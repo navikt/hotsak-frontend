@@ -45,8 +45,9 @@ azure
     });*/
 
 // Unprotected routes
-app.get('/isAlive', (_, res) => res.send('alive'));
-app.get('/isReady', (_, res) => {
+app.get('/isalive', (_, res) => res.send('alive'));
+app.get('/isready', (_, res) => {
+res.send('ready for action')
     /*if (helsesjekk.redis) {
         return res.send('ready');
     } else {

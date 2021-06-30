@@ -12,6 +12,7 @@ import config from './config'
 //import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
 import logger from './logging'
 import path from 'path'
+import { cli } from 'winston/lib/winston/config'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
 //import paymentRoutes from './payment/paymentRoutes';
@@ -161,12 +162,23 @@ app.get('/*', (req, res, next) => {
   next()
 })
 
-const buildPath = path.resolve(__dirname, '../build')
-app.use('/banan', express.static(buildPath))
+const distPath = path.join(__dirname, 'dist')
+const clientPath = path.join(distPath, 'client')
+const htmlPath = path.join(clientPath, 'index.html')
+
+console.log('distpath', distPath)
+console.log('clientpath', clientPath)
+console.log('htmlPath', htmlPath)
+
+
+app.use(express.static(path.join(__dirname, 'dist','client')));
+app.use('/*', express.static(htmlPath))
+
+app.use('/banan', express.static(distPath))
 
 // At the time of writing this comment, the setup of the static 'routes' has to be done in a particular order.
-app.use('/static', express.static('dist/client'))
-app.use('/*', express.static('dist/client/index.html'))
-app.use('/', express.static('dist/client/'))
+//app.use('/static', express.static('dist/client'))
+//app.use('/*', express.static('dist/client/index.html'))
+//app.use('/', express.static('dist/client/'))
 
 app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))

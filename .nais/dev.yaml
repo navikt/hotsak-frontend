@@ -9,6 +9,8 @@ metadata:
 spec:
   image: {{ image }}
   team: teamdigihot
+  ingresses:
+    - https://hm-saksbehandling.dev.intern.nav.no
   liveness:
     path: /isalive
   readiness:

@@ -162,16 +162,14 @@ app.get('/*', (req, res, next) => {
   next()
 })
 
-const distPath = path.join(__dirname, 'dist')
-const clientPath = path.join(distPath, 'client')
-const htmlPath = path.join(clientPath, 'index.html')
+const distPath = __dirname + '/../client'
+//const clientPath = path.join(distPath, 'client')
+const htmlPath = path.join(distPath, 'index.html')
 
 console.log('distpath', distPath)
-console.log('clientpath', clientPath)
 console.log('htmlPath', htmlPath)
 
-
-app.use(express.static(path.join(__dirname, 'dist','client')));
+app.use(express.static(__dirname + '/../client'))
 app.use('/*', express.static(htmlPath))
 
 app.use('/banan', express.static(distPath))

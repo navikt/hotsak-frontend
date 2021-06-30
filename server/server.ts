@@ -1,16 +1,16 @@
 //import bodyParser from 'body-parser';
 //import compression from 'compression';
 //import cookieParser from 'cookie-parser';
-import express, { Response } from 'express';
+import express, { Response } from 'express'
 //import { Client, generators } from 'openid-client';
 
 //import auth from './auth/authSupport';
 //import azure from './auth/azure';
 //import behandlingsstatistikkRoutes from './behandlingsstatistikk/behandlingsstatistikkRoutes';
-import config from './config';
+import config from './config'
 //import headers from './headers';
 //import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
-import logger from './logging';
+import logger from './logging'
 import path from 'path'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
@@ -22,8 +22,8 @@ import path from 'path'
 //import { AuthError, SpeilRequest } from './types';
 //import wiring from './wiring';
 
-const app = express();
-const port = config.server.port;
+const app = express()
+const port = config.server.port
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
@@ -46,17 +46,17 @@ azure
     });*/
 
 // Unprotected routes
-app.get('/isalive', (_, res) => res.send('alive'));
+app.get('/isalive', (_, res) => res.send('alive'))
 app.get('/isready', (_, res) => {
-res.send('ready for action')
-    /*if (helsesjekk.redis) {
+  res.send('ready for action')
+  /*if (helsesjekk.redis) {
         return res.send('ready');
     } else {
         logger.warning('Svarer not ready på isReady');
         res.statusCode = 503;
         return res.send('NOT READY');
     }*/
-});
+})
 
 /*const setUpAuthentication = () => {
     app.get('/login', (req: SpeilRequest, res: Response) => {
@@ -82,9 +82,9 @@ res.send('ready for action')
         });
     });*/
 
-    //app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 
-    /*app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
+/*app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
         const session = req.session;
         auth.validateOidcCallback(req, azureClient!, config.oidc)
             .then((tokens: string[]) => {
@@ -111,7 +111,7 @@ res.send('ready for action')
 
 // Protected routes
 //app.use('/*', async (/*req: SpeilRequest*/ _ , res, next) => {
-   /* if (process.env.NODE_ENV === 'development') {
+/* if (process.env.NODE_ENV === 'development') {
         res.cookie('speil', auth.createTokenForTest(), {
             secure: false,
             sameSite: true,
@@ -141,7 +141,7 @@ res.send('ready for action')
             }
         }
     }*/
-  //  next()
+//  next()
 //});
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));
@@ -153,20 +153,20 @@ app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
 app.get('/*', (req, res, next) => {
-    if (!req.accepts('html') && /\/api/.test(req.url)) {
-        console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`);
-        res.sendStatus(404);
-        return;
-    }
-    next();
-});
+  if (!req.accepts('html') && /\/api/.test(req.url)) {
+    console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`)
+    res.sendStatus(404)
+    return
+  }
+  next()
+})
 
 const buildPath = path.resolve(__dirname, '../build')
-app.use('/banan',  express.static(buildPath))
+app.use('/banan', express.static(buildPath))
 
 // At the time of writing this comment, the setup of the static 'routes' has to be done in a particular order.
-app.use('/static', express.static('dist/client'));
-app.use('/*', express.static('dist/client/index.html'));
-app.use('/', express.static('dist/client/'));
+app.use('/static', express.static('dist/client'))
+app.use('/*', express.static('dist/client/index.html'))
+app.use('/', express.static('dist/client/'))
 
-app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`));
+app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))

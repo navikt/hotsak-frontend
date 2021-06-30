@@ -11,6 +11,7 @@ import config from './config';
 //import headers from './headers';
 //import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
 import logger from './logging';
+import path from 'path'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
 //import paymentRoutes from './payment/paymentRoutes';
@@ -109,7 +110,7 @@ res.send('ready for action')
 //setUpAuthentication();
 
 // Protected routes
-app.use('/*', async (/*req: SpeilRequest*/ _ , res, next) => {
+//app.use('/*', async (/*req: SpeilRequest*/ _ , res, next) => {
    /* if (process.env.NODE_ENV === 'development') {
         res.cookie('speil', auth.createTokenForTest(), {
             secure: false,
@@ -140,8 +141,8 @@ app.use('/*', async (/*req: SpeilRequest*/ _ , res, next) => {
             }
         }
     }*/
-    next()
-});
+  //  next()
+//});
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));
 app.use('/api/payments', paymentRoutes(dependencies.payments));
@@ -159,6 +160,9 @@ app.get('/*', (req, res, next) => {
     }
     next();
 });
+
+const buildPath = path.resolve(__dirname, '../build')
+app.use('/banan',  express.static(buildPath))
 
 // At the time of writing this comment, the setup of the static 'routes' has to be done in a particular order.
 app.use('/static', express.static('dist/client'));

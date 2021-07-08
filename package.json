@@ -13,7 +13,7 @@
   "scripts": {
     "build-client": "npm run build --prefix client",
     "build-server": "npm run build-server --prefix server",
-    "build" : "concurrently \"npm run build-server\" \"cross-env-shell BUILD_PATH=../dist/client npm run build-client\"",
+    "build": "concurrently \"npm run build-server\" \"cross-env-shell BUILD_PATH=../dist/client npm run build-client\"",
     "dev": "npm run start --prefix client "
   },
   "lint-staged": {
@@ -23,5 +23,8 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix --rule react-hooks/exhaustive-deps:off"
     ]
+  },
+  "msw": {
+    "workerDirectory": "client/public"
   }
 }

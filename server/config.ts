@@ -18,7 +18,7 @@ env.config();
 };
  */
 const server: ServerConfig = {
-    port: process.env.HM_SAKSBEHANDLING_API_PORT ? parseInt(process.env.HM_SAKSBEHANDLING_API_PORT) : 3000,
+    port: process.env.HM_SAKSBEHANDLING_API_PORT ? parseInt(process.env.HM_SAKSBEHANDLING_API_PORT) : 3001,
     sessionSecret: process.env.SESSION_SECRET,
 };
 

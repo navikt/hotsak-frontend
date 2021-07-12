@@ -6,33 +6,23 @@ import { useOppgaveliste } from '../oppgaveliste/oppgavelisteHook'
 
 import {
   TabType,
-  /*, useAktivTab*/
 } from '../tabs'
 import { Oppgave, StatusType } from '../types/types.internal'
 import { Body } from './Body'
 import { Cell } from './Cell'
-//import { FilterButton } from './FilterButton';
 import { Header } from './Header'
 import { LinkRow } from './LinkRow'
-//import { Pagination } from './Pagination';
-//import { SortButton } from './SortButton';
 import { Table } from './Table'
-//import { Bosted } from './rader/Bosted';
-//import { Inntektskilde } from './rader/Inntektskilde';
-import { Opprettet } from './rader/Opprettet'
-//import { Sakstype } from './rader/Sakstype';
 import { Status } from '../oppgaveliste/Status'
-//import { Søker } from './rader/Søker';
 import { Tildeling } from './rader/Tildeling'
 import { Funksjonsnedsettelse } from '../oppgaveliste/Funksjonsnedsettelse'
 import { Gjelder } from '../oppgaveliste/Gjelder'
 import { Hjelpemiddelbruker } from '../oppgaveliste/Hjelpemiddelbruker'
 import { Fødselsnummer } from '../oppgaveliste/Fødselsnummer'
 import { Fødselsdato } from '../oppgaveliste/Fødselsdato'
-import { convertCompilerOptionsFromJson } from 'typescript'
 import { Bosted } from '../oppgaveliste/Bosted'
 import { Motatt } from '../oppgaveliste/Motatt'
-//import { OptionsButton } from './rader/kjøttbolle/OptionsButton';
+import { OptionsButton } from './rader/kjøttbolle/OptionsButton';
 
 const Container = styled.div`
   min-height: 300px;
@@ -45,15 +35,6 @@ const ScrollableX = styled.div`
   height: calc(100% - 50px);
   width: 100%;
 `
-
-/*const groupFiltersByColumn = (filters: Filter<Oppgave>[]): Filter<Oppgave>[][] => {
-    const groups = filters.reduce((groups: { [key: string]: Filter<Oppgave>[] }, filter: Filter<Oppgave>) => {
-        const key = `${filter.column}`;
-        return groups[key] ? { ...groups, [key]: [...groups[key], filter] } : { ...groups, [key]: [filter] };
-    }, {});
-
-    return Object.values(groups);
-};*/
 
 export const OppgaverTable = () => {
   const { aktivTab } = useTabContext()
@@ -72,15 +53,6 @@ export const OppgaverTable = () => {
         return true
     }
   })
-
-  //const paginatedRows: any[] = []
-  //const visibleRows = []
-  /*const paginatedRows = pagination
-        ? sortedRows.slice(pagination.firstVisibleEntry, pagination.lastVisibleEntry + 1)
-        : sortedRows;*/
-
-  //const onNavigate = () => removeVarsler();
-  //console.log(oppgaver.)
 
   return (
     <Container>
@@ -155,8 +127,7 @@ export const OppgaverTable = () => {
                   <Motatt dato={oppgave.motattDato}/>
                 </Cell>
                 <Cell style={{ width: '100%' }}>
-                  OptionsButton her
-                  {/*<OptionsButton oppgave={it} />*/}
+                  {<OptionsButton oppgave={oppgave} />}
                 </Cell>
               </LinkRow>
             ))}

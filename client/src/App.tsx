@@ -33,9 +33,9 @@ function App() {
             {/*<ProtectedRoute path={Routes.Saksbilde}>
                         <Saksbilde />
 </ProtectedRoute>*/}
-            {/*<Route path="*">
+            {<Route path="*">
                         <PageNotFound />
-</Route>*/}
+</Route>}
           </Switch>
         </React.Suspense>
         {/*</React.Suspense>*/}

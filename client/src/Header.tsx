@@ -1,14 +1,13 @@
 import styled from '@emotion/styled'
 //import { Person } from 'internal-types';
-import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link/*, useHistory*/ } from 'react-router-dom'
 
 //import { useRecoilValue } from 'recoil';
 //import '@navikt/ds-css'
-import { InternalHeader, InternalHeaderTitle } from '@navikt/ds-react'
+//import { InternalHeader, InternalHeaderTitle } from '@navikt/ds-react'
 import { HeaderEnkel } from '@navikt/helse-frontend-header'
 import '@navikt/helse-frontend-header/lib/main.css'
-import { Varseltype } from '@navikt/helse-frontend-varsel'
+//import { Varseltype } from '@navikt/helse-frontend-varsel'
 
 //import { authState } from '../state/authentication';
 //import { useAddVarsel, useRemoveVarsel } from '../state/varsler';
@@ -40,7 +39,7 @@ const Container = styled.div`
 `
 
 export const HeaderBar = () => {
-  const history = useHistory()
+  //const history = useHistory()
   //const hentPerson = useHentPerson();
   //const removeVarsel = useRemoveVarsel();
   //const addVarsel = useAddVarsel();

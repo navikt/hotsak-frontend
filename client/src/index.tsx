@@ -1,4 +1,3 @@
-import React from 'react'
 import { render } from 'react-dom';
 //import ReactDOM from 'react-dom'
 
@@ -19,10 +18,3 @@ if (true) {
 }
 
 render(<App />, document.getElementById('root'));
-
-{/*ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-document.getElementById('root')
-)*/}

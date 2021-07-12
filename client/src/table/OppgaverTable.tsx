@@ -1,5 +1,4 @@
 import styled from 'styled-components/macro'
-import React from 'react'
 
 import { useTabContext } from '../oppgaveliste/Oppgaveliste'
 import { useOppgaveliste } from '../oppgaveliste/oppgavelisteHook'
@@ -7,7 +6,7 @@ import { useOppgaveliste } from '../oppgaveliste/oppgavelisteHook'
 import {
   TabType,
 } from '../tabs'
-import { Oppgave, StatusType } from '../types/types.internal'
+import { StatusType } from '../types/types.internal'
 import { Body } from './Body'
 import { Cell } from './Cell'
 import { Header } from './Header'

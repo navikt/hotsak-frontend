@@ -21,7 +21,7 @@ interface IkkeTildeltProps {
 
 export const IkkeTildelt = ({ oppgavereferanse }: IkkeTildeltProps) => {
   //const saksbehandler = useInnloggetSaksbehandler();
-  const [isFetching, setIsFetching] = useState(false)
+  const [isFetching/*, setIsFetching*/] = useState(false)
   //const tildelOppgave = useTildelOppgave();
 
   const tildel = (event: React.MouseEvent) => {

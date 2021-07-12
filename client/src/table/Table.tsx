@@ -1,5 +1,4 @@
 import styled from 'styled-components/macro'
-import React from 'react'
 
 export const Table = styled.table`
   --speil-table-row-background-color-alternate: #f8f8f8;

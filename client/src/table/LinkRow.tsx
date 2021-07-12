@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+//import { useHistory } from 'react-router-dom'
 
 import { Row } from './Row'
 
@@ -18,7 +18,7 @@ interface LinkRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
 }
 
 export const LinkRow = ({ onNavigate, children, ...rest }: LinkRowProps) => {
-  const history = useHistory()
+  //const history = useHistory()
 
   const navigate = (event: React.KeyboardEvent | React.MouseEvent) => {
     onNavigate?.()

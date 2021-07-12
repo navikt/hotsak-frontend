@@ -1,6 +1,4 @@
-import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import React from 'react'
 
 export const CellContent = styled.div<{ width?: number }>`
   position: relative;

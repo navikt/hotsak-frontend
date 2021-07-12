@@ -1,5 +1,4 @@
 import styled from 'styled-components/macro'
-import React from 'react'
 
 type BasicValue = 'normal' | 'stretch'
 

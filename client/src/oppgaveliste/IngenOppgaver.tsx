@@ -1,11 +1,6 @@
 import styled from '@emotion/styled'
-import dayjs from 'dayjs'
 
 import { Sidetittel } from 'nav-frontend-typografi'
-
-import { TabType } from '../tabs'
-
-//import { useAktivTab } from './tabs';
 
 const Container = styled.div`
   align-self: flex-start;

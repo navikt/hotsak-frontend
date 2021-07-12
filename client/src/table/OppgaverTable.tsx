@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro' 
+import styled from 'styled-components/macro'
 import React from 'react'
 
 import { useTabContext } from '../oppgaveliste/Oppgaveliste'
@@ -21,10 +21,17 @@ import { Table } from './Table'
 //import { Inntektskilde } from './rader/Inntektskilde';
 import { Opprettet } from './rader/Opprettet'
 //import { Sakstype } from './rader/Sakstype';
-import { Status } from './rader/Status'
+import { Status } from '../oppgaveliste/Status'
 //import { Søker } from './rader/Søker';
 import { Tildeling } from './rader/Tildeling'
-
+import { Funksjonsnedsettelse } from '../oppgaveliste/Funksjonsnedsettelse'
+import { Gjelder } from '../oppgaveliste/Gjelder'
+import { Hjelpemiddelbruker } from '../oppgaveliste/Hjelpemiddelbruker'
+import { Fødselsnummer } from '../oppgaveliste/Fødselsnummer'
+import { Fødselsdato } from '../oppgaveliste/Fødselsdato'
+import { convertCompilerOptionsFromJson } from 'typescript'
+import { Bosted } from '../oppgaveliste/Bosted'
+import { Motatt } from '../oppgaveliste/Motatt'
 //import { OptionsButton } from './rader/kjøttbolle/OptionsButton';
 
 const Container = styled.div`
@@ -73,6 +80,7 @@ export const OppgaverTable = () => {
         : sortedRows;*/
 
   //const onNavigate = () => removeVarsler();
+  //console.log(oppgaver.)
 
   return (
     <Container>
@@ -94,19 +102,19 @@ export const OppgaverTable = () => {
                 Eier
               </Header>
               <Header scope="col" colSpan={1}>
-                Funksjonsnedsettelse
-              </Header>
-              <Header scope="col" colSpan={1}>
-                Søknad om
+                Fødselsnummer
               </Header>
               <Header scope="col" colSpan={1}>
                 Hjelpemiddelbruker
               </Header>
               <Header scope="col" colSpan={1}>
-                Fødselsnummer
+                Fødselsdato
               </Header>
               <Header scope="col" colSpan={1}>
-                Fødselsdato
+                Funksjonsnedsettelse
+              </Header>
+              <Header scope="col" colSpan={1}>
+                Søknad om
               </Header>
               <Header scope="col" colSpan={1}>
                 Bosted
@@ -127,30 +135,24 @@ export const OppgaverTable = () => {
                   <Tildeling oppgave={oppgave} />
                 </Cell>
                 <Cell>
-                  Funksjonsnedsettelse
-                  {/*Sakstype/*<Sakstype type={it.periodetype} />*/}
+                  <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
                 </Cell>
                 <Cell>
-                  Søknad om
-                  {/*<Bosted stedsnavn={it.boenhet.navn} oppgavereferanse={it.oppgavereferanse} />*/}
+                  <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
-                  Hjelpemiddelbruker
-                  {/*<Inntektskilde type={it.inntektskilde} />*/}
+                  <Fødselsdato fødselsdato={oppgave.personinformasjon.fødselsdato}/>
                 </Cell>
                 <Cell>
-                  Fødselsnummer
-                  {/*<Status numberOfWarnings={oppgave.antallVarsler} />*/}
+                  <Funksjonsnedsettelse funksjonsnedsettelser={oppgave.funksjonsnedsettelse} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
-                  Fødselsdato
-                  {/*<Søker personinfo={it.personinfo} oppgavereferanse={it.oppgavereferanse} />*/}
+                  <Gjelder søknadOm={oppgave.søknadOm} saksID={oppgave.saksid} />
                 </Cell>
-                <Cell>Bosted</Cell>
-                <Cell>Status</Cell>
+                <Cell><Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid}/></Cell>
+                <Cell><Status status={oppgave.status} saksID={oppgave.saksid}/></Cell>
                 <Cell>
-                  Mottatt
-                  {/*<Opprettet date={oppgave.opprettet} />*/}
+                  <Motatt dato={oppgave.motattDato}/>
                 </Cell>
                 <Cell style={{ width: '100%' }}>
                   OptionsButton her

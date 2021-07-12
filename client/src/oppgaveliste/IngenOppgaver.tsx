@@ -1,12 +1,8 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
-import React from 'react'
 
 import { Sidetittel } from 'nav-frontend-typografi'
 
-//import agurk from '../../assets/ingen-oppgaver-agurk.png';
-//import fredagstaco from '../../assets/ingen-oppgaver-fredagstaco.png';
-//import brevkasse from '../../assets/ingen-oppgaver.png';
 import { TabType } from '../tabs'
 
 //import { useAktivTab } from './tabs';

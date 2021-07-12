@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import React from 'react'
 
 export const Row = styled.tr`
   position: relative;

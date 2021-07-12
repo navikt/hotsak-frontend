@@ -9,10 +9,12 @@ const saksbehandlingHandlers = [
           saksid: '1234567',
           funksjonsnedsettelse: ['hørsel', 'kognisjon'],
           søknadOm: 'Hjelpemidler',
-          personinformarsjon: {
-            fornavn: 'Navn',
-            mellomnavn: 'Mlm',
-            etternavn: 'Navnesen',
+          motattDato: '2021-06-25T13:55:45',
+          personinformasjon: {
+            fnr: '16120101181',
+            fødselsdato: '2001-12-16',
+            fornavn: 'Bananskall',
+            etternavn: 'Eple',
             adresse: 'Veien 69',
             kjønn: 'MANN',
             brukernummer: '454545',
@@ -40,10 +42,13 @@ const saksbehandlingHandlers = [
           saksid: '1234568',
           funksjonsnedsettelse: ['hørsel', 'kognisjon'],
           søknadOm: 'Hjelpemidler',
-          personinformarsjon: {
+          motattDato: '2021-07-09T14:55:45',
+          personinformasjon: {
+            fnr: '15084300133',
+            fødselsdato: '1943-08-15',
             fornavn: 'Navn',
             mellomnavn: 'Mlm',
-            etternavn: 'Navnesen',
+            etternavn: 'LangtesenNavnesen',
             adresse: 'Veien 69',
             kjønn: 'MANN',
             brukernummer: '454545',
@@ -65,9 +70,12 @@ const saksbehandlingHandlers = [
         },
         {
           saksid: '1234569',
-          funksjonsnedsettelse: ['hørsel', 'kognisjon'],
+          funksjonsnedsettelse: ['hørsel', 'kognisjon', 'bevegelse'],
           søknadOm: 'Hjelpemidler',
-          personinformarsjon: {
+          motattDato: '2021-07-08T16:55:45',
+          personinformasjon: {
+            fnr: '15084300133',
+            fødselsdato: '1943-08-15',
             fornavn: 'Navn',
             mellomnavn: 'Mlm',
             etternavn: 'Navnesen',

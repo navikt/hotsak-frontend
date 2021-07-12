@@ -111,7 +111,6 @@ export const Oppgaveliste = () => {
           <Tabs />
           <Flex style={{ height: '100%' }}>
             <Content>{hasData ? <OppgaverTable /> : <IngenOppgaver />}</Content>
-            {/*<Behandlingsstatistikk />*/}
           </Flex>
         </TabContext.Provider>
       </FlexColumn>

@@ -7,6 +7,7 @@ import { Meatball } from '@navikt/helse-frontend-meatball';
 import '@navikt/helse-frontend-meatball/lib/main.css';
 
 import { Tooltip } from '../../../Tooltip';
+import saksbehandler from '../../../saksbehandler/innloggetSaksbehandler'
 //import { useInnloggetSaksbehandler } from '../../../../../state/authentication';
 
 import { CellContent } from '../CellContent';
@@ -43,11 +44,7 @@ export const OptionsButton = React.memo(({ oppgave }: OptionsButtonProps) => {
     const [popoverIsActive, setPopoverIsActive] = useState(false);
     const meatballRef = useRef<HTMLButtonElement>(null);
 
-    //const innloggetSaksbehandler = useInnloggetSaksbehandler();
-    // TODO: Fjern hardkoding når vi har fått på plass innlogging
-    const innloggetSaksbehandler = {objectId: '23ea7485-1324-4b25-a763-assdfdfa'}
-    
-    const erTildeltInnloggetBruker = oppgave.saksbehandler?.objectId === innloggetSaksbehandler.objectId;
+    const erTildeltInnloggetBruker = oppgave.saksbehandler?.objectId === saksbehandler.objectId;
     const id = `options-${oppgave.saksid}`;
 
     const togglePopover = (event: React.MouseEvent) => {

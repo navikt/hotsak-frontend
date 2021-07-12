@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 import ReactTooltip from 'react-tooltip'
 
 export const Tooltip = styled(ReactTooltip)`

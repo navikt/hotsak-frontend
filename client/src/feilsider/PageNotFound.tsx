@@ -5,7 +5,7 @@ import Lenke from 'nav-frontend-lenker'
 import { Normaltekst, Sidetittel } from 'nav-frontend-typografi'
 
 //import nissemyra from '../assets/nissemyra.svg';
-import { FlexColumn } from './Flex'
+import { FlexColumn } from '../felleskomponenter/Flex'
 
 const Container = styled.div`
   display: flex;

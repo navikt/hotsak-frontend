@@ -5,13 +5,13 @@ import styled from '@emotion/styled'
 //import { PopoverOrientering } from 'nav-frontend-popover'
 import { Normaltekst } from 'nav-frontend-typografi'
 
-import { useTabContext } from './oppgaveliste/Oppgaveliste'
-import { useOppgaveliste } from './oppgaveliste/oppgavelisteHook'
+import { useTabContext } from './Oppgaveliste'
+import { useOppgaveliste } from './oppgavelisteHook'
 
-import { Flex } from './Flex'
-import { StatusType } from './types/types.internal'
+import { Flex } from '../felleskomponenter/Flex'
+import { StatusType } from '../types/types.internal'
 
-import saksbehandler  from  './saksbehandler/innloggetSaksbehandler'
+import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
 
 //import { useInnloggetSaksbehandler } from '../../state/authentication';
 

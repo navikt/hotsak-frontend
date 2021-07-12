@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { CellContent } from '../table/rader/CellContent'
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import dayjs from 'dayjs'
 
-import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../utils/date'
+import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../../utils/date'
 import { Normaltekst } from 'nav-frontend-typografi'
 
 interface MottattProps {

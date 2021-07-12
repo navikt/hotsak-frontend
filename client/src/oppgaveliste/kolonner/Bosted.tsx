@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { CellContent } from '../table/rader/CellContent'
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
-import { Tooltip } from '../Tooltip';
-import { TekstMedEllipsis } from '../TekstMedEllipsis'
+import { Tooltip } from '../../felleskomponenter/Tooltip';
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 
 interface BostedProps {
   bosted: string,

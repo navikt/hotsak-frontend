@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { TekstMedEllipsis } from '../TekstMedEllipsis';
-import { Tooltip } from '../Tooltip';
-import { CellContent } from '../table/rader/CellContent'
-import { capitalize } from '../utils/stringFormating'
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis';
+import { Tooltip } from '../../felleskomponenter/Tooltip';
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { capitalize } from '../../utils/stringFormating'
 
 interface FunksjonsnedsettelseProps {
     funksjonsnedsettelser: string[];

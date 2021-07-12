@@ -5,7 +5,7 @@ import { Knapp } from 'nav-frontend-knapper'
 
 //import { useInnloggetSaksbehandler } from '../../../../state/authentication';
 //import { useTildelOppgave } from '../../../../state/oppgaver';
-import { CellContent } from './CellContent'
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
 const Tildelingsknapp = styled(Knapp)`
   min-height: 0;

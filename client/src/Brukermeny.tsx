@@ -6,7 +6,7 @@ import Lenke from 'nav-frontend-lenker';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 
-import { TekstMedEllipsis } from './TekstMedEllipsis';
+import { TekstMedEllipsis } from './felleskomponenter/TekstMedEllipsis';
 
 const BrukermenyContainer = styled.div`
     margin-left: 16px;

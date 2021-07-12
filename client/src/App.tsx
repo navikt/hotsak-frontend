@@ -3,10 +3,10 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import 'reset-css';
 import './App.less'
-import { GlobalFeilside } from './GlobalFeilside'
+import { GlobalFeilside } from './feilsider/GlobalFeilside'
 //import ReactModal from 'react-modal';
 import { HeaderBar as ToppMeny } from './Header'
-import { PageNotFound } from './PageNotFound'
+import { PageNotFound } from './feilsider/PageNotFound'
 import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'
 

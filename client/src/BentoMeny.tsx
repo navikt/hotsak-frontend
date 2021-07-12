@@ -9,7 +9,7 @@ import { PopoverOrientering } from 'nav-frontend-popover'
 import { ExternalLink, SystemFilled } from '@navikt/ds-icons'
 
 //import { usePerson } from '../state/person';
-import { Button } from './Button'
+import { Button } from './felleskomponenter/Button'
 
 const BentoMenyContainer = styled.div`
   display: flex;

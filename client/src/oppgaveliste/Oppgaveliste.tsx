@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import Panel from 'nav-frontend-paneler'
 
-import { OppgaverTable } from '../table/OppgaverTable'
+import { OppgaverTable } from './OppgaverTable'
 
-import { Flex, FlexColumn } from '../Flex'
+import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import {
   Tabs,
   TabType,
-} from '../tabs'
+} from './tabs'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
 //import { useInnloggetSaksbehandler } from '../../state/authentication';
 import { IngenOppgaver } from './IngenOppgaver'

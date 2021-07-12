@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { CellContent } from '../table/rader/CellContent'
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
-import { Tooltip } from '../Tooltip';
-import { TekstMedEllipsis } from '../TekstMedEllipsis'
-import { capitalize } from '../utils/stringFormating';
+import { Tooltip } from '../../felleskomponenter/Tooltip';
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
+import { capitalize } from '../../utils/stringFormating';
 
 interface StatusProps {
   status: string,

@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { TekstMedEllipsis } from '../TekstMedEllipsis';
-import { Tooltip } from '../Tooltip';
-import { CellContent } from '../table/rader/CellContent'
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis';
+import { Tooltip } from '../../felleskomponenter/Tooltip';
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
 interface GjelderProps {
     søknadOm: string;

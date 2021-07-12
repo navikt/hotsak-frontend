@@ -1,7 +1,7 @@
 import { Normaltekst } from 'nav-frontend-typografi'
 import React from 'react'
 
-import { CellContent } from '../table/rader/CellContent'
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
 interface FødselsnummerProps {
   fødselsnummer: string

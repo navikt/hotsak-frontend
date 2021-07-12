@@ -1,16 +1,16 @@
 import styled from 'styled-components/macro'
-import { Oppgave } from '../../../types/types.internal';
+import { Oppgave } from '../../types/types.internal';
 import React, { useRef, useState } from 'react';
 
 import { Popover } from '@navikt/ds-react';
 import { Meatball } from '@navikt/helse-frontend-meatball';
 import '@navikt/helse-frontend-meatball/lib/main.css';
 
-import { Tooltip } from '../../../Tooltip';
-import saksbehandler from '../../../saksbehandler/innloggetSaksbehandler'
+import { Tooltip } from '../Tooltip';
+import saksbehandler from '../../saksbehandler/innloggetSaksbehandler'
 //import { useInnloggetSaksbehandler } from '../../../../../state/authentication';
 
-import { CellContent } from '../CellContent';
+import { CellContent } from '../table/rader/CellContent';
 import { MeldAvMenuButton } from './MeldAvMenuButton';
 
 const SpicyMeatball = styled(Meatball)`

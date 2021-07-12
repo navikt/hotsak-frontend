@@ -2,18 +2,16 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import Panel from 'nav-frontend-paneler'
 
+import saksbehandler from '../saksbehandler/innloggetSaksbehandler'
 import { OppgaverTable } from './OppgaverTable'
-
+import { StatusType } from '../types/types.internal'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import {
-  Tabs,
-  TabType,
-} from './tabs'
+import { Tabs, TabType } from './tabs'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
 //import { useInnloggetSaksbehandler } from '../../state/authentication';
 import { IngenOppgaver } from './IngenOppgaver'
 import { useOppgaveliste } from './oppgavelisteHook'
-
+import { Oppgave } from '../types/types.internal'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -50,8 +48,27 @@ const Content = styled(Panel)`
 
 export const Oppgaveliste = () => {
   const { oppgaver, isError, isLoading } = useOppgaveliste()
-  const [aktivTab, setAktivTab]: [TabType, Function] = React.useState(TabType.Ufordelte)
+  const [aktivTab, setAktivTab]: [TabType, Function] = React.useState<TabType>(TabType.Ufordelte)
   const byttTab = (nyTab: TabType) => setAktivTab(nyTab)
+  const [filtrerteOppgaver, setFiltrerteOppgaver]: [Oppgave[], Function] = React.useState([])
+
+  React.useEffect(() => {
+        const filtrert =  oppgaver?.filter((oppgave) => {
+        switch (aktivTab) {
+          case TabType.Ufordelte:
+            return !oppgave.saksbehandler && oppgave.status !== StatusType.OVERFØRT_GOSYS
+          case TabType.OverførtGosys:
+            return oppgave.status === StatusType.OVERFØRT_GOSYS
+          case TabType.Mine:
+            return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
+          default:
+            return true
+        }
+      }) || []
+
+    setFiltrerteOppgaver(filtrert)
+    
+  }, [aktivTab, oppgaver])
 
   if (isError) {
     throw Error('Feil med henting av oppgaver')
@@ -62,15 +79,14 @@ export const Oppgaveliste = () => {
   }
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
-
-  const hasData = oppgaver.length > 0
+  const hasData = filtrerteOppgaver.length > 0
   return (
     <Container>
       <FlexColumn>
         <TabContext.Provider value={{ aktivTab, byttTab }}>
           <Tabs />
           <Flex style={{ height: '100%' }}>
-            <Content>{hasData ? <OppgaverTable /> : <IngenOppgaver />}</Content>
+            <Content>{hasData ? <OppgaverTable oppgaver={filtrerteOppgaver} /> : <IngenOppgaver />}</Content>
           </Flex>
         </TabContext.Provider>
       </FlexColumn>

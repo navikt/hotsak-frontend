@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-
+import { useTabContext } from './Oppgaveliste'
 import { Sidetittel } from 'nav-frontend-typografi'
+import { TabType } from './tabs'
 
 const Container = styled.div`
   align-self: flex-start;
@@ -19,28 +20,34 @@ const Tekst = styled(Sidetittel)`
 `
 
 export const IngenOppgaver = () => {
-  //const aktivTab = useAktivTab();
-  var aktivTab = 'mine'
+    const { aktivTab } = useTabContext()
 
   switch (aktivTab) {
-    case 'alle':
+    case TabType.Ufordelte:
       return (
         <Container>
           <Tekst>Ingen nye saker å plukke</Tekst>
         </Container>
       )
-    case 'mine':
+    case TabType.Mine:
       return (
         <Container>
           {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
           <Tekst>Du har ingen tildelte saker</Tekst>
         </Container>
       )
-    case 'ventende':
+    case TabType.OverførtGosys:
       return (
         <Container>
           {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
-          <Tekst>Du har ingen saker på vent</Tekst>
+          <Tekst>Ingen saker overført til Gosys</Tekst>
+        </Container>
+      )
+      case TabType.Alle: 
+      return (
+        <Container>
+          {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
+          <Tekst>Ingen saker funnet for din enhet</Tekst>
         </Container>
       )
     default:

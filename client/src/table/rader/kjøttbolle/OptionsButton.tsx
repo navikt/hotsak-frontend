@@ -1,21 +1,18 @@
-import styled from '@emotion/styled'
-import React, { useRef, useState } from 'react'
+import styled from 'styled-components/macro'
+import { Oppgave } from '../../../types/types.internal';
+import React, { useRef, useState } from 'react';
 
-import { Popover } from '@navikt/ds-react'
+import { Popover } from '@navikt/ds-react';
+import { Meatball } from '@navikt/helse-frontend-meatball';
+import '@navikt/helse-frontend-meatball/lib/main.css';
 
-import { Oppgave } from '../../../types/types.internal'
-//import { Meatball } from '@navikt/helse-frontend-meatball';
-//import '@navikt/helse-frontend-meatball/lib/main.css';
-//import { Tooltip } from '../../../../../components/Tooltip';
+import { Tooltip } from '../../../Tooltip';
 //import { useInnloggetSaksbehandler } from '../../../../../state/authentication';
-import { CellContent } from '../CellContent'
 
-//import { FjernFraPåVentMenuButton } from './FjernFraPåVentMenuButton';
-//import { LeggPåVentMenuButton } from './LeggPåVentMenuButton';
-//import { MeldAvMenuButton } from './MeldAvMenuButton';
-//import { TildelMenuButton } from './TildelMenuButton';
+import { CellContent } from '../CellContent';
+import { MeldAvMenuButton } from './MeldAvMenuButton';
 
-/*const SpicyMeatball = styled(Meatball)`
+const SpicyMeatball = styled(Meatball)`
     #circle_fill {
         fill: transparent;
     }
@@ -31,45 +28,41 @@ import { CellContent } from '../CellContent'
             fill: var(--navds-color-text-inverse);
         }
     }
-`;*/
+`;
 
 const Container = styled.span`
-  display: flex;
-  align-items: center;
-`
+    display: flex;
+    align-items: center;
+`;
 
 interface OptionsButtonProps {
-  oppgave: Oppgave
+    oppgave: Oppgave;
 }
 
 export const OptionsButton = React.memo(({ oppgave }: OptionsButtonProps) => {
-  const [popoverIsActive, setPopoverIsActive] = useState(false)
-  const meatballRef = useRef<HTMLButtonElement>(null)
+    const [popoverIsActive, setPopoverIsActive] = useState(false);
+    const meatballRef = useRef<HTMLButtonElement>(null);
 
-  // const innloggetSaksbehandler = useInnloggetSaksbehandler();
-  // const erTildeltInnloggetBruker = oppgave.tildeling?.saksbehandler?.oid === innloggetSaksbehandler.oid;
+    //const innloggetSaksbehandler = useInnloggetSaksbehandler();
+    // TODO: Fjern hardkoding når vi har fått på plass innlogging
+    const innloggetSaksbehandler = {objectId: '23ea7485-1324-4b25-a763-assdfdfa'}
+    
+    const erTildeltInnloggetBruker = oppgave.saksbehandler?.objectId === innloggetSaksbehandler.objectId;
+    const id = `options-${oppgave.saksid}`;
 
-  var erTildeltInnloggetBruker = true
-  const innloggetSaksbehandler = { iod: '1234', epost: 'banan@fjes.com', navn: 'Bjarne Betjent' }
+    const togglePopover = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        setPopoverIsActive((active) => !active);
+    };
 
-  // const id = `options-${oppgave.oppgavereferanse}`;
-  const id = '1234'
+    const closePopover = () => {
+        setPopoverIsActive(false);
+    };
 
-  const togglePopover = (event: React.MouseEvent) => {
-    event.stopPropagation()
-    setPopoverIsActive((active) => !active)
-  }
-
-  const closePopover = () => {
-    setPopoverIsActive(false)
-  }
-
-  return (
-    <CellContent>
-      <Container data-tip="Mer" data-for={id}>
-        Kjøttbolle
-      </Container>
-      {/*<SpicyMeatball
+    return (
+        <CellContent>
+            <Container data-tip="Mer" data-for={id}>
+                <SpicyMeatball
                     // @ts-ignore
                     ref={meatballRef}
                     size="s"
@@ -83,32 +76,14 @@ export const OptionsButton = React.memo(({ oppgave }: OptionsButtonProps) => {
                     arrow={false}
                     offset={0}
                 >
-                    {!erTildeltInnloggetBruker && (
-                        "TilDelMenuButton"
-                        <TildelMenuButton
-                            oppgavereferanse={oppgave.oppgavereferanse}
-                            saksbehandler={innloggetSaksbehandler}
-                            tildeling={oppgave.tildeling}
-                        />
-                    )
-                    {erTildeltInnloggetBruker && oppgave.tildeling && (
+                    {erTildeltInnloggetBruker &&  (
                         <>
-                       
-                            {<MeldAvMenuButton oppgavereferanse={oppgave.oppgavereferanse} />
-                            {"MeldAvMenuButton"}
-                            {/*oppgave.tildeling.påVent true ? ( ("FjernFraPåVentMenuButton")
-                               /*<FjernFraPåVentMenuButton oppgavereferanse={oppgave.oppgavereferanse} />
-                            ) : ("LeggPåVentKnapp")
-                                
-                                
-                            }
-                            {/*<LeggPåVentMenuButton oppgavereferanse={oppgave.oppgavereferanse} />}
+                            <MeldAvMenuButton oppgavereferanse={oppgave.saksid} />
                         </>
-                        
-                    )
-                </Popover>}
+                    )}
+                </Popover>
             </Container>
-            {/*<Tooltip id={id} effect="solid" offset={{ top: -10 }} />*/}
-    </CellContent>
-  )
-})
+            <Tooltip id={id} effect="solid" offset={{ top: -10 }} />
+        </CellContent>
+    );
+});

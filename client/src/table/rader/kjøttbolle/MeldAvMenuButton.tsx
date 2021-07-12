@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { KnappBaseProps } from 'nav-frontend-knapper'
 
 //import { useFjernTildeling } from '../../../../../state/oppgaver';
@@ -11,10 +9,15 @@ interface MeldAvMenuButtonProps extends KnappBaseProps {
 
 export const MeldAvMenuButton = ({ oppgavereferanse, ...rest }: MeldAvMenuButtonProps) => {
   //const fjernTildeling = useFjernTildeling();
-  return <div>Meld av button</div>
-  /*return (
-        <AsyncMenuButton asyncOperation={() => fjernTildeling({ oppgavereferanse })} {...rest}>
-            Meld av
-        </AsyncMenuButton>
-    );*/
+  return (
+    <AsyncMenuButton
+      asyncOperation={() => {
+        /*fjernTildeling({ oppgavereferanse })*/ console.log('Her kommer funksjon for å fjerne tildeling etterhvert')
+        return Promise.resolve()
+      }}
+      {...rest}
+    >
+      Meld av
+    </AsyncMenuButton>
+  )
 }

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 import React, { useState } from 'react'
 
 import { Knapp, KnappBaseProps } from 'nav-frontend-knapper'

@@ -1,7 +1,5 @@
 import { Dayjs } from 'dayjs'
 
-import { Utbetalingsperiode } from './types.external'
-
 export interface Oppgave {
   opprettetDato: Dayjs
   motattDato: string
@@ -14,7 +12,7 @@ export interface Oppgave {
 }
 
 export interface Saksbehandler {
-    oid: string
+    objectId: string
     epost: string
     navn: string
   }
@@ -24,8 +22,6 @@ export enum StatusType {
   OVERFØRT_GOSYS = 'overført_gosys',
   INNVILGET = 'innvilget',
 }
-
-/* ---- */
 
 export interface Error {
     message: string

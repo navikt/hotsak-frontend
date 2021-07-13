@@ -22,6 +22,10 @@ spec:
   replicas:
     max: 1
     min: 1
+  accessPolicy:
+    outbound:
+      rules:
+        - application: hm-mocks
   #azure:
   #  application:
   #    enabled: true

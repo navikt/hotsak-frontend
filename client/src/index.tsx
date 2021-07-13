@@ -13,7 +13,7 @@ declare global {
 }
 
 // TODO hent fra miljøvariabel
-if (true) {
+if (process.env.NODE_ENV !== 'production') {
   initMSW()
 }
 

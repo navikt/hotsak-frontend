@@ -27,9 +27,12 @@ import { cli } from 'winston/lib/winston/config'
 const app = express()
 const port = config.server.port
 
-app.get(`/mockServiceWorker.js`, (req, res) => {
-    res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
-  })
+if(process.env.NODE_ENV !== 'production') {
+    app.get(`/mockServiceWorker.js`, (req, res) => {
+        res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
+      })
+}
+
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);

@@ -43,4 +43,6 @@ spec:
       value: http://hm-mocks.teamdigihot.svc.cluster.local
     - name: PORT
       value: '3000'
+    - name: DEBUG
+      value: express-http-proxy
 

@@ -6,6 +6,8 @@ const envProperties = {
 }
 
 const setupProxy = (server) => {
+  console.log('setup proxy ' + envProperties.API_URL)
+
   server.use(`/api/`, proxy(envProperties.API_URL))
 }
 

@@ -5,7 +5,7 @@ import { httpGet } from '../io/http'
 import { Oppgave } from '../types/types.internal'
 
 export function useOppgaveliste() {
-  const { data, error } = useSwr('http://localhost:3000/api/oppgaver', httpGet)
+  const { data, error } = useSwr('oppgaver', httpGet)
 
   return {
     oppgaver: data?.data as Oppgave[],

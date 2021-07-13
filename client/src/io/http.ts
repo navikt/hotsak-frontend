@@ -3,6 +3,8 @@ export interface SaksbehandlingApiResponse {
   data: any
 }
 
+const baseUrl = (process.env.NODE_ENV === 'production'  ? '' : `http://localhost:3000`)  + '/api'
+
 export const ResponseError = (statusCode: number, message?: string) => ({
   statusCode,
   message,
@@ -26,7 +28,8 @@ const getErrorMessage = async (response: Response) => {
 
 export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> => {
   const headers = { headers: { Accept: 'application/json' } }
-  const response = await fetch(url, headers)
+  console.log(`Calling url ${baseUrl}/${url}`)
+  const response = await fetch(`${baseUrl}/${url}`, headers)
 
   if (response.status >= 400) {
     const errorMessage = await getErrorMessage(response)

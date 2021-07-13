@@ -38,5 +38,5 @@ spec:
     - name: API_URL
       value: http://hm-mocks.teamdigihot.svc.cluster.local
     - name: PORT
-      value: 3000
+      value: '3000'
 

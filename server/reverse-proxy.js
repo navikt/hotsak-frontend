@@ -5,10 +5,8 @@ const envProperties = {
   API_URL: process.env.API_URL || `http://localhost:${config.server.port}`,
 }
 
-const setup = (server) => {
+const setupProxy = (server) => {
   server.use(`/api/`, proxy(envProperties.API_URL))
 }
 
-module.exports = {
-  setup,
-}
+export default setupProxy

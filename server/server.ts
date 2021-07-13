@@ -12,7 +12,7 @@ import config from './config'
 //import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
 import logger from './logging'
 import path from 'path'
-import reverseProxy from './reverse-proxy' 
+import setupProxy from './reverse-proxy' 
 import { cli } from 'winston/lib/winston/config'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
@@ -159,7 +159,7 @@ app.use('/api/opptegnelse', opptegnelseRoutes(dependencies.opptegnelse));
 app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
-reverseProxy.setup(app)
+setupProxy(app)
 
 app.get('/*', (req, res, next) => {
   if (!req.accepts('html') && /\/api/.test(req.url)) {

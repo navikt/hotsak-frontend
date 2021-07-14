@@ -183,8 +183,6 @@ console.log('htmlPath', htmlPath)
 app.use(express.static(__dirname + '/../client'))
 app.use('/*', express.static(htmlPath))
 
-app.use('/banan', express.static(distPath))
-
 // At the time of writing this comment, the setup of the static 'routes' has to be done in a particular order.
 //app.use('/static', express.static('dist/client'))
 //app.use('/*', express.static('dist/client/index.html'))

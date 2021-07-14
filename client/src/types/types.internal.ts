@@ -1,11 +1,106 @@
 import { Dayjs } from 'dayjs'
 
+
+export interface Sak {
+    saksid: string
+    søknadGjelder: string, 
+    hjelpemidler: Hjelpemiddel[]
+    formidler: Formidler
+    greitåViteFaktum: GreitÅViteFaktum[]
+    motattDato: string
+    personinformasjon: Personinfo
+    levering: Levering
+    oppfølgingsansvarlig: Oppfølgingsansvarlig
+    saksbehandler: Saksbehandler
+    status: StatusType
+    enhet: Enhet[]
+}
+
+export interface Enhet {
+    enhetsnummer: string
+    enhetsnavn: string
+}
+
+export interface Oppfølgingsansvarlig {
+    navn: string 
+    arbeidssted: string
+    stilling: string
+    telefon: string
+    ansvarFor: string
+}
+
+export interface Levering {
+    kontaktPerson?: KontaktPerson
+    leveringsmåte: Leveringsmåte
+    adresse?: string
+    merknad?: string
+}
+
+
+export enum Leveringsmåte {
+    FOLKEREGISTRERT_ADRESSE,
+    ANNEN_ADRESSE, 
+    HJELPEMIDDELSENTRAL,
+    ALLEREDE_LEVERT
+}
+
+export interface KontaktPerson {
+    navn: string, 
+    adresse: string, 
+    kontaktpersonType: KontaktPersonType
+}
+
+export enum KontaktPersonType {
+    HJELPEMIDDELBRUKER = 'hjelpemiddelbruker'
+}
+export interface Hjelpemiddel {
+    hmsnr: string,
+    rangering: number
+    alleredeUtlevert: boolean
+    antall: number
+    kategori: string
+    beskrivelse: string 
+    tilleggsinfo: Tilleggsinfo[]
+    tilbehør: Tilbehør[]
+}
+
+export interface Tilleggsinfo {
+    tittel: string
+    innhold: string
+}
+
+export interface Tilbehør {
+    hmsnr: string
+    antall: number
+    navn: string
+}
+
+export interface Formidler {
+    navn: string
+    kommune: string
+    arbeidssted: string
+    stilling: string
+    postadresse: string
+    telefon: string
+    treffesEnklest: string
+    epost: string
+}
+
+export interface GreitÅViteFaktum {
+    beskrivelse: string
+    type: GreitÅViteType
+}
+
+export enum GreitÅViteType {
+    ADVARSEL = 'advarsel',
+    INFO = 'info'
+}
+
 export interface Oppgave {
   opprettetDato: Dayjs
   motattDato: string
   saksid: string
   personinformasjon: Personinfo
-  funksjonsnedsettelse: string[]
   status: StatusType
   saksbehandler?: Saksbehandler
   søknadOm: string
@@ -29,7 +124,11 @@ export interface Error {
     technical?: string
   }
   
-export type Kjønn = 'mann' | 'kvinne' | 'ukjent'
+export enum Kjønn  {
+    MANN = 'mann',
+    KVINNE = 'kvinne',
+    UKJENT = 'ukjent'
+}
 
 export interface Personinfo {
   fornavn: string
@@ -40,10 +139,45 @@ export interface Personinfo {
   fnr: string
   brukernummer?: string
   adresse: string
+  kilde: PersonInfoKilde
+  signaturType: SignaturType
+  telefon: string
+  funksjonsnedsettelse: string[]
+  bruksareana: Bruksarena
+  bosituasjon: Bosituasjon
   postnummer: string
   poststed: string
   gtNummer: string
   gtType: string
   egenAnsatt: boolean
   brukerErDigital: boolean
+  oppfylteVilkår: string[]
+  kroppsmål?: Kroppsmål
+}
+
+export interface Kroppsmål {
+    høyde: number
+    kroppsvekt: number
+    lårlengde: number
+    legglengde: number
+    setebredde: number
+}
+
+export enum Bruksarena {
+    DAGLIGLIV = 'dagligliv'
+}
+
+export enum Bosituasjon {
+    HJEMME = 'hjemme',
+    INSTITUSJON = 'institusjon'
+}
+
+export enum SignaturType {
+    SIGNATUR = 'signatur',
+    BRUKER_BEKREFTER = 'bruker_bekrefter'
+}
+
+export enum PersonInfoKilde {
+    PDL = 'pdl',
+    MANUELL = 'manuell'
 }

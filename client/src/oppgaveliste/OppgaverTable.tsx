@@ -184,7 +184,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 {tab.kolonner.includes(kolonner.FUNKSJONSNEDSETTELSE) && (
                   <Cell>
                     <Funksjonsnedsettelse
-                      funksjonsnedsettelser={oppgave.funksjonsnedsettelse}
+                      funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
                       saksID={oppgave.saksid}
                     />
                   </Cell>

@@ -1,7 +1,7 @@
 import { rest } from 'msw'
 
 const saksbildeHandlers = [
-  rest.get(`/api/oppgaver/*`, (req, res, ctx) => {
+  rest.get(`/api/sak/*`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

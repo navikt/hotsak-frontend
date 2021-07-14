@@ -28,9 +28,7 @@ const getErrorMessage = async (response: Response) => {
 }
 
 export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> => {
-    console.log("Kaller httpGet " + url)
   const headers = { headers: { Accept: 'application/json' } }
-  console.log(`Calling url ${baseUrl}/${url}`)
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
   if (response.status >= 400) {

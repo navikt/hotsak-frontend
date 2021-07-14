@@ -13,13 +13,10 @@ const options = () => ({
 })
 
 const pathRewriteBasedOnEnvironment = (req) => {
-  console.log('Rewrite ' + req.originalUrl)
   return req.originalUrl
 }
 
 const setupProxy = (server) => {
-  console.log('setup proxy ' + envProperties.API_URL)
-
   server.use(`/api/`, proxy(envProperties.API_URL + '/api', options()))
 }
 

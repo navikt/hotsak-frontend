@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components/macro'
 import React from 'react';
 
 import { Flex } from '../felleskomponenter/Flex';

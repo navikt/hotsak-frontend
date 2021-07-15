@@ -1,8 +1,8 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 
 import { Element, Normaltekst } from 'nav-frontend-typografi'
 
-import { formaterFødselsdato } from '../utils/date'
+import { formaterDato } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
 
 import { Clipboard } from '../felleskomponenter/clipboard'
@@ -32,7 +32,6 @@ const Separator = styled(Normaltekst)`
   margin: 0 1rem 0 1rem;
 `
 const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
-    console.log("Kjønn", kjønn)
   switch (kjønn) {
     case Kjønn.KVINNE:
       return <Kvinneikon />
@@ -97,7 +96,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
       {fødselsdato ? (
         <>
           <Separator>/</Separator>
-          <Normaltekst>{fødselsdato ? ` Født ${formaterFødselsdato(fødselsdato)}` : ''}</Normaltekst>
+          <Normaltekst>{fødselsdato ? ` Født: ${formaterDato(fødselsdato)}` : ''}</Normaltekst>
         </>
       ) : null}
 
@@ -112,7 +111,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
       <Separator>/</Separator>
       {brukernummer ? (
         <Clipboard preserveWhitespace={false} copyMessage="Brukernummer er kopiert">
-          <Normaltekst>{brukernummer}</Normaltekst>
+          <Normaltekst>{`Brukernummer: ${brukernummer}`}</Normaltekst>
         </Clipboard>
       ) : (
         <Normaltekst>Brukernummer ikke tilgjengelig</Normaltekst>

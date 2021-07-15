@@ -143,7 +143,7 @@ export interface Personinfo {
   signaturType: SignaturType
   telefon: string
   funksjonsnedsettelse: string[]
-  bruksareana: Bruksarena
+  bruksarena: Bruksarena
   bosituasjon: Bosituasjon
   postnummer: string
   poststed: string
@@ -181,3 +181,7 @@ export enum PersonInfoKilde {
     PDL = 'pdl',
     MANUELL = 'manuell'
 }
+
+export enum Oppgavetype {
+    Søknad = 'SØKNAD',
+  }

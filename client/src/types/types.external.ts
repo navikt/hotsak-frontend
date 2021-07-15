@@ -186,9 +186,6 @@ export enum SpesialistPeriodetype {
 
 export enum Oppgavetype {
   Søknad = 'SØKNAD',
-  Stikkprøve = 'STIKKPRØVE',
-  RiskQa = 'RISK_QA',
-  Revurdering = 'REVURDERING',
 }
 
 export interface SpesialistOppgave {

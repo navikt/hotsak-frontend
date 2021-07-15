@@ -3,7 +3,7 @@ export interface SaksbehandlingApiResponse {
   data: any
 }
 
-const baseUrl = (process.env.NODE_ENV === 'production'  ? '' : `http://localhost:3000`)
+const baseUrl = (process.env.NODE_ENV === 'production'  ? '' : `http://localhost:3001`)
 
 
 export const ResponseError = (statusCode: number, message?: string) => ({

@@ -1,19 +1,15 @@
 import React from 'react'
 
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { formaterFødselsdato } from '../../utils/date'
 
-import dayjs from 'dayjs'
-
-import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../../utils/date'
 import { Normaltekst } from 'nav-frontend-typografi'
 
 interface FødselsdatoProps {
   fødselsdato?: string
 }
 
-const formaterFødselsdato = (fødselsdato: string) => {
-    return dayjs(fødselsdato, ISO_DATOFORMAT ).format(NORSK_DATOFORMAT)
-}
+
 
 export const Fødselsdato = React.memo(({ fødselsdato }: FødselsdatoProps) => {
   return (

@@ -12,6 +12,10 @@ export const NORSK_DATOFORMAT_KORT = 'DD.MM.YY'
 export const ISO_DATOFORMAT = 'YYYY-MM-DD'
 export const ISO_TIDSPUNKTFORMAT = 'YYYY-MM-DDTHH:mm:ss'
 
+export const formaterFødselsdato = (fødselsdato: string) => {
+    return dayjs(fødselsdato, ISO_DATOFORMAT ).format(NORSK_DATOFORMAT)
+}
+
 export const findLatest = (dates: Dayjs[]): Dayjs => {
   return Array.from(dates)
     .sort((a, b) => (b.isAfter(a) ? -1 : a.isAfter(b) ? 1 : 0))

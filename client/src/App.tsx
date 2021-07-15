@@ -11,18 +11,18 @@ import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
+const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
 
 //ReactModal.setAppElement('#root');
 //const Opptegnelse = React.lazy(() => import('./routes/saksbilde/Opptegnelse'));
 
 function App() {
   return (
-    <ErrorBoundary key="asf" FallbackComponent={GlobalFeilside}>
+    <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <BrowserRouter>
         <ToppMeny />
         <React.Suspense fallback={<div />}>
           {/*<Varsler />*/}
-          {/*<React.Suspense fallback={<div />}>*/}
           <Switch>
             {/*<Route path={Routes.Uautorisert}>
                         <IkkeLoggetInn />
@@ -30,9 +30,9 @@ function App() {
             <ProtectedRoute path={Routes.Oppgaveliste} exact>
               <Oppgaveliste />
             </ProtectedRoute>
-            {/*<ProtectedRoute path={Routes.Saksbilde}>
+            <ProtectedRoute path={Routes.Saksbilde}>
                         <Saksbilde />
-</ProtectedRoute>*/}
+            </ProtectedRoute>
             {<Route path="*">
                         <PageNotFound />
 </Route>}

@@ -7,7 +7,6 @@ const saksbehandlingHandlers = [
       ctx.json([
         {
           saksid: '1234567',
-          funksjonsnedsettelse: ['hørsel', 'kognisjon'],
           søknadOm: 'Hjelpemidler',
           motattDato: '2021-06-25T13:55:45',
           personinformasjon: {
@@ -17,6 +16,7 @@ const saksbehandlingHandlers = [
             etternavn: 'Eple',
             adresse: 'Veien 69',
             kjønn: 'MANN',
+            funksjonsnedsettelse: ['hørsel', 'kognisjon'],
             brukernummer: '454545',
             postnummer: '2825',
             poststed: 'Gjøvik',
@@ -40,7 +40,6 @@ const saksbehandlingHandlers = [
         },
         {
           saksid: '1234568',
-          funksjonsnedsettelse: ['hørsel', 'kognisjon'],
           søknadOm: 'Hjelpemidler',
           motattDato: '2021-07-09T14:55:45',
           personinformasjon: {
@@ -52,6 +51,7 @@ const saksbehandlingHandlers = [
             adresse: 'Veien 69',
             kjønn: 'MANN',
             brukernummer: '454545',
+            funksjonsnedsettelse: ['hørsel', 'kognisjon'],
             postnummer: '2825',
             poststed: 'Gjøvik',
             gtNummer: '1234',
@@ -70,7 +70,6 @@ const saksbehandlingHandlers = [
         },
         {
           saksid: '1234569',
-          funksjonsnedsettelse: ['hørsel', 'kognisjon', 'bevegelse'],
           søknadOm: 'Hjelpemidler',
           motattDato: '2021-07-08T16:55:45',
           personinformasjon: {
@@ -82,6 +81,7 @@ const saksbehandlingHandlers = [
             adresse: 'Veien 69',
             kjønn: 'MANN',
             brukernummer: '454545',
+            funksjonsnedsettelse: ['hørsel', 'kognisjon', 'bevegelse'],
             postnummer: '2825',
             poststed: 'Gjøvik',
             gtNummer: '1234',

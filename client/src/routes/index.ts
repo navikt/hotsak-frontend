@@ -1,5 +1,5 @@
 export const Routes = {
   Oppgaveliste: '/',
-  //Oppgaveliste: '/person/:aktorId',
+  Saksbilde: '/sak/:saksnummer',
   Uautorisert: '/uautorisert',
 }

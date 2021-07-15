@@ -125,9 +125,9 @@ export interface Error {
   }
   
 export enum Kjønn  {
-    MANN = 'mann',
-    KVINNE = 'kvinne',
-    UKJENT = 'ukjent'
+    MANN = 'MANN',
+    KVINNE = 'KVINNE',
+    UKJENT = 'UKJENT'
 }
 
 export interface Personinfo {

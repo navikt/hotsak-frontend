@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro'
-import { Personinfo } from '../types/types.internal'
+//import { Personinfo } from '../types/types.internal'
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary'
 //import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import { Varsel, Varseltype } from '@navikt/helse-frontend-varsel'
+//import { Varsel, Varseltype } from '@navikt/helse-frontend-varsel'
 //import '@navikt/helse-frontend-logg/lib/main.css';
 
 //import { ErrorBoundary } from '../../components/ErrorBoundary';

@@ -4,7 +4,8 @@ import { Button } from '@navikt/ds-react'
 
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-
+import { Input } from 'nav-frontend-skjema';
+import React from 'react';
 interface PeriodeCardProps {
   saksnr: string
 }
@@ -13,6 +14,7 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  padding-top: 1rem;
   align-self: flex-end;
 `
 
@@ -26,11 +28,14 @@ font-size: var(--navds-font-size-m);
 `
 
 export const SkjemaCard = ({ saksnr }: PeriodeCardProps) => {
+const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState('')
+
   return (
     <Card>
       <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
+      <Input mini label="Søknad om:" description="Skriv inn hjelpemidler feks. rullator, seng." value={dokumentbeskrivelse} onChange={(event) => setDokumentbeskrivelse(event.target.value)} />
       <ButtonContainer>
-        <Knapp variant={'action'} size={'s'} onClick={() => {alert(`Invilger søknad med saksnummer ${saksnr}`)}}>
+        <Knapp variant={'action'} size={'s'} onClick={() => {alert(`Invilger søknad med saksnummer ${saksnr} med dokumentbeskrivelse ${dokumentbeskrivelse}`)}}>
           Invilg søknaden
         </Knapp>
         <Knapp variant={'primary'} size={'s'} onClick={() => {alert(`Sender søknad med saksnummer ${saksnr} til gode gamle Gosys`)}}>

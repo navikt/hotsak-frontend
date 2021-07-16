@@ -37,6 +37,7 @@ const AutoFlexContainer = styled.div`
 
 const Content = styled.div`
   padding: 0 2.5rem;
+  padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;
   max-width: calc(100vw - var(--speil-venstremeny-width) - var(--speil-historikk-width));
@@ -77,7 +78,7 @@ const SaksbildeContent = React.memo(() => {
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <Hjelpemidler/>
+                    <Hjelpemidler hjelpemidler={sak.hjelpemidler} søknadGjelder={sak.søknadGjelder} funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}/>
                   </Route>
                   <Route path={`${path}/bruker`}>
                     <Bruker/>

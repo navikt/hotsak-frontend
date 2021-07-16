@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro'
 
+import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
-import { Routes } from '../routes'
 import { TabLink } from './TabLink'
-import { Flex } from '../felleskomponenter/Flex';
+import { useSak } from './sakHook'
 
 const Container = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const Container = styled.div`
   height: 48px;
   box-sizing: border-box;
   border-bottom: 1px solid var(--navds-color-border);
-  padding: 0 2rem 0 2rem;
+  
   min-width: var(--speil-total-min-width);
 
   > div:last-of-type {
@@ -23,18 +23,25 @@ const TabList = styled.span`
   display: flex;
 `
 
+export enum Location {
+  Hjelpemidler,
+  Bruker,
+  Formidler,
+}
+
 export const Søknadslinje = () => {
+    const {saksid} = useSak().sak;
   return (
     <Container>
       <Flex>
         <TabList role="tablist">
-          <TabLink to={Routes.Saksbilde} title="Hjelpemidler" icon={<HjemIkon />}>
+          <TabLink to={`/sak/${saksid}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
             Hjelpemidler
           </TabLink>
-          <TabLink to={Routes.Bruker} title="Bruker">
+          <TabLink to={`/sak/${saksid}/bruker`} title="Bruker">
             Bruker
           </TabLink>
-          <TabLink to={Routes.Formidler} title="Formidler">
+          <TabLink to={`/sak/${saksid}/formidler`} title="Formidler">
             Formidler
           </TabLink>
         </TabList>

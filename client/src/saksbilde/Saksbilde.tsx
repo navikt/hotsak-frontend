@@ -1,4 +1,3 @@
-//import { Personinfo } from '../types/types.internal'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
@@ -6,10 +5,6 @@ import styled from 'styled-components/macro'
 
 import { FeilmeldingVarsel } from '../feilsider/FeilmeldingsVarsel'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-//import { Route, Switch, useRouteMatch } from 'react-router-dom';
-//import { Varsel, Varseltype } from '@navikt/helse-frontend-varsel'
-//import '@navikt/helse-frontend-logg/lib/main.css';
-//import { ErrorBoundary } from '../../components/ErrorBoundary';
 import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadslinje from './Søknadslinje'
 import { useSak } from './sakHook'
@@ -18,11 +13,9 @@ import { VenstreMeny } from './venstremeny/Venstremeny'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import {SkjemaCard} from './venstremeny/SkjemaCard'
 import { GreitÅViteCard} from './venstremeny/GreitÅViteCard'
-
-
-//import { copyString } from '../../components/clipboard/util';
-//import { ToastObject, useAddToast } from '../../state/toasts';
-
+import { Hjelpemidler } from './Hjelpemidler'
+import { Bruker } from './Bruker'
+import { Formidler} from './Formidler'
 
 const SaksbildeContainer = styled.div`
   display: flex;
@@ -84,13 +77,13 @@ const SaksbildeContent = React.memo(() => {
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <div>Utbetaling</div>
+                    <Hjelpemidler/>
                   </Route>
                   <Route path={`${path}/bruker`}>
-                    <div>Bruker</div>
+                    <Bruker/>
                   </Route>
                   <Route path={`${path}/formidler`}>
-                    <div>Formidler</div>
+                    <Formidler/>
                   </Route>
                 </Switch>
               </Content>

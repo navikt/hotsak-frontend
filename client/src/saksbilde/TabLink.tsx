@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
 import {
-  /*useHistory,*/
+  useHistory,
   useLocation,
 } from 'react-router-dom'
 
@@ -39,7 +39,7 @@ const IconContainer = styled.span`
 
 interface TabLinkProps {
   children: ReactNode
-  to?: string
+  to: string
   title?: string
   disabled?: boolean
   icon?: ReactNode
@@ -47,10 +47,10 @@ interface TabLinkProps {
 
 export const TabLink = ({ children, to, title, icon }: TabLinkProps) => {
   const location = useLocation()
-  //const history = useHistory();
+  const history = useHistory();
 
   return (
-    <TabLinkButton role="link" data-href={to} onClick={() => {} /*history.push(to)*/} active={location.pathname === to}>
+    <TabLinkButton role="link" data-href={to} onClick={() => history.push(to)} active={location.pathname === to}>
       {icon && <IconContainer>{icon}</IconContainer>}
       <Content className="content" title={title}>
         {children}

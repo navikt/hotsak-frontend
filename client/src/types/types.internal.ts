@@ -168,8 +168,8 @@ export enum Bruksarena {
 }
 
 export enum Bosituasjon {
-    HJEMME = 'hjemme',
-    INSTITUSJON = 'institusjon'
+    HJEMME = 'HJEMME',
+    INSTITUSJON = 'INSITUSJON'
 }
 
 export enum SignaturType {

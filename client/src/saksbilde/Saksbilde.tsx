@@ -16,6 +16,7 @@ import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
+import {SkjemaCard} from './venstremeny/SkjemaCard'
 import { GreitÅViteCard} from './venstremeny/GreitÅViteCard'
 
 
@@ -77,6 +78,7 @@ const SaksbildeContent = React.memo(() => {
               />
               <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.kommune} />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum}/>
+              <SkjemaCard saksnr={sak.saksid}/>
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>

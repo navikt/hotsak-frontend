@@ -54,10 +54,6 @@ background-color: #FFF5E5;
 padding: 0.3rem;
 `
 
-const Tilbehør = styled(Rad)`
-padding: 0.3rem;
-`
-
 interface HjelpemidlerProps {
   hjelpemidler: Hjelpemiddel[]
   søknadGjelder: string

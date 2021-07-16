@@ -11,14 +11,14 @@ import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 //import '@navikt/helse-frontend-logg/lib/main.css';
 //import { ErrorBoundary } from '../../components/ErrorBoundary';
 import { LasterPersonlinje, Personlinje } from './Personlinje'
-import { VenstreMeny } from './venstremeny/Venstremeny'
-import { useSak } from './sakHook'
 import Søknadslinje from './Søknadslinje'
+import { useSak } from './sakHook'
+import { SøknadCard } from './venstremeny/SøknadCard'
+import { VenstreMeny } from './venstremeny/Venstremeny'
 
 //import { copyString } from '../../components/clipboard/util';
 //import { ToastObject, useAddToast } from '../../state/toasts';
 
-//import { Sakslinje } from './sakslinje/Sakslinje';
 
 const SaksbildeContainer = styled.div`
   display: flex;
@@ -59,18 +59,20 @@ const SaksbildeContent = React.memo(() => {
   return (
     <SaksbildeContainer className="saksbilde">
       <Personlinje person={sak.personinformasjon} />
-    <Søknadslinje/>
+      <Søknadslinje />
       <Container data-testid="saksbilde-fullstendig">
         <AutoFlexContainer>
           <Flex flex={1} style={{ height: '100%' }}>
-            <VenstreMeny  
-            søknadGjelder={sak.søknadGjelder}
-            saksnr={sak.saksid}
-            motattDato={sak.motattDato}
-            bosituasjon={sak.personinformasjon.bosituasjon}
-            bruksarena={sak.personinformasjon.bruksarena}
-            funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
-             />
+            <VenstreMeny>
+              <SøknadCard
+                søknadGjelder={sak.søknadGjelder }
+                saksnr={sak.saksid}
+                motattDato={sak.motattDato}
+                bosituasjon={sak.personinformasjon.bosituasjon}
+                bruksarena={sak.personinformasjon.bruksarena}
+                funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
+              />
+            </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>
                 <Switch>

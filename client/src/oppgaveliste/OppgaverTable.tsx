@@ -160,7 +160,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
           </thead>
           <Body>
             {oppgaver.map((oppgave) => (
-              <LinkRow /*onNavigate={onNavigate>}*/ key={oppgave.saksid}>
+              <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
                 {tab.kolonner.includes(kolonner.EIER) && (
                   <Cell>
                     <Tildeling oppgave={oppgave} />

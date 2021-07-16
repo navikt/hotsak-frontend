@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import React from 'react'
-//import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { Row } from './Row'
 
@@ -13,28 +13,21 @@ const HighlightOnHoverRow = styled(Row)`
   }
 `
 
-interface LinkRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
-  onNavigate?: () => void
+interface LinkRowProps {
+    saksnummer: string
 }
 
-export const LinkRow = ({ onNavigate, children, ...rest }: LinkRowProps) => {
-  //const history = useHistory()
 
-  const navigate = (event: React.KeyboardEvent | React.MouseEvent) => {
-    onNavigate?.()
-    //const destinationUrl = `/person/${aktørId}/utbetaling`;
-    //const pressedModifierKey = event.ctrlKey || event.metaKey;
-    //const clickedMiddleMouseButton = (event as React.MouseEvent).button === 1;
+export const LinkRow : React.FC<LinkRowProps>= ({ saksnummer, children }) => {
+  const history = useHistory()
 
-    //if (pressedModifierKey || clickedMiddleMouseButton) {
-    //    window.open(destinationUrl, '_blank');
-    //} else {
-    //  history.push(destinationUrl);
-    //}
+  const navigate = () => {
+    const destinationUrl = `/sak/${saksnummer}/hjelpemidler`;
+    history.push(destinationUrl);
   }
 
   return (
-    <HighlightOnHoverRow role="link" tabIndex={0} onClick={navigate} {...rest}>
+    <HighlightOnHoverRow role="link" tabIndex={0} onClick={navigate} >
       {children}
     </HighlightOnHoverRow>
   )

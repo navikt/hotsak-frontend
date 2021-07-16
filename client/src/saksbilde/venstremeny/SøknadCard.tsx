@@ -1,5 +1,3 @@
-import styled from 'styled-components/macro'
-
 import { Normaltekst } from 'nav-frontend-typografi'
 import { Tooltip } from '../../felleskomponenter/Tooltip';
 
@@ -15,17 +13,8 @@ import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Oppgaveetikett } from './Oppgaveetikett'
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1.25rem auto;
-  grid-column-gap: 0.75rem;
-  grid-row-gap: 0.125rem;
-`
-
-const IconContainer = styled.div`
-  justify-self: center;
-`
+import {Grid} from './Grid'
+import {IconContainer} from './IconContainer'
 
 interface PeriodeCardProps {
   søknadGjelder: string

@@ -15,6 +15,9 @@ import Søknadslinje from './Søknadslinje'
 import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
+import { FormidlerCard } from './venstremeny/FormidlerCard'
+import { GreitÅViteCard} from './venstremeny/GreitÅViteCard'
+
 
 //import { copyString } from '../../components/clipboard/util';
 //import { ToastObject, useAddToast } from '../../state/toasts';
@@ -72,6 +75,8 @@ const SaksbildeContent = React.memo(() => {
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
+              <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.kommune} />
+              <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum}/>
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>

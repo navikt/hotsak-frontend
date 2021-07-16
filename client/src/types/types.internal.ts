@@ -6,7 +6,7 @@ export interface Sak {
     søknadGjelder: string, 
     hjelpemidler: Hjelpemiddel[]
     formidler: Formidler
-    greitåViteFaktum: GreitÅViteFaktum[]
+    greitÅViteFaktum: GreitÅViteFaktum[]
     motattDato: string
     personinformasjon: Personinfo
     levering: Levering

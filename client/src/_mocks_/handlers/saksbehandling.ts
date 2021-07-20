@@ -3,6 +3,7 @@ import { rest } from 'msw'
 const saksbehandlingHandlers = [
   rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     return res(
+
       ctx.status(200),
       ctx.json([
         {

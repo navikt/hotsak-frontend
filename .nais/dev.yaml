@@ -26,9 +26,9 @@ spec:
     outbound:
       rules:
         - application: hm-mocks
-  #azure:
-  #  application:
-  #    enabled: true
+  azure:
+    application:
+      enabled: true
   resources:
     limits:
       cpu: 500m

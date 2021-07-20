@@ -26,6 +26,8 @@ spec:
     outbound:
       rules:
         - application: hm-mocks
+        - application: hm-saksbehandling
+        - application: saksbehandling-redis
   azure:
     application:
       enabled: true
@@ -38,9 +40,16 @@ spec:
       memory: 512Mi
   secureLogs:
     enabled: true
+  envFrom:
+    - secret: redis-password
   env:
     - name: API_URL
       value: http://hm-mocks.teamdigihot.svc.cluster.local
     - name: PORT
       value: '3000'
+    - name: CLIENT_ID_SPESIALIST
+      value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
+    - name: REDIS_HOST
+      value: saksbehandling-redis.teamdigihot.svc.cluster.local
+
 

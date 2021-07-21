@@ -6,15 +6,15 @@ import { OidcConfig, RedisConfig, ServerConfig } from './types'
 
 env.config();
 
- const oidc: OidcConfig = {
-    wellKnownEndpoint: process.env.AZURE_APP_WELL_KNOWN_URL || 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/v2.0/.well-known/openid-configuration',
-    tokenEndpoint: process.env.AZURE_OPENID_CONFIG_TOKEN_ENDPOINT || 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token',
-    clientID: process.env.AZURE_APP_CLIENT_ID || '182b0696-e9a4-423d-b2bb-763bc7075fb7',
-    clientIDSpesialist: process.env.CLIENT_ID_SPESIALIST || '23727dac-e9a5-47b7-a33f-51f20fe3a48c',
-    responseType: ['code'],
-    clientSecret: process.env.AZURE_APP_CLIENT_SECRET || 'PsCRzgLoo21Av.fh8.cS.7Q.p._q0xPj7-',
-    scope: `profile offline_access openid email 23727dac-e9a5-47b7-a33f-51f20fe3a48c/.default`,
-    logoutUrl: process.env.LOGOUT_URL ?? 'https://navno.sharepoint.com/sites/intranett',
+const oidc: OidcConfig = {
+  wellKnownEndpoint: process.env.AZURE_APP_WELL_KNOWN_URL || 'unknown',
+  tokenEndpoint: process.env.AZURE_OPENID_CONFIG_TOKEN_ENDPOINT || 'unknown',
+  clientID: process.env.AZURE_APP_CLIENT_ID || 'unknown',
+  clientIDSpesialist: process.env.CLIENT_ID_SPESIALIST || 'unknown',
+  responseType: ['code'],
+  clientSecret: process.env.AZURE_APP_CLIENT_SECRET || 'unknown',
+  scope: `profile offline_access openid email ${process.env.AZURE_APP_CLIENT_ID}/.default`,
+  logoutUrl: process.env.LOGOUT_URL ?? 'https://navno.sharepoint.com/sites/intranett',
 };
 
 const server: ServerConfig = {

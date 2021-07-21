@@ -18,10 +18,10 @@ const options = () => (
 
           if (speilToken !== '') {
             onBehalfOf
-              .hentFor(spesialistId, req.session!.speilToken).then(
+              .hentFor(spesialistId, speilToken).then(
               (onBehalfOfToken) => {
                 // @ts-ignore
-                options.headers.Authorization = `Bearer ${onBehalfOfTokenn}`
+                options.headers.Authorization = `Bearer ${onBehalfOfToken}`
                 resolve(options)
               },
               (error) => reject(error)

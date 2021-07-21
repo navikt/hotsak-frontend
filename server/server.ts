@@ -153,7 +153,6 @@ app.use('/*', async (req: SpeilRequest, res, next) => {
             }
         }
     }
-  next()
 });
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));

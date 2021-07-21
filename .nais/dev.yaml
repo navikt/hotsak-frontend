@@ -42,6 +42,7 @@ spec:
     enabled: true
   envFrom:
     - secret: redis-password
+    - secret: hm-saksbehandling
   env:
     - name: API_URL
       value: http://hm-mocks.teamdigihot.svc.cluster.local

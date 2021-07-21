@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs'
 
 export interface Sak {
     saksid: string
-    søknadGjelder: string, 
+    søknadGjelder: string,
     hjelpemidler: Hjelpemiddel[]
     formidler: Formidler
     greitÅViteFaktum: GreitÅViteFaktum[]
@@ -22,7 +22,7 @@ export interface Enhet {
 }
 
 export interface Oppfølgingsansvarlig {
-    navn: string 
+    navn: string
     arbeidssted: string
     stilling: string
     telefon: string
@@ -39,14 +39,14 @@ export interface Levering {
 
 export enum Leveringsmåte {
     FOLKEREGISTRERT_ADRESSE,
-    ANNEN_ADRESSE, 
+    ANNEN_ADRESSE,
     HJELPEMIDDELSENTRAL,
     ALLEREDE_LEVERT
 }
 
 export interface KontaktPerson {
-    navn: string, 
-    adresse: string, 
+    navn: string,
+    adresse: string,
     kontaktpersonType: KontaktPersonType
 }
 
@@ -59,7 +59,7 @@ export interface Hjelpemiddel {
     alleredeUtlevert: boolean
     antall: number
     kategori: string
-    beskrivelse: string 
+    beskrivelse: string
     tilleggsinfo: Tilleggsinfo[]
     tilbehør: Tilbehør[]
 }
@@ -123,7 +123,7 @@ export interface Error {
     statusCode?: number
     technical?: string
   }
-  
+
 export enum Kjønn  {
     MANN = 'MANN',
     KVINNE = 'KVINNE',

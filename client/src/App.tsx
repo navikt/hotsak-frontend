@@ -6,20 +6,26 @@ import './App.less'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 //import ReactModal from 'react-modal';
 import { HeaderBar as ToppMeny } from './Header'
+import { hot } from 'react-hot-loader';
 import { PageNotFound } from './feilsider/PageNotFound'
 import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'
+import { useAuthentication } from './state/authentication'
+import { RecoilRoot } from 'recoil';
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
+
 
 //ReactModal.setAppElement('#root');
 //const Opptegnelse = React.lazy(() => import('./routes/saksbilde/Opptegnelse'));
 
 function App() {
+
+  useAuthentication();
+
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
-      <BrowserRouter>
         <ToppMeny />
         <React.Suspense fallback={<div />}>
           {/*<Varsler />*/}
@@ -40,9 +46,17 @@ function App() {
         </React.Suspense>
         {/*</React.Suspense>*/}
         {/*<Toasts />*/}
-      </BrowserRouter>
+
     </ErrorBoundary>
   )
 }
 
-export default App
+const withRoutingAndState = (Component: React.ComponentType) => () => (
+  <BrowserRouter>
+    <RecoilRoot>
+      <Component />
+    </RecoilRoot>
+  </BrowserRouter>
+);
+
+export default hot(module)(withRoutingAndState(App));

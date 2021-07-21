@@ -2,20 +2,10 @@ import request from 'request-promise-native';
 
 import { OidcConfig } from '../types';
 
-interface Instrumentation {
-    onBehalfOfCounter: Function;
-}
-
-interface Counter {
-    inc: (id: string) => void;
-}
-
-export default (config: OidcConfig, instrumentation: Instrumentation) => {
-    const counter: Counter = instrumentation.onBehalfOfCounter();
+export default (config: OidcConfig) => {
 
     return {
         hentFor: async (targetClientId: string, accessToken: string) => {
-            counter.inc(targetClientId);
 
             const options = {
                 uri: config.tokenEndpoint,

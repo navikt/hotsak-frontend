@@ -22,6 +22,7 @@ import { ipAddressFromRequest } from './requestData';
 import { sessionStore } from './sessionStore';
 //import tildelingRoutes from './tildeling/tildelingRoutes';
 import { AuthError, SpeilRequest } from './types';
+import onBehalfOf from './auth/onBehalfOf'
 //import wiring from './wiring';
 
 const app = express()
@@ -164,8 +165,8 @@ app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
 
-
-setupProxy(app)
+const _onBehalfOf = onBehalfOf(config.oidc);
+setupProxy(app, _onBehalfOf, config)
 
 // app.get('/*', (req, res, next) => {
 //   if (!req.accepts('html') && /\/api/.test(req.url)) {

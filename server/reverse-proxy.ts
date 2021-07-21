@@ -19,11 +19,6 @@ const pathRewriteBasedOnEnvironment = (req: Request) => {
 }
 
 const setupProxy = (server: core.Express) => {
-  console.log('Setting up proxy')
-   server.use('/api/*', (req, res, next) => {
-    // console.log('Got a request')
-    //proxy(envProperties.API_URL + '/api', options())
-   });
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
 }
 

@@ -1,12 +1,12 @@
 import fs from 'fs';
 import winston from 'winston';
+import { SpeilRequest } from './types'
 
-//import authSupport from './auth/authSupport';
-//import { SpeilRequest } from './types';
+import authSupport from './auth/authSupport';
 
 ('use strict');
 
-//const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log');
+const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log');
 
 const stdoutLogger = winston.createLogger({
     level: 'info',
@@ -14,11 +14,11 @@ const stdoutLogger = winston.createLogger({
     transports: [new winston.transports.Console()],
 });
 
-/* const sikkerLogger = winston.createLogger({
+ const sikkerLogger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
     transports: [new winston.transports.File({ filename: sikkerLogPath(), maxsize: 5242880 })],
-}); */
+});
 
 const info = (message: string, ...meta: any[]) => {
     stdoutLogger.info(message, ...meta);
@@ -32,7 +32,7 @@ const error = (message: string, ...meta: any[]) => {
     stdoutLogger.error(message, ...meta);
 };
 
-/* const sikkerInfo = (message: string, ...meta: any[]) => {
+ const sikkerInfo = (message: string, ...meta: any[]) => {
     sikkerLogger.info(message, ...meta);
 };
 
@@ -42,12 +42,12 @@ const sikkerWarning = (message: string, ...meta: any[]) => {
 
 const sikkerError = (message: string, ...meta: any[]) => {
     sikkerLogger.error(message, ...meta);
-}; */
+};
 
-/*const requestMeta = (req: SpeilRequest) => {
+const requestMeta = (req: SpeilRequest) => {
     return {
-        //speilUser: authSupport.valueFromClaim('name', req.session.speilToken),
-        //navIdent: authSupport.valueFromClaim('NAVident', req.session.speilToken),
+        speilUser: authSupport.valueFromClaim('name', req.session.speilToken),
+        navIdent: authSupport.valueFromClaim('NAVident', req.session.speilToken),
         headers: req.headers,
         method: req.method,
         url: req.url,
@@ -60,16 +60,16 @@ const sikkerError = (message: string, ...meta: any[]) => {
         originalUrl: req.originalUrl,
         params: req.params,
     };
-};*/
+};
 
 export default {
     info,
     warning,
     error,
-    /*sikker: {
+    sikker: {
         info: sikkerInfo,
         warning: sikkerWarning,
         error: sikkerError,
     },
-*/    //requestMeta,
+    requestMeta,
 };

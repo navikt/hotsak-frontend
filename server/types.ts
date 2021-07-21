@@ -1,6 +1,6 @@
 import { Request } from 'express';
-//import { Session } from 'express-session';
-//import { ResponseType } from 'openid-client';
+import { Session } from 'express-session';
+import { ResponseType } from 'openid-client';
 
 //import { OverstyringClient } from './overstyring/overstyringClient';
 //import { PersonClient } from './person/personClient';
@@ -15,7 +15,7 @@ export interface OidcConfig {
     tokenEndpoint: string;
     clientID: string;
     clientIDSpesialist: string;
-    //responseType: ResponseType[];
+    responseType: ResponseType[];
     clientSecret: string;
     scope: string;
     logoutUrl: string;
@@ -38,18 +38,19 @@ export interface AppConfig {
     server: ServerConfig;
 }
 
-//export type OnBehalfOf = { hentFor: (tjenesteId: string, token: string) => Promise<string> };
+export type OnBehalfOf = { hentFor: (tjenesteId: string, token: string) => Promise<string> };
 
-/* export interface PersonDependencies {
-    spesialistClient: SpesialistClient;
-    personClient: PersonClient;
-    onBehalfOf: OnBehalfOf;
-    config: AppConfig;
-}
+//  export interface PersonDependencies {
+//     spesialistClient: SpesialistClient;
+//     personClient: PersonClient;
+//     onBehalfOf: OnBehalfOf;
+//     config: AppConfig;
+// }
+//
+// export interface OverstyringDependencies {
+//     overstyringClient: OverstyringClient;
+// }
 
-export interface OverstyringDependencies {
-    overstyringClient: OverstyringClient;
-}
 
 export interface SpeilSession extends Session {
     speilToken: string;
@@ -58,12 +59,12 @@ export interface SpeilSession extends Session {
     state: string;
     user: string;
 }
- */
-// export interface SpeilRequest extends Request {
-//     session: SpeilSession;
-// }
 
-// export interface AuthError extends Error {
-//     statusCode: number;
-//     cause?: any;
-// }
+export interface SpeilRequest extends Request {
+    session: SpeilSession;
+}
+
+export interface AuthError extends Error {
+    statusCode: number;
+    cause?: any;
+}

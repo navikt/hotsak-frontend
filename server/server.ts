@@ -1,50 +1,49 @@
-//import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 //import compression from 'compression';
-//import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import express, { Response } from 'express'
-//import { Client, generators } from 'openid-client';
+import { Client, generators } from 'openid-client';
 
-//import auth from './auth/authSupport';
-//import azure from './auth/azure';
+import auth from './auth/authSupport';
+import azure from './auth/azure';
 //import behandlingsstatistikkRoutes from './behandlingsstatistikk/behandlingsstatistikkRoutes';
 import config from './config'
 //import headers from './headers';
 //import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
 import logger from './logging'
 import path from 'path'
-import setupProxy from './reverse-proxy' 
+import setupProxy from './reverse-proxy'
 import { cli } from 'winston/lib/winston/config'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
 //import paymentRoutes from './payment/paymentRoutes';
 //import person from './person/personRoutes';
-//import { ipAddressFromRequest } from './requestData';
-//import { sessionStore } from './sessionStore';
+import { ipAddressFromRequest } from './requestData';
+import { sessionStore } from './sessionStore';
 //import tildelingRoutes from './tildeling/tildelingRoutes';
-//import { AuthError, SpeilRequest } from './types';
+import { AuthError, SpeilRequest } from './types';
 //import wiring from './wiring';
 
 const app = express()
 const port = config.server.port
 
-if(process.env.NODE_ENV !== 'production') {
-    app.get(`/mockServiceWorker.js`, (req, res) => {
-        res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
-      })
-}
+// if(process.env.NODE_ENV !== 'production') {
+//     app.get(`/mockServiceWorker.js`, (req, res) => {
+//         res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
+//       })
+// }
 
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
-//app.use(bodyParser.json());
-//app.use(cookieParser());
-//app.use(sessionStore(config, dependencies.redisClient));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(sessionStore(config));
 //app.use(compression());
 
 //headers.setup(app);
-
-/*let azureClient: Client | null = null;
+let azureClient: Client | null = null;
 azure
     .setup(config.oidc)
     .then((client: Client) => {
@@ -53,7 +52,7 @@ azure
     .catch((err) => {
         logger.error(`Failed to discover OIDC provider properties: ${err}`);
         process.exit(1);
-    });*/
+    });
 
 // Unprotected routes
 app.get('/isalive', (_, res) => res.send('alive'))
@@ -68,11 +67,14 @@ app.get('/isready', (_, res) => {
     }*/
 })
 
-/*const setUpAuthentication = () => {
+const setUpAuthentication = () => {
     app.get('/login', (req: SpeilRequest, res: Response) => {
         const session = req.session;
         session.nonce = generators.nonce();
         session.state = generators.state();
+        if(azureClient === null){
+          console.log("Azure client er null")
+        }
         const url = azureClient!.authorizationUrl({
             scope: config.oidc.scope,
             redirect_uri: auth.redirectUrl(req),
@@ -90,11 +92,11 @@ app.get('/isready', (_, res) => {
             res.clearCookie('speil');
             res.redirect(302, config.oidc.logoutUrl);
         });
-    });*/
+    });
 
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-/*app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
+app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
         const session = req.session;
         auth.validateOidcCallback(req, azureClient!, config.oidc)
             .then((tokens: string[]) => {
@@ -115,13 +117,13 @@ app.get('/isready', (_, res) => {
                 res.sendStatus(err.statusCode);
             });
     });
-};*/
+};
 
-//setUpAuthentication();
+setUpAuthentication();
 
 // Protected routes
-//app.use('/*', async (/*req: SpeilRequest*/ _ , res, next) => {
-/* if (process.env.NODE_ENV === 'development') {
+app.use('/*', async (req: SpeilRequest, res, next) => {
+ if (process.env.NODE_ENV === 'developmentX') {
         res.cookie('speil', auth.createTokenForTest(), {
             secure: false,
             sameSite: true,
@@ -150,9 +152,9 @@ app.get('/isready', (_, res) => {
                 res.sendStatus(401);
             }
         }
-    }*/
-//  next()
-//});
+    }
+  next()
+});
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));
 app.use('/api/payments', paymentRoutes(dependencies.payments));
@@ -162,16 +164,18 @@ app.use('/api/opptegnelse', opptegnelseRoutes(dependencies.opptegnelse));
 app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
+
+
 setupProxy(app)
 
-app.get('/*', (req, res, next) => {
-  if (!req.accepts('html') && /\/api/.test(req.url)) {
-    console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`)
-    res.sendStatus(404)
-    return
-  }
-  next()
-})
+// app.get('/*', (req, res, next) => {
+//   if (!req.accepts('html') && /\/api/.test(req.url)) {
+//     console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`)
+//     res.sendStatus(404)
+//     return
+//   }
+//   next()
+// })
 
 const distPath = __dirname + '/../client'
 //const clientPath = path.join(distPath, 'client')

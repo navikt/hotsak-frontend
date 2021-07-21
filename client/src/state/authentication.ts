@@ -49,7 +49,7 @@ export const useAuthentication = () => {
                 isLoggedIn: true,
             });
         }
-    }, [name, authInfo]);
+    }, [name, ident, email, oid, authInfo, setAuthInfo]);
 
     useEffect(() => {
         fetchIntercept.register({
@@ -61,5 +61,5 @@ export const useAuthentication = () => {
                 return res;
             },
         });
-    }, []);
+    }, [resetAuthInfo]);
 };

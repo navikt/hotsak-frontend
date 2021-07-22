@@ -77,7 +77,7 @@ export interface Tilbehør {
 
 export interface Formidler {
     navn: string
-    kommune: string
+    poststed: string
     arbeidssted: string
     stilling: string
     postadresse: string

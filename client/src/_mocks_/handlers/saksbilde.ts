@@ -56,7 +56,7 @@ const saksbildeHandlers = [
         ],
         formidler: {
           navn: 'Formidler navn',
-          kommune: 'Kommunenavn',
+          poststed: 'Poststed',
           arbeidssted: 'Arbeidssted',
           stilling: 'Ergo',
           postadresse: 'Formidlers adresse',

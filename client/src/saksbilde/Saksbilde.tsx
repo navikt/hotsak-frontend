@@ -70,7 +70,7 @@ const SaksbildeContent = React.memo(() => {
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
-              <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.kommune} />
+              <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.poststed} />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum}/>
               <SkjemaCard saksnr={sak.saksid}/>
             </VenstreMeny>

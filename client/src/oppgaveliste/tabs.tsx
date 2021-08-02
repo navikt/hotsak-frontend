@@ -11,9 +11,9 @@ import { useOppgaveliste } from './oppgavelisteHook'
 import { Flex } from '../felleskomponenter/Flex'
 import { StatusType } from '../types/types.internal'
 
-import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
+//import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
 
-//import { useInnloggetSaksbehandler } from '../../state/authentication';
+import { useInnloggetSaksbehandler } from '../state/authentication';
 
 export enum TabType {
   Alle = 'alle',
@@ -105,7 +105,8 @@ const AlleSakerTab = () => {
 }
 
 const MineSakerTab = () => {
-    const antallOppgaver = useOppgaveliste().oppgaver.filter(oppgave => oppgave.saksbehandler?.objectId === saksbehandler.objectId)
+    const saksbehandler = useInnloggetSaksbehandler();
+    const antallOppgaver = useOppgaveliste().oppgaver.filter((oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId)
   return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={antallOppgaver.length} />
 }
 

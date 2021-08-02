@@ -16,10 +16,10 @@ export enum CookieKey {
 if (process.env.NODE_ENV === 'development') {
     document.cookie = `speil=dev-cookie.${btoa(
         JSON.stringify({
-            name: 'Lokal utvikler',
+            name: 'Anders Bertolomeus',
             NAVident: 'dev-ident',
             email: 'dev@nav.no',
-            oid: 'uuid',
+            oid: '23ea7485-1324-4b25-a763-assdfdfa',
             groups: ['gruppe1', 'gruppe2'],
         })
     )}.ignored-part`;

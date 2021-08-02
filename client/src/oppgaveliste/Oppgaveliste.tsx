@@ -2,13 +2,12 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import Panel from 'nav-frontend-paneler'
 
-import saksbehandler from '../saksbehandler/innloggetSaksbehandler'
 import { OppgaverTable } from './OppgaverTable'
 import { StatusType } from '../types/types.internal'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { Tabs, TabType } from './tabs'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
-//import { useInnloggetSaksbehandler } from '../../state/authentication';
+import { useInnloggetSaksbehandler } from '../state/authentication';
 import { IngenOppgaver } from './IngenOppgaver'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Oppgave } from '../types/types.internal'
@@ -51,6 +50,7 @@ export const Oppgaveliste = () => {
   const [aktivTab, setAktivTab]: [TabType, Function] = React.useState<TabType>(TabType.Ufordelte)
   const byttTab = (nyTab: TabType) => setAktivTab(nyTab)
   const [filtrerteOppgaver, setFiltrerteOppgaver]: [Oppgave[], Function] = React.useState([])
+  const saksbehandler = useInnloggetSaksbehandler()
 
   React.useEffect(() => {
         const filtrert =  oppgaver?.filter((oppgave) => {
@@ -67,7 +67,7 @@ export const Oppgaveliste = () => {
       }) || []
 
     setFiltrerteOppgaver(filtrert)
-    
+
   }, [aktivTab, oppgaver])
 
   if (isError) {

@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 
 import { Knapp } from 'nav-frontend-knapper'
 
-//import { useInnloggetSaksbehandler } from '../../../../state/authentication';
+import { useInnloggetSaksbehandler } from '../../state/authentication';
 //import { useTildelOppgave } from '../../../../state/oppgaver';
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { postTildeling } from '../../io/http'
 
 const Tildelingsknapp = styled(Knapp)`
   min-height: 0;
@@ -20,15 +21,15 @@ interface IkkeTildeltProps {
 }
 
 export const IkkeTildelt = ({ oppgavereferanse }: IkkeTildeltProps) => {
-  //const saksbehandler = useInnloggetSaksbehandler();
-  const [isFetching/*, setIsFetching*/] = useState(false)
+  const saksbehandler = useInnloggetSaksbehandler();
+  const [isFetching, setIsFetching] = useState(false)
   //const tildelOppgave = useTildelOppgave();
 
   const tildel = (event: React.MouseEvent) => {
     event.stopPropagation()
-    // if (!saksbehandler || isFetching) return;
-    // setIsFetching(true);
-    //tildelOppgave({ oppgavereferanse }, saksbehandler).catch(() => setIsFetching(false));
+    if (!saksbehandler || isFetching) return;
+    setIsFetching(true);
+    postTildeling(oppgavereferanse).catch(() => setIsFetching(false));
   }
 
   return (

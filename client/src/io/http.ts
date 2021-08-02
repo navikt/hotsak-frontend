@@ -5,6 +5,7 @@ export interface SaksbehandlingApiResponse {
 
 const baseUrl = (process.env.NODE_ENV === 'production'  ? '' : `http://localhost:3001`)
 
+type Headers = { [key: string]: any };
 
 export const ResponseError = (statusCode: number, message?: string) => ({
   statusCode,
@@ -27,6 +28,29 @@ const getErrorMessage = async (response: Response) => {
   }
 }
 
+export const post = async (url: string, data: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      ...headere,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (response.status !== 200 && response.status !== 204) {
+    const message = await getErrorMessage(response);
+    console.log(response.status, message);
+
+    throw ResponseError(response.status, message);
+  }
+
+  return {
+    status: response.status,
+    data: await getData(response),
+  };
+};
+
 export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> => {
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
@@ -41,3 +65,7 @@ export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> =
     data: await getData(response),
   }
 }
+
+export const postTildeling = async (oppgavereferanse: string) => {
+  return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {});
+};

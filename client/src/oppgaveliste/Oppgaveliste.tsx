@@ -68,7 +68,7 @@ export const Oppgaveliste = () => {
 
     setFiltrerteOppgaver(filtrert)
 
-  }, [aktivTab, oppgaver])
+  }, [aktivTab, oppgaver, saksbehandler])
 
   if (isError) {
     throw Error('Feil med henting av oppgaver')

@@ -98,7 +98,7 @@ export enum GreitÅViteType {
 
 export interface Oppgave {
   opprettetDato: Dayjs
-  motattDato: string
+  mottattDato: string
   saksid: string
   personinformasjon: Personinfo
   status: StatusType

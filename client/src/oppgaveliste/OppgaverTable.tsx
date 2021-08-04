@@ -87,7 +87,7 @@ const kolonnerOverførstGosys = kolonnerAlleSaker
 
 export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
   const { aktivTab } = useTabContext()
-  
+
   let tab: any
   switch (aktivTab) {
     case TabType.Alle:
@@ -206,7 +206,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 )}
                 {tab.kolonner.includes(kolonner.MOTTATT) && (
                   <Cell>
-                    <Motatt dato={oppgave.motattDato} />
+                    <Motatt dato={oppgave.mottattDato} />
                   </Cell>
                 )}
                 <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>

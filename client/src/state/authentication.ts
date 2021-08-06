@@ -20,7 +20,7 @@ export const authState = atom<AuthInfo>({
         ident: undefined,
         email: undefined,
         oid: undefined,
-        isLoggedIn: undefined,
+        isLoggedIn: false,
     },
 });
 

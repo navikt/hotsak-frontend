@@ -29,7 +29,7 @@ export const IkkeTildelt = ({ oppgavereferanse }: IkkeTildeltProps) => {
     event.stopPropagation()
     if (!saksbehandler || isFetching) return;
     setIsFetching(true);
-    postTildeling(oppgavereferanse).catch(() => setIsFetching(false));
+    postTildeling(oppgavereferanse).catch(() => setIsFetching(false)).then(() => setIsFetching(false));
   }
 
   return (

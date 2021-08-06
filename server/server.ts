@@ -124,7 +124,7 @@ setUpAuthentication();
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
- if (process.env.NODE_ENV === 'developmentX') {
+ if (process.env.NODE_ENV === 'development') {
         res.cookie('speil', auth.createTokenForTest(), {
             secure: false,
             sameSite: true,

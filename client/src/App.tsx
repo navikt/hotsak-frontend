@@ -1,17 +1,18 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import 'reset-css';
+import 'reset-css'
 import './App.less'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 //import ReactModal from 'react-modal';
 import { HeaderBar as ToppMeny } from './Header'
-import { hot } from 'react-hot-loader';
+import { hot } from 'react-hot-loader'
 import { PageNotFound } from './feilsider/PageNotFound'
 import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot } from 'recoil'
+import { IkkeLoggetInn } from './routes/IkkeLoggetInn'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -22,30 +23,30 @@ const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
 
-  useAuthentication();
+  useAuthentication()
 
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
-        <ToppMeny />
-        <React.Suspense fallback={<div />}>
-          {/*<Varsler />*/}
-          <Switch>
-            {/*<Route path={Routes.Uautorisert}>
-                        <IkkeLoggetInn />
-    </Route>*/}
-            <ProtectedRoute path={Routes.Oppgaveliste} exact>
-              <Oppgaveliste />
-            </ProtectedRoute>
-            <ProtectedRoute path={Routes.Saksbilde}>
-                        <Saksbilde />
-            </ProtectedRoute>
-            {<Route path="*">
-                        <PageNotFound />
-</Route>}
-          </Switch>
-        </React.Suspense>
-        {/*</React.Suspense>*/}
-        {/*<Toasts />*/}
+      <ToppMeny />
+      <React.Suspense fallback={<div />}>
+        {/*<Varsler />*/}
+        <Switch>
+          {<Route path={Routes.Uautorisert}>
+            <IkkeLoggetInn />
+          </Route>}
+          <ProtectedRoute path={Routes.Oppgaveliste} exact>
+            <Oppgaveliste />
+          </ProtectedRoute>
+          <ProtectedRoute path={Routes.Saksbilde}>
+            <Saksbilde />
+          </ProtectedRoute>
+          {<Route path='*'>
+            <PageNotFound />
+          </Route>}
+        </Switch>
+      </React.Suspense>
+      {/*</React.Suspense>*/}
+      {/*<Toasts />*/}
 
     </ErrorBoundary>
   )
@@ -57,6 +58,6 @@ const withRoutingAndState = (Component: React.ComponentType) => () => (
       <Component />
     </RecoilRoot>
   </BrowserRouter>
-);
+)
 
-export default hot(module)(withRoutingAndState(App));
+export default hot(module)(withRoutingAndState(App))

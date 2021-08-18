@@ -55,7 +55,6 @@ export const useAuthentication = () => {
         fetchIntercept.register({
             response: (res) => {
                 if (res.status === 401) {
-                    localStorage.removeItem('agurkmodus');
                     resetAuthInfo();
                 }
                 return res;

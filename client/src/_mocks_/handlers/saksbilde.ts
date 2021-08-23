@@ -10,9 +10,13 @@ const saksbildeHandlers = [
         søknadGjelder: 'Hjelpemidler',
         hjelpemidler: [
           {
-            hmsnr: '123456',
+            hmsnr: '343434',
             rangering: '1',
-            alleredeUtlevert: 'true',
+            utlevertFraHjelpemiddelsentralen: 'true',
+            utlevertInfo: {
+                "utlevertType": "Overført",
+                "overførtFraBruker": "565656"
+              },
             antall: '6',
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
@@ -32,8 +36,71 @@ const saksbildeHandlers = [
                 antall: '1',
                 navn: 'Navn på tilbehør',
               },
+              {
+                hmsnr: '121212',
+                antall: '69',
+                navn: 'Wonderbaum',
+              },
+              {
+                hmsnr: '454545',
+                antall: '2',
+                navn: 'Gummimatte',
+              },
             ],
           },
+          {
+            hmsnr: '414141',
+            rangering: '1',
+            utlevertFraHjelpemiddelsentralen: 'true',
+            utlevertInfo: {
+                "utlevertType": "FremskuttLager"
+              },
+            antall: '6',
+            kategori: 'Terskeleliminatorer og Kjøreramper',
+            beskrivelse: 'Topro Terskeleliminator',
+            tilleggsinfo: [
+              
+            ],
+            tilbehør: [
+            ],
+          },
+
+          {
+            hmsnr: '888888',
+            rangering: '4',
+            utlevertFraHjelpemiddelsentralen: 'true',
+            utlevertInfo: {
+                "utlevertType": "Korttidslån"
+              },
+            antall: '1',
+            kategori: 'Terskeleliminatorer og Kjøreramper',
+            beskrivelse: 'Toro Terskeleliminator',
+            tilleggsinfo: [
+              
+            ],
+            tilbehør: [
+            ],
+          },
+
+          {
+            hmsnr: '999999',
+            rangering: '1',
+            utlevertFraHjelpemiddelsentralen: 'true',
+            utlevertInfo: {
+                "utlevertType": "Annen",
+                annenKommentar: "masse annen begrunnelse som faktisk kan være litt lang. Kanskje to setninger. Eller til og med tre. Forsatt over 100 tegn igjen. Sjukt."
+              },
+            antall: '1',
+            kategori: 'Terskeleliminatorer og Kjøreramper',
+            beskrivelse: 'Topro Terskeleliminator',
+            tilleggsinfo: [
+              
+            ],
+            tilbehør: [
+            ],
+          },
+
+
 
           {
             hmsnr: '123456',

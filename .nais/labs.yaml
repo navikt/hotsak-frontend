@@ -26,7 +26,6 @@ spec:
     outbound:
       rules:
         - application: hm-mocks
-        - application: saksbehandling-redis
   azure:
     application:
       enabled: true
@@ -40,7 +39,6 @@ spec:
   secureLogs:
     enabled: true
   envFrom:
-    - secret: redis-password
     - secret: hm-saksbehandling
   env:
     - name: API_URL

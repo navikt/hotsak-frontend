@@ -1,10 +1,10 @@
-import env from 'dotenv';
+import env from 'dotenv'
 
 import { OidcConfig, RedisConfig, ServerConfig } from './types'
 
-('use strict');
+;('use strict')
 
-env.config();
+env.config()
 
 const oidc: OidcConfig = {
   wellKnownEndpoint: process.env.AZURE_APP_WELL_KNOWN_URL || 'unknown',
@@ -15,21 +15,21 @@ const oidc: OidcConfig = {
   clientSecret: process.env.AZURE_APP_CLIENT_SECRET || 'unknown',
   scope: `profile offline_access openid email ${process.env.AZURE_APP_CLIENT_ID}/.default`,
   logoutUrl: process.env.LOGOUT_URL ?? 'https://navno.sharepoint.com/sites/intranett',
-};
+}
 
 const server: ServerConfig = {
-    port: process.env.PORT ? parseInt(process.env.PORT) : 3001,
-    sessionSecret: process.env.SESSION_SECRET,
-};
+  port: process.env.PORT ? parseInt(process.env.PORT) : 3001,
+  sessionSecret: process.env.SESSION_SECRET,
+}
 
- const redis: RedisConfig = {
-   host: process.env.REDIS_HOST,
-   port: process.env.REDIS_PORT || "6379",
-   password: process.env.REDIS_PASSWORD,
-};
+const redis: RedisConfig = {
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT || '6379',
+  password: process.env.REDIS_PASSWORD || 'tull',
+}
 
 export default {
-    oidc,
-    redis,
-    server,
-};
+  oidc,
+  redis,
+  server,
+}

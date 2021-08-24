@@ -13,7 +13,9 @@ export enum CookieKey {
     Groups = 'groups',
 }
 
-if (process.env.NODE_ENV === 'development') {
+console.log("NAIS_CLUSTER_NAME ", process.env.NAIS_CLUSTER_NAME)
+
+if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'LABS-GCP') {
     document.cookie = `speil=dev-cookie.${btoa(
         JSON.stringify({
             name: 'Anders Bertolomeusen',

@@ -124,7 +124,7 @@ setUpAuthentication();
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
- if (process.env.NODE_ENV === 'development') {
+ if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'LABS-GCP') {
         res.cookie('speil', auth.createTokenForTest(), {
             secure: false,
             sameSite: true,

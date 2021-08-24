@@ -18,7 +18,7 @@ const isValidIn = ({ seconds, token }: IsValidInProps) => {
 };
 
 const redirectUrl = (req: Request) => {
-    if (process.env.NODE_ENV === 'development') return 'http://localhost:3000/oauth2/callback';
+    if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'LABS-GCP') return 'http://localhost:3000/oauth2/callback';
     return 'https://' + req.get('Host') + '/oauth2/callback';
 };
 

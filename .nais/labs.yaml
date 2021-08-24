@@ -1,0 +1,56 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    app: hm-saksbehandling-frontend
+    team: teamdigihot
+  name: hm-saksbehandling-frontend
+  namespace: teamdigihot
+spec:
+  image: {{ image }}
+  team: teamdigihot
+  port: 3000
+  ingresses:
+    - https://hm-saksbehandling.dev.intern.nav.no
+  liveness:
+    path: /isalive
+  readiness:
+    path: /isready
+  prometheus:
+    enabled: true
+    path: /metrics
+  replicas:
+    max: 1
+    min: 1
+  accessPolicy:
+    outbound:
+      rules:
+        - application: hm-mocks
+        - application: saksbehandling-redis
+  azure:
+    application:
+      enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  secureLogs:
+    enabled: true
+  envFrom:
+    - secret: redis-password
+    - secret: hm-saksbehandling
+  env:
+    - name: API_URL
+      value: http://hm-mocks.teamdigihot.svc.cluster.local
+    - name: PORT
+      value: '3000'
+    - name: CLIENT_ID_SPESIALIST
+      value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
+    - name: REDIS_HOST
+      value: saksbehandling-redis.teamdigihot.svc.cluster.local
+    - name 
+
+

@@ -11,7 +11,7 @@ spec:
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.dev.intern.nav.no
+    - https://hm-saksbehandling.labs.nais.io
   liveness:
     path: /isalive
   readiness:

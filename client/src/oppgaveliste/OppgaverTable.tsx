@@ -76,6 +76,7 @@ const kolonnerAlleSaker = [
   kolonner.FØDSELSDATO,
   kolonner.HJELPEMIDDELBRUKER,
   kolonner.BOSTED,
+  kolonner.STATUS,
   kolonner.MOTTATT,
 ]
 

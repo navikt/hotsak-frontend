@@ -9,7 +9,7 @@ import { AppConfig } from './types';
 const redisStore = connectRedis(expressSession);
 
 export const sessionStore = (config: AppConfig) => {
-    return process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'LABS-GCP'
+    return process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp'
         ? createMemoryStoreSession(config)
         : createRedisSession(config, redisClient.init(config.redis));
 };

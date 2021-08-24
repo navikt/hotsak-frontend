@@ -75,7 +75,7 @@ jobs:
           RESOURCE: .nais/dev.yaml
   
   deployLabs:
-    name: Deploy to lakvs
+    name: Deploy to labs
     needs: [build]
     runs-on: ubuntu-latest
     steps:

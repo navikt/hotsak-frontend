@@ -36,7 +36,7 @@ export const IkkeTildelt = ({ oppgavereferanse }: IkkeTildeltProps) => {
     <CellContent width={128}>
       {
         <Tildelingsknapp mini onClick={tildel} spinner={isFetching}>
-          Tildel meg
+          Start saken
         </Tildelingsknapp>
       }
     </CellContent>

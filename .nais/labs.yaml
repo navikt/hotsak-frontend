@@ -43,6 +43,8 @@ spec:
   env:
     - name: API_URL
       value: http://hm-mocks.teamdigihot.svc.cluster.local
+    - name: DEBUG
+      value: express-http-proxy
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_SPESIALIST

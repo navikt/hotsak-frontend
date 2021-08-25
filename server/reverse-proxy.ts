@@ -40,13 +40,11 @@ const options = () => (
 })
 
 const pathRewriteBasedOnEnvironment = (req: SpeilRequest) => {
-    console.log("Original url", req.originalUrl)
   return req.originalUrl
 }
 
 const setupProxy = (server: core.Express, _onBehaldOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehaldOf
-  console.log('API URL', envProperties.API_URL)
   spesialistId = config.oidc.clientIDSpesialist;
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
 }

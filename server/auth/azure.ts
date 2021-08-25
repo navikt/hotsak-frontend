@@ -11,7 +11,6 @@ const proxyAgent = proxy(Issuer, custom)
 
 const setup = (config: OidcConfig) => {
   return new Promise<void | Client>((resolve, reject) => {
-    console.log('PROcess env cluster name', process.env.NAIS_CLUSTER_NAME)
     if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
       resolve()
     } else {

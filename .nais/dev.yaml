@@ -6,6 +6,8 @@ metadata:
     team: teamdigihot
   name: hm-saksbehandling-frontend
   namespace: teamdigihot
+  annotations:
+    snorlax.nais.io/enabled: "true"
 spec:
   image: {{ image }}
   team: teamdigihot

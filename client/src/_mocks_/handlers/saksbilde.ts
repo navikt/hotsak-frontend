@@ -59,7 +59,7 @@ const saksbildeHandlers = [
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
             tilleggsinfo: [
-              
+
             ],
             tilbehør: [
             ],
@@ -76,7 +76,7 @@ const saksbildeHandlers = [
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Toro Terskeleliminator',
             tilleggsinfo: [
-              
+
             ],
             tilbehør: [
             ],
@@ -94,7 +94,7 @@ const saksbildeHandlers = [
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
             tilleggsinfo: [
-              
+
             ],
             tilbehør: [
             ],
@@ -128,7 +128,7 @@ const saksbildeHandlers = [
           stilling: 'Ergo',
           postadresse: 'Formidlers adresse',
           telefon: '34343434',
-          treffesEnklest: 'Mandag - fredag',
+          treffestEnklest: 'Mandag - fredag',
           epost: 'e@post.com',
         },
         greitÅViteFaktum: [

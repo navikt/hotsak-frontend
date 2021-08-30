@@ -69,7 +69,7 @@ export interface Hjelpemiddel {
 
 export interface UtlevertInfo {
     annenKommentar: string
-    overførtFraBruker: string 
+    overførtFraBruker: string
     utlevertType: UtlevertType
 }
 
@@ -98,7 +98,7 @@ export interface Formidler {
     stilling: string
     postadresse: string
     telefon: string
-    treffesEnklest: string
+    treffestEnklest: string
     epost: string
 }
 

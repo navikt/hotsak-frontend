@@ -11,6 +11,7 @@
 /coverage
 
 /build
+client/build
 /dist
 /server/dist
 

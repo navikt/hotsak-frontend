@@ -111,7 +111,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
           <Formidlerinfo />
           <br />
           <Title level='1' size='s' spacing={false}>
-            Hjelpemiddelformidler
+            Oppfølgings- og opplæringsansvarlig
           </Title>
           <br />
           <OppfølgingsasvarligInfo />

@@ -11,11 +11,11 @@ import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
-import {SkjemaCard} from './venstremeny/SkjemaCard'
-import { GreitÅViteCard} from './venstremeny/GreitÅViteCard'
+import { SkjemaCard } from './venstremeny/SkjemaCard'
+import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { Hjelpemidler } from './Hjelpemidler'
 import { Bruker } from './Bruker'
-import { Formidler} from './Formidler'
+import { Formidlerside } from './Formidlerside'
 
 const SaksbildeContainer = styled.div`
   display: flex;
@@ -84,7 +84,7 @@ const SaksbildeContent = React.memo(() => {
                     <Bruker person={sak.personinformasjon} levering={sak.levering}/>
                   </Route>
                   <Route path={`${path}/formidler`}>
-                    <Formidler/>
+                    <Formidlerside formidler={sak.formidler}/>
                   </Route>
                 </Switch>
               </Content>

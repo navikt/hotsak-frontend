@@ -173,12 +173,12 @@ const saksbildeHandlers = [
         },
         levering: {
           kontaktPerson: {
-            navn: 'Nullable kontaktpersonnavn',
-            telefon: 'Nullable kontaktperson tlf',
-            kontaktpersonType: 'HJELPEMIDDELBRUKER',
+            navn: 'Konrad Kontaktperson',
+            telefon: '66666666',
+            kontaktpersonType: 'ANNEN_BRUKER',
           },
-          leveringsmaate: 'FOLKEREGISTRERT_ADRESSE|ANNEN_ADRESSE|HJELPEMIDDELSENTRAL|ALLEREDE_LEVERT',
-          adresse: 'nullable adresse',
+          leveringsmåte: 'FOLKEREGISTRERT_ADRESSE',
+          adresse: 'Folkeregistervegen 42',
           merknad: 'Ta også kontakt med meg dvs. formidler ved utlevering',
         },
         oppfølgingsansvarlig: {

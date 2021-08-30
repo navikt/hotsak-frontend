@@ -38,20 +38,22 @@ export interface Levering {
 
 
 export enum Leveringsmåte {
-    FOLKEREGISTRERT_ADRESSE,
-    ANNEN_ADRESSE,
-    HJELPEMIDDELSENTRAL,
-    ALLEREDE_LEVERT
+    FOLKEREGISTRERT_ADRESSE = 'FOLKEREGISTRERT_ADRESSE',
+    ANNEN_ADRESSE = 'ANNEN_ADRESSE',
+    HJELPEMIDDELSENTRAL = 'HJELPEMIDDELSENTRAL',
+    ALLEREDE_LEVERT = 'ALLEREDE_LEVERT'
 }
 
 export interface KontaktPerson {
     navn: string,
-    adresse: string,
+    telefon: string,
     kontaktpersonType: KontaktPersonType
 }
 
 export enum KontaktPersonType {
-    HJELPEMIDDELBRUKER = 'hjelpemiddelbruker'
+    HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
+    HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
+    ANNEN_BRUKER = 'ANNEN_BRUKER'
 }
 export interface Hjelpemiddel {
     hmsnr: string,

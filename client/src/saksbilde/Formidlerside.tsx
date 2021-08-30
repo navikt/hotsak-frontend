@@ -93,6 +93,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Container>
           <Formidlerinfo />
         </Container>
+        <Strek />
       </>
     )
   } else {

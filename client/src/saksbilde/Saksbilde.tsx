@@ -81,7 +81,7 @@ const SaksbildeContent = React.memo(() => {
                     <Hjelpemidler hjelpemidler={sak.hjelpemidler} søknadGjelder={sak.søknadGjelder} funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}/>
                   </Route>
                   <Route path={`${path}/bruker`}>
-                    <Bruker/>
+                    <Bruker person={sak.personinformasjon} levering={sak.levering}/>
                   </Route>
                   <Route path={`${path}/formidler`}>
                     <Formidler/>

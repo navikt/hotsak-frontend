@@ -116,6 +116,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
           <br />
           <OppfølgingsasvarligInfo />
         </Container>
+        <Strek />
       </>
     )
 

@@ -58,7 +58,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler }) => {
           <Label>Telefon</Label>
           <BodyShort>{formidler.telefon}</BodyShort>
           <Label>Treffest enklest</Label>
-          <BodyShort>{capitalize(formidler.treffesEnklest)}</BodyShort>
+          <BodyShort>{capitalize(formidler.treffestEnklest)}</BodyShort>
           <Label>E-postadresse</Label>
           <BodyShort>{capitalize(formidler.epost)}</BodyShort>
         </Grid>

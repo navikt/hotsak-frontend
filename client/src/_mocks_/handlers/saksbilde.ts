@@ -132,9 +132,10 @@ const saksbildeHandlers = [
           epost: 'e@post.com',
         },
         greitÅViteFaktum: [
-          { beskrivelse: 'Kun førsterangering', type: 'advarsel' },
-          { beskrivelse: 'Personalia fra folkeregisteret', type: 'advarsel' },
+          { beskrivelse: 'Lavere rangerte hjelpemidler', type: 'advarsel' },
+          { beskrivelse: 'Personalia fra folkeregisteret', type: 'info' },
           { beskrivelse: 'Ingen fritekst i søknaden', type: 'info' },
+          { beskrivelse: 'Haster - trykksår', type: 'advarsel' },
         ],
 
         motattDato: '2021-06-25T13:55:45',
@@ -145,15 +146,15 @@ const saksbildeHandlers = [
           etternavn: 'Eple',
           adresse: 'Veien 69',
           kilde: 'PDL',
-          signaturType: 'BRUKER_BEKREFTER',
+          signaturType: 'FULLMAKT',
           telefon: '45454545',
           bosituasjon: "HJEMME",
           funksjonsnedsettelse: ['hørsel', 'kognisjon'],
           bruksarena: "DAGLIGLIV",
           oppfylteVilkår: [
-            'Mia Cathrine Svendsen har vesentlig nedsatt funksjon.  Funksjonsnedsettelsen varer over 2 år eller livet ut.',
-            'Mia Cathrine Svendsen sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.',
-            'Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. Mia Cathrine Svendsen vil være i stand til å bruke hjelpemidlene.',
+            'Eple, Bananskall har vesentlig nedsatt funksjon.  Funksjonsnedsettelsen varer over 2 år eller livet ut.',
+            'Eple, Bananskall sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.',
+            'Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. Eple, Bananskall vil være i stand til å bruke hjelpemidlene.',
           ],
           kjønn: 'MANN',
           kroppsmål: {

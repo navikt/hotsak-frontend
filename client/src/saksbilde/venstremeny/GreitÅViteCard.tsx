@@ -26,19 +26,20 @@ const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {
 }
 
 export const GreitÅViteCard = ({ greitÅViteFakta }: GreitÅViteCardProps) => {
-  if(greitÅViteFakta.length > 0){
+  if (greitÅViteFakta.length > 0) {
     return (
       <Card>
         <CardTitle>GREIT Å VITE</CardTitle>
         <Grid>
-          {greitÅViteFakta.map((faktum) => {
-            return <FaktaRad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
-          })}
+          {greitÅViteFakta
+            .sort((a, b) => (a.type === GreitÅViteType.ADVARSEL ? -1 : b.type === GreitÅViteType.ADVARSEL ? 1 : 0))
+            .map((faktum) => {
+              return <FaktaRad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
+            })}
         </Grid>
       </Card>
     )
   } else {
-    return (null);
+    return null
   }
-
 }

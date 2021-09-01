@@ -1,10 +1,14 @@
 import styled from 'styled-components/macro'
 import { Title, BodyShort } from '@navikt/ds-react'
-import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler } from '../types/types.internal'
+import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler, SignaturType } from '../types/types.internal'
 import { Personikon } from '../felleskomponenter/ikoner/Personikon'
 import { capitalizeName, capitalize } from '../utils/stringFormating'
 import { LeveringsMåte } from './venstremeny/Leveringsmåte'
 import { Kontaktperson } from './venstremeny/Kontaktperson'
+import { Liste } from '../felleskomponenter/Liste'
+import { Fullmakt } from './bruker/Fullmakt'
+import { BrukerBekreftet } from './bruker/BrukerBekreftet'
+
 
 interface BrukerProps {
   person: Personinfo
@@ -12,15 +16,12 @@ interface BrukerProps {
   formidler: Formidler
 }
 
-
-
 const TittelIkon = styled(Personikon)`
   padding-right: 0.5rem;
 `
 
 const Container = styled.div`
   padding-top: 1rem;
-  font-size: 1rem !important;
   padding-bottom: 2rem;
 `
 
@@ -40,6 +41,12 @@ const Grid = styled.div`
   grid-row-gap: 0.125rem;
 `
 
+const formaterNavn = (person : Personinfo) => {
+    return capitalizeName(
+        `${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`
+      )
+}
+
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   return (
@@ -52,9 +59,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
         <Grid>
           <Label size="s">Navn</Label>
           <BodyShort size="s">
-            {capitalizeName(
-              `${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`
-            )}
+            {formaterNavn(person)}
           </BodyShort>
           <Label size="s">Fødselsnummer</Label>
           <BodyShort size="s">{person.fnr}</BodyShort>
@@ -92,14 +97,19 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
         </Grid>
       </Container>
 
+<Strek/>
+    {person.signaturType === SignaturType.SIGNATUR ? <Fullmakt navn={formaterNavn(person)}/> : <BrukerBekreftet navn={formaterNavn(person)}/>}
+
       <Strek />
 
       <Title level="1" size="m" spacing={true}>
         Vilkår for å motta hjelpemidler
       </Title>
-      <ul>
+      <Container>
+      <Liste>
         {person.oppfylteVilkår.map(vilkår => <li>{vilkår}</li>)}
-      </ul>
+      </Liste>
+      </Container>
     </>
   )
 }

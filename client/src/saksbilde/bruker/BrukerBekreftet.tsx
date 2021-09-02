@@ -1,5 +1,6 @@
-import { Title, BodyShort } from '@navikt/ds-react'
+import { Title } from '@navikt/ds-react'
 import styled from 'styled-components/macro'
+import { Tekst } from '../../felleskomponenter/typografi'
 
 
 interface BrukerBekreftetProps {
@@ -19,7 +20,7 @@ export const BrukerBekreftet: React.FC<BrukerBekreftetProps> = ({navn}) => {
         Bruker har godkjent søknaden
       </Title>
       <Container>
-        <BodyShort size='s'>{`${navn} har godkjent søknaden selv på nav.no`}</BodyShort> 
+        <Tekst>{`${navn} har godkjent søknaden selv på nav.no`}</Tekst> 
       </Container>
       </>
     )

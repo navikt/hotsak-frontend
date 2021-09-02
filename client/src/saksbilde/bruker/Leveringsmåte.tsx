@@ -1,5 +1,5 @@
 import { Levering, Leveringsmåte } from "../../types/types.internal"
-import { BodyShort } from '@navikt/ds-react'
+import { Tekst } from "../../felleskomponenter/typografi"
 
 interface LeveringProps {
     levering: Levering
@@ -24,6 +24,6 @@ export const LeveringsMåte: React.FC<LeveringProps> = ({ levering }) => {
         break
     }
   
-    return <BodyShort size="s">{leveringsTekst}</BodyShort>
+    return <Tekst>{leveringsTekst}</Tekst>
   }
   

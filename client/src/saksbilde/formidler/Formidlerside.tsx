@@ -1,8 +1,10 @@
-import { Formidler, Oppfølgingsansvarlig } from '../types/types.internal'
-import { BodyShort, Title } from '@navikt/ds-react'
-import { capitalize, capitalizeName } from '../utils/stringFormating'
+import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
+import { Title } from '@navikt/ds-react'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import styled from 'styled-components/macro'
-import { Personikon } from '../felleskomponenter/ikoner/Personikon'
+import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
+import { Strek } from '../../felleskomponenter/Strek'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 
 
 interface FormidlerProps {
@@ -19,15 +21,6 @@ const Container = styled.div`
   font-size: 1rem;
 `
 
-const Strek = styled.hr`
-  border: none;
-  height: 1px;
-  background-color: var(--navds-color-gray-40);
-`
-
-const Label = styled(BodyShort)`
-  font-weight: bold;
-`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 12rem auto;
@@ -40,24 +33,24 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
   const Formidlerinfo = () => {
     return (
       <Grid>
-        <Label>Navn</Label>
-        <BodyShort>
+        <Etikett>Navn</Etikett>
+        <Tekst>
           {capitalizeName(
             formidler.navn,
           )}
-        </BodyShort>
-        <Label>Arbeidssted</Label>
-        <BodyShort>{`${capitalize(formidler.arbeidssted)}`}</BodyShort>
-        <Label>Stilling</Label>
-        <BodyShort>{`${capitalize(formidler.stilling)}`}</BodyShort>
-        <Label>Postadresse</Label>
-        <BodyShort>{`${capitalize(formidler.postadresse)}`}</BodyShort>
-        <Label>Telefon</Label>
-        <BodyShort>{formidler.telefon}</BodyShort>
-        <Label>Treffest enklest</Label>
-        <BodyShort>{capitalize(formidler.treffestEnklest)}</BodyShort>
-        <Label>E-postadresse</Label>
-        <BodyShort>{capitalize(formidler.epost)}</BodyShort>
+        </Tekst>
+        <Etikett>Arbeidssted</Etikett>
+        <Tekst>{`${capitalize(formidler.arbeidssted)}`}</Tekst>
+        <Etikett>Stilling</Etikett>
+        <Tekst>{`${capitalize(formidler.stilling)}`}</Tekst>
+        <Etikett>Postadresse</Etikett>
+        <Tekst>{`${capitalize(formidler.postadresse)}`}</Tekst>
+        <Etikett>Telefon</Etikett>
+        <Tekst>{formidler.telefon}</Tekst>
+        <Etikett>Treffest enklest</Etikett>
+        <Tekst>{capitalize(formidler.treffestEnklest)}</Tekst>
+        <Etikett>E-postadresse</Etikett>
+        <Tekst>{capitalize(formidler.epost)}</Tekst>
       </Grid>
     )
   }
@@ -65,20 +58,20 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
   const OppfølgingsasvarligInfo = () => {
     return (
       <Grid>
-        <Label>Navn</Label>
-        <BodyShort>
+        <Etikett>Navn</Etikett>
+        <Tekst>
           {capitalizeName(
             oppfølgingsansvarling!!.navn,
           )}
-        </BodyShort>
-        <Label>Arbeidssted</Label>
-        <BodyShort>{`${capitalize(oppfølgingsansvarling!!.arbeidssted)}`}</BodyShort>
-        <Label>Stilling</Label>
-        <BodyShort>{`${capitalize(oppfølgingsansvarling!!.stilling)}`}</BodyShort>
-        <Label>Telefon</Label>
-        <BodyShort>{oppfølgingsansvarling!!.telefon}</BodyShort>
-        <Label>Ansvar</Label>
-        <BodyShort>{capitalize(oppfølgingsansvarling!!.ansvarFor)}</BodyShort>
+        </Tekst>
+        <Etikett>Arbeidssted</Etikett>
+        <Tekst>{`${capitalize(oppfølgingsansvarling!!.arbeidssted)}`}</Tekst>
+        <Etikett>Stilling</Etikett>
+        <Tekst>{`${capitalize(oppfølgingsansvarling!!.stilling)}`}</Tekst>
+        <Etikett>Telefon</Etikett>
+        <Tekst>{oppfølgingsansvarling!!.telefon}</Tekst>
+        <Etikett>Ansvar</Etikett>
+        <Tekst>{capitalize(oppfølgingsansvarling!!.ansvarFor)}</Tekst>
       </Grid>
     )
   }

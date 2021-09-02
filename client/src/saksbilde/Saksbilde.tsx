@@ -13,9 +13,9 @@ import { VenstreMeny } from './venstremeny/Venstremeny'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { SkjemaCard } from './venstremeny/SkjemaCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
-import { Hjelpemidler } from './Hjelpemidler'
-import { Bruker } from './Bruker'
-import { Formidlerside } from './Formidlerside'
+import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
+import { Bruker } from './bruker/Bruker'
+import { Formidlerside } from './formidler/Formidlerside'
 
 const SaksbildeContainer = styled.div`
   display: flex;

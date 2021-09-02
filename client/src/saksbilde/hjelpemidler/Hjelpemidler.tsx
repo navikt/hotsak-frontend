@@ -1,14 +1,16 @@
 import styled from 'styled-components/macro'
 
-import { Title, BodyShort } from '@navikt/ds-react'
+import { Title } from '@navikt/ds-react'
 
-import { capitalize } from '../utils/stringFormating'
+import { capitalize } from '../../utils/stringFormating'
 
-import { RullestolIkon } from '../felleskomponenter/ikoner/RullestolIkon'
-import { LevertIkon } from '../felleskomponenter/ikoner/LevertIkon'
-import { Hjelpemiddel } from '../types/types.internal'
+import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
+import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
+import { Hjelpemiddel } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { Normaltekst } from 'nav-frontend-typografi'
+import { Strek } from '../../felleskomponenter/Strek'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 
 const TittelIkon = styled(RullestolIkon)`
   padding-right: 0.5rem;
@@ -69,19 +71,6 @@ display: flex;
   font-weight: inherit;
 }
 `
-
-
-
-const Strek = styled.hr`
-  border: none;
-  height: 1px;
-  background-color: var(--navds-color-gray-40);
-`
-
-const Bold = styled(BodyShort)`
-  font-weight: bold;
-`
-
 const TilleggsInfo = styled(Rad)`
   background-color: #fff5e5;
   padding-top: 0.2rem;
@@ -122,7 +111,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
         <TittelIkon width={22} height={22} />
         {søknadGjelder}
       </Title>
-      <BodyShort size="s">{capitalize(funksjonsnedsettelse.join(', '))}</BodyShort>
+      <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {
           return (
@@ -131,7 +120,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                 <Kolonne>
                   <Rad>
                     <Kolonne>
-                      <Bold size="s">{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Bold>
+                      <Etikett>{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Etikett>
                     </Kolonne>
                     <Kolonne textAlign="right"><Rangering rank={hjelpemiddel.rangering}><Normaltekst>Rangering:</Normaltekst><Normaltekst>{hjelpemiddel.rangering}</Normaltekst></Rangering></Kolonne>
                   </Rad>
@@ -139,12 +128,12 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                   {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
                     <Rad>
                       <Kolonne width="160px">
-                        <Bold size="s">
+                        <Etikett>
                           <UtlevertContainer>
                             <LevertIkon />
                             <Normaltekst>Utlevert:</Normaltekst>
                           </UtlevertContainer>
-                        </Bold>
+                        </Etikett>
                       </Kolonne>
                       <Kolonne>
                         <Utlevert
@@ -161,7 +150,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                         return (
                           <Rad key={tilleggsinfo.innhold}>
                             <Kolonne width="160px">
-                              <Bold size="s">{`${capitalize(tilleggsinfo.tittel)}:`}</Bold>
+                              <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                             </Kolonne>
                             <Kolonne>{tilleggsinfo.innhold}</Kolonne>
                           </Rad>
@@ -180,7 +169,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                   <>
                     <Rad paddingTop="0.8rem">
                       <Kolonne width="160px">
-                        <Bold size="s">Tilbehør:</Bold>
+                        <Etikett>Tilbehør:</Etikett>
                       </Kolonne>
                       <Kolonne>
                         {hjelpemiddel.tilbehør.map((tilbehør) => (
@@ -206,7 +195,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
         })}
         <Totaler>
           <Normaltekst>
-            <Bold size="s">Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør</Bold>
+            <Etikett>Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør</Etikett>
             Totalt. {summerAntall(hjelpemidler.filter((it) => it.utlevertFraHjelpemiddelsentralen))} stk. allerede utlevert
           </Normaltekst>{' '}
         </Totaler>

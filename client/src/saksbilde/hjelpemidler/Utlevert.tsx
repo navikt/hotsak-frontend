@@ -1,4 +1,4 @@
-import { UtlevertInfo, UtlevertType } from '../types/types.internal'
+import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
 
 import { Normaltekst } from 'nav-frontend-typografi'
 

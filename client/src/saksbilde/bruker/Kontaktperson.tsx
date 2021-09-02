@@ -1,5 +1,5 @@
 import { KontaktPerson, KontaktPersonType, Formidler} from "../../types/types.internal"
-import { BodyShort } from '@navikt/ds-react'
+import { Tekst } from "../../felleskomponenter/typografi"
 
 interface KontaktpersonProps {
     kontaktperson?: KontaktPerson
@@ -23,6 +23,6 @@ export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, for
         break
     }
   
-    return <BodyShort size="s">{kontaktpersonTekst}</BodyShort>
+    return <Tekst>{kontaktpersonTekst}</Tekst>
   }
   

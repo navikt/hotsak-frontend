@@ -11,7 +11,7 @@ import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
-import { SkjemaCard } from './venstremeny/SkjemaCard'
+import { VedtakCard } from './venstremeny/VedtakCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
 import { Bruker } from './bruker/Bruker'
@@ -63,7 +63,7 @@ const SaksbildeContent = React.memo(() => {
           <Flex flex={1} style={{ height: '100%' }}>
             <VenstreMeny>
               <SøknadCard
-                søknadGjelder={sak.søknadGjelder }
+                søknadGjelder={sak.søknadGjelder}
                 saksnr={sak.saksid}
                 motattDato={sak.motattDato}
                 bosituasjon={sak.personinformasjon.bosituasjon}
@@ -71,20 +71,24 @@ const SaksbildeContent = React.memo(() => {
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
               <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.poststed} />
-              <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum}/>
-              <SkjemaCard saksnr={sak.saksid}/>
+              <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />
+              <VedtakCard sak={sak} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <Hjelpemidler hjelpemidler={sak.hjelpemidler} søknadGjelder={sak.søknadGjelder} funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}/>
+                    <Hjelpemidler
+                      hjelpemidler={sak.hjelpemidler}
+                      søknadGjelder={sak.søknadGjelder}
+                      funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
+                    />
                   </Route>
                   <Route path={`${path}/bruker`}>
-                    <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler}/>
+                    <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
                   </Route>
                   <Route path={`${path}/formidler`}>
-                    <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig}/>
+                    <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig} />
                   </Route>
                 </Switch>
               </Content>

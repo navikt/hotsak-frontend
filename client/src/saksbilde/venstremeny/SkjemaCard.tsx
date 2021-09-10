@@ -6,6 +6,8 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
+import { post, putVedtak } from '../../io/http';
+import { StatusType } from '../../types/types.internal';
 interface PeriodeCardProps {
   saksnr: string
 }
@@ -30,12 +32,16 @@ font-size: var(--navds-font-size-m);
 export const SkjemaCard = ({ saksnr }: PeriodeCardProps) => {
 const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState('')
 
+const opprettVedtak = () => {
+    putVedtak(saksnr, dokumentbeskrivelse, StatusType.INNVILGET)
+}
+
   return (
     <Card>
       <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
       <Input mini label="Søknad om:" description="Skriv inn hjelpemidler feks. rullator, seng." value={dokumentbeskrivelse} onChange={(event) => setDokumentbeskrivelse(event.target.value)} />
       <ButtonContainer>
-        <Knapp variant={'action'} size={'s'} onClick={() => {alert(`Invilger søknad med saksnummer ${saksnr} med dokumentbeskrivelse ${dokumentbeskrivelse}`)}}>
+        <Knapp variant={'action'} size={'s'} onClick={() => opprettVedtak()}>
           Invilg søknaden
         </Knapp>
         <Knapp variant={'primary'} size={'s'} onClick={() => {alert(`Sender søknad med saksnummer ${saksnr} til gode gamle Gosys`)}}>

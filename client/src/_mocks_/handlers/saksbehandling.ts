@@ -1,6 +1,9 @@
 import { rest } from 'msw'
 
 const saksbehandlingHandlers = [
+    rest.put('/api/vedtak/:saksnummer', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}))
+    }),
   rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     return res(
 

@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs'
 
-
 export interface Sak {
     saksid: string
     søknadGjelder: string,

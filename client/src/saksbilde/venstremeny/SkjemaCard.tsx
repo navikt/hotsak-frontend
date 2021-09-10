@@ -6,7 +6,7 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema';
 import React from 'react';
-import { post, putVedtak } from '../../io/http';
+import { putVedtak } from '../../io/http';
 import { StatusType } from '../../types/types.internal';
 interface PeriodeCardProps {
   saksnr: string

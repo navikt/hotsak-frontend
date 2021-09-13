@@ -14,9 +14,9 @@ const saksbildeHandlers = [
             rangering: '1',
             utlevertFraHjelpemiddelsentralen: 'true',
             utlevertInfo: {
-                "utlevertType": "Overført",
-                "overførtFraBruker": "565656"
-              },
+              utlevertType: 'Overført',
+              overførtFraBruker: '565656',
+            },
             antall: '6',
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
@@ -53,16 +53,13 @@ const saksbildeHandlers = [
             rangering: '1',
             utlevertFraHjelpemiddelsentralen: 'true',
             utlevertInfo: {
-                "utlevertType": "FremskuttLager"
-              },
+              utlevertType: 'FremskuttLager',
+            },
             antall: '6',
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
-            tilleggsinfo: [
-
-            ],
-            tilbehør: [
-            ],
+            tilleggsinfo: [],
+            tilbehør: [],
           },
 
           {
@@ -70,16 +67,13 @@ const saksbildeHandlers = [
             rangering: '4',
             utlevertFraHjelpemiddelsentralen: 'true',
             utlevertInfo: {
-                "utlevertType": "Korttidslån"
-              },
+              utlevertType: 'Korttidslån',
+            },
             antall: '1',
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Toro Terskeleliminator',
-            tilleggsinfo: [
-
-            ],
-            tilbehør: [
-            ],
+            tilleggsinfo: [],
+            tilbehør: [],
           },
 
           {
@@ -87,20 +81,16 @@ const saksbildeHandlers = [
             rangering: '1',
             utlevertFraHjelpemiddelsentralen: 'true',
             utlevertInfo: {
-                "utlevertType": "Annen",
-                annenKommentar: "masse annen begrunnelse som faktisk kan være litt lang. Kanskje to setninger. Eller til og med tre. Forsatt over 100 tegn igjen. Sjukt."
-              },
+              utlevertType: 'Annen',
+              annenKommentar:
+                'masse annen begrunnelse som faktisk kan være litt lang. Kanskje to setninger. Eller til og med tre. Forsatt over 100 tegn igjen. Sjukt.',
+            },
             antall: '1',
             kategori: 'Terskeleliminatorer og Kjøreramper',
             beskrivelse: 'Topro Terskeleliminator',
-            tilleggsinfo: [
-
-            ],
-            tilbehør: [
-            ],
+            tilleggsinfo: [],
+            tilbehør: [],
           },
-
-
 
           {
             hmsnr: '123456',
@@ -148,9 +138,9 @@ const saksbildeHandlers = [
           kilde: 'PDL',
           signaturType: 'FULLMAKT',
           telefon: '45454545',
-          bosituasjon: "HJEMME",
+          bosituasjon: 'HJEMME',
           funksjonsnedsettelse: ['hørsel', 'kognisjon'],
-          bruksarena: "DAGLIGLIV",
+          bruksarena: 'DAGLIGLIV',
           oppfylteVilkår: [
             'Eple, Bananskall har vesentlig nedsatt funksjon.  Funksjonsnedsettelsen varer over 2 år eller livet ut.',
             'Eple, Bananskall sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.',
@@ -195,6 +185,13 @@ const saksbildeHandlers = [
           objectId: '23ea7485-1324-4b25-a763-assdfdfa',
           navn: 'Anders Bertolomeus',
         },
+        vedtak: {
+          vedtaksDato: '06.09.2021',
+          vedtaksStatus: 'innvilget',
+          saksbehandlerOid: '23ea7485-1324-4b25-a763-assdfdfa',
+          saksbehandlerNavn: 'Anders Bertolomeus',
+          søknadsId: 'cf7b5ec7-f6a1-49d4-b988-c2261503d797',
+        },
         status: 'mottatt',
         enhet: [
           {
@@ -206,4 +203,4 @@ const saksbildeHandlers = [
     )
   }),
 ]
- export default saksbildeHandlers
+export default saksbildeHandlers

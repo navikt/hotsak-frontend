@@ -12,7 +12,20 @@ export interface Sak {
     oppfølgingsansvarlig: Oppfølgingsansvarlig
     saksbehandler: Saksbehandler
     status: StatusType
+    vedtak: VedtakType
     enhet: Enhet[]
+}
+
+export interface VedtakType {
+    vedtaksDato: string
+            vedtaksStatus: VedtakStatus
+            saksbehandlerOid: string
+            saksbehandlerNavn: string
+            søknadsId: string
+}
+
+export enum VedtakStatus {
+    INNVILGET = 'innvilget',
 }
 
 export interface Enhet {

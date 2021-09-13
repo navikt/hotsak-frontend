@@ -1,7 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Button } from '@navikt/ds-react'
-
+import { Button, Loader  } from '@navikt/ds-react'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
@@ -12,7 +11,8 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import { RundtSjekkikon } from '../../felleskomponenter/ikoner/RundtSjekkikon'
 import { Grid } from './Grid'
-import {IconContainer} from './IconContainer'
+import { IconContainer } from './IconContainer'
+import { useInnloggetSaksbehandler } from '../../state/authentication'
 interface VedtakCardProps {
   sak: Sak
 }
@@ -37,9 +37,14 @@ const Knapp = styled(Button)`
 export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const { saksid } = sak
   const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState(sak.søknadGjelder)
+  const saksbehandler = useInnloggetSaksbehandler()
+  const [venter, setVenter] = React.useState(false)
 
   const opprettVedtak = () => {
+    setVenter(true)
     putVedtak(saksid, dokumentbeskrivelse, StatusType.INNVILGET)
+
+
   }
 
   if (sak.status === StatusType.INNVILGET) {
@@ -47,10 +52,12 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
       <Card>
         <CardTitle>VEDTAK</CardTitle>
         <Grid>
-        <IconContainer>
-            <RundtSjekkikon/>
-            </IconContainer>
-        <Tekst>{capitalize(sak.status)} 06.09 2021 av {capitalizeName(sak.saksbehandler.navn)} </Tekst>
+          <IconContainer>
+            <RundtSjekkikon />
+          </IconContainer>
+          <Tekst>
+            {capitalize(sak.status)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
+          </Tekst>
         </Grid>
       </Card>
     )
@@ -59,11 +66,27 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   if (sak.status === StatusType.OVERFØRT_GOSYS) {
     return (
       <Card>
-        <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
+        <CardTitle>OVERFØRT</CardTitle>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
       </Card>
     )
-  } else {
+  }
+
+  if (sak.saksbehandler.objectId !== saksbehandler.objectId) {
+    return (
+      <Card>
+        <CardTitle>SAKSBEHANDLER</CardTitle>
+        <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
+        <ButtonContainer>
+          <Knapp variant={'action'} size={'s'} onClick={() => alert('Tildeler sak til innlogget saksbehandler')}>
+            Ta saken
+          </Knapp>
+        </ButtonContainer>
+      </Card>
+    )
+  }
+
+  else {
     return (
       <Card>
         <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
@@ -76,7 +99,8 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         />
         <ButtonContainer>
           <Knapp variant={'action'} size={'s'} onClick={() => opprettVedtak()}>
-            Invilg søknaden
+            <span>Invilg søknaden</span>
+            {venter ? <Loader/> : null}
           </Knapp>
           <Knapp
             variant={'primary'}

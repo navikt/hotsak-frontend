@@ -40,10 +40,8 @@ const save = async (url: string, method: string, data: any, headere?: Headers): 
     },
     body: JSON.stringify(data),
   })
-  if (response.status !== 200 && response.status !== 204) {
+  if (response.status > 400) {
     const message = await getErrorMessage(response)
-    console.log(response.status, message)
-
     throw ResponseError(response.status, message)
   }
 

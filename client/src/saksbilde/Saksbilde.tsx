@@ -50,6 +50,8 @@ const SaksbildeContent = React.memo(() => {
   const { sak, isError, isLoading } = useSak()
   const { path } = useRouteMatch()
 
+  
+
   if (isLoading) return <LasterSaksbilde />
 
   if (isError) throw new Error('Feil med henting av sak' + isError)

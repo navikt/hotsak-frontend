@@ -1,4 +1,3 @@
-//import bodyParser from 'body-parser';
 //import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import express, { Response } from 'express'
@@ -38,7 +37,6 @@ const port = config.server.port
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
-//app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(sessionStore(config));
 //app.use(compression());
@@ -94,8 +92,6 @@ const setUpAuthentication = () => {
             res.redirect(302, config.oidc.logoutUrl);
         });
     });
-
-//app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
         const session = req.session;

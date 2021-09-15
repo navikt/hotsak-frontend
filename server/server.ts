@@ -2,6 +2,7 @@
 import cookieParser from 'cookie-parser';
 import express, { Response } from 'express'
 import { Client, generators } from 'openid-client';
+import  bodyParser from 'body-parser'
 
 import auth from './auth/authSupport';
 import azure from './auth/azure';
@@ -163,6 +164,8 @@ app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.p
 
 const _onBehalfOf = onBehalfOf(config.oidc);
 setupProxy(app, _onBehalfOf, config)
+
+app.use(bodyParser.json())
 
 // app.get('/*', (req, res, next) => {
 //   if (!req.accepts('html') && /\/api/.test(req.url)) {

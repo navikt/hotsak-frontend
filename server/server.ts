@@ -1,11 +1,11 @@
 //import compression from 'compression';
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'
 import express, { Response } from 'express'
-import { Client, generators } from 'openid-client';
-import  bodyParser from 'body-parser'
+import { Client, generators } from 'openid-client'
+import bodyParser from 'body-parser'
 
-import auth from './auth/authSupport';
-import azure from './auth/azure';
+import auth from './auth/authSupport'
+import azure from './auth/azure'
 //import behandlingsstatistikkRoutes from './behandlingsstatistikk/behandlingsstatistikkRoutes';
 import config from './config'
 //import headers from './headers';
@@ -13,15 +13,14 @@ import config from './config'
 import logger from './logging'
 import path from 'path'
 import setupProxy from './reverse-proxy'
-import { cli } from 'winston/lib/winston/config'
 //import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
 //import overstyringRoutes from './overstyring/overstyringRoutes';
 //import paymentRoutes from './payment/paymentRoutes';
 //import person from './person/personRoutes';
-import { ipAddressFromRequest } from './requestData';
-import { sessionStore } from './sessionStore';
+import { ipAddressFromRequest } from './requestData'
+import { sessionStore } from './sessionStore'
 //import tildelingRoutes from './tildeling/tildelingRoutes';
-import { AuthError, SpeilRequest } from './types';
+import { AuthError, SpeilRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
 //import wiring from './wiring';
 
@@ -117,7 +116,7 @@ app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
     });
 };
 
-setUpAuthentication();
+
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
@@ -166,6 +165,8 @@ const _onBehalfOf = onBehalfOf(config.oidc);
 setupProxy(app, _onBehalfOf, config)
 
 app.use(bodyParser.json())
+
+setUpAuthentication();
 
 // app.get('/*', (req, res, next) => {
 //   if (!req.accepts('html') && /\/api/.test(req.url)) {

@@ -18,7 +18,7 @@ export interface Sak {
 
 export interface VedtakType {
     vedtaksDato: string
-    vedtaksStatus: VedtakStatusType
+    status: VedtakStatusType
     saksbehandlerOid: string
     saksbehandlerNavn: string
     søknadsId: string

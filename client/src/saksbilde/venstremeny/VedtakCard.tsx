@@ -48,7 +48,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   }
 
-  if (sak.vedtak && sak.vedtak.vedtaksStatus === VedtakStatusType.INNVILGET) {
+  if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
       <Card>
         <CardTitle>VEDTAK</CardTitle>
@@ -57,7 +57,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
             <RundtSjekkikon />
           </IconContainer>
           <Tekst>
-            {capitalize(VedtakStatusLabel.get(sak.vedtak.vedtaksStatus)!)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
+            {capitalize(VedtakStatusLabel.get(sak.vedtak.status)!)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
           </Tekst>
         </Grid>
       </Card>

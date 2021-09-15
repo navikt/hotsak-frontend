@@ -37,13 +37,8 @@ const port = config.server.port
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
-
-const unless = (middleware: any, ...paths: string[]) =>
-  (req: SpeilRequest, res: Response, next: any) =>
-    paths.some(path => path === req.path) ? next() : middleware(req, res, next)
-
-app.use(unless(bodyParser.json(), "/api"));
-app.use(unless(bodyParser.urlencoded({extended: false}), "/api"));
+app.use(/\/((?!api).)*/, bodyParser.json());
+app.use(/\/((?!api).)*/, bodyParser.urlencoded({extended: false}));
 
 app.use(cookieParser())
 app.use(sessionStore(config))

@@ -37,22 +37,29 @@ const port = config.server.port
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(sessionStore(config));
+
+const unless = (middleware: any, ...paths: string[]) =>
+  (req: SpeilRequest, res: Response, next: any) =>
+    paths.some(path => path === req.path) ? next() : middleware(req, res, next)
+
+app.use(unless(bodyParser.json, "/api"));
+app.use(unless(bodyParser.urlencoded({extended: false}), "/api"));
+
+app.use(cookieParser())
+app.use(sessionStore(config))
 //app.use(compression());
 
 //headers.setup(app);
-let azureClient: Client | null = null;
+let azureClient: Client | null = null
 azure
   .setup(config.oidc)
   .then((client: Client) => {
-    azureClient = client;
+    azureClient = client
   })
   .catch((err) => {
-    logger.error(`Failed to discover OIDC provider properties: ${err}`);
-    process.exit(1);
-  });
+    logger.error(`Failed to discover OIDC provider properties: ${err}`)
+    process.exit(1)
+  })
 
 // Unprotected routes
 app.get('/isalive', (_, res) => res.send('alive'))
@@ -69,11 +76,11 @@ app.get('/isready', (_, res) => {
 
 const setUpAuthentication = () => {
   app.get('/login', (req: SpeilRequest, res: Response) => {
-    const session = req.session;
-    session.nonce = generators.nonce();
-    session.state = generators.state();
-    if(azureClient === null){
-      console.log("Azure client er null")
+    const session = req.session
+    session.nonce = generators.nonce()
+    session.state = generators.state()
+    if (azureClient === null) {
+      console.log('Azure client er null')
     }
     const url = azureClient!.authorizationUrl({
       scope: config.oidc.scope,
@@ -83,43 +90,43 @@ const setUpAuthentication = () => {
       response_mode: 'form_post',
       nonce: session.nonce,
       state: session.state,
-    });
-    res.redirect(url);
-  });
+    })
+    res.redirect(url)
+  })
   app.get('/logout', (req: SpeilRequest, res: Response) => {
     azureClient!.revoke(req.session.speilToken).finally(() => {
-      req.session.destroy(() => {});
-      res.clearCookie('speil');
-      res.redirect(302, config.oidc.logoutUrl);
-    });
-  });
-
-app.use(bodyParser.urlencoded({ extended: false }));
+      req.session.destroy(() => {
+      })
+      res.clearCookie('speil')
+      res.redirect(302, config.oidc.logoutUrl)
+    })
+  })
 
   app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
-    const session = req.session;
+    const session = req.session
     auth.validateOidcCallback(req, azureClient!, config.oidc)
       .then((tokens: string[]) => {
-        const [accessToken, idToken, refreshToken] = tokens;
+        const [accessToken, idToken, refreshToken] = tokens
         res.cookie('speil', `${idToken}`, {
           secure: true,
           sameSite: true,
-        });
-        session.speilToken = accessToken;
-        session.refreshToken = refreshToken;
-        session.user = auth.valueFromClaim('NAVident', idToken);
-        res.redirect(303, '/');
+        })
+        session.speilToken = accessToken
+        session.refreshToken = refreshToken
+        session.user = auth.valueFromClaim('NAVident', idToken)
+        res.redirect(303, '/')
       })
       .catch((err: AuthError) => {
-        logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`);
-        logger.sikker.error(`Error caught during login: ${err.message}`, err);
-        session.destroy(() => {});
-        res.sendStatus(err.statusCode);
-      });
-  });
-};
+        logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`)
+        logger.sikker.error(`Error caught during login: ${err.message}`, err)
+        session.destroy(() => {
+        })
+        res.sendStatus(err.statusCode)
+      })
+  })
+}
 
-setUpAuthentication();
+setUpAuthentication()
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
@@ -127,33 +134,33 @@ app.use('/*', async (req: SpeilRequest, res, next) => {
     res.cookie('speil', auth.createTokenForTest(), {
       secure: false,
       sameSite: true,
-    });
-    next();
+    })
+    next()
   } else {
     if (
       auth.isValidIn({ seconds: 5, token: req.session!.speilToken }) ||
       (await auth.refreshAccessToken(azureClient!, req.session!))
     ) {
-      next();
+      next()
     } else {
       if (req.session!.speilToken) {
-        const name = auth.valueFromClaim('name', req.session!.speilToken);
-        logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`);
+        const name = auth.valueFromClaim('name', req.session!.speilToken)
+        logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`)
         logger.sikker.info(
           `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
-          logger.requestMeta(req)
-        );
+          logger.requestMeta(req),
+        )
       }
       if (req.originalUrl === '/' || req.originalUrl.startsWith('/static')) {
-        res.redirect('/login');
+        res.redirect('/login')
       } else {
         // these are xhr's, let the client decide how to handle
-        res.clearCookie('speil');
-        res.sendStatus(401);
+        res.clearCookie('speil')
+        res.sendStatus(401)
       }
     }
   }
-});
+})
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));
 app.use('/api/payments', paymentRoutes(dependencies.payments));
@@ -164,7 +171,7 @@ app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
 
-const _onBehalfOf = onBehalfOf(config.oidc);
+const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
 
 // app.get('/*', (req, res, next) => {

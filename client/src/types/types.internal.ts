@@ -11,21 +11,17 @@ export interface Sak {
     levering: Levering
     oppfølgingsansvarlig: Oppfølgingsansvarlig
     saksbehandler: Saksbehandler
-    status: StatusType
+    status: OppgaveStatusType
     vedtak: VedtakType
     enhet: Enhet[]
 }
 
 export interface VedtakType {
     vedtaksDato: string
-            vedtaksStatus: VedtakStatus
-            saksbehandlerOid: string
-            saksbehandlerNavn: string
-            søknadsId: string
-}
-
-export enum VedtakStatus {
-    INNVILGET = 'innvilget',
+    status: VedtakStatusType
+    saksbehandlerOid: string
+    saksbehandlerNavn: string
+    søknadsId: string
 }
 
 export interface Enhet {
@@ -129,7 +125,7 @@ export interface Oppgave {
   mottattDato: string
   saksid: string
   personinformasjon: Personinfo
-  status: StatusType
+  status: OppgaveStatusType
   saksbehandler?: Saksbehandler
   søknadOm: string
 }
@@ -140,11 +136,31 @@ export interface Saksbehandler {
     navn: string
   }
 
-export enum StatusType {
-  MOTTATT = 'mottatt',
-  OVERFØRT_GOSYS = 'overført_gosys',
-  INNVILGET = 'innvilget',
+export enum OppgaveStatusType {
+  AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
+  TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
+  SENDT_GOSYS = 'SENDT_GOSYS',
+  VEDTAK_FATTET = 'VEDTAK_FATTET',
+  FERDIGSTILT = 'FERDIGSTILT',
 }
+
+export const OppgaveStatusLabel = new Map<string, string>([
+  [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Avventer saksbehandler'],
+  [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
+  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
+  [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Tildelt saksbehandler'],
+  [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
+]);
+
+export enum VedtakStatusType {
+  INNVILGET= 'INNVILGET'
+}
+
+export const VedtakStatusLabel = new Map<string, string>([
+  [VedtakStatusType.INNVILGET, 'Innvilget']
+]);
+
+
 
 export interface Error {
     message: string

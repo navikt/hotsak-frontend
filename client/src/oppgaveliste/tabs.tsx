@@ -9,11 +9,10 @@ import { useTabContext } from './Oppgaveliste'
 import { useOppgaveliste } from './oppgavelisteHook'
 
 import { Flex } from '../felleskomponenter/Flex'
-import { StatusType } from '../types/types.internal'
+import { OppgaveStatusType } from '../types/types.internal'
 
 //import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
-
-import { useInnloggetSaksbehandler } from '../state/authentication';
+import { useInnloggetSaksbehandler } from '../state/authentication'
 
 export enum TabType {
   Alle = 'alle',
@@ -112,13 +111,13 @@ const MineSakerTab = () => {
 
 const UfordelteSakerTab = () => {
   const antallOppgaver = useOppgaveliste().oppgaver.filter(
-    (oppgave) => !oppgave.saksbehandler && oppgave.status !== StatusType.OVERFØRT_GOSYS
+    (oppgave) => !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
   ).length
   return <OppgaveTab tag={TabType.Ufordelte} label="Ufordelte saker" numberOfTasks={antallOppgaver} />
 }
 
 const OverførtTilGosysTab = () => {
-  const antallOppgaver = useOppgaveliste().oppgaver.filter((oppgave) => oppgave.status === StatusType.OVERFØRT_GOSYS)
+  const antallOppgaver = useOppgaveliste().oppgaver.filter((oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS)
     .length
   return <OppgaveTab tag={TabType.OverførtGosys} label="Overført til Gosys" numberOfTasks={antallOppgaver} />
 }

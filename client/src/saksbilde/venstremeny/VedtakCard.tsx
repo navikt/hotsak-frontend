@@ -1,12 +1,12 @@
 import styled from 'styled-components/macro'
 
-import { Button  } from '@navikt/ds-react'
+import { Button } from '@navikt/ds-react'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
 import React from 'react'
 import { putVedtak } from '../../io/http'
-import { Sak, StatusType } from '../../types/types.internal'
+import { OppgaveStatusType, Sak, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import { RundtSjekkikon } from '../../felleskomponenter/ikoner/RundtSjekkikon'
@@ -43,14 +43,14 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const [visBekreftelsesModal, setVisBekreftelsesModal] = React.useState(false)
 
  const opprettVedtak = () => {
-     console.log("Opprettet vedtat, ", saksid)
     setLoading(true)
-    putVedtak(saksid, dokumentbeskrivelse, StatusType.INNVILGET)
+    putVedtak(saksid, dokumentbeskrivelse, VedtakStatusType.INNVILGET)
     setLoading(false)
     setVisBekreftelsesModal(false)
+
   }
 
-  if (sak.status === StatusType.INNVILGET) {
+  if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
       <Card>
         <CardTitle>VEDTAK</CardTitle>
@@ -59,14 +59,14 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
             <RundtSjekkikon />
           </IconContainer>
           <Tekst>
-            {capitalize(sak.status)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
+            {capitalize(VedtakStatusLabel.get(sak.vedtak.status)!)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
           </Tekst>
         </Grid>
       </Card>
     )
   }
 
-  if (sak.status === StatusType.OVERFØRT_GOSYS) {
+  if (sak.status === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
@@ -75,7 +75,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     )
   }
 
-  if (sak.saksbehandler.objectId !== saksbehandler.objectId) {
+  if (sak.saksbehandler && sak.saksbehandler.objectId !== saksbehandler.objectId) {
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>

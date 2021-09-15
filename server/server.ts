@@ -94,7 +94,7 @@ const setUpAuthentication = () => {
     });
   });
 
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
   app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
     const session = req.session;

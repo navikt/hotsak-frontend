@@ -116,7 +116,8 @@ app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
     });
 };
 
-
+const _onBehalfOf = onBehalfOf(config.oidc);
+setupProxy(app, _onBehalfOf, config)
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
@@ -161,8 +162,7 @@ app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
 
-const _onBehalfOf = onBehalfOf(config.oidc);
-setupProxy(app, _onBehalfOf, config)
+
 
 app.use(bodyParser.json())
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Button, Loader  } from '@navikt/ds-react'
+import { Button, Loader } from '@navikt/ds-react'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
@@ -13,6 +13,7 @@ import { RundtSjekkikon } from '../../felleskomponenter/ikoner/RundtSjekkikon'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+
 interface VedtakCardProps {
   sak: Sak
 }
@@ -72,7 +73,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     )
   }
 
-  if (sak.saksbehandler.objectId !== saksbehandler.objectId) {
+  if (sak.saksbehandler && sak.saksbehandler.objectId !== saksbehandler.objectId) {
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>

@@ -138,14 +138,18 @@ export interface Saksbehandler {
 
 export enum OppgaveStatusType {
   AVVENTER_SAKSBEHANDLER,
+  TILDELT_SAKSBEHANDLER,
   SENDT_GOSYS,
   VEDTAK_FATTET,
+  FERDIGSTILT,
 }
 
 export const OppgaveStatusLabel = new Map<number, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Avventer saksbehandler'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak Fattet'],
+  [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Tildelt saksbehandler'],
+  [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
 ]);
 
 export enum VedtakStatusType {

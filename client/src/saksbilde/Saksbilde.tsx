@@ -17,6 +17,7 @@ import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
 
+
 const SaksbildeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,11 +51,12 @@ const SaksbildeContent = React.memo(() => {
   const { sak, isError, isLoading } = useSak()
   const { path } = useRouteMatch()
 
-  
+
 
   if (isLoading) return <LasterSaksbilde />
 
   if (isError) throw new Error('Feil med henting av sak' + isError)
+
 
   return (
     <SaksbildeContainer className="saksbilde">
@@ -83,7 +85,7 @@ const SaksbildeContent = React.memo(() => {
                     <Hjelpemidler
                       hjelpemidler={sak.hjelpemidler}
                       søknadGjelder={sak.søknadGjelder}
-                      funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
+                      personinformasjon={sak.personinformasjon}
                     />
                   </Route>
                   <Route path={`${path}/bruker`}>
@@ -98,6 +100,7 @@ const SaksbildeContent = React.memo(() => {
           </Flex>
         </AutoFlexContainer>
       </Container>
+      
     </SaksbildeContainer>
   )
 })

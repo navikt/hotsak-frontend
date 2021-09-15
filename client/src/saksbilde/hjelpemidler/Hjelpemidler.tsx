@@ -6,7 +6,7 @@ import { capitalize } from '../../utils/stringFormating'
 
 import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
-import { Hjelpemiddel } from '../../types/types.internal'
+import { Hjelpemiddel, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { Strek } from '../../felleskomponenter/Strek'
@@ -80,7 +80,7 @@ const TilleggsInfo = styled(Rad)`
 interface HjelpemidlerProps {
   hjelpemidler: Hjelpemiddel[]
   søknadGjelder: string
-  funksjonsnedsettelse: string[]
+  personinformasjon: Personinfo
 }
 
 const UtlevertContainer = styled.div`
@@ -104,14 +104,14 @@ const summerAntall = (hjelpemidler: Hjelpemiddel[]) => {
     .reduce(summarize, 0)
 }
 
-export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søknadGjelder, funksjonsnedsettelse }) => {
+export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søknadGjelder, personinformasjon }) => {
   return (
     <>
       <Title level="1" size="m" spacing={false}>
-        <TittelIkon width={22} height={22} />
+        <TittelIkon width={26} height={26} />
         {søknadGjelder}
       </Title>
-      <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
+      <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {
           return (
@@ -156,6 +156,14 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                           </Rad>
                         )
                       })}
+                      {hjelpemiddel.kategori.includes("rullestol") &&  personinformasjon.kroppsmål && (
+                          <Rad>
+                          <Kolonne width="160px">
+                            <Etikett>Kroppsmål:</Etikett>
+                          </Kolonne>
+                          <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                        </Rad>
+                      )}
                     </TilleggsInfo>
                   )}
                 </Kolonne>

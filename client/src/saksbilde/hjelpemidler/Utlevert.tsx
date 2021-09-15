@@ -10,7 +10,9 @@ interface UtlevertProps {
 
 
 export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertInfo }) => {
+
   if (alleredeUtlevert) {
+
     let utlevertTekst
 
     switch (utlevertInfo.utlevertType) {

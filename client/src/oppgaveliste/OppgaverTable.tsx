@@ -21,7 +21,7 @@ import { Motatt } from './kolonner/Motatt'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { TabType } from './tabs'
-import {Oppgave} from '../types/types.internal'
+import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
 
 const Container = styled.div`
   min-height: 300px;
@@ -202,7 +202,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 )}
                 {tab.kolonner.includes(kolonner.STATUS) && (
                   <Cell>
-                    <Status status={oppgave.status} saksID={oppgave.saksid} />
+                    <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                   </Cell>
                 )}
                 {tab.kolonner.includes(kolonner.MOTTATT) && (

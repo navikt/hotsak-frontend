@@ -3,14 +3,13 @@ import styled from 'styled-components/macro'
 import Panel from 'nav-frontend-paneler'
 
 import { OppgaverTable } from './OppgaverTable'
-import { StatusType } from '../types/types.internal'
+import { Oppgave, OppgaveStatusType } from '../types/types.internal'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { Tabs, TabType } from './tabs'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
-import { useInnloggetSaksbehandler } from '../state/authentication';
+import { useInnloggetSaksbehandler } from '../state/authentication'
 import { IngenOppgaver } from './IngenOppgaver'
 import { useOppgaveliste } from './oppgavelisteHook'
-import { Oppgave } from '../types/types.internal'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -56,9 +55,9 @@ export const Oppgaveliste = () => {
       const filtrert =  oppgaver?.filter((oppgave) => {
       switch (aktivTab) {
         case TabType.Ufordelte:
-          return !oppgave.saksbehandler && oppgave.status !== StatusType.OVERFØRT_GOSYS
+          return !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
         case TabType.OverførtGosys:
-          return oppgave.status === StatusType.OVERFØRT_GOSYS
+          return oppgave.status === OppgaveStatusType.SENDT_GOSYS
         case TabType.Mine:
           return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
         default:
@@ -71,7 +70,7 @@ export const Oppgaveliste = () => {
 }, [aktivTab, oppgaver, saksbehandler.objectId])
 
 
-  
+
   if (isError) {
     throw Error('Feil med henting av oppgaver')
   }

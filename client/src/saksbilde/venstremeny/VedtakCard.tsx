@@ -6,7 +6,7 @@ import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
 import React from 'react'
 import { putVedtak } from '../../io/http'
-import { Sak, StatusType } from '../../types/types.internal'
+import { OppgaveStatusType, Sak, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import { RundtSjekkikon } from '../../felleskomponenter/ikoner/RundtSjekkikon'
@@ -43,12 +43,12 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   const opprettVedtak = () => {
     setVenter(true)
-    putVedtak(saksid, dokumentbeskrivelse, StatusType.INNVILGET)
+    putVedtak(saksid, dokumentbeskrivelse, VedtakStatusType.INNVILGET)
 
 
   }
 
-  if (sak.status === StatusType.INNVILGET) {
+  if (sak.status === OppgaveStatusType.VEDTAK_FATTET) {
     return (
       <Card>
         <CardTitle>VEDTAK</CardTitle>
@@ -57,14 +57,14 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
             <RundtSjekkikon />
           </IconContainer>
           <Tekst>
-            {capitalize(sak.status)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
+            {capitalize(VedtakStatusLabel.get(sak.vedtak.vedtaksStatus)!)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
           </Tekst>
         </Grid>
       </Card>
     )
   }
 
-  if (sak.status === StatusType.OVERFØRT_GOSYS) {
+  if (sak.status === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>

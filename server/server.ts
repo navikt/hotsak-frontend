@@ -42,7 +42,7 @@ const unless = (middleware: any, ...paths: string[]) =>
   (req: SpeilRequest, res: Response, next: any) =>
     paths.some(path => path === req.path) ? next() : middleware(req, res, next)
 
-app.use(unless(bodyParser.json, "/api"));
+app.use(unless(bodyParser.json(), "/api"));
 app.use(unless(bodyParser.urlencoded({extended: false}), "/api"));
 
 app.use(cookieParser())

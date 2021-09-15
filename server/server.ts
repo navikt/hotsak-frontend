@@ -1,8 +1,8 @@
+//import bodyParser from 'body-parser';
 //import compression from 'compression';
 import cookieParser from 'cookie-parser'
 import express, { Response } from 'express'
 import { Client, generators } from 'openid-client'
-import bodyParser from 'body-parser'
 
 import auth from './auth/authSupport'
 import azure from './auth/azure'
@@ -37,6 +37,7 @@ const port = config.server.port
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
+//app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(sessionStore(config));
 //app.use(compression());
@@ -44,14 +45,14 @@ app.use(sessionStore(config));
 //headers.setup(app);
 let azureClient: Client | null = null;
 azure
-    .setup(config.oidc)
-    .then((client: Client) => {
-        azureClient = client;
-    })
-    .catch((err) => {
-        logger.error(`Failed to discover OIDC provider properties: ${err}`);
-        process.exit(1);
-    });
+  .setup(config.oidc)
+  .then((client: Client) => {
+    azureClient = client;
+  })
+  .catch((err) => {
+    logger.error(`Failed to discover OIDC provider properties: ${err}`);
+    process.exit(1);
+  });
 
 // Unprotected routes
 app.get('/isalive', (_, res) => res.send('alive'))
@@ -67,90 +68,91 @@ app.get('/isready', (_, res) => {
 })
 
 const setUpAuthentication = () => {
-    app.get('/login', (req: SpeilRequest, res: Response) => {
-        const session = req.session;
-        session.nonce = generators.nonce();
-        session.state = generators.state();
-        if(azureClient === null){
-          console.log("Azure client er null")
-        }
-        const url = azureClient!.authorizationUrl({
-            scope: config.oidc.scope,
-            redirect_uri: auth.redirectUrl(req),
-            response_type: config.oidc.responseType[0],
-            prompt: 'select_account',
-            response_mode: 'form_post',
-            nonce: session.nonce,
-            state: session.state,
-        });
-        res.redirect(url);
+  app.get('/login', (req: SpeilRequest, res: Response) => {
+    const session = req.session;
+    session.nonce = generators.nonce();
+    session.state = generators.state();
+    if(azureClient === null){
+      console.log("Azure client er null")
+    }
+    const url = azureClient!.authorizationUrl({
+      scope: config.oidc.scope,
+      redirect_uri: auth.redirectUrl(req),
+      response_type: config.oidc.responseType[0],
+      prompt: 'select_account',
+      response_mode: 'form_post',
+      nonce: session.nonce,
+      state: session.state,
     });
-    app.get('/logout', (req: SpeilRequest, res: Response) => {
-        azureClient!.revoke(req.session.speilToken).finally(() => {
-            req.session.destroy(() => {});
-            res.clearCookie('speil');
-            res.redirect(302, config.oidc.logoutUrl);
-        });
+    res.redirect(url);
+  });
+  app.get('/logout', (req: SpeilRequest, res: Response) => {
+    azureClient!.revoke(req.session.speilToken).finally(() => {
+      req.session.destroy(() => {});
+      res.clearCookie('speil');
+      res.redirect(302, config.oidc.logoutUrl);
     });
+  });
 
-app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
-        const session = req.session;
-        auth.validateOidcCallback(req, azureClient!, config.oidc)
-            .then((tokens: string[]) => {
-                const [accessToken, idToken, refreshToken] = tokens;
-                res.cookie('speil', `${idToken}`, {
-                    secure: true,
-                    sameSite: true,
-                });
-                session.speilToken = accessToken;
-                session.refreshToken = refreshToken;
-                session.user = auth.valueFromClaim('NAVident', idToken);
-                res.redirect(303, '/');
-            })
-            .catch((err: AuthError) => {
-                logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`);
-                logger.sikker.error(`Error caught during login: ${err.message}`, err);
-                session.destroy(() => {});
-                res.sendStatus(err.statusCode);
-            });
-    });
+//app.use(bodyParser.urlencoded({ extended: false }));
+
+  app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
+    const session = req.session;
+    auth.validateOidcCallback(req, azureClient!, config.oidc)
+      .then((tokens: string[]) => {
+        const [accessToken, idToken, refreshToken] = tokens;
+        res.cookie('speil', `${idToken}`, {
+          secure: true,
+          sameSite: true,
+        });
+        session.speilToken = accessToken;
+        session.refreshToken = refreshToken;
+        session.user = auth.valueFromClaim('NAVident', idToken);
+        res.redirect(303, '/');
+      })
+      .catch((err: AuthError) => {
+        logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`);
+        logger.sikker.error(`Error caught during login: ${err.message}`, err);
+        session.destroy(() => {});
+        res.sendStatus(err.statusCode);
+      });
+  });
 };
 
-const _onBehalfOf = onBehalfOf(config.oidc);
-setupProxy(app, _onBehalfOf, config)
+setUpAuthentication();
 
 // Protected routes
 app.use('/*', async (req: SpeilRequest, res, next) => {
- if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
-        res.cookie('speil', auth.createTokenForTest(), {
-            secure: false,
-            sameSite: true,
-        });
-        next();
+  if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
+    res.cookie('speil', auth.createTokenForTest(), {
+      secure: false,
+      sameSite: true,
+    });
+    next();
+  } else {
+    if (
+      auth.isValidIn({ seconds: 5, token: req.session!.speilToken }) ||
+      (await auth.refreshAccessToken(azureClient!, req.session!))
+    ) {
+      next();
     } else {
-        if (
-            auth.isValidIn({ seconds: 5, token: req.session!.speilToken }) ||
-            (await auth.refreshAccessToken(azureClient!, req.session!))
-        ) {
-            next();
-        } else {
-            if (req.session!.speilToken) {
-                const name = auth.valueFromClaim('name', req.session!.speilToken);
-                logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`);
-                logger.sikker.info(
-                    `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
-                    logger.requestMeta(req)
-                );
-            }
-            if (req.originalUrl === '/' || req.originalUrl.startsWith('/static')) {
-                res.redirect('/login');
-            } else {
-                // these are xhr's, let the client decide how to handle
-                res.clearCookie('speil');
-                res.sendStatus(401);
-            }
-        }
+      if (req.session!.speilToken) {
+        const name = auth.valueFromClaim('name', req.session!.speilToken);
+        logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`);
+        logger.sikker.info(
+          `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
+          logger.requestMeta(req)
+        );
+      }
+      if (req.originalUrl === '/' || req.originalUrl.startsWith('/static')) {
+        res.redirect('/login');
+      } else {
+        // these are xhr's, let the client decide how to handle
+        res.clearCookie('speil');
+        res.sendStatus(401);
+      }
     }
+  }
 });
 
 /*app.use('/api/person', person.setup({ ...dependencies.person }));
@@ -162,11 +164,8 @@ app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
 
 
-
-
-app.use(bodyParser.json())
-
-setUpAuthentication();
+const _onBehalfOf = onBehalfOf(config.oidc);
+setupProxy(app, _onBehalfOf, config)
 
 // app.get('/*', (req, res, next) => {
 //   if (!req.accepts('html') && /\/api/.test(req.url)) {
@@ -193,3 +192,4 @@ app.use('/*', express.static(htmlPath))
 //app.use('/', express.static('dist/client/'))
 
 app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))
+

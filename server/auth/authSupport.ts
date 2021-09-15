@@ -1,9 +1,9 @@
-import { Request } from 'express';
-import { Client, TokenSet } from 'openid-client';
+import { Request } from 'express'
+import { Client, TokenSet } from 'openid-client'
 
-import logger from '../logging';
-import { ipAddressFromRequest } from '../requestData';
-import { AuthError, OidcConfig, SpeilRequest, SpeilSession } from '../types';
+import logger from '../logging'
+import { ipAddressFromRequest } from '../requestData'
+import { AuthError, OidcConfig, SpeilRequest, SpeilSession } from '../types'
 
 interface IsValidInProps {
     seconds: number;
@@ -32,9 +32,7 @@ const authError = (statusCode: number, reason: string, cause?: any): AuthError =
 };
 
 const validateOidcCallback = (req: SpeilRequest, azureClient: Client, config: OidcConfig) => {
-    if (req.body.code === undefined) {
-        return Promise.reject(authError(400, 'missing data in POST after login'));
-    }
+
     const params = azureClient.callbackParams(req);
     const nonce = req.session!.nonce;
     const state = req.session!.state;

@@ -202,6 +202,8 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 )}
                 {tab.kolonner.includes(kolonner.STATUS) && (
                   <Cell>
+                    {console.log(oppgave.status)}
+                    {console.log(OppgaveStatusLabel.get(oppgave.status))}
                     <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                   </Cell>
                 )}

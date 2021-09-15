@@ -2,9 +2,8 @@ import React from 'react'
 
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
-import { Tooltip } from '../../felleskomponenter/Tooltip';
+import { Tooltip } from '../../felleskomponenter/Tooltip'
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { capitalize } from '../../utils/stringFormating';
 
 interface StatusProps {
   status: string,
@@ -14,10 +13,10 @@ interface StatusProps {
 export const Status = React.memo(({ status, saksID }: StatusProps) => {
 
     const id = `status-${saksID}`;
-    const formatertStatus = capitalize(status)
+   // const formatertStatus = capitalize(status)
   return (
-    <CellContent width={120}  data-for={id} data-tip={formatertStatus}>
-      <TekstMedEllipsis>{capitalize(formatertStatus)}</TekstMedEllipsis>
+    <CellContent width={120}  data-for={id} data-tip={status}>
+      <TekstMedEllipsis>{status}</TekstMedEllipsis>
       {status.length > 18 && <Tooltip id={id} />}
     </CellContent>
   )

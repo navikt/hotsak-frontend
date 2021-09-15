@@ -137,14 +137,14 @@ export interface Saksbehandler {
   }
 
 export enum OppgaveStatusType {
-  AVVENTER_SAKSBEHANDLER,
-  TILDELT_SAKSBEHANDLER,
-  SENDT_GOSYS,
-  VEDTAK_FATTET,
-  FERDIGSTILT,
+  AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
+  TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
+  SENDT_GOSYS = 'SENDT_GOSYS',
+  VEDTAK_FATTET = 'VEDTAK_FATTET',
+  FERDIGSTILT = 'FERDIGSTILT',
 }
 
-export const OppgaveStatusLabel = new Map<number, string>([
+export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Avventer saksbehandler'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak Fattet'],
@@ -153,10 +153,10 @@ export const OppgaveStatusLabel = new Map<number, string>([
 ]);
 
 export enum VedtakStatusType {
-  INNVILGET
+  INNVILGET= 'INNVILGET'
 }
 
-export const VedtakStatusLabel = new Map<number, string>([
+export const VedtakStatusLabel = new Map<string, string>([
   [VedtakStatusType.INNVILGET, 'Innvilget']
 ]);
 

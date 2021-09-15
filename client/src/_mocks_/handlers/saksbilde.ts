@@ -192,7 +192,7 @@ const saksbildeHandlers = [
           saksbehandlerNavn: 'Anders Bertolomeus',
           søknadsId: 'cf7b5ec7-f6a1-49d4-b988-c2261503d797',
         },
-        status: 'avventer_saksbehandler',
+        status: 'AVVENTER_SAKSBEHANDLER',
         enhet: [
           {
             enhetsnummer: '6969',

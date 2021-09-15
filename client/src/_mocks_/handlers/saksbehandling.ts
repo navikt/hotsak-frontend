@@ -34,7 +34,7 @@ const saksbehandlingHandlers = [
             objectId: '23ea7485-1324-4b25-a763-assdfdfa',
             navn: 'Anders Bertolomeus',
           },
-          status: 'avventer_saksbehandler',
+          status: 'AVVENTER_SAKSBEHANDLER',
           enhet: [
             {
               enhetsnummer: '6969',
@@ -64,7 +64,7 @@ const saksbehandlingHandlers = [
             brukerErDigital: 'true',
           },
           saksbehandler: null,
-          status: 'avventer_saksbehandler',
+          status: 'AVVENTER_SAKSBEHANDLER',
           enhet: [
             {
               enhetsnummer: '6969',
@@ -94,7 +94,7 @@ const saksbehandlingHandlers = [
             brukerErDigital: 'true',
           },
           saksbehandler: null,
-          status: 'avventer_saksbehandler',
+          status: 'AVVENTER_SAKSBEHANDLER',
           enhet: [
             {
               enhetsnummer: '6969',

@@ -48,7 +48,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   }
 
-  if (sak.status === OppgaveStatusType.VEDTAK_FATTET) {
+  if (sak.vedtak && sak.vedtak.vedtaksStatus === VedtakStatusType.INNVILGET) {
     return (
       <Card>
         <CardTitle>VEDTAK</CardTitle>

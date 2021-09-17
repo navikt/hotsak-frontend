@@ -11,6 +11,7 @@ import { Utlevert } from './Utlevert'
 import { Normaltekst } from 'nav-frontend-typografi'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import Lenke from 'nav-frontend-lenker'
 
 const TittelIkon = styled(RullestolIkon)`
   padding-right: 0.5rem;
@@ -107,7 +108,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
     <>
       <Title level="1" size="m" spacing={false}>
         <TittelIkon width={26} height={26} />
-        {capitalize(søknadGjelder)}
+        Hjelpemidler
       </Title>
       <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
@@ -130,7 +131,12 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                       <Etikett>{hjelpemiddel.kategori}</Etikett>
                     </Kolonne>
                   </Rad>
-                  <Rad>{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Rad>
+                  <Rad>
+                    <Lenke
+                      href={`https://www.hjelpemiddeldatabasen.no/r6x.asp?searchterm=${hjelpemiddel.hmsnr}`}
+                      target={'_blank'}
+                    >{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Lenke>
+                  </Rad>
                   <Rad>
                     {hjelpemiddel.tilleggsinfo.length > 0 && (
                       <TilleggsInfo>

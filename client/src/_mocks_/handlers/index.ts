@@ -1,6 +1,5 @@
 import saksbehandlingHandlers from './saksbehandling'
-import saksbildeHandlers from './saksbilde'
 
-const handlers = [...saksbehandlingHandlers, ...saksbildeHandlers]
+const handlers = [...saksbehandlingHandlers]
 
 export default handlers

@@ -145,10 +145,10 @@ export enum OppgaveStatusType {
 }
 
 export const OppgaveStatusLabel = new Map<string, string>([
-  [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Avventer saksbehandler'],
+  [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
-  [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Tildelt saksbehandler'],
+  [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
   [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
 ]);
 

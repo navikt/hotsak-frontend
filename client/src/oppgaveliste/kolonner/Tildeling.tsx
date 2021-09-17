@@ -12,6 +12,6 @@ export const Tildeling = React.memo(({ oppgave }: TildelingProps) =>
   oppgave.saksbehandler ? (
     <Tildelt name={oppgave.saksbehandler.navn} saksid={oppgave.saksid} />
   ) : (
-    <IkkeTildelt oppgavereferanse={oppgave.saksid} />
+    <IkkeTildelt oppgavereferanse={oppgave.saksid} gåTilSak={true} />
   )
 )

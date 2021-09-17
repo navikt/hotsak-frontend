@@ -22,6 +22,7 @@ import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { TabType } from './tabs'
 import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
+import { capitalize } from '../utils/stringFormating'
 
 const Container = styled.div`
   min-height: 300px;
@@ -192,7 +193,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 )}
                 {tab.kolonner.includes(kolonner.SØKNAD_OM) && (
                   <Cell>
-                    <Gjelder søknadOm={oppgave.søknadOm} saksID={oppgave.saksid} />
+                    <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
                   </Cell>
                 )}
                 {tab.kolonner.includes(kolonner.BOSTED) && (

@@ -17,7 +17,7 @@ export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertIn
 
     switch (utlevertInfo.utlevertType) {
       case UtlevertType.FremskuttLager:
-        utlevertTekst = 'Utlevert fra fremskutt lager'
+        utlevertTekst = 'Fra fremskutt lager'
         break
       case UtlevertType.Overført:
         utlevertTekst = `Overført fra annen bruker. Brukernummer ${utlevertInfo.overførtFraBruker}`
@@ -26,13 +26,13 @@ export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertIn
         utlevertTekst = 'Korttidsutlån/utprøvingslån'
         break
       case UtlevertType.Annen:
-        utlevertTekst = utlevertInfo.annenKommentar
+        utlevertTekst = ` ${utlevertInfo.annenKommentar}`
         break
     }
 
 
     return (
-    <Normaltekst>{utlevertTekst}</Normaltekst>
+    <Normaltekst>{`Utlevert: ${utlevertTekst}`}</Normaltekst>
     )
   }
   return null

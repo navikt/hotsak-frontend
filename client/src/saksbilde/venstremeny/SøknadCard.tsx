@@ -1,10 +1,8 @@
 import { Normaltekst } from 'nav-frontend-typografi'
-import { Tooltip } from '../../felleskomponenter/Tooltip';
 
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
-import { Clipboard } from '../../felleskomponenter/clipboard'
 import { HjemIkon } from '../../felleskomponenter/ikoner/HjemIkon'
 import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
 import { MappeIkon } from '../../felleskomponenter/ikoner/MappeIkon'
@@ -52,12 +50,7 @@ export const SøknadCard = ({
         </IconContainer>
         <CardTitle>{`Søknad om ${søknadGjelder}`}</CardTitle>
         <IconContainer />
-
-
-          <Clipboard preserveWhitespace={false} copyMessage="Saksnummer er kopiert">
-            <Normaltekst  data-tip="Saksnummer" data-for="sak">{`${saksnr}`}</Normaltekst>
-          </Clipboard><Tooltip id="sak" />
-
+            <Normaltekst  data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Normaltekst>
         <IconContainer>
           <KalenderIkon />
         </IconContainer>

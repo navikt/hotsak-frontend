@@ -20,7 +20,6 @@ const Container = styled.div`
 `
 
 const HjelpemiddelContainer = styled.div`
-  padding-top: 1rem;
   font-size: 1rem;
 `
 
@@ -43,9 +42,8 @@ interface RadProps {
 }
 
 interface RangeringProps {
-    rank?: number
+  rank?: number
 }
-
 
 //
 const Kolonne = styled('div')<KolonneProps>`
@@ -57,19 +55,20 @@ const Kolonne = styled('div')<KolonneProps>`
   max-width: ${(props) => props.width || 'auto'};
 `
 const Rangering = styled('div')<RangeringProps>`
-display: flex; 
+  display: flex;
 
-> p.typo-normal:last-child {
+  > p.typo-normal:last-child {
     min-width: 24px;
-  min-height: 24px;
-  text-align: center;
-  margin-left: 0.5rem;
-  padding: 1px;
-  border-radius: 50%;
-  background-color: ${(props) => Number(props.rank) === 1 ? 'var(--navds-color-green-20)' : 'var(--navds-color-gray-20)'};
-  color: inherit;
-  font-weight: inherit;
-}
+    min-height: 24px;
+    text-align: center;
+    margin-left: 0.5rem;
+    padding: 1px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+      Number(props.rank) === 1 ? 'var(--navds-color-green-20)' : 'var(--navds-color-gray-20)'};
+    color: inherit;
+    font-weight: inherit;
+  }
 `
 const TilleggsInfo = styled(Rad)`
   background-color: #fff5e5;
@@ -88,10 +87,9 @@ const UtlevertContainer = styled.div`
   grid-template-columns: 1.25rem auto;
   grid-column-gap: 0.75rem;
 `
-
-const Totaler = styled.div`
-    text-align: right;
-`
+const EtikettKolonne: React.FC = ({ children }) => {
+  return <Kolonne width="150px">{children}</Kolonne>
+}
 
 const summerAntall = (hjelpemidler: Hjelpemiddel[]) => {
   const summarize = (accumulator: number, currentValue: number) => Number(accumulator) + Number(currentValue)
@@ -109,7 +107,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
     <>
       <Title level="1" size="m" spacing={false}>
         <TittelIkon width={26} height={26} />
-        {søknadGjelder}
+        {capitalize(søknadGjelder)}
       </Title>
       <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
@@ -117,96 +115,101 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
           return (
             <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
               <Rad>
+                <EtikettKolonne>
+                  <Rad>
+                    <Rangering rank={hjelpemiddel.rangering}>
+                      <Normaltekst>Rangering:</Normaltekst>
+                      <Normaltekst>{hjelpemiddel.rangering}</Normaltekst>
+                    </Rangering>
+                  </Rad>
+                  <Rad>{hjelpemiddel.antall} stk</Rad>
+                </EtikettKolonne>
                 <Kolonne>
                   <Rad>
                     <Kolonne>
-                      <Etikett>{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Etikett>
+                      <Etikett>{hjelpemiddel.kategori}</Etikett>
                     </Kolonne>
-                    <Kolonne textAlign="right"><Rangering rank={hjelpemiddel.rangering}><Normaltekst>Rangering:</Normaltekst><Normaltekst>{hjelpemiddel.rangering}</Normaltekst></Rangering></Kolonne>
                   </Rad>
-                  <Rad>{hjelpemiddel.kategori}</Rad>
-                  {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
-                    <Rad>
-                      <Kolonne width="160px">
+                  <Rad>{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Rad>
+                  <Rad>
+                    {hjelpemiddel.tilleggsinfo.length > 0 && (
+                      <TilleggsInfo>
+                        {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
+                          return (
+                            <Rad key={tilleggsinfo.innhold}>
+                              <EtikettKolonne>
+                                <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
+                              </EtikettKolonne>
+                              <Kolonne>{tilleggsinfo.innhold}</Kolonne>
+                            </Rad>
+                          )
+                        })}
+                        {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
+                          <Rad>
+                            <EtikettKolonne>
+                              <Etikett>Kroppsmål:</Etikett>
+                            </EtikettKolonne>
+                            <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                          </Rad>
+                        )}
+                      </TilleggsInfo>
+                    )}
+                  </Rad>
+                  <Rad>
+                    {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
+                      <Rad>
                         <Etikett>
                           <UtlevertContainer>
                             <LevertIkon />
-                            <Normaltekst>Utlevert:</Normaltekst>
                           </UtlevertContainer>
                         </Etikett>
-                      </Kolonne>
-                      <Kolonne>
+
                         <Utlevert
                           alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
                           utlevertInfo={hjelpemiddel.utlevertInfo}
                         />
-                      </Kolonne>
-                    </Rad>
-                  )}
-
-                  {hjelpemiddel.tilleggsinfo.length > 0 && (
-                    <TilleggsInfo>
-                      {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
-                        return (
-                          <Rad key={tilleggsinfo.innhold}>
-                            <Kolonne width="160px">
-                              <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
-                            </Kolonne>
-                            <Kolonne>{tilleggsinfo.innhold}</Kolonne>
-                          </Rad>
-                        )
-                      })}
-                      {hjelpemiddel.kategori.includes("rullestol") &&  personinformasjon.kroppsmål && (
-                          <Rad>
-                          <Kolonne width="160px">
-                            <Etikett>Kroppsmål:</Etikett>
-                          </Kolonne>
-                          <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
-                        </Rad>
-                      )}
-                    </TilleggsInfo>
-                  )}
-                </Kolonne>
-                <Kolonne width="180px">
-                  <Rad>
-                    <Kolonne width="100px" textAlign="right"></Kolonne>
-                    <Kolonne textAlign="right"> {hjelpemiddel.antall} stk</Kolonne>
+                      </Rad>
+                    )}
                   </Rad>
                 </Kolonne>
-                {hjelpemiddel.tilbehør.length > 0 && (
-                  <>
-                    <Rad paddingTop="0.8rem">
-                      <Kolonne width="160px">
-                        <Etikett>Tilbehør:</Etikett>
-                      </Kolonne>
-                      <Kolonne>
-                        {hjelpemiddel.tilbehør.map((tilbehør) => (
-                          <Rad key={tilbehør.hmsnr}>
-                            <Kolonne>
-                              {tilbehør.hmsnr} {tilbehør.navn}
-                            </Kolonne>
-                            <Kolonne>
-                              <Rad>
-                                <Kolonne textAlign="right">{tilbehør.antall} stk</Kolonne>
-                              </Rad>
-                            </Kolonne>
-                          </Rad>
-                        ))}
-                      </Kolonne>
-                    </Rad>
-                  </>
-                )}
+                <Rad>
+                  <Rad>
+                    {hjelpemiddel.tilbehør.length > 0 && (
+                      <>
+                        <EtikettKolonne />
+                        <Kolonne>
+                          <Etikett>Tilbehør:</Etikett>
+                        </Kolonne>
+                        <Rad>
+                          {hjelpemiddel.tilbehør.map((tilbehør) => (
+                            <Rad key={tilbehør.hmsnr}>
+                              <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
+                              <Kolonne>
+                                {tilbehør.hmsnr} {tilbehør.navn}
+                              </Kolonne>
+                            </Rad>
+                          ))}
+                        </Rad>
+                      </>
+                    )}
+                  </Rad>
+                </Rad>
               </Rad>
               <Strek />
             </HjelpemiddelContainer>
           )
         })}
-        <Totaler>
-          <Normaltekst>
-            <Etikett>Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør</Etikett>
-            Totalt. {summerAntall(hjelpemidler.filter((it) => it.utlevertFraHjelpemiddelsentralen))} stk. allerede utlevert
-          </Normaltekst>{' '}
-        </Totaler>
+        <Rad>
+          <Etikett>
+            Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør
+          </Etikett>
+        </Rad>
+        {hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.utlevertFraHjelpemiddelsentralen).length > 0 && (
+          <Rad>
+            Totalt. {summerAntall(hjelpemidler.filter((it) => it.utlevertFraHjelpemiddelsentralen))} stk. allerede
+            utlevert
+          </Rad>
+        )}
       </Container>
     </>
   )

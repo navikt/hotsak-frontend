@@ -1,11 +1,13 @@
 
-import { BodyShort } from '@navikt/ds-react'
-import styled from 'styled-components/macro'
+import { BodyShort, Label } from '@navikt/ds-react'
 
 export const Tekst: React.FC = ({ children }) => {
     return <BodyShort size="s">{children}</BodyShort>
   }
 
-export const Etikett = styled(Tekst)`
-  font-weight: bold;
-`
+  export const Etikett: React.FC = ({ children }) => {
+    return <Label size="s">{children}</Label>
+  }
+
+
+

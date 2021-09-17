@@ -7,6 +7,7 @@ import { FeilmeldingVarsel } from '../feilsider/FeilmeldingsVarsel'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadslinje from './Søknadslinje'
+import { Alert } from '@navikt/ds-react'
 import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
@@ -16,6 +17,10 @@ import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
+import { SaksbehandlerCard } from './venstremeny/SaksbehandlerCard'
+import { OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
+import { capitalize } from '../utils/stringFormating'
+import { formaterDato } from '../utils/date'
 
 
 const SaksbildeContainer = styled.div`
@@ -74,11 +79,18 @@ const SaksbildeContent = React.memo(() => {
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
+              <SaksbehandlerCard saksbehandler={sak.saksbehandler}/>
               <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.poststed} />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />
               <VedtakCard sak={sak} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
+            {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && <Alert size="s" variant="success">
+     {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksDato)} av ${sak.vedtak.saksbehandlerNavn}`}
+    </Alert>}
+    {sak.status === OppgaveStatusType.SENDT_GOSYS && <Alert size="s" variant="info">
+      {`Saken er overført til Gosys. Videre saksbehandling skjer i Gosys`}
+    </Alert>}
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>

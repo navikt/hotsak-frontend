@@ -1,22 +1,29 @@
 import styled from 'styled-components/macro'
 
-import { Button } from '@navikt/ds-react'
+import { Button, Tag } from '@navikt/ds-react'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
 import React from 'react'
 import { putVedtak } from '../../io/http'
-import { OppgaveStatusType, Sak, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
-import { RundtSjekkikon } from '../../felleskomponenter/ikoner/RundtSjekkikon'
-import { Grid } from './Grid'
-import { IconContainer } from './IconContainer'
+import { capitalizeName } from '../../utils/stringFormating'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { BekreftVedtakModal } from '../BekreftVedtakModal'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
+// @ts-ignore
+import { useSWRConfig } from 'swr'
 interface VedtakCardProps {
   sak: Sak
 }
+
+export const TagGrid = styled.div`
+  display: grid;
+  grid-template-columns: 4.3rem auto;
+  grid-column-gap: 0.75rem;
+  grid-row-gap: 0.125rem;
+`
 
 const ButtonContainer = styled.div`
   flex-direction: row;
@@ -41,27 +48,28 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = React.useState(false)
   const [visBekreftelsesModal, setVisBekreftelsesModal] = React.useState(false)
+  const { mutate } = useSWRConfig()
 
- const opprettVedtak = () => {
+  const opprettVedtak = () => {
     setLoading(true)
     putVedtak(saksid, dokumentbeskrivelse, VedtakStatusType.INNVILGET)
-    setLoading(false)
-    setVisBekreftelsesModal(false)
-
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        setVisBekreftelsesModal(false)
+        mutate(`api/sak/${saksid}`)
+      })
   }
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
       <Card>
+          
         <CardTitle>VEDTAK</CardTitle>
-        <Grid>
-          <IconContainer>
-            <RundtSjekkikon />
-          </IconContainer>
-          <Tekst>
-            {capitalize(VedtakStatusLabel.get(sak.vedtak.status)!)} 06.09 2021 av {capitalizeName(sak.vedtak.saksbehandlerNavn)}{' '}
-          </Tekst>
-        </Grid>
+        <TagGrid>
+        <Tag variant="success">Innvilget</Tag>
+        <Tekst>06.09 2021</Tekst>
+        </TagGrid>
       </Card>
     )
   }
@@ -71,6 +79,18 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
+      </Card>
+    )
+  }
+
+  if (!sak.saksbehandler) {
+    return (
+      <Card>
+        <CardTitle>SAK IKKE STARTET</CardTitle>
+        <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
+        <ButtonContainer>
+          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
+        </ButtonContainer>
       </Card>
     )
   }
@@ -87,9 +107,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         </ButtonContainer>
       </Card>
     )
-  }
-
-  else {
+  } else {
     return (
       <Card>
         <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
@@ -102,7 +120,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         />
         <ButtonContainer>
           <Knapp variant={'action'} size={'s'} onClick={() => setVisBekreftelsesModal(true)}>
-            <span>Invilg søknaden</span>
+            <span>Innvilg søknaden</span>
           </Knapp>
           <Knapp
             variant={'primary'}
@@ -114,7 +132,12 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
             Overfør til Gosys
           </Knapp>
         </ButtonContainer>
-        <BekreftVedtakModal open={visBekreftelsesModal} onBekreft={() => opprettVedtak()} loading={loading} onClose={() => setVisBekreftelsesModal(false)}/>
+        <BekreftVedtakModal
+          open={visBekreftelsesModal}
+          onBekreft={() => opprettVedtak()}
+          loading={loading}
+          onClose={() => setVisBekreftelsesModal(false)}
+        />
       </Card>
     )
   }

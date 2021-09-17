@@ -14,20 +14,19 @@ const HighlightOnHoverRow = styled(Row)`
 `
 
 interface LinkRowProps {
-    saksnummer: string
+  saksnummer: string
 }
 
-
-export const LinkRow : React.FC<LinkRowProps>= ({ saksnummer, children }) => {
+export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, children }) => {
   const history = useHistory()
 
   const navigate = () => {
-    const destinationUrl = `/sak/${saksnummer}/hjelpemidler`;
-    history.push(destinationUrl);
+    const destinationUrl = `/sak/${saksnummer}/hjelpemidler`
+    history.push(destinationUrl)
   }
 
   return (
-    <HighlightOnHoverRow role="link" tabIndex={0} onClick={navigate} >
+    <HighlightOnHoverRow role="link" tabIndex={0} onClick={navigate}>
       {children}
     </HighlightOnHoverRow>
   )

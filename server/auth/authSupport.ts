@@ -84,7 +84,7 @@ const claimsFrom = (token: string): any => {
 
 const createTokenForTest = () =>
     `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64')}.${Buffer.from(
-        JSON.stringify({ name: 'S. A. Ksbehandler', email: 'dev@nav.no', NAVident: 'dev-ident', oid: 'uuid' })
+        JSON.stringify({ name: 'Silje Saksbehandler', email: 'dev@nav.no', NAVident: 'S112233', oid: '23ea7485-1324-4b25-a763-assdfdfa' })
     ).toString('base64')}.bogussignature`;
 
 const refreshAccessToken = async (azureClient: Client, session: SpeilSession): Promise<boolean> => {

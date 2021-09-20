@@ -1,4 +1,4 @@
-import { VedtakStatusType } from '../types/types.internal'
+import { OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse {
   status: number
@@ -81,3 +81,9 @@ export const postTildeling = async (oppgavereferanse: string) => {
 export const putVedtak = async (saksnummer: string, søknadsbeskrivelse: string, status: VedtakStatusType) => {
   return put(`${baseUrl}/api/vedtak/${saksnummer}`, { søknadsbeskrivelse, status})
 }
+
+export const putSendTilGosys = async (saksnummer: string, søknadsbeskrivelse: string, status: OppgaveStatusType) => {
+    return put(`${baseUrl}/api/overførGosys/${saksnummer}`, { søknadsbeskrivelse, status})
+  }
+
+

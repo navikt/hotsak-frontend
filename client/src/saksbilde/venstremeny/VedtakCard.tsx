@@ -5,12 +5,13 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Input } from 'nav-frontend-skjema'
 import React from 'react'
-import { putVedtak } from '../../io/http'
+import { putVedtak, putSendTilGosys } from '../../io/http'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { capitalizeName } from '../../utils/stringFormating'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { BekreftVedtakModal } from '../BekreftVedtakModal'
+import { OverførGosysModal } from '../OverførGosysModal'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
@@ -47,7 +48,8 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState(sak.søknadGjelder)
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = React.useState(false)
-  const [visBekreftelsesModal, setVisBekreftelsesModal] = React.useState(false)
+  const [visVedtakModal, setVisVedtakModal] = React.useState(false)
+  const [visGosysModal, setVisGosysModal] = React.useState(false)
   const { mutate } = useSWRConfig()
 
   const opprettVedtak = () => {
@@ -56,7 +58,18 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
-        setVisBekreftelsesModal(false)
+        setVisVedtakModal(false)
+        mutate(`api/sak/${saksid}`)
+      })
+  }
+
+  const sendTilGosys = () => {
+    setLoading(true)
+    putSendTilGosys(saksid, dokumentbeskrivelse, OppgaveStatusType.SENDT_GOSYS)
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        setVisGosysModal(false)
         mutate(`api/sak/${saksid}`)
       })
   }
@@ -119,24 +132,28 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
           onChange={(event) => setDokumentbeskrivelse(event.target.value)}
         />
         <ButtonContainer>
-          <Knapp variant={'action'} size={'s'} onClick={() => setVisBekreftelsesModal(true)}>
+          <Knapp variant={'action'} size={'s'} onClick={() => setVisVedtakModal(true)}>
             <span>Innvilg søknaden</span>
           </Knapp>
           <Knapp
             variant={'primary'}
             size={'s'}
-            onClick={() => {
-              alert(`Sender søknad med saksnummer ${saksid} til gode gamle Gosys`)
-            }}
+            onClick={()  => setVisGosysModal(true)}
           >
             Overfør til Gosys
           </Knapp>
         </ButtonContainer>
         <BekreftVedtakModal
-          open={visBekreftelsesModal}
+          open={visVedtakModal}
           onBekreft={() => opprettVedtak()}
           loading={loading}
-          onClose={() => setVisBekreftelsesModal(false)}
+          onClose={() => setVisVedtakModal(false)}
+        />
+        <OverførGosysModal
+          open={visGosysModal}
+          onBekreft={() => sendTilGosys()}
+          loading={loading}
+          onClose={() => setVisGosysModal(false)}
         />
       </Card>
     )

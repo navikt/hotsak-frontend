@@ -42,6 +42,19 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
+  rest.put('/api/overførGosys/:saksnummer', (req, res, ctx) => {
+    //@ts-ignore
+    const soknadsbeskrivelse = req.body.søknadsbeskrivelse
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    oppgaveliste[oppgaveIdx]['status'] = 'SENDT_GOSYS'
+    oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
+
+    saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
+
+    return res(ctx.status(200), ctx.json({}))
+  }),
   rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(oppgaveliste))
   }),

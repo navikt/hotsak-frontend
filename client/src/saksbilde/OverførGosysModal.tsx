@@ -3,29 +3,28 @@ import { Tekst } from '../felleskomponenter/typografi'
 import { Button, Loader } from '@navikt/ds-react'
 import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
 
-
-
-interface BekreftVedtakModalProps {
+interface OverførGosysModalProps {
   open: boolean
   onBekreft: Function
   loading: boolean
   onClose: Function
 }
 
-export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: BekreftVedtakModalProps) => {
+
+export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: OverførGosysModalProps) => {
   // Modal && Modal.setAppElement("#root")
 
   return (
     <DialogBoks shouldCloseOnOverlayClick={false} open={open} onClose={() => {onClose()}}>
       <Title level="1" size="m" spacing={true}>
-       Vil du innvilge søknaden?
+        Vil du overføre saken til Gosys
       </Title>
       <Tekst>
-        Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS. Innbygger vil få beskjed om vedtaket på Ditt NAV. 
+        Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd.
       </Tekst>
       <ButtonContainer>
         <Button variant={'action'} size={'s'} onClick={() => onBekreft()}>
-          <span>Innvilg søknaden</span>
+          <span>Overfør saken</span>
           {loading && <Loader />}
         </Button>
         <Button

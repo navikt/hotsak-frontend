@@ -16,6 +16,14 @@ export interface Sak {
     enhet: Enhet[]
 }
 
+export interface Hendelse {
+    id: string, 
+    tittel: string,
+    timestamp: string,
+    bruker?: string, 
+    innhold?: string
+}
+
 export interface VedtakType {
     vedtaksDato: string
     status: VedtakStatusType

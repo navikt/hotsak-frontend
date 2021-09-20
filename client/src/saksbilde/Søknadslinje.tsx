@@ -4,6 +4,7 @@ import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { TabLink } from './TabLink'
 import { useSak } from './sakHook'
+import { HistorikkHeader } from './historikk/HistorikkHeader'
 
 const Container = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const Container = styled.div`
   height: 48px;
   box-sizing: border-box;
   border-bottom: 1px solid var(--navds-color-border);
-  
+  padding: 0 2rem 0 2rem;
   min-width: var(--speil-total-min-width);
 
   > div:last-of-type {
@@ -46,6 +47,7 @@ export const Søknadslinje = () => {
           </TabLink>
         </TabList>
       </Flex>
+      <HistorikkHeader />
     </Container>
   )
 }

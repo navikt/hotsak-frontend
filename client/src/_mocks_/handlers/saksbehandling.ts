@@ -1,6 +1,7 @@
 import { rest } from 'msw'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
+import historikk from '../mockdata/historikk.json'
 
 const saksbehandlingHandlers = [
   rest.post(`/api/tildeling/:saksnummer`, (req, res, ctx) => {
@@ -20,6 +21,9 @@ const saksbehandlingHandlers = [
   }),
   rest.get(`/api/sak/:saksid`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.saksid === req.params.saksid)[0] || saker[2]))
+  }),
+  rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(historikk))
   }),
   rest.put('/api/vedtak/:saksnummer', (req, res, ctx) => {
     //@ts-ignore

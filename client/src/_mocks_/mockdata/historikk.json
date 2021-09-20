@@ -1,0 +1,34 @@
+[
+    {
+        "id": "1",
+        "tittel": "Søknaden ble registrert mottatt",
+        "timestamp": "2021-03-28T12:02:45"
+    },
+    {
+        "id": "2",
+        "tittel": "Saksbehandler har tatt saken",
+        "timestamp": "2021-03-29T12:38:45",
+        "bruker": "Silje Saksbehandler"
+    },
+    {
+        "id": "3",
+        "tittel": "Dokumentbeskrivelse oppdatert",
+        "innhold": "\"Søknad om rullator og dusjkrakk\"",
+        "timestamp": "2021-03-29T12:43:45",
+        "bruker": "Silje Saksbehandler"
+    },
+    {
+        "id": "4",
+        "tittel": "Vedtak fattet",
+        "timestamp": "2021-02-28T12:43:45",
+        "innhold": "Søknaden blir innvilget",
+        "bruker": "Silje Saksbehandler"
+    },
+    {
+        "id": "5",
+        "tittel": "Serviceforespørsel opprettet i OEBS",
+        "timestamp": "2021-03-29T12:45:45",
+        "innhold": "SF-nummer: 1390009031"
+    }
+
+]

@@ -11,6 +11,7 @@ import { Alert } from '@navikt/ds-react'
 import { useSak } from './sakHook'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
+import { Historikk } from './historikk/Historikk'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
@@ -111,6 +112,7 @@ const SaksbildeContent = React.memo(() => {
             </FlexColumn>
           </Flex>
         </AutoFlexContainer>
+        <Historikk />
       </Container>
       
     </SaksbildeContainer>

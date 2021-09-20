@@ -109,12 +109,6 @@
       }
     ]
   },
-
-
-
-
-
-
   {
     "saksid": "222222",
     "søknadGjelder": "Hjelpemidler",
@@ -202,13 +196,13 @@
         { "beskrivelse": "Haster - trykksår", "type": "advarsel" },
       { "beskrivelse": "Lavere rangerte hjelpemidler", "type": "advarsel" },
       { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
+      { "beskrivelse": "Fritekst i søknaden", "type": "advarsel" },
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
     "motattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
-      "fnr": "19044238651",
+      "fnr": "13044238651",
       "fødselsdato": "1942-06-19",
       "fornavn": "Mia Cathrine",
       "etternavn": "Svendsen",
@@ -268,6 +262,97 @@
       }
     ]
   },
+  {
+    "saksid": "5878444",
+    "søknadGjelder": "Rullator",
+    "hjelpemidler": [
+      {
+        "hmsnr": "177946",
+        "rangering": "1",
+        "utlevertFraHjelpemiddelsentralen": false,
+
+        "antall": "1",
+        "kategori": "Rullator",
+        "beskrivelse": "Gemino 20",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      { "beskrivelse": "Kun førsterangering", "type": "info" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+    ],
+
+    "motattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "130441386551",
+      "fødselsdato": "1942-06-19",
+      "fornavn": "Per",
+      "etternavn": "Bjørkli",
+      "adresse": "Storgata 12",
+      "kilde": "PDL",
+      "signaturType": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": [
+        "Per Bjørkli har vesentlig nedsatt funksjon. Funksjonsnedsettelsen varer over 2 år eller livet ut.",
+        "Per Bjørkli sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.",
+        "Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. Per Bjørkli vil være i stand til å bruke hjelpemidlene."
+      ],
+      "kjønn": "MANN",
+
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktPerson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": ""
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "SENDT_GOSYS",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+
+
+
+
 
   {
     "saksid": "1234567",
@@ -275,73 +360,26 @@
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
       {
-        "hmsnr": "123456",
+        "hmsnr": "289709",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": "true",
+        "utlevertFraHjelpemiddelsentralen": false,
         "utlevertInfo": {
-            "utlevertType": "Overført",
-            "overførtFraBruker": "565656"
           },
-        "antall": "6",
-        "kategori": "Terskeleliminatorer og Kjøreramper",
-        "beskrivelse": "Topro Terskeleliminator",
+        "antall": "1",
+        "kategori": "Alarm- og varslingshjelpemidler",
+        "beskrivelse": "Prefi M EB 25 komfyrvakt 25 ampere",
         "tilleggsinfo": [
-          { "tittel": "behov", "innhold": "Problem med sittestilling / posisjonering" },
-          { "tittel": "Tilsvarende ikke ok", "innhold": "Hun trenger å stabilisere bekkenet." },
-          { "tittel": "Begrunnelse", "innhold": "Eneste pute som passer rullestolen hennes." },
-          {
-            "tittel": "info",
-            "innhold": "Mia har scoliose og skjevt bekken med rotasjon mot høyre, benlengdeforskjell og nedsatt sittestabilitet. Scoliosen/bekkenskjevheten er ikke korrigerbar. Trenger en pute som kan tilpasses asymmetrien i bekkenet."
-          }
-        ],
+                  ],
         "tilbehør": [
-          {
-            "hmsnr": "654321",
-            "antall": "1",
-            "navn": "Navn på tilbehør"
-          },{
-            "hmsnr": "454545",
-            "antall": "2",
-            "navn": "Gummimatte"
-          }
-        ]
-      },
-      {
-        "hmsnr": "666666",
-        "rangering": "5",
-        "antall": "6",
-        "kategori": "Manuelle rullestoler",
-        "beskrivelse": "Cross 6 allround sb35 sd35-50 kort",
-        "tilleggsinfo": [
-
-        ],
-        "tilbehør": [
-        ]
-      },
-      {
-        "hmsnr": "333333",
-        "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": "true",
-            "utlevertInfo": {
-                "utlevertType": "Annen",
-                "annenKommentar": "masse annen begrunnelse som faktisk kan være litt lang. Kanskje to setninger. Eller til og med tre. Forsatt over 100 tegn igjen. Sjukt."
-              },
-        "antall": "6",
-        "kategori": "Manuelle rullestoler",
-        "beskrivelse": "Cross 6 allround sb35 sd35-50 kort",
-        "tilleggsinfo": [
-          { "tittel": "Bil", "innhold": "Rullestolen skal brukes som sete i bil" },
-          { "tittel": "Sitteputevalg", "innhold": "Standard sittepute" }
-        ],
-        "tilbehør": [
-
+          
         ]
       }
     ],
     "formidler": {
-      "navn": "Formidler navn",
+      "navn": "Kari Johansen",
       "kommune": "Formidlers kommune",
       "arbeidssted": "Arbeidssted",
+      "poststed": "Trondheim",
       "stilling": "Ergo",
       "postadresse": "Formidlers adresse",
       "telefon": "34343434",
@@ -349,24 +387,22 @@
       "epost": "e@post.com"
     },
     "greitÅViteFaktum": [
-        { "beskrivelse": "Lavere rangerte hjelpemidler", "type": "advarsel" },
         { "beskrivelse": "Personalia fra folkeregisteret", "type": "info" },
-        { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
-        { "beskrivelse": "Haster - trykksår", "type": "advarsel" }
+        { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" }
     ],
 
     "motattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
-      "fnr": "16120101181",
+      "fnr": "06115559891",
       "fødselsdato": "2001-12-16",
-      "fornavn": "Bananskall",
-      "etternavn": "Eple",
-      "adresse": "Veien 69",
+      "fornavn": "Iver",
+      "etternavn": "Slettan",
+      "adresse": "Veien 124",
       "kilde": "PDL",
       "signaturType": "BRUKER_BEKREFTER",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": ["hørsel", "kognisjon"],
+      "funksjonsnedsettelse": ["kognisjon"],
       "bruksarena": "DAGLIGLIV",
       "oppfylteVilkår": [
         "Eple Bananskall har vesentlig nedsatt funksjon.  Funksjonsnedsettelsen varer over 2 år eller livet ut.",
@@ -382,8 +418,8 @@
         "setebredde": "45"
       },
       "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Gjøvik",
+      "postnummer": "7041",
+      "poststed": "Lade",
       "gtNummer": "1234",
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
@@ -410,9 +446,104 @@
     "saksbehandler": {
       "epost": "a.b@nav.no",
       "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-      "navn": "Anders Bertolomeus"
+      "navn": "Silje Saksbehandler"
     },
     "status": "mottatt",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+
+
+
+  {
+    "saksid": "999999",
+    "søknadGjelder": "Rullator",
+    "hjelpemidler": [
+      {
+        "hmsnr": "177946",
+        "rangering": "1",
+        "utlevertFraHjelpemiddelsentralen": false,
+
+        "antall": "1",
+        "kategori": "Rullator",
+        "beskrivelse": "Gemino 20",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      { "beskrivelse": "Kun førsterangering", "type": "info" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+    ],
+
+    "motattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "16120101181",
+      "fødselsdato": "1942-06-19",
+      "fornavn": "Sondre Hansen",
+      "etternavn": "Bjørkli",
+      "adresse": "Storgata 12",
+      "kilde": "PDL",
+      "signaturType": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": [
+        "Sondre Hansen har vesentlig nedsatt funksjon. Funksjonsnedsettelsen varer over 2 år eller livet ut.",
+        "Sondre Hansen sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.",
+        "Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. Sondre Hansen vil være i stand til å bruke hjelpemidlene."
+      ],
+      "kjønn": "MANN",
+
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktPerson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": ""
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "saksbehandler": {
+        "epost": "a.b@nav.no",
+        "objectId": "23ea7485-1324-4b25-a763-6969",
+        "navn": "Geir Markusen"
+      },
     "enhet": [
       {
         "enhetsnummer": "6969",

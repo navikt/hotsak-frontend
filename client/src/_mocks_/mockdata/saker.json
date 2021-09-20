@@ -116,7 +116,7 @@
       {
         "hmsnr": "014112",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": true,
+        "utlevertFraHjelpemiddelsentralen": false,
         "utlevertInfo": {
             "utlevertType": "FremskuttLager"
         },

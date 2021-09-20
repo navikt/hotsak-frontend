@@ -91,6 +91,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
+        <Tag variant="info">Overført til Gosys</Tag>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
       </Card>
     )

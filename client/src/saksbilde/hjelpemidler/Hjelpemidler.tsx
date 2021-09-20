@@ -66,7 +66,7 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-      Number(props.rank) === 1 ? 'var(--navds-color-green-20)' : 'var(--navds-color-gray-20)'};
+      Number(props.rank) === 1 ? 'var(--navds-color-green-20)' : 'var(--navds-color-orange-40)'};
     color: inherit;
     font-weight: inherit;
   }

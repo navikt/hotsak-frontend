@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
-import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
-import { TabButton } from '../TabButton'
+//import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
+//import { TabButton } from '../TabButton'
 
 const Header = styled.section`
   display: flex;
@@ -8,17 +8,17 @@ const Header = styled.section`
   height: 48px;
   box-sizing: border-box;
 `
-const HistorikkTabButton = styled(TabButton)`
+/*const HistorikkTabButton = styled(TabButton)`
   height: 48px;
   width: 48px,
-`
+`*/
 
 export const HistorikkHeader: React.FC = ({ children }) => {
   return (
     <Header>
-        <HistorikkTabButton active={true}>
+        {/*<HistorikkTabButton active={true}>
           <HistorikkIkon />
-        </HistorikkTabButton>
+  </HistorikkTabButton>*/}
     </Header>
   )
 }

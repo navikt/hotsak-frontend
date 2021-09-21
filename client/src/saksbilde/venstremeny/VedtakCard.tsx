@@ -76,6 +76,11 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
+        <>
+        <Card>
+            <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
+            <Tekst>{sak.søknadGjelder}</Tekst>
+        </Card>
       <Card>
           
         <CardTitle>VEDTAK</CardTitle>
@@ -84,6 +89,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         <Tekst>06.09 2021</Tekst>
         </TagGrid>
       </Card>
+      </>
     )
   }
 
@@ -116,7 +122,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
         <ButtonContainer>
           <Knapp variant={'action'} size={'s'} onClick={() => alert('Tildeler sak til innlogget saksbehandler')}>
-            Ta saken
+            Overta saken
           </Knapp>
         </ButtonContainer>
       </Card>

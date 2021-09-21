@@ -83,7 +83,7 @@ export const putVedtak = async (saksnummer: string, søknadsbeskrivelse: string,
 }
 
 export const putSendTilGosys = async (saksnummer: string, søknadsbeskrivelse: string, status: OppgaveStatusType) => {
-    return put(`${baseUrl}/api/overførGosys/${saksnummer}`, { søknadsbeskrivelse, status})
+    return put(`${baseUrl}/api/overforGosys/${saksnummer}`, { søknadsbeskrivelse, status})
   }
 
 

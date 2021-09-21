@@ -1,4 +1,6 @@
+import dayjs from 'dayjs';
 import styled from 'styled-components/macro'
+import { ISO_TIDSPUNKTFORMAT } from '../../utils/date';
 import { useHistorikk } from '../historikkHook';
 import { HistorikkHendelse } from './HistorikkHendelse';
 const HistorikkTitle = styled.li`
@@ -20,6 +22,12 @@ const Hendelser = styled.ul`
     border-left: 1px solid var(--navds-color-border);
 `;
 
+const sorterKronologisk = (a: string, b: string) => {
+    let date = dayjs(a, ISO_TIDSPUNKTFORMAT)
+    let otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
+    return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
+}
+
 export const Historikk: React.FC = ({ children }) => {
     const {hendelser, isError, isLoading} = useHistorikk();
 
@@ -36,7 +44,7 @@ export const Historikk: React.FC = ({ children }) => {
                 <HistorikkTitle>
                     HISTORIKK
                 </HistorikkTitle>
-                {hendelser.map((it) => (
+                {hendelser.sort((a, b) => sorterKronologisk(a.timestamp, b.timestamp)).map((it) => (
                     <HistorikkHendelse key={it.id} {...it} />
                 ))}
             </Hendelser>

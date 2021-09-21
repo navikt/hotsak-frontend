@@ -18,7 +18,6 @@ import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
-import { SaksbehandlerCard } from './venstremeny/SaksbehandlerCard'
 import { OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
 import { capitalize } from '../utils/stringFormating'
 import { formaterDato } from '../utils/date'
@@ -80,7 +79,6 @@ const SaksbildeContent = React.memo(() => {
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
-              <SaksbehandlerCard saksbehandler={sak.saksbehandler}/>
               <FormidlerCard formidlerNavn={sak.formidler.navn} kommune={sak.formidler.poststed} />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />
               <VedtakCard sak={sak} />

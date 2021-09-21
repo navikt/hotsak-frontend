@@ -60,6 +60,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         setLoading(false)
         setVisVedtakModal(false)
         mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
       })
   }
 
@@ -71,6 +72,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         setLoading(false)
         setVisGosysModal(false)
         mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
       })
   }
 

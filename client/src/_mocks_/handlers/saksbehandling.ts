@@ -3,15 +3,39 @@ import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
 import historikk from '../mockdata/historikk.json'
 
+const sakshistorikk = [
+  { saksid: '111111', hendelser: deepClone(historikk) },
+  { saksid: '222222', hendelser: deepClone(historikk) },
+  { saksid: '5878444', hendelser: deepClone(historikk) },
+  { saksid: '1234567', hendelser: deepClone(historikk) },
+  { saksid: '999999', hendelser: deepClone(historikk) },
+]
+
+function deepClone(array: any[]) {
+  return JSON.parse(JSON.stringify(array))
+}
+
 const saksbehandlingHandlers = [
   rest.post(`/api/tildeling/:saksnummer`, (req, res, ctx) => {
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+    
     const saksbehandler = {
       epost: 'silje.saksbehandler@nav.no',
       objectId: '23ea7485-1324-4b25-a763-assdfdfa',
       navn: 'Silje Saksbehandler',
     }
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const hendelse = {
+      id: '2',
+      tittel: 'Saksbehandler har tatt saken',
+      timestamp: '2021-03-29T12:38:45',
+      bruker: 'Silje Saksbehandler',
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
     // @ts-ignore
     saker[sakIdx]['saksbehandler'] = saksbehandler
     oppgaveliste[oppgaveIdx]['saksbehandler'] = saksbehandler
@@ -23,13 +47,41 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.saksid === req.params.saksid)[0] || saker[2]))
   }),
   rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(historikk))
+    const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
+    return res(ctx.status(200), ctx.json(hist))
   }),
   rest.put('/api/vedtak/:saksnummer', (req, res, ctx) => {
     //@ts-ignore
     const soknadsbeskrivelse = req.body.søknadsbeskrivelse
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const dokumentBeskrivelseHendelse = {
+      id: '3',
+      tittel: 'Dokumentbeskrivelse oppdatert',
+      innhold: soknadsbeskrivelse,
+      timestamp: '2021-03-29T12:43:44',
+      bruker: 'Silje Saksbehandler',
+    }
+    const vedtakHendelse = {
+      id: '4',
+      tittel: 'Vedtak fattet',
+      timestamp: '2021-03-29T12:43:45',
+      innhold: 'Søknaden blir innvilget',
+      bruker: 'Silje Saksbehandler',
+    }
+    const sfHendelse = {
+        "id": "5",
+        "tittel": "Serviceforespørsel opprettet i OEBS",
+        "timestamp": "2021-03-29T12:45:45",
+        "innhold": "SF-nummer: 1390009031"
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(dokumentBeskrivelseHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
 
     oppgaveliste[oppgaveIdx]['status'] = 'VEDTAK_FATTET'
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
@@ -51,6 +103,16 @@ const saksbehandlingHandlers = [
     const soknadsbeskrivelse = req.body.søknadsbeskrivelse
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const hendelse = {
+      id: '5',
+      tittel: 'Saken ble overført Gosys',
+      timestamp: '2021-03-29T12:43:45',
+      bruker: 'Silje Saksbehandler',
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
 
     oppgaveliste[oppgaveIdx]['status'] = 'SENDT_GOSYS'
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse

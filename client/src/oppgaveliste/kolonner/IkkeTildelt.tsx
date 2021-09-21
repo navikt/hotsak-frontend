@@ -44,6 +44,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           history.push(destinationUrl)
         } else {
           mutate(`api/sak/${oppgavereferanse}`)
+          mutate(`api/sak/${oppgavereferanse}/historikk`)
         }
       })
   }

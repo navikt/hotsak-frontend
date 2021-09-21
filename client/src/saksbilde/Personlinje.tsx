@@ -1,8 +1,7 @@
 import styled from 'styled-components/macro'
-
+import dayjs from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi'
-
-import { formaterDato } from '../utils/date'
+import { ISO_TIDSPUNKTFORMAT } from '../utils/date';
 import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
 
 import { Clipboard } from '../felleskomponenter/clipboard'
@@ -85,6 +84,10 @@ export const LasterPersonlinje = () => (
   </Container>
 )
 
+const beregnAlder = (fødselsdato: string) => {
+    return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
+}
+
 export const Personlinje = ({ person }: PersonlinjeProps) => {
   if (!person) return <Container />
 
@@ -92,14 +95,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      <Element>{capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''}`)}</Element>
-      {fødselsdato ? (
-        <>
-          <Separator>/</Separator>
-          <Normaltekst>{fødselsdato ? ` Født: ${formaterDato(fødselsdato)}` : ''}</Normaltekst>
-        </>
-      ) : null}
-
+      <Element>{capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} (${fødselsdato && beregnAlder(fødselsdato)} år)`)}</Element>
       <Separator>/</Separator>
       {fnr ? (
         <Clipboard preserveWhitespace={false} copyMessage="Fødselsnummer er kopiert">

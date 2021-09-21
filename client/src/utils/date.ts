@@ -8,6 +8,7 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
 
 export const NORSK_DATOFORMAT = 'DD.MM.YYYY'
+export const NORSK_TIDSPUNKTFORMAT = 'DD.MM.YYYY kl. HH:mm'
 export const NORSK_DATOFORMAT_KORT = 'DD.MM.YY'
 export const ISO_DATOFORMAT = 'YYYY-MM-DD'
 export const ISO_TIDSPUNKTFORMAT = 'YYYY-MM-DDTHH:mm:ss'
@@ -15,6 +16,11 @@ export const ISO_TIDSPUNKTFORMAT = 'YYYY-MM-DDTHH:mm:ss'
 export const formaterDato = (dato: string) => {
     return dayjs(dato, ISO_DATOFORMAT ).format(NORSK_DATOFORMAT)
 }
+
+export const norskTimestamp = (dato: string) => {
+    return dayjs(dato, ISO_DATOFORMAT ).format(NORSK_TIDSPUNKTFORMAT)
+}
+
 
 export const findLatest = (dates: Dayjs[]): Dayjs => {
   return Array.from(dates)

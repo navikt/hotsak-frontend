@@ -1,6 +1,6 @@
 import { Etikett, Tekst, Undertittel } from '../../felleskomponenter/typografi';
 import { Hendelse } from '../../types/types.internal';
-import { formaterDato } from '../../utils/date';
+import { norskTimestamp } from '../../utils/date';
 import styled from 'styled-components/macro'
 
 
@@ -25,7 +25,7 @@ export const HistorikkHendelse = ({ tittel, innhold, timestamp, bruker }: Hendel
         <Container>
             <ContentContainer>
                 <Etikett>{tittel}</Etikett>
-                {timestamp && <Undertittel>{formaterDato(timestamp)}</Undertittel>}
+                {timestamp && <Undertittel>{norskTimestamp(timestamp)}</Undertittel>}
                 <Tekst>{innhold}</Tekst>
                 <Tekst>{bruker}</Tekst>
             </ContentContainer>

@@ -46,24 +46,24 @@ enum kolonner {
   BOSTED = 'Bosted',
   STATUS = 'Status',
   MOTTATT = 'Mottatt',
+  KJØTTBOLLE = 'Kjøttbolle'
 }
 
 const kolonnerMine = [
   kolonner.FUNKSJONSNEDSETTELSE,
   kolonner.SØKNAD_OM,
   kolonner.FØDSELSNUMMER,
-  kolonner.FØDSELSDATO,
   kolonner.HJELPEMIDDELBRUKER,
   kolonner.BOSTED,
   kolonner.STATUS,
   kolonner.MOTTATT,
+  kolonner.KJØTTBOLLE
 ]
 
 const kolonnerUtfordelte = [
   kolonner.EIER,
   kolonner.FUNKSJONSNEDSETTELSE,
   kolonner.FØDSELSNUMMER,
-  kolonner.FØDSELSDATO,
   kolonner.HJELPEMIDDELBRUKER,
   kolonner.BOSTED,
   kolonner.MOTTATT,
@@ -74,11 +74,11 @@ const kolonnerAlleSaker = [
   kolonner.FUNKSJONSNEDSETTELSE,
   kolonner.SØKNAD_OM,
   kolonner.FØDSELSNUMMER,
-  kolonner.FØDSELSDATO,
   kolonner.HJELPEMIDDELBRUKER,
   kolonner.BOSTED,
   kolonner.STATUS,
   kolonner.MOTTATT,
+  kolonner.KJØTTBOLLE
 ]
 
 interface OppgaverTableProps {
@@ -148,7 +148,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 </Header>
               )}
               {tab.kolonner.includes(kolonner.STATUS) && (
-                <Header scope="col" colSpan={1}>
+                <Header scope="col" colSpan={1} >
                   Status
                 </Header>
               )}
@@ -157,7 +157,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                   Mottatt
                 </Header>
               )}
-              <Header scope="col" colSpan={1} />
+              {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (<Header scope="col" colSpan={1} />)}
             </tr>
           </thead>
           <Body>
@@ -211,7 +211,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                     <Motatt dato={oppgave.mottattDato} />
                   </Cell>
                 )}
-                <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
+                {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (<Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>)}
               </LinkRow>
             ))}
           </Body>

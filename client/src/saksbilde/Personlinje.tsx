@@ -88,14 +88,18 @@ const beregnAlder = (fødselsdato: string) => {
     return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
+const formaterNavn  = (person: Personinfo) => {
+    return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
+}
+
 export const Personlinje = ({ person }: PersonlinjeProps) => {
   if (!person) return <Container />
 
-  const { fnr, brukernummer, fornavn, mellomnavn, etternavn, kjønn, fødselsdato } = person
+  const { fnr, brukernummer, kjønn, fødselsdato } = person
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      <Element>{capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} (${fødselsdato && beregnAlder(fødselsdato)} år)`)}</Element>
+      <Element>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Element>
       <Separator>/</Separator>
       {fnr ? (
         <Clipboard preserveWhitespace={false} copyMessage="Fødselsnummer er kopiert">

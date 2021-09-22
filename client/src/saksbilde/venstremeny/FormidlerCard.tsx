@@ -5,6 +5,7 @@ import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import {IconContainer} from './IconContainer'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 interface FormidlerCardProps {
   formidlerNavn: string
@@ -19,7 +20,7 @@ export const FormidlerCard = ({ formidlerNavn, kommune }: FormidlerCardProps) =>
         <IconContainer>
           <Personikon />
         </IconContainer>
-        <Normaltekst>{`${formidlerNavn} - ${kommune}`}</Normaltekst>
+        <Normaltekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Normaltekst>
       </Grid>
     </Card>
   )

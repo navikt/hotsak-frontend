@@ -32,7 +32,17 @@ export const GreitÅViteCard = ({ greitÅViteFakta }: GreitÅViteCardProps) => {
         <CardTitle>GREIT Å VITE</CardTitle>
         <Grid>
           {greitÅViteFakta
-            .sort((a, b) => (a.type === GreitÅViteType.ADVARSEL ? -1 : b.type === GreitÅViteType.ADVARSEL ? 1 : 0))
+            .sort((a, b) => {
+                if(a.type === b.type) {
+                    if(a.beskrivelse < b.beskrivelse) return -1
+                    if(a.beskrivelse > b.beskrivelse) return 1
+                    return 0
+                }
+                if(a.type === GreitÅViteType.ADVARSEL) return -1
+                if(b.type === GreitÅViteType.ADVARSEL) return  1
+                return 0
+            }
+            )
             .map((faktum) => {
               return <FaktaRad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
             })}

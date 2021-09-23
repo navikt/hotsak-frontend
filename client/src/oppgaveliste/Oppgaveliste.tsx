@@ -10,6 +10,7 @@ import { Tabs, TabType } from './tabs'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { IngenOppgaver } from './IngenOppgaver'
 import { useOppgaveliste } from './oppgavelisteHook'
+import { Toast } from '../felleskomponenter/Toast'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -76,7 +77,7 @@ export const Oppgaveliste = () => {
   }
 
   if (isLoading) {
-    return <div>Her skal det komme en spinner. Eller kanskje den skal komme i stedet for tabellen?</div>
+    return <Toast>Henter oppgaver </Toast>
   }
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });

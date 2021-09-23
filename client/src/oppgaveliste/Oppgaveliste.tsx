@@ -55,7 +55,7 @@ export const Oppgaveliste = () => {
       const filtrert =  oppgaver?.filter((oppgave) => {
       switch (aktivTab) {
         case TabType.Ufordelte:
-          return !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
+          return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
         case TabType.OverførtGosys:
           return oppgave.status === OppgaveStatusType.SENDT_GOSYS
         case TabType.Mine:

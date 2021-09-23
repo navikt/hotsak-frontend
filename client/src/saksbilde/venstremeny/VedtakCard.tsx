@@ -15,6 +15,7 @@ import { OverførGosysModal } from '../OverførGosysModal'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
+import { formaterDato } from '../../utils/date'
 interface VedtakCardProps {
   sak: Sak
 }
@@ -88,7 +89,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         <CardTitle>VEDTAK</CardTitle>
         <TagGrid>
         <Tag variant="success">Innvilget</Tag>
-        <Tekst>06.09 2021</Tekst>
+        <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
         </TagGrid>
       </Card>
       </>
@@ -105,7 +106,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     )
   }
 
-  if (!sak.saksbehandler) {
+  if (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <Card>
         <CardTitle>SAK IKKE STARTET</CardTitle>
@@ -117,7 +118,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     )
   }
 
-  if (sak.saksbehandler && sak.saksbehandler.objectId !== saksbehandler.objectId) {
+  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler.objectId !== saksbehandler.objectId) {
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>

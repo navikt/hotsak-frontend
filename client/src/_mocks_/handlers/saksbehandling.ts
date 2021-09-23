@@ -38,6 +38,7 @@ const saksbehandlingHandlers = [
     sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
     // @ts-ignore
     saker[sakIdx]['saksbehandler'] = saksbehandler
+    saker[sakIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
     oppgaveliste[oppgaveIdx]['saksbehandler'] = saksbehandler
     oppgaveliste[oppgaveIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
 
@@ -87,9 +88,10 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
 
     saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
+    saker[sakIdx]['status'] = 'VEDTAK_FATTET'
     // @ts-ignore
     saker[sakIdx]['vedtak'] = {
-      vedtaksDato: '2021-09-16',
+      vedtaksDato: '2021-03-29',
       status: 'INNVILGET',
       saksbehandlerRef: '23ea7485-1324-4b25-a763-assdfdfa',
       saksbehandlerNavn: 'Silje Saksbehandler',

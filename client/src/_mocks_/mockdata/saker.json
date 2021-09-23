@@ -99,9 +99,7 @@
       "telefon": "45454545",
       "ansvarFor": "ansvar for"
     },
-
-   
-    "status": "mottatt",
+    "status": "AVVENTER_SAKSBEHANDLER",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -252,9 +250,7 @@
       "telefon": "45454545",
       "ansvarFor": "ansvar for"
     },
-
-    
-    "status": "mottatt",
+    "status": "AVVENTER_SAKSBEHANDLER",
     "enhet": [
       {
         "enhetsnummer": "6969",

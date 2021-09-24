@@ -28,6 +28,12 @@ export const findLatest = (dates: Dayjs[]): Dayjs => {
     .pop()!
 }
 
+export const sorterKronologisk = (a: string, b: string) => {
+    let date = dayjs(a, ISO_TIDSPUNKTFORMAT)
+    let otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
+    return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
+}
+
 export const findEarliest = (dates: Dayjs[]): Dayjs => {
   return Array.from(dates)
     .sort((a, b) => (b.isBefore(a) ? -1 : a.isBefore(b) ? 1 : 0))

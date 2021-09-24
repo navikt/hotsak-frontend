@@ -2,7 +2,7 @@
   {
     "saksid": "111111",
     "søknadOm": "Hjelpemidler",
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "19044238651",
       "fødselsdato": "1942-04-19",
@@ -31,7 +31,7 @@
   {
     "saksid": "222222",
     "søknadOm": "Hjelpemidler",
-    "motattDato": "2021-09-21T13:55:45",
+    "mottattDato": "2021-09-24T13:55:45",
     "personinformasjon": {
       "fnr": "13044238651",
       "fødselsdato": "1942-04-19",
@@ -61,7 +61,7 @@
   {
     "saksid": "5878444",
     "søknadOm": "Hjelpemidler",
-    "motattDato": "2021-09-20T13:55:45",
+    "mottattDato": "2021-09-20T13:55:45",
     "personinformasjon": {
       "fnr": "130441386551",
       "fødselsdato": "1941-04-13",
@@ -95,7 +95,7 @@
   {
     "saksid": "1234567",
     "søknadOm": "Hjelpemidler",
-    "motattDato": "2021-06-25T13:55:45",
+    "mottattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
       "fnr": "06115559891",
       "fødselsdato": "2001-12-16",
@@ -128,7 +128,7 @@
   {
     "saksid": "999999",
     "søknadOm": "Hjelpemidler",
-    "motattDato": "2021-06-25T13:55:45",
+    "mottattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
       "fnr": "16120101181",
       "fødselsdato": "2001-12-16",

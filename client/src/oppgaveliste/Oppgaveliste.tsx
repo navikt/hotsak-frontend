@@ -11,6 +11,7 @@ import { useInnloggetSaksbehandler } from '../state/authentication'
 import { IngenOppgaver } from './IngenOppgaver'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Toast } from '../felleskomponenter/Toast'
+import { sorterKronologisk } from '../utils/date'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -64,7 +65,7 @@ export const Oppgaveliste = () => {
         default:
           return true
       }
-    }) || []
+    }).sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
 
   setFiltrerteOppgaver(filtrert)
 

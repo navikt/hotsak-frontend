@@ -13,3 +13,4 @@ jobs:
         with:
           start: npm run start:mock
           working-directory: client
+          config: pageLoadTimeout=100000

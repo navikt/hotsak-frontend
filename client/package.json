@@ -62,7 +62,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:mock": "PORT=3001 REACT_APP_USE_MSW=true npm run start",
+    "dev:mock": "PORT=3001 REACT_APP_USE_MSW=true npm run start",
     "build": "craco build ",
     "test": "craco test",
     "eject": "craco eject",

@@ -11,6 +11,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run start:mock
+          start: npm run dev:mock
           wait-on: 'http://localhost:3001'
           working-directory: client

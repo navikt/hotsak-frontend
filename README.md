@@ -1,26 +1,43 @@
-# Frontend for saksbehandling på Hjelpemiddelområdet 
+# Frontend for saksbehandling på Hjelpemiddelområdet
 
-Koden er delt i to separate moduler med hver sin package.json 
+Koden er delt i to separate moduler med hver sin package.json
 En for nodeJS backenden (server) og en for frontend (client)
 
-For å installere pakker til server kjør 
-### `npm install <pakkenavn> --prefix server` 
+For å installere pakker til server kjør
 
-eller CD inn i server mapa og kjør npm install på vanlig måte derfra. 
+### `npm install <pakkenavn> --prefix server`
 
-Samme gjelder for client, bare bruk prefix client i stedet. 
+eller CD inn i server mapa og kjør npm install på vanlig måte derfra.
 
-For lokal kjøring er backend mocket ut med Mock Service Worker. Mockene ligger i _mocks_ mappen. 
+Samme gjelder for client, bare bruk prefix client i stedet.
 
-Kjør opp appen ved å kjøre følgende kommando fra toppnivå. 
-### `npm run dev` 
+For lokal kjøring er backend mocket ut med Mock Service Worker. Mockene ligger i _mocks_ mappen.
+
+Kjør opp appen ved å kjøre følgende kommando fra toppnivå.
+
+### `npm run dev`
 
 Alternativ CD inn i client og kjørt npm start
 
+## Kjør med MSW
 
-Ved push til main kjøres det deploy til dev-gcp 
-Appen er tilgjenglig på https://hm-saksbehandling.dev.intern.nav.no/
+For å kjøre lokalt med mockede data, kan du kjøre
 
-Backend i dev-gcp er foreløpig mocked ut ved at kall gjøres til endepunkter i hm-mocks. For oppdatering av testdata, må hm-mocks oppdateres og redeployes. 
+```
+npm run dev:mock
+```
 
+fra rot i prosjektet. MSW brukes da for å interecepte requests til APIet.
 
+## Tester
+
+Vi bruker Cypress sammen med MSW for å kjøre testene våre:
+
+- Kjør cypress-tester i nettleser: start appen med `npm run dev:mock`, deretter `npm run cypress:open` i en annen terminal.
+- Kjør cypress-tester i headless nettleser: start appen med `npm run dev:mock`, deretter `npm run cypress:run` i en annen terminal.
+
+Tester kjøres også automatisk i Github Actions ved push.
+
+## Deploy
+
+Ved push til main kjøres det deploy til dev-gcp. Appen er tilgjenglig på https://hm-saksbehandling.dev.intern.nav.no/

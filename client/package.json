@@ -62,6 +62,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "start:mock": "REACT_APP_USE_MSW=true start",
     "build": "craco build ",
     "test": "craco test",
     "eject": "craco eject",

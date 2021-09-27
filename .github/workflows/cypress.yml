@@ -11,5 +11,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run dev:mock
+          start: npm run start:mock
           working-directory: client

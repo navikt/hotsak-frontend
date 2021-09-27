@@ -52,7 +52,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
   return (
     <CellContent width={128}>
       {
-        <Tildelingsknapp mini onClick={tildel} spinner={isFetching}>
+        <Tildelingsknapp mini onClick={tildel} spinner={isFetching} data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
           Start saken
         </Tildelingsknapp>
       }

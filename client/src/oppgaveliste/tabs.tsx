@@ -89,7 +89,13 @@ interface TabProps {
 const OppgaveTab = ({ tag, label, numberOfTasks }: TabProps) => {
   const { aktivTab, byttTab } = useTabContext()
   return (
-    <Tab role="tab" aria-selected={aktivTab === tag} active={aktivTab === tag} onClick={() => byttTab(tag)}>
+    <Tab
+      data-cy={`tab-${tag}`}
+      role="tab"
+      aria-selected={aktivTab === tag}
+      active={aktivTab === tag}
+      onClick={() => byttTab(tag)}
+    >
       <Flex alignItems="center">
         {label}
         <Antall>({numberOfTasks})</Antall>
@@ -104,8 +110,10 @@ const AlleSakerTab = () => {
 }
 
 const MineSakerTab = () => {
-    const saksbehandler = useInnloggetSaksbehandler();
-    const antallOppgaver = useOppgaveliste().oppgaver.filter((oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId)
+  const saksbehandler = useInnloggetSaksbehandler()
+  const antallOppgaver = useOppgaveliste().oppgaver.filter(
+    (oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId
+  )
   return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={antallOppgaver.length} />
 }
 
@@ -117,8 +125,9 @@ const UfordelteSakerTab = () => {
 }
 
 const OverførtTilGosysTab = () => {
-  const antallOppgaver = useOppgaveliste().oppgaver.filter((oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS)
-    .length
+  const antallOppgaver = useOppgaveliste().oppgaver.filter(
+    (oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS
+  ).length
   return <OppgaveTab tag={TabType.OverførtGosys} label="Overført til Gosys" numberOfTasks={antallOppgaver} />
 }
 

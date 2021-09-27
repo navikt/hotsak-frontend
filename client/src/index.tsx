@@ -1,4 +1,4 @@
-import { render } from 'react-dom';
+import { render } from 'react-dom'
 //import ReactDOM from 'react-dom'
 
 import '@navikt/ds-tokens/dist/tokens.css'
@@ -12,9 +12,8 @@ declare global {
   }
 }
 
-// TODO hent fra miljøvariabel
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.REACT_APP_USE_MSW === 'true') {
   initMSW()
 }
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById('root'))

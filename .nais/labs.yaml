@@ -7,7 +7,7 @@ metadata:
   name: hm-saksbehandling-frontend
   namespace: teamdigihot
 spec:
-  image: {{ image }}
+  image: { { image } }
   team: teamdigihot
   port: 3000
   ingresses:
@@ -22,10 +22,6 @@ spec:
   replicas:
     max: 1
     min: 1
-  accessPolicy:
-    outbound:
-      rules:
-        - application: hm-mocks
   azure:
     application:
       enabled: true
@@ -42,12 +38,12 @@ spec:
     - secret: hm-saksbehandling
   env:
     - name: API_URL
-      value: http://hm-mocks.teamdigihot.svc.cluster.local
+      value: false
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_SPESIALIST
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
-
-
+    - name: USE_MSW
+      value: true

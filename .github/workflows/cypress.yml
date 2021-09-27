@@ -11,6 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Cache node deps
+        id: cache-node
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
       - name: top level install
         run: npm install
       - name: install frontend deps

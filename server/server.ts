@@ -73,7 +73,11 @@ app.get('/isready', (_, res) => {
 })
 
 app.get('/settings.js', (req, res) => {
-  res.send(`window.appSettings = {USE_MSW = ${process.env.USE_MSW}}`)
+  res.send(`
+    window.appSettings = {
+      USE_MSW: ${process.env.USE_MSW}
+    }
+  `)
 })
 
 const setUpAuthentication = () => {

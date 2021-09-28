@@ -23,6 +23,7 @@ import { sessionStore } from './sessionStore'
 import { AuthError, SpeilRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
 //import wiring from './wiring';
+import createEnvSettingsFile from './envSettings'
 
 const app = express()
 const port = config.server.port
@@ -33,6 +34,8 @@ const port = config.server.port
 //       })
 // }
 
+const buildPath = path.resolve(__dirname, '../client/build')
+createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);

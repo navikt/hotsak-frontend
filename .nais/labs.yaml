@@ -6,8 +6,6 @@ metadata:
     team: teamdigihot
   name: hm-saksbehandling-frontend
   namespace: teamdigihot
-  annotations:
-    nais.io/read-only-file-system: "false"
 spec:
   image: {{ image }}
   team: teamdigihot

@@ -34,7 +34,7 @@ const port = config.server.port
 //       })
 // }
 
-const buildPath = path.resolve(__dirname, '../client/build')
+const buildPath = path.resolve(__dirname, '../client')
 createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
 
 //const helsesjekk = { redis: false };

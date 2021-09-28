@@ -73,7 +73,7 @@ app.get('/settings.js', (req, res) => {
   res.send(`
     window.appSettings = {
       USE_MSW: ${process.env.USE_MSW},
-      MILJO: ${process.env.NAIS_CLUSTER_NAME}
+      MILJO: '${process.env.NAIS_CLUSTER_NAME}'
     }
   `)
 })

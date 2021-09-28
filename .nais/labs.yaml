@@ -38,7 +38,7 @@ spec:
     - secret: hm-saksbehandling
   env:
     - name: API_URL
-      value: false
+      value: ''
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_SPESIALIST

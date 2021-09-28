@@ -23,7 +23,6 @@ import { sessionStore } from './sessionStore'
 import { AuthError, SpeilRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
 //import wiring from './wiring';
-import createEnvSettingsFile from './envSettings'
 
 const app = express()
 const port = config.server.port
@@ -33,9 +32,6 @@ const port = config.server.port
 //         res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
 //       })
 // }
-
-// const buildPath = path.resolve(__dirname, '../client')
-// createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
@@ -76,7 +72,8 @@ app.get('/settings.js', (req, res) => {
   res.type('.js')
   res.send(`
     window.appSettings = {
-      USE_MSW: ${process.env.USE_MSW}
+      USE_MSW: ${process.env.USE_MSW},
+      MILJO: ${process.env.NAIS_CLUSTER_NAME}
     }
   `)
 })

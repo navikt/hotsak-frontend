@@ -1,12 +1,11 @@
 import { render } from 'react-dom'
+
 //import ReactDOM from 'react-dom'
-
 import '@navikt/ds-tokens/dist/tokens.css'
-// import environment from './environment'
-
 
 import App from './App'
 import { initMSW } from './_mocks_/msw'
+import environment from './environment'
 
 declare global {
   interface Window {
@@ -15,7 +14,7 @@ declare global {
 }
 
 console.log('process.env:', process.env)
-// console.log('environment:', environment)
+console.log('environment:', environment)
 
 const useMSW = process.env.REACT_APP_USE_MSW === 'true'
 if (useMSW) {

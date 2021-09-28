@@ -40,6 +40,8 @@
     <script type="application/javascript">
       window.appSettings = {}
     </script>
+    <% if (process.env.NODE_ENV === 'production') { %>
     <script type="text/javascript" src="/settings.js"></script>
+    <% } %>
   </body>
 </html>

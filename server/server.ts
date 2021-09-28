@@ -34,8 +34,8 @@ const port = config.server.port
 //       })
 // }
 
-const buildPath = path.resolve(__dirname, '../client/build')
-createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
+// const buildPath = path.resolve(__dirname, '../client/build')
+// createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);

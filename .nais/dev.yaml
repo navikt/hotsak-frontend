@@ -55,5 +55,5 @@ spec:
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
-    - name: USE_MSW
+    - name: REACT_APP_USE_MSW
       value: 'false'

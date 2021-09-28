@@ -73,6 +73,7 @@ app.get('/isready', (_, res) => {
 })
 
 app.get('/settings.js', (req, res) => {
+  res.setHeader('content-type', 'application/javascript;')
   res.send(`
     window.appSettings = {
       USE_MSW: ${process.env.USE_MSW}

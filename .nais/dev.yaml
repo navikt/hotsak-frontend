@@ -56,4 +56,4 @@ spec:
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: false
+      value: 'false'

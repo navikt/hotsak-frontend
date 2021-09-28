@@ -13,7 +13,7 @@ declare global {
 }
 
 console.log('process.env:', process.env)
-const useMSW = process.env.REACT_APP_USE_MSW === 'true' || process.env.USE_MSW
+const useMSW = process.env.REACT_APP_USE_MSW === 'true' || process.env.USE_MSW === 'true'
 if (useMSW) {
   initMSW()
 }

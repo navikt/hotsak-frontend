@@ -34,8 +34,8 @@ const port = config.server.port
 //       })
 // }
 
-const buildPath = path.resolve(__dirname, '../client')
-createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
+// const buildPath = path.resolve(__dirname, '../client')
+// createEnvSettingsFile(path.resolve(`${buildPath}/static/js/settings.js`))
 
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
@@ -70,6 +70,10 @@ app.get('/isready', (_, res) => {
         res.statusCode = 503;
         return res.send('NOT READY');
     }*/
+})
+
+app.get('/settings.js', (req, res) => {
+  res.send(`window.appSettings = {USE_MSW = ${process.env.USE_MSW}}`)
 })
 
 const setUpAuthentication = () => {

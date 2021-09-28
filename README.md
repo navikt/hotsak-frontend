@@ -24,7 +24,7 @@ Alternativ CD inn i client og kjørt npm start
 For å kjøre lokalt med mockede data, kan du kjøre
 
 ```
-npm run dev:mock
+npm run dev
 ```
 
 fra rot i prosjektet. MSW brukes da for å interecepte requests til APIet.
@@ -33,8 +33,8 @@ fra rot i prosjektet. MSW brukes da for å interecepte requests til APIet.
 
 Vi bruker Cypress sammen med MSW for å kjøre testene våre:
 
-- Kjør cypress-tester i nettleser: start appen med `npm run dev:mock`, deretter `npm run cypress:open` i en annen terminal.
-- Kjør cypress-tester i headless nettleser: start appen med `npm run dev:mock`, deretter `npm run cypress:run` i en annen terminal.
+- Kjør cypress-tester i nettleser: start appen med `npm run dev`, deretter `npm run cypress:open` i en annen terminal.
+- Kjør cypress-tester i headless nettleser: start appen med `npm run dev`, deretter `npm run cypress:run` i en annen terminal.
 
 Tester kjøres også automatisk i Github Actions ved push.
 

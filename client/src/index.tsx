@@ -10,14 +10,15 @@ import environment from './environment'
 declare global {
   interface Window {
     msw: any
+    appSettings: any
   }
 }
 
 console.log('process.env:', process.env)
 console.log('environment:', environment)
-console.log('window:', window)
+console.log('window.appSettings:', window.appSettings)
 
-const useMSW = process.env.REACT_APP_USE_MSW === 'true' || environment.USE_MSW === true
+const useMSW = process.env.REACT_APP_USE_MSW === 'true' || window.appSettings.USE_MSW === true
 if (useMSW) {
   initMSW()
 }

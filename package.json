@@ -14,8 +14,7 @@
     "build-client": "npm run build --prefix client",
     "build-server": "npm run build-server --prefix server",
     "build": "concurrently \"npm run build-server\" \"cross-env-shell BUILD_PATH=../dist/client npm run build-client\"",
-    "dev": "cross-env PORT=3001 npm run start --prefix client",
-    "dev:mock": "npm run dev:mock --prefix client",
+    "dev": "npm run dev --prefix client",
     "cypress:open": "npm run cypress:open --prefix client",
     "cypress:run": "npm run cypress:run --prefix client",
     "devserver": "cross-env PORT=3001 npm run start --prefix server"

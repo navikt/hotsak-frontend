@@ -1,3 +1,4 @@
+import { VedtakStatusType } from "../types/types.internal"
 
 export interface SaksbehandlingApiResponse {
   status: number

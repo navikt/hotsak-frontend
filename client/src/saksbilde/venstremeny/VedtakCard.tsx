@@ -79,19 +79,20 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
-        <>
+      <>
         <Card>
-            <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
-            <Tekst>{sak.søknadGjelder}</Tekst>
+          <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
+          <Tekst>{sak.søknadGjelder}</Tekst>
         </Card>
-      <Card>
-          
-        <CardTitle>VEDTAK</CardTitle>
-        <TagGrid>
-        <Tag variant="success">Innvilget</Tag>
-        <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
-        </TagGrid>
-      </Card>
+        <Card>
+          <CardTitle>VEDTAK</CardTitle>
+          <TagGrid>
+            <Tag data-cy="tag-soknad-status" variant="success">
+              Innvilget
+            </Tag>
+            <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
+          </TagGrid>
+        </Card>
       </>
     )
   }
@@ -100,7 +101,9 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
-        <Tag variant="info">Overført til Gosys</Tag>
+        <Tag data-cy="tag-soknad-status" variant="info">
+          Overført til Gosys
+        </Tag>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
       </Card>
     )
@@ -142,14 +145,10 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
           onChange={(event) => setDokumentbeskrivelse(event.target.value)}
         />
         <ButtonContainer>
-          <Knapp variant={'action'} size={'s'} onClick={() => setVisVedtakModal(true)}>
+          <Knapp variant={'action'} size={'s'} onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
             <span>Innvilg søknaden</span>
           </Knapp>
-          <Knapp
-            variant={'primary'}
-            size={'s'}
-            onClick={()  => setVisGosysModal(true)}
-          >
+          <Knapp variant={'primary'} size={'s'} onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
             Overfør til Gosys
           </Knapp>
         </ButtonContainer>

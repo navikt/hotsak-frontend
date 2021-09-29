@@ -33,12 +33,11 @@ const port = config.server.port
 //       })
 // }
 
-
 //const helsesjekk = { redis: false };
 //const dependencies = wiring.getDependencies(app, helsesjekk);
 
-app.use(/\/((?!api).)*/, bodyParser.json());
-app.use(/\/((?!api).)*/, bodyParser.urlencoded({extended: false}));
+app.use(/\/((?!api).)*/, bodyParser.json())
+app.use(/\/((?!api).)*/, bodyParser.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 app.use(sessionStore(config))
@@ -69,6 +68,16 @@ app.get('/isready', (_, res) => {
     }*/
 })
 
+app.get('/settings.js', (req, res) => {
+  res.type('.js')
+  res.send(`
+    window.appSettings = {
+      USE_MSW: ${process.env.USE_MSW},
+      MILJO: '${process.env.NAIS_CLUSTER_NAME}'
+    }
+  `)
+})
+
 const setUpAuthentication = () => {
   app.get('/login', (req: SpeilRequest, res: Response) => {
     const session = req.session
@@ -90,8 +99,7 @@ const setUpAuthentication = () => {
   })
   app.get('/logout', (req: SpeilRequest, res: Response) => {
     azureClient!.revoke(req.session.speilToken).finally(() => {
-      req.session.destroy(() => {
-      })
+      req.session.destroy(() => {})
       res.clearCookie('speil')
       res.redirect(302, config.oidc.logoutUrl)
     })
@@ -99,7 +107,8 @@ const setUpAuthentication = () => {
 
   app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
     const session = req.session
-    auth.validateOidcCallback(req, azureClient!, config.oidc)
+    auth
+      .validateOidcCallback(req, azureClient!, config.oidc)
       .then((tokens: string[]) => {
         const [accessToken, idToken, refreshToken] = tokens
         res.cookie('speil', `${idToken}`, {
@@ -114,8 +123,7 @@ const setUpAuthentication = () => {
       .catch((err: AuthError) => {
         logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`)
         logger.sikker.error(`Error caught during login: ${err.message}`, err)
-        session.destroy(() => {
-        })
+        session.destroy(() => {})
         res.sendStatus(err.statusCode)
       })
   })
@@ -143,7 +151,7 @@ app.use('/*', async (req: SpeilRequest, res, next) => {
         logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`)
         logger.sikker.info(
           `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
-          logger.requestMeta(req),
+          logger.requestMeta(req)
         )
       }
       if (req.originalUrl === '/' || req.originalUrl.startsWith('/static')) {
@@ -164,7 +172,6 @@ app.use('/api/tildeling', tildelingRoutes(dependencies.tildeling));
 app.use('/api/opptegnelse', opptegnelseRoutes(dependencies.opptegnelse));
 app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
 app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
-
 
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
@@ -194,4 +201,3 @@ app.use('/*', express.static(htmlPath))
 //app.use('/', express.static('dist/client/'))
 
 app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))
-

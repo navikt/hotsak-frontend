@@ -13,21 +13,7 @@ env:
   IMAGE: 'ghcr.io/navikt/hm-saksbehandling-frontend:${{ github.sha }}'
 
 jobs:
-  test:
-    name: Run Cypress tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          start: npm run dev
-          wait-on: 'http://localhost:3001'
-          working-directory: client
-
   build:
-    needs: [test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -77,9 +63,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  test:
+    name: Run Cypress tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run dev
+          wait-on: 'http://localhost:3001'
+          working-directory: client
+
   deployDev:
     name: Deploy to dev
-    needs: [build]
+    needs: [build, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -91,7 +90,7 @@ jobs:
 
   deployLabs:
     name: Deploy to labs
-    needs: [build]
+    needs: [build, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

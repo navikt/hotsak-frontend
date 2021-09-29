@@ -8,7 +8,6 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - msw-cypress
 env:
   IMAGE: 'ghcr.io/navikt/hm-saksbehandling-frontend:${{ github.sha }}'
 

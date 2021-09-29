@@ -22,7 +22,6 @@ import { OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
 import { capitalize } from '../utils/stringFormating'
 import { formaterDato } from '../utils/date'
 
-
 const SaksbildeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,12 +55,9 @@ const SaksbildeContent = React.memo(() => {
   const { sak, isError, isLoading } = useSak()
   const { path } = useRouteMatch()
 
-
-
   if (isLoading) return <LasterSaksbilde />
 
   if (isError) throw new Error('Feil med henting av sak' + isError)
-
 
   return (
     <SaksbildeContainer className="saksbilde">
@@ -84,12 +80,18 @@ const SaksbildeContent = React.memo(() => {
               <VedtakCard sak={sak} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
-            {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && <Alert size="s" variant="success">
-     {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksDato)} av ${sak.vedtak.saksbehandlerNavn}`}
-    </Alert>}
-    {sak.status === OppgaveStatusType.SENDT_GOSYS && <Alert size="s" variant="info">
-      {`Saken er overført til Gosys. Videre saksbehandling skjer i Gosys`}
-    </Alert>}
+              {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && (
+                <Alert size="s" variant="success" data-cy="alert-vedtak-status">
+                  {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksDato)} av ${
+                    sak.vedtak.saksbehandlerNavn
+                  }`}
+                </Alert>
+              )}
+              {sak.status === OppgaveStatusType.SENDT_GOSYS && (
+                <Alert size="s" variant="info" data-cy="alert-vedtak-status">
+                  Saken er overført til Gosys. Videre saksbehandling skjer i Gosys
+                </Alert>
+              )}
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
@@ -112,7 +114,6 @@ const SaksbildeContent = React.memo(() => {
         </AutoFlexContainer>
         <Historikk />
       </Container>
-      
     </SaksbildeContainer>
   )
 })

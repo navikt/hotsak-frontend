@@ -3,8 +3,6 @@ import { Tekst } from '../felleskomponenter/typografi'
 import { Button, Loader } from '@navikt/ds-react'
 import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
 
-
-
 interface BekreftVedtakModalProps {
   open: boolean
   onBekreft: Function
@@ -16,15 +14,22 @@ export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: Bekref
   // Modal && Modal.setAppElement("#root")
 
   return (
-    <DialogBoks shouldCloseOnOverlayClick={false} open={open} onClose={() => {onClose()}}>
+    <DialogBoks
+      shouldCloseOnOverlayClick={false}
+      open={open}
+      onClose={() => {
+        onClose()
+      }}
+    >
       <Title level="1" size="m" spacing={true}>
-       Vil du innvilge søknaden?
+        Vil du innvilge søknaden?
       </Title>
       <Tekst>
-        Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS. Innbygger vil få beskjed om vedtaket på Ditt NAV. 
+        Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS. Innbygger
+        vil få beskjed om vedtaket på Ditt NAV.
       </Tekst>
       <ButtonContainer>
-        <Button variant={'action'} size={'s'} onClick={() => onBekreft()}>
+        <Button variant={'action'} size={'s'} onClick={() => onBekreft()} data-cy="btn-innvilg-soknad">
           <span>Innvilg søknaden</span>
           {loading && <Loader />}
         </Button>
@@ -32,10 +37,10 @@ export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: Bekref
           variant={'primary'}
           size={'s'}
           onClick={() => {
-           onClose()
+            onClose()
           }}
         >
-         Avbryt
+          Avbryt
         </Button>
       </ButtonContainer>
     </DialogBoks>

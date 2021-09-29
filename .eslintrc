@@ -8,9 +8,7 @@
     }
   },
   "plugins": ["@typescript-eslint", "react", "react-hooks"],
-  "extends": [
-    "eslint:recommended", "prettier"
-  ],
+  "extends": ["eslint:recommended", "prettier"],
   "settings": {
     "react": {
       "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -18,12 +16,12 @@
   },
   "rules": {
     "react/jsx-no-bind": [
-       "error",
-       {
-          "allowArrowFunctions": true,
-          "allowBind": false,
-          "ignoreRefs": true
-       }
+      "error",
+      {
+        "allowArrowFunctions": true,
+        "allowBind": false,
+        "ignoreRefs": true
+      }
     ],
     "react/no-did-update-set-state": "error",
     "react/no-unknown-property": "error",
@@ -38,5 +36,5 @@
     "react-hooks/rules-of-hooks": "error",
     "no-undef": "off",
     "no-empty-pattern": "off"
- }
+  }
 }

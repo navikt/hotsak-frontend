@@ -82,8 +82,8 @@ export const putVedtak = async (saksnummer: string, søknadsbeskrivelse: string,
   return put(`${baseUrl}/api/vedtak/${saksnummer}`, { søknadsbeskrivelse, status})
 }
 
-export const putSendTilGosys = async (saksnummer: string, søknadsbeskrivelse: string, status: OppgaveStatusType) => {
-    return put(`${baseUrl}/api/overforGosys/${saksnummer}`, { søknadsbeskrivelse, status})
+export const putSendTilGosys = async (saksnummer: string, søknadsbeskrivelse: string) => {
+    return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { søknadsbeskrivelse})
   }
 
 

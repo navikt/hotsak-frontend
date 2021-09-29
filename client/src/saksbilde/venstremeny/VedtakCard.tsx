@@ -67,7 +67,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   const sendTilGosys = () => {
     setLoading(true)
-    putSendTilGosys(saksid, dokumentbeskrivelse, OppgaveStatusType.SENDT_GOSYS)
+    putSendTilGosys(saksid, dokumentbeskrivelse)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)

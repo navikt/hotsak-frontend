@@ -100,7 +100,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.put('/api/overforGosys/:saksnummer', (req, res, ctx) => {
+  rest.put('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
     //@ts-ignore
     const soknadsbeskrivelse = req.body.søknadsbeskrivelse
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)

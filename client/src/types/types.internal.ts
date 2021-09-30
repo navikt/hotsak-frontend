@@ -18,10 +18,10 @@ export interface Sak {
 
 export interface Hendelse {
     id: string, 
-    tittel: string,
-    timestamp: string,
+    hendelse: string,
+    opprettet: string,
     bruker?: string, 
-    innhold?: string
+    detaljer?: string
 }
 
 export interface VedtakType {

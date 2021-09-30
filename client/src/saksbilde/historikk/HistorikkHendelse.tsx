@@ -20,13 +20,13 @@ const ContentContainer = styled.div`
 `;
 
 
-export const HistorikkHendelse = ({ tittel, innhold, timestamp, bruker }: Hendelse) => {
+export const HistorikkHendelse = ({ hendelse, detaljer, opprettet, bruker }: Hendelse) => {
     return (
         <Container>
             <ContentContainer>
-                <Etikett>{tittel}</Etikett>
-                {timestamp && <Undertittel>{norskTimestamp(timestamp)}</Undertittel>}
-                <Tekst>{innhold}</Tekst>
+                <Etikett>{hendelse}</Etikett>
+                {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
+                <Tekst>{detaljer}</Tekst>
                 <Tekst>{bruker}</Tekst>
             </ContentContainer>
         </Container>

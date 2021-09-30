@@ -30,8 +30,8 @@ const saksbehandlingHandlers = [
 
     const hendelse = {
       id: '2',
-      tittel: 'Saksbehandler har tatt saken',
-      timestamp: '2021-03-29T12:38:45',
+      hendelse: 'Saksbehandler har tatt saken',
+      opprettet: '2021-03-29T12:38:45',
       bruker: 'Silje Saksbehandler',
     }
 
@@ -61,16 +61,16 @@ const saksbehandlingHandlers = [
 
     const dokumentBeskrivelseHendelse = {
       id: '3',
-      tittel: 'Dokumentbeskrivelse oppdatert',
-      innhold: soknadsbeskrivelse,
-      timestamp: '2021-03-29T12:43:44',
+      hendelse: 'Dokumentbeskrivelse oppdatert',
+      detaljer: soknadsbeskrivelse,
+      opprettet: '2021-03-29T12:43:44',
       bruker: 'Silje Saksbehandler',
     }
     const vedtakHendelse = {
       id: '4',
-      tittel: 'Vedtak fattet',
-      timestamp: '2021-03-29T12:43:45',
-      innhold: 'Søknaden blir innvilget',
+      hendelse: 'Vedtak fattet',
+      opprettet: '2021-03-29T12:43:45',
+      detaljer: 'Søknaden blir innvilget',
       bruker: 'Silje Saksbehandler',
     }
     const sfHendelse = {
@@ -109,8 +109,8 @@ const saksbehandlingHandlers = [
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
     const hendelse = {
       id: '5',
-      tittel: 'Saken ble overført Gosys',
-      timestamp: '2021-03-29T12:43:45',
+      hendelse: 'Saken ble overført Gosys',
+      opprettet: '2021-03-29T12:43:45',
       bruker: 'Silje Saksbehandler',
     }
 

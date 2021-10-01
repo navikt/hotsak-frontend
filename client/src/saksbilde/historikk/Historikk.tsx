@@ -1,7 +1,10 @@
 import styled from 'styled-components/macro'
+
 import { sorterKronologisk } from '../../utils/date'
+
 import { useHistorikk } from '../historikkHook'
 import { HistorikkHendelse } from './HistorikkHendelse'
+
 const HistorikkTitle = styled.li`
   display: flex;
   align-items: center;
@@ -36,7 +39,7 @@ export const Historikk: React.FC = ({ children }) => {
     <Hendelser>
       <HistorikkTitle>HISTORIKK</HistorikkTitle>
       {hendelser
-        .sort((a, b) => sorterKronologisk(a.timestamp, b.timestamp))
+        .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))
         .map((it) => (
           <HistorikkHendelse key={it.id} {...it} />
         ))}

@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro'
+
 import { Modal } from '@navikt/ds-react'
 
 export const DialogBoks = styled(Modal)`

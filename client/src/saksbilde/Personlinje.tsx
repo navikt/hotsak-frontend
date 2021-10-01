@@ -1,6 +1,8 @@
-import styled from 'styled-components/macro'
 import dayjs from 'dayjs'
+import styled from 'styled-components/macro'
+
 import { Element, Normaltekst } from 'nav-frontend-typografi'
+
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
 

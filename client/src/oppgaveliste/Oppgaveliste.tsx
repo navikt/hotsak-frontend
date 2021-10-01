@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from 'styled-components/macro'
+
 import Panel from 'nav-frontend-paneler'
 
-import { OppgaverTable } from './OppgaverTable'
-import { Oppgave, OppgaveStatusType } from '../types/types.internal'
+import { sorterKronologisk } from '../utils/date'
+
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { Tabs, TabType } from './tabs'
+import { Toast } from '../felleskomponenter/Toast'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
 import { useInnloggetSaksbehandler } from '../state/authentication'
+import { Oppgave, OppgaveStatusType } from '../types/types.internal'
 import { IngenOppgaver } from './IngenOppgaver'
+import { OppgaverTable } from './OppgaverTable'
 import { useOppgaveliste } from './oppgavelisteHook'
-import { Toast } from '../felleskomponenter/Toast'
-import { sorterKronologisk } from '../utils/date'
+import { Tabs, TabType } from './tabs'
 
 interface TabContextValue {
   aktivTab: TabType

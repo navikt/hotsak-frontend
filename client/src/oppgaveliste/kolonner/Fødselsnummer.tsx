@@ -1,8 +1,9 @@
-import { Normaltekst } from 'nav-frontend-typografi'
 import React from 'react'
-import { formaterFødselsnummer } from '../../utils/stringFormating'
+
+import { Normaltekst } from 'nav-frontend-typografi'
 
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { formaterFødselsnummer } from '../../utils/stringFormating'
 
 interface FødselsnummerProps {
   fødselsnummer: string

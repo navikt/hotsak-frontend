@@ -1,9 +1,10 @@
 import fetchIntercept from 'fetch-intercept'
-import { Saksbehandler } from '../types/types.internal'
 import { useEffect } from 'react'
 import { atom, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { extractValues, Keys } from '../utils/cookie'
+
+import { Saksbehandler } from '../types/types.internal'
 
 interface AuthInfo {
   name: string

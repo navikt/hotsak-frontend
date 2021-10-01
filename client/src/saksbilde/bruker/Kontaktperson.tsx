@@ -1,5 +1,5 @@
-import { KontaktPerson, KontaktPersonType, Formidler } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
+import { KontaktPerson, KontaktPersonType, Formidler } from '../../types/types.internal'
 
 interface KontaktpersonProps {
   kontaktperson?: KontaktPerson

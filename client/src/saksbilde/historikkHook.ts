@@ -1,6 +1,8 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
+
 import { httpGet } from '../io/http'
+
 import { Hendelse } from '../types/types.internal'
 
 export function useHistorikk() {

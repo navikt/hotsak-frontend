@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
 import { Personinfo } from '../../types/types.internal'
-import { capitalizeName } from '../../utils/stringFormating'
 
 interface HjelpemiddelbrukerProps {
   person: Personinfo

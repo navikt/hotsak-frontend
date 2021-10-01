@@ -5,14 +5,12 @@ import styled from '@emotion/styled'
 //import { PopoverOrientering } from 'nav-frontend-popover'
 import { Normaltekst } from 'nav-frontend-typografi'
 
-import { useTabContext } from './Oppgaveliste'
-import { useOppgaveliste } from './oppgavelisteHook'
-
 import { Flex } from '../felleskomponenter/Flex'
-import { OppgaveStatusType } from '../types/types.internal'
-
 //import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
 import { useInnloggetSaksbehandler } from '../state/authentication'
+import { OppgaveStatusType } from '../types/types.internal'
+import { useTabContext } from './Oppgaveliste'
+import { useOppgaveliste } from './oppgavelisteHook'
 
 export enum TabType {
   Alle = 'alle',

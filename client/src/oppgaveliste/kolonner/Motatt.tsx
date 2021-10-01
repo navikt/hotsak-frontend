@@ -1,10 +1,10 @@
+import dayjs from 'dayjs'
 import React from 'react'
 
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
-import dayjs from 'dayjs'
-
-import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../../utils/date'
 import { Normaltekst } from 'nav-frontend-typografi'
+
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../../utils/date'
 
 interface MottattProps {
   dato: string

@@ -10,9 +10,9 @@ import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { Oppgaveetikett } from './Oppgaveetikett'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
+import { Oppgaveetikett } from './Oppgaveetikett'
 
 interface PeriodeCardProps {
   søknadGjelder: string

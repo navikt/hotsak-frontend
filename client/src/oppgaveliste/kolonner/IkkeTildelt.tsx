@@ -1,15 +1,16 @@
-import styled from 'styled-components/macro'
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import styled from 'styled-components/macro'
+// @ts-ignore
+import { useSWRConfig } from 'swr'
 
 import { Knapp } from 'nav-frontend-knapper'
 
-import { useHistory } from 'react-router-dom'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
 //import { useTildelOppgave } from '../../../../state/oppgaver';
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { postTildeling } from '../../io/http'
-// @ts-ignore
-import { useSWRConfig } from 'swr'
+
+import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 const Tildelingsknapp = styled(Knapp)`
   min-height: 0;

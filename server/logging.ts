@@ -3,7 +3,6 @@ import winston from 'winston'
 import { SpeilRequest } from './types'
 
 import authSupport from './auth/authSupport'
-
 ;('use strict')
 
 const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')

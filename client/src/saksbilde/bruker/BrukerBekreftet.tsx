@@ -1,5 +1,7 @@
-import { Title } from '@navikt/ds-react'
 import styled from 'styled-components/macro'
+
+import { Title } from '@navikt/ds-react'
+
 import { Tekst } from '../../felleskomponenter/typografi'
 
 interface BrukerBekreftetProps {

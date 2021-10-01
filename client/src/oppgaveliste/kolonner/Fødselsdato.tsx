@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { Normaltekst } from 'nav-frontend-typografi'
+
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { formaterDato } from '../../utils/date'
-
-import { Normaltekst } from 'nav-frontend-typografi'
 
 interface FødselsdatoProps {
   fødselsdato?: string

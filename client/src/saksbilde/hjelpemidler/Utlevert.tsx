@@ -1,6 +1,6 @@
-import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
-
 import { Normaltekst } from 'nav-frontend-typografi'
+
+import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
 
 interface UtlevertProps {
   alleredeUtlevert: boolean

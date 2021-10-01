@@ -1,10 +1,13 @@
-import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
-import { Title } from '@navikt/ds-react'
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import styled from 'styled-components/macro'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
+
+import { Title } from '@navikt/ds-react'
+
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
+
 import { Strek } from '../../felleskomponenter/Strek'
+import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
 
 interface FormidlerProps {
   formidler: Formidler

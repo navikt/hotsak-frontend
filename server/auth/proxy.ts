@@ -2,7 +2,6 @@ import { custom, Issuer } from 'openid-client'
 import tunnel from 'tunnel'
 
 import logger from '../logging'
-
 ;('use strict')
 
 export const setup = (issuer: typeof Issuer, bespoke: typeof custom) => {

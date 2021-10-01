@@ -1,5 +1,5 @@
-import { Levering, Leveringsmåte } from '../../types/types.internal'
 import { Tekst } from '../../felleskomponenter/typografi'
+import { Levering, Leveringsmåte } from '../../types/types.internal'
 
 interface LeveringProps {
   levering: Levering

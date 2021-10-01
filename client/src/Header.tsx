@@ -1,21 +1,11 @@
 import styled from '@emotion/styled'
-//import { Person } from 'internal-types';
-import { Link /*, useHistory*/ } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
-//import { useRecoilValue } from 'recoil';
-//import '@navikt/ds-css'
-//import { InternalHeader, InternalHeaderTitle } from '@navikt/ds-react'
 import { HeaderEnkel } from '@navikt/helse-frontend-header'
 import '@navikt/helse-frontend-header/lib/main.css'
-import { useRecoilValue } from 'recoil'
+
 import { authState } from './state/authentication'
-//import { Varseltype } from '@navikt/helse-frontend-varsel'
-
-//import { authState } from '../state/authentication';
-//import { useAddVarsel, useRemoveVarsel } from '../state/varsler';
-
-//import { BentoMeny } from './BentoMeny';
-//import Brukermeny from './Brukermeny';
 
 const Container = styled.div`
   flex-shrink: 0;

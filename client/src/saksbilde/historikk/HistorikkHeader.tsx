@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro'
+
 //import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
 //import { TabButton } from '../TabButton'
 

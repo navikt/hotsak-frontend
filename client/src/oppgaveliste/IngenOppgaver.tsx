@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
-import { useTabContext } from './Oppgaveliste'
+
 import { Sidetittel } from 'nav-frontend-typografi'
+
+import { useTabContext } from './Oppgaveliste'
 import { TabType } from './tabs'
 
 const Container = styled.div`

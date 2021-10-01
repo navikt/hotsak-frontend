@@ -1,5 +1,5 @@
-import styled from 'styled-components/macro'
 import React, { useState } from 'react'
+import styled from 'styled-components/macro'
 
 import NavFrontendChevron from 'nav-frontend-chevron'
 import Lenke from 'nav-frontend-lenker'

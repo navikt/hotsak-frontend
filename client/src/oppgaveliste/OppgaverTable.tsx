@@ -6,8 +6,10 @@ import { Cell } from '../felleskomponenter/table/Cell'
 import { Header } from '../felleskomponenter/table/Header'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Table } from '../felleskomponenter/table/Table'
+import { capitalize } from '../utils/stringFormating'
 
 import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
+import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
 //import saksbehandler from '../saksbehandler/innloggetSaksbehandler'
 //import { StatusType } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
@@ -21,8 +23,6 @@ import { Motatt } from './kolonner/Motatt'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { TabType } from './tabs'
-import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
-import { capitalize } from '../utils/stringFormating'
 
 const Container = styled.div`
   min-height: 300px;

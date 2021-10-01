@@ -1,21 +1,25 @@
-import styled from 'styled-components/macro'
-
-import { Button, Tag } from '@navikt/ds-react'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
-import { Input } from 'nav-frontend-skjema'
 import React from 'react'
-import { putVedtak, putSendTilGosys } from '../../io/http'
-import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
-import { Tekst } from '../../felleskomponenter/typografi'
-import { capitalizeName } from '../../utils/stringFormating'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { BekreftVedtakModal } from '../BekreftVedtakModal'
-import { OverførGosysModal } from '../OverførGosysModal'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
+import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
+
+import { Input } from 'nav-frontend-skjema'
+
+import { Button, Tag } from '@navikt/ds-react'
+
+import { putVedtak, putSendTilGosys } from '../../io/http'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
+import { capitalizeName } from '../../utils/stringFormating'
+
+import { Tekst } from '../../felleskomponenter/typografi'
+import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
+import { BekreftVedtakModal } from '../BekreftVedtakModal'
+import { OverførGosysModal } from '../OverførGosysModal'
+import { Card } from './Card'
+import { CardTitle } from './CardTitle'
+
 interface VedtakCardProps {
   sak: Sak
 }

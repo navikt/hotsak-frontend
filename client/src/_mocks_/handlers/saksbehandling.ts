@@ -1,7 +1,8 @@
 import { rest } from 'msw'
+
+import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
-import historikk from '../mockdata/historikk.json'
 
 const sakshistorikk = [
   { saksid: '111111', hendelser: deepClone(historikk) },

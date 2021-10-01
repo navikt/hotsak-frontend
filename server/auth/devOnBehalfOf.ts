@@ -1,3 +1,3 @@
 export default {
-    hentFor: async () => '',
-};
+  hentFor: async () => '',
+}

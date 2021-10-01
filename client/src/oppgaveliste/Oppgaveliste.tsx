@@ -54,24 +54,24 @@ export const Oppgaveliste = () => {
   const saksbehandler = useInnloggetSaksbehandler()
 
   React.useEffect(() => {
-      const filtrert =  oppgaver?.filter((oppgave) => {
-      switch (aktivTab) {
-        case TabType.Ufordelte:
-          return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
-        case TabType.OverførtGosys:
-          return oppgave.status === OppgaveStatusType.SENDT_GOSYS
-        case TabType.Mine:
-          return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
-        default:
-          return true
-      }
-    }).sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+    const filtrert =
+      oppgaver
+        ?.filter((oppgave) => {
+          switch (aktivTab) {
+            case TabType.Ufordelte:
+              return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
+            case TabType.OverførtGosys:
+              return oppgave.status === OppgaveStatusType.SENDT_GOSYS
+            case TabType.Mine:
+              return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
+            default:
+              return true
+          }
+        })
+        .sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
 
-  setFiltrerteOppgaver(filtrert)
-
-}, [aktivTab, oppgaver, saksbehandler.objectId])
-
-
+    setFiltrerteOppgaver(filtrert)
+  }, [aktivTab, oppgaver, saksbehandler.objectId])
 
   if (isError) {
     throw Error('Feil med henting av oppgaver')

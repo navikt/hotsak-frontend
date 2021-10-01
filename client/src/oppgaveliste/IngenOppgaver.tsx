@@ -20,7 +20,7 @@ const Tekst = styled(Sidetittel)`
 `
 
 export const IngenOppgaver = () => {
-    const { aktivTab } = useTabContext()
+  const { aktivTab } = useTabContext()
 
   switch (aktivTab) {
     case TabType.Ufordelte:
@@ -43,7 +43,7 @@ export const IngenOppgaver = () => {
           <Tekst>Ingen saker overført til Gosys</Tekst>
         </Container>
       )
-      case TabType.Alle: 
+    case TabType.Alle:
       return (
         <Container>
           {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}

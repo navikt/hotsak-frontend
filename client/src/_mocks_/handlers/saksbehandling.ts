@@ -19,7 +19,7 @@ const saksbehandlingHandlers = [
   rest.post(`/api/tildeling/:saksnummer`, (req, res, ctx) => {
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
-    
+
     const saksbehandler = {
       epost: 'silje.saksbehandler@nav.no',
       objectId: '23ea7485-1324-4b25-a763-assdfdfa',
@@ -74,10 +74,10 @@ const saksbehandlingHandlers = [
       bruker: 'Silje Saksbehandler',
     }
     const sfHendelse = {
-        "id": "5",
-        "tittel": "Serviceforespørsel opprettet i OEBS",
-        "timestamp": "2021-03-29T12:45:45",
-        "innhold": "SF-nummer: 1390009031"
+      id: '5',
+      tittel: 'Serviceforespørsel opprettet i OEBS',
+      timestamp: '2021-03-29T12:45:45',
+      innhold: 'SF-nummer: 1390009031',
     }
 
     sakshistorikk[historikkIdx]['hendelser'].push(dokumentBeskrivelseHendelse)

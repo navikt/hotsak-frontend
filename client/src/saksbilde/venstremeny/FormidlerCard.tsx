@@ -3,7 +3,7 @@ import { Normaltekst } from 'nav-frontend-typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
-import {IconContainer} from './IconContainer'
+import { IconContainer } from './IconContainer'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -15,8 +15,8 @@ interface FormidlerCardProps {
 export const FormidlerCard = ({ formidlerNavn, kommune }: FormidlerCardProps) => {
   return (
     <Card>
-        <CardTitle>FORMIDLER</CardTitle>
-        <Grid>
+      <CardTitle>FORMIDLER</CardTitle>
+      <Grid>
         <IconContainer>
           <Personikon />
         </IconContainer>

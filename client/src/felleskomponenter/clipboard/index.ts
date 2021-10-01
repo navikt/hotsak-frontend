@@ -1,3 +1,3 @@
-import { Clipboard } from './Clipboard';
+import { Clipboard } from './Clipboard'
 
-export { Clipboard };
+export { Clipboard }

@@ -79,10 +79,10 @@
       "brukerErDigital": "true"
     },
     "saksbehandler": {
-        "epost": "a.b@nav.no",
-        "objectId": "23ea7485-1324-4b25-a763-6969",
-        "navn": "Geir Markusen"
-      },
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-6969",
+      "navn": "Geir Markusen"
+    },
     "status": "SENDT_GOSYS",
     "enhet": [
       {
@@ -158,6 +158,4 @@
       }
     ]
   }
-
-
 ]

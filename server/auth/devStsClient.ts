@@ -1,7 +1,7 @@
-const init = () => undefined;
+const init = () => undefined
 
 const hentAccessToken = async () => {
-    return 'accessToken';
-};
+  return 'accessToken'
+}
 
-export default { init, hentAccessToken };
+export default { init, hentAccessToken }

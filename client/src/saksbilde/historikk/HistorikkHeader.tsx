@@ -16,7 +16,7 @@ const Header = styled.section`
 export const HistorikkHeader: React.FC = ({ children }) => {
   return (
     <Header>
-        {/*<HistorikkTabButton active={true}>
+      {/*<HistorikkTabButton active={true}>
           <HistorikkIkon />
   </HistorikkTabButton>*/}
     </Header>

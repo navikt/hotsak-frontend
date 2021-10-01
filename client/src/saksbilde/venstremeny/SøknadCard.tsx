@@ -11,8 +11,8 @@ import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Oppgaveetikett } from './Oppgaveetikett'
-import {Grid} from './Grid'
-import {IconContainer} from './IconContainer'
+import { Grid } from './Grid'
+import { IconContainer } from './IconContainer'
 
 interface PeriodeCardProps {
   søknadGjelder: string
@@ -50,7 +50,7 @@ export const SøknadCard = ({
         </IconContainer>
         <CardTitle>{`Søknad om ${søknadGjelder}`}</CardTitle>
         <IconContainer />
-            <Normaltekst  data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Normaltekst>
+        <Normaltekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Normaltekst>
         <IconContainer>
           <KalenderIkon />
         </IconContainer>

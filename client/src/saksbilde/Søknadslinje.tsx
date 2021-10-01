@@ -31,7 +31,7 @@ export enum Location {
 }
 
 export const Søknadslinje = () => {
-    const {saksid} = useSak().sak;
+  const { saksid } = useSak().sak
   return (
     <Container>
       <Flex>

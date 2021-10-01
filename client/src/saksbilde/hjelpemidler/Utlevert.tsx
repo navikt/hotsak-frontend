@@ -7,12 +7,8 @@ interface UtlevertProps {
   utlevertInfo: UtlevertInfo
 }
 
-
-
 export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertInfo }) => {
-
   if (alleredeUtlevert) {
-
     let utlevertTekst
 
     switch (utlevertInfo.utlevertType) {
@@ -30,10 +26,7 @@ export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertIn
         break
     }
 
-
-    return (
-    <Normaltekst>{`Utlevert: ${utlevertTekst}`}</Normaltekst>
-    )
+    return <Normaltekst>{`Utlevert: ${utlevertTekst}`}</Normaltekst>
   }
   return null
 }

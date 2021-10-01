@@ -1,10 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ReactNode } from 'react'
-import {
-  useHistory,
-  useLocation,
-} from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { TabButton } from './TabButton'
 
@@ -47,7 +44,7 @@ interface TabLinkProps {
 
 export const TabLink = ({ children, to, title, icon }: TabLinkProps) => {
   const location = useLocation()
-  const history = useHistory();
+  const history = useHistory()
 
   return (
     <TabLinkButton role="link" data-href={to} onClick={() => history.push(to)} active={location.pathname === to}>

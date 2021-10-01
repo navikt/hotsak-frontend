@@ -11,7 +11,7 @@ interface MottattProps {
 }
 
 const formaterDato = (dato: string) => {
-    return dayjs(dato, ISO_DATOFORMAT ).format(NORSK_DATOFORMAT)
+  return dayjs(dato, ISO_DATOFORMAT).format(NORSK_DATOFORMAT)
 }
 
 export const Motatt = React.memo(({ dato }: MottattProps) => {
@@ -21,4 +21,3 @@ export const Motatt = React.memo(({ dato }: MottattProps) => {
     </CellContent>
   )
 })
-

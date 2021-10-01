@@ -12,6 +12,3 @@ export const MappeIkon = ({ width = 14, height = 14, className }: IkonProps) => 
     </g>
   </Ikon>
 )
-
-
-

@@ -46,7 +46,7 @@ enum kolonner {
   BOSTED = 'Bosted',
   STATUS = 'Status',
   MOTTATT = 'Mottatt',
-  KJØTTBOLLE = 'Kjøttbolle'
+  KJØTTBOLLE = 'Kjøttbolle',
 }
 
 const kolonnerMine = [
@@ -57,7 +57,7 @@ const kolonnerMine = [
   kolonner.BOSTED,
   kolonner.STATUS,
   kolonner.MOTTATT,
-  kolonner.KJØTTBOLLE
+  kolonner.KJØTTBOLLE,
 ]
 
 const kolonnerUtfordelte = [
@@ -78,16 +78,16 @@ const kolonnerAlleSaker = [
   kolonner.BOSTED,
   kolonner.STATUS,
   kolonner.MOTTATT,
-  kolonner.KJØTTBOLLE
+  kolonner.KJØTTBOLLE,
 ]
 
 interface OppgaverTableProps {
-    oppgaver: Oppgave[],
-  }
+  oppgaver: Oppgave[]
+}
 
 const kolonnerOverførstGosys = kolonnerAlleSaker
 
-export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
+export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
   const { aktivTab } = useTabContext()
 
   let tab: any
@@ -148,7 +148,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                 </Header>
               )}
               {tab.kolonner.includes(kolonner.STATUS) && (
-                <Header scope="col" colSpan={1} >
+                <Header scope="col" colSpan={1}>
                   Status
                 </Header>
               )}
@@ -157,7 +157,7 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                   Mottatt
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (<Header scope="col" colSpan={1} />)}
+              {tab.kolonner.includes(kolonner.KJØTTBOLLE) && <Header scope="col" colSpan={1} />}
             </tr>
           </thead>
           <Body>
@@ -211,7 +211,9 @@ export const OppgaverTable = React.memo(({oppgaver}: OppgaverTableProps) => {
                     <Motatt dato={oppgave.mottattDato} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (<Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>)}
+                {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (
+                  <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
+                )}
               </LinkRow>
             ))}
           </Body>

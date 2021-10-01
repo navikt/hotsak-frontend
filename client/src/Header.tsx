@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 //import { Person } from 'internal-types';
-import { Link/*, useHistory*/ } from 'react-router-dom'
+import { Link /*, useHistory*/ } from 'react-router-dom'
 
 //import { useRecoilValue } from 'recoil';
 //import '@navikt/ds-css'
@@ -46,15 +46,18 @@ export const HeaderBar = () => {
   //const removeVarsel = useRemoveVarsel();
   //const addVarsel = useAddVarsel();
 
-  const { name, ident, isLoggedIn } = useRecoilValue(authState);
+  const { name, ident, isLoggedIn } = useRecoilValue(authState)
 
-  const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' };
+  const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
 
   return (
     <Container>
       <HeaderEnkel
         tittel={<Link to="/">NAV Hjelpemidler</Link>}
-        brukerinfo={{ navn: brukerinfo.navn , ident: brukerinfo.ident /*, enhet: 'Enhetsnavn', rolle: 'Saksbehandler'*/ }}
+        brukerinfo={{
+          navn: brukerinfo.navn,
+          ident: brukerinfo.ident /*, enhet: 'Enhetsnavn', rolle: 'Saksbehandler'*/,
+        }}
       >
         {/*<BentoMeny />*/}
       </HeaderEnkel>

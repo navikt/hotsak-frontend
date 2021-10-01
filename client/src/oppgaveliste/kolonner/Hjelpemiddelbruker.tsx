@@ -13,16 +13,14 @@ interface HjelpemiddelbrukerProps {
 }
 
 const getFormattedName = (personinfo: Personinfo): string => {
+  const { fornavn, mellomnavn, etternavn } = personinfo
 
-    const {fornavn, mellomnavn, etternavn} = personinfo
-
-return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)
+  return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)
 }
 
 export const Hjelpemiddelbruker = React.memo(({ person, saksID }: HjelpemiddelbrukerProps) => {
   const id = `hjelpemiddelbruker-${saksID}`
   const formatertNavn = getFormattedName(person)
-
 
   return (
     <CellContent width={140} data-for={id} data-tip={formatertNavn}>
@@ -31,4 +29,3 @@ export const Hjelpemiddelbruker = React.memo(({ person, saksID }: Hjelpemiddelbr
     </CellContent>
   )
 })
-

@@ -6,7 +6,6 @@ import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 
-
 interface FormidlerProps {
   formidler: Formidler
   oppfølgingsansvarling: Oppfølgingsansvarlig | null
@@ -29,16 +28,11 @@ const Grid = styled.div`
 `
 
 export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
-
   const Formidlerinfo = () => {
     return (
       <Grid>
         <Etikett>Navn</Etikett>
-        <Tekst>
-          {capitalizeName(
-            formidler.navn,
-          )}
-        </Tekst>
+        <Tekst>{capitalizeName(formidler.navn)}</Tekst>
         <Etikett>Arbeidssted</Etikett>
         <Tekst>{`${capitalize(formidler.arbeidssted)}`}</Tekst>
         <Etikett>Stilling</Etikett>
@@ -59,11 +53,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
     return (
       <Grid>
         <Etikett>Navn</Etikett>
-        <Tekst>
-          {capitalizeName(
-            oppfølgingsansvarling!!.navn,
-          )}
-        </Tekst>
+        <Tekst>{capitalizeName(oppfølgingsansvarling!!.navn)}</Tekst>
         <Etikett>Arbeidssted</Etikett>
         <Tekst>{`${capitalize(oppfølgingsansvarling!!.arbeidssted)}`}</Tekst>
         <Etikett>Stilling</Etikett>
@@ -79,7 +69,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
   if (oppfølgingsansvarling == null) {
     return (
       <>
-        <Title level='1' size='m' spacing={false}>
+        <Title level="1" size="m" spacing={false}>
           <TittelIkon width={22} height={22} />
           Formidler og opplæringsansvarlig
         </Title>
@@ -92,18 +82,18 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
   } else {
     return (
       <>
-        <Title level='1' size='m' spacing={false}>
+        <Title level="1" size="m" spacing={false}>
           <TittelIkon width={22} height={22} />
           Formidler og opplæringsansvarlig
         </Title>
         <Container>
-          <Title level='1' size='s' spacing={false}>
+          <Title level="1" size="s" spacing={false}>
             Hjelpemiddelformidler
           </Title>
           <br />
           <Formidlerinfo />
           <br />
-          <Title level='1' size='s' spacing={false}>
+          <Title level="1" size="s" spacing={false}>
             Oppfølgings- og opplæringsansvarlig
           </Title>
           <br />
@@ -112,7 +102,5 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Strek />
       </>
     )
-
   }
-
 }

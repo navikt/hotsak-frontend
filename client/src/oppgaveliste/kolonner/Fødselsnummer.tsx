@@ -8,14 +8,10 @@ interface FødselsnummerProps {
   fødselsnummer: string
 }
 
-
-
 export const Fødselsnummer = React.memo(({ fødselsnummer }: FødselsnummerProps) => {
-
   return (
     <CellContent width={100}>
       <Normaltekst>{formaterFødselsnummer(fødselsnummer)}</Normaltekst>
     </CellContent>
   )
 })
-

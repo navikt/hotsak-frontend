@@ -13,8 +13,6 @@ export enum CookieKey {
     Groups = 'groups',
 }
 
-console.log("NAIS_CLUSTER_NAME ", process.env.NAIS_CLUSTER_NAME)
-
 if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
     document.cookie = `speil=dev-cookie.${btoa(
         JSON.stringify({

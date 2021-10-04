@@ -1,8 +1,9 @@
 import React from 'react'
 
+import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
+
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
 interface TildeltProps {
   name: string

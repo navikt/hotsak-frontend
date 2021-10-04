@@ -14,13 +14,12 @@ export const ISO_DATOFORMAT = 'YYYY-MM-DD'
 export const ISO_TIDSPUNKTFORMAT = 'YYYY-MM-DDTHH:mm:ss'
 
 export const formaterDato = (dato: string) => {
-    return dayjs(dato, ISO_DATOFORMAT ).format(NORSK_DATOFORMAT)
+  return dayjs(dato, ISO_DATOFORMAT).format(NORSK_DATOFORMAT)
 }
 
 export const norskTimestamp = (dato: string) => {
-    return dayjs(dato, ISO_DATOFORMAT ).format(NORSK_TIDSPUNKTFORMAT)
+  return dayjs(dato, ISO_DATOFORMAT).format(NORSK_TIDSPUNKTFORMAT)
 }
-
 
 export const findLatest = (dates: Dayjs[]): Dayjs => {
   return Array.from(dates)
@@ -29,9 +28,9 @@ export const findLatest = (dates: Dayjs[]): Dayjs => {
 }
 
 export const sorterKronologisk = (a: string, b: string) => {
-    let date = dayjs(a, ISO_TIDSPUNKTFORMAT)
-    let otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
-    return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
+  let date = dayjs(a, ISO_TIDSPUNKTFORMAT)
+  let otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
+  return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
 }
 
 export const findEarliest = (dates: Dayjs[]): Dayjs => {

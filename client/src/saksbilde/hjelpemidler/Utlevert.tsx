@@ -1,18 +1,14 @@
-import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
-
 import { Normaltekst } from 'nav-frontend-typografi'
+
+import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
 
 interface UtlevertProps {
   alleredeUtlevert: boolean
   utlevertInfo: UtlevertInfo
 }
 
-
-
 export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertInfo }) => {
-
   if (alleredeUtlevert) {
-
     let utlevertTekst
 
     switch (utlevertInfo.utlevertType) {
@@ -30,10 +26,7 @@ export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertIn
         break
     }
 
-
-    return (
-    <Normaltekst>{`Utlevert: ${utlevertTekst}`}</Normaltekst>
-    )
+    return <Normaltekst>{`Utlevert: ${utlevertTekst}`}</Normaltekst>
   }
   return null
 }

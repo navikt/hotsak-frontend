@@ -1,4 +1,5 @@
 import styled from 'styled-components/macro'
+
 //import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
 //import { TabButton } from '../TabButton'
 
@@ -16,7 +17,7 @@ const Header = styled.section`
 export const HistorikkHeader: React.FC = ({ children }) => {
   return (
     <Header>
-        {/*<HistorikkTabButton active={true}>
+      {/*<HistorikkTabButton active={true}>
           <HistorikkIkon />
   </HistorikkTabButton>*/}
     </Header>

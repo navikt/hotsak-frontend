@@ -47,7 +47,6 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-       
       { "beskrivelse": "Kun førsterangering", "type": "info" },
       { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
       { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
@@ -116,7 +115,7 @@
         "rangering": "1",
         "utlevertFraHjelpemiddelsentralen": false,
         "utlevertInfo": {
-            "utlevertType": "FremskuttLager"
+          "utlevertType": "FremskuttLager"
         },
         "antall": "8",
         "kategori": "Terskeleliminatorer og Kjøreramper",
@@ -150,8 +149,11 @@
         "kategori": "Sitteputer",
         "beskrivelse": "Inserto Domino sb42",
         "tilleggsinfo": [
-            { "tittel": "Behov", "innhold": "Trykksår" },
-            { "tittel": "Kommentar", "innhold": "Mia Cathrine har scoliose og skjevt bekken med rotasjon mot høyre, benlengdeforskjell og nedsatt sittestabilitet. Scoliosen/bekkenskjevheten er ikke korrigerbar. Trenger en pute som kan tilpasses asymmetrien i bekkenet." }
+          { "tittel": "Behov", "innhold": "Trykksår" },
+          {
+            "tittel": "Kommentar",
+            "innhold": "Mia Cathrine har scoliose og skjevt bekken med rotasjon mot høyre, benlengdeforskjell og nedsatt sittestabilitet. Scoliosen/bekkenskjevheten er ikke korrigerbar. Trenger en pute som kan tilpasses asymmetrien i bekkenet."
+          }
         ],
         "tilbehør": []
       },
@@ -163,20 +165,20 @@
         "kategori": "Manuelle rullestoler",
         "beskrivelse": "Cross 6 allround sb35 sd35-50 kort",
         "tilleggsinfo": [
-            { "tittel": "Tilsvarende ikke ok", "innhold": "Fungerte mye bedre på utprøving enn andre stoler" }
-
+          { "tittel": "Tilsvarende ikke ok", "innhold": "Fungerte mye bedre på utprøving enn andre stoler" }
         ],
         "tilbehør": [
-            {
-              "hmsnr": "921033",
-              "antall": "1",
-              "navn": "Hoftebelte"
-            },{
-              "hmsnr": "019386",
-              "antall": "1",
-              "navn": "Sittepute"
-            }
-          ]
+          {
+            "hmsnr": "921033",
+            "antall": "1",
+            "navn": "Hoftebelte"
+          },
+          {
+            "hmsnr": "019386",
+            "antall": "1",
+            "navn": "Sittepute"
+          }
+        ]
       }
     ],
     "formidler": {
@@ -191,7 +193,7 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-        { "beskrivelse": "Haster - trykksår", "type": "advarsel" },
+      { "beskrivelse": "Haster - trykksår", "type": "advarsel" },
       { "beskrivelse": "Lavere rangerte hjelpemidler", "type": "advarsel" },
       { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
       { "beskrivelse": "Fritekst i søknaden", "type": "advarsel" },
@@ -355,16 +357,12 @@
         "hmsnr": "289709",
         "rangering": "1",
         "utlevertFraHjelpemiddelsentralen": false,
-        "utlevertInfo": {
-          },
+        "utlevertInfo": {},
         "antall": "1",
         "kategori": "Alarm- og varslingshjelpemidler",
         "beskrivelse": "Prefi M EB 25 komfyrvakt 25 ampere",
-        "tilleggsinfo": [
-                  ],
-        "tilbehør": [
-          
-        ]
+        "tilleggsinfo": [],
+        "tilbehør": []
       }
     ],
     "formidler": {
@@ -379,8 +377,8 @@
       "epost": "e@post.com"
     },
     "greitÅViteFaktum": [
-        { "beskrivelse": "Personalia fra folkeregisteret", "type": "info" },
-        { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" }
+      { "beskrivelse": "Personalia fra folkeregisteret", "type": "info" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" }
     ],
 
     "motattDato": "2021-06-25T13:55:45",
@@ -398,7 +396,7 @@
       "bruksarena": "DAGLIGLIV",
       "oppfylteVilkår": [
         "Eple Bananskall har vesentlig nedsatt funksjon.  Funksjonsnedsettelsen varer over 2 år eller livet ut.",
-          "Eple Bananskall sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.",
+        "Eple Bananskall sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.",
         "Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. Eple Bananskall vil være i stand til å bruke hjelpemidlene."
       ],
       "kjønn": "MANN",
@@ -448,8 +446,6 @@
       }
     ]
   },
-
-
 
   {
     "saksid": "999999",
@@ -532,10 +528,10 @@
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "saksbehandler": {
-        "epost": "a.b@nav.no",
-        "objectId": "23ea7485-1324-4b25-a763-6969",
-        "navn": "Geir Markusen"
-      },
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-6969",
+      "navn": "Geir Markusen"
+    },
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -543,5 +539,4 @@
       }
     ]
   }
-
 ]

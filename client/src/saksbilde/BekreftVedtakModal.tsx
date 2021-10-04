@@ -1,7 +1,8 @@
 import { Title } from '@navikt/ds-react'
-import { Tekst } from '../felleskomponenter/typografi'
 import { Button, Loader } from '@navikt/ds-react'
+
 import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
+import { Tekst } from '../felleskomponenter/typografi'
 
 interface BekreftVedtakModalProps {
   open: boolean

@@ -1,86 +1,86 @@
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components/macro'
-import { Oppgave } from '../../types/types.internal';
-import React, { useRef, useState } from 'react';
 
-import { Popover } from '@navikt/ds-react';
-import { Meatball } from '@navikt/helse-frontend-meatball';
-import '@navikt/helse-frontend-meatball/lib/main.css';
+import { Popover } from '@navikt/ds-react'
+import { Meatball } from '@navikt/helse-frontend-meatball'
+import '@navikt/helse-frontend-meatball/lib/main.css'
 
-import { Tooltip } from '../Tooltip';
-import saksbehandler from '../../saksbehandler/innloggetSaksbehandler'
 //import { useInnloggetSaksbehandler } from '../../../../../state/authentication';
+import { CellContent } from '../table/rader/CellContent'
 
-import { CellContent } from '../table/rader/CellContent';
-import { MeldAvMenuButton } from './MeldAvMenuButton';
+import saksbehandler from '../../saksbehandler/innloggetSaksbehandler'
+import { Oppgave } from '../../types/types.internal'
+import { Tooltip } from '../Tooltip'
+import { MeldAvMenuButton } from './MeldAvMenuButton'
 
 const SpicyMeatball = styled(Meatball)`
+  #circle_fill {
+    fill: transparent;
+  }
+
+  :hover {
     #circle_fill {
-        fill: transparent;
+      fill: var(--navds-color-action-hover);
     }
 
-    :hover {
-        #circle_fill {
-            fill: var(--navds-color-action-hover);
-        }
-
-        #inner_circle_left,
-        #inner_circle_center,
-        #inner_circle_right {
-            fill: var(--navds-color-text-inverse);
-        }
+    #inner_circle_left,
+    #inner_circle_center,
+    #inner_circle_right {
+      fill: var(--navds-color-text-inverse);
     }
-`;
+  }
+`
 
 const Container = styled.span`
-    display: flex;
-    align-items: center;
-`;
+  display: flex;
+  align-items: center;
+`
 
 interface OptionsButtonProps {
-    oppgave: Oppgave;
+  oppgave: Oppgave
 }
 
 export const OptionsButton = React.memo(({ oppgave }: OptionsButtonProps) => {
-    const [popoverIsActive, setPopoverIsActive] = useState(false);
-    const meatballRef = useRef<HTMLButtonElement>(null);
+  const [popoverIsActive, setPopoverIsActive] = useState(false)
+  const meatballRef = useRef<HTMLButtonElement>(null)
 
-    const erTildeltInnloggetBruker = oppgave.saksbehandler?.objectId === saksbehandler.objectId;
-    const id = `options-${oppgave.saksid}`;
+  const erTildeltInnloggetBruker = oppgave.saksbehandler?.objectId === saksbehandler.objectId
+  const id = `options-${oppgave.saksid}`
 
-    const togglePopover = (event: React.MouseEvent) => {
-        event.stopPropagation();
-        setPopoverIsActive((active) => !active);
-    };
+  const togglePopover = (event: React.MouseEvent) => {
+    event.stopPropagation()
+    setPopoverIsActive((active) => !active)
+  }
 
-    const closePopover = () => {
-        setPopoverIsActive(false);
-    };
+  const closePopover = () => {
+    setPopoverIsActive(false)
+  }
 
-    return (
-        <CellContent>
-            <Container data-tip="Mer" data-for={id}>
-                <SpicyMeatball
-                    // @ts-ignore
-                    ref={meatballRef}
-                    size="s"
-                    onClick={togglePopover}
-                />
-                <Popover
-                    anchorEl={meatballRef.current}
-                    open={popoverIsActive}
-                    onClose={closePopover}
-                    placement="bottom"
-                    arrow={false}
-                    offset={0}
-                >
-                    {erTildeltInnloggetBruker &&  (
-                        <>
-                            <MeldAvMenuButton oppgavereferanse={oppgave.saksid} />
-                        </>
-                    )}
-                </Popover>
-            </Container>
-            <Tooltip id={id} effect="solid" offset={{ top: -10 }} />
-        </CellContent>
-    );
-});
+  return (
+    <CellContent>
+      <Container data-tip="Mer" data-for={id}>
+        <SpicyMeatball
+          // @ts-ignore
+          ref={meatballRef}
+          size="s"
+          onClick={togglePopover}
+        />
+        <Popover
+          anchorEl={meatballRef.current}
+          open={popoverIsActive}
+          onClose={closePopover}
+          placement="bottom"
+          arrow={false}
+          offset={0}
+        >
+          {erTildeltInnloggetBruker && (
+            <>
+              <MeldAvMenuButton oppgavereferanse={oppgave.saksid} />
+            </>
+          )}
+        </Popover>
+      </Container>
+      <Tooltip id={id} effect="solid" offset={{ top: -10 }} />
+    </CellContent>
+  )
+})

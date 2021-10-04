@@ -3,8 +3,8 @@ import styled from 'styled-components/macro'
 import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { TabLink } from './TabLink'
-import { useSak } from './sakHook'
 import { HistorikkHeader } from './historikk/HistorikkHeader'
+import { useSak } from './sakHook'
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ export enum Location {
 }
 
 export const Søknadslinje = () => {
-    const {saksid} = useSak().sak;
+  const { saksid } = useSak().sak
   return (
     <Container>
       <Flex>

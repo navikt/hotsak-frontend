@@ -1,16 +1,18 @@
 import styled from 'styled-components/macro'
-import { Title } from '@navikt/ds-react'
-import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler, SignaturType } from '../../types/types.internal'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
-import { capitalizeName, capitalize } from '../../utils/stringFormating'
-import { LeveringsMåte } from './Leveringsmåte'
-import { Kontaktperson } from './Kontaktperson'
-import { Liste } from '../../felleskomponenter/Liste'
-import { Fullmakt } from './Fullmakt'
-import { BrukerBekreftet } from './BrukerBekreftet'
-import { Strek } from '../../felleskomponenter/Strek'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 
+import { Title } from '@navikt/ds-react'
+
+import { capitalizeName, capitalize } from '../../utils/stringFormating'
+
+import { Liste } from '../../felleskomponenter/Liste'
+import { Strek } from '../../felleskomponenter/Strek'
+import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler, SignaturType } from '../../types/types.internal'
+import { BrukerBekreftet } from './BrukerBekreftet'
+import { Fullmakt } from './Fullmakt'
+import { Kontaktperson } from './Kontaktperson'
+import { LeveringsMåte } from './Leveringsmåte'
 
 interface BrukerProps {
   person: Personinfo
@@ -34,12 +36,9 @@ const Grid = styled.div`
   grid-row-gap: 0.125rem;
 `
 
-const formaterNavn = (person : Personinfo) => {
-    return capitalizeName(
-        `${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`
-      )
+const formaterNavn = (person: Personinfo) => {
+  return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
 }
-
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   return (
@@ -51,9 +50,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       <Container>
         <Grid>
           <Etikett>Navn</Etikett>
-          <Tekst>
-            {formaterNavn(person) }
-          </Tekst>
+          <Tekst>{formaterNavn(person)}</Tekst>
           <Etikett>Fødselsnummer</Etikett>
           <Tekst>{person.fnr}</Tekst>
           <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
@@ -84,14 +81,18 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
             <LeveringsMåte levering={levering} />
           </Tekst>
           <Etikett>Kontaktperson</Etikett>
-          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktPerson}/>
+          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktPerson} />
           <Etikett>Merknad til utlevering</Etikett>
           <Tekst>{levering.merknad}</Tekst>
         </Grid>
       </Container>
 
-<Strek/>
-    {person.signaturType === SignaturType.SIGNATUR ? <Fullmakt navn={formaterNavn(person)}/> : <BrukerBekreftet navn={formaterNavn(person)}/>}
+      <Strek />
+      {person.signaturType === SignaturType.SIGNATUR ? (
+        <Fullmakt navn={formaterNavn(person)} />
+      ) : (
+        <BrukerBekreftet navn={formaterNavn(person)} />
+      )}
 
       <Strek />
 
@@ -99,9 +100,11 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
         Vilkår for å motta hjelpemidler
       </Title>
       <Container>
-      <Liste>
-        {person.oppfylteVilkår.map(vilkår => <li>{vilkår}</li>)}
-      </Liste>
+        <Liste>
+          {person.oppfylteVilkår.map((vilkår) => (
+            <li>{vilkår}</li>
+          ))}
+        </Liste>
       </Container>
     </>
   )

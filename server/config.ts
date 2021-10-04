@@ -1,7 +1,6 @@
 import env from 'dotenv'
 
 import { OidcConfig, RedisConfig, ServerConfig } from './types'
-
 ;('use strict')
 
 env.config()

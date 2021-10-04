@@ -1,5 +1,5 @@
-import styled from 'styled-components/macro'
 import React, { useState } from 'react'
+import styled from 'styled-components/macro'
 
 import { Knapp, KnappBaseProps } from 'nav-frontend-knapper'
 

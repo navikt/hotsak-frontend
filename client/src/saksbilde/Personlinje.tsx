@@ -1,7 +1,9 @@
+import dayjs from 'dayjs'
 import styled from 'styled-components/macro'
-import dayjs from 'dayjs';
+
 import { Element, Normaltekst } from 'nav-frontend-typografi'
-import { ISO_TIDSPUNKTFORMAT } from '../utils/date';
+
+import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
 
 import { Clipboard } from '../felleskomponenter/clipboard'
@@ -85,11 +87,11 @@ export const LasterPersonlinje = () => (
 )
 
 const beregnAlder = (fødselsdato: string) => {
-    return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
+  return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-const formaterNavn  = (person: Personinfo) => {
-    return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
+const formaterNavn = (person: Personinfo) => {
+  return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
 }
 
 export const Personlinje = ({ person }: PersonlinjeProps) => {

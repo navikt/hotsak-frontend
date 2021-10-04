@@ -1,6 +1,8 @@
-import styled from 'styled-components/macro'
 import React from 'react'
+import styled from 'styled-components/macro'
+
 import { Loader } from '@navikt/ds-react'
+
 import { Tekst } from './typografi'
 
 const ToastView = styled.div`

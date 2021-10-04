@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from 'styled-components/macro'
+
 import Panel from 'nav-frontend-paneler'
 
-import { OppgaverTable } from './OppgaverTable'
-import { Oppgave, OppgaveStatusType } from '../types/types.internal'
+import { sorterKronologisk } from '../utils/date'
+
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { Tabs, TabType } from './tabs'
+import { Toast } from '../felleskomponenter/Toast'
 //import { useLoadingToast } from '../../hooks/useLoadingToast';
 import { useInnloggetSaksbehandler } from '../state/authentication'
+import { Oppgave, OppgaveStatusType } from '../types/types.internal'
 import { IngenOppgaver } from './IngenOppgaver'
+import { OppgaverTable } from './OppgaverTable'
 import { useOppgaveliste } from './oppgavelisteHook'
-import { Toast } from '../felleskomponenter/Toast'
-import { sorterKronologisk } from '../utils/date'
+import { Tabs, TabType } from './tabs'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -54,24 +56,24 @@ export const Oppgaveliste = () => {
   const saksbehandler = useInnloggetSaksbehandler()
 
   React.useEffect(() => {
-      const filtrert =  oppgaver?.filter((oppgave) => {
-      switch (aktivTab) {
-        case TabType.Ufordelte:
-          return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
-        case TabType.OverførtGosys:
-          return oppgave.status === OppgaveStatusType.SENDT_GOSYS
-        case TabType.Mine:
-          return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
-        default:
-          return true
-      }
-    }).sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+    const filtrert =
+      oppgaver
+        ?.filter((oppgave) => {
+          switch (aktivTab) {
+            case TabType.Ufordelte:
+              return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
+            case TabType.OverførtGosys:
+              return oppgave.status === OppgaveStatusType.SENDT_GOSYS
+            case TabType.Mine:
+              return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
+            default:
+              return true
+          }
+        })
+        .sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
 
-  setFiltrerteOppgaver(filtrert)
-
-}, [aktivTab, oppgaver, saksbehandler.objectId])
-
-
+    setFiltrerteOppgaver(filtrert)
+  }, [aktivTab, oppgaver, saksbehandler.objectId])
 
   if (isError) {
     throw Error('Feil med henting av oppgaver')

@@ -1,23 +1,24 @@
-import React from 'react';
+import React from 'react'
 
-import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis';
-import { Tooltip } from '../../felleskomponenter/Tooltip';
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { capitalize } from '../../utils/stringFormating'
 
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
+import { Tooltip } from '../../felleskomponenter/Tooltip'
+
 interface FunksjonsnedsettelseProps {
-    funksjonsnedsettelser: string[];
-    saksID: string;
+  funksjonsnedsettelser: string[]
+  saksID: string
 }
 
-export const Funksjonsnedsettelse = React.memo(({  funksjonsnedsettelser , saksID }: FunksjonsnedsettelseProps) => {
-    const id = `funksjonsnedsettelse-${saksID}`;
-    const funksjonsnedsettelse = capitalize(funksjonsnedsettelser.join(', '))
+export const Funksjonsnedsettelse = React.memo(({ funksjonsnedsettelser, saksID }: FunksjonsnedsettelseProps) => {
+  const id = `funksjonsnedsettelse-${saksID}`
+  const funksjonsnedsettelse = capitalize(funksjonsnedsettelser.join(', '))
 
-    return (
-        <CellContent width={128} data-for={id} data-tip={funksjonsnedsettelse}>
-            <TekstMedEllipsis>{funksjonsnedsettelse}</TekstMedEllipsis>
-            {funksjonsnedsettelse.length > 18 && <Tooltip id={id} />}
-        </CellContent>
-    );
-});
+  return (
+    <CellContent width={128} data-for={id} data-tip={funksjonsnedsettelse}>
+      <TekstMedEllipsis>{funksjonsnedsettelse}</TekstMedEllipsis>
+      {funksjonsnedsettelse.length > 18 && <Tooltip id={id} />}
+    </CellContent>
+  )
+})

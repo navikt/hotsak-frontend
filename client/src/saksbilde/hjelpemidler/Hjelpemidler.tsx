@@ -1,17 +1,18 @@
 import styled from 'styled-components/macro'
 
+import Lenke from 'nav-frontend-lenker'
+import { Normaltekst } from 'nav-frontend-typografi'
+
 import { Title } from '@navikt/ds-react'
 
 import { capitalize } from '../../utils/stringFormating'
 
-import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
+import { Strek } from '../../felleskomponenter/Strek'
 import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
+import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Hjelpemiddel, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
-import { Normaltekst } from 'nav-frontend-typografi'
-import { Strek } from '../../felleskomponenter/Strek'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import Lenke from 'nav-frontend-lenker'
 
 const TittelIkon = styled(RullestolIkon)`
   padding-right: 0.5rem;

@@ -3,11 +3,11 @@ import styled from 'styled-components/macro'
 
 import Panel from 'nav-frontend-paneler'
 
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { sorterKronologisk } from '../utils/date'
 
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { Toast } from '../felleskomponenter/Toast'
-//import { useLoadingToast } from '../../hooks/useLoadingToast';
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgave, OppgaveStatusType } from '../types/types.internal'
 import { IngenOppgaver } from './IngenOppgaver'
@@ -17,7 +17,7 @@ import { Tabs, TabType } from './tabs'
 
 interface TabContextValue {
   aktivTab: TabType
-  byttTab: Function
+  byttTab: (nyTab: TabType) => void
 }
 
 const TabContext = React.createContext<TabContextValue | undefined>(undefined)
@@ -51,7 +51,10 @@ const Content = styled(Panel)`
 export const Oppgaveliste = () => {
   const { oppgaver, isError, isLoading } = useOppgaveliste()
   const [aktivTab, setAktivTab]: [TabType, Function] = React.useState<TabType>(TabType.Ufordelte)
-  const byttTab = (nyTab: TabType) => setAktivTab(nyTab)
+  const byttTab = (nyTab: TabType) => {
+    setAktivTab(nyTab)
+    logAmplitudeEvent(amplitude_taxonomy.OPPGAVELISTE_BYTT_TAB, { tab: nyTab })
+  }
   const [filtrerteOppgaver, setFiltrerteOppgaver]: [Oppgave[], Function] = React.useState([])
   const saksbehandler = useInnloggetSaksbehandler()
 

@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { TabButton } from './TabButton'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 const Content = styled.span`
   color: transparent;
@@ -47,7 +48,15 @@ export const TabLink = ({ children, to, title, icon }: TabLinkProps) => {
   const history = useHistory()
 
   return (
-    <TabLinkButton role="link" data-href={to} onClick={() => history.push(to)} active={location.pathname === to}>
+    <TabLinkButton
+      role="link"
+      data-href={to}
+      onClick={() => {
+        history.push(to)
+        logAmplitudeEvent(amplitude_taxonomy.SAKSBILDE_BYTT_TAB, { tab: title })
+      }}
+      active={location.pathname === to}
+    >
       {icon && <IconContainer>{icon}</IconContainer>}
       <Content className="content" title={title}>
         {children}

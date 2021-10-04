@@ -11,6 +11,8 @@ import { putVedtak, putSendTilGosys } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -56,6 +58,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const [visVedtakModal, setVisVedtakModal] = React.useState(false)
   const [visGosysModal, setVisGosysModal] = React.useState(false)
   const { mutate } = useSWRConfig()
+  const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const opprettVedtak = () => {
     setLoading(true)
@@ -158,13 +161,21 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         </ButtonContainer>
         <BekreftVedtakModal
           open={visVedtakModal}
-          onBekreft={() => opprettVedtak()}
+          onBekreft={() => {
+            opprettVedtak()
+            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
+            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
+          }}
           loading={loading}
           onClose={() => setVisVedtakModal(false)}
         />
         <OverførGosysModal
           open={visGosysModal}
-          onBekreft={() => sendTilGosys()}
+          onBekreft={() => {
+            sendTilGosys()
+            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+          }}
           loading={loading}
           onClose={() => setVisGosysModal(false)}
         />

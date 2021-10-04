@@ -30,3 +30,5 @@ yarn-error.log*
 /.vscode
 **/.DS_Store
 /yarn-error.log
+client/cypress/videos/
+client/cypress/fixtures/example.json

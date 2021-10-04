@@ -7,7 +7,7 @@ metadata:
   name: hm-saksbehandling-frontend
   namespace: teamdigihot
 spec:
-  image: {{ image }}
+  image: {{image}}
   team: teamdigihot
   port: 3000
   ingresses:

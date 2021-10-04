@@ -9,7 +9,7 @@ metadata:
   annotations:
     snorlax.nais.io/enabled: 'true'
 spec:
-  image: {{ image }}
+  image: {{image}}
   team: teamdigihot
   port: 3000
   ingresses:

@@ -101,8 +101,8 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Title>
       <Container>
         <Liste>
-          {person.oppfylteVilkår.map((vilkår) => (
-            <li>{vilkår}</li>
+          {person.oppfylteVilkår.map((vilkår, i) => (
+            <li key={i}>{vilkår}</li>
           ))}
         </Liste>
       </Container>

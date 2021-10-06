@@ -1,7 +1,8 @@
 import { render } from 'react-dom'
 
-//import ReactDOM from 'react-dom'
 import '@navikt/ds-tokens/dist/tokens.css'
+
+import { initAmplitude } from './utils/amplitude'
 
 import App from './App'
 import { initMSW } from './_mocks_/msw'
@@ -20,5 +21,7 @@ const useMSW = process.env.REACT_APP_USE_MSW === 'true' || window.appSettings.US
 if (useMSW) {
   initMSW()
 }
+
+initAmplitude()
 
 render(<App />, document.getElementById('root'))

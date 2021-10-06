@@ -8,7 +8,7 @@ import { Normaltekst } from 'nav-frontend-typografi'
 import { Flex } from '../felleskomponenter/Flex'
 //import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
 import { useInnloggetSaksbehandler } from '../state/authentication'
-import { OppgaveStatusType } from '../types/types.internal'
+import { OppgaveStatusType, Oppgave } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
 import { useOppgaveliste } from './oppgavelisteHook'
 
@@ -102,40 +102,50 @@ const OppgaveTab = ({ tag, label, numberOfTasks }: TabProps) => {
   )
 }
 
-const AlleSakerTab = () => {
-  const antallOppgaver = useOppgaveliste().oppgaver.length
-  return <OppgaveTab tag={TabType.Alle} label="Alle saker" numberOfTasks={antallOppgaver} />
+interface Props {
+  oppgaver: Oppgave[]
+}
+const AlleSakerTab = ({ oppgaver }: Props) => {
+  return <OppgaveTab tag={TabType.Alle} label="Alle saker" numberOfTasks={oppgaver.length} />
 }
 
-const MineSakerTab = () => {
+const MineSakerTab = ({ oppgaver }: Props) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const antallOppgaver = useOppgaveliste().oppgaver.filter(
-    (oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId
-  )
-  return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={antallOppgaver.length} />
+  const mineOppgaver = oppgaver.filter((oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId)
+  return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={mineOppgaver.length} />
 }
 
-const UfordelteSakerTab = () => {
-  const antallOppgaver = useOppgaveliste().oppgaver.filter(
+const UfordelteSakerTab = ({ oppgaver }: Props) => {
+  const ufordelteOppgaver = oppgaver.filter(
     (oppgave) => !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
-  ).length
-  return <OppgaveTab tag={TabType.Ufordelte} label="Ufordelte saker" numberOfTasks={antallOppgaver} />
+  )
+  return <OppgaveTab tag={TabType.Ufordelte} label="Ufordelte saker" numberOfTasks={ufordelteOppgaver.length} />
 }
 
-const OverførtTilGosysTab = () => {
-  const antallOppgaver = useOppgaveliste().oppgaver.filter(
-    (oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS
-  ).length
-  return <OppgaveTab tag={TabType.OverførtGosys} label="Overført til Gosys" numberOfTasks={antallOppgaver} />
+const OverførtTilGosysTab = ({ oppgaver }: Props) => {
+  const overførtTilGosysOppgaver = oppgaver.filter((oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS)
+  return (
+    <OppgaveTab
+      tag={TabType.OverførtGosys}
+      label="Overført til Gosys"
+      numberOfTasks={overførtTilGosysOppgaver.length}
+    />
+  )
 }
 
-export const Tabs = () => (
-  <Tablist>
-    <NoWrap>
-      <UfordelteSakerTab />
-      <MineSakerTab />
-      <AlleSakerTab />
-      <OverførtTilGosysTab />
-    </NoWrap>
-  </Tablist>
-)
+export const Tabs = () => {
+  const { oppgaver } = useOppgaveliste()
+  if (!oppgaver) {
+    return null
+  }
+  return (
+    <Tablist>
+      <NoWrap>
+        <UfordelteSakerTab oppgaver={oppgaver} />
+        <MineSakerTab oppgaver={oppgaver} />
+        <AlleSakerTab oppgaver={oppgaver} />
+        <OverførtTilGosysTab oppgaver={oppgaver} />
+      </NoWrap>
+    </Tablist>
+  )
+}

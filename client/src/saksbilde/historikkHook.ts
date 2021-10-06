@@ -5,12 +5,18 @@ import { httpGet } from '../io/http'
 
 import { Hendelse } from '../types/types.internal'
 
-export function useHistorikk() {
+interface DataResponse {
+  hendelser: Hendelse[] | undefined
+  isLoading: boolean
+  isError: any
+}
+
+export function useHistorikk(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr(`api/sak/${saksnummer}/historikk`, httpGet)
+  const { data, error } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet)
 
   return {
-    hendelser: data?.data as Hendelse[],
+    hendelser: data?.data,
     isLoading: !error && !data,
     isError: error,
   }

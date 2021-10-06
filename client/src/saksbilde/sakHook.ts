@@ -5,12 +5,18 @@ import { httpGet } from '../io/http'
 
 import { Sak } from '../types/types.internal'
 
-export function useSak() {
+interface DataResponse {
+  sak: Sak | undefined
+  isLoading: boolean
+  isError: any
+}
+
+export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr(`api/sak/${saksnummer}`, httpGet)
+  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet)
 
   return {
-    sak: data?.data as Sak,
+    sak: data?.data,
     isLoading: !error && !data,
     isError: error,
   }

@@ -61,6 +61,8 @@ const SaksbildeContent = React.memo(() => {
 
   if (isError) throw new Error('Feil med henting av sak' + isError)
 
+  if (!sak) return <div>Fant ikke sak</div>
+
   return (
     <SaksbildeContainer className="saksbilde">
       <Personlinje person={sak.personinformasjon} />

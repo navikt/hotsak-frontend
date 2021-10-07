@@ -36,7 +36,7 @@ const ScrollableX = styled.div`
   width: 100%;
 `
 
-enum kolonner {
+enum Kolonne {
   EIER = 'Eier',
   FØDSELSNUMMER = 'Fødselsnummer',
   HJELPEMIDDELBRUKER = 'Hjelpemiddelbruker',
@@ -50,35 +50,35 @@ enum kolonner {
 }
 
 const kolonnerMine = [
-  kolonner.FUNKSJONSNEDSETTELSE,
-  kolonner.SØKNAD_OM,
-  kolonner.FØDSELSNUMMER,
-  kolonner.HJELPEMIDDELBRUKER,
-  kolonner.BOSTED,
-  kolonner.STATUS,
-  kolonner.MOTTATT,
-  kolonner.KJØTTBOLLE,
+  Kolonne.FUNKSJONSNEDSETTELSE,
+  Kolonne.SØKNAD_OM,
+  Kolonne.FØDSELSNUMMER,
+  Kolonne.HJELPEMIDDELBRUKER,
+  Kolonne.BOSTED,
+  Kolonne.STATUS,
+  Kolonne.MOTTATT,
+  Kolonne.KJØTTBOLLE,
 ]
 
 const kolonnerUtfordelte = [
-  kolonner.EIER,
-  kolonner.FUNKSJONSNEDSETTELSE,
-  kolonner.FØDSELSNUMMER,
-  kolonner.HJELPEMIDDELBRUKER,
-  kolonner.BOSTED,
-  kolonner.MOTTATT,
+  Kolonne.EIER,
+  Kolonne.FUNKSJONSNEDSETTELSE,
+  Kolonne.FØDSELSNUMMER,
+  Kolonne.HJELPEMIDDELBRUKER,
+  Kolonne.BOSTED,
+  Kolonne.MOTTATT,
 ]
 
 const kolonnerAlleSaker = [
-  kolonner.EIER,
-  kolonner.FUNKSJONSNEDSETTELSE,
-  kolonner.SØKNAD_OM,
-  kolonner.FØDSELSNUMMER,
-  kolonner.HJELPEMIDDELBRUKER,
-  kolonner.BOSTED,
-  kolonner.STATUS,
-  kolonner.MOTTATT,
-  kolonner.KJØTTBOLLE,
+  Kolonne.EIER,
+  Kolonne.FUNKSJONSNEDSETTELSE,
+  Kolonne.SØKNAD_OM,
+  Kolonne.FØDSELSNUMMER,
+  Kolonne.HJELPEMIDDELBRUKER,
+  Kolonne.BOSTED,
+  Kolonne.STATUS,
+  Kolonne.MOTTATT,
+  Kolonne.KJØTTBOLLE,
 ]
 
 interface OppgaverTableProps {
@@ -90,7 +90,7 @@ const kolonnerOverførstGosys = kolonnerAlleSaker
 export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
   const { aktivTab } = useTabContext()
 
-  let tab: any
+  let tab: { label: string; kolonner: Kolonne[] }
   switch (aktivTab) {
     case TabType.Alle:
       tab = { label: 'Alle saker fordelt til min enhet', kolonner: kolonnerAlleSaker }
@@ -112,78 +112,78 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
         <Table aria-label={tab.label}>
           <thead>
             <tr>
-              {tab.kolonner.includes(kolonner.EIER) && (
+              {tab.kolonner.includes(Kolonne.EIER) && (
                 <Header scope="col" colSpan={1}>
                   Eier
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.FØDSELSNUMMER) && (
+              {tab.kolonner.includes(Kolonne.FØDSELSNUMMER) && (
                 <Header scope="col" colSpan={1}>
                   Fødselsnummer
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.HJELPEMIDDELBRUKER) && (
+              {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
                 <Header scope="col" colSpan={1}>
                   Hjelpemiddelbruker
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.FØDSELSDATO) && (
+              {tab.kolonner.includes(Kolonne.FØDSELSDATO) && (
                 <Header scope="col" colSpan={1}>
                   Fødselsdato
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.FUNKSJONSNEDSETTELSE) && (
+              {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (
                 <Header scope="col" colSpan={1}>
                   Funksjonsnedsettelse
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.SØKNAD_OM) && (
+              {tab.kolonner.includes(Kolonne.SØKNAD_OM) && (
                 <Header scope="col" colSpan={1}>
                   Søknad om
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.BOSTED) && (
+              {tab.kolonner.includes(Kolonne.BOSTED) && (
                 <Header scope="col" colSpan={1}>
                   Bosted
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.STATUS) && (
+              {tab.kolonner.includes(Kolonne.STATUS) && (
                 <Header scope="col" colSpan={1}>
                   Status
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.MOTTATT) && (
+              {tab.kolonner.includes(Kolonne.MOTTATT) && (
                 <Header scope="col" colSpan={1}>
                   Mottatt
                 </Header>
               )}
-              {tab.kolonner.includes(kolonner.KJØTTBOLLE) && <Header scope="col" colSpan={1} />}
+              {tab.kolonner.includes(Kolonne.KJØTTBOLLE) && <Header scope="col" colSpan={1} />}
             </tr>
           </thead>
           <Body>
             {oppgaver.map((oppgave) => (
               <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                {tab.kolonner.includes(kolonner.EIER) && (
+                {tab.kolonner.includes(Kolonne.EIER) && (
                   <Cell>
                     <Tildeling oppgave={oppgave} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.FØDSELSNUMMER) && (
+                {tab.kolonner.includes(Kolonne.FØDSELSNUMMER) && (
                   <Cell>
                     <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.HJELPEMIDDELBRUKER) && (
+                {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
                   <Cell>
                     <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.FØDSELSDATO) && (
+                {tab.kolonner.includes(Kolonne.FØDSELSDATO) && (
                   <Cell>
                     <Fødselsdato fødselsdato={oppgave.personinformasjon.fødselsdato} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.FUNKSJONSNEDSETTELSE) && (
+                {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (
                   <Cell>
                     <Funksjonsnedsettelse
                       funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
@@ -191,27 +191,27 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                     />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.SØKNAD_OM) && (
+                {tab.kolonner.includes(Kolonne.SØKNAD_OM) && (
                   <Cell>
                     <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.BOSTED) && (
+                {tab.kolonner.includes(Kolonne.BOSTED) && (
                   <Cell>
                     <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.STATUS) && (
+                {tab.kolonner.includes(Kolonne.STATUS) && (
                   <Cell>
                     <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.MOTTATT) && (
+                {tab.kolonner.includes(Kolonne.MOTTATT) && (
                   <Cell>
                     <Motatt dato={oppgave.mottattDato} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(kolonner.KJØTTBOLLE) && (
+                {tab.kolonner.includes(Kolonne.KJØTTBOLLE) && (
                   <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
                 )}
               </LinkRow>

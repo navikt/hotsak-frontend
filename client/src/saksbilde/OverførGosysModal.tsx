@@ -6,9 +6,9 @@ import { Tekst } from '../felleskomponenter/typografi'
 
 interface OverførGosysModalProps {
   open: boolean
-  onBekreft: Function
+  onBekreft: () => void
   loading: boolean
-  onClose: Function
+  onClose: () => void
 }
 
 export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: OverførGosysModalProps) => {

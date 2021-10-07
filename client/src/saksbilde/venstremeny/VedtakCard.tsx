@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
@@ -52,11 +52,11 @@ const Knapp = styled(Button)`
 
 export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const { saksid } = sak
-  const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState(sak.søknadGjelder)
+  const [dokumentbeskrivelse, setDokumentbeskrivelse] = useState(sak.søknadGjelder)
   const saksbehandler = useInnloggetSaksbehandler()
-  const [loading, setLoading] = React.useState(false)
-  const [visVedtakModal, setVisVedtakModal] = React.useState(false)
-  const [visGosysModal, setVisGosysModal] = React.useState(false)
+  const [loading, setLoading] = useState(false)
+  const [visVedtakModal, setVisVedtakModal] = useState(false)
+  const [visGosysModal, setVisGosysModal] = useState(false)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 

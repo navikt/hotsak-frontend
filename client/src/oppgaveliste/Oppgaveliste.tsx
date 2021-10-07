@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components/macro'
 
 import Panel from 'nav-frontend-paneler'
@@ -24,7 +24,7 @@ const TabContext = React.createContext<TabContextValue | undefined>(undefined)
 TabContext.displayName = 'TabContext'
 
 export function useTabContext() {
-  const context = React.useContext(TabContext)
+  const context = useContext(TabContext)
 
   if (context === undefined) {
     throw Error('Must be used in a TabContext ')
@@ -50,25 +50,26 @@ const Content = styled(Panel)`
 
 export const Oppgaveliste = () => {
   const { oppgaver, isError, isLoading } = useOppgaveliste()
-  const [aktivTab, setAktivTab]: [TabType, Function] = React.useState<TabType>(TabType.Ufordelte)
+  const [aktivTab, setAktivTab] = useState(TabType.Ufordelte)
   const byttTab = (nyTab: TabType) => {
     setAktivTab(nyTab)
     logAmplitudeEvent(amplitude_taxonomy.OPPGAVELISTE_BYTT_TAB, { tab: nyTab })
   }
-  const [filtrerteOppgaver, setFiltrerteOppgaver]: [Oppgave[], Function] = React.useState([])
+  const [filtrerteOppgaver, setFiltrerteOppgaver] = useState<Oppgave[]>([])
   const saksbehandler = useInnloggetSaksbehandler()
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (!oppgaver) return
     const filtrert =
       oppgaver
-        ?.filter((oppgave) => {
+        .filter((oppgave) => {
           switch (aktivTab) {
             case TabType.Ufordelte:
               return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
             case TabType.OverførtGosys:
               return oppgave.status === OppgaveStatusType.SENDT_GOSYS
             case TabType.Mine:
-              return oppgave?.saksbehandler?.objectId === saksbehandler.objectId
+              return oppgave.saksbehandler?.objectId === saksbehandler.objectId
             default:
               return true
           }

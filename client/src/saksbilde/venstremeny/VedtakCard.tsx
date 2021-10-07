@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
@@ -11,6 +11,8 @@ import { putVedtak, putSendTilGosys } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -50,12 +52,13 @@ const Knapp = styled(Button)`
 
 export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const { saksid } = sak
-  const [dokumentbeskrivelse, setDokumentbeskrivelse] = React.useState(sak.søknadGjelder)
+  const [dokumentbeskrivelse, setDokumentbeskrivelse] = useState(sak.søknadGjelder)
   const saksbehandler = useInnloggetSaksbehandler()
-  const [loading, setLoading] = React.useState(false)
-  const [visVedtakModal, setVisVedtakModal] = React.useState(false)
-  const [visGosysModal, setVisGosysModal] = React.useState(false)
+  const [loading, setLoading] = useState(false)
+  const [visVedtakModal, setVisVedtakModal] = useState(false)
+  const [visGosysModal, setVisGosysModal] = useState(false)
   const { mutate } = useSWRConfig()
+  const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const opprettVedtak = () => {
     setLoading(true)
@@ -158,13 +161,21 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         </ButtonContainer>
         <BekreftVedtakModal
           open={visVedtakModal}
-          onBekreft={() => opprettVedtak()}
+          onBekreft={() => {
+            opprettVedtak()
+            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
+            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
+          }}
           loading={loading}
           onClose={() => setVisVedtakModal(false)}
         />
         <OverførGosysModal
           open={visGosysModal}
-          onBekreft={() => sendTilGosys()}
+          onBekreft={() => {
+            sendTilGosys()
+            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+          }}
           loading={loading}
           onClose={() => setVisGosysModal(false)}
         />

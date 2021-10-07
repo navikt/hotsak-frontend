@@ -6,9 +6,9 @@ import { Tekst } from '../felleskomponenter/typografi'
 
 interface BekreftVedtakModalProps {
   open: boolean
-  onBekreft: Function
+  onBekreft: () => void
   loading: boolean
-  onClose: Function
+  onClose: () => void
 }
 
 export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: BekreftVedtakModalProps) => {

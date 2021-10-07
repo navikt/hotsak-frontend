@@ -11,7 +11,7 @@ import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
 
 interface FormidlerProps {
   formidler: Formidler
-  oppfølgingsansvarling: Oppfølgingsansvarlig | null
+  oppfølgingsansvarling: Oppfølgingsansvarlig
 }
 
 const TittelIkon = styled(Personikon)`
@@ -56,15 +56,15 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
     return (
       <Grid>
         <Etikett>Navn</Etikett>
-        <Tekst>{capitalizeName(oppfølgingsansvarling!!.navn)}</Tekst>
+        <Tekst>{capitalizeName(oppfølgingsansvarling.navn)}</Tekst>
         <Etikett>Arbeidssted</Etikett>
-        <Tekst>{`${capitalize(oppfølgingsansvarling!!.arbeidssted)}`}</Tekst>
+        <Tekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Tekst>
         <Etikett>Stilling</Etikett>
-        <Tekst>{`${capitalize(oppfølgingsansvarling!!.stilling)}`}</Tekst>
+        <Tekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Tekst>
         <Etikett>Telefon</Etikett>
-        <Tekst>{oppfølgingsansvarling!!.telefon}</Tekst>
+        <Tekst>{oppfølgingsansvarling.telefon}</Tekst>
         <Etikett>Ansvar</Etikett>
-        <Tekst>{capitalize(oppfølgingsansvarling!!.ansvarFor)}</Tekst>
+        <Tekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Tekst>
       </Grid>
     )
   }
@@ -82,28 +82,28 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Strek />
       </>
     )
-  } else {
-    return (
-      <>
-        <Title level="1" size="m" spacing={false}>
-          <TittelIkon width={22} height={22} />
-          Formidler og opplæringsansvarlig
-        </Title>
-        <Container>
-          <Title level="1" size="s" spacing={false}>
-            Hjelpemiddelformidler
-          </Title>
-          <br />
-          <Formidlerinfo />
-          <br />
-          <Title level="1" size="s" spacing={false}>
-            Oppfølgings- og opplæringsansvarlig
-          </Title>
-          <br />
-          <OppfølgingsasvarligInfo />
-        </Container>
-        <Strek />
-      </>
-    )
   }
+
+  return (
+    <>
+      <Title level="1" size="m" spacing={false}>
+        <TittelIkon width={22} height={22} />
+        Formidler og opplæringsansvarlig
+      </Title>
+      <Container>
+        <Title level="1" size="s" spacing={false}>
+          Hjelpemiddelformidler
+        </Title>
+        <br />
+        <Formidlerinfo />
+        <br />
+        <Title level="1" size="s" spacing={false}>
+          Oppfølgings- og opplæringsansvarlig
+        </Title>
+        <br />
+        <OppfølgingsasvarligInfo />
+      </Container>
+      <Strek />
+    </>
+  )
 }

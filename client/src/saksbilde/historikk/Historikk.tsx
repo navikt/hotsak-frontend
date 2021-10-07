@@ -35,6 +35,10 @@ export const Historikk: React.FC = ({ children }) => {
     return <div>Henter sakshistorikk</div>
   }
 
+  if (!hendelser) {
+    return <div>Ingen hendelser</div>
+  }
+
   return (
     <Hendelser>
       <HistorikkTitle>HISTORIKK</HistorikkTitle>

@@ -4,11 +4,17 @@ import { httpGet } from '../io/http'
 
 import { Oppgave } from '../types/types.internal'
 
-export function useOppgaveliste() {
-  const { data, error } = useSwr('api/oppgaver', httpGet)
+interface DataResponse {
+  oppgaver: Oppgave[] | undefined
+  isLoading: boolean
+  isError: any
+}
+
+export function useOppgaveliste(): DataResponse {
+  const { data, error } = useSwr<{ data: Oppgave[] }>('api/oppgaver', httpGet)
 
   return {
-    oppgaver: data?.data as Oppgave[],
+    oppgaver: data?.data,
     isLoading: !error && !data,
     isError: error,
   }

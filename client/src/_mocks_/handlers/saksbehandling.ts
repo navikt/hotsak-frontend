@@ -60,28 +60,20 @@ const saksbehandlingHandlers = [
 
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
-    const dokumentBeskrivelseHendelse = {
-      id: '3',
-      hendelse: 'Dokumentbeskrivelse oppdatert',
-      detaljer: soknadsbeskrivelse,
-      opprettet: '2021-03-29T12:43:44',
-      bruker: 'Silje Saksbehandler',
-    }
     const vedtakHendelse = {
       id: '4',
       hendelse: 'Vedtak fattet',
       opprettet: '2021-03-29T12:43:45',
-      detaljer: 'Søknaden blir innvilget',
+      detaljer: 'Søknaden ble innvilget',
       bruker: 'Silje Saksbehandler',
     }
     const sfHendelse = {
       id: '5',
-      tittel: 'Serviceforespørsel opprettet i OEBS',
-      timestamp: '2021-03-29T12:45:45',
-      innhold: 'SF-nummer: 1390009031',
+      hendelse: 'Serviceforespørsel opprettet i OEBS',
+      opprettet: '2021-10-05T21:52:40.815302',
+      detaljer: 'SF-nummer: 1390009031',
     }
 
-    sakshistorikk[historikkIdx]['hendelser'].push(dokumentBeskrivelseHendelse)
     sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
     sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
 

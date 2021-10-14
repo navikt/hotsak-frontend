@@ -3,6 +3,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isoWeek from 'dayjs/plugin/isoWeek'
 
+
 dayjs.extend(isoWeek)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
@@ -18,7 +19,7 @@ export const formaterDato = (dato: string) => {
 }
 
 export const norskTimestamp = (dato: string) => {
-  return dayjs(dato, ISO_DATOFORMAT).format(NORSK_TIDSPUNKTFORMAT)
+  return dayjs(`${dato}Z`).format(NORSK_TIDSPUNKTFORMAT)
 }
 
 export const findLatest = (dates: Dayjs[]): Dayjs => {

@@ -1,61 +1,21 @@
-import styled from 'styled-components/macro'
-
 import Lenke from 'nav-frontend-lenker'
 import { Normaltekst } from 'nav-frontend-typografi'
+import styled from 'styled-components/macro'
 
-import { Title } from '@navikt/ds-react'
 
 import { capitalize } from '../../utils/stringFormating'
 
 import { Strek } from '../../felleskomponenter/Strek'
 import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
-import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Hjelpemiddel, Personinfo } from '../../types/types.internal'
+import { Etikett } from '../../felleskomponenter/typografi'
+import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
-
-const TittelIkon = styled(RullestolIkon)`
-  padding-right: 0.5rem;
-`
-const Container = styled.div`
-  padding-top: 1rem;
-`
+import { Rad, Kolonne } from '../../felleskomponenter/Flex'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
 `
 
-const Rad = styled('div')<RadProps>`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-  padding-top: ${(props) => props.paddingTop || '0.1rem'};
-  padding-bottom: 0.2rem;
-`
-
-interface KolonneProps {
-  width?: string
-  textAlign?: string
-}
-
-interface RadProps {
-  paddingTop?: string
-}
-
-interface RangeringProps {
-  rank?: number
-}
-
-//
-const Kolonne = styled('div')<KolonneProps>`
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-  text-align: ${(props) => props.textAlign || 'left'};
-  max-width: ${(props) => props.width || 'auto'};
-`
 const Rangering = styled('div')<RangeringProps>`
   display: flex;
 
@@ -72,18 +32,12 @@ const Rangering = styled('div')<RangeringProps>`
     font-weight: inherit;
   }
 `
+
 const TilleggsInfo = styled(Rad)`
   background-color: #fff5e5;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
 `
-
-interface HjelpemidlerProps {
-  hjelpemidler: Hjelpemiddel[]
-  søknadGjelder: string
-  personinformasjon: Personinfo
-}
-
 const UtlevertContainer = styled.div`
   display: grid;
   grid-template-columns: 1.25rem auto;
@@ -93,55 +47,45 @@ const EtikettKolonne: React.FC = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
-const summerAntall = (hjelpemidler: Hjelpemiddel[]) => {
-  const summarize = (accumulator: number, currentValue: number) => Number(accumulator) + Number(currentValue)
 
-  return hjelpemidler
-    .map((hjelpemiddel) => {
-      const antallTilbehør = hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.antall).reduce(summarize, 0)
-      return Number(hjelpemiddel.antall) + antallTilbehør
-    })
-    .reduce(summarize, 0)
+interface RangeringProps {
+  rank?: number
 }
 
-export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søknadGjelder, personinformasjon }) => {
-  return (
-    <>
-      <Title level="1" size="m" spacing={false}>
-        <TittelIkon width={26} height={26} />
-        Hjelpemidler
-      </Title>
-      <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
-      <Container>
-        {hjelpemidler.map((hjelpemiddel) => {
-          return (
-            <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
+interface HjelpemiddelProps {
+    produkt: HjelpemiddelType
+    personinformasjon: Personinfo
+}
+
+export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinformasjon}) => {
+    return (
+        <HjelpemiddelContainer key={produkt.hmsnr}>
               <Rad>
                 <EtikettKolonne>
                   <Rad>
-                    <Rangering rank={hjelpemiddel.rangering}>
+                    <Rangering rank={produkt.rangering}>
                       <Normaltekst>Rangering:</Normaltekst>
-                      <Normaltekst>{hjelpemiddel.rangering}</Normaltekst>
+                      <Normaltekst>{produkt.rangering}</Normaltekst>
                     </Rangering>
                   </Rad>
-                  <Rad>{hjelpemiddel.antall} stk</Rad>
+                  <Rad>{produkt.antall} stk</Rad>
                 </EtikettKolonne>
                 <Kolonne>
                   <Rad>
                     <Kolonne>
-                      <Etikett>{hjelpemiddel.kategori}</Etikett>
+                      <Etikett>{produkt.kategori}</Etikett>
                     </Kolonne>
                   </Rad>
                   <Rad>
                     <Lenke
-                      href={`https://www.hjelpemiddeldatabasen.no/r6x.asp?searchterm=${hjelpemiddel.hmsnr}`}
+                      href={`https://www.hjelpemiddeldatabasen.no/r6x.asp?searchterm=${produkt.hmsnr}`}
                       target={'_blank'}
-                    >{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Lenke>
+                    >{`${produkt.hmsnr} ${produkt.beskrivelse}`}</Lenke>
                   </Rad>
                   <Rad>
-                    {hjelpemiddel.tilleggsinfo.length > 0 && (
+                    {produkt.tilleggsinfo.length > 0 && (
                       <TilleggsInfo>
-                        {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
+                        {produkt.tilleggsinfo.map((tilleggsinfo) => {
                           return (
                             <Rad key={tilleggsinfo.innhold}>
                               <EtikettKolonne>
@@ -151,7 +95,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                             </Rad>
                           )
                         })}
-                        {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
+                        {produkt.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
                           <Rad>
                             <EtikettKolonne>
                               <Etikett>Kroppsmål:</Etikett>
@@ -163,7 +107,7 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                     )}
                   </Rad>
                   <Rad>
-                    {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
+                    {produkt.utlevertFraHjelpemiddelsentralen && (
                       <Rad>
                         <Etikett>
                           <UtlevertContainer>
@@ -172,8 +116,8 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                         </Etikett>
 
                         <Utlevert
-                          alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
-                          utlevertInfo={hjelpemiddel.utlevertInfo}
+                          alleredeUtlevert={produkt.utlevertFraHjelpemiddelsentralen}
+                          utlevertInfo={produkt.utlevertInfo}
                         />
                       </Rad>
                     )}
@@ -181,14 +125,14 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
                 </Kolonne>
                 <Rad>
                   <Rad>
-                    {hjelpemiddel.tilbehør.length > 0 && (
+                    {produkt.tilbehør.length > 0 && (
                       <>
                         <EtikettKolonne />
                         <Kolonne>
                           <Etikett>Tilbehør:</Etikett>
                         </Kolonne>
                         <Rad>
-                          {hjelpemiddel.tilbehør.map((tilbehør) => (
+                          {produkt.tilbehør.map((tilbehør) => (
                             <Rad key={tilbehør.hmsnr}>
                               <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
                               <Kolonne>
@@ -204,20 +148,5 @@ export const Hjelpemidler: React.FC<HjelpemidlerProps> = ({ hjelpemidler, søkna
               </Rad>
               <Strek />
             </HjelpemiddelContainer>
-          )
-        })}
-        <Rad>
-          <Etikett>
-            Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør
-          </Etikett>
-        </Rad>
-        {hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.utlevertFraHjelpemiddelsentralen).length > 0 && (
-          <Rad>
-            Totalt. {summerAntall(hjelpemidler.filter((it) => it.utlevertFraHjelpemiddelsentralen))} stk. allerede
-            utlevert
-          </Rad>
-        )}
-      </Container>
-    </>
-  )
+    )
 }

@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs'
 export interface Sak {
   saksid: string
   søknadGjelder: string
-  hjelpemidler: Hjelpemiddel[]
+  hjelpemidler: HjelpemiddelType[]
   formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   motattDato: string
@@ -70,7 +70,7 @@ export enum KontaktPersonType {
   HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
   ANNEN_BRUKER = 'ANNEN_BRUKER',
 }
-export interface Hjelpemiddel {
+export interface HjelpemiddelType {
   hmsnr: string
   rangering: number
   utlevertFraHjelpemiddelsentralen: boolean

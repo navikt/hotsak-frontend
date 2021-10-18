@@ -16,7 +16,7 @@ import Søknadslinje from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
 import { Historikk } from './historikk/Historikk'
-import { Hjelpemidler } from './hjelpemidler/Hjelpemidler'
+import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
 import { useSak } from './sakHook'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
@@ -99,9 +99,8 @@ const SaksbildeContent = React.memo(() => {
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <Hjelpemidler
+                    <HjelpemiddelListe
                       hjelpemidler={sak.hjelpemidler}
-                      søknadGjelder={sak.søknadGjelder}
                       personinformasjon={sak.personinformasjon}
                     />
                   </Route>

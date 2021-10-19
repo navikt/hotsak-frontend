@@ -126,7 +126,8 @@ async function handleRequest(event, requestId) {
           ok: clonedResponse.ok,
           status: clonedResponse.status,
           statusText: clonedResponse.statusText,
-          body: clonedResponse.body === null ? null : await clonedResponse.text(),
+          body:
+            clonedResponse.body === null ? null : await clonedResponse.text(),
           headers: serializeHeaders(clonedResponse.headers),
           redirected: clonedResponse.redirected,
         },
@@ -196,7 +197,10 @@ async function getResponse(event, client, requestId) {
 
   switch (clientMessage.type) {
     case 'MOCK_SUCCESS': {
-      return delayPromise(() => respondWithMock(clientMessage), clientMessage.payload.delay)
+      return delayPromise(
+        () => respondWithMock(clientMessage),
+        clientMessage.payload.delay,
+      )
     }
 
     case 'MOCK_NOT_FOUND': {
@@ -226,7 +230,7 @@ This exception has been gracefully handled as a 500 response, however, it's stro
 If you wish to mock an error response, please refer to this guide: https://mswjs.io/docs/recipes/mocking-error-responses\
 `,
         request.method,
-        request.url
+        request.url,
       )
 
       return respondWithMock(clientMessage)
@@ -261,15 +265,22 @@ self.addEventListener('fetch', function (event) {
 
   return event.respondWith(
     handleRequest(event, requestId).catch((error) => {
-      console.error('[MSW] Failed to mock a "%s" request to "%s": %s', request.method, request.url, error)
-    })
+      console.error(
+        '[MSW] Failed to mock a "%s" request to "%s": %s',
+        request.method,
+        request.url,
+        error,
+      )
+    }),
   )
 })
 
 function serializeHeaders(headers) {
   const reqHeaders = {}
   headers.forEach((value, name) => {
-    reqHeaders[name] = reqHeaders[name] ? [].concat(reqHeaders[name]).concat(value) : value
+    reqHeaders[name] = reqHeaders[name]
+      ? [].concat(reqHeaders[name]).concat(value)
+      : value
   })
   return reqHeaders
 }

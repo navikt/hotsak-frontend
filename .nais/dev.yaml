@@ -38,7 +38,7 @@ spec:
         extra:
           - "NAVident"
         groups:
-          - id: "88956569-f23d-455c-ace4-001b56e94602"
+          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
   resources:
     limits:
       cpu: 500m

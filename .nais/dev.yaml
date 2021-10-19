@@ -29,6 +29,7 @@ spec:
       rules:
         - application: hm-mocks
         - application: hm-saksbehandling
+        - application: hm-grunndata-api
         - application: saksbehandling-redis
   azure:
     application:

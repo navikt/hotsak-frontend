@@ -39,6 +39,8 @@ spec:
   env:
     - name: API_URL
       value: ''
+    - name: GRUNNDATA_API_URL
+      value: http://dummy
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_SPESIALIST

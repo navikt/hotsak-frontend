@@ -232,3 +232,10 @@ export enum PersonInfoKilde {
 export enum Oppgavetype {
   Søknad = 'SØKNAD',
 }
+
+export interface Produkt {
+    isokode: string
+    isotittel: string
+    rammeavtalePostId: string
+    produktid: string
+}

@@ -4,6 +4,7 @@ import { AppConfig, OnBehalfOf, SpeilRequest } from './types'
 
 const envProperties = {
   API_URL: process.env.API_URL || `http://localhost:7070`,
+  GRUNNDATA_API_URL: process.env.GRUNNDATA_API_URL || ''
 }
 let onBehalfOf: OnBehalfOf
 let spesialistId: string
@@ -45,6 +46,7 @@ const setupProxy = (server: core.Express, _onBehaldOf: OnBehalfOf, config: AppCo
   onBehalfOf = _onBehaldOf
   spesialistId = config.oidc.clientIDSpesialist
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
+  server.use('/grunndata-api', proxy(envProperties.GRUNNDATA_API_URL))
 }
 
 export default setupProxy

@@ -1,3 +1,4 @@
+import React from 'react'
 import Lenke from 'nav-frontend-lenker'
 import { Normaltekst } from 'nav-frontend-typografi'
 import styled from 'styled-components/macro'
@@ -11,6 +12,7 @@ import { Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { Rad, Kolonne } from '../../felleskomponenter/Flex'
+import { useGrunndata } from './grunndataHook'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -53,39 +55,44 @@ interface RangeringProps {
 }
 
 interface HjelpemiddelProps {
-    produkt: HjelpemiddelType
+    hjelpemiddel: HjelpemiddelType
     personinformasjon: Personinfo
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinformasjon}) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, personinformasjon}) => {
+    const { produkt } = useGrunndata(hjelpemiddel.hmsnr)
+
+
+
     return (
-        <HjelpemiddelContainer key={produkt.hmsnr}>
+        <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
               <Rad>
                 <EtikettKolonne>
                   <Rad>
-                    <Rangering rank={produkt.rangering}>
+                    <Rangering rank={hjelpemiddel.rangering}>
                       <Normaltekst>Rangering:</Normaltekst>
-                      <Normaltekst>{produkt.rangering}</Normaltekst>
+                      <Normaltekst>{hjelpemiddel.rangering}</Normaltekst>
                     </Rangering>
                   </Rad>
-                  <Rad>{produkt.antall} stk</Rad>
+                  <Rad>{hjelpemiddel.antall} stk</Rad>
                 </EtikettKolonne>
                 <Kolonne>
                   <Rad>
                     <Kolonne>
-                      <Etikett>{produkt.kategori}</Etikett>
+                      <Etikett>{hjelpemiddel.kategori}</Etikett>
                     </Kolonne>
                   </Rad>
+                  <Rad>{produkt && `POST ${produkt.rammeavtalePostId}: ${produkt.isotittel} `}</Rad>
                   <Rad>
                     <Lenke
-                      href={`https://www.hjelpemiddeldatabasen.no/r6x.asp?searchterm=${produkt.hmsnr}`}
+                      href={`https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=${produkt?.produktid}`}
                       target={'_blank'}
-                    >{`${produkt.hmsnr} ${produkt.beskrivelse}`}</Lenke>
+                    >{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Lenke>
                   </Rad>
                   <Rad>
-                    {produkt.tilleggsinfo.length > 0 && (
+                    {hjelpemiddel.tilleggsinfo.length > 0 && (
                       <TilleggsInfo>
-                        {produkt.tilleggsinfo.map((tilleggsinfo) => {
+                        {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                           return (
                             <Rad key={tilleggsinfo.innhold}>
                               <EtikettKolonne>
@@ -95,7 +102,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinfo
                             </Rad>
                           )
                         })}
-                        {produkt.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
+                        {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
                           <Rad>
                             <EtikettKolonne>
                               <Etikett>Kroppsmål:</Etikett>
@@ -107,7 +114,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinfo
                     )}
                   </Rad>
                   <Rad>
-                    {produkt.utlevertFraHjelpemiddelsentralen && (
+                    {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
                       <Rad>
                         <Etikett>
                           <UtlevertContainer>
@@ -116,8 +123,8 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinfo
                         </Etikett>
 
                         <Utlevert
-                          alleredeUtlevert={produkt.utlevertFraHjelpemiddelsentralen}
-                          utlevertInfo={produkt.utlevertInfo}
+                          alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
+                          utlevertInfo={hjelpemiddel.utlevertInfo}
                         />
                       </Rad>
                     )}
@@ -125,14 +132,14 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({produkt, personinfo
                 </Kolonne>
                 <Rad>
                   <Rad>
-                    {produkt.tilbehør.length > 0 && (
+                    {hjelpemiddel.tilbehør.length > 0 && (
                       <>
                         <EtikettKolonne />
                         <Kolonne>
                           <Etikett>Tilbehør:</Etikett>
                         </Kolonne>
                         <Rad>
-                          {produkt.tilbehør.map((tilbehør) => (
+                          {hjelpemiddel.tilbehør.map((tilbehør) => (
                             <Rad key={tilbehør.hmsnr}>
                               <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
                               <Kolonne>

@@ -33,6 +33,12 @@ spec:
   azure:
     application:
       enabled: true
+      allowAllUsers: false
+      claims:
+        extra:
+          - "NAVident"
+        groups:
+          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
   resources:
     limits:
       cpu: 500m

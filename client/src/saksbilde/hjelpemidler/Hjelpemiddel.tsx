@@ -79,7 +79,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, perso
                 <Kolonne>
                   <Rad>
                     <Kolonne>
-                      <Etikett>{hjelpemiddel.kategori}</Etikett>
+                      <Etikett>{produkt ? produkt?.isotittel : hjelpemiddel.kategori}</Etikett>
                     </Kolonne>
                   </Rad>
                   <Rad>{produkt && produkt.posttittel}</Rad>

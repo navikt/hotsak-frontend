@@ -41,7 +41,7 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidl
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {
           return (
-            <Hjelpemiddel hjelpemiddel={hjelpemiddel} personinformasjon={personinformasjon}  />
+            <Hjelpemiddel key={hjelpemiddel.hmsnr} hjelpemiddel={hjelpemiddel} personinformasjon={personinformasjon} />
           )
         })}
         <Rad>

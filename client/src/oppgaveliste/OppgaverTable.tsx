@@ -23,6 +23,7 @@ import { Motatt } from './kolonner/Motatt'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { TabType } from './tabs'
+import { FormidlerCelle } from './kolonner/Formidler'
 
 const Container = styled.div`
   min-height: 300px;
@@ -44,6 +45,7 @@ enum Kolonne {
   FUNKSJONSNEDSETTELSE = 'Funksjonsnedsettelse',
   SØKNAD_OM = 'Søknad om',
   BOSTED = 'Bosted',
+  FORMIDLER = 'Formidler',
   STATUS = 'Status',
   MOTTATT = 'Mottatt',
   KJØTTBOLLE = 'Kjøttbolle',
@@ -55,6 +57,7 @@ const kolonnerMine = [
   Kolonne.FØDSELSNUMMER,
   Kolonne.HJELPEMIDDELBRUKER,
   Kolonne.BOSTED,
+  Kolonne.FORMIDLER,
   Kolonne.STATUS,
   Kolonne.MOTTATT,
   Kolonne.KJØTTBOLLE,
@@ -66,6 +69,7 @@ const kolonnerUtfordelte = [
   Kolonne.FØDSELSNUMMER,
   Kolonne.HJELPEMIDDELBRUKER,
   Kolonne.BOSTED,
+  Kolonne.FORMIDLER,
   Kolonne.MOTTATT,
 ]
 
@@ -76,6 +80,7 @@ const kolonnerAlleSaker = [
   Kolonne.FØDSELSNUMMER,
   Kolonne.HJELPEMIDDELBRUKER,
   Kolonne.BOSTED,
+  Kolonne.FORMIDLER,
   Kolonne.STATUS,
   Kolonne.MOTTATT,
   Kolonne.KJØTTBOLLE,
@@ -147,6 +152,11 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                   Bosted
                 </Header>
               )}
+              {tab.kolonner.includes(Kolonne.FORMIDLER) && (
+                <Header scope="col" colSpan={1}>
+                  Formidler
+                </Header>
+              )}
               {tab.kolonner.includes(Kolonne.STATUS) && (
                 <Header scope="col" colSpan={1}>
                   Status
@@ -201,6 +211,7 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                     <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
                   </Cell>
                 )}
+                {tab.kolonner.includes(Kolonne.FORMIDLER) && (<Cell><FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle></Cell>)}
                 {tab.kolonner.includes(Kolonne.STATUS) && (
                   <Cell>
                     <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />

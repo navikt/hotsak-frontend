@@ -82,7 +82,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, perso
                       <Etikett>{hjelpemiddel.kategori}</Etikett>
                     </Kolonne>
                   </Rad>
-                  <Rad>{produkt && `POST ${produkt.rammeavtalePostId}: ${produkt.isotittel} `}</Rad>
+                  <Rad>{produkt && produkt.posttittel}</Rad>
                   <Rad>
                     <Lenke
                       href={`https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=${produkt?.produktid}`}

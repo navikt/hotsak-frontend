@@ -238,4 +238,5 @@ export interface Produkt {
     isotittel: string
     rammeavtalePostId: string
     produktid: string
+    posttittel: string
 }

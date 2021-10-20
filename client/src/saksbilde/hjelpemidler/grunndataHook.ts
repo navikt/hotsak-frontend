@@ -18,6 +18,7 @@ export function useGrunndata(hmsnummer: string): DataResponse {
     ? {
         isokode: grunndataProdukt.produkt.isocode,
         isotittel: grunndataProdukt.produkt.isotitle,
+        posttittel: grunndataProdukt.produkt.aposttitle,
         rammeavtalePostId: grunndataProdukt.produkt.apostnr,
         produktid: grunndataProdukt.prodid,
       }

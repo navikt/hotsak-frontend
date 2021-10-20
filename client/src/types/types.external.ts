@@ -8,5 +8,6 @@ export interface GrunndataProdukt {
     isotitle: string
     apostid: string
     apostnr: string
+    aposttitle: string
   }
 }

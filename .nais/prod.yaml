@@ -13,8 +13,8 @@ spec:
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.dev.intern.nav.no
-    - https://hotsak.dev.intern.nav.no
+    - https://hm-saksbehandling.intern.nav.no
+    - https://hotsak.intern.nav.no
   liveness:
     path: /isalive
   readiness:
@@ -23,8 +23,8 @@ spec:
     enabled: true
     path: /metrics
   replicas:
-    max: 1
-    min: 1
+    max: 6
+    min: 2
   accessPolicy:
     outbound:
       rules:
@@ -40,7 +40,7 @@ spec:
         extra:
           - "NAVident"
         groups:
-          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
+          - id: "2f632b40-4730-4692-9c7c-fb744e2d33e1"
   resources:
     limits:
       cpu: 500m
@@ -61,7 +61,7 @@ spec:
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_SPESIALIST
-      value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
+      value: api://prod-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW

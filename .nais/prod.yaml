@@ -40,6 +40,7 @@ spec:
         extra:
           - "NAVident"
         groups:
+          - id: "88956569-f23d-455c-ace4-001b56e94602"
           - id: "2f632b40-4730-4692-9c7c-fb744e2d33e1"
   resources:
     limits:

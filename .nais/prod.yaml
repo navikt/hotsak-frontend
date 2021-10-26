@@ -6,14 +6,11 @@ metadata:
     team: teamdigihot
   name: hm-saksbehandling-frontend
   namespace: teamdigihot
-  annotations:
-    snorlax.nais.io/enabled: 'true'
 spec:
   image: {{image}}
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.intern.nav.no
     - https://hotsak.intern.nav.no
   liveness:
     path: /isalive
@@ -28,7 +25,6 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: hm-mocks
         - application: hm-saksbehandling
         - application: hm-grunndata-api
         - application: saksbehandling-redis

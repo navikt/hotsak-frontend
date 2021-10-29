@@ -12,6 +12,20 @@ env:
   IMAGE: 'ghcr.io/navikt/hm-saksbehandling-frontend:${{ github.sha }}'
 
 jobs:
+
+  test:
+    name: Run Cypress tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run dev
+          wait-on: 'http://localhost:3001'
+          working-directory: client
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -48,10 +62,15 @@ jobs:
       #  with:
       #    name: videos
       #    path: e2e-tests/cypress/videos
+      - name: pre-deploy
+        uses: navikt/digihot-deploy/actions/pre-deploy@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_IMAGE: ghcr.io/navikt/hm-saksbehandling-frontend
       - name: build docker image
         run: |
           npm prune --production
-          docker build . --pull -t ${{ env.IMAGE }}
+          docker build . -t $IMAGE
       - name: push docker image
         run: |
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
@@ -61,40 +80,32 @@ jobs:
         #  docker push ${{ env.IMAGE }}:${{ needs.set_version.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  test:
-    name: Run Cypress tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          start: npm run dev
-          wait-on: 'http://localhost:3001'
-          working-directory: client
-
-  deployDev:
-    name: Deploy to dev
-    needs: [build, test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
-
-  deployLabs:
-    name: Deploy to labs
-    needs: [build, test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
+          VAR: image=${{ env.IMAGE }}
+      - name: post-deploy
+        uses: navikt/digihot-deploy/actions/post-deploy@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: draft release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION_TAG }}
+          release_name: ${{ env.APPLICATION }} ${{ env.VERSION_TAG }}
+          body: ${{ env.CHANGE_LOG }}
+          draft: true
+          prerelease: false
+      - name: deploy to labs
+        uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: labs-gcp
           RESOURCE: .nais/labs.yaml
+          VAR: image=${{ env.IMAGE }}
+
+

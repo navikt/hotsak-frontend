@@ -18,6 +18,10 @@ const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
 `
 
+const HMSLenke = styled(Lenke)`
+padding-left: 0.5rem;
+`
+
 const Rangering = styled('div')<RangeringProps>`
   display: flex;
 
@@ -84,10 +88,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, perso
                   </Rad>
                   <Rad>{produkt && produkt.posttittel}</Rad>
                   <Rad>
-                    <Lenke
+                  {hjelpemiddel.hmsnr}
+                    <HMSLenke
                       href={`https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=${produkt?.produktid}`}
                       target={'_blank'}
-                    >{`${hjelpemiddel.hmsnr} ${hjelpemiddel.beskrivelse}`}</Lenke>
+                    >{` ${hjelpemiddel.beskrivelse}`}</HMSLenke>
                   </Rad>
                   <Rad>
                     {hjelpemiddel.tilleggsinfo.length > 0 && (

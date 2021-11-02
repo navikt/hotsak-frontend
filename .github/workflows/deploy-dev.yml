@@ -9,7 +9,7 @@ on:
     branches:
       - main
 env:
-  IMAGE: 'ghcr.io/navikt/hm-saksbehandling-frontend:${{ github.sha }}'
+  IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
 
 jobs:
 
@@ -66,7 +66,7 @@ jobs:
         uses: navikt/digihot-deploy/actions/pre-deploy@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_IMAGE: ghcr.io/navikt/hm-saksbehandling-frontend
+          DOCKER_IMAGE: ghcr.io/navikt/hotsak-frontend
       - name: build docker image
         run: |
           npm prune --production

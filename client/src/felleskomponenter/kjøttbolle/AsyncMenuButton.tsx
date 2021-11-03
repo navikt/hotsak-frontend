@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import styled from 'styled-components/macro'
+/* eslint-disable no-unreachable */
+import React/*, { useState }*/ from 'react'
+//import styled from 'styled-components/macro'
+import {/*Button,*/ ButtonProps} from '@navikt/ds-react'
 
-import { Knapp, KnappBaseProps } from 'nav-frontend-knapper'
+//import { Knapp, KnappBaseProps } from 'nav-frontend-knapper'
 
-const Button = styled(Knapp)`
+/*const MenuButton = styled(Button)`
   all: unset;
   height: 30px;
   min-width: 180px;
@@ -28,9 +30,9 @@ const Button = styled(Knapp)`
       color: var(--navds-color-text-disabled);
     }
   }
-`
+`*/
 
-interface AsyncMenuButtonProps extends KnappBaseProps {
+interface AsyncMenuButtonProps extends ButtonProps {
   asyncOperation: () => Promise<any>
   onSuccess?: (result?: any) => void
   onFail?: (error: Error) => void
@@ -45,9 +47,9 @@ export const AsyncMenuButton = ({
   swallorErrors = true,
   ...rest
 }: AsyncMenuButtonProps) => {
-  const [isPerformingAsyncOperation, setIsPerformingAsyncOperation] = useState(false)
+  //const [isPerformingAsyncOperation, setIsPerformingAsyncOperation] = useState(false)
 
-  const onClick = (event: React.MouseEvent) => {
+  /*const onClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     setIsPerformingAsyncOperation(true)
     asyncOperation()
@@ -60,11 +62,13 @@ export const AsyncMenuButton = ({
         onFail?.(error)
         return swallorErrors ? Promise.resolve() : Promise.reject(error)
       })
-  }
+  }*/
 
   return (
-    <Button spinner={isPerformingAsyncOperation} onClick={onClick} {...rest}>
-      {children}
-    </Button>
+      <></>
   )
+    // eslint-disable-next-line no-lone-blocks
+    {/*<MenuButton variant="tertiary" spinner={isPerformingAsyncOperation} onClick={onClick} {...rest}>
+      {children}
+  </MenuButton>*/}
 }

@@ -23,9 +23,9 @@ export const Hjelpemiddelbruker = React.memo(({ person, saksID }: Hjelpemiddelbr
   const formatertNavn = getFormattedName(person)
 
   return (
-    <CellContent width={140} data-for={id} data-tip={formatertNavn}>
+    <CellContent width={160} data-for={id} data-tip={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
-      {formatertNavn.length > 19 && <Tooltip id={id} />}
+      {formatertNavn.length > 23 && <Tooltip id={id} />}
     </CellContent>
   )
 })

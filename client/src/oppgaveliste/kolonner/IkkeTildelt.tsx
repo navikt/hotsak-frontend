@@ -3,16 +3,14 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
-
-import { Knapp } from 'nav-frontend-knapper'
-
+import {Button} from '@navikt/ds-react'
 //import { useTildelOppgave } from '../../../../state/oppgaver';
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { postTildeling } from '../../io/http'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
-const Tildelingsknapp = styled(Knapp)`
+const Tildelingsknapp = styled(Button)`
   min-height: 0;
   height: 1.5rem;
   padding: 0 0.75rem;
@@ -53,7 +51,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
   return (
     <CellContent width={128}>
       {
-        <Tildelingsknapp mini onClick={tildel} spinner={isFetching} data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
+        <Tildelingsknapp size="small" variant="secondary" onClick={tildel} spinner={isFetching} data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
           Start saken
         </Tildelingsknapp>
       }

@@ -1,23 +1,25 @@
-import { KnappBaseProps } from 'nav-frontend-knapper'
+/* eslint-disable no-lone-blocks */
 
 //import { useFjernTildeling } from '../../../../../state/oppgaver';
-import { AsyncMenuButton } from './AsyncMenuButton'
+//import { AsyncMenuButton } from './AsyncMenuButton'
 
-interface MeldAvMenuButtonProps extends KnappBaseProps {
+interface MeldAvMenuButtonProps  {
   oppgavereferanse: string
 }
 
 export const MeldAvMenuButton = ({ oppgavereferanse, ...rest }: MeldAvMenuButtonProps) => {
   //const fjernTildeling = useFjernTildeling();
-  return (
-    <AsyncMenuButton
+  return (<></>
+  )
+    // eslint-disable-next-line no-lone-blocks
+    // eslint-disable-next-line no-unreachable
+    {/*<AsyncMenuButton
       asyncOperation={() => {
-        /*fjernTildeling({ oppgavereferanse })*/ console.log('Her kommer funksjon for å fjerne tildeling etterhvert')
+        fjernTildeling({ oppgavereferanse }) console.log('Her kommer funksjon for å fjerne tildeling etterhvert')
         return Promise.resolve()
       }}
       {...rest}
     >
       Meld av
-    </AsyncMenuButton>
-  )
+    </AsyncMenuButton>*/}
 }

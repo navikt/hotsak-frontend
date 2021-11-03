@@ -8,7 +8,7 @@ import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Table } from '../felleskomponenter/table/Table'
 import { capitalize } from '../utils/stringFormating'
 
-import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
+//import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
 import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
 //import saksbehandler from '../saksbehandler/innloggetSaksbehandler'
 //import { StatusType } from '../types/types.internal'
@@ -167,7 +167,7 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                   Mottatt
                 </Header>
               )}
-              {tab.kolonner.includes(Kolonne.KJØTTBOLLE) && <Header scope="col" colSpan={1} />}
+              {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && <Header scope="col" colSpan={1} />*/}
             </tr>
           </thead>
           <Body>
@@ -184,7 +184,7 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                   </Cell>
                 )}
                 {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
-                  <Cell>
+                  <Cell> 
                     <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
                   </Cell>
                 )}
@@ -222,9 +222,9 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                     <Motatt dato={oppgave.mottattDato} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(Kolonne.KJØTTBOLLE) && (
+                {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && (
                   <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
-                )}
+                )*/}
               </LinkRow>
             ))}
           </Body>

@@ -3,9 +3,7 @@ import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
 
-import { Input } from 'nav-frontend-skjema'
-
-import { Button, Tag } from '@navikt/ds-react'
+import { Button, Tag, TextField } from '@navikt/ds-react'
 
 import { putVedtak, putSendTilGosys } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -144,8 +142,8 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
-        <Input
-          mini
+        <TextField
+          size="small"
           label="Søknad om:"
           description="Skriv inn hjelpemidler feks. rullator, seng."
           value={dokumentbeskrivelse}

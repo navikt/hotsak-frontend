@@ -43,7 +43,7 @@ export const HeaderBar = () => {
   return (
     <Container>
       <HeaderEnkel
-        tittel={<Link to="/">Hjelpemidler og tilrettelegging</Link>}
+        tittel={<Link to="/">HOTSAK</Link>}
         brukerinfo={{
           navn: brukerinfo.navn,
           ident: brukerinfo.ident /*, enhet: 'Enhetsnavn', rolle: 'Saksbehandler'*/,

@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -72,10 +72,10 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
   if (oppfølgingsansvarling == null) {
     return (
       <>
-        <Title level="1" size="m" spacing={false}>
+        <Heading level="1" size="medium" spacing={false}>
           <TittelIkon width={22} height={22} />
           Formidler og opplæringsansvarlig
-        </Title>
+        </Heading>
         <Container>
           <Formidlerinfo />
         </Container>
@@ -86,20 +86,20 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
 
   return (
     <>
-      <Title level="1" size="m" spacing={false}>
+      <Heading level="1" size="medium" spacing={false}>
         <TittelIkon width={22} height={22} />
         Formidler og opplæringsansvarlig
-      </Title>
+      </Heading>
       <Container>
-        <Title level="1" size="s" spacing={false}>
+        <Heading level="1" size="small" spacing={false}>
           Hjelpemiddelformidler
-        </Title>
+        </Heading>
         <br />
         <Formidlerinfo />
         <br />
-        <Title level="1" size="s" spacing={false}>
+        <Heading level="1" size="small" spacing={false}>
           Oppfølgings- og opplæringsansvarlig
-        </Title>
+        </Heading>
         <br />
         <OppfølgingsasvarligInfo />
       </Container>

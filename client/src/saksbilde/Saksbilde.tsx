@@ -85,14 +85,14 @@ const SaksbildeContent = React.memo(() => {
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && (
-                <Alert size="s" variant="success" data-cy="alert-vedtak-status">
+                <Alert size="small" variant="success" data-cy="alert-vedtak-status">
                   {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksDato)} av ${
                     sak.vedtak.saksbehandlerNavn
                   }`}
                 </Alert>
               )}
               {sak.status === OppgaveStatusType.SENDT_GOSYS && (
-                <Alert size="s" variant="info" data-cy="alert-vedtak-status">
+                <Alert size="small" variant="info" data-cy="alert-vedtak-status">
                   Saken er overført til Gosys. Videre saksbehandling skjer i Gosys
                 </Alert>
               )}

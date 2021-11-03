@@ -3,7 +3,7 @@ import { capitalize } from '../../utils/stringFormating'
 import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { Hjelpemiddel } from './Hjelpemiddel'
 import { Rad } from '../../felleskomponenter/Flex'
 
@@ -33,10 +33,10 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
 export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidler, personinformasjon }) => {
   return (
     <>
-      <Title level="1" size="m" spacing={false}>
+      <Heading level="1" size="medium" spacing={false}>
         <TittelIkon width={26} height={26} />
         Hjelpemidler
-      </Title>
+      </Heading>
       <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {

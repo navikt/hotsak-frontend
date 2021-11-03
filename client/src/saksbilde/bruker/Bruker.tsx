@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
 import { capitalizeName, capitalize } from '../../utils/stringFormating'
 
@@ -43,10 +43,10 @@ const formaterNavn = (person: Personinfo) => {
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   return (
     <>
-      <Title level="1" size="m" spacing={false}>
+      <Heading level="1" size="medium" spacing={false}>
         <TittelIkon width={22} height={22} />
         Hjelpemiddelbruker
-      </Title>
+      </Heading>
       <Container>
         <Grid>
           <Etikett>Navn</Etikett>
@@ -71,9 +71,9 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Container>
       <Strek />
 
-      <Title level="1" size="m" spacing={true}>
+      <Heading level="1" size="medium" spacing={true}>
         Utlevering
-      </Title>
+      </Heading>
       <Container>
         <Grid>
           <Etikett>Leveringadresse</Etikett>
@@ -96,9 +96,9 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
 
       <Strek />
 
-      <Title level="1" size="m" spacing={true}>
+      <Heading level="1" size="medium" spacing={true}>
         Vilkår for å motta hjelpemidler
-      </Title>
+      </Heading>
       <Container>
         <Liste>
           {person.oppfylteVilkår.map((vilkår, i) => (

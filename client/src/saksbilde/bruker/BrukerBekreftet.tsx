@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 
@@ -16,9 +16,9 @@ const Container = styled.div`
 export const BrukerBekreftet: React.FC<BrukerBekreftetProps> = ({ navn }) => {
   return (
     <>
-      <Title level="1" size="m" spacing={true}>
+      <Heading level="1" size="medium" spacing={true}>
         Bruker har godkjent søknaden
-      </Title>
+      </Heading>
       <Container>
         <Tekst>{`${navn} har godkjent søknaden selv på nav.no`}</Tekst>
       </Container>

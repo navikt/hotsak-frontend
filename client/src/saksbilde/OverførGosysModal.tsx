@@ -1,4 +1,4 @@
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { Button, Loader } from '@navikt/ds-react'
 
 import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
@@ -22,21 +22,22 @@ export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: Overf�
         onClose()
       }}
     >
-      <Title level="1" size="m" spacing>
+        <DialogBoks.Content>
+      <Heading level="1" size="medium" spacing>
         Vil du overføre saken til Gosys?
-      </Title>
+      </Heading>
       <Tekst>
         Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre
         saksbehandling må gjøres manuelt i Gosys og Infotrygd.
       </Tekst>
       <ButtonContainer>
-        <Button variant="action" size="s" onClick={() => onBekreft()} data-cy="btn-overfor-soknad">
+        <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-overfor-soknad">
           <span>Overfør saken</span>
           {loading && <Loader />}
         </Button>
         <Button
-          variant={'primary'}
-          size={'s'}
+          variant='secondary'
+          size='small'
           onClick={() => {
             onClose()
           }}
@@ -44,6 +45,7 @@ export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: Overf�
           Avbryt
         </Button>
       </ButtonContainer>
+      </DialogBoks.Content>
     </DialogBoks>
   )
 }

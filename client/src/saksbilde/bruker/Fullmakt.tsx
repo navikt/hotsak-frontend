@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 
-import { Title } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
 import { Liste } from '../../felleskomponenter/Liste'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -17,9 +17,9 @@ const Container = styled.div`
 export const Fullmakt: React.FC<FullmaktProps> = ({ navn }) => {
   return (
     <>
-      <Title level="1" size="m" spacing={true}>
+      <Heading level="1" size="medium" spacing={true}>
         Fullmakt
-      </Title>
+      </Heading>
       <Container>
         <Liste>
           <li>

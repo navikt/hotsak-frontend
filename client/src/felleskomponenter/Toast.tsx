@@ -30,7 +30,7 @@ interface ToastProps {}
 export const Toast: React.FC<ToastProps> = ({ children }) => {
   return (
     <ToastView aria-live="polite">
-      <Tekst>{children}</Tekst> <Loader title="Henter oppgaver" size="xs" />
+      <Tekst>{children}</Tekst> <Loader title="Henter oppgaver" size="xsmall" />
     </ToastView>
   )
 }

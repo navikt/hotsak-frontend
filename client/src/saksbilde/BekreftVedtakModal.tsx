@@ -32,8 +32,8 @@ export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: Bekref
       </Tekst>
       <ButtonContainer>
         <Button variant='primary' size='small' onClick={() => onBekreft()} data-cy="btn-innvilg-soknad">
-          <span>Innvilg søknaden</span>
-          {loading && <Loader />}
+         Innvilg søknaden
+          {loading && <Loader size="small" />}
         </Button>
         <Button
           variant='secondary'

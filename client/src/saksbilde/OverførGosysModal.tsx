@@ -32,8 +32,8 @@ export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: Overf�
       </Tekst>
       <ButtonContainer>
         <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-overfor-soknad">
-          <span>Overfør saken</span>
-          {loading && <Loader />}
+          Overfør saken
+          {loading && <Loader size="small" />}
         </Button>
         <Button
           variant='secondary'

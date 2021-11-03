@@ -3,3 +3,4 @@ export const Routes = {
   Saksbilde: '/sak/:saksnummer',
   Uautorisert: '/uautorisert',
 }
+    

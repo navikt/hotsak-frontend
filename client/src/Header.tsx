@@ -43,7 +43,7 @@ export const HeaderBar = () => {
   return (
     <Container>
       <HeaderEnkel
-        tittel={<Link to="/">NAV Hjelpemidler</Link>}
+        tittel={<Link to="/">Hjelpemidler og tilrettelegging</Link>}
         brukerinfo={{
           navn: brukerinfo.navn,
           ident: brukerinfo.ident /*, enhet: 'Enhetsnavn', rolle: 'Saksbehandler'*/,
@@ -57,7 +57,6 @@ export const HeaderBar = () => {
 
                 </InternalHeaderTitle>
                 <BentoMeny />
-                <Brukermeny navn={brukerinfo.navn} ident={brukerinfo.ident} />
             </InternalHeader>*/}
     </Container>
   )

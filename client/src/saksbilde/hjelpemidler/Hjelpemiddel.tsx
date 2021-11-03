@@ -1,11 +1,7 @@
 import React from 'react'
-import Lenke from 'nav-frontend-lenker'
 import { Normaltekst } from 'nav-frontend-typografi'
 import styled from 'styled-components/macro'
-
-
 import { capitalize } from '../../utils/stringFormating'
-
 import { Strek } from '../../felleskomponenter/Strek'
 import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
 import { Etikett } from '../../felleskomponenter/typografi'
@@ -13,12 +9,13 @@ import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { Rad, Kolonne } from '../../felleskomponenter/Flex'
 import { useGrunndata } from './grunndataHook'
+import { Link } from '@navikt/ds-react'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
 `
 
-const HMSLenke = styled(Lenke)`
+const HMSLenke = styled(Link)`
 padding-left: 0.5rem;
 `
 

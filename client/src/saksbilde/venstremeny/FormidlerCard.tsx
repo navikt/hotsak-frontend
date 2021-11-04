@@ -1,5 +1,3 @@
-import { Normaltekst } from 'nav-frontend-typografi'
-
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
@@ -7,6 +5,7 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
+import { Tekst } from '../../felleskomponenter/typografi'
 
 interface FormidlerCardProps {
   formidlerNavn: string
@@ -21,7 +20,7 @@ export const FormidlerCard = ({ formidlerNavn, kommune }: FormidlerCardProps) =>
         <IconContainer>
           <Personikon />
         </IconContainer>
-        <Normaltekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Normaltekst>
+        <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
       </Grid>
     </Card>
   )

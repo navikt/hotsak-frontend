@@ -5,7 +5,6 @@
   "trailingComma": "es5",
   "endOfLine": "auto",
   "importOrder": [
-    "^nav-frontend-(.*)$",
     "^@navikt/(.*)$",
     "/(oppgaveliste|dropdown|table|io|routes|utils|assets)/",
     "^[./]"

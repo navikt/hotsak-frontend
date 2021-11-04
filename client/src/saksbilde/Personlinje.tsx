@@ -1,16 +1,14 @@
 import dayjs from 'dayjs'
 import styled from 'styled-components/macro'
-
-import { Element, Normaltekst } from 'nav-frontend-typografi'
-
+import { CopyToClipboard } from '@navikt/ds-react-internal'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
 
-import { Clipboard } from '../felleskomponenter/clipboard'
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Personinfo, Kjønn } from '../types/types.internal'
+import { Etikett, Tekst } from '../felleskomponenter/typografi'
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +27,11 @@ const Container = styled.div`
   }
 `
 
-const Separator = styled(Normaltekst)`
+const Clipboard = styled(CopyToClipboard)`
+  color: var(--navds-color-text-primary);
+`
+
+const Separator = styled.div`
   margin: 0 1rem 0 1rem;
 `
 const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
@@ -101,22 +103,30 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      <Element>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Element>
+      <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
       <Separator>/</Separator>
       {fnr ? (
-        <Clipboard preserveWhitespace={false} copyMessage="Fødselsnummer er kopiert">
-          <Normaltekst>{formaterFødselsnummer(fnr)}</Normaltekst>
-        </Clipboard>
+        <>
+          <Tekst>{formaterFødselsnummer(fnr)}</Tekst>
+          <Clipboard popoverText="Fødselsnummer kopiert" variant="tertiary" size="small" copyText={fnr} popoverPlacement="bottom" />
+        </>
       ) : (
-        <Normaltekst>Fødselsnummer ikke tilgjengelig</Normaltekst>
+        <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
       )}
       <Separator>/</Separator>
       {brukernummer ? (
-        <Clipboard preserveWhitespace={false} copyMessage="Brukernummer er kopiert">
-          <Normaltekst>{`Brukernummer: ${brukernummer}`}</Normaltekst>
-        </Clipboard>
+        <>
+          <Tekst>{`Brukernummer: ${brukernummer}`}</Tekst>
+          <Clipboard
+            popoverText="Brukernummer kopiert"
+            popoverPlacement="bottom"
+            variant="tertiary"
+            size="small"
+            copyText={brukernummer}
+          ></Clipboard>
+        </>
       ) : (
-        <Normaltekst>Brukernummer ikke tilgjengelig</Normaltekst>
+        <Tekst>Brukernummer ikke tilgjengelig</Tekst>
       )}
     </Container>
   )

@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
 import React from 'react'
 
-import { Normaltekst } from 'nav-frontend-typografi'
-
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { NORSK_DATOFORMAT, ISO_DATOFORMAT } from '../../utils/date'
+import { Tekst } from '../../felleskomponenter/typografi'
 
 interface MottattProps {
   dato: string
@@ -17,7 +16,7 @@ const formaterDato = (dato: string) => {
 export const Motatt = React.memo(({ dato }: MottattProps) => {
   return (
     <CellContent width={100}>
-      <Normaltekst>{formaterDato(dato)}</Normaltekst>
+      <Tekst>{formaterDato(dato)}</Tekst>
     </CellContent>
   )
 })

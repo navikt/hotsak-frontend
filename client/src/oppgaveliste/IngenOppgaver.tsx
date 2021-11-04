@@ -1,24 +1,11 @@
 import styled from '@emotion/styled'
-
-import { Sidetittel } from 'nav-frontend-typografi'
+import { Heading } from '@navikt/ds-react'
 
 import { useTabContext } from './Oppgaveliste'
 import { TabType } from './tabs'
 
 const Container = styled.div`
-  align-self: flex-start;
-  width: max-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
-`
-
-const Tekst = styled(Sidetittel)`
-  margin: 2rem 0 0;
-  font-size: 1.25rem;
-  flex: 1;
+  padding: 1rem;
 `
 
 export const IngenOppgaver = () => {
@@ -28,28 +15,25 @@ export const IngenOppgaver = () => {
     case TabType.Ufordelte:
       return (
         <Container>
-          <Tekst>Ingen nye saker å plukke</Tekst>
+          <Heading size="small">Ingen nye saker å plukke</Heading>
         </Container>
       )
     case TabType.Mine:
       return (
         <Container>
-          {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
-          <Tekst>Du har ingen tildelte saker</Tekst>
+          <Heading size="small">Du har ingen tildelte saker</Heading>
         </Container>
       )
     case TabType.OverførtGosys:
       return (
         <Container>
-          {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
-          <Tekst>Ingen saker overført til Gosys</Tekst>
+          <Heading size="small">Ingen saker overført til Gosys</Heading>
         </Container>
       )
     case TabType.Alle:
       return (
         <Container>
-          {/*<img alt="Tom brevkasse som smiler" src={brevkasse} />*/}
-          <Tekst>Ingen saker funnet for din enhet</Tekst>
+          <Heading size="small">Ingen saker funnet for din enhet</Heading>
         </Container>
       )
     default:

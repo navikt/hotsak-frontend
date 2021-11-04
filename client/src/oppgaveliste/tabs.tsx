@@ -1,9 +1,7 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
+//import { css } from '@emotion/react'
+//import styled from '@emotion/styled'
 
-//import { atom, useRecoilState, useRecoilValue } from 'recoil';
-//import { PopoverOrientering } from 'nav-frontend-popover'
-import { Normaltekst } from 'nav-frontend-typografi'
+import styled from 'styled-components/macro'
 
 import { Flex } from '../felleskomponenter/Flex'
 //import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
@@ -67,15 +65,16 @@ const Tab = styled.button<{ active: boolean }>`
 
   ${({ active }) =>
     active &&
-    css`
+    `
       &:before {
         height: 4px;
       }
     `}
 `
 
-const Antall = styled(Normaltekst)`
-  margin-left: 0.25rem;
+const Antall = styled.div`
+  padding-left: 0.25rem;
+  font-weight: normal;
 `
 
 interface TabProps {

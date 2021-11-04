@@ -1,10 +1,9 @@
 import React from 'react'
-import { Normaltekst } from 'nav-frontend-typografi'
 import styled from 'styled-components/macro'
 import { capitalize } from '../../utils/stringFormating'
 import { Strek } from '../../felleskomponenter/Strek'
 import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
-import { Etikett } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { Rad, Kolonne } from '../../felleskomponenter/Flex'
@@ -22,7 +21,7 @@ padding-left: 0.5rem;
 const Rangering = styled('div')<RangeringProps>`
   display: flex;
 
-  > p.typo-normal:last-child {
+  > p.navds-body-short:last-child {
     min-width: 24px;
     min-height: 24px;
     text-align: center;
@@ -71,8 +70,8 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, perso
                 <EtikettKolonne>
                   <Rad>
                     <Rangering rank={hjelpemiddel.rangering}>
-                      <Normaltekst>Rangering:</Normaltekst>
-                      <Normaltekst>{hjelpemiddel.rangering}</Normaltekst>
+                      <Tekst>Rangering:</Tekst>
+                      <Tekst>{hjelpemiddel.rangering}</Tekst>
                     </Rangering>
                   </Rad>
                   <Rad>{hjelpemiddel.antall} stk</Rad>

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
-import {Button} from '@navikt/ds-react'
+import {Button, Loader} from '@navikt/ds-react'
 //import { useTildelOppgave } from '../../../../state/oppgaver';
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { postTildeling } from '../../io/http'
@@ -51,8 +51,9 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
   return (
     <CellContent width={128}>
       {
-        <Tildelingsknapp size="small" variant="secondary" onClick={tildel} spinner={isFetching} data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
+        <Tildelingsknapp size="small" variant="secondary" onClick={tildel} data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
           Start saken
+          {isFetching && <Loader size="small" />}
         </Tildelingsknapp>
       }
     </CellContent>

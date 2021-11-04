@@ -1,7 +1,6 @@
-import { Normaltekst } from 'nav-frontend-typografi'
-
 import { Advarselikon } from '../../felleskomponenter/ikoner/Advarselikon'
 import { Sjekkikon } from '../../felleskomponenter/ikoner/Sjekkikon'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { GreitÅViteType, GreitÅViteFaktum } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
@@ -20,7 +19,7 @@ const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {
   return (
     <>
       <IconContainer>{ikon(type)}</IconContainer>
-      <Normaltekst>{beskrivelse}</Normaltekst>
+      <Tekst>{beskrivelse}</Tekst>
     </>
   )
 }

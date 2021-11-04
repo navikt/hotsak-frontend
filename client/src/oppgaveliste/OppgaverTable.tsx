@@ -15,7 +15,6 @@ import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
-import { Fødselsdato } from './kolonner/Fødselsdato'
 import { Fødselsnummer } from './kolonner/Fødselsnummer'
 import { Gjelder } from './kolonner/Gjelder'
 import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
@@ -41,7 +40,6 @@ enum Kolonne {
   EIER = 'Eier',
   FØDSELSNUMMER = 'Fødselsnummer',
   HJELPEMIDDELBRUKER = 'Hjelpemiddelbruker',
-  FØDSELSDATO = 'Fødselsdato',
   FUNKSJONSNEDSETTELSE = 'Funksjonsnedsettelse',
   SØKNAD_OM = 'Søknad om',
   BOSTED = 'Bosted',
@@ -132,11 +130,6 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                   Hjelpemiddelbruker
                 </Header>
               )}
-              {tab.kolonner.includes(Kolonne.FØDSELSDATO) && (
-                <Header scope="col" colSpan={1}>
-                  Fødselsdato
-                </Header>
-              )}
               {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (
                 <Header scope="col" colSpan={1}>
                   Funksjonsnedsettelse
@@ -186,11 +179,6 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                 {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
                   <Cell> 
                     <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.FØDSELSDATO) && (
-                  <Cell>
-                    <Fødselsdato fødselsdato={oppgave.personinformasjon.fødselsdato} />
                   </Cell>
                 )}
                 {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (

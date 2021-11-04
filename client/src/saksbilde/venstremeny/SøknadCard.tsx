@@ -1,5 +1,3 @@
-import { Normaltekst } from 'nav-frontend-typografi'
-
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
@@ -13,6 +11,7 @@ import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
 import { Oppgaveetikett } from './Oppgaveetikett'
+import { Tekst } from '../../felleskomponenter/typografi'
 
 interface PeriodeCardProps {
   søknadGjelder: string
@@ -48,25 +47,25 @@ export const SøknadCard = ({
         <IconContainer>
           <Oppgaveetikett type={Oppgavetype.Søknad} />
         </IconContainer>
-        <CardTitle>{`Søknad om ${søknadGjelder}`}</CardTitle>
+        <CardTitle>{`Søknad om ${søknadGjelder}`.toUpperCase()}</CardTitle>
         <IconContainer />
-        <Normaltekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Normaltekst>
+        <Tekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Tekst>
         <IconContainer>
           <KalenderIkon />
         </IconContainer>
-        <Normaltekst>{formaterDato(motattDato)}</Normaltekst>
+        <Tekst>{formaterDato(motattDato)}</Tekst>
         <IconContainer>
           <MappeIkon />
         </IconContainer>
-        <Normaltekst>{capitalize(bruksarena)}</Normaltekst>
+        <Tekst>{capitalize(bruksarena)}</Tekst>
         <IconContainer>
           <HjemIkon />
         </IconContainer>
-        <Normaltekst>{getTextForBosituasjon(bosituasjon)}</Normaltekst>
+        <Tekst>{getTextForBosituasjon(bosituasjon)}</Tekst>
         <IconContainer>
           <RullestolIkon />
         </IconContainer>
-        <Normaltekst>{capitalize(funksjonsnedsettelse.join(', '))}</Normaltekst>
+        <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
       </Grid>
     </Card>
   )

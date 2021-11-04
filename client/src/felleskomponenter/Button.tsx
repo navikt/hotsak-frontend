@@ -1,5 +1,4 @@
-import styled from '@emotion/styled'
-import React from 'react'
+import styled from 'styled-components/macro'
 
 export const Button = styled.button`
   font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;

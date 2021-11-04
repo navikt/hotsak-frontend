@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 import { Heading } from '@navikt/ds-react'
 
 import { useTabContext } from './Oppgaveliste'

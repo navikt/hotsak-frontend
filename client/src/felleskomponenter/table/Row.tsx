@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 
 export const Row = styled.tr`
   position: relative;

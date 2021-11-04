@@ -1,6 +1,3 @@
-//import { css } from '@emotion/react'
-//import styled from '@emotion/styled'
-
 import styled from 'styled-components/macro'
 
 import { Flex } from '../felleskomponenter/Flex'

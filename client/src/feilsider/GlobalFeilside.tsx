@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 
 import { Varsel, Varseltype } from '@navikt/helse-frontend-varsel'
 

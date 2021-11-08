@@ -1,63 +1,40 @@
-import styled from '@emotion/styled'
-import { Link } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-
-import { HeaderEnkel } from '@navikt/helse-frontend-header'
-import '@navikt/helse-frontend-header/lib/main.css'
-
+import { useHistory } from 'react-router-dom'
+import { Header, Dropdown } from '@navikt/ds-react-internal'
+import { System } from '@navikt/ds-icons'
 import { authState } from './state/authentication'
+import { useRecoilValue } from 'recoil'
+import { Link } from '@navikt/ds-react'
 
-const Container = styled.div`
-  flex-shrink: 0;
-  width: 100%;
-
-  > header {
-    max-width: unset;
-    box-sizing: border-box;
-  }
-
-  input {
-    margin-left: 1.5rem;
-  }
-
-  .navds-header__title > span > a:focus {
-    box-shadow: none;
-  }
-
-  .navds-header__title > span > a:focus-visible {
-    box-shadow: var(--navds-shadow-focus-on-dark);
-    outline: none;
-  }
-`
-
-export const HeaderBar = () => {
-  //const history = useHistory()
-  //const hentPerson = useHentPerson();
-  //const removeVarsel = useRemoveVarsel();
-  //const addVarsel = useAddVarsel();
-
+export const Toppmeny = () => {
   const { name, ident, isLoggedIn } = useRecoilValue(authState)
-
   const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
+  const history = useHistory()
 
   return (
-    <Container>
-      <HeaderEnkel
-        tittel={<Link to="/">HOTSAK</Link>}
-        brukerinfo={{
-          navn: brukerinfo.navn,
-          ident: brukerinfo.ident /*, enhet: 'Enhetsnavn', rolle: 'Saksbehandler'*/,
-        }}
-      >
-        {/*<BentoMeny />*/}
-      </HeaderEnkel>
+      <Header>
+        <Header.Title href="/">HOTSAK</Header.Title>
 
-      {/*<InternalHeader>
-                <InternalHeaderTitle>
+        <Dropdown>
+          <Header.Button as={Dropdown.Toggle} style={{ marginLeft: 'auto' }}>
+            <System title="Systemer og oppslagsverk" />
+          </Header.Button>
 
-                </InternalHeaderTitle>
-                <BentoMeny />
-            </InternalHeader>*/}
-    </Container>
+          <Dropdown.Menu>
+            <Dropdown.Menu.GroupedList>
+              <Dropdown.Menu.GroupedList.Heading>Systemer og oppslagsverk</Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList.Item><Link href="https://gosys.intern.nav.no/gosys/" target="_new">Gosys</Link></Dropdown.Menu.GroupedList.Item>
+              <Dropdown.Menu.GroupedList.Item><Link href="https://app.adeo.no/modiapersonoversikt" target="_new">Modia</Link></Dropdown.Menu.GroupedList.Item>
+            </Dropdown.Menu.GroupedList>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown>
+          <Header.UserButton as={Dropdown.Toggle} name={brukerinfo.navn} description={brukerinfo.ident} />
+          <Dropdown.Menu>
+            <Dropdown.Menu.List>
+              <Dropdown.Menu.List.Item onClick={() => history.push("/logout")}>Logg ut</Dropdown.Menu.List.Item>
+            </Dropdown.Menu.List>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Header>
   )
 }

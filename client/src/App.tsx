@@ -9,7 +9,7 @@ import { IkkeLoggetInn } from './routes/IkkeLoggetInn'
 
 import './App.less'
 //import ReactModal from 'react-modal';
-import { HeaderBar as ToppMeny } from './Header'
+import { Toppmeny } from './Header'
 import { ProtectedRoute } from './ProtectedRoute'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { PageNotFound } from './feilsider/PageNotFound'
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
-      <ToppMeny />
+      <Toppmeny />
       <React.Suspense fallback={<div />}>
         {/*<Varsler />*/}
         <Switch>

@@ -46,7 +46,7 @@ export interface Oppfølgingsansvarlig {
 }
 
 export interface Levering {
-  kontaktPerson?: KontaktPerson
+  kontaktperson?: KontaktPerson
   leveringsmåte: Leveringsmåte
   adresse?: string
   merknad?: string

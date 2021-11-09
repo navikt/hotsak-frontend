@@ -52,7 +52,6 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   if (vilkår === 'storreBehov') {
     return `Hjelpemiddelet(ene) er egnet til å avhjelpe funksjonsnedsettelsen og ${navn} vil være i stand til å bruke det.`
   }
-  
 }
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
@@ -97,10 +96,13 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Tekst>
             <LeveringsMåte levering={levering} brukerAdresse={adresse} />
           </Tekst>
-          <Etikett>Kontaktperson</Etikett>
-          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktPerson} />
-          <Etikett>Merknad til utlevering</Etikett>
-          <Tekst>{levering.merknad}</Tekst>
+          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
+          {levering.merknad && (
+            <>
+              <Etikett>Merknad til utlevering</Etikett>
+              <Tekst>{levering.merknad}</Tekst>
+            </>
+          )}
         </Grid>
       </Container>
 

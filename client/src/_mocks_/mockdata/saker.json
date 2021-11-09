@@ -82,7 +82,7 @@
       "brukerErDigital": "true"
     },
     "levering": {
-      "kontaktPerson": {
+      "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
@@ -236,7 +236,7 @@
       "brukerErDigital": "true"
     },
     "levering": {
-      "kontaktPerson": {
+      "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
@@ -416,7 +416,7 @@
       "brukerErDigital": "true"
     },
     "levering": {
-      "kontaktPerson": {
+      "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
@@ -510,7 +510,7 @@
       "brukerErDigital": "true"
     },
     "levering": {
-      "kontaktPerson": {
+      "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"

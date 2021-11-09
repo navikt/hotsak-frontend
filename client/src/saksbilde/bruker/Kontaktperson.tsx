@@ -1,4 +1,4 @@
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { KontaktPerson, KontaktPersonType, Formidler } from '../../types/types.internal'
 
 interface KontaktpersonProps {
@@ -23,5 +23,7 @@ export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, for
       break
   }
 
-  return <Tekst>{kontaktpersonTekst}</Tekst>
+  return <>
+  <Etikett>Kontaktperson</Etikett>
+  <Tekst>{kontaktpersonTekst}</Tekst></>
 }

@@ -162,5 +162,35 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+  {
+    "saksid": "888888",
+    "søknadOm": "Hjelpemidler",
+    "mottattDato": "2021-09-19T13:55:45",
+    "formidlerNavn": "Kari Johansen",
+    "personinformasjon": {
+      "fnr": "19044238651",
+      "fødselsdato": "1942-04-19",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Geir",
+      "etternavn": "Dalby",
+      "adresse": "Veien 69",
+      "kjønn": "MANN",
+      "brukernummer": "454545",
+      "postnummer": "2825",
+      "poststed": "Trondheim",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "saksbehandler": null,
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

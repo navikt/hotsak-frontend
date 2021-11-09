@@ -538,5 +538,107 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+
+  {
+    "saksid": "888888",
+    "søknadGjelder": "Hjelpemidler",
+    "hjelpemidler": [
+      {
+        "hmsnr": "014112",
+        "rangering": "1",
+        "utlevertFraHjelpemiddelsentralen": false,
+        "utlevertInfo": {},
+        "antall": "1",
+        "kategori": "Terskeleliminatorer og Kjøreramper",
+        "beskrivelse": "Topro Terskeleliminator",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      },
+     
+      {
+        "hmsnr": "177946",
+        "rangering": "1",
+        "utlevertFraHjelpemiddelsentralen": true,
+        "utlevertInfo": {
+            "utlevertType": "FremskuttLager"
+        },
+        "antall": "1",
+        "kategori": "Rullator",
+        "beskrivelse": "Gemino 20",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      { "beskrivelse": "Kun førsterangering", "type": "info" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+    ],
+
+    "motattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "19044238651",
+      "fødselsdato": "1942-12-19",
+      "fornavn": "Geir",
+      "etternavn": "Dalby",
+      "adresse": "Andre Veien 69",
+      "kilde": "PDL",
+      "signaturType": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": [
+        "storreBehov",
+        "nedsattFunksjon",
+        "praktiskeProblem"
+      ],
+      "kjønn": "MANN",
+
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktperson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

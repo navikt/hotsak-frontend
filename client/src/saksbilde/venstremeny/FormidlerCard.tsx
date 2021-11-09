@@ -6,13 +6,15 @@ import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
 import { Tekst } from '../../felleskomponenter/typografi'
+import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
 
 interface FormidlerCardProps {
   formidlerNavn: string
   kommune: string
+  formidlerTelefon: string
 }
 
-export const FormidlerCard = ({ formidlerNavn, kommune }: FormidlerCardProps) => {
+export const FormidlerCard = ({ formidlerNavn, kommune, formidlerTelefon }: FormidlerCardProps) => {
   return (
     <Card>
       <CardTitle>FORMIDLER</CardTitle>
@@ -21,6 +23,10 @@ export const FormidlerCard = ({ formidlerNavn, kommune }: FormidlerCardProps) =>
           <Personikon />
         </IconContainer>
         <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
+        <IconContainer>
+          <TelefonIkon />
+        </IconContainer>
+        <Tekst>{formidlerTelefon}</Tekst>
       </Grid>
     </Card>
   )

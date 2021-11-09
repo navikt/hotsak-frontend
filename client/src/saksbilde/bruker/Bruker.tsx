@@ -57,6 +57,7 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   const formatertNavn = formaterNavn(person)
+  const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
@@ -70,7 +71,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Etikett>Fødselsnummer</Etikett>
           <Tekst>{person.fnr}</Tekst>
           <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
-          <Tekst>{`${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`}</Tekst>
+          <Tekst>{adresse}</Tekst>
           <Etikett>Telefon</Etikett>
           <Tekst>{person.telefon}</Tekst>
           <Etikett>Boform</Etikett>
@@ -94,7 +95,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
         <Grid>
           <Etikett>Leveringadresse</Etikett>
           <Tekst>
-            <LeveringsMåte levering={levering} />
+            <LeveringsMåte levering={levering} brukerAdresse={adresse} />
           </Tekst>
           <Etikett>Kontaktperson</Etikett>
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktPerson} />

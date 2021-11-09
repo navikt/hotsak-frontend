@@ -87,7 +87,7 @@
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
       },
-      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
       "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
     },
@@ -241,7 +241,7 @@
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
       },
-      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
       "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
     },
@@ -328,7 +328,7 @@
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
       },
-      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
       "merknad": ""
     },
@@ -421,7 +421,7 @@
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
       },
-      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE|ANNEN_ADRESSE|HJELPEMIDDELSENTRAL|ALLEREDE_LEVERT",
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
       "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
     },
@@ -515,7 +515,7 @@
         "telefon": "Nullable kontaktperson tlf",
         "kontaktpersonType": "HJELPEMIDDELBRUKER"
       },
-      "leveringsmaate": "FOLKEREGISTRERT_ADRESSE",
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
       "merknad": ""
     },

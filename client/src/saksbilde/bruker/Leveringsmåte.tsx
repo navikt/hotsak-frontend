@@ -3,9 +3,10 @@ import { Levering, Leveringsmåte } from '../../types/types.internal'
 
 interface LeveringProps {
   levering: Levering
+  brukerAdresse: String
 }
 
-export const LeveringsMåte: React.FC<LeveringProps> = ({ levering }) => {
+export const LeveringsMåte: React.FC<LeveringProps> = ({ levering, brukerAdresse }) => {
   const { adresse, leveringsmåte } = levering
 
   let leveringsTekst = ''
@@ -17,7 +18,7 @@ export const LeveringsMåte: React.FC<LeveringProps> = ({ levering }) => {
       leveringsTekst = `${adresse} (Annen adresse)`
       break
     case Leveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      leveringsTekst = `${adresse} (Folkeregistert adresse)`
+      leveringsTekst = `${brukerAdresse} (Folkeregistert adresse)`
       break
     case Leveringsmåte.HJELPEMIDDELSENTRAL:
       leveringsTekst = 'Hentes på hjelpemiddelsentralen'

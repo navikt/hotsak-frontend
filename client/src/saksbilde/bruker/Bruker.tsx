@@ -37,7 +37,7 @@ const Grid = styled.div`
 `
 
 const formaterNavn = (person: Personinfo) => {
-  return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
+  return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn}` : ''} ${person.etternavn}`)
 }
 
 const vilkårsTekst = (vilkår: string, navn: string) => {

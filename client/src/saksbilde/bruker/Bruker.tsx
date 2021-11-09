@@ -40,7 +40,23 @@ const formaterNavn = (person: Personinfo) => {
   return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
 }
 
+const vilkårsTekst = (vilkår: string, navn: string) => {
+  if (vilkår === 'nedsattFunksjon') {
+    return `${navn} har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut.`
+  }
+
+  if (vilkår === 'praktiskeProblem') {
+    return `Hjelpemiddelet(ene) er nødvendig for å avhjelpe praktiske problemer i dagliglivet eller bli pleid i hjemmet. ${navn} sitt behov kan ikke løses med enklere og rimeligere hjelpemidler eller ved andre tiltak som ikke dekkes av NAV.`
+  }
+
+  if (vilkår === 'storreBehov') {
+    return `Hjelpemiddelet(ene) er egnet til å avhjelpe funksjonsnedsettelsen og ${navn} vil være i stand til å bruke det.`
+  }
+  
+}
+
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
+  const formatertNavn = formaterNavn(person)
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
@@ -50,7 +66,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       <Container>
         <Grid>
           <Etikett>Navn</Etikett>
-          <Tekst>{formaterNavn(person)}</Tekst>
+          <Tekst>{formatertNavn}</Tekst>
           <Etikett>Fødselsnummer</Etikett>
           <Tekst>{person.fnr}</Tekst>
           <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
@@ -89,9 +105,9 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
 
       <Strek />
       {person.signaturType === SignaturType.SIGNATUR ? (
-        <Fullmakt navn={formaterNavn(person)} />
+        <Fullmakt navn={formatertNavn} />
       ) : (
-        <BrukerBekreftet navn={formaterNavn(person)} />
+        <BrukerBekreftet navn={formatertNavn} />
       )}
 
       <Strek />
@@ -102,7 +118,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       <Container>
         <Liste>
           {person.oppfylteVilkår.map((vilkår, i) => (
-            <li key={i}>{vilkår}</li>
+            <li key={i}>{vilkårsTekst(vilkår, formatertNavn)}</li>
           ))}
         </Liste>
       </Container>

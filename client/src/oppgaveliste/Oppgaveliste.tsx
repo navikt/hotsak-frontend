@@ -58,6 +58,8 @@ export const Oppgaveliste = () => {
               return oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
             case TabType.OverførtGosys:
               return oppgave.status === OppgaveStatusType.SENDT_GOSYS
+            case TabType.Ferdigstilte: 
+                return oppgave.status === OppgaveStatusType.VEDTAK_FATTET
             case TabType.Mine:
               return oppgave.saksbehandler?.objectId === saksbehandler.objectId
             default:

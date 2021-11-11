@@ -11,6 +11,7 @@ export enum TabType {
   Alle = 'alle',
   Mine = 'mine',
   Ufordelte = 'ufordelte',
+  Ferdigstilte = 'ferdigstilte',
   OverførtGosys = 'overførtGosys',
 }
 
@@ -111,6 +112,11 @@ const MineSakerTab = ({ oppgaver }: Props) => {
   return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={mineOppgaver.length} />
 }
 
+const FerdigstilteSakerTab = ({oppgaver}: Props) => {
+    const ferdigstilteSaker = oppgaver.filter(oppgave => oppgave.status === OppgaveStatusType.VEDTAK_FATTET)
+    return <OppgaveTab tag={TabType.Ferdigstilte} label="Ferdigstilte saker" numberOfTasks={ferdigstilteSaker.length}/>
+}
+
 const UfordelteSakerTab = ({ oppgaver }: Props) => {
   const ufordelteOppgaver = oppgaver.filter(
     (oppgave) => !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
@@ -139,6 +145,7 @@ export const Tabs = () => {
       <NoWrap>
         <UfordelteSakerTab oppgaver={oppgaver} />
         <MineSakerTab oppgaver={oppgaver} />
+        <FerdigstilteSakerTab oppgaver={oppgaver} />
         <AlleSakerTab oppgaver={oppgaver} />
         <OverførtTilGosysTab oppgaver={oppgaver} />
       </NoWrap>

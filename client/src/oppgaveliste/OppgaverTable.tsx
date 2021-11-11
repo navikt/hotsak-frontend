@@ -101,6 +101,9 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
     case TabType.Mine:
       tab = { label: 'Saker som er tildelt meg', kolonner: kolonnerMine }
       break
+    case TabType.Ferdigstilte:
+        tab = {label: 'Alle innvilgede saker fordelt til min enhet', kolonner: kolonnerAlleSaker}
+        break
     case TabType.OverførtGosys:
       tab = { label: 'Saker som er overført Gosys', kolonner: kolonnerOverførstGosys }
       break

@@ -64,10 +64,7 @@ export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> =
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
   if (response.status >= 400) {
-    console.log('Eggog')
-
     const errorMessage = await getErrorMessage(response)
-    console.log('Eggog', errorMessage)
     throw ResponseError(response.status, errorMessage)
   }
 

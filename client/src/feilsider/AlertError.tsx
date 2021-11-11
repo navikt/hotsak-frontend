@@ -16,7 +16,7 @@ export const AlertError = (props: AlertErrorProps) => {
   const { error } = props
   return (
     <FeilmeldingContainer>
-      <Alert size="small" variant="error">{error.message}</Alert>
+      <Alert size="small" variant="error">{error.message ? error.message : 'Klare ikke å hente saken. Dette kan skyldes en teknisk feil. Kontakt utviklerne i Digihot'}</Alert>
     </FeilmeldingContainer>
   )
 }

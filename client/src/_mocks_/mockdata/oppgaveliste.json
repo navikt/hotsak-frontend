@@ -184,8 +184,12 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
-    "saksbehandler": null,
-    "status": "AVVENTER_SAKSBEHANDLER",
+    "saksbehandler": {
+        "epost": "a.b@nav.no",
+        "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+        "navn": "Silje Saksbehandler"
+      },
+    "status": "VEDTAK_FATTET",
     "enhet": [
       {
         "enhetsnummer": "6969",

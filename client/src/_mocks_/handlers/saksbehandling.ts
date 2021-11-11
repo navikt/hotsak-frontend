@@ -9,6 +9,7 @@ const sakshistorikk = [
   { saksid: '222222', hendelser: deepClone(historikk) },
   { saksid: '5878444', hendelser: deepClone(historikk) },
   { saksid: '1234567', hendelser: deepClone(historikk) },
+  { saksid: '888888', hendelser: deepClone(historikk) },
   { saksid: '999999', hendelser: deepClone(historikk) },
 ]
 

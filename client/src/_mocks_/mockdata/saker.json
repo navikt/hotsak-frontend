@@ -66,11 +66,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
 
       "brukernummer": "454269",
@@ -213,11 +209,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "KVINNE",
       "kroppsmål": {
         "høyde": "170",
@@ -307,11 +299,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
 
       "brukernummer": "454269",
@@ -394,11 +382,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["kognisjon"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "kroppsmål": {
         "høyde": "100",
@@ -494,11 +478,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
 
       "brukernummer": "454269",
@@ -555,13 +535,13 @@
         "tilleggsinfo": [],
         "tilbehør": []
       },
-     
+
       {
         "hmsnr": "177946",
         "rangering": "1",
         "utlevertFraHjelpemiddelsentralen": true,
         "utlevertInfo": {
-            "utlevertType": "FremskuttLager"
+          "utlevertType": "FremskuttLager"
         },
         "antall": "1",
         "kategori": "Rullator",
@@ -601,11 +581,7 @@
       "bosituasjon": "HJEMME",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
 
       "brukernummer": "454269",
@@ -633,7 +609,19 @@
       "telefon": "45454545",
       "ansvarFor": "ansvar for"
     },
-    "status": "AVVENTER_SAKSBEHANDLER",
+    "status": "VEDTAK_FATTET",
+    "saksbehandler": {
+      "epost": "silje.saksbehandler@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
+    "vedtak": {
+      "vedtaksDato": "2021-03-29",
+      "status": "INNVILGET",
+      "saksbehandlerRef": "23ea7485-1324-4b25-a763-assdfdfa",
+      "saksbehandlerNavn": "Silje Saksbehandler",
+      "soknadUuid": "06d4f1b0-a7b0-4568-a899-c1321164e95a"
+    },
     "enhet": [
       {
         "enhetsnummer": "6969",

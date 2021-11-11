@@ -10,6 +10,8 @@ const Feiltekst = styled.div`
 `
 
 export const GlobalFeilside = ({ error }: { error: Error }) => {
+
+    console.log("EB trigges")
   return (
     <>
       <Varsel type={Varseltype.Advarsel}>Siden kan dessverre ikke vises</Varsel>

@@ -47,6 +47,10 @@ const saksbehandlingHandlers = [
     return res(ctx.status(201), ctx.json({}))
   }),
   rest.get(`/api/sak/:saksid`, (req, res, ctx) => {
+    if (req.params.saksid === '666') {
+      return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))
+    }
+
     return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.saksid === req.params.saksid)[0] || saker[2]))
   }),
   rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {

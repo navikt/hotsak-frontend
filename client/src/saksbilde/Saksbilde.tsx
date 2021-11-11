@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -8,7 +8,7 @@ import { Alert } from '@navikt/ds-react'
 import { formaterDato } from '../utils/date'
 import { capitalize } from '../utils/stringFormating'
 
-import { FeilmeldingVarsel } from '../feilsider/FeilmeldingsVarsel'
+import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
 import { LasterPersonlinje, Personlinje } from './Personlinje'
@@ -54,12 +54,15 @@ const SaksbildeContent = React.memo(() => {
   //const personTilBehandling = usePerson();
   //useRefreshPersonVedUrlEndring();
 
-  const { sak, isError, isLoading } = useSak()
+  const { sak, isLoading, isError } = useSak()
   const { path } = useRouteMatch()
+  const handleError = useErrorHandler()
 
   if (isLoading) return <LasterSaksbilde />
 
-  if (isError) throw new Error('Feil med henting av sak' + isError)
+  if (isError) {
+    handleError(isError)
+  }
 
   if (!sak) return <div>Fant ikke sak</div>
 
@@ -79,7 +82,11 @@ const SaksbildeContent = React.memo(() => {
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
-              <FormidlerCard formidlerNavn={sak.formidler.navn} formidlerTelefon={sak.formidler.telefon} kommune={sak.formidler.poststed} />
+              <FormidlerCard
+                formidlerNavn={sak.formidler.navn}
+                formidlerTelefon={sak.formidler.telefon}
+                kommune={sak.formidler.poststed}
+              />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />
               <VedtakCard sak={sak} />
             </VenstreMeny>
@@ -99,10 +106,7 @@ const SaksbildeContent = React.memo(() => {
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <HjelpemiddelListe
-                      hjelpemidler={sak.hjelpemidler}
-                      personinformasjon={sak.personinformasjon}
-                    />
+                    <HjelpemiddelListe hjelpemidler={sak.hjelpemidler} personinformasjon={sak.personinformasjon} />
                   </Route>
                   <Route path={`${path}/bruker`}>
                     <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
@@ -128,7 +132,7 @@ const LasterSaksbilde = () => (
 )
 
 export const Saksbilde = () => (
-  <ErrorBoundary FallbackComponent={FeilmeldingVarsel}>
+  <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterSaksbilde />}>
       <SaksbildeContent />
     </React.Suspense>

@@ -32,3 +32,4 @@ yarn-error.log*
 /yarn-error.log
 client/cypress/videos/
 client/cypress/fixtures/example.json
+client/cypress/videos/1_happy_path.spec.js.mp4

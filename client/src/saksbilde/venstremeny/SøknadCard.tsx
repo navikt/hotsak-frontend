@@ -47,7 +47,7 @@ export const SøknadCard = ({
         <IconContainer>
           <Oppgaveetikett type={Oppgavetype.Søknad} />
         </IconContainer>
-        <CardTitle>{`Søknad om ${søknadGjelder}`.toUpperCase()}</CardTitle>
+        <CardTitle>SØKNAD OM HJELPEMIDLER</CardTitle>
         <IconContainer />
         <Tekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Tekst>
         <IconContainer>

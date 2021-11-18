@@ -165,12 +165,12 @@
         ],
         "tilbehør": [
           {
-            "hmsnr": "921033",
+            "hmsNr": "921033",
             "antall": "1",
             "navn": "Hoftebelte"
           },
           {
-            "hmsnr": "019386",
+            "hmsNr": "019386",
             "antall": "1",
             "navn": "Sittepute"
           }

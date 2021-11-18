@@ -4,6 +4,7 @@ import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
+import { capitalize } from '../../utils/stringFormating'
 
 interface GjelderProps {
   søknadOm: string
@@ -15,7 +16,7 @@ export const Gjelder = React.memo(({ søknadOm, saksID }: GjelderProps) => {
 
   return (
     <CellContent width={128} data-for={id} data-tip={søknadOm}>
-      <TekstMedEllipsis>{søknadOm}</TekstMedEllipsis>
+      <TekstMedEllipsis>{capitalize(søknadOm)}</TekstMedEllipsis>
       {søknadOm.length > 18 && <Tooltip id={id} />}
     </CellContent>
   )

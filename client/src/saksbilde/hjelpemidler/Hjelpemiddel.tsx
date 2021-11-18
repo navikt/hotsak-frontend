@@ -141,10 +141,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, perso
                         </Kolonne>
                         <Rad>
                           {hjelpemiddel.tilbehør.map((tilbehør) => (
-                            <Rad key={tilbehør.hmsnr}>
+                            <Rad key={tilbehør.hmsNr}>
                               <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
                               <Kolonne>
-                                {tilbehør.hmsnr} {tilbehør.navn}
+                                {tilbehør.hmsNr} {tilbehør.navn}
                               </Kolonne>
                             </Rad>
                           ))}

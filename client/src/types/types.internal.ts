@@ -101,7 +101,7 @@ export interface Tilleggsinfo {
 }
 
 export interface Tilbehør {
-  hmsnr: string
+  hmsNr: string
   antall: number
   navn: string
 }

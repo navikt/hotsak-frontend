@@ -8,7 +8,7 @@ import { Button, Tag, TextField } from '@navikt/ds-react'
 import { putVedtak, putSendTilGosys } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
-import { capitalizeName } from '../../utils/stringFormating'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
@@ -146,7 +146,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
           size="small"
           label="Søknad om:"
           description="Skriv inn hjelpemidler feks. rullator, seng."
-          value={dokumentbeskrivelse}
+          value={capitalize(dokumentbeskrivelse)}
           onChange={(event) => setDokumentbeskrivelse(event.target.value)}
         />
         <ButtonContainer>

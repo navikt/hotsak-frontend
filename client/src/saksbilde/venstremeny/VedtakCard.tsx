@@ -3,12 +3,12 @@ import styled from 'styled-components/macro'
 // @ts-ignore
 import { useSWRConfig } from 'swr'
 
-import { Button, Tag, TextField } from '@navikt/ds-react'
+import { Button, Tag } from '@navikt/ds-react'
 
 import { putVedtak, putSendTilGosys } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { capitalizeName } from '../../utils/stringFormating'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
@@ -86,10 +86,6 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <>
         <Card>
-          <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
-          <Tekst>{sak.søknadGjelder}</Tekst>
-        </Card>
-        <Card>
           <CardTitle>VEDTAK</CardTitle>
           <TagGrid>
             <Tag data-cy="tag-soknad-status" variant="success" size="small">
@@ -141,14 +137,6 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   } else {
     return (
       <Card>
-        <CardTitle>DOKUMENTBESKRIVELSE</CardTitle>
-        <TextField
-          size="small"
-          label="Søknad om:"
-          description="Skriv inn hjelpemidler feks. rullator, seng."
-          value={capitalize(dokumentbeskrivelse)}
-          onChange={(event) => setDokumentbeskrivelse(event.target.value)}
-        />
         <ButtonContainer>
           <Knapp variant='primary' size='small' onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
             <span>Innvilg søknaden</span>

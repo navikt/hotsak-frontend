@@ -50,7 +50,6 @@ const Knapp = styled(Button)`
 
 export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const { saksid } = sak
-  const [dokumentbeskrivelse, setDokumentbeskrivelse] = useState(sak.søknadGjelder)
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
@@ -60,7 +59,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   const opprettVedtak = () => {
     setLoading(true)
-    putVedtak(saksid, dokumentbeskrivelse, VedtakStatusType.INNVILGET)
+    putVedtak(saksid, VedtakStatusType.INNVILGET)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
@@ -72,7 +71,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   const sendTilGosys = () => {
     setLoading(true)
-    putSendTilGosys(saksid, dokumentbeskrivelse)
+    putSendTilGosys(saksid)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)

@@ -55,7 +55,7 @@ export const post = async (url: string, data: any, headere?: Headers): Promise<S
   return save(url, 'POST', data, headere)
 }
 
-export const put = async (url: string, data: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
+export const put = async (url: string, data?: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
   return save(url, 'PUT', data, headere)
 }
 
@@ -78,10 +78,10 @@ export const postTildeling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
-export const putVedtak = async (saksnummer: string, søknadsbeskrivelse: string, status: VedtakStatusType) => {
-  return put(`${baseUrl}/api/vedtak/${saksnummer}`, { søknadsbeskrivelse, status })
+export const putVedtak = async (saksnummer: string, status: VedtakStatusType) => {
+  return put(`${baseUrl}/api/vedtak/${saksnummer}`, { status })
 }
 
-export const putSendTilGosys = async (saksnummer: string, søknadsbeskrivelse: string) => {
-  return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { søknadsbeskrivelse })
+export const putSendTilGosys = async (saksnummer: string) => {
+  return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`)
 }

@@ -11,7 +11,7 @@ interface DataResponse {
   isError: any
 }
 
-const basePath = 'api/oppgaver'
+const basePath = 'api/oppgaver-paged'
 const pageSize = 25
 const inialPage = 1
 const defaultQueryParams = { "limit": pageSize, "page": inialPage }

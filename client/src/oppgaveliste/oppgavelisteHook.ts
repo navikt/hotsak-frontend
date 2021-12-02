@@ -38,7 +38,7 @@ const pathConfig = (type: TabType): PathConfigType => {
 }
 
 const buildQueryParamString = (queryParams: Object) => {
-  return Object.entries(queryParams).map(([key, value]) => `${key}=${value}`)
+  return Object.entries(queryParams).map(([key, value]) => `${key}=${value}`).join("&")
 }
 
 export function useOppgaveliste(type: TabType): DataResponse {

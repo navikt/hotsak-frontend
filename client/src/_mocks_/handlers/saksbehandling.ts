@@ -122,7 +122,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.get(`/api/oppgaver/`, (req, res, ctx) => {
+  rest.get(`/api/oppgaver-paged/`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(oppgaveliste))
   }),
   rest.get(`/api/oppgaver/mine`, (req, res, ctx) => {

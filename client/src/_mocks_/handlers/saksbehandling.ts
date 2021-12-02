@@ -125,6 +125,9 @@ const saksbehandlingHandlers = [
   rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(oppgaveliste))
   }),
+  rest.get(`/api/oppgaver/mine`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(oppgaveliste.filter(oppgave => oppgave.saksbehandler?.navn === 'Silje Saksbehandler')))
+  }),
 ]
 
 export default saksbehandlingHandlers

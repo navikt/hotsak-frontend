@@ -83,7 +83,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
           <Rad>
             {hjelpemiddel.hmsnr}
             {produkt ? (
-              <HMSLenke href={produkt.produkturl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`} </HMSLenke>) : ` ${hjelpemiddel.beskrivelse}`
+              <HMSLenke href={produkt.artikkelurl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`} </HMSLenke>) : ` ${hjelpemiddel.beskrivelse}`
             }
           </Rad>
           <Rad>

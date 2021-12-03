@@ -8,10 +8,10 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "@navikt/ds-css": "^0.10.0",
+    "@navikt/ds-css-internal": "^0.6.0",
     "@navikt/ds-icons": "^0.6.1",
     "@navikt/ds-react": "^0.12.1",
     "@navikt/ds-react-internal": "0.7.2",
-    "@navikt/ds-css-internal": "^0.6.0",
     "@navikt/ds-tokens": "^0.5.3",
     "@navikt/fnrvalidator": "^1.1.4",
     "@navikt/helse-frontend-meatball": "0.0.3",
@@ -28,6 +28,7 @@
     "craco-less": "^1.18.0",
     "dayjs": "^1.10.5",
     "fetch-intercept": "^2.3.1",
+    "graphql-request": "^3.6.1",
     "install": "^0.13.0",
     "npm": "^7.19.0",
     "react": "^17.0.2",
@@ -54,7 +55,8 @@
     "eject": "craco eject",
     "prettier": "prettier --write \"src/**/*.{jsx,js,css,less,ts,tsx}\"",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "codegen": "graphql-codegen --config codegen.yml && prettier --write src/generated/**/*.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -76,6 +78,9 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.3.0",
+    "@graphql-codegen/typescript": "^2.4.0",
+    "@graphql-codegen/typescript-operations": "^2.2.0",
     "@emotion/babel-preset-css-prop": "^11.2.0",
     "@trivago/prettier-plugin-sort-imports": "^2.0.3",
     "@types/amplitude-js": "^8.0.1",

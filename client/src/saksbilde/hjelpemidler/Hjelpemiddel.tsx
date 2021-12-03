@@ -15,7 +15,7 @@ const HjelpemiddelContainer = styled.div`
 `
 
 const HMSLenke = styled(Link)`
-padding-left: 0.5rem;
+  padding-left: 0.5rem;
 `
 
 const Rangering = styled('div')<RangeringProps>`
@@ -49,112 +49,108 @@ const EtikettKolonne: React.FC = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
-
 interface RangeringProps {
   rank?: number
 }
 
 interface HjelpemiddelProps {
-    hjelpemiddel: HjelpemiddelType
-    personinformasjon: Personinfo
+  hjelpemiddel: HjelpemiddelType
+  personinformasjon: Personinfo
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps>  =  ({hjelpemiddel, personinformasjon}) => {
-    const { produkt } = useGrunndata(hjelpemiddel.hmsnr)
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon }) => {
+  const  produkt  = useGrunndata(hjelpemiddel.hmsnr)
 
-
-
-    return (
-        <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
+  return (
+    <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
+      <Rad>
+        <EtikettKolonne>
+          <Rad>
+            <Rangering rank={hjelpemiddel.rangering}>
+              <Tekst>Rangering:</Tekst>
+              <Tekst>{hjelpemiddel.rangering}</Tekst>
+            </Rangering>
+          </Rad>
+          <Rad>{hjelpemiddel.antall} stk</Rad>
+        </EtikettKolonne>
+        <Kolonne>
+          <Rad>
+            <Kolonne>
+              <Etikett>{produkt ? produkt?.isotittel : hjelpemiddel.kategori}</Etikett>
+            </Kolonne>
+          </Rad>
+          <Rad>{produkt && produkt.posttittel}</Rad>
+          <Rad>
+            {hjelpemiddel.hmsnr}
+            {produkt && (
+              <HMSLenke href={produkt.produkturl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`}</HMSLenke>
+            )}
+          </Rad>
+          <Rad>
+            {hjelpemiddel.tilleggsinfo.length > 0 && (
+              <TilleggsInfo>
+                {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
+                  return (
+                    <Rad key={tilleggsinfo.innhold}>
+                      <EtikettKolonne>
+                        <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
+                      </EtikettKolonne>
+                      <Kolonne>{tilleggsinfo.innhold}</Kolonne>
+                    </Rad>
+                  )
+                })}
+                {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
+                  <Rad>
+                    <EtikettKolonne>
+                      <Etikett>Kroppsmål:</Etikett>
+                    </EtikettKolonne>
+                    <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                  </Rad>
+                )}
+              </TilleggsInfo>
+            )}
+          </Rad>
+          <Rad>
+            {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
               <Rad>
-                <EtikettKolonne>
-                  <Rad>
-                    <Rangering rank={hjelpemiddel.rangering}>
-                      <Tekst>Rangering:</Tekst>
-                      <Tekst>{hjelpemiddel.rangering}</Tekst>
-                    </Rangering>
-                  </Rad>
-                  <Rad>{hjelpemiddel.antall} stk</Rad>
-                </EtikettKolonne>
-                <Kolonne>
-                  <Rad>
-                    <Kolonne>
-                      <Etikett>{produkt ? produkt?.isotittel : hjelpemiddel.kategori}</Etikett>
-                    </Kolonne>
-                  </Rad>
-                  <Rad>{produkt && produkt.posttittel}</Rad>
-                  <Rad>
-                  {hjelpemiddel.hmsnr}
-                    <HMSLenke
-                      href={`https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=${produkt?.produktid}`}
-                      target={'_blank'}
-                    >{` ${hjelpemiddel.beskrivelse}`}</HMSLenke>
-                  </Rad>
-                  <Rad>
-                    {hjelpemiddel.tilleggsinfo.length > 0 && (
-                      <TilleggsInfo>
-                        {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
-                          return (
-                            <Rad key={tilleggsinfo.innhold}>
-                              <EtikettKolonne>
-                                <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
-                              </EtikettKolonne>
-                              <Kolonne>{tilleggsinfo.innhold}</Kolonne>
-                            </Rad>
-                          )
-                        })}
-                        {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
-                          <Rad>
-                            <EtikettKolonne>
-                              <Etikett>Kroppsmål:</Etikett>
-                            </EtikettKolonne>
-                            <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
-                          </Rad>
-                        )}
-                      </TilleggsInfo>
-                    )}
-                  </Rad>
-                  <Rad>
-                    {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
-                      <Rad>
-                        <Etikett>
-                          <UtlevertContainer>
-                            <LevertIkon />
-                          </UtlevertContainer>
-                        </Etikett>
+                <Etikett>
+                  <UtlevertContainer>
+                    <LevertIkon />
+                  </UtlevertContainer>
+                </Etikett>
 
-                        <Utlevert
-                          alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
-                          utlevertInfo={hjelpemiddel.utlevertInfo}
-                        />
-                      </Rad>
-                    )}
-                  </Rad>
+                <Utlevert
+                  alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
+                  utlevertInfo={hjelpemiddel.utlevertInfo}
+                />
+              </Rad>
+            )}
+          </Rad>
+        </Kolonne>
+        <Rad>
+          <Rad>
+            {hjelpemiddel.tilbehør.length > 0 && (
+              <>
+                <EtikettKolonne />
+                <Kolonne>
+                  <Etikett>Tilbehør:</Etikett>
                 </Kolonne>
                 <Rad>
-                  <Rad>
-                    {hjelpemiddel.tilbehør.length > 0 && (
-                      <>
-                        <EtikettKolonne />
-                        <Kolonne>
-                          <Etikett>Tilbehør:</Etikett>
-                        </Kolonne>
-                        <Rad>
-                          {hjelpemiddel.tilbehør.map((tilbehør) => (
-                            <Rad key={tilbehør.hmsNr}>
-                              <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
-                              <Kolonne>
-                                {tilbehør.hmsNr} {tilbehør.navn}
-                              </Kolonne>
-                            </Rad>
-                          ))}
-                        </Rad>
-                      </>
-                    )}
-                  </Rad>
+                  {hjelpemiddel.tilbehør.map((tilbehør) => (
+                    <Rad key={tilbehør.hmsNr}>
+                      <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
+                      <Kolonne>
+                        {tilbehør.hmsNr} {tilbehør.navn}
+                      </Kolonne>
+                    </Rad>
+                  ))}
                 </Rad>
-              </Rad>
-              <Strek />
-            </HjelpemiddelContainer>
-    )
+              </>
+            )}
+          </Rad>
+        </Rad>
+      </Rad>
+      <Strek />
+    </HjelpemiddelContainer>
+  )
 }

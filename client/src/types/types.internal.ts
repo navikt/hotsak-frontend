@@ -238,6 +238,7 @@ export interface Produkt {
     isokode: string
     isotittel: string
     rammeavtalePostId: string
-    produktid: string
+    produkturl: string
+    artikkelurl: string
     posttittel: string
 }

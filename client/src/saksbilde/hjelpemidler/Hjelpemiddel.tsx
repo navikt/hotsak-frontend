@@ -82,9 +82,9 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
           <Rad>{produkt && produkt.posttittel}</Rad>
           <Rad>
             {hjelpemiddel.hmsnr}
-            {produkt && (
-              <HMSLenke href={produkt.produkturl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`}</HMSLenke>
-            )}
+            {produkt ? (
+              <HMSLenke href={produkt.produkturl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`} </HMSLenke>) : ` ${hjelpemiddel.beskrivelse}`
+            }
           </Rad>
           <Rad>
             {hjelpemiddel.tilleggsinfo.length > 0 && (

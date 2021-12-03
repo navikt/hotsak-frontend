@@ -24,13 +24,13 @@ interface PathConfigType {
 const pathConfig = (type: TabType): PathConfigType => {
   switch (type) {
     case TabType.Ufordelte:
-      return { path: basePath, queryParams: { ...defaultQueryParams, type: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
+      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
     case TabType.Mine:
       return { path: `${basePath}/mine`, queryParams: { ...defaultQueryParams } }
     case TabType.Ferdigstilte:
-      return { path: basePath, queryParams: { ...defaultQueryParams, type: OppgaveStatusType.VEDTAK_FATTET } }
+      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.VEDTAK_FATTET } }
     case TabType.OverførtGosys:
-      return { path: basePath, queryParams: { ...defaultQueryParams, type: OppgaveStatusType.SENDT_GOSYS } }
+      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.SENDT_GOSYS } }
     case TabType.Alle:
     default:
       return { path: basePath, queryParams: { ...defaultQueryParams } }

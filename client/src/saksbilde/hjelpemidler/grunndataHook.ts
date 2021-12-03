@@ -24,7 +24,7 @@ export function useGrunndata(hmsnummer: string) {
     ;(async () => {
       try {
         const data = await request<HMDBHentProduktQuery, HMDBHentProduktQueryVariables>(
-          'grunndata-api/graphql',
+          '/grunndata-api/graphql',
           query,
           { hmsnr: hmsnummer }
         )

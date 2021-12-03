@@ -11,7 +11,7 @@ interface DataResponse {
   isError: any
 }
 
-const basePath = 'api/oppgaver-paged'
+const basePath = 'api'
 const pageSize = 25
 const inialPage = 1
 const defaultQueryParams = { "limit": pageSize, "page": inialPage }
@@ -24,16 +24,16 @@ interface PathConfigType {
 const pathConfig = (type: TabType): PathConfigType => {
   switch (type) {
     case TabType.Ufordelte:
-      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
+      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
     case TabType.Mine:
-      return { path: `${basePath}/mine`, queryParams: { ...defaultQueryParams } }
+      return { path: `${basePath}/oppgaver/mine`, queryParams: { ...defaultQueryParams } }
     case TabType.Ferdigstilte:
-      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.VEDTAK_FATTET } }
+      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.VEDTAK_FATTET } }
     case TabType.OverførtGosys:
-      return { path: basePath, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.SENDT_GOSYS } }
+      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.SENDT_GOSYS } }
     case TabType.Alle:
     default:
-      return { path: basePath, queryParams: { ...defaultQueryParams } }
+      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams } }
   }
 }
 

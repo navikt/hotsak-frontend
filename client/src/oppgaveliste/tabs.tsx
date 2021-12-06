@@ -1,11 +1,7 @@
 import styled from 'styled-components/macro'
 
 import { Flex } from '../felleskomponenter/Flex'
-//import saksbehandler  from  '../saksbehandler/innloggetSaksbehandler'
-import { useInnloggetSaksbehandler } from '../state/authentication'
-import { OppgaveStatusType, Oppgave } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
-import { useOppgaveliste } from './oppgavelisteHook'
 
 export enum TabType {
   Alle = 'alle',
@@ -70,18 +66,12 @@ const Tab = styled.button<{ active: boolean }>`
     `}
 `
 
-const Antall = styled.div`
-  padding-left: 0.25rem;
-  font-weight: normal;
-`
-
 interface TabProps {
   tag: TabType
   label: string
-  numberOfTasks: number
 }
 
-const OppgaveTab = ({ tag, label, numberOfTasks }: TabProps) => {
+const OppgaveTab = ({ tag, label }: TabProps) => {
   const { aktivTab, byttTab } = useTabContext()
   return (
     <Tab
@@ -93,61 +83,47 @@ const OppgaveTab = ({ tag, label, numberOfTasks }: TabProps) => {
     >
       <Flex alignItems="center">
         {label}
-        <Antall>({numberOfTasks})</Antall>
       </Flex>
     </Tab>
   )
 }
 
-interface Props {
-  oppgaver: Oppgave[]
-}
-const AlleSakerTab = ({ oppgaver }: Props) => {
-  return <OppgaveTab tag={TabType.Alle} label="Alle saker" numberOfTasks={oppgaver.length} />
+
+const AlleSakerTab = () => {
+  return <OppgaveTab tag={TabType.Alle} label="Alle saker"  />
 }
 
-const MineSakerTab = ({ oppgaver }: Props) => {
-  const saksbehandler = useInnloggetSaksbehandler()
-  const mineOppgaver = oppgaver.filter((oppgave) => oppgave.saksbehandler?.objectId === saksbehandler.objectId)
-  return <OppgaveTab tag={TabType.Mine} label="Mine saker" numberOfTasks={mineOppgaver.length} />
+const MineSakerTab = () => {
+  return <OppgaveTab tag={TabType.Mine} label="Mine saker"  />
 }
 
-const FerdigstilteSakerTab = ({oppgaver}: Props) => {
-    const ferdigstilteSaker = oppgaver.filter(oppgave => oppgave.status === OppgaveStatusType.VEDTAK_FATTET)
-    return <OppgaveTab tag={TabType.Ferdigstilte} label="Ferdigstilte saker" numberOfTasks={ferdigstilteSaker.length}/>
+const FerdigstilteSakerTab = () => {
+    return <OppgaveTab tag={TabType.Ferdigstilte} label="Ferdigstilte saker" />
 }
 
-const UfordelteSakerTab = ({ oppgaver }: Props) => {
-  const ufordelteOppgaver = oppgaver.filter(
-    (oppgave) => !oppgave.saksbehandler && oppgave.status !== OppgaveStatusType.SENDT_GOSYS
-  )
-  return <OppgaveTab tag={TabType.Ufordelte} label="Ufordelte saker" numberOfTasks={ufordelteOppgaver.length} />
+const UfordelteSakerTab = () => {
+  return <OppgaveTab tag={TabType.Ufordelte} label="Ufordelte saker"  />
 }
 
-const OverførtTilGosysTab = ({ oppgaver }: Props) => {
-  const overførtTilGosysOppgaver = oppgaver.filter((oppgave) => oppgave.status === OppgaveStatusType.SENDT_GOSYS)
+const OverførtTilGosysTab = () => {
   return (
     <OppgaveTab
       tag={TabType.OverførtGosys}
       label="Overført til Gosys"
-      numberOfTasks={overførtTilGosysOppgaver.length}
     />
   )
 }
 
 export const Tabs = () => {
-  const { oppgaver } = useOppgaveliste()
-  if (!oppgaver) {
-    return null
-  }
+  
   return (
     <Tablist>
       <NoWrap>
-        <UfordelteSakerTab oppgaver={oppgaver} />
-        <MineSakerTab oppgaver={oppgaver} />
-        <FerdigstilteSakerTab oppgaver={oppgaver} />
-        <AlleSakerTab oppgaver={oppgaver} />
-        <OverførtTilGosysTab oppgaver={oppgaver} />
+        <UfordelteSakerTab  />
+        <MineSakerTab />
+        <FerdigstilteSakerTab />
+        <AlleSakerTab  />
+        <OverførtTilGosysTab  />
       </NoWrap>
     </Tablist>
   )

@@ -1,32 +1,48 @@
-import useSwr from 'swr'
-
-import { httpGet } from '../../io/http'
-import { GrunndataProdukt } from '../../types/types.external'
+import { useState, useEffect } from 'react'
+import { gql, request } from 'graphql-request'
+import { HMDBHentProduktQuery, HMDBHentProduktQueryVariables } from '../../generated/hjelpemiddeldatabasen'
 import { Produkt } from '../../types/types.internal'
 
-interface DataResponse {
-  produkt: Produkt | undefined
-  isLoading: boolean
-  isError: any
-}
-
-export function useGrunndata(hmsnummer: string): DataResponse {
-  const { data, error } = useSwr<{ data: GrunndataProdukt[] }>(`grunndata-api/artikkel/${hmsnummer}`, httpGet)
-
-  const grunndataProdukt = data?.data[0]
-  const produkt = grunndataProdukt
-    ? {
-        isokode: grunndataProdukt.produkt.isocode,
-        isotittel: grunndataProdukt.produkt.isotitle,
-        posttittel: grunndataProdukt.produkt.aposttitle,
-        rammeavtalePostId: grunndataProdukt.produkt.apostnr,
-        produktid: grunndataProdukt.prodid,
-      }
-    : undefined
-
-  return {
-    produkt,
-    isLoading: !error && !data,
-    isError: error,
+const query = gql`
+  query HentProdukt($hmsnr: String!) {
+    produkter: hentProdukterMedHmsnr(hmsnr: $hmsnr) {
+      artikkelUrl
+      produktUrl
+      produktnavn
+      isotittel
+      isokode
+      avtaleposttittel
+      avtalepostnr
+    }
   }
+`
+
+export function useGrunndata(hmsnummer: string) {
+  const [produkt, setProdukt] = useState<Produkt | null>(null)
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const data = await request<HMDBHentProduktQuery, HMDBHentProduktQueryVariables>(
+          '/grunndata-api/graphql',
+          query,
+          { hmsnr: hmsnummer }
+        )
+        const [produkt] = data.produkter
+        const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl } = produkt
+        setProdukt({
+          isokode: isokode || '',
+          isotittel: isotittel || '',
+          posttittel: avtaleposttittel || '',
+          rammeavtalePostId: avtalepostnr || '',
+          produkturl: produktUrl || '',
+          artikkelurl: artikkelUrl,
+        })
+      } catch (e) {
+        setProdukt(null)
+      }
+    })()
+  }, [hmsnummer])
+
+  return produkt
 }

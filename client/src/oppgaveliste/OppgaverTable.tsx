@@ -10,8 +10,6 @@ import { capitalize } from '../utils/stringFormating'
 
 //import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
 import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
-//import saksbehandler from '../saksbehandler/innloggetSaksbehandler'
-//import { StatusType } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
@@ -102,8 +100,8 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
       tab = { label: 'Saker som er tildelt meg', kolonner: kolonnerMine }
       break
     case TabType.Ferdigstilte:
-        tab = {label: 'Alle innvilgede saker fordelt til min enhet', kolonner: kolonnerAlleSaker}
-        break
+      tab = { label: 'Alle innvilgede saker fordelt til min enhet', kolonner: kolonnerAlleSaker }
+      break
     case TabType.OverførtGosys:
       tab = { label: 'Saker som er overført Gosys', kolonner: kolonnerOverførstGosys }
       break
@@ -117,6 +115,7 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
       <ScrollableX>
         <Table aria-label={tab.label}>
           <thead>
+              <tr></tr>
             <tr>
               {tab.kolonner.includes(Kolonne.EIER) && (
                 <Header scope="col" colSpan={1}>
@@ -180,7 +179,7 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                   </Cell>
                 )}
                 {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
-                  <Cell> 
+                  <Cell>
                     <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
                   </Cell>
                 )}
@@ -202,7 +201,11 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
                     <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
                   </Cell>
                 )}
-                {tab.kolonner.includes(Kolonne.FORMIDLER) && (<Cell><FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle></Cell>)}
+                {tab.kolonner.includes(Kolonne.FORMIDLER) && (
+                  <Cell>
+                    <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle>
+                  </Cell>
+                )}
                 {tab.kolonner.includes(Kolonne.STATUS) && (
                   <Cell>
                     <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />

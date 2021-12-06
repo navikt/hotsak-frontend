@@ -12,7 +12,7 @@ interface DataResponse {
 }
 
 const basePath = 'api'
-const pageSize = 25
+const pageSize = 1000
 const inialPage = 1
 const defaultQueryParams = { "limit": pageSize, "page": inialPage }
 

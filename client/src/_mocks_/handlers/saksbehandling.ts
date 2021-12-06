@@ -123,10 +123,19 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json({}))
   }),
   rest.get(`/api/oppgaver-paged/`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(oppgaveliste))
+    const status = req.url.searchParams.get('status')
+
+    if (!status) {
+      return res(ctx.status(200), ctx.json(oppgaveliste))
+    }
+
+    return res(ctx.status(200), ctx.json(oppgaveliste.filter((oppgave) => oppgave.status === status)))
   }),
   rest.get(`/api/oppgaver/mine`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(oppgaveliste.filter(oppgave => oppgave.saksbehandler?.navn === 'Silje Saksbehandler')))
+    return res(
+      ctx.status(200),
+      ctx.json(oppgaveliste.filter((oppgave) => oppgave.saksbehandler?.navn === 'Silje Saksbehandler'))
+    )
   }),
 ]
 

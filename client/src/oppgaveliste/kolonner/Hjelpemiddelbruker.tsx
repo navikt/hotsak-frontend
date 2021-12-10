@@ -5,14 +5,14 @@ import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
-import { Personinfo } from '../../types/types.internal'
+import { Personinfo, PersoninfoOppgave } from '../../types/types.internal'
 
 interface HjelpemiddelbrukerProps {
-  person: Personinfo
+  person: PersoninfoOppgave
   saksID: string
 }
 
-const getFormattedName = (personinfo: Personinfo): string => {
+const getFormattedName = (personinfo: PersoninfoOppgave): string => {
   const { fornavn, mellomnavn, etternavn } = personinfo
 
   return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)

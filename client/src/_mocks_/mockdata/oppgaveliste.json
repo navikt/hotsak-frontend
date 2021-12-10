@@ -6,19 +6,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "19044238651",
-      "fødselsdato": "1942-04-19",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Petter Andreas",
       "etternavn": "Hansen",
-      "adresse": "Veien 69",
-      "kjønn": "MANN",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Trondheim",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Trondheim"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -36,19 +27,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "13044238651",
-      "fødselsdato": "1942-04-19",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Mia Cathrine",
       "etternavn": "Svendsen",
-      "adresse": "Veien 69",
-      "kjønn": "KVINNE",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Trondheim",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Trondheim"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -67,19 +49,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "130441386551",
-      "fødselsdato": "1941-04-13",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Per Bjørkli",
       "etternavn": "Hansen",
-      "adresse": "Veien 69",
-      "kjønn": "MANN",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Trondheim",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Trondheim"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -102,19 +75,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "06115559891",
-      "fødselsdato": "2001-12-16",
       "funksjonsnedsettelse": ["kognisjon"],
       "fornavn": "Iver",
       "etternavn": "Slettan",
-      "adresse": "Veien 69",
-      "kjønn": "MANN",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Lade",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Lade"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -136,19 +100,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "16120101181",
-      "fødselsdato": "2001-12-16",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Sondre",
       "etternavn": "Hansen",
-      "adresse": "Veien 69",
-      "kjønn": "MANN",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Lade",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Lade"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -170,19 +125,10 @@
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "19044238651",
-      "fødselsdato": "1942-04-19",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Geir",
       "etternavn": "Dalby",
-      "adresse": "Veien 69",
-      "kjønn": "MANN",
-      "brukernummer": "454545",
-      "postnummer": "2825",
-      "poststed": "Trondheim",
-      "gtNummer": "1234",
-      "gtType": "KOMMUNE",
-      "egenAnsatt": "false",
-      "brukerErDigital": "true"
+      "poststed": "Trondheim"
     },
     "saksbehandler": {
         "epost": "a.b@nav.no",

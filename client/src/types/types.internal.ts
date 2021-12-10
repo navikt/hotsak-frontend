@@ -132,7 +132,7 @@ export interface Oppgave {
   mottattDato: string
   formidlerNavn: string
   saksid: string
-  personinformasjon: Personinfo
+  personinformasjon: PersoninfoOppgave
   status: OppgaveStatusType
   saksbehandler?: Saksbehandler
   søknadOm: string
@@ -176,6 +176,15 @@ export enum Kjønn {
   MANN = 'MANN',
   KVINNE = 'KVINNE',
   UKJENT = 'UKJENT',
+}
+
+export interface PersoninfoOppgave {
+  fornavn: string
+  mellomnavn: string | null
+  etternavn: string
+  fnr: string
+  funksjonsnedsettelse: string[]
+  poststed: string
 }
 
 export interface Personinfo {

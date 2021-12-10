@@ -24,16 +24,16 @@ interface PathConfigType {
 const pathConfig = (type: TabType): PathConfigType => {
   switch (type) {
     case TabType.Ufordelte:
-      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
+      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
     case TabType.Mine:
       return { path: `${basePath}/oppgaver/mine`, queryParams: { ...defaultQueryParams } }
     case TabType.Ferdigstilte:
-      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.VEDTAK_FATTET } }
+      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.VEDTAK_FATTET } }
     case TabType.OverførtGosys:
-      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.SENDT_GOSYS } }
+      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...defaultQueryParams, status: OppgaveStatusType.SENDT_GOSYS } }
     case TabType.Alle:
     default:
-      return { path: `${basePath}/oppgaver-paged`, queryParams: { ...defaultQueryParams } }
+      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...defaultQueryParams } }
   }
 }
 

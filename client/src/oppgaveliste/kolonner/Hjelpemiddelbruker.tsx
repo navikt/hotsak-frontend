@@ -5,7 +5,7 @@ import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
-import { Personinfo, PersoninfoOppgave } from '../../types/types.internal'
+import { PersoninfoOppgave } from '../../types/types.internal'
 
 interface HjelpemiddelbrukerProps {
   person: PersoninfoOppgave

@@ -104,7 +104,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Container>
 
       <Strek />
-      <Signatur signaturType={person.signaturType} navn={formatertNavn} />
+      <Signatur signaturType={person.signaturtype} navn={formatertNavn} />
       <Strek />
 
       <Heading level="1" size="medium" spacing={true}>

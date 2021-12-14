@@ -9,7 +9,7 @@ interface SignaturProps {
 }
 
 export const Signatur: React.FC<SignaturProps> = ({ signaturType, navn }) => {
-  switch (signaturType) {
+    switch (signaturType) {
     case SignaturType.BRUKER_BEKREFTER:
       return <BrukerBekreftet navn={navn} />
     case SignaturType.FULLMAKT:

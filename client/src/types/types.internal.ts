@@ -197,7 +197,7 @@ export interface Personinfo {
   brukernummer?: string
   adresse: string
   kilde: PersonInfoKilde
-  signaturType: SignaturType
+  signaturtype: SignaturType
   telefon: string
   funksjonsnedsettelse: string[]
   bruksarena: Bruksarena

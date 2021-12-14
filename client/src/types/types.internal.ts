@@ -230,8 +230,9 @@ export enum Bosituasjon {
 }
 
 export enum SignaturType {
-  SIGNATUR = 'signatur',
-  BRUKER_BEKREFTER = 'bruker_bekrefter',
+  FULLMAKT = 'FULLMAKT',
+  BRUKER_BEKREFTER = 'BRUKER_BEKREFTER',
+  FRITAK_FRA_FULLMAKT = 'FRITAK_FRA_FULLMAKT'
 }
 
 export enum PersonInfoKilde {

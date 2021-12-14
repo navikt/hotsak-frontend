@@ -23,7 +23,7 @@ export const Fullmakt: React.FC<FullmaktProps> = ({ navn }) => {
       <Container>
         <Liste>
           <li>
-            <Tekst>{`${navn} har signert en fullmakt på at jeg fyller ut og begrunner søknad om hjelpemidler på sine vegne. ${navn} er kjent med hvilke hjelpemidler det søkes om og er informert om sine rettigheter og plikter.`}</Tekst>{' '}
+            <Tekst>{`${navn} har signert en fullmakt på at formidler fyller ut og begrunner søknad om hjelpemidler på sine vegne. ${navn} er kjent med hvilke hjelpemidler det søkes om og er informert om sine rettigheter og plikter.`}</Tekst>{' '}
           </li>
           <li>
             <Tekst>

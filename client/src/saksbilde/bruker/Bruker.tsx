@@ -8,11 +8,10 @@ import { Liste } from '../../felleskomponenter/Liste'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler, SignaturType } from '../../types/types.internal'
-import { BrukerBekreftet } from './BrukerBekreftet'
-import { Fullmakt } from './Fullmakt'
+import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
+import { Signatur } from './Signatur'
 
 interface BrukerProps {
   person: Personinfo
@@ -93,9 +92,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       <Container>
         <Grid>
           <Etikett>Leveringadresse</Etikett>
-          <Tekst>
-            <LeveringsMåte levering={levering} brukerAdresse={adresse} />
-          </Tekst>
+          <LeveringsMåte levering={levering} brukerAdresse={adresse} />
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
           {levering.merknad && (
             <>
@@ -107,12 +104,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Container>
 
       <Strek />
-      {person.signaturType === SignaturType.SIGNATUR ? (
-        <Fullmakt navn={formatertNavn} />
-      ) : (
-        <BrukerBekreftet navn={formatertNavn} />
-      )}
-
+      <Signatur signaturType={person.signaturType} navn={formatertNavn} />
       <Strek />
 
       <Heading level="1" size="medium" spacing={true}>

@@ -20,13 +20,13 @@ const SpicyMeatball = styled(Meatball)`
 
   :hover {
     #circle_fill {
-      fill: var(--navds-color-action-hover);
+      fill: var( --navds-semantic-color-interaction-primary-hover);
     }
 
     #inner_circle_left,
     #inner_circle_center,
     #inner_circle_right {
-      fill: var(--navds-color-text-inverse);
+      fill: var(--navds-semantic-color-component-background-alternate);
     }
   }
 `

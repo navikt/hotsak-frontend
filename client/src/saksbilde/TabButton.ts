@@ -12,29 +12,29 @@ export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>
   border: none;
   cursor: pointer;
   padding: 0 13px;
-  border-bottom: 1px solid var(--navds-color-border);
+  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
   transition: background-color 0.1s ease;
 
   ${(props) =>
     !props.disabled &&
     css`
       &:hover {
-        background-color: var(--navds-color-gray-10);
+        background-color: var(--navds-semantic-color-canvas-background);
       }
 
       &:active {
-        background-color: var(--navds-color-gray-20);
+        background-color: var(--navds-semantic-color-canvas-background);
       }
 
       &:focus-visible {
-        box-shadow: inset 0 0 0 3px var(--navds-text-focus);
+        box-shadow: inset 0 0 0 3px var(--navds-semantic-color-focus);
       }
     `}
 
   &:before {
     position: absolute;
     content: '';
-    background: var(--navds-color-action-default);
+    background: var(--navds-semantic-color-interaction-primary);
     bottom: 0;
     left: 0;
     height: 0;

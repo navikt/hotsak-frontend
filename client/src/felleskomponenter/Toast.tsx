@@ -14,7 +14,7 @@ const ToastView = styled.div`
   min-height: 1rem;
   padding: 14px 16px;
   border-radius: 4px;
-  background: var(--navds-color-text-primary);
+  background: var(--navds-semantic-color-text);
   color: white;
   width: max-content;
   margin: 1rem;

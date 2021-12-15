@@ -45,7 +45,6 @@ const Knapp = styled(Button)`
   height: 1.8rem;
   padding: 0 0.75rem;
   box-sizing: border-box;
-  font-size: var(--navds-font-size-m);
 `
 
 export const VedtakCard = ({ sak }: VedtakCardProps) => {

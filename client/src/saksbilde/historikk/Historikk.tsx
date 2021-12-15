@@ -21,7 +21,7 @@ const Hendelser = styled.ul`
   flex-shrink: 0;
   padding: 0 24px;
   box-sizing: border-box;
-  border-left: 1px solid var(--navds-color-border);
+  border-left: 1px solid var(--navds-semantic-color-border-muted);
 `
 
 export const Historikk: React.FC = ({ children }) => {

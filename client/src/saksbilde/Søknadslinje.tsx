@@ -11,7 +11,7 @@ const Container = styled.div`
   justify-content: space-between;
   height: 48px;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--navds-color-border);
+  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
   padding: 0 2rem 0 2rem;
   min-width: var(--speil-total-min-width);
 

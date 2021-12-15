@@ -12,7 +12,7 @@ export enum TabType {
 }
 
 const Tablist = styled.div`
-  border-bottom: 1px solid var(--navds-color-border);
+  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
   margin: 1rem 1.5rem 0;
   display: flex;
   flex-wrap: nowrap;
@@ -35,7 +35,7 @@ const Tab = styled.button<{ active: boolean }>`
   font-family: inherit;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--navds-color-text-primary);
+  color: var(--navds-semantic-color-text);
   cursor: pointer;
   outline: none;
 
@@ -46,7 +46,7 @@ const Tab = styled.button<{ active: boolean }>`
     height: 0;
     left: 0;
     bottom: 0;
-    background-color: var(--navds-color-action-default);
+    background-color: var(--navds-semantic-color-interaction-primary);
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     transition: height 0.1s ease;
@@ -54,7 +54,7 @@ const Tab = styled.button<{ active: boolean }>`
 
   &:hover,
   &:focus {
-    color: var(--navds-color-action-default);
+    color: var(--navds-semantic-color-interaction-primary);
   }
 
   ${({ active }) =>

@@ -6,6 +6,6 @@ export const TekstMedEllipsis = styled.p`
   text-overflow: ellipsis;
 
   > a:focus {
-    box-shadow: 0 0 0 3px var(--navds-text-focus);
+    box-shadow: 0 0 0 3px var(--navds-semantic-color-focus);
   }
 `

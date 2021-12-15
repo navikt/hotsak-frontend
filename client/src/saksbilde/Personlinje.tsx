@@ -18,9 +18,9 @@ const Container = styled.div`
   min-width: var(--speil-total-min-width);
   box-sizing: border-box;
   padding: 0 2rem;
-  background: var(--speil-background-secondary);
-  border-bottom: 1px solid var(--navds-color-border);
-  color: var(--navds-color-text-primary);
+  background: var(--navds-semantic-color-canvas-background);
+  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
+  color: var(--navds-semantic-color-text);
 
   > svg {
     margin-right: 0.5rem;
@@ -28,7 +28,7 @@ const Container = styled.div`
 `
 
 const Clipboard = styled(CopyToClipboard)`
-  color: var(--navds-color-text-primary);
+  color: var(--navds-semantic-color-text);
 `
 
 const Separator = styled.div`

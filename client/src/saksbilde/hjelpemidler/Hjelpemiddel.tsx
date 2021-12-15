@@ -29,14 +29,14 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-      Number(props.rank) === 1 ? 'var(--navds-color-green-20)' : 'var(--navds-color-orange-40)'};
+      Number(props.rank) === 1 ? 'var(--navds-global-color-green-200)' : 'var(--navds-global-color-orange-400)'};
     color: inherit;
     font-weight: inherit;
   }
 `
 
 const TilleggsInfo = styled(Rad)`
-  background-color: #fff5e5;
+  background-color: var(--navds-global-color-orange-100);
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
 `

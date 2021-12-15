@@ -12,10 +12,9 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 const Tildelingsknapp = styled(Button)`
   min-height: 0;
-  height: 1.5rem;
-  padding: 0 0.75rem;
+  height: var(--navds-spacing-6);
+  padding: 0 var(--navds-spacing-3);
   box-sizing: border-box;
-  font-size: var(--navds-font-size-xs);
 `
 
 interface IkkeTildeltProps {

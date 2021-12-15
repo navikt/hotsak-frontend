@@ -7,7 +7,7 @@ const Container = styled.section`
   width: var(--speil-venstremeny-width);
   min-width: 19.5rem;
   padding: 2rem 1.5rem;
-  border-right: 1px solid var(--navds-color-border);
+  border-right: 1px solid var(--navds-semantic-color-border-muted);
 `
 
 export const VenstreMeny: React.FC = ({ children }) => {

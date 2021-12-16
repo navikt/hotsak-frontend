@@ -43,6 +43,7 @@ export const Oppgaveliste = () => {
 
   const byttTab = (nyTab: TabType) => {
     setAktivTab(nyTab)
+    setCurrentPage(1)
     logAmplitudeEvent(amplitude_taxonomy.OPPGAVELISTE_BYTT_TAB, { tab: nyTab })
   }
 

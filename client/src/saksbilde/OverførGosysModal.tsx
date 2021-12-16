@@ -27,8 +27,8 @@ export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: Overf�
         Vil du overføre saken til Gosys?
       </Heading>
       <Tekst>
-        Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre
-        saksbehandling må gjøres manuelt i Gosys og Infotrygd.
+      Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd. 
+      Merk at det kan ta noen minutter før saken dukker opp i Gosys
       </Tekst>
       <ButtonContainer>
         <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-overfor-soknad">

@@ -32,16 +32,16 @@ const pathConfig = (type: TabType, currentPage: number): PathConfigType => {
     const pagingParams = {"limit": PAGE_SIZE, "page": currentPage }
   switch (type) {
     case TabType.Ufordelte:
-      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...pagingParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
+      return { path: `${basePath}/oppgaver`, queryParams: { ...pagingParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER } }
     case TabType.Mine:
       return { path: `${basePath}/oppgaver/mine`, queryParams: { ...pagingParams }}
     case TabType.Ferdigstilte:
-      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...pagingParams, status: OppgaveStatusType.VEDTAK_FATTET } }
+      return { path: `${basePath}/oppgaver`, queryParams: { ...pagingParams, status: OppgaveStatusType.VEDTAK_FATTET } }
     case TabType.OverførtGosys:
-      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...pagingParams, status: OppgaveStatusType.SENDT_GOSYS } }
+      return { path: `${basePath}/oppgaver`, queryParams: { ...pagingParams, status: OppgaveStatusType.SENDT_GOSYS } }
     case TabType.Alle:
     default:
-      return { path: `${basePath}/oppgaver-paged_v2`, queryParams: { ...pagingParams }}
+      return { path: `${basePath}/oppgaver`, queryParams: { ...pagingParams }}
   }
 }
 

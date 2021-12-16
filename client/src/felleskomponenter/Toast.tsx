@@ -7,8 +7,8 @@ import { Tekst } from './typografi'
 
 const ToastView = styled.div`
   position: fixed;
-  top: 5rem;
-  right: 50%;
+  top: 6rem;
+  left: 15%;
   display: flex;
   align-items: center;
   min-height: 1rem;

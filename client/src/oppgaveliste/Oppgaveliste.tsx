@@ -51,10 +51,6 @@ export const Oppgaveliste = () => {
     throw Error('Feil med henting av oppgaver')
   }
 
-  if (isLoading) {
-    return <Toast>Henter oppgaver </Toast>
-  }
-
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
   return (
@@ -62,18 +58,26 @@ export const Oppgaveliste = () => {
       <FlexColumn>
         <TabContext.Provider value={{ aktivTab, byttTab }}>
           <Tabs />
-          <Flex style={{ height: '100%' }}>
-            <Panel>
-              {hasData ? (
-                <>
-                  <OppgaverTable oppgaver={oppgaver} />
-                  <Pagination totalCount={totalCount} currentPage={currentPage} onChangePage={(page : number) => setCurrentPage(page)}  />
-                </>
-              ) : (
-                <IngenOppgaver />
-              )}
-            </Panel>
-          </Flex>
+          {false ? (
+            <Toast>Henter oppgaver </Toast>
+          ) : (
+            <Flex style={{ height: '100%' }}>
+              <Panel>
+                {hasData ? (
+                  <>
+                    <OppgaverTable oppgaver={oppgaver} />
+                    <Pagination
+                      totalCount={totalCount}
+                      currentPage={currentPage}
+                      onChangePage={(page: number) => setCurrentPage(page)}
+                    />
+                  </>
+                ) : (
+                  <IngenOppgaver />
+                )}
+              </Panel>
+            </Flex>
+          )}
         </TabContext.Provider>
       </FlexColumn>
     </Container>

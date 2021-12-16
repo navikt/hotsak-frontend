@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import styled from 'styled-components/macro'
 import { CopyToClipboard } from '@navikt/ds-react-internal'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
-import { capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
+import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
 
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
@@ -99,7 +99,7 @@ const formaterNavn = (person: Personinfo) => {
 export const Personlinje = ({ person }: PersonlinjeProps) => {
   if (!person) return <Container />
 
-  const { fnr, brukernummer, kjønn, fødselsdato } = person
+  const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
@@ -107,7 +107,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
       <Separator>/</Separator>
       {fnr ? (
         <>
-          <Tekst>{formaterFødselsnummer(fnr)}</Tekst>
+          <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
           <Clipboard popoverText="Fødselsnummer kopiert" variant="tertiary" size="small" copyText={fnr} popoverPlacement="bottom" />
         </>
       ) : (
@@ -116,7 +116,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
       <Separator>/</Separator>
       {brukernummer ? (
         <>
-          <Tekst>{`Brukernummer: ${brukernummer}`}</Tekst>
+          <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
           <Clipboard
             popoverText="Brukernummer kopiert"
             popoverPlacement="bottom"
@@ -127,6 +127,21 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
         </>
       ) : (
         <Tekst>Brukernummer ikke tilgjengelig</Tekst>
+      )}
+      <Separator>/</Separator>
+      {telefon ? (
+        <>
+          <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
+          <Clipboard
+            popoverText="Telefonnummer er kopier"
+            popoverPlacement="bottom"
+            variant="tertiary"
+            size="small"
+            copyText={telefon}
+          ></Clipboard>
+        </>
+      ) : (
+        <Tekst>Telefonnummer ikke tilgjengelig</Tekst>
       )}
     </Container>
   )

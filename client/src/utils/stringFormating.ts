@@ -10,3 +10,9 @@ export const capitalizeName = (value: string) =>
 export const formaterFødselsnummer = (fødselsnummer: string) => {
   return `${fødselsnummer.slice(0, 6)} ${fødselsnummer.slice(6)}`
 }
+
+export const formaterTelefonnummer = (telefon: string) => {
+    const siffer = telefon.split("")
+
+    return `${siffer.slice(0, 2).join("")} ${siffer.slice(2, 4).join("")} ${siffer.slice(4, 6).join("")} ${siffer.slice(6, siffer.length ).join("")}`
+}

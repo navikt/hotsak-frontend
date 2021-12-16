@@ -122,7 +122,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.get(`/api/oppgaver-paged_v2/`, (req, res, ctx) => {
+  rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     const status = req.url.searchParams.get('status')
     const currentPage = Number(req.url.searchParams.get('page'))
     const pageSize = Number(req.url.searchParams.get('limit'))

@@ -36,8 +36,7 @@ export const Pagination: React.FC<PaginationProps> = ({ totalCount, currentPage,
   const hasMultiplePages = pages.length > 1
   return (
     <Container>
-      <ButtonsNumbersContainer>
-        {hasMultiplePages && (
+      {hasMultiplePages && <ButtonsNumbersContainer>
           <Button
             size="small"
             variant="tertiary"
@@ -46,8 +45,7 @@ export const Pagination: React.FC<PaginationProps> = ({ totalCount, currentPage,
           >
             Forrige
           </Button>
-        )}
-        {hasMultiplePages && (pages.map((page) => {
+        {pages.map((page) => {
           return (
             <Button
               key={page}
@@ -57,9 +55,8 @@ export const Pagination: React.FC<PaginationProps> = ({ totalCount, currentPage,
             >
               {page}
             </Button>
-          )
-        }))}
-        {hasMultiplePages && (
+        )})}
+        
           <Button
             size="small"
             variant="tertiary"
@@ -68,8 +65,7 @@ export const Pagination: React.FC<PaginationProps> = ({ totalCount, currentPage,
           >
             Neste
           </Button>
-        )}
-      </ButtonsNumbersContainer>
+      </ButtonsNumbersContainer>}
 
       <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalCount={totalCount} />
     </Container>

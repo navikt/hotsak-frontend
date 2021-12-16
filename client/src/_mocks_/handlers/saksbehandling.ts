@@ -124,17 +124,39 @@ const saksbehandlingHandlers = [
   }),
   rest.get(`/api/oppgaver-paged_v2/`, (req, res, ctx) => {
     const status = req.url.searchParams.get('status')
+    const currentPage = Number(req.url.searchParams.get('page'))
+    const pageSize = Number(req.url.searchParams.get('limit'))
 
-    if (!status) {
-      return res(ctx.status(200), ctx.json(oppgaveliste))
+    const startIndex =  currentPage - 1
+    const endIndex = startIndex + pageSize
+    const filtrerteOppgaver = oppgaveliste.filter((oppgave) => oppgave.status === status)
+
+    const response = {
+        oppgaver: !status ? oppgaveliste.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
+        totalCount: ! status ? oppgaveliste.length : filtrerteOppgaver.length,
+        pageSize: pageSize,
+        currentPage: currentPage
     }
 
-    return res(ctx.status(200), ctx.json(oppgaveliste.filter((oppgave) => oppgave.status === status)))
+    return res(ctx.status(200),ctx.json(response))
   }),
   rest.get(`/api/oppgaver/mine`, (req, res, ctx) => {
+    const currentPage = Number(req.url.searchParams.get('page'))
+    const pageSize = Number(req.url.searchParams.get('limit'))
+
+    const startIndex =  currentPage - 1
+    const endIndex = startIndex + pageSize
+    const filtrerteOppgaver = oppgaveliste.filter((oppgave) => oppgave.saksbehandler?.navn === 'Silje Saksbehandler')
+
+    const response = {
+        oppgaver: filtrerteOppgaver.slice(startIndex, endIndex),
+        totalCount: filtrerteOppgaver.length,
+        pageSize: pageSize,
+        currentPage: currentPage
+    }
     return res(
       ctx.status(200),
-      ctx.json(oppgaveliste.filter((oppgave) => oppgave.saksbehandler?.navn === 'Silje Saksbehandler'))
+      ctx.json(response)
     )
   }),
 ]

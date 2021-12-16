@@ -10,6 +10,7 @@ import { OppgaverTable } from './OppgaverTable'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Tabs, TabType } from './tabs'
 import { Panel } from '@navikt/ds-react'
+import { Pagination } from './paging/Pagination'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -37,9 +38,8 @@ const Container = styled.div`
 
 export const Oppgaveliste = () => {
   const [aktivTab, setAktivTab] = useState(TabType.Ufordelte)
-  const { oppgaver, isError, isLoading } = useOppgaveliste(aktivTab)
-
-  
+  const [currentPage, setCurrentPage] = useState(1)
+  const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(aktivTab, currentPage)
 
   const byttTab = (nyTab: TabType) => {
     setAktivTab(nyTab)
@@ -62,7 +62,16 @@ export const Oppgaveliste = () => {
         <TabContext.Provider value={{ aktivTab, byttTab }}>
           <Tabs />
           <Flex style={{ height: '100%' }}>
-            <Panel>{hasData ? <OppgaverTable oppgaver={oppgaver} /> : <IngenOppgaver />}</Panel>
+            <Panel>
+              {hasData ? (
+                <>
+                  <OppgaverTable oppgaver={oppgaver} />
+                  <Pagination totalCount={totalCount} currentPage={currentPage} onChangePage={(page : number) => setCurrentPage(page)}  />
+                </>
+              ) : (
+                <IngenOppgaver />
+              )}
+            </Panel>
           </Flex>
         </TabContext.Provider>
       </FlexColumn>

@@ -58,7 +58,7 @@ export const Oppgaveliste = () => {
       <FlexColumn>
         <TabContext.Provider value={{ aktivTab, byttTab }}>
           <Tabs />
-          {false ? (
+          {isLoading ? (
             <Toast>Henter oppgaver </Toast>
           ) : (
             <Flex style={{ height: '100%' }}>

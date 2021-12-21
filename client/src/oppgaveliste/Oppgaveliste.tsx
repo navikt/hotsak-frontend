@@ -40,17 +40,17 @@ const Container = styled.div`
 export const Oppgaveliste = () => {
   const [aktivTab, setAktivTab] = useState(TabType.Ufordelte)
   const [currentPage, setCurrentPage] = useState(1)
-  const [sortBy, setSortBy] = useState({label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
+  const [sortBy, setSortBy] = useState({ label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
   const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(aktivTab, currentPage, sortBy)
 
-const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
-    if(label !== sortBy.label) {
-        setSortBy({label, sortOrder: SortOrder.DESCENDING})
+  const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
+    if (label !== sortBy.label) {
+      setSortBy({ label, sortOrder: SortOrder.DESCENDING })
     } else {
-        setSortBy({label, sortOrder})
+      setSortBy({ label, sortOrder })
     }
-    
-}
+    setCurrentPage(1)
+  }
 
   const byttTab = (nyTab: TabType) => {
     setAktivTab(nyTab)
@@ -76,7 +76,11 @@ const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
               <Panel>
                 {hasData ? (
                   <>
-                    <OppgaverTable oppgaver={oppgaver} sortBy={sortBy} onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)} />
+                    <OppgaverTable
+                      oppgaver={oppgaver}
+                      sortBy={sortBy}
+                      onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)}
+                    />
                     <Pagination
                       totalCount={totalCount}
                       currentPage={currentPage}

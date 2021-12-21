@@ -35,18 +35,6 @@ const ScrollableX = styled.div`
   width: 100%;
 `
 
-/*export const OppgaveKolonner: { [key in Kolonne]: string} = {
-    EIER: "saksbehandler.navn",
-    FØDSELSNUMMER: "personinfo.fnr",
-    HJELPEMIDDELBRUKER: "personinfo.fornavn",
-    FUNKSJONSNEDSETTELSE: "personinfo.funksjonsnedsettelser",
-    SØKNAD_OM: "sak.soknadGjelder",
-    BOSTED: "personinfo.poststed",
-    FORMIDLER: "formidler.navn",
-    STATUS: "status.status",
-    MOTTATT: "sak.opprettet",
-}*/   
-
 export enum Kolonne {
   EIER = 'EIER',
   FØDSELSNUMMER = 'FØDSELSNUMMER',

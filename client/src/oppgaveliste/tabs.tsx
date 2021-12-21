@@ -13,7 +13,7 @@ export enum TabType {
 
 const Tablist = styled.div`
   border-bottom: 1px solid var(--navds-semantic-color-border-muted);
-  margin: 1rem 1.5rem 0;
+  margin: 1rem 1.5rem 0.5rem;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;

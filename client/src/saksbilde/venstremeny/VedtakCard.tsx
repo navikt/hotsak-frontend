@@ -5,7 +5,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button, Tag } from '@navikt/ds-react'
 
-import { putVedtak, putSendTilGosys } from '../../io/http'
+import { putVedtak, putSendTilGosys, postTildeling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { formaterDato } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
@@ -19,6 +19,7 @@ import { BekreftVedtakModal } from '../BekreftVedtakModal'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
+import { OvertaSakModal } from '../OvertaSakModal'
 
 interface VedtakCardProps {
   sak: Sak
@@ -53,6 +54,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visGosysModal, setVisGosysModal] = useState(false)
+  const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
@@ -63,6 +65,18 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
       .then(() => {
         setLoading(false)
         setVisVedtakModal(false)
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
+      })
+  }
+
+  const overtaSak = () => {
+    setLoading(true)
+    postTildeling(saksid)
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        setVisOvertaSakModal(false)
         mutate(`api/sak/${saksid}`)
         mutate(`api/sak/${saksid}/historikk`)
       })
@@ -86,7 +100,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         <Card>
           <CardTitle>VEDTAK</CardTitle>
           <TagGrid>
-            <Tag data-cy="tag-soknad-status" variant="success" size="small">
+            <Tag data-cy='tag-soknad-status' variant='success' size='small'>
               Innvilget
             </Tag>
             <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
@@ -100,7 +114,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
-        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+        <Tag data-cy='tag-soknad-status' variant='info' size='small'>
           Overført til Gosys
         </Tag>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
@@ -121,25 +135,37 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   }
 
   if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler.objectId !== saksbehandler.objectId) {
+
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
         <ButtonContainer>
-          <Knapp variant='primary' size='s' onClick={() => alert('Tildeler sak til innlogget saksbehandler')}>
+          <Knapp variant='primary' size='small' onClick={() => setVisOvertaSakModal(true)} data-cy='btn-vis-overta-sak-modal'>
             Overta saken
           </Knapp>
         </ButtonContainer>
+        <OvertaSakModal
+          open={visOvertaSakModal}
+          saksbehandler={saksbehandler.navn}
+          onBekreft={() => {
+            overtaSak()
+            logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
+            logNesteNavigasjon(amplitude_taxonomy.SAK_OVERTATT)
+          }}
+          loading={loading}
+          onClose={() => setVisOvertaSakModal(false)}
+        />
       </Card>
     )
   } else {
     return (
       <Card>
         <ButtonContainer>
-          <Knapp variant='primary' size='small' onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
+          <Knapp variant='primary' size='small' onClick={() => setVisVedtakModal(true)} data-cy='btn-vis-vedtak-modal'>
             <span>Innvilg søknaden</span>
           </Knapp>
-          <Knapp variant='secondary' size='small' onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
+          <Knapp variant='secondary' size='small' onClick={() => setVisGosysModal(true)} data-cy='btn-vis-gosys-modal'>
             Overfør til Gosys
           </Knapp>
         </ButtonContainer>

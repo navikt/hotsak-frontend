@@ -5,6 +5,7 @@ export enum amplitude_taxonomy {
   SAKSBILDE_BYTT_TAB = 'byttet tab i saksbilde',
   SOKNAD_INNVILGET = 'innvilget søknad',
   SOKNAD_OVERFORT_TIL_GOSYS = 'overført søknad til Gosys',
+  SAK_OVERTATT = 'sak overtatt av ny saksbehandler',
   NAVIGASJON_ETTER_HENDELSE = 'neste navigasjon foretatt etter hendelse',
 }
 

@@ -12,8 +12,6 @@ interface BekreftVedtakModalProps {
 }
 
 export const BekreftVedtakModal = ({ open, onBekreft, loading, onClose }: BekreftVedtakModalProps) => {
-  // Modal && Modal.setAppElement("#root")
-
   return (
     <DialogBoks
       shouldCloseOnOverlayClick={false}

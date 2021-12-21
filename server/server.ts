@@ -121,8 +121,10 @@ const setUpAuthentication = () => {
         res.redirect(303, '/')
       })
       .catch((err: AuthError) => {
-        logger.error(`Error caught during login: ${err.message} (se sikkerLog for detaljer)`)
-        logger.sikker.error(`Error caught during login: ${err.message}`, err)
+        logger.error(`Error caught during login: ${err.statusCode} ${err.message} (se sikkerLog for detaljer)`)
+        logger.sikker.error(`Error caught during login: ${err.message} ${JSON.stringify(err)}`, err)
+        logger.sikker.error(`Error caught during login (tmp log): ${err.message} ${err}`, err)
+
         session.destroy(() => {})
         res.sendStatus(err.statusCode)
       })

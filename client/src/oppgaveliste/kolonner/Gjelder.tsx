@@ -15,9 +15,9 @@ export const Gjelder = React.memo(({ søknadOm, saksID }: GjelderProps) => {
   const id = `gjelder-${saksID}`
 
   return (
-    <CellContent width={128} data-for={id} data-tip={søknadOm}>
+    <CellContent width={168} data-for={id} data-tip={søknadOm}>
       <TekstMedEllipsis>{capitalize(søknadOm)}</TekstMedEllipsis>
-      {søknadOm.length > 18 && <Tooltip id={id} />}
+      {søknadOm.length > 20 && <Tooltip id={id} />}
     </CellContent>
   )
 })

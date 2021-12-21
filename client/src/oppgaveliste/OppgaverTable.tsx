@@ -109,23 +109,13 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-                <SortButton
-                  active={sortBy.label === Kolonne.FØDSELSNUMMER}
-                  column={Kolonne.FØDSELSNUMMER}
+              <SortButton
+                  active={sortBy.label === Kolonne.STATUS}
+                  column={Kolonne.STATUS}
                   sortOrder={sortBy.sortOrder}
                   onClick={onSort}
                 >
-                  Fødselsnummer
-                </SortButton>
-              </Header>
-              <Header scope="col" colSpan={1}>
-                <SortButton
-                  active={sortBy.label === Kolonne.HJELPEMIDDELBRUKER}
-                  column={Kolonne.HJELPEMIDDELBRUKER}
-                  sortOrder={sortBy.sortOrder}
-                  onClick={onSort}
-                >
-                  Hjelpemiddelbruker
+                  Status
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
@@ -149,6 +139,26 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
+                <SortButton
+                  active={sortBy.label === Kolonne.HJELPEMIDDELBRUKER}
+                  column={Kolonne.HJELPEMIDDELBRUKER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
+                  Hjelpemiddelbruker
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+                <SortButton
+                  active={sortBy.label === Kolonne.FØDSELSNUMMER}
+                  column={Kolonne.FØDSELSNUMMER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
+                  Fødselsnr.
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
               <SortButton
                   active={sortBy.label === Kolonne.BOSTED}
                   column={Kolonne.BOSTED}
@@ -168,16 +178,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   Formidler
                 </SortButton>
               </Header>
-              <Header scope="col" colSpan={1}>
-              <SortButton
-                  active={sortBy.label === Kolonne.STATUS}
-                  column={Kolonne.STATUS}
-                  sortOrder={sortBy.sortOrder}
-                  onClick={onSort}
-                >
-                  Status
-                </SortButton>
-              </Header>
+              
               <Header scope="col" colSpan={1}>
               <SortButton
                   active={sortBy.label === Kolonne.MOTTATT}
@@ -198,10 +199,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   <Tildeling oppgave={oppgave} />
                 </Cell>
                 <Cell>
-                  <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
-                </Cell>
-                <Cell>
-                  <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
+                  <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
                   <Funksjonsnedsettelse
@@ -213,13 +211,16 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
+                  <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
+                </Cell>
+                <Cell>
+                  <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
+                </Cell>
+                <Cell>
                   <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
                   <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle>
-                </Cell>
-                <Cell>
-                  <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
                   <Motatt dato={oppgave.mottattDato} />

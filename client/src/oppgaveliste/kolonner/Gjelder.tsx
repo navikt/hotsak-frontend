@@ -13,11 +13,12 @@ interface GjelderProps {
 
 export const Gjelder = React.memo(({ søknadOm, saksID }: GjelderProps) => {
   const id = `gjelder-${saksID}`
+  const søknadGjelder = søknadOm.replace('Søknad om:', '').trim()
 
   return (
-    <CellContent width={168} data-for={id} data-tip={søknadOm}>
-      <TekstMedEllipsis>{capitalize(søknadOm)}</TekstMedEllipsis>
-      {søknadOm.length > 20 && <Tooltip id={id} />}
+    <CellContent width={168} data-for={id} data-tip={søknadGjelder}>
+      <TekstMedEllipsis>{capitalize(søknadGjelder)}</TekstMedEllipsis>
+      {søknadGjelder.length > 20 && <Tooltip id={id} />}
     </CellContent>
   )
 })

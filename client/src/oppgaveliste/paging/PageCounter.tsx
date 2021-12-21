@@ -2,9 +2,8 @@ import styled from '@emotion/styled'
 import { Tekst } from '../../felleskomponenter/typografi'
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  margin-left: 1.4rem;
+  margin-top: 0.5rem;
 `
 
 interface PageCounterProps {
@@ -17,12 +16,14 @@ export const PageCounter: React.FC<PageCounterProps> = ({ pageSize, totalCount, 
   const førsteSynligeOppgave = pageSize * (currentPage - 1) + 1
   const sisteOppgave = førsteSynligeOppgave + pageSize - 1
   return (
-    <Container>
-      <Tekst>
-        {`Viser ${førsteSynligeOppgave} - ${
-          sisteOppgave > totalCount ? totalCount : sisteOppgave
-        } av ${totalCount} oppgaver`}
-      </Tekst>
-    </Container>
+    <>
+      <Container>
+        <Tekst>
+          {`Viser ${førsteSynligeOppgave} - ${
+            sisteOppgave > totalCount ? totalCount : sisteOppgave
+          } av ${totalCount} saker`}
+        </Tekst>
+      </Container>
+    </>
   )
 }

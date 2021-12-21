@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs'
+import { Kolonne } from '../oppgaveliste/OppgaverTable'
 
 export interface Sak {
   saksid: string
@@ -232,7 +233,7 @@ export enum Bosituasjon {
 export enum SignaturType {
   FULLMAKT = 'FULLMAKT',
   BRUKER_BEKREFTER = 'BRUKER_BEKREFTER',
-  FRITAK_FRA_FULLMAKT = 'FRITAK_FRA_FULLMAKT'
+  FRITAK_FRA_FULLMAKT = 'FRITAK_FRA_FULLMAKT',
 }
 
 export enum PersonInfoKilde {
@@ -245,10 +246,19 @@ export enum Oppgavetype {
 }
 
 export interface Produkt {
-    isokode: string
-    isotittel: string
-    rammeavtalePostId: string
-    produkturl: string
-    artikkelurl: string
-    posttittel: string
+  isokode: string
+  isotittel: string
+  rammeavtalePostId: string
+  produkturl: string
+  artikkelurl: string
+  posttittel: string
+}
+
+export interface SortBy {
+    label: Kolonne, sortOrder: SortOrder }
+
+export enum SortOrder {
+  ASCENDING = 'asc',
+  DESCENDING = 'desc',
+  NONE = 'none',
 }

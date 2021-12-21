@@ -6,11 +6,12 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { Toast } from '../felleskomponenter/Toast'
 import { IngenOppgaver } from './IngenOppgaver'
-import { OppgaverTable } from './OppgaverTable'
+import { Kolonne, OppgaverTable } from './OppgaverTable'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Tabs, TabType } from './tabs'
 import { Panel } from '@navikt/ds-react'
 import { Pagination } from './paging/Pagination'
+import { SortOrder } from '../types/types.internal'
 
 interface TabContextValue {
   aktivTab: TabType
@@ -39,7 +40,17 @@ const Container = styled.div`
 export const Oppgaveliste = () => {
   const [aktivTab, setAktivTab] = useState(TabType.Ufordelte)
   const [currentPage, setCurrentPage] = useState(1)
-  const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(aktivTab, currentPage)
+  const [sortBy, setSortBy] = useState({label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
+  const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(aktivTab, currentPage, sortBy)
+
+const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
+    if(label !== sortBy.label) {
+        setSortBy({label, sortOrder: SortOrder.DESCENDING})
+    } else {
+        setSortBy({label, sortOrder})
+    }
+    
+}
 
   const byttTab = (nyTab: TabType) => {
     setAktivTab(nyTab)
@@ -65,7 +76,7 @@ export const Oppgaveliste = () => {
               <Panel>
                 {hasData ? (
                   <>
-                    <OppgaverTable oppgaver={oppgaver} />
+                    <OppgaverTable oppgaver={oppgaver} sortBy={sortBy} onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)} />
                     <Pagination
                       totalCount={totalCount}
                       currentPage={currentPage}

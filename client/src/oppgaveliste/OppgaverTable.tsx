@@ -9,7 +9,7 @@ import { Table } from '../felleskomponenter/table/Table'
 import { capitalize } from '../utils/stringFormating'
 
 //import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
-import { Oppgave, OppgaveStatusLabel } from '../types/types.internal'
+import { Oppgave, OppgaveStatusLabel, SortOrder } from '../types/types.internal'
 import { useTabContext } from './Oppgaveliste'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
@@ -21,6 +21,7 @@ import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { TabType } from './tabs'
 import { FormidlerCelle } from './kolonner/Formidler'
+import { SortButton } from './sorting/SortButton'
 
 const Container = styled.div`
   min-height: 300px;
@@ -34,79 +35,59 @@ const ScrollableX = styled.div`
   width: 100%;
 `
 
-enum Kolonne {
-  EIER = 'Eier',
-  FØDSELSNUMMER = 'Fødselsnummer',
-  HJELPEMIDDELBRUKER = 'Hjelpemiddelbruker',
-  FUNKSJONSNEDSETTELSE = 'Funksjonsnedsettelse',
-  SØKNAD_OM = 'Søknad om',
-  BOSTED = 'Bosted',
-  FORMIDLER = 'Formidler',
-  STATUS = 'Status',
-  MOTTATT = 'Mottatt',
-  KJØTTBOLLE = 'Kjøttbolle',
+/*export const OppgaveKolonner: { [key in Kolonne]: string} = {
+    EIER: "saksbehandler.navn",
+    FØDSELSNUMMER: "personinfo.fnr",
+    HJELPEMIDDELBRUKER: "personinfo.fornavn",
+    FUNKSJONSNEDSETTELSE: "personinfo.funksjonsnedsettelser",
+    SØKNAD_OM: "sak.soknadGjelder",
+    BOSTED: "personinfo.poststed",
+    FORMIDLER: "formidler.navn",
+    STATUS: "status.status",
+    MOTTATT: "sak.opprettet",
+}*/   
+
+export enum Kolonne {
+  EIER = 'EIER',
+  FØDSELSNUMMER = 'FØDSELSNUMMER',
+  HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
+  FUNKSJONSNEDSETTELSE = 'FUNKSJONSNEDSETTELSE',
+  SØKNAD_OM = 'SØKNAD_OM',
+  BOSTED = 'BOSTED',
+  FORMIDLER = 'FORMIDLER',
+  STATUS = 'STATUS',
+  MOTTATT = 'MOTTATT',
 }
-
-const kolonnerMine = [
-  Kolonne.FUNKSJONSNEDSETTELSE,
-  Kolonne.SØKNAD_OM,
-  Kolonne.FØDSELSNUMMER,
-  Kolonne.HJELPEMIDDELBRUKER,
-  Kolonne.BOSTED,
-  Kolonne.FORMIDLER,
-  Kolonne.STATUS,
-  Kolonne.MOTTATT,
-  Kolonne.KJØTTBOLLE,
-]
-
-const kolonnerUtfordelte = [
-  Kolonne.EIER,
-  Kolonne.FUNKSJONSNEDSETTELSE,
-  Kolonne.FØDSELSNUMMER,
-  Kolonne.HJELPEMIDDELBRUKER,
-  Kolonne.BOSTED,
-  Kolonne.FORMIDLER,
-  Kolonne.MOTTATT,
-]
-
-const kolonnerAlleSaker = [
-  Kolonne.EIER,
-  Kolonne.FUNKSJONSNEDSETTELSE,
-  Kolonne.SØKNAD_OM,
-  Kolonne.FØDSELSNUMMER,
-  Kolonne.HJELPEMIDDELBRUKER,
-  Kolonne.BOSTED,
-  Kolonne.FORMIDLER,
-  Kolonne.STATUS,
-  Kolonne.MOTTATT,
-  Kolonne.KJØTTBOLLE,
-]
 
 interface OppgaverTableProps {
   oppgaver: Oppgave[]
+  sortBy: {
+    label: Kolonne
+    sortOrder: SortOrder
+  }
+  onSort: Function
 }
 
-const kolonnerOverførstGosys = kolonnerAlleSaker
 
-export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
+export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverTableProps) => {
   const { aktivTab } = useTabContext()
 
-  let tab: { label: string; kolonner: Kolonne[] }
+  let tab: { label: string }
   switch (aktivTab) {
     case TabType.Alle:
-      tab = { label: 'Alle saker fordelt til min enhet', kolonner: kolonnerAlleSaker }
+      tab = { label: 'Alle saker fordelt til min enhet' }
       break
     case TabType.Mine:
-      tab = { label: 'Saker som er tildelt meg', kolonner: kolonnerMine }
+      tab = { label: 'Saker som er tildelt meg' }
       break
     case TabType.Ferdigstilte:
-      tab = { label: 'Alle innvilgede saker fordelt til min enhet', kolonner: kolonnerAlleSaker }
+      tab = { label: 'Alle innvilgede saker fordelt til min enhet' }
       break
     case TabType.OverførtGosys:
-      tab = { label: 'Saker som er overført Gosys', kolonner: kolonnerOverførstGosys }
+      tab = { label: 'Saker som er overført Gosys' }
       break
     case TabType.Ufordelte:
-      tab = { label: 'Saker som ikke er tildelt en saksbehandler enda', kolonner: kolonnerUtfordelte }
+      tab = { label: 'Saker som ikke er tildelt en saksbehandler enda' }
       break
   }
 
@@ -115,107 +96,134 @@ export const OppgaverTable = React.memo(({ oppgaver }: OppgaverTableProps) => {
       <ScrollableX>
         <Table aria-label={tab.label}>
           <thead>
-              <tr></tr>
+            <tr></tr>
             <tr>
-              {tab.kolonner.includes(Kolonne.EIER) && (
-                <Header scope="col" colSpan={1}>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.EIER}
+                  column={Kolonne.EIER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Eier
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.FØDSELSNUMMER) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+                <SortButton
+                  active={sortBy.label === Kolonne.FØDSELSNUMMER}
+                  column={Kolonne.FØDSELSNUMMER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Fødselsnummer
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+                <SortButton
+                  active={sortBy.label === Kolonne.HJELPEMIDDELBRUKER}
+                  column={Kolonne.HJELPEMIDDELBRUKER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Hjelpemiddelbruker
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (
-                <Header scope="col" colSpan={1}>
-                  Funksjonsnedsettelse
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.SØKNAD_OM) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+                  <SortButton
+                  active={sortBy.label === Kolonne.FUNKSJONSNEDSETTELSE}
+                  column={Kolonne.FUNKSJONSNEDSETTELSE}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
+                  Område
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.SØKNAD_OM}
+                  column={Kolonne.SØKNAD_OM}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Søknad om
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.BOSTED) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.BOSTED}
+                  column={Kolonne.BOSTED}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Bosted
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.FORMIDLER) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.FORMIDLER}
+                  column={Kolonne.FORMIDLER}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Formidler
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.STATUS) && (
-                <Header scope="col" colSpan={1}>
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.STATUS}
+                  column={Kolonne.STATUS}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
                   Status
-                </Header>
-              )}
-              {tab.kolonner.includes(Kolonne.MOTTATT) && (
-                <Header scope="col" colSpan={1}>
-                  Mottatt
-                </Header>
-              )}
+                </SortButton>
+              </Header>
+              <Header scope="col" colSpan={1}>
+              <SortButton
+                  active={sortBy.label === Kolonne.MOTTATT}
+                  column={Kolonne.MOTTATT}
+                  sortOrder={sortBy.sortOrder}
+                  onClick={onSort}
+                >
+                  Mottatt dato
+                </SortButton>
+              </Header>
               {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && <Header scope="col" colSpan={1} />*/}
             </tr>
           </thead>
           <Body>
             {oppgaver.map((oppgave) => (
               <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                {tab.kolonner.includes(Kolonne.EIER) && (
-                  <Cell>
-                    <Tildeling oppgave={oppgave} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.FØDSELSNUMMER) && (
-                  <Cell>
-                    <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.HJELPEMIDDELBRUKER) && (
-                  <Cell>
-                    <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.FUNKSJONSNEDSETTELSE) && (
-                  <Cell>
-                    <Funksjonsnedsettelse
-                      funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
-                      saksID={oppgave.saksid}
-                    />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.SØKNAD_OM) && (
-                  <Cell>
-                    <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.BOSTED) && (
-                  <Cell>
-                    <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.FORMIDLER) && (
-                  <Cell>
-                    <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle>
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.STATUS) && (
-                  <Cell>
-                    <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
-                  </Cell>
-                )}
-                {tab.kolonner.includes(Kolonne.MOTTATT) && (
-                  <Cell>
-                    <Motatt dato={oppgave.mottattDato} />
-                  </Cell>
-                )}
+                <Cell>
+                  <Tildeling oppgave={oppgave} />
+                </Cell>
+                <Cell>
+                  <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
+                </Cell>
+                <Cell>
+                  <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
+                </Cell>
+                <Cell>
+                  <Funksjonsnedsettelse
+                    funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
+                    saksID={oppgave.saksid}
+                  />
+                </Cell>
+                <Cell>
+                  <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
+                </Cell>
+                <Cell>
+                  <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
+                </Cell>
+                <Cell>
+                  <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle>
+                </Cell>
+                <Cell>
+                  <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
+                </Cell>
+                <Cell>
+                  <Motatt dato={oppgave.mottattDato} />
+                </Cell>
                 {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && (
                   <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
                 )*/}

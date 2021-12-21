@@ -7,14 +7,18 @@ export interface SorteringsIkonProps extends SVGProps<any> {
 }
 
 export const SorteringsIkon = ({ sortOrder, active }: SorteringsIkonProps) => {
-  const topArrowColor =
-    active && sortOrder === SortOrder.ASCENDING
-      ? 'var(--navds-semantic-color-interaction-primary)'
-      : 'var(--navds-semantic-color-text)'
-  const bottomArrowColor =
-    active && sortOrder === SortOrder.DESCENDING
-      ? 'var(--navds-semantic-color-interaction-primary)'
-      : 'var(--navds-semantic-color-text)'
+  let topArrowColor = 'var(--navds-semantic-color-text)'
+  let bottomArrowColor = 'var(--navds-semantic-color-text)'
+  if (active) {
+    topArrowColor =
+      sortOrder === SortOrder.ASCENDING
+        ? 'var(--navds-semantic-color-interaction-primary)'
+        : 'var(--navds-semantic-color-text-muted)'
+    bottomArrowColor =
+      sortOrder === SortOrder.DESCENDING
+        ? 'var(--navds-semantic-color-interaction-primary)'
+        : 'var(--navds-semantic-color-text-muted)'
+  }
 
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

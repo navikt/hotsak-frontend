@@ -53,7 +53,7 @@
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "19044238651",
       "fødselsdato": "1942-12-19",
@@ -196,7 +196,7 @@
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "13044238651",
       "fødselsdato": "1942-06-19",
@@ -286,7 +286,7 @@
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "130441386551",
       "fødselsdato": "1942-06-19",
@@ -369,7 +369,7 @@
       { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" }
     ],
 
-    "motattDato": "2021-06-25T13:55:45",
+    "mottattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
       "fnr": "06115559891",
       "fødselsdato": "2001-12-16",
@@ -465,7 +465,7 @@
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "16120101181",
       "fødselsdato": "1942-06-19",
@@ -568,7 +568,7 @@
       { "beskrivelse": "Medlem av folketrygden", "type": "info" }
     ],
 
-    "motattDato": "2021-09-19T13:55:45",
+    "mottattDato": "2021-09-19T13:55:45",
     "personinformasjon": {
       "fnr": "19044238651",
       "fødselsdato": "1942-12-19",

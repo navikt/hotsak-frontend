@@ -16,7 +16,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 interface PeriodeCardProps {
   søknadGjelder: string
   saksnr: string
-  motattDato: string
+  mottattDato: string
   bruksarena: Bruksarena
   funksjonsnedsettelse: string[]
   bosituasjon: Bosituasjon
@@ -36,7 +36,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
 export const SøknadCard = ({
   søknadGjelder,
   saksnr,
-  motattDato,
+  mottattDato,
   bruksarena,
   funksjonsnedsettelse,
   bosituasjon,
@@ -53,7 +53,7 @@ export const SøknadCard = ({
         <IconContainer>
           <KalenderIkon />
         </IconContainer>
-        <Tekst>{formaterDato(motattDato)}</Tekst>
+        <Tekst>{formaterDato(mottattDato)}</Tekst>
         <IconContainer>
           <MappeIkon />
         </IconContainer>

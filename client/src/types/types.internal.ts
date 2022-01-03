@@ -7,7 +7,7 @@ export interface Sak {
   hjelpemidler: HjelpemiddelType[]
   formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
-  motattDato: string
+  mottattDato: string
   personinformasjon: Personinfo
   levering: Levering
   oppfølgingsansvarlig: Oppfølgingsansvarlig

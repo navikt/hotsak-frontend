@@ -77,7 +77,7 @@ const SaksbildeContent = React.memo(() => {
               <SøknadCard
                 søknadGjelder={sak.søknadGjelder}
                 saksnr={sak.saksid}
-                motattDato={sak.motattDato}
+                mottattDato={sak.mottattDato}
                 bosituasjon={sak.personinformasjon.bosituasjon}
                 bruksarena={sak.personinformasjon.bruksarena}
                 funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}

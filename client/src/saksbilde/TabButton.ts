@@ -1,5 +1,4 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 
 export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>`
   position: relative;
@@ -17,7 +16,7 @@ export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>
 
   ${(props) =>
     !props.disabled &&
-    css`
+    `
       &:hover {
         background-color: var(--navds-semantic-color-canvas-background);
       }
@@ -46,7 +45,7 @@ export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>
 
   ${(props) =>
     props.active &&
-    css`
+    `
       &:before {
         height: 4px;
       }

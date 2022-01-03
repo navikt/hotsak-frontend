@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 
 export const CellContent = styled.div<{ width?: number }>`
   position: relative;

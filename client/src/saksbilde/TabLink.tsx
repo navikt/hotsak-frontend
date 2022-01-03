@@ -1,5 +1,4 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
+import styled from 'styled-components/macro'
 import { ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -24,7 +23,7 @@ const TabLinkButton = styled(TabButton)`
 
   ${(props) =>
     props.active &&
-    css`
+    `
       > span:after {
         font-weight: 600;
       }

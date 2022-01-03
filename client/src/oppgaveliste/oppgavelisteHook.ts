@@ -32,8 +32,6 @@ const pathConfig = (type: TabType, currentPage: number, sortBy: SortBy): PathCon
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sortBy.label}.${sortBy.sortOrder}` }
 
-  console.log('Sort par', sortParams)
-
   switch (type) {
     case TabType.Ufordelte:
       return {

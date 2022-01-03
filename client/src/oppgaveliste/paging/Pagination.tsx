@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 import { Button } from '@navikt/ds-react'
 import { PageCounter } from './PageCounter'
+import { generatePageNumbers } from './pageNumbers'
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const ButtonsNumbersContainer = styled.div`
   }
 `
 export const PAGE_SIZE = 25
+const visiblePages = 10
 
 interface PaginationProps {
   totalCount: number
@@ -23,52 +25,53 @@ interface PaginationProps {
   onChangePage: Function
 }
 
-const pageNumbers = (totalCount: number) => {
-  const totalPages = Math.ceil(totalCount / PAGE_SIZE)
-  return Array(totalPages)
-    .fill(0)
-    .map((_, idx) => idx + 1)
-}
 
 export const Pagination: React.FC<PaginationProps> = ({ totalCount, currentPage, onChangePage }) => {
-  
-  const pages = pageNumbers(totalCount)
+const totalNumberOfPages = Math.ceil(totalCount / PAGE_SIZE)
+  const pages = generatePageNumbers(currentPage, totalNumberOfPages, visiblePages)
   const hasMultiplePages = pages.length > 1
   return (
-      <>
-    <Container>
-      {hasMultiplePages && <ButtonsNumbersContainer>
-          <Button
-            size="small"
-            variant="tertiary"
-            disabled={currentPage === 1}
-            onClick={() => onChangePage(currentPage - 1)}
-          >
-            Forrige
-          </Button>
-        {pages.map((page) => {
-          return (
+    <>
+      <Container>
+        {hasMultiplePages && (
+          <ButtonsNumbersContainer>
             <Button
-              key={page}
               size="small"
-              variant={page === currentPage ? 'primary' : 'tertiary'}
-              onClick={() => onChangePage(page)}
+              variant="tertiary"
+              disabled={currentPage === 1}
+              onClick={() => onChangePage(currentPage - 1)}
             >
-              {page}
+              Forrige
             </Button>
-        )})}
-        
-          <Button
-            size="small"
-            variant="tertiary"
-            disabled={currentPage === pages.length}
-            onClick={() => onChangePage(currentPage + 1)}
-          >
-            Neste
-          </Button>
-      </ButtonsNumbersContainer>}
-    </Container>
-    <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalCount={totalCount} />
+            {pages.map((page) => {
+              return page === '...' ? (
+                <Button key={page} size="small" variant="tertiary">
+                  {page}
+                </Button>
+              ) : (
+                <Button
+                  key={page}
+                  size="small"
+                  variant={page === currentPage ? 'primary' : 'tertiary'}
+                  onClick={() => onChangePage(page)}
+                >
+                  {page}
+                </Button>
+              )
+            })}
+
+            <Button
+              size="small"
+              variant="tertiary"
+              disabled={currentPage === totalNumberOfPages}
+              onClick={() => onChangePage(currentPage + 1)}
+            >
+              Neste
+            </Button>
+          </ButtonsNumbersContainer>
+        )}
+      </Container>
+      <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalCount={totalCount} />
     </>
   )
 }

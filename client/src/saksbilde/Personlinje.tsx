@@ -133,7 +133,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
         <>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
           <Clipboard
-            popoverText="Telefonnummer er kopier"
+            popoverText="Telefonnummer er kopiert"
             popoverPlacement="bottom"
             variant="tertiary"
             size="small"

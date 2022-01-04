@@ -31,11 +31,6 @@ export function useTabContext() {
   return context
 }
 
-const Container = styled.div`
-  position: relative;
-  flex: 1;
-  overflow-x: hidden;
-`
 
 export const Oppgaveliste = () => {
   const [aktivTab, setAktivTab] = useState(TabType.Ufordelte)
@@ -65,7 +60,6 @@ export const Oppgaveliste = () => {
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
   return (
-    <Container>
       <FlexColumn>
         <TabContext.Provider value={{ aktivTab, byttTab }}>
           <Tabs />
@@ -95,7 +89,6 @@ export const Oppgaveliste = () => {
           )}
         </TabContext.Provider>
       </FlexColumn>
-    </Container>
   )
 }
 

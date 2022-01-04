@@ -1,6 +1,4 @@
 import React, { useState, useContext } from 'react'
-import styled from 'styled-components/macro'
-
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'

@@ -151,14 +151,16 @@ export enum OppgaveStatusType {
   SENDT_GOSYS = 'SENDT_GOSYS',
   VEDTAK_FATTET = 'VEDTAK_FATTET',
   FERDIGSTILT = 'FERDIGSTILT',
+  ALLE = 'ALLE',
 }
 
 export const OppgaveStatusLabel = new Map<string, string>([
+  [OppgaveStatusType.ALLE, 'Alle'],
+  [OppgaveStatusType.VEDTAK_FATTET, 'Innvilget'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
+  /*[OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],*/ // Brukes ikke enda
 ])
 
 export enum VedtakStatusType {
@@ -255,10 +257,44 @@ export interface Produkt {
 }
 
 export interface SortBy {
-    label: Kolonne, sortOrder: SortOrder }
+  label: Kolonne
+  sortOrder: SortOrder
+}
 
 export enum SortOrder {
   ASCENDING = 'asc',
   DESCENDING = 'desc',
   NONE = 'none',
 }
+
+export enum Filter {
+    SAKER,
+    STATUS,
+    OMRÅDE
+}
+
+export enum SakerFilter {
+  ALLE = 'ALLE',
+  UFORDELTE = 'UFORDELTE',
+  MINE = 'MINE',
+}
+
+export enum OmrådeFilter {
+  ALLE = 'ALLE',
+  BEVEGELSE = 'BEVEGELSE',
+  HØRSEL = 'HØRSEL',
+  KOGNISJON = 'KOGNISJON',
+}
+
+export const SakerFilterLabel = new Map<string, string>([
+  [SakerFilter.ALLE, 'Alle'],
+  [SakerFilter.MINE, 'Mine saker'],
+  [SakerFilter.UFORDELTE, 'Ufordelte'],
+])
+
+export const OmrådeFilterLabel = new Map<string, string>([
+  [OmrådeFilter.ALLE, 'Alle'],
+  [OmrådeFilter.BEVEGELSE, 'Bevegelse'],
+  [OmrådeFilter.HØRSEL, 'Hørsel'],
+  [OmrådeFilter.KOGNISJON, 'Kognisjon'],
+])

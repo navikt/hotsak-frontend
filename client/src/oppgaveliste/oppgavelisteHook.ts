@@ -1,8 +1,7 @@
 import useSwr from 'swr'
 import { httpGet } from '../io/http'
 
-import { Oppgave, OppgaveStatusType, SortBy } from '../types/types.internal'
-import { TabType } from './tabs'
+import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SortBy } from '../types/types.internal'
 import { PAGE_SIZE } from './paging/Pagination'
 
 interface DataResponse {
@@ -14,11 +13,17 @@ interface DataResponse {
   isError: any
 }
 
-const basePath = 'api'
+const basePath = 'api/oppgaver-filtered'
 
 interface PathConfigType {
   path: string
   queryParams: Object
+}
+
+interface Filters {
+  sakerFilter: string
+  statusFilter: string
+  områdeFilter: string
 }
 
 interface OppgavelisteResponse {
@@ -28,31 +33,26 @@ interface OppgavelisteResponse {
   currentPage: number
 }
 
-const pathConfig = (type: TabType, currentPage: number, sortBy: SortBy): PathConfigType => {
+const pathConfig = (currentPage: number, sortBy: SortBy, filters: Filters): PathConfigType => {
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sortBy.label}.${sortBy.sortOrder}` }
+  const { sakerFilter, statusFilter, områdeFilter } = filters
 
-  switch (type) {
-    case TabType.Ufordelte:
-      return {
-        path: `${basePath}/oppgaver`,
-        queryParams: { ...pagingParams, ...sortParams, status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER },
-      }
-    case TabType.Mine:
-      return { path: `${basePath}/oppgaver/mine`, queryParams: { ...pagingParams, ...sortParams } }
-    case TabType.Ferdigstilte:
-      return {
-        path: `${basePath}/oppgaver`,
-        queryParams: { ...pagingParams, ...sortParams, status: OppgaveStatusType.VEDTAK_FATTET },
-      }
-    case TabType.OverførtGosys:
-      return {
-        path: `${basePath}/oppgaver`,
-        queryParams: { ...pagingParams, ...sortParams, status: OppgaveStatusType.SENDT_GOSYS },
-      }
-    case TabType.Alle:
-    default:
-      return { path: `${basePath}/oppgaver`, queryParams: { ...pagingParams, ...sortParams } }
+  let filterParams: any = {}
+
+  if (sakerFilter && sakerFilter !== SakerFilter.ALLE) {
+    filterParams.saksbehandler = sakerFilter
+  }
+  if (statusFilter && statusFilter !== OppgaveStatusType.ALLE) {
+    filterParams.status = statusFilter
+  }
+  if (områdeFilter && områdeFilter !== OmrådeFilter.ALLE) {
+    filterParams.område = områdeFilter
+  }
+
+  return {
+    path: `${basePath}`,
+    queryParams: { ...pagingParams, ...sortParams, ...filterParams },
   }
 }
 
@@ -62,8 +62,8 @@ const buildQueryParamString = (queryParams: Object) => {
     .join('&')
 }
 
-export function useOppgaveliste(type: TabType, currentPage: number, sortBy: SortBy): DataResponse {
-  const { path, queryParams } = pathConfig(type, currentPage, sortBy)
+export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Filters): DataResponse {
+  const { path, queryParams } = pathConfig(currentPage, sortBy, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet)
 

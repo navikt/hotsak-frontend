@@ -10,7 +10,6 @@ import { capitalize } from '../utils/stringFormating'
 
 //import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
 import { Oppgave, OppgaveStatusLabel, SortOrder } from '../types/types.internal'
-import { useTabContext } from './Oppgaveliste'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
 import { Fødselsnummer } from './kolonner/Fødselsnummer'
@@ -19,7 +18,6 @@ import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
 import { Motatt } from './kolonner/Motatt'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
-import { TabType } from './tabs'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { SortButton } from './sorting/SortButton'
 
@@ -58,31 +56,10 @@ interface OppgaverTableProps {
 
 
 export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverTableProps) => {
-  const { aktivTab } = useTabContext()
-
-  let tab: { label: string }
-  switch (aktivTab) {
-    case TabType.Alle:
-      tab = { label: 'Alle saker fordelt til min enhet' }
-      break
-    case TabType.Mine:
-      tab = { label: 'Saker som er tildelt meg' }
-      break
-    case TabType.Ferdigstilte:
-      tab = { label: 'Alle innvilgede saker fordelt til min enhet' }
-      break
-    case TabType.OverførtGosys:
-      tab = { label: 'Saker som er overført Gosys' }
-      break
-    case TabType.Ufordelte:
-      tab = { label: 'Saker som ikke er tildelt en saksbehandler enda' }
-      break
-  }
-
   return (
     <Container>
       <ScrollableX>
-        <Table aria-label={tab.label}>
+        <Table aria-label={"Saker"}>
           <thead>
             <tr></tr>
             <tr>

@@ -4,14 +4,6 @@ describe('Happy path', () => {
   before(() => {
     cy.visit('/')
   })
-  it('burde vise taber med riktig innhold', () => {
-    cy.get('[data-cy="tab-ufordelte"]').should('have.text', 'Ufordelte saker')
-    cy.get('[data-cy="tab-ufordelte"]').should('have.attr', 'aria-selected', 'true')
-    cy.get('[data-cy="tab-mine"]').should('have.text', 'Mine saker')
-    cy.get('[data-cy="tab-ferdigstilte"]').should('have.text', 'Ferdigstilte saker')
-    cy.get('[data-cy="tab-alle"]').should('have.text', 'Alle saker')
-    cy.get('[data-cy="tab-overførtGosys"]').should('have.text', 'Overført til Gosys')
-  })
 
   it('burde kunne starte en ufordelt sak', () => {
     cy.get('[data-cy="btn-tildel-sak-222222"]').click()

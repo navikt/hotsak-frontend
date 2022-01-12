@@ -20,6 +20,7 @@ import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { SortButton } from './sorting/SortButton'
+import { MenyKnapp } from './kolonner/MenyKnapp'
 
 const Container = styled.div`
   min-height: 300px;
@@ -143,7 +144,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   Formidler
                 </SortButton>
               </Header>
-              
+
               <Header scope="col" colSpan={1}>
               <SortButton
                   active={sortBy.label === Kolonne.MOTTATT}
@@ -154,7 +155,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   Mottatt dato
                 </SortButton>
               </Header>
-              {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && <Header scope="col" colSpan={1} />*/}
+              <Header scope="col" colSpan={1}/>
             </tr>
           </thead>
           <Body>
@@ -190,9 +191,9 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                 <Cell>
                   <Motatt dato={oppgave.mottattDato} />
                 </Cell>
-                {/*tab.kolonner.includes(Kolonne.KJØTTBOLLE) && (
-                  <Cell style={{ width: '100%' }}>{<OptionsButton oppgave={oppgave} />}</Cell>
-                )*/}
+                <Cell>
+                  <MenyKnapp oppgave={oppgave} />
+                </Cell>
               </LinkRow>
             ))}
           </Body>

@@ -7,4 +7,5 @@ export const Table = styled.table`
   display: block;
   overflow-x: auto;
   white-space: nowrap;
+  min-height: 300px;
 `

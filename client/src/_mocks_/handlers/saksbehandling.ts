@@ -47,6 +47,28 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(201), ctx.json({}))
   }),
+  rest.delete(`/api/tildeling/:oppgaveref`, (req, res, ctx) => {
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.oppgaveref)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.oppgaveref)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.oppgaveref)
+
+    const hendelse = {
+      id: '2',
+      hendelse: 'Saksbehandler har fjernet tildeling av saken',
+      opprettet: '2021-03-29T12:38:45',
+      bruker: 'Silje Saksbehandler',
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
+    // @ts-ignore
+    saker[sakIdx]['saksbehandler'] = null
+    saker[sakIdx]['status'] = 'AVVENTER_SAKSBEHANDLER'
+    oppgaveliste[oppgaveIdx]['saksbehandler'] = null
+    oppgaveliste[oppgaveIdx]['status'] = 'AVVENTER_SAKSBEHANDLER'
+
+    return res(ctx.status(201), ctx.json({}))
+  }),
   rest.get(`/api/sak/:saksid`, (req, res, ctx) => {
     if (req.params.saksid === '666') {
       return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))

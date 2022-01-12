@@ -59,6 +59,10 @@ export const put = async (url: string, data?: any, headere?: Headers): Promise<S
   return save(url, 'PUT', data, headere)
 }
 
+export const del = async (url: string, data?: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
+  return save(url, 'DELETE', data, headere)
+}
+
 export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> => {
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
@@ -76,6 +80,10 @@ export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> =
 
 export const postTildeling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
+}
+
+export const deleteFjernTildeling = async (oppgavereferanse: string) => {
+  return del(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
 export const putVedtak = async (saksnummer: string, status: VedtakStatusType) => {

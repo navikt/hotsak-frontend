@@ -11,6 +11,7 @@ interface DataResponse {
   pageSize: number
   isLoading: boolean
   isError: any
+  mutate: Function
 }
 
 const basePath = 'api/oppgaver-filtered'
@@ -62,10 +63,10 @@ const buildQueryParamString = (queryParams: Object) => {
     .join('&')
 }
 
-export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Filters): DataResponse {
+export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Filters, retrigger: String): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sortBy, filters)
-  const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet)
+  const fullPath = `${path}?${buildQueryParamString(queryParams) + '?retriggerkey=' + retrigger}`
+  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet)
 
   return {
     oppgaver: data?.data.oppgaver || [],
@@ -74,5 +75,6 @@ export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Fi
     currentPage: data?.data.currentPage || currentPage,
     isLoading: !error && !data,
     isError: error,
+    mutate: mutate
   }
 }

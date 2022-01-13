@@ -21,6 +21,7 @@ import { Tildeling } from './kolonner/Tildeling'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { SortButton } from './sorting/SortButton'
 import { MenyKnapp } from './kolonner/MenyKnapp'
+import { mutate } from 'swr'
 
 const Container = styled.div`
   min-height: 300px;
@@ -52,11 +53,12 @@ interface OppgaverTableProps {
     label: Kolonne
     sortOrder: SortOrder
   }
-  onSort: Function
+  onSort: Function,
+  retrigger: Function
 }
 
 
-export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverTableProps) => {
+export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, retrigger }: OppgaverTableProps) => {
   return (
     <Container>
       <ScrollableX>
@@ -192,7 +194,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort }: OppgaverT
                   <Motatt dato={oppgave.mottattDato} />
                 </Cell>
                 <Cell>
-                  <MenyKnapp oppgave={oppgave} />
+                  <MenyKnapp oppgave={oppgave} retrigger={retrigger}/>
                 </Cell>
               </LinkRow>
             ))}

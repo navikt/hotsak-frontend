@@ -11,16 +11,20 @@ import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
 
 
 interface MenyKnappProps {
-  oppgave: Oppgave
+  oppgave: Oppgave,
+  retrigger: Function
 }
 
-export const MenyKnapp = ({ oppgave }: MenyKnappProps) => {
+export const MenyKnapp = ({ oppgave, retrigger }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
-  const { mutate } = useSWRConfig()
 
   const menyClick = (event: React.MouseEvent) => {
     event.stopPropagation()
+  }
+
+  const disabled = () => {
+    return !oppgave.saksbehandler || oppgave.saksbehandler.objectId !== saksbehandler.objectId || oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
   }
 
   const fjernTildeling = (event: React.MouseEvent) => {
@@ -31,6 +35,7 @@ export const MenyKnapp = ({ oppgave }: MenyKnappProps) => {
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)
+        retrigger(oppgave.saksid)
       })
   }
 
@@ -38,15 +43,16 @@ export const MenyKnapp = ({ oppgave }: MenyKnappProps) => {
     <CellContent width={128}>
       {
         <Dropdown>
-          <Button variant='tertiary' size='small' as={Dropdown.Toggle} onClick={menyClick}>
+          <Button variant='tertiary' size='small' as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
             <EllipsisCircleH />
           </Button>
           <Dropdown.Menu onClick={menyClick}>
             <Dropdown.Menu.List>
               <Dropdown.Menu.List.Item
-                disabled={!oppgave.saksbehandler || oppgave.saksbehandler.objectId !== saksbehandler.objectId || oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER}
+                disabled={disabled()}
                 onClick={fjernTildeling}>Fjern tildeling {isFetching &&
-              <Loader size='small' />}</Dropdown.Menu.List.Item>
+              <Loader size='small' />}
+              </Dropdown.Menu.List.Item>
             </Dropdown.Menu.List>
           </Dropdown.Menu>
         </Dropdown>

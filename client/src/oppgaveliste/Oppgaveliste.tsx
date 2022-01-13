@@ -4,7 +4,7 @@ import { Toast } from '../felleskomponenter/Toast'
 import { IngenOppgaver } from './IngenOppgaver'
 import { Kolonne, OppgaverTable } from './OppgaverTable'
 import { useOppgaveliste } from './oppgavelisteHook'
-import {  Panel } from '@navikt/ds-react'
+import { Panel } from '@navikt/ds-react'
 import { Pagination } from './paging/Pagination'
 import {
   OmrådeFilter,
@@ -23,11 +23,19 @@ export const Oppgaveliste = () => {
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
   const [currentPage, setCurrentPage] = useState(1)
   const [sortBy, setSortBy] = useState({ label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
+  const [retrigger, setRetrigger] = useState('')
   const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(currentPage, sortBy, {
-    sakerFilter,
-    statusFilter,
-    områdeFilter,
-  })
+      sakerFilter,
+      statusFilter,
+      områdeFilter,
+    },
+    retrigger,
+  )
+
+  const refreshOppgaveliste = (saksid: string) => {
+    console.log('I retrigger ' + saksid)
+    setRetrigger(saksid)
+  }
 
   const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
     if (label !== sortBy.label) {
@@ -64,7 +72,7 @@ export const Oppgaveliste = () => {
           handleChange={(filterValue: SakerFilter) => {
             handleFilter(setSakerFilter, filterValue)
           }}
-          label="Saker"
+          label='Saker'
           value={sakerFilter}
           options={SakerFilterLabel}
         />
@@ -72,7 +80,7 @@ export const Oppgaveliste = () => {
           handleChange={(filterValue: SakerFilter) => {
             handleFilter(setStatusFilter, filterValue)
           }}
-          label="Status"
+          label='Status'
           value={statusFilter}
           options={OppgaveStatusLabel}
         />
@@ -80,13 +88,13 @@ export const Oppgaveliste = () => {
           handleChange={(filterValue: SakerFilter) => {
             handleFilter(setOmrådeFilter, filterValue)
           }}
-          label="Område"
+          label='Område'
           value={områdeFilter}
           options={OmrådeFilterLabel}
         />
-       
+
       </Filters>
-      
+
       {isLoading ? (
         <Toast>Henter oppgaver </Toast>
       ) : (
@@ -98,6 +106,7 @@ export const Oppgaveliste = () => {
                   oppgaver={oppgaver}
                   sortBy={sortBy}
                   onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)}
+                  retrigger={refreshOppgaveliste}
                 />
                 <Pagination
                   totalCount={totalCount}

@@ -11,10 +11,10 @@ import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
 
 interface MenyKnappProps {
   oppgave: Oppgave,
-  retrigger: Function
+    onMutate: Function
 }
 
-export const MenyKnapp = ({ oppgave, retrigger }: MenyKnappProps) => {
+export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
 
@@ -34,7 +34,7 @@ export const MenyKnapp = ({ oppgave, retrigger }: MenyKnappProps) => {
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)
-        retrigger(oppgave.saksid)
+        onMutate()
       })
   }
 

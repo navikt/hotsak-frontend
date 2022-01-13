@@ -7,8 +7,6 @@ import { Header } from '../felleskomponenter/table/Header'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Table } from '../felleskomponenter/table/Table'
 import { capitalize } from '../utils/stringFormating'
-
-//import { OptionsButton } from '../felleskomponenter/kjøttbolle/OptionsButton'
 import { Oppgave, OppgaveStatusLabel, SortOrder } from '../types/types.internal'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
@@ -53,11 +51,11 @@ interface OppgaverTableProps {
     sortOrder: SortOrder
   }
   onSort: Function,
-  retrigger: Function
+  onMutate: Function
 }
 
 
-export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, retrigger }: OppgaverTableProps) => {
+export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }: OppgaverTableProps) => {
   return (
     <Container>
       <ScrollableX>
@@ -193,7 +191,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, retrigger }
                   <Motatt dato={oppgave.mottattDato} />
                 </Cell>
                 <Cell>
-                  <MenyKnapp oppgave={oppgave} retrigger={retrigger}/>
+                  <MenyKnapp oppgave={oppgave} onMutate={onMutate}/>
                 </Cell>
               </LinkRow>
             ))}

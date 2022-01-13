@@ -23,19 +23,12 @@ export const Oppgaveliste = () => {
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
   const [currentPage, setCurrentPage] = useState(1)
   const [sortBy, setSortBy] = useState({ label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
-  const [retrigger, setRetrigger] = useState('')
-  const { oppgaver, isError, isLoading, totalCount } = useOppgaveliste(currentPage, sortBy, {
+  const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sortBy, {
       sakerFilter,
       statusFilter,
       områdeFilter,
     },
-    retrigger,
   )
-
-  const refreshOppgaveliste = (saksid: string) => {
-    console.log('I retrigger ' + saksid)
-    setRetrigger(saksid)
-  }
 
   const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
     if (label !== sortBy.label) {
@@ -62,6 +55,7 @@ export const Oppgaveliste = () => {
   if (isError) {
     throw Error('Feil med henting av oppgaver')
   }
+
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
@@ -106,7 +100,7 @@ export const Oppgaveliste = () => {
                   oppgaver={oppgaver}
                   sortBy={sortBy}
                   onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)}
-                  retrigger={refreshOppgaveliste}
+                  onMutate={mutate}
                 />
                 <Pagination
                   totalCount={totalCount}

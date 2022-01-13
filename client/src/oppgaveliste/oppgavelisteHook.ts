@@ -65,7 +65,7 @@ const buildQueryParamString = (queryParams: Object) => {
 
 export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Filters, retrigger: String): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sortBy, filters)
-  const fullPath = `${path}?${buildQueryParamString(queryParams) + '?retriggerkey=' + retrigger}`
+  const fullPath = `${path}?${buildQueryParamString(queryParams) + '&retriggerkey=' + retrigger}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet)
 
   return {

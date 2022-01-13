@@ -59,7 +59,7 @@ interface HjelpemiddelProps {
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon }) => {
-  const  produkt  = useGrunndata(hjelpemiddel.hmsnr)
+  const produkt = useGrunndata(hjelpemiddel.hmsnr)
 
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
@@ -83,20 +83,28 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
           <Rad>
             {hjelpemiddel.hmsnr}
             {produkt ? (
-              <HMSLenke href={produkt.artikkelurl} target={'_blank'}>{` ${hjelpemiddel.beskrivelse}`} </HMSLenke>) : ` ${hjelpemiddel.beskrivelse}`
-            }
+              <HMSLenke href={produkt.artikkelurl} target={'_blank'}>
+                {` ${hjelpemiddel.beskrivelse}`}{' '}
+              </HMSLenke>
+            ) : (
+              ` ${hjelpemiddel.beskrivelse}`
+            )}
           </Rad>
           <Rad>
             {hjelpemiddel.tilleggsinfo.length > 0 && (
               <TilleggsInfo>
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
-                    <Rad key={tilleggsinfo.innhold}>
-                      <EtikettKolonne>
+                    <>
+                      <Rad key={tilleggsinfo.innhold}>
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
-                      </EtikettKolonne>
-                      <Kolonne>{tilleggsinfo.innhold}</Kolonne>
-                    </Rad>
+                      </Rad>
+                      <Rad>
+                          <Kolonne width="650px">
+                        {tilleggsinfo.innhold}
+                        </Kolonne>
+                      </Rad>
+                    </>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (

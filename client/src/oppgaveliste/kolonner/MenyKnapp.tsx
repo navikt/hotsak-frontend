@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 // @ts-ignore
-import { useSWRConfig } from 'swr'
 import { Button, Loader } from '@navikt/ds-react'
 import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { deleteFjernTildeling } from '../../io/http'

@@ -21,7 +21,6 @@ import { Tildeling } from './kolonner/Tildeling'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { SortButton } from './sorting/SortButton'
 import { MenyKnapp } from './kolonner/MenyKnapp'
-import { mutate } from 'swr'
 
 const Container = styled.div`
   min-height: 300px;

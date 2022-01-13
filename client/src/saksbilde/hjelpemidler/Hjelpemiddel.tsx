@@ -100,20 +100,20 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
-                          <Kolonne width="650px">
-                        {tilleggsinfo.innhold}
-                        </Kolonne>
+                        <Kolonne width="700px">{tilleggsinfo.innhold}</Kolonne>
                       </Rad>
                     </>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
-                  <Rad>
-                    <EtikettKolonne>
+                  <>
+                    <Rad>
                       <Etikett>Kroppsmål:</Etikett>
-                    </EtikettKolonne>
-                    <Kolonne>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
-                  </Rad>
+                    </Rad>
+                    <Rad>
+                      <Kolonne  width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                    </Rad>
+                  </>
                 )}
               </TilleggsInfo>
             )}

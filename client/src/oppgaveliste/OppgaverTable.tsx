@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 import { Body } from '../felleskomponenter/table/Body'
-import { Cell } from '../felleskomponenter/table/Cell'
+import { ButtonCell, Cell } from '../felleskomponenter/table/Cell'
 import { Header } from '../felleskomponenter/table/Header'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Table } from '../felleskomponenter/table/Table'
@@ -50,21 +50,20 @@ interface OppgaverTableProps {
     label: Kolonne
     sortOrder: SortOrder
   }
-  onSort: Function,
+  onSort: Function
   onMutate: Function
 }
-
 
 export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }: OppgaverTableProps) => {
   return (
     <Container>
       <ScrollableX>
-        <Table aria-label={"Saker"}>
+        <Table aria-label={'Saker'}>
           <thead>
             <tr></tr>
             <tr>
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.EIER}
                   column={Kolonne.EIER}
                   sortOrder={sortBy.sortOrder}
@@ -74,7 +73,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.STATUS}
                   column={Kolonne.STATUS}
                   sortOrder={sortBy.sortOrder}
@@ -84,7 +83,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-                  <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.FUNKSJONSNEDSETTELSE}
                   column={Kolonne.FUNKSJONSNEDSETTELSE}
                   sortOrder={sortBy.sortOrder}
@@ -94,7 +93,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.SØKNAD_OM}
                   column={Kolonne.SØKNAD_OM}
                   sortOrder={sortBy.sortOrder}
@@ -124,7 +123,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.BOSTED}
                   column={Kolonne.BOSTED}
                   sortOrder={sortBy.sortOrder}
@@ -134,7 +133,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.FORMIDLER}
                   column={Kolonne.FORMIDLER}
                   sortOrder={sortBy.sortOrder}
@@ -145,7 +144,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
               </Header>
 
               <Header scope="col" colSpan={1}>
-              <SortButton
+                <SortButton
                   active={sortBy.label === Kolonne.MOTTATT}
                   column={Kolonne.MOTTATT}
                   sortOrder={sortBy.sortOrder}
@@ -154,15 +153,21 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                   Mottatt dato
                 </SortButton>
               </Header>
-              <Header scope="col" colSpan={1}/>
+              <Header scope="col" colSpan={1} />
             </tr>
           </thead>
           <Body>
             {oppgaver.map((oppgave) => (
               <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                <Cell>
-                  <Tildeling oppgave={oppgave} />
-                </Cell>
+                {oppgave.saksbehandler ? (
+                  <Cell>
+                    <Tildeling oppgave={oppgave} />
+                  </Cell>
+                ) : (
+                  <ButtonCell>
+                    <Tildeling oppgave={oppgave} />
+                  </ButtonCell>
+                )}
                 <Cell>
                   <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
                 </Cell>
@@ -191,7 +196,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                   <Motatt dato={oppgave.mottattDato} />
                 </Cell>
                 <Cell>
-                  <MenyKnapp oppgave={oppgave} onMutate={onMutate}/>
+                  <MenyKnapp oppgave={oppgave} onMutate={onMutate} />
                 </Cell>
               </LinkRow>
             ))}

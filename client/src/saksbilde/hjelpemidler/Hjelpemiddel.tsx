@@ -36,9 +36,19 @@ const Rangering = styled('div')<RangeringProps>`
 `
 
 const TilleggsInfo = styled(Rad)`
-  background-color: var(--navds-global-color-orange-100);
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
+  position: relative;
+
+  &:before {
+    content:'';
+    position: absolute;
+    background-color: var(--navds-semantic-color-feedback-info-border);
+    width: 3px;
+    height: 95%;
+    bottom: 0;
+    left:-1rem; 
+  }
 `
 const UtlevertContainer = styled.div`
   display: grid;

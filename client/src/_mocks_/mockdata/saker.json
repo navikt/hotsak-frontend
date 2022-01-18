@@ -47,10 +47,10 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Kun førsterangering", "type": "info" },
-      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
-      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+      { "beskrivelse": "Kun førsterangering", "type": "INFO" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "INFO" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-09-19T13:55:45",
@@ -189,11 +189,11 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Haster - trykksår", "type": "advarsel" },
-      { "beskrivelse": "Lavere rangerte hjelpemidler", "type": "advarsel" },
-      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Fritekst i søknaden", "type": "advarsel" },
-      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+      { "beskrivelse": "Haster - trykksår", "type": "ADVARSEL" },
+      { "beskrivelse": "Lavere rangerte hjelpemidler", "type": "ADVARSEL" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Fritekst i søknaden", "type": "ADVARSEL" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-09-19T13:55:45",
@@ -280,10 +280,10 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Kun førsterangering", "type": "info" },
-      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
-      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+      { "beskrivelse": "Kun førsterangering", "type": "INFO" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "INFO" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-09-19T13:55:45",
@@ -365,8 +365,8 @@
       "epost": "e@post.com"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Personalia fra folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" }
+      { "beskrivelse": "Personalia fra folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-06-25T13:55:45",
@@ -459,10 +459,10 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Kun førsterangering", "type": "info" },
-      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
-      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+      { "beskrivelse": "Kun førsterangering", "type": "INFO" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "INFO" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-09-19T13:55:45",
@@ -562,10 +562,10 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
-      { "beskrivelse": "Kun førsterangering", "type": "info" },
-      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "info" },
-      { "beskrivelse": "Ingen fritekst i søknaden", "type": "info" },
-      { "beskrivelse": "Medlem av folketrygden", "type": "info" }
+      { "beskrivelse": "Kun førsterangering", "type": "INFO" },
+      { "beskrivelse": "Personalia fra Folkeregisteret", "type": "INFO" },
+      { "beskrivelse": "Ingen fritekst i søknaden", "type": "INFO" },
+      { "beskrivelse": "Medlem av folketrygden", "type": "INFO" }
     ],
 
     "mottattDato": "2021-09-19T13:55:45",

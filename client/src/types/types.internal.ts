@@ -69,7 +69,7 @@ export interface KontaktPerson {
 export enum KontaktPersonType {
   HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
   HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
-  ANNEN_BRUKER = 'ANNEN_BRUKER',
+  ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
 export interface HjelpemiddelType {
   hmsnr: string

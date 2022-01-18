@@ -69,7 +69,7 @@ export interface KontaktPerson {
 export enum KontaktPersonType {
   HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
   HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
-  ANNEN_BRUKER = 'ANNEN_BRUKER',
+  ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
 export interface HjelpemiddelType {
   hmsnr: string
@@ -124,8 +124,8 @@ export interface GreitÅViteFaktum {
 }
 
 export enum GreitÅViteType {
-  ADVARSEL = 'advarsel',
-  INFO = 'info',
+  ADVARSEL = 'ADVARSEL',
+  INFO = 'INFO',
 }
 
 export interface Oppgave {

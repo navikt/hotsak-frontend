@@ -18,7 +18,7 @@ export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, for
     case KontaktPersonType.HJELPEMIDDELFORMIDLER:
       kontaktpersonTekst = `Formidler (${formidler.navn})`
       break
-    case KontaktPersonType.ANNEN_BRUKER:
+    case KontaktPersonType.ANNEN_KONTAKTPERSON:
       kontaktpersonTekst = `${navn}. Telefon: ${telefon}`
       break
   }

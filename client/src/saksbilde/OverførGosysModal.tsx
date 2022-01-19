@@ -3,7 +3,7 @@ import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@nav
 import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 import styled from 'styled-components/macro'
-import { useEffect, useState, VFC } from 'react'
+import { useState, VFC } from 'react'
 import type { OverforGosysTilbakemelding } from '../types/types.internal'
 
 interface OverførGosysModalProps {
@@ -37,8 +37,8 @@ export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekre
           value={valgteArsaker}
           onChange={setValgteArsaker}
         >
-          {overforGosysArsaker.map((arsak) => (
-            <Checkbox key={arsak} value={arsak}>
+          {overforGosysArsaker.map((arsak, index) => (
+            <Checkbox key={arsak} value={arsak} data-cy={`overfor-soknad-arsak-${index}`}>
               {arsak}
             </Checkbox>
           ))}

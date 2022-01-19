@@ -98,7 +98,7 @@ export enum UtlevertType {
 
 export interface Tilleggsinfo {
   tittel: string
-  innhold: string
+  innholdsliste: string[]
 }
 
 export interface Tilbehør {

@@ -96,11 +96,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
                     <>
-                      <Rad key={tilleggsinfo.innhold}>
+                      <Rad key={tilleggsinfo.tittel}>
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
-                        <Kolonne width="700px">{tilleggsinfo.innhold}</Kolonne>
+                        <Kolonne width="700px">{tilleggsinfo.innholdsliste.join(", ")}</Kolonne>
                       </Rad>
                     </>
                   )

@@ -7,7 +7,7 @@ export const DialogBoks = styled(Modal)`
   padding-right: 4rem;
   padding-left: 2rem;
   padding-top: 2rem;
-  padding-bottom: 2 rem;
+  padding-bottom: 2rem;
 `
 
 export const ButtonContainer = styled.div`

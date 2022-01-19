@@ -268,9 +268,9 @@ export enum SortOrder {
 }
 
 export enum Filter {
-    SAKER,
-    STATUS,
-    OMRÅDE
+  SAKER,
+  STATUS,
+  OMRÅDE,
 }
 
 export enum SakerFilter {
@@ -298,3 +298,8 @@ export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.HØRSEL, 'Hørsel'],
   [OmrådeFilter.KOGNISJON, 'Kognisjon'],
 ])
+
+export interface OverforGosysTilbakemelding {
+  valgteArsaker: string[]
+  begrunnelse: string
+}

@@ -14,7 +14,7 @@ import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType } from '../../types/types.internal'
 import { BekreftVedtakModal } from '../BekreftVedtakModal'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { Card } from './Card'
@@ -82,9 +82,9 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
       })
   }
 
-  const sendTilGosys = () => {
+  const sendTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
     setLoading(true)
-    putSendTilGosys(saksid)
+    putSendTilGosys(saksid, tilbakemelding)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
@@ -100,7 +100,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         <Card>
           <CardTitle>VEDTAK</CardTitle>
           <TagGrid>
-            <Tag data-cy='tag-soknad-status' variant='success' size='small'>
+            <Tag data-cy="tag-soknad-status" variant="success" size="small">
               Innvilget
             </Tag>
             <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
@@ -114,7 +114,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <CardTitle>OVERFØRT</CardTitle>
-        <Tag data-cy='tag-soknad-status' variant='info' size='small'>
+        <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Overført til Gosys
         </Tag>
         <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
@@ -135,13 +135,17 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
   }
 
   if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler.objectId !== saksbehandler.objectId) {
-
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
         <ButtonContainer>
-          <Knapp variant='primary' size='small' onClick={() => setVisOvertaSakModal(true)} data-cy='btn-vis-overta-sak-modal'>
+          <Knapp
+            variant="primary"
+            size="small"
+            onClick={() => setVisOvertaSakModal(true)}
+            data-cy="btn-vis-overta-sak-modal"
+          >
             Overta saken
           </Knapp>
         </ButtonContainer>
@@ -162,10 +166,10 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
     return (
       <Card>
         <ButtonContainer>
-          <Knapp variant='primary' size='small' onClick={() => setVisVedtakModal(true)} data-cy='btn-vis-vedtak-modal'>
+          <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
             <span>Innvilg søknaden</span>
           </Knapp>
-          <Knapp variant='secondary' size='small' onClick={() => setVisGosysModal(true)} data-cy='btn-vis-gosys-modal'>
+          <Knapp variant="secondary" size="small" onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
             Overfør til Gosys
           </Knapp>
         </ButtonContainer>
@@ -181,8 +185,8 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         />
         <OverførGosysModal
           open={visGosysModal}
-          onBekreft={() => {
-            sendTilGosys()
+          onBekreft={(tilbakemelding) => {
+            sendTilGosys(tilbakemelding)
             logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
             logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
           }}

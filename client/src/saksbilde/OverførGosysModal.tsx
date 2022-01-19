@@ -1,51 +1,90 @@
-import { Heading } from '@navikt/ds-react'
-import { Button, Loader } from '@navikt/ds-react'
+import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@navikt/ds-react'
 
-import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
+import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
+import styled from 'styled-components/macro'
+import { useEffect, useState, VFC } from 'react'
+import type { OverforGosysTilbakemelding } from '../types/types.internal'
 
 interface OverførGosysModalProps {
   open: boolean
-  onBekreft: () => void
   loading: boolean
-  onClose: () => void
+
+  onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
+  onClose(): void
 }
 
-export const OverførGosysModal = ({ open, onBekreft, loading, onClose }: OverførGosysModalProps) => {
+export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
+  const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
+  const [begrunnelse, setBegrunnelse] = useState<string>('')
+  const [error, setError] = useState('')
 
   return (
-    <DialogBoks
-      shouldCloseOnOverlayClick={false}
-      open={open}
-      onClose={() => {
-        onClose()
-      }}
-    >
-        <DialogBoks.Content>
-      <Heading level="1" size="medium" spacing>
-        Vil du overføre saken til Gosys?
-      </Heading>
-      <Tekst>
-      Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd. 
-      Merk at det kan ta noen minutter før saken dukker opp i Gosys
-      </Tekst>
-      <ButtonContainer>
-        <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-overfor-soknad">
-          Overfør saken
-          {loading && <Loader size="small" />}
-        </Button>
-        <Button
-          variant='secondary'
-          size='small'
-          onClick={() => {
-            onClose()
-          }}
+    <DialogBoks shouldCloseOnOverlayClick={false} open={open} onClose={onClose}>
+      <DialogBoks.Content>
+        <Heading level="1" size="medium" spacing>
+          Vil du overføre saken til Gosys?
+        </Heading>
+        <Tekst>
+          Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre
+          saksbehandling må gjøres manuelt i Gosys og Infotrygd. Merk at det kan ta noen minutter før saken dukker opp i
+          Gosys
+        </Tekst>
+        <OverforGosysArsakCheckboxGroup
+          legend="Velg årsak til at saken må overføres til Gosys"
+          error={!valgteArsaker.length && error}
+          value={valgteArsaker}
+          onChange={setValgteArsaker}
         >
-          Avbryt
-        </Button>
-      </ButtonContainer>
+          {overforGosysArsaker.map((arsak) => (
+            <Checkbox key={arsak} value={arsak}>
+              {arsak}
+            </Checkbox>
+          ))}
+        </OverforGosysArsakCheckboxGroup>
+        <Textarea
+          label="Begrunnelse (valgfri)"
+          description="Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger."
+          value={begrunnelse}
+          onChange={(e) => setBegrunnelse(e.target.value)}
+        />
+        <ButtonContainer>
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => {
+              if (valgteArsaker.length) {
+                onBekreft({
+                  valgteArsaker,
+                  begrunnelse,
+                })
+              } else {
+                setError('Du må velge minst en årsak i listen over.')
+              }
+            }}
+            data-cy="btn-overfor-soknad"
+          >
+            Overfør saken
+            {loading && <Loader size="small" />}
+          </Button>
+          <Button variant="secondary" size="small" onClick={onClose}>
+            Avbryt
+          </Button>
+        </ButtonContainer>
       </DialogBoks.Content>
     </DialogBoks>
   )
 }
+
+const overforGosysArsaker: ReadonlyArray<string> = [
+  'Det må etterspørres eller legges til flere opplysninger i saken',
+  'Saken kan ikke innvilges (avslag, delvis innvilgelse eller annullering)',
+  'Saken skal ses på av en annen saksbehandler eller enhet',
+  'Formidler har ikke fullført nødvendig godkjenningskurs',
+  'Annet',
+]
+
+const OverforGosysArsakCheckboxGroup = styled(CheckboxGroup)`
+  margin: var(--navds-spacing-4) 0;
+`

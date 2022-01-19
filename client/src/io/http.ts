@@ -1,4 +1,4 @@
-import { VedtakStatusType } from '../types/types.internal'
+import type { OverforGosysTilbakemelding, VedtakStatusType } from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse {
   status: number
@@ -90,6 +90,6 @@ export const putVedtak = async (saksnummer: string, status: VedtakStatusType) =>
   return put(`${baseUrl}/api/vedtak/${saksnummer}`, { status })
 }
 
-export const putSendTilGosys = async (saksnummer: string) => {
-  return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`)
+export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {
+  return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { tilbakemelding })
 }

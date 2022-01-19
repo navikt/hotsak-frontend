@@ -34,6 +34,7 @@ describe('Happy path', () => {
         'Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd.'
       )
       .should('be.visible')
+    cy.get('[data-cy="overfor-soknad-arsak-0"]').click()
     cy.get('[data-cy="btn-overfor-soknad"]').should('have.text', 'Overfør saken').click()
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Overført til Gosys')
     cy.get('[data-cy="alert-vedtak-status"]').should(

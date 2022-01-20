@@ -53,7 +53,7 @@ export const SøknadCard = ({
         <IconContainer>
           <KalenderIkon />
         </IconContainer>
-        <Tekst>{formaterDato(mottattDato)}</Tekst>
+        <Tekst>Mottatt: {formaterDato(mottattDato)}</Tekst>
         <IconContainer>
           <MappeIkon />
         </IconContainer>

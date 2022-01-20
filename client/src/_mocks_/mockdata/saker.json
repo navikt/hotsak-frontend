@@ -55,7 +55,7 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen fritekst i søknaden",
+        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       },
       {
@@ -233,7 +233,7 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Fritekst i søknaden",
+        "beskrivelse": "Tilleggsinformasjon i søknaden",
         "type": "ADVARSEL"
       },
       {
@@ -287,13 +287,7 @@
       "adresse": "nullable adresse",
       "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
     },
-    "oppfølgingsansvarlig": {
-      "navn": "Navn ",
-      "arbeidssted": "arbeidssted",
-      "stilling": "stilling",
-      "telefon": "45454545",
-      "ansvarFor": "ansvar for"
-    },
+    
     "status": "AVVENTER_SAKSBEHANDLER",
     "enhet": [
       {
@@ -433,7 +427,7 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen fritekst i søknaden",
+        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       }
     ],
@@ -539,7 +533,7 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen fritekst i søknaden",
+        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       },
       {
@@ -656,7 +650,7 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen fritekst i søknaden",
+        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       },
       {

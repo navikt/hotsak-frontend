@@ -8,6 +8,7 @@ import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
+import { Merknad } from '../../felleskomponenter/Merknad'
 
 interface FormidlerProps {
   formidler: Formidler
@@ -54,33 +55,22 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
 
   const OppfølgingsasvarligInfo = () => {
     return (
-      <Grid>
-        <Etikett>Navn</Etikett>
-        <Tekst>{capitalizeName(oppfølgingsansvarling.navn)}</Tekst>
-        <Etikett>Arbeidssted</Etikett>
-        <Tekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Tekst>
-        <Etikett>Stilling</Etikett>
-        <Tekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Tekst>
-        <Etikett>Telefon</Etikett>
-        <Tekst>{oppfølgingsansvarling.telefon}</Tekst>
-        <Etikett>Ansvar</Etikett>
-        <Tekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Tekst>
-      </Grid>
-    )
-  }
-
-  if (oppfølgingsansvarling == null) {
-    return (
-      <>
-        <Heading level="1" size="medium" spacing={false}>
-          <TittelIkon width={22} height={22} />
-          Formidler og opplæringsansvarlig
-        </Heading>
-        <Container>
-          <Formidlerinfo />
-        </Container>
-        <Strek />
-      </>
+      <Container>
+        <Merknad>
+          <Grid>
+            <Etikett>Navn</Etikett>
+            <Tekst>{capitalizeName(oppfølgingsansvarling.navn)}</Tekst>
+            <Etikett>Arbeidssted</Etikett>
+            <Tekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Tekst>
+            <Etikett>Stilling</Etikett>
+            <Tekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Tekst>
+            <Etikett>Telefon</Etikett>
+            <Tekst>{oppfølgingsansvarling.telefon}</Tekst>
+            <Etikett>Ansvar</Etikett>
+            <Tekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Tekst>
+          </Grid>
+        </Merknad>
+      </Container>
     )
   }
 
@@ -94,16 +84,21 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Heading level="1" size="small" spacing={false}>
           Hjelpemiddelformidler
         </Heading>
-        <br />
-        <Formidlerinfo />
-        <br />
-        <Heading level="1" size="small" spacing={false}>
-          Oppfølgings- og opplæringsansvarlig
-        </Heading>
-        <br />
-        <OppfølgingsasvarligInfo />
+        <Container>
+          <Formidlerinfo />
+        </Container>
+        {oppfølgingsansvarling && (
+          <>
+            <Strek />
+            <Container>
+              <Heading level="1" size="small" spacing={false}>
+                Oppfølgings- og opplæringsansvarlig
+              </Heading>
+              <OppfølgingsasvarligInfo />
+            </Container>
+          </>
+        )}
       </Container>
-      <Strek />
     </>
   )
 }

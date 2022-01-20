@@ -12,6 +12,7 @@ import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler } from '.
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
+import { Merknad } from '../../felleskomponenter/Merknad'
 
 interface BrukerProps {
   person: Personinfo
@@ -96,7 +97,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
           {levering.merknad && (
             <>
-              <Etikett>Merknad til utlevering</Etikett>
+              <Merknad><Etikett>Merknad til utlevering</Etikett></Merknad>
               <Tekst>{levering.merknad}</Tekst>
             </>
           )}

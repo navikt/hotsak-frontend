@@ -1,18 +1,27 @@
-import { Advarselikon } from '../../felleskomponenter/ikoner/Advarselikon'
-import { Sjekkikon } from '../../felleskomponenter/ikoner/Sjekkikon'
-import { Tekst } from '../../felleskomponenter/typografi'
-import { GreitÅViteType, GreitÅViteFaktum } from '../../types/types.internal'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
-import { Grid } from './Grid'
-import { IconContainer } from './IconContainer'
+import {Advarselikon} from '../../felleskomponenter/ikoner/Advarselikon'
+import {Sjekkikon} from '../../felleskomponenter/ikoner/Sjekkikon'
+import {Tekst} from '../../felleskomponenter/typografi'
+import {GreitÅViteFaktum, GreitÅViteType} from '../../types/types.internal'
+import {Card} from './Card'
+import {CardTitle} from './CardTitle'
+import {Grid} from './Grid'
+import {IconContainer} from './IconContainer'
+import {Informasjonikon} from "../../felleskomponenter/ikoner/Informasjonikon";
 
 interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]
 }
 
 const ikon = (faktumType: GreitÅViteType) => {
-  return faktumType === GreitÅViteType.ADVARSEL ? <Advarselikon /> : <Sjekkikon />
+
+  switch (faktumType){
+    case GreitÅViteType.ADVARSEL:
+      return <Advarselikon />
+    case GreitÅViteType.INFO:
+      return <Sjekkikon />
+    case GreitÅViteType.MERKNAD:
+      return <Informasjonikon />
+  }
 }
 
 const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {

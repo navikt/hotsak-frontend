@@ -126,6 +126,7 @@ export interface GreitÅViteFaktum {
 export enum GreitÅViteType {
   ADVARSEL = 'ADVARSEL',
   INFO = 'INFO',
+  MERKNAD = 'MERKNAD'
 }
 
 export interface Oppgave {

@@ -59,6 +59,10 @@
         "type": "INFO"
       },
       {
+        "beskrivelse": "Oppfølgingsansvarlig: annen oppfølgingsansvarlig",
+        "type": "MERKNAD"
+      },
+      {
         "beskrivelse": "Medlem av folketrygden",
         "type": "INFO"
       }

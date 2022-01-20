@@ -46,12 +46,12 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidl
         })}
         <Rad>
           <Etikett>
-            Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertFraHjelpemiddelsentralen))} stk. inkl. tilbehør
+            Totalt {summerAntall(hjelpemidler.filter((it) => !it.alleredeUtlevert))} stk. inkl. tilbehør
           </Etikett>
         </Rad>
-        {hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.utlevertFraHjelpemiddelsentralen).length > 0 && (
+        {hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.alleredeUtlevert).length > 0 && (
           <Rad>
-            Totalt. {summerAntall(hjelpemidler.filter((it) => it.utlevertFraHjelpemiddelsentralen))} stk. allerede
+            Totalt. {summerAntall(hjelpemidler.filter((it) => it.alleredeUtlevert))} stk. allerede
             utlevert
           </Rad>
         )}

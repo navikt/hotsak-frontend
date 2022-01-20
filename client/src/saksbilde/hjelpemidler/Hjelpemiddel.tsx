@@ -1,14 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { capitalize } from '../../utils/stringFormating'
-import { Strek } from '../../felleskomponenter/Strek'
-import { LevertIkon } from '../../felleskomponenter/ikoner/LevertIkon'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
-import { Utlevert } from './Utlevert'
-import { Rad, Kolonne } from '../../felleskomponenter/Flex'
-import { useGrunndata } from './grunndataHook'
-import { Link } from '@navikt/ds-react'
+import {capitalize} from '../../utils/stringFormating'
+import {Strek} from '../../felleskomponenter/Strek'
+import {Etikett, Tekst} from '../../felleskomponenter/typografi'
+import {HjelpemiddelType, Personinfo} from '../../types/types.internal'
+import {Utlevert} from './Utlevert'
+import {Rad, Kolonne} from '../../felleskomponenter/Flex'
+import {useGrunndata} from './grunndataHook'
+import {Link} from '@navikt/ds-react'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -29,7 +28,7 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-      Number(props.rank) === 1 ? 'var(--navds-global-color-green-200)' : 'var(--navds-global-color-orange-400)'};
+  Number(props.rank) === 1 ? 'var(--navds-global-color-green-200)' : 'var(--navds-global-color-orange-400)'};
     color: inherit;
     font-weight: inherit;
   }
@@ -50,13 +49,9 @@ const TilleggsInfo = styled(Rad)`
     left:-1rem; 
   }
 `
-const UtlevertContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1.25rem auto;
-  grid-column-gap: 0.75rem;
-`
-const EtikettKolonne: React.FC = ({ children }) => {
-  return <Kolonne width="150px">{children}</Kolonne>
+
+const EtikettKolonne: React.FC = ({children}) => {
+  return <Kolonne width='150px'>{children}</Kolonne>
 }
 
 interface RangeringProps {
@@ -68,7 +63,7 @@ interface HjelpemiddelProps {
   personinformasjon: Personinfo
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon }) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personinformasjon}) => {
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
 
   return (
@@ -110,7 +105,12 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
-                        <Kolonne width="700px">{tilleggsinfo.innholdsliste.join(", ")}</Kolonne>
+                        <Kolonne width='700px'>
+                          {tilleggsinfo.innholdsliste.map(element =>
+                            <Rad>{element}</Rad>
+                          )}
+                        </Kolonne>
+
                       </Rad>
                     </>
                   )
@@ -121,7 +121,8 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                       <Etikett>Kroppsmål:</Etikett>
                     </Rad>
                     <Rad>
-                      <Kolonne  width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                      <Kolonne
+                        width='700px'>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
                     </Rad>
                   </>
                 )}
@@ -129,16 +130,13 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
             )}
           </Rad>
           <Rad>
-            {hjelpemiddel.utlevertFraHjelpemiddelsentralen && (
+            {hjelpemiddel.alleredeUtlevert && (
               <Rad>
                 <Etikett>
-                  <UtlevertContainer>
-                    <LevertIkon />
-                  </UtlevertContainer>
+                  Utlevert:
                 </Etikett>
-
                 <Utlevert
-                  alleredeUtlevert={hjelpemiddel.utlevertFraHjelpemiddelsentralen}
+                  alleredeUtlevert={hjelpemiddel.alleredeUtlevert}
                   utlevertInfo={hjelpemiddel.utlevertInfo}
                 />
               </Rad>

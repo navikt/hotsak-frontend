@@ -74,7 +74,7 @@ export enum KontaktPersonType {
 export interface HjelpemiddelType {
   hmsnr: string
   rangering: number
-  utlevertFraHjelpemiddelsentralen: boolean
+  alleredeUtlevert: boolean
   utlevertInfo: UtlevertInfo
   antall: number
   kategori: string
@@ -93,7 +93,7 @@ export enum UtlevertType {
   FremskuttLager = 'FremskuttLager',
   Korttidslån = 'Korttidslån',
   Overført = 'Overført',
-  Annen = 'Annen',
+  Annet = 'Annet',
 }
 
 export interface Tilleggsinfo {

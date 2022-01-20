@@ -6,7 +6,7 @@
       {
         "hmsnr": "014112",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "utlevertInfo": {},
         "antall": "8",
         "kategori": "Terskeleliminatorer og Kjøreramper",
@@ -26,7 +26,7 @@
       {
         "hmsnr": "177946",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "antall": "1",
         "kategori": "Rullator",
         "beskrivelse": "Gemino 20",
@@ -128,7 +128,7 @@
       {
         "hmsnr": "014112",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "utlevertInfo": {
           "utlevertType": "FremskuttLager"
         },
@@ -159,7 +159,7 @@
       {
         "hmsnr": "248586",
         "rangering": "5",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "antall": "1",
         "kategori": "Sitteputer",
         "beskrivelse": "Inserto Domino sb42",
@@ -167,7 +167,9 @@
           {
             "tittel": "Behov",
             "innholdsliste": [
-              "Trykksår"
+              "Forebygge trykksår",
+              "Hindre trykksår",
+              "Denne må vi bare ha"
             ]
           },
           {
@@ -180,7 +182,7 @@
       {
         "hmsnr": "278331",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "antall": "1",
         "kategori": "Manuelle rullestoler",
         "beskrivelse": "Cross 6 allround sb35 sd35-50 kort",
@@ -307,7 +309,7 @@
       {
         "hmsnr": "177946",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "antall": "1",
         "kategori": "Rullator",
         "beskrivelse": "Gemino 20",
@@ -405,7 +407,7 @@
       {
         "hmsnr": "289709",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "utlevertInfo": {},
         "antall": "1",
         "kategori": "Alarm- og varslingshjelpemidler",
@@ -508,7 +510,7 @@
       {
         "hmsnr": "177946",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "antall": "1",
         "kategori": "Rullator",
         "beskrivelse": "Gemino 20",
@@ -611,7 +613,7 @@
       {
         "hmsnr": "014112",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": false,
+        "alleredeUtlevert": false,
         "utlevertInfo": {},
         "antall": "1",
         "kategori": "Terskeleliminatorer og Kjøreramper",
@@ -622,7 +624,7 @@
       {
         "hmsnr": "177946",
         "rangering": "1",
-        "utlevertFraHjelpemiddelsentralen": true,
+        "alleredeUtlevert": true,
         "utlevertInfo": {
           "utlevertType": "FremskuttLager"
         },

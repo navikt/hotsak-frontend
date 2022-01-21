@@ -7,7 +7,7 @@ export enum amplitude_taxonomy {
   SOKNAD_OVERFORT_TIL_GOSYS = 'overført søknad til Gosys',
   SAK_OVERTATT = 'sak overtatt av ny saksbehandler',
   NAVIGASJON_ETTER_HENDELSE = 'neste navigasjon foretatt etter hendelse',
-  CLIENT_RESOLUTION = 'client-resolution'
+  CLIENT_INFO = 'client info'
 }
 
 export const initAmplitude = () => {

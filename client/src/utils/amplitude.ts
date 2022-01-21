@@ -24,7 +24,7 @@ export const initAmplitude = () => {
 export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any) {
   setTimeout(() => {
     data = {
-      app: 'hm-saksbehandling',
+      app: 'hotsak-frontend',
       team: 'teamdigihot',
       ...data,
     }

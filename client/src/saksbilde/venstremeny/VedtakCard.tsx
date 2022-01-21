@@ -1,25 +1,26 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components/macro'
 // @ts-ignore
-import { useSWRConfig } from 'swr'
+import {useSWRConfig} from 'swr'
 
-import { Button, Tag } from '@navikt/ds-react'
+import {Button, Tag} from '@navikt/ds-react'
 
-import { putVedtak, putSendTilGosys, postTildeling } from '../../io/http'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { formaterDato } from '../../utils/date'
-import { capitalizeName } from '../../utils/stringFormating'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import {postTildeling, putSendTilGosys, putVedtak} from '../../io/http'
+import {IkkeTildelt} from '../../oppgaveliste/kolonner/IkkeTildelt'
+import {formaterDato} from '../../utils/date'
+import {capitalizeName} from '../../utils/stringFormating'
+import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
-import { Tekst } from '../../felleskomponenter/typografi'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType } from '../../types/types.internal'
-import { BekreftVedtakModal } from '../BekreftVedtakModal'
-import { OverførGosysModal } from '../OverførGosysModal'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
-import { OvertaSakModal } from '../OvertaSakModal'
+import {Tekst} from '../../felleskomponenter/typografi'
+import {useInnloggetSaksbehandler} from '../../state/authentication'
+import {OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType} from '../../types/types.internal'
+import {BekreftVedtakModal} from '../BekreftVedtakModal'
+import {OverførGosysModal} from '../OverførGosysModal'
+import {Card} from './Card'
+import {CardTitle} from './CardTitle'
+import {OvertaSakModal} from '../OvertaSakModal'
+
 
 interface VedtakCardProps {
   sak: Sak
@@ -79,6 +80,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
         setVisOvertaSakModal(false)
         mutate(`api/sak/${saksid}`)
         mutate(`api/sak/${saksid}/historikk`)
+        logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
       })
   }
 
@@ -155,7 +157,6 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
           onBekreft={() => {
             overtaSak()
             logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
-            logNesteNavigasjon(amplitude_taxonomy.SAK_OVERTATT)
           }}
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}

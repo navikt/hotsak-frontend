@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 // @ts-ignore
-import { Button, Loader } from '@navikt/ds-react'
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
-import { deleteFjernTildeling } from '../../io/http'
-import { EllipsisCircleH } from '@navikt/ds-icons'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { Dropdown } from '@navikt/ds-react-internal'
-import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
-
+import {Button, Loader} from '@navikt/ds-react'
+import {CellContent} from '../../felleskomponenter/table/rader/CellContent'
+import {deleteFjernTildeling} from '../../io/http'
+import {EllipsisCircleH} from '@navikt/ds-icons'
+import {useInnloggetSaksbehandler} from '../../state/authentication'
+import {Dropdown} from '@navikt/ds-react-internal'
+import {Oppgave, OppgaveStatusType} from '../../types/types.internal'
+import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
 
 interface MenyKnappProps {
   oppgave: Oppgave,
@@ -33,6 +33,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
     deleteFjernTildeling(oppgave.saksid)
       .catch(() => setIsFetching(false))
       .then(() => {
+        logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)
         setIsFetching(false)
         onMutate()
       })

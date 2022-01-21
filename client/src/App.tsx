@@ -54,7 +54,7 @@ function App() {
 
 const logUserStats = () => {
   const {innerWidth: width, innerHeight: height} = window;
-  logAmplitudeEvent(amplitude_taxonomy.CLIENT_RESOLUTION, {'res': {width, height}})
+  logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, {'res': {width, height}})
 }
 
 

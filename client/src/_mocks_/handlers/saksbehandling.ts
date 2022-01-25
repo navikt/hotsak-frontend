@@ -145,7 +145,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.get(`/api/oppgaver-filtered/`, (req, res, ctx) => {
+  rest.get(`/api/oppgaver/`, (req, res, ctx) => {
     const statusFilter = req.url.searchParams.get('status')
     const sakerFilter = req.url.searchParams.get('saksbehandler')
     const områdeFilter = req.url.searchParams.get('område')

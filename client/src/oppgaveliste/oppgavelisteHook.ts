@@ -14,7 +14,7 @@ interface DataResponse {
   mutate: Function
 }
 
-const basePath = 'api/oppgaver-filtered'
+const basePath = 'api/oppgaver'
 
 interface PathConfigType {
   path: string

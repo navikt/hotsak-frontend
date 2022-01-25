@@ -7,6 +7,11 @@ export enum amplitude_taxonomy {
   SOKNAD_OVERFORT_TIL_GOSYS = 'overført søknad til Gosys',
   SAK_OVERTATT = 'sak overtatt av ny saksbehandler',
   NAVIGASJON_ETTER_HENDELSE = 'neste navigasjon foretatt etter hendelse',
+  CLIENT_INFO = 'client info',
+  SAK_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
+  SAK_STARTET_FRA_SAK = 'sak startet fra sak',
+  SAK_FRIGITT = 'sak frigitt',
+
 }
 
 export const initAmplitude = () => {
@@ -24,7 +29,7 @@ export const initAmplitude = () => {
 export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any) {
   setTimeout(() => {
     data = {
-      app: 'hm-saksbehandling',
+      app: 'hotsak-frontend',
       team: 'teamdigihot',
       ...data,
     }

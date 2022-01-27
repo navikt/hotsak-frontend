@@ -79,9 +79,10 @@ export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekre
 
 const overforGosysArsaker: ReadonlyArray<string> = [
   'Det må etterspørres eller legges til flere opplysninger i saken',
-  'Saken kan ikke innvilges (avslag, delvis innvilgelse eller annullering)',
+  'Saken kan ikke innvilges (avslag, delvis innvilgelse eller henleggelse)',
   'Saken skal ses på av en annen saksbehandler eller enhet',
   'Formidler har ikke fullført nødvendig godkjenningskurs',
+  'Bruker har hjelpemiddelet fra før',
   'Annet',
 ]
 

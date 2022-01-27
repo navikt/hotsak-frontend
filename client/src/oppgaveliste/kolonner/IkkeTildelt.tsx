@@ -5,18 +5,17 @@ import styled from 'styled-components/macro'
 import {useSWRConfig} from 'swr'
 import {Button, Loader} from '@navikt/ds-react'
 //import { useTildelOppgave } from '../../../../state/oppgaver';
-import {CellContent} from '../../felleskomponenter/table/rader/CellContent'
 import {postTildeling} from '../../io/http'
 
 import {useInnloggetSaksbehandler} from '../../state/authentication'
 import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
 
-const Tildelingsknapp = styled(Button)`
+/*const Tildelingsknapp = styled(Button)`
   min-height: 0;
   height: var(--navds-spacing-6);
   padding: 0 var(--navds-spacing-3);
   box-sizing: border-box;
-`
+`*/
 
 interface IkkeTildeltProps {
   oppgavereferanse: string
@@ -57,14 +56,14 @@ export const IkkeTildelt = ({oppgavereferanse, gåTilSak = false}: IkkeTildeltPr
   }
 
   return (
-    <CellContent width={128}>
+    <>
       {
-        <Tildelingsknapp size='small' variant={gåTilSak ? "tertiary" : "secondary"} onClick={tildel}
+        <Button size={gåTilSak ? 'xsmall' : 'small'} variant={gåTilSak ? "tertiary" : "secondary"} onClick={tildel}
                          data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
           Start saken
           {isFetching && <Loader size='small' />}
-        </Tildelingsknapp>
+        </Button>
       }
-    </CellContent>
+    </>
   )
 }

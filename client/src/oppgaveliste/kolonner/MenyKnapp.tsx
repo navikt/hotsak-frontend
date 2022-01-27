@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 // @ts-ignore
 import {Button, Loader} from '@navikt/ds-react'
-import {CellContent} from '../../felleskomponenter/table/rader/CellContent'
 import {deleteFjernTildeling} from '../../io/http'
 import {EllipsisCircleH} from '@navikt/ds-icons'
 import {useInnloggetSaksbehandler} from '../../state/authentication'
@@ -40,10 +39,10 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   }
 
   return (
-    <CellContent width={128}>
+    <>
       {
         <Dropdown>
-          <Button variant='tertiary' size='small' as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
+          <Button variant='tertiary' size='xsmall' as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
             <EllipsisCircleH />
           </Button>
           <Dropdown.Menu onClick={menyClick}>
@@ -57,6 +56,6 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
           </Dropdown.Menu>
         </Dropdown>
       }
-    </CellContent>
+    </>
   )
 }

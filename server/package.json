@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "@testing-library/react": "^11.2.6",
-    "@types/connect-redis": "^0.0.16",
+    "@types/connect-redis": "^0.0.18",
     "@types/cookie-parser": "^1.4.2",
     "@types/express-http-proxy": "^1.6.2",
     "@types/express-session": "^1.17.3",

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.2.0",
+    "@craco/craco": "^6.4.3",
     "@navikt/ds-css": "^0.12.7",
     "@navikt/ds-css-internal": "^0.7.0",
     "@navikt/ds-icons": "^0.7.2",

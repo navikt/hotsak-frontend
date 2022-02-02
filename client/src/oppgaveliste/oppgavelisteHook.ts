@@ -2,8 +2,8 @@ import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 import { httpGet } from '../io/http'
 
-import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SortBy } from '../types/types.internal'
-import { PAGE_SIZE } from './paging/Pagination'
+import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter } from '../types/types.internal'
+import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
   oppgaver: Oppgave[]
@@ -36,8 +36,7 @@ interface OppgavelisteResponse {
 }
 
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
-    console.log("HookSort", sort);
-    const pagingParams = { limit: PAGE_SIZE, page: currentPage }
+    const pagingParams = { limit: PAGE_SIZE, page: currentPage + 1 }
   const sortParams = { sort_by: `${sort.orderBy}.${sort.direction}` }
   const { sakerFilter, statusFilter, områdeFilter } = filters
 

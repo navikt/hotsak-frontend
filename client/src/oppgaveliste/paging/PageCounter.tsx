@@ -2,7 +2,7 @@ import styled from 'styled-components/macro'
 import { Tekst } from '../../felleskomponenter/typografi'
 
 const Container = styled.div`
-  margin-left: 1.4rem;
+  margin-left: 0.9rem;
   margin-top: 0.5rem;
 `
 
@@ -15,6 +15,9 @@ interface PageCounterProps {
 export const PageCounter: React.FC<PageCounterProps> = ({ pageSize, totalCount, currentPage }) => {
   const førsteSynligeOppgave = pageSize * (currentPage - 1) + 1
   const sisteOppgave = førsteSynligeOppgave + pageSize - 1
+
+  console.log(pageSize, totalCount, currentPage);
+  
   return (
     <>
       <Container>

@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { Flex } from '../felleskomponenter/Flex'
 import { Toast } from '../felleskomponenter/Toast'
 import { IngenOppgaver } from './IngenOppgaver'
-import { Kolonne, OppgaverTable } from './OppgaverTable'
+import styled from 'styled-components/macro'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Panel, Table, SortState } from '@navikt/ds-react'
-import { Pagination } from './paging/Pagination'
 import { Bosted } from './kolonner/Bosted'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
 import { Fødselsnummer } from './kolonner/Fødselsnummer'
@@ -24,49 +23,60 @@ import {
   OppgaveStatusType,
   SakerFilter,
   SakerFilterLabel,
-  SortOrder,
 } from '../types/types.internal'
 import { FilterDropdown, Filters } from './filter'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
+import { Paging } from './paging/Paging'
+
+enum Kolonne {
+    EIER = 'EIER',
+    FØDSELSNUMMER = 'FØDSELSNUMMER',
+    HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
+    FUNKSJONSNEDSETTELSE = 'FUNKSJONSNEDSETTELSE',
+    SØKNAD_OM = 'SØKNAD_OM',
+    BOSTED = 'BOSTED',
+    FORMIDLER = 'FORMIDLER',
+    STATUS = 'STATUS',
+    MOTTATT = 'MOTTATT',
+  }
 
 export const Oppgaveliste = () => {
   const [sakerFilter, setSakerFilter] = useState(SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
   const [sort, setSort] = useState<SortState>({ orderBy: Kolonne.MOTTATT, direction: 'descending' })
-  //const [sortBy, setSortBy] = useState({ label: , sortOrder: SortOrder.DESCENDING })
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
     områdeFilter,
   })
 
-const handleSort = (sortolinen: SortState) => {
-    console.log("Jau", sortolinen);
-    
-}
-
-  /*const handleSort = (label: Kolonne, sortOrder: SortOrder) => {
-    if (label !== sortBy.label) {
-      setSortBy({ label, sortOrder: SortOrder.DESCENDING })
-    } else {
-      setSortBy({ label, sortOrder })
-    }
-    setCurrentPage(1)
-  }*/
-
   const handleFilter = (handler: Function, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
     handler(value)
-    setCurrentPage(1)
+    setCurrentPage(0)
   }
 
   const clearFilters = () => {
     setSakerFilter(SakerFilter.UFORDELTE)
     setStatusFilter(OppgaveStatusType.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
-    setCurrentPage(1)
+    setCurrentPage(0)
   }
+
+  const Container = styled.div`
+  min-height: 300px;
+`
+
+const ScrollableX = styled.div`
+  overflow: auto hidden;
+  margin: 0;
+  padding: 0;
+  height: calc(100% - 50px);
+  width: 100%;
+`
+
+
 
   const kolonner = [
     { key: Kolonne.EIER, name: 'Eier' },
@@ -83,9 +93,6 @@ const handleSort = (sortolinen: SortState) => {
   if (isError) {
     throw Error('Feil med henting av oppgaver')
   }
-
-  console.log("Sort", sort);
-  
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
@@ -121,7 +128,8 @@ const handleSort = (sortolinen: SortState) => {
       {isLoading ? (
         <Toast>Henter oppgaver </Toast>
       ) : (
-        <Flex style={{ height: '100%' }}>
+        <Container>
+            <ScrollableX>
           <Panel>
             {hasData ? (
               <>
@@ -133,14 +141,12 @@ const handleSort = (sortolinen: SortState) => {
                     onMutate={mutate}
                   />
                 */}
-                <Pagination
-                  totalCount={totalCount}
-                  currentPage={currentPage}
-                  onChangePage={(page: number) => setCurrentPage(page)}
-                />
+                
 
-                {/* @ts-ignore */}
-                <Table zebraStripes size="small" sort={sort} onSortChange={setSort}>
+               
+                <div style={{ overflow: "auto" }}>
+                     {/* @ts-ignore */}
+                <Table style={{ width: "initial" }} zebraStripes size="small" sort={sort} onSortChange={setSort}>
                   <Table.Header>
                     <Table.Row>
                       {kolonner.map(({ key, name }) => (
@@ -196,12 +202,20 @@ const handleSort = (sortolinen: SortState) => {
                     ))}
                   </Table.Body>
                 </Table>
+                
+                <Paging
+                  totalCount={totalCount}
+                  currentPage={currentPage}
+                  onPageChange={(page: number) => setCurrentPage(page)}
+                />
+                </div>
               </>
             ) : (
               <IngenOppgaver />
             )}
           </Panel>
-        </Flex>
+          </ScrollableX>
+        </Container>
       )}
     </>
   )

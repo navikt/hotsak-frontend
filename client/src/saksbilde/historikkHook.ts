@@ -13,7 +13,7 @@ interface DataResponse {
 
 export function useHistorikk(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet)
+  const { data, error } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet, {refreshInterval: 10000})
 
   return {
     hendelser: data?.data,

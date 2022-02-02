@@ -100,19 +100,19 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
               <TilleggsInfo>
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
-                    <>
-                      <Rad key={tilleggsinfo.tittel}>
+                    <React.Fragment key={tilleggsinfo.tittel}>
+                      <Rad >
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
                         <Kolonne width='700px'>
                           {tilleggsinfo.innholdsliste.map(element =>
-                            <Rad>{element}</Rad>
+                            <Rad key={element}>{element}</Rad>
                           )}
                         </Kolonne>
 
                       </Rad>
-                    </>
+                    </React.Fragment>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (

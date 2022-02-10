@@ -22,7 +22,7 @@ export const Oppgaveliste = () => {
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
   const [currentPage, setCurrentPage] = useState(1)
-  const [sortBy, setSortBy] = useState({ label: Kolonne.MOTTATT, sortOrder: SortOrder.DESCENDING })
+  const [sortBy, setSortBy] = useState({ label: Kolonne.MOTTATT, sortOrder: SortOrder.ASCENDING })
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sortBy, {
       sakerFilter,
       statusFilter,

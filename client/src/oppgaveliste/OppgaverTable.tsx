@@ -187,7 +187,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                   <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
                 </Cell>
                 <Cell>
-                  <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
+                  <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />
                 </Cell>
                 <Cell>
                   <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn}></FormidlerCelle>

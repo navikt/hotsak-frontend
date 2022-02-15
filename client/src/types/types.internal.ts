@@ -126,7 +126,7 @@ export interface GreitÅViteFaktum {
 export enum GreitÅViteType {
   ADVARSEL = 'ADVARSEL',
   INFO = 'INFO',
-  MERKNAD = 'MERKNAD'
+  MERKNAD = 'MERKNAD',
 }
 
 export interface Oppgave {
@@ -189,6 +189,7 @@ export interface PersoninfoOppgave {
   fnr: string
   funksjonsnedsettelse: string[]
   poststed: string
+  bosted: string
 }
 
 export interface Personinfo {

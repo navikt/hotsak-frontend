@@ -129,7 +129,7 @@ export const OppgaverTable = React.memo(({ oppgaver, sortBy, onSort, onMutate }:
                   sortOrder={sortBy.sortOrder}
                   onClick={onSort}
                 >
-                  Bosted
+                  Kommune / Bydel
                 </SortButton>
               </Header>
               <Header scope="col" colSpan={1}>

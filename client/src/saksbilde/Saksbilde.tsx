@@ -51,7 +51,7 @@ const Content = styled.div`
 const SaksbildeContent = React.memo(() => {
   //const personTilBehandling = usePerson();
   //useRefreshPersonVedUrlEndring();
-  const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)
+  const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
   const { path } = useRouteMatch()

@@ -8,9 +8,9 @@ interface HjelpemiddeloversiktResponse {
   isError: any
 }
 
-export function useHjelpemiddeloversikt(brukersFødselsnummer?: string): HjelpemiddeloversiktResponse {
+export function useHjelpemiddeloversikt(brukersFodselsnummer?: string): HjelpemiddeloversiktResponse {
   const { data, error } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
-    brukersFødselsnummer ? ['api/hjelpemiddeloversikt' , brukersFødselsnummer] : null,
+    brukersFodselsnummer ? ['api/hjelpemiddeloversikt' , brukersFodselsnummer] : null,
     hentHjelpemiddeloversikt
   )
 

@@ -28,7 +28,7 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-  Number(props.rank) === 1 ? 'var(--navds-global-color-green-200)' : 'var(--navds-global-color-orange-400)'};
+  Number(props.rank) === 1 ? 'var(--navds-global-color-gray-200)' : 'var(--navds-global-color-orange-400)'};
     color: inherit;
     font-weight: inherit;
   }

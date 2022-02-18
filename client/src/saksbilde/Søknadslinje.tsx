@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { TabLink } from './TabLink'
-import { HistorikkHeader } from './høyrekolonne/historikk/HistorikkHeader'
+import { HøyrekolonneHeader } from './høyrekolonne/historikk/HøyrekolonneHeader'
 import { useSak } from './sakHook'
 import { HøyrekolonneTabs } from '../types/types.internal'
 
@@ -55,7 +55,7 @@ export const Søknadslinje = ({ onTabChange, currentTab}: SøknadslinjeProps ) =
           </TabLink>
         </TabList>
       </Flex>
-      <HistorikkHeader onTabChange={onTabChange} currentTab={currentTab}  />
+      <HøyrekolonneHeader onTabChange={onTabChange} currentTab={currentTab}  />
     </Container>
   )
 }

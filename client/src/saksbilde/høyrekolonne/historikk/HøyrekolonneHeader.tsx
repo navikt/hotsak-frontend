@@ -26,7 +26,7 @@ const Teller = styled.div`
     border-radius: 50%;
 `
 
-export const HistorikkHeader = ({ onTabChange, currentTab }: SøknadslinjeProps) => {
+export const HøyrekolonneHeader = ({ onTabChange, currentTab }: SøknadslinjeProps) => {
     const { sak } = useSak()
     const { hjelpemiddelArtikler}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
 

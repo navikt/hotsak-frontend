@@ -44,6 +44,7 @@ export const FlexColumn = styled(Flex)`
 type KolonneProps =  {
     width?: string
     textAlign?: string
+    marginLeft?: string
   }
   
   type RadProps  = {
@@ -67,5 +68,6 @@ export const Kolonne = styled('div')<KolonneProps>`
   flex: 1;
   text-align: ${(props) => props.textAlign || 'left'};
   max-width: ${(props) => props.width || 'auto'};
+  ${(props) => props.marginLeft && `margin-left: ${props.marginLeft};`}
 `
 

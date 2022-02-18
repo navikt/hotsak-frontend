@@ -25,6 +25,26 @@ export interface Hendelse {
   detaljer?: string
 }
 
+export interface HjelpemiddelArtikkel {
+    antall: number,
+    antallEnhet: string,
+    isoKode: string,
+    isoKategori: string,
+    beskrivelse: string,
+    hmsnr: string,
+    serieNr?: string,
+    datoUtsendelse: string,
+    ordrenummer?: string,
+    status: string,
+    grunndataBeriket: boolean,
+    grunndataProduktNavn?: string,
+    grunndataBeskrivelse?: string,
+    grunndataKategori?: string,
+    grunndataBilde?: string,
+    grunndataKategoriKortnavn?: string,
+    hjelpemiddeldatabasenURL?: string,
+}
+
 export interface VedtakType {
   vedtaksDato: string
   status: VedtakStatusType
@@ -300,6 +320,12 @@ export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.HØRSEL, 'Hørsel'],
   [OmrådeFilter.KOGNISJON, 'Kognisjon'],
 ])
+
+
+export enum HøyrekolonneTabs {
+    SAKSHISTORIKK = 'SAKSHISTORIKK',
+    HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT'
+}
 
 export interface OverforGosysTilbakemelding {
   valgteArsaker: string[]

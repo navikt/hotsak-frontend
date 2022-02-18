@@ -3,8 +3,9 @@ import styled from 'styled-components/macro'
 import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { TabLink } from './TabLink'
-import { HistorikkHeader } from './historikk/HistorikkHeader'
+import { HistorikkHeader } from './høyrekolonne/historikk/HistorikkHeader'
 import { useSak } from './sakHook'
+import { HøyrekolonneTabs } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ const Container = styled.div`
   height: 48px;
   box-sizing: border-box;
   border-bottom: 1px solid var(--navds-semantic-color-border-muted);
-  padding: 0 2rem 0 2rem;
+  padding: 0 0 0 2rem;
   min-width: var(--speil-total-min-width);
 
   > div:last-of-type {
@@ -30,7 +31,12 @@ export enum Location {
   Formidler,
 }
 
-export const Søknadslinje = () => {
+export interface SøknadslinjeProps {
+    onTabChange: Function, 
+    currentTab: HøyrekolonneTabs
+}
+
+export const Søknadslinje = ({ onTabChange, currentTab}: SøknadslinjeProps ) => {
   const { sak } = useSak()
   if (!sak) return null
   const saksid = sak.saksid
@@ -49,7 +55,7 @@ export const Søknadslinje = () => {
           </TabLink>
         </TabList>
       </Flex>
-      <HistorikkHeader />
+      <HistorikkHeader onTabChange={onTabChange} currentTab={currentTab}  />
     </Container>
   )
 }

@@ -1,4 +1,4 @@
-import { Ikon, IkonProps } from './Ikon'
+    import { Ikon, IkonProps } from './Ikon'
 
 export const RullestolIkon = ({ width = 14, height = 14, className }: IkonProps) => (
   <Ikon width={width} height={height} viewBox="0 0 24 24" className={className}>

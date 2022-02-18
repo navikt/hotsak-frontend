@@ -32,7 +32,7 @@ const Container = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 12rem auto;
-  grid-column-gap: 0.75rem;
+  grid-column-gap: 0.70rem;
   grid-row-gap: 0.125rem;
 `
 

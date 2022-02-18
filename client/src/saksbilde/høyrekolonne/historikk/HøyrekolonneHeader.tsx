@@ -28,7 +28,7 @@ const Teller = styled.div`
 
 export const HøyrekolonneHeader = ({ onTabChange, currentTab }: SøknadslinjeProps) => {
     const { sak } = useSak()
-    const { hjelpemiddelArtikler}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+    const { hjelpemiddelArtikler, isError, isLoading}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
 
     const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => {
         return antall += artikkel.antall
@@ -46,7 +46,7 @@ export const HøyrekolonneHeader = ({ onTabChange, currentTab }: SøknadslinjePr
         active={currentTab === HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
         onClick={() => onTabChange(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)}
       >
-          <Teller>{antallUtlånteHjelpemidler}</Teller>
+          {(!isLoading && !isError) && <Teller>{antallUtlånteHjelpemidler}</Teller>}
         <RullestolIkon width={20} height={20} />
       </TabButton>
     </Header>

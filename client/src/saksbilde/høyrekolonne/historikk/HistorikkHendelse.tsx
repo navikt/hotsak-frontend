@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro'
 
-import { norskTimestamp } from '../../utils/date'
+import { norskTimestamp } from '../../../utils/date'
 
-import { Etikett, Tekst, Undertittel } from '../../felleskomponenter/typografi'
-import { Hendelse } from '../../types/types.internal'
+import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
+import { Hendelse } from '../../../types/types.internal'
 
 const Container = styled.li`
   margin: 0;

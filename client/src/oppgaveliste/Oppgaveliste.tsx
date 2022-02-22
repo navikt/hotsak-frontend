@@ -45,7 +45,7 @@ export const Oppgaveliste = () => {
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
   const [currentPage, setCurrentPage] = useState(0)
-  const [sort, setSort] = useState<SortState>({ orderBy: Kolonne.MOTTATT, direction: 'descending' })
+  const [sort, setSort] = useState<SortState>({ orderBy: Kolonne.MOTTATT, direction: 'ascending' })
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
@@ -85,7 +85,7 @@ const ScrollableX = styled.div`
     { key: Kolonne.SØKNAD_OM, name: 'Søknad om' },
     { key: Kolonne.HJELPEMIDDELBRUKER, name: 'Hjelpemiddelbruker' },
     { key: Kolonne.FØDSELSNUMMER, name: 'Fødselsnr.' },
-    { key: Kolonne.BOSTED, name: 'Bosted' },
+    { key: Kolonne.BOSTED, name: 'Kommune / bydel' },
     { key: Kolonne.FORMIDLER, name: 'Formidler' },
     { key: Kolonne.MOTTATT, name: 'Mottatt dato' },
   ]
@@ -184,7 +184,7 @@ const ScrollableX = styled.div`
                           <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
                         </Table.DataCell>
                         <Table.DataCell>
-                          <Bosted bosted={oppgave.personinformasjon.poststed} saksID={oppgave.saksid} />
+                          <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />
                         </Table.DataCell>
                         <Table.DataCell>
                           <FormidlerCelle

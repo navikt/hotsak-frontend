@@ -1,15 +1,10 @@
 import styled from 'styled-components/macro'
-import { capitalize } from '../../utils/stringFormating'
-import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
 import { Heading } from '@navikt/ds-react'
 import { Hjelpemiddel } from './Hjelpemiddel'
 import { Rad } from '../../felleskomponenter/Flex'
 
-const TittelIkon = styled(RullestolIkon)`
-  padding-right: 0.5rem;
-`
 const Container = styled.div`
   padding-top: 1rem;
 `
@@ -34,10 +29,8 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidl
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
-        <TittelIkon width={26} height={26} />
-        Hjelpemidler
+        Søknad om hjelpemidler
       </Heading>
-      <Tekst>{capitalize(personinformasjon.funksjonsnedsettelse.join(', '))}</Tekst>
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {
           return (

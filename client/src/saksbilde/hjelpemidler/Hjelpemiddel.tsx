@@ -28,7 +28,7 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-  Number(props.rank) === 1 ? 'var(--navds-global-color-green-200)' : 'var(--navds-global-color-orange-400)'};
+  Number(props.rank) === 1 ? 'var(--navds-global-color-gray-200)' : 'var(--navds-global-color-orange-400)'};
     color: inherit;
     font-weight: inherit;
   }
@@ -100,19 +100,19 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
               <TilleggsInfo>
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
-                    <>
-                      <Rad key={tilleggsinfo.tittel}>
+                    <React.Fragment key={tilleggsinfo.tittel}>
+                      <Rad >
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
                         <Kolonne width='700px'>
                           {tilleggsinfo.innholdsliste.map(element =>
-                            <Rad>{element}</Rad>
+                            <Rad key={element}>{element}</Rad>
                           )}
                         </Kolonne>
 
                       </Rad>
-                    </>
+                    </React.Fragment>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (

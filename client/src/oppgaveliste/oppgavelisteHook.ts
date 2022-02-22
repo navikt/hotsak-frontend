@@ -70,7 +70,7 @@ const buildQueryParamString = (queryParams: Object) => {
 export function useOppgaveliste(currentPage: number, sort: SortState, filters: Filters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet)
+  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, {refreshInterval: 10000})
 
   return {
     oppgaver: data?.data.oppgaver || [],

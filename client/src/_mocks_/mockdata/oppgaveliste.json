@@ -9,7 +9,8 @@
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Petter Andreas",
       "etternavn": "Hansen",
-      "poststed": "Trondheim"
+      "poststed": "Trondheim",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -30,7 +31,8 @@
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Mia Cathrine",
       "etternavn": "Svendsen",
-      "poststed": "Trondheim"
+      "poststed": "Trondheim",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -52,7 +54,8 @@
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Per Bjørkli",
       "etternavn": "Hansen",
-      "poststed": "Trondheim"
+      "poststed": "Trondheim",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -78,7 +81,8 @@
       "funksjonsnedsettelse": ["kognisjon"],
       "fornavn": "Iver",
       "etternavn": "Slettan",
-      "poststed": "Lade"
+      "poststed": "Lade",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -96,14 +100,15 @@
   {
     "saksid": "999999",
     "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-06-25T13:55:45",
+    "mottattDato": "2021-06-25T16:55:45",
     "formidlerNavn": "Kari Johansen",
     "personinformasjon": {
       "fnr": "16120101181",
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Sondre",
       "etternavn": "Hansen",
-      "poststed": "Lade"
+      "poststed": "Lade",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -128,7 +133,8 @@
       "funksjonsnedsettelse": ["bevegelse"],
       "fornavn": "Geir",
       "etternavn": "Dalby",
-      "poststed": "Trondheim"
+      "poststed": "Trondheim",
+      "bosted": "TRONDHEIM"
     },
     "saksbehandler": {
         "epost": "a.b@nav.no",

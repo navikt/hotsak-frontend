@@ -50,6 +50,8 @@ export const GreitÅViteCard = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør 
               }
               if (a.type === GreitÅViteType.ADVARSEL) return -1
               if (b.type === GreitÅViteType.ADVARSEL) return 1
+              if (a.type === GreitÅViteType.MERKNAD) return -1
+              if (b.type === GreitÅViteType.MERKNAD) return 1
               return 0
             })
             .map((faktum) => {

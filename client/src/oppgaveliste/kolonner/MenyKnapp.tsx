@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 // @ts-ignore
-import {Button, Loader} from '@navikt/ds-react'
-import {deleteFjernTildeling} from '../../io/http'
-import {EllipsisCircleH} from '@navikt/ds-icons'
-import {useInnloggetSaksbehandler} from '../../state/authentication'
-import {Dropdown} from '@navikt/ds-react-internal'
-import {Oppgave, OppgaveStatusType} from '../../types/types.internal'
-import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
+import { Button, Loader } from '@navikt/ds-react'
+import { deleteFjernTildeling } from '../../io/http'
+import { EllipsisCircleH } from '@navikt/ds-icons'
+import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { Dropdown } from '@navikt/ds-react-internal'
+import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 interface MenyKnappProps {
-  oppgave: Oppgave,
-    onMutate: Function
+  oppgave: Oppgave
+  onMutate: Function
 }
 
 export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
@@ -22,7 +22,11 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   }
 
   const disabled = () => {
-    return !oppgave.saksbehandler || oppgave.saksbehandler.objectId !== saksbehandler.objectId || oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    return (
+      !oppgave.saksbehandler ||
+      oppgave.saksbehandler.objectId !== saksbehandler.objectId ||
+      oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    )
   }
 
   const fjernTildeling = (event: React.MouseEvent) => {
@@ -41,20 +45,20 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   return (
     <>
       {
-        <Dropdown>
-          <Button variant='tertiary' size='xsmall' as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
-            <EllipsisCircleH />
-          </Button>
-          <Dropdown.Menu onClick={menyClick}>
-            <Dropdown.Menu.List>
-              <Dropdown.Menu.List.Item
-                disabled={disabled()}
-                onClick={fjernTildeling}>Fjern tildeling {isFetching &&
-              <Loader size='small' />}
-              </Dropdown.Menu.List.Item>
-            </Dropdown.Menu.List>
-          </Dropdown.Menu>
-        </Dropdown>
+        <span style={{ display: 'flex', marginBlock: -2 }}>
+          <Dropdown>
+            <Button variant="tertiary" size="xsmall" as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
+              <EllipsisCircleH />
+            </Button>
+            <Dropdown.Menu onClick={menyClick}>
+              <Dropdown.Menu.List>
+                <Dropdown.Menu.List.Item disabled={disabled()} onClick={fjernTildeling}>
+                  Fjern tildeling {isFetching && <Loader size="small" />}
+                </Dropdown.Menu.List.Item>
+              </Dropdown.Menu.List>
+            </Dropdown.Menu>
+          </Dropdown>
+        </span>
       }
     </>
   )

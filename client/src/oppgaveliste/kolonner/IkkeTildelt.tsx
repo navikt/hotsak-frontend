@@ -59,6 +59,7 @@ export const IkkeTildelt = ({oppgavereferanse, gåTilSak = false}: IkkeTildeltPr
     <>
       {
         <Button size={gåTilSak ? 'xsmall' : 'small'} variant={gåTilSak ? "tertiary" : "secondary"} onClick={tildel}
+        style={{ marginTop: -2, marginBottom: -2, marginLeft: -6 }}
                          data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
           Start saken
           {isFetching && <Loader size='small' />}

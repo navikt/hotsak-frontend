@@ -11,7 +11,7 @@ interface MottattProps {
 
 export const Motatt = React.memo(({ dato }: MottattProps) => {
   return (
-    <CellContent width={100}>
+    <CellContent width={140}>
       <Tekst>{norskTimestamp(dato)}</Tekst>
     </CellContent>
   )

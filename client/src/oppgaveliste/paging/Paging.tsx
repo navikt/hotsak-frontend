@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 import { Pagination } from '@navikt/ds-react'
 import { PageCounter } from './PageCounter'
-import { generatePageNumbers } from './pageNumbers'
+//import { generatePageNumbers } from './pageNumbers'
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const Container = styled.div`
 `
 
 export const PAGE_SIZE = 25
-const visiblePages = 10
+//const visiblePages = 10
 
 interface PaginationProps {
   totalCount: number
@@ -20,8 +20,8 @@ interface PaginationProps {
 
 export const Paging: React.FC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {
   const totalNumberOfPages = Math.ceil(totalCount / PAGE_SIZE)
-  const pages = generatePageNumbers(currentPage, totalNumberOfPages, visiblePages)
-  const hasMultiplePages = pages.length > 1
+  //const pages = generatePageNumbers(currentPage, totalNumberOfPages, visiblePages)
+  const hasMultiplePages = totalNumberOfPages > 1
 
   
   return (

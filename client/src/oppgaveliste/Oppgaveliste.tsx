@@ -35,6 +35,10 @@ const Container = styled.div`
   width: 100%;
 `
 
+const ScrollWrapper = styled.div`
+overflow: auto;
+`
+
 export const Oppgaveliste = () => {
   const [sakerFilter, setSakerFilter] = useState(SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
@@ -158,8 +162,7 @@ export const Oppgaveliste = () => {
         <Container>
             <Panel>
               {hasData ? (
-                <>
-                  <div style={{ overflow: 'auto' }}>
+                <ScrollWrapper>
                     {/* @ts-ignore */}
                     <Table
                       style={{ width: 'initial' }}
@@ -211,8 +214,7 @@ export const Oppgaveliste = () => {
                       currentPage={currentPage}
                       onPageChange={(page: number) => setCurrentPage(page)}
                     />
-                  </div>
-                </>
+                </ScrollWrapper>
               ) : (
                 <IngenOppgaver />
               )}

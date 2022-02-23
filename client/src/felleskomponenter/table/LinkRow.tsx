@@ -10,9 +10,6 @@ const ClickableRow = styled(Table.Row)`
     outline: none;
   }
 `
-
-
-
 interface LinkRowProps {
   saksnummer: string
 }

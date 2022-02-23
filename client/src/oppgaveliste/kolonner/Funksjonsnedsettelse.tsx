@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { capitalize } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
@@ -16,9 +15,9 @@ export const Funksjonsnedsettelse = React.memo(({ funksjonsnedsettelser, saksID 
   const funksjonsnedsettelse = capitalize(funksjonsnedsettelser.join(', '))
 
   return (
-    <CellContent width={128} data-for={id} data-tip={funksjonsnedsettelse}>
+    <div data-for={id} data-tip={funksjonsnedsettelse}>
       <TekstMedEllipsis>{funksjonsnedsettelse}</TekstMedEllipsis>
       {funksjonsnedsettelse.length > 18 && <Tooltip id={id} />}
-    </CellContent>
+    </div>
   )
 })

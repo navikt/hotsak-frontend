@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
@@ -16,9 +15,9 @@ export const FormidlerCelle = React.memo(({ formidlerNavn, saksID }: FormidlerPr
   const formatertNavn = capitalizeName(formidlerNavn)
 
   return (
-    <CellContent width={140} data-for={id} data-tip={formatertNavn}>
+    <div data-for={id} data-tip={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
       {formatertNavn.length > 19 && <Tooltip id={id} />}
-    </CellContent>
+    </div>
   )
 })

@@ -1,4 +1,4 @@
-@import '@navikt/ds-css';
+@import '@navikt/ds-css/index.css';
 @import '@navikt/ds-css-internal';
 
 #root {
@@ -6,6 +6,10 @@
   flex-direction: column;
   height: 100%;
   flex: 1;
+}
+ /* https://github.com/facebook/create-react-app/issues/11773 Løsning herfra på grunn av problemer med react scripts */
+iframe {
+    pointer-events: none;
 }
 
 :root {

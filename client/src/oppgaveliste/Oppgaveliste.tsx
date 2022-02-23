@@ -18,6 +18,7 @@ import { MenyKnapp } from './kolonner/MenyKnapp'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
+  Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
   SakerFilter,
@@ -26,26 +27,20 @@ import {
 import { FilterDropdown, Filters } from './filter'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Paging } from './paging/Paging'
+import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 
-enum Kolonne {
-  EIER = 'EIER',
-  FØDSELSNUMMER = 'FØDSELSNUMMER',
-  HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
-  FUNKSJONSNEDSETTELSE = 'FUNKSJONSNEDSETTELSE',
-  SØKNAD_OM = 'SØKNAD_OM',
-  BOSTED = 'BOSTED',
-  FORMIDLER = 'FORMIDLER',
-  STATUS = 'STATUS',
-  MOTTATT = 'MOTTATT',
-}
-
+const Container = styled.div`
+  min-height: 300px;
+  height: calc(100% - 50px);
+  width: 100%;
+`
 
 export const Oppgaveliste = () => {
   const [sakerFilter, setSakerFilter] = useState(SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
   const [currentPage, setCurrentPage] = useState(0)
-  const [sort, setSort] = useState<SortState>({ orderBy: "mottatt", direction: 'ascending' })
+  const [sort, setSort] = useState<SortState>({ orderBy: 'MOTTATT', direction: 'ascending' })
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
@@ -64,28 +59,62 @@ export const Oppgaveliste = () => {
     setCurrentPage(0)
   }
 
-  const Container = styled.div`
-    min-height: 300px;
-  `
-
-  const ScrollableX = styled.div`
-    overflow: auto hidden;
-    margin: 0;
-    padding: 0;
-    height: calc(100% - 50px);
-    width: 100%;
-  `
-
   const kolonner = [
-    { key: "eier", name: 'Eier' },
-    { key: "status", name: 'Status' },
-    { key: "funksjonsnedsettelse", name: 'Område' },
-    { key: "søknadOm", name: 'Søknad om' },
-    { key: "hjelpemiddelbruker", name: 'Hjelpemiddelbruker' },
-    { key: "fødselsnummer", name: 'Fødselsnr.' },
-    { key: "bosted", name: 'Kommune / bydel' },
-    { key: "formidler", name: 'Formidler' },
-    { key: "mottatt", name: 'Mottatt dato' },
+    { key: 'EIER', name: 'Eier', width: 152, render: (oppgave: Oppgave) => <Tildeling oppgave={oppgave} /> },
+    {
+      key: 'STATUS',
+      name: 'Status',
+      width: 154,
+      render: (oppgave: Oppgave) => <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />,
+    },
+    {
+      key: 'FUNKSJONSNEDSETTELSE',
+      name: 'Område',
+      width: 152,
+      render: (oppgave: Oppgave) => (
+        <Funksjonsnedsettelse
+          funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
+          saksID={oppgave.saksid}
+        />
+      ),
+    },
+    {
+      key: 'SØKNAD_OM',
+      name: 'Søknad om',
+      width: 192,
+      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />,
+    },
+    {
+      key: 'HJELPEMIDDELBRUKER',
+      name: 'Hjelpemiddelbruker',
+      width: 188,
+      render: (oppgave: Oppgave) => <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />,
+    },
+    {
+      key: 'FØDSELSNUMMER',
+      name: 'Fødselsnr.',
+      width: 124,
+      render: (oppgave: Oppgave) => <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />,
+    },
+    {
+      key: 'BOSTED',
+      name: 'Kommune / bydel',
+      width: 155,
+      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />,
+    },
+    {
+      key: 'FORMIDLER',
+      name: 'Formidler',
+      width: 164,
+      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn} />,
+    },
+    {
+      key: 'MOTTATT',
+      name: 'Mottatt dato',
+      width: 140,
+      render: (oppgave: Oppgave) => <Motatt dato={oppgave.mottattDato} />,
+    },
+    { key: 'MENU', sortable: false, render: (oppgave: Oppgave) => <MenyKnapp oppgave={oppgave} onMutate={mutate} /> },
   ]
 
   if (isError) {
@@ -127,19 +156,9 @@ export const Oppgaveliste = () => {
         <Toast>Henter oppgaver </Toast>
       ) : (
         <Container>
-          <ScrollableX>
             <Panel>
               {hasData ? (
                 <>
-                  {/*
-                  <OppgaverTable
-                    oppgaver={oppgaver}
-                    sortBy={"sortBy"}
-                    onSort={(label: Kolonne, sortOrder: SortOrder) => handleSort(label, sortOrder)}
-                    onMutate={mutate}
-                  />
-                */}
-
                   <div style={{ overflow: 'auto' }}>
                     {/* @ts-ignore */}
                     <Table
@@ -148,65 +167,40 @@ export const Oppgaveliste = () => {
                       size="small"
                       sort={sort}
                       onSortChange={(sortKey) => {
-                          console.log("Sort key: ", sortKey);
-                          
                         setSort({
-                          orderBy: "mottatt",
+                          orderBy: 'mottatt',
                           direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
-                        })}
-                      }
+                        })
+                      }}
                     >
                       <Table.Header>
                         <Table.Row>
-                          {kolonner.map(({ key, name }) => (
-                            <Table.ColumnHeader key={key} sortable={true} sortKey={key}>
+                          {kolonner.map(({ key, name, sortable = true, width }, idx) => (
+                            <KolonneHeader
+                              key={key}
+                              sortable={sortable}
+                              sortKey={key}
+                              width={width}
+                            >
                               {name}
-                            </Table.ColumnHeader>
+                            </KolonneHeader>
                           ))}
-                          <Table.HeaderCell scope="col" />
                         </Table.Row>
                       </Table.Header>
                       <Table.Body>
                         {oppgaver.map((oppgave) => (
                           <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                            {
-                              <Table.DataCell style={{ padding: '0.4rem' }}>
-                                <Tildeling oppgave={oppgave} />
-                              </Table.DataCell>
-                            }
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Funksjonsnedsettelse
-                                funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
-                                saksID={oppgave.saksid}
-                              />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <FormidlerCelle
-                                saksID={oppgave.saksid}
-                                formidlerNavn={oppgave.formidlerNavn}
-                              ></FormidlerCelle>
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <Motatt dato={oppgave.mottattDato} />
-                            </Table.DataCell>
-                            <Table.DataCell style={{ padding: '0.4rem' }}>
-                              <MenyKnapp oppgave={oppgave} onMutate={mutate} />
-                            </Table.DataCell>
+                            {kolonner.map(({ render, width, key }, idx) => (
+                              <DataCell
+                                key={key}
+                                width={width}
+                                style={{
+                                  padding: '0.35rem',
+                                }}
+                              >
+                                {render(oppgave)}
+                              </DataCell>
+                            ))}
                           </LinkRow>
                         ))}
                       </Table.Body>
@@ -223,7 +217,6 @@ export const Oppgaveliste = () => {
                 <IngenOppgaver />
               )}
             </Panel>
-          </ScrollableX>
         </Container>
       )}
     </>

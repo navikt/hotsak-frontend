@@ -10,7 +10,7 @@
       "fornavn": "Petter Andreas",
       "etternavn": "Hansen",
       "poststed": "Trondheim",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -32,7 +32,7 @@
       "fornavn": "Mia Cathrine",
       "etternavn": "Svendsen",
       "poststed": "Trondheim",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
@@ -55,7 +55,7 @@
       "fornavn": "Per Bjørkli",
       "etternavn": "Hansen",
       "poststed": "Trondheim",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -82,7 +82,7 @@
       "fornavn": "Iver",
       "etternavn": "Slettan",
       "poststed": "Lade",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -108,7 +108,7 @@
       "fornavn": "Sondre",
       "etternavn": "Hansen",
       "poststed": "Lade",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -134,7 +134,7 @@
       "fornavn": "Geir",
       "etternavn": "Dalby",
       "poststed": "Trondheim",
-      "bosted": "TRONDHEIM"
+      "bosted": "Trondheim"
     },
     "saksbehandler": {
         "epost": "a.b@nav.no",

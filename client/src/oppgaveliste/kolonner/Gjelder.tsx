@@ -11,11 +11,11 @@ interface GjelderProps {
 
 export const Gjelder = React.memo(({ søknadOm, saksID }: GjelderProps) => {
   const id = `gjelder-${saksID}`
-  const søknadGjelder = søknadOm.replace('Søknad om:', '').trim()
+  const søknadGjelder = capitalize(søknadOm.replace('Søknad om:', '').trim())
 
   return (
     <div data-for={id} data-tip={søknadGjelder}>
-      <TekstMedEllipsis>{capitalize(søknadGjelder)}</TekstMedEllipsis>
+      <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
       {søknadGjelder.length > 20 && <Tooltip id={id} />}
     </div>
   )

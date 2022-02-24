@@ -103,7 +103,7 @@ export const Oppgaveliste = () => {
     {
       key: 'BOSTED',
       name: 'Kommune / bydel',
-      width: 155,
+      width: 165,
       render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />,
     },
     {
@@ -169,9 +169,12 @@ export const Oppgaveliste = () => {
                       zebraStripes
                       size="small"
                       sort={sort}
+                      /* @ts-ignore */
                       onSortChange={(sortKey) => {
+                          console.log(sortKey)
+                          /* @ts-ignore */
                         setSort({
-                          orderBy: 'mottatt',
+                          orderBy: sortKey || 'mottatt',
                           direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
                         })
                       }}
@@ -194,12 +197,10 @@ export const Oppgaveliste = () => {
                         {oppgaver.map((oppgave) => (
                           <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
                             {kolonner.map(({ render, width, key }, idx) => (
-                              <DataCell
+                              <DataCell 
                                 key={key}
                                 width={width}
-                                style={{
-                                  padding: '0.35rem',
-                                }}
+                                style={{padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)'}}
                               >
                                 {render(oppgave)}
                               </DataCell>

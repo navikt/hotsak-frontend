@@ -45,7 +45,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   return (
     <>
       {
-        <span style={{ display: 'flex', marginBlock: -2 }}>
+        <span style={{ display: 'flex', marginBlock: -2}}>
           <Dropdown>
             <Button variant="tertiary" size="xsmall" as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
               <EllipsisCircleH />
@@ -53,7 +53,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
                 <Dropdown.Menu.List.Item disabled={disabled()} onClick={fjernTildeling}>
-                  Fjern tildeling {isFetching && <Loader size="small" />}
+                  Fjern tildeling {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
               </Dropdown.Menu.List>
             </Dropdown.Menu>

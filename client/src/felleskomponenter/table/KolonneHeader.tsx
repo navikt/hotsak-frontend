@@ -20,6 +20,5 @@ export const DataCell = styled(Table.DataCell)<{ width?: number }>`
     min-width:  ${width}px;
     max-width:  ${width}px;
     white-space: nowrap;
-    padding: 0.35rem;
 `}
 `

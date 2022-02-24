@@ -43,7 +43,7 @@ export const Oppgaveliste = () => {
   const [sakerFilter, setSakerFilter] = useState(SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useState(OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useState(OmrådeFilter.ALLE)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [sort, setSort] = useState<SortState>({ orderBy: 'MOTTATT', direction: 'ascending' })
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -163,16 +163,12 @@ export const Oppgaveliste = () => {
             <Panel>
               {hasData ? (
                 <ScrollWrapper>
-                    {/* @ts-ignore */}
                     <Table
                       style={{ width: 'initial' }}
                       zebraStripes
                       size="small"
                       sort={sort}
-                      /* @ts-ignore */
                       onSortChange={(sortKey) => {
-                          console.log(sortKey)
-                          /* @ts-ignore */
                         setSort({
                           orderBy: sortKey || 'mottatt',
                           direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',

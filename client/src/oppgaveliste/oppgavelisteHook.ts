@@ -36,7 +36,7 @@ interface OppgavelisteResponse {
 }
 
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
-    const pagingParams = { limit: PAGE_SIZE, page: currentPage + 1 }
+    const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sort.direction}` }
   const { sakerFilter, statusFilter, områdeFilter } = filters
 

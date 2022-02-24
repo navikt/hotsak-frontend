@@ -16,8 +16,6 @@ export const PageCounter: React.FC<PageCounterProps> = ({ pageSize, totalCount, 
   const førsteSynligeOppgave = pageSize * (currentPage - 1) + 1
   const sisteOppgave = førsteSynligeOppgave + pageSize - 1
 
-  console.log(pageSize, totalCount, currentPage);
-  
   return (
     <>
       <Container>

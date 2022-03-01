@@ -28,7 +28,7 @@ import { FilterDropdown, Filters } from './filter'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { Paging } from './paging/Paging'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { useFilterContext } from './stateManagement/FilterContext'
+import { useLocalStorageState } from './localStorage/localStorageHook'
 
 const Container = styled.div`
   min-height: 300px;
@@ -41,18 +41,11 @@ const ScrollWrapper = styled.div`
 `
 
 export const Oppgaveliste = () => {
-  const {
-    sakerFilter,
-    setSakerFilter,
-    statusFilter,
-    setStatusFilter,
-    områdeFilter,
-    setOmrådeFilter,
-    currentPage,
-    setCurrentPage,
-    sort,
-    setSort,
-  } = useFilterContext()
+  const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
+  const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
+  const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
+  const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
+  const [sort, setSort] = useLocalStorageState('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -133,8 +126,6 @@ export const Oppgaveliste = () => {
   if (isError) {
     throw Error('Feil med henting av oppgaver')
   }
-
-  console.log("Sort", sort, sakerFilter, statusFilter, områdeFilter, currentPage)
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0

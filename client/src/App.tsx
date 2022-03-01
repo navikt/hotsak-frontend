@@ -16,7 +16,6 @@ import { PageNotFound } from './feilsider/PageNotFound'
 import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
-import { FilterProvider } from './oppgaveliste/stateManagement/FilterContext'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -61,7 +60,6 @@ const logUserStats = () => {
 
 const withRoutingAndState = (Component: React.ComponentType) => () =>
   (
-    <FilterProvider>
     <BrowserRouter>
       <RecoilRoot>
       
@@ -70,7 +68,6 @@ const withRoutingAndState = (Component: React.ComponentType) => () =>
       </RecoilRoot>
 
     </BrowserRouter>
-    </FilterProvider>
   )
 
 export default hot(module)(withRoutingAndState(App))

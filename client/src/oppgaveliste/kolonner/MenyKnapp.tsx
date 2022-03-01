@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// @ts-ignore
 import { Button, Loader } from '@navikt/ds-react'
 import { deleteFjernTildeling } from '../../io/http'
 import { EllipsisCircleH } from '@navikt/ds-icons'

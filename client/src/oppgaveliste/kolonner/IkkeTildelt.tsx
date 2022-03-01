@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-// @ts-ignore
 import {useSWRConfig} from 'swr'
 import {Button, Loader} from '@navikt/ds-react'
 import {postTildeling} from '../../io/http'

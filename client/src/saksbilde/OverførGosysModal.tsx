@@ -35,6 +35,7 @@ export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekre
           legend="Velg årsak til at saken må overføres til Gosys"
           error={!valgteArsaker.length && error}
           value={valgteArsaker}
+          
           onChange={setValgteArsaker}
         >
           {overforGosysArsaker.map((arsak, index) => (

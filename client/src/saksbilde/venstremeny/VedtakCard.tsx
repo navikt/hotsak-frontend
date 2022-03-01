@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import styled from 'styled-components/macro'
-// @ts-ignore
 import {useSWRConfig} from 'swr'
 
 import {Button, Tag} from '@navikt/ds-react'

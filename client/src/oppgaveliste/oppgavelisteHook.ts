@@ -1,8 +1,9 @@
+import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 import { httpGet } from '../io/http'
 
-import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SortBy } from '../types/types.internal'
-import { PAGE_SIZE } from './paging/Pagination'
+import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter } from '../types/types.internal'
+import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
   oppgaver: Oppgave[]
@@ -34,10 +35,13 @@ interface OppgavelisteResponse {
   currentPage: number
 }
 
-const pathConfig = (currentPage: number, sortBy: SortBy, filters: Filters): PathConfigType => {
-  const pagingParams = { limit: PAGE_SIZE, page: currentPage }
-  const sortParams = { sort_by: `${sortBy.label}.${sortBy.sortOrder}` }
+const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
+    const pagingParams = { limit: PAGE_SIZE, page: currentPage }
+  const sortParams = { sort_by: `${sort.orderBy}.${sort.direction}` }
   const { sakerFilter, statusFilter, områdeFilter } = filters
+
+
+
 
   let filterParams: any = {}
 
@@ -63,8 +67,8 @@ const buildQueryParamString = (queryParams: Object) => {
     .join('&')
 }
 
-export function useOppgaveliste(currentPage: number, sortBy: SortBy, filters: Filters): DataResponse {
-  const { path, queryParams } = pathConfig(currentPage, sortBy, filters)
+export function useOppgaveliste(currentPage: number, sort: SortState, filters: Filters): DataResponse {
+  const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, {refreshInterval: 10000})
 

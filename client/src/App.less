@@ -7,6 +7,10 @@
   height: 100%;
   flex: 1;
 }
+ /* https://github.com/facebook/create-react-app/issues/11773 Løsning herfra på grunn av problemer med react scripts */
+iframe {
+    pointer-events: none;
+}
 
 :root {
   --speil-light-hover: #e9e7e7;

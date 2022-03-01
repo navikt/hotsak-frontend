@@ -1,5 +1,4 @@
 import { Dayjs } from 'dayjs'
-import { Kolonne } from '../oppgaveliste/OppgaverTable'
 
 export interface Sak {
   saksid: string
@@ -276,17 +275,6 @@ export interface Produkt {
   produkturl: string
   artikkelurl: string
   posttittel: string
-}
-
-export interface SortBy {
-  label: Kolonne
-  sortOrder: SortOrder
-}
-
-export enum SortOrder {
-  ASCENDING = 'asc',
-  DESCENDING = 'desc',
-  NONE = 'none',
 }
 
 export enum Filter {

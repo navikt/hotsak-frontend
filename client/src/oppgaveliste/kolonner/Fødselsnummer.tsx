@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { Tekst } from '../../felleskomponenter/typografi'
 
@@ -11,8 +9,8 @@ interface FødselsnummerProps {
 
 export const Fødselsnummer = React.memo(({ fødselsnummer }: FødselsnummerProps) => {
   return (
-    <CellContent width={100}>
+    <div>
       <Tekst>{formaterFødselsnummer(fødselsnummer)}</Tekst>
-    </CellContent>
+    </div>
   )
 })

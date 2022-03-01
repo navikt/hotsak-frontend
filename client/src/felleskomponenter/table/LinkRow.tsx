@@ -1,18 +1,15 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { Table } from '@navikt/ds-react'
 import styled from 'styled-components/macro'
 
-import { Row } from './Row'
-
-const HighlightOnHoverRow = styled(Row)`
+const ClickableRow = styled(Table.Row)`
   &:hover,
   &:focus {
-    background-color: var(--speil-light-hover-tabell);
     cursor: pointer;
     outline: none;
   }
 `
-
 interface LinkRowProps {
   saksnummer: string
 }
@@ -26,8 +23,8 @@ export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, children }) => {
   }
 
   return (
-    <HighlightOnHoverRow role="link" tabIndex={0} onClick={navigate}>
+    <ClickableRow role="link" tabIndex={0} onClick={navigate}>
       {children}
-    </HighlightOnHoverRow>
+    </ClickableRow>
   )
 }

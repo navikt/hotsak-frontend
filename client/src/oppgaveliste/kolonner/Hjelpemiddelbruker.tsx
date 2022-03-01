@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { CellContent } from '../../felleskomponenter/table/rader/CellContent'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
@@ -23,9 +22,9 @@ export const Hjelpemiddelbruker = React.memo(({ person, saksID }: Hjelpemiddelbr
   const formatertNavn = getFormattedName(person)
 
   return (
-    <CellContent width={160} data-for={id} data-tip={formatertNavn}>
+    <div data-for={id} data-tip={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
       {formatertNavn.length > 23 && <Tooltip id={id} />}
-    </CellContent>
+    </div>
   )
 })

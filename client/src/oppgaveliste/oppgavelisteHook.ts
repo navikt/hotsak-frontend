@@ -36,12 +36,10 @@ interface OppgavelisteResponse {
 }
 
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
-    const pagingParams = { limit: PAGE_SIZE, page: currentPage }
-  const sortParams = { sort_by: `${sort.orderBy}.${sort.direction}` }
+  const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
+  const pagingParams = { limit: PAGE_SIZE, page: currentPage }
+  const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
   const { sakerFilter, statusFilter, områdeFilter } = filters
-
-
-
 
   let filterParams: any = {}
 
@@ -70,7 +68,7 @@ const buildQueryParamString = (queryParams: Object) => {
 export function useOppgaveliste(currentPage: number, sort: SortState, filters: Filters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, {refreshInterval: 10000})
+  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
 
   return {
     oppgaver: data?.data.oppgaver || [],
@@ -79,6 +77,6 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: F
     currentPage: data?.data.currentPage || currentPage,
     isLoading: !error && !data,
     isError: error,
-    mutate: mutate
+    mutate: mutate,
   }
 }

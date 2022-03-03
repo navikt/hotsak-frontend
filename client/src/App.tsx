@@ -1,37 +1,43 @@
+
 import React from 'react'
+
 import { ErrorBoundary } from 'react-error-boundary'
 import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-import 'reset-css'
+//import 'reset-css'
 
 import { IkkeLoggetInn } from './routes/IkkeLoggetInn'
 
-import './App.less'
+//import './App.less'
 //import ReactModal from 'react-modal';
 import { Toppmeny } from './Header'
 import { ProtectedRoute } from './ProtectedRoute'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
+
 import { PageNotFound } from './feilsider/PageNotFound'
 import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
+import { PersonProvider } from './personoversikt/PersonContext'
+import { Personoversikt } from './personoversikt/Personoversikt'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
 
 //ReactModal.setAppElement('#root');
-//const Opptegnelse = React.lazy(() => import('./routes/saksbilde/Opptegnelse'));
+
+
 
 function App() {
   useAuthentication()
   logUserStats()
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
-        <Toppmeny />
-        <React.Suspense fallback={<div />}>
-          {/*<Varsler />*/}
-
+      <Toppmeny />
+      <React.Suspense fallback={<div />}>
+        {/*<Varsler />*/}
+        <PersonProvider>
           <Switch>
             <Route path={Routes.Uautorisert}>
               <IkkeLoggetInn />
@@ -42,13 +48,17 @@ function App() {
             <ProtectedRoute path={Routes.Saksbilde}>
               <Saksbilde />
             </ProtectedRoute>
+            <ProtectedRoute path={Routes.Personoversikt}>
+              <Personoversikt />
+            </ProtectedRoute>
             <Route path="*">
               <PageNotFound />
             </Route>
           </Switch>
-        </React.Suspense>
-        {/*</React.Suspense>*/}
-        {/*<Toasts />*/}
+        </PersonProvider>
+      </React.Suspense>
+      {/*</React.Suspense>*/}
+      {/*<Toasts />*/}
     </ErrorBoundary>
   )
 }
@@ -62,11 +72,8 @@ const withRoutingAndState = (Component: React.ComponentType) => () =>
   (
     <BrowserRouter>
       <RecoilRoot>
-      
         <Component />
-        
       </RecoilRoot>
-
     </BrowserRouter>
   )
 

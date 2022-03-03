@@ -2,15 +2,16 @@ import { HøyrekolonneTabs } from '../../types/types.internal'
 import styled from 'styled-components/macro'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
+import { hotsakHistorikkWidth } from '../../GlobalStyles'
 
 interface HøyrekolonneProps {
   currentTab: HøyrekolonneTabs
 }
 
 export const KolonneOppsett = styled.ul`
-  width: var(--speil-historikk-width);
-  min-width: var(--speil-historikk-width);
-  max-width: var(--speil-historikk-width);
+  width: ${hotsakHistorikkWidth};
+  min-width: ${hotsakHistorikkWidth};
+  max-width: ${hotsakHistorikkWidth};
   flex: 1;
   flex-shrink: 0;
   padding: 0 24px;

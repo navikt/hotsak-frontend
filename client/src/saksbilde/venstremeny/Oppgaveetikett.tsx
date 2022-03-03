@@ -30,8 +30,8 @@ const Etikett = styled.div<EtikettProps>`
 `
 
 const SøknadEtikett = styled(Etikett)`
-  background: var(--speil-etikett-forstegangs-background);
-  border: 1px solid var(--speil-etikett-forstegangs-border);
+  background: var(--navds-global-color-purple-100);
+  border: 1px solid var(--navds-global-color-purple-500);
 
   :before {
     content: 'S';

@@ -9,13 +9,14 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Personinfo, Kjønn } from '../types/types.internal'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
+import { hotsakTotalMinWidth } from '../GlobalStyles'
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
   height: 48px;
-  min-width: var(--speil-total-min-width);
+  min-width: ${hotsakTotalMinWidth};
   box-sizing: border-box;
   padding: 0 2rem;
   background: var(--navds-semantic-color-canvas-background);

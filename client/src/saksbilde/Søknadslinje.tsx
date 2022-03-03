@@ -6,6 +6,7 @@ import { TabLink } from './TabLink'
 import { HøyrekolonneHeader } from './høyrekolonne/historikk/HøyrekolonneHeader'
 import { useSak } from './sakHook'
 import { HøyrekolonneTabs } from '../types/types.internal'
+import { hotsakTotalMinWidth } from '../GlobalStyles'
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const Container = styled.div`
   box-sizing: border-box;
   border-bottom: 1px solid var(--navds-semantic-color-border-muted);
   padding: 0 0 0 2rem;
-  min-width: var(--speil-total-min-width);
+  min-width: ${hotsakTotalMinWidth};
 
   > div:last-of-type {
     margin-left: 1rem;

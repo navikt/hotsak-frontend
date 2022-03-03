@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro'
 import { HistorikkIkon } from '../../../felleskomponenter/ikoner/HistorikkIkon'
 import { RullestolIkon } from '../../../felleskomponenter/ikoner/RullestolIkon'
+import { hotsakHistorikkWidth } from '../../../GlobalStyles'
 import { HøyrekolonneTabs } from '../../../types/types.internal'
 import { useSak } from '../../sakHook'
 import { SøknadslinjeProps } from '../../Søknadslinje'
@@ -11,7 +12,7 @@ const Header = styled.section`
   display: flex;
   height: 48px;
   box-sizing: border-box;
-  width: var(--speil-historikk-width);
+  width: ${hotsakHistorikkWidth};
 `
 const Teller = styled.div`
     background-color: var(--navds-global-color-blue-500);

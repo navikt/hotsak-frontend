@@ -19,8 +19,8 @@ import { PageNotFound } from './feilsider/PageNotFound'
 import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
-import { PersonProvider } from './personoversikt/PersonContext'
-import { Personoversikt } from './personoversikt/Personoversikt'
+//import { PersonProvider } from './personoversikt/PersonContext'
+//import { Personoversikt } from './personoversikt/Personoversikt'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -37,7 +37,7 @@ function App() {
       <Toppmeny />
       <React.Suspense fallback={<div />}>
         {/*<Varsler />*/}
-        <PersonProvider>
+        {/*<PersonProvider>*/}
           <Switch>
             <Route path={Routes.Uautorisert}>
               <IkkeLoggetInn />
@@ -48,14 +48,14 @@ function App() {
             <ProtectedRoute path={Routes.Saksbilde}>
               <Saksbilde />
             </ProtectedRoute>
-            <ProtectedRoute path={Routes.Personoversikt}>
+            {/*<ProtectedRoute path={Routes.Personoversikt}>
               <Personoversikt />
-            </ProtectedRoute>
+  </ProtectedRoute>*/}
             <Route path="*">
               <PageNotFound />
             </Route>
           </Switch>
-        </PersonProvider>
+       {/* </PersonProvider>*/}
       </React.Suspense>
       {/*</React.Suspense>*/}
       {/*<Toasts />*/}

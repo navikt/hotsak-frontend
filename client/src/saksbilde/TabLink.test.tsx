@@ -20,7 +20,7 @@ describe('TabLink', () => {
   test('rendrer disabled', () => {
     render(
       <MemoryRouter>
-        <TabLink title="Test" disabled>
+        <TabLink title="Test"  to="/et/eller/annet/sted" disabled>
           Test
         </TabLink>
       </MemoryRouter>

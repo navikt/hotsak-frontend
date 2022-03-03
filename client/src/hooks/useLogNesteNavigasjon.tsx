@@ -10,7 +10,7 @@ const useLogNesteNavigasjon = () => {
    * listeneren fjernet.
    */
   const logNesteNavigasjon = (fraHendelse: string, data?: any) => {
-    const unlisten = history.listen((location) => {
+    const unlisten = history.listen((location: any) => {
       logAmplitudeEvent(amplitude_taxonomy.NAVIGASJON_ETTER_HENDELSE, {
         fraHendelse,
         til: location.pathname,

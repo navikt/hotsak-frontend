@@ -1,49 +1,28 @@
 import bodyParser from 'body-parser'
-//import compression from 'compression';
 import cookieParser from 'cookie-parser'
 import express, { Response } from 'express'
 import { Client, generators } from 'openid-client'
 
 import auth from './auth/authSupport'
 import azure from './auth/azure'
-//import behandlingsstatistikkRoutes from './behandlingsstatistikk/behandlingsstatistikkRoutes';
 import config from './config'
-//import headers from './headers';
-//import oppgaveRoutes from './leggpåvent/leggPåVentRoutes';
 import logger from './logging'
 import path from 'path'
 import setupProxy from './reverse-proxy'
-//import opptegnelseRoutes from './opptegnelse/opptegnelseRoutes';
-//import overstyringRoutes from './overstyring/overstyringRoutes';
-//import paymentRoutes from './payment/paymentRoutes';
-//import person from './person/personRoutes';
 import { ipAddressFromRequest } from './requestData'
 import { sessionStore } from './sessionStore'
-//import tildelingRoutes from './tildeling/tildelingRoutes';
 import { AuthError, SpeilRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
-//import wiring from './wiring';
 
 const app = express()
 const port = config.server.port
-
-// if(process.env.NODE_ENV !== 'production') {
-//     app.get(`/mockServiceWorker.js`, (req, res) => {
-//         res.sendFile(path.resolve('', 'public', 'mockServiceWorker.js'))
-//       })
-// }
-
-//const helsesjekk = { redis: false };
-//const dependencies = wiring.getDependencies(app, helsesjekk);
 
 app.use(/\/((?!api).)*/, bodyParser.json())
 app.use(/\/((?!api).)*/, bodyParser.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 app.use(sessionStore(config))
-//app.use(compression());
 
-//headers.setup(app);
 let azureClient: Client | null = null
 azure
   .setup(config.oidc)
@@ -55,17 +34,9 @@ azure
     process.exit(1)
   })
 
-// Unprotected routes
 app.get('/isalive', (_, res) => res.send('alive'))
 app.get('/isready', (_, res) => {
   res.send('ready for action')
-  /*if (helsesjekk.redis) {
-        return res.send('ready');
-    } else {
-        logger.warning('Svarer not ready på isReady');
-        res.statusCode = 503;
-        return res.send('NOT READY');
-    }*/
 })
 
 app.get('/settings.js', (req, res) => {

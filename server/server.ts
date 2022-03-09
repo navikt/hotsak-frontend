@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import express, { Response } from 'express'
 import { Client, generators } from 'openid-client'
@@ -17,8 +16,8 @@ import onBehalfOf from './auth/onBehalfOf'
 const app = express()
 const port = config.server.port
 
-app.use(/\/((?!api).)*/, bodyParser.json())
-app.use(/\/((?!api).)*/, bodyParser.urlencoded({ extended: false }))
+app.use(/\/((?!api).)*/, express.json)
+app.use(/\/((?!api).)*/, express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 app.use(sessionStore(config))
@@ -114,8 +113,7 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
     next()
   } else {
     if (
-      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken }) ||
-      (await auth.refreshAccessToken(azureClient!, req.session!))
+      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken }) 
     ) {
       next()
     } else {

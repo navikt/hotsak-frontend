@@ -7,7 +7,7 @@ const envProperties = {
   GRUNNDATA_API_URL: process.env.GRUNNDATA_API_URL || ''
 }
 let onBehalfOf: OnBehalfOf
-let spesialistId: string
+let hotsakApiId: string
 
 const options = () => ({
   parseReqBody: false,
@@ -17,7 +17,7 @@ const options = () => ({
         const hotsakToken = req.session.hotsakToken
 
         if (hotsakToken !== '') {
-          onBehalfOf.hentFor(spesialistId, hotsakToken).then(
+          onBehalfOf.hentFor(hotsakApiId, hotsakToken).then(
             (onBehalfOfToken) => {
               // @ts-ignore
               options.headers.Authorization = `Bearer ${onBehalfOfToken}`
@@ -44,7 +44,7 @@ const pathRewriteBasedOnEnvironment = (req: HotsakRequest) => {
 
 const setupProxy = (server: core.Express, _onBehaldOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehaldOf
-  spesialistId = config.oidc.clientIDHotsakApi
+  hotsakApiId = config.oidc.clientIDHotsakApi
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
   server.use('/grunndata-api', proxy(envProperties.GRUNNDATA_API_URL))
 }

@@ -25,23 +25,23 @@ export interface Hendelse {
 }
 
 export interface HjelpemiddelArtikkel {
-    antall: number,
-    antallEnhet: string,
-    isoKode: string,
-    isoKategori: string,
-    beskrivelse: string,
-    hmsnr: string,
-    serieNr?: string,
-    datoUtsendelse: string,
-    ordrenummer?: string,
-    status: string,
-    grunndataBeriket: boolean,
-    grunndataProduktNavn?: string,
-    grunndataBeskrivelse?: string,
-    grunndataKategori?: string,
-    grunndataBilde?: string,
-    grunndataKategoriKortnavn?: string,
-    hjelpemiddeldatabasenURL?: string,
+  antall: number
+  antallEnhet: string
+  isoKode: string
+  isoKategori: string
+  beskrivelse: string
+  hmsnr: string
+  serieNr?: string
+  datoUtsendelse: string
+  ordrenummer?: string
+  status: string
+  grunndataBeriket: boolean
+  grunndataProduktNavn?: string
+  grunndataBeskrivelse?: string
+  grunndataKategori?: string
+  grunndataBilde?: string
+  grunndataKategoriKortnavn?: string
+  hjelpemiddeldatabasenURL?: string
 }
 
 export interface VedtakType {
@@ -309,13 +309,38 @@ export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.KOGNISJON, 'Kognisjon'],
 ])
 
-
 export enum HøyrekolonneTabs {
-    SAKSHISTORIKK = 'SAKSHISTORIKK',
-    HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT'
+  SAKSHISTORIKK = 'SAKSHISTORIKK',
+  HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
 }
 
 export interface OverforGosysTilbakemelding {
   valgteArsaker: string[]
   begrunnelse: string
+}
+
+
+export interface SaksoversiktType {
+  personinformasjon: {
+    fornavn: string
+    mellomnavn: string | null
+    etternavn: string
+    fødselsdato: string | undefined
+    kjønn: Kjønn
+    fnr: string
+    brukernummer?: string
+    telefon: string
+  }
+  saker: Saksoversikt_Sak[]
+}
+export interface Saksoversikt_Sak {
+    saksid: string
+    søknadGjelder: string
+    mottattDato: string
+    område: string[]
+    saksbehandler: Saksbehandler
+    fagsystem: string
+    status: OppgaveStatusType
+    vedtak?: VedtakType
+    enhet: Enhet[]
 }

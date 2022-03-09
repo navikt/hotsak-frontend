@@ -5,12 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-//import 'reset-css'
-
 import { IkkeLoggetInn } from './routes/IkkeLoggetInn'
-
-//import './App.less'
-//import ReactModal from 'react-modal';
 import { Toppmeny } from './Header'
 import { ProtectedRoute } from './ProtectedRoute'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
@@ -19,25 +14,24 @@ import { PageNotFound } from './feilsider/PageNotFound'
 import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
-//import { PersonProvider } from './personoversikt/PersonContext'
-//import { Personoversikt } from './personoversikt/Personoversikt'
+import { PersonProvider } from './personoversikt/PersonContext'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
+const Personoversikt = React.lazy(() => import('./personoversikt/Personoversikt'))
 
 //ReactModal.setAppElement('#root');
-
-
 
 function App() {
   useAuthentication()
   logUserStats()
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
+        <PersonProvider>
       <Toppmeny />
       <React.Suspense fallback={<div />}>
         {/*<Varsler />*/}
-        {/*<PersonProvider>*/}
+        
           <Switch>
             <Route path={Routes.Uautorisert}>
               <IkkeLoggetInn />
@@ -48,15 +42,16 @@ function App() {
             <ProtectedRoute path={Routes.Saksbilde}>
               <Saksbilde />
             </ProtectedRoute>
-            {/*<ProtectedRoute path={Routes.Personoversikt}>
+            <ProtectedRoute path={Routes.Personoversikt}>
               <Personoversikt />
-  </ProtectedRoute>*/}
+  </ProtectedRoute>
             <Route path="*">
               <PageNotFound />
             </Route>
           </Switch>
-       {/* </PersonProvider>*/}
+       
       </React.Suspense>
+      </PersonProvider>
       {/*</React.Suspense>*/}
       {/*<Toasts />*/}
     </ErrorBoundary>

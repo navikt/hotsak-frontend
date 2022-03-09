@@ -7,9 +7,12 @@ import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '.
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
-import { Personinfo, Kjønn } from '../types/types.internal'
+import { Personinfo, Kjønn, SaksoversiktType } from '../types/types.internal'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { Link } from '@navikt/ds-react'
+import { usePersonContext } from '../personoversikt/PersonContext'
+import { useHistory } from 'react-router'
 
 const Container = styled.div`
   display: flex;
@@ -47,7 +50,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo
+  person?: Personinfo | SaksoversiktType['personinformasjon'] | undefined
 }
 
 const LoadingText = styled.div`
@@ -93,23 +96,44 @@ const beregnAlder = (fødselsdato: string) => {
   return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-const formaterNavn = (person: Personinfo) => {
+const formaterNavn = (person: Personinfo | SaksoversiktType['personinformasjon']) => {
   return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
 }
 
 export const Personlinje = ({ person }: PersonlinjeProps) => {
+  const { setFodselsnummer } = usePersonContext()
+  const history = useHistory()
+
   if (!person) return <Container />
 
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
+      {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' ? (
+        <Link
+          href="#"
+          onClick={() => {
+            setFodselsnummer(fnr)
+            history.push('/personoversikt/saker')
+          }}
+        >
+          <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
+        </Link>
+      ) : (
+        <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
+      )}
       <Separator>/</Separator>
       {fnr ? (
         <>
           <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
-          <Clipboard popoverText="Fødselsnummer kopiert" variant="tertiary" size="small" copyText={fnr} popoverPlacement="bottom" />
+          <Clipboard
+            popoverText="Fødselsnummer kopiert"
+            variant="tertiary"
+            size="small"
+            copyText={fnr}
+            popoverPlacement="bottom"
+          />
         </>
       ) : (
         <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>

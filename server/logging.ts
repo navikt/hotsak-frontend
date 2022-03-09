@@ -1,6 +1,6 @@
 import fs from 'fs'
 import winston from 'winston'
-import { SpeilRequest } from './types'
+import { HotsakRequest } from './types'
 
 import authSupport from './auth/authSupport'
 ;('use strict')
@@ -43,10 +43,10 @@ const sikkerError = (message: string, ...meta: any[]) => {
   sikkerLogger.error(message, ...meta)
 }
 
-const requestMeta = (req: SpeilRequest) => {
+const requestMeta = (req: HotsakRequest) => {
   return {
-    speilUser: authSupport.valueFromClaim('name', req.session.speilToken),
-    navIdent: authSupport.valueFromClaim('NAVident', req.session.speilToken),
+    hotsakUser: authSupport.valueFromClaim('name', req.session.hotsakToken),
+    navIdent: authSupport.valueFromClaim('NAVident', req.session.hotsakToken),
     headers: req.headers,
     method: req.method,
     url: req.url,

@@ -11,7 +11,7 @@ import path from 'path'
 import setupProxy from './reverse-proxy'
 import { ipAddressFromRequest } from './requestData'
 import { sessionStore } from './sessionStore'
-import { AuthError, SpeilRequest } from './types'
+import { AuthError, HotsakRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
 
 const app = express()
@@ -50,7 +50,7 @@ app.get('/settings.js', (req, res) => {
 })
 
 const setUpAuthentication = () => {
-  app.get('/login', (req: SpeilRequest, res: Response) => {
+  app.get('/login', (req: HotsakRequest, res: Response) => {
     const session = req.session
     session.nonce = generators.nonce()
     session.state = generators.state()
@@ -68,25 +68,25 @@ const setUpAuthentication = () => {
     })
     res.redirect(url)
   })
-  app.get('/logout', (req: SpeilRequest, res: Response) => {
-    azureClient!.revoke(req.session.speilToken).finally(() => {
+  app.get('/logout', (req: HotsakRequest, res: Response) => {
+    azureClient!.revoke(req.session.hotsakToken).finally(() => {
       req.session.destroy(() => {})
-      res.clearCookie('speil')
+      res.clearCookie('hotsak')
       res.redirect(302, config.oidc.logoutUrl)
     })
   })
 
-  app.post('/oauth2/callback', (req: SpeilRequest, res: Response) => {
+  app.post('/oauth2/callback', (req: HotsakRequest, res: Response) => {
     const session = req.session
     auth
       .validateOidcCallback(req, azureClient!, config.oidc)
       .then((tokens: string[]) => {
         const [accessToken, idToken, refreshToken] = tokens
-        res.cookie('speil', `${idToken}`, {
+        res.cookie('hotsak', `${idToken}`, {
           secure: true,
           sameSite: true,
         })
-        session.speilToken = accessToken
+        session.hotsakToken = accessToken
         session.refreshToken = refreshToken
         session.user = auth.valueFromClaim('NAVident', idToken)
         res.redirect(303, '/')
@@ -105,22 +105,22 @@ const setUpAuthentication = () => {
 setUpAuthentication()
 
 // Protected routes
-app.use('/*', async (req: SpeilRequest, res, next) => {
+app.use('/*', async (req: HotsakRequest, res, next) => {
   if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
-    res.cookie('speil', auth.createTokenForTest(), {
+    res.cookie('hotsak', auth.createTokenForTest(), {
       secure: false,
       sameSite: true,
     })
     next()
   } else {
     if (
-      auth.isValidIn({ seconds: 5, token: req.session!.speilToken }) ||
+      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken }) ||
       (await auth.refreshAccessToken(azureClient!, req.session!))
     ) {
       next()
     } else {
-      if (req.session!.speilToken) {
-        const name = auth.valueFromClaim('name', req.session!.speilToken)
+      if (req.session!.hotsakToken) {
+        const name = auth.valueFromClaim('name', req.session!.hotsakToken)
         logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`)
         logger.sikker.info(
           `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
@@ -131,35 +131,17 @@ app.use('/*', async (req: SpeilRequest, res, next) => {
         res.redirect('/login')
       } else {
         // these are xhr's, let the client decide how to handle
-        res.clearCookie('speil')
+        res.clearCookie('hotsak')
         res.sendStatus(401)
       }
     }
   }
 })
 
-/*app.use('/api/person', person.setup({ ...dependencies.person }));
-app.use('/api/payments', paymentRoutes(dependencies.payments));
-app.use('/api/overstyring', overstyringRoutes(dependencies.overstyring));
-app.use('/api/tildeling', tildelingRoutes(dependencies.tildeling));
-app.use('/api/opptegnelse', opptegnelseRoutes(dependencies.opptegnelse));
-app.use('/api/leggpaavent', oppgaveRoutes(dependencies.leggPåVent));
-app.use('/api/behandlingsstatistikk', behandlingsstatistikkRoutes(dependencies.person.spesialistClient));*/
-
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
 
-// app.get('/*', (req, res, next) => {
-//   if (!req.accepts('html') && /\/api/.test(req.url)) {
-//     console.debug(`Received a non-HTML request for '${req.url}', which didn't match a route`)
-//     res.sendStatus(404)
-//     return
-//   }
-//   next()
-// })
-
 const distPath = __dirname + '/../client'
-//const clientPath = path.join(distPath, 'client')
 const htmlPath = path.join(distPath, 'index.html')
 
 console.log('distpath', distPath)
@@ -167,10 +149,5 @@ console.log('htmlPath', htmlPath)
 
 app.use(express.static(__dirname + '/../client'))
 app.use('/*', express.static(htmlPath))
-
-// At the time of writing this comment, the setup of the static 'routes' has to be done in a particular order.
-//app.use('/static', express.static('dist/client'))
-//app.use('/*', express.static('dist/client/index.html'))
-//app.use('/', express.static('dist/client/'))
 
 app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))

@@ -14,7 +14,7 @@ export enum CookieKey {
 }
 
 if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
-  document.cookie = `speil=dev-cookie.${btoa(
+  document.cookie = `hotsak=dev-cookie.${btoa(
     JSON.stringify({
       name: 'Silje Saksbehandler',
       NAVident: 'S112233',
@@ -56,12 +56,12 @@ const extractTokenFromCookie = (tokenName: string): string =>
     ?.split('=')
     .pop() as string
 
-export const extractSpeilToken = (): string => extractTokenFromCookie('speil')
+export const extractHotsakToken = (): string => extractTokenFromCookie('hotsak')
 
 export const extractValues = (values: ArrayLike<any>) => {
   const decodedCookie = document.cookie
     .split(';')
-    .filter((item) => item.trim().startsWith('speil='))
+    .filter((item) => item.trim().startsWith('hotsak='))
     .map(decode)
     .pop()
 

@@ -1,18 +1,15 @@
 import { BodyLong, Label } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components/macro'
-import { Boble } from '../../../felleskomponenter/Boble'
-import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
-import { Strek } from '../../../felleskomponenter/Strek'
-import { BodyLongMedEllipsis } from '../../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../../felleskomponenter/Tooltip'
-import { HjelpemiddelArtikkel } from '../../../types/types.internal'
-import { formaterDato } from '../../../utils/date'
-import { capitalize } from '../../../utils/stringFormating'
-import { useSak } from '../../sakHook'
-import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
-
-import { useHjelpemiddeloversikt } from './hjelpemiddeloversiktHook'
+import { Boble } from '../felleskomponenter/Boble'
+import { Kolonne, Rad } from '../felleskomponenter/Flex'
+import { Strek } from '../felleskomponenter/Strek'
+import { BodyLongMedEllipsis } from '../felleskomponenter/TekstMedEllipsis'
+import { Tooltip } from '../felleskomponenter/Tooltip'
+import { KolonneOppsett, KolonneTittel } from '../saksbilde/høyrekolonne/Høyrekolonne'
+import { HjelpemiddelArtikkel } from '../types/types.internal'
+import { formaterDato } from '../utils/date'
+import { capitalize } from '../utils/stringFormating'
 
 const HjelpemiddeloversiktContainer = styled.div`
   padding-top: 1rem;
@@ -36,9 +33,11 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
   }, {})
 }
 
-export const Hjelpemiddeloversikt = () => {
-  const { sak } = useSak()
-  const { hjelpemiddelArtikler, isError, isLoading } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+interface HjelpemiddeloversiktProps {
+    hjelpemiddelArtikler: HjelpemiddelArtikkel[], isError: boolean, isLoading: boolean
+}
+
+export const Hjelpemiddeloversikt = ({hjelpemiddelArtikler, isError, isLoading}: HjelpemiddeloversiktProps) => {
 
   if (isError) {
     return (

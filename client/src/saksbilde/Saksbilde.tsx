@@ -74,7 +74,7 @@ const SaksbildeContent = React.memo(() => {
       <Søknadslinje onTabChange={setHøyrekolonneTab} currentTab={høyrekolonneTab}/>
       <Container data-testid="saksbilde-fullstendig">
         <AutoFlexContainer>
-          <Flex flex={1} style={{ height: '100%' }}>
+          <Flex flex={1} style={{ height: '100%'}}>
             <VenstreMeny>
               <SøknadCard
                 søknadGjelder={sak.søknadGjelder}

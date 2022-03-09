@@ -12,3 +12,11 @@ export const IngenOppgaver = () => {
     </Container>
   )
 }
+
+export const IngentingFunnet:React.FC = ({ children }) => {
+    return (
+      <Container>
+        <Heading size="small">{children}</Heading>
+      </Container>
+    )
+  }

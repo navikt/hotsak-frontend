@@ -1,5 +1,5 @@
 import useSwr from 'swr'
-import { hentHjelpemiddeloversikt } from '../../../io/http'
+import { hentBrukerdataMedPost } from '../../../io/http'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 
 interface HjelpemiddeloversiktResponse {
@@ -11,7 +11,7 @@ interface HjelpemiddeloversiktResponse {
 export function useHjelpemiddeloversikt(brukersFodselsnummer?: string): HjelpemiddeloversiktResponse {
   const { data, error } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
     brukersFodselsnummer ? ['api/hjelpemiddeloversikt' , brukersFodselsnummer] : null,
-    hentHjelpemiddeloversikt
+    hentBrukerdataMedPost
   )
 
   return {

@@ -1,0 +1,47 @@
+{
+  "personinformasjon": {
+    "fnr": "19044238651",
+    "fødselsdato": "1942-12-19",
+    "fornavn": "Petter Andreas",
+    "etternavn": "Hansen",
+    "telefon": "45454545",
+    "kjønn": "MANN",
+    "brukernummer": "454269"
+  },
+  "saker": [
+    {
+      "mottattDato": "2021-09-19T13:55:45",
+      "område": ["bevegelse"],
+      "søknadGjelder": "Rullator",
+      "status": "VEDTAK_FATTET",
+      "vedtak": {
+        "vedtaksDato": "2021-03-29",
+        "status": "INNVILGET",
+        "saksbehandlerRef": "23ea7485-1324-4b25-a763-assdfdfa",
+        "saksbehandlerNavn": "Silje Saksbehandler"
+      },
+      "fagsystem": "HOTSAK",
+      "saksid": "111111"
+    },
+    {
+      "mottattDato": "2021-08-18T13:55:45",
+      "område": ["kognisjon"],
+      "søknadGjelder": "Kalender",
+      "status": "TILDELT_SAKSBEHANDLER",
+      "vedtak": {
+        "saksbehandlerRef": "23ea7485-1324-4b25-a763-assdfdfa",
+        "saksbehandlerNavn": "Silje Saksbehandler"
+      },
+      "fagsystem": "HOTSAK",
+      "saksid": "222222"
+    },
+    {
+      "mottattDato": "2021-09-19T13:55:45",
+      "område": ["bevegelse"],
+      "søknadGjelder": "Rullator",
+      "status": "AVVENTER_SAKSBEHANDLER",
+      "fagsystem": "HOTSAK",
+      "saksid": "333333"
+    }
+  ]
+}

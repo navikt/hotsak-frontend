@@ -16,7 +16,7 @@ import onBehalfOf from './auth/onBehalfOf'
 const app = express()
 const port = config.server.port
 
-app.use(/\/((?!api).)*/, express.json)
+app.use(/\/((?!api).)*/, express.json())
 app.use(/\/((?!api).)*/, express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
@@ -113,7 +113,7 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
     next()
   } else {
     if (
-      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken }) 
+      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken })
     ) {
       next()
     } else {

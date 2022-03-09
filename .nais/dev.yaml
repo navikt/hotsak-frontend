@@ -60,7 +60,7 @@ spec:
       value: http://hm-grunndata-api.teamdigihot.svc.cluster.local
     - name: PORT
       value: '3000'
-    - name: CLIENT_ID_SPESIALIST
+    - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local

@@ -1,23 +1,23 @@
 import proxy from 'express-http-proxy'
 import * as core from 'express-serve-static-core'
-import { AppConfig, OnBehalfOf, SpeilRequest } from './types'
+import { AppConfig, OnBehalfOf, HotsakRequest } from './types'
 
 const envProperties = {
   API_URL: process.env.API_URL || `http://localhost:7070`,
   GRUNNDATA_API_URL: process.env.GRUNNDATA_API_URL || ''
 }
 let onBehalfOf: OnBehalfOf
-let spesialistId: string
+let hotsakApiId: string
 
 const options = () => ({
   parseReqBody: false,
-  proxyReqOptDecorator: (options: any, req: SpeilRequest) => {
+  proxyReqOptDecorator: (options: any, req: HotsakRequest) => {
     if (process.env.NAIS_CLUSTER_NAME !== 'labs-gcp') {
       return new Promise((resolve, reject) => {
-        const speilToken = req.session.speilToken
+        const hotsakToken = req.session.hotsakToken
 
-        if (speilToken !== '') {
-          onBehalfOf.hentFor(spesialistId, speilToken).then(
+        if (hotsakToken !== '') {
+          onBehalfOf.hentFor(hotsakApiId, hotsakToken).then(
             (onBehalfOfToken) => {
               // @ts-ignore
               options.headers.Authorization = `Bearer ${onBehalfOfToken}`
@@ -33,18 +33,18 @@ const options = () => ({
       return options
     }
   },
-  proxyReqPathResolver: (req: SpeilRequest) => {
+  proxyReqPathResolver: (req: HotsakRequest) => {
     return pathRewriteBasedOnEnvironment(req)
   },
 })
 
-const pathRewriteBasedOnEnvironment = (req: SpeilRequest) => {
+const pathRewriteBasedOnEnvironment = (req: HotsakRequest) => {
   return req.originalUrl
 }
 
 const setupProxy = (server: core.Express, _onBehaldOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehaldOf
-  spesialistId = config.oidc.clientIDSpesialist
+  hotsakApiId = config.oidc.clientIDHotsakApi
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
   server.use('/grunndata-api', proxy(envProperties.GRUNNDATA_API_URL))
 }

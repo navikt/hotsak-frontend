@@ -3,7 +3,7 @@ import { Client, TokenSet } from 'openid-client'
 
 import logger from '../logging'
 import { ipAddressFromRequest } from '../requestData'
-import { AuthError, OidcConfig, SpeilRequest, SpeilSession } from '../types'
+import { AuthError, OidcConfig, HotsakRequest, HotsakSession } from '../types'
 
 interface IsValidInProps {
   seconds: number
@@ -32,7 +32,7 @@ const authError = (statusCode: number, reason: string, cause?: any): AuthError =
   }
 }
 
-const validateOidcCallback = (req: SpeilRequest, azureClient: Client, config: OidcConfig) => {
+const validateOidcCallback = (req: HotsakRequest, azureClient: Client, config: OidcConfig) => {
   if (req.body.code === undefined) {
     return Promise.reject(authError(400, 'missing data in POST after login'))
   }
@@ -93,14 +93,14 @@ const createTokenForTest = () =>
     })
   ).toString('base64')}.bogussignature`
 
-const refreshAccessToken = async (azureClient: Client, session: SpeilSession): Promise<boolean> => {
+const refreshAccessToken = async (azureClient: Client, session: HotsakSession): Promise<boolean> => {
   if (!session.refreshToken) return false
   return await azureClient
     .refresh(session.refreshToken)
     .then((tokenSet: TokenSet) => retrieveTokens(tokenSet, 'access_token', 'refresh_token'))
     .then(([accessToken, refreshToken]) => {
       logger.info(`Refresher access token for ${session.user}`)
-      session.speilToken = accessToken
+      session.hotsakToken = accessToken
       session.refreshToken = refreshToken
       return true
     })

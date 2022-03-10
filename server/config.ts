@@ -14,7 +14,6 @@ const oidc: OidcConfig = {
   clientSecret: process.env.AZURE_APP_CLIENT_SECRET || 'unknown',
   scope: `profile offline_access openid email ${process.env.AZURE_APP_CLIENT_ID}/.default`,
   logoutUrl: process.env.LOGOUT_URL ?? 'https://navno.sharepoint.com/sites/intranett',
-  redirectUrl: process.env.REDIRECT_URL || 'unknown'
 }
 
 const server: ServerConfig = {

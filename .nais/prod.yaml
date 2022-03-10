@@ -64,5 +64,3 @@ spec:
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
       value: 'false'
-    - name: REDIRECT_URL
-      value: https://hotsak.intern.nav.no

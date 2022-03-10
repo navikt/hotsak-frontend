@@ -11,7 +11,6 @@ export interface OidcConfig {
   clientSecret: string
   scope: string
   logoutUrl: string
-  redirectUrl: string
 }
 
 export interface ServerConfig {

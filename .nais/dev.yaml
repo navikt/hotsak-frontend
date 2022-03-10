@@ -64,5 +64,3 @@ spec:
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: USE_MSW
       value: 'false'
-    - name: REDIRECT_URL
-      value: https://hotsak.dev.intern.nav.no

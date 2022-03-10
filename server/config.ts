@@ -1,6 +1,6 @@
 import env from 'dotenv'
 
-import { AppConfig, OidcConfig, ServerConfig } from './types'
+import { OidcConfig, ServerConfig } from './types'
 ;('use strict')
 
 env.config()

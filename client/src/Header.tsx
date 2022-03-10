@@ -66,7 +66,7 @@ export const Toppmeny = () => {
         <Header.UserButton as={Dropdown.Toggle} name={brukerinfo.navn} description={brukerinfo.ident} />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            <Dropdown.Menu.List.Item onClick={() => history.go('/logout')}>Logg ut</Dropdown.Menu.List.Item>
+            <Dropdown.Menu.List.Item onClick={() => history.push('/logout')}>Logg ut</Dropdown.Menu.List.Item>
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

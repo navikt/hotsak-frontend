@@ -50,8 +50,7 @@ app.get('/settings.js', (req, res) => {
 
 const setUpAuthentication = () => {
   app.get('/login', (req: HotsakRequest, res: Response) => {
-    console.log(`logging in. redirect path: ${config.oidc.redirectUrl}`)
-    res.redirect(`/oauth2/login?redirect=${config.oidc.redirectUrl}`)
+    res.redirect(`/oauth2/login`)
   })
   app.get('/logout', (req: HotsakRequest, res: Response) => {
     res.redirect(`/oauth2/logout`)

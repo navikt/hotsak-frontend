@@ -10,7 +10,7 @@ import path from 'path'
 import setupProxy from './reverse-proxy'
 import { ipAddressFromRequest } from './requestData'
 import { sessionStore } from './sessionStore'
-import { AuthError, HotsakRequest } from './types'
+import { HotsakRequest } from './types'
 import onBehalfOf from './auth/onBehalfOf'
 
 const app = express()
@@ -50,54 +50,10 @@ app.get('/settings.js', (req, res) => {
 
 const setUpAuthentication = () => {
   app.get('/login', (req: HotsakRequest, res: Response) => {
-    const session = req.session
-    session.nonce = generators.nonce()
-    session.state = generators.state()
-    if (azureClient === null) {
-      console.log('Azure client er null')
-    }
-    const url = azureClient!.authorizationUrl({
-      scope: config.oidc.scope,
-      redirect_uri: auth.redirectUrl(req),
-      response_type: config.oidc.responseType[0],
-      prompt: 'select_account',
-      response_mode: 'form_post',
-      nonce: session.nonce,
-      state: session.state,
-    })
-    res.redirect(url)
+    res.redirect(`/oauth2/login`)
   })
   app.get('/logout', (req: HotsakRequest, res: Response) => {
-    azureClient!.revoke(req.session.hotsakToken).finally(() => {
-      req.session.destroy(() => {})
-      res.clearCookie('hotsak')
-      res.redirect(302, config.oidc.logoutUrl)
-    })
-  })
-
-  app.post('/oauth2/callback', (req: HotsakRequest, res: Response) => {
-    const session = req.session
-    auth
-      .validateOidcCallback(req, azureClient!, config.oidc)
-      .then((tokens: string[]) => {
-        const [accessToken, idToken, refreshToken] = tokens
-        res.cookie('hotsak', `${idToken}`, {
-          secure: true,
-          sameSite: true,
-        })
-        session.hotsakToken = accessToken
-        session.refreshToken = refreshToken
-        session.user = auth.valueFromClaim('NAVident', idToken)
-        res.redirect(303, '/')
-      })
-      .catch((err: AuthError) => {
-        logger.error(`Error caught during login: ${err.statusCode} ${err.message} (se sikkerLog for detaljer)`)
-        logger.sikker.error(`Error caught during login: ${err.message} ${JSON.stringify(err)}`, err)
-        logger.sikker.error(`Error caught during login (tmp log): ${err.message} ${err}`, err)
-
-        session.destroy(() => {})
-        res.sendStatus(err.statusCode)
-      })
+    res.redirect(`/oauth2/logout`)
   })
 }
 
@@ -113,15 +69,20 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
     next()
   } else {
     if (
-      auth.isValidIn({ seconds: 5, token: req.session!.hotsakToken })
+      auth.isValidIn({ seconds: 5, token: req.headers['authorization']?.split(' ')[1] })
     ) {
+      // todo: hente ut relevante felt frå access-token og legge i cookie, må dette gjeras kvar gong eller bare om cookie ikkje finnes?
+      res.cookie('hotsak', `${req.headers['authorization']?.split(' ')[1]}`, {
+        secure: true,
+        sameSite: true,
+      })
       next()
     } else {
-      if (req.session!.hotsakToken) {
-        const name = auth.valueFromClaim('name', req.session!.hotsakToken)
-        logger.info(`No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`)
+      if (req.headers['authorization']?.split(' ')[1]) {
+        const name = auth.valueFromClaim('name', req.headers['authorization']?.split(' ')[1])
+        logger.info(`No valid token found for ${name}, connecting via ${ipAddressFromRequest(req)}`)
         logger.sikker.info(
-          `No valid session found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
+          `No valid token found for ${name}, connecting via ${ipAddressFromRequest(req)}`,
           logger.requestMeta(req)
         )
       }
@@ -135,6 +96,17 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
     }
   }
 })
+
+// todo: removee signature etc
+const createCookieFromToken = (token: string) =>
+  `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64')}.${Buffer.from(
+    JSON.stringify({
+      name: 'Silje Saksbehandler',
+      email: 'dev@nav.no',
+      NAVident: 'S112233',
+      oid: '23ea7485-1324-4b25-a763-assdfdfa',
+    })
+  ).toString('base64')}.bogussignature`
 
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)

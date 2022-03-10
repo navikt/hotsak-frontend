@@ -13,7 +13,6 @@ spec:
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.dev.intern.nav.no
     - https://hotsak.dev.intern.nav.no
   liveness:
     path: /isalive
@@ -31,7 +30,6 @@ spec:
         - application: hm-mocks
         - application: hm-saksbehandling
         - application: hm-grunndata-api
-        - application: saksbehandling-redis
   azure:
     application:
       enabled: true
@@ -41,6 +39,9 @@ spec:
           - "NAVident"
         groups:
           - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
+    sidecar:
+      enabled: true
+      autoLogin: false
   resources:
     limits:
       cpu: 500m
@@ -51,7 +52,6 @@ spec:
   secureLogs:
     enabled: true
   envFrom:
-    - secret: redis-password
     - secret: hm-saksbehandling
   env:
     - name: API_URL
@@ -62,7 +62,5 @@ spec:
       value: '3000'
     - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
-    - name: REDIS_HOST
-      value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
       value: 'false'

@@ -45,8 +45,8 @@ const sikkerError = (message: string, ...meta: any[]) => {
 
 const requestMeta = (req: HotsakRequest) => {
   return {
-    hotsakUser: authSupport.valueFromClaim('name', req.session.hotsakToken),
-    navIdent: authSupport.valueFromClaim('NAVident', req.session.hotsakToken),
+    hotsakUser: authSupport.valueFromClaim('name', req.headers['authorization']?.split(' ')[1]),
+    navIdent: authSupport.valueFromClaim('NAVident', req.headers['authorization']?.split(' ')[1]),
     headers: req.headers,
     method: req.method,
     url: req.url,

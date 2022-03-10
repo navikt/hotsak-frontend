@@ -13,6 +13,11 @@ const Søk = styled(Search)`
   padding-left: 1rem;
 `
 
+const Lenke = styled.a`
+  text-decoration: none;  
+`
+
+
 export const Toppmeny = () => {
   const { name, ident, isLoggedIn } = useRecoilValue(authState)
   const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
@@ -66,11 +71,11 @@ export const Toppmeny = () => {
         <Header.UserButton as={Dropdown.Toggle} name={brukerinfo.navn} description={brukerinfo.ident} />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            <a href="/logout">
+            <Lenke href="/logout">
               <Dropdown.Menu.List.Item>
                 Logg ut
               </Dropdown.Menu.List.Item>
-            </a>
+            </Lenke>
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>

@@ -14,7 +14,7 @@ const options = () => ({
   proxyReqOptDecorator: (options: any, req: HotsakRequest) => {
     if (process.env.NAIS_CLUSTER_NAME !== 'labs-gcp') {
       return new Promise((resolve, reject) => {
-        const hotsakToken = req.session.hotsakToken
+        const hotsakToken = req.headers['authorization']!!.split(' ')[1]
 
         if (hotsakToken !== '') {
           onBehalfOf.hentFor(hotsakApiId, hotsakToken).then(

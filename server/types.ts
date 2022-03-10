@@ -11,6 +11,7 @@ export interface OidcConfig {
   clientSecret: string
   scope: string
   logoutUrl: string
+  redirectUrl: string
 }
 
 export interface ServerConfig {
@@ -18,15 +19,8 @@ export interface ServerConfig {
   sessionSecret?: string
 }
 
-export interface RedisConfig {
-  host?: string
-  port?: string
-  password?: string
-}
-
 export interface AppConfig {
   oidc: OidcConfig
-  redis: object
   server: ServerConfig
 }
 

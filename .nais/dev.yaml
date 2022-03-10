@@ -13,7 +13,6 @@ spec:
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.dev.intern.nav.no
     - https://hotsak.dev.intern.nav.no
   liveness:
     path: /isalive

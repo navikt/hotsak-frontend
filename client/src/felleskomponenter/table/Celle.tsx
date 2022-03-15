@@ -14,9 +14,6 @@ export const DataCelle: React.FC<DataCelleProps> = ({ children, width }) => {
   return (
     <DataCell
       width={width}
-      style={{
-        padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
-      }}
     >
       {children}
     </DataCell>

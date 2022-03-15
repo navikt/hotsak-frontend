@@ -29,19 +29,24 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
     {
       key: 'UTLÅNSDATO',
       name: 'Utlånsdato',
-      width: 140,
+      width: 110,
       render: (artikkel: HjelpemiddelArtikkel) => <TekstCell value={formaterDato(artikkel.datoUtsendelse)} />,
     },
     {
-      key: 'HMSNR',
-      name: 'Hmsnr.',
-      width: 80,
-      render: (artikkel: HjelpemiddelArtikkel) => <ExternalLinkCell to={artikkel.hjelpemiddeldatabasenURL} target="_blank" value={artikkel.hmsnr} />,
+      key: 'KATEGORI',
+      name: 'Kategori',
+      width: 152,
+      render: (artikkel: HjelpemiddelArtikkel) => (
+        <EllipsisCell
+          value={artikkel.grunndataKategoriKortnavn || ''}
+          id={`kategori-${artikkel.beskrivelse}`}
+          minLength={18}
+        />
+      ),
     },
-
     {
-      key: 'BESKRIVELSE',
-      name: 'Beskrivelse',
+      key: 'PRODUKT',
+      name: 'Produkt',
       width: 400,
       render: (artikkel: HjelpemiddelArtikkel) => (
         <EllipsisCell
@@ -51,7 +56,6 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
         />
       ),
     },
-    
     {
       key: 'ANTALL',
       name: 'Antall',
@@ -61,22 +65,12 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
       ),
     },
     {
-        key: 'KATEGORI',
-        name: 'Kategori',
-        width: 152,
-        render: (artikkel: HjelpemiddelArtikkel) => (
-          <EllipsisCell
-            value={artikkel.grunndataKategoriKortnavn || ''}
-            id={`kategori-${artikkel.beskrivelse}`}
-            minLength={18}
-          />
-        ),
-      },
-    {
-      key: 'SERIENUMMER',
-      name: 'Serienr.',
+      key: 'HMSNR',
+      name: 'Hmsnr.',
       width: 80,
-      render: (artikkel: HjelpemiddelArtikkel) => <TekstCell value={artikkel.serieNr || ''} />,
+      render: (artikkel: HjelpemiddelArtikkel) => (
+        <ExternalLinkCell to={artikkel.hjelpemiddeldatabasenURL} target="_blank" value={artikkel.hmsnr} />
+      ),
     },
   ]
 

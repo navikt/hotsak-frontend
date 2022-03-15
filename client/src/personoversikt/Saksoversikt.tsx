@@ -2,7 +2,7 @@ import React from 'react'
 import { Toast } from '../felleskomponenter/Toast'
 import styled from 'styled-components/macro'
 import { Table } from '@navikt/ds-react'
-import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
+import { OppgaveStatusLabel, Saksoversikt_Sak, VedtakStatusLabel } from '../types/types.internal'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
 import { capitalize } from '../utils/stringFormating'
@@ -29,7 +29,7 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
     {
       key: 'MOTTATT',
       name: 'Mottatt dato',
-      width: 140,
+      width: 110,
       render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.mottattDato)} />,
     },
     {
@@ -46,33 +46,53 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
     },
     {
       key: 'SØKNAD_OM',
-      name: 'Søknad om',
+      name: 'Kategori',
       width: 192,
       render: (sak: Saksoversikt_Sak) => (
-        <LinkCell
-          to={`/sak/${sak.saksid}/hjelpemidler`}
+        <EllipsisCell
           value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}
-          id={`gjelder-${sak.saksid}`}
+          id={`kategori-${sak.saksid}`}
           minLength={20}
         />
       ),
     },
     {
+        key: 'SAKSTYPE',
+        name: 'Sakstype',
+        width: 80,
+        render: (sak: Saksoversikt_Sak) => (
+          <LinkCell
+          to={`/sak/${sak.saksid}`}
+            value="Søknad"
+            id={`sakstype-${sak.saksid}`}
+            minLength={20}
+          />
+        ),
+      },
+      {
+        key: 'STATUS',
+        name: 'Status',
+        width: 140,
+        render: (sak: Saksoversikt_Sak) => (
+          <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />
+        ),
+      },
+    {
       key: 'RESULTAT',
       name: 'Resultat',
-      width: 154,
+      width: 110,
       render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell value={OppgaveStatusLabel.get(sak.status)!} id={`status-${sak.saksid}`} minLength={18} />
+        <TekstCell value={VedtakStatusLabel.get(sak.vedtak?.status || '') || 'Ikke vurdert'} />
       ),
     },
     {
       key: 'VEDTAKSDATO',
       name: 'Vedtaksdato',
-      width: 140,
+      width: 110,
       render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.vedtak?.vedtaksDato)} />,
     },
     {
-      key: 'SAKSBEHANDLER',
+      key: 'SAKSBEHANDLER',   
       name: 'Saksbehandler',
       width: 152,
       render: (sak: Saksoversikt_Sak) => (

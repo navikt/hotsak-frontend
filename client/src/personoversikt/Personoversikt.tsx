@@ -2,7 +2,6 @@ import { Toast } from '../felleskomponenter/Toast'
 import styled from 'styled-components/macro'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
-import { Hjelpemiddeloversikt } from './Hjelpemiddeloversikt'
 import Saksoversikt from './Saksoversikt'
 import { usePersonContext } from './PersonContext'
 import { useSaksoversikt } from './saksoversiktHook'
@@ -53,9 +52,9 @@ const PersonoversiktContent = () => {
         <>
           <Personlinje person={saksoversikt?.personinformasjon} />
           <Alert size="small" variant="info">
-            Her ser du saker på personen i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
+            Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>
-          <SaksoversiktLinje />
+          <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={hjelpemidler.length} />
           
           <Container>
             <Content>
@@ -71,11 +70,6 @@ const PersonoversiktContent = () => {
                 </Route>
               </Switch>
             </Content>
-            <Hjelpemiddeloversikt
-              hjelpemiddelArtikler={hjelpemidler}
-              isError={hjelpemiddeloversikt.isError}
-              isLoading={hjelpemiddeloversikt.isLoading}
-            />
           </Container>
         </>
       )}

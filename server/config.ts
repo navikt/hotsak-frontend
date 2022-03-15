@@ -1,6 +1,6 @@
 import env from 'dotenv'
 
-import { OidcConfig, RedisConfig, ServerConfig } from './types'
+import { OidcConfig, ServerConfig } from './types'
 ;('use strict')
 
 env.config()
@@ -21,14 +21,7 @@ const server: ServerConfig = {
   sessionSecret: process.env.SESSION_SECRET,
 }
 
-const redis: RedisConfig = {
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT || '6379',
-  password: process.env.REDIS_PASSWORD || 'tull',
-}
-
 export default {
   oidc,
-  redis,
   server,
 }

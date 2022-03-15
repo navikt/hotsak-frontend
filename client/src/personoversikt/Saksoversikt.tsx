@@ -77,14 +77,7 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
           <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />
         ),
       },
-    {
-      key: 'RESULTAT',
-      name: 'Resultat',
-      width: 110,
-      render: (sak: Saksoversikt_Sak) => (
-        <TekstCell value={VedtakStatusLabel.get(sak.vedtak?.status || '') || 'Ikke vurdert'} />
-      ),
-    },
+    
     {
       key: 'VEDTAKSDATO',
       name: 'Vedtaksdato',

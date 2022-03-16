@@ -50,7 +50,7 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
       width: 400,
       render: (artikkel: HjelpemiddelArtikkel) => (
         <EllipsisCell
-          value={capitalize(artikkel.grunndataProduktNavn || artikkel.beskrivelse)}
+          value={artikkel.grunndataProduktNavn || artikkel.beskrivelse}
           id={`beskrivelse-${artikkel.beskrivelse}`}
           minLength={25}
         />

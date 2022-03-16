@@ -11,7 +11,7 @@ const hjelpemiddeloversiktHandlers = [
             return res(ctx.status(200), ctx.json([]))
          }
 
-         if(brukersFodselsnummer === '19044238651') { // 
+         if(brukersFodselsnummer === '19044238651') { // Petter Andreas
             return res(ctx.status(200), ctx.json(hjelpemiddeloversikt[0]))
          }
          else if(brukersFodselsnummer === '13044238651') { // Mia Cathrine

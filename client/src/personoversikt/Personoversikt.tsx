@@ -43,6 +43,10 @@ const PersonoversiktContent = () => {
 
   const saker = saksoversikt?.saker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const hjelpemidler = hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a,b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
+  const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
+    return antall += artikkel.antall
+
+}, 0)
 
   return (
     <>
@@ -54,7 +58,7 @@ const PersonoversiktContent = () => {
           <Alert size="small" variant="info">
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>
-          <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={hjelpemidler.length} />
+          <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
           
           <Container>
             <Content>

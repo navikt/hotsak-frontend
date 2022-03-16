@@ -5,7 +5,6 @@ import { Table } from '@navikt/ds-react'
 import { HjelpemiddelArtikkel } from '../types/types.internal'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
-import { capitalize } from '../utils/stringFormating'
 import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { formaterDato } from '../utils/date'
 

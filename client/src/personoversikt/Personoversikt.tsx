@@ -5,7 +5,7 @@ import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import Saksoversikt from './Saksoversikt'
 import { usePersonContext } from './PersonContext'
 import { useSaksoversikt } from './saksoversiktHook'
-import { hotsakHistorikkWidth, hotsakTotalMinWidth } from '../GlobalStyles'
+import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { Flex } from '../felleskomponenter/Flex'
 import { sorterKronologisk } from '../utils/date'
 import SaksoversiktLinje from './SaksoversiktLinje'
@@ -28,7 +28,7 @@ const Content = styled.div`
   padding-top: 1rem;
   flex: 2;
   box-sizing: border-box;
-  max-width: calc(100vw - ${hotsakHistorikkWidth});
+  max-width: 100vw;
 `
 
 const PersonoversiktContent = () => {

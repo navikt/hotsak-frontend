@@ -110,7 +110,7 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' ? (
+      {window.appSettings.MILJO !== 'prod-gcp' ? (
         <Link
           href="#"
           onClick={() => {

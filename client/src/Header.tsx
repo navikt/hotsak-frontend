@@ -28,7 +28,7 @@ export const Toppmeny = () => {
   return (
     <Header>
       <Header.Title href="/">HOTSAK</Header.Title>
-      {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' && (
+      {window.appSettings.MILJO !== 'prod-gcp' && (
         <Søk
           label="Finn bruker basert på fødselsnummer"
           size="small"

@@ -338,7 +338,7 @@ export interface Saksoversikt_Sak {
     søknadGjelder: string
     mottattDato: string
     område: string[]
-    saksbehandler: Saksbehandler
+    saksbehandler?: string
     fagsystem: string
     status: OppgaveStatusType
     vedtak?: VedtakType

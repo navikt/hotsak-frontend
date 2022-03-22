@@ -77,7 +77,6 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
           <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />
         ),
       },
-    
     {
       key: 'VEDTAKSDATO',
       name: 'Vedtaksdato',
@@ -87,9 +86,9 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
     {
       key: 'SAKSBEHANDLER',   
       name: 'Saksbehandler',
-      width: 152,
+      width: 160,
       render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell value={sak.vedtak?.saksbehandlerNavn || ''} id={`tildelt-${sak.saksid}`} minLength={15} />
+        <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.saksid}`} minLength={20} />
       ),
     },
     {

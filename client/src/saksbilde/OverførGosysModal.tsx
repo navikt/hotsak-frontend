@@ -35,7 +35,6 @@ export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekre
           legend="Velg årsak til at saken må overføres til Gosys"
           error={!valgteArsaker.length && error}
           value={valgteArsaker}
-          
           onChange={setValgteArsaker}
         >
           {overforGosysArsaker.map((arsak, index) => (
@@ -84,6 +83,7 @@ const overforGosysArsaker: ReadonlyArray<string> = [
   'Saken skal ses på av en annen saksbehandler eller enhet',
   'Formidler har ikke fullført nødvendig godkjenningskurs',
   'Bruker har hjelpemiddelet fra før',
+  'Behov for skriftlig vedtak',
   'Annet',
 ]
 

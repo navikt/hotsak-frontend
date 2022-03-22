@@ -89,9 +89,8 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
       if (req.originalUrl === '/' || req.originalUrl.startsWith('/static')) {
         res.redirect('/login')
       } else {
-        // these are xhr's, let the client decide how to handle
         res.clearCookie('hotsak')
-        res.sendStatus(401)
+        res.redirect('/login')
       }
     }
   }

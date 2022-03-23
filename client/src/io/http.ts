@@ -1,4 +1,4 @@
-import type { OverforGosysTilbakemelding, VedtakStatusType } from '../types/types.internal'
+import type { OverforGosysTilbakemelding, Vedtaksgrunnlag, VedtakStatusType } from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse {
   status: number
@@ -98,8 +98,8 @@ export const deleteFjernTildeling = async (oppgavereferanse: string) => {
   return del(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
-export const putVedtak = async (saksnummer: string, status: VedtakStatusType) => {
-  return put(`${baseUrl}/api/vedtak/${saksnummer}`, { status })
+export const putVedtak = async (saksnummer: string, status: VedtakStatusType, vedtaksgrunnlag: Vedtaksgrunnlag ) => {
+  return put(`${baseUrl}/api/vedtak-v2/${saksnummer}`, { status, vedtaksgrunnlag })
 }
 
 export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {

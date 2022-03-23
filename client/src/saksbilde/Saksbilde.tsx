@@ -90,7 +90,7 @@ const SaksbildeContent = React.memo(() => {
                 kommune={sak.formidler.poststed}
               />
               <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør} />
-              <VedtakCard sak={sak} />
+              <VedtakCard sak={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && (

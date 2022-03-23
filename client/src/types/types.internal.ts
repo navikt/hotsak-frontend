@@ -16,6 +16,19 @@ export interface Sak {
   enhet: Enhet[]
 }
 
+export enum VedtaksgrunnlagType {
+  UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
+}
+
+export interface Vedtaksgrunnlag {
+  type: VedtaksgrunnlagType,
+  data: any[] | undefined
+}
+
+export const vedtaksgrunnlagUtlaanshistorikk = ( utlaanshistorikk: HjelpemiddelArtikkel[] | undefined ): Vedtaksgrunnlag => {
+    return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk}
+}
+
 export interface Hendelse {
   id: string
   hendelse: string

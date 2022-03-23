@@ -13,7 +13,7 @@ import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 
 import {Tekst} from '../../felleskomponenter/typografi'
 import {useInnloggetSaksbehandler} from '../../state/authentication'
-import {OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType} from '../../types/types.internal'
+import {OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType, HjelpemiddelArtikkel, vedtaksgrunnlagUtlaanshistorikk} from '../../types/types.internal'
 import {BekreftVedtakModal} from '../BekreftVedtakModal'
 import {OverførGosysModal} from '../OverførGosysModal'
 import {Card} from './Card'
@@ -22,7 +22,9 @@ import {OvertaSakModal} from '../OvertaSakModal'
 
 
 interface VedtakCardProps {
-  sak: Sak
+  sak: Sak,
+  hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
+
 }
 
 export const TagGrid = styled.div`
@@ -48,7 +50,7 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
-export const VedtakCard = ({ sak }: VedtakCardProps) => {
+export const VedtakCard = ({ sak, hjelpemiddelArtikler }: VedtakCardProps) => {
   const { saksid } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -60,7 +62,7 @@ export const VedtakCard = ({ sak }: VedtakCardProps) => {
 
   const opprettVedtak = () => {
     setLoading(true)
-    putVedtak(saksid, VedtakStatusType.INNVILGET)
+    putVedtak(saksid, VedtakStatusType.INNVILGET, vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler) )
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)

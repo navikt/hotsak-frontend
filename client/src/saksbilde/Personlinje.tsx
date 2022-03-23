@@ -97,7 +97,7 @@ const beregnAlder = (fødselsdato: string) => {
 }
 
 const formaterNavn = (person: Personinfo | SaksoversiktType['personinformasjon']) => {
-  return capitalizeName(`${person.etternavn}, ${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''}`)
+  return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 
 export const Personlinje = ({ person }: PersonlinjeProps) => {

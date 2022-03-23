@@ -121,6 +121,47 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
+  rest.put('/api/vedtak-v2/:saksnummer', (req, res, ctx) => {
+    //@ts-ignore
+    const soknadsbeskrivelse = req.body.søknadsbeskrivelse
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const vedtakHendelse = {
+      id: '4',
+      hendelse: 'Vedtak fattet',
+      opprettet: '2021-03-29T12:43:45',
+      detaljer: 'Søknaden ble innvilget',
+      bruker: 'Silje Saksbehandler',
+    }
+    const sfHendelse = {
+      id: '5',
+      hendelse: 'Serviceforespørsel opprettet i OEBS',
+      opprettet: '2021-10-05T21:52:40.815302',
+      detaljer: 'SF-nummer: 1390009031',
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
+
+    oppgaveliste[oppgaveIdx]['status'] = 'VEDTAK_FATTET'
+    oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
+
+    saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
+    saker[sakIdx]['status'] = 'VEDTAK_FATTET'
+    // @ts-ignore
+    saker[sakIdx]['vedtak'] = {
+      vedtaksDato: '2021-03-29',
+      status: 'INNVILGET',
+      saksbehandlerRef: '23ea7485-1324-4b25-a763-assdfdfa',
+      saksbehandlerNavn: 'Silje Saksbehandler',
+      soknadUuid: '06d4f1b0-a7b0-4568-a899-c1321164e95a',
+    }
+
+    return res(ctx.status(200), ctx.json({}))
+  }),
   rest.put('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
     //@ts-ignore
     const soknadsbeskrivelse = req.body.søknadsbeskrivelse

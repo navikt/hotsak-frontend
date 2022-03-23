@@ -25,8 +25,9 @@ export interface Vedtaksgrunnlag {
   data: any[] | undefined
 }
 
-export const vedtaksgrunnlagUtlaanshistorikk = ( utlaanshistorikk: HjelpemiddelArtikkel[] | undefined ): Vedtaksgrunnlag => {
-    return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk}
+export const vedtaksgrunnlagUtlaanshistorikk = ( utlaanshistorikk: HjelpemiddelArtikkel[] ): Vedtaksgrunnlag => {
+
+  return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk}
 }
 
 export interface Hendelse {

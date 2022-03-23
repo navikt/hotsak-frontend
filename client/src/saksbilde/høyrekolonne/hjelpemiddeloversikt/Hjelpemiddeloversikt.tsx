@@ -6,7 +6,7 @@ import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { BodyLongMedEllipsis } from '../../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../../felleskomponenter/Tooltip'
-import { HjelpemiddelArtikkel } from '../../../types/types.internal'
+import { HjelpemiddelArtikkel, VedtaksgrunnlagType } from '../../../types/types.internal'
 import { formaterDato } from '../../../utils/date'
 import { capitalize } from '../../../utils/stringFormating'
 import { useSak } from '../../sakHook'
@@ -38,7 +38,7 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
 
 export const Hjelpemiddeloversikt = () => {
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, isError, isLoading } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+  const { hjelpemiddelArtikler, isError, isLoading}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
 
   if (isError) {
     return (

@@ -63,6 +63,7 @@ export interface VedtakType {
   saksbehandlerOid: string
   saksbehandlerNavn: string
   søknadsId: string
+  vedtaksgrunnlag?: Vedtaksgrunnlag[]
 }
 
 export interface Enhet {

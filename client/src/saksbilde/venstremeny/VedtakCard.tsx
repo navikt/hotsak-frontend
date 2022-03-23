@@ -62,7 +62,7 @@ export const VedtakCard = ({ sak, hjelpemiddelArtikler }: VedtakCardProps) => {
 
   const opprettVedtak = () => {
     setLoading(true)
-    putVedtak(saksid, VedtakStatusType.INNVILGET, vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler) )
+    putVedtak(saksid, VedtakStatusType.INNVILGET, [vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler)] )
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)

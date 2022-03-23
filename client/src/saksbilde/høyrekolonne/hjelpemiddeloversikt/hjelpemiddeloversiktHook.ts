@@ -1,22 +1,36 @@
 import useSwr from 'swr'
 import { hentBrukerdataMedPost } from '../../../io/http'
-import { HjelpemiddelArtikkel } from '../../../types/types.internal'
+import { HjelpemiddelArtikkel, Vedtaksgrunnlag, VedtaksgrunnlagType } from '../../../types/types.internal'
 
 interface HjelpemiddeloversiktResponse {
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
   isLoading: boolean
   isError: any
+  isFromVedtak: boolean
 }
 
-export function useHjelpemiddeloversikt(brukersFodselsnummer?: string): HjelpemiddeloversiktResponse {
+export function useHjelpemiddeloversikt(brukersFodselsnummer?: string, vedtaksgrunnlag?: Vedtaksgrunnlag): HjelpemiddeloversiktResponse {
+  const utlaanshistorikkFraVedtak = vedtaksgrunnlag?.data?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
+  const harUtlaanshistorikkFraVedtak = utlaanshistorikkFraVedtak !== null && utlaanshistorikkFraVedtak !== undefined
+
   const { data, error } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
-    brukersFodselsnummer ? ['api/hjelpemiddeloversikt' , brukersFodselsnummer] : null,
+    brukersFodselsnummer  && !harUtlaanshistorikkFraVedtak ? ['api/hjelpemiddeloversikt' , brukersFodselsnummer] : null,
     hentBrukerdataMedPost
   )
 
-  return {
-    hjelpemiddelArtikler: data?.data,
-    isLoading: !error && !data,
-    isError: error,
+  if(harUtlaanshistorikkFraVedtak){
+    return {
+      hjelpemiddelArtikler: utlaanshistorikkFraVedtak,
+      isLoading: false,
+      isError: false,
+      isFromVedtak: true
+    }
+  } else {
+    return {
+      hjelpemiddelArtikler: data?.data,
+      isLoading: !error && !data,
+      isError: error,
+      isFromVedtak: false
+    }
   }
 }

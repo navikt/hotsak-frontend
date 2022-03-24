@@ -9,8 +9,8 @@ interface HjelpemiddeloversiktResponse {
   isFromVedtak: boolean
 }
 
-export function useHjelpemiddeloversikt(brukersFodselsnummer?: string, vedtaksgrunnlag?: Vedtaksgrunnlag): HjelpemiddeloversiktResponse {
-  const utlaanshistorikkFraVedtak = vedtaksgrunnlag?.data?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
+export function useHjelpemiddeloversikt(brukersFodselsnummer?: string, vedtaksgrunnlag?: Vedtaksgrunnlag[]): HjelpemiddeloversiktResponse {
+  const utlaanshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
   const harUtlaanshistorikkFraVedtak = utlaanshistorikkFraVedtak !== null && utlaanshistorikkFraVedtak !== undefined
 
   const { data, error } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(

@@ -38,7 +38,7 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
 
 export const Hjelpemiddeloversikt = () => {
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, isError, isLoading}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+  const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr, sak?.vedtak?.vedtaksgrunnlag)
 
   if (isError) {
     return (
@@ -74,7 +74,10 @@ export const Hjelpemiddeloversikt = () => {
 
   return (
     <KolonneOppsett>
-      <KolonneTittel>HJELPEMIDLER UTLÅNT TIL BRUKER</KolonneTittel>
+      {isFromVedtak ?
+         <KolonneTittel>HJELPEMIDLER UTLÅNT TIL BRUKER PÅ VEDTAKSTIDSPUNKT</KolonneTittel>
+         : <KolonneTittel>HJELPEMIDLER UTLÅNT TIL BRUKER (HENTET NÅ)</KolonneTittel>
+      }
       <HjelpemiddeloversiktContainer>
         {Object.keys(artiklerPrKategori).sort().map((kategori) => {
           return (

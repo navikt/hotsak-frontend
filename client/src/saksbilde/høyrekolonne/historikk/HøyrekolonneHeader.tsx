@@ -29,7 +29,7 @@ const Teller = styled.div`
 
 export const HøyrekolonneHeader = ({ onTabChange, currentTab }: SøknadslinjeProps) => {
     const { sak } = useSak()
-    const { hjelpemiddelArtikler, isError, isLoading}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+    const { hjelpemiddelArtikler, isError, isLoading }  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr, sak?.vedtak?.vedtaksgrunnlag)
 
     const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => {
         return antall += artikkel.antall

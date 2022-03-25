@@ -59,7 +59,7 @@ export interface HjelpemiddelArtikkel {
 }
 
 export interface VedtakType {
-  vedtaksDato: string
+  vedtaksdato: string
   status: VedtakStatusType
   saksbehandlerOid: string
   saksbehandlerNavn: string

@@ -106,7 +106,7 @@ export const VedtakCard = ({ sak, hjelpemiddelArtikler }: VedtakCardProps) => {
             <Tag data-cy="tag-soknad-status" variant="success" size="small">
               Innvilget
             </Tag>
-            <Tekst>{formaterDato(sak.vedtak.vedtaksDato)}</Tekst>
+            <Tekst>{formaterDato(sak.vedtak.vedtaksdato)}</Tekst>
           </TagGrid>
         </Card>
       </>

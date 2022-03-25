@@ -77,7 +77,7 @@ export const Hjelpemiddeloversikt = () => {
       {isFromVedtak ? (
         <>
           <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-          <Rad>Per {formaterDato(sak?.vedtak.vedtaksDato)}, da vedtaket ble gjort </Rad>
+          <Rad>Per {formaterDato(sak?.vedtak.vedtaksdato)}, da vedtaket ble gjort </Rad>
          </>
       )
          : (

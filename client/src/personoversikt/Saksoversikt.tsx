@@ -81,7 +81,7 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
       key: 'VEDTAKSDATO',
       name: 'Vedtaksdato',
       width: 110,
-      render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.vedtak?.vedtaksDato)} />,
+      render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.vedtak?.vedtaksdato)} />,
     },
     {
       key: 'SAKSBEHANDLER',   

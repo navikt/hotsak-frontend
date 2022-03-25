@@ -16,7 +16,7 @@
         "søknadGjelder": "Rullator",
         "status": "VEDTAK_FATTET",
         "vedtak": {
-          "vedtaksDato": "2021-03-29",
+          "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"
         },
         "saksbehandler": "Silje Saksbehandler",
@@ -60,7 +60,7 @@
         "status": "VEDTAK_FATTET",
         "saksbehandler": "Silje Saksbehandler",
         "vedtak": {
-          "vedtaksDato": "2021-03-29",
+          "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"
         },
         "fagsystem": "HOTSAK",
@@ -103,7 +103,7 @@
         "søknadGjelder": "Rullator",
         "status": "VEDTAK_FATTET",
         "vedtak": {
-          "vedtaksDato": "2021-03-29",
+          "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"
         },
         "saksbehandler": "Silje Saksbehandler",

@@ -115,7 +115,7 @@ const saksbehandlingHandlers = [
     saker[sakIdx]['status'] = 'VEDTAK_FATTET'
     // @ts-ignore
     saker[sakIdx]['vedtak'] = {
-      vedtaksDato: '2021-03-29',
+      vedtaksdato: '2021-03-29',
       status: 'INNVILGET',
       saksbehandlerRef: '23ea7485-1324-4b25-a763-assdfdfa',
       saksbehandlerNavn: 'Silje Saksbehandler',
@@ -156,7 +156,7 @@ const saksbehandlingHandlers = [
     saker[sakIdx]['status'] = 'VEDTAK_FATTET'
     // @ts-ignore
     saker[sakIdx]['vedtak'] = {
-      vedtaksDato: '2021-03-29',
+      vedtaksdato: '2021-03-29',
       status: 'INNVILGET',
       saksbehandlerRef: '23ea7485-1324-4b25-a763-assdfdfa',
       saksbehandlerNavn: 'Silje Saksbehandler',

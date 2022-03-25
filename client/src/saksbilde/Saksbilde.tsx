@@ -95,7 +95,7 @@ const SaksbildeContent = React.memo(() => {
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && (
                 <Alert size="small" variant="success" data-cy="alert-vedtak-status">
-                  {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksDato)} av ${
+                  {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksdato)} av ${
                     sak.vedtak.saksbehandlerNavn
                   }`}
                 </Alert>

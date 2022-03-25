@@ -73,6 +73,9 @@ const saksbehandlingHandlers = [
     if (req.params.saksid === '666') {
       return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))
     }
+    if (req.params.saksid === '999') {
+      return res(ctx.status(401), ctx.text('Unauthorized.'))
+    }
 
     return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.saksid === req.params.saksid)[0] || saker[2]))
   }),

@@ -74,9 +74,17 @@ export const Hjelpemiddeloversikt = () => {
 
   return (
     <KolonneOppsett>
-      {isFromVedtak ?
-         <KolonneTittel>HJELPEMIDLER UTLÅNT TIL BRUKER PÅ VEDTAKSTIDSPUNKT</KolonneTittel>
-         : <KolonneTittel>HJELPEMIDLER UTLÅNT TIL BRUKER (HENTET NÅ)</KolonneTittel>
+      {isFromVedtak ? (
+        <>
+          <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
+          <Rad>Per {formaterDato(sak?.vedtak.vedtaksDato)}, da vedtaket ble gjort </Rad>
+         </>
+      )
+         : (
+          <>
+            <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
+           </>
+        )
       }
       <HjelpemiddeloversiktContainer>
         {Object.keys(artiklerPrKategori).sort().map((kategori) => {

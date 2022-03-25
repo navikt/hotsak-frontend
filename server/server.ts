@@ -90,7 +90,7 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
         res.redirect('/login')
       } else {
         res.clearCookie('hotsak')
-        res.redirect('/login')
+        res.sendStatus(401)
       }
     }
   }

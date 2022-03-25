@@ -1,11 +1,14 @@
 import dayjs, { Dayjs } from 'dayjs'
+import 'dayjs/locale/nb'
+import isoWeek from 'dayjs/plugin/isoWeek'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
-import isoWeek from 'dayjs/plugin/isoWeek'
 
 dayjs.extend(isoWeek)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
+
+dayjs.locale('nb')
 
 export const NORSK_DATOFORMAT = 'DD.MM.YYYY'
 export const NORSK_TIDSPUNKTFORMAT = 'DD.MM.YYYY kl. HH:mm'

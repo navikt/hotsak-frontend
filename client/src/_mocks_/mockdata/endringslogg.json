@@ -1,0 +1,33 @@
+[
+  {
+    "id": "5",
+    "dato": "2022-03-24",
+    "tittel": "Tittel Nyhet 5",
+    "innhold": "Beskrivelse av endringene og hvordan det påvirker både det ene og det andre. Kanskje kort om hvorfor? Kanskje en lenke? Her kan det stå mye spennende.\n\n[Mer om denne spennende nyheten](https://confluence.adeo.no/x/lG2gEw)\n"
+  },
+  {
+    "id": "4",
+    "dato": "2022-03-10",
+    "tittel": "Tittel Nyhet 4",
+    "innhold": "Beskrivelse av endringene og hvordan det påvirker både det ene og det andre. Kanskje kort om hvorfor? Kanskje en lenke? Her kan det stå mye spennende.\n\n[Mer om denne spennende nyheten](https://confluence.adeo.no/x/lG2gEw)\n"
+  },
+  {
+    "id": "3",
+    "dato": "2022-03-10",
+    "tittel": "Tittel Nyhet 3",
+    "innhold": "Beskrivelse av endringene og hvordan det påvirker både det ene og det andre. Kanskje kort om hvorfor? Kanskje en lenke? Her kan det stå mye spennende.\n\n[Mer om denne spennende nyheten](https://confluence.adeo.no/x/lG2gEw)\n"
+  },
+  {
+    "id": "2",
+    "dato": "2022-02-15",
+    "tittel": "Tittel Nyhet 2",
+    "innhold": "Beskrivelse av endringene og hvordan det påvirker både det ene og det andre. Kanskje kort om hvorfor? Kanskje en lenke? Her kan det stå mye spennende.\n\n[Mer om denne spennende nyheten](https://confluence.adeo.no/x/lG2gEw)\n"
+  },
+  {
+    "id": "1",
+    "dato": "2022-01-02",
+    "tittel": "Tittel Nyhet 1",
+    "innhold": "Beskrivelse av endringene og hvordan det påvirker både det ene og det andre. Kanskje kort om hvorfor? Kanskje en lenke? Her kan det stå mye spennende.\n\n[Mer om denne spennende nyheten](https://confluence.adeo.no/x/lG2gEw)\n",
+    "lest": "2022-01-03T13:30:00.000"
+  }
+]

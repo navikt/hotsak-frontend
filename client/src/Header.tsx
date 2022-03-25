@@ -1,24 +1,25 @@
-import { useHistory } from 'react-router-dom'
-import { Header, Dropdown } from '@navikt/ds-react-internal'
 import { System } from '@navikt/ds-icons'
-import { authState } from './state/authentication'
-import { useRecoilValue } from 'recoil'
 import { Link, Search } from '@navikt/ds-react'
-import styled from 'styled-components/macro'
-import { usePersonContext } from './personoversikt/PersonContext'
+import { Dropdown, Header } from '@navikt/ds-react-internal'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import styled from 'styled-components/macro'
+import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
+import { usePersonContext } from './personoversikt/PersonContext'
+import { authState } from './state/authentication'
 
 const Søk = styled(Search)`
   padding-top: 0.5rem;
   padding-left: 1rem;
+  flex: 1;
 `
 
 const Lenke = styled.a`
-  text-decoration: none;  
+  text-decoration: none;
 `
 
-
-export const Toppmeny = () => {
+export const Toppmeny: React.VFC = () => {
   const { name, ident, isLoggedIn } = useRecoilValue(authState)
   const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
   const history = useHistory()
@@ -46,11 +47,11 @@ export const Toppmeny = () => {
           }}
         />
       )}
+      {window.appSettings.MILJO !== 'prod-gcp' && <EndringsloggDropdown />}
       <Dropdown>
-        <Header.Button as={Dropdown.Toggle} style={{ marginLeft: 'auto' }}>
+        <Header.Button as={Dropdown.Toggle}>
           <System title="Systemer og oppslagsverk" />
         </Header.Button>
-
         <Dropdown.Menu>
           <Dropdown.Menu.GroupedList>
             <Dropdown.Menu.GroupedList.Heading>Systemer og oppslagsverk</Dropdown.Menu.GroupedList.Heading>
@@ -72,9 +73,7 @@ export const Toppmeny = () => {
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             <Lenke href="/logout">
-              <Dropdown.Menu.List.Item>
-                Logg ut
-              </Dropdown.Menu.List.Item>
+              <Dropdown.Menu.List.Item>Logg ut</Dropdown.Menu.List.Item>
             </Lenke>
           </Dropdown.Menu.List>
         </Dropdown.Menu>

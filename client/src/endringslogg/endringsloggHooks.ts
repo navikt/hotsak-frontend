@@ -16,12 +16,18 @@ export type MerkSomLestCallback = (
 
 export function useEndringslogg(): {
   innslag: ReadonlyArray<EndringsloggInnslag>
+  loading: boolean
   uleste: boolean
+  fading: boolean
   merkSomLest: MerkSomLestCallback
 } {
-  const { data, mutate } = useSwr<{ data: ReadonlyArray<EndringsloggInnslag> }>('api/endringslogg', httpGet, {
+  const { data, error, mutate } = useSwr<{ data: ReadonlyArray<EndringsloggInnslag> }>('api/endringslogg', httpGet, {
     refreshInterval: 10000,
   })
+  const innslag: ReadonlyArray<EndringsloggInnslag> = data ? data.data : []
+  const loading = !data && !error
+  const uleste = innslag.some(({ lest }: EndringsloggInnslag) => !lest)
+  const fading = !(loading || uleste)
   const merkSomLest = useCallback<MerkSomLestCallback>(
     (endringslogginnslagId) =>
       postEndringslogginnslagLest(endringslogginnslagId).then(() => {
@@ -30,8 +36,10 @@ export function useEndringslogg(): {
     [mutate]
   )
   return {
-    innslag: data ? data.data : [],
-    uleste: data ? data.data.some(({ lest }) => !lest) : false,
+    innslag,
+    loading,
+    uleste,
+    fading,
     merkSomLest,
   }
 }

@@ -10,7 +10,7 @@ export const EndringsloggDropdown: React.VFC = () => {
   return (
     <Dropdown>
       <Header.Button as={Dropdown.Toggle} style={{ position: 'relative' }}>
-        {endringslogg.uleste && <Uleste />}
+        {!endringslogg.loading && <Uleste fading={endringslogg.fading} />}
         <Information title="Endringslogg" width={20} height={20} />
       </Header.Button>
       <EndringsloggDropdownMenu>
@@ -20,7 +20,7 @@ export const EndringsloggDropdown: React.VFC = () => {
   )
 }
 
-const Uleste = styled.div`
+const Uleste = styled.div<{ fading: boolean }>`
   position: absolute;
   top: 7px;
   right: 7px;
@@ -28,6 +28,9 @@ const Uleste = styled.div`
   height: 14px;
   border-radius: 50%;
   background-color: #ff9100;
+  visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
+  opacity: ${(props) => (props.fading ? 0 : undefined)};
+  transition: ${(props) => (props.fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
 `
 
 const EndringsloggDropdownMenu = styled(Dropdown.Menu)`

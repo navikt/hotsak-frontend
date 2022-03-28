@@ -1,7 +1,7 @@
 import { Ingress, Label } from '@navikt/ds-react'
 import { Divider } from '@navikt/ds-react-internal'
 import dayjs from 'dayjs'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
 import { ISO_DATOFORMAT } from '../utils/date'
@@ -32,12 +32,17 @@ const Innslag: React.VFC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLes
   const timeoutRef = useRef<number | null>(null)
   const innslagRef = useRef<HTMLElement>(null)
   const isOnScreen = useOnScreen(innslagRef)
+  const [isFading, setIsFading] = useState(!ulest)
   useEffect(() => {
     if (isOnScreen && ulest) {
       timeoutRef.current = window.setTimeout(() => {
-        merkSomLest(innslag.id).catch((err) => {
-          console.warn(err)
-        })
+        merkSomLest(innslag.id)
+          .then(() => {
+            setIsFading(true)
+          })
+          .catch((err) => {
+            console.warn(err)
+          })
       }, 5_000)
     }
   }, [isOnScreen, ulest, merkSomLest, innslag])
@@ -49,7 +54,7 @@ const Innslag: React.VFC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLes
   return (
     <>
       <dt>
-        {ulest ? <Ulest>{dato}</Ulest> : <span>{dato}</span>}
+        <Ulest fading={isFading}>{dato}</Ulest>
         <Label as="h3" spacing>
           {innslag.tittel}
         </Label>
@@ -74,7 +79,7 @@ const Liste = styled.dl`
   margin: var(--navds-spacing-3) var(--navds-spacing-6) !important;
 `
 
-const Ulest = styled.span`
+const Ulest = styled.span<{ fading: boolean }>`
   position: relative;
 
   &:before {
@@ -87,5 +92,8 @@ const Ulest = styled.span`
     border-radius: 50%;
     background-color: #ff9100;
     content: '';
+    visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
+    opacity: ${(props) => (props.fading ? 0 : undefined)};
+    transition: ${(props) => (props.fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
   }
 `

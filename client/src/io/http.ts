@@ -1,8 +1,8 @@
 import type { OverforGosysTilbakemelding, Vedtaksgrunnlag, VedtakStatusType } from '../types/types.internal'
 
-export interface SaksbehandlingApiResponse {
+export interface SaksbehandlingApiResponse<T = any> {
   status: number
-  data: any
+  data: T
 }
 
 const baseUrl = process.env.NODE_ENV === 'production' ? '' : `http://localhost:3001`
@@ -63,7 +63,7 @@ export const del = async (url: string, data?: any, headere?: Headers): Promise<S
   return save(url, 'DELETE', data, headere)
 }
 
-export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> => {
+export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiResponse<T>> => {
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
@@ -78,16 +78,16 @@ export const httpGet = async (url: string): Promise<SaksbehandlingApiResponse> =
   }
 }
 
+export const hentBrukerdataMedPost = async (
+  url: string,
+  brukersFodselsnummer: string
+): Promise<SaksbehandlingApiResponse> => {
+  const response = await post(`${baseUrl}/${url}`, { brukersFodselsnummer }, {})
 
-
-
-export const hentBrukerdataMedPost = async (url: string, brukersFodselsnummer: string): Promise<SaksbehandlingApiResponse> => {
-    const response = await post(`${baseUrl}/${url}`, {brukersFodselsnummer}, {})
-  
-    return {
-      status: response.status,
-      data: response.data
-    }
+  return {
+    status: response.status,
+    data: response.data,
+  }
 }
 
 export const postTildeling = async (oppgavereferanse: string) => {
@@ -104,4 +104,8 @@ export const putVedtak = async (saksnummer: string, status: VedtakStatusType, ve
 
 export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {
   return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { tilbakemelding })
+}
+
+export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {
+  return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
 }

@@ -7,7 +7,7 @@ import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '.
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
-import { Personinfo, Kjønn, SaksoversiktType } from '../types/types.internal'
+import { Personinfo, Kjønn, PersonoversiktType } from '../types/types.internal'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { Link } from '@navikt/ds-react'
@@ -50,7 +50,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo | SaksoversiktType['personinformasjon'] | undefined
+  person?: Personinfo | PersonoversiktType | undefined
 }
 
 const LoadingText = styled.div`
@@ -96,7 +96,7 @@ const beregnAlder = (fødselsdato: string) => {
   return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-const formaterNavn = (person: Personinfo | SaksoversiktType['personinformasjon']) => {
+const formaterNavn = (person: Personinfo | PersonoversiktType) => {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 

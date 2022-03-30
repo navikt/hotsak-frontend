@@ -1,15 +1,15 @@
 import useSwr from 'swr'
 import { hentBrukerdataMedPost } from '../io/http'
-import { SaksoversiktType } from '../types/types.internal'
+import { Saksoversikt_Sak } from '../types/types.internal'
 
 interface SaksoversiktResponse {
-  saksoversikt: SaksoversiktType | undefined
+  saksoversikt: Saksoversikt_Sak[] | undefined
   isLoading: boolean
   isError: any
 }
 
 export function useSaksoversikt(brukersFodselsnummer?: string): SaksoversiktResponse {
-  const { data, error } = useSwr<{ data: SaksoversiktType | undefined }>(
+  const { data, error } = useSwr<{ data: Saksoversikt_Sak[] | undefined }>(
     brukersFodselsnummer ? ['api/saksoversikt' , brukersFodselsnummer] : null,
     hentBrukerdataMedPost
   )

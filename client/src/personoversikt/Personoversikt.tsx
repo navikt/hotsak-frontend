@@ -15,6 +15,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { AlertError } from '../feilsider/AlertError'
 import React from 'react'
 import { Alert } from '@navikt/ds-react'
+import { usePersonInfo } from './personInfoHook'
 
 const Container = styled(Flex)`
   flex: 1;
@@ -34,14 +35,21 @@ const Content = styled.div`
 const PersonoversiktContent = () => {
   const { fodselsnummer } = usePersonContext()
   const { path } = useRouteMatch()
+  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const hjelpemiddeloversikt = useHjelpemiddeloversikt(fodselsnummer)
 
-  if (isError) {
+if(personInfoError) {
+    return <Alert size="small" variant="error">
+    Du har ikke tilgang til å søke opp denne personen
+  </Alert>
+}
+
+  if (isError) {    
     throw Error('Feil med henting av oppgaver')
   }
 
-  const saker = saksoversikt?.saker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+  const saker = saksoversikt?.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const hjelpemidler = hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a,b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return antall += artikkel.antall
@@ -50,11 +58,11 @@ const PersonoversiktContent = () => {
 
   return (
     <>
-      {isLoading ? (
+      {personInfoLoading ? (
         <LasterPersonoversikt />
       ) : (
         <>
-          <Personlinje person={saksoversikt?.personinformasjon} />
+          <Personlinje person={personInfo} />
           <Alert size="small" variant="info">
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>

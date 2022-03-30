@@ -335,8 +335,7 @@ export interface OverforGosysTilbakemelding {
 }
 
 
-export interface SaksoversiktType {
-  personinformasjon: {
+export interface PersonoversiktType {
     fornavn: string
     mellomnavn: string | null
     etternavn: string
@@ -345,9 +344,8 @@ export interface SaksoversiktType {
     fnr: string
     brukernummer?: string
     telefon: string
-  }
-  saker: Saksoversikt_Sak[]
 }
+
 export interface Saksoversikt_Sak {
     saksid: string
     søknadGjelder: string

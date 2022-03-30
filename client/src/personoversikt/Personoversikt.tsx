@@ -49,7 +49,7 @@ if(personInfoError) {
     throw Error('Feil med henting av oppgaver')
   }
 
-  const saker = saksoversikt?.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+  const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const hjelpemidler = hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a,b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return antall += artikkel.antall

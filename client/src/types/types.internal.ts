@@ -346,6 +346,10 @@ export interface PersonoversiktType {
     telefon: string
 }
 
+
+export interface Saksoversikt {
+    hotsakSaker: Saksoversikt_Sak[]
+}
 export interface Saksoversikt_Sak {
     saksid: string
     søknadGjelder: string

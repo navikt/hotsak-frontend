@@ -1,98 +1,104 @@
 [
-  [
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "VEDTAK_FATTET",
-      "vedtak": {
-        "vedtaksdato": "2021-03-29",
-        "status": "INNVILGET"
+  {
+    "hotsakSaker": [
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "VEDTAK_FATTET",
+        "vedtak": {
+          "vedtaksdato": "2021-03-29",
+          "status": "INNVILGET"
+        },
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "111111"
       },
-      "saksbehandler": "Silje Saksbehandler",
-      "fagsystem": "HOTSAK",
-      "saksid": "111111"
-    },
-    {
-      "mottattDato": "2021-08-18T13:55:45",
-      "område": ["kognisjon"],
-      "søknadGjelder": "Kalender",
-      "status": "TILDELT_SAKSBEHANDLER",
-      "saksbehandler": "Silje Saksbehandler",
-      "fagsystem": "HOTSAK",
-      "saksid": "222222"
-    },
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "AVVENTER_SAKSBEHANDLER",
-      "fagsystem": "HOTSAK",
-      "saksid": "333333"
-    }
-  ],
-  [
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "VEDTAK_FATTET",
-      "saksbehandler": "Silje Saksbehandler",
-      "vedtak": {
-        "vedtaksdato": "2021-03-29",
-        "status": "INNVILGET"
+      {
+        "mottattDato": "2021-08-18T13:55:45",
+        "område": ["kognisjon"],
+        "søknadGjelder": "Kalender",
+        "status": "TILDELT_SAKSBEHANDLER",
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "222222"
       },
-      "fagsystem": "HOTSAK",
-      "saksid": "111111"
-    },
-    {
-      "mottattDato": "2021-08-18T13:55:45",
-      "område": ["kognisjon"],
-      "søknadGjelder": "Kalender",
-      "status": "TILDELT_SAKSBEHANDLER",
-      "saksbehandler": "Silje Saksbehandler",
-      "fagsystem": "HOTSAK",
-      "saksid": "222222"
-    },
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "AVVENTER_SAKSBEHANDLER",
-      "fagsystem": "HOTSAK",
-      "saksid": "333333"
-    }
-  ],
-  [
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "VEDTAK_FATTET",
-      "vedtak": {
-        "vedtaksdato": "2021-03-29",
-        "status": "INNVILGET"
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "AVVENTER_SAKSBEHANDLER",
+        "fagsystem": "HOTSAK",
+        "saksid": "333333"
+      }
+    ]
+  },
+  {
+    "hotsakSaker": [
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "VEDTAK_FATTET",
+        "saksbehandler": "Silje Saksbehandler",
+        "vedtak": {
+          "vedtaksdato": "2021-03-29",
+          "status": "INNVILGET"
+        },
+        "fagsystem": "HOTSAK",
+        "saksid": "111111"
       },
-      "saksbehandler": "Silje Saksbehandler",
-      "fagsystem": "HOTSAK",
-      "saksid": "111111"
-    },
-    {
-      "mottattDato": "2021-08-18T13:55:45",
-      "område": ["kognisjon"],
-      "søknadGjelder": "Kalender",
-      "status": "TILDELT_SAKSBEHANDLER",
-      "saksbehandler": "Silje Saksbehandler",
-      "fagsystem": "HOTSAK",
-      "saksid": "222222"
-    },
-    {
-      "mottattDato": "2021-09-19T13:55:45",
-      "område": ["bevegelse"],
-      "søknadGjelder": "Rullator",
-      "status": "AVVENTER_SAKSBEHANDLER",
-      "fagsystem": "HOTSAK",
-      "saksid": "333333"
-    }
-  ]
+      {
+        "mottattDato": "2021-08-18T13:55:45",
+        "område": ["kognisjon"],
+        "søknadGjelder": "Kalender",
+        "status": "TILDELT_SAKSBEHANDLER",
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "222222"
+      },
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "AVVENTER_SAKSBEHANDLER",
+        "fagsystem": "HOTSAK",
+        "saksid": "333333"
+      }
+    ]
+  },
+  {
+    "hotsakSaker": [
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "VEDTAK_FATTET",
+        "vedtak": {
+          "vedtaksdato": "2021-03-29",
+          "status": "INNVILGET"
+        },
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "111111"
+      },
+      {
+        "mottattDato": "2021-08-18T13:55:45",
+        "område": ["kognisjon"],
+        "søknadGjelder": "Kalender",
+        "status": "TILDELT_SAKSBEHANDLER",
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "222222"
+      },
+      {
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "AVVENTER_SAKSBEHANDLER",
+        "fagsystem": "HOTSAK",
+        "saksid": "333333"
+      }
+    ]
+  }
 ]

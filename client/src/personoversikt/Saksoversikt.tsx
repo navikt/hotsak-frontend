@@ -62,7 +62,7 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
         width: 80,
         render: (sak: Saksoversikt_Sak) => (
           <LinkCell
-          to={`/sak/${sak.saksid}`}
+          to={`/sak/${sak.saksid}/hjelpemidler`}
             value="Søknad"
             id={`sakstype-${sak.saksid}`}
             minLength={20}

@@ -21,13 +21,13 @@ import { VedtakCard } from './venstremeny/VedtakCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
-import { hotsakHistorikkWidth, hotsakTotalMinWidth, hotsaktVenstremenyWidth } from '../GlobalStyles'
+import {  hotsakTotalMinWidth } from '../GlobalStyles'
 
 const SaksbildeContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: max-content;
+  height: 96vh;
 `
 
 const Container = styled(Flex)`
@@ -46,7 +46,6 @@ const Content = styled.div`
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;
-  max-width: calc(100vw - ${hotsaktVenstremenyWidth} - ${hotsakHistorikkWidth});
 `
 
 const SaksbildeContent = React.memo(() => {

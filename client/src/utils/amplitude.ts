@@ -2,6 +2,7 @@ import amplitude from 'amplitude-js'
 
 export enum amplitude_taxonomy {
   OPPGAVELISTE_BYTT_TAB = 'byttet tab i oppgaveliste',
+  OPPGAVELISTE_OPPDATERT = 'oppdaterte oppgaveliste',
   SAKSBILDE_BYTT_TAB = 'byttet tab i saksbilde',
   SOKNAD_INNVILGET = 'innvilget søknad',
   SOKNAD_OVERFORT_TIL_GOSYS = 'overført søknad til Gosys',
@@ -11,7 +12,6 @@ export enum amplitude_taxonomy {
   SAK_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
   SAK_STARTET_FRA_SAK = 'sak startet fra sak',
   SAK_FRIGITT = 'sak frigitt',
-
 }
 
 export const initAmplitude = () => {
@@ -36,6 +36,8 @@ export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any) {
     try {
       if (amplitude) {
         amplitude.getInstance().logEvent(eventName, data)
+      } else {
+        console.debug(eventName, data)
       }
     } catch (error) {
       console.error(error)

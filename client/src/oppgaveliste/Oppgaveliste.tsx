@@ -1,20 +1,9 @@
-import React from 'react'
-import { Toast } from '../felleskomponenter/Toast'
-import { IngenOppgaver } from './IngenOppgaver'
-import styled from 'styled-components/macro'
-import { useOppgaveliste } from './oppgavelisteHook'
 import { Panel, Table } from '@navikt/ds-react'
-import { Bosted } from './kolonner/Bosted'
-import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
-import { Fødselsnummer } from './kolonner/Fødselsnummer'
-import { Gjelder } from './kolonner/Gjelder'
-import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
-import { Motatt } from './kolonner/Motatt'
-import { Status } from './kolonner/Status'
-import { Tildeling } from './kolonner/Tildeling'
-import { capitalize } from '../utils/stringFormating'
-import { FormidlerCelle } from './kolonner/Formidler'
-import { MenyKnapp } from './kolonner/MenyKnapp'
+import React from 'react'
+import styled from 'styled-components/macro'
+import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
+import { LinkRow } from '../felleskomponenter/table/LinkRow'
+import { Toast } from '../felleskomponenter/Toast'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
@@ -24,11 +13,22 @@ import {
   SakerFilter,
   SakerFilterLabel,
 } from '../types/types.internal'
+import { capitalize } from '../utils/stringFormating'
 import { FilterDropdown, Filters } from './filter'
-import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { Paging } from './paging/Paging'
-import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
+import { IngenOppgaver } from './IngenOppgaver'
+import { Bosted } from './kolonner/Bosted'
+import { FormidlerCelle } from './kolonner/Formidler'
+import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
+import { Fødselsnummer } from './kolonner/Fødselsnummer'
+import { Gjelder } from './kolonner/Gjelder'
+import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
+import { MenyKnapp } from './kolonner/MenyKnapp'
+import { Motatt } from './kolonner/Motatt'
+import { Status } from './kolonner/Status'
+import { Tildeling } from './kolonner/Tildeling'
 import { useLocalStorageState } from './localStorage/localStorageHook'
+import { useOppgaveliste } from './oppgavelisteHook'
+import { Paging } from './paging/Paging'
 
 const Container = styled.div`
   min-height: 300px;
@@ -40,7 +40,7 @@ const ScrollWrapper = styled.div`
   overflow: auto;
 `
 
-export const Oppgaveliste = () => {
+export const Oppgaveliste: React.VFC = () => {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)

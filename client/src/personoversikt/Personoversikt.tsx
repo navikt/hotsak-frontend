@@ -16,6 +16,7 @@ import { AlertError } from '../feilsider/AlertError'
 import React from 'react'
 import { Alert } from '@navikt/ds-react'
 import { usePersonInfo } from './personInfoHook'
+import { Feilmelding } from '../felleskomponenter/Feilmelding'
 
 const Container = styled(Flex)`
   flex: 1;
@@ -39,22 +40,31 @@ const PersonoversiktContent = () => {
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const hjelpemiddeloversikt = useHjelpemiddeloversikt(fodselsnummer)
 
-if(personInfoError) {
-    return <Alert size="small" variant="error">
-    Du har ikke tilgang til å søke opp denne personen
-  </Alert>
-}
+  if (personInfoError) {
+    console.log(personInfoError)
 
-  if (isError) {    
+    if (personInfoError.statusCode === 403) {
+      return <Feilmelding>Du har ikke tilgang til å søke opp denne personen</Feilmelding>
+    } else if (personInfoError.statusCode === 404) {
+      return <Feilmelding>Person ikke funnet i PDL</Feilmelding>
+    } else {
+      return <Feilmelding>Teknisk feil. Klarte ikke å hente person fra PDL.</Feilmelding>
+    }
+  }
+
+  console.log(`Feil ${personInfoError}`)
+
+  if (isError) {
     throw Error('Feil med henting av oppgaver')
   }
 
   const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
-  const hjelpemidler = hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a,b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
+  const hjelpemidler =
+    hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) ||
+    []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
-    return antall += artikkel.antall
-
-}, 0)
+    return (antall += artikkel.antall)
+  }, 0)
 
   return (
     <>
@@ -67,7 +77,7 @@ if(personInfoError) {
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>
           <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
-          
+
           <Container>
             <Content>
               <Switch>

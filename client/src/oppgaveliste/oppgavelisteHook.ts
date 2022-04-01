@@ -78,7 +78,7 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: F
       ...sort,
       ...filters,
     })
-  }, [currentPage, sort.orderBy, sort.direction, filters.sakerFilter, filters.statusFilter, filters.områdeFilter])
+  }, [currentPage, sort, filters])
 
   return {
     oppgaver: data?.data.oppgaver || [],

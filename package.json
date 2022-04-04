@@ -29,10 +29,8 @@
       "prettier --write"
     ],
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix --rule react-hooks/exhaustive-deps:off"
-    ],
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+      "eslint --cache --fix --rule react-hooks/exhaustive-deps:off"
+    ]
   },
   "msw": {
     "workerDirectory": "client/public"

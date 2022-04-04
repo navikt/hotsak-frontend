@@ -107,7 +107,7 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
               </Table>
             </ScrollWrapper>
           ) : (
-            <IngentingFunnet>Fant ingen Hjelpemidler utlånt til bruker</IngentingFunnet>
+            <IngentingFunnet>Fant ingen hjelpemidler utlånt til bruker</IngentingFunnet>
           )}
         </Container>
       )}

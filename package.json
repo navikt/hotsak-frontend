@@ -7,7 +7,11 @@
   "private": true,
   "devDependencies": {
     "concurrently": "^6.2.0",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "eslint": "^8.12.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.2"
   },
   "license": "MIT",
   "scripts": {
@@ -17,7 +21,8 @@
     "dev": "cross-env npm run dev --prefix client",
     "cypress:open": "npm run cypress:open --prefix client",
     "cypress:run": "npm run cypress:run --prefix client",
-    "devserver": "cross-env PORT=3001 npm run start --prefix server"
+    "devserver": "cross-env PORT=3001 npm run start --prefix server",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [
@@ -25,7 +30,9 @@
     ],
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix --rule react-hooks/exhaustive-deps:off"
-    ]
+    ],
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   },
   "msw": {
     "workerDirectory": "client/public"

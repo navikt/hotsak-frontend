@@ -15,7 +15,7 @@ import {
 } from '../types/types.internal'
 import { capitalize } from '../utils/stringFormating'
 import { FilterDropdown, Filters } from './filter'
-import { IngenOppgaver } from './IngenOppgaver'
+import { IngentingFunnet } from './IngenOppgaver'
 import { Bosted } from './kolonner/Bosted'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
@@ -212,7 +212,7 @@ export const Oppgaveliste: React.VFC = () => {
                 />
               </ScrollWrapper>
             ) : (
-              <IngenOppgaver />
+              <IngentingFunnet>Ingen saker funnet</IngentingFunnet>
             )}
           </Panel>
         </Container>

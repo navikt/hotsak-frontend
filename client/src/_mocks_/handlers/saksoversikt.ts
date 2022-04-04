@@ -13,6 +13,12 @@ const saksoversiktHandlers = [
          else if(brukersFodselsnummer === '13044238651') { // Mia Cathrine
             return res(ctx.status(200), ctx.json(saksoversikt[1]))
          }
+         else if(brukersFodselsnummer === '1234') {
+            return res(ctx.status(500))
+         }
+         else if( brukersFodselsnummer === "6666") {
+             return res(ctx.status(200), ctx.json({hotsakSaker: []}))
+         }
          else {
             return res(ctx.status(200), ctx.json(saksoversikt[2]))
          }

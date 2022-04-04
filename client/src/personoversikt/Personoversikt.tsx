@@ -52,11 +52,6 @@ const PersonoversiktContent = () => {
     }
   }
 
-  console.log(`Feil ${personInfoError}`)
-
-  if (isError) {
-    throw Error('Feil med henting av oppgaver')
-  }
 
   const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const hjelpemidler =
@@ -82,7 +77,7 @@ const PersonoversiktContent = () => {
             <Content>
               <Switch>
                 <Route path={`${path}/saker`}>
-                  <Saksoversikt saker={saker} henterSaker={isLoading} />
+                    {isError ? <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding> :  <Saksoversikt saker={saker} henterSaker={isLoading} />}
                 </Route>
                 <Route path={`${path}/hjelpemidler`}>
                   <HjelpemiddeloversiktTabell

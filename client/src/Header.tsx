@@ -27,9 +27,10 @@ export const Toppmeny: React.VFC = () => {
   const [søketekst, setSøketekst] = React.useState<string>('')
 
   return (
-    <Header>
-      <Header.Title href="/">HOTSAK</Header.Title>
-      {window.appSettings.MILJO !== 'prod-gcp' && (
+    <Header style={{display: 'flex', justifyContent: 'flex-end'}}>
+        
+      <Header.Title href="/" style={{marginRight: 'auto'}}>HOTSAK</Header.Title>
+      {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' && (
         <Søk
           label="Finn bruker basert på fødselsnummer"
           size="small"

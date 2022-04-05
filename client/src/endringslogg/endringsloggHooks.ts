@@ -1,6 +1,7 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import useSwr from 'swr'
 import { httpGet, postEndringslogginnslagLest } from '../io/http'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 export interface EndringsloggInnslag {
   id: string
@@ -29,10 +30,12 @@ export function useEndringslogg(): {
   const uleste = innslag.some(({ lest }: EndringsloggInnslag) => !lest)
   const fading = !(loading || uleste)
   const merkSomLest = useCallback<MerkSomLestCallback>(
-    (endringslogginnslagId) =>
-      postEndringslogginnslagLest(endringslogginnslagId).then(() => {
+    (endringslogginnslagId) => {
+      logAmplitudeEvent(amplitude_taxonomy.ENDRINGSLOGGINNSLAG_LEST, { endringslogginnslagId })
+      return postEndringslogginnslagLest(endringslogginnslagId).then(() => {
         return mutate()
-      }),
+      })
+    },
     [mutate]
   )
   return {

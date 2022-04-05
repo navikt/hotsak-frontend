@@ -37,7 +37,7 @@ const Uleste = styled.div<{ fading: boolean }>`
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background-color: #ff9100;
+  background-color: var(--navds-semantic-color-feedback-warning-icon);
   visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
   opacity: ${(props) => (props.fading ? 0 : undefined)};
   transition: ${(props) => (props.fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};

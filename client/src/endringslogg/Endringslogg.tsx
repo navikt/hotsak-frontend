@@ -69,8 +69,8 @@ const Innslag: React.VFC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLes
 
 const Overskrift = styled(Ingress)`
   margin: 0 !important;
-  color: #fff;
-  background-color: #000;
+  color: var(--navds-semantic-color-text-inverted);
+  background-color: var(--navds-semantic-color-canvas-background-inverted);
   padding: var(--navds-spacing-3) var(--navds-spacing-4);
   text-align: center;
 `
@@ -90,7 +90,7 @@ const Ulest = styled.span<{ fading: boolean }>`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background-color: #ff9100;
+    background-color: var(--navds-semantic-color-feedback-warning-icon);
     content: '';
     visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
     opacity: ${(props) => (props.fading ? 0 : undefined)};

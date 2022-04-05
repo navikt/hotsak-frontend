@@ -58,8 +58,7 @@ export const Toppmeny: React.VFC = () => {
         </SøkContainer>
         </div>
       )}
-      <div style={{justifyContent: 'flex-end'}}>
-      {window.appSettings.MILJO !== 'prod-gcp' && <EndringsloggDropdown />}
+      <EndringsloggDropdown />
       <Dropdown>
         <Header.Button as={Dropdown.Toggle}>
           <System title="Systemer og oppslagsverk" />

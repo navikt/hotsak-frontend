@@ -7,7 +7,7 @@ import { RecoilRoot } from 'recoil'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 
 import { PageNotFound } from './feilsider/PageNotFound'
-import { Toppmeny } from './Header'
+import { Toppmeny } from './header/Header'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'

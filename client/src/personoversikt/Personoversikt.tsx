@@ -40,6 +40,9 @@ const PersonoversiktContent = () => {
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const { hjelpemiddelArtikler, isError: hjelpemiddeloversiktError , isLoading: hjelpemiddeloversiktLoading} = useHjelpemiddeloversikt(fodselsnummer)
 
+console.log("Fnr", fodselsnummer);
+
+
   if (personInfoError) {
     console.log(personInfoError)
 

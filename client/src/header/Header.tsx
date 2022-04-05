@@ -1,25 +1,21 @@
-import { System } from '@navikt/ds-icons'
-import { Link, Search } from '@navikt/ds-react'
-import { Dropdown, Header } from '@navikt/ds-react-internal'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components/macro'
-import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
-import { usePersonContext } from './personoversikt/PersonContext'
-import { authState } from './state/authentication'
 
-const Søk = styled(Search)`
+import { System } from '@navikt/ds-icons'
+import { Link } from '@navikt/ds-react'
+import { Dropdown, Header } from '@navikt/ds-react-internal'
+
+import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
+import { usePersonContext } from '../personoversikt/PersonContext'
+import { authState } from '../state/authentication'
+import { Søk } from './Søk'
+
+const SøkeContainer = styled.div`
   padding-top: 0.5rem;
   padding-left: 1rem;
-`
-
-const SøkContainer = styled.div`
-//flex: 1;
-max-width: 400px;
-padding: 0.5rem;
-justify-content: center;
-
+  margin-right: auto;
 `
 
 const Lenke = styled.a`
@@ -29,34 +25,27 @@ const Lenke = styled.a`
 export const Toppmeny: React.VFC = () => {
   const { name, ident, isLoggedIn } = useRecoilValue(authState)
   const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
-  const history = useHistory()
   const { setFodselsnummer } = usePersonContext()
-  const [søketekst, setSøketekst] = React.useState<string>('')
+  const history = useHistory()
 
   return (
-    <Header>
-      <Header.Title href="/">HOTSAK</Header.Title>
-      {window.appSettings.MILJO !== 'prod-gcp' && (
-        <div>
-              <SøkContainer>
-        <Search
-          label="Finn bruker basert på fødselsnummer"
-          size="small"
-          variant="primary"
-          hideLabel={true}
-          onChange={(value) => {
-            setSøketekst(value)
-          }}
-          onClear={() => setSøketekst('')}
-          value={søketekst}
-          onSearch={() => {
-            setFodselsnummer(søketekst)
-            setSøketekst('')
-            history.push('/personoversikt/saker')
-          }}
-        />
-        </SøkContainer>
-        </div>
+    <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {window.appSettings.MILJO !== 'prod-gcp' ? (
+        <>
+          <Header.Title href="/">HOTSAK</Header.Title>
+          <SøkeContainer>
+            <Søk
+              onSearch={(value: string) => {
+                setFodselsnummer(value)
+                history.push('/personoversikt/saker')
+              }}
+            />
+          </SøkeContainer>
+        </>
+      ) : (
+        <Header.Title href="/" style={{ marginRight: 'auto' }}>
+          HOTSAK
+        </Header.Title>
       )}
       <EndringsloggDropdown />
       <Dropdown>
@@ -89,7 +78,6 @@ export const Toppmeny: React.VFC = () => {
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
-      </div>
     </Header>
   )
 }

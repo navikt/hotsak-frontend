@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components/macro'
-import { ISO_DATOFORMAT } from '../utils/date'
+import { ISO_DATOFORMAT } from '../../utils/date'
 import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
 
 export const Endringslogg: React.VFC<{

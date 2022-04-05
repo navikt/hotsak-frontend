@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import useSwr from 'swr'
-import { httpGet, postEndringslogginnslagLest } from '../io/http'
+import { httpGet, postEndringslogginnslagLest } from '../../io/http'
 
 export interface EndringsloggInnslag {
   id: string

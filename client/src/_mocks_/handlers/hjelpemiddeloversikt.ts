@@ -17,6 +17,9 @@ const hjelpemiddeloversiktHandlers = [
          else if(brukersFodselsnummer === '13044238651') { // Mia Cathrine
             return res(ctx.status(200), ctx.json(hjelpemiddeloversikt[1]))
          }
+         else if(brukersFodselsnummer === '500') {
+            return res(ctx.status(500), ctx.text("Å nei og nei. Dette kunne virkelig ikke gått verre"))
+         }
          else {
             return res(ctx.status(200), ctx.json(hjelpemiddeloversikt[2]))
          }

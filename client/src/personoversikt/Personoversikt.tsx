@@ -38,7 +38,7 @@ const PersonoversiktContent = () => {
   const { path } = useRouteMatch()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
-  const hjelpemiddeloversikt = useHjelpemiddeloversikt(fodselsnummer)
+  const { hjelpemiddelArtikler, isError: hjelpemiddeloversiktError , isLoading: hjelpemiddeloversiktLoading} = useHjelpemiddeloversikt(fodselsnummer)
 
   if (personInfoError) {
     console.log(personInfoError)
@@ -55,7 +55,7 @@ const PersonoversiktContent = () => {
 
   const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const hjelpemidler =
-    hjelpemiddeloversikt.hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) ||
+    hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) ||
     []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return (antall += artikkel.antall)
@@ -80,10 +80,10 @@ const PersonoversiktContent = () => {
                     {isError ? <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding> :  <Saksoversikt saker={saker} henterSaker={isLoading} />}
                 </Route>
                 <Route path={`${path}/hjelpemidler`}>
-                  <HjelpemiddeloversiktTabell
+                  {hjelpemiddeloversiktError ? <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding> :  <HjelpemiddeloversiktTabell
                     artikler={hjelpemidler}
-                    henterHjelpemiddeloversikt={hjelpemiddeloversikt.isLoading}
-                  />
+                    henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
+                  />}
                 </Route>
               </Switch>
             </Content>

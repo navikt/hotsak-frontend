@@ -55,10 +55,6 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
-        "type": "INFO"
-      },
-      {
         "beskrivelse": "Oppfølgingsansvarlig: annen oppfølgingsansvarlig",
         "type": "MERKNAD"
       },
@@ -233,10 +229,6 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Tilleggsinformasjon i søknaden",
-        "type": "ADVARSEL"
-      },
-      {
         "beskrivelse": "Medlem av folketrygden",
         "type": "INFO"
       }
@@ -332,10 +324,6 @@
         "type": "INFO"
       },
       {
-        "beskrivelse": "Ingen fritekst i søknaden",
-        "type": "INFO"
-      },
-      {
         "beskrivelse": "Medlem av folketrygden",
         "type": "INFO"
       }
@@ -425,12 +413,7 @@
       {
         "beskrivelse": "Personalia fra folkeregisteret",
         "type": "INFO"
-      },
-      {
-        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
-        "type": "INFO"
-      }
-    ],
+      }],
     "mottattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
       "fnr": "06115559891",
@@ -530,10 +513,6 @@
       },
       {
         "beskrivelse": "Personalia fra Folkeregisteret",
-        "type": "INFO"
-      },
-      {
-        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       },
       {
@@ -647,10 +626,6 @@
       },
       {
         "beskrivelse": "Personalia fra Folkeregisteret",
-        "type": "INFO"
-      },
-      {
-        "beskrivelse": "Ingen tilleggsinformasjon i søknaden",
         "type": "INFO"
       },
       {

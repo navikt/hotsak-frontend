@@ -12,7 +12,14 @@ import { authState } from './state/authentication'
 const Søk = styled(Search)`
   padding-top: 0.5rem;
   padding-left: 1rem;
-  flex: 1;
+`
+
+const SøkContainer = styled.div`
+//flex: 1;
+max-width: 400px;
+padding: 0.5rem;
+justify-content: center;
+
 `
 
 const Lenke = styled.a`
@@ -30,7 +37,9 @@ export const Toppmeny: React.VFC = () => {
     <Header>
       <Header.Title href="/">HOTSAK</Header.Title>
       {window.appSettings.MILJO !== 'prod-gcp' && (
-        <Søk
+        <div>
+              <SøkContainer>
+        <Search
           label="Finn bruker basert på fødselsnummer"
           size="small"
           variant="primary"
@@ -46,7 +55,10 @@ export const Toppmeny: React.VFC = () => {
             history.push('/personoversikt/saker')
           }}
         />
+        </SøkContainer>
+        </div>
       )}
+      <div style={{justifyContent: 'flex-end'}}>
       {window.appSettings.MILJO !== 'prod-gcp' && <EndringsloggDropdown />}
       <Dropdown>
         <Header.Button as={Dropdown.Toggle}>
@@ -78,6 +90,7 @@ export const Toppmeny: React.VFC = () => {
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
+      </div>
     </Header>
   )
 }

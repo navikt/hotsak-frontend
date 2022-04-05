@@ -12,9 +12,11 @@ export enum amplitude_taxonomy {
   SAK_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
   SAK_STARTET_FRA_SAK = 'sak startet fra sak',
   SAK_FRIGITT = 'sak frigitt',
+  ENDRINGSLOGG_APNET = 'endringslogg åpnet',
+  ENDRINGSLOGGINNSLAG_LEST = 'endringslogginnslag lest',
 }
 
-export const initAmplitude = () => {
+export const initAmplitude = (): void => {
   if (amplitude) {
     amplitude.getInstance().init('default', '', {
       apiEndpoint: 'amplitude.nav.no/collect-auto',
@@ -26,7 +28,7 @@ export const initAmplitude = () => {
   }
 }
 
-export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any) {
+export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any): void {
   setTimeout(() => {
     data = {
       app: 'hotsak-frontend',

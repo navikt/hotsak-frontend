@@ -30,9 +30,6 @@
     "@types/tunnel": "0.0.2",
     "concurrently": "^6.2.0",
     "cross-env": "^7.0.3",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.23.3",
-    "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.6.3"
@@ -46,13 +43,5 @@
     "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only ./server.ts",
     "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm start\"",
     "build-exp": "npm run clean:dist && parcel build src/index.html --out-dir dist/ --public-url /static"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,json,md}": [
-      "prettier --write"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix --rule react-hooks/exhaustive-deps:off"
-    ]
   }
 }

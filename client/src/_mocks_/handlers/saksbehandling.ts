@@ -1,6 +1,6 @@
 import { rest } from 'msw'
-import { OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 
+import { OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
@@ -189,31 +189,41 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.get(`/api/oppgaver/`, (req, res, ctx) => {
+  rest.get(`/api/oppgaver`, (req, res, ctx) => {
     const statusFilter = req.url.searchParams.get('status')
     const sakerFilter = req.url.searchParams.get('saksbehandler')
     const områdeFilter = req.url.searchParams.get('område')
     const currentPage = Number(req.url.searchParams.get('page'))
     const pageSize = Number(req.url.searchParams.get('limit'))
 
-    const startIndex =  currentPage - 1
+    const startIndex = currentPage - 1
     const endIndex = startIndex + pageSize
     const filtrerteOppgaver = oppgaveliste
-    .filter((oppgave) => statusFilter ? oppgave.status === statusFilter : true)
-    .filter((oppgave) => (sakerFilter && sakerFilter === SakerFilter.MINE) ? oppgave.saksbehandler?.navn === "Silje Saksbehandler" : true)
-    .filter((oppgave) => (sakerFilter && sakerFilter === SakerFilter.UFORDELTE) ? oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER : true)
-    .filter((oppgave) => områdeFilter ? oppgave.personinformasjon.funksjonsnedsettelse.includes(områdeFilter.toLowerCase()) : true)
+      .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))
+      .filter((oppgave) =>
+        sakerFilter && sakerFilter === SakerFilter.MINE ? oppgave.saksbehandler?.navn === 'Silje Saksbehandler' : true
+      )
+      .filter((oppgave) =>
+        sakerFilter && sakerFilter === SakerFilter.UFORDELTE
+          ? oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
+          : true
+      )
+      .filter((oppgave) =>
+        områdeFilter ? oppgave.personinformasjon.funksjonsnedsettelse.includes(områdeFilter.toLowerCase()) : true
+      )
 
     const filterApplied = oppgaveliste.length !== filtrerteOppgaver.length
 
     const response = {
-        oppgaver: !filterApplied ? oppgaveliste.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
-        totalCount: !filterApplied ? oppgaveliste.length : filtrerteOppgaver.length,
-        pageSize: pageSize,
-        currentPage: currentPage
+      oppgaver: !filterApplied
+        ? oppgaveliste.slice(startIndex, endIndex)
+        : filtrerteOppgaver.slice(startIndex, endIndex),
+      totalCount: !filterApplied ? oppgaveliste.length : filtrerteOppgaver.length,
+      pageSize: pageSize,
+      currentPage: currentPage,
     }
 
-    return res(ctx.status(200),ctx.json(response))
+    return res(ctx.status(200), ctx.json(response))
   }),
 ]
 

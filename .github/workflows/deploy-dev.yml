@@ -50,7 +50,7 @@ jobs:
       #- name: validate ts
       #  run: npm run validate-ts
       - name: build bundle
-        run: npm run build
+        run: npm run build --workspaces
       #- name: run e2e-test
       #  run: npm run e2e-test
       #- name: Archive Cypress artifacts

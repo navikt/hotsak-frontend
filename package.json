@@ -22,12 +22,12 @@
     "prettier": "^2.6.2"
   },
   "scripts": {
-    "build-client": "npm run build -w client",
-    "build-server": "npm run build -w server",
+    "build-client": "npm run build --workspace=client",
+    "build-server": "npm run build --workspace=server",
     "build": "concurrently \"npm run build-server\" \"cross-env-shell BUILD_PATH=../dist/client npm run build-client\"",
-    "dev": "cross-env npm run dev -w client",
-    "cypress:open": "npm run cypress:open -w client",
-    "cypress:run": "npm run cypress:run -w client",
+    "dev": "cross-env npm run dev --workspace=client",
+    "cypress:open": "npm run cypress:open --workspace=client",
+    "cypress:run": "npm run cypress:run --workspace=client",
     "prepare": "husky install"
   },
   "lint-staged": {

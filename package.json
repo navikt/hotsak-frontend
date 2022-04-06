@@ -22,7 +22,7 @@
     "prettier": "^2.6.2"
   },
   "scripts": {
-    "build": "npm run build -w client -w server",
+    "build": "cross-env-shell BUILD_PATH=../dist/client npm run build -w client -w server",
     "build-client": "npm run build -w client",
     "build-server": "npm run build -w server",
     "dev": "cross-env npm run dev -w client",

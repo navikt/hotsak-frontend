@@ -1,5 +1,3 @@
-import { Request } from 'express'
-
 import logger from '../logging'
 
 interface IsValidInProps {
@@ -45,7 +43,6 @@ const createTokenForTest = () =>
       oid: '23ea7485-1324-4b25-a763-assdfdfa',
     })
   ).toString('base64')}.bogussignature`
-
 
 export default {
   isValidIn,

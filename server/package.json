@@ -36,12 +36,10 @@
   },
   "license": "MIT",
   "scripts": {
-    "server-dev": "ts-node-dev --respawn --transpile-only ./server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
     "mockend": "cross-env MOCK_BACKEND=true HM_SAKSBEHANDLING_API_URL= ts-node-dev --respawn --transpile-only ./_mock_/mockServer.ts",
-    "build-server": "tsc -p .",
-    "clean:dist": "rimraf dist/",
-    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only ./server.ts",
-    "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm start\"",
-    "build-exp": "npm run clean:dist && parcel build src/index.html --out-dir dist/ --public-url /static"
+    "build": "tsc -p .",
+    "clean": "rimraf ../dist/server",
+    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only ./server.ts"
   }
 }

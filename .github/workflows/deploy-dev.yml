@@ -46,11 +46,7 @@ jobs:
       - name: set timezone
         run: export TZ=utc
       - name: top level install
-        run: npm install
-      - name: install frontend deps
-        run: npm install --prefix client
-      - name: install server deps
-        run: npm install --prefix server
+        run: npm install --workspaces
       #- name: validate ts
       #  run: npm run validate-ts
       - name: build bundle
@@ -69,7 +65,7 @@ jobs:
           DOCKER_IMAGE: ghcr.io/navikt/hotsak-frontend
       - name: build docker image
         run: |
-          npm prune --production
+          npm prune --production --workspaces
           docker build . -t $IMAGE
       - name: push docker image
         run: |
@@ -107,5 +103,3 @@ jobs:
           CLUSTER: labs-gcp
           RESOURCE: .nais/labs.yaml
           VAR: image=${{ env.IMAGE }}
-
-

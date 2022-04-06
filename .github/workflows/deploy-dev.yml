@@ -9,6 +9,7 @@ on:
     branches:
       - main
 env:
+  HUSKY: 0
   IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
 
 jobs:

@@ -46,7 +46,11 @@ jobs:
       - name: set timezone
         run: export TZ=utc
       - name: top level install
-        run: npm install
+        run: npm install -ws false
+      - name: install frontend deps
+        run: npm install -ws false --prefix client
+      - name: install server deps
+        run: npm install -ws false --prefix server
       #- name: validate ts
       #  run: npm run validate-ts
       - name: build bundle

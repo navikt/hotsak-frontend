@@ -11,5 +11,11 @@
         "bracketSpacing": false
       }
     }
-  ]
+  ],
+  "importOrder": [
+    "^@navikt/(.*)$",
+    "/(oppgaveliste|dropdown|table|io|routes|utils|assets)/",
+    "^[./]"
+  ],
+  "importOrderSeparation": true
 }

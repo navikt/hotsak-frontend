@@ -1,25 +1,25 @@
-import request from 'request-promise-native'
-
-import { OidcConfig } from '../types'
+import type { OidcConfig } from '../types'
+import fetch from 'node-fetch'
 
 export default (config: OidcConfig) => {
   return {
-    hentFor: async (targetClientId: string, accessToken: string) => {
-      const options = {
-        uri: config.tokenEndpoint,
-        json: true,
+    hentFor: async (targetClientId: string, accessToken: string): Promise<string> => {
+      const body = new URLSearchParams()
+      body.append('grant_type', 'urn:ietf:params:oauth:grant-type:jwt-bearer')
+      body.append('client_id', config.clientID) // our own
+      body.append('client_secret', config.clientSecret)
+      body.append('assertion', accessToken)
+      body.append('scope', targetClientId) // the app we're reaching out to
+      body.append('requested_token_use', 'on_behalf_of')
+      const response = await fetch(config.tokenEndpoint, {
         method: 'POST',
-        form: {
-          grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-          client_id: config.clientID, // our own
-          client_secret: config.clientSecret,
-          assertion: accessToken,
-          scope: targetClientId, // the app we're reaching out to
-          requested_token_use: 'on_behalf_of',
-        },
+        body,
+      })
+      if (response.ok) {
+        const data = (await response.json()) as { access_token: string }
+        return data.access_token
       }
-      const response = await request.post(options)
-      return response.access_token
+      return Promise.reject(new Error(`kall feilet med status: ${response.status}`))
     },
   }
 }

@@ -16,7 +16,6 @@
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^7.0.4",
-    "is-ci": "^3.0.1",
     "lint-staged": "^12.3.7",
     "path-to-regexp": "^6.2.0",
     "prettier": "^2.6.2"
@@ -28,7 +27,7 @@
     "dev": "cross-env npm run dev -w client",
     "cypress:open": "npm run cypress:open -w client",
     "cypress:run": "npm run cypress:run -w client",
-    "prepare": "is-ci || husky install"
+    "prepare": "node ./prepare.cjs"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [

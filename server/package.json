@@ -7,21 +7,17 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-http-proxy": "^1.6.3",
     "express-session": "^1.17.2",
-    "msw": "^0.39.2",
     "node-fetch": "^2.6.7",
     "openid-client": "^3.15.10",
     "tunnel": "0.0.6",
-    "web-vitals": "^2.1.4",
     "winston": "^3.7.2"
   },
   "devDependencies": {
-    "@types/connect-redis": "^0.0.16",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.12",
     "@types/express-http-proxy": "^1.6.2",
@@ -30,16 +26,14 @@
     "@types/node-fetch": "^2.6.1",
     "@types/tunnel": "0.0.2",
     "cross-env": "^7.0.3",
-    "is-ci": "^3.0.1",
     "rimraf": "^3.0.2",
-    "ts-node-dev": "^1.1.6",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
-    "mockend": "cross-env MOCK_BACKEND=true HM_SAKSBEHANDLING_API_URL= ts-node-dev --respawn --transpile-only ./_mock_/mockServer.ts",
     "build": "tsc -p .",
     "clean": "rimraf ../dist/server",
-    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only ./server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
+    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev"
   }
 }

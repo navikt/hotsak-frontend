@@ -1,9 +1,7 @@
-import { Alert } from '@navikt/ds-react'
+import React from 'react'
 import styled from 'styled-components/macro'
 
-interface AlertErrorProps {
-  error: Error
-}
+import { Alert } from '@navikt/ds-react'
 
 const FeilmeldingContainer = styled.div`
   display: flex;
@@ -11,19 +9,23 @@ const FeilmeldingContainer = styled.div`
   margin-top: 2rem;
 `
 
-
-export const AlertError = (props: AlertErrorProps) => {
-
+export const AlertError: React.VFC<{
+  error: Error
+}> = (props) => {
   const { error } = props
   let error_: any = error
-  if(error_.hasOwnProperty('statusCode')){
-    if(error_.statusCode === 401){
+  if (error_.hasOwnProperty('statusCode')) {
+    if (error_.statusCode === 401) {
       throw error
     }
   }
   return (
     <FeilmeldingContainer>
-      <Alert size="small" variant="error">{error.message ? error.message : 'Klare ikke å hente saken. Dette kan skyldes en teknisk feil. Kontakt utviklerne i Digihot'}</Alert>
+      <Alert size="small" variant="error">
+        {error.message
+          ? error.message
+          : 'Klare ikke å hente saken. Dette kan skyldes en teknisk feil. Kontakt utviklerne i Digihot'}
+      </Alert>
     </FeilmeldingContainer>
   )
 }

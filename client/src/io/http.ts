@@ -1,3 +1,5 @@
+import { isNumber } from '../utils/type'
+
 import type { OverforGosysTilbakemelding, Vedtaksgrunnlag, VedtakStatusType } from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse<T = any> {
@@ -9,10 +11,27 @@ const baseUrl = process.env.NODE_ENV === 'production' ? '' : `http://localhost:3
 
 type Headers = { [key: string]: any }
 
-export const ResponseError = (statusCode: number, message?: string) => ({
-  statusCode,
-  message,
-})
+export class ResponseError extends Error {
+  constructor(readonly statusCode: number, message?: string) {
+    super(message)
+  }
+
+  isUnauthorized() {
+    return this.statusCode === 401
+  }
+
+  isNotFound() {
+    return this.statusCode === 404
+  }
+
+  isInternalServerError() {
+    return this.statusCode === 500
+  }
+}
+
+export function isResponseError(value: unknown): value is ResponseError {
+  return value instanceof ResponseError || isNumber((value as any).statusCode)
+}
 
 const getData = async (response: Response) => {
   try {
@@ -42,7 +61,7 @@ const save = async (url: string, method: string, data: any, headere?: Headers): 
   })
   if (response.status > 400) {
     const message = await getErrorMessage(response)
-    throw ResponseError(response.status, message)
+    throw new ResponseError(response.status, message)
   }
 
   return {
@@ -69,7 +88,7 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
 
   if (response.status >= 400) {
     const errorMessage = await getErrorMessage(response)
-    throw ResponseError(response.status, errorMessage)
+    throw new ResponseError(response.status, errorMessage)
   }
 
   return {
@@ -98,7 +117,7 @@ export const deleteFjernTildeling = async (oppgavereferanse: string) => {
   return del(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
-export const putVedtak = async (saksnummer: string, status: VedtakStatusType, vedtaksgrunnlag: Vedtaksgrunnlag[] ) => {
+export const putVedtak = async (saksnummer: string, status: VedtakStatusType, vedtaksgrunnlag: Vedtaksgrunnlag[]) => {
   return put(`${baseUrl}/api/vedtak-v2/${saksnummer}`, { status, vedtaksgrunnlag })
 }
 

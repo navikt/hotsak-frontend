@@ -1,19 +1,18 @@
 import React from 'react'
-
 import { ErrorBoundary } from 'react-error-boundary'
 import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
-import { GlobalFeilside } from './feilsider/GlobalFeilside'
 
-import { PageNotFound } from './feilsider/PageNotFound'
+import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
+
+import { ProtectedRoute } from './ProtectedRoute'
+import { Feilside } from './feilsider/Feilside'
+import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Toppmeny } from './header/Header'
 import { PersonProvider } from './personoversikt/PersonContext'
-import { ProtectedRoute } from './ProtectedRoute'
 import { Routes } from './routes'
-import { IkkeLoggetInn } from './routes/IkkeLoggetInn'
 import { useAuthentication } from './state/authentication'
-import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -28,29 +27,29 @@ const App: React.VFC = () => {
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
         <Toppmeny />
-        <React.Suspense fallback={<div />}>
-          {/*<Varsler />*/}
-
-          <Switch>
-            <Route path={Routes.Uautorisert}>
-              <IkkeLoggetInn />
-            </Route>
-            <ProtectedRoute path={Routes.Oppgaveliste} exact>
-              <Oppgaveliste />
-            </ProtectedRoute>
-            <ProtectedRoute path={Routes.Saksbilde}>
-              <Saksbilde />
-            </ProtectedRoute>
-            <ProtectedRoute path={Routes.Personoversikt}>
-              <Personoversikt />
-            </ProtectedRoute>
-            <Route path="*">
-              <PageNotFound />
-            </Route>
-          </Switch>
-        </React.Suspense>
+        <ErrorBoundary FallbackComponent={GlobalFeilside}>
+          <React.Suspense fallback={<div />}>
+            {/*<Varsler />*/}
+            <Switch>
+              <Route path={Routes.Uautorisert}>
+                <Feilside statusCode={401} />
+              </Route>
+              <ProtectedRoute path={Routes.Oppgaveliste} exact>
+                <Oppgaveliste />
+              </ProtectedRoute>
+              <ProtectedRoute path={Routes.Saksbilde}>
+                <Saksbilde />
+              </ProtectedRoute>
+              <ProtectedRoute path={Routes.Personoversikt}>
+                <Personoversikt />
+              </ProtectedRoute>
+              <Route path="*">
+                <Feilside statusCode={404} />
+              </Route>
+            </Switch>
+          </React.Suspense>
+        </ErrorBoundary>
       </PersonProvider>
-      {/*</React.Suspense>*/}
       {/*<Toasts />*/}
     </ErrorBoundary>
   )

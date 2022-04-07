@@ -1,10 +1,12 @@
-import { SortState } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import useSwr from 'swr'
+
+import { SortState } from '@navikt/ds-react'
+
 import { httpGet } from '../io/http'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter } from '../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
@@ -13,7 +15,7 @@ interface DataResponse {
   currentPage: number
   pageSize: number
   isLoading: boolean
-  isError: any
+  error: unknown
   mutate: Function
 }
 
@@ -86,7 +88,7 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: F
     pageSize: data?.data.pageSize || PAGE_SIZE,
     currentPage: data?.data.currentPage || currentPage,
     isLoading: !error && !data,
-    isError: error,
+    error,
     mutate,
   }
 }

@@ -1,8 +1,13 @@
-import { Panel, Table } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components/macro'
+
+import { Panel, Table } from '@navikt/ds-react'
+
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
+import { capitalize } from '../utils/stringFormating'
+import { isError } from '../utils/type'
+
 import { Toast } from '../felleskomponenter/Toast'
 import {
   OmrådeFilter,
@@ -13,9 +18,8 @@ import {
   SakerFilter,
   SakerFilterLabel,
 } from '../types/types.internal'
-import { capitalize } from '../utils/stringFormating'
-import { FilterDropdown, Filters } from './filter'
 import { IngentingFunnet } from './IngenOppgaver'
+import { FilterDropdown, Filters } from './filter'
 import { Bosted } from './kolonner/Bosted'
 import { FormidlerCelle } from './kolonner/Formidler'
 import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
@@ -47,7 +51,7 @@ export const Oppgaveliste: React.VFC = () => {
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
-  const { oppgaver, isError, isLoading, totalCount, mutate } = useOppgaveliste(currentPage, sort, {
+  const { oppgaver, isLoading, totalCount, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
     områdeFilter,
@@ -123,8 +127,12 @@ export const Oppgaveliste: React.VFC = () => {
     { key: 'MENU', sortable: false, render: (oppgave: Oppgave) => <MenyKnapp oppgave={oppgave} onMutate={mutate} /> },
   ]
 
-  if (isError) {
-    throw Error('Feil med henting av oppgaver')
+  if (error) {
+    if (isError(error)) {
+      throw Error('Feil med henting av oppgaver', { cause: error })
+    } else {
+      throw Error('Feil med henting av oppgaver')
+    }
   }
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });

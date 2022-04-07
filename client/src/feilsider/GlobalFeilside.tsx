@@ -1,35 +1,17 @@
-import styled from 'styled-components/macro'
+import React from 'react'
 
-import { Varsel, Varseltype } from '@navikt/helse-frontend-varsel'
-import { IkkeLoggetInn } from '../routes/IkkeLoggetInn'
+import { isResponseError } from '../io/http'
 
-const Feiltekst = styled.div`
-  padding-top: 2rem;
-  * {
-    padding: 1rem;
-  }
-`
+import { Feilside } from './Feilside'
 
-export const GlobalFeilside = ({ error }: { error: Error }) => {
-
-  let error_: any = error
-  
+export const GlobalFeilside: React.VFC<{ error: Error }> = ({ error }) => {
   return (
-
     <>
-      {error_.hasOwnProperty("statusCode") && error_.statusCode === 401
-        ? <IkkeLoggetInn />
-        : <>
-        <Varsel type={Varseltype.Advarsel}>Siden kan dessverre ikke vises</Varsel>
-        <Feiltekst>
-          Du kan forsøke å laste siden på nytt, eller lukke nettleservinduet og logge inn på nytt.
-          <pre>{error.stack}</pre>
-        </Feiltekst>
-      </>
-      }
+      {isResponseError(error) ? (
+        <Feilside statusCode={error.statusCode} error={error} />
+      ) : (
+        <Feilside statusCode={500} error={error} />
+      )}
     </>
   )
-  
-
-
 }

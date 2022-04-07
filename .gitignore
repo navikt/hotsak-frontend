@@ -16,7 +16,8 @@ client/build
 /server/dist
 
 # misc
-.DS_Store
+**/.DS_Store
+**/.eslintcache
 .env.local
 .env.development.local
 .env.test.local
@@ -28,7 +29,6 @@ yarn-error.log*
 
 /.idea
 /.vscode
-**/.DS_Store
 /yarn-error.log
 client/cypress/videos/
 client/cypress/fixtures/example.json

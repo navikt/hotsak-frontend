@@ -1,18 +1,20 @@
 import dayjs from 'dayjs'
+import { useHistory } from 'react-router'
 import styled from 'styled-components/macro'
+
+import { Link } from '@navikt/ds-react'
 import { CopyToClipboard } from '@navikt/ds-react-internal'
+
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
 
+import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
-import { Personinfo, Kjønn, PersonoversiktType } from '../types/types.internal'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
-import { hotsakTotalMinWidth } from '../GlobalStyles'
-import { Link } from '@navikt/ds-react'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { useHistory } from 'react-router'
+import { Personinfo, Kjønn, PersonoversiktType } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -110,19 +112,15 @@ export const Personlinje = ({ person }: PersonlinjeProps) => {
   return (
     <Container>
       <Kjønnsikon kjønn={kjønn} />
-      {window.appSettings.MILJO !== 'prod-gcp' ? (
-        <Link
-          href="#"
-          onClick={() => {
-            setFodselsnummer(fnr)
-            history.push('/personoversikt/saker')
-          }}
-        >
-          <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
-        </Link>
-      ) : (
+      <Link
+        href="#"
+        onClick={() => {
+          setFodselsnummer(fnr)
+          history.push('/personoversikt/saker')
+        }}
+      >
         <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
-      )}
+      </Link>
       <Separator>/</Separator>
       {fnr ? (
         <>

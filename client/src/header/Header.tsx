@@ -7,10 +7,10 @@ import { System } from '@navikt/ds-icons'
 import { Link } from '@navikt/ds-react'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
 
-import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { authState } from '../state/authentication'
 import { Søk } from './Søk'
+import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -30,23 +30,15 @@ export const Toppmeny: React.VFC = () => {
 
   return (
     <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      {window.appSettings.MILJO !== 'prod-gcp' ? (
-        <>
-          <Header.Title href="/">HOTSAK</Header.Title>
-          <SøkeContainer>
-            <Søk
-              onSearch={(value: string) => {
-                setFodselsnummer(value)
-                history.push('/personoversikt/saker')
-              }}
-            />
-          </SøkeContainer>
-        </>
-      ) : (
-        <Header.Title href="/" style={{ marginRight: 'auto' }}>
-          HOTSAK
-        </Header.Title>
-      )}
+      <Header.Title href="/">HOTSAK</Header.Title>
+      <SøkeContainer style={{ visibility: 'hidden' }}>
+        <Søk
+          onSearch={(value: string) => {
+            setFodselsnummer(value)
+            history.push('/personoversikt/saker')
+          }}
+        />
+      </SøkeContainer>
       <EndringsloggDropdown />
       <Dropdown>
         <Header.Button as={Dropdown.Toggle}>

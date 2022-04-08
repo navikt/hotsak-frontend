@@ -31,7 +31,7 @@ export const Toppmeny: React.VFC = () => {
   return (
     <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <Header.Title href="/">HOTSAK</Header.Title>
-      <SøkeContainer style={{ visibility: 'hidden' }}>
+      <SøkeContainer>
         <Søk
           onSearch={(value: string) => {
             setFodselsnummer(value)

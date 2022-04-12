@@ -51,7 +51,7 @@ const Content = styled.section`
   box-sizing: border-box;
 `
 
-const SaksbildeContent = React.memo(() => {
+const SaksbildeContent: React.VFC = React.memo(() => {
   //const personTilBehandling = usePerson();
   //useRefreshPersonVedUrlEndring();
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)

@@ -1,7 +1,8 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
-import { Flex } from '../felleskomponenter/Flex'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { Flex } from '../felleskomponenter/Flex'
 import { TabLink } from '../saksbilde/TabLink'
 
 const Container = styled.div`
@@ -13,7 +14,6 @@ const Container = styled.div`
   padding: 0 0 0 2rem;
   min-width: ${hotsakTotalMinWidth};
   white-space: nowrap;
-  
 
   > div:last-of-type {
     margin-left: 1rem;
@@ -25,12 +25,11 @@ const TabList = styled.span`
 `
 
 interface SaksoversiktLinjeProps {
-    sakerCount: number,
-    hjelpemidlerCount: number
+  sakerCount: number
+  hjelpemidlerCount: number
 }
 
-export const SaksoversiktLinje = ({sakerCount, hjelpemidlerCount}: SaksoversiktLinjeProps) => {
-  
+export const SaksoversiktLinje: React.VFC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
   return (
     <Container>
       <Flex>

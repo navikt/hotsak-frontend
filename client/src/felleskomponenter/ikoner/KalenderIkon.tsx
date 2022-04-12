@@ -1,6 +1,8 @@
+import React from 'react'
+
 import { Ikon, IkonProps } from './Ikon'
 
-export const KalenderIkon = ({ width = 14, height = 14, className }: IkonProps) => (
+export const KalenderIkon: React.VFC<IkonProps> = ({ width = 14, height = 14, className }) => (
   <Ikon width={width} height={height} viewBox="0 0 14 14" className={className}>
     <g fill="none">
       <path

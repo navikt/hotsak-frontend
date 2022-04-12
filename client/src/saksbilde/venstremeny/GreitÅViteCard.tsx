@@ -1,4 +1,7 @@
+import React from 'react'
+
 import { Advarselikon } from '../../felleskomponenter/ikoner/Advarselikon'
+import { Informasjonikon } from '../../felleskomponenter/ikoner/Informasjonikon'
 import { Sjekkikon } from '../../felleskomponenter/ikoner/Sjekkikon'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { GreitÅViteFaktum, GreitÅViteType } from '../../types/types.internal'
@@ -6,7 +9,6 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
-import { Informasjonikon } from '../../felleskomponenter/ikoner/Informasjonikon'
 
 interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]
@@ -33,8 +35,10 @@ const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {
   )
 }
 
-export const GreitÅViteCard = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør }: GreitÅViteCardProps) => {
-  const fakta = harIngenHjelpemidlerFraFør ? [...greitÅViteFakta, { beskrivelse: 'Bruker har ingen hjelpemidler fra før', type: GreitÅViteType.MERKNAD }] : [...greitÅViteFakta]
+export const GreitÅViteCard: React.VFC<GreitÅViteCardProps> = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør }) => {
+  const fakta = harIngenHjelpemidlerFraFør
+    ? [...greitÅViteFakta, { beskrivelse: 'Bruker har ingen hjelpemidler fra før', type: GreitÅViteType.MERKNAD }]
+    : [...greitÅViteFakta]
 
   if (fakta.length > 0) {
     return (

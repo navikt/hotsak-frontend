@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import React from 'react'
 import { useHistory } from 'react-router'
 import styled from 'styled-components/macro'
 
@@ -102,7 +103,7 @@ const formaterNavn = (person: Personinfo | PersonoversiktType) => {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 
-export const Personlinje = ({ person }: PersonlinjeProps) => {
+export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
   const { setFodselsnummer } = usePersonContext()
   const history = useHistory()
 

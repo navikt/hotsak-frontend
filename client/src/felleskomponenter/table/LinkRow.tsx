@@ -1,7 +1,8 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Table } from '@navikt/ds-react'
 import styled from 'styled-components/macro'
+
+import { Table } from '@navikt/ds-react'
 
 const ClickableRow = styled(Table.Row)`
   &:hover,

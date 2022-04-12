@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Search } from '@navikt/ds-react'
 
-export const Søk = ({ onSearch }: { onSearch: Function }) => {
+export const Søk: React.VFC<{ onSearch: Function }> = ({ onSearch }) => {
   const [søketekst, setSøketekst] = React.useState<string>('')
 
   return (

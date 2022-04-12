@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
@@ -43,7 +43,7 @@ interface TabLinkProps {
   icon?: ReactNode
 }
 
-export const TabLink = ({ children, to, title, icon }: TabLinkProps) => {
+export const TabLink: React.FC<TabLinkProps> = ({ children, to, title, icon }) => {
   const location = useLocation()
   const history = useHistory()
   const active = location.pathname === to

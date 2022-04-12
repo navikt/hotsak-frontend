@@ -57,12 +57,12 @@ const App: React.VFC = () => {
   )
 }
 
-const logUserStats = () => {
+const logUserStats = (): void => {
   const { innerWidth: width, innerHeight: height } = window
   logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, { res: { width, height } })
 }
 
-const withRoutingAndState = (Component: React.ComponentType) => () =>
+const withRoutingAndState = (Component: React.ComponentType) => (): JSX.Element =>
   (
     <BrowserRouter>
       <RecoilRoot>

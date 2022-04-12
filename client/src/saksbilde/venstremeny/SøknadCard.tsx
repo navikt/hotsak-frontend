@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
@@ -33,14 +35,14 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
   }
 }
 
-export const SøknadCard = ({
+export const SøknadCard: React.VFC<PeriodeCardProps> = ({
   søknadGjelder,
   saksnr,
   mottattDato,
   bruksarena,
   funksjonsnedsettelse,
   bosituasjon,
-}: PeriodeCardProps) => {
+}) => {
   return (
     <Card>
       <Grid>

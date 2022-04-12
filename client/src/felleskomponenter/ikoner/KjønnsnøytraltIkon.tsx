@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Ikon } from './Ikon'
 
-export const KjønnsnøytraltIkon = () => (
+export const KjønnsnøytraltIkon: React.VFC = () => (
   <Ikon width={28} height={28} viewBox="0 0 24 24">
     <g transform="translate(1.000000, 1.000000)">
       <path

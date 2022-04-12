@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
 import { Oppgavetype } from '../../types/types.internal'
@@ -42,7 +43,7 @@ interface OppgaveetikettProps extends EtikettProps {
   type: Oppgavetype
 }
 
-export const Oppgaveetikett = ({ type, størrelse = 'l' }: OppgaveetikettProps) => {
+export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({ type, størrelse = 'l' }) => {
   switch (type) {
     case Oppgavetype.Søknad:
       return <SøknadEtikett størrelse={størrelse} />

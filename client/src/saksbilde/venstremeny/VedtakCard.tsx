@@ -1,30 +1,35 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/macro'
-import {useSWRConfig} from 'swr'
+import { useSWRConfig } from 'swr'
 
-import {Button, Tag} from '@navikt/ds-react'
+import { Button, Tag } from '@navikt/ds-react'
 
-import {postTildeling, putSendTilGosys, putVedtak} from '../../io/http'
-import {IkkeTildelt} from '../../oppgaveliste/kolonner/IkkeTildelt'
-import {formaterDato} from '../../utils/date'
-import {capitalizeName} from '../../utils/stringFormating'
-import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
+import { postTildeling, putSendTilGosys, putVedtak } from '../../io/http'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { formaterDato } from '../../utils/date'
+import { capitalizeName } from '../../utils/stringFormating'
+
+import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
-
-import {Tekst} from '../../felleskomponenter/typografi'
-import {useInnloggetSaksbehandler} from '../../state/authentication'
-import {OppgaveStatusType, OverforGosysTilbakemelding, Sak, VedtakStatusType, HjelpemiddelArtikkel, vedtaksgrunnlagUtlaanshistorikk} from '../../types/types.internal'
-import {BekreftVedtakModal} from '../BekreftVedtakModal'
-import {OverførGosysModal} from '../OverførGosysModal'
-import {Card} from './Card'
-import {CardTitle} from './CardTitle'
-import {OvertaSakModal} from '../OvertaSakModal'
-
+import { useInnloggetSaksbehandler } from '../../state/authentication'
+import {
+  OppgaveStatusType,
+  OverforGosysTilbakemelding,
+  Sak,
+  VedtakStatusType,
+  HjelpemiddelArtikkel,
+  vedtaksgrunnlagUtlaanshistorikk,
+} from '../../types/types.internal'
+import { BekreftVedtakModal } from '../BekreftVedtakModal'
+import { OverførGosysModal } from '../OverførGosysModal'
+import { OvertaSakModal } from '../OvertaSakModal'
+import { Card } from './Card'
+import { CardTitle } from './CardTitle'
 
 interface VedtakCardProps {
-  sak: Sak,
+  sak: Sak
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
-
 }
 
 export const TagGrid = styled.div`
@@ -50,7 +55,7 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
-export const VedtakCard = ({ sak, hjelpemiddelArtikler }: VedtakCardProps) => {
+export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
   const { saksid } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -62,7 +67,11 @@ export const VedtakCard = ({ sak, hjelpemiddelArtikler }: VedtakCardProps) => {
 
   const opprettVedtak = () => {
     setLoading(true)
-    putVedtak(saksid, VedtakStatusType.INNVILGET, hjelpemiddelArtikler ? [vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler)] : [] )
+    putVedtak(
+      saksid,
+      VedtakStatusType.INNVILGET,
+      hjelpemiddelArtikler ? [vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler)] : []
+    )
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)

@@ -4,11 +4,11 @@ import { Heading } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
+import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
-import { Merknad } from '../../felleskomponenter/Merknad'
 
 interface FormidlerProps {
   formidler: Formidler
@@ -31,7 +31,7 @@ const Grid = styled.div`
   grid-row-gap: 0.125rem;
 `
 
-export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
+export const Formidlerside: React.VFC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
   const Formidlerinfo = () => {
     return (
       <Grid>

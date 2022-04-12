@@ -1,9 +1,10 @@
+import React, { useState } from 'react'
+import styled from 'styled-components/macro'
+
 import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
-import styled from 'styled-components/macro'
-import { useState, VFC } from 'react'
 import type { OverforGosysTilbakemelding } from '../types/types.internal'
 
 interface OverførGosysModalProps {
@@ -14,7 +15,7 @@ interface OverførGosysModalProps {
   onClose(): void
 }
 
-export const OverførGosysModal: VFC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')

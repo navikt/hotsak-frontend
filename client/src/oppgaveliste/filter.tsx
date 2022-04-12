@@ -1,5 +1,8 @@
+import React from 'react'
 import styled from 'styled-components/macro'
+
 import { Select, Button } from '@navikt/ds-react'
+
 import { ButtonContainer } from '../felleskomponenter/Dialogboks'
 
 export enum TabType {
@@ -29,7 +32,7 @@ interface FilterProps {
   handleChange: Function
 }
 
-export const FilterDropdown = ({ label, value, options, handleChange }: FilterProps) => {
+export const FilterDropdown: React.VFC<FilterProps> = ({ label, value, options, handleChange }) => {
   const filterOptions = Array.from(options.keys())
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>

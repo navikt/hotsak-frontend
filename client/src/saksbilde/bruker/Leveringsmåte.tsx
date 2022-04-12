@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Tekst } from '../../felleskomponenter/typografi'
 import { Levering, Leveringsmåte } from '../../types/types.internal'
 
@@ -6,7 +8,7 @@ interface LeveringProps {
   brukerAdresse: String
 }
 
-export const LeveringsMåte: React.FC<LeveringProps> = ({ levering, brukerAdresse }) => {
+export const LeveringsMåte: React.VFC<LeveringProps> = ({ levering, brukerAdresse }) => {
   const { adresse, leveringsmåte } = levering
 
   let leveringsTekst = ''

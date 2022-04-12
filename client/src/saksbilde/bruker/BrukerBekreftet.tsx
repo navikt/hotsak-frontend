@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
 import { Heading } from '@navikt/ds-react'
@@ -13,7 +14,7 @@ const Container = styled.div`
   padding-bottom: 2rem;
 `
 
-export const BrukerBekreftet: React.FC<BrukerBekreftetProps> = ({ navn }) => {
+export const BrukerBekreftet: React.VFC<BrukerBekreftetProps> = ({ navn }) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={true}>

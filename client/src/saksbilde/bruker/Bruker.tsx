@@ -1,18 +1,19 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
 import { Heading } from '@navikt/ds-react'
 
-import { capitalizeName, capitalize } from '../../utils/stringFormating'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Liste } from '../../felleskomponenter/Liste'
+import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Levering, Personinfo, PersonInfoKilde, Formidler } from '../../types/types.internal'
+import { Bosituasjon, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
-import { Merknad } from '../../felleskomponenter/Merknad'
 
 interface BrukerProps {
   person: Personinfo
@@ -32,7 +33,7 @@ const Container = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 12rem auto;
-  grid-column-gap: 0.70rem;
+  grid-column-gap: 0.7rem;
   grid-row-gap: 0.125rem;
 `
 
@@ -54,7 +55,7 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   }
 }
 
-export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
+export const Bruker: React.VFC<BrukerProps> = ({ person, levering, formidler }) => {
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
   return (
@@ -97,7 +98,9 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
           {levering.merknad && (
             <>
-              <Merknad><Etikett>Merknad til utlevering</Etikett></Merknad>
+              <Merknad>
+                <Etikett>Merknad til utlevering</Etikett>
+              </Merknad>
               <Tekst>{levering.merknad}</Tekst>
             </>
           )}

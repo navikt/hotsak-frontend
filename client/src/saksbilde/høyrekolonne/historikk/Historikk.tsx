@@ -1,10 +1,12 @@
+import React from 'react'
+
 import { sorterKronologisk } from '../../../utils/date'
 
-import { useHistorikk } from './historikkHook'
-import { HistorikkHendelse } from './HistorikkHendelse'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
+import { HistorikkHendelse } from './HistorikkHendelse'
+import { useHistorikk } from './historikkHook'
 
-export const Historikk: React.FC = ({ children }) => {
+export const Historikk: React.VFC = () => {
   const { hendelser, isError, isLoading } = useHistorikk()
 
   if (isError) {

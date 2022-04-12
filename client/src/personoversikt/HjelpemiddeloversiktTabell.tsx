@@ -1,12 +1,16 @@
 import React from 'react'
-import { Toast } from '../felleskomponenter/Toast'
 import styled from 'styled-components/macro'
+
 import { Table } from '@navikt/ds-react'
-import { HjelpemiddelArtikkel } from '../types/types.internal'
+
+import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
-import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { formaterDato } from '../utils/date'
+
+import { Toast } from '../felleskomponenter/Toast'
+import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { HjelpemiddelArtikkel } from '../types/types.internal'
 
 const Container = styled.div`
   min-height: 300px;
@@ -23,7 +27,10 @@ interface HjelpemiddeloversiktProps {
   henterHjelpemiddeloversikt: boolean
 }
 
-export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversikt }: HjelpemiddeloversiktProps) => {
+export const HjelpemiddeloversiktTabell: React.VFC<HjelpemiddeloversiktProps> = ({
+  artikler,
+  henterHjelpemiddeloversikt,
+}) => {
   const kolonner = [
     {
       key: 'UTLÅNSDATO',
@@ -77,8 +84,9 @@ export const HjelpemiddeloversiktTabell = ({ artikler, henterHjelpemiddeloversik
 
   return (
     <>
+      <Skjermlesertittel level="2">Hjelpemidler</Skjermlesertittel>
       {henterHjelpemiddeloversikt ? (
-        <Toast>Henter hjelpemiddeloversikt </Toast>
+        <Toast>Henter hjelpemiddeloversikt</Toast>
       ) : (
         <Container>
           {hasData ? (

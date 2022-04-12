@@ -1,17 +1,19 @@
-import { BodyLong, Label } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components/macro'
+
+import { BodyLong, Label } from '@navikt/ds-react'
+
+import { formaterDato } from '../../../utils/date'
+import { capitalize } from '../../../utils/stringFormating'
+
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { BodyLongMedEllipsis } from '../../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../../felleskomponenter/Tooltip'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
-import { formaterDato } from '../../../utils/date'
-import { capitalize } from '../../../utils/stringFormating'
 import { useSak } from '../../sakHook'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
-
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversiktHook'
 
 const HjelpemiddeloversiktContainer = styled.div`
@@ -36,9 +38,12 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
   }, {})
 }
 
-export const Hjelpemiddeloversikt = () => {
+export const Hjelpemiddeloversikt: React.VFC = () => {
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak}  = useHjelpemiddeloversikt(sak?.personinformasjon.fnr, sak?.vedtak?.vedtaksgrunnlag)
+  const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak } = useHjelpemiddeloversikt(
+    sak?.personinformasjon.fnr,
+    sak?.vedtak?.vedtaksgrunnlag
+  )
 
   if (isError) {
     return (
@@ -78,24 +83,24 @@ export const Hjelpemiddeloversikt = () => {
         <>
           <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
           <Rad>Per {formaterDato(sak?.vedtak.vedtaksdato)}, da vedtaket ble gjort </Rad>
-         </>
-      )
-         : (
-          <>
-            <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-           </>
-        )
-      }
+        </>
+      ) : (
+        <>
+          <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
+        </>
+      )}
       <HjelpemiddeloversiktContainer>
-        {Object.keys(artiklerPrKategori).sort().map((kategori) => {
-          return (
-            <React.Fragment key={kategori}>
-              <Artikkeloverskrift size="small">{kategori}</Artikkeloverskrift>
-              <Artikler artikler={artiklerPrKategori[kategori]} />
-              <Strek />
-            </React.Fragment>
-          )
-        })}
+        {Object.keys(artiklerPrKategori)
+          .sort()
+          .map((kategori) => {
+            return (
+              <React.Fragment key={kategori}>
+                <Artikkeloverskrift size="small">{kategori}</Artikkeloverskrift>
+                <Artikler artikler={artiklerPrKategori[kategori]} />
+                <Strek />
+              </React.Fragment>
+            )
+          })}
       </HjelpemiddeloversiktContainer>
     </KolonneOppsett>
   )
@@ -105,7 +110,7 @@ interface ArtiklerProps {
   artikler: HjelpemiddelArtikkel[]
 }
 
-const Artikler = ({ artikler }: ArtiklerProps) => {
+const Artikler: React.VFC<ArtiklerProps> = ({ artikler }) => {
   return (
     <>
       {artikler.map((artikkel) => {

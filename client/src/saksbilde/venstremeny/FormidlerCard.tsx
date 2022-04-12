@@ -1,12 +1,14 @@
+import React from 'react'
+
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
+import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
-import { Tekst } from '../../felleskomponenter/typografi'
-import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
 
 interface FormidlerCardProps {
   formidlerNavn: string
@@ -14,7 +16,7 @@ interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
-export const FormidlerCard = ({ formidlerNavn, kommune, formidlerTelefon }: FormidlerCardProps) => {
+export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
       <CardTitle>FORMIDLER</CardTitle>

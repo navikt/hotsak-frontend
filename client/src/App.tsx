@@ -30,23 +30,25 @@ const App: React.VFC = () => {
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <React.Suspense fallback={<div />}>
             {/*<Varsler />*/}
-            <Switch>
-              <Route path={Routes.Uautorisert}>
-                <Feilside statusCode={401} />
-              </Route>
-              <ProtectedRoute path={Routes.Oppgaveliste} exact>
-                <Oppgaveliste />
-              </ProtectedRoute>
-              <ProtectedRoute path={Routes.Saksbilde}>
-                <Saksbilde />
-              </ProtectedRoute>
-              <ProtectedRoute path={Routes.Personoversikt}>
-                <Personoversikt />
-              </ProtectedRoute>
-              <Route path="*">
-                <Feilside statusCode={404} />
-              </Route>
-            </Switch>
+            <main>
+              <Switch>
+                <Route path={Routes.Uautorisert}>
+                  <Feilside statusCode={401} />
+                </Route>
+                <ProtectedRoute path={Routes.Oppgaveliste} exact>
+                  <Oppgaveliste />
+                </ProtectedRoute>
+                <ProtectedRoute path={Routes.Saksbilde}>
+                  <Saksbilde />
+                </ProtectedRoute>
+                <ProtectedRoute path={Routes.Personoversikt}>
+                  <Personoversikt />
+                </ProtectedRoute>
+                <Route path="*">
+                  <Feilside statusCode={404} />
+                </Route>
+              </Switch>
+            </main>
           </React.Suspense>
         </ErrorBoundary>
       </PersonProvider>

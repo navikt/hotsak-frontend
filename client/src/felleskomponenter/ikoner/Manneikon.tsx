@@ -4,6 +4,7 @@ import { Ikon } from './Ikon'
 
 export const Manneikon = () => (
   <Ikon width={28} height={28} viewBox="0 0 24 24">
+    <title>Mann</title>
     <g transform="translate(1.000000, 1.000000)">
       <circle fill="var(--navds-global-color-white)" cx="11" cy="11" r="11" />
       <path

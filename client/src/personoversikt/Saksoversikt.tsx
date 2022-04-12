@@ -1,13 +1,17 @@
 import React from 'react'
-import { Toast } from '../felleskomponenter/Toast'
 import styled from 'styled-components/macro'
+
 import { Table } from '@navikt/ds-react'
-import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
+
+import { DataCelle, EllipsisCell, LinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
-import { capitalize } from '../utils/stringFormating'
-import { DataCelle, EllipsisCell, LinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { formaterDato } from '../utils/date'
+import { capitalize } from '../utils/stringFormating'
+
+import { Toast } from '../felleskomponenter/Toast'
+import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
 
 const Container = styled.div`
   min-height: 300px;
@@ -24,7 +28,7 @@ interface SaksoversiktProps {
   henterSaker: boolean
 }
 
-export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
+export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker }) => {
   const kolonner = [
     {
       key: 'MOTTATT',
@@ -57,26 +61,19 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
       ),
     },
     {
-        key: 'SAKSTYPE',
-        name: 'Sakstype',
-        width: 80,
-        render: (sak: Saksoversikt_Sak) => (
-          <LinkCell
-          to={`/sak/${sak.saksid}/hjelpemidler`}
-            value="Søknad"
-            id={`sakstype-${sak.saksid}`}
-            minLength={20}
-          />
-        ),
-      },
-      {
-        key: 'STATUS',
-        name: 'Status',
-        width: 140,
-        render: (sak: Saksoversikt_Sak) => (
-          <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />
-        ),
-      },
+      key: 'SAKSTYPE',
+      name: 'Sakstype',
+      width: 80,
+      render: (sak: Saksoversikt_Sak) => (
+        <LinkCell to={`/sak/${sak.saksid}/hjelpemidler`} value="Søknad" id={`sakstype-${sak.saksid}`} minLength={20} />
+      ),
+    },
+    {
+      key: 'STATUS',
+      name: 'Status',
+      width: 140,
+      render: (sak: Saksoversikt_Sak) => <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />,
+    },
     {
       key: 'VEDTAKSDATO',
       name: 'Vedtaksdato',
@@ -84,7 +81,7 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
       render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.vedtak?.vedtaksdato)} />,
     },
     {
-      key: 'SAKSBEHANDLER',   
+      key: 'SAKSBEHANDLER',
       name: 'Saksbehandler',
       width: 160,
       render: (sak: Saksoversikt_Sak) => (
@@ -104,8 +101,9 @@ export const Saksoversikt = ({ saker, henterSaker }: SaksoversiktProps) => {
 
   return (
     <>
+      <Skjermlesertittel level="2">Saker</Skjermlesertittel>
       {henterSaker ? (
-        <Toast>Henter saksoversikt </Toast>
+        <Toast>Henter saksoversikt</Toast>
       ) : (
         <Container>
           {hasData ? (

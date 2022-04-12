@@ -8,8 +8,8 @@ import { Saksbehandler } from '../types/types.internal'
 
 interface AuthInfo {
   name: string
-  email?: string
   ident?: string
+  email?: string
   oid?: string
   isLoggedIn?: boolean
 }
@@ -26,16 +26,15 @@ export const authState = atom<AuthInfo>({
 })
 
 export const useInnloggetSaksbehandler = (): Saksbehandler => {
-  const authInfo = useRecoilValue(authState) as Required<AuthInfo>
-
+  const authInfo = useRecoilValue<AuthInfo>(authState)
   return {
-    objectId: authInfo.oid,
-    navn: authInfo.name,
-    epost: authInfo.email,
+    objectId: authInfo.oid!,
+    navn: authInfo.name!,
+    epost: authInfo.email!,
   }
 }
 
-export const useAuthentication = () => {
+export const useAuthentication = (): void => {
   const [authInfo, setAuthInfo] = useRecoilState(authState)
   const resetAuthInfo = useResetRecoilState(authState)
   const [name, ident, email, oid] = extractValues([Keys.NAME, Keys.IDENT, Keys.EMAIL, Keys.OID])

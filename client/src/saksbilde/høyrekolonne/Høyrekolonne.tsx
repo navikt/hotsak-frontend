@@ -1,8 +1,10 @@
-import { HøyrekolonneTabs } from '../../types/types.internal'
+import React from 'react'
 import styled from 'styled-components/macro'
+
+import { hotsakHistorikkWidth } from '../../GlobalStyles'
+import { HøyrekolonneTabs } from '../../types/types.internal'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
-import { hotsakHistorikkWidth } from '../../GlobalStyles'
 
 interface HøyrekolonneProps {
   currentTab: HøyrekolonneTabs
@@ -27,8 +29,7 @@ export const KolonneTittel = styled.li`
   font-size: 14px;
 `
 
-export const Høyrekolonne = ({ currentTab }: HøyrekolonneProps) => {
-
+export const Høyrekolonne: React.VFC<HøyrekolonneProps> = ({ currentTab }) => {
   switch (currentTab) {
     case HøyrekolonneTabs.SAKSHISTORIKK:
       return <Historikk />

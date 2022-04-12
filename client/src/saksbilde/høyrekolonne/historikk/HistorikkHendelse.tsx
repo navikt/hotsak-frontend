@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 
 import { norskTimestamp } from '../../../utils/date'
@@ -20,7 +21,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
 `
 
-export const HistorikkHendelse = ({ hendelse, detaljer, opprettet, bruker }: Hendelse) => {
+export const HistorikkHendelse: React.VFC<Hendelse> = ({ hendelse, detaljer, opprettet, bruker }) => {
   return (
     <Container>
       <ContentContainer>

@@ -9,6 +9,7 @@ import { capitalize } from '../utils/stringFormating'
 import { isError } from '../utils/type'
 
 import { Toast } from '../felleskomponenter/Toast'
+import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
@@ -139,6 +140,7 @@ export const Oppgaveliste: React.VFC = () => {
   const hasData = oppgaver && oppgaver.length > 0
   return (
     <>
+      <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <Filters onClear={clearFilters}>
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {

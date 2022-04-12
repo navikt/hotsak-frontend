@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components/macro'
+
 import { Alert } from '@navikt/ds-react'
+
 import { formaterDato } from '../utils/date'
 import { capitalize } from '../utils/stringFormating'
+
+import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { HøyrekolonneTabs, OppgaveStatusType, VedtakStatusType } from '../types/types.internal'
@@ -13,15 +17,14 @@ import Søknadslinje from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
 import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
+import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
+import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
 import { useSak } from './sakHook'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
-import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
-import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
-import {  hotsakTotalMinWidth } from '../GlobalStyles'
 
 const SaksbildeContainer = styled.div`
   display: flex;
@@ -41,7 +44,7 @@ const AutoFlexContainer = styled.div`
   flex: auto;
 `
 
-const Content = styled.div`
+const Content = styled.section`
   padding: 0 1.4rem;
   padding-top: 1rem;
   height: 100%;
@@ -63,17 +66,17 @@ const SaksbildeContent = React.memo(() => {
     handleError(isError)
   }
 
-  const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0 
+  const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
 
   if (!sak) return <div>Fant ikke sak</div>
 
   return (
     <SaksbildeContainer className="saksbilde">
       <Personlinje person={sak.personinformasjon} />
-      <Søknadslinje onTabChange={setHøyrekolonneTab} currentTab={høyrekolonneTab}/>
+      <Søknadslinje onTabChange={setHøyrekolonneTab} currentTab={høyrekolonneTab} />
       <Container data-testid="saksbilde-fullstendig">
         <AutoFlexContainer>
-          <Flex flex={1} style={{ height: '100%'}}>
+          <Flex flex={1} style={{ height: '100%' }}>
             <VenstreMeny>
               <SøknadCard
                 søknadGjelder={sak.søknadGjelder}
@@ -88,7 +91,10 @@ const SaksbildeContent = React.memo(() => {
                 formidlerTelefon={sak.formidler.telefon}
                 kommune={sak.formidler.poststed}
               />
-              <GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør} />
+              <GreitÅViteCard
+                greitÅViteFakta={sak.greitÅViteFaktum}
+                harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
+              />
               <VedtakCard sak={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
@@ -120,7 +126,7 @@ const SaksbildeContent = React.memo(() => {
             </FlexColumn>
           </Flex>
         </AutoFlexContainer>
-        <Høyrekolonne currentTab={høyrekolonneTab}/>
+        <Høyrekolonne currentTab={høyrekolonneTab} />
       </Container>
     </SaksbildeContainer>
   )

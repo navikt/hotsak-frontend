@@ -1,22 +1,26 @@
-import { Toast } from '../felleskomponenter/Toast'
-import styled from 'styled-components/macro'
-import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
-import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
-import Saksoversikt from './Saksoversikt'
-import { usePersonContext } from './PersonContext'
-import { useSaksoversikt } from './saksoversiktHook'
-import { hotsakTotalMinWidth } from '../GlobalStyles'
-import { Flex } from '../felleskomponenter/Flex'
-import { sorterKronologisk } from '../utils/date'
-import SaksoversiktLinje from './SaksoversiktLinje'
-import { Route, Switch, useRouteMatch } from 'react-router'
-import HjelpemiddeloversiktTabell from './HjelpemiddeloversiktTabell'
-import { ErrorBoundary } from 'react-error-boundary'
-import { AlertError } from '../feilsider/AlertError'
 import React from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
+import { Route, Switch, useRouteMatch } from 'react-router'
+import styled from 'styled-components/macro'
+
 import { Alert } from '@navikt/ds-react'
-import { usePersonInfo } from './personInfoHook'
+
+import { sorterKronologisk } from '../utils/date'
+
+import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Flex } from '../felleskomponenter/Flex'
+import { Toast } from '../felleskomponenter/Toast'
+import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
+import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
+import HjelpemiddeloversiktTabell from './HjelpemiddeloversiktTabell'
+import { usePersonContext } from './PersonContext'
+import Saksoversikt from './Saksoversikt'
+import SaksoversiktLinje from './SaksoversiktLinje'
+import { usePersonInfo } from './personInfoHook'
+import { useSaksoversikt } from './saksoversiktHook'
 
 const Container = styled(Flex)`
   flex: 1;
@@ -33,15 +37,18 @@ const Content = styled.div`
   max-width: 100vw;
 `
 
-const PersonoversiktContent = () => {
+const PersonoversiktContent: React.VFC = () => {
   const { fodselsnummer } = usePersonContext()
   const { path } = useRouteMatch()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
-  const { hjelpemiddelArtikler, isError: hjelpemiddeloversiktError , isLoading: hjelpemiddeloversiktLoading} = useHjelpemiddeloversikt(fodselsnummer)
+  const {
+    hjelpemiddelArtikler,
+    isError: hjelpemiddeloversiktError,
+    isLoading: hjelpemiddeloversiktLoading,
+  } = useHjelpemiddeloversikt(fodselsnummer)
 
-console.log("Fnr", fodselsnummer);
-
+  console.log('Fnr', fodselsnummer)
 
   if (personInfoError) {
     console.log(personInfoError)
@@ -55,17 +62,15 @@ console.log("Fnr", fodselsnummer);
     }
   }
 
-
   const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
-  const hjelpemidler =
-    hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) ||
-    []
+  const hjelpemidler = hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return (antall += artikkel.antall)
   }, 0)
 
   return (
     <>
+      <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
         <LasterPersonoversikt />
       ) : (
@@ -75,18 +80,25 @@ console.log("Fnr", fodselsnummer);
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>
           <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
-
           <Container>
             <Content>
               <Switch>
                 <Route path={`${path}/saker`}>
-                    {isError ? <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding> :  <Saksoversikt saker={saker} henterSaker={isLoading} />}
+                  {isError ? (
+                    <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
+                  ) : (
+                    <Saksoversikt saker={saker} henterSaker={isLoading} />
+                  )}
                 </Route>
                 <Route path={`${path}/hjelpemidler`}>
-                  {hjelpemiddeloversiktError ? <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding> :  <HjelpemiddeloversiktTabell
-                    artikler={hjelpemidler}
-                    henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
-                  />}
+                  {hjelpemiddeloversiktError ? (
+                    <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
+                  ) : (
+                    <HjelpemiddeloversiktTabell
+                      artikler={hjelpemidler}
+                      henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
+                    />
+                  )}
                 </Route>
               </Switch>
             </Content>
@@ -97,16 +109,16 @@ console.log("Fnr", fodselsnummer);
   )
 }
 
-const LasterPersonoversikt = () => {
+const LasterPersonoversikt: React.VFC = () => {
   return (
     <>
       <LasterPersonlinje />
-      <Toast>Henter saksoversikt </Toast>
+      <Toast>Henter saksoversikt</Toast>
     </>
   )
 }
 
-const Personoversikt = () => (
+const Personoversikt: React.VFC = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterPersonoversikt />}>
       <PersonoversiktContent />

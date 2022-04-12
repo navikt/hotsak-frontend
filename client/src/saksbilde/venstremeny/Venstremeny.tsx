@@ -1,7 +1,8 @@
 import styled from 'styled-components/macro'
+
 import { hotsaktVenstremenyWidth } from '../../GlobalStyles'
 
-const Container = styled.section`
+const Container = styled.aside`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

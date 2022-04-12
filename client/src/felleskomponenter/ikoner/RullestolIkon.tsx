@@ -1,7 +1,13 @@
-    import { Ikon, IkonProps } from './Ikon'
+import { Ikon, IkonProps } from './Ikon'
 
-export const RullestolIkon = ({ width = 14, height = 14, className }: IkonProps) => (
+export const RullestolIkon: React.VFC<IkonProps & { title: string }> = ({
+  width = 14,
+  height = 14,
+  className,
+  title,
+}) => (
   <Ikon width={width} height={height} viewBox="0 0 24 24" className={className}>
+    <title>{title}</title>
     <g fill="none">
       <path
         fillRule="evenodd"

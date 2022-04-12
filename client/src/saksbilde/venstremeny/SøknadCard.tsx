@@ -5,13 +5,13 @@ import { HjemIkon } from '../../felleskomponenter/ikoner/HjemIkon'
 import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
 import { MappeIkon } from '../../felleskomponenter/ikoner/MappeIkon'
 import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 import { IconContainer } from './IconContainer'
 import { Oppgaveetikett } from './Oppgaveetikett'
-import { Tekst } from '../../felleskomponenter/typografi'
 
 interface PeriodeCardProps {
   søknadGjelder: string
@@ -63,7 +63,7 @@ export const SøknadCard = ({
         </IconContainer>
         <Tekst>{getTextForBosituasjon(bosituasjon)}</Tekst>
         <IconContainer>
-          <RullestolIkon />
+          <RullestolIkon title="Funksjonsnedsettelse" />
         </IconContainer>
         <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
       </Grid>

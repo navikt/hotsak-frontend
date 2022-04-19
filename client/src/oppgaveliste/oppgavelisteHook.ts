@@ -65,7 +65,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
 
 const buildQueryParamString = (queryParams: Object) => {
   return Object.entries(queryParams)
-    .map(([key, value]) => `${key}=${value}`)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&')
 }
 

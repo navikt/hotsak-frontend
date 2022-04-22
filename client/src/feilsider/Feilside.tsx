@@ -27,7 +27,11 @@ export const Feilside: React.VFC<{ statusCode: number; error?: Error }> = ({ sta
                   <Code>{utviklerinformasjon}</Code>
                 </div>
                 <div style={{ marginLeft: 10 }}>
-                  <CopyToClipboard copyText={utviklerinformasjon} popoverText="Kopier informasjon til utviklere" />
+                  <CopyToClipboard
+                    copyText={utviklerinformasjon}
+                    title="Kopier feilmelding"
+                    popoverText="Kopier informasjon til utviklere"
+                  />
                 </div>
               </div>
             </Accordion.Content>

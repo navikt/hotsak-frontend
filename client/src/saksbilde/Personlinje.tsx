@@ -128,6 +128,7 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
           <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
           <Clipboard
             popoverText="Fødselsnummer kopiert"
+            title="Kopier fødselsnummer"
             variant="tertiary"
             size="small"
             copyText={fnr}
@@ -143,6 +144,7 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
           <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
           <Clipboard
             popoverText="Brukernummer kopiert"
+            title="Kopier brukernummer"
             popoverPlacement="bottom"
             variant="tertiary"
             size="small"
@@ -158,6 +160,7 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
           <Clipboard
             popoverText="Telefonnummer er kopiert"
+            title="Kopier telefonnummer"
             popoverPlacement="bottom"
             variant="tertiary"
             size="small"

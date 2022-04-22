@@ -84,9 +84,9 @@ export const HjelpemiddeloversiktTabell: React.VFC<HjelpemiddeloversiktProps> = 
 
   return (
     <>
-      <Skjermlesertittel level="2">Hjelpemidler</Skjermlesertittel>
+      <Skjermlesertittel level="2">Utlånsoversikt</Skjermlesertittel>
       {henterHjelpemiddeloversikt ? (
-        <Toast>Henter hjelpemiddeloversikt</Toast>
+        <Toast>Henter utlånsoversikt</Toast>
       ) : (
         <Container>
           {hasData ? (

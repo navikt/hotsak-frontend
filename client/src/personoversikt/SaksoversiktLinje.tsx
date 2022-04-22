@@ -37,8 +37,8 @@ export const SaksoversiktLinje: React.VFC<SaksoversiktLinjeProps> = ({ sakerCoun
           <TabLink to={`/personoversikt/saker`} title={`Saker (${sakerCount})`}>
             {`Saker (${sakerCount})`}
           </TabLink>
-          <TabLink to={`/personoversikt/hjelpemidler`} title={`Hjelpemidler (${hjelpemidlerCount})`}>
-            {`Hjelpemidler (${hjelpemidlerCount})`}
+          <TabLink to={`/personoversikt/hjelpemidler`} title={`Utlånsoversikt (${hjelpemidlerCount})`}>
+            {`Utlånsoversikt (${hjelpemidlerCount})`}
           </TabLink>
         </TabList>
       </Flex>

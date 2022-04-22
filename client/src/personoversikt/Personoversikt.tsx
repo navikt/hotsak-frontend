@@ -48,8 +48,6 @@ const PersonoversiktContent: React.VFC = () => {
     isLoading: hjelpemiddeloversiktLoading,
   } = useHjelpemiddeloversikt(fodselsnummer)
 
-  console.log('Fnr', fodselsnummer)
-
   if (personInfoError) {
     console.log(personInfoError)
 

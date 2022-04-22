@@ -6,6 +6,7 @@ import styled from 'styled-components/macro'
 import { Link } from '@navikt/ds-react'
 import { CopyToClipboard } from '@navikt/ds-react-internal'
 
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
 
@@ -116,6 +117,7 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
       <Link
         href="#"
         onClick={() => {
+          logAmplitudeEvent(amplitude_taxonomy.PERSONOVERSIKT)
           setFodselsnummer(fnr)
           history.push('/personoversikt/saker')
         }}

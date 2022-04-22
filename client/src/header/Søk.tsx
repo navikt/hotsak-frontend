@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Search } from '@navikt/ds-react'
 
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
+
 export const Søk: React.VFC<{ onSearch: Function }> = ({ onSearch }) => {
   const [søketekst, setSøketekst] = React.useState<string>('')
 
@@ -24,6 +26,7 @@ export const Søk: React.VFC<{ onSearch: Function }> = ({ onSearch }) => {
         onClear={() => setSøketekst('')}
         value={søketekst}
         onSearch={() => {
+          logAmplitudeEvent(amplitude_taxonomy.PERSONSØK)
           onSearch(søketekst)
         }}
       />

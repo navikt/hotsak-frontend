@@ -14,6 +14,8 @@ export enum amplitude_taxonomy {
   SAK_FRIGITT = 'sak frigitt',
   ENDRINGSLOGG_APNET = 'endringslogg åpnet',
   ENDRINGSLOGGINNSLAG_LEST = 'endringslogginnslag lest',
+  PERSONSØK = 'søkt etter person',
+  PERSONOVERSIKT = 'navigert til personoversikt',
 }
 
 export const initAmplitude = (): void => {

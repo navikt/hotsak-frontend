@@ -1,8 +1,16 @@
 import React from 'react'
+import styled from 'styled-components/macro'
 
-import { BodyShort, Detail, Heading, Label } from '@navikt/ds-react'
+import { BodyShort, BodyLong, Detail, Heading, Label } from '@navikt/ds-react'
+
+const FlytendeTekst = styled(BodyLong)`
+  white-space: normal;
+  overflow-wrap: break-word;
+`
 
 export const Tekst: React.FC = ({ children }) => <BodyShort size="small">{children}</BodyShort>
+
+export const Brødtekst: React.FC = ({ children }) => <FlytendeTekst size="small">{children}</FlytendeTekst>
 
 export const Etikett: React.FC = ({ children }) => <Label size="small">{children}</Label>
 

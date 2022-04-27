@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import { Heading } from '@navikt/ds-react'
 
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 
 interface BrukerBekreftetProps {
   navn: string
@@ -21,7 +21,7 @@ export const BrukerBekreftet: React.VFC<BrukerBekreftetProps> = ({ navn }) => {
         Bruker har godkjent søknaden
       </Heading>
       <Container>
-        <Tekst>{`${navn} har godkjent søknaden selv på nav.no`}</Tekst>
+        <Brødtekst>{`${navn} har godkjent søknaden selv på nav.no`}</Brødtekst>
       </Container>
     </>
   )

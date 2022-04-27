@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import { Heading } from '@navikt/ds-react'
 
 import { Liste } from '../../felleskomponenter/Liste'
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 
 interface FullmaktProps {
   navn: string
@@ -24,12 +24,12 @@ export const Fullmakt: React.VFC<FullmaktProps> = ({ navn }) => {
       <Container>
         <Liste>
           <li>
-            <Tekst>{`${navn} har signert en fullmakt på at formidler fyller ut og begrunner søknad om hjelpemidler på sine vegne. ${navn} er kjent med hvilke hjelpemidler det søkes om og er informert om sine rettigheter og plikter.`}</Tekst>{' '}
+            <Brødtekst>{`${navn} har signert en fullmakt på at formidler fyller ut og begrunner søknad om hjelpemidler på sine vegne. ${navn} er kjent med hvilke hjelpemidler det søkes om og er informert om sine rettigheter og plikter.`}</Brødtekst>{' '}
           </li>
           <li>
-            <Tekst>
+            <Brødtekst>
               Fullmakten er arkivert i kommunens arkiv og kan vises frem på forespørsel fra NAV hjelpemiddelsentral.
-            </Tekst>
+            </Brødtekst>
           </li>
         </Liste>
       </Container>

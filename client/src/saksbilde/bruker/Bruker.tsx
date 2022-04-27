@@ -9,7 +9,7 @@ import { Liste } from '../../felleskomponenter/Liste'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Bosituasjon, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
@@ -101,7 +101,7 @@ export const Bruker: React.VFC<BrukerProps> = ({ person, levering, formidler }) 
               <Merknad>
                 <Etikett>Merknad til utlevering</Etikett>
               </Merknad>
-              <Tekst>{levering.merknad}</Tekst>
+              <Brødtekst>{levering.merknad}</Brødtekst>
             </>
           )}
         </Grid>
@@ -117,7 +117,9 @@ export const Bruker: React.VFC<BrukerProps> = ({ person, levering, formidler }) 
       <Container>
         <Liste>
           {person.oppfylteVilkår.map((vilkår, i) => (
-            <li key={i}>{vilkårsTekst(vilkår, formatertNavn)}</li>
+            <li key={i}>
+              <Brødtekst>{vilkårsTekst(vilkår, formatertNavn)}</Brødtekst>
+            </li>
           ))}
         </Liste>
       </Container>

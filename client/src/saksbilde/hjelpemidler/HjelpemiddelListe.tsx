@@ -1,9 +1,11 @@
 import styled from 'styled-components/macro'
+
+import { Heading } from '@navikt/ds-react'
+
+import { Rad } from '../../felleskomponenter/Flex'
 import { Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
-import { Heading } from '@navikt/ds-react'
 import { Hjelpemiddel } from './Hjelpemiddel'
-import { Rad } from '../../felleskomponenter/Flex'
 
 const Container = styled.div`
   padding-top: 1rem;
@@ -43,10 +45,7 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidl
           </Etikett>
         </Rad>
         {hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.alleredeUtlevert).length > 0 && (
-          <Rad>
-            Totalt. {summerAntall(hjelpemidler.filter((it) => it.alleredeUtlevert))} stk. allerede
-            utlevert
-          </Rad>
+          <Rad>Totalt. {summerAntall(hjelpemidler.filter((it) => it.alleredeUtlevert))} stk. allerede utlevert</Rad>
         )}
       </Container>
     </>

@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import { Heading } from '@navikt/ds-react'
 
 import { Liste } from '../../felleskomponenter/Liste'
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 
 interface FullmaktFritakProps {
   navn: string
@@ -24,12 +24,12 @@ export const FullmaktFritak: React.VFC<FullmaktFritakProps> = ({ navn }) => {
       <Container>
         <Liste>
           <li>
-            <Tekst>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</Tekst>
+            <Brødtekst>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</Brødtekst>
           </li>
           <li>
-            <Tekst>
+            <Brødtekst>
               {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at NAV kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
-            </Tekst>{' '}
+            </Brødtekst>{' '}
           </li>
         </Liste>
       </Container>

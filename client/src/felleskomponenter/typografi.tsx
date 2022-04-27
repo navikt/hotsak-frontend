@@ -8,9 +8,18 @@ const FlytendeTekst = styled(BodyLong)`
   overflow-wrap: break-word;
 `
 
+const FlytendeBrytbarTekst = styled(BodyLong)`
+  white-space: normal;
+  overflow-wrap: anywhere;
+`
+
 export const Tekst: React.FC = ({ children }) => <BodyShort size="small">{children}</BodyShort>
 
 export const Brødtekst: React.FC = ({ children }) => <FlytendeTekst size="small">{children}</FlytendeTekst>
+
+export const BrytbarBrødtekst: React.FC = ({ children }) => (
+  <FlytendeBrytbarTekst size="small">{children}</FlytendeBrytbarTekst>
+)
 
 export const Etikett: React.FC = ({ children }) => <Label size="small">{children}</Label>
 

@@ -46,6 +46,7 @@ const AutoFlexContainer = styled.div`
 
 const Content = styled.section`
   padding: 0 1.4rem;
+
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;

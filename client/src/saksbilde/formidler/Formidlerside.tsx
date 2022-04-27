@@ -7,7 +7,7 @@ import { capitalize, capitalizeName } from '../../utils/stringFormating'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
 
 interface FormidlerProps {
@@ -26,7 +26,7 @@ const Container = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 12rem auto;
+  grid-template-columns: minmax(min-content, 12rem) auto;
   grid-column-gap: 0.75rem;
   grid-row-gap: 0.125rem;
 `
@@ -36,19 +36,19 @@ export const Formidlerside: React.VFC<FormidlerProps> = ({ formidler, oppfølgin
     return (
       <Grid>
         <Etikett>Navn</Etikett>
-        <Tekst>{capitalizeName(formidler.navn)}</Tekst>
+        <Brødtekst>{capitalizeName(formidler.navn)}</Brødtekst>
         <Etikett>Arbeidssted</Etikett>
-        <Tekst>{`${capitalize(formidler.arbeidssted)}`}</Tekst>
+        <Brødtekst>{`${capitalize(formidler.arbeidssted)}`}</Brødtekst>
         <Etikett>Stilling</Etikett>
-        <Tekst>{`${capitalize(formidler.stilling)}`}</Tekst>
+        <Brødtekst>{`${capitalize(formidler.stilling)}`}</Brødtekst>
         <Etikett>Postadresse</Etikett>
-        <Tekst>{`${capitalize(formidler.postadresse)}`}</Tekst>
-        <Etikett>Telefon</Etikett>
-        <Tekst>{formidler.telefon}</Tekst>
+        <Brødtekst>{`${capitalize(formidler.postadresse)}`}</Brødtekst>
+        <BrytbarBrødtekst>Telefon</BrytbarBrødtekst>
+        <Brødtekst>{formidler.telefon}</Brødtekst>
         <Etikett>Treffest enklest</Etikett>
-        <Tekst>{capitalize(formidler.treffestEnklest)}</Tekst>
+        <Brødtekst>{capitalize(formidler.treffestEnklest)}</Brødtekst>
         <Etikett>E-postadresse</Etikett>
-        <Tekst>{formidler.epost}</Tekst>
+        <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
       </Grid>
     )
   }
@@ -59,15 +59,15 @@ export const Formidlerside: React.VFC<FormidlerProps> = ({ formidler, oppfølgin
         <Merknad>
           <Grid>
             <Etikett>Navn</Etikett>
-            <Tekst>{capitalizeName(oppfølgingsansvarling.navn)}</Tekst>
+            <Brødtekst>{capitalizeName(oppfølgingsansvarling.navn)}</Brødtekst>
             <Etikett>Arbeidssted</Etikett>
-            <Tekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Tekst>
+            <Brødtekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Brødtekst>
             <Etikett>Stilling</Etikett>
-            <Tekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Tekst>
+            <Brødtekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Brødtekst>
             <Etikett>Telefon</Etikett>
-            <Tekst>{oppfølgingsansvarling.telefon}</Tekst>
+            <Brødtekst>{oppfølgingsansvarling.telefon}</Brødtekst>
             <Etikett>Ansvar</Etikett>
-            <Tekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Tekst>
+            <Brødtekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Brødtekst>
           </Grid>
         </Merknad>
       </Container>

@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import { Heading } from '@navikt/ds-react'
 
-import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst } from '../../felleskomponenter/typografi'
 
 interface BrukerBekreftetProps {
   navn: string

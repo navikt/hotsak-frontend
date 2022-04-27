@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import { Heading } from '@navikt/ds-react'
 
 import { Liste } from '../../felleskomponenter/Liste'
-import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst } from '../../felleskomponenter/typografi'
 
 interface FullmaktProps {
   navn: string

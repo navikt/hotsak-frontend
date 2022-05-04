@@ -1,5 +1,52 @@
 [
   {
+    "type": "BESTILLING",
+    "saksid": "112233",
+    "søknadOm": "Dusjkrakk",
+    "mottattDato": "2022-05-04T13:55:45",
+    "formidlerNavn": "Bjarne Bestillersen",
+    "personinformasjon": {
+      "fnr": "13044238651",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Anders",
+      "etternavn": "Amundsen",
+      "poststed": "Trondheim",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": null,
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
+    "type": "BESTILLING",
+    "saksid": "223344",
+    "søknadOm": "Rullator",
+    "mottattDato": "2021-09-24T13:55:45",
+    "formidlerNavn": "Bjarne Bestillersen",
+    "personinformasjon": {
+      "fnr": "13044238651",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Beate",
+      "etternavn": "Storebø",
+      "poststed": "Trondheim",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": null,
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
+    "type": "SØKNAD",
     "saksid": "111111",
     "søknadOm": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",
     "mottattDato": "2021-09-19T13:55:45",
@@ -22,6 +69,7 @@
     ]
   },
   {
+    "type": "SØKNAD",
     "saksid": "222222",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-24T13:55:45",
@@ -45,6 +93,7 @@
   },
 
   {
+    "type": "SØKNAD",
     "saksid": "5878444",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-20T13:55:45",
@@ -72,6 +121,7 @@
   },
 
   {
+    "type": "SØKNAD",
     "saksid": "1234567",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-06-25T13:55:45",
@@ -98,6 +148,7 @@
     ]
   },
   {
+    "type": "SØKNAD",
     "saksid": "999999",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-06-25T16:55:45",
@@ -124,6 +175,7 @@
     ]
   },
   {
+    "type": "SØKNAD",
     "saksid": "888888",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-19T13:55:45",
@@ -137,10 +189,10 @@
       "bosted": "Trondheim"
     },
     "saksbehandler": {
-        "epost": "a.b@nav.no",
-        "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-        "navn": "Silje Saksbehandler"
-      },
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
     "status": "VEDTAK_FATTET",
     "enhet": [
       {

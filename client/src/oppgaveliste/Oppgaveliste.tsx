@@ -29,6 +29,7 @@ import { Gjelder } from './kolonner/Gjelder'
 import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { Motatt } from './kolonner/Motatt'
+import { OppgaveType } from './kolonner/OpgaveType'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { useLocalStorageState } from './localStorage/localStorageHook'
@@ -77,6 +78,12 @@ export const Oppgaveliste: React.VFC = () => {
       name: 'Status',
       width: 154,
       render: (oppgave: Oppgave) => <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />,
+    },
+    {
+      key: 'TYPE',
+      name: 'Type',
+      width: 154,
+      render: (oppgave: Oppgave) => <OppgaveType oppgaveType={oppgave.type} />,
     },
     {
       key: 'FUNKSJONSNEDSETTELSE',
@@ -189,27 +196,41 @@ export const Oppgaveliste: React.VFC = () => {
                 >
                   <Table.Header>
                     <Table.Row>
-                      {kolonner.map(({ key, name, sortable = true, width }, idx) => (
-                        <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
-                          {name}
-                        </KolonneHeader>
-                      ))}
+                      {kolonner
+                        // Toggle for at oppsett for bestillingsordning kun skal vises i labs
+                        .filter(({ key }) =>
+                          window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'labs-gcp'
+                            ? true
+                            : key !== 'TYPE'
+                        )
+                        .map(({ key, name, sortable = true, width }, idx) => (
+                          <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
+                            {name}
+                          </KolonneHeader>
+                        ))}
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
                       <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                        {kolonner.map(({ render, width, key }, idx) => (
-                          <DataCell
-                            key={key}
-                            width={width}
-                            style={{
-                              padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
-                            }}
-                          >
-                            {render(oppgave)}
-                          </DataCell>
-                        ))}
+                        {kolonner
+                          // Toggle for at oppsett for bestillingsordning kun skal vises i labs
+                          .filter(({ key }) =>
+                            window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'labs-gcp'
+                              ? true
+                              : key !== 'TYPE'
+                          )
+                          .map(({ render, width, key }, idx) => (
+                            <DataCell
+                              key={key}
+                              width={width}
+                              style={{
+                                padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
+                              }}
+                            >
+                              {render(oppgave)}
+                            </DataCell>
+                          ))}
                       </LinkRow>
                     ))}
                   </Table.Body>

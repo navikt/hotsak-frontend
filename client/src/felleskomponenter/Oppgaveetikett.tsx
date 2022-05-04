@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 
-import { Oppgavetype } from '../../types/types.internal'
+import { capitalize } from '../utils/stringFormating'
+
+import { Oppgavetype } from '../types/types.internal'
 
 interface EtikettProps {
   størrelse?: 's' | 'l'
@@ -39,14 +41,44 @@ const SøknadEtikett = styled(Etikett)`
   }
 `
 
+const Label = styled.div`
+  margin-left: 0.5rem;
+`
+
+const BestillingEtikett = styled(Etikett)`
+  background: var(--navds-global-color-green-100);
+  border: 1px solid var(--navds-global-color-green-500);
+
+  :before {
+    content: 'B';
+  }
+`
+
 interface OppgaveetikettProps extends EtikettProps {
   type: Oppgavetype
+  showLabel?: boolean
 }
 
-export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({ type, størrelse = 'l' }) => {
+export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({ type, størrelse = 'l', showLabel = false }) => {
   switch (type) {
-    case Oppgavetype.Søknad:
-      return <SøknadEtikett størrelse={størrelse} />
+    case Oppgavetype.SØKNAD:
+      return showLabel ? (
+        <>
+          <SøknadEtikett størrelse={størrelse} />
+          <Label>{capitalize(type)}</Label>
+        </>
+      ) : (
+        <SøknadEtikett størrelse={størrelse} />
+      )
+    case Oppgavetype.BESTILLING:
+      return showLabel ? (
+        <>
+          <BestillingEtikett størrelse={størrelse} />
+          <Label>{capitalize(type)}</Label>
+        </>
+      ) : (
+        <BestillingEtikett størrelse={størrelse} />
+      )
     default:
       return null
   }

@@ -21,13 +21,12 @@ export enum VedtaksgrunnlagType {
 }
 
 export interface Vedtaksgrunnlag {
-  type: VedtaksgrunnlagType,
+  type: VedtaksgrunnlagType
   data: any[] | undefined
 }
 
-export const vedtaksgrunnlagUtlaanshistorikk = ( utlaanshistorikk: HjelpemiddelArtikkel[] ): Vedtaksgrunnlag => {
-
-  return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk}
+export const vedtaksgrunnlagUtlaanshistorikk = (utlaanshistorikk: HjelpemiddelArtikkel[]): Vedtaksgrunnlag => {
+  return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk }
 }
 
 export interface Hendelse {
@@ -164,6 +163,7 @@ export enum GreitÅViteType {
 }
 
 export interface Oppgave {
+  type: Oppgavetype
   opprettetDato: Dayjs
   mottattDato: string
   formidlerNavn: string
@@ -172,6 +172,11 @@ export interface Oppgave {
   status: OppgaveStatusType
   saksbehandler?: Saksbehandler
   søknadOm: string
+}
+
+export enum Oppgavetype {
+  SØKNAD = 'SØKNAD',
+  BESTILLING = 'BESTILLING',
 }
 
 export interface Saksbehandler {
@@ -279,10 +284,6 @@ export enum PersonInfoKilde {
   MANUELL = 'manuell',
 }
 
-export enum Oppgavetype {
-  Søknad = 'SØKNAD',
-}
-
 export interface Produkt {
   isokode: string
   isotittel: string
@@ -334,30 +335,28 @@ export interface OverforGosysTilbakemelding {
   begrunnelse: string
 }
 
-
 export interface PersonoversiktType {
-    fornavn: string
-    mellomnavn: string | null
-    etternavn: string
-    fødselsdato: string | undefined
-    kjønn: Kjønn
-    fnr: string
-    brukernummer?: string
-    telefon: string
+  fornavn: string
+  mellomnavn: string | null
+  etternavn: string
+  fødselsdato: string | undefined
+  kjønn: Kjønn
+  fnr: string
+  brukernummer?: string
+  telefon: string
 }
-
 
 export interface Saksoversikt {
-    hotsakSaker: Saksoversikt_Sak[]
+  hotsakSaker: Saksoversikt_Sak[]
 }
 export interface Saksoversikt_Sak {
-    saksid: string
-    søknadGjelder: string
-    mottattDato: string
-    område: string[]
-    saksbehandler?: string
-    fagsystem: string
-    status: OppgaveStatusType
-    vedtak?: VedtakType
-    enhet: Enhet[]
+  saksid: string
+  søknadGjelder: string
+  mottattDato: string
+  område: string[]
+  saksbehandler?: string
+  fagsystem: string
+  status: OppgaveStatusType
+  vedtak?: VedtakType
+  enhet: Enhet[]
 }

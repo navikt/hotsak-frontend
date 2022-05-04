@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { IconContainer } from '../../felleskomponenter/IconContainer'
 import { Advarselikon } from '../../felleskomponenter/ikoner/Advarselikon'
 import { Informasjonikon } from '../../felleskomponenter/ikoner/Informasjonikon'
 import { Sjekkikon } from '../../felleskomponenter/ikoner/Sjekkikon'
@@ -8,7 +9,6 @@ import { GreitÅViteFaktum, GreitÅViteType } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
-import { IconContainer } from './IconContainer'
 
 interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]

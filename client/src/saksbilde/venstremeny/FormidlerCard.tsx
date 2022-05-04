@@ -2,13 +2,13 @@ import React from 'react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
+import { IconContainer } from '../../felleskomponenter/IconContainer'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
-import { IconContainer } from './IconContainer'
 
 interface FormidlerCardProps {
   formidlerNavn: string

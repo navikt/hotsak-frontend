@@ -3,6 +3,8 @@ import React from 'react'
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
+import { IconContainer } from '../../felleskomponenter/IconContainer'
+import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { HjemIkon } from '../../felleskomponenter/ikoner/HjemIkon'
 import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
 import { MappeIkon } from '../../felleskomponenter/ikoner/MappeIkon'
@@ -12,8 +14,6 @@ import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
-import { IconContainer } from './IconContainer'
-import { Oppgaveetikett } from './Oppgaveetikett'
 
 interface PeriodeCardProps {
   søknadGjelder: string
@@ -47,7 +47,7 @@ export const SøknadCard: React.VFC<PeriodeCardProps> = ({
     <Card>
       <Grid>
         <IconContainer>
-          <Oppgaveetikett type={Oppgavetype.Søknad} />
+          <Oppgaveetikett type={Oppgavetype.SØKNAD} />
         </IconContainer>
         <CardTitle>SØKNAD OM HJELPEMIDLER</CardTitle>
         <IconContainer />

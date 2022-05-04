@@ -41,6 +41,9 @@ const App: React.VFC = () => {
                 <ProtectedRoute path={Routes.Saksbilde}>
                   <Saksbilde />
                 </ProtectedRoute>
+                <ProtectedRoute path={Routes.Bestillingsbildet}>
+                  <Saksbilde />
+                </ProtectedRoute>
                 <ProtectedRoute path={Routes.Personoversikt}>
                   <Personoversikt />
                 </ProtectedRoute>

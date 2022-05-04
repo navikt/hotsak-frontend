@@ -184,8 +184,8 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['status'] = 'SENDT_GOSYS'
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
 
-    saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
-    saker[oppgaveIdx]['status'] = 'SENDT_GOSYS'
+    //saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
+    saker[sakIdx]['status'] = 'SENDT_GOSYS'
 
     return res(ctx.status(200), ctx.json({}))
   }),

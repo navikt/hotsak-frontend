@@ -1,5 +1,168 @@
 [
   {
+    "saksid": "112233",
+    "søknadGjelder": "Hjelpemidler",
+    "hjelpemidler": [
+      {
+        "hmsnr": "014112",
+        "rangering": "1",
+        "alleredeUtlevert": false,
+        "utlevertInfo": {},
+        "antall": "8",
+        "kategori": "Terskeleliminatorer og Kjøreramper",
+        "beskrivelse": "Topro Terskeleliminator",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      {
+        "beskrivelse": "Personalia fra Folkeregisteret",
+        "type": "INFO"
+      }
+    ],
+    "mottattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "19044238651",
+      "fødselsdato": "1942-12-19",
+      "fornavn": "Petter Andreas",
+      "etternavn": "Hansen",
+      "adresse": "Andre Veien 69",
+      "kilde": "PDL",
+      "signaturtype": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
+      "kjønn": "MANN",
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktperson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
+    "saksid": "223344",
+    "søknadGjelder": "Hjelpemidler",
+    "hjelpemidler": [
+      {
+        "hmsnr": "014112",
+        "rangering": "1",
+        "alleredeUtlevert": false,
+        "utlevertInfo": {},
+        "antall": "8",
+        "kategori": "Terskeleliminatorer og Kjøreramper",
+        "beskrivelse": "Topro Terskeleliminator",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      {
+        "beskrivelse": "Personalia fra Folkeregisteret",
+        "type": "INFO"
+      }
+    ],
+    "mottattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "19044238651",
+      "fødselsdato": "1942-12-19",
+      "fornavn": "Petter Andreas",
+      "etternavn": "Hansen",
+      "adresse": "Andre Veien 69",
+      "kilde": "PDL",
+      "signaturtype": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
+      "kjønn": "MANN",
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktperson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+
+  {
     "saksid": "111111",
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -74,15 +237,9 @@
       "signaturtype": "BRUKER_BEKREFTER",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "bevegelse"
-      ],
+      "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "brukernummer": "454269",
       "postnummer": "2825",
@@ -162,15 +319,13 @@
         "tilleggsinfo": [
           {
             "tittel": "Behov",
-            "innholdsliste": [
-              "Forebygge trykksår",
-              "Hindre trykksår",
-              "Denne må vi bare ha"
-            ]
+            "innholdsliste": ["Forebygge trykksår", "Hindre trykksår", "Denne må vi bare ha"]
           },
           {
             "tittel": "Kommentar",
-            "innholdsliste": ["Mia Cathrine har scoliose og skjevt bekken med rotasjon mot høyre, benlengdeforskjell og nedsatt sittestabilitet. Scoliosen/bekkenskjevheten er ikke korrigerbar. Trenger en pute som kan tilpasses asymmetrien i bekkenet."]
+            "innholdsliste": [
+              "Mia Cathrine har scoliose og skjevt bekken med rotasjon mot høyre, benlengdeforskjell og nedsatt sittestabilitet. Scoliosen/bekkenskjevheten er ikke korrigerbar. Trenger en pute som kan tilpasses asymmetrien i bekkenet."
+            ]
           }
         ],
         "tilbehør": []
@@ -185,9 +340,7 @@
         "tilleggsinfo": [
           {
             "tittel": "Tilsvarende ikke ok",
-            "innholdsliste": [
-              "Fungerte mye bedre på utprøving enn andre stoler"
-            ]
+            "innholdsliste": ["Fungerte mye bedre på utprøving enn andre stoler"]
           }
         ],
         "tilbehør": [
@@ -244,15 +397,9 @@
       "signaturtype": "FULLMAKT",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "bevegelse"
-      ],
+      "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "KVINNE",
       "kroppsmål": {
         "høyde": "170",
@@ -279,7 +426,7 @@
       "adresse": "nullable adresse",
       "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
     },
-    
+
     "status": "AVVENTER_SAKSBEHANDLER",
     "enhet": [
       {
@@ -339,15 +486,9 @@
       "signaturtype": "FRITAK_FRA_FULLMAKT",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "bevegelse"
-      ],
+      "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "brukernummer": "454269",
       "postnummer": "2825",
@@ -413,7 +554,8 @@
       {
         "beskrivelse": "Personalia fra folkeregisteret",
         "type": "INFO"
-      }],
+      }
+    ],
     "mottattDato": "2021-06-25T13:55:45",
     "personinformasjon": {
       "fnr": "06115559891",
@@ -425,15 +567,9 @@
       "signaturtype": "BRUKER_BEKREFTER",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "kognisjon"
-      ],
+      "funksjonsnedsettelse": ["kognisjon"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "kroppsmål": {
         "høyde": "100",
@@ -531,15 +667,9 @@
       "signaturtype": "BRUKER_BEKREFTER",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "bevegelse"
-      ],
+      "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "brukernummer": "454269",
       "postnummer": "2825",
@@ -644,15 +774,9 @@
       "signaturtype": "BRUKER_BEKREFTER",
       "telefon": "45454545",
       "bosituasjon": "HJEMME",
-      "funksjonsnedsettelse": [
-        "bevegelse"
-      ],
+      "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
-      "oppfylteVilkår": [
-        "storreBehov",
-        "nedsattFunksjon",
-        "praktiskeProblem"
-      ],
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
       "kjønn": "MANN",
       "brukernummer": "454269",
       "postnummer": "2825",

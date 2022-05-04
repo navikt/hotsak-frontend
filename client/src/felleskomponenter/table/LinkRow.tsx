@@ -4,6 +4,8 @@ import styled from 'styled-components/macro'
 
 import { Table } from '@navikt/ds-react'
 
+import { Oppgavetype } from '../../types/types.internal'
+
 const ClickableRow = styled(Table.Row)`
   &:hover,
   &:focus {
@@ -13,14 +15,21 @@ const ClickableRow = styled(Table.Row)`
 `
 interface LinkRowProps {
   saksnummer: string
+  oppgaveType: Oppgavetype
 }
 
-export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, children }) => {
+export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, oppgaveType, children }) => {
   const history = useHistory()
 
   const navigate = () => {
-    const destinationUrl = `/sak/${saksnummer}/hjelpemidler`
-    history.push(destinationUrl)
+    switch (oppgaveType) {
+      case Oppgavetype.BESTILLING:
+        history.push(`/bestilling/${saksnummer}/hjelpemidler`)
+        break
+      case Oppgavetype.SØKNAD:
+      default:
+        history.push(`/sak/${saksnummer}/hjelpemidler`)
+    }
   }
 
   return (

@@ -212,7 +212,7 @@ export const Oppgaveliste: React.VFC = () => {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
-                      <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
+                      <LinkRow key={oppgave.saksid} oppgaveType={oppgave.type} saksnummer={oppgave.saksid}>
                         {kolonner
                           // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                           .filter(({ key }) =>

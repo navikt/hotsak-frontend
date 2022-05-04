@@ -199,7 +199,7 @@ export const Oppgaveliste: React.VFC = () => {
                       {kolonner
                         // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                         .filter(({ key }) =>
-                          window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'labs-gcp'
+                          window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp'
                             ? true
                             : key !== 'TYPE'
                         )
@@ -216,7 +216,7 @@ export const Oppgaveliste: React.VFC = () => {
                         {kolonner
                           // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                           .filter(({ key }) =>
-                            window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'labs-gcp'
+                            window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp'
                               ? true
                               : key !== 'TYPE'
                           )

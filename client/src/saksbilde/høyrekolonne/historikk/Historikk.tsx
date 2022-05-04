@@ -18,7 +18,12 @@ export const Historikk: React.VFC = () => {
   }
 
   if (!hendelser) {
-    return <div>Ingen hendelser</div>
+    return (
+      <KolonneOppsett>
+        <KolonneTittel>HISTORIKK</KolonneTittel>
+        <div>Ingen hendelser</div>
+      </KolonneOppsett>
+    )
   }
 
   return (

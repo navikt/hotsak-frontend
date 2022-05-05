@@ -85,7 +85,7 @@ const overforGosysArsaker: ReadonlyArray<string> = [
   'Saken skal ses på av en annen saksbehandler eller enhet',
   'Formidler har ikke fullført nødvendig godkjenningskurs',
   'Bruker har hjelpemiddelet fra før',
-  'Behov for skriftlig vedtak',
+  'Saken skal innvilges med vedtaksbrev',
   'Annet',
 ]
 

@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button, Loader } from '@navikt/ds-react'
 
-import { postTildeling, tildelBestilling } from '../../io/http'
+import { tildelBestilling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'

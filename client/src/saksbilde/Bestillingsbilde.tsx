@@ -5,14 +5,13 @@ import styled from 'styled-components/macro'
 
 import { Alert } from '@navikt/ds-react'
 
-import { OppgaveType } from '../oppgaveliste/kolonner/OpgaveType'
 import { formaterDato } from '../utils/date'
 import { capitalize } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { HøyrekolonneTabs, OppgaveStatusType, Oppgavetype, VedtakStatusType } from '../types/types.internal'
+import { HøyrekolonneTabs, OppgaveStatusType, Oppgavetype } from '../types/types.internal'
 import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadslinje from './Søknadslinje'
 import { useBestilling } from './bestillingHook'
@@ -25,7 +24,6 @@ import { BestillingCard } from './venstremeny/BestillingCard'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
-import { VedtakCard } from './venstremeny/VedtakCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
 
 const BestillingsbildeContainer = styled.div`

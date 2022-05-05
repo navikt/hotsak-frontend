@@ -14,6 +14,7 @@ const Container = styled.div`
 interface HjelpemiddelListeProps {
   hjelpemidler: HjelpemiddelType[]
   personinformasjon: Personinfo
+  tittel: String
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
@@ -27,11 +28,11 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
     .reduce(summarize, 0)
 }
 
-export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ hjelpemidler, personinformasjon }) => {
+export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, hjelpemidler, personinformasjon }) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
-        Søknad om hjelpemidler
+        {tittel}
       </Heading>
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {

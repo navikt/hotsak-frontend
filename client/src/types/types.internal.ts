@@ -16,6 +16,22 @@ export interface Sak {
   enhet: Enhet[]
 }
 
+export interface Bestilling {
+  id: string
+  gjelder: string
+  hjelpemidler: HjelpemiddelType[]
+  formidler: Formidler
+  greitÅViteFaktum: GreitÅViteFaktum[]
+  mottattDato: string
+  personinformasjon: Personinfo
+  levering: Levering
+  oppfølgingsansvarlig: Oppfølgingsansvarlig
+  saksbehandler: Saksbehandler
+  status: OppgaveStatusType
+  statusEndretDato: string
+  enhet: Enhet[]
+}
+
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
 }
@@ -200,7 +216,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  /*[OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],*/ // Brukes ikke enda
+  [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
 ])
 
 export enum VedtakStatusType {

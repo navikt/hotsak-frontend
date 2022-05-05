@@ -3,10 +3,9 @@ import styled from 'styled-components/macro'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
-import { HøyrekolonneTabs } from '../types/types.internal'
+import { HøyrekolonneTabs, Oppgavetype } from '../types/types.internal'
 import { TabLink } from './TabLink'
 import { HøyrekolonneHeader } from './høyrekolonne/HøyrekolonneHeader'
-import { useSak } from './sakHook'
 
 const Container = styled.nav`
   display: flex;
@@ -33,30 +32,33 @@ export enum Location {
 }
 
 export interface SøknadslinjeProps {
+  id: string
+  type: Oppgavetype
   onTabChange: Function
   currentTab: HøyrekolonneTabs
 }
 
-export const Søknadslinje: React.VFC<SøknadslinjeProps> = ({ onTabChange, currentTab }) => {
-  const { sak } = useSak()
-  if (!sak) return null
-  const saksid = sak.saksid
+export const Søknadslinje: React.VFC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
+  const basepath = type === Oppgavetype.BESTILLING ? 'bestilling' : 'sak'
   return (
     <Container>
       <Flex>
         <TabList role="tablist">
-          <TabLink to={`/sak/${saksid}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
+          <TabLink to={`/${basepath}/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
             Hjelpemidler
           </TabLink>
-          <TabLink to={`/sak/${saksid}/bruker`} title="Bruker">
+          <TabLink to={`/${basepath}/${id}/bruker`} title="Bruker">
             Bruker
           </TabLink>
-          <TabLink to={`/sak/${saksid}/formidler`} title="Formidler">
+          <TabLink
+            to={`/${basepath}/${id}/formidler`}
+            title={type === Oppgavetype.BESTILLING ? 'Bestiller' : 'Formidler'}
+          >
             Formidler
           </TabLink>
         </TabList>
       </Flex>
-      <HøyrekolonneHeader onTabChange={onTabChange} currentTab={currentTab} />
+      <HøyrekolonneHeader id={id} type={type} onTabChange={onTabChange} currentTab={currentTab} />
     </Container>
   )
 }

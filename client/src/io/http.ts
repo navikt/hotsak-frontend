@@ -1,6 +1,11 @@
 import { isNumber } from '../utils/type'
 
-import type { OverforGosysTilbakemelding, Vedtaksgrunnlag, VedtakStatusType } from '../types/types.internal'
+import type {
+  OppgaveStatusType,
+  OverforGosysTilbakemelding,
+  Vedtaksgrunnlag,
+  VedtakStatusType,
+} from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse<T = any> {
   status: number
@@ -113,12 +118,20 @@ export const postTildeling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
+export const tildelBestilling = async (oppgavereferanse: string) => {
+  return post(`${baseUrl}/api/bestilling/tildeling/${oppgavereferanse}`, {})
+}
+
 export const deleteFjernTildeling = async (oppgavereferanse: string) => {
   return del(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
 export const putVedtak = async (saksnummer: string, status: VedtakStatusType, vedtaksgrunnlag: Vedtaksgrunnlag[]) => {
   return put(`${baseUrl}/api/vedtak-v2/${saksnummer}`, { status, vedtaksgrunnlag })
+}
+
+export const putFerdigstillBestilling = async (bestillingsnummer: string, status: OppgaveStatusType) => {
+  return put(`${baseUrl}/api/bestilling/ferdigstill/${bestillingsnummer}`, { status })
 }
 
 export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {

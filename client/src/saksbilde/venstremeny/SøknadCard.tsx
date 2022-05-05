@@ -15,7 +15,8 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 
-interface PeriodeCardProps {
+interface SøknadCardProps {
+  oppgaveType: Oppgavetype
   søknadGjelder: string
   saksnr: string
   mottattDato: string
@@ -35,21 +36,25 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
   }
 }
 
-export const SøknadCard: React.VFC<PeriodeCardProps> = ({
-  søknadGjelder,
+export const SøknadCard: React.VFC<SøknadCardProps> = ({
+  oppgaveType,
   saksnr,
   mottattDato,
   bruksarena,
   funksjonsnedsettelse,
   bosituasjon,
 }) => {
+  console.log('Type', oppgaveType)
+
   return (
     <Card>
       <Grid>
         <IconContainer>
-          <Oppgaveetikett type={Oppgavetype.SØKNAD} />
+          <Oppgaveetikett type={oppgaveType} />
         </IconContainer>
-        <CardTitle>SØKNAD OM HJELPEMIDLER</CardTitle>
+        <CardTitle>
+          {oppgaveType === Oppgavetype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
+        </CardTitle>
         <IconContainer />
         <Tekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Tekst>
         <IconContainer>

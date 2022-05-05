@@ -4,10 +4,10 @@ import { sorterKronologisk } from '../../../utils/date'
 
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { HistorikkHendelse } from './HistorikkHendelse'
-import { useHistorikk } from './historikkHook'
+import { useBestillingsHistorikk } from './historikkHook'
 
-export const Historikk: React.VFC = () => {
-  const { hendelser, isError, isLoading } = useHistorikk()
+export const BestillingsHistorikk: React.VFC = () => {
+  const { hendelser, isError, isLoading } = useBestillingsHistorikk()
 
   if (isError) {
     return <div>Feil ved henting av historikk</div>

@@ -16,6 +16,10 @@ export enum amplitude_taxonomy {
   ENDRINGSLOGGINNSLAG_LEST = 'endringslogginnslag lest',
   PERSONSØK = 'søkt etter person',
   PERSONOVERSIKT = 'navigert til personoversikt',
+  BESTILLING_STARTET_FRA_OPPGAVELISTE = 'bestilling startet fra oppgaveliste',
+  BESTILLING_STARTET_FRA_BESTILLINGSBILDE = 'bestilling startet fra bestillingsbilde',
+  BESTILLING_FERDIGSTILT = 'ferdigstilt bestilling',
+  BESTILLING_OVERFORT_TIL_GOSYS = 'overført bestilling til Gosys',
 }
 
 export const initAmplitude = (): void => {

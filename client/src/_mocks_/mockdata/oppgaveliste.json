@@ -36,8 +36,8 @@
       "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
-    "saksbehandler": null,
-    "status": "AVVENTER_SAKSBEHANDLER",
+    "saksbehandler": { "navn": "Silje Saksbehandler" },
+    "status": "FERDIGSTILT",
     "enhet": [
       {
         "enhetsnummer": "6969",

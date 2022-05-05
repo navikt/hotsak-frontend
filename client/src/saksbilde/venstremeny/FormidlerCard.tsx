@@ -11,15 +11,16 @@ import { CardTitle } from './CardTitle'
 import { Grid } from './Grid'
 
 interface FormidlerCardProps {
+  tittel: string
   formidlerNavn: string
   kommune: string
   formidlerTelefon: string
 }
 
-export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ formidlerNavn, kommune, formidlerTelefon }) => {
+export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
-      <CardTitle>FORMIDLER</CardTitle>
+      <CardTitle>{tittel}</CardTitle>
       <Grid>
         <IconContainer>
           <Personikon />

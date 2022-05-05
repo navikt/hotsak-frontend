@@ -30,7 +30,7 @@ export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, o
         <Tekst>
           Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre
           saksbehandling må gjøres manuelt i Gosys og Infotrygd. Merk at det kan ta noen minutter før saken dukker opp i
-          Gosys
+          Gosys.
         </Tekst>
         <OverforGosysArsakCheckboxGroup
           legend="Velg årsak til at saken må overføres til Gosys"
@@ -38,6 +38,7 @@ export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, o
           value={valgteArsaker}
           onChange={setValgteArsaker}
         >
+          <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke i Gosys.</Tekst>
           {overforGosysArsaker.map((arsak, index) => (
             <Checkbox key={arsak} value={arsak} data-cy={`overfor-soknad-arsak-${index}`}>
               {arsak}

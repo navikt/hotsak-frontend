@@ -64,9 +64,10 @@ interface RangeringProps {
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
   personinformasjon: Personinfo
+  forenkletVisning: Boolean
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon }) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon, forenkletVisning }) => {
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
 
   return (
@@ -74,10 +75,12 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
       <Rad>
         <EtikettKolonne>
           <Rad>
-            <Rangering rank={hjelpemiddel.rangering}>
-              <Tekst>Rangering:</Tekst>
-              <Tekst>{hjelpemiddel.rangering}</Tekst>
-            </Rangering>
+            {!forenkletVisning && (
+              <Rangering rank={hjelpemiddel.rangering}>
+                <Tekst>Rangering:</Tekst>
+                <Tekst>{hjelpemiddel.rangering}</Tekst>
+              </Rangering>
+            )}
           </Rad>
           <Rad>{hjelpemiddel.antall} stk</Rad>
         </EtikettKolonne>

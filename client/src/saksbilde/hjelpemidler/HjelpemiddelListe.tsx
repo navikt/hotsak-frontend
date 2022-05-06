@@ -15,6 +15,7 @@ interface HjelpemiddelListeProps {
   hjelpemidler: HjelpemiddelType[]
   personinformasjon: Personinfo
   tittel: String
+  forenkletVisning?: Boolean
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
@@ -28,7 +29,12 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
     .reduce(summarize, 0)
 }
 
-export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, hjelpemidler, personinformasjon }) => {
+export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({
+  tittel,
+  hjelpemidler,
+  personinformasjon,
+  forenkletVisning = false,
+}) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
@@ -37,7 +43,12 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, hj
       <Container>
         {hjelpemidler.map((hjelpemiddel) => {
           return (
-            <Hjelpemiddel key={hjelpemiddel.hmsnr} hjelpemiddel={hjelpemiddel} personinformasjon={personinformasjon} />
+            <Hjelpemiddel
+              key={hjelpemiddel.hmsnr}
+              hjelpemiddel={hjelpemiddel}
+              personinformasjon={personinformasjon}
+              forenkletVisning={forenkletVisning}
+            />
           )
         })}
         <Rad>

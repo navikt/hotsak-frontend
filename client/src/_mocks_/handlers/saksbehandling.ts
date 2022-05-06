@@ -193,6 +193,7 @@ const saksbehandlingHandlers = [
     const statusFilter = req.url.searchParams.get('status')
     const sakerFilter = req.url.searchParams.get('saksbehandler')
     const områdeFilter = req.url.searchParams.get('område')
+    const sakstypeFilter = req.url.searchParams.get('type')
     const currentPage = Number(req.url.searchParams.get('page'))
     const pageSize = Number(req.url.searchParams.get('limit'))
 
@@ -211,6 +212,7 @@ const saksbehandlingHandlers = [
       .filter((oppgave) =>
         områdeFilter ? oppgave.personinformasjon.funksjonsnedsettelse.includes(områdeFilter.toLowerCase()) : true
       )
+      .filter((oppgave) => (sakstypeFilter ? oppgave.type.toLowerCase() === sakstypeFilter.toLowerCase() : true))
 
     const filterApplied = oppgaveliste.length !== filtrerteOppgaver.length
 

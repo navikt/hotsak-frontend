@@ -18,6 +18,8 @@ import {
   OppgaveStatusType,
   SakerFilter,
   SakerFilterLabel,
+  SakstypeFilter,
+  SakstypeFilterLabel,
 } from '../types/types.internal'
 import { IngentingFunnet } from './IngenOppgaver'
 import { FilterDropdown, Filters } from './filter'
@@ -50,12 +52,14 @@ export const Oppgaveliste: React.VFC = () => {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
+  const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const { oppgaver, isLoading, totalCount, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
+    sakstypeFilter,
     områdeFilter,
   })
 
@@ -67,6 +71,7 @@ export const Oppgaveliste: React.VFC = () => {
   const clearFilters = () => {
     setSakerFilter(SakerFilter.UFORDELTE)
     setStatusFilter(OppgaveStatusType.ALLE)
+    setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
     setCurrentPage(1)
   }
@@ -165,6 +170,16 @@ export const Oppgaveliste: React.VFC = () => {
           value={statusFilter}
           options={OppgaveStatusLabel}
         />
+        {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' && (
+          <FilterDropdown
+            handleChange={(filterValue: SakerFilter) => {
+              handleFilter(setSakstypeFilter, filterValue)
+            }}
+            label="Sakstype"
+            value={sakstypeFilter}
+            options={SakstypeFilterLabel}
+          />
+        )}
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {
             handleFilter(setOmrådeFilter, filterValue)

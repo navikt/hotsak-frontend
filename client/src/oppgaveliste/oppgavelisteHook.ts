@@ -6,7 +6,7 @@ import { SortState } from '@navikt/ds-react'
 import { httpGet } from '../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
-import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter } from '../types/types.internal'
+import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
 import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
@@ -29,6 +29,7 @@ interface PathConfigType {
 interface Filters {
   sakerFilter: string
   statusFilter: string
+  sakstypeFilter: string
   områdeFilter: string
 }
 
@@ -43,7 +44,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
-  const { sakerFilter, statusFilter, områdeFilter } = filters
+  const { sakerFilter, statusFilter, sakstypeFilter, områdeFilter } = filters
 
   let filterParams: any = {}
 
@@ -52,6 +53,9 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
   }
   if (statusFilter && statusFilter !== OppgaveStatusType.ALLE) {
     filterParams.status = statusFilter
+  }
+  if (sakstypeFilter && sakstypeFilter !== SakstypeFilter.ALLE) {
+    filterParams.type = sakstypeFilter
   }
   if (områdeFilter && områdeFilter !== OmrådeFilter.ALLE) {
     filterParams.område = områdeFilter

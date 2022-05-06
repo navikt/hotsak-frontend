@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import {capitalize} from '../../utils/stringFormating'
-import {Strek} from '../../felleskomponenter/Strek'
-import {Etikett, Tekst} from '../../felleskomponenter/typografi'
-import {HjelpemiddelType, Personinfo} from '../../types/types.internal'
-import {Utlevert} from './Utlevert'
-import {Rad, Kolonne} from '../../felleskomponenter/Flex'
-import {useGrunndata} from './grunndataHook'
-import {Link} from '@navikt/ds-react'
+
+import { Link } from '@navikt/ds-react'
+
+import { capitalize } from '../../utils/stringFormating'
+
+import { Rad, Kolonne } from '../../felleskomponenter/Flex'
+import { Strek } from '../../felleskomponenter/Strek'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
+import { Utlevert } from './Utlevert'
+import { useGrunndata } from './grunndataHook'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -28,7 +31,7 @@ const Rangering = styled('div')<RangeringProps>`
     padding: 1px;
     border-radius: 50%;
     background-color: ${(props) =>
-  Number(props.rank) === 1 ? 'var(--navds-global-color-gray-200)' : 'var(--navds-global-color-orange-400)'};
+      Number(props.rank) === 1 ? 'var(--navds-global-color-gray-200)' : 'var(--navds-global-color-orange-400)'};
     color: inherit;
     font-weight: inherit;
   }
@@ -40,18 +43,18 @@ const TilleggsInfo = styled(Rad)`
   position: relative;
 
   &:before {
-    content:'';
+    content: '';
     position: absolute;
     background-color: var(--navds-semantic-color-feedback-info-border);
     width: 3px;
     height: 95%;
     bottom: 0;
-    left:-1rem; 
+    left: -1rem;
   }
 `
 
-const EtikettKolonne: React.FC = ({children}) => {
-  return <Kolonne width='150px'>{children}</Kolonne>
+const EtikettKolonne: React.FC = ({ children }) => {
+  return <Kolonne width="150px">{children}</Kolonne>
 }
 
 interface RangeringProps {
@@ -63,7 +66,7 @@ interface HjelpemiddelProps {
   personinformasjon: Personinfo
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personinformasjon}) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon }) => {
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
 
   return (
@@ -86,7 +89,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
           </Rad>
           <Rad>{produkt && produkt.posttittel}</Rad>
           <Rad>
-            {hjelpemiddel.hmsnr}
+            <strong>{hjelpemiddel.hmsnr}</strong>
             {produkt ? (
               <HMSLenke href={produkt.artikkelurl} target={'_blank'}>
                 {` ${hjelpemiddel.beskrivelse}`}{' '}
@@ -101,16 +104,15 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
                     <React.Fragment key={tilleggsinfo.tittel}>
-                      <Rad >
+                      <Rad>
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
-                        <Kolonne width='700px'>
-                          {tilleggsinfo.innholdsliste.map(element =>
+                        <Kolonne width="700px">
+                          {tilleggsinfo.innholdsliste.map((element) => (
                             <Rad key={element}>{element}</Rad>
-                          )}
+                          ))}
                         </Kolonne>
-
                       </Rad>
                     </React.Fragment>
                   )
@@ -121,8 +123,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
                       <Etikett>Kroppsmål:</Etikett>
                     </Rad>
                     <Rad>
-                      <Kolonne
-                        width='700px'>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                      <Kolonne width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
                     </Rad>
                   </>
                 )}
@@ -132,13 +133,8 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({hjelpemiddel, personi
           <Rad>
             {hjelpemiddel.alleredeUtlevert && (
               <Rad>
-                <Etikett>
-                  Utlevert:
-                </Etikett>
-                <Utlevert
-                  alleredeUtlevert={hjelpemiddel.alleredeUtlevert}
-                  utlevertInfo={hjelpemiddel.utlevertInfo}
-                />
+                <Etikett>Utlevert:</Etikett>
+                <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
               </Rad>
             )}
           </Rad>

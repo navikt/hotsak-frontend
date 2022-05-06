@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { sorterKronologisk } from '../../../utils/date'
+import { sorterKronologisk } from '../../utils/date'
 
-import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
-import { HistorikkHendelse } from './HistorikkHendelse'
-import { useBestillingsHistorikk } from './historikkHook'
+import { KolonneOppsett, KolonneTittel } from '../høyrekolonne/Høyrekolonne'
+import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
+import { useBestillingsHistorikk } from '../høyrekolonne/historikk/historikkHook'
 
 export const BestillingsHistorikk: React.VFC = () => {
   const { hendelser, isError, isLoading } = useBestillingsHistorikk()

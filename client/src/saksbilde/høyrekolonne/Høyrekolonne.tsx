@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
 import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
-import { BestillingsHistorikk } from './historikk/BestillingsHistorikk'
+import { BestillingsHistorikk } from '../bestillingsordning/BestillingsHistorikk'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 

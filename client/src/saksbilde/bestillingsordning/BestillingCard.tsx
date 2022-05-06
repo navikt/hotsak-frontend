@@ -19,10 +19,10 @@ import {
   HjelpemiddelArtikkel,
   Bestilling,
 } from '../../types/types.internal'
-import { OpprettOrdreModal } from '../OpprettOrdreModal'
 import { OverførGosysModal } from '../OverførGosysModal'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
+import { Card } from '../venstremeny/Card'
+import { CardTitle } from '../venstremeny/CardTitle'
+import { OpprettOrdreModal } from './OpprettOrdreModal'
 
 interface BestillingCardProps {
   bestilling: Bestilling

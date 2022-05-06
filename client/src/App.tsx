@@ -16,7 +16,7 @@ import { useAuthentication } from './state/authentication'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
-const Bestillingsbilde = React.lazy(() => import('./saksbilde/Bestillingsbilde'))
+const Bestillingsbilde = React.lazy(() => import('./saksbilde/bestillingsordning/Bestillingsbilde'))
 const Personoversikt = React.lazy(() => import('./personoversikt/Personoversikt'))
 
 //ReactModal.setAppElement('#root');

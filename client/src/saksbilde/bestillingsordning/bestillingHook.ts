@@ -1,9 +1,9 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
-import { httpGet } from '../io/http'
+import { httpGet } from '../../io/http'
 
-import { Bestilling } from '../types/types.internal'
+import { Bestilling } from '../../types/types.internal'
 
 interface DataResponse {
   bestilling: Bestilling | undefined

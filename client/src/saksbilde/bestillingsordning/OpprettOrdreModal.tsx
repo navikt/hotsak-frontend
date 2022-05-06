@@ -2,8 +2,8 @@ import React from 'react'
 
 import { Button, Heading, Loader } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
-import { Tekst } from '../felleskomponenter/typografi'
+import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
+import { Tekst } from '../../felleskomponenter/typografi'
 
 interface OpprettOrdreModalProps {
   open: boolean

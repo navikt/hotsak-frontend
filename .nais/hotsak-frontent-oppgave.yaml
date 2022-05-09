@@ -2,9 +2,9 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   labels:
-    app: hotsak-frontend
+    app: hotsak-frontend-oppgave
     team: teamdigihot
-  name: hotsak-frontend
+  name: hotsak-frontend-oppgave
   namespace: teamdigihot
   annotations:
     snorlax.nais.io/enabled: 'true'

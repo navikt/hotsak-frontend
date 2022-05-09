@@ -9,9 +9,10 @@ import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
 import { formaterDato } from '../utils/date'
 import { capitalize } from '../utils/stringFormating'
 
+import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
+import { OppgaveStatusLabel, Oppgavetype, Saksoversikt_Sak } from '../types/types.internal'
 
 const Container = styled.div`
   min-height: 300px;
@@ -63,9 +64,17 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
     {
       key: 'SAKSTYPE',
       name: 'Sakstype',
-      width: 80,
+      width: 90,
       render: (sak: Saksoversikt_Sak) => (
-        <LinkCell to={`/sak/${sak.saksid}/hjelpemidler`} value="Søknad" id={`sakstype-${sak.saksid}`} minLength={20} />
+        <>
+          <Oppgaveetikett type={sak.type ? sak.type : Oppgavetype.SØKNAD} />
+          <LinkCell
+            to={`/sak/${sak.saksid}/hjelpemidler`}
+            value={capitalize(sak.type ? sak.type : Oppgavetype.SØKNAD)}
+            id={`sakstype-${sak.saksid}`}
+            minLength={25}
+          />
+        </>
       ),
     },
     {

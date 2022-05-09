@@ -14,7 +14,7 @@ function deepClone(array: any[]) {
 }
 
 const bestillingsordningsHandlers = [
-  rest.get(`/api/bestilling/:saksid`, (req, res, ctx) => {
+  rest.get(`/api/sak/:saksid`, (req, res, ctx) => {
     //@ts-ignore
     return res(
       ctx.status(200),
@@ -25,6 +25,7 @@ const bestillingsordningsHandlers = [
     const hist = bestillingshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
     return res(ctx.status(200), ctx.json(hist))
   }),
+  // api/tildeling/:oppgaveid
   rest.post(`/api/bestilling/tildeling/:saksnummer`, (req, res, ctx) => {
     //@ts-ignore
     const sakIdx = bestillinger.findIndex((bestilling) => bestilling.id === req.params.saksnummer)

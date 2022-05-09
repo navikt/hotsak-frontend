@@ -378,6 +378,7 @@ export interface Saksoversikt {
   hotsakSaker: Saksoversikt_Sak[]
 }
 export interface Saksoversikt_Sak {
+  type?: Oppgavetype
   saksid: string
   søknadGjelder: string
   mottattDato: string

@@ -170,7 +170,7 @@ export const Oppgaveliste: React.VFC = () => {
           value={statusFilter}
           options={OppgaveStatusLabel}
         />
-        {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' && (
+        {window.appSettings.MILJO !== 'prod-gcp' && (
           <FilterDropdown
             handleChange={(filterValue: SakerFilter) => {
               handleFilter(setSakstypeFilter, filterValue)
@@ -213,11 +213,7 @@ export const Oppgaveliste: React.VFC = () => {
                     <Table.Row>
                       {kolonner
                         // Toggle for at oppsett for bestillingsordning kun skal vises i labs
-                        .filter(({ key }) =>
-                          window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp'
-                            ? true
-                            : key !== 'TYPE'
-                        )
+                        .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
                         .map(({ key, name, sortable = true, width }, idx) => (
                           <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
                             {name}
@@ -230,11 +226,7 @@ export const Oppgaveliste: React.VFC = () => {
                       <LinkRow key={oppgave.saksid} oppgaveType={oppgave.type} saksnummer={oppgave.saksid}>
                         {kolonner
                           // Toggle for at oppsett for bestillingsordning kun skal vises i labs
-                          .filter(({ key }) =>
-                            window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp'
-                              ? true
-                              : key !== 'TYPE'
-                          )
+                          .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
                           .map(({ render, width, key }, idx) => (
                             <DataCell
                               key={key}

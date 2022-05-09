@@ -2,6 +2,7 @@ import { Dayjs } from 'dayjs'
 
 export interface Sak {
   saksid: string
+  oppgaveid: string
   søknadGjelder: string
   hjelpemidler: HjelpemiddelType[]
   formidler: Formidler

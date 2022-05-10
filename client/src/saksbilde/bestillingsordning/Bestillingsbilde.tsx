@@ -73,7 +73,7 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
     <BestillingsbildeContainer>
       <Personlinje person={bestilling.personinformasjon} />
       <Søknadslinje
-        id={bestilling.id}
+        id={bestilling.saksid}
         type={Oppgavetype.BESTILLING}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
@@ -84,8 +84,8 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
             <VenstreMeny>
               <SøknadCard
                 oppgaveType={Oppgavetype.BESTILLING}
-                søknadGjelder={bestilling.gjelder}
-                saksnr={bestilling.id}
+                søknadGjelder={bestilling.søknadGjelder}
+                saksnr={bestilling.saksid}
                 mottattDato={bestilling.mottattDato}
                 bosituasjon={bestilling.personinformasjon.bosituasjon}
                 bruksarena={bestilling.personinformasjon.bruksarena}
@@ -106,7 +106,7 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               {bestilling.status === OppgaveStatusType.FERDIGSTILT && (
                 <Alert size="small" variant="success" data-cy="alert-bestilling-ferdigstilt">
-                  {`${capitalize(bestilling.status)} ${formaterDato(bestilling.statusEndretDato)} av ${
+                  {`${capitalize(bestilling.status)} ${`` /*formaterDato(bestilling.statusEndretDato)*/} av ${
                     bestilling.saksbehandler.navn
                   }`}
                 </Alert>

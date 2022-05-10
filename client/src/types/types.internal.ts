@@ -2,6 +2,7 @@ import { Dayjs } from 'dayjs'
 
 export interface Sak {
   saksid: string
+  sakstype: Oppgavetype
   oppgaveid: string
   søknadGjelder: string
   hjelpemidler: HjelpemiddelType[]
@@ -17,7 +18,7 @@ export interface Sak {
   enhet: Enhet[]
 }
 
-export interface Bestilling {
+/*export interface Bestilling {
   id: string
   gjelder: string
   hjelpemidler: HjelpemiddelType[]
@@ -31,7 +32,7 @@ export interface Bestilling {
   status: OppgaveStatusType
   statusEndretDato: string
   enhet: Enhet[]
-}
+}*/
 
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',

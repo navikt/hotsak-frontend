@@ -3,17 +3,17 @@ import useSwr from 'swr'
 
 import { httpGet } from '../../io/http'
 
-import { Bestilling } from '../../types/types.internal'
+import { Sak } from '../../types/types.internal'
 
 interface DataResponse {
-  bestilling: Bestilling | undefined
+  bestilling: Sak | undefined
   isLoading: boolean
   isError: any
 }
 
 export function useBestilling(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Bestilling }>(`api/bestilling/${saksnummer}`, httpGet, {
+  const { data, error } = useSwr<{ data: Sak }>(`api/bestilling/${saksnummer}`, httpGet, {
     refreshInterval: 10000,
   })
 

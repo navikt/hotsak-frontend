@@ -16,7 +16,6 @@ import { useAuthentication } from './state/authentication'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
-const Bestillingsbilde = React.lazy(() => import('./saksbilde/bestillingsordning/Bestillingsbilde'))
 const Personoversikt = React.lazy(() => import('./personoversikt/Personoversikt'))
 
 //ReactModal.setAppElement('#root');
@@ -41,9 +40,6 @@ const App: React.VFC = () => {
                 </ProtectedRoute>
                 <ProtectedRoute path={Routes.Saksbilde}>
                   <Saksbilde />
-                </ProtectedRoute>
-                <ProtectedRoute path={Routes.Bestillingsbildet}>
-                  <Bestillingsbilde />
                 </ProtectedRoute>
                 <ProtectedRoute path={Routes.Personoversikt}>
                   <Personoversikt />

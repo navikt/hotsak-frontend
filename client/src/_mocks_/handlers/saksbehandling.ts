@@ -12,6 +12,8 @@ const sakshistorikk = [
   { saksid: '1234567', hendelser: deepClone(historikk) },
   { saksid: '888888', hendelser: deepClone(historikk) },
   { saksid: '999999', hendelser: deepClone(historikk) },
+  { saksid: '112233', hendelser: deepClone(historikk) },
+  { saksid: '223344', hendelser: deepClone(historikk) },
 ]
 
 function deepClone(array: any[]) {
@@ -82,47 +84,6 @@ const saksbehandlingHandlers = [
   rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
     const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
     return res(ctx.status(200), ctx.json(hist))
-  }),
-  rest.put('/api/vedtak/:saksnummer', (req, res, ctx) => {
-    //@ts-ignore
-    const soknadsbeskrivelse = req.body.søknadsbeskrivelse
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
-
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
-
-    const vedtakHendelse = {
-      id: '4',
-      hendelse: 'Vedtak fattet',
-      opprettet: '2021-03-29T12:43:45',
-      detaljer: 'Søknaden ble innvilget',
-      bruker: 'Silje Saksbehandler',
-    }
-    const sfHendelse = {
-      id: '5',
-      hendelse: 'Serviceforespørsel opprettet i OEBS',
-      opprettet: '2021-10-05T21:52:40.815302',
-      detaljer: 'SF-nummer: 1390009031',
-    }
-
-    sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
-    sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
-
-    oppgaveliste[oppgaveIdx]['status'] = 'VEDTAK_FATTET'
-    oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
-
-    saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
-    saker[sakIdx]['status'] = 'VEDTAK_FATTET'
-    // @ts-ignore
-    saker[sakIdx]['vedtak'] = {
-      vedtaksdato: '2021-03-29',
-      status: 'INNVILGET',
-      saksbehandlerRef: '23ea7485-1324-4b25-a763-assdfdfa',
-      saksbehandlerNavn: 'Silje Saksbehandler',
-      soknadUuid: '06d4f1b0-a7b0-4568-a899-c1321164e95a',
-    }
-
-    return res(ctx.status(200), ctx.json({}))
   }),
   rest.put('/api/vedtak-v2/:saksnummer', (req, res, ctx) => {
     //@ts-ignore
@@ -226,6 +187,39 @@ const saksbehandlingHandlers = [
     }
 
     return res(ctx.status(200), ctx.json(response))
+  }),
+  rest.put('/api/bestilling/ferdigstill/:saksnummer', (req, res, ctx) => {
+    console.log('Ferdigstiller')
+
+    //@ts-ignore
+    const bestillingIdx = bestillinger.findIndex((bestilling) => bestilling.id === req.params.saksnummer)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const vedtakHendelse = {
+      id: '4',
+      hendelse: 'Bestilling ferdigstilt',
+      opprettet: '2022-05-05T12:43:45',
+      bruker: 'Silje Saksbehandler',
+    }
+    const sfHendelse = {
+      id: '5',
+      hendelse: 'Ordre opprettett i ordreorganisator i OEBS',
+      opprettet: '2022-05-05T12:44:00.815302',
+      detaljer: 'Ordrenummer: 1390009031',
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
+
+    oppgaveliste[oppgaveIdx]['status'] = 'FERDIGSTILT'
+
+    saker[bestillingIdx]['status'] = 'FERDIGSTILT'
+    //@ts-ignore
+    bestillinger[bestillingIdx]['statusEndretDato'] = '2021-10-05T21:52:40.815302'
+
+    return res(ctx.status(200), ctx.json({}))
   }),
 ]
 

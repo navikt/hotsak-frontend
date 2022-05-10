@@ -97,7 +97,7 @@ export const Oppgaveliste: React.VFC = () => {
       render: (oppgave: Oppgave) => (
         <Funksjonsnedsettelse
           funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
-          saksID={oppgave.saksid}
+          saksID={oppgave.saksId}
         />
       ),
     },
@@ -123,13 +123,13 @@ export const Oppgaveliste: React.VFC = () => {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksId} />,
     },
     {
       key: 'FORMIDLER',
       name: 'Formidler',
       width: 164,
-      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn} />,
+      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksId} formidlerNavn={oppgave.formidlerNavn} />,
     },
     {
       key: 'MOTTATT',
@@ -223,7 +223,7 @@ export const Oppgaveliste: React.VFC = () => {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
-                      <LinkRow key={oppgave.saksid} oppgaveType={oppgave.type} saksnummer={oppgave.saksid}>
+                      <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
                         {kolonner
                           // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                           .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))

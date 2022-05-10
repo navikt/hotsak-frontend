@@ -1,4 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
+
+import { CopyToClipboard } from '@navikt/ds-react-internal'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -17,6 +20,15 @@ interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
+const CopyContainer = styled.div`
+  display: flex;
+  align-items: baseline;
+`
+
+const Clipboard = styled(CopyToClipboard)`
+  color: var(--navds-semantic-color-text);
+`
+
 export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
@@ -25,11 +37,31 @@ export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidler
         <IconContainer>
           <Personikon />
         </IconContainer>
-        <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
+        <CopyContainer>
+          <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
+          <Clipboard
+            popoverText="Formidler navn kopiert"
+            title="Kopier formidler navn"
+            variant="tertiary"
+            size="small"
+            copyText={formidlerNavn}
+            popoverPlacement="bottom"
+          />
+        </CopyContainer>
         <IconContainer>
           <TelefonIkon />
         </IconContainer>
-        <Tekst>{formidlerTelefon}</Tekst>
+        <CopyContainer>
+          <Tekst>{formidlerTelefon}</Tekst>
+          <Clipboard
+            popoverText="Formidler telefonnummer kopiert"
+            title="Kopier telefonnummer"
+            variant="tertiary"
+            size="small"
+            copyText={formidlerTelefon}
+            popoverPlacement="bottom"
+          />
+        </CopyContainer>
       </Grid>
     </Card>
   )

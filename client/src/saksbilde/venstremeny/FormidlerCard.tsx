@@ -22,11 +22,11 @@ interface FormidlerCardProps {
 
 const CopyContainer = styled.div`
   display: flex;
-  align-items: baseline;
 `
 
 const Clipboard = styled(CopyToClipboard)`
   color: var(--navds-semantic-color-text);
+  padding: 0.1rem var(--navds-spacing-3) 0.1rem var(--navds-spacing-3);
 `
 
 export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {

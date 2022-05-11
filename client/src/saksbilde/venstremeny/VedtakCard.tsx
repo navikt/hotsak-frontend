@@ -56,7 +56,7 @@ const Knapp = styled(Button)`
 `
 
 export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
-  const { saksid, oppgaveid } = sak
+  const { saksid } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
@@ -83,7 +83,7 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
 
   const overtaSak = () => {
     setLoading(true)
-    postTildeling(oppgaveid)
+    postTildeling(saksid)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
@@ -140,7 +140,7 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
         <CardTitle>SAK IKKE STARTET</CardTitle>
         <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
         <ButtonContainer>
-          <IkkeTildelt oppgavereferanse={oppgaveid} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
         </ButtonContainer>
       </Card>
     )

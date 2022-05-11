@@ -5,7 +5,6 @@ import styled from 'styled-components/macro'
 
 import { Alert } from '@navikt/ds-react'
 
-import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../../GlobalStyles'
@@ -19,12 +18,12 @@ import { Formidlerside } from '../formidler/Formidlerside'
 import { HjelpemiddelListe } from '../hjelpemidler/HjelpemiddelListe'
 import { Høyrekolonne } from '../høyrekolonne/Høyrekolonne'
 import { useHjelpemiddeloversikt } from '../høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
+import { useSak } from '../sakHook'
 import { FormidlerCard } from '../venstremeny/FormidlerCard'
 import { GreitÅViteCard } from '../venstremeny/GreitÅViteCard'
 import { SøknadCard } from '../venstremeny/SøknadCard'
 import { VenstreMeny } from '../venstremeny/Venstremeny'
 import { BestillingCard } from './BestillingCard'
-import { useBestilling } from './bestillingHook'
 
 const BestillingsbildeContainer = styled.div`
   display: flex;
@@ -54,8 +53,8 @@ const Content = styled.section`
 
 const BestillingsbildeContent: React.VFC = React.memo(() => {
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
-  const { bestilling, isLoading, isError } = useBestilling()
-  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(bestilling?.personinformasjon.fnr)
+  const { sak, isLoading, isError } = useSak()
+  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
   const { path } = useRouteMatch()
   const handleError = useErrorHandler()
 
@@ -67,13 +66,13 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
 
   const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
 
-  if (!bestilling) return <div>Fant ikke bestilling</div>
+  if (!sak) return <div>Fant ikke bestilling</div>
 
   return (
     <BestillingsbildeContainer>
-      <Personlinje person={bestilling.personinformasjon} />
+      <Personlinje person={sak.personinformasjon} />
       <Søknadslinje
-        id={bestilling.saksid}
+        id={sak.saksid}
         type={Oppgavetype.BESTILLING}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
@@ -84,34 +83,34 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
             <VenstreMeny>
               <SøknadCard
                 oppgaveType={Oppgavetype.BESTILLING}
-                søknadGjelder={bestilling.søknadGjelder}
-                saksnr={bestilling.saksid}
-                mottattDato={bestilling.mottattDato}
-                bosituasjon={bestilling.personinformasjon.bosituasjon}
-                bruksarena={bestilling.personinformasjon.bruksarena}
-                funksjonsnedsettelse={bestilling.personinformasjon.funksjonsnedsettelse}
+                søknadGjelder={sak.søknadGjelder}
+                saksnr={sak.saksid}
+                mottattDato={sak.mottattDato}
+                bosituasjon={sak.personinformasjon.bosituasjon}
+                bruksarena={sak.personinformasjon.bruksarena}
+                funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
               />
               <FormidlerCard
                 tittel="BESTILLER"
-                formidlerNavn={bestilling.formidler.navn}
-                formidlerTelefon={bestilling.formidler.telefon}
-                kommune={bestilling.formidler.poststed}
+                formidlerNavn={sak.formidler.navn}
+                formidlerTelefon={sak.formidler.telefon}
+                kommune={sak.formidler.poststed}
               />
               <GreitÅViteCard
-                greitÅViteFakta={bestilling.greitÅViteFaktum}
+                greitÅViteFakta={sak.greitÅViteFaktum}
                 harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
               />
-              <BestillingCard bestilling={bestilling} hjelpemiddelArtikler={hjelpemiddelArtikler} />
+              <BestillingCard bestilling={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
-              {bestilling.status === OppgaveStatusType.FERDIGSTILT && (
+              {sak.status === OppgaveStatusType.FERDIGSTILT && (
                 <Alert size="small" variant="success" data-cy="alert-bestilling-ferdigstilt">
-                  {`${capitalize(bestilling.status)} ${`` /*formaterDato(bestilling.statusEndretDato)*/} av ${
-                    bestilling.saksbehandler.navn
+                  {`${capitalize(sak.status)} ${`` /*formaterDato(bestilling.statusEndretDato)*/} av ${
+                    sak.saksbehandler.navn
                   }`}
                 </Alert>
               )}
-              {bestilling.status === OppgaveStatusType.SENDT_GOSYS && (
+              {sak.status === OppgaveStatusType.SENDT_GOSYS && (
                 <Alert size="small" variant="info" data-cy="alert-vedtak-status">
                   Bestillingen er overført til Gosys. Videre behandling skjer i Gosys
                 </Alert>
@@ -122,22 +121,15 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
                     <HjelpemiddelListe
                       tittel="Bestilling av hjelpemidler på bestillingsordningen"
                       forenkletVisning={true}
-                      hjelpemidler={bestilling.hjelpemidler}
-                      personinformasjon={bestilling.personinformasjon}
+                      hjelpemidler={sak.hjelpemidler}
+                      personinformasjon={sak.personinformasjon}
                     />
                   </Route>
                   <Route path={`${path}/bruker`}>
-                    <Bruker
-                      person={bestilling.personinformasjon}
-                      levering={bestilling.levering}
-                      formidler={bestilling.formidler}
-                    />
+                    <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
                   </Route>
                   <Route path={`${path}/formidler`}>
-                    <Formidlerside
-                      formidler={bestilling.formidler}
-                      oppfølgingsansvarling={bestilling.oppfølgingsansvarlig}
-                    />
+                    <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig} />
                   </Route>
                 </Switch>
               </Content>

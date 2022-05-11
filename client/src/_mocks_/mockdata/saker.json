@@ -1,7 +1,6 @@
 [
   {
-    "id": "1",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "111111",
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -114,8 +113,7 @@
     ]
   },
   {
-    "id": "2",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "222222",
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -277,8 +275,7 @@
     ]
   },
   {
-    "id": "3",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "5878444",
     "søknadGjelder": "Rullator",
     "hjelpemidler": [
@@ -367,8 +364,7 @@
     ]
   },
   {
-    "id": "4",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "1234567",
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -462,8 +458,7 @@
     ]
   },
   {
-    "id": "5",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "999999",
     "søknadGjelder": "Rullator",
     "hjelpemidler": [
@@ -557,8 +552,7 @@
     ]
   },
   {
-    "id": "6",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "888888",
     "søknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -676,8 +670,7 @@
     ]
   },
   {
-    "id": "7",
-    "type": "BESTILLING",
+    "sakstype": "BESTILLING",
     "saksid": "112233",
     "gjelder": "Hjelpemidler",
     "hjelpemidler": [
@@ -771,8 +764,7 @@
     ]
   },
   {
-    "id": "8",
-    "type": "BESTILLING",
+    "sakstype": "BESTILLING",
     "saksid": "223344",
     "gjelder": "Hjelpemidler",
     "hjelpemidler": [

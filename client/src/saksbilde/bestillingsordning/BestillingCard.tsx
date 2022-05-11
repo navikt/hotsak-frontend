@@ -5,7 +5,7 @@ import { useSWRConfig } from 'swr'
 import { Button, Tag } from '@navikt/ds-react'
 
 import { putFerdigstillBestilling, putSendTilGosys } from '../../io/http'
-import { BesillingIkkeTildelt } from '../../oppgaveliste/kolonner/BestillingIkkeTildelt'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
@@ -63,8 +63,8 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
       .then(() => {
         setLoading(false)
         setVisOpprettOrdreModal(false)
-        mutate(`api/bestilling/${saksid}`)
-        mutate(`api/bestilling/${saksid}/historikk`)
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
       })
   }
 
@@ -88,7 +88,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
             <Tag data-cy="tag-soknad-status" variant="success" size="small">
               Ferdigstilt
             </Tag>
-            <Tekst>{/*formaterDato(bestilling.statusEndretDato)*/}</Tekst>
+            <Tekst>{formaterDato(bestilling.statusEndret)}</Tekst>
           </TagGrid>
         </Card>
       </>
@@ -113,7 +113,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
         <CardTitle>BESTILLING IKKE STARTET</CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <ButtonContainer>
-          <BesillingIkkeTildelt oppgavereferanse={saksid} gåTilBestilling={false}></BesillingIkkeTildelt>
+          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
         </ButtonContainer>
       </Card>
     )

@@ -173,7 +173,7 @@ const saksbehandlingHandlers = [
       .filter((oppgave) =>
         områdeFilter ? oppgave.personinformasjon.funksjonsnedsettelse.includes(områdeFilter.toLowerCase()) : true
       )
-      .filter((oppgave) => (sakstypeFilter ? oppgave.type.toLowerCase() === sakstypeFilter.toLowerCase() : true))
+      .filter((oppgave) => (sakstypeFilter ? oppgave.sakstype.toLowerCase() === sakstypeFilter.toLowerCase() : true))
 
     const filterApplied = oppgaveliste.length !== filtrerteOppgaver.length
 
@@ -191,8 +191,7 @@ const saksbehandlingHandlers = [
   rest.put('/api/bestilling/ferdigstill/:saksnummer', (req, res, ctx) => {
     console.log('Ferdigstiller')
 
-    //@ts-ignore
-    const bestillingIdx = bestillinger.findIndex((bestilling) => bestilling.id === req.params.saksnummer)
+    const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
@@ -215,9 +214,10 @@ const saksbehandlingHandlers = [
 
     oppgaveliste[oppgaveIdx]['status'] = 'FERDIGSTILT'
 
+    console.log('Oppgave', oppgaveIdx)
+
     saker[bestillingIdx]['status'] = 'FERDIGSTILT'
-    //@ts-ignore
-    bestillinger[bestillingIdx]['statusEndretDato'] = '2021-10-05T21:52:40.815302'
+    saker[bestillingIdx]['statusEndretDato'] = '2021-10-05T21:52:40.815302'
 
     return res(ctx.status(200), ctx.json({}))
   }),

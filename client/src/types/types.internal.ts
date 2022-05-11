@@ -14,25 +14,10 @@ export interface Sak {
   oppfølgingsansvarlig: Oppfølgingsansvarlig
   saksbehandler: Saksbehandler
   status: OppgaveStatusType
+  statusEndret: string
   vedtak: VedtakType
   enhet: Enhet[]
 }
-
-/*export interface Bestilling {
-  id: string
-  gjelder: string
-  hjelpemidler: HjelpemiddelType[]
-  formidler: Formidler
-  greitÅViteFaktum: GreitÅViteFaktum[]
-  mottattDato: string
-  personinformasjon: Personinfo
-  levering: Levering
-  oppfølgingsansvarlig: Oppfølgingsansvarlig
-  saksbehandler: Saksbehandler
-  status: OppgaveStatusType
-  statusEndretDato: string
-  enhet: Enhet[]
-}*/
 
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
@@ -181,13 +166,14 @@ export enum GreitÅViteType {
 }
 
 export interface Oppgave {
-  type: Oppgavetype
+  sakstype: Oppgavetype
   opprettetDato: Dayjs
   mottattDato: string
   formidlerNavn: string
   saksid: string
   personinformasjon: PersoninfoOppgave
   status: OppgaveStatusType
+  statusEndret: string
   saksbehandler?: Saksbehandler
   søknadOm: string
 }

@@ -1,7 +1,6 @@
 [
   {
-    "oppgaveid": "1",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "111111",
     "søknadOm": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",
     "mottattDato": "2021-09-19T13:55:45",
@@ -16,6 +15,7 @@
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -24,8 +24,7 @@
     ]
   },
   {
-    "oppgaveid": "2",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "222222",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-24T13:55:45",
@@ -40,6 +39,7 @@
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -49,8 +49,7 @@
   },
 
   {
-    "oppgaveid": "3",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "5878444",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-20T13:55:45",
@@ -69,6 +68,7 @@
       "navn": "Geir Markusen"
     },
     "status": "SENDT_GOSYS",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -78,8 +78,7 @@
   },
 
   {
-    "oppgaveid": "4",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "1234567",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-06-25T13:55:45",
@@ -98,6 +97,7 @@
       "navn": "Silje Saksbehandler"
     },
     "status": "TILDELT_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -106,8 +106,7 @@
     ]
   },
   {
-    "oppgaveid": "5",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "999999",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-06-25T16:55:45",
@@ -126,6 +125,7 @@
       "navn": "Geir Markusen"
     },
     "status": "TILDELT_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -134,8 +134,7 @@
     ]
   },
   {
-    "oppgaveid": "6",
-    "type": "SØKNAD",
+    "sakstype": "SØKNAD",
     "saksid": "888888",
     "søknadOm": "Hjelpemidler",
     "mottattDato": "2021-09-19T13:55:45",
@@ -154,6 +153,7 @@
       "navn": "Silje Saksbehandler"
     },
     "status": "VEDTAK_FATTET",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -162,8 +162,7 @@
     ]
   },
   {
-    "oppgaveid": "7",
-    "type": "BESTILLING",
+    "sakstype": "BESTILLING",
     "saksid": "112233",
     "søknadOm": "Dusjkrakk",
     "mottattDato": "2022-05-04T13:55:45",
@@ -178,6 +177,7 @@
     },
     "saksbehandler": null,
     "status": "AVVENTER_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -186,8 +186,7 @@
     ]
   },
   {
-    "oppgaveid": "8",
-    "type": "BESTILLING",
+    "sakstype": "BESTILLING",
     "saksid": "223344",
     "søknadOm": "Rullator",
     "mottattDato": "2021-09-24T13:55:45",
@@ -202,6 +201,7 @@
     },
     "saksbehandler": { "navn": "Silje Saksbehandler" },
     "status": "FERDIGSTILT",
+    "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {
         "enhetsnummer": "6969",

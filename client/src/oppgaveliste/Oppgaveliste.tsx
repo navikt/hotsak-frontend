@@ -88,7 +88,7 @@ export const Oppgaveliste: React.VFC = () => {
       key: 'TYPE',
       name: 'Type',
       width: 154,
-      render: (oppgave: Oppgave) => <OppgaveType oppgaveType={oppgave.type} />,
+      render: (oppgave: Oppgave) => <OppgaveType oppgaveType={oppgave.sakstype} />,
     },
     {
       key: 'FUNKSJONSNEDSETTELSE',
@@ -97,7 +97,7 @@ export const Oppgaveliste: React.VFC = () => {
       render: (oppgave: Oppgave) => (
         <Funksjonsnedsettelse
           funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
-          saksID={oppgave.saksId}
+          saksID={oppgave.saksid}
         />
       ),
     },
@@ -123,13 +123,13 @@ export const Oppgaveliste: React.VFC = () => {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksId} />,
+      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />,
     },
     {
       key: 'FORMIDLER',
       name: 'Formidler',
       width: 164,
-      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksId} formidlerNavn={oppgave.formidlerNavn} />,
+      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn} />,
     },
     {
       key: 'MOTTATT',

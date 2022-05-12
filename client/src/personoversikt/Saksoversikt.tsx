@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 import { Table } from '@navikt/ds-react'
 
-import { DataCelle, EllipsisCell, LinkCell, TekstCell } from '../felleskomponenter/table/Celle'
+import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
 import { formaterDato } from '../utils/date'
@@ -64,17 +64,15 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
     {
       key: 'SAKSTYPE',
       name: 'Sakstype',
-      width: 90,
+      width: 100,
       render: (sak: Saksoversikt_Sak) => (
-        <>
-          <Oppgaveetikett type={sak.type ? sak.type : Oppgavetype.SØKNAD} />
-          <LinkCell
-            to={`/sak/${sak.saksid}/hjelpemidler`}
-            value={capitalize(sak.type ? sak.type : Oppgavetype.SØKNAD)}
-            id={`sakstype-${sak.saksid}`}
-            minLength={25}
+        <div style={{ display: 'flex' }}>
+          <Oppgaveetikett
+            type={sak.type ? sak.type : Oppgavetype.SØKNAD}
+            showLabel={true}
+            labelLinkTo={`/sak/${sak.saksid}/hjelpemidler`}
           />
-        </>
+        </div>
       ),
     },
     {

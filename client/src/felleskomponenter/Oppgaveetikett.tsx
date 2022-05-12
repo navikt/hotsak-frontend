@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
 import { capitalize } from '../utils/stringFormating'
@@ -12,7 +13,7 @@ interface EtikettProps {
 const Etikett = styled.div<EtikettProps>`
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
   text-align: center;
@@ -41,8 +42,9 @@ const SøknadEtikett = styled(Etikett)`
   }
 `
 
-const Label = styled.div`
+const LabelContainer = styled.div`
   margin-left: 0.5rem;
+  //margin-bottom: -5px;
 `
 
 const BestillingEtikett = styled(Etikett)`
@@ -57,15 +59,37 @@ const BestillingEtikett = styled(Etikett)`
 interface OppgaveetikettProps extends EtikettProps {
   type: Oppgavetype
   showLabel?: boolean
+  labelLinkTo?: string
 }
 
-export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({ type, størrelse = 'l', showLabel = false }) => {
+interface LabelProps {
+  labelLinkTo?: string
+}
+
+const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
+  if (labelLinkTo) {
+    return (
+      <Link to={labelLinkTo}>
+        <LabelContainer>{children}</LabelContainer>
+      </Link>
+    )
+  } else {
+    return <LabelContainer>{children}</LabelContainer>
+  }
+}
+
+export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({
+  type,
+  størrelse = 'l',
+  showLabel = false,
+  labelLinkTo,
+}) => {
   switch (type) {
     case Oppgavetype.SØKNAD:
       return showLabel ? (
         <>
           <SøknadEtikett størrelse={størrelse} />
-          <Label>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
         <SøknadEtikett størrelse={størrelse} />
@@ -74,7 +98,7 @@ export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({ type, størrels
       return showLabel ? (
         <>
           <BestillingEtikett størrelse={størrelse} />
-          <Label>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
         <BestillingEtikett størrelse={størrelse} />

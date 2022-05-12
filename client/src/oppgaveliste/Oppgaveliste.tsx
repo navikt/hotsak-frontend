@@ -232,7 +232,7 @@ export const Oppgaveliste: React.VFC = () => {
                               key={key}
                               width={width}
                               style={{
-                                padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
+                                padding: 'var(--navds-spacing-2) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
                               }}
                             >
                               {render(oppgave)}

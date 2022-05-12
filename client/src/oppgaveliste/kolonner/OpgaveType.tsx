@@ -10,10 +10,6 @@ interface OppgaveTypeProps {
 
 const Container = styled.div`
   display: flex;
-  &:div {
-    padding-right: 0.5rem;
-    background-color: pink;
-  }
 `
 
 export const OppgaveType = React.memo(({ oppgaveType }: OppgaveTypeProps) => {

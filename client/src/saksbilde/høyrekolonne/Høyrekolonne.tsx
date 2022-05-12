@@ -3,7 +3,6 @@ import styled from 'styled-components/macro'
 
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
 import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
-import { BestillingsHistorikk } from '../bestillingsordning/BestillingsHistorikk'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 
@@ -34,7 +33,7 @@ export const KolonneTittel = styled.li`
 export const Høyrekolonne: React.VFC<HøyrekolonneProps> = ({ currentTab, oppgavetype }) => {
   switch (currentTab) {
     case HøyrekolonneTabs.SAKSHISTORIKK:
-      return oppgavetype === Oppgavetype.BESTILLING ? <BestillingsHistorikk /> : <Historikk />
+      return <Historikk />
     case HøyrekolonneTabs.HJELPEMIDDELOVERSIKT:
       return <Hjelpemiddeloversikt />
   }

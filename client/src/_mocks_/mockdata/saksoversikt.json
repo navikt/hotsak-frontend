@@ -2,6 +2,7 @@
   {
     "hotsakSaker": [
       {
+        "type": "BESTILLING",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -15,6 +16,7 @@
         "saksid": "111111"
       },
       {
+        "type": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",
@@ -24,6 +26,7 @@
         "saksid": "222222"
       },
       {
+        "type": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -36,6 +39,7 @@
   {
     "hotsakSaker": [
       {
+        "type": "BESTILLING",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -49,6 +53,7 @@
         "saksid": "111111"
       },
       {
+        "type": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",
@@ -58,6 +63,7 @@
         "saksid": "222222"
       },
       {
+        "type": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -70,6 +76,21 @@
   {
     "hotsakSaker": [
       {
+        "type": "BESTILLING",
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "FERDIGSTILT",
+        "vedtak": {
+          "vedtaksdato": "2021-03-29",
+          "status": "INNVILGET"
+        },
+        "saksbehandler": "Silje Saksbehandler",
+        "fagsystem": "HOTSAK",
+        "saksid": "111111"
+      },
+      {
+        "type": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -83,6 +104,7 @@
         "saksid": "111111"
       },
       {
+        "type": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",

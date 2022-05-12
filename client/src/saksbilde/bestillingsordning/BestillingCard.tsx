@@ -5,7 +5,7 @@ import { useSWRConfig } from 'swr'
 import { Button, Tag } from '@navikt/ds-react'
 
 import { putFerdigstillBestilling, putSendTilGosys } from '../../io/http'
-import { BesillingIkkeTildelt } from '../../oppgaveliste/kolonner/BestillingIkkeTildelt'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
@@ -13,19 +13,14 @@ import { capitalizeName } from '../../utils/stringFormating'
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import {
-  OppgaveStatusType,
-  OverforGosysTilbakemelding,
-  HjelpemiddelArtikkel,
-  Bestilling,
-} from '../../types/types.internal'
+import { OppgaveStatusType, OverforGosysTilbakemelding, HjelpemiddelArtikkel, Sak } from '../../types/types.internal'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
 import { OpprettOrdreModal } from './OpprettOrdreModal'
 
 interface BestillingCardProps {
-  bestilling: Bestilling
+  bestilling: Sak
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
 }
 
@@ -53,7 +48,7 @@ const Knapp = styled(Button)`
 `
 
 export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hjelpemiddelArtikler }) => {
-  const { id } = bestilling
+  const { saksid } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdeModal, setVisOpprettOrdreModal] = useState(false)
@@ -63,25 +58,25 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
 
   const ferdigstillBestilling = () => {
     setLoading(true)
-    putFerdigstillBestilling(id, OppgaveStatusType.FERDIGSTILT)
+    putFerdigstillBestilling(saksid, OppgaveStatusType.FERDIGSTILT)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisOpprettOrdreModal(false)
-        mutate(`api/bestilling/${id}`)
-        mutate(`api/bestilling/${id}/historikk`)
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
       })
   }
 
   const sendBestillingTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
     setLoading(true)
-    putSendTilGosys(id, tilbakemelding)
+    putSendTilGosys(saksid, tilbakemelding)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisGosysModal(false)
-        mutate(`api/sak/${id}`)
-        mutate(`api/sak/${id}/historikk`)
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
       })
   }
 
@@ -93,7 +88,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
             <Tag data-cy="tag-soknad-status" variant="success" size="small">
               Ferdigstilt
             </Tag>
-            <Tekst>{formaterDato(bestilling.statusEndretDato)}</Tekst>
+            <Tekst>{formaterDato(bestilling.statusEndret)}</Tekst>
           </TagGrid>
         </Card>
       </>
@@ -118,7 +113,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hje
         <CardTitle>BESTILLING IKKE STARTET</CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <ButtonContainer>
-          <BesillingIkkeTildelt oppgavereferanse={id} gåTilBestilling={false}></BesillingIkkeTildelt>
+          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
         </ButtonContainer>
       </Card>
     )

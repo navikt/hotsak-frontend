@@ -39,21 +39,17 @@ export interface SøknadslinjeProps {
 }
 
 export const Søknadslinje: React.VFC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
-  const basepath = type === Oppgavetype.BESTILLING ? 'bestilling' : 'sak'
   return (
     <Container>
       <Flex>
         <TabList role="tablist">
-          <TabLink to={`/${basepath}/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
+          <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
             Hjelpemidler
           </TabLink>
-          <TabLink to={`/${basepath}/${id}/bruker`} title="Bruker">
+          <TabLink to={`/sak/${id}/bruker`} title="Bruker">
             Bruker
           </TabLink>
-          <TabLink
-            to={`/${basepath}/${id}/formidler`}
-            title={type === Oppgavetype.BESTILLING ? 'Bestiller' : 'Formidler'}
-          >
+          <TabLink to={`/sak/${id}/formidler`} title={type === Oppgavetype.BESTILLING ? 'Bestiller' : 'Formidler'}>
             Formidler
           </TabLink>
         </TabList>

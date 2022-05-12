@@ -38,7 +38,6 @@ const SøknadEtikett = styled(Etikett)`
 
 const LabelContainer = styled.div`
   margin-left: 0.5rem;
-  //margin-bottom: -5px;
 `
 
 const BestillingEtikett = styled(Etikett)`

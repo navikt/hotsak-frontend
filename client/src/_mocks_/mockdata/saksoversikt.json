@@ -2,7 +2,7 @@
   {
     "hotsakSaker": [
       {
-        "type": "BESTILLING",
+        "sakstype": "BESTILLING",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -16,7 +16,7 @@
         "saksid": "111111"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",
@@ -26,7 +26,7 @@
         "saksid": "222222"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -39,7 +39,7 @@
   {
     "hotsakSaker": [
       {
-        "type": "BESTILLING",
+        "sakstype": "BESTILLING",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -53,7 +53,7 @@
         "saksid": "111111"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",
@@ -63,7 +63,7 @@
         "saksid": "222222"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -76,7 +76,7 @@
   {
     "hotsakSaker": [
       {
-        "type": "BESTILLING",
+        "sakstype": "BESTILLING",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -90,7 +90,7 @@
         "saksid": "111111"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
@@ -104,7 +104,7 @@
         "saksid": "111111"
       },
       {
-        "type": "SØKNAD",
+        "sakstype": "SØKNAD",
         "mottattDato": "2021-08-18T13:55:45",
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",

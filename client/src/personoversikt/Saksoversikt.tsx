@@ -68,7 +68,7 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
       render: (sak: Saksoversikt_Sak) => (
         <div style={{ display: 'flex' }}>
           <Oppgaveetikett
-            type={sak.type ? sak.type : Oppgavetype.SØKNAD}
+            type={sak.sakstype ? sak.sakstype : Oppgavetype.SØKNAD}
             showLabel={true}
             labelLinkTo={`/sak/${sak.saksid}/hjelpemidler`}
           />

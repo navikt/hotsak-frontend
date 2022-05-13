@@ -47,7 +47,7 @@ jobs:
       - name: set timezone
         run: export TZ=utc
       - name: install deps
-        run: npm ci && npm ci:all
+        run: npm ci && npm run ci:all
       #- name: validate ts
       #  run: npm run validate-ts
       - name: build bundle

@@ -1,5 +1,5 @@
 import ReactTooltip from 'react-tooltip'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 export const Tooltip = styled(ReactTooltip)`
   padding: 2px 8px !important;

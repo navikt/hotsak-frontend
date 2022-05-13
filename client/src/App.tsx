@@ -1,6 +1,5 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
@@ -71,4 +70,4 @@ const withRoutingAndState = (Component: React.ComponentType) => (): JSX.Element 
     </BrowserRouter>
   )
 
-export default hot(module)(withRoutingAndState(App))
+export default withRoutingAndState(App)

@@ -1,47 +1,38 @@
 {
   "name": "hotsak-frontend",
   "version": "0.1.0",
-  "type": "module",
   "author": "Team DigiHoT",
-  "proxy": "http://localhost:5000",
   "private": true,
   "license": "MIT",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.18.0",
-    "@typescript-eslint/parser": "^5.18.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.12.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.26.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
-    "path-to-regexp": "^6.2.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2"
   },
   "scripts": {
-    "build": "cross-env-shell BUILD_PATH=../dist/client npm run build -w client -w server",
-    "build-client": "npm run build -w client",
-    "build-server": "npm run build -w server",
-    "dev": "cross-env npm run dev -w client",
-    "cypress:open": "npm run cypress:open -w client",
-    "cypress:run": "npm run cypress:run -w client",
+    "build": "npm-run-all build:*",
+    "ci:client": "npm --prefix client ci",
+    "ci:server": "npm --prefix server ci",
+    "ci:all": "npm-run-all ci:client ci:server",
+    "install:client": "npm --prefix client install",
+    "install:server": "npm --prefix server install",
+    "install:all": "npm-run-all install:client install:server",
+    "build:client": "npm --prefix client run build",
+    "build:server": "npm --prefix server run build",
+    "dev": "npm --prefix client run dev",
+    "cypress:open": "npm --prefix client run cypress:open",
+    "cypress:run": "npm --prefix client run cypress:run",
     "prepare": "node ./prepare.cjs"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [
       "prettier --write"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix --rule react-hooks/exhaustive-deps:off"
     ]
   },
   "msw": {
     "workerDirectory": "client/public"
-  },
-  "workspaces": [
-    "client",
-    "server"
-  ]
+  }
 }

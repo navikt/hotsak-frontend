@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>`
   position: relative;

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
 
@@ -14,7 +14,7 @@ export const AlertError: React.VFC<{
 }> = (props) => {
   const { error } = props
   let error_: any = error
-  if (error_.hasOwnProperty('statusCode')) {
+  if (Object.prototype.hasOwnProperty.call(error_, 'statusCode')) {
     if (error_.statusCode === 401) {
       throw error
     }

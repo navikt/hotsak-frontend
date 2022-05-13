@@ -1,4 +1,5 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
+
 import { Table } from '@navikt/ds-react'
 
 export const KolonneHeader = styled(Table.ColumnHeader)<{ width?: number }>`

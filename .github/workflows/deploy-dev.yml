@@ -8,6 +8,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
+      - vite
 env:
   IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
 
@@ -45,12 +46,8 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - name: set timezone
         run: export TZ=utc
-      - name: top level install
-        run: npm install -ws false
-      - name: install frontend deps
-        run: npm install -ws false --prefix client
-      - name: install server deps
-        run: npm install -ws false --prefix server
+      - name: install deps
+        run: npm ci && npm ci:all
       #- name: validate ts
       #  run: npm run validate-ts
       - name: build bundle
@@ -69,7 +66,7 @@ jobs:
           DOCKER_IMAGE: ghcr.io/navikt/hotsak-frontend
       - name: build docker image
         run: |
-          npm prune --production --workspaces
+          npm --prefix server prune --production
           docker build . -t $IMAGE
       - name: push docker image
         run: |

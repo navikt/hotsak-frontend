@@ -1,16 +1,15 @@
-
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 export const Merknad = styled.div`
-position: relative;
+  position: relative;
 
-&:before {
-    content:'';
+  &:before {
+    content: '';
     position: absolute;
     background-color: var(--navds-semantic-color-feedback-info-border);
     width: 3px;
     height: 95%;
     bottom: 0;
-    left:-1rem; 
+    left: -1rem;
   }
 `

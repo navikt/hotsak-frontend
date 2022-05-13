@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
 import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'

@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Accordion, BodyShort, Heading, Link, Panel } from '@navikt/ds-react'
 import { CopyToClipboard } from '@navikt/ds-react-internal'

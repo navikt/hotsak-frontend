@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import React from 'react'
 import { useHistory } from 'react-router'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Link } from '@navikt/ds-react'
 import { CopyToClipboard } from '@navikt/ds-react-internal'

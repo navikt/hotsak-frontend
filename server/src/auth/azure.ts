@@ -1,8 +1,8 @@
-import { Client, custom, Issuer } from 'openid-client'
-
 import logger from '../logging'
 import { OidcConfig } from '../types'
 import { setup as proxy } from './proxy'
+import { Client, custom, Issuer } from 'openid-client'
+
 ;('use strict')
 
 let azureClient

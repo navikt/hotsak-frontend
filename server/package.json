@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "type": "module",
   "author": "Team DigiHoT",
-  "proxy": "http://localhost:5000",
   "private": true,
   "license": "MIT",
   "dependencies": {
@@ -32,8 +31,8 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "clean": "rimraf ../dist/server",
-    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
-    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev"
+    "clean": "rimraf ./dist",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev-server": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev"
   }
 }

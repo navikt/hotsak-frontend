@@ -1,10 +1,10 @@
+import { AppConfig, OnBehalfOf, HotsakRequest } from './types'
 import proxy from 'express-http-proxy'
 import * as core from 'express-serve-static-core'
-import { AppConfig, OnBehalfOf, HotsakRequest } from './types'
 
 const envProperties = {
   API_URL: process.env.API_URL || `http://localhost:7070`,
-  GRUNNDATA_API_URL: process.env.GRUNNDATA_API_URL || ''
+  GRUNNDATA_API_URL: process.env.GRUNNDATA_API_URL || '',
 }
 let onBehalfOf: OnBehalfOf
 let hotsakApiId: string

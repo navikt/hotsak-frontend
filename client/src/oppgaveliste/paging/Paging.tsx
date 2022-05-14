@@ -16,7 +16,7 @@ export const PAGE_SIZE = 25
 interface PaginationProps {
   totalCount: number
   currentPage: number
-  onPageChange: Function
+  onPageChange: (...args: any[]) => any
 }
 
 export const Paging: React.VFC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {

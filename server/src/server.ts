@@ -29,7 +29,7 @@ azure
   })
   .catch((err) => {
     logger.error(`Failed to discover OIDC provider properties: ${err}`)
-    process.exit(1)
+    throw new Error(`Failed to discover OIDC provider properties: ${err}`)
   })
 
 app.get('/isalive', (_, res) => res.send('alive'))

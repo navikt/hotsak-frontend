@@ -1,4 +1,4 @@
-import { AppConfig, OnBehalfOf, HotsakRequest } from './types'
+import { AppConfig, HotsakRequest, OnBehalfOf } from './types'
 import proxy from 'express-http-proxy'
 import * as core from 'express-serve-static-core'
 
@@ -14,12 +14,11 @@ const options = () => ({
   proxyReqOptDecorator: (options: any, req: HotsakRequest) => {
     if (process.env.NAIS_CLUSTER_NAME !== 'labs-gcp') {
       return new Promise((resolve, reject) => {
-        const hotsakToken = req.headers['authorization']!!.split(' ')[1]
+        const hotsakToken = req.headers['authorization']!.split(' ')[1]
 
         if (hotsakToken !== '') {
           onBehalfOf.hentFor(hotsakApiId, hotsakToken).then(
             (onBehalfOfToken) => {
-              // @ts-ignore
               options.headers.Authorization = `Bearer ${onBehalfOfToken}`
               resolve(options)
             },

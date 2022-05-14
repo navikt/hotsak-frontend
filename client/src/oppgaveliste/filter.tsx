@@ -29,7 +29,7 @@ interface FilterProps {
   label: string
   value: string
   options: Map<string, string>
-  handleChange: Function
+  handleChange: (...args: any[]) => any
 }
 
 export const FilterDropdown: React.VFC<FilterProps> = ({ label, value, options, handleChange }) => {
@@ -46,7 +46,7 @@ export const FilterDropdown: React.VFC<FilterProps> = ({ label, value, options, 
 }
 
 interface FiltersProps {
-  onClear: Function
+  onClear: (...args: any[]) => any
 }
 
 export const Filters: React.FC<FiltersProps> = ({ children, onClear }) => {

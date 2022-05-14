@@ -5,7 +5,7 @@ import { Levering, Leveringsmåte } from '../../types/types.internal'
 
 interface LeveringProps {
   levering: Levering
-  brukerAdresse: String
+  brukerAdresse: string
 }
 
 export const LeveringsMåte: React.VFC<LeveringProps> = ({ levering, brukerAdresse }) => {

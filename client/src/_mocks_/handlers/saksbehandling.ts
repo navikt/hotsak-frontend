@@ -41,7 +41,6 @@ const saksbehandlingHandlers = [
     }
 
     sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
-    // @ts-ignore
     saker[sakIdx]['saksbehandler'] = saksbehandler
     saker[sakIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
     oppgaveliste[oppgaveIdx]['saksbehandler'] = saksbehandler
@@ -63,8 +62,7 @@ const saksbehandlingHandlers = [
     }
 
     sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
-    // @ts-ignore
-    saker[sakIdx]['saksbehandler'] = null
+    saker[sakIdx]['saksbehandler'] = undefined
     saker[sakIdx]['status'] = 'AVVENTER_SAKSBEHANDLER'
     oppgaveliste[oppgaveIdx]['saksbehandler'] = null
     oppgaveliste[oppgaveIdx]['status'] = 'AVVENTER_SAKSBEHANDLER'
@@ -85,9 +83,8 @@ const saksbehandlingHandlers = [
     const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
     return res(ctx.status(200), ctx.json(hist))
   }),
-  rest.put('/api/vedtak-v2/:saksnummer', (req, res, ctx) => {
-    //@ts-ignore
-    const soknadsbeskrivelse = req.body.søknadsbeskrivelse
+  rest.put<{ søknadsbeskrivelse: any }>('/api/vedtak-v2/:saksnummer', (req, res, ctx) => {
+    const soknadsbeskrivelse = req?.body?.søknadsbeskrivelse
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 
@@ -115,7 +112,6 @@ const saksbehandlingHandlers = [
 
     saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
     saker[sakIdx]['status'] = 'VEDTAK_FATTET'
-    // @ts-ignore
     saker[sakIdx]['vedtak'] = {
       vedtaksdato: '2021-03-29',
       status: 'INNVILGET',
@@ -126,9 +122,8 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.put('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
-    //@ts-ignore
-    const soknadsbeskrivelse = req.body.søknadsbeskrivelse
+  rest.put<{ søknadsbeskrivelse: any }>('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
+    const soknadsbeskrivelse = req?.body?.søknadsbeskrivelse
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 

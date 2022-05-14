@@ -14,8 +14,8 @@ const Container = styled.div`
 interface HjelpemiddelListeProps {
   hjelpemidler: HjelpemiddelType[]
   personinformasjon: Personinfo
-  tittel: String
-  forenkletVisning?: Boolean
+  tittel: string
+  forenkletVisning?: boolean
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {

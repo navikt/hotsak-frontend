@@ -118,7 +118,7 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
               <Table style={{ width: 'initial' }} zebraStripes size="small">
                 <Table.Header>
                   <Table.Row>
-                    {kolonner.map(({ key, name, width }, idx) => (
+                    {kolonner.map(({ key, name, width }) => (
                       <KolonneHeader key={key} sortable={false} sortKey={key} width={width}>
                         {name}
                       </KolonneHeader>
@@ -128,7 +128,7 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
                 <Table.Body>
                   {saker.map((sak) => (
                     <Table.Row key={sak.saksid}>
-                      {kolonner.map(({ render, width, key }, idx) => (
+                      {kolonner.map(({ render, width, key }) => (
                         <DataCelle key={key} width={width}>
                           {render(sak)}
                         </DataCelle>

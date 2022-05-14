@@ -64,7 +64,7 @@ interface RangeringProps {
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
   personinformasjon: Personinfo
-  forenkletVisning: Boolean
+  forenkletVisning: boolean
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon, forenkletVisning }) => {

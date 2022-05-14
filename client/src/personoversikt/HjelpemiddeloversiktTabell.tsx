@@ -104,7 +104,7 @@ export const HjelpemiddeloversiktTabell: React.VFC<HjelpemiddeloversiktProps> = 
                 <Table.Body>
                   {artikler.map((artikkel) => (
                     <Table.Row key={`${artikkel.hmsnr}${artikkel.datoUtsendelse}`}>
-                      {kolonner.map(({ render, width, key }, idx) => (
+                      {kolonner.map(({ render, width, key }) => (
                         <DataCelle key={key} width={width}>
                           {render(artikkel)}
                         </DataCelle>

@@ -13,7 +13,7 @@ export const AlertError: React.VFC<{
   error: Error
 }> = (props) => {
   const { error } = props
-  let error_: any = error
+  const error_: any = error
   if (Object.prototype.hasOwnProperty.call(error_, 'statusCode')) {
     if (error_.statusCode === 401) {
       throw error

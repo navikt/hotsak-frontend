@@ -63,7 +63,7 @@ export const Oppgaveliste: React.VFC = () => {
     områdeFilter,
   })
 
-  const handleFilter = (handler: Function, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
+  const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
     handler(value)
     setCurrentPage(1)
   }
@@ -214,7 +214,7 @@ export const Oppgaveliste: React.VFC = () => {
                       {kolonner
                         // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                         .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
-                        .map(({ key, name, sortable = true, width }, idx) => (
+                        .map(({ key, name, sortable = true, width }) => (
                           <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
                             {name}
                           </KolonneHeader>
@@ -227,7 +227,7 @@ export const Oppgaveliste: React.VFC = () => {
                         {kolonner
                           // Toggle for at oppsett for bestillingsordning kun skal vises i labs
                           .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
-                          .map(({ render, width, key }, idx) => (
+                          .map(({ render, width, key }) => (
                             <DataCell
                               key={key}
                               width={width}

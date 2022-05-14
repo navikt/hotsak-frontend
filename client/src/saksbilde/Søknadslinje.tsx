@@ -34,7 +34,7 @@ export enum Location {
 export interface SøknadslinjeProps {
   id: string
   type: Oppgavetype
-  onTabChange: Function
+  onTabChange: (...args: any[]) => any
   currentTab: HøyrekolonneTabs
 }
 

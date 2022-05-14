@@ -1,9 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, HtmlTagDescriptor, Plugin, splitVendorChunkPlugin } from 'vite'
 
-const development = process.env.NODE_ENV === 'development'
-
-const htmlPlugin = (): Plugin => {
+const htmlPlugin = ({ development }: { development?: boolean }): Plugin => {
   return {
     name: 'html-transform',
     transformIndexHtml(html) {
@@ -13,7 +11,7 @@ const htmlPlugin = (): Plugin => {
           tag: 'script',
           children: `window.appSettings = {
             USE_MSW: true,
-            MILJO: 'local'
+            MILJO: 'labs-gcp'
           }`,
         })
       } else {
@@ -39,9 +37,9 @@ const htmlPlugin = (): Plugin => {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig((env) => ({
   base: '/',
-  plugins: [htmlPlugin(), react(), splitVendorChunkPlugin()],
+  plugins: [htmlPlugin({ development: env.mode === 'development' }), react(), splitVendorChunkPlugin()],
   build: {
     manifest: true,
     sourcemap: true,
@@ -49,4 +47,4 @@ export default defineConfig({
   server: {
     port: 3001,
   },
-})
+}))

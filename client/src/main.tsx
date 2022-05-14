@@ -22,8 +22,7 @@ declare global {
 }
 
 ;(async () => {
-  const useMSW = import.meta.env.VITE_USE_MSW === 'true' || window.appSettings.USE_MSW === true
-  if (useMSW) {
+  if (window.appSettings.USE_MSW === true) {
     await initMSW()
   }
 

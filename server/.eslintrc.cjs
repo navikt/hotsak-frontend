@@ -15,6 +15,8 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-explicit-any': 0,
-    'node/no-missing-import': 0
-  }
+    '@typescript-eslint/no-non-null-assertion': 0,
+    'node/no-missing-import': 0,
+    'node/no-unsupported-features/es-syntax': 0,
+  },
 }

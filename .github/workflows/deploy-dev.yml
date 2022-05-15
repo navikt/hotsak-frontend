@@ -50,6 +50,8 @@ jobs:
         run: npm ci && npm run ci:all
       #- name: validate ts
       #  run: npm run validate-ts
+      - name: test
+        run: npm run test
       - name: build bundle
         run: npm run build
       #- name: run e2e-test

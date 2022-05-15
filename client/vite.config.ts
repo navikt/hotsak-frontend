@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, HtmlTagDescriptor, Plugin, splitVendorChunkPlugin } from 'vite'
 
-const htmlPlugin = ({ development }: { development?: boolean }): Plugin => {
+function htmlPlugin({ development }: { development?: boolean }): Plugin {
   return {
     name: 'html-transform',
     transformIndexHtml(html) {
@@ -39,12 +39,21 @@ const htmlPlugin = ({ development }: { development?: boolean }): Plugin => {
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
   base: '/',
-  plugins: [htmlPlugin({ development: env.mode === 'development' }), react(), splitVendorChunkPlugin()],
+  plugins: [
+    htmlPlugin({ development: env.mode === 'test' || env.mode === 'development' }),
+    react(),
+    splitVendorChunkPlugin(),
+  ],
   build: {
     manifest: true,
     sourcemap: true,
   },
   server: {
     port: 3001,
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: 'src/setupTests.ts',
   },
 }))

@@ -39,7 +39,6 @@ interface TabLinkProps {
   children: ReactNode
   to: string
   title?: string
-  disabled?: boolean
   icon?: ReactNode
 }
 

@@ -21,6 +21,8 @@
     "install:client": "npm --prefix client install",
     "install:server": "npm --prefix server install",
     "install:all": "npm-run-all install:client install:server",
+    "test:client": "npm --prefix client run test:ci",
+    "test": "npm-run-all test:client",
     "build:client": "npm --prefix client run build",
     "build:server": "npm --prefix server run build",
     "dev": "npm --prefix client run dev",
@@ -29,7 +31,7 @@
     "prepare": "node ./prepare.cjs",
     "lint:client": "npm --prefix client run lint",
     "lint:server": "npm --prefix server run lint",
-    "lint:all": "npm-run-all lint:client lint:server"
+    "lint": "npm-run-all lint:client lint:server"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [

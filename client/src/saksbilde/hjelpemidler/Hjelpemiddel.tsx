@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Link } from '@navikt/ds-react'
 
@@ -64,7 +64,7 @@ interface RangeringProps {
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
   personinformasjon: Personinfo
-  forenkletVisning: Boolean
+  forenkletVisning: boolean
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon, forenkletVisning }) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
 import { Button, Tag } from '@navikt/ds-react'
@@ -47,7 +47,7 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
-export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling, hjelpemiddelArtikler }) => {
+export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) => {
   const { saksid } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)

@@ -1,4 +1,5 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
+
 import { Heading } from '@navikt/ds-react'
 
 export const CardTitle = styled(Heading)`
@@ -7,4 +8,3 @@ export const CardTitle = styled(Heading)`
   color: var(--navds-semantic-color-text);
   font-size: var(--navds-font-size-small);
 `
-

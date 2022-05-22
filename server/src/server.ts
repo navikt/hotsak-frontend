@@ -1,17 +1,16 @@
-import cookieParser from 'cookie-parser'
-import express, { Response } from 'express'
-import { Client, generators } from 'openid-client'
-
 import auth from './auth/authSupport'
 import azure from './auth/azure'
+import onBehalfOf from './auth/onBehalfOf'
 import config from './config'
 import logger from './logging'
-import path from 'path'
-import setupProxy from './reverse-proxy'
 import { ipAddressFromRequest } from './requestData'
+import setupProxy from './reverse-proxy'
 import { sessionStore } from './sessionStore'
 import { HotsakRequest } from './types'
-import onBehalfOf from './auth/onBehalfOf'
+import cookieParser from 'cookie-parser'
+import express, { Response } from 'express'
+import { Client } from 'openid-client'
+import path from 'path'
 
 const app = express()
 const port = config.server.port
@@ -30,7 +29,7 @@ azure
   })
   .catch((err) => {
     logger.error(`Failed to discover OIDC provider properties: ${err}`)
-    process.exit(1)
+    throw new Error(`Failed to discover OIDC provider properties: ${err}`)
   })
 
 app.get('/isalive', (_, res) => res.send('alive'))
@@ -39,13 +38,12 @@ app.get('/isready', (_, res) => {
 })
 
 app.get('/settings.js', (req, res) => {
+  const appSettings = {
+    USE_MSW: process.env.USE_MSW === 'true',
+    MILJO: process.env.NAIS_CLUSTER_NAME,
+  }
   res.type('.js')
-  res.send(`
-    window.appSettings = {
-      USE_MSW: ${process.env.USE_MSW},
-      MILJO: '${process.env.NAIS_CLUSTER_NAME}'
-    }
-  `)
+  res.send(`window.appSettings = ${JSON.stringify(appSettings)}`)
 })
 
 const setUpAuthentication = () => {
@@ -68,9 +66,7 @@ app.use('/*', async (req: HotsakRequest, res, next) => {
     })
     next()
   } else {
-    if (
-      auth.isValidIn({ seconds: 5, token: req.headers['authorization']?.split(' ')[1] })
-    ) {
+    if (auth.isValidIn({ seconds: 5, token: req.headers['authorization']?.split(' ')[1] })) {
       // todo: hente ut relevante felt frå access-token og legge i cookie, må dette gjeras kvar gong eller bare om cookie ikkje finnes?
       res.cookie('hotsak', `${req.headers['authorization']?.split(' ')[1]}`, {
         secure: true,
@@ -110,13 +106,13 @@ const createCookieFromToken = (token: string) =>
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
 
-const distPath = __dirname + '/../client'
+const distPath = __dirname + '/../../client/dist'
 const htmlPath = path.join(distPath, 'index.html')
 
-console.log('distpath', distPath)
+console.log('distPath', distPath)
 console.log('htmlPath', htmlPath)
 
-app.use(express.static(__dirname + '/../client'))
+app.use(express.static(distPath))
 app.use('/*', express.static(htmlPath))
 
 app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))

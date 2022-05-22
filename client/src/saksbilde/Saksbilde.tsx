@@ -1,6 +1,6 @@
 import React from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { AlertError } from '../feilsider/AlertError'
 import { Oppgavetype } from '../types/types.internal'

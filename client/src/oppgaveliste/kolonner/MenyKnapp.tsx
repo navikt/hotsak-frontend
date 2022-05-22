@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { Button, Loader } from '@navikt/ds-react'
-import { deleteFjernTildeling } from '../../io/http'
+
 import { EllipsisCircleH } from '@navikt/ds-icons'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { Button, Loader } from '@navikt/ds-react'
 import { Dropdown } from '@navikt/ds-react-internal'
-import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
+
+import { deleteFjernTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
+import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
 
 interface MenyKnappProps {
   oppgave: Oppgave
-  onMutate: Function
+  onMutate: (...args: any[]) => any
 }
 
 export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
@@ -44,7 +47,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
   return (
     <>
       {
-        <span style={{ display: 'flex', marginBlock: -2}}>
+        <span style={{ display: 'flex', marginBlock: -2 }}>
           <Dropdown>
             <Button variant="tertiary" size="xsmall" as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
               <EllipsisCircleH />

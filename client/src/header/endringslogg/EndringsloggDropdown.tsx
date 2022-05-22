@@ -1,8 +1,11 @@
+import React, { useRef } from 'react'
+import styled from 'styled-components'
+
 import { Information } from '@navikt/ds-icons'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
-import React, { useRef } from 'react'
-import styled from 'styled-components/macro'
+
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './endringsloggHooks'
 

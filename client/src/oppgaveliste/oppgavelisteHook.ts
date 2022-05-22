@@ -16,14 +16,14 @@ interface DataResponse {
   pageSize: number
   isLoading: boolean
   error: unknown
-  mutate: Function
+  mutate: (...args: any[]) => any
 }
 
 const basePath = 'api/oppgaver'
 
 interface PathConfigType {
   path: string
-  queryParams: Object
+  queryParams: Record<string, string>
 }
 
 interface Filters {
@@ -46,7 +46,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
   const { sakerFilter, statusFilter, sakstypeFilter, områdeFilter } = filters
 
-  let filterParams: any = {}
+  const filterParams: any = {}
 
   if (sakerFilter && sakerFilter !== SakerFilter.ALLE) {
     filterParams.saksbehandler = sakerFilter
@@ -67,7 +67,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
   }
 }
 
-const buildQueryParamString = (queryParams: Object) => {
+const buildQueryParamString = (queryParams: Record<string, string>) => {
   return Object.entries(queryParams)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&')

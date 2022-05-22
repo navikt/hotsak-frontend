@@ -1,7 +1,6 @@
-export const initMSW = () => {
-  /* eslint-disable */
-  const { worker } = require('./browser')
-  worker.start({
+export const initMSW = async () => {
+  const { worker } = await import('./browser')
+  await worker.start({
     onUnhandledRequest: 'bypass',
   })
 }

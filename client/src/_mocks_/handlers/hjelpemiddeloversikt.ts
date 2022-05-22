@@ -3,9 +3,8 @@ import { rest } from 'msw'
 import hjelpemiddeloversikt from '../mockdata/hjelpemiddeloversikt.json'
 
 const hjelpemiddeloversiktHandlers = [
-  rest.post(`/api/hjelpemiddeloversikt`, (req, res, ctx) => {
-    // @ts-ignore
-    const brukersFodselsnummer = req.body.brukersFodselsnummer
+  rest.post<{ brukersFodselsnummer: any }>(`/api/hjelpemiddeloversikt`, (req, res, ctx) => {
+    const brukersFodselsnummer = req?.body?.brukersFodselsnummer
 
     if (brukersFodselsnummer === '06115559891') {
       return res(ctx.status(200), ctx.json([]))

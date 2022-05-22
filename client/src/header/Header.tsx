@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { System } from '@navikt/ds-icons'
 import { Link } from '@navikt/ds-react'

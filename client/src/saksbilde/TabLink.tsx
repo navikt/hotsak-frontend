@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
@@ -39,7 +39,6 @@ interface TabLinkProps {
   children: ReactNode
   to: string
   title?: string
-  disabled?: boolean
   icon?: ReactNode
 }
 

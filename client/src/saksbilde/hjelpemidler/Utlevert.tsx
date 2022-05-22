@@ -1,6 +1,7 @@
-import {Tekst} from '../../felleskomponenter/typografi'
-import {UtlevertInfo, UtlevertType} from '../../types/types.internal'
-import styled from "styled-components/macro";
+import styled from 'styled-components'
+
+import { Tekst } from '../../felleskomponenter/typografi'
+import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
 
 interface UtlevertProps {
   alleredeUtlevert: boolean
@@ -11,8 +12,7 @@ const UtlevertTekst = styled('div')`
   padding-left: 0.2rem;
 `
 
-
-export const Utlevert: React.FC<UtlevertProps> = ({alleredeUtlevert, utlevertInfo}) => {
+export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertInfo }) => {
   if (alleredeUtlevert) {
     let utlevertTekst
 

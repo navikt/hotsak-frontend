@@ -7,6 +7,7 @@ type PersonContextType = {
 
 const initialState = {
   fodselsnummer: '',
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setFodselsnummer: () => {},
 }
 

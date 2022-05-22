@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "type": "module",
   "author": "Team DigiHoT",
-  "proxy": "http://localhost:5000",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": ">=16.15.0"
+  },
   "dependencies": {
     "cookie-parser": "1.4.6",
     "dotenv": "16.0.0",
@@ -25,15 +27,22 @@
     "@types/node": "17.0.23",
     "@types/node-fetch": "2.6.1",
     "@types/tunnel": "0.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "cross-env": "7.0.3",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "^2.6.2",
     "rimraf": "3.0.2",
     "ts-node-dev": "1.1.8",
-    "typescript": "4.6.3"
+    "typescript": "^4.6.3"
   },
   "scripts": {
     "build": "tsc -p .",
-    "clean": "rimraf ../dist/server",
-    "dev": "ts-node-dev --respawn --transpile-only ./server.ts",
-    "dev-server": "cross-env-shell NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev"
+    "clean": "rimraf ./dist",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev-server": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev",
+    "lint": "eslint . --ext .ts"
   }
 }

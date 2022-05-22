@@ -1,10 +1,9 @@
-import expressSession from 'express-session'
-
 import logger from './logging'
 import { AppConfig } from './types'
+import expressSession from 'express-session'
 
 export const sessionStore = (config: AppConfig) => {
-    return createMemoryStoreSession(config)
+  return createMemoryStoreSession(config)
 }
 
 const createMemoryStoreSession = (config: AppConfig) => {

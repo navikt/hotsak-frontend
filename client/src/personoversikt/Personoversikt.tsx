@@ -1,7 +1,7 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Switch, useRouteMatch } from 'react-router'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
 

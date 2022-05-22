@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Heading } from '@navikt/ds-react'
 
@@ -14,8 +14,8 @@ const Container = styled.div`
 interface HjelpemiddelListeProps {
   hjelpemidler: HjelpemiddelType[]
   personinformasjon: Personinfo
-  tittel: String
-  forenkletVisning?: Boolean
+  tittel: string
+  forenkletVisning?: boolean
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {

@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { Flex } from '../felleskomponenter/Flex'
@@ -34,7 +34,7 @@ export enum Location {
 export interface SøknadslinjeProps {
   id: string
   type: Oppgavetype
-  onTabChange: Function
+  onTabChange: (...args: any[]) => any
   currentTab: HøyrekolonneTabs
 }
 

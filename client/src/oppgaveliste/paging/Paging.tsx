@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Pagination } from '@navikt/ds-react'
 
@@ -16,7 +16,7 @@ export const PAGE_SIZE = 25
 interface PaginationProps {
   totalCount: number
   currentPage: number
-  onPageChange: Function
+  onPageChange: (...args: any[]) => any
 }
 
 export const Paging: React.VFC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {

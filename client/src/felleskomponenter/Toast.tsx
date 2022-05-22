@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { Loader } from '@navikt/ds-react'
 
@@ -25,6 +25,7 @@ const ToastView = styled.div`
   }
 `
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ToastProps {}
 
 export const Toast: React.FC<ToastProps> = ({ children }) => {

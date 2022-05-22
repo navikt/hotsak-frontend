@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 export const Button = styled.button`
   font-family: 'Source Sans Pro', Arial, Helvetica, sans-serif;

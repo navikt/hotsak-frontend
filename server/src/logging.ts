@@ -1,8 +1,8 @@
+import authSupport from './auth/authSupport'
+import { HotsakRequest } from './types'
 import fs from 'fs'
 import winston from 'winston'
-import { HotsakRequest } from './types'
 
-import authSupport from './auth/authSupport'
 ;('use strict')
 
 const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')

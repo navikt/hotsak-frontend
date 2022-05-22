@@ -43,7 +43,7 @@ const decode = (cookie: string) => {
   try {
     return JSON.parse(transformToUtf8(token))
   } catch (err) {
-    console.warn('error while decoding cookie:', err) // eslint-disable-line no-console
+    console.warn('error while decoding cookie:', err)
     return null
   }
 }

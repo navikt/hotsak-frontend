@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
 import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
@@ -30,7 +30,7 @@ export const KolonneTittel = styled.li`
   font-size: 14px;
 `
 
-export const Høyrekolonne: React.VFC<HøyrekolonneProps> = ({ currentTab, oppgavetype }) => {
+export const Høyrekolonne: React.VFC<HøyrekolonneProps> = ({ currentTab }) => {
   switch (currentTab) {
     case HøyrekolonneTabs.SAKSHISTORIKK:
       return <Historikk />

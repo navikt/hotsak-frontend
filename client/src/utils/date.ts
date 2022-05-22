@@ -1,8 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs'
 import 'dayjs/locale/nb'
-import isoWeek from 'dayjs/plugin/isoWeek'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import isoWeek from 'dayjs/plugin/isoWeek'
 
 dayjs.extend(isoWeek)
 dayjs.extend(isSameOrBefore)
@@ -34,8 +34,8 @@ export const findLatest = (dates: Dayjs[]): Dayjs => {
 }
 
 export const sorterKronologisk = (a: string, b: string) => {
-  let date = dayjs(a, ISO_TIDSPUNKTFORMAT)
-  let otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
+  const date = dayjs(a, ISO_TIDSPUNKTFORMAT)
+  const otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
   return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
 }
 

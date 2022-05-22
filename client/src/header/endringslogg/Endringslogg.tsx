@@ -1,10 +1,13 @@
-import { Ingress, Label } from '@navikt/ds-react'
-import { Divider } from '@navikt/ds-react-internal'
 import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
+
+import { Ingress, Label } from '@navikt/ds-react'
+import { Divider } from '@navikt/ds-react-internal'
+
 import { ISO_DATOFORMAT } from '../../utils/date'
+
 import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
 
 export const Endringslogg: React.VFC<{

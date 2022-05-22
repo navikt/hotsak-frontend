@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro'
+import styled from 'styled-components'
 
 type BasicValue = 'normal' | 'stretch'
 
@@ -41,16 +41,15 @@ export const FlexColumn = styled(Flex)`
   flex-direction: column;
 `
 
-type KolonneProps =  {
-    width?: string
-    textAlign?: string
-    marginLeft?: string
-  }
-  
-  type RadProps  = {
-    paddingTop?: string
-  }
-  
+type KolonneProps = {
+  width?: string
+  textAlign?: string
+  marginLeft?: string
+}
+
+type RadProps = {
+  paddingTop?: string
+}
 
 export const Rad = styled('div')<RadProps>`
   display: flex;
@@ -70,4 +69,3 @@ export const Kolonne = styled('div')<KolonneProps>`
   max-width: ${(props) => props.width || 'auto'};
   ${(props) => props.marginLeft && `margin-left: ${props.marginLeft};`}
 `
-

@@ -19,6 +19,9 @@ const HjelpemiddelContainer = styled.div`
 const HMSLenke = styled(Link)`
   padding-left: 0.5rem;
 `
+const HMSTekst = styled.span`
+  padding-left: 0.5rem;
+`
 
 const Rangering = styled('div')<RangeringProps>`
   display: flex;
@@ -94,11 +97,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
           <Rad>
             <strong>{hjelpemiddel.hmsnr}</strong>
             {produkt ? (
-              <HMSLenke href={produkt.artikkelurl} target={'_blank'}>
-                {` ${hjelpemiddel.beskrivelse}`}{' '}
+              <HMSLenke href={produkt.artikkelurl} target="_blank">
+                {hjelpemiddel.beskrivelse}
               </HMSLenke>
             ) : (
-              ` ${hjelpemiddel.beskrivelse}`
+              <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
             )}
           </Rad>
           <Rad>

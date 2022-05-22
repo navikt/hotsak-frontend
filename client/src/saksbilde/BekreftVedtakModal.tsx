@@ -30,7 +30,13 @@ export const BekreftVedtakModal: React.VFC<BekreftVedtakModalProps> = ({ open, o
           vil få beskjed om vedtaket på Ditt NAV.
         </Tekst>
         <ButtonContainer>
-          <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-innvilg-soknad">
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => onBekreft()}
+            data-cy="btn-innvilg-soknad"
+            disabled={loading}
+          >
             Innvilg søknaden
             {loading && <Loader size="small" />}
           </Button>

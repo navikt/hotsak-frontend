@@ -1,24 +1,25 @@
-import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {useSWRConfig} from 'swr'
-import {Button, Loader} from '@navikt/ds-react'
-import {postTildeling} from '../../io/http'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useSWRConfig } from 'swr'
 
-import {useInnloggetSaksbehandler} from '../../state/authentication'
-import {amplitude_taxonomy, logAmplitudeEvent} from '../../utils/amplitude'
+import { Button, Loader } from '@navikt/ds-react'
+
+import { postTildeling } from '../../io/http'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
+import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 interface IkkeTildeltProps {
   oppgavereferanse: string
   gåTilSak: boolean
 }
 
-export const IkkeTildelt = ({oppgavereferanse, gåTilSak = false}: IkkeTildeltProps) => {
+export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const history = useHistory()
-  const {mutate} = useSWRConfig()
+  const { mutate } = useSWRConfig()
   const tildel = (event: React.MouseEvent) => {
-
     event.stopPropagation()
 
     if (gåTilSak) {
@@ -46,10 +47,15 @@ export const IkkeTildelt = ({oppgavereferanse, gåTilSak = false}: IkkeTildeltPr
   return (
     <>
       {
-        <Button size={gåTilSak ? 'xsmall' : 'small'} variant={gåTilSak ? "tertiary" : "secondary"} onClick={tildel}
-                         data-cy={`btn-tildel-sak-${oppgavereferanse}`}>
+        <Button
+          size={gåTilSak ? 'xsmall' : 'small'}
+          variant={gåTilSak ? 'tertiary' : 'secondary'}
+          onClick={tildel}
+          data-cy={`btn-tildel-sak-${oppgavereferanse}`}
+          disabled={isFetching}
+        >
           Start saken
-          {isFetching && <Loader size='small' />}
+          {isFetching && <Loader size="small" />}
         </Button>
       }
     </>

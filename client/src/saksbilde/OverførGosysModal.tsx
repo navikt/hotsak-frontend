@@ -66,6 +66,7 @@ export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, o
               }
             }}
             data-cy="btn-overfor-soknad"
+            disabled={loading}
           >
             Overfør saken
             {loading && <Loader size="small" />}

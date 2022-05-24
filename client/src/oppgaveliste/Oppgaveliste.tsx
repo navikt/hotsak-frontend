@@ -209,6 +209,7 @@ export const Oppgaveliste: React.VFC = () => {
                     })
                   }}
                 >
+                  <caption className="sr-only">Oppgaveliste</caption>
                   <Table.Header>
                     <Table.Row>
                       {kolonner

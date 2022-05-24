@@ -23,7 +23,7 @@ export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, children }) => {
   }
 
   return (
-    <ClickableRow role="link" tabIndex={0} onClick={navigate}>
+    <ClickableRow tabIndex={0} onClick={navigate}>
       {children}
     </ClickableRow>
   )

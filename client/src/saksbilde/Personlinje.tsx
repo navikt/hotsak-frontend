@@ -122,7 +122,9 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
           history.push('/personoversikt/saker')
         }}
       >
-        <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
+        <div aria-live="polite">
+          <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
+        </div>
       </Link>
       <Separator>/</Separator>
       {fnr ? (

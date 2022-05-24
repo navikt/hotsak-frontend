@@ -81,7 +81,7 @@ export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({
     case Oppgavetype.SØKNAD:
       return showLabel ? (
         <>
-          <SøknadEtikett størrelse={størrelse} />
+          <SøknadEtikett størrelse={størrelse} aria-hidden />
           <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
@@ -90,11 +90,11 @@ export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({
     case Oppgavetype.BESTILLING:
       return showLabel ? (
         <>
-          <BestillingEtikett størrelse={størrelse} />
+          <BestillingEtikett størrelse={størrelse} aria-hidden />
           <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
-        <BestillingEtikett størrelse={størrelse} />
+        <BestillingEtikett størrelse={størrelse} aria-hidden />
       )
     default:
       return null

@@ -1,5 +1,53 @@
 [
   {
+    "sakstype": "BESTILLING",
+    "saksid": "112233",
+    "søknadOm": "Bestilling av: Dusjkrakk",
+    "mottattDato": "2022-05-04T13:55:45",
+    "formidlerNavn": "Bjarne Bestillersen",
+    "personinformasjon": {
+      "fnr": "13044238651",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Anders",
+      "etternavn": "Amundsen",
+      "poststed": "Trondheim",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": null,
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
+    "sakstype": "BESTILLING",
+    "saksid": "223344",
+    "søknadOm": "Bestilling av: Rullator",
+    "mottattDato": "2021-09-24T13:55:45",
+    "formidlerNavn": "Bjarne Bestillersen",
+    "personinformasjon": {
+      "fnr": "13044238651",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Beate",
+      "etternavn": "Storebø",
+      "poststed": "Trondheim",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": { "navn": "Silje Saksbehandler" },
+    "status": "FERDIGSTILT",
+    "statusEndret": "2022-05-11T13:37:45",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
     "sakstype": "SØKNAD",
     "saksid": "111111",
     "søknadOm": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",
@@ -153,54 +201,6 @@
       "navn": "Silje Saksbehandler"
     },
     "status": "VEDTAK_FATTET",
-    "statusEndret": "2022-05-11T13:37:45",
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "BESTILLING",
-    "saksid": "112233",
-    "søknadOm": "Dusjkrakk",
-    "mottattDato": "2022-05-04T13:55:45",
-    "formidlerNavn": "Bjarne Bestillersen",
-    "personinformasjon": {
-      "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
-      "fornavn": "Anders",
-      "etternavn": "Amundsen",
-      "poststed": "Trondheim",
-      "bosted": "Trondheim"
-    },
-    "saksbehandler": null,
-    "status": "AVVENTER_SAKSBEHANDLER",
-    "statusEndret": "2022-05-11T13:37:45",
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "BESTILLING",
-    "saksid": "223344",
-    "søknadOm": "Rullator",
-    "mottattDato": "2021-09-24T13:55:45",
-    "formidlerNavn": "Bjarne Bestillersen",
-    "personinformasjon": {
-      "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
-      "fornavn": "Beate",
-      "etternavn": "Storebø",
-      "poststed": "Trondheim",
-      "bosted": "Trondheim"
-    },
-    "saksbehandler": { "navn": "Silje Saksbehandler" },
-    "status": "FERDIGSTILT",
     "statusEndret": "2022-05-11T13:37:45",
     "enhet": [
       {

@@ -164,8 +164,15 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
           }}
           loading={loading}
           onClose={() => setVisGosysModal(false)}
+          aarsaker={overforGosysArsaker}
         />
       </Card>
     )
   }
 }
+
+const overforGosysArsaker: ReadonlyArray<string> = [
+  'Bruker har tilsvarende hjelpemidler fra før',
+  'Duplikat av en annen bestilling',
+  'Annet',
+]

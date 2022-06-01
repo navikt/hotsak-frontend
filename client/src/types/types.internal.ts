@@ -193,6 +193,7 @@ export enum OppgaveStatusType {
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
   SENDT_GOSYS = 'SENDT_GOSYS',
+  AVVIST = 'AVVIST',
   VEDTAK_FATTET = 'VEDTAK_FATTET',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
@@ -347,6 +348,11 @@ export enum HøyrekolonneTabs {
 }
 
 export interface OverforGosysTilbakemelding {
+  valgteArsaker: string[]
+  begrunnelse: string
+}
+
+export interface AvvisBestilling {
   valgteArsaker: string[]
   begrunnelse: string
 }

@@ -1,6 +1,7 @@
 import { isNumber } from '../utils/type'
 
 import type {
+  AvvisBestilling,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
   Vedtaksgrunnlag,
@@ -136,6 +137,10 @@ export const putFerdigstillBestilling = async (bestillingsnummer: string, status
 
 export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {
   return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { tilbakemelding })
+}
+
+export const putAvvisBestilling = async (saksnummer: string, tilbakemelding: AvvisBestilling) => {
+  return put(`${baseUrl}/api/bestilling/avvis/${saksnummer}`, { tilbakemelding })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button, Tag } from '@navikt/ds-react'
 
-import { putFerdigstillBestilling, putSendTilGosys } from '../../io/http'
+import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato } from '../../utils/date'
@@ -13,10 +13,10 @@ import { capitalizeName } from '../../utils/stringFormating'
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, OverforGosysTilbakemelding, HjelpemiddelArtikkel, Sak } from '../../types/types.internal'
-import { OverførGosysModal } from '../OverførGosysModal'
+import { OppgaveStatusType, HjelpemiddelArtikkel, Sak, AvvisBestilling } from '../../types/types.internal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
+import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { OpprettOrdreModal } from './OpprettOrdreModal'
 
 interface BestillingCardProps {
@@ -52,7 +52,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdeModal, setVisOpprettOrdreModal] = useState(false)
-  const [visGosysModal, setVisGosysModal] = useState(false)
+  const [visAvvisModal, setVisAvvisModal] = useState(false)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
@@ -68,13 +68,13 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
       })
   }
 
-  const sendBestillingTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
+  const avvvisBestilling = (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    putSendTilGosys(saksid, tilbakemelding)
+    putAvvisBestilling(saksid, tilbakemelding)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
-        setVisGosysModal(false)
+        setVisAvvisModal(false)
         mutate(`api/sak/${saksid}`)
         mutate(`api/sak/${saksid}/historikk`)
       })
@@ -95,14 +95,14 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
     )
   }
 
-  if (bestilling.status === OppgaveStatusType.SENDT_GOSYS) {
+  if (bestilling.status === OppgaveStatusType.AVVIST) {
     return (
       <Card>
-        <CardTitle>OVERFØRT</CardTitle>
+        <CardTitle>AVVIST</CardTitle>
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
-          Overført til Gosys
+          Avvist
         </Tag>
-        <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
+        <Tekst>Bestillingen ble avvist</Tekst>
       </Card>
     )
   }
@@ -141,8 +141,13 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
           >
             <span>Opprett ordre</span>
           </Knapp>
-          <Knapp variant="secondary" size="small" onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
-            Overfør til Gosys
+          <Knapp
+            variant="secondary"
+            size="small"
+            onClick={() => setVisAvvisModal(true)}
+            data-cy="btn-avvis-bestilling-modal"
+          >
+            Avvis bestilling
           </Knapp>
         </ButtonContainer>
         <OpprettOrdreModal
@@ -155,23 +160,23 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
         />
-        <OverførGosysModal
-          open={visGosysModal}
+        <AvvisBestillingModal
+          open={visAvvisModal}
           onBekreft={(tilbakemelding) => {
-            sendBestillingTilGosys(tilbakemelding)
-            logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERFORT_TIL_GOSYS)
-            logNesteNavigasjon(amplitude_taxonomy.BESTILLING_OVERFORT_TIL_GOSYS)
+            avvvisBestilling(tilbakemelding)
+            logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)
+            logNesteNavigasjon(amplitude_taxonomy.BESTILLING_AVVIST)
           }}
           loading={loading}
-          onClose={() => setVisGosysModal(false)}
-          aarsaker={overforGosysArsaker}
+          onClose={() => setVisAvvisModal(false)}
+          aarsaker={avvisÅrsaker}
         />
       </Card>
     )
   }
 }
 
-const overforGosysArsaker: ReadonlyArray<string> = [
+const avvisÅrsaker: ReadonlyArray<string> = [
   'Bruker har tilsvarende hjelpemidler fra før',
   'Duplikat av en annen bestilling',
   'Annet',

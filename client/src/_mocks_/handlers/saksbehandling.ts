@@ -140,8 +140,34 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['status'] = 'SENDT_GOSYS'
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
 
-    //saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
     saker[sakIdx]['status'] = 'SENDT_GOSYS'
+
+    return res(ctx.status(200), ctx.json({}))
+  }),
+  rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', (req, res, ctx) => {
+    const årsak = `Årsak: ${req?.body?.tilbakemelding?.valgteArsaker}. `
+    const begrunnelse =
+      req?.body?.tilbakemelding?.begrunnelse && req?.body?.tilbakemelding?.begrunnelse !== ''
+        ? `Begrunnelse: ${req?.body?.tilbakemelding?.begrunnelse}`
+        : ''
+
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const hendelse = {
+      id: '5',
+      hendelse: 'Bestillingen ble avvist',
+      opprettet: '2021-03-29T12:43:45',
+      bruker: 'Silje Saksbehandler',
+      detaljer: `${årsak} ${begrunnelse}`,
+    }
+
+    sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
+
+    oppgaveliste[oppgaveIdx]['status'] = 'AVVIST'
+
+    saker[sakIdx]['status'] = 'AVVIST'
 
     return res(ctx.status(200), ctx.json({}))
   }),

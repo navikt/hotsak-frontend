@@ -27,7 +27,9 @@ export const HistorikkHendelse: React.VFC<Hendelse> = ({ hendelse, detaljer, opp
       <ContentContainer>
         <Etikett>{hendelse}</Etikett>
         {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
-        <Tekst>{detaljer}</Tekst>
+        {detaljer?.split(';').map((detalj) => (
+          <Tekst key={detalj}>{detalj}</Tekst>
+        ))}
         <Tekst>{bruker}</Tekst>
       </ContentContainer>
     </Container>

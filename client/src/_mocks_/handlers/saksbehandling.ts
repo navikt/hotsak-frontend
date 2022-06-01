@@ -145,10 +145,10 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json({}))
   }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', (req, res, ctx) => {
-    const årsak = `Årsak: ${req?.body?.tilbakemelding?.valgteArsaker}. `
+    const årsaker = `${req?.body?.tilbakemelding?.valgteArsaker.join(';')}. `
     const begrunnelse =
       req?.body?.tilbakemelding?.begrunnelse && req?.body?.tilbakemelding?.begrunnelse !== ''
-        ? `Begrunnelse: ${req?.body?.tilbakemelding?.begrunnelse}`
+        ? `${req?.body?.tilbakemelding?.begrunnelse}`
         : ''
 
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
@@ -160,7 +160,7 @@ const saksbehandlingHandlers = [
       hendelse: 'Bestillingen ble avvist',
       opprettet: '2021-03-29T12:43:45',
       bruker: 'Silje Saksbehandler',
-      detaljer: `${årsak} ${begrunnelse}`,
+      detaljer: `${årsaker} ${begrunnelse}`,
     }
 
     sakshistorikk[historikkIdx]['hendelser'].push(hendelse)

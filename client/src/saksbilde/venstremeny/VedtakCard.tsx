@@ -203,19 +203,8 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
           }}
           loading={loading}
           onClose={() => setVisGosysModal(false)}
-          aarsaker={overforGosysArsaker}
         />
       </Card>
     )
   }
 }
-
-const overforGosysArsaker: ReadonlyArray<string> = [
-  'Det må etterspørres eller legges til flere opplysninger i saken',
-  'Saken kan ikke innvilges (avslag, delvis innvilgelse eller henleggelse)',
-  'Saken skal ses på av en annen saksbehandler eller enhet',
-  'Formidler har ikke fullført nødvendig godkjenningskurs',
-  'Bruker har hjelpemiddelet fra før',
-  'Saken skal innvilges med vedtaksbrev',
-  'Annet',
-]

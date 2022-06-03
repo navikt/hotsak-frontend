@@ -5,24 +5,17 @@ import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@nav
 
 import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
-import type { AvvisBestilling, OverforGosysTilbakemelding } from '../../types/types.internal'
+import type { AvvisBestilling } from '../../types/types.internal'
 
 interface AvvisBestillingModalProps {
   open: boolean
   loading: boolean
-  aarsaker: ReadonlyArray<string>
 
   onBekreft(tilbakemelding: AvvisBestilling): void
   onClose(): void
 }
 
-export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({
-  open,
-  onBekreft,
-  loading,
-  onClose,
-  aarsaker,
-}) => {
+export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')
@@ -45,7 +38,7 @@ export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({
           onChange={setValgteArsaker}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke til bruker.</Tekst>
-          {aarsaker.map((arsak, index) => (
+          {avvisÅrsaker.map((arsak, index) => (
             <Checkbox key={arsak} value={arsak} data-cy={`avvis-bestilling-arsak-${index}`}>
               {arsak}
             </Checkbox>
@@ -85,6 +78,8 @@ export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({
     </DialogBoks>
   )
 }
+
+const avvisÅrsaker: ReadonlyArray<string> = ['Duplikat av en annen bestilling', 'Annet']
 
 const AvvisBestillingCheckboxGroup = styled(CheckboxGroup)`
   margin: var(--navds-spacing-4) 0;

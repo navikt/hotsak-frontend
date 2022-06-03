@@ -10,19 +10,12 @@ import type { OverforGosysTilbakemelding } from '../types/types.internal'
 interface OverførGosysModalProps {
   open: boolean
   loading: boolean
-  aarsaker: ReadonlyArray<string>
 
   onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
   onClose(): void
 }
 
-export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({
-  open,
-  onBekreft,
-  loading,
-  onClose,
-  aarsaker,
-}) => {
+export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')
@@ -46,7 +39,7 @@ export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({
           onChange={setValgteArsaker}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke i Gosys.</Tekst>
-          {aarsaker.map((arsak, index) => (
+          {overforGosysArsaker.map((arsak, index) => (
             <Checkbox key={arsak} value={arsak} data-cy={`overfor-soknad-arsak-${index}`}>
               {arsak}
             </Checkbox>
@@ -86,6 +79,16 @@ export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({
     </DialogBoks>
   )
 }
+
+const overforGosysArsaker: ReadonlyArray<string> = [
+  'Det må etterspørres eller legges til flere opplysninger i saken',
+  'Saken kan ikke innvilges (avslag, delvis innvilgelse eller henleggelse)',
+  'Saken skal ses på av en annen saksbehandler eller enhet',
+  'Formidler har ikke fullført nødvendig godkjenningskurs',
+  'Bruker har hjelpemiddelet fra før',
+  'Saken skal innvilges med vedtaksbrev',
+  'Annet',
+]
 
 const OverforGosysArsakCheckboxGroup = styled(CheckboxGroup)`
   margin: var(--navds-spacing-4) 0;

@@ -169,15 +169,8 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
           }}
           loading={loading}
           onClose={() => setVisAvvisModal(false)}
-          aarsaker={avvisÅrsaker}
         />
       </Card>
     )
   }
 }
-
-const avvisÅrsaker: ReadonlyArray<string> = [
-  'Bruker har tilsvarende hjelpemidler fra før',
-  'Duplikat av en annen bestilling',
-  'Annet',
-]

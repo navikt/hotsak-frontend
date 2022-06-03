@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
 
+import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../../GlobalStyles'
@@ -105,14 +106,12 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               {sak.status === OppgaveStatusType.FERDIGSTILT && (
                 <Alert size="small" variant="success" data-cy="alert-bestilling-ferdigstilt">
-                  {`${capitalize(sak.status)} ${`` /*formaterDato(bestilling.statusEndretDato)*/} av ${
-                    sak.saksbehandler.navn
-                  }`}
+                  {`${capitalize(sak.status)} ${formaterDato(sak.statusEndret)} av ${sak.saksbehandler.navn}`}
                 </Alert>
               )}
-              {sak.status === OppgaveStatusType.SENDT_GOSYS && (
-                <Alert size="small" variant="info" data-cy="alert-vedtak-status">
-                  Bestillingen er overført til Gosys. Videre behandling skjer i Gosys
+              {sak.status === OppgaveStatusType.AVVIST && (
+                <Alert size="small" variant="error" data-cy="alert-bestilling-status">
+                  {`Bestillingen ble avvist ${formaterDato(sak.statusEndret)} av ${sak.saksbehandler.navn}`}
                 </Alert>
               )}
               <Content>

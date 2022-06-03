@@ -168,6 +168,7 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['status'] = 'AVVIST'
 
     saker[sakIdx]['status'] = 'AVVIST'
+    saker[sakIdx]['statusEndret'] = '2022-06-03T10:48:40.47986'
 
     return res(ctx.status(200), ctx.json({}))
   }),
@@ -235,10 +236,8 @@ const saksbehandlingHandlers = [
 
     oppgaveliste[oppgaveIdx]['status'] = 'FERDIGSTILT'
 
-    console.log('Oppgave', oppgaveIdx)
-
     saker[bestillingIdx]['status'] = 'FERDIGSTILT'
-    saker[bestillingIdx]['statusEndretDato'] = '2021-10-05T21:52:40.815302'
+    saker[bestillingIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
 
     return res(ctx.status(200), ctx.json({}))
   }),

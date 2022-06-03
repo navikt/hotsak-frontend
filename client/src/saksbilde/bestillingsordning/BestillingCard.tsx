@@ -98,8 +98,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
   if (bestilling.status === OppgaveStatusType.AVVIST) {
     return (
       <Card>
-        <CardTitle>AVVIST</CardTitle>
-        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+        <Tag data-cy="tag-soknad-status" variant="error" size="small">
           Avvist
         </Tag>
         <Tekst>Bestillingen ble avvist</Tekst>

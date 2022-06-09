@@ -40,7 +40,7 @@ export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidler
         <CopyContainer>
           <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
           <Clipboard
-            popoverText="Formidler navn kopiert"
+            popoverText="Navn kopiert"
             title="Kopier formidler navn"
             variant="tertiary"
             size="small"
@@ -54,7 +54,7 @@ export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidler
         <CopyContainer>
           <Tekst>{formidlerTelefon}</Tekst>
           <Clipboard
-            popoverText="Formidler telefonnummer kopiert"
+            popoverText="Telefonnummer kopiert"
             title="Kopier telefonnummer"
             variant="tertiary"
             size="small"

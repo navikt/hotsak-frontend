@@ -594,6 +594,10 @@
     },
     "greitÅViteFaktum": [
       {
+        "beskrivelse": "Bruker bor på institusjon (sykehjem)",
+        "type": "ADVARSEL"
+      },
+      {
         "beskrivelse": "Kun førsterangering",
         "type": "INFO"
       },
@@ -616,7 +620,7 @@
       "kilde": "PDL",
       "signaturtype": "BRUKER_BEKREFTER",
       "telefon": "45454545",
-      "bosituasjon": "HJEMME",
+      "bosituasjon": "INSTITUSJON",
       "funksjonsnedsettelse": ["bevegelse"],
       "bruksarena": "DAGLIGLIV",
       "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],

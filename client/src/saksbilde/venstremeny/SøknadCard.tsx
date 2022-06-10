@@ -30,7 +30,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
     case Bosituasjon.HJEMME:
       return 'Hjemmeboende'
     case Bosituasjon.INSTITUSJON:
-      return 'Bor på institusjon'
+      return 'Institusjon (sykehjem)'
     default:
       return 'Ukjent bosituasjon'
   }

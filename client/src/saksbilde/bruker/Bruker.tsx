@@ -78,7 +78,7 @@ export const Bruker: React.VFC<BrukerProps> = ({ person, levering, formidler }) 
           <Tekst>
             {person.bosituasjon === Bosituasjon.HJEMME
               ? 'Hjemme (egen bolig, omsorgsbolig eller bofelleskap)'
-              : 'Institusjon'}
+              : 'Institusjon (sykehjem)'}
           </Tekst>
           <Etikett>Bruksarena</Etikett>
           <Tekst>{capitalize(person.bruksarena)}</Tekst>

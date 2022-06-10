@@ -276,7 +276,7 @@ export enum Bruksarena {
 
 export enum Bosituasjon {
   HJEMME = 'HJEMME',
-  INSTITUSJON = 'INSITUSJON',
+  INSTITUSJON = 'INSTITUSJON',
 }
 
 export enum SignaturType {

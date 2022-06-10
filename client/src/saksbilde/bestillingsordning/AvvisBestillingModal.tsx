@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@navikt/ds-react'
+import { Button, RadioGroup, Heading, Loader, Textarea, Radio } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -17,7 +17,7 @@ interface AvvisBestillingModalProps {
 
 export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
-  const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
+  const [valgtArsak, setValgtArsak] = useState<string>('')
   const [begrunnelse, setBegrunnelse] = useState<string>('')
   const [error, setError] = useState('')
 
@@ -28,25 +28,25 @@ export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ ope
           Vil du avvise bestillingen?
         </Heading>
         <Tekst>
-          Bestillingen avvises i Hotsak. Bruker og formidler vil se oppdatert status på nav.no. Det er ikke behov for å
-          gjøre noe videre med saken i Gosys.
+          Bestillingen avvises i Hotsak. Bruker og formidler vil se oppdatert status på nav.no innen neste virkedag. Det
+          er ikke behov for å gjøre noe videre med saken i Gosys.
         </Tekst>
-        <AvvisBestillingCheckboxGroup
+        <AvvisBestillingRadioGroup
           legend="Velg årsak til at bestillingen avvises"
-          error={!valgteArsaker.length && error}
-          value={valgteArsaker}
-          onChange={setValgteArsaker}
+          error={valgtArsak === '' && error}
+          value={valgtArsak}
+          onChange={setValgtArsak}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke til bruker.</Tekst>
           {avvisÅrsaker.map((arsak, index) => (
-            <Checkbox key={arsak} value={arsak} data-cy={`avvis-bestilling-arsak-${index}`}>
+            <Radio key={arsak} value={arsak} data-cy={`avvis-bestilling-arsak-${index}`}>
               {arsak}
-            </Checkbox>
+            </Radio>
           ))}
-        </AvvisBestillingCheckboxGroup>
+        </AvvisBestillingRadioGroup>
         <Textarea
-          label="Begrunnelse (valgfri)"
-          description="Gi en kort forklaring for hvorfor bestillingen avvises. Unngå personopplysninger."
+          label="Begrunnelse for å avvise bestillingen"
+          description="Unngå personopplysninger. Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
           value={begrunnelse}
           onChange={(e) => setBegrunnelse(e.target.value)}
         />
@@ -55,13 +55,13 @@ export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ ope
             variant="primary"
             size="small"
             onClick={() => {
-              if (valgteArsaker.length) {
+              if (valgtArsak !== '') {
                 onBekreft({
-                  valgteArsaker,
+                  valgtArsak,
                   begrunnelse,
                 })
               } else {
-                setError('Du må velge minst en årsak i listen over.')
+                setError('Du må velge en årsak i listen over.')
               }
             }}
             data-cy="btn-overfor-soknad"
@@ -81,6 +81,6 @@ export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ ope
 
 const avvisÅrsaker: ReadonlyArray<string> = ['Duplikat av en annen bestilling', 'Annet']
 
-const AvvisBestillingCheckboxGroup = styled(CheckboxGroup)`
+const AvvisBestillingRadioGroup = styled(RadioGroup)`
   margin: var(--navds-spacing-4) 0;
 `

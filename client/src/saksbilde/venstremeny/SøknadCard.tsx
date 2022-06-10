@@ -44,8 +44,6 @@ export const SøknadCard: React.VFC<SøknadCardProps> = ({
   funksjonsnedsettelse,
   bosituasjon,
 }) => {
-  console.log('Type', oppgaveType)
-
   return (
     <Card>
       <Grid>

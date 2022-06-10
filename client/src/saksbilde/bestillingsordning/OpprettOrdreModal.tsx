@@ -23,11 +23,12 @@ export const OpprettOrdreModal: React.VFC<OpprettOrdreModalProps> = ({ open, onB
     >
       <DialogBoks.Content>
         <Heading level="1" size="medium" spacing={true}>
-          Vil du ferdigstille bestillingen
+          Vil du opprette ordre?
         </Heading>
         <Tekst>
-          Ved å ferdigstille bestillingen vil det bli opprettett en ordre i ordreorganisator i OEBS. Alle hjelpemidler i
-          bestillingen vil automatisk legges inn som ordrelinjer.
+          Ordren vil bli opprettet i ordreorganisator i OEBS, og du trenger ikke gjøre noe mer med saken. Alle
+          hjelpemidler i bestillingen vil automatisk legges inn som ordrelinjer. Merk at det kan gå noen minutter før
+          ordren er klagjort.
         </Tekst>
         <ButtonContainer>
           <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-ferdigstill-bestilling">

@@ -354,7 +354,7 @@ export interface OverforGosysTilbakemelding {
 }
 
 export interface AvvisBestilling {
-  valgteArsaker: string[]
+  valgtArsak: string
   begrunnelse: string
 }
 

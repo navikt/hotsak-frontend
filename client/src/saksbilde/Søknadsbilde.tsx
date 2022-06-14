@@ -106,18 +106,6 @@ const SaksbildeContent: React.VFC = React.memo(() => {
               <VedtakCard sak={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
-              {sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET && (
-                <Alert size="small" variant="success" data-cy="alert-vedtak-status">
-                  {`${capitalize(sak.vedtak.status)} ${formaterDato(sak.vedtak.vedtaksdato)} av ${
-                    sak.vedtak.saksbehandlerNavn
-                  }`}
-                </Alert>
-              )}
-              {sak.status === OppgaveStatusType.SENDT_GOSYS && (
-                <Alert size="small" variant="info" data-cy="alert-vedtak-status">
-                  Saken er overført til Gosys. Videre saksbehandling skjer i Gosys
-                </Alert>
-              )}
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>

@@ -7,8 +7,8 @@ import { Button, Tag } from '@navikt/ds-react'
 import { postTildeling, putSendTilGosys, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato } from '../../utils/date'
-import { capitalizeName } from '../../utils/stringFormating'
+import { formaterDato, norskTimestamp } from '../../utils/date'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
@@ -45,6 +45,10 @@ const ButtonContainer = styled.div`
   width: 100%;
   padding-top: 1rem;
   align-self: flex-end;
+`
+
+const StatusTekst = styled.div`
+  padding-top: 0.5rem;
 `
 
 const Knapp = styled(Button)`
@@ -111,12 +115,12 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
       <>
         <Card>
           <CardTitle>VEDTAK</CardTitle>
-          <TagGrid>
-            <Tag data-cy="tag-soknad-status" variant="success" size="small">
-              Innvilget
-            </Tag>
-            <Tekst>{formaterDato(sak.vedtak.vedtaksdato)}</Tekst>
-          </TagGrid>
+          <Tag data-cy="tag-soknad-status" variant="success" size="small">
+            Innvilget
+          </Tag>
+          <StatusTekst>
+            <Tekst>{`${norskTimestamp(sak.vedtak.vedtaksdato)} av ${sak.vedtak.saksbehandlerNavn}`}</Tekst>
+          </StatusTekst>
         </Card>
       </>
     )
@@ -129,7 +133,10 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Overført til Gosys
         </Tag>
-        <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
+        <StatusTekst>
+          <Tekst>{`${norskTimestamp(sak.statusEndret)} av ${sak.saksbehandler.navn}`}</Tekst>
+          <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
+        </StatusTekst>
       </Card>
     )
   }

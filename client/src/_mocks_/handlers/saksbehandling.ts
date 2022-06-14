@@ -141,6 +141,7 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
 
     saker[sakIdx]['status'] = 'SENDT_GOSYS'
+    saker[sakIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
 
     return res(ctx.status(200), ctx.json({}))
   }),

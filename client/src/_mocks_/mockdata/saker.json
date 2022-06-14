@@ -594,7 +594,7 @@
     },
     "greitÅViteFaktum": [
       {
-        "beskrivelse": "Bruker bor på institusjon (sykehjem)",
+        "beskrivelse": "Bruker bor på institusjon (sykehjem), ifølge formidler. Du må sjekke om vilkårene for institusjon er oppfylt.",
         "type": "ADVARSEL"
       },
       {

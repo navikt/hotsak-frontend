@@ -7,7 +7,7 @@ import { Button, Tag } from '@navikt/ds-react'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato } from '../../utils/date'
+import { formaterDato, norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -47,6 +47,10 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
+const StatusTekst = styled.div`
+  padding-top: 0.5rem;
+`
+
 export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) => {
   const { saksid } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
@@ -84,12 +88,13 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
     return (
       <>
         <Card>
-          <TagGrid>
-            <Tag data-cy="tag-soknad-status" variant="success" size="small">
-              Ferdigstilt
-            </Tag>
-            <Tekst>{formaterDato(bestilling.statusEndret)}</Tekst>
-          </TagGrid>
+          <Tag data-cy="tag-soknad-status" variant="success" size="small">
+            Ferdigstilt
+          </Tag>
+          <StatusTekst>
+            <Tekst>{`${norskTimestamp(bestilling.statusEndret)} av ${bestilling.saksbehandler.navn}.`}</Tekst>
+            <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
+          </StatusTekst>
         </Card>
       </>
     )
@@ -101,7 +106,9 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
         <Tag data-cy="tag-soknad-status" variant="error" size="small">
           Avvist
         </Tag>
-        <Tekst>Bestillingen ble avvist</Tekst>
+        <StatusTekst>
+          <Tekst>{`${norskTimestamp(bestilling.statusEndret)} av ${bestilling.saksbehandler.navn}.`}</Tekst>
+        </StatusTekst>
       </Card>
     )
   }

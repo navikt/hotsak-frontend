@@ -104,16 +104,6 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
               <BestillingCard bestilling={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
-              {sak.status === OppgaveStatusType.FERDIGSTILT && (
-                <Alert size="small" variant="success" data-cy="alert-bestilling-ferdigstilt">
-                  {`${capitalize(sak.status)} ${formaterDato(sak.statusEndret)} av ${sak.saksbehandler.navn}`}
-                </Alert>
-              )}
-              {sak.status === OppgaveStatusType.AVVIST && (
-                <Alert size="small" variant="error" data-cy="alert-bestilling-status">
-                  {`Bestillingen ble avvist ${formaterDato(sak.statusEndret)} av ${sak.saksbehandler.navn}`}
-                </Alert>
-              )}
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>

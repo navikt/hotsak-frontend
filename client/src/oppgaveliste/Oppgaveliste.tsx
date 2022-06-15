@@ -212,14 +212,11 @@ export const Oppgaveliste: React.VFC = () => {
                   <caption className="sr-only">Oppgaveliste</caption>
                   <Table.Header>
                     <Table.Row>
-                      {kolonner
-                        // Toggle for at oppsett for bestillingsordning kun skal vises i labs
-                        .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
-                        .map(({ key, name, sortable = true, width }) => (
-                          <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
-                            {name}
-                          </KolonneHeader>
-                        ))}
+                      {kolonner.map(({ key, name, sortable = true, width }) => (
+                        <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
+                          {name}
+                        </KolonneHeader>
+                      ))}
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>

@@ -20,7 +20,7 @@ describe('Happy path', () => {
       .should('be.visible')
     cy.get('[data-cy="btn-innvilg-soknad"]').should('have.text', 'Innvilg søknaden').click()
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Innvilget')
-    cy.get('[data-cy="alert-vedtak-status"]').should('contain.text', 'Innvilget 29.03.2021 av Silje Saksbehandler')
+    //cy.get('[data-cy="alert-vedtak-status"]').should('contain.text', 'Innvilget 29.03.2021 av Silje Saksbehandler')
   })
 
   it('burde kunne overføre til Gosys', () => {
@@ -37,9 +37,9 @@ describe('Happy path', () => {
     cy.get('[data-cy="overfor-soknad-arsak-0"]').click()
     cy.get('[data-cy="btn-overfor-soknad"]').should('have.text', 'Overfør saken').click()
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Overført til Gosys')
-    cy.get('[data-cy="alert-vedtak-status"]').should(
+    /*cy.get('[data-cy="alert-vedtak-status"]').should(
       'contain.text',
       'Saken er overført til Gosys. Videre saksbehandling skjer i Gosys'
-    )
+    )*/
   })
 })

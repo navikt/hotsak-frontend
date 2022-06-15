@@ -85,7 +85,17 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
       key: 'BEHANDLET_DATO',
       name: 'Behandlet dato',
       width: 130,
-      render: (sak: Saksoversikt_Sak) => <TekstCell value={(sak.status === OppgaveStatusType.FERDIGSTILT ||  sak.status === OppgaveStatusType.AVVIST || sak.status === OppgaveStatusType.VEDTAK_FATTET) ? formaterDato(sak.statusEndretDato): ''} />,
+      render: (sak: Saksoversikt_Sak) => (
+        <TekstCell
+          value={
+            sak.status === OppgaveStatusType.FERDIGSTILT ||
+            sak.status === OppgaveStatusType.AVVIST ||
+            sak.status === OppgaveStatusType.VEDTAK_FATTET
+              ? formaterDato(sak.statusEndretDato)
+              : ''
+          }
+        />
+      ),
     },
     {
       key: 'SAKSBEHANDLER',

@@ -92,7 +92,8 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
             Ferdigstilt
           </Tag>
           <StatusTekst>
-            <Tekst>{`${norskTimestamp(bestilling.statusEndret)} av ${bestilling.saksbehandler.navn}.`}</Tekst>
+            <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
+            <Tekst>{`av ${bestilling.saksbehandler.navn}.`}</Tekst>
             <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
           </StatusTekst>
         </Card>
@@ -107,7 +108,8 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
           Avvist
         </Tag>
         <StatusTekst>
-          <Tekst>{`${norskTimestamp(bestilling.statusEndret)} av ${bestilling.saksbehandler.navn}.`}</Tekst>
+          <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
+          <Tekst>{`av ${bestilling.saksbehandler.navn}.`}</Tekst>
         </StatusTekst>
       </Card>
     )

@@ -119,7 +119,8 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
             Innvilget
           </Tag>
           <StatusTekst>
-            <Tekst>{`${norskTimestamp(sak.vedtak.vedtaksdato)} av ${sak.vedtak.saksbehandlerNavn}`}</Tekst>
+            <Tekst>{`${norskTimestamp(sak.vedtak.vedtaksdato)}`}</Tekst>
+            <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
           </StatusTekst>
         </Card>
       </>
@@ -134,7 +135,8 @@ export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikl
           Overført til Gosys
         </Tag>
         <StatusTekst>
-          <Tekst>{`${norskTimestamp(sak.statusEndret)} av ${sak.saksbehandler.navn}`}</Tekst>
+          <Tekst>{`${norskTimestamp(sak.statusEndret)}`}</Tekst>
+          <Tekst>{`av ${sak.saksbehandler.navn}.`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
         </StatusTekst>
       </Card>

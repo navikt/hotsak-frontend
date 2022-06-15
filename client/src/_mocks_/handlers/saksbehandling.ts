@@ -225,15 +225,22 @@ const saksbehandlingHandlers = [
       opprettet: '2022-05-05T12:43:45',
       bruker: 'Silje Saksbehandler',
     }
-    const sfHendelse = {
+    const ordreRegistertHendelse = {
       id: '5',
-      hendelse: 'Ordre opprettett i ordreorganisator i OEBS',
-      opprettet: '2022-05-05T12:44:00.815302',
-      detaljer: 'Ordrenummer: 1390009031',
+      hendelse: 'Ordre oppdatert i OEBS',
+      opprettet: '2022-05-05T12:48:00.815302',
+      detaljer: 'Ordrenummer: 1390009031 | Status: Registrert',
+    }
+    const ordreFerdigstiltHendelse = {
+      id: '5',
+      hendelse: 'Ordre oppdatert i OEBS',
+      opprettet: '2022-05-05T12:49:00.815302',
+      detaljer: 'Ordrenummer: 1390009031 | Status: Klargjort',
     }
 
     sakshistorikk[historikkIdx]['hendelser'].push(vedtakHendelse)
-    sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(ordreRegistertHendelse)
+    sakshistorikk[historikkIdx]['hendelser'].push(ordreFerdigstiltHendelse)
 
     oppgaveliste[oppgaveIdx]['status'] = 'FERDIGSTILT'
 

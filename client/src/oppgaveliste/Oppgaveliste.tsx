@@ -170,7 +170,7 @@ export const Oppgaveliste: React.VFC = () => {
           value={statusFilter}
           options={OppgaveStatusLabel}
         />
-        {window.appSettings.MILJO !== 'prod-gcp' && (
+        {
           <FilterDropdown
             handleChange={(filterValue: SakerFilter) => {
               handleFilter(setSakstypeFilter, filterValue)
@@ -179,7 +179,7 @@ export const Oppgaveliste: React.VFC = () => {
             value={sakstypeFilter}
             options={SakstypeFilterLabel}
           />
-        )}
+        }
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {
             handleFilter(setOmrådeFilter, filterValue)
@@ -225,20 +225,17 @@ export const Oppgaveliste: React.VFC = () => {
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
                       <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
-                        {kolonner
-                          // Toggle for at oppsett for bestillingsordning kun skal vises i labs
-                          .filter(({ key }) => (window.appSettings.MILJO !== 'prod-gcp' ? true : key !== 'TYPE'))
-                          .map(({ render, width, key }) => (
-                            <DataCell
-                              key={key}
-                              width={width}
-                              style={{
-                                padding: 'var(--navds-spacing-2) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
-                              }}
-                            >
-                              {render(oppgave)}
-                            </DataCell>
-                          ))}
+                        {kolonner.map(({ render, width, key }) => (
+                          <DataCell
+                            key={key}
+                            width={width}
+                            style={{
+                              padding: 'var(--navds-spacing-2) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
+                            }}
+                          >
+                            {render(oppgave)}
+                          </DataCell>
+                        ))}
                       </LinkRow>
                     ))}
                   </Table.Body>

@@ -7,6 +7,7 @@
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
         "status": "VEDTAK_FATTET",
+        "statusEndretDato": "2021-09-20T14:59:45",
         "vedtak": {
           "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"
@@ -21,6 +22,7 @@
         "område": ["kognisjon"],
         "søknadGjelder": "Kalender",
         "status": "TILDELT_SAKSBEHANDLER",
+        "statusEndretDato": "2021-08-18T13:55:45",
         "saksbehandler": "Silje Saksbehandler",
         "fagsystem": "HOTSAK",
         "saksid": "222222"
@@ -31,6 +33,7 @@
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
         "status": "AVVENTER_SAKSBEHANDLER",
+        "statusEndretDato": "2021-09-20T14:59:45",
         "fagsystem": "HOTSAK",
         "saksid": "333333"
       }
@@ -43,7 +46,23 @@
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
-        "status": "VEDTAK_FATTET",
+        "status": "FERDIGSTILT",
+        "statusEndretDato": "2021-09-20T14:59:45",
+        "saksbehandler": "Silje Saksbehandler",
+        "vedtak": {
+          "vedtaksdato": "2021-03-29",
+          "status": "INNVILGET"
+        },
+        "fagsystem": "HOTSAK",
+        "saksid": "111111"
+      },
+      {
+        "sakstype": "BESTILLING",
+        "mottattDato": "2021-09-19T13:55:45",
+        "område": ["bevegelse"],
+        "søknadGjelder": "Rullator",
+        "status": "AVVIST",
+        "statusEndretDato": "2021-09-20T14:59:45",
         "saksbehandler": "Silje Saksbehandler",
         "vedtak": {
           "vedtaksdato": "2021-03-29",
@@ -81,6 +100,7 @@
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
         "status": "FERDIGSTILT",
+        "statusEndretDato": "2021-09-20T14:59:45",
         "vedtak": {
           "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"
@@ -95,6 +115,7 @@
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
         "status": "VEDTAK_FATTET",
+        "statusEndretDato": "2021-09-20T14:59:45",
         "vedtak": {
           "vedtaksdato": "2021-03-29",
           "status": "INNVILGET"

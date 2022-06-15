@@ -12,7 +12,7 @@ import { capitalize } from '../utils/stringFormating'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgaveStatusLabel, Oppgavetype, Saksoversikt_Sak } from '../types/types.internal'
+import { OppgaveStatusLabel, OppgaveStatusType, Oppgavetype, Saksoversikt_Sak } from '../types/types.internal'
 
 const Container = styled.div`
   min-height: 300px;
@@ -82,10 +82,10 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
       render: (sak: Saksoversikt_Sak) => <TekstCell value={OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'} />,
     },
     {
-      key: 'VEDTAKSDATO',
-      name: 'Vedtaksdato',
-      width: 110,
-      render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.vedtak?.vedtaksdato)} />,
+      key: 'BEHANDLET_DATO',
+      name: 'Behandlet dato',
+      width: 130,
+      render: (sak: Saksoversikt_Sak) => <TekstCell value={(sak.status === OppgaveStatusType.FERDIGSTILT ||  sak.status === OppgaveStatusType.AVVIST || sak.status === OppgaveStatusType.VEDTAK_FATTET) ? formaterDato(sak.statusEndretDato): ''} />,
     },
     {
       key: 'SAKSBEHANDLER',

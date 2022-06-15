@@ -703,7 +703,11 @@
     },
     "greitÅViteFaktum": [
       {
-        "beskrivelse": "Bestiller er godkjent bestiller",
+        "beskrivelse": "Alle kravene til bestillingsordningen er oppfylt",
+        "type": "MERKNAD"
+      },
+      {
+        "beskrivelse": "Bestiller er vurdert som godkjent, i kraft av å være kommunal formidler",
         "type": "INFO"
       },
       {
@@ -796,6 +800,22 @@
       "epost": "kari.johnsen@trondheim.kommune.no"
     },
     "greitÅViteFaktum": [
+      {
+        "beskrivelse": "Alle kravene til bestillingsordningen er oppfylt",
+        "type": "MERKNAD"
+      },
+      {
+        "beskrivelse": "Bestiller er vurdert som godkjent, i kraft av å være kommunal formidler",
+        "type": "INFO"
+      },
+      {
+        "beskrivelse": "Alle hjelpemidlene er på bestillingsordningen",
+        "type": "INFO"
+      },
+      {
+        "beskrivelse": "Brukeren har fått hjelpemidler tidligere",
+        "type": "INFO"
+      },
       {
         "beskrivelse": "Personalia fra Folkeregisteret",
         "type": "INFO"

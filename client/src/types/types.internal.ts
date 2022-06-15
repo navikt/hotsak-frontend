@@ -381,6 +381,6 @@ export interface Saksoversikt_Sak {
   saksbehandler?: string
   fagsystem: string
   status: OppgaveStatusType
-  vedtak?: VedtakType
+  statusEndretDato: string
   enhet: Enhet[]
 }

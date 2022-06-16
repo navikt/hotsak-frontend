@@ -55,7 +55,7 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
       width: 192,
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
-          value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}
+          value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
           id={`kategori-${sak.saksid}`}
           minLength={20}
         />

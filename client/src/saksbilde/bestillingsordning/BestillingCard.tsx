@@ -155,7 +155,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
             onClick={() => setVisAvvisModal(true)}
             data-cy="btn-avvis-bestilling-modal"
           >
-            Avvis bestilling
+            Avvis
           </Knapp>
         </ButtonContainer>
         <OpprettOrdreModal

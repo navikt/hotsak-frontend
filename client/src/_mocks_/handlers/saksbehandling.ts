@@ -221,7 +221,7 @@ const saksbehandlingHandlers = [
 
     const vedtakHendelse = {
       id: '4',
-      hendelse: 'Bestilling ferdigstilt',
+      hendelse: 'Bestilling godkjent i Hotsak',
       opprettet: '2022-05-05T12:43:45',
       bruker: 'Silje Saksbehandler',
     }

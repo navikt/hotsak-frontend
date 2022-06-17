@@ -103,7 +103,7 @@ export const Oppgaveliste: React.VFC = () => {
     },
     {
       key: 'SØKNAD_OM',
-      name: 'Søknad om',
+      name: 'Beskrivelse',
       width: 192,
       render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />,
     },

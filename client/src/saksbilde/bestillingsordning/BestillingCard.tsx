@@ -7,7 +7,7 @@ import { Button, Tag } from '@navikt/ds-react'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato, norskTimestamp } from '../../utils/date'
+import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -147,7 +147,7 @@ export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) =
             onClick={() => setVisOpprettOrdreModal(true)}
             data-cy="btn-vis-opprett-ordre-modal"
           >
-            <span>Opprett ordre</span>
+            <span>Godkjenn</span>
           </Knapp>
           <Knapp
             variant="secondary"

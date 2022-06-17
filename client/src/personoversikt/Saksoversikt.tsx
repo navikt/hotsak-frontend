@@ -51,7 +51,7 @@ export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker 
     },
     {
       key: 'SØKNAD_OM',
-      name: 'Kategori',
+      name: 'Beskrivelse',
       width: 192,
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell

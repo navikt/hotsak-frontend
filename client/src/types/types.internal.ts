@@ -205,7 +205,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  [OppgaveStatusType.FERDIGSTILT, 'Ferdigstilt'],
+  [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
 ])
 

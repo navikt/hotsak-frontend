@@ -18,7 +18,7 @@ export enum amplitude_taxonomy {
   PERSONOVERSIKT = 'navigert til personoversikt',
   BESTILLING_STARTET_FRA_OPPGAVELISTE = 'bestilling startet fra oppgaveliste',
   BESTILLING_STARTET_FRA_BESTILLINGSBILDE = 'bestilling startet fra bestillingsbilde',
-  BESTILLING_FERDIGSTILT = 'ferdigstilt bestilling',
+  BESTILLING_FERDIGSTILT = 'godkjent bestilling',
   BESTILLING_AVVIST = 'avvist bestilling hotsak',
 }
 

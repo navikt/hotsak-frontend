@@ -6,12 +6,8 @@
         "mottattDato": "2021-09-19T13:55:45",
         "område": ["bevegelse"],
         "søknadGjelder": "Rullator",
-        "status": "VEDTAK_FATTET",
+        "status": "FERDIGSTILT",
         "statusEndretDato": "2021-09-20T14:59:45",
-        "vedtak": {
-          "vedtaksdato": "2021-03-29",
-          "status": "INNVILGET"
-        },
         "saksbehandler": "Silje Saksbehandler",
         "fagsystem": "HOTSAK",
         "saksid": "111111"
@@ -101,10 +97,6 @@
         "søknadGjelder": "Rullator",
         "status": "FERDIGSTILT",
         "statusEndretDato": "2021-09-20T14:59:45",
-        "vedtak": {
-          "vedtaksdato": "2021-03-29",
-          "status": "INNVILGET"
-        },
         "saksbehandler": "Silje Saksbehandler",
         "fagsystem": "HOTSAK",
         "saksid": "111111"

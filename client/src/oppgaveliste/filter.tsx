@@ -5,14 +5,6 @@ import { Select, Button } from '@navikt/ds-react'
 
 import { ButtonContainer } from '../felleskomponenter/Dialogboks'
 
-export enum TabType {
-  Alle = 'alle',
-  Mine = 'mine',
-  Ufordelte = 'ufordelte',
-  Ferdigstilte = 'ferdigstilte',
-  OverførtGosys = 'overførtGosys',
-}
-
 const FilterList = styled.div`
   margin: 1rem 1.5rem 0.5rem;
   white-space: nowrap;

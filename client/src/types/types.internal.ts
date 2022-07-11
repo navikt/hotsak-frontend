@@ -287,7 +287,7 @@ export enum SignaturType {
 
 export enum PersonInfoKilde {
   PDL = 'pdl',
-  MANUELL = 'manuell',
+  FORMIDLER = 'manuell',
 }
 
 export interface Produkt {

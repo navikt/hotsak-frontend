@@ -106,3 +106,4 @@ jobs:
           CLUSTER: labs-gcp
           RESOURCE: .nais/labs.yaml
           VAR: image=${{ env.IMAGE }}
+

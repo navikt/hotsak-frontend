@@ -12,7 +12,12 @@
         "antall": "8",
         "kategori": "Terskeleliminatorer og Kjøreramper",
         "beskrivelse": "Topro Terskeleliminator",
-        "tilleggsinfo": [],
+        "tilleggsinfo": [
+          {
+            "tittel": "Begrunnelse for antall",
+            "innholdsliste": ["Behov i flere etasjer"]
+          }
+        ],
         "tilbehør": []
       },
       {
@@ -127,7 +132,12 @@
         "antall": "8",
         "kategori": "Terskeleliminatorer og Kjøreramper",
         "beskrivelse": "Topro Terskeleliminator",
-        "tilleggsinfo": [],
+        "tilleggsinfo": [
+          {
+            "tittel": "Begrunnelse for antall",
+            "innholdsliste": ["Behov i flere rom"]
+          }
+        ],
         "tilbehør": []
       },
       {

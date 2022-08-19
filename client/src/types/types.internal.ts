@@ -297,6 +297,8 @@ export interface Produkt {
   produkturl: string
   artikkelurl: string
   posttittel: string
+  artikkelnavn: string
+  hmsnr: string
 }
 
 export enum Filter {

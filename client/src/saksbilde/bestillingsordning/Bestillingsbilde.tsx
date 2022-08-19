@@ -106,8 +106,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
                       <HjelpemiddelListe
                         tittel="Bestilling av hjelpemidler på bestillingsordningen"
                         forenkletVisning={true}
-                        hjelpemidler={sak.hjelpemidler}
-                        personinformasjon={sak.personinformasjon}
+                        sak={sak}
                       />
                     }
                   />

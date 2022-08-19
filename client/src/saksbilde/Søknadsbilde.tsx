@@ -105,11 +105,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                   <Route
                     path="/hjelpemidler"
                     element={
-                      <HjelpemiddelListe
-                        tittel="Søknad om hjelpemidler"
-                        hjelpemidler={sak.hjelpemidler}
-                        personinformasjon={sak.personinformasjon}
-                      />
+                      <HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak} />
                     }
                   />
                   <Route

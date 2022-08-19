@@ -2,6 +2,7 @@ import { isNumber } from '../utils/type'
 
 import type {
   AvvisBestilling,
+  EndreHjelpemiddelRequest,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
   Vedtaksgrunnlag,
@@ -145,4 +146,8 @@ export const putAvvisBestilling = async (saksnummer: string, tilbakemelding: Avv
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {
   return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
+}
+
+export const putEndreHjelpemiddel = async (saksnummer: string, endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+  return put(`${baseUrl}/api/bestilling/${saksnummer}`, endreHjelpemiddel)
 }

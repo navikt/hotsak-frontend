@@ -150,5 +150,7 @@ export type HMDBHentProduktQuery = {
     isokode: string
     avtaleposttittel?: string | null | undefined
     avtalepostnr?: string | null | undefined
+    artikkelnavn: string
+    hmsnr: string
   }>
 }

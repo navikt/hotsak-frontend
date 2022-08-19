@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-import { OppgaveStatusType, SakerFilter } from '../../types/types.internal'
+import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
@@ -212,8 +212,6 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json(response))
   }),
   rest.put('/api/bestilling/ferdigstill/:saksnummer', (req, res, ctx) => {
-    console.log('Ferdigstiller')
-
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 
@@ -248,6 +246,53 @@ const saksbehandlingHandlers = [
     saker[bestillingIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+  }),
+  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', (req, res, ctx) => {
+    const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const {
+      hmsNr: hmsNr,
+      hmsBeskrivelse: hmsBeskrivelse,
+      endretHmsNr: endretHmsNr,
+      endretHmsBeskrivelse: endretHmsBeskrivelse,
+      begrunnelse: endretBegrunnelse,
+      begrunnelseFritekst: endretBegrunnelseFritekst,
+    } = req.body
+    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsNr)
+
+    const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
+
+    if (hmsNr === endretHmsNr) {
+      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+        ...hjm,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        endretHjelpemiddel: undefined,
+      }
+    } else {
+      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+        ...hjm,
+        endretHjelpemiddel: {
+          hmsNr: endretHmsNr,
+          begrunnelse: endretBegrunnelse,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          begrunnelseFritekst: endretBegrunnelseFritekst,
+        },
+      }
+    }
+
+    const endreHjmHendelse = {
+      id: sakshistorikk[historikkIdx]['hendelser'].length + 1,
+      hendelse: 'Endret artikkelnummer hjelpemiddel',
+      detaljer: `Nytt: ${endretHmsNr} ${endretHmsBeskrivelse};Opprinnelig: ${hmsNr} ${hmsBeskrivelse};Begrunnelse: "${endretBegrunnelseFritekst}"`,
+      opprettet: '2022-05-05T12:43:45',
+      bruker: 'Silje Saksbehandler',
+    }
+    sakshistorikk[historikkIdx]['hendelser'].push(endreHjmHendelse)
+
+    return res(ctx.status(200), ctx.json({}))
   }),
 ]
 

@@ -251,20 +251,11 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json({}))
   }),
   rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', (req, res, ctx) => {
-    console.log('saksnummer', req.params.saksnummer)
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    console.log('bestillingIdx', bestillingIdx)
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
     const { hmsnr, endretHmsnr, endretBeskrivelse, endretBegrunnelse, endretBegrunnelseFritekst } = req.body
-
-    console.log('req.body', req.body)
-
-    console.log('hjelpemidler', saker[bestillingIdx]['hjelpemidler'])
-    console.log('hmsnr', hmsnr)
     const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsnr)
-
-    console.log('hjelpemiddelIdx', hjelpemiddelIdx)
 
     const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
     saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
@@ -277,10 +268,8 @@ const saksbehandlingHandlers = [
       },
     }
 
-    console.log('saker', saker[bestillingIdx])
-
     const endreHjmHendelse = {
-      id: '6',
+      id: sakshistorikk[historikkIdx]['hendelser'].length + 1,
       hendelse: 'Hjelpemiddel endret',
       detaljer: `Byttet fra ${hmsnr} til ${endretHmsnr}`,
       opprettet: '2022-05-05T12:43:45',

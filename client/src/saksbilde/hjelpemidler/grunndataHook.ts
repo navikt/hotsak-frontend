@@ -25,7 +25,7 @@ export function useGrunndata(hmsnummer?: string) {
   useEffect(() => {
     ;(async () => {
       try {
-        if (!hmsnummer) {
+        if (!hmsnummer || hmsnummer.length !== 6) {
           setProdukt(null)
         } else {
           const data = await request<HMDBHentProduktQuery, HMDBHentProduktQueryVariables>(

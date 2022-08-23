@@ -1,6 +1,7 @@
 import { rest } from 'msw'
 
-import { OppgaveStatusType, SakerFilter } from '../../types/types.internal'
+import { EndreHjelpemiddel } from '../../saksbilde/hjelpemidler/EndreHjelpemiddel'
+import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
@@ -246,6 +247,46 @@ const saksbehandlingHandlers = [
 
     saker[bestillingIdx]['status'] = 'FERDIGSTILT'
     saker[bestillingIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
+
+    return res(ctx.status(200), ctx.json({}))
+  }),
+  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', (req, res, ctx) => {
+    console.log('saksnummer', req.params.saksnummer)
+    const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
+    console.log('bestillingIdx', bestillingIdx)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+
+    const { hmsnr, endretHmsnr, endretBeskrivelse, endretBegrunnelse, endretBegrunnelseFritekst } = req.body
+
+    console.log('req.body', req.body)
+
+    console.log('hjelpemidler', saker[bestillingIdx]['hjelpemidler'])
+    console.log('hmsnr', hmsnr)
+    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsnr)
+
+    console.log('hjelpemiddelIdx', hjelpemiddelIdx)
+
+    const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
+    saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+      ...hjm,
+      endretHjelpemiddel: {
+        hmsnr: endretHmsnr,
+        beskrivelse: endretBeskrivelse,
+        begrunnelse: endretBegrunnelse,
+        begrunnelseFritekst: endretBegrunnelseFritekst,
+      },
+    }
+
+    console.log('saker', saker[bestillingIdx])
+
+    const endreHjmHendelse = {
+      id: '6',
+      hendelse: 'Hjelpemiddel endret',
+      detaljer: `Byttet fra ${hmsnr} til ${endretHmsnr}`,
+      opprettet: '2022-05-05T12:43:45',
+      bruker: 'Silje Saksbehandler',
+    }
+    sakshistorikk[historikkIdx]['hendelser'].push(endreHjmHendelse)
 
     return res(ctx.status(200), ctx.json({}))
   }),

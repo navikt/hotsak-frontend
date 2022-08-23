@@ -16,6 +16,7 @@ interface HjelpemiddelListeProps {
   personinformasjon: Personinfo
   tittel: string
   forenkletVisning?: boolean
+  saksid: string
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
@@ -34,6 +35,7 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({
   hjelpemidler,
   personinformasjon,
   forenkletVisning = false,
+  saksid,
 }) => {
   return (
     <>
@@ -48,6 +50,7 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({
               hjelpemiddel={hjelpemiddel}
               personinformasjon={personinformasjon}
               forenkletVisning={forenkletVisning}
+              saksid={saksid}
             />
           )
         })}

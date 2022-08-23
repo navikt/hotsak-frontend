@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useSWRConfig } from 'swr'
 
 import { Collapse, Expand, People, PeopleFilled, SaveFile } from '@navikt/ds-icons'
 import { Button, Link, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
+import { putEndreHjelpemiddel } from '../../io/http'
 import { capitalize } from '../../utils/stringFormating'
 
 import { Rad, Kolonne } from '../../felleskomponenter/Flex'
@@ -12,7 +14,14 @@ import { Kvinneikon } from '../../felleskomponenter/ikoner/Kvinneikon'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { HjelpemiddelType, Personinfo, Produkt } from '../../types/types.internal'
+import {
+  EndreHjelpemiddelRequest,
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+  HjelpemiddelType,
+  Personinfo,
+  Produkt,
+} from '../../types/types.internal'
 import { Utlevert } from './Utlevert'
 import { useGrunndata } from './grunndataHook'
 
@@ -72,20 +81,33 @@ interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
   personinformasjon: Personinfo
   forenkletVisning: boolean
+  saksid: string
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon, forenkletVisning }) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
+  hjelpemiddel,
+  personinformasjon,
+  forenkletVisning,
+  saksid,
+}) => {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
-  const [endreBegrunnelse, setEndreBegrunnelse] = useState('')
+  const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
 
-  const [isProduktendringLagret, setIsProduktendringLagret] = useState(false)
-  const [lagretProduktendringBegrunnelse, setLagretProduktendringBegrunnelse] = useState('')
-  const [lagretEndreProdukt, setLagretEndreProdukt] = useState<Produkt | null>(null)
-
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
-  const endreProdukt = useGrunndata(endreProduktHmsnr)
+  const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsnr)
+
+  const { mutate } = useSWRConfig()
+
+  const endreHjelpemiddel = (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+    putEndreHjelpemiddel(saksid, endreHjelpemiddel)
+      .catch(() => console.log('error endre hjelpemiddel'))
+      .then(() => {
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
+      })
+  }
 
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
@@ -108,29 +130,26 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
             </Kolonne>
           </Rad>
           <Rad>{produkt && produkt.posttittel}</Rad>
-          {isProduktendringLagret && lagretEndreProdukt && (
+          {endretProdukt && (
             <Rad>
-              <strong>{lagretEndreProdukt.hmsnr}</strong>
-              <HMSLenke href={lagretEndreProdukt.artikkelurl} target="_blank">
-                {lagretEndreProdukt.artikkelnavn}
+              <strong>{endretProdukt.hmsnr}</strong>
+              {/* TODO håndter manglende URL */}
+              <HMSLenke href={endretProdukt.artikkelurl} target="_blank">
+                {endretProdukt.artikkelnavn}
               </HMSLenke>
             </Rad>
           )}
           <Rad>
-            <strong style={{ textDecoration: isProduktendringLagret ? 'line-through' : '' }}>
-              {hjelpemiddel.hmsnr}
-            </strong>
+            <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
             {produkt ? (
               <HMSLenke href={produkt.artikkelurl} target="_blank">
-                <div style={{ textDecoration: isProduktendringLagret ? 'line-through' : '' }}>
-                  {hjelpemiddel.beskrivelse}
-                </div>
+                <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
               </HMSLenke>
             ) : (
               <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
             )}
           </Rad>
-          {isProduktendringLagret && (
+          {hjelpemiddel.endretHjelpemiddel && (
             <Rad style={{ marginTop: '.5rem' }}>
               <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
                 <PersonikonFilled width={22} height={22} />
@@ -139,7 +158,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                 <Rad>
                   <strong>Byttet ut av saksbehandler, begrunnelse:</strong>
                 </Rad>
-                <Rad>{`"${lagretProduktendringBegrunnelse}"`}</Rad>
+                <Rad>{EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}</Rad>
               </div>
             </Rad>
           )}
@@ -249,7 +268,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                   <Rad>
                     <Etikett>Beskrivelse</Etikett>
                   </Rad>
-                  <Rad style={{ flexGrow: '1', alignContent: 'center' }}>{endreProdukt?.artikkelnavn ?? ''}</Rad>
+                  <Rad style={{ flexGrow: '1', alignContent: 'center' }}>{endretProdukt?.artikkelnavn ?? ''}</Rad>
                 </Kolonne>
               </Rad>
               <Rad style={{ marginTop: '1rem' }}>
@@ -257,14 +276,20 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                   size="small"
                   legend="Begrunnelse for å endre hjelpemiddel:"
                   onChange={(val) => setEndreBegrunnelse(val)}
-                  value={endreBegrunnelse}
+                  value={endreBegrunnelse ?? ''}
                 >
-                  <Radio value="Endring i rammeavtale">Endring i rammeavtale</Radio>
-                  <Radio value="Gjenbruk">Gjenbruk</Radio>
-                  <Radio value="ANNET">Annet (begrunn)</Radio>
+                  <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
+                    {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
+                  </Radio>
+                  <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
+                    {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
+                  </Radio>
+                  <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
+                    {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
+                  </Radio>
                 </RadioGroup>
               </Rad>
-              {endreBegrunnelse == 'ANNET' && (
+              {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
                 <Rad style={{ marginTop: '1rem', paddingRight: '1rem', maxWidth: '36rem' }}>
                   <TextField
                     label="Begrunn endringen"
@@ -281,13 +306,16 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
                   size="small"
                   style={{ marginRight: '1rem' }}
                   onClick={() => {
-                    if (endreProdukt != null && endreBegrunnelse) {
+                    if (endretProdukt != null && endreBegrunnelse) {
                       setIsProduktendringLagret(true)
                       setVisEndreProdukt(false)
-                      setLagretProduktendringBegrunnelse(
-                        endreBegrunnelse === 'ANNET' ? endreBegrunnelseFritekst : endreBegrunnelse
-                      )
-                      setLagretEndreProdukt(endreProdukt)
+                      endreHjelpemiddel({
+                        hmsnr: hjelpemiddel.hmsnr,
+                        endretHmsnr: endretProdukt?.hmsnr,
+                        endretBeskrivelse: endretProdukt?.artikkelnavn,
+                        endretBegrunnelse: endreBegrunnelse,
+                        endretBegrunnelseFritekst: endreBegrunnelseFritekst,
+                      })
                     }
                   }}
                 >

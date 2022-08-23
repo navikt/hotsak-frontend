@@ -117,6 +117,14 @@ export interface HjelpemiddelType {
   beskrivelse: string
   tilleggsinfo: Tilleggsinfo[]
   tilbehør: Tilbehør[]
+  endretHjelpemiddel?: EndretHjelpemiddel
+}
+
+export interface EndretHjelpemiddel {
+  hmsnr: string
+  beskrivelse: string
+  begrunnelse: EndretHjelpemiddelBegrunnelse
+  begrunnelseFritekst?: string
 }
 
 export interface UtlevertInfo {
@@ -386,3 +394,23 @@ export interface Saksoversikt_Sak {
   statusEndretDato: string
   enhet: Enhet[]
 }
+
+export interface EndreHjelpemiddelRequest {
+  hmsnr: string
+  endretHmsnr: string
+  endretBeskrivelse: string
+  endretBegrunnelse: EndretHjelpemiddelBegrunnelse
+  endretBegrunnelseFritekst?: string
+}
+
+export enum EndretHjelpemiddelBegrunnelse {
+  RAMMEAVTALE = 'RAMMEAVTALE',
+  GJENBRUK = 'GJENBRUK',
+  ANNET = 'ANNET',
+}
+
+export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
+  [EndretHjelpemiddelBegrunnelse.RAMMEAVTALE, 'Endring i rammeavtale'],
+  [EndretHjelpemiddelBegrunnelse.GJENBRUK, 'Gjenbruk'],
+  [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
+])

@@ -99,7 +99,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hms
                 if (endretProdukt != null && endreBegrunnelse) {
                   onLagre({
                     hmsNr: hmsNr,
-                    endretHmsNr: endretProdukt?.hmsnr,
+                    endretHmsNr: endreProduktHmsnr,
                     begrunnelse: endreBegrunnelse,
                     begrunnelseFritekst: endreBegrunnelseFritekst,
                   })

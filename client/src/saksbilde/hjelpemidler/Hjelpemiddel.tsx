@@ -156,7 +156,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
                 <Rad>
                   <strong>Byttet ut av saksbehandler, begrunnelse:</strong>
                 </Rad>
-                <Rad>{EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}</Rad>
+                <Rad>
+                  {hjelpemiddel.endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                    ? hjelpemiddel.endretHjelpemiddel.begrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}
+                </Rad>
               </div>
             </Rad>
           )}

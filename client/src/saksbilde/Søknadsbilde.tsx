@@ -113,6 +113,7 @@ const SaksbildeContent: React.VFC = React.memo(() => {
                       tittel="Søknad om hjelpemidler"
                       hjelpemidler={sak.hjelpemidler}
                       personinformasjon={sak.personinformasjon}
+                      saksid={sak.saksid}
                     />
                   </Route>
                   <Route path={`${path}/bruker`}>

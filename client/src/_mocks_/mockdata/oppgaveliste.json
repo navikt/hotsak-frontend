@@ -48,6 +48,30 @@
     ]
   },
   {
+    "sakstype": "BESTILLING",
+    "saksid": "223345",
+    "søknadOm": "Bestilling av: Endring",
+    "mottattDato": "2021-09-24T13:55:45",
+    "formidlerNavn": "Bjarne Bestillersen",
+    "personinformasjon": {
+      "fnr": "13044238651",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Beate",
+      "etternavn": "Storebø",
+      "poststed": "Trondheim",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": { "navn": "Silje Saksbehandler" },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
     "sakstype": "SØKNAD",
     "saksid": "111111",
     "søknadOm": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",

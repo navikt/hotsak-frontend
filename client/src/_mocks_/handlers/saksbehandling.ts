@@ -1,6 +1,5 @@
 import { rest } from 'msw'
 
-import { EndreHjelpemiddel } from '../../saksbilde/hjelpemidler/EndreHjelpemiddel'
 import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
@@ -263,11 +262,14 @@ const saksbehandlingHandlers = [
     const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsNr)
 
     const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
+
     saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
       ...hjm,
       endretHjelpemiddel: {
         hmsNr: endretHmsNr,
         begrunnelse: endretBegrunnelse,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         begrunnelseFritekst: endretBegrunnelseFritekst,
       },
     }

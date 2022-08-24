@@ -121,8 +121,7 @@ export interface HjelpemiddelType {
 }
 
 export interface EndretHjelpemiddel {
-  hmsnr: string
-  beskrivelse: string
+  hmsNr: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
 }

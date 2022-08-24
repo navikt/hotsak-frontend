@@ -95,7 +95,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
   const { mutate } = useSWRConfig()
 
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
-  const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsnr)
+  const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsNr)
 
   const endreHjelpemiddel = (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     putEndreHjelpemiddel(saksid, endreHjelpemiddel)

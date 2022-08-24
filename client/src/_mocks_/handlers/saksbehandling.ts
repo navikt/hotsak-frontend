@@ -255,20 +255,18 @@ const saksbehandlingHandlers = [
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
     const {
-      hmsnr,
-      endretHmsnr,
-      endretBeskrivelse,
+      hmsNr: hmsNr,
+      endretHmsNr: endretHmsNr,
       begrunnelse: endretBegrunnelse,
       begrunnelseFritekst: endretBegrunnelseFritekst,
     } = req.body
-    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsnr)
+    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsNr)
 
     const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
     saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
       ...hjm,
       endretHjelpemiddel: {
-        hmsnr: endretHmsnr,
-        beskrivelse: endretBeskrivelse,
+        hmsNr: endretHmsNr,
         begrunnelse: endretBegrunnelse,
         begrunnelseFritekst: endretBegrunnelseFritekst,
       },
@@ -277,7 +275,7 @@ const saksbehandlingHandlers = [
     const endreHjmHendelse = {
       id: sakshistorikk[historikkIdx]['hendelser'].length + 1,
       hendelse: 'Hjelpemiddel endret',
-      detaljer: `Byttet fra ${hmsnr} til ${endretHmsnr}`,
+      detaljer: `Byttet fra ${hmsNr} til ${endretHmsNr}`,
       opprettet: '2022-05-05T12:43:45',
       bruker: 'Silje Saksbehandler',
     }

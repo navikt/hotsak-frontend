@@ -8,6 +8,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
+      - endre-bestilling-mock
 env:
   IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
 
@@ -78,12 +79,12 @@ jobs:
         #  docker push ${{ env.IMAGE }}:${{ needs.set_version.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - uses: nais/deploy/actions/deploy@v1
-      #   env:
-      #     APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-      #     CLUSTER: dev-gcp
-      #     RESOURCE: .nais/dev.yaml
-      #     VAR: image=${{ env.IMAGE }}
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dev.yaml
+          VAR: image=${{ env.IMAGE }}
       # - name: post-deploy
       #   uses: navikt/digihot-deploy/actions/post-deploy@v2
       #   env:
@@ -98,11 +99,11 @@ jobs:
       #     body: ${{ env.CHANGE_LOG }}
       #     draft: true
       #     prerelease: false
-      - name: deploy to labs
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: labs-gcp
-          RESOURCE: .nais/labs.yaml
-          VAR: image=${{ env.IMAGE }}
+      # - name: deploy to labs
+      #   uses: nais/deploy/actions/deploy@v1
+      #   env:
+      #     APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+      #     CLUSTER: labs-gcp
+      #     RESOURCE: .nais/labs.yaml
+      #     VAR: image=${{ env.IMAGE }}
 

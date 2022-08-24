@@ -396,9 +396,8 @@ export interface Saksoversikt_Sak {
 }
 
 export interface EndreHjelpemiddelRequest {
-  hmsnr: string
-  endretHmsnr: string
-  endretBeskrivelse: string
+  hmsNr: string
+  endretHmsNr: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
 }

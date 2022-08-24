@@ -242,7 +242,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
       </Rad>
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
-          hmsnr={hjelpemiddel.hmsnr}
+          hmsNr={hjelpemiddel.hmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}
         />

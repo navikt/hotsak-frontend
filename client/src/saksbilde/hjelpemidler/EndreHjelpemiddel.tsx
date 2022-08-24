@@ -14,7 +14,7 @@ import {
 import { useGrunndata } from './grunndataHook'
 
 interface EndreHjelpemiddelProps {
-  hmsnr: string
+  hmsNr: string
   onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void // Todo, fix type
   onAvbryt: () => void
 }
@@ -23,7 +23,7 @@ const EtikettKolonne: React.FC = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
-export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsnr, onLagre, onAvbryt }) => {
+export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hmsNr, onLagre, onAvbryt }) => {
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
@@ -98,9 +98,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsnr, onL
               onClick={() => {
                 if (endretProdukt != null && endreBegrunnelse) {
                   onLagre({
-                    hmsnr: hmsnr,
-                    endretHmsnr: endretProdukt?.hmsnr,
-                    endretBeskrivelse: endretProdukt?.artikkelnavn,
+                    hmsNr: hmsNr,
+                    endretHmsNr: endretProdukt?.hmsnr,
                     begrunnelse: endreBegrunnelse,
                     begrunnelseFritekst: endreBegrunnelseFritekst,
                   })

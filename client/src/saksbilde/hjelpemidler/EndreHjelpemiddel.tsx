@@ -101,8 +101,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsnr, onL
                     hmsnr: hmsnr,
                     endretHmsnr: endretProdukt?.hmsnr,
                     endretBeskrivelse: endretProdukt?.artikkelnavn,
-                    endretBegrunnelse: endreBegrunnelse,
-                    endretBegrunnelseFritekst: endreBegrunnelseFritekst,
+                    begrunnelse: endreBegrunnelse,
+                    begrunnelseFritekst: endreBegrunnelseFritekst,
                   })
                   //setVisEndreProdukt(false)
                 }

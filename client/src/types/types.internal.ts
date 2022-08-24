@@ -399,8 +399,8 @@ export interface EndreHjelpemiddelRequest {
   hmsnr: string
   endretHmsnr: string
   endretBeskrivelse: string
-  endretBegrunnelse: EndretHjelpemiddelBegrunnelse
-  endretBegrunnelseFritekst?: string
+  begrunnelse: EndretHjelpemiddelBegrunnelse
+  begrunnelseFritekst?: string
 }
 
 export enum EndretHjelpemiddelBegrunnelse {

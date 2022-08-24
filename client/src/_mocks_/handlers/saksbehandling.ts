@@ -254,7 +254,13 @@ const saksbehandlingHandlers = [
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
-    const { hmsnr, endretHmsnr, endretBeskrivelse, endretBegrunnelse, endretBegrunnelseFritekst } = req.body
+    const {
+      hmsnr,
+      endretHmsnr,
+      endretBeskrivelse,
+      begrunnelse: endretBegrunnelse,
+      begrunnelseFritekst: endretBegrunnelseFritekst,
+    } = req.body
     const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsnr)
 
     const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]

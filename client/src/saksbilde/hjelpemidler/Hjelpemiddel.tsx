@@ -130,7 +130,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
           <Rad>{produkt && produkt.posttittel}</Rad>
           {endretProdukt && (
             <Rad>
-              <strong>{endretProdukt.hmsnr}</strong>
+              <strong>{hjelpemiddel.endretHjelpemiddel?.hmsNr}</strong>
               {/* TODO håndter manglende URL */}
               <HMSLenke href={endretProdukt.artikkelurl} target="_blank">
                 {endretProdukt.artikkelnavn}

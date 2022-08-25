@@ -109,12 +109,7 @@ const SaksbildeContent: React.VFC = React.memo(() => {
               <Content>
                 <Switch>
                   <Route path={`${path}/hjelpemidler`}>
-                    <HjelpemiddelListe
-                      tittel="Søknad om hjelpemidler"
-                      hjelpemidler={sak.hjelpemidler}
-                      personinformasjon={sak.personinformasjon}
-                      saksid={sak.saksid}
-                    />
+                    <HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak} />
                   </Route>
                   <Route path={`${path}/bruker`}>
                     <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />

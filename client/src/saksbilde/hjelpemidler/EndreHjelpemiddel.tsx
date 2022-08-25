@@ -112,7 +112,6 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                       ? endreBegrunnelseFritekst
                       : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse)
                   if (hmsTittel !== endretProdukt.isotittel) {
-                    console.log('logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)')
                     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)
                   }
                   onLagre({

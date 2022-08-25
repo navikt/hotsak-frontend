@@ -107,6 +107,9 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
     setVisEndreProdukt(false)
   }
 
+  const isoTittel = endretProdukt ? endretProdukt.isotittel : produkt ? produkt.isotittel : hjelpemiddel.kategori
+  const postTittel = endretProdukt ? endretProdukt.posttittel : produkt?.posttittel
+
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
       <Rad>
@@ -124,10 +127,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{produkt ? produkt?.isotittel : hjelpemiddel.kategori}</Etikett>
+              <Etikett>{isoTittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{produkt && produkt.posttittel}</Rad>
+          <Rad>{postTittel && postTittel}</Rad>
           {endretProdukt && (
             <Rad>
               <strong>{hjelpemiddel.endretHjelpemiddel?.hmsNr}</strong>

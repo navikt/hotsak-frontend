@@ -37,6 +37,7 @@ export const initAmplitude = (): void => {
 
 export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any): void {
   if (process.env.NODE_ENV === 'test') {
+    console.log('amplitude NODE_ENV === test. skipping')
     return
   }
   setTimeout(() => {

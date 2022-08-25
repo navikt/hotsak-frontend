@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { SaveFile } from '@navikt/ds-icons'
 import { Button, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett } from '../../felleskomponenter/typografi'
@@ -15,6 +17,7 @@ import { useGrunndata } from './grunndataHook'
 
 interface EndreHjelpemiddelProps {
   hmsNr: string
+  hmsTittel: string
   hmsBeskrivelse: string
   onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void // Todo, fix type
   onAvbryt: () => void
@@ -26,6 +29,7 @@ const EtikettKolonne: React.FC = ({ children }) => {
 
 export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   hmsNr: hmsNr,
+  hmsTittel: hmsTittel,
   hmsBeskrivelse: hmsBeskrivelse,
   onLagre,
   onAvbryt,
@@ -107,6 +111,9 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                     endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
                       ? endreBegrunnelseFritekst
                       : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse)
+                  if (hmsTittel !== endretProdukt.isotittel) {
+                    logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)
+                  }
                   onLagre({
                     hmsNr: hmsNr,
                     hmsBeskrivelse: hmsBeskrivelse,
@@ -115,7 +122,6 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                     begrunnelse: endreBegrunnelse,
                     begrunnelseFritekst: begrunnelseFritekst,
                   })
-                  //setVisEndreProdukt(false)
                 }
               }}
             >

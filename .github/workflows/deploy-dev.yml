@@ -85,25 +85,25 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
           VAR: image=${{ env.IMAGE }}
-      # - name: post-deploy
-      #   uses: navikt/digihot-deploy/actions/post-deploy@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: draft release
-      #   uses: actions/create-release@latest
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ env.VERSION_TAG }}
-      #     release_name: ${{ env.APPLICATION }} ${{ env.VERSION_TAG }}
-      #     body: ${{ env.CHANGE_LOG }}
-      #     draft: true
-      #     prerelease: false
-      # - name: deploy to labs
-      #   uses: nais/deploy/actions/deploy@v1
-      #   env:
-      #     APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-      #     CLUSTER: labs-gcp
-      #     RESOURCE: .nais/labs.yaml
-      #     VAR: image=${{ env.IMAGE }}
+      - name: post-deploy
+        uses: navikt/digihot-deploy/actions/post-deploy@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: draft release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION_TAG }}
+          release_name: ${{ env.APPLICATION }} ${{ env.VERSION_TAG }}
+          body: ${{ env.CHANGE_LOG }}
+          draft: true
+          prerelease: false
+      - name: deploy to labs
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: .nais/labs.yaml
+          VAR: image=${{ env.IMAGE }}
 

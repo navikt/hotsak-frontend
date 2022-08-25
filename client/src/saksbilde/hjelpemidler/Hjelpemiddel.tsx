@@ -19,8 +19,10 @@ import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
   HjelpemiddelType,
+  OppgaveStatusType,
   Personinfo,
   Produkt,
+  Sak,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
@@ -80,17 +82,13 @@ interface RangeringProps {
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
-  personinformasjon: Personinfo
   forenkletVisning: boolean
-  saksid: string
+  sak: Sak
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
-  hjelpemiddel,
-  personinformasjon,
-  forenkletVisning,
-  saksid,
-}) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
+  const { personinformasjon, status, saksid } = sak
+
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
 
@@ -238,7 +236,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
             </Button>
           </Rad>
         )}
-        {forenkletVisning && !visEndreProdukt && (
+        {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && forenkletVisning && !visEndreProdukt && (
           <Rad style={{ justifyContent: 'flex-end' }}>
             <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(true)}>
               Endre
@@ -250,6 +248,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
           hmsNr={hjelpemiddel.hmsnr}
+          hmsBeskrivelse={hjelpemiddel.beskrivelse}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}
         />

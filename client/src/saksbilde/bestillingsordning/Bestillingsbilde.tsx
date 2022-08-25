@@ -110,9 +110,7 @@ const BestillingsbildeContent: React.VFC = React.memo(() => {
                     <HjelpemiddelListe
                       tittel="Bestilling av hjelpemidler på bestillingsordningen"
                       forenkletVisning={true}
-                      hjelpemidler={sak.hjelpemidler}
-                      personinformasjon={sak.personinformasjon}
-                      saksid={sak.saksid}
+                      sak={sak}
                     />
                   </Route>
                   <Route path={`${path}/bruker`}>

@@ -255,7 +255,9 @@ const saksbehandlingHandlers = [
 
     const {
       hmsNr: hmsNr,
+      hmsBeskrivelse: hmsBeskrivelse,
       endretHmsNr: endretHmsNr,
+      endretHmsBeskrivelse: endretHmsBeskrivelse,
       begrunnelse: endretBegrunnelse,
       begrunnelseFritekst: endretBegrunnelseFritekst,
     } = req.body
@@ -276,8 +278,8 @@ const saksbehandlingHandlers = [
 
     const endreHjmHendelse = {
       id: sakshistorikk[historikkIdx]['hendelser'].length + 1,
-      hendelse: 'Hjelpemiddel endret',
-      detaljer: `Byttet fra ${hmsNr} til ${endretHmsNr}`,
+      hendelse: 'Endret artikkelnummer hjelpemiddel',
+      detaljer: `Nytt: ${endretHmsNr} ${endretHmsBeskrivelse};Opprinnelig: ${hmsNr} ${hmsBeskrivelse};Begrunnelse: "${endretBegrunnelseFritekst}"`,
       opprettet: '2022-05-05T12:43:45',
       bruker: 'Silje Saksbehandler',
     }

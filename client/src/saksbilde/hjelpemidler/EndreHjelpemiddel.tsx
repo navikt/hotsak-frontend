@@ -15,6 +15,7 @@ import { useGrunndata } from './grunndataHook'
 
 interface EndreHjelpemiddelProps {
   hmsNr: string
+  hmsBeskrivelse: string
   onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void // Todo, fix type
   onAvbryt: () => void
 }
@@ -23,7 +24,12 @@ const EtikettKolonne: React.FC = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
-export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hmsNr, onLagre, onAvbryt }) => {
+export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
+  hmsNr: hmsNr,
+  hmsBeskrivelse: hmsBeskrivelse,
+  onLagre,
+  onAvbryt,
+}) => {
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
@@ -37,14 +43,14 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hms
         <EtikettKolonne></EtikettKolonne>
         <Kolonne>
           <Rad>
-            <Etikett>Endre hjelpemiddel</Etikett>
+            <Etikett>Endre artikkelnummer</Etikett>
           </Rad>
-          <Rad>Her kan du erstatte hjelpemiddelet begrunner har lagt inn med et tilsvarende produkt.</Rad>
+          <Rad>Her kan du erstatte artikkelnummeret begrunner har lagt inn.</Rad>
           <Rad style={{ marginTop: '1rem' }}>
             <Kolonne style={{ width: '10rem', maxWidth: '10rem' }}>
               <Rad style={{ width: '8rem' }}>
                 <TextField
-                  label="Oppgi HMS-nr"
+                  label="Artikkelnummer"
                   size="small"
                   maxLength={6}
                   onChange={(event) => {
@@ -64,7 +70,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hms
           <Rad style={{ marginTop: '1rem' }}>
             <RadioGroup
               size="small"
-              legend="Begrunnelse for å endre hjelpemiddel:"
+              legend="Begrunnelse for å endre artikkelnummer:"
               onChange={(val) => setEndreBegrunnelse(val)}
               value={endreBegrunnelse ?? ''}
             >
@@ -97,11 +103,17 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({ hmsNr: hms
               style={{ marginRight: '1rem' }}
               onClick={() => {
                 if (endretProdukt != null && endreBegrunnelse) {
+                  const begrunnelseFritekst =
+                    endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                      ? endreBegrunnelseFritekst
+                      : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse)
                   onLagre({
                     hmsNr: hmsNr,
+                    hmsBeskrivelse: hmsBeskrivelse,
                     endretHmsNr: endreProduktHmsnr,
+                    endretHmsBeskrivelse: endretProdukt.artikkelnavn,
                     begrunnelse: endreBegrunnelse,
-                    begrunnelseFritekst: endreBegrunnelseFritekst,
+                    begrunnelseFritekst: begrunnelseFritekst,
                   })
                   //setVisEndreProdukt(false)
                 }

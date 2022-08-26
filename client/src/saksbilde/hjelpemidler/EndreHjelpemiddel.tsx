@@ -37,8 +37,31 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
+  const [submitAttempt, setSubmitAttempt] = useState(false)
 
   const endretProdukt = useGrunndata(endreProduktHmsnr)
+
+  const errorEndretProdukt = () => {
+    if (!endretProdukt) {
+      return 'Du må oppgi et gyldig HMS-nr'
+    }
+  }
+
+  const errorBegrunnelseFritekst = () => {
+    if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length === 0) {
+      return 'Du må fylle inn en begrunnelse'
+    }
+  }
+
+  const errorBegrunnelse = () => {
+    if (!endreBegrunnelse) {
+      return 'Du må velge en begrunnelse'
+    }
+  }
+
+  const validationError = () => {
+    return errorEndretProdukt() || errorBegrunnelseFritekst() || errorBegrunnelse()
+  }
 
   return (
     <div style={{ background: '#F1F1F1', paddingBottom: '1rem' }}>
@@ -61,6 +84,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                     setEndreProduktHmsnr(event.target.value)
                   }}
                   value={endreProduktHmsnr}
+                  error={submitAttempt && errorEndretProdukt()}
                 />
               </Rad>
             </Kolonne>
@@ -77,6 +101,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               legend="Begrunnelse for å endre artikkelnummer:"
               onChange={(val) => setEndreBegrunnelse(val)}
               value={endreBegrunnelse ?? ''}
+              error={submitAttempt && errorBegrunnelse()}
             >
               <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
                 {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
@@ -97,6 +122,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                 description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også blir brukt i videreutvikling av løsningen."
                 value={endreBegrunnelseFritekst}
                 onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
+                error={submitAttempt && errorBegrunnelseFritekst()}
               />
             </Rad>
           )}
@@ -106,23 +132,24 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               size="small"
               style={{ marginRight: '1rem' }}
               onClick={() => {
-                if (endretProdukt != null && endreBegrunnelse) {
+                if (!validationError()) {
                   const begrunnelseFritekst =
                     endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
                       ? endreBegrunnelseFritekst
-                      : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse)
-                  if (hmsTittel !== endretProdukt.isotittel) {
+                      : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
+                  if (hmsTittel !== endretProdukt!.isotittel) {
                     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)
                   }
                   onLagre({
                     hmsNr: hmsNr,
                     hmsBeskrivelse: hmsBeskrivelse,
                     endretHmsNr: endreProduktHmsnr,
-                    endretHmsBeskrivelse: endretProdukt.artikkelnavn,
-                    begrunnelse: endreBegrunnelse,
+                    endretHmsBeskrivelse: endretProdukt!.artikkelnavn,
+                    begrunnelse: endreBegrunnelse!,
                     begrunnelseFritekst: begrunnelseFritekst,
                   })
                 }
+                setSubmitAttempt(true)
               }}
             >
               <SaveFile />

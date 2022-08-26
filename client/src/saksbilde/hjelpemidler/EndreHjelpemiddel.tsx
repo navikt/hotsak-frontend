@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { SaveFile } from '@navikt/ds-icons'
-import { Button, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { Button, Loader, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
@@ -20,7 +20,7 @@ interface EndreHjelpemiddelProps {
   hmsTittel?: string
   hmsBeskrivelse: string
   nåværendeHmsNr?: string
-  onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void // Todo, fix type
+  onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void
   onAvbryt: () => void
 }
 
@@ -40,6 +40,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
   const [submitAttempt, setSubmitAttempt] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const endretProdukt = useGrunndata(endreProduktHmsnr)
 
@@ -132,8 +133,9 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               variant="secondary"
               size="small"
               style={{ marginRight: '1rem' }}
-              onClick={() => {
+              onClick={async () => {
                 if (!validationError()) {
+                  setSubmitting(true)
                   const begrunnelseFritekst =
                     endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
                       ? endreBegrunnelseFritekst
@@ -141,7 +143,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                   if (hmsTittel !== endretProdukt!.isotittel) {
                     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)
                   }
-                  onLagre({
+
+                  await onLagre({
                     hmsNr: hmsNr,
                     hmsBeskrivelse: hmsBeskrivelse,
                     endretHmsNr: endreProduktHmsnr,
@@ -149,12 +152,13 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                     begrunnelse: endreBegrunnelse!,
                     begrunnelseFritekst: begrunnelseFritekst,
                   })
+                  setSubmitting(false)
                 } else {
                   setSubmitAttempt(true)
                 }
               }}
             >
-              <SaveFile />
+              {submitting ? <Loader /> : <SaveFile />}
               Lagre
             </Button>
             <Button variant="tertiary" size="small" onClick={() => onAvbryt()}>

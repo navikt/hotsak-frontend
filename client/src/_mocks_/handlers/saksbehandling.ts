@@ -249,7 +249,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', (req, res, ctx) => {
+  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', async (req, res, ctx) => {
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
@@ -293,6 +293,8 @@ const saksbehandlingHandlers = [
       bruker: 'Silje Saksbehandler',
     }
     sakshistorikk[historikkIdx]['hendelser'].push(endreHjmHendelse)
+
+    await new Promise((r) => setTimeout(r, 1000))
 
     return res(ctx.status(200), ctx.json({}))
   }),

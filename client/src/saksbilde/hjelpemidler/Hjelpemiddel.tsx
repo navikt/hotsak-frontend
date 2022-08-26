@@ -91,8 +91,8 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
   const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsNr)
 
-  const endreHjelpemiddel = (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
-    putEndreHjelpemiddel(saksid, endreHjelpemiddel)
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+    await putEndreHjelpemiddel(saksid, endreHjelpemiddel)
       .catch(() => console.log('error endre hjelpemiddel'))
       .then(() => {
         mutate(`api/sak/${saksid}`)

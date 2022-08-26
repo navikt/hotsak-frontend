@@ -19,6 +19,7 @@ interface EndreHjelpemiddelProps {
   hmsNr: string
   hmsTittel?: string
   hmsBeskrivelse: string
+  nåværendeHmsNr?: string
   onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void // Todo, fix type
   onAvbryt: () => void
 }
@@ -31,6 +32,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   hmsNr: hmsNr,
   hmsTittel: hmsTittel,
   hmsBeskrivelse: hmsBeskrivelse,
+  nåværendeHmsNr: nåværendeHmsNr,
   onLagre,
   onAvbryt,
 }) => {
@@ -42,8 +44,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const endretProdukt = useGrunndata(endreProduktHmsnr)
 
   const errorEndretProdukt = () => {
-    if (!endretProdukt) {
-      return 'Du må oppgi et gyldig HMS-nr'
+    if (!endretProdukt || endretProdukt.hmsnr === nåværendeHmsNr) {
+      return 'Du må oppgi et nytt, gyldig HMS-nr'
     }
   }
 

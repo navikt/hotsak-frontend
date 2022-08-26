@@ -2,16 +2,14 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Collapse, Expand, People, PeopleFilled, SaveFile } from '@navikt/ds-icons'
-import { Button, Link, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { Collapse, Expand } from '@navikt/ds-icons'
+import { Button, Link } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
 import { capitalize } from '../../utils/stringFormating'
 
-import { Rad, Kolonne } from '../../felleskomponenter/Flex'
+import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
-import { Kvinneikon } from '../../felleskomponenter/ikoner/Kvinneikon'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
@@ -20,8 +18,6 @@ import {
   EndretHjelpemiddelBegrunnelseLabel,
   HjelpemiddelType,
   OppgaveStatusType,
-  Personinfo,
-  Produkt,
   Sak,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
@@ -105,8 +101,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
     setVisEndreProdukt(false)
   }
 
-  const isoTittel = endretProdukt ? endretProdukt.isotittel : produkt ? produkt.isotittel : hjelpemiddel.kategori
-  const postTittel = endretProdukt ? endretProdukt.posttittel : produkt?.posttittel
+  const nåværendeProdukt = endretProdukt ?? produkt
 
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
@@ -125,10 +120,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{isoTittel}</Etikett>
+              <Etikett>{nåværendeProdukt?.isotittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{postTittel && postTittel}</Rad>
+          <Rad>{nåværendeProdukt?.posttittel}</Rad>
           {endretProdukt && (
             <Rad>
               <strong>{hjelpemiddel.endretHjelpemiddel?.hmsNr}</strong>
@@ -250,6 +245,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           hmsNr={hjelpemiddel.hmsnr}
           hmsTittel={produkt?.isotittel}
           hmsBeskrivelse={hjelpemiddel.beskrivelse}
+          nåværendeHmsNr={nåværendeProdukt?.hmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}
         />

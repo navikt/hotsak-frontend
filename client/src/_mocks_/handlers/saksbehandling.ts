@@ -265,15 +265,24 @@ const saksbehandlingHandlers = [
 
     const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
 
-    saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
-      ...hjm,
-      endretHjelpemiddel: {
-        hmsNr: endretHmsNr,
-        begrunnelse: endretBegrunnelse,
+    if (hmsNr === endretHmsNr) {
+      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+        ...hjm,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        begrunnelseFritekst: endretBegrunnelseFritekst,
-      },
+        endretHjelpemiddel: undefined,
+      }
+    } else {
+      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+        ...hjm,
+        endretHjelpemiddel: {
+          hmsNr: endretHmsNr,
+          begrunnelse: endretBegrunnelse,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          begrunnelseFritekst: endretBegrunnelseFritekst,
+        },
+      }
     }
 
     const endreHjmHendelse = {

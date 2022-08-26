@@ -44,10 +44,6 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const endretProdukt = useGrunndata(endreProduktHmsnr)
 
   const errorEndretProdukt = () => {
-    console.log('errorEndretProdukt:')
-    console.log('endretProdukt', endretProdukt)
-    console.log('endretProdukt.hmsnr', endretProdukt?.hmsnr)
-    console.log('nåværendeHmsNr', nåværendeHmsNr)
     if (!endretProdukt || endretProdukt.hmsnr === nåværendeHmsNr) {
       return 'Du må oppgi et nytt, gyldig HMS-nr'
     }

@@ -913,43 +913,60 @@
     "gjelder": "Hjelpemidler",
     "hjelpemidler": [
       {
-        "hmsnr": "014112",
+        "hmsnr": "177946",
         "rangering": 1,
         "alleredeUtlevert": false,
-        "utlevertInfo": {
-          "utlevertType": "FremskuttLager",
-          "annenKommentar": "kommentar",
-          "overførtFraBruker": ""
-        },
-        "antall": 8,
-        "kategori": "Terskeleliminatorer og Kjøreramper",
-        "beskrivelse": "Topro Terskeleliminator",
+        "antall": 1,
+        "kategori": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+        "beskrivelse": "Gemino 20",
         "tilleggsinfo": [],
-        "tilbehør": [],
-        "endretHjelpemiddel": {
-          "hmsNr": "177948",
-          "begrunnelse": "ANNET",
-          "begrunnelseFritekst": "lignende på lager"
-        }
+        "tilbehør": []
       },
       {
-        "hmsnr": "014112",
+        "hmsnr": "014186",
         "rangering": 1,
         "alleredeUtlevert": false,
-        "utlevertInfo": {
-          "utlevertType": "FremskuttLager",
-          "annenKommentar": "kommentar",
-          "overførtFraBruker": ""
-        },
-        "antall": 8,
-        "kategori": "Terskeleliminatorer og Kjøreramper",
+        "antall": 3,
+        "kategori": "Terskeleliminatorer",
+        "beskrivelse": "Topro Terskeleliminator",
+        "tilleggsinfo": [
+          {
+            "tittel": "Begrunnelse for antall",
+            "innholdsliste": ["Behov i flere rom"]
+          }
+        ],
+        "tilbehør": []
+      },
+      {
+        "hmsnr": "014119",
+        "rangering": 1,
+        "alleredeUtlevert": false,
+        "antall": 1,
+        "kategori": "Terskeleliminatorer",
         "beskrivelse": "Topro Terskeleliminator",
         "tilleggsinfo": [],
-        "tilbehør": [],
-        "endretHjelpemiddel": {
-          "hmsNr": "177948",
-          "begrunnelse": "RAMMEAVTALE"
-        }
+        "tilbehør": []
+      },
+      {
+        "hmsnr": "297415",
+        "rangering": 1,
+        "alleredeUtlevert": false,
+        "antall": 1,
+        "kategori": "Dusjkrakker",
+        "beskrivelse": "Dusjkrakk Etac Swift firkantet",
+        "tilleggsinfo": [],
+        "tilbehør": [
+          {
+            "hmsNr": "139857",
+            "antall": 1,
+            "navn": "Armlene dusjkrakk Etac Swift grått par"
+          },
+          {
+            "hmsNr": "139865",
+            "antall": 1,
+            "navn": "Rygg dusjkrakk Etac Swift grå"
+          }
+        ]
       }
     ],
     "formidler": {

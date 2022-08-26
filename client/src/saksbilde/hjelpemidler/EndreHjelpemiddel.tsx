@@ -153,8 +153,9 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                     begrunnelse: endreBegrunnelse!,
                     begrunnelseFritekst: begrunnelseFritekst,
                   })
+                } else {
+                  setSubmitAttempt(true)
                 }
-                setSubmitAttempt(true)
               }}
             >
               <SaveFile />

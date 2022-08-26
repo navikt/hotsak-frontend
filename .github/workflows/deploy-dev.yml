@@ -79,7 +79,8 @@ jobs:
         #  docker push ${{ env.IMAGE }}:${{ needs.set_version.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: nais/deploy/actions/deploy@v1
+      - name: deploy to dev
+        uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp

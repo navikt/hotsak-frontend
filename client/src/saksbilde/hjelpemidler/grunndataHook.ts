@@ -34,8 +34,7 @@ export function useGrunndata(hmsnummer?: string) {
             { hmsnr: hmsnummer }
           )
           const [produkt] = data.produkter
-          const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl, artikkelnavn, hmsnr } =
-            produkt
+          const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl, artikkelnavn } = produkt
           setProdukt({
             isokode: isokode || '',
             isotittel: isotittel || '',
@@ -44,7 +43,7 @@ export function useGrunndata(hmsnummer?: string) {
             produkturl: produktUrl || '',
             artikkelurl: artikkelUrl,
             artikkelnavn: artikkelnavn,
-            hmsnr: hmsnr,
+            hmsnr: hmsnummer,
           })
         }
       } catch (e) {

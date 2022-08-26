@@ -66,9 +66,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   }
 
   return (
-    <div style={{ background: '#F1F1F1', paddingBottom: '1rem' }}>
-      <Strek />
-      <Rad>
+    <div style={{ background: '#F1F1F1', marginBottom: '1rem', paddingTop: '1rem' }}>
+      <Rad style={{ marginBottom: '1rem' }}>
         <EtikettKolonne></EtikettKolonne>
         <Kolonne>
           <Rad>
@@ -94,7 +93,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               <Rad>
                 <Etikett>Beskrivelse</Etikett>
               </Rad>
-              <Rad style={{ flexGrow: '1', alignContent: 'center' }}>{endretProdukt?.artikkelnavn ?? ''}</Rad>
+              <Rad style={{ marginTop: '.5rem', alignContent: 'center' }}>{endretProdukt?.artikkelnavn ?? ''}</Rad>
             </Kolonne>
           </Rad>
           <Rad style={{ marginTop: '1rem' }}>
@@ -163,6 +162,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
           </Rad>
         </Kolonne>
       </Rad>
+      <Strek />
     </div>
   )
 }

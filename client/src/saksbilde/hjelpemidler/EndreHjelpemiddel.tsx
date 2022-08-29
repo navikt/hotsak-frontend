@@ -28,6 +28,8 @@ const EtikettKolonne: React.FC = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
+const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
+
 export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   hmsNr: hmsNr,
   hmsTittel: hmsTittel,
@@ -55,8 +57,11 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
       return 'Du må fylle inn en begrunnelse'
     }
 
-    if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length > 150) {
-      const antallForMange = endreBegrunnelseFritekst.length - 150
+    if (
+      endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET &&
+      endreBegrunnelseFritekst.length > MAX_TEGN_BEGRUNNELSE_FRITEKST
+    ) {
+      const antallForMange = endreBegrunnelseFritekst.length - MAX_TEGN_BEGRUNNELSE_FRITEKST
       return `Antall tegn for mange ${antallForMange}`
     }
   }

@@ -54,6 +54,11 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
     if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length === 0) {
       return 'Du må fylle inn en begrunnelse'
     }
+
+    if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length > 150) {
+      const antallForMange = endreBegrunnelseFritekst.length - 150
+      return `Antall tegn for mange ${antallForMange}`
+    }
   }
 
   const errorBegrunnelse = () => {
@@ -121,7 +126,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               <TextField
                 label="Begrunn endringen"
                 size="small"
-                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også blir brukt i videreutvikling av løsningen."
+                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
                 value={endreBegrunnelseFritekst}
                 onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
                 error={submitAttempt && errorBegrunnelseFritekst()}

@@ -144,7 +144,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
             )}
           </Rad>
           {hjelpemiddel.endretHjelpemiddel && (
-            <Rad style={{ marginTop: '.5rem' }}>
+            <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>
               <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
                 <PersonikonFilled width={22} height={22} />
               </div>

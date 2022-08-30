@@ -212,8 +212,6 @@ const saksbehandlingHandlers = [
     return res(ctx.status(200), ctx.json(response))
   }),
   rest.put('/api/bestilling/ferdigstill/:saksnummer', (req, res, ctx) => {
-    console.log('Ferdigstiller')
-
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 

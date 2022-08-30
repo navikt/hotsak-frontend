@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, RadioGroup, Heading, Loader, Textarea, Radio } from '@navikt/ds-react'
+import { Button, Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -12,6 +12,7 @@ interface AvvisBestillingModalProps {
   loading: boolean
 
   onBekreft(tilbakemelding: AvvisBestilling): void
+
   onClose(): void
 }
 
@@ -66,11 +67,11 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
             }}
             data-cy="btn-overfor-soknad"
             disabled={loading}
+            loading={loading}
           >
             Avvis bestillingen
-            {loading && <Loader size="small" />}
           </Button>
-          <Button variant="secondary" size="small" onClick={onClose}>
+          <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
             Avbryt
           </Button>
         </ButtonContainer>

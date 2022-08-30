@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Heading, Loader } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
@@ -31,9 +31,15 @@ export const OpprettOrdreModal: React.FC<OpprettOrdreModalProps> = ({ open, onBe
           klargjort. Du trenger ikke gjøre noe mer med saken.
         </Tekst>
         <ButtonContainer>
-          <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-ferdigstill-bestilling">
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => onBekreft()}
+            data-cy="btn-ferdigstill-bestilling"
+            disabled={loading}
+            loading={loading}
+          >
             Godkjenn
-            {loading && <Loader size="small" />}
           </Button>
           <Button
             variant="secondary"
@@ -41,6 +47,7 @@ export const OpprettOrdreModal: React.FC<OpprettOrdreModalProps> = ({ open, onBe
             onClick={() => {
               onClose()
             }}
+            disabled={loading}
           >
             Avbryt
           </Button>

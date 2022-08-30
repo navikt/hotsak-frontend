@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { Heading } from '@navikt/ds-react'
-import { Button, Loader } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 
-import { DialogBoks, ButtonContainer } from '../felleskomponenter/Dialogboks'
+import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface OvertaSakModalProps {
@@ -29,9 +28,15 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({ open, saksbehand
         </Heading>
         <Tekst>Denne saken er allerede tildelt {saksbehandler}, er du sikker på at du vil overta saken?</Tekst>
         <ButtonContainer>
-          <Button variant="primary" size="small" onClick={() => onBekreft()} data-cy="btn-overta-sak">
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => onBekreft()}
+            data-cy="btn-overta-sak"
+            disabled={loading}
+            loading={loading}
+          >
             Overta saken
-            {loading && <Loader size="small" />}
           </Button>
           <Button
             variant="secondary"
@@ -39,6 +44,7 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({ open, saksbehand
             onClick={() => {
               onClose()
             }}
+            disabled={loading}
           >
             Avbryt
           </Button>

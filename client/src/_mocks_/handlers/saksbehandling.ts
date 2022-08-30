@@ -46,7 +46,7 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['saksbehandler'] = saksbehandler
     oppgaveliste[oppgaveIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
 
-    return res(ctx.status(201), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(201), ctx.json({}))
   }),
   rest.delete(`/api/tildeling/:oppgaveref`, (req, res, ctx) => {
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.oppgaveref)
@@ -120,7 +120,7 @@ const saksbehandlingHandlers = [
       soknadUuid: '06d4f1b0-a7b0-4568-a899-c1321164e95a',
     }
 
-    return res(ctx.status(200), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
   rest.put<{ søknadsbeskrivelse: any }>('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
     const soknadsbeskrivelse = req?.body?.søknadsbeskrivelse
@@ -143,7 +143,7 @@ const saksbehandlingHandlers = [
     saker[sakIdx]['status'] = 'SENDT_GOSYS'
     saker[sakIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
 
-    return res(ctx.status(200), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', (req, res, ctx) => {
     const årsaker = `${req?.body?.tilbakemelding?.valgtArsak}`
@@ -171,7 +171,7 @@ const saksbehandlingHandlers = [
     saker[sakIdx]['status'] = 'AVVIST'
     saker[sakIdx]['statusEndret'] = '2022-06-03T10:48:40.47986'
 
-    return res(ctx.status(200), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
   rest.get(`/api/oppgaver`, (req, res, ctx) => {
     const statusFilter = req.url.searchParams.get('status')
@@ -247,7 +247,7 @@ const saksbehandlingHandlers = [
     saker[bestillingIdx]['status'] = 'FERDIGSTILT'
     saker[bestillingIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
 
-    return res(ctx.status(200), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
 ]
 

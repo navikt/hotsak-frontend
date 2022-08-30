@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Checkbox, CheckboxGroup, Heading, Loader, Textarea } from '@navikt/ds-react'
+import { Button, Checkbox, CheckboxGroup, Heading, Textarea } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
@@ -12,6 +12,7 @@ interface OverførGosysModalProps {
   loading: boolean
 
   onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
+
   onClose(): void
 }
 
@@ -67,11 +68,11 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, on
             }}
             data-cy="btn-overfor-soknad"
             disabled={loading}
+            loading={loading}
           >
             Overfør saken
-            {loading && <Loader size="small" />}
           </Button>
-          <Button variant="secondary" size="small" onClick={onClose}>
+          <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
             Avbryt
           </Button>
         </ButtonContainer>

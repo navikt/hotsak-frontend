@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Heading, Loader } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 
 import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
@@ -36,9 +36,9 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
             onClick={() => onBekreft()}
             data-cy="btn-innvilg-soknad"
             disabled={loading}
+            loading={loading}
           >
             Innvilg søknaden
-            {loading && <Loader size="small" />}
           </Button>
           <Button
             variant="secondary"
@@ -46,6 +46,7 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
             onClick={() => {
               onClose()
             }}
+            disabled={loading}
           >
             Avbryt
           </Button>

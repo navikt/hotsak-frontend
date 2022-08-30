@@ -53,9 +53,9 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           onClick={tildel}
           data-cy={`btn-tildel-sak-${oppgavereferanse}`}
           disabled={isFetching}
+          loading={isFetching}
         >
           Start saken
-          {isFetching && <Loader size="small" />}
         </Button>
       }
     </>

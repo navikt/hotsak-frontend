@@ -1,5 +1,6 @@
-import { AppConfig, HotsakRequest, OnBehalfOf } from './types'
-import proxy from 'express-http-proxy'
+import type { AppConfig, OnBehalfOf } from './types'
+import type { Request } from 'express'
+import proxy, { ProxyOptions } from 'express-http-proxy'
 import * as core from 'express-serve-static-core'
 
 const envProperties = {
@@ -9,9 +10,9 @@ const envProperties = {
 let onBehalfOf: OnBehalfOf
 let hotsakApiId: string
 
-const options = () => ({
+const options = (): ProxyOptions => ({
   parseReqBody: false,
-  proxyReqOptDecorator: (options: any, req: HotsakRequest) => {
+  proxyReqOptDecorator: (options, req) => {
     if (process.env.NAIS_CLUSTER_NAME !== 'labs-gcp') {
       return new Promise((resolve, reject) => {
         const hotsakToken = req.headers['authorization']!.split(' ')[1]
@@ -19,7 +20,10 @@ const options = () => ({
         if (hotsakToken !== '') {
           onBehalfOf.hentFor(hotsakApiId, hotsakToken).then(
             (onBehalfOfToken) => {
-              options.headers.Authorization = `Bearer ${onBehalfOfToken}`
+              options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${onBehalfOfToken}`,
+              }
               resolve(options)
             },
             (error) => reject(error)
@@ -32,17 +36,15 @@ const options = () => ({
       return options
     }
   },
-  proxyReqPathResolver: (req: HotsakRequest) => {
+  proxyReqPathResolver: (req) => {
     return pathRewriteBasedOnEnvironment(req)
   },
 })
 
-const pathRewriteBasedOnEnvironment = (req: HotsakRequest) => {
-  return req.originalUrl
-}
+const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
 
-const setupProxy = (server: core.Express, _onBehaldOf: OnBehalfOf, config: AppConfig) => {
-  onBehalfOf = _onBehaldOf
+const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
+  onBehalfOf = _onBehalfOf
   hotsakApiId = config.oidc.clientIDHotsakApi
   server.use('/api/', proxy(envProperties.API_URL + '/api', options()))
   server.use('/grunndata-api', proxy(envProperties.GRUNNDATA_API_URL))

@@ -38,7 +38,7 @@ export interface SøknadslinjeProps {
   currentTab: HøyrekolonneTabs
 }
 
-export const Søknadslinje: React.VFC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
+export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
   return (
     <Container>
       <Flex>

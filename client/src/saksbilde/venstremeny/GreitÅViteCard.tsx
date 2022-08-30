@@ -35,7 +35,7 @@ const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {
   )
 }
 
-export const GreitÅViteCard: React.VFC<GreitÅViteCardProps> = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør }) => {
+export const GreitÅViteCard: React.FC<GreitÅViteCardProps> = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør }) => {
   const fakta = harIngenHjelpemidlerFraFør
     ? [...greitÅViteFakta, { beskrivelse: 'Bruker har ingen hjelpemidler fra før', type: GreitÅViteType.MERKNAD }]
     : [...greitÅViteFakta]

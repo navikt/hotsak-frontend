@@ -1,6 +1,7 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Route, Switch, useRouteMatch } from 'react-router'
+import { Route } from 'react-router'
+import { Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
@@ -37,9 +38,8 @@ const Content = styled.div`
   max-width: 100vw;
 `
 
-const PersonoversiktContent: React.VFC = () => {
+const PersonoversiktContent: React.FC = () => {
   const { fodselsnummer } = usePersonContext()
-  const { path } = useRouteMatch()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const {
@@ -80,25 +80,31 @@ const PersonoversiktContent: React.VFC = () => {
           <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
           <Container>
             <Content>
-              <Switch>
-                <Route path={`${path}/saker`}>
-                  {isError ? (
-                    <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
-                  ) : (
-                    <Saksoversikt saker={saker} henterSaker={isLoading} />
-                  )}
-                </Route>
-                <Route path={`${path}/hjelpemidler`}>
-                  {hjelpemiddeloversiktError ? (
-                    <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
-                  ) : (
-                    <HjelpemiddeloversiktTabell
-                      artikler={hjelpemidler}
-                      henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
-                    />
-                  )}
-                </Route>
-              </Switch>
+              <Routes>
+                <Route
+                  path="/saker"
+                  element={
+                    isError ? (
+                      <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
+                    ) : (
+                      <Saksoversikt saker={saker} henterSaker={isLoading} />
+                    )
+                  }
+                />
+                <Route
+                  path="/hjelpemidler"
+                  element={
+                    hjelpemiddeloversiktError ? (
+                      <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
+                    ) : (
+                      <HjelpemiddeloversiktTabell
+                        artikler={hjelpemidler}
+                        henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
+                      />
+                    )
+                  }
+                />
+              </Routes>
             </Content>
           </Container>
         </>
@@ -107,7 +113,7 @@ const PersonoversiktContent: React.VFC = () => {
   )
 }
 
-const LasterPersonoversikt: React.VFC = () => {
+const LasterPersonoversikt: React.FC = () => {
   return (
     <>
       <LasterPersonlinje />
@@ -116,7 +122,7 @@ const LasterPersonoversikt: React.VFC = () => {
   )
 }
 
-const Personoversikt: React.VFC = () => (
+const Personoversikt: React.FC = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterPersonoversikt />}>
       <PersonoversiktContent />

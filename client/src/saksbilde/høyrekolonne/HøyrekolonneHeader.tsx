@@ -29,7 +29,7 @@ const Teller = styled.div`
   border-radius: 50%;
 `
 
-export const HøyrekolonneHeader: React.VFC<SøknadslinjeProps> = ({ onTabChange, currentTab }) => {
+export const HøyrekolonneHeader: React.FC<SøknadslinjeProps> = ({ onTabChange, currentTab }) => {
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading } = useHjelpemiddeloversikt(
     sak?.personinformasjon.fnr,

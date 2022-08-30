@@ -25,8 +25,9 @@ const ToastView = styled.div`
   }
 `
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ToastProps {}
+interface ToastProps {
+  children: React.ReactNode
+}
 
 export const Toast: React.FC<ToastProps> = ({ children }) => {
   return (

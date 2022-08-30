@@ -6,7 +6,7 @@ import { CopyToClipboard } from '@navikt/ds-react-internal'
 
 import { isError } from '../utils/type'
 
-export const Feilside: React.VFC<{ statusCode: number; error?: Error }> = ({ statusCode, error }) => {
+export const Feilside: React.FC<{ statusCode: number; error?: Error }> = ({ statusCode, error }) => {
   const utviklerinformasjon = hentUtviklerinformasjon(error)
   return (
     <Feilpanel>
@@ -55,7 +55,7 @@ const Code = styled.pre`
   white-space: pre-wrap;
 `
 
-const IkkeLoggetInn: React.VFC = () => (
+const IkkeLoggetInn: React.FC = () => (
   <>
     <BodyShort spacing>Du må logge inn for å få tilgang til systemet.</BodyShort>
     <BodyShort spacing>
@@ -64,7 +64,7 @@ const IkkeLoggetInn: React.VFC = () => (
   </>
 )
 
-const IkkeFunnet: React.VFC = () => (
+const IkkeFunnet: React.FC = () => (
   <>
     <BodyShort spacing>
       Beklager, siden kan være slettet eller flyttet, eller det var en feil i lenken som førte deg hit.
@@ -75,7 +75,7 @@ const IkkeFunnet: React.VFC = () => (
   </>
 )
 
-const TekniskFeil: React.VFC = () => (
+const TekniskFeil: React.FC = () => (
   <>
     <BodyShort spacing>Beklager, det har skjedd en teknisk feil.</BodyShort>
   </>

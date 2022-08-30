@@ -5,7 +5,7 @@ import { Link } from '@navikt/ds-react'
 
 import { capitalize } from '../../utils/stringFormating'
 
-import { Rad, Kolonne } from '../../felleskomponenter/Flex'
+import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
@@ -56,7 +56,7 @@ const TilleggsInfo = styled(Rad)`
   }
 `
 
-const EtikettKolonne: React.FC = ({ children }) => {
+const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <Kolonne width="150px">{children}</Kolonne>
 }
 

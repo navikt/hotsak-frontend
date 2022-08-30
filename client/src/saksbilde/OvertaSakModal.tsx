@@ -14,13 +14,7 @@ interface OvertaSakModalProps {
   saksbehandler: string
 }
 
-export const OvertaSakModal: React.VFC<OvertaSakModalProps> = ({
-  open,
-  saksbehandler,
-  onBekreft,
-  loading,
-  onClose,
-}) => {
+export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({ open, saksbehandler, onBekreft, loading, onClose }) => {
   return (
     <DialogBoks
       shouldCloseOnOverlayClick={false}

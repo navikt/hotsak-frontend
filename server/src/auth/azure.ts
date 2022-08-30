@@ -3,8 +3,6 @@ import { OidcConfig } from '../types'
 import { setup as proxy } from './proxy'
 import { Client, custom, Issuer } from 'openid-client'
 
-;('use strict')
-
 let azureClient
 const proxyAgent = proxy(Issuer, custom)
 
@@ -24,11 +22,11 @@ const setup = (config: OidcConfig) => {
           })
 
           if (proxyAgent) {
-            azure[custom.http_options] = function (options) {
+            azure[custom.http_options] = function (url, options) {
               options.agent = proxyAgent
               return options
             }
-            azureClient[custom.http_options] = function (options) {
+            azureClient[custom.http_options] = function (url, options) {
               options.agent = proxyAgent
               return options
             }

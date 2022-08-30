@@ -30,7 +30,7 @@ export const KolonneTittel = styled.li`
   font-size: 14px;
 `
 
-export const Høyrekolonne: React.VFC<HøyrekolonneProps> = ({ currentTab }) => {
+export const Høyrekolonne: React.FC<HøyrekolonneProps> = ({ currentTab }) => {
   switch (currentTab) {
     case HøyrekolonneTabs.SAKSHISTORIKK:
       return <Historikk />

@@ -29,7 +29,7 @@ interface SaksoversiktLinjeProps {
   hjelpemidlerCount: number
 }
 
-export const SaksoversiktLinje: React.VFC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
+export const SaksoversiktLinje: React.FC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
   return (
     <Container>
       <Flex>

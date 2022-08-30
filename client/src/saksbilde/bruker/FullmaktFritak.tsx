@@ -15,7 +15,7 @@ const Container = styled.div`
   padding-bottom: 2rem;
 `
 
-export const FullmaktFritak: React.VFC<FullmaktFritakProps> = ({ navn }) => {
+export const FullmaktFritak: React.FC<FullmaktFritakProps> = ({ navn }) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={true}>

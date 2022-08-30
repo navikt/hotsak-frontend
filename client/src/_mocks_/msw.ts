@@ -1,6 +1,11 @@
+import { worker } from './browser'
+
 export const initMSW = async () => {
-  const { worker } = await import('./browser')
-  await worker.start({
-    onUnhandledRequest: 'bypass',
-  })
+  if (window.appSettings.USE_MSW === true) {
+    const { worker } = await import('./browser')
+    worker.printHandlers()
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+    })
+  }
 }

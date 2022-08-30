@@ -1,9 +1,7 @@
 import authSupport from './auth/authSupport'
-import { HotsakRequest } from './types'
+import type { Request } from 'express'
 import fs from 'fs'
 import winston from 'winston'
-
-;('use strict')
 
 const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')
 
@@ -43,7 +41,7 @@ const sikkerError = (message: string, ...meta: any[]) => {
   sikkerLogger.error(message, ...meta)
 }
 
-const requestMeta = (req: HotsakRequest) => {
+const requestMeta = (req: Request) => {
   return {
     hotsakUser: authSupport.valueFromClaim('name', req.headers['authorization']?.split(' ')[1]),
     navIdent: authSupport.valueFromClaim('NAVident', req.headers['authorization']?.split(' ')[1]),

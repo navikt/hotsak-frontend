@@ -31,7 +31,7 @@ const Grid = styled.div`
   grid-row-gap: 0.125rem;
 `
 
-export const Formidlerside: React.VFC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
+export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
   const Formidlerinfo = () => {
     return (
       <Grid>

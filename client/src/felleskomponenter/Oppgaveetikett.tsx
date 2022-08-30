@@ -57,6 +57,7 @@ interface OppgaveetikettProps extends EtikettProps {
 
 interface LabelProps {
   labelLinkTo?: string
+  children: React.ReactNode
 }
 
 const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
@@ -71,7 +72,7 @@ const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
   }
 }
 
-export const Oppgaveetikett: React.VFC<OppgaveetikettProps> = ({
+export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
   type,
   størrelse = 'l',
   showLabel = false,

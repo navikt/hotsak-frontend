@@ -1,8 +1,7 @@
-import { useHistory } from 'react-router-dom'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
+import { useLocation } from 'react-router-dom'
 
 const useLogNesteNavigasjon = () => {
-  const history = useHistory()
+  const location = useLocation()
   /**
    * Brukes for å logge til Amplitude den neste navigasjonen som gjøres etter
    * at en spesifikk hendelse har skjedd. For eksempel hvor brukeren navigerer etter
@@ -10,6 +9,7 @@ const useLogNesteNavigasjon = () => {
    * listeneren fjernet.
    */
   const logNesteNavigasjon = (fraHendelse: string, data?: any) => {
+    /*
     const unlisten = history.listen((location: any) => {
       logAmplitudeEvent(amplitude_taxonomy.NAVIGASJON_ETTER_HENDELSE, {
         fraHendelse,
@@ -19,6 +19,7 @@ const useLogNesteNavigasjon = () => {
 
       unlisten()
     })
+    */
   }
 
   return [logNesteNavigasjon]

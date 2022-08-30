@@ -13,7 +13,7 @@ interface DataResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, {refreshInterval: 10000})
+  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10000 })
 
   return {
     sak: data?.data,

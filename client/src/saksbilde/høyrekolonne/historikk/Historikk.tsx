@@ -6,7 +6,7 @@ import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { HistorikkHendelse } from './HistorikkHendelse'
 import { useHistorikk } from './historikkHook'
 
-export const Historikk: React.VFC = () => {
+export const Historikk: React.FC = () => {
   const { hendelser, isError, isLoading } = useHistorikk()
 
   if (isError) {

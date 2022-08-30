@@ -1,6 +1,4 @@
-import { Request } from 'express'
-import { Session } from 'express-session'
-import { ResponseType } from 'openid-client'
+import type { ResponseType } from 'openid-client'
 
 export interface OidcConfig {
   wellKnownEndpoint: string
@@ -24,20 +22,3 @@ export interface AppConfig {
 }
 
 export type OnBehalfOf = { hentFor: (tjenesteId: string, token: string) => Promise<string> }
-
-export interface HotsakSession extends Session {
-  hotsakToken: string
-  refreshToken: string
-  nonce: string
-  state: string
-  user: string
-}
-
-export interface HotsakRequest extends Request {
-  session: HotsakSession
-}
-
-export interface AuthError extends Error {
-  statusCode: number
-  cause?: any
-}

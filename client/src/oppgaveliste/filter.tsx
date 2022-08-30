@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Select, Button } from '@navikt/ds-react'
+import { Button, Select } from '@navikt/ds-react'
 
 import { ButtonContainer } from '../felleskomponenter/Dialogboks'
 
@@ -24,7 +24,7 @@ interface FilterProps {
   handleChange: (...args: any[]) => any
 }
 
-export const FilterDropdown: React.VFC<FilterProps> = ({ label, value, options, handleChange }) => {
+export const FilterDropdown: React.FC<FilterProps> = ({ label, value, options, handleChange }) => {
   const filterOptions = Array.from(options.keys())
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>
@@ -38,6 +38,7 @@ export const FilterDropdown: React.VFC<FilterProps> = ({ label, value, options, 
 }
 
 interface FiltersProps {
+  children: React.ReactNode
   onClear: (...args: any[]) => any
 }
 

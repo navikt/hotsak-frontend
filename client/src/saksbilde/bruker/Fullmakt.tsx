@@ -15,7 +15,7 @@ const Container = styled.div`
   padding-bottom: 2rem;
 `
 
-export const Fullmakt: React.VFC<FullmaktProps> = ({ navn }) => {
+export const Fullmakt: React.FC<FullmaktProps> = ({ navn }) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={true}>

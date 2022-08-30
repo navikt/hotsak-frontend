@@ -4,13 +4,12 @@ import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
 import { Ingress, Label } from '@navikt/ds-react'
-import { Divider } from '@navikt/ds-react-internal'
 
 import { ISO_DATOFORMAT } from '../../utils/date'
 
 import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
 
-export const Endringslogg: React.VFC<{
+export const Endringslogg: React.FC<{
   endringslogginnslag: ReadonlyArray<EndringsloggInnslag>
   merkSomLest: MerkSomLestCallback
 }> = ({ endringslogginnslag, merkSomLest }) => {
@@ -26,7 +25,7 @@ export const Endringslogg: React.VFC<{
   )
 }
 
-const Innslag: React.VFC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLestCallback }> = ({
+const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLestCallback }> = ({
   innslag,
   merkSomLest,
 }) => {
@@ -64,7 +63,7 @@ const Innslag: React.VFC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLes
       </dt>
       <dd ref={innslagRef}>
         <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
-        <Divider />
+        <div />
       </dd>
     </>
   )

@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 
 import { hotsaktVenstremenyWidth } from '../../GlobalStyles'
@@ -12,6 +13,6 @@ const Container = styled.aside`
   border-right: 1px solid var(--navds-semantic-color-border-muted);
 `
 
-export const VenstreMeny: React.FC = ({ children }) => {
+export const VenstreMeny: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <Container>{children}</Container>
 }

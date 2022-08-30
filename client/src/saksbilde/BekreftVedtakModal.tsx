@@ -12,7 +12,7 @@ interface BekreftVedtakModalProps {
   onClose: () => void
 }
 
-export const BekreftVedtakModal: React.VFC<BekreftVedtakModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, onBekreft, loading, onClose }) => {
   return (
     <DialogBoks
       shouldCloseOnOverlayClick={false}

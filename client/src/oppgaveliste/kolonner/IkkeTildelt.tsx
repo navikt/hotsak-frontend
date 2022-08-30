@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { Button, Loader } from '@navikt/ds-react'
@@ -17,7 +17,7 @@ interface IkkeTildeltProps {
 export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
-  const history = useHistory()
+  const navigate = useNavigate()
   const { mutate } = useSWRConfig()
   const tildel = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -36,7 +36,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
         setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
-          history.push(destinationUrl)
+          navigate(destinationUrl)
         } else {
           mutate(`api/sak/${oppgavereferanse}`)
           mutate(`api/sak/${oppgavereferanse}/historikk`)

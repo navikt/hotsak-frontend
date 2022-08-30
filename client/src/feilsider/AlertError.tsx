@@ -9,7 +9,7 @@ const FeilmeldingContainer = styled.div`
   margin-top: 2rem;
 `
 
-export const AlertError: React.VFC<{
+export const AlertError: React.FC<{
   error: Error
 }> = (props) => {
   const { error } = props

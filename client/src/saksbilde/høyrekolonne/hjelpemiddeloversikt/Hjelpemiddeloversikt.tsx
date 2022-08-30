@@ -38,7 +38,7 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
   }, {})
 }
 
-export const Hjelpemiddeloversikt: React.VFC = () => {
+export const Hjelpemiddeloversikt: React.FC = () => {
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak } = useHjelpemiddeloversikt(
     sak?.personinformasjon.fnr,
@@ -110,7 +110,7 @@ interface ArtiklerProps {
   artikler: HjelpemiddelArtikkel[]
 }
 
-const Artikler: React.VFC<ArtiklerProps> = ({ artikler }) => {
+const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
   return (
     <>
       {artikler.map((artikkel) => {

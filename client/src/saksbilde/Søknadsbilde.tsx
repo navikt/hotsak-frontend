@@ -1,17 +1,12 @@
 import React, { useState } from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
-
-import { Alert } from '@navikt/ds-react'
-
-import { formaterDato } from '../utils/date'
-import { capitalize } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { HøyrekolonneTabs, OppgaveStatusType, Oppgavetype, VedtakStatusType } from '../types/types.internal'
+import { HøyrekolonneTabs, Oppgavetype } from '../types/types.internal'
 import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadslinje from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
@@ -52,13 +47,12 @@ const Content = styled.section`
   box-sizing: border-box;
 `
 
-const SaksbildeContent: React.VFC = React.memo(() => {
+const SaksbildeContent: React.FC = React.memo(() => {
   //const personTilBehandling = usePerson();
   //useRefreshPersonVedUrlEndring();
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
-  const { path } = useRouteMatch()
   const handleError = useErrorHandler()
 
   if (isLoading) return <LasterSaksbilde />
@@ -107,21 +101,30 @@ const SaksbildeContent: React.VFC = React.memo(() => {
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>
-                <Switch>
-                  <Route path={`${path}/hjelpemidler`}>
-                    <HjelpemiddelListe
-                      tittel="Søknad om hjelpemidler"
-                      hjelpemidler={sak.hjelpemidler}
-                      personinformasjon={sak.personinformasjon}
-                    />
-                  </Route>
-                  <Route path={`${path}/bruker`}>
-                    <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
-                  </Route>
-                  <Route path={`${path}/formidler`}>
-                    <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig} />
-                  </Route>
-                </Switch>
+                <Routes>
+                  <Route
+                    path="/hjelpemidler"
+                    element={
+                      <HjelpemiddelListe
+                        tittel="Søknad om hjelpemidler"
+                        hjelpemidler={sak.hjelpemidler}
+                        personinformasjon={sak.personinformasjon}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/bruker"
+                    element={
+                      <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
+                    }
+                  />
+                  <Route
+                    path="/formidler"
+                    element={
+                      <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig} />
+                    }
+                  />
+                </Routes>
               </Content>
             </FlexColumn>
           </Flex>

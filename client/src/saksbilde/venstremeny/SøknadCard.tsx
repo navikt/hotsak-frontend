@@ -36,7 +36,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
   }
 }
 
-export const SøknadCard: React.VFC<SøknadCardProps> = ({
+export const SøknadCard: React.FC<SøknadCardProps> = ({
   oppgaveType,
   saksnr,
   mottattDato,

@@ -4,7 +4,7 @@ import { atom, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoi
 
 import { extractValues, Keys } from '../utils/cookie'
 
-import { Saksbehandler } from '../types/types.internal'
+import type { Saksbehandler } from '../types/types.internal'
 
 interface AuthInfo {
   name: string

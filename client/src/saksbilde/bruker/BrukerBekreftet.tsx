@@ -14,7 +14,7 @@ const Container = styled.div`
   padding-bottom: 2rem;
 `
 
-export const BrukerBekreftet: React.VFC<BrukerBekreftetProps> = ({ navn }) => {
+export const BrukerBekreftet: React.FC<BrukerBekreftetProps> = ({ navn }) => {
   return (
     <>
       <Heading level="1" size="medium" spacing={true}>

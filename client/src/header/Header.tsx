@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
@@ -22,11 +22,11 @@ const Lenke = styled.a`
   text-decoration: none;
 `
 
-export const Toppmeny: React.VFC = () => {
+export const Toppmeny: React.FC = () => {
   const { name, ident, isLoggedIn } = useRecoilValue(authState)
   const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
   const { setFodselsnummer } = usePersonContext()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -35,7 +35,7 @@ export const Toppmeny: React.VFC = () => {
         <Søk
           onSearch={(value: string) => {
             setFodselsnummer(value)
-            history.push('/personoversikt/saker')
+            navigate('/personoversikt/saker')
           }}
         />
       </SøkeContainer>

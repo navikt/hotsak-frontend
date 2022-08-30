@@ -2,7 +2,7 @@ import React from 'react'
 
 import { IkonProps } from './Ikon'
 
-export const HistorikkIkon: React.VFC<IkonProps> = ({ width = 14, height = 14, className }) => (
+export const HistorikkIkon: React.FC<IkonProps> = ({ width = 14, height = 14, className }) => (
   <svg
     width={width}
     height={height}

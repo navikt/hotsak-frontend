@@ -1,5 +1,7 @@
 import useSwr from 'swr'
+
 import { hentBrukerdataMedPost } from '../io/http'
+
 import { PersonoversiktType } from '../types/types.internal'
 
 interface PersonInfoResponse {
@@ -10,7 +12,7 @@ interface PersonInfoResponse {
 
 export function usePersonInfo(brukersFodselsnummer?: string): PersonInfoResponse {
   const { data, error } = useSwr<{ data: PersonoversiktType | undefined }>(
-    brukersFodselsnummer ? ['api/personinfo' , brukersFodselsnummer] : null,
+    brukersFodselsnummer ? ['api/personinfo', brukersFodselsnummer] : null,
     hentBrukerdataMedPost
   )
 

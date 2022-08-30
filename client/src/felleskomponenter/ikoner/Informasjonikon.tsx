@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Ikon, IkonProps } from './Ikon'
 
-export const Informasjonikon: React.VFC<IkonProps> = ({ height = 16, width = 16, viewBox, className }) => (
+export const Informasjonikon: React.FC<IkonProps> = ({ height = 16, width = 16, viewBox, className }) => (
   <Ikon height={height} width={width} viewBox={viewBox} className={className}>
     <g fill="none" fillRule="evenodd">
       <path

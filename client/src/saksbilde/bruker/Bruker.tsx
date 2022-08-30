@@ -55,7 +55,7 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   }
 }
 
-export const Bruker: React.VFC<BrukerProps> = ({ person, levering, formidler }) => {
+export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
   return (

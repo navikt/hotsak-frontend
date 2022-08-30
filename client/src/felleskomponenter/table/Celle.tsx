@@ -9,6 +9,7 @@ import { Tekst } from '../typografi'
 import { DataCell } from './KolonneHeader'
 
 interface DataCelleProps {
+  children: React.ReactNode
   width: number
 }
 

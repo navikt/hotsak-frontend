@@ -21,7 +21,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
 `
 
-export const HistorikkHendelse: React.VFC<Hendelse> = ({ hendelse, detaljer, opprettet, bruker }) => {
+export const HistorikkHendelse: React.FC<Hendelse> = ({ hendelse, detaljer, opprettet, bruker }) => {
   return (
     <Container>
       <ContentContainer>

@@ -15,7 +15,7 @@ interface OverførGosysModalProps {
   onClose(): void
 }
 
-export const OverførGosysModal: React.VFC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')

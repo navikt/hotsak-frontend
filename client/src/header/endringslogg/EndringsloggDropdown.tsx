@@ -9,7 +9,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './endringsloggHooks'
 
-export const EndringsloggDropdown: React.VFC = () => {
+export const EndringsloggDropdown: React.FC = () => {
   const endringslogg = useEndringslogg()
   const dropdownMenuRef = useRef<HTMLDivElement>(null)
   return (

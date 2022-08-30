@@ -29,7 +29,7 @@ interface SaksoversiktProps {
   henterSaker: boolean
 }
 
-export const Saksoversikt: React.VFC<SaksoversiktProps> = ({ saker, henterSaker }) => {
+export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }) => {
   const kolonner = [
     {
       key: 'MOTTATT',

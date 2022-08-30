@@ -8,7 +8,7 @@ interface LeveringProps {
   brukerAdresse: string
 }
 
-export const LeveringsMåte: React.VFC<LeveringProps> = ({ levering, brukerAdresse }) => {
+export const LeveringsMåte: React.FC<LeveringProps> = ({ levering, brukerAdresse }) => {
   const { adresse, leveringsmåte } = levering
 
   let leveringsTekst = ''

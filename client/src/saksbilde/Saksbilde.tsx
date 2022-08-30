@@ -16,7 +16,7 @@ const SaksbildeContainer = styled.div`
   height: 96vh;
 `
 
-const SaksbildeContent: React.VFC = React.memo(() => {
+const SaksbildeContent = React.memo(() => {
   const { sak, isLoading, isError } = useSak()
   const handleError = useErrorHandler()
 

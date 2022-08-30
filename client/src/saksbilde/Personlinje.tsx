@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Link } from '@navikt/ds-react'
@@ -16,7 +16,7 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { Personinfo, Kjønn, PersonoversiktType } from '../types/types.internal'
+import { Kjønn, Personinfo, PersonoversiktType } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -104,9 +104,9 @@ const formaterNavn = (person: Personinfo | PersonoversiktType) => {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 
-export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
+export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
   const { setFodselsnummer } = usePersonContext()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   if (!person) return <Container />
 
@@ -119,7 +119,7 @@ export const Personlinje: React.VFC<PersonlinjeProps> = ({ person }) => {
         onClick={() => {
           logAmplitudeEvent(amplitude_taxonomy.PERSONOVERSIKT)
           setFodselsnummer(fnr)
-          history.push('/personoversikt/saker')
+          navigate('/personoversikt/saker')
         }}
       >
         <div aria-live="polite">

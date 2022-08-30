@@ -48,7 +48,7 @@ const ScrollWrapper = styled.div`
   overflow: auto;
 `
 
-export const Oppgaveliste: React.VFC = () => {
+export const Oppgaveliste: React.FC = () => {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)

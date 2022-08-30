@@ -59,7 +59,7 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
-export const VedtakCard: React.VFC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
+export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
   const { saksid } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)

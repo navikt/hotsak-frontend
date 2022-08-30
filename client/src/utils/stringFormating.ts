@@ -12,7 +12,9 @@ export const formaterFødselsnummer = (fødselsnummer: string) => {
 }
 
 export const formaterTelefonnummer = (telefon: string) => {
-    const siffer = telefon.split("")
+  const siffer = telefon.split('')
 
-    return `${siffer.slice(0, 2).join("")} ${siffer.slice(2, 4).join("")} ${siffer.slice(4, 6).join("")} ${siffer.slice(6, siffer.length ).join("")}`
+  return `${siffer.slice(0, 2).join('')} ${siffer.slice(2, 4).join('')} ${siffer.slice(4, 6).join('')} ${siffer
+    .slice(6, siffer.length)
+    .join('')}`
 }

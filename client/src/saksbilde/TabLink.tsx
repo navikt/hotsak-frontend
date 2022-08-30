@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
@@ -44,14 +44,14 @@ interface TabLinkProps {
 
 export const TabLink: React.FC<TabLinkProps> = ({ children, to, title, icon }) => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const active = location.pathname === to
   return (
     <TabLinkButton
       role="tab"
       data-href={to}
       onClick={() => {
-        history.push(to)
+        navigate(to)
         logAmplitudeEvent(amplitude_taxonomy.SAKSBILDE_BYTT_TAB, { tab: title })
       }}
       active={active}

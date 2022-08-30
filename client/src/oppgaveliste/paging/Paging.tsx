@@ -19,7 +19,7 @@ interface PaginationProps {
   onPageChange: (...args: any[]) => any
 }
 
-export const Paging: React.VFC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {
+export const Paging: React.FC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {
   const totalNumberOfPages = Math.ceil(totalCount / PAGE_SIZE)
   const hasMultiplePages = totalNumberOfPages > 1
 

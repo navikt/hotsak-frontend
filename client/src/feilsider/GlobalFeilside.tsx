@@ -4,7 +4,7 @@ import { isResponseError } from '../io/http'
 
 import { Feilside } from './Feilside'
 
-export const GlobalFeilside: React.VFC<{ error: Error }> = ({ error }) => {
+export const GlobalFeilside: React.FC<{ error: Error }> = ({ error }) => {
   return (
     <>
       {isResponseError(error) ? (

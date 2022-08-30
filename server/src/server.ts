@@ -6,10 +6,9 @@ import logger from './logging'
 import { ipAddressFromRequest } from './requestData'
 import setupProxy from './reverse-proxy'
 import { sessionStore } from './sessionStore'
-import { HotsakRequest } from './types'
 import cookieParser from 'cookie-parser'
-import express, { Response } from 'express'
-import { Client } from 'openid-client'
+import express from 'express'
+import { BaseClient } from 'openid-client'
 import path from 'path'
 
 const app = express()
@@ -21,11 +20,13 @@ app.use(/\/((?!api).)*/, express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(sessionStore(config))
 
-let azureClient: Client | null = null
+let azureClient: BaseClient | null = null
 azure
   .setup(config.oidc)
-  .then((client: Client) => {
-    azureClient = client
+  .then((client) => {
+    if (client) {
+      azureClient = client
+    }
   })
   .catch((err) => {
     logger.error(`Failed to discover OIDC provider properties: ${err}`)
@@ -47,10 +48,10 @@ app.get('/settings.js', (req, res) => {
 })
 
 const setUpAuthentication = () => {
-  app.get('/login', (req: HotsakRequest, res: Response) => {
+  app.get('/login', (req, res) => {
     res.redirect(`/oauth2/login`)
   })
-  app.get('/logout', (req: HotsakRequest, res: Response) => {
+  app.get('/logout', (req, res) => {
     res.redirect(`/oauth2/logout`)
   })
 }
@@ -58,7 +59,7 @@ const setUpAuthentication = () => {
 setUpAuthentication()
 
 // Protected routes
-app.use('/*', async (req: HotsakRequest, res, next) => {
+app.use('/*', async (req, res, next) => {
   if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
     res.cookie('hotsak', auth.createTokenForTest(), {
       secure: false,

@@ -11,7 +11,7 @@ const FeilmeldingAlert = styled(Alert)`
   padding: 0.5rem;
 `
 
-export const Feilmelding: React.FC = ({ children }) => {
+export const Feilmelding: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <FeilmeldingAlert size="small" variant="error">
       <Tekst>{children}</Tekst>

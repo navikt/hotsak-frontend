@@ -22,6 +22,7 @@ interface FormidlerCardProps {
 
 const CopyContainer = styled.div`
   display: flex;
+  align-items: center;
 `
 
 const Clipboard = styled(CopyToClipboard)`
@@ -29,11 +30,11 @@ const Clipboard = styled(CopyToClipboard)`
   padding: 0.1rem var(--navds-spacing-3) 0.1rem var(--navds-spacing-3);
 `
 
-export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
+export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
       <CardTitle>{tittel}</CardTitle>
-      <Grid>
+      <CenterGrid>
         <IconContainer>
           <Personikon />
         </IconContainer>
@@ -62,7 +63,11 @@ export const FormidlerCard: React.VFC<FormidlerCardProps> = ({ tittel, formidler
             popoverPlacement="bottom"
           />
         </CopyContainer>
-      </Grid>
+      </CenterGrid>
     </Card>
   )
 }
+
+const CenterGrid = styled(Grid)`
+  align-items: center;
+`

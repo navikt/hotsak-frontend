@@ -1,5 +1,7 @@
 import useSwr from 'swr'
+
 import { hentBrukerdataMedPost } from '../io/http'
+
 import { Saksoversikt } from '../types/types.internal'
 
 interface SaksoversiktResponse {
@@ -10,7 +12,7 @@ interface SaksoversiktResponse {
 
 export function useSaksoversikt(brukersFodselsnummer?: string): SaksoversiktResponse {
   const { data, error } = useSwr<{ data: Saksoversikt }>(
-    brukersFodselsnummer ? ['api/saksoversikt' , brukersFodselsnummer] : null,
+    brukersFodselsnummer ? ['api/saksoversikt', brukersFodselsnummer] : null,
     hentBrukerdataMedPost
   )
 

@@ -1,25 +1,22 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 
-import { ProtectedRoute } from './ProtectedRoute'
+import { RequireAuth } from './RequireAuth'
 import { Feilside } from './feilsider/Feilside'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Toppmeny } from './header/Header'
 import { PersonProvider } from './personoversikt/PersonContext'
-import { Routes } from './routes'
 import { useAuthentication } from './state/authentication'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
 const Personoversikt = React.lazy(() => import('./personoversikt/Personoversikt'))
 
-//ReactModal.setAppElement('#root');
-
-const App: React.VFC = () => {
+function App() {
   useAuthentication()
   logUserStats()
   return (
@@ -30,23 +27,34 @@ const App: React.VFC = () => {
           <React.Suspense fallback={<div />}>
             {/*<Varsler />*/}
             <main>
-              <Switch>
-                <Route path={Routes.Uautorisert}>
-                  <Feilside statusCode={401} />
-                </Route>
-                <ProtectedRoute path={Routes.Oppgaveliste} exact>
-                  <Oppgaveliste />
-                </ProtectedRoute>
-                <ProtectedRoute path={Routes.Saksbilde}>
-                  <Saksbilde />
-                </ProtectedRoute>
-                <ProtectedRoute path={Routes.Personoversikt}>
-                  <Personoversikt />
-                </ProtectedRoute>
-                <Route path="*">
-                  <Feilside statusCode={404} />
-                </Route>
-              </Switch>
+              <Routes>
+                <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                <Route
+                  path="/"
+                  element={
+                    <RequireAuth>
+                      <Oppgaveliste />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/sak/:saksnummer/*"
+                  element={
+                    <RequireAuth>
+                      <Saksbilde />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/personoversikt/*"
+                  element={
+                    <RequireAuth>
+                      <Personoversikt />
+                    </RequireAuth>
+                  }
+                />
+                <Route path="*" element={<Feilside statusCode={404} />} />
+              </Routes>
             </main>
           </React.Suspense>
         </ErrorBoundary>
@@ -56,18 +64,19 @@ const App: React.VFC = () => {
   )
 }
 
-const logUserStats = (): void => {
+function logUserStats(): void {
   const { innerWidth: width, innerHeight: height } = window
   logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, { res: { width, height } })
 }
 
-const withRoutingAndState = (Component: React.ComponentType) => (): JSX.Element =>
-  (
+function withRoutingAndState(Component: React.ComponentType) {
+  return (): JSX.Element => (
     <BrowserRouter>
       <RecoilRoot>
         <Component />
       </RecoilRoot>
     </BrowserRouter>
   )
+}
 
 export default withRoutingAndState(App)

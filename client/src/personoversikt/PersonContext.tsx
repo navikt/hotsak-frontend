@@ -13,7 +13,7 @@ const initialState = {
 
 const PersonContext = React.createContext<PersonContextType>(initialState)
 
-const PersonProvider: React.FC = ({ children }) => {
+const PersonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [fodselsnummer, setFodselsnummer] = useState(initialState.fodselsnummer)
 
   return <PersonContext.Provider value={{ fodselsnummer, setFodselsnummer }}>{children}</PersonContext.Provider>

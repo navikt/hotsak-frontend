@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Ikon, IkonProps } from './Ikon'
 
-export const MappeIkon: React.VFC<IkonProps> = ({ width = 14, height = 14, className }) => (
+export const MappeIkon: React.FC<IkonProps> = ({ width = 14, height = 14, className }) => (
   <Ikon width={width} height={height} viewBox="0 0 24 24" className={className}>
     <g fill="none">
       <path

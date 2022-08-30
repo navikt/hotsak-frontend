@@ -12,7 +12,7 @@ interface OpprettOrdreModalProps {
   onClose: () => void
 }
 
-export const OpprettOrdreModal: React.VFC<OpprettOrdreModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const OpprettOrdreModal: React.FC<OpprettOrdreModalProps> = ({ open, onBekreft, loading, onClose }) => {
   return (
     <DialogBoks
       shouldCloseOnOverlayClick={false}

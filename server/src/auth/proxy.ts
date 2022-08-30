@@ -15,7 +15,7 @@ export const setup = (issuer: typeof Issuer, bespoke: typeof custom) => {
 
     logger.info(`proxying requests via ${process.env['HTTP_PROXY']}`)
 
-    issuer[bespoke.http_options] = function (options: { agent: any }) {
+    issuer[bespoke.http_options] = function (url, options) {
       options.agent = proxyAgent
       return options
     }

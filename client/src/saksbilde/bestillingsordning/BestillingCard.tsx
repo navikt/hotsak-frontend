@@ -51,7 +51,7 @@ const StatusTekst = styled.div`
   padding-top: 0.5rem;
 `
 
-export const BestillingCard: React.VFC<BestillingCardProps> = ({ bestilling }) => {
+export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) => {
   const { saksid } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)

@@ -15,7 +15,7 @@ interface AvvisBestillingModalProps {
   onClose(): void
 }
 
-export const AvvisBestillingModal: React.VFC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
   // Modal && Modal.setAppElement("#root")
   const [valgtArsak, setValgtArsak] = useState<string>('')
   const [begrunnelse, setBegrunnelse] = useState<string>('')

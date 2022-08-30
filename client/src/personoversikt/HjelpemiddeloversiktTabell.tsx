@@ -27,7 +27,7 @@ interface HjelpemiddeloversiktProps {
   henterHjelpemiddeloversikt: boolean
 }
 
-export const HjelpemiddeloversiktTabell: React.VFC<HjelpemiddeloversiktProps> = ({
+export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = ({
   artikler,
   henterHjelpemiddeloversikt,
 }) => {

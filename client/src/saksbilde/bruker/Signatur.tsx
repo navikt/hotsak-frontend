@@ -10,7 +10,7 @@ interface SignaturProps {
   navn: string
 }
 
-export const Signatur: React.VFC<SignaturProps> = ({ signaturType, navn }) => {
+export const Signatur: React.FC<SignaturProps> = ({ signaturType, navn }) => {
   switch (signaturType) {
     case SignaturType.BRUKER_BEKREFTER:
       return <BrukerBekreftet navn={navn} />

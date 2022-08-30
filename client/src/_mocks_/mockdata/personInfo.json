@@ -18,11 +18,12 @@
     "kjønn": "KVINNE",
     "brukernummer": "454269"
   },
-  {"fnr": "19044238651",
-  "fødselsdato": "1942-12-19",
-  "fornavn": "Navn",
-  "etternavn": "Navnesen",
-  "telefon": "45454545",
-  "kjønn": "MANN"
+  {
+    "fnr": "19044238651",
+    "fødselsdato": "1942-12-19",
+    "fornavn": "Navn",
+    "etternavn": "Navnesen",
+    "telefon": "45454545",
+    "kjønn": "MANN"
   }
 ]

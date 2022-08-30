@@ -1,62 +1,62 @@
 [
-        {
-          "hmsnr": "248586",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=60030&art0=111016&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=60030",
-          "produktnavn": "Inserto Domino",
-          "isotittel": "Sitteputer for komfort",
-          "isokode": "18100601",
-          "avtaleposttittel": "Post 6: Sittepute for trykksårforebygging og posisjonering ",
-          "avtalepostnr": "6"
-        },
-        {
-          "hmsnr": "278331",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=64861&art0=118549&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=64861",
-          "produktnavn": "Cross 6 allround ",
-          "isotittel": "Manuelle rullestoler allround",
-          "isokode": "12220302",
-          "avtaleposttittel": "Post 5: Allround rullestol med sammenleggbar ramme og avtakbare benstøtter ",
-          "avtalepostnr": "5"
-        },
-        {
-          "hmsnr": "288805",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=65017&art0=48668&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=65017",
-          "produktnavn": "Meteor Voksen",
-          "isotittel": "Regntøy",
-          "isokode": "09030502",
-          "avtaleposttittel": "Post 6: Regncape uten ermer  voksne, til bruk i rullestol med høy rygg",
-          "avtalepostnr": "6"
-        },
-        {
-          "hmsnr": "019161",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=24586&art0=58344&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=24586",
-          "produktnavn": "Etac Swift",
-          "isotittel": "Dusjkrakker",
-          "isokode": "09330701",
-          "avtaleposttittel": "Post 10: Dusjkrakk  firkantet",
-          "avtalepostnr": "10"
-        },
-        {
-          "hmsnr": "014112",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=30418&art0=65052&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=30418",
-          "produktnavn": "Topro Terskeleliminator",
-          "isotittel": "Terskeleliminatorer",
-          "isokode": "18301505",
-          "avtaleposttittel": "Post 1: Terskeleliminator - påkjøring fra en side. Velegnet for innendørs bruk og begrenset utendørs bruk. ",
-          "avtalepostnr": "1"
-        },
-        {
-          "hmsnr": "177946",
-          "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=34825&art0=72217&nart=1",
-          "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=34825",
-          "produktnavn": "Gemino 20",
-          "isotittel": "Rollatorer, 4 hjul innendørsbruk, begrenset utebruk",
-          "isokode": "12060602",
-          "avtaleposttittel": "Post 2: Rullator - innendørs bruk",
-          "avtalepostnr": "2"
-        }
+  {
+    "hmsnr": "248586",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=60030&art0=111016&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=60030",
+    "produktnavn": "Inserto Domino",
+    "isotittel": "Sitteputer for komfort",
+    "isokode": "18100601",
+    "avtaleposttittel": "Post 6: Sittepute for trykksårforebygging og posisjonering ",
+    "avtalepostnr": "6"
+  },
+  {
+    "hmsnr": "278331",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=64861&art0=118549&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=64861",
+    "produktnavn": "Cross 6 allround ",
+    "isotittel": "Manuelle rullestoler allround",
+    "isokode": "12220302",
+    "avtaleposttittel": "Post 5: Allround rullestol med sammenleggbar ramme og avtakbare benstøtter ",
+    "avtalepostnr": "5"
+  },
+  {
+    "hmsnr": "288805",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=65017&art0=48668&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=65017",
+    "produktnavn": "Meteor Voksen",
+    "isotittel": "Regntøy",
+    "isokode": "09030502",
+    "avtaleposttittel": "Post 6: Regncape uten ermer  voksne, til bruk i rullestol med høy rygg",
+    "avtalepostnr": "6"
+  },
+  {
+    "hmsnr": "019161",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=24586&art0=58344&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=24586",
+    "produktnavn": "Etac Swift",
+    "isotittel": "Dusjkrakker",
+    "isokode": "09330701",
+    "avtaleposttittel": "Post 10: Dusjkrakk  firkantet",
+    "avtalepostnr": "10"
+  },
+  {
+    "hmsnr": "014112",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=30418&art0=65052&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=30418",
+    "produktnavn": "Topro Terskeleliminator",
+    "isotittel": "Terskeleliminatorer",
+    "isokode": "18301505",
+    "avtaleposttittel": "Post 1: Terskeleliminator - påkjøring fra en side. Velegnet for innendørs bruk og begrenset utendørs bruk. ",
+    "avtalepostnr": "1"
+  },
+  {
+    "hmsnr": "177946",
+    "artikkelUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=34825&art0=72217&nart=1",
+    "produktUrl": "https://www.hjelpemiddeldatabasen.no/r11x.asp?linkinfo=34825",
+    "produktnavn": "Gemino 20",
+    "isotittel": "Rollatorer, 4 hjul innendørsbruk, begrenset utebruk",
+    "isokode": "12060602",
+    "avtaleposttittel": "Post 2: Rullator - innendørs bruk",
+    "avtalepostnr": "2"
+  }
 ]

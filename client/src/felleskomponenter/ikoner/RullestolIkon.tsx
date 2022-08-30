@@ -1,6 +1,6 @@
 import { Ikon, IkonProps } from './Ikon'
 
-export const RullestolIkon: React.VFC<IkonProps & { title: string }> = ({
+export const RullestolIkon: React.FC<IkonProps & { title: string }> = ({
   width = 14,
   height = 14,
   className,

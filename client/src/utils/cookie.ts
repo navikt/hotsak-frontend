@@ -13,7 +13,7 @@ export enum CookieKey {
   Groups = 'groups',
 }
 
-if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
+if (import.meta.env.NODE_ENV === 'development' || import.meta.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
   document.cookie = `hotsak=dev-cookie.${btoa(
     JSON.stringify({
       name: 'Silje Saksbehandler',

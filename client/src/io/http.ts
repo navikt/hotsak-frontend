@@ -13,7 +13,7 @@ export interface SaksbehandlingApiResponse<T = any> {
   data: T
 }
 
-const baseUrl = process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production' ? '' : ``
+const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NODE_ENV === 'production' ? '' : ''
 
 type Headers = { [key: string]: any }
 

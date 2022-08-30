@@ -35,7 +35,7 @@ export const initAmplitude = (): void => {
 }
 
 export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any): void {
-  if (process.env.NODE_ENV === 'test') {
+  if (import.meta.env.NODE_ENV === 'test') {
     return
   }
   setTimeout(() => {

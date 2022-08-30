@@ -1,7 +1,7 @@
 {
   "name": "hotsak-frontend-server",
   "version": "0.1.0",
-  "type": "module",
+  "type": "commonjs",
   "author": "Team DigiHoT",
   "private": true,
   "license": "MIT",
@@ -14,7 +14,7 @@
     "express": "4.18.1",
     "express-http-proxy": "1.6.3",
     "express-session": "1.17.3",
-    "node-fetch": "3.2.10",
+    "node-fetch": "2.6.7",
     "openid-client": "5.1.9",
     "tunnel": "0.0.6",
     "winston": "3.8.1"
@@ -41,8 +41,7 @@
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf ./dist",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "dev-server": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration npm run dev",
+    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only src/server.ts",
     "lint": "eslint . --ext .ts"
   }
 }

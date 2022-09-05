@@ -7,6 +7,7 @@ import { Ingress, Label } from '@navikt/ds-react'
 
 import { ISO_DATOFORMAT } from '../../utils/date'
 
+import { Strek } from '../../felleskomponenter/Strek'
 import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
 
 export const Endringslogg: React.FC<{
@@ -65,6 +66,7 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
         <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
         <div />
       </dd>
+      <Strek />
     </>
   )
 }

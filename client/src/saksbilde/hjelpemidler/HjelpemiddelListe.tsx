@@ -4,7 +4,7 @@ import { Heading } from '@navikt/ds-react'
 
 import { Rad } from '../../felleskomponenter/Flex'
 import { Etikett } from '../../felleskomponenter/typografi'
-import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
+import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { Hjelpemiddel } from './Hjelpemiddel'
 
 const Container = styled.div`
@@ -12,10 +12,9 @@ const Container = styled.div`
 `
 
 interface HjelpemiddelListeProps {
-  hjelpemidler: HjelpemiddelType[]
-  personinformasjon: Personinfo
   tittel: string
   forenkletVisning?: boolean
+  sak: Sak
 }
 
 const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
@@ -29,12 +28,9 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
     .reduce(summarize, 0)
 }
 
-export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({
-  tittel,
-  hjelpemidler,
-  personinformasjon,
-  forenkletVisning = false,
-}) => {
+export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, forenkletVisning = false, sak }) => {
+  const { hjelpemidler } = sak
+
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
@@ -46,8 +42,8 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({
             <Hjelpemiddel
               key={hjelpemiddel.hmsnr}
               hjelpemiddel={hjelpemiddel}
-              personinformasjon={personinformasjon}
               forenkletVisning={forenkletVisning}
+              sak={sak}
             />
           )
         })}

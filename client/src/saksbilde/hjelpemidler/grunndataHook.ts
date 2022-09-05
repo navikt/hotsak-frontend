@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
 import { gql, request } from 'graphql-request'
+import { useState, useEffect } from 'react'
+
 import { HMDBHentProduktQuery, HMDBHentProduktQueryVariables } from '../../generated/hjelpemiddeldatabasen'
 import { Produkt } from '../../types/types.internal'
 
@@ -13,31 +14,38 @@ const query = gql`
       isokode
       avtaleposttittel
       avtalepostnr
+      artikkelnavn
     }
   }
 `
 
-export function useGrunndata(hmsnummer: string) {
+export function useGrunndata(hmsnummer?: string) {
   const [produkt, setProdukt] = useState<Produkt | null>(null)
 
   useEffect(() => {
     ;(async () => {
       try {
-        const data = await request<HMDBHentProduktQuery, HMDBHentProduktQueryVariables>(
-          '/grunndata-api/graphql',
-          query,
-          { hmsnr: hmsnummer }
-        )
-        const [produkt] = data.produkter
-        const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl } = produkt
-        setProdukt({
-          isokode: isokode || '',
-          isotittel: isotittel || '',
-          posttittel: avtaleposttittel || '',
-          rammeavtalePostId: avtalepostnr || '',
-          produkturl: produktUrl || '',
-          artikkelurl: artikkelUrl,
-        })
+        if (!hmsnummer || hmsnummer.length !== 6) {
+          setProdukt(null)
+        } else {
+          const data = await request<HMDBHentProduktQuery, HMDBHentProduktQueryVariables>(
+            '/grunndata-api/graphql',
+            query,
+            { hmsnr: hmsnummer }
+          )
+          const [produkt] = data.produkter
+          const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl, artikkelnavn } = produkt
+          setProdukt({
+            isokode: isokode || '',
+            isotittel: isotittel || '',
+            posttittel: avtaleposttittel || '',
+            rammeavtalePostId: avtalepostnr || '',
+            produkturl: produktUrl || '',
+            artikkelurl: artikkelUrl,
+            artikkelnavn: artikkelnavn,
+            hmsnr: hmsnummer,
+          })
+        }
       } catch (e) {
         setProdukt(null)
       }

@@ -1,5 +1,19 @@
 /// <reference types="Cypress" />
 describe('Happy path', () => {
+  beforeEach(() => {
+    cy.setCookie(
+      'hotsak',
+      `dev-cookie.${btoa(
+        JSON.stringify({
+          name: 'Silje Saksbehandler',
+          NAVident: 'S112233',
+          email: 'dev@nav.no',
+          oid: '23ea7485-1324-4b25-a763-assdfdfa',
+          groups: ['gruppe1', 'gruppe3'],
+        })
+      )}.ignored-part`
+    )
+  })
   before(() => {
     cy.visit('/')
   })

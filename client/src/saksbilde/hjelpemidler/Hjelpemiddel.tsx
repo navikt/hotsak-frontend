@@ -1,14 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useSWRConfig } from 'swr'
 
-import { Link } from '@navikt/ds-react'
+import { Collapse, Expand } from '@navikt/ds-icons'
+import { Button, Link } from '@navikt/ds-react'
 
+import { putEndreHjelpemiddel } from '../../io/http'
 import { capitalize } from '../../utils/stringFormating'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
+import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { HjelpemiddelType, Personinfo } from '../../types/types.internal'
+import {
+  EndreHjelpemiddelRequest,
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+  HjelpemiddelType,
+  OppgaveStatusType,
+  Sak,
+} from '../../types/types.internal'
+import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useGrunndata } from './grunndataHook'
 
@@ -66,12 +78,30 @@ interface RangeringProps {
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
-  personinformasjon: Personinfo
   forenkletVisning: boolean
+  sak: Sak
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, personinformasjon, forenkletVisning }) => {
+export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
+  const { personinformasjon, status, saksid } = sak
+
+  const [visEndreProdukt, setVisEndreProdukt] = useState(false)
+  const { mutate } = useSWRConfig()
+
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
+  const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsNr)
+
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+    await putEndreHjelpemiddel(saksid, endreHjelpemiddel)
+      .catch(() => console.log('error endre hjelpemiddel'))
+      .then(() => {
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
+      })
+    setVisEndreProdukt(false)
+  }
+
+  const nåværendeProdukt = endretProdukt ?? produkt
 
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
@@ -90,20 +120,46 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{produkt ? produkt?.isotittel : hjelpemiddel.kategori}</Etikett>
+              <Etikett>{nåværendeProdukt?.isotittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{produkt && produkt.posttittel}</Rad>
+          <Rad>{nåværendeProdukt?.posttittel}</Rad>
+          {endretProdukt && (
+            <Rad>
+              <strong>{hjelpemiddel.endretHjelpemiddel?.hmsNr}</strong>
+              {/* TODO håndter manglende URL */}
+              <HMSLenke href={endretProdukt.artikkelurl} target="_blank">
+                {endretProdukt.artikkelnavn}
+              </HMSLenke>
+            </Rad>
+          )}
           <Rad>
-            <strong>{hjelpemiddel.hmsnr}</strong>
+            <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
             {produkt ? (
               <HMSLenke href={produkt.artikkelurl} target="_blank">
-                {hjelpemiddel.beskrivelse}
+                <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
               </HMSLenke>
             ) : (
               <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
             )}
           </Rad>
+          {hjelpemiddel.endretHjelpemiddel && (
+            <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>
+              <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
+                <PersonikonFilled width={22} height={22} />
+              </div>
+              <div>
+                <Rad>
+                  <strong>Byttet ut av saksbehandler, begrunnelse:</strong>
+                </Rad>
+                <Rad>
+                  {hjelpemiddel.endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                    ? hjelpemiddel.endretHjelpemiddel.begrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}
+                </Rad>
+              </div>
+            </Rad>
+          )}
           <Rad>
             {hjelpemiddel.tilleggsinfo.length > 0 && (
               <TilleggsInfo>
@@ -167,8 +223,35 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, person
             )}
           </Rad>
         </Rad>
+        {forenkletVisning && visEndreProdukt && (
+          <Rad style={{ justifyContent: 'flex-end' }}>
+            <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(false)}>
+              Avbryt
+              <Collapse />
+            </Button>
+          </Rad>
+        )}
+        {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && forenkletVisning && !visEndreProdukt && (
+          <Rad style={{ justifyContent: 'flex-end' }}>
+            <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(true)}>
+              Endre
+              <Expand />
+            </Button>
+          </Rad>
+        )}
       </Rad>
-      <Strek />
+      {forenkletVisning && visEndreProdukt ? (
+        <EndreHjelpemiddel
+          hmsNr={hjelpemiddel.hmsnr}
+          hmsTittel={produkt?.isotittel}
+          hmsBeskrivelse={hjelpemiddel.beskrivelse}
+          nåværendeHmsNr={nåværendeProdukt?.hmsnr}
+          onLagre={endreHjelpemiddel}
+          onAvbryt={() => setVisEndreProdukt(false)}
+        />
+      ) : (
+        <Strek />
+      )}
     </HjelpemiddelContainer>
   )
 }

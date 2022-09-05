@@ -143,6 +143,8 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
               variant="secondary"
               size="small"
               style={{ marginRight: '1rem' }}
+              loading={submitting}
+              icon={<SaveFile />}
               onClick={async () => {
                 if (!validationError()) {
                   setSubmitting(true)
@@ -168,7 +170,6 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                 }
               }}
             >
-              {submitting ? <Loader /> : <SaveFile />}
               Lagre
             </Button>
             <Button variant="tertiary" size="small" onClick={() => onAvbryt()}>

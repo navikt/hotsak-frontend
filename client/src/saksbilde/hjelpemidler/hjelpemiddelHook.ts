@@ -11,7 +11,7 @@ interface DataResponse {
 }
 
 export function useHjelpemiddel(hmsnummer?: string): DataResponse {
-  const shouldFetch = hmsnummer !== undefined && hmsnummer !== ''
+  const shouldFetch = hmsnummer && hmsnummer !== undefined && hmsnummer !== ''
 
   const { data, error } = useSwr<{ data: Hjelpemiddel }>(shouldFetch ? `api/hjelpemiddel/${hmsnummer}` : null, httpGet)
 

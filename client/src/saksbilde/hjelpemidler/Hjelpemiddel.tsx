@@ -23,6 +23,7 @@ import {
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useGrunndata } from './grunndataHook'
+import { useHjelpemiddel } from './hjelpemiddelHook'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -89,7 +90,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
   const { mutate } = useSWRConfig()
 
   const produkt = useGrunndata(hjelpemiddel.hmsnr)
-  const endretProdukt = useGrunndata(hjelpemiddel.endretHjelpemiddel?.hmsNr)
+
+  const endretProdukt = hjelpemiddel.endretHjelpemiddel
+
+  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(endretProdukt ? endretProdukt.hmsNr : undefined)
 
   const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     await putEndreHjelpemiddel(saksid, endreHjelpemiddel)
@@ -101,7 +105,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
     setVisEndreProdukt(false)
   }
 
-  const nåværendeProdukt = endretProdukt ?? produkt
+  const nåværendeHmsnr = endretProdukt ? endretProdukt.hmsNr : hjelpemiddel.hmsnr
 
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
@@ -120,17 +124,14 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{nåværendeProdukt?.isotittel}</Etikett>
+              <Etikett>{produkt?.isotittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{nåværendeProdukt?.posttittel}</Rad>
+          <Rad>{produkt?.posttittel}</Rad>
           {endretProdukt && (
             <Rad>
-              <strong>{hjelpemiddel.endretHjelpemiddel?.hmsNr}</strong>
-              {/* TODO håndter manglende URL */}
-              <HMSLenke href={endretProdukt.artikkelurl} target="_blank">
-                {endretProdukt.artikkelnavn}
-              </HMSLenke>
+              <strong>{endretProdukt.hmsNr}</strong>
+              <HMSTekst>{endretHjelpemiddelNavn?.navn}</HMSTekst>
             </Rad>
           )}
           <Rad>
@@ -244,7 +245,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <EndreHjelpemiddel
           hmsNr={hjelpemiddel.hmsnr}
           hmsBeskrivelse={hjelpemiddel.beskrivelse}
-          nåværendeHmsNr={nåværendeProdukt?.hmsnr}
+          nåværendeHmsNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}
         />

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { SaveFile } from '@navikt/ds-icons'
-import { Button, Panel, Radio, RadioGroup, TextField } from '@navikt/ds-react'
+import { Button, ErrorMessage, Panel, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
@@ -46,8 +46,6 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const [submitting, setSubmitting] = useState(false)
 
   const { hjelpemiddel, isError } = useHjelpemiddel(endreProduktHmsnr)
-
-  console.log(`Error: ${isError}`)
 
   const errorEndretProdukt = () => {
     if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsNr) {
@@ -110,9 +108,11 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                   <Etikett>Beskrivelse</Etikett>
                 </Rad>
                 <Rad style={{ marginTop: '.5rem', alignContent: 'center' }}>
-                  {hmsNr !== '' && isError
-                    ? 'Hmsnummer ikke funnet i hjelpemiddeldatabasen eller OEBS'
-                    : hjelpemiddel?.navn ?? ''}
+                  {hmsNr !== '' && isError ? (
+                    <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OEBS</ErrorMessage>
+                  ) : (
+                    hjelpemiddel?.navn ?? ''
+                  )}
                 </Rad>
               </Kolonne>
             </Rad>

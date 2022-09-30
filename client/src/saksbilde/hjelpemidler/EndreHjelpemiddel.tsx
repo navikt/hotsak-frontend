@@ -1,9 +1,8 @@
 import { useState } from 'react'
+import styled from 'styled-components'
 
 import { SaveFile } from '@navikt/ds-icons'
-import { Button, Loader, Radio, RadioGroup, TextField } from '@navikt/ds-react'
-
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { Button, Panel, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
@@ -13,11 +12,10 @@ import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
 } from '../../types/types.internal'
-import { useGrunndata } from './grunndataHook'
+import { useHjelpemiddel } from './hjelpemiddelHook'
 
 interface EndreHjelpemiddelProps {
   hmsNr: string
-  hmsTittel?: string
   hmsBeskrivelse: string
   nåværendeHmsNr?: string
   onLagre: (endreHjelpemiddel: EndreHjelpemiddelRequest) => void
@@ -28,11 +26,14 @@ const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) 
   return <Kolonne width="150px">{children}</Kolonne>
 }
 
+const EndreHjelpemiddelPanel = styled(Panel)`
+  background-color: #f1f1f1;
+`
+
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
 export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   hmsNr: hmsNr,
-  hmsTittel: hmsTittel,
   hmsBeskrivelse: hmsBeskrivelse,
   nåværendeHmsNr: nåværendeHmsNr,
   onLagre,
@@ -44,10 +45,12 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  const endretProdukt = useGrunndata(endreProduktHmsnr)
+  const { hjelpemiddel, isError } = useHjelpemiddel(endreProduktHmsnr)
+
+  console.log(`Error: ${isError}`)
 
   const errorEndretProdukt = () => {
-    if (!endretProdukt || endretProdukt.hmsnr === nåværendeHmsNr) {
+    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsNr) {
       return 'Du må oppgi et nytt, gyldig HMS-nr'
     }
   }
@@ -77,108 +80,112 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
   }
 
   return (
-    <div style={{ background: '#F1F1F1', marginBottom: '1rem', paddingTop: '1rem' }}>
-      <Rad style={{ marginBottom: '1rem' }}>
-        <EtikettKolonne></EtikettKolonne>
-        <Kolonne>
-          <Rad>
-            <Etikett>Endre artikkelnummer</Etikett>
-          </Rad>
-          <Rad>Her kan du erstatte artikkelnummeret begrunner har lagt inn.</Rad>
-          <Rad style={{ marginTop: '1rem' }}>
-            <Kolonne style={{ width: '10rem', maxWidth: '10rem' }}>
-              <Rad style={{ width: '8rem' }}>
+    <>
+      <EndreHjelpemiddelPanel>
+        <Rad style={{ marginBottom: '1rem' }}>
+          <EtikettKolonne></EtikettKolonne>
+          <Kolonne>
+            <Rad>
+              <Etikett>Endre artikkelnummer</Etikett>
+            </Rad>
+            <Rad>Her kan du erstatte artikkelnummeret begrunner har lagt inn.</Rad>
+            <Rad style={{ marginTop: '1rem' }}>
+              <Kolonne width="10rem">
+                <Rad style={{ width: '8rem' }}>
+                  <TextField
+                    label="Artikkelnummer"
+                    size="small"
+                    maxLength={6}
+                    onChange={(event) => {
+                      if (event.target.value.length === 6) {
+                        setEndreProduktHmsnr(event.target.value)
+                      }
+                    }}
+                    error={submitAttempt && errorEndretProdukt()}
+                  />
+                </Rad>
+              </Kolonne>
+              <Kolonne>
+                <Rad>
+                  <Etikett>Beskrivelse</Etikett>
+                </Rad>
+                <Rad style={{ marginTop: '.5rem', alignContent: 'center' }}>
+                  {hmsNr !== '' && isError
+                    ? 'Hmsnummer ikke funnet i hjelpemiddeldatabasen eller OEBS'
+                    : hjelpemiddel?.navn ?? ''}
+                </Rad>
+              </Kolonne>
+            </Rad>
+            <Rad style={{ marginTop: '1rem' }}>
+              <RadioGroup
+                size="small"
+                legend="Begrunnelse for å endre artikkelnummer:"
+                onChange={(val) => setEndreBegrunnelse(val)}
+                value={endreBegrunnelse ?? ''}
+                error={submitAttempt && errorBegrunnelse()}
+              >
+                <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
+                  {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
+                </Radio>
+                <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
+                  {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
+                </Radio>
+                <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
+                  {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
+                </Radio>
+              </RadioGroup>
+            </Rad>
+            {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
+              <Rad style={{ marginTop: '1rem', paddingRight: '1rem', maxWidth: '36rem' }}>
                 <TextField
-                  label="Artikkelnummer"
+                  label="Begrunn endringen"
                   size="small"
-                  maxLength={6}
-                  onChange={(event) => {
-                    setEndreProduktHmsnr(event.target.value)
-                  }}
-                  value={endreProduktHmsnr}
-                  error={submitAttempt && errorEndretProdukt()}
+                  description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
+                  value={endreBegrunnelseFritekst}
+                  onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
+                  error={submitAttempt && errorBegrunnelseFritekst()}
                 />
               </Rad>
-            </Kolonne>
-            <Kolonne>
-              <Rad>
-                <Etikett>Beskrivelse</Etikett>
-              </Rad>
-              <Rad style={{ marginTop: '.5rem', alignContent: 'center' }}>{endretProdukt?.artikkelnavn ?? ''}</Rad>
-            </Kolonne>
-          </Rad>
-          <Rad style={{ marginTop: '1rem' }}>
-            <RadioGroup
-              size="small"
-              legend="Begrunnelse for å endre artikkelnummer:"
-              onChange={(val) => setEndreBegrunnelse(val)}
-              value={endreBegrunnelse ?? ''}
-              error={submitAttempt && errorBegrunnelse()}
-            >
-              <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
-              </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
-              </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
-              </Radio>
-            </RadioGroup>
-          </Rad>
-          {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
-            <Rad style={{ marginTop: '1rem', paddingRight: '1rem', maxWidth: '36rem' }}>
-              <TextField
-                label="Begrunn endringen"
+            )}
+            <Rad style={{ marginTop: '1rem' }}>
+              <Button
+                variant="secondary"
                 size="small"
-                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
-                value={endreBegrunnelseFritekst}
-                onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
-                error={submitAttempt && errorBegrunnelseFritekst()}
-              />
-            </Rad>
-          )}
-          <Rad style={{ marginTop: '1rem' }}>
-            <Button
-              variant="secondary"
-              size="small"
-              style={{ marginRight: '1rem' }}
-              loading={submitting}
-              icon={<SaveFile />}
-              onClick={async () => {
-                if (!validationError()) {
-                  setSubmitting(true)
-                  const begrunnelseFritekst =
-                    endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                      ? endreBegrunnelseFritekst
-                      : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
-                  if (hmsTittel !== endretProdukt!.isotittel) {
-                    logAmplitudeEvent(amplitude_taxonomy.BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL)
-                  }
+                style={{ marginRight: '1rem' }}
+                loading={submitting}
+                icon={<SaveFile />}
+                onClick={async () => {
+                  if (!validationError()) {
+                    setSubmitting(true)
+                    const begrunnelseFritekst =
+                      endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                        ? endreBegrunnelseFritekst
+                        : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
 
-                  await onLagre({
-                    hmsNr: hmsNr,
-                    hmsBeskrivelse: hmsBeskrivelse,
-                    endretHmsNr: endreProduktHmsnr,
-                    endretHmsBeskrivelse: endretProdukt!.artikkelnavn,
-                    begrunnelse: endreBegrunnelse!,
-                    begrunnelseFritekst: begrunnelseFritekst,
-                  })
-                  setSubmitting(false)
-                } else {
-                  setSubmitAttempt(true)
-                }
-              }}
-            >
-              Lagre
-            </Button>
-            <Button variant="tertiary" size="small" onClick={() => onAvbryt()}>
-              Avbryt
-            </Button>
-          </Rad>
-        </Kolonne>
-      </Rad>
+                    await onLagre({
+                      hmsNr: hmsNr,
+                      hmsBeskrivelse: hmsBeskrivelse,
+                      endretHmsNr: endreProduktHmsnr,
+                      endretHmsBeskrivelse: hjelpemiddel?.navn || '',
+                      begrunnelse: endreBegrunnelse!,
+                      begrunnelseFritekst: begrunnelseFritekst,
+                    })
+                    setSubmitting(false)
+                  } else {
+                    setSubmitAttempt(true)
+                  }
+                }}
+              >
+                Lagre
+              </Button>
+              <Button variant="tertiary" size="small" onClick={() => onAvbryt()}>
+                Avbryt
+              </Button>
+            </Rad>
+          </Kolonne>
+        </Rad>
+      </EndreHjelpemiddelPanel>
       <Strek />
-    </div>
+    </>
   )
 }

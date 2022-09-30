@@ -243,7 +243,6 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
           hmsNr={hjelpemiddel.hmsnr}
-          hmsTittel={produkt?.isotittel}
           hmsBeskrivelse={hjelpemiddel.beskrivelse}
           nåværendeHmsNr={nåværendeProdukt?.hmsnr}
           onLagre={endreHjelpemiddel}

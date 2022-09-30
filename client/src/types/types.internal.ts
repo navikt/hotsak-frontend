@@ -414,3 +414,8 @@ export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
   [EndretHjelpemiddelBegrunnelse.GJENBRUK, 'Gjenbruk'],
   [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
 ])
+
+export interface Hjelpemiddel {
+  hmsnr: string
+  navn: string
+}

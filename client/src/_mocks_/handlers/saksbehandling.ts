@@ -230,7 +230,7 @@ const saksbehandlingHandlers = [
       detaljer: 'Ordrenummer: 1390009031 | Status: Registrert',
     }
     const ordreFerdigstiltHendelse = {
-      id: '5',
+      id: '6',
       hendelse: 'Ordre oppdatert i OEBS',
       opprettet: '2022-05-05T12:49:00.815302',
       detaljer: 'Ordrenummer: 1390009031 | Status: Klargjort',

@@ -20,7 +20,6 @@ export enum amplitude_taxonomy {
   BESTILLING_STARTET_FRA_BESTILLINGSBILDE = 'bestilling startet fra bestillingsbilde',
   BESTILLING_FERDIGSTILT = 'godkjent bestilling',
   BESTILLING_AVVIST = 'avvist bestilling hotsak',
-  BESTILLING_ENDRE_HMSNR_NY_ISOTITTEL = 'endret bestilling med ny isotittel',
 }
 
 export const initAmplitude = (): void => {

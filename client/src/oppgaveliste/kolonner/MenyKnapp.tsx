@@ -33,6 +33,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
 
   const fjernTildeling = (event: React.MouseEvent) => {
     event.stopPropagation()
+
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
     deleteFjernTildeling(oppgave.saksid)
@@ -48,13 +49,13 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
     <>
       {
         <span style={{ display: 'flex', marginBlock: -2 }}>
-          <Dropdown>
+          <Dropdown onSelect={fjernTildeling}>
             <Button variant="tertiary" size="xsmall" as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
               <EllipsisCircleH />
             </Button>
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item disabled={disabled()} onClick={fjernTildeling}>
+                <Dropdown.Menu.List.Item disabled={disabled()}>
                   Fjern tildeling {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
               </Dropdown.Menu.List>

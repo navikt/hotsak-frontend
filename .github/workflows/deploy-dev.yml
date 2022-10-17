@@ -8,7 +8,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - endre-bestilling
+      - hjelpemiddelId-for-endreBestilling
 env:
   IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
 

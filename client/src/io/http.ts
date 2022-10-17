@@ -149,5 +149,5 @@ export const postEndringslogginnslagLest = async (endringslogginnslagId: string)
 }
 
 export const putEndreHjelpemiddel = async (saksnummer: string, endreHjelpemiddel: EndreHjelpemiddelRequest) => {
-  return put(`${baseUrl}/api/bestilling/${saksnummer}`, endreHjelpemiddel)
+  return put(`${baseUrl}/api/bestilling/v2/${saksnummer}`, endreHjelpemiddel)
 }

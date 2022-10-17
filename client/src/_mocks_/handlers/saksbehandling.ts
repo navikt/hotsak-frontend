@@ -247,7 +247,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/:saksnummer', (req, res, ctx) => {
+  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/v2/:saksnummer', (req, res, ctx) => {
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 

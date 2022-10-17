@@ -108,6 +108,7 @@ export enum KontaktPersonType {
   ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
 export interface HjelpemiddelType {
+  id: number
   hmsnr: string
   rangering: number
   alleredeUtlevert: boolean
@@ -395,6 +396,7 @@ export interface Saksoversikt_Sak {
 }
 
 export interface EndreHjelpemiddelRequest {
+  hjelpemiddelId: number
   hmsNr: string
   hmsBeskrivelse: string
   endretHmsNr: string

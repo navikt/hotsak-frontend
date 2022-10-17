@@ -15,6 +15,7 @@ import {
 import { useHjelpemiddel } from './hjelpemiddelHook'
 
 interface EndreHjelpemiddelProps {
+  hjelpemiddelId: number
   hmsNr: string
   hmsBeskrivelse: string
   nåværendeHmsNr?: string
@@ -33,6 +34,7 @@ const EndreHjelpemiddelPanel = styled(Panel)`
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
 export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
+  hjelpemiddelId: hjelpemiddelId,
   hmsNr: hmsNr,
   hmsBeskrivelse: hmsBeskrivelse,
   nåværendeHmsNr: nåværendeHmsNr,
@@ -163,6 +165,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                         : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
 
                     await onLagre({
+                      hjelpemiddelId: hjelpemiddelId,
                       hmsNr: hmsNr,
                       hmsBeskrivelse: hmsBeskrivelse,
                       endretHmsNr: endreProduktHmsnr,

@@ -107,8 +107,6 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
 
   const nåværendeHmsnr = endretProdukt ? endretProdukt.hmsNr : hjelpemiddel.hmsnr
 
-  console.log('hjelpemiddel', hjelpemiddel)
-
   return (
     <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
       <Rad>

@@ -10,10 +10,21 @@ export interface Scalars {
   Boolean: boolean
   Int: number
   Float: number
-  /** class java.time.LocalDate */
   LocalDate: any
-  /** class java.time.LocalDateTime */
   LocalDateTime: string
+}
+
+export interface HMDBAvtalepost {
+  __typename?: 'Avtalepost'
+  beskrivelse: Scalars['String']
+  id: Scalars['String']
+  navn: Scalars['String']
+  nummer: Scalars['String']
+}
+
+export enum HMDBBehovsmeldingstype {
+  Bestilling = 'BESTILLING',
+  Soknad = 'SOKNAD',
 }
 
 export interface HMDBBestillingsordning {
@@ -22,8 +33,30 @@ export interface HMDBBestillingsordning {
   hmsnr: Scalars['String']
 }
 
-export interface HMDBGodkjenningskursDto {
-  __typename?: 'GodkjenningskursDTO'
+export interface HMDBKategori {
+  __typename?: 'Kategori'
+  navn: Scalars['String']
+  produkter: Array<HMDBProdukt>
+}
+
+export interface HMDBLeverandor {
+  __typename?: 'Leverandor'
+  adresse?: Maybe<Scalars['String']>
+  epost?: Maybe<Scalars['String']>
+  generertAv: Scalars['String']
+  generertDato: Scalars['LocalDateTime']
+  id: Scalars['ID']
+  landkode?: Maybe<Scalars['String']>
+  leverandorId: Scalars['String']
+  leverandornavn?: Maybe<Scalars['String']>
+  postnummer?: Maybe<Scalars['String']>
+  poststed?: Maybe<Scalars['String']>
+  telefon?: Maybe<Scalars['String']>
+  www?: Maybe<Scalars['String']>
+}
+
+export interface HMDBPaakrevdGodkjenningskursDto {
+  __typename?: 'PaakrevdGodkjenningskursDTO'
   isokode: Scalars['String']
   kursId: Scalars['Int']
   tittel: Scalars['String']
@@ -56,13 +89,16 @@ export interface HMDBProdukt {
   isokortnavn?: Maybe<Scalars['String']>
   isotekst: Scalars['String']
   isotittel: Scalars['String']
+  kanSokesTilInstitusjon: Scalars['Boolean']
   kategori?: Maybe<Scalars['String']>
+  leverandor?: Maybe<HMDBLeverandor>
   leverandorId?: Maybe<Scalars['String']>
-  paakrevdGodkjenningskurs?: Maybe<HMDBGodkjenningskursDto>
+  paakrevdGodkjenningskurs?: Maybe<HMDBPaakrevdGodkjenningskursDto>
   produktId: Scalars['String']
   produktUrl: Scalars['String']
   produktbeskrivelse: Scalars['String']
   produktnavn: Scalars['String']
+  produkttype?: Maybe<HMDBProdukttype>
   rammeavtaleId?: Maybe<Scalars['String']>
   rammeavtaleSlutt?: Maybe<Scalars['LocalDate']>
   rammeavtaleStart?: Maybe<Scalars['LocalDate']>
@@ -78,24 +114,56 @@ export interface HMDBProduktPage {
   numberOfItems: Scalars['Int']
 }
 
+export interface HMDBProdukterFilterInput {
+  artikkelId?: InputMaybe<Array<Scalars['String']>>
+  avtalepostId?: InputMaybe<Array<Scalars['String']>>
+  behovsmeldingstype?: InputMaybe<HMDBBehovsmeldingstype>
+  hmsnr?: InputMaybe<Array<Scalars['String']>>
+  isokode?: InputMaybe<Array<Scalars['String']>>
+  kategori?: InputMaybe<Array<Scalars['String']>>
+  produktId?: InputMaybe<Array<Scalars['String']>>
+}
+
 export interface HMDBProduktfilterInput {
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
 }
 
+export enum HMDBProdukttype {
+  Del = 'Del',
+  Hovedprodukt = 'Hovedprodukt',
+  Tilbehoer = 'Tilbehoer',
+}
+
 export interface HMDBQuery {
   __typename?: 'Query'
+  avtaleposter: Array<HMDBAvtalepost>
   /** Sjekk om et tilbehør er prisforhandlet */
   erPrisforhandletTilbehoer: Scalars['Boolean']
-  /** Hent produkter */
+  /**
+   * Hent alle produkter
+   * @deprecated Bruk produkter i stedet, replace with produkter(filter)
+   */
   hentAlleProdukter: HMDBProduktPage
   /** Sjekk om et produkt/tilbehør er på bestillingsordning */
   hentErIBestillingsOrdning: Array<HMDBBestillingsordning>
-  /** Hent produkter med hmsnr */
+  /**
+   * Hent produkter med hmsnr
+   * @deprecated Bruk produkter i stedet, replace with produkter(filter)
+   */
   hentProdukterMedHmsnr: Array<HMDBProdukt>
-  /** Hent produkter med hmsnrs */
+  /**
+   * Hent produkter med hmsnrs
+   * @deprecated Bruk produkter i stedet, replace with produkter(filter)
+   */
   hentProdukterMedHmsnrs: Array<HMDBProdukt>
-  /** Hent produkter som er tilgjengelige for digital søknad */
+  kategorier: Array<HMDBKategori>
+  /** Finn produkter */
+  produkter: Array<HMDBProdukt>
+  /**
+   * Hent produkter som er tilgjengelige for digital søknad
+   * @deprecated Bruk produkter i stedet, replace with produkter(filter)
+   */
   sortiment: Array<HMDBProdukt>
 }
 
@@ -106,7 +174,7 @@ export interface HMDBQueryErPrisforhandletTilbehoerArgs {
 }
 
 export interface HMDBQueryHentAlleProdukterArgs {
-  filter: HMDBProduktfilterInput
+  filter?: InputMaybe<HMDBProduktfilterInput>
 }
 
 export interface HMDBQueryHentErIBestillingsOrdningArgs {
@@ -119,6 +187,18 @@ export interface HMDBQueryHentProdukterMedHmsnrArgs {
 
 export interface HMDBQueryHentProdukterMedHmsnrsArgs {
   hmsnrs: Array<Scalars['String']>
+}
+
+export interface HMDBQueryKategorierArgs {
+  navn?: InputMaybe<Array<Scalars['String']>>
+}
+
+export interface HMDBQueryProdukterArgs {
+  filter?: InputMaybe<HMDBProdukterFilterInput>
+}
+
+export interface HMDBQuerySortimentArgs {
+  filter?: InputMaybe<HMDBProdukterFilterInput>
 }
 
 /** Teknisk datum med ledetekst, verdi og evt. enhet */
@@ -148,9 +228,8 @@ export type HMDBHentProduktQuery = {
     produktnavn: string
     isotittel: string
     isokode: string
-    avtaleposttittel?: string | null | undefined
-    avtalepostnr?: string | null | undefined
+    avtaleposttittel?: string | null
+    avtalepostnr?: string | null
     artikkelnavn: string
-    hmsnr: string
   }>
 }

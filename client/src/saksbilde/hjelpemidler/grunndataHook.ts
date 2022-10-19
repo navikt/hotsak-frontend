@@ -6,7 +6,7 @@ import { Produkt } from '../../types/types.internal'
 
 const query = gql`
   query HentProdukt($hmsnr: String!) {
-    produkter: hentProdukterMedHmsnr(hmsnr: $hmsnr) {
+    produkter(filter: { hmsnr: [$hmsnr] }) {
       artikkelUrl
       produktUrl
       produktnavn

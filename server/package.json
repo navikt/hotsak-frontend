@@ -15,7 +15,7 @@
     "express-http-proxy": "1.6.3",
     "express-session": "1.17.3",
     "node-fetch": "2.6.7",
-    "openid-client": "5.1.9",
+    "openid-client": "5.1.10",
     "tunnel": "0.0.6",
     "winston": "3.8.1"
   },

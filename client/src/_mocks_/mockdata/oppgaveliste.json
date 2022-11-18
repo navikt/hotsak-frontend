@@ -206,6 +206,34 @@
     ]
   },
   {
+    "sakstype": "BESTILLING",
+    "saksid": "10111213",
+    "søknadOm": "Hjelpemidler",
+    "mottattDato": "2021-06-25T16:55:45",
+    "formidlerNavn": "Kari Johansen",
+    "personinformasjon": {
+      "fnr": "16120101181",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "fornavn": "Sondre",
+      "etternavn": "Hansen",
+      "poststed": "Lade",
+      "bosted": "Trondheim"
+    },
+    "saksbehandler": {
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-6969",
+      "navn": "Geir Markusen"
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "statusEndret": "2022-05-11T13:37:45",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
     "sakstype": "SØKNAD",
     "saksid": "888888",
     "søknadOm": "Hjelpemidler",

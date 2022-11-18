@@ -572,6 +572,100 @@
     ]
   },
   {
+    "sakstype": "BESTILLING",
+    "saksid": "10111213",
+    "søknadGjelder": "Rullator",
+    "hjelpemidler": [
+      {
+        "hmsnr": "177946",
+        "rangering": 1,
+        "alleredeUtlevert": false,
+        "antall": 1,
+        "kategori": "Rullator",
+        "beskrivelse": "Gemino 20",
+        "tilleggsinfo": [],
+        "tilbehør": []
+      }
+    ],
+    "formidler": {
+      "navn": "Kari Johansen",
+      "kommune": "Trondheim",
+      "arbeidssted": "Trondheim kommune",
+      "stilling": "Ergo",
+      "postadresse": "Ladegata 34",
+      "poststed": "Trondheim",
+      "telefon": "34343434",
+      "treffestEnklest": "Mandag - fredag",
+      "epost": "kari.johnsen@trondheim.kommune.no"
+    },
+    "greitÅViteFaktum": [
+      {
+        "beskrivelse": "Kun førsterangering",
+        "type": "INFO"
+      },
+      {
+        "beskrivelse": "Personalia fra Folkeregisteret",
+        "type": "INFO"
+      },
+      {
+        "beskrivelse": "Medlem av folketrygden",
+        "type": "INFO"
+      }
+    ],
+    "mottattDato": "2021-09-19T13:55:45",
+    "personinformasjon": {
+      "fnr": "16120101181",
+      "fødselsdato": "1942-06-19",
+      "fornavn": "Sondre Hansen",
+      "etternavn": "Bjørkli",
+      "adresse": "Storgata 12",
+      "kilde": "PDL",
+      "signaturtype": "BRUKER_BEKREFTER",
+      "telefon": "45454545",
+      "bosituasjon": "HJEMME",
+      "funksjonsnedsettelse": ["bevegelse"],
+      "bruksarena": "DAGLIGLIV",
+      "oppfylteVilkår": ["storreBehov", "nedsattFunksjon", "praktiskeProblem"],
+      "kjønn": "MANN",
+      "brukernummer": "454269",
+      "postnummer": "2825",
+      "poststed": "Gjøvik",
+      "gtNummer": "1234",
+      "gtType": "KOMMUNE",
+      "egenAnsatt": "false",
+      "brukerErDigital": "true"
+    },
+    "levering": {
+      "kontaktperson": {
+        "navn": "Nullable kontaktpersonnavn",
+        "telefon": "Nullable kontaktperson tlf",
+        "kontaktpersonType": "HJELPEMIDDELBRUKER"
+      },
+      "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "adresse": "nullable adresse",
+      "merknad": ""
+    },
+    "oppfølgingsansvarlig": {
+      "navn": "Navn ",
+      "arbeidssted": "arbeidssted",
+      "stilling": "stilling",
+      "telefon": "45454545",
+      "ansvarFor": "ansvar for"
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "saksbehandler": {
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-6969",
+      "navn": "Geir Markusen"
+    },
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
     "sakstype": "SØKNAD",
     "saksid": "888888",
     "søknadGjelder": "Hjelpemidler",

@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button, Tag } from '@navikt/ds-react'
 
-import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
+import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
@@ -14,6 +14,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, HjelpemiddelArtikkel, Sak, AvvisBestilling } from '../../types/types.internal'
+import { OvertaSakModal } from '../OvertaSakModal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
@@ -56,6 +57,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdeModal, setVisOpprettOrdreModal] = useState(false)
+  const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
@@ -69,6 +71,19 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
         setVisOpprettOrdreModal(false)
         mutate(`api/sak/${saksid}`)
         mutate(`api/sak/${saksid}/historikk`)
+      })
+  }
+
+  const overtaBestilling = () => {
+    setLoading(true)
+    postTildeling(saksid)
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        setVisOvertaSakModal(false)
+        mutate(`api/sak/${saksid}`)
+        mutate(`api/sak/${saksid}/historikk`)
+        logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)
       })
   }
 
@@ -135,6 +150,27 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
         <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler.navn)}</Tekst>
+        <ButtonContainer>
+          <Knapp
+            variant="primary"
+            size="small"
+            onClick={() => setVisOvertaSakModal(true)}
+            data-cy="btn-vis-overta-sak-modal"
+          >
+            Overta bestillingen
+          </Knapp>
+        </ButtonContainer>
+        <OvertaSakModal
+          open={visOvertaSakModal}
+          saksbehandler={saksbehandler.navn}
+          type="bestilling"
+          onBekreft={() => {
+            overtaBestilling()
+            logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
+          }}
+          loading={loading}
+          onClose={() => setVisOvertaSakModal(false)}
+        />
       </Card>
     )
   } else {

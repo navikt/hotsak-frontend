@@ -41,14 +41,14 @@ describe('Happy path', () => {
     cy.visit('/sak/222222/hjelpemidler')
     cy.get('[data-cy="btn-tildel-sak-222222"]').click()
     cy.get('[data-cy="btn-vis-gosys-modal"]').should('have.text', 'Overfør til Gosys').click()
-    cy.get('h1').contains('Vil du overføre saken til Gosys?').should('be.visible')
+    cy.get('h1').contains('Overfør til Gosys').should('be.visible')
     cy.get('p')
       .contains(
-        'Hvis saken overføres til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd.'
+        'Hvis du overfører saken til Gosys, vil den dukke opp som en vanlig journalføringsoppgave. Journalføring og videre saksbehandling må gjøres manuelt i Gosys og Infotrygd.'
       )
       .should('be.visible')
     cy.get('[data-cy="overfor-soknad-arsak-0"]').click()
-    cy.get('[data-cy="btn-overfor-soknad"]').should('have.text', 'Overfør saken').click()
+    cy.get('[data-cy="btn-overfor-soknad"]').should('have.text', 'Overfør til Gosys').click()
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Overført til Gosys')
     /*
     cy.get('[data-cy="alert-vedtak-status"]').should(

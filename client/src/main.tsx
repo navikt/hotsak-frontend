@@ -4,7 +4,6 @@ import 'reset-css'
 import '@navikt/ds-css'
 import '@navikt/ds-css-internal'
 import { Modal } from '@navikt/ds-react'
-import '@navikt/ds-tokens/dist/tokens.css'
 
 import { initAmplitude } from './utils/amplitude'
 

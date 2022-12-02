@@ -6,7 +6,7 @@ export const Merknad = styled.div`
   &:before {
     content: '';
     position: absolute;
-    background-color: var(--navds-semantic-color-feedback-info-border);
+    background-color: var(--a-border-info);
     width: 3px;
     height: 95%;
     bottom: 0;

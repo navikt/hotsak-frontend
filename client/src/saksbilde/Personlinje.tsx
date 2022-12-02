@@ -26,9 +26,9 @@ const Container = styled.div`
   min-width: ${hotsakTotalMinWidth};
   box-sizing: border-box;
   padding: 0 2rem;
-  background: var(--navds-semantic-color-canvas-background);
-  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
-  color: var(--navds-semantic-color-text);
+  background: var(--a-bg-subtle);
+  border-bottom: 1px solid var(--a-border-default);
+  color: var(--a-text-default);
 
   > svg {
     margin-right: 0.5rem;
@@ -36,7 +36,7 @@ const Container = styled.div`
 `
 
 const Clipboard = styled(CopyToClipboard)`
-  color: var(--navds-semantic-color-text);
+  color: var(--a-text-default);
 `
 
 const Separator = styled.div`

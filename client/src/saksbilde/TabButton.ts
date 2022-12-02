@@ -11,29 +11,29 @@ export const TabButton = styled.button<{ active?: boolean; disabled?: boolean }>
   border: none;
   cursor: pointer;
   padding: 0 13px;
-  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
+  border-bottom: 1px solid var(--a-border-default);
   transition: background-color 0.1s ease;
 
   ${(props) =>
     !props.disabled &&
     `
       &:hover {
-        background-color: var(--navds-semantic-color-canvas-background);
+        background-color: var(--a-bg-subtle);
       }
 
       &:active {
-        background-color: var(--navds-semantic-color-canvas-background);
+        background-color: var(--a-bg-subtle);
       }
 
       &:focus-visible {
-        box-shadow: inset 0 0 0 3px var(--navds-semantic-color-focus);
+        box-shadow: inset 0 0 0 3px var(--a-border-focus);
       }
     `}
 
   &:before {
     position: absolute;
     content: '';
-    background: var(--navds-semantic-color-interaction-primary);
+    background: var(--a-surface-action);
     bottom: 0;
     left: 0;
     height: 0;

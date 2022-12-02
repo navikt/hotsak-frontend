@@ -227,7 +227,7 @@ export const Oppgaveliste: React.FC = () => {
                             key={key}
                             width={width}
                             style={{
-                              padding: 'var(--navds-spacing-1) 0rem var(--navds-spacing-1) var(--navds-spacing-3)',
+                              padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
                             }}
                           >
                             {render(oppgave)}

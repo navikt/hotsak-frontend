@@ -19,7 +19,7 @@ export const KolonneOppsett = styled.ul`
   flex-shrink: 0;
   padding: 0 24px;
   box-sizing: border-box;
-  border-left: 1px solid var(--navds-semantic-color-border-muted);
+  border-left: 1px solid var(--a-border-default);
 `
 
 export const KolonneTittel = styled.li`

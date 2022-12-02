@@ -17,8 +17,8 @@ const Header = styled.div`
 `
 
 const Teller = styled.div`
-  background-color: var(--navds-global-color-blue-500);
-  color: var(--navds-semantic-color-text-inverted);
+  background-color: var(--a-blue-500);
+  color: var(--a-text-on-inverted);
   min-width: 24px;
   min-height: 24px;
   font-size: 14px;

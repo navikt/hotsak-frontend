@@ -28,8 +28,8 @@ const Etikett = styled.div<EtikettProps>`
 `
 
 const SøknadEtikett = styled(Etikett)`
-  background: var(--navds-global-color-purple-100);
-  border: 1px solid var(--navds-global-color-purple-500);
+  background: var(--a-purple-100);
+  border: 1px solid var(--a-purple-500);
 
   :before {
     content: 'S';
@@ -41,8 +41,8 @@ const LabelContainer = styled.div`
 `
 
 const BestillingEtikett = styled(Etikett)`
-  background: var(--navds-global-color-green-100);
-  border: 1px solid var(--navds-global-color-green-500);
+  background: var(--a-green-100);
+  border: 1px solid var(--a-green-500);
 
   :before {
     content: 'B';

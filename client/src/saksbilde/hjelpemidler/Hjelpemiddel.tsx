@@ -46,8 +46,7 @@ const Rangering = styled('div')<RangeringProps>`
     margin-left: 0.5rem;
     padding: 1px;
     border-radius: 50%;
-    background-color: ${(props) =>
-      Number(props.rank) === 1 ? 'var(--navds-global-color-gray-200)' : 'var(--navds-global-color-orange-400)'};
+    background-color: ${(props) => (Number(props.rank) === 1 ? 'var(--a-gray-200)' : 'var(--a-orange-400)')};
     color: inherit;
     font-weight: inherit;
   }
@@ -61,7 +60,7 @@ const TilleggsInfo = styled(Rad)`
   &:before {
     content: '';
     position: absolute;
-    background-color: var(--navds-semantic-color-feedback-info-border);
+    background-color: var(--a-border-info);
     width: 3px;
     height: 95%;
     bottom: 0;

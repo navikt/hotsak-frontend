@@ -10,7 +10,7 @@ const Container = styled.aside`
   width: ${hotsaktVenstremenyWidth};
   min-width: 19.5rem;
   padding: 2rem 1.5rem;
-  border-right: 1px solid var(--navds-semantic-color-border-muted);
+  border-right: 1px solid var(--a-border-default);
 `
 
 export const VenstreMeny: React.FC<{ children: React.ReactNode }> = ({ children }) => {

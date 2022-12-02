@@ -8,7 +8,7 @@ export const TekstMedEllipsis = styled.p`
   text-overflow: ellipsis;
 
   > a:focus {
-    box-shadow: 0 0 0 3px var(--navds-semantic-color-focus);
+    box-shadow: 0 0 0 3px var(--a-border-focus);
   }
 `
 
@@ -18,6 +18,6 @@ export const BodyLongMedEllipsis = styled(BodyLong)`
   text-overflow: ellipsis;
 
   > a:focus {
-    box-shadow: 0 0 0 3px var(--navds-semantic-color-focus);
+    box-shadow: 0 0 0 3px var(--a-border-focus);
   }
 `

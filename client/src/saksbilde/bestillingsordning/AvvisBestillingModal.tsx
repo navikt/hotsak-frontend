@@ -83,5 +83,5 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
 const avvisÅrsaker: ReadonlyArray<string> = ['Duplikat av en annen bestilling', 'Annet']
 
 const AvvisBestillingRadioGroup = styled(RadioGroup)`
-  margin: var(--navds-spacing-4) 0;
+  margin: var(--a-spacing-4) 0;
 `

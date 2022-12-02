@@ -44,7 +44,7 @@ export const Feilside: React.FC<{ statusCode: number; error?: Error }> = ({ stat
 
 const Feilpanel = styled(Panel)`
   margin: 2rem 100px;
-  background-color: var(--navds-semantic-color-canvas-background);
+  background-color: var(--a-bg-subtle);
 `
 
 const Feilkode = styled.small`

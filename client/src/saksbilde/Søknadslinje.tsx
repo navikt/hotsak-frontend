@@ -12,7 +12,7 @@ const Container = styled.nav`
   justify-content: space-between;
   height: 48px;
   box-sizing: border-box;
-  border-bottom: 1px solid var(--navds-semantic-color-border-muted);
+  border-bottom: 1px solid var(--a-border-default);
   padding: 0 0 0 2rem;
   min-width: ${hotsakTotalMinWidth};
 

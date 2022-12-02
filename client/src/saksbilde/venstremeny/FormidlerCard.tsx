@@ -26,8 +26,8 @@ const CopyContainer = styled.div`
 `
 
 const Clipboard = styled(CopyToClipboard)`
-  color: var(--navds-semantic-color-text);
-  padding: 0.1rem var(--navds-spacing-3) 0.1rem var(--navds-spacing-3);
+  color: var(--a-text-default);
+  padding: 0.1rem var(--a-spacing-3) 0.1rem var(--a-spacing-3);
 `
 
 export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {

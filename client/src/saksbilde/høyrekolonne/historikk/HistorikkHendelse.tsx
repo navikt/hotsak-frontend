@@ -12,7 +12,7 @@ const Container = styled.li`
   display: flex;
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid var(--navds-semantic-color-border-muted);
+    border-bottom: 1px solid var(--a-border-default);
   }
 `
 

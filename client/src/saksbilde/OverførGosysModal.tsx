@@ -93,5 +93,5 @@ const overforGosysArsaker: ReadonlyArray<string> = [
 ]
 
 const OverforGosysArsakCheckboxGroup = styled(CheckboxGroup)`
-  margin: var(--navds-spacing-4) 0;
+  margin: var(--a-spacing-4) 0;
 `

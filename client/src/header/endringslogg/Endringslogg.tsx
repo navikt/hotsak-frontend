@@ -73,14 +73,14 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
 
 const Overskrift = styled(Ingress)`
   margin: 0 !important;
-  color: var(--navds-semantic-color-text-inverted);
-  background-color: var(--navds-semantic-color-canvas-background-inverted);
-  padding: var(--navds-spacing-3) var(--navds-spacing-4);
+  color: var(--a-text-on-inverted);
+  background-color: var(--a-surface-inverted);
+  padding: var(--a-spacing-3) var(--a-spacing-4);
   text-align: center;
 `
 
 const Liste = styled.dl`
-  margin: var(--navds-spacing-3) var(--navds-spacing-6) !important;
+  margin: var(--a-spacing-3) var(--a-spacing-6) !important;
 `
 
 const Ulest = styled.span<{ fading: boolean }>`
@@ -94,7 +94,7 @@ const Ulest = styled.span<{ fading: boolean }>`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background-color: var(--navds-semantic-color-feedback-warning-icon);
+    background-color: var(--a-icon-warning);
     content: '';
     visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
     opacity: ${(props) => (props.fading ? 0 : undefined)};

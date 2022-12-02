@@ -15,7 +15,7 @@ const Content = styled.span`
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--navds-semantic-color-text);
+    color: var(--a-text-default);
   }
 `
 

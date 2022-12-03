@@ -20,7 +20,7 @@
     "react-markdown": "8.0.3",
     "react-modal": "3.15.1",
     "react-router": "6.3.0",
-    "react-router-dom": "6.3.0",
+    "react-router-dom": "6.4.3",
     "react-tooltip": "4.2.21",
     "recoil": "0.7.5",
     "reset-css": "5.0.1",

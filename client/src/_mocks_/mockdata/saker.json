@@ -645,13 +645,6 @@
       "adresse": "nullable adresse",
       "merknad": ""
     },
-    "oppfølgingsansvarlig": {
-      "navn": "Navn ",
-      "arbeidssted": "arbeidssted",
-      "stilling": "stilling",
-      "telefon": "45454545",
-      "ansvarFor": "ansvar for"
-    },
     "status": "TILDELT_SAKSBEHANDLER",
     "saksbehandler": {
       "epost": "a.b@nav.no",
@@ -1023,12 +1016,7 @@
         "antall": 3,
         "kategori": "Terskeleliminatorer",
         "beskrivelse": "Topro Terskeleliminator",
-        "tilleggsinfo": [
-          {
-            "tittel": "Begrunnelse for antall",
-            "innholdsliste": ["Behov i flere rom"]
-          }
-        ],
+        "tilleggsinfo": [],
         "tilbehør": []
       },
       {
@@ -1127,7 +1115,7 @@
       },
       "leveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "adresse": "nullable adresse",
-      "merknad": "Ta også kontakt med meg dvs. formidler ved utlevering"
+      "merknad": ""
     },
     "oppfølgingsansvarlig": {
       "navn": "Navn ",

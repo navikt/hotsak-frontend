@@ -1,4 +1,5 @@
 import { rest, RestHandler } from 'msw'
+
 import endringslogg from '../mockdata/endringslogg.json'
 
 const endringsloggKopi: Array<{
@@ -6,7 +7,7 @@ const endringsloggKopi: Array<{
   dato: string
   tittel: string
   innhold: string
-  lest?: string
+  lest?: string | null
 }> = endringslogg.map((innslag) => ({
   ...innslag,
 }))

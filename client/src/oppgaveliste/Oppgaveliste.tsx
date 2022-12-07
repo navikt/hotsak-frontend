@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Panel, Table } from '@navikt/ds-react'
@@ -8,6 +8,7 @@ import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { capitalize } from '../utils/stringFormating'
 import { isError } from '../utils/type'
 
+import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
@@ -21,7 +22,7 @@ import {
   SakstypeFilter,
   SakstypeFilterLabel,
 } from '../types/types.internal'
-import { IngentingFunnet } from './IngenOppgaver'
+import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { FilterDropdown, Filters } from './filter'
 import { Bosted } from './kolonner/Bosted'
 import { FormidlerCelle } from './kolonner/Formidler'
@@ -153,6 +154,7 @@ export const Oppgaveliste: React.FC = () => {
   return (
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
+      {window.appSettings.MILJO !== 'prod-gcp' && window.appSettings.MILJO !== 'dev-gcp' && <OppgavelisteTabs />}
       <Filters onClear={clearFilters}>
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {
@@ -221,7 +223,7 @@ export const Oppgaveliste: React.FC = () => {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
-                      <LinkRow key={oppgave.saksid} saksnummer={oppgave.saksid}>
+                      <LinkRow key={oppgave.saksid} path={`/sak/${oppgave.saksid}/hjelpemidler`}>
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell
                             key={key}

@@ -1,3 +1,4 @@
+import dokumentHandlers from './dokumenter'
 import endringsloggHandlers from './endringslogg'
 import grunndataHandlers from './grunndata'
 import hjelpemiddelHandlers from './hjelpemiddel'
@@ -14,6 +15,7 @@ const handlers = [
   ...endringsloggHandlers,
   ...personInfoHandlers,
   ...hjelpemiddelHandlers,
+  ...dokumentHandlers,
 ]
 
 export default handlers

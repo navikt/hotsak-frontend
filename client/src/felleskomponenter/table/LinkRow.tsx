@@ -13,17 +13,17 @@ const ClickableRow = styled(Table.Row)`
 `
 
 interface LinkRowProps {
-  saksnummer: string
+  path: string
   children: React.ReactNode
 }
 
-export const LinkRow: React.FC<LinkRowProps> = ({ saksnummer, children }) => {
+export const LinkRow: React.FC<LinkRowProps> = ({ path, children }) => {
   const navigate = useNavigate()
   return (
     <ClickableRow
       tabIndex={0}
       onClick={() => {
-        navigate(`/sak/${saksnummer}/hjelpemidler`)
+        navigate(path)
       }}
     >
       {children}

@@ -110,10 +110,7 @@ setupProxy(app, _onBehalfOf, config)
 const distPath = __dirname + '/../../client/dist'
 const htmlPath = path.join(distPath, 'index.html')
 
-console.log('distPath', distPath)
-console.log('htmlPath', htmlPath)
-
 app.use(express.static(distPath))
 app.use('/*', express.static(htmlPath))
 
-app.listen(port, () => logger.info(`hm-saksbehandling backend listening on port ${port}`))
+app.listen(port, () => logger.info(`Hotsak frontend backend listening on port ${port}`))

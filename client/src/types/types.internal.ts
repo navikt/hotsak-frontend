@@ -186,9 +186,40 @@ export interface Oppgave {
   søknadOm: string
 }
 
+export interface DokumentOppgave {
+  journalpostID: string
+  journalpostOpprettetDato: string
+  tittel: string
+  fnr: string
+  status: DokumentOppgaveStatusType
+  enhet: Enhet
+  saksbehandler?: Saksbehandler
+  dokumenter: Dokument[]
+}
+
+export interface Dokument {
+  dokumentID: string
+  tittel: string
+  brevkode: string
+  skjerming?: string
+  vedlegg: any[]
+  varianter: [
+    {
+      format: DokumentFormant
+      skjerming?: string
+    }
+  ]
+}
+
+export enum DokumentFormant {
+  ARKIV = 'ARKIV',
+  ORIGINAL = 'ORIGINAL',
+}
+
 export enum Oppgavetype {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
+  DOKUMENT = 'DOKUMENT',
 }
 
 export interface Saksbehandler {
@@ -196,6 +227,18 @@ export interface Saksbehandler {
   epost: string
   navn: string
 }
+
+export enum DokumentOppgaveStatusType {
+  MOTTATT = 'MOTTATT',
+  TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
+  ENDELIG_JOURNALFØRT = 'ENDELIG_JOURNALFØRT',
+}
+
+export const DokumentStatusLabel = new Map<string, string>([
+  [DokumentOppgaveStatusType.MOTTATT, 'Mottatt'],
+  [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+  [DokumentOppgaveStatusType.ENDELIG_JOURNALFØRT, 'Journalført'],
+])
 
 export enum OppgaveStatusType {
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',

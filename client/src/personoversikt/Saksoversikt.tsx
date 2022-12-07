@@ -5,10 +5,10 @@ import { Table } from '@navikt/ds-react'
 
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
 import { formaterDato } from '../utils/date'
 import { capitalize } from '../utils/stringFormating'
 
+import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'

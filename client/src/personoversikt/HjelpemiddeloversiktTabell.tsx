@@ -5,9 +5,9 @@ import { Table } from '@navikt/ds-react'
 
 import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { IngentingFunnet } from '../oppgaveliste/IngenOppgaver'
 import { formaterDato } from '../utils/date'
 
+import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { HjelpemiddelArtikkel } from '../types/types.internal'

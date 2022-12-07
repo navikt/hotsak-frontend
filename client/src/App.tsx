@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
+import Dokumentliste from './oppgaveliste/dokumenter/Dokumentliste'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 
 import { RequireAuth } from './RequireAuth'
@@ -34,6 +35,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <Oppgaveliste />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/oppgaveliste/dokumenter"
+                  element={
+                    <RequireAuth>
+                      <Dokumentliste />
                     </RequireAuth>
                   }
                 />

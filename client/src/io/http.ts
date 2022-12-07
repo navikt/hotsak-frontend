@@ -120,6 +120,10 @@ export const postTildeling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
+export const postJournalføringStartet = async (journalpostID: string) => {
+  return post(`${baseUrl}/api/dokument/tildeling/${journalpostID}`, {})
+}
+
 export const tildelBestilling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/bestilling/tildeling/${oppgavereferanse}`, {})
 }

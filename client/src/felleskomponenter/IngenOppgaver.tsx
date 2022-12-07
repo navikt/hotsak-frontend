@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Tekst } from '../felleskomponenter/typografi'
+import { Tekst } from './typografi'
 
 const Container = styled.div`
   padding: 1rem;

@@ -16,6 +16,10 @@ const dokumentHandlers = [
       return res(ctx.status(404))
     }
   }),
+  rest.post(`/api/dokumenter/:journalpostID/tildeling`, (req, res, ctx) => {
+    return res(ctx.status(200))
+    // setter innlogget bruker som saksbehandler på "oppgaven" på samme måte som for sak
+  }),
   // Henter ARKIV variant av et gitt dokument fra SAF via hm-saksbehandling-api
   // /api/journalpost/:journalpostid/:dokumentid/
 ]

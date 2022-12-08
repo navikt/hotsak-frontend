@@ -49,7 +49,7 @@ export const Dokumentliste: React.FC = () => {
       key: 'STATUS',
       name: 'Status',
       width: 140,
-      render: (dokument: DokumentOppgave) => <TekstCell value={DokumentStatusLabel.get(dokument.status)!} />,
+      render: (dokument: DokumentOppgave) => <TekstCell value={DokumentStatusLabel.get(dokument.journalstatus)!} />,
     },
     {
       key: 'INNSENDER',

@@ -1,5 +1,6 @@
 import { rest } from 'msw'
 
+import { DokumentOppgave } from '../../types/types.internal'
 import dokumentliste from '../mockdata/dokumentliste.json'
 
 const dokumentHandlers = [

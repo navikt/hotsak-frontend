@@ -1,11 +1,12 @@
 [
   {
     "journalpostID": "11223344",
-    "status": "MOTTATT",
+    "journalstatus": "MOTTATT",
     "journalpostOpprettetDato": "2022-05-04T13:55:45",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "fnr": "15084300133",
     "enhet": null,
+    "saksbehandler": null,
     "dokumenter": [
       {
         "dokumentID": "1234",
@@ -49,7 +50,7 @@
   },
   {
     "journalpostID": "22334455",
-    "status": "TILDELT_SAKSBEHANDLER",
+    "journalstatus": "TILDELT_SAKSBEHANDLER",
     "journalpostOpprettetDato": "2022-05-04T13:55:45",
     "fnr": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",

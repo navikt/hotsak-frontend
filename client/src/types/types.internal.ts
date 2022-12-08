@@ -191,8 +191,9 @@ export interface DokumentOppgave {
   journalpostOpprettetDato: string
   tittel: string
   fnr: string
-  status: DokumentOppgaveStatusType
-  enhet: Enhet
+  journalstatus: DokumentOppgaveStatusType
+  skjerming?: string
+  enhet?: Enhet
   saksbehandler?: Saksbehandler
   dokumenter: Dokument[]
 }

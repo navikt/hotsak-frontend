@@ -85,13 +85,13 @@ export const LasterPersonlinje = () => (
   <Container>
     <KjønnsnøytraltIkon />
     <LoadingText />
-    <Separator>/</Separator>
+    <Separator>|</Separator>
     <LoadingText />
-    <Separator>/</Separator>
+    <Separator>|</Separator>
     <LoadingText />
-    <Separator>/</Separator>
+    <Separator>|</Separator>
     <LoadingText />
-    <Separator>/</Separator>
+    <Separator>|</Separator>
     <LoadingText />
   </Container>
 )

@@ -126,7 +126,7 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
           <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
         </div>
       </Link>
-      <Separator>/</Separator>
+      <Separator>|</Separator>
       {fnr ? (
         <>
           <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
@@ -142,7 +142,7 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
       ) : (
         <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
       )}
-      <Separator>/</Separator>
+      <Separator>|</Separator>
       {brukernummer ? (
         <>
           <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
@@ -158,7 +158,7 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
       ) : (
         <Tekst>Brukernummer ikke tilgjengelig</Tekst>
       )}
-      <Separator>/</Separator>
+      <Separator>|</Separator>
       {telefon ? (
         <>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>

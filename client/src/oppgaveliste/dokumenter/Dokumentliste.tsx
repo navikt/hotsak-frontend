@@ -12,12 +12,12 @@ import { isError } from '../../utils/type'
 
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
-import { Skjermlesertittel, Tekst } from '../../felleskomponenter/typografi'
-import { DokumentOppgave, DokumentStatusLabel } from '../../types/types.internal'
+import { Skjermlesertittel } from '../../felleskomponenter/typografi'
+import { Journalpost, DokumentStatusLabel } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { DokumentTildeling } from './DokumentTildeling'
 // Flytte til felles
-import { useDokumentListe } from './dokumentlisteHook'
+import { useDokumentListe } from './dokumentHook'
 
 const Container = styled.div`
   min-height: 300px;
@@ -37,39 +37,39 @@ export const Dokumentliste: React.FC = () => {
       key: 'EIER',
       name: 'Eier',
       width: 160,
-      render: (dokument: DokumentOppgave) => <DokumentTildeling dokumentOppgave={dokument} />,
+      render: (journalpost: Journalpost) => <DokumentTildeling dokumentOppgave={journalpost} />,
     },
     {
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
       width: 300,
-      render: (dokument: DokumentOppgave) => <TekstCell value={dokument.tittel} />,
+      render: (journalpost: Journalpost) => <TekstCell value={journalpost.tittel} />,
     },
     {
       key: 'STATUS',
       name: 'Status',
       width: 140,
-      render: (dokument: DokumentOppgave) => <TekstCell value={DokumentStatusLabel.get(dokument.journalstatus)!} />,
+      render: (journalpost: Journalpost) => <TekstCell value={DokumentStatusLabel.get(journalpost.journalstatus)!} />,
     },
     {
       key: 'INNSENDER',
       name: 'Innsender',
       width: 135,
-      render: (dokument: DokumentOppgave) => <TekstCell value={formaterFødselsnummer(dokument.fnr)} />,
+      render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnr)} />,
     },
     {
       key: 'MOTTATT_DATO',
       name: 'Mottatt dato',
       width: 152,
-      render: (dokument: DokumentOppgave) => <TekstCell value={norskTimestamp(dokument.journalpostOpprettetDato)} />,
+      render: (journalpost: Journalpost) => <TekstCell value={norskTimestamp(journalpost.journalpostOpprettetDato)} />,
     },
   ]
 
   if (error) {
     if (isError(error)) {
-      throw Error('Feil med henting av dokumentoppgaver', { cause: error })
+      throw Error('Feil med henting av journalposter', { cause: error })
     } else {
-      throw Error('Feil med henting av dokumentoppgaver')
+      throw Error('Feil med henting av journalposter')
     }
   }
 
@@ -104,7 +104,7 @@ export const Dokumentliste: React.FC = () => {
                   </Table.Header>
                   <Table.Body>
                     {dokumenter.map((dokument) => (
-                      <LinkRow key={dokument.journalpostID} path={`/dokument/dokument.dokumentid`}>
+                      <LinkRow key={dokument.journalpostID} path={`/oppgaveliste/dokumenter/${dokument.journalpostID}`}>
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell
                             key={key}

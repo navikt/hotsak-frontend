@@ -1,0 +1,44 @@
+import React from 'react'
+import styled from 'styled-components'
+
+import { headerHøydeRem } from '../../GlobalStyles'
+import { Feilmelding } from '../../felleskomponenter/Feilmelding'
+import { Skjermlesertittel } from '../../felleskomponenter/typografi'
+import { usePersonInfo } from '../../personoversikt/personInfoHook'
+import { Personlinje } from '../../saksbilde/Personlinje'
+import { useDokument } from '../dokumenter/dokumentHook'
+import { JournalpostSkjema } from './JournalpostSkjema'
+
+const ToKolonner = styled.div`
+  display: grid;
+  grid-template-columns: 40rem 1fr;
+  grid-template-rows: 1fr;
+  height: calc(100vh - ${headerHøydeRem}rem);
+`
+
+export const ManuellJournalfør: React.FC = () => {
+  const { journalpost /*, isLoading, isError*/ } = useDokument()
+  const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(journalpost?.fnr)
+
+  if (personInfoError) {
+    if (personInfoError.statusCode === 403) {
+      return <Feilmelding>Du har ikke tilgang til å søke opp denne personen</Feilmelding>
+    } else if (personInfoError.statusCode === 404) {
+      return <Feilmelding>Person ikke funnet i PDL</Feilmelding>
+    } else {
+      return <Feilmelding>Teknisk feil. Klarte ikke å hente person fra PDL.</Feilmelding>
+    }
+  }
+
+  return (
+    <>
+      <Skjermlesertittel>Personoversikt</Skjermlesertittel>
+      <Personlinje person={personInfo} />
+
+      <ToKolonner>
+        <JournalpostSkjema />
+        {/*<DokumentPanel/>*/}
+      </ToKolonner>
+    </>
+  )
+}

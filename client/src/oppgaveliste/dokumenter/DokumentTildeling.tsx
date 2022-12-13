@@ -1,10 +1,10 @@
 import { EllipsisCell } from '../../felleskomponenter/table/Celle'
 
-import { DokumentOppgave } from '../../types/types.internal'
+import { Journalpost } from '../../types/types.internal'
 import { DokumentIkkeTildelt } from './DokumentIkkeTildelt'
 
 interface DokumentTildelingProps {
-  dokumentOppgave: DokumentOppgave
+  dokumentOppgave: Journalpost
 }
 
 export const DokumentTildeling = ({ dokumentOppgave }: DokumentTildelingProps) =>

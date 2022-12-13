@@ -49,8 +49,6 @@ const PersonoversiktContent: React.FC = () => {
   } = useHjelpemiddeloversikt(fodselsnummer)
 
   if (personInfoError) {
-    console.log(personInfoError)
-
     if (personInfoError.statusCode === 403) {
       return <Feilmelding>Du har ikke tilgang til å søke opp denne personen</Feilmelding>
     } else if (personInfoError.statusCode === 404) {

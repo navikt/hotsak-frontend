@@ -186,7 +186,7 @@ export interface Oppgave {
   søknadOm: string
 }
 
-export interface DokumentOppgave {
+export interface Journalpost {
   journalpostID: string
   journalpostOpprettetDato: string
   tittel: string
@@ -420,7 +420,7 @@ export interface PersonoversiktType {
   kjønn: Kjønn
   fnr: string
   brukernummer?: string
-  telefon: string
+  telefon?: string
 }
 
 export interface Saksoversikt {

@@ -100,7 +100,7 @@ const beregnAlder = (fødselsdato: string) => {
   return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-const formaterNavn = (person: Personinfo | PersonoversiktType) => {
+export const formaterNavn = (person: Personinfo | PersonoversiktType) => {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 

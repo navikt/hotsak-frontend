@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { Heading } from '@navikt/ds-react'
+
 import { headerHøydeRem } from '../../GlobalStyles'
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
-import { Skjermlesertittel } from '../../felleskomponenter/typografi'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { Personlinje } from '../../saksbilde/Personlinje'
 import { useDokument } from '../dokumenter/dokumentHook'
@@ -14,6 +15,11 @@ const ToKolonner = styled.div`
   grid-template-columns: 40rem 1fr;
   grid-template-rows: 1fr;
   height: calc(100vh - ${headerHøydeRem}rem);
+`
+
+const Container = styled.div`
+  padding-top: var(--a-spacing-6);
+  padding-left: var(--a-spacing-6);
 `
 
 export const ManuellJournalfør: React.FC = () => {
@@ -32,13 +38,17 @@ export const ManuellJournalfør: React.FC = () => {
 
   return (
     <>
-      <Skjermlesertittel>Personoversikt</Skjermlesertittel>
+      {/* Loading state på personlinje */}
       <Personlinje person={personInfo} />
-
-      <ToKolonner>
-        <JournalpostSkjema />
-        {/*<DokumentPanel/>*/}
-      </ToKolonner>
+      <Container>
+        <Heading level="1" size="small">
+          Journalføring
+        </Heading>
+        <ToKolonner>
+          <JournalpostSkjema />
+          {/*<DokumentPanel/>*/}
+        </ToKolonner>
+      </Container>
     </>
   )
 }

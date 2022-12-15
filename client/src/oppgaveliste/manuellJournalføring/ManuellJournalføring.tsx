@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Heading } from '@navikt/ds-react'
@@ -27,6 +27,13 @@ export const ManuellJournalfør: React.FC = () => {
   const { journalpost /*, isLoading, isError*/ } = useDokument()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
+
+  useEffect(() => {
+    if (journalpost?.fnr) {
+      console.log('Fnr settes på nytt')
+      setFodselsnummer(journalpost.fnr)
+    }
+  }, [journalpost?.fnr])
 
   if (personInfoError) {
     if (personInfoError.statusCode === 403) {

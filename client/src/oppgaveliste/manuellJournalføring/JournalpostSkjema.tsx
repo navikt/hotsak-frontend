@@ -35,14 +35,6 @@ export const JournalpostSkjema: React.FC = () => {
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   //const {personInfo as innsender } = usePersonInfo(journalpost)
 
-  /*const personInfo: PersonoversiktType = {
-    fnr: '19044238651',
-    fødselsdato: '1942-12-19',
-    fornavn: 'Navn',
-    etternavn: 'Navnesen',
-    kjønn: 'MANN',
-  }*/
-
   if (henterPerson || !personInfo) {
     return (
       <div>

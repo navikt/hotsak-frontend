@@ -6,11 +6,9 @@ import { Applicant, File } from '@navikt/ds-icons'
 import { Accordion, Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
-import { Feilmelding } from '../../felleskomponenter/Feilmelding'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
-import { PersonoversiktType } from '../../types/types.internal'
 import { useDokument } from '../dokumenter/dokumentHook'
 import { Dokumenter } from './Dokumenter'
 

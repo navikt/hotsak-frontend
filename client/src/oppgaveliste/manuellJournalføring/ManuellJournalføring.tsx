@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Heading } from '@navikt/ds-react'
 
 import { headerHøydeRem } from '../../GlobalStyles'
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
+import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { Personlinje } from '../../saksbilde/Personlinje'
 import { useDokument } from '../dokumenter/dokumentHook'
@@ -24,7 +25,8 @@ const Container = styled.div`
 
 export const ManuellJournalfør: React.FC = () => {
   const { journalpost /*, isLoading, isError*/ } = useDokument()
-  const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(journalpost?.fnr)
+  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
 
   if (personInfoError) {
     if (personInfoError.statusCode === 403) {

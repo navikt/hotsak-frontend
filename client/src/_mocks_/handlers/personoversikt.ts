@@ -21,7 +21,9 @@ const personInfoHandlers = [
     } else if (brukersFodselsnummer === '11098600142') {
       return res(ctx.status(500), ctx.text('Noe gikk fryktelig galt'))
     } else {
-      return res(ctx.status(200), ctx.json(personInfo[2]))
+      const person = personInfo[2]
+      person.fnr = brukersFodselsnummer
+      return res(ctx.status(200), ctx.json(person))
     }
   }),
 ]

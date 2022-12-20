@@ -11,8 +11,5 @@ export const AppRoot = createGlobalStyle`
     font-size: 1rem;
   }
 
-  /* https://github.com/facebook/create-react-app/issues/11773 Løsning herfra på grunn av problemer med react scripts */
-  iframe {
-    pointer-events: none;
-  }
+  
 `

@@ -22,7 +22,7 @@ export const DokumentPanel: React.FC = () => {
 
       hentForhåndsvisning(journalpostID, valgtDokumentID)
     }
-  }, [journalpostID, valgtDokumentID, hentForhåndsvisning])
+  }, [journalpostID, valgtDokumentID])
 
   if (!journalpostID || !valgtDokumentID) {
     return <div>Mangler journalpostID eller dokumentID </div>

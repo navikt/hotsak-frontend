@@ -14,6 +14,11 @@ export interface SaksbehandlingApiResponse<T = any> {
   data: T
 }
 
+export interface PDFResponse {
+  status: number
+  data: Blob
+}
+
 const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NODE_ENV === 'production' ? '' : ''
 
 type Headers = { [key: string]: any }
@@ -43,6 +48,15 @@ export function isResponseError(value: unknown): value is ResponseError {
 const getData = async (response: Response) => {
   try {
     return await response.json()
+  } catch (e) {
+    return undefined
+  }
+}
+
+const getBlob = async (response: Response) => {
+  try {
+    const data = await response.blob()
+    return data
   } catch (e) {
     return undefined
   }
@@ -87,6 +101,28 @@ export const put = async (url: string, data?: any, headere?: Headers): Promise<S
 
 export const del = async (url: string, data?: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
   return save(url, 'DELETE', data, headere)
+}
+
+export const httpGetPdf = async <T = any>(url: string): Promise<PDFResponse<T>> => {
+  const headers = { headers: { Accept: 'application/pdf' } }
+  const response = await fetch(`${baseUrl}/${url}`, headers)
+  // Trenger vi egne statuser fra backend ala Famile sin RessursStatus?
+
+  if (response.status >= 400) {
+    const errorMessage = await getErrorMessage(response)
+    throw new ResponseError(response.status, errorMessage)
+  }
+
+  const blob = await getBlob(response)
+
+  if (!blob) {
+    throw new ResponseError(response.status, 'Feil ved uthenting av PDF blob')
+  }
+
+  return {
+    status: response.status,
+    data: blob,
+  }
 }
 
 export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiResponse<T>> => {

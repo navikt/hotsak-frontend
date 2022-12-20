@@ -1,21 +1,46 @@
+import { Eye } from '@navikt/ds-icons'
 import { Button } from '@navikt/ds-react'
 
-//import { useState } from 'react'
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Dokument } from '../../types/types.internal'
 
 interface DokumentVelgerProps {
   dokument: Dokument
+  valgtDokumentID: string
+  onClick: () => void
 }
 
-export const DokumentVelger: React.FC<DokumentVelgerProps> = ({ dokument }) => {
-  //const [åpen, settÅpen] = useState(false)
-  // const valgt = dokument.dokumentInfoId === valgtDokumentId;
-
+export const DokumentVelger: React.FC<DokumentVelgerProps> = ({ dokument, valgtDokumentID, onClick }) => {
   return (
     <li>
-      <Button role={'link'} size="small" variant="tertiary">
-        {dokument.tittel}
-      </Button>
+      <Avstand marginTop={1} paddingLeft={2}>
+        {dokument.dokumentID === valgtDokumentID ? (
+          <Button
+            role={'link'}
+            icon={<Eye aria-hidden />}
+            iconPosition="right"
+            size="small"
+            variant="tertiary"
+            onClick={(e) => {
+              e.preventDefault()
+            }}
+          >
+            {dokument.tittel}
+          </Button>
+        ) : (
+          <Button
+            role={'link'}
+            size="small"
+            variant="tertiary"
+            onClick={(e) => {
+              e.preventDefault()
+              onClick()
+            }}
+          >
+            {dokument.tittel}
+          </Button>
+        )}
+      </Avstand>
     </li>
   )
 }

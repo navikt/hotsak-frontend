@@ -1,10 +1,13 @@
 import { Heading } from '@navikt/ds-react'
 
+import { Avstand } from '../../felleskomponenter/Avstand'
+import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { useDokument } from '../dokumenter/dokumentHook'
 import { DokumentVelger } from './DokumentVelger'
 
 export const Dokumenter: React.FC = () => {
-  const journalpost = useDokument()
+  const { journalpost } = useDokument()
+  const { valgtDokumentID, setValgtDokumentID } = useDokumentContext()
 
   return (
     <>
@@ -12,8 +15,15 @@ export const Dokumenter: React.FC = () => {
         Dokumenter
       </Heading>
       <ul>
-        {journalpost?.journalpost?.dokumenter.map((dokument) => (
-          <DokumentVelger key={dokument.dokumentID} dokument={dokument} />
+        {journalpost?.dokumenter.map((dokument) => (
+          <DokumentVelger
+            key={dokument.dokumentID}
+            valgtDokumentID={valgtDokumentID}
+            dokument={dokument}
+            onClick={() => {
+              setValgtDokumentID(dokument.dokumentID)
+            }}
+          />
         ))}
       </ul>
     </>

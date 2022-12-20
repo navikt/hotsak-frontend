@@ -1,9 +1,11 @@
+import React from 'react'
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
-import { httpGet } from '../../io/http'
+import { httpGet, httpGetPdf, PDFResponse } from '../../io/http'
 
-import { Journalpost } from '../../types/types.internal'
+import { Journalpost, Ressurs } from '../../types/types.internal'
+import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from './ressursFunksjoner'
 
 interface DokumentlisteResponse {
   dokumenter: Journalpost[]
@@ -17,6 +19,10 @@ interface DokumentResponse {
   journalpost: Journalpost | undefined
   isLoading: boolean
   isError: unknown
+  hentForhåndsvisning: (journalpostID: string, dokumentID: string) => any
+  nullstillDokument: () => any
+  hentetDokument: any
+  settHentetDokument: any
   mutate: (...args: any[]) => any
 }
 
@@ -49,11 +55,35 @@ export function useDokumentListe(): DokumentlisteResponse {
 export function useDokument(): DokumentResponse {
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
+  //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
+  const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
+
+  const nullstillDokument = () => {
+    settHentetDokument(byggTomRessurs)
+  }
+
+  const hentForhåndsvisning = (journalpostID: string, dokumentID: string) => {
+    settHentetDokument(byggHenterRessurs())
+
+    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${journalpostID}/${dokumentID}`)
+
+    pdfResponse
+      .then((response: PDFResponse) => {
+        settHentetDokument(byggDataRessurs(window.URL.createObjectURL(response.data)))
+      })
+      .catch((error: any) => {
+        settHentetDokument(byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
+      })
+  }
 
   return {
     journalpost: data?.data,
     isLoading: !error && !data,
     isError: error,
+    hentForhåndsvisning,
+    nullstillDokument,
+    hentetDokument,
+    settHentetDokument,
     mutate,
   }
 }

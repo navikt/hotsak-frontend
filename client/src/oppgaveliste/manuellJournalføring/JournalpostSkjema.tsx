@@ -6,6 +6,7 @@ import { Applicant, File } from '@navikt/ds-icons'
 import { Accordion, Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
+import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
@@ -33,7 +34,6 @@ export const JournalpostSkjema: React.FC = () => {
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
-  //const {personInfo as innsender } = usePersonInfo(journalpost)
 
   if (henterPerson || !personInfo) {
     return (
@@ -51,8 +51,6 @@ export const JournalpostSkjema: React.FC = () => {
       </div>
     )
   }
-
-  //const { journalpostID, journalpostOpprettetDato, tittel, fnr, journalstatus, saksbehandler, dokumenter } = journalpost
 
   return (
     <Container>
@@ -85,7 +83,7 @@ export const JournalpostSkjema: React.FC = () => {
                 <IconContainer>
                   <Applicant />
                 </IconContainer>
-                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}` /* Bruke felles personcontext her? */}
+                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
               </Accordion.Header>
               <Accordion.Content>
                 <Kolonner>
@@ -110,33 +108,12 @@ export const JournalpostSkjema: React.FC = () => {
             </Accordion.Item>
           </Accordion>
         </Panel>
-        {/*<Heading size="small" level="2" spacing>
-          Innsender
-        </Heading>
-        <Panel>
-          <Accordion>
-            <Accordion.Item defaultOpen={true}>
-              <Accordion.Header>
-                <IconContainer>
-                  <Applicant />
-                </IconContainer>
-                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}` }
-              </Accordion.Header>
-              <Accordion.Content>
-                <Kolonner>
-                  <TextField label="Endre bruker" description="Skriv inn fødselsnummer" size="small" />
-                  <Button variant="secondary" size="small">
-                    Endre bruker
-                  </Button>
-                </Kolonner>
-              </Accordion.Content>
-            </Accordion.Item>
-          </Accordion>
-  </Panel>*/}
         <Dokumenter />
-        <Button type="submit" variant="primary">
-          Journalfør
-        </Button>
+        <ButtonContainer>
+          <Button type="submit" variant="primary">
+            Journalfør
+          </Button>
+        </ButtonContainer>
       </form>
     </Container>
   )

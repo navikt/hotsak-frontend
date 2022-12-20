@@ -103,7 +103,7 @@ export const del = async (url: string, data?: any, headere?: Headers): Promise<S
   return save(url, 'DELETE', data, headere)
 }
 
-export const httpGetPdf = async <T = any>(url: string): Promise<PDFResponse<T>> => {
+export const httpGetPdf = async <T = any>(url: string): Promise<PDFResponse> => {
   const headers = { headers: { Accept: 'application/pdf' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
   // Trenger vi egne statuser fra backend ala Famile sin RessursStatus?

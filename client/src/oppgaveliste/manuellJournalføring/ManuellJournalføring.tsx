@@ -21,7 +21,6 @@ const ToKolonner = styled.div`
 `
 
 const Container = styled.div`
-  padding-top: var(--a-spacing-6);
   padding-left: var(--a-spacing-6);
 `
 
@@ -60,9 +59,6 @@ export const ManuellJournalfør: React.FC = () => {
       {/* Loading state på personlinje */}
       <Personlinje person={personInfo} />
       <Container>
-        <Heading level="1" size="small" spacing>
-          Journalføring
-        </Heading>
         <ToKolonner>
           <JournalpostSkjema />
           <DokumentPanel />

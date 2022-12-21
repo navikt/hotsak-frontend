@@ -3,7 +3,6 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
-import { Header } from '@navikt/ds-react-internal'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
@@ -15,6 +14,7 @@ import { Dokumenter } from './Dokumenter'
 
 const Container = styled.div`
   overflow: auto;
+  padding-top: var(--a-spacing-6);
 `
 
 const Kolonner = styled.div`
@@ -54,6 +54,9 @@ export const JournalpostSkjema: React.FC = () => {
 
   return (
     <Container>
+      <Heading level="1" size="small" spacing>
+        Journalføring
+      </Heading>
       <form>
         <Heading size="small" level="2" spacing>
           Bruker

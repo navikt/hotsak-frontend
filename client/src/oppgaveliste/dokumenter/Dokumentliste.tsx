@@ -55,13 +55,13 @@ export const Dokumentliste: React.FC = () => {
       key: 'INNSENDER',
       name: 'Innsender',
       width: 135,
-      render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnr)} />,
+      render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnrInnsender)} />,
     },
     {
       key: 'MOTTATT_DATO',
       name: 'Mottatt dato',
       width: 152,
-      render: (journalpost: Journalpost) => <TekstCell value={norskTimestamp(journalpost.journalpostOpprettetDato)} />,
+      render: (journalpost: Journalpost) => <TekstCell value={norskTimestamp(journalpost.journalpostOpprettetTid)} />,
     },
   ]
 

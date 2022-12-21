@@ -188,9 +188,9 @@ export interface Oppgave {
 
 export interface Journalpost {
   journalpostID: string
-  journalpostOpprettetDato: string
+  journalpostOpprettetTid: string
   tittel: string
-  fnr: string
+  fnrInnsender: string
   journalstatus: DokumentOppgaveStatusType
   skjerming?: string
   enhet?: Enhet
@@ -206,13 +206,13 @@ export interface Dokument {
   vedlegg: any[]
   varianter: [
     {
-      format: DokumentFormant
+      format: DokumentFormat
       skjerming?: string
     }
   ]
 }
 
-export enum DokumentFormant {
+export enum DokumentFormat {
   ARKIV = 'ARKIV',
   ORIGINAL = 'ORIGINAL',
 }

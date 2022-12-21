@@ -2,8 +2,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { Applicant, File } from '@navikt/ds-icons'
-import { Accordion, Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+import { Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+import { Header } from '@navikt/ds-react-internal'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
@@ -55,60 +55,50 @@ export const JournalpostSkjema: React.FC = () => {
   return (
     <Container>
       <form>
-        <Panel>
-          <Accordion>
-            <Accordion.Item defaultOpen={true}>
-              <Accordion.Header>
-                <IconContainer>
-                  <File />
-                </IconContainer>
-                {journalpost.tittel}
-              </Accordion.Header>
-              <Accordion.Content>
-                <TextField label="Dokumentittel" size="small" defaultValue={journalpost.tittel} />
-                <Avstand paddingBottom={4} />
-                <TextField label="Annet innhold/Navn på vedlegg" size="small"></TextField>
-              </Accordion.Content>
-            </Accordion.Item>
-          </Accordion>
-        </Panel>
-        <Avstand paddingTop={8} />
         <Heading size="small" level="2" spacing>
           Bruker
         </Heading>
-        <Panel>
-          <Accordion>
-            <Accordion.Item defaultOpen={true}>
-              <Accordion.Header>
-                <IconContainer>
-                  <Applicant />
-                </IconContainer>
-                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
-              </Accordion.Header>
-              <Accordion.Content>
-                <Kolonner>
-                  <TextField
-                    label="Endre bruker"
-                    description="Skriv inn fødselsnummer"
-                    size="small"
-                    value={journalføresPåFnr}
-                    onChange={(e) => setJournalføresPåFnr(e.target.value)}
-                  />
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={() => {
-                      setFodselsnummer(journalføresPåFnr)
-                    }}
-                  >
-                    Endre bruker
-                  </Button>
-                </Kolonner>
-              </Accordion.Content>
-            </Accordion.Item>
-          </Accordion>
-        </Panel>
-        <Dokumenter />
+        <Avstand marginRight={3}>
+          <Panel border>
+            <Heading level="3" size="small" spacing>
+              {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
+            </Heading>
+            <Kolonner>
+              <TextField
+                label="Endre bruker"
+                description="Skriv inn fødselsnummer"
+                size="small"
+                value={journalføresPåFnr}
+                onChange={(e) => setJournalføresPåFnr(e.target.value)}
+              />
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => {
+                  setFodselsnummer(journalføresPåFnr)
+                }}
+              >
+                Endre bruker
+              </Button>
+            </Kolonner>
+          </Panel>
+        </Avstand>
+        <Avstand paddingTop={8} marginRight={3}>
+          <Heading size="small" level="2" spacing>
+            Journalpost
+          </Heading>
+          <Panel border>
+            <Heading level="3" size="small" spacing>
+              {journalpost.tittel}
+            </Heading>
+            <TextField label="Dokumentittel" size="small" defaultValue={journalpost.tittel} />
+            <Avstand paddingBottom={4} />
+            <TextField label="Annet innhold/Navn på vedlegg" size="small"></TextField>
+          </Panel>
+        </Avstand>
+        <Avstand paddingTop={4}>
+          <Dokumenter />
+        </Avstand>
         <ButtonContainer>
           <Button type="submit" variant="primary">
             Journalfør

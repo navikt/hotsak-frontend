@@ -60,7 +60,7 @@ export const ManuellJournalfør: React.FC = () => {
       {/* Loading state på personlinje */}
       <Personlinje person={personInfo} />
       <Container>
-        <Heading level="1" size="small">
+        <Heading level="1" size="small" spacing>
           Journalføring
         </Heading>
         <ToKolonner>

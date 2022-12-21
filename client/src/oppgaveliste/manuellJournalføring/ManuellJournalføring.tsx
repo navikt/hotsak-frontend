@@ -31,11 +31,11 @@ export const ManuellJournalfør: React.FC = () => {
   const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
 
   useEffect(() => {
-    if (journalpost?.fnr) {
+    if (journalpost?.fnrInnsender) {
       console.log('Fnr settes på nytt')
-      setFodselsnummer(journalpost.fnr)
+      setFodselsnummer(journalpost.fnrInnsender)
     }
-  }, [journalpost?.fnr])
+  }, [journalpost?.fnrInnsender])
 
   useEffect(() => {
     if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {

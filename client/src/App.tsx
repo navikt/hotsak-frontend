@@ -25,60 +25,61 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
-        <DokumentProvider>
-          <Toppmeny />
-          <ErrorBoundary FallbackComponent={GlobalFeilside}>
-            <React.Suspense fallback={<div />}>
-              {/*<Varsler />*/}
-              <main>
-                <Routes>
-                  <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-                  <Route
-                    path="/"
-                    element={
-                      <RequireAuth>
-                        <Oppgaveliste />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/oppgaveliste/dokumenter"
-                    element={
-                      <RequireAuth>
-                        <Dokumentliste />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/oppgaveliste/dokumenter/:journalpostID"
-                    element={
-                      <RequireAuth>
+        <Toppmeny />
+        <ErrorBoundary FallbackComponent={GlobalFeilside}>
+          <React.Suspense fallback={<div />}>
+            {/*<Varsler />*/}
+            <main>
+              <Routes>
+                <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                <Route
+                  path="/"
+                  element={
+                    <RequireAuth>
+                      <Oppgaveliste />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/oppgaveliste/dokumenter"
+                  element={
+                    <RequireAuth>
+                      <Dokumentliste />
+                    </RequireAuth>
+                  }
+                />
+
+                <Route
+                  path="/oppgaveliste/dokumenter/:journalpostID"
+                  element={
+                    <RequireAuth>
+                      <DokumentProvider>
                         <ManuellJournalfør />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/sak/:saksnummer/*"
-                    element={
-                      <RequireAuth>
-                        <Saksbilde />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/personoversikt/*"
-                    element={
-                      <RequireAuth>
-                        <Personoversikt />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route path="*" element={<Feilside statusCode={404} />} />
-                </Routes>
-              </main>
-            </React.Suspense>
-          </ErrorBoundary>
-        </DokumentProvider>
+                      </DokumentProvider>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/sak/:saksnummer/*"
+                  element={
+                    <RequireAuth>
+                      <Saksbilde />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/personoversikt/*"
+                  element={
+                    <RequireAuth>
+                      <Personoversikt />
+                    </RequireAuth>
+                  }
+                />
+                <Route path="*" element={<Feilside statusCode={404} />} />
+              </Routes>
+            </main>
+          </React.Suspense>
+        </ErrorBoundary>
       </PersonProvider>
       {/*<Toasts />*/}
     </ErrorBoundary>

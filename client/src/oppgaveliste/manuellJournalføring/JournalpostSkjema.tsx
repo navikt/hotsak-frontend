@@ -102,11 +102,13 @@ export const JournalpostSkjema: React.FC = () => {
         <Avstand paddingTop={4}>
           <Dokumenter />
         </Avstand>
-        <ButtonContainer>
-          <Button type="submit" variant="primary">
-            Journalfør
-          </Button>
-        </ButtonContainer>
+        <Avstand paddingLeft={2}>
+          <ButtonContainer>
+            <Button type="submit" variant="primary" size="small">
+              Journalfør
+            </Button>
+          </ButtonContainer>
+        </Avstand>
       </form>
     </Container>
   )

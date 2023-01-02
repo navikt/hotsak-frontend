@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Heading } from '@navikt/ds-react'
-
 import { headerHøydeRem } from '../../GlobalStyles'
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { Personlinje } from '../../saksbilde/Personlinje'
+import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { DokumentOppgaveStatusType } from '../../types/types.internal'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { useDokument } from '../dokumenter/dokumentHook'
 import { DokumentPanel } from './DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
+import { JournalpostVisning } from './JournalpostVisning'
 
 const ToKolonner = styled.div`
   display: grid;
@@ -28,7 +29,12 @@ export const ManuellJournalfør: React.FC = () => {
   const { journalpost /*, isLoading, isError*/ } = useDokument()
   const { setValgtDokumentID } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const saksbehandler = useInnloggetSaksbehandler()
   const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
+
+  const journalpostTildeltSaksbehandler =
+    journalpost?.journalstatus === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    journalpost.saksbehandler?.objectId === saksbehandler.objectId
 
   useEffect(() => {
     if (journalpost?.fnrInnsender) {
@@ -60,7 +66,7 @@ export const ManuellJournalfør: React.FC = () => {
       <Personlinje person={personInfo} />
       <Container>
         <ToKolonner>
-          <JournalpostSkjema />
+          {journalpostTildeltSaksbehandler ? <JournalpostSkjema /> : <JournalpostVisning />}
           <DokumentPanel />
         </ToKolonner>
       </Container>

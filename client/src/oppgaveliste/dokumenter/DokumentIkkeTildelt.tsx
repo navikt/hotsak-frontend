@@ -28,10 +28,10 @@ export const DokumentIkkeTildelt = ({ journalpostID, gåTilSak = false }: IkkeTi
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
-          const destinationUrl = `/dokument/${journalpostID}`
+          const destinationUrl = `/oppgaveliste/dokumenter/${journalpostID}`
           navigate(destinationUrl)
         } else {
-          mutate(`api/dokument/${journalpostID}`)
+          mutate(`api/journalpost/${journalpostID}`)
         }
       })
   }

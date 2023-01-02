@@ -52,9 +52,19 @@ const dokumentHandlers = [
   }),
 
   /* Endepunkter som ikke er laget enda  */
-  rest.post(`/api/journalpost/:journalpostID/tildeling`, (req, res, ctx) => {
-    return res(ctx.status(200))
-    // setter innlogget bruker som saksbehandler på "oppgaven" på samme måte som for sak
+  rest.post(`/api/journalpost/tildeling/:journalpostID`, (req, res, ctx) => {
+    const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === req.params.journalpostID)
+
+    const saksbehandler = {
+      epost: 'silje.saksbehandler@nav.no',
+      objectId: '23ea7485-1324-4b25-a763-assdfdfa',
+      navn: 'Silje Saksbehandler',
+    }
+
+    dokumentliste[journalpostIdx]['saksbehandler'] = saksbehandler
+    dokumentliste[journalpostIdx]['journalstatus'] = 'TILDELT_SAKSBEHANDLER'
+
+    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
 
   /*

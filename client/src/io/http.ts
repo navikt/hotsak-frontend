@@ -3,6 +3,7 @@ import { isNumber } from '../utils/type'
 import type {
   AvvisBestilling,
   EndreHjelpemiddelRequest,
+  JournalførRequest,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
   Vedtaksgrunnlag,
@@ -103,7 +104,7 @@ export const del = async (url: string, data?: any, headere?: Headers): Promise<S
   return save(url, 'DELETE', data, headere)
 }
 
-export const httpGetPdf = async <T = any>(url: string): Promise<PDFResponse> => {
+export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
   const headers = { headers: { Accept: 'application/pdf' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
   // Trenger vi egne statuser fra backend ala Famile sin RessursStatus?
@@ -158,6 +159,10 @@ export const postTildeling = async (oppgavereferanse: string) => {
 
 export const postJournalføringStartet = async (journalpostID: string) => {
   return post(`${baseUrl}/api/journalpost/tildeling/${journalpostID}`, {})
+}
+
+export const postJournalfør = async (journalpostRequest: JournalførRequest) => {
+  return post(`${baseUrl}/api/journalpost/journalfor`, journalpostRequest)
 }
 
 export const tildelBestilling = async (oppgavereferanse: string) => {

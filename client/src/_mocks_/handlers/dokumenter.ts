@@ -1,5 +1,6 @@
 import { rest } from 'msw'
 
+import { DokumentOppgaveStatusType, JournalførRequest, OpprettetSakResponse } from '../../types/types.internal'
 import kvittering from '../mockdata/brillekvittering.pdf'
 import brilleseddel from '../mockdata/brilleseddel.pdf'
 //import { Journalpost } from '../../types/types.internal'
@@ -50,8 +51,13 @@ const dokumentHandlers = [
       ctx.body(buffer)
     )
   }),
+  rest.post<JournalførRequest, any, OpprettetSakResponse>(`/api/journalpost/journalfor`, async (req, res, ctx) => {
+    const journalpost: JournalførRequest = await req.json()
+    const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
+    dokumentliste[journalpostIdx]['journalstatus'] = DokumentOppgaveStatusType.JOURNALFØRT
 
-  /* Endepunkter som ikke er laget enda  */
+    return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
+  }),
   rest.post(`/api/journalpost/tildeling/:journalpostID`, (req, res, ctx) => {
     const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === req.params.journalpostID)
 
@@ -62,7 +68,7 @@ const dokumentHandlers = [
     }
 
     dokumentliste[journalpostIdx]['saksbehandler'] = saksbehandler
-    dokumentliste[journalpostIdx]['journalstatus'] = 'TILDELT_SAKSBEHANDLER'
+    dokumentliste[journalpostIdx]['journalstatus'] = DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),

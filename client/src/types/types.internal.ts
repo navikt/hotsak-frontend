@@ -212,6 +212,17 @@ export interface Dokument {
   ]
 }
 
+export interface JournalførRequest {
+  journalpostID: string
+  tittel: string
+  vedlegg: string[]
+  fnrBarn: string
+}
+
+export interface OpprettetSakResponse {
+  sakID: string
+}
+
 export enum DokumentFormat {
   ARKIV = 'ARKIV',
   ORIGINAL = 'ORIGINAL',
@@ -232,13 +243,13 @@ export interface Saksbehandler {
 export enum DokumentOppgaveStatusType {
   MOTTATT = 'MOTTATT',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
-  ENDELIG_JOURNALFØRT = 'ENDELIG_JOURNALFØRT',
+  JOURNALFØRT = 'JOURNALFØRT',
 }
 
 export const DokumentStatusLabel = new Map<string, string>([
   [DokumentOppgaveStatusType.MOTTATT, 'Mottatt'],
   [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  [DokumentOppgaveStatusType.ENDELIG_JOURNALFØRT, 'Journalført'],
+  [DokumentOppgaveStatusType.JOURNALFØRT, 'Journalført'],
 ])
 
 export enum OppgaveStatusType {

@@ -1,14 +1,18 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import styled from 'styled-components'
 
-import { Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+import { Button, Checkbox, CheckboxGroup, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+
+import { postJournalfør } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
+import { JournalførRequest } from '../../types/types.internal'
 import { useDokument } from '../dokumenter/dokumentHook'
 import { Dokumenter } from './Dokumenter'
 
@@ -25,15 +29,41 @@ const Kolonner = styled.div`
   align-items: flex-end;
 `
 
-const IconContainer = styled.span`
-  margin-right: 0.4rem;
-`
-
 export const JournalpostSkjema: React.FC = () => {
+  const navigate = useNavigate()
   const { journalpost, /*isError,*/ isLoading } = useDokument()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
+  const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
+  const [vedlegg, setVedlegg] = useState<string[]>([])
+  const [annetVedlegg, setAnnetVedlegg] = useState<string>('')
+  const manglerAnnetVedlegg = vedlegg.includes('Annet') && annetVedlegg.trim().length < 3
+  const [error, setError] = useState('')
+  const [journalfører, setJournalfører] = useState(false)
+
+  const journalfør = () => {
+    const journalpostRequest: JournalførRequest = {
+      journalpostID: journalpost!.journalpostID,
+      tittel: journalpostTittel,
+      fnrBarn: fodselsnummer,
+      vedlegg: annetVedlegg && annetVedlegg !== '' ? vedlegg.concat([annetVedlegg]) : vedlegg,
+    }
+
+    setJournalfører(true)
+    postJournalfør(journalpostRequest)
+      .catch(() => setJournalfører(false))
+      .then((opprettetSakResponse: any) => {
+        const opprettetSakID = opprettetSakResponse.data.sakID
+
+        if (!opprettetSakID) {
+          throw new Error('Klarte ikke å opprette sak')
+        }
+
+        setJournalfører(false)
+        navigate(`/sak/saksid/${opprettetSakID}`)
+      })
+  }
 
   if (henterPerson || !personInfo) {
     return (
@@ -80,31 +110,67 @@ export const JournalpostSkjema: React.FC = () => {
                 onClick={() => {
                   setFodselsnummer(journalføresPåFnr)
                 }}
+                disabled={journalfører}
+                loading={journalfører}
               >
                 Endre bruker
               </Button>
             </Kolonner>
           </Panel>
         </Avstand>
-        <Avstand paddingTop={8} marginRight={3}>
+        <Avstand paddingTop={8} marginRight={3} marginLeft={2}>
           <Heading size="small" level="2" spacing>
             Journalpost
           </Heading>
-          <Panel border>
-            <Heading level="3" size="small" spacing>
-              {journalpost.tittel}
-            </Heading>
-            <TextField label="Dokumentittel" size="small" defaultValue={journalpost.tittel} />
-            <Avstand paddingBottom={4} />
-            <TextField label="Annet innhold/Navn på vedlegg" size="small"></TextField>
-          </Panel>
+          <TextField
+            label="Dokumentittel"
+            description="Tittelen blir synlig i fagsystemer og for bruker"
+            size="small"
+            value={journalpostTittel}
+            onChange={(e) => setJournalpostTittel(e.target.value)}
+          />
+          <VedleggCheckboxGroup
+            legend="Hvilke vedlegg er med?"
+            onChange={setVedlegg}
+            size="small"
+            error={manglerAnnetVedlegg && error}
+          >
+            <Checkbox value="Brilleseddel">Brilleseddel</Checkbox>
+            <Checkbox value="Bestillingsbekreftelse">Bestillingsbekreftelse</Checkbox>
+            <Checkbox value="Vergeattest">Vergeattest</Checkbox>
+            <Checkbox value="Annet">Annet</Checkbox>
+          </VedleggCheckboxGroup>
+          <TextField
+            label="Andre vedlegg (valgfri)"
+            description="Kort beskrivelse av andre vedlegg hvis du har valgt 'Annet' "
+            value={annetVedlegg}
+            onChange={(e) => setAnnetVedlegg(e.target.value)}
+            size="small"
+          />
         </Avstand>
-        <Avstand paddingTop={4}>
+        <Avstand paddingTop={6}>
           <Dokumenter />
         </Avstand>
         <Avstand paddingLeft={2}>
           <ButtonContainer>
-            <Button type="submit" variant="primary" size="small">
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              onClick={(e) => {
+                e.preventDefault()
+                /*if (manglerVedlegg) {
+                  setError('Du må velge minst en årsak i listen over.')
+                } else*/ if (manglerAnnetVedlegg) {
+                  setError('Du må gi en begrunnelse når det er huket av for Annet.')
+                } else {
+                  journalfør()
+                }
+              }}
+              data-cy="btn-journalfør"
+              disabled={journalfører}
+              loading={journalfører}
+            >
               Journalfør
             </Button>
           </ButtonContainer>
@@ -113,3 +179,7 @@ export const JournalpostSkjema: React.FC = () => {
     </Container>
   )
 }
+
+const VedleggCheckboxGroup = styled(CheckboxGroup)`
+  margin: var(--a-spacing-6) 0;
+`

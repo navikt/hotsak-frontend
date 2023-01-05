@@ -42,12 +42,20 @@ export const JournalpostSkjema: React.FC = () => {
   const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
 
+  const byggVedleggBeskrivelse = (): string[] => {
+    if (vedlegg.includes('Annet')) {
+      return vedlegg.filter((v) => v !== 'Annet').concat([annetVedlegg])
+    } else {
+      return vedlegg
+    }
+  }
+
   const journalfør = () => {
     const journalpostRequest: JournalførRequest = {
       journalpostID: journalpost!.journalpostID,
       tittel: journalpostTittel,
       fnrBarn: fodselsnummer,
-      vedlegg: annetVedlegg && annetVedlegg !== '' ? vedlegg.concat([annetVedlegg]) : vedlegg,
+      vedlegg: byggVedleggBeskrivelse(),
     }
 
     setJournalfører(true)

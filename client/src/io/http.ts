@@ -158,7 +158,7 @@ export const postTildeling = async (oppgavereferanse: string) => {
 }
 
 export const postJournalføringStartet = async (journalpostID: string) => {
-  return post(`${baseUrl}/api/journalpost/tildeling/${journalpostID}`, {})
+  return post(`${baseUrl}/api/journalpost/${journalpostID}/tildeling`, {})
 }
 
 export const postJournalfør = async (journalpostRequest: JournalførRequest) => {

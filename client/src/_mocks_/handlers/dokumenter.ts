@@ -58,7 +58,7 @@ const dokumentHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
   }),
-  rest.post(`/api/journalpost/tildeling/:journalpostID`, (req, res, ctx) => {
+  rest.post(`/api/journalpost/:journalpostID/tildeling`, (req, res, ctx) => {
     const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === req.params.journalpostID)
 
     const saksbehandler = {

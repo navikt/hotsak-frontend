@@ -32,10 +32,6 @@ const ScrollWrapper = styled.div`
 export const Dokumentliste: React.FC = () => {
   const { dokumenter, isLoading, error } = useDokumentListe()
 
-  console.log(dokumenter)
-
-  dokumenter.forEach((d: Journalpost) => console.log(`Status: ${d.status}, "s2: ${DokumentStatusLabel.get(d.status)!}`))
-
   const kolonner = [
     {
       key: 'EIER',

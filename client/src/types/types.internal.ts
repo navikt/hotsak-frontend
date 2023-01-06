@@ -191,7 +191,8 @@ export interface Journalpost {
   journalpostOpprettetTid: string
   tittel: string
   fnrInnsender: string
-  journalstatus: DokumentOppgaveStatusType
+  journalstatus: JournalpostStatusType
+  status: DokumentOppgaveStatusType
   skjerming?: string
   enhet?: Enhet
   saksbehandler?: Saksbehandler
@@ -243,6 +244,7 @@ export interface Saksbehandler {
 export enum DokumentOppgaveStatusType {
   MOTTATT = 'MOTTATT',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
+  AVVENTER_JOURNALFØRING = 'AVVENTER_JOURNALFØRING',
   JOURNALFØRT = 'JOURNALFØRT',
 }
 
@@ -251,6 +253,10 @@ export const DokumentStatusLabel = new Map<string, string>([
   [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
   [DokumentOppgaveStatusType.JOURNALFØRT, 'Journalført'],
 ])
+
+export enum JournalpostStatusType {
+  MOTTATT = 'MOTATT',
+}
 
 export enum OppgaveStatusType {
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',

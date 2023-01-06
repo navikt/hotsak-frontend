@@ -54,7 +54,7 @@ const dokumentHandlers = [
   rest.post<JournalførRequest, any, OpprettetSakResponse>(`/api/journalpost/journalfor`, async (req, res, ctx) => {
     const journalpost: JournalførRequest = await req.json()
     const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
-    dokumentliste[journalpostIdx]['journalstatus'] = DokumentOppgaveStatusType.JOURNALFØRT
+    dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
   }),
@@ -68,7 +68,7 @@ const dokumentHandlers = [
     }
 
     dokumentliste[journalpostIdx]['saksbehandler'] = saksbehandler
-    dokumentliste[journalpostIdx]['journalstatus'] = DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER
+    dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),

@@ -2,6 +2,7 @@
   {
     "journalpostID": "11223344",
     "journalstatus": "MOTTATT",
+    "status": "MOTTATT",
     "journalpostOpprettetTid": "2022-05-04T13:55:45",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "fnrInnsender": "15084300133",
@@ -50,7 +51,8 @@
   },
   {
     "journalpostID": "22334455",
-    "journalstatus": "TILDELT_SAKSBEHANDLER",
+    "journalstatus": "MOTTATT",
+    "status": "TILDELT_SAKSBEHANDLER",
     "journalpostOpprettetTid": "2022-05-04T13:55:45",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",
@@ -112,6 +114,7 @@
   {
     "journalpostID": "33445566",
     "journalstatus": "TILDELT_SAKSBEHANDLER",
+    "status": "MOTTATT",
     "journalpostOpprettetTid": "2022-05-04T13:55:45",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",

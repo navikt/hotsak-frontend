@@ -33,7 +33,7 @@ export const ManuellJournalfør: React.FC = () => {
   const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
 
   const journalpostTildeltSaksbehandler =
-    journalpost?.journalstatus === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    journalpost?.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     journalpost.saksbehandler?.objectId === saksbehandler.objectId
 
   useEffect(() => {

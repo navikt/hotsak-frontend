@@ -113,8 +113,8 @@
 
   {
     "journalpostID": "33445566",
-    "journalstatus": "TILDELT_SAKSBEHANDLER",
-    "status": "MOTTATT",
+    "journalstatus": "MOTTATT",
+    "status": "TILDELT_SAKSBEHANDLER",
     "journalpostOpprettetTid": "2022-05-04T13:55:45",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",

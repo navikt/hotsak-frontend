@@ -1141,7 +1141,7 @@
   {
     "sakstype": "BESTILLING",
     "saksid": "223346",
-    "gjelder": "Hjelpemidler",
+    "soknadGjelder": "Hjelpemidler",
     "hjelpemidler": [
       {
         "hmsnr": "177946",
@@ -1234,6 +1234,41 @@
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "statusEndret": "2021-10-05T21:52:40.815302",
+    "saksbehandler": {
+      "epost": "silje.saksbehandler@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
+  },
+  {
+    "sakstype": "BARNEBRILLER",
+    "saksid": "9876",
+    "soknadGjelder": "Briller til barn",
+    "mottattDato": "2023-01-05T13:55:45",
+    "søker": {
+      "fnr": "20071359671",
+      "fødselsdato": "2013-07-20",
+      "fornavn": "Albert",
+      "etternavn": "Åberg",
+      "telefon": ""
+    },
+    "verge": {
+      "fnr": "09418208349",
+      "fødselsdato": "2013-07-20",
+      "fornavn": "Albert",
+      "etternavn": "Åberg",
+      "telefon": ""
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "steg": "INNHENTE_FAKTA",
+    "journalpost": ["33445566"],
+    "statusEndret": "2023-01-05T14:31:42.815302",
     "saksbehandler": {
       "epost": "silje.saksbehandler@nav.no",
       "objectId": "23ea7485-1324-4b25-a763-assdfdfa",

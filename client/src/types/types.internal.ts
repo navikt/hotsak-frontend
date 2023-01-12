@@ -19,6 +19,36 @@ export interface Sak {
   enhet: Enhet[]
 }
 
+export interface Brillesak {
+  saksid: string
+  sakstype: Oppgavetype
+  soknadGjelder: string
+  mottattDato: string
+  innsender: Person
+  bruker: Person
+  saksbehandler: Saksbehandler
+  status: OppgaveStatusType
+  steg: StegType
+  journalpost: string[]
+  enhet: Enhet[]
+}
+
+export enum StegType {
+  INNHENTE_FAKTA = 'INNHENTE_FAKTA',
+  VURDERE_VILKÅR = 'VURDERE_VILKÅR',
+  VEDTAK = 'VEDTAK',
+  BREV = 'BREV',
+  UTBETALING = 'UTBETALING',
+}
+
+export interface Person {
+  fnr: string
+  fødelsdato: string
+  fornavn: string
+  etternavn: string
+  telefon?: string
+}
+
 export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
 }
@@ -233,6 +263,7 @@ export enum Oppgavetype {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
   DOKUMENT = 'DOKUMENT',
+  BARNEBRILLER = 'BARNEBRILLER',
 }
 
 export interface Saksbehandler {

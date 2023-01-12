@@ -16,7 +16,7 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { Kjønn, Personinfo, PersonoversiktType } from '../types/types.internal'
+import { Kjønn, Person, Personinfo, PersonoversiktType } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo | PersonoversiktType | undefined
+  person?: Personinfo | PersonoversiktType | Person | undefined
 }
 
 const LoadingText = styled.div`

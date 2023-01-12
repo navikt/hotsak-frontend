@@ -52,9 +52,12 @@ export function useDokumentListe(): DokumentlisteResponse {
   }
 }
 
-export function useDokument(): DokumentResponse {
+export function useDokument(journalpost?: string): DokumentResponse {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
+
+  const valgtJournalpostID = journalpost ? journalpost : journalpostID
+
+  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${valgtJournalpostID}`, httpGet)
   //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
 
@@ -62,10 +65,10 @@ export function useDokument(): DokumentResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = (journalpostID: string, dokumentID: string) => {
+  const hentForhåndsvisning = (valgtJournalpostID: string, dokumentID: string) => {
     settHentetDokument(byggHenterRessurs())
 
-    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${journalpostID}/${dokumentID}`)
+    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostID}/${dokumentID}`)
 
     pdfResponse
       .then((response: PDFResponse) => {

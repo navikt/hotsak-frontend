@@ -3,16 +3,20 @@ import styled from 'styled-components'
 
 import { hotsaktVenstremenyWidth } from '../../GlobalStyles'
 
-const Container = styled.aside`
+type VenstremenyProps = {
+  width?: string
+}
+
+const Container = styled.aside<VenstremenyProps>`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: ${hotsaktVenstremenyWidth};
+  width: ${(props) => props.width || hotsaktVenstremenyWidth};
   min-width: 19.5rem;
   padding: 2rem 1.5rem;
   border-right: 1px solid var(--a-border-default);
 `
 
-export const VenstreMeny: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <Container>{children}</Container>
+export const VenstreMeny: React.FC<{ width?: string; children: React.ReactNode }> = ({ width, children }) => {
+  return <Container width={width}>{children}</Container>
 }

@@ -6,6 +6,7 @@ import { AlertError } from '../feilsider/AlertError'
 import { Oppgavetype } from '../types/types.internal'
 import { LasterPersonlinje } from './Personlinje'
 import Søknadsbilde from './Søknadsbilde'
+import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
 import Bestillingsbilde from './bestillingsordning/Bestillingsbilde'
 import { useSak } from './sakHook'
 
@@ -28,10 +29,13 @@ const SaksbildeContent = React.memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  if (sak.sakstype === Oppgavetype.BESTILLING) {
-    return <Bestillingsbilde />
-  } else {
-    return <Søknadsbilde />
+  switch (sak.sakstype) {
+    case Oppgavetype.BESTILLING:
+      return <Bestillingsbilde />
+    case Oppgavetype.BARNEBRILLER:
+      return <BarnebrilleBilde />
+    default:
+      return <Søknadsbilde />
   }
 })
 

@@ -69,7 +69,7 @@ export const JournalpostSkjema: React.FC = () => {
         }
 
         setJournalfører(false)
-        navigate(`/sak/saksid/${opprettetSakID}`)
+        navigate(`/sak/${opprettetSakID}`)
       })
   }
 

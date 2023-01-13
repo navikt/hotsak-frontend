@@ -63,6 +63,8 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   //const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
   const handleError = useErrorHandler()
 
+  console.log(`Sak ${sak?.bruker}`)
+
   if (isLoading) return <LasterBarnebrilleBilde />
 
   if (isError) {
@@ -85,7 +87,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
       <Stegindikator />
       <Container>
         <TreKolonner>
-          <VenstreMeny width="40rem">
+          <VenstreMeny width="35rem">
             <RegistrerSøknad />
           </VenstreMeny>
           <div>PDF her</div>

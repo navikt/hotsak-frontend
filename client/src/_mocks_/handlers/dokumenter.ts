@@ -51,13 +51,16 @@ const dokumentHandlers = [
       ctx.body(buffer)
     )
   }),
-  rest.post<JournalførRequest, any, OpprettetSakResponse>(`/api/journalpost/journalfor`, async (req, res, ctx) => {
-    const journalpost: JournalførRequest = await req.json()
-    const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
-    dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
+  rest.post<JournalførRequest, any, OpprettetSakResponse>(
+    `/api/journalpost/:journalpostID/journalforing`,
+    async (req, res, ctx) => {
+      const journalpost: JournalførRequest = await req.json()
+      const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
+      dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
 
-    return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
-  }),
+      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
+    }
+  ),
   rest.post(`/api/journalpost/:journalpostID/tildeling`, (req, res, ctx) => {
     const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === req.params.journalpostID)
 

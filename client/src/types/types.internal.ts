@@ -247,7 +247,7 @@ export interface JournalførRequest {
   journalpostID: string
   tittel: string
   vedlegg: string[]
-  fnrBarn: string
+  journalføresPåFnr: string
 }
 
 export interface OpprettetSakResponse {

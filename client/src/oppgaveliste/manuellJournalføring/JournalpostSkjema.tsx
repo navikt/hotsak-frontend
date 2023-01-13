@@ -54,7 +54,7 @@ export const JournalpostSkjema: React.FC = () => {
     const journalpostRequest: JournalførRequest = {
       journalpostID: journalpost!.journalpostID,
       tittel: journalpostTittel,
-      fnrBarn: fodselsnummer,
+      journalføresPåFnr: fodselsnummer,
       vedlegg: byggVedleggBeskrivelse(),
     }
 

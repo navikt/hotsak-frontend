@@ -260,5 +260,34 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+  {
+    "sakstype": "BARNEBRILLER",
+    "saksid": "9876",
+    "søknadOm": "Briller til barn",
+    "mottattDato": "2023-01-05T13:55:45",
+    "formidlerNavn": "",
+    "personinformasjon": {
+      "fnr": "20071359671",
+      "funksjonsnedsettelse": ["syn"],
+      "fornavn": "Albert",
+      "etternavn": "Åberg",
+      "poststed": "",
+      "bosted": "",
+      "telefon": ""
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "statusEndret": "2023-01-05T14:31:42.815302",
+    "saksbehandler": {
+      "epost": "silje.saksbehandler@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

@@ -259,19 +259,18 @@ const saksbehandlingHandlers = [
       begrunnelse: endretBegrunnelse,
       begrunnelseFritekst: endretBegrunnelseFritekst,
     } = req.body
-    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler'].findIndex((hjm) => hjm.hmsnr === hmsNr)
-
-    const hjm = saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx]
+    const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler']!.findIndex((hjm) => hjm.hmsnr === hmsNr)
+    const hjm = saker[bestillingIdx]['hjelpemidler']![hjelpemiddelIdx]
 
     if (hmsNr === endretHmsNr) {
-      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+      saker[bestillingIdx]['hjelpemidler']![hjelpemiddelIdx] = {
         ...hjm,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         endretHjelpemiddel: undefined,
       }
     } else {
-      saker[bestillingIdx]['hjelpemidler'][hjelpemiddelIdx] = {
+      saker[bestillingIdx]['hjelpemidler']![hjelpemiddelIdx] = {
         ...hjm,
         endretHjelpemiddel: {
           hmsNr: endretHmsNr,

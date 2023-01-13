@@ -54,7 +54,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo | PersonoversiktType | Person | undefined
+  person?: Personinfo | PersonoversiktType | undefined
 }
 
 const LoadingText = styled.div`

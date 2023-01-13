@@ -58,7 +58,7 @@ const dokumentHandlers = [
       const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
       dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
 
-      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakID: '9876' }))
+      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: '9876' }))
     }
   ),
   rest.post(`/api/journalpost/:journalpostID/tildeling`, (req, res, ctx) => {

@@ -62,7 +62,7 @@ export const JournalpostSkjema: React.FC = () => {
     postJournalfør(journalpostRequest)
       .catch(() => setJournalfører(false))
       .then((opprettetSakResponse: any) => {
-        const opprettetSakID = opprettetSakResponse.data.sakID
+        const opprettetSakID = opprettetSakResponse.data.sakId
 
         if (!opprettetSakID) {
           throw new Error('Klarte ikke å opprette sak')

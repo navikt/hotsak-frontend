@@ -246,12 +246,11 @@ export interface Dokument {
 export interface JournalførRequest {
   journalpostID: string
   tittel: string
-  vedlegg: string[]
   journalføresPåFnr: string
 }
 
 export interface OpprettetSakResponse {
-  sakID: string
+  sakId: string
 }
 
 export enum DokumentFormat {

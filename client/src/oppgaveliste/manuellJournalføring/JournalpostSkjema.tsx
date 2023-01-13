@@ -36,26 +36,14 @@ export const JournalpostSkjema: React.FC = () => {
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
-  const [vedlegg, setVedlegg] = useState<string[]>([])
-  const [annetVedlegg, setAnnetVedlegg] = useState<string>('')
-  const manglerAnnetVedlegg = vedlegg.includes('Annet') && annetVedlegg.trim().length < 3
   const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
-
-  const byggVedleggBeskrivelse = (): string[] => {
-    if (vedlegg.includes('Annet')) {
-      return vedlegg.filter((v) => v !== 'Annet').concat([annetVedlegg])
-    } else {
-      return vedlegg
-    }
-  }
 
   const journalfør = () => {
     const journalpostRequest: JournalførRequest = {
       journalpostID: journalpost!.journalpostID,
       tittel: journalpostTittel,
       journalføresPåFnr: fodselsnummer,
-      vedlegg: byggVedleggBeskrivelse(),
     }
 
     setJournalfører(true)
@@ -137,24 +125,6 @@ export const JournalpostSkjema: React.FC = () => {
             value={journalpostTittel}
             onChange={(e) => setJournalpostTittel(e.target.value)}
           />
-          <VedleggCheckboxGroup
-            legend="Hvilke vedlegg er med?"
-            onChange={setVedlegg}
-            size="small"
-            error={manglerAnnetVedlegg && error}
-          >
-            <Checkbox value="Brilleseddel">Brilleseddel</Checkbox>
-            <Checkbox value="Bestillingsbekreftelse">Bestillingsbekreftelse</Checkbox>
-            <Checkbox value="Vergeattest">Vergeattest</Checkbox>
-            <Checkbox value="Annet">Annet</Checkbox>
-          </VedleggCheckboxGroup>
-          <TextField
-            label="Andre vedlegg (valgfri)"
-            description="Kort beskrivelse av andre vedlegg hvis du har valgt 'Annet' "
-            value={annetVedlegg}
-            onChange={(e) => setAnnetVedlegg(e.target.value)}
-            size="small"
-          />
         </Avstand>
         <Avstand paddingTop={6}>
           <Dokumenter />
@@ -169,11 +139,8 @@ export const JournalpostSkjema: React.FC = () => {
                 e.preventDefault()
                 /*if (manglerVedlegg) {
                   setError('Du må velge minst en årsak i listen over.')
-                } else*/ if (manglerAnnetVedlegg) {
-                  setError('Du må gi en begrunnelse når det er huket av for Annet.')
-                } else {
-                  journalfør()
-                }
+                } else*/
+                journalfør()
               }}
               data-cy="btn-journalfør"
               disabled={journalfører}
@@ -187,7 +154,3 @@ export const JournalpostSkjema: React.FC = () => {
     </Container>
   )
 }
-
-const VedleggCheckboxGroup = styled(CheckboxGroup)`
-  margin: var(--a-spacing-6) 0;
-`

@@ -54,7 +54,7 @@ const BarnebrilleEtikett = styled(Etikett)`
   border: 1px solid var(--a-blue-500);
 
   :before {
-    content: 'Br';
+    content: 'T';
   }
 `
 
@@ -110,7 +110,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       return showLabel ? (
         <>
           <BarnebrilleEtikett størrelse={størrelse} aria-hidden />
-          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{'Tilskudd'}</Label>
         </>
       ) : (
         <BarnebrilleEtikett størrelse={størrelse} aria-hidden />

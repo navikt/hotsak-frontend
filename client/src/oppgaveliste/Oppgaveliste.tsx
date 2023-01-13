@@ -128,7 +128,7 @@ export const Oppgaveliste: React.FC = () => {
     },
     {
       key: 'FORMIDLER',
-      name: 'Formidler',
+      name: 'Innsender',
       width: 164,
       render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn} />,
     },

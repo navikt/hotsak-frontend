@@ -17,6 +17,7 @@ import {
   Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
+  Oppgavetype,
   SakerFilter,
   SakerFilterLabel,
   SakstypeFilter,
@@ -223,7 +224,14 @@ export const Oppgaveliste: React.FC = () => {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
-                      <LinkRow key={oppgave.saksid} path={`/sak/${oppgave.saksid}/hjelpemidler`}>
+                      <LinkRow
+                        key={oppgave.saksid}
+                        path={
+                          oppgave.sakstype !== Oppgavetype.BARNEBRILLER
+                            ? `/sak/${oppgave.saksid}/hjelpemidler`
+                            : `/sak/${oppgave.saksid}`
+                        }
+                      >
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell
                             key={key}

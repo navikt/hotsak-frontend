@@ -1,4 +1,5 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Heading, Loader } from '@navikt/ds-react'
@@ -33,7 +34,8 @@ const IconContainer = styled.span`
 `
 
 export const JournalpostVisning: React.FC = () => {
-  const { journalpost, /*isError,*/ isLoading } = useDokument()
+  const { journalpostID } = useParams<{ journalpostID: string }>()
+  const { journalpost, /*isError,*/ isLoading } = useDokument(journalpostID)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()

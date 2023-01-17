@@ -1,6 +1,6 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Button, Checkbox, CheckboxGroup, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
@@ -31,7 +31,8 @@ const Kolonner = styled.div`
 
 export const JournalpostSkjema: React.FC = () => {
   const navigate = useNavigate()
-  const { journalpost, /*isError,*/ isLoading } = useDokument()
+  const { journalpostID } = useParams<{ journalpostID: string }>()
+  const { journalpost, /*isError,*/ isLoading } = useDokument(journalpostID)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)

@@ -24,5 +24,14 @@
     "fornavn": "Navn",
     "etternavn": "Navnesen",
     "kjønn": "MANN"
+  },
+  {
+    "fnr": "20071359671",
+    "fødselsdato": "2013-07-20",
+    "fornavn": "Spencer",
+    "etternavn": "Tjøstheim",
+    "telefon": "",
+    "kjønn": "UKJENT",
+    "brukernummer": ""
   }
 ]

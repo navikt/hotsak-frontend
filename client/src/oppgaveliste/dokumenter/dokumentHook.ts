@@ -52,12 +52,12 @@ export function useDokumentListe(): DokumentlisteResponse {
   }
 }
 
-export function useDokument(journalpost?: string): DokumentResponse {
-  const { journalpostID } = useParams<{ journalpostID: string }>()
+export function useDokument(journalpostID?: string): DokumentResponse {
+  //const { journalpostID } = useParams<{ journalpostID: string }>()
 
-  const valgtJournalpostID = journalpost ? journalpost : journalpostID
+  //const valgtJournalpostID = journalpost ? journalpost : journalpostID
 
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${valgtJournalpostID}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
   //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
 

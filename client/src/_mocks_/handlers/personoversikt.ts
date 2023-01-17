@@ -12,6 +12,9 @@ const personInfoHandlers = [
     } else if (brukersFodselsnummer === '13044238651') {
       // Mia Cathrine
       return res(ctx.status(200), ctx.json(personInfo[1]))
+    } else if (brukersFodselsnummer === '20071359671') {
+      // Spencer
+      return res(ctx.status(200), ctx.json(personInfo[3]))
     } else if (brukersFodselsnummer === '13041163393') {
       //sperret person med kode 6 eller 7
       return res(ctx.status(403), ctx.text('Du har ikke tilgang til å søke opp denne personen'))

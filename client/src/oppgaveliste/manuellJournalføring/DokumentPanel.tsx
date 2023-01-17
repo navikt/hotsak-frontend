@@ -10,11 +10,18 @@ const DokumentDiv = styled.div`
   height: 100%;
 `
 
-export const DokumentPanel: React.FC = () => {
-  const { journalpost, hentetDokument, hentForhåndsvisning } = useDokument()
+interface DokumentPanelProps {
+  journalpostID?: string
+}
+
+export const DokumentPanel: React.FC<DokumentPanelProps> = (props) => {
+  const { journalpostID } = props
+  const { journalpost, hentetDokument, hentForhåndsvisning } = useDokument(journalpostID)
   const { valgtDokumentID } = useDokumentContext()
 
-  const journalpostID = journalpost?.journalpostID
+  //const journalpostID = journalpost?.journalpostID
+
+  console.log('jpid', journalpostID)
 
   useEffect(() => {
     if (journalpostID && valgtDokumentID) {

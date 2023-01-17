@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { headerHøydeRem } from '../../GlobalStyles'
@@ -26,7 +27,8 @@ const Container = styled.div`
 `
 
 export const ManuellJournalfør: React.FC = () => {
-  const { journalpost /*, isLoading, isError*/ } = useDokument()
+  const { journalpostID } = useParams<{ journalpostID: string }>()
+  const { journalpost /*, isLoading, isError*/ } = useDokument(journalpostID)
   const { setValgtDokumentID } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
@@ -67,7 +69,7 @@ export const ManuellJournalfør: React.FC = () => {
       <Container>
         <ToKolonner>
           {journalpostTildeltSaksbehandler ? <JournalpostSkjema /> : <JournalpostVisning />}
-          <DokumentPanel />
+          <DokumentPanel journalpostID={journalpostID} />
         </ToKolonner>
       </Container>
     </>

@@ -2,6 +2,8 @@ import React from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import styled from 'styled-components'
 
+import { DokumentContext, DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
+
 import { AlertError } from '../feilsider/AlertError'
 import { Oppgavetype } from '../types/types.internal'
 import { LasterPersonlinje } from './Personlinje'
@@ -33,7 +35,11 @@ const SaksbildeContent = React.memo(() => {
     case Oppgavetype.BESTILLING:
       return <Bestillingsbilde />
     case Oppgavetype.BARNEBRILLER:
-      return <BarnebrilleBilde />
+      return (
+        <DokumentProvider>
+          <BarnebrilleBilde />
+        </DokumentProvider>
+      )
     default:
       return <Søknadsbilde />
   }

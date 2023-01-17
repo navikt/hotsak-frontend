@@ -5,7 +5,6 @@ import { Heading, Select } from '@navikt/ds-react'
 
 import { capitalize } from '../../utils/stringFormating'
 
-import { Etikett } from '../../felleskomponenter/typografi'
 import { FormatertStyrke } from './FormatertStyrke'
 //import { enhet } from '../enhet'
 //import type { Brilleseddel } from '../types'
@@ -72,11 +71,6 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
     </>
   )
 }
-
-const ØyeEtikett = styled.div`
-  justify-items: auto;
-  align-self: center;
-`
 
 const Grid = styled.div`
   display: grid;

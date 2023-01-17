@@ -59,7 +59,7 @@ export const RegistrerSøknad: React.FC = () => {
   console.log(`Sak jp ${sak?.journalpost}`)
 
   const { datepickerProps, inputProps, selectedDay } = UNSAFE_useDatepicker({
-    fromDate: new Date('Aug 23 2019'),
+    fromDate: new Date('Aug 1 2022'),
     onDateChange: console.log,
   })
 

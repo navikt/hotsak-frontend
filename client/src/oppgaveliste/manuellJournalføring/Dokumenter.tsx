@@ -1,3 +1,5 @@
+import { useParams } from 'react-router'
+
 import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
@@ -6,7 +8,8 @@ import { useDokument } from '../dokumenter/dokumentHook'
 import { DokumentVelger } from './DokumentVelger'
 
 export const Dokumenter: React.FC = () => {
-  const { journalpost } = useDokument()
+  const { journalpostID } = useParams<{ journalpostID: string }>()
+  const { journalpost } = useDokument(journalpostID)
   const { valgtDokumentID, setValgtDokumentID } = useDokumentContext()
 
   return (

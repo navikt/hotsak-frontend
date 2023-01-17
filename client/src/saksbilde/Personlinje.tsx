@@ -142,9 +142,10 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
       ) : (
         <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
       )}
-      <Separator>|</Separator>
-      {brukernummer ? (
+
+      {brukernummer && (
         <>
+          <Separator>|</Separator>
           <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
           <Clipboard
             popoverText="Brukernummer kopiert"
@@ -155,12 +156,11 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
             copyText={brukernummer}
           ></Clipboard>
         </>
-      ) : (
-        <Tekst>Brukernummer ikke tilgjengelig</Tekst>
       )}
-      <Separator>|</Separator>
-      {telefon ? (
+
+      {telefon && (
         <>
+          <Separator>|</Separator>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
           <Clipboard
             popoverText="Telefonnummer er kopiert"
@@ -171,8 +171,6 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
             copyText={telefon}
           ></Clipboard>
         </>
-      ) : (
-        <Tekst>Telefonnummer ikke tilgjengelig</Tekst>
       )}
     </Container>
   )

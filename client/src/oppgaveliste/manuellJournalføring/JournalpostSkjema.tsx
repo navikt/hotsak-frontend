@@ -127,9 +127,7 @@ export const JournalpostSkjema: React.FC = () => {
             onChange={(e) => setJournalpostTittel(e.target.value)}
           />
         </Avstand>
-        <Avstand paddingTop={6}>
-          <Dokumenter />
-        </Avstand>
+        <Dokumenter journalpostID={journalpostID} />
         <Avstand paddingLeft={2}>
           <ButtonContainer>
             <Button

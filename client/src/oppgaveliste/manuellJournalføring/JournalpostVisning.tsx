@@ -78,7 +78,7 @@ export const JournalpostVisning: React.FC = () => {
         <Brødtekst>{journalpost.tittel}</Brødtekst>
       </Avstand>
       <Avstand paddingTop={4}>
-        <Dokumenter />
+        <Dokumenter journalpostID={journalpostID} />
       </Avstand>
       <Avstand paddingTop={6}>
         {journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler ? (

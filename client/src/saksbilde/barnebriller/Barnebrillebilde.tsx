@@ -48,9 +48,6 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   //const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
   const handleError = useErrorHandler()
 
-  console.log(`Sak`, sak?.journalpost[0])
-  //console.log(`BBbilde jp`,  journalpost?.journalpostID)
-
   const journalpostID = sak?.journalpost[0]
 
   useEffect(() => {
@@ -71,6 +68,8 @@ const BarnebrilleContent: React.FC = React.memo(() => {
       `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.sakstype} `
     )
   }
+
+  console.log('PI', personInfo)
 
   //const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
 

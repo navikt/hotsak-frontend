@@ -1251,14 +1251,14 @@
     "saksid": "9876",
     "soknadGjelder": "Briller til barn",
     "mottattDato": "2023-01-05T13:55:45",
-    "søker": {
+    "bruker": {
       "fnr": "20071359671",
       "fødselsdato": "2013-07-20",
-      "fornavn": "Albert",
-      "etternavn": "Åberg",
+      "fornavn": "Spencer",
+      "etternavn": "Tjøstheim",
       "telefon": ""
     },
-    "verge": {
+    "innsender": {
       "fnr": "09418208349",
       "fødselsdato": "2013-07-20",
       "fornavn": "Albert",

@@ -22,6 +22,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
       <Heading level="3" size="xsmall">
         {`${capitalize(type)} øye`}
       </Heading>
+
       <Grid>
         {/*<Controller
         name={`brillestyrke.${type}Sfære`}

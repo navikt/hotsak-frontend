@@ -6,11 +6,9 @@ import styled from 'styled-components'
 
 import {
   Button,
-  Checkbox,
   CheckboxGroup,
   Heading,
   Loader,
-  Panel,
   Radio,
   RadioGroup,
   Textarea,
@@ -19,18 +17,14 @@ import {
   UNSAFE_useDatepicker,
 } from '@navikt/ds-react'
 
-import { postJournalfør } from '../../io/http'
 import { useDokument } from '../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../oppgaveliste/manuellJournalføring/Dokumenter'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
-import { Etikett } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { JournalførRequest } from '../../types/types.internal'
-import { formaterNavn } from '../Personlinje'
-import { useBrillesak, useSak } from '../sakHook'
+import { useBrillesak } from '../sakHook'
 import { Øye } from './Øye'
 
 const Container = styled.div`
@@ -77,6 +71,9 @@ export const RegistrerSøknad: React.FC = () => {
       <Heading level="1" size="xsmall" spacing>
         Registrer søknad
       </Heading>
+      <Dokumenter journalpostID={journalpost.journalpostID} />
+      <Avstand paddingTop={4}></Avstand>
+
       <form>
         <RadioGroup legend="Målform" size="small" value="bokmål">
           <Radio value="bokmål">Bokmål</Radio>
@@ -148,7 +145,3 @@ export const RegistrerSøknad: React.FC = () => {
     </Container>
   )
 }
-
-const VedleggCheckboxGroup = styled(CheckboxGroup)`
-  margin: var(--a-spacing-6) 0;
-`

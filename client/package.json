@@ -13,7 +13,7 @@
     "amplitude-js": "8.21.2",
     "dayjs": "1.11.5",
     "fetch-intercept": "2.4.0",
-    "graphql-request": "5.0.0",
+    "graphql-request": "5.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-error-boundary": "3.1.4",

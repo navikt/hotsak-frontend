@@ -49,7 +49,7 @@ const BestillingEtikett = styled(Etikett)`
   }
 `
 
-const BarnebrilleEtikett = styled(Etikett)`
+const TilskuddEtikett = styled(Etikett)`
   background: var(--a-blue-100);
   border: 1px solid var(--a-blue-500);
 
@@ -106,14 +106,14 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       ) : (
         <BestillingEtikett størrelse={størrelse} aria-hidden />
       )
-    case Oppgavetype.BARNEBRILLER:
+    case Oppgavetype.TILSKUDD:
       return showLabel ? (
         <>
-          <BarnebrilleEtikett størrelse={størrelse} aria-hidden />
-          <Label labelLinkTo={labelLinkTo}>{'Tilskudd'}</Label>
+          <TilskuddEtikett størrelse={størrelse} aria-hidden />
+          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
-        <BarnebrilleEtikett størrelse={størrelse} aria-hidden />
+        <TilskuddEtikett størrelse={størrelse} aria-hidden />
       )
     default:
       return null

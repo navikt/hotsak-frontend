@@ -275,6 +275,7 @@ export enum DokumentFormat {
 export enum Oppgavetype {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
+  TILSKUDD = 'TILSKUDD',
   DOKUMENT = 'DOKUMENT',
   BARNEBRILLER = 'BARNEBRILLER',
 }

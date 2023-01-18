@@ -438,6 +438,7 @@ export enum SakstypeFilter {
   ALLE = 'ALLE',
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
+  TILSKUDD = 'TILSKUDD',
 }
 
 export const SakerFilterLabel = new Map<string, string>([
@@ -450,6 +451,7 @@ export const SakstypeFilterLabel = new Map<string, string>([
   [SakstypeFilter.ALLE, 'Alle'],
   [SakstypeFilter.BESTILLING, 'Bestilling'],
   [SakstypeFilter.SØKNAD, 'Søknad'],
+  [SakstypeFilter.TILSKUDD, 'Tilskudd'],
 ])
 
 export const OmrådeFilterLabel = new Map<string, string>([

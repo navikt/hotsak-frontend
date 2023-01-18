@@ -31,7 +31,7 @@ export function useSak(): DataResponse {
 // Duplisert frem til vi vet om de ulike sakstypene vil ha samme payload eller om det blir to ulike varianter/endepunkt
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Brillesak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10000 })
+  const { data, error } = useSwr<{ data: Brillesak }>(`api/sak/${saksnummer}`, httpGet)
 
   return {
     sak: data?.data,

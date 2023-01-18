@@ -33,6 +33,20 @@ export interface Brillesak {
   enhet: Enhet[]
 }
 
+export interface RegistrerSøknadData {
+  maalform: string
+  brillestyrke: Brilleseddel
+  bestillingsdato: string
+  brillepris: string
+}
+
+export interface Brilleseddel {
+  høyreSfære: string
+  høyreSylinder: string
+  venstreSfære: string
+  venstreSylinder: string
+}
+
 export enum StegType {
   INNHENTE_FAKTA = 'INNHENTE_FAKTA',
   VURDERE_VILKÅR = 'VURDERE_VILKÅR',
@@ -417,6 +431,7 @@ export enum OmrådeFilter {
   BEVEGELSE = 'BEVEGELSE',
   HØRSEL = 'HØRSEL',
   KOGNISJON = 'KOGNISJON',
+  SYN = 'SYN',
 }
 
 export enum SakstypeFilter {
@@ -442,6 +457,7 @@ export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.BEVEGELSE, 'Bevegelse'],
   [OmrådeFilter.HØRSEL, 'Hørsel'],
   [OmrådeFilter.KOGNISJON, 'Kognisjon'],
+  [OmrådeFilter.SYN, 'Syn'],
 ])
 
 export enum HøyrekolonneTabs {

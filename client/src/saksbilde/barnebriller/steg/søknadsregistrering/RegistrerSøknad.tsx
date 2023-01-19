@@ -12,21 +12,14 @@ import {
   hotsakRegistrerSøknadKolonne,
 } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
-import { usePersonInfo } from '../../../../personoversikt/personInfoHook'
+import { Flex } from '../../../../felleskomponenter/Flex'
 import { Oppgavetype } from '../../../../types/types.internal'
-import { LasterPersonlinje, Personlinje } from '../../../Personlinje'
+import { LasterPersonlinje } from '../../../Personlinje'
 import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { Stegindikator } from './../../Stegindikator'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
-
-const RegistrerSøknadContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 96vh;
-`
 
 const TreKolonner = styled.div`
   display: grid;
@@ -39,7 +32,6 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
   const { setValgtDokumentID } = useDokumentContext()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
-  const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(sak?.bruker?.fnr)
   const handleError = useErrorHandler()
 
   const journalpostID = sak?.journalpost[0]
@@ -63,30 +55,36 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
     )
   }
 
-  //const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
-
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <RegistrerSøknadContainer>
-      <Personlinje person={personInfo} />
+    <>
       <Stegindikator />
-      <TreKolonner>
-        <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
-          <RegistrerSøknadSkjema />
-        </VenstreMeny>
-        <DokumentPanel journalpostID={journalpostID} />
-        <Historikk />
-      </TreKolonner>
-    </RegistrerSøknadContainer>
+      <Container>
+        <AutoFlexContainer>
+          <TreKolonner>
+            <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
+              <RegistrerSøknadSkjema />
+            </VenstreMeny>
+            <DokumentPanel journalpostID={journalpostID} />
+            <Historikk />
+          </TreKolonner>
+        </AutoFlexContainer>
+      </Container>
+    </>
   )
 })
 
-const LasterRegistrerSøknadBilde = () => (
-  <RegistrerSøknadContainer>
-    <LasterPersonlinje />
-  </RegistrerSøknadContainer>
-)
+const LasterRegistrerSøknadBilde = () => <LasterPersonlinje />
+
+const Container = styled(Flex)`
+  overflow: auto;
+  overflow-x: hidden;
+`
+
+const AutoFlexContainer = styled.div`
+  flex: auto;
+`
 
 export const RegistrerSøknad = () => (
   <ErrorBoundary FallbackComponent={AlertError}>

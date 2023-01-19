@@ -65,7 +65,6 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
 
   return (
     <BestillingsbildeContainer>
-      <Personlinje person={sak.personinformasjon} />
       <Søknadslinje
         id={sak.saksid}
         type={Oppgavetype.BESTILLING}

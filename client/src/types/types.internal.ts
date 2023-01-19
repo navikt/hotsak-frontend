@@ -10,6 +10,7 @@ export interface Sak {
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
   personinformasjon: Personinfo
+  bruker?: Person
   levering: Levering
   oppfølgingsansvarlig: Oppfølgingsansvarlig
   saksbehandler: Saksbehandler
@@ -75,10 +76,13 @@ export enum StegType {
 
 export interface Person {
   fnr: string
-  fødelsdato: string
+  fødselsdato: string
   fornavn: string
+  mellomnavn?: string
   etternavn: string
   telefon?: string
+  brukernummer?: string
+  kjønn?: Kjønn
 }
 
 export enum VedtaksgrunnlagType {

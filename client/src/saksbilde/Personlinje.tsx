@@ -54,7 +54,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo | PersonoversiktType | undefined
+  person?: Personinfo | PersonoversiktType | Person | undefined
 }
 
 const LoadingText = styled.div`
@@ -100,7 +100,7 @@ const beregnAlder = (fødselsdato: string) => {
   return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-export const formaterNavn = (person: Personinfo | PersonoversiktType) => {
+export const formaterNavn = (person: Personinfo | PersonoversiktType | Person) => {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
 }
 
@@ -113,7 +113,7 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
     <Container>
-      <Kjønnsikon kjønn={kjønn} />
+      {kjønn && <Kjønnsikon kjønn={kjønn} />}
       <Link
         href="#"
         onClick={() => {

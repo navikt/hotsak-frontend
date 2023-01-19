@@ -7,7 +7,7 @@ import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
 import { HøyrekolonneTabs, Oppgavetype } from '../types/types.internal'
-import { LasterPersonlinje, Personlinje } from './Personlinje'
+import { LasterPersonlinje } from './Personlinje'
 import Søknadslinje from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
 import { Formidlerside } from './formidler/Formidlerside'
@@ -66,8 +66,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke sak</div>
 
   return (
-    <SaksbildeContainer className="saksbilde">
-      <Personlinje person={sak.personinformasjon} />
+    <>
       <Søknadslinje
         id={sak.saksid}
         type={Oppgavetype.SØKNAD}
@@ -104,9 +103,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 <Routes>
                   <Route
                     path="/hjelpemidler"
-                    element={
-                      <HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak} />
-                    }
+                    element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak} />}
                   />
                   <Route
                     path="/bruker"
@@ -127,7 +124,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
         </AutoFlexContainer>
         <Høyrekolonne currentTab={høyrekolonneTab} oppgavetype={Oppgavetype.SØKNAD} />
       </Container>
-    </SaksbildeContainer>
+    </>
   )
 })
 

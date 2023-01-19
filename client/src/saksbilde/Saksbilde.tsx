@@ -2,11 +2,11 @@ import React from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import styled from 'styled-components'
 
-import { DokumentContext, DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
+import { DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
 
 import { AlertError } from '../feilsider/AlertError'
 import { Oppgavetype } from '../types/types.internal'
-import { LasterPersonlinje } from './Personlinje'
+import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadsbilde from './Søknadsbilde'
 import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
 import Bestillingsbilde from './bestillingsordning/Bestillingsbilde'
@@ -31,18 +31,29 @@ const SaksbildeContent = React.memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  switch (sak.sakstype) {
-    case Oppgavetype.BESTILLING:
-      return <Bestillingsbilde />
-    case Oppgavetype.BARNEBRILLER:
-      return (
-        <DokumentProvider>
-          <BarnebrilleBilde />
-        </DokumentProvider>
-      )
-    default:
-      return <Søknadsbilde />
-  }
+  const person = sak.personinformasjon ? sak.personinformasjon : sak.bruker
+
+  return (
+    <>
+      <SaksbildeContainer className="saksbilde">
+        <Personlinje person={person} />
+        {(() => {
+          switch (sak!.sakstype) {
+            case Oppgavetype.BESTILLING:
+              return <Bestillingsbilde />
+            case Oppgavetype.BARNEBRILLER:
+              return (
+                <DokumentProvider>
+                  <BarnebrilleBilde />
+                </DokumentProvider>
+              )
+            default:
+              return <Søknadsbilde />
+          }
+        })()}
+      </SaksbildeContainer>
+    </>
+  )
 })
 
 export const Saksbilde = () => (

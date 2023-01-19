@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router'
 import styled from 'styled-components'
 
-import { Cognition, FileContent, Task } from '@navikt/ds-icons'
+import { FileContent, Task } from '@navikt/ds-icons'
 import { Tabs } from '@navikt/ds-react'
 
 const TabContainer = styled.div`
@@ -29,7 +29,16 @@ export const OppgavelisteTabs: React.FC = () => {
           <Tabs.Tab
             value="oppgaveliste"
             label="Oppgaveliste"
-            icon={<Task focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
+            icon={
+              <Task
+                focusable="false"
+                aria-hidden="true"
+                role="img"
+                title="oppgaveliste"
+                onResize={undefined}
+                onResizeCapture={undefined}
+              />
+            }
           />
           <Tabs.Tab
             value="dokumenter"

@@ -227,7 +227,7 @@ export const Oppgaveliste: React.FC = () => {
                       <LinkRow
                         key={oppgave.saksid}
                         path={
-                          oppgave.sakstype !== Oppgavetype.BARNEBRILLER
+                          oppgave.sakstype !== Oppgavetype.TILSKUDD
                             ? `/sak/${oppgave.saksid}/hjelpemidler`
                             : `/sak/${oppgave.saksid}`
                         }

@@ -8,6 +8,7 @@ import type {
   OverforGosysTilbakemelding,
   Vedtaksgrunnlag,
   VedtakStatusType,
+  VurderVilkårRequest,
 } from '../types/types.internal'
 
 export interface SaksbehandlingApiResponse<T = any> {
@@ -163,6 +164,10 @@ export const postJournalføringStartet = async (journalpostID: string) => {
 
 export const postJournalfør = async (journalpostRequest: JournalførRequest) => {
   return post(`${baseUrl}/api/journalpost/${journalpostRequest.journalpostID}/journalforing`, journalpostRequest)
+}
+
+export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårRequest) => {
+  return post(`${baseUrl}/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
 }
 
 export const tildelBestilling = async (oppgavereferanse: string) => {

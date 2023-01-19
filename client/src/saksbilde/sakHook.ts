@@ -15,6 +15,7 @@ interface BrillesakResponse {
   sak: Brillesak | undefined
   isLoading: boolean
   isError: any
+  mutate: (...args: any[]) => any
 }
 
 export function useSak(): DataResponse {
@@ -31,11 +32,12 @@ export function useSak(): DataResponse {
 // Duplisert frem til vi vet om de ulike sakstypene vil ha samme payload eller om det blir to ulike varianter/endepunkt
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Brillesak }>(`api/sak/${saksnummer}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: Brillesak }>(`api/sak/${saksnummer}`, httpGet)
 
   return {
     sak: data?.data,
     isLoading: !error && !data,
     isError: error,
+    mutate: mutate,
   }
 }

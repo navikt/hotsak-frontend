@@ -1,36 +1,28 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { register } from 'fetch-intercept'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useErrorHandler } from 'react-error-boundary'
-import { Controller, FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form'
-import { useNavigate } from 'react-router'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
-import {
-  Button,
-  Heading,
-  Loader,
-  Radio,
-  RadioGroup,
-  Textarea,
-  TextField,
-  UNSAFE_DatePicker,
-  UNSAFE_useDatepicker,
-} from '@navikt/ds-react'
+import { Button, Heading, Loader, Textarea } from '@navikt/ds-react'
 
-import { useDokument } from '../../oppgaveliste/dokumenter/dokumentHook'
-import { Dokumenter } from '../../oppgaveliste/manuellJournalføring/Dokumenter'
+import { postVilkårsvurdering } from '../../../../io/http'
+import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
+import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
-import { Tekstfelt } from '../../felleskomponenter/skjema/Tekstfelt'
-import { usePersonContext } from '../../personoversikt/PersonContext'
-import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { RegistrerSøknadData } from '../../types/types.internal'
-import { useBrillesak } from '../sakHook'
-import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
-import { Målform } from './skjemaelementer/Målform'
-import { Øye } from './skjemaelementer/Øye'
+import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
+import { usePersonContext } from '../../../../personoversikt/PersonContext'
+import { usePersonInfo } from '../../../../personoversikt/personInfoHook'
+import { MålformType, RegistrerSøknadData, VurderVilkårRequest } from '../../../../types/types.internal'
+import { useBrillesak } from '../../../sakHook'
+import { Bestillingsdato } from '../../skjemaelementer/Bestillingsdato'
+import { BestiltHosOptiker } from '../../skjemaelementer/BestiltHotOptiker'
+import { KomplettBrille } from '../../skjemaelementer/KomplettBrille'
+import { Målform } from '../../skjemaelementer/Målform'
+import { Øye } from '../../skjemaelementer/Øye'
 
 const Container = styled.div`
   overflow: auto;
@@ -45,20 +37,35 @@ const Kolonner = styled.div`
   align-items: flex-end;
 `
 
-export const RegistrerSøknad: React.FC = () => {
+export const RegistrerSøknadSkjema: React.FC = () => {
   const navigate = useNavigate()
-
-  const { sak, isLoading, isError } = useBrillesak()
+  const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
+  const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const [error, setError] = useState('')
-  //const [journalfører, setJournalfører] = useState(false)
+  const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const handleError = useErrorHandler()
+
+  const vurderVilkår = (formData: RegistrerSøknadData) => {
+    const vurderVilkårRequest: VurderVilkårRequest = {
+      sakId: sakID!,
+      ...formData,
+    }
+
+    setVenterPåVilkårsvurdering(true)
+    postVilkårsvurdering(vurderVilkårRequest)
+      .catch(() => setVenterPåVilkårsvurdering(false))
+      .then(() => {
+        setVenterPåVilkårsvurdering(false)
+        mutate()
+      })
+  }
 
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
-      maalform: '',
+      maalform: MålformType.BOKMÅL,
       bestillingsdato: '',
       brillestyrke: {
         høyreSfære: '',
@@ -67,6 +74,9 @@ export const RegistrerSøknad: React.FC = () => {
         venstreSylinder: '',
       },
       brillepris: '',
+      bestiltHosOptiker: '',
+      komplettBrille: '',
+      saksbehandlersBegrunnelse: '',
     },
   })
 
@@ -79,8 +89,6 @@ export const RegistrerSøknad: React.FC = () => {
     )
   }
 
-  console.log('aa', methods.watch())
-
   return (
     <Container>
       <Heading level="1" size="xsmall" spacing>
@@ -91,11 +99,10 @@ export const RegistrerSøknad: React.FC = () => {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit((data) => {
-              console.log('Data', data)
+              vurderVilkår(data)
             })}
           >
             <Målform />
-
             <Avstand paddingTop={4}>
               <Bestillingsdato />
             </Avstand>
@@ -118,41 +125,29 @@ export const RegistrerSøknad: React.FC = () => {
             </Avstand>
 
             <Avstand paddingTop={6}>
-              <Heading level="2" size="xsmall" spacing>
-                § 2 Brillen må være bestilt hos optiker
-              </Heading>
-              <RadioGroup legend="Er brillen bestilt hos optiker" size="small" value="ja">
-                <Radio value="ja">Ja</Radio>
-                <Radio value="nei">Nei</Radio>
-                <Radio value="manglerDokumentasjon">Dokumentasjon mangler</Radio>
-              </RadioGroup>
+              <KomplettBrille />
             </Avstand>
 
             <Avstand paddingTop={4}>
-              <Heading level="2" size="xsmall" spacing>
-                § 2 Komplett brille
-              </Heading>
-              <RadioGroup legend="Er det en komplett brille?" size="small" value="ja">
-                <Radio value="ja">Ja</Radio>
-                <Radio value="nei">Nei</Radio>
-                <Radio value="manglerDokumentasjon">Dokumentasjon mangler</Radio>
-              </RadioGroup>
+              <BestiltHosOptiker />
             </Avstand>
             <Avstand paddingTop={4}>
-              <Textarea size="small" label="Begrunnelse" description="Skriv din individuelle begrunnelse"></Textarea>
+              <Textarea
+                size="small"
+                label="Begrunnelse"
+                description="Skriv din individuelle begrunnelse"
+                {...methods.register('saksbehandlersBegrunnelse')}
+              ></Textarea>
             </Avstand>
 
-            {/* <Avstand paddingTop={6}>
-          <Dokumenter />
-  </Avstand>*/}
             <Avstand paddingLeft={2}>
               <ButtonContainer>
                 <Button
                   type="submit"
                   variant="primary"
                   size="small"
-                  //disabled={journalfører}
-                  //loading={journalfører}
+                  disabled={venterPåVilkårsvurdering}
+                  loading={venterPåVilkårsvurdering}
                 >
                   Neste steg
                 </Button>

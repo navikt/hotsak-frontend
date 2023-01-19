@@ -1,4 +1,4 @@
-import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from './config'
+import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from '../../config'
 
 interface FormatertStyrkeProps {
   verdi?: number | string

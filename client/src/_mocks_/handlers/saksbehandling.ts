@@ -1,6 +1,12 @@
 import { rest } from 'msw'
 
-import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
+import {
+  EndreHjelpemiddelRequest,
+  OppgaveStatusType,
+  SakerFilter,
+  StegType,
+  VurderVilkårRequest,
+} from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
 import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
@@ -281,7 +287,6 @@ const saksbehandlingHandlers = [
         },
       }
     }
-
     const endreHjmHendelse = {
       id: sakshistorikk[historikkIdx]['hendelser'].length + 1,
       hendelse: 'Endret artikkelnummer hjelpemiddel',
@@ -292,6 +297,13 @@ const saksbehandlingHandlers = [
     sakshistorikk[historikkIdx]['hendelser'].push(endreHjmHendelse)
 
     return res(ctx.status(200), ctx.json({}))
+  }),
+  rest.post<VurderVilkårRequest, any, any>('/api/sak/:saksid/vilkarsgrunnlag', (req, res, ctx) => {
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
+    console.log('Ja', saker[sakIdx])
+
+    saker[sakIdx].steg = StegType.VURDERE_VILKÅR
+    return res(ctx.status(201))
   }),
 ]
 

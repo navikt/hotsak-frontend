@@ -6,13 +6,12 @@ import { Heading, Select } from '@navikt/ds-react'
 import { capitalize } from '../../../utils/stringFormating'
 
 import { Brilleseddel } from '../../../types/types.internal'
-import { FormatertStyrke } from '../FormatertStyrke'
 //import { enhet } from '../enhet'
 import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from '../config'
+import { FormatertStyrke } from '../steg/søknadsregistrering/FormatertStyrke'
 
 export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const { type } = props
-  //const { t } = useTranslation()
   const {
     control,
     //  formState: { errors },

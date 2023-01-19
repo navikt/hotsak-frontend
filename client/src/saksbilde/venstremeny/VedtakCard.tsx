@@ -7,19 +7,19 @@ import { Button, Tag } from '@navikt/ds-react'
 import { postTildeling, putSendTilGosys, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato, norskTimestamp } from '../../utils/date'
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { norskTimestamp } from '../../utils/date'
+import { capitalizeName } from '../../utils/stringFormating'
 
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
+  HjelpemiddelArtikkel,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
   Sak,
-  VedtakStatusType,
-  HjelpemiddelArtikkel,
   vedtaksgrunnlagUtlaanshistorikk,
+  VedtakStatusType,
 } from '../../types/types.internal'
 import { BekreftVedtakModal } from '../BekreftVedtakModal'
 import { OverførGosysModal } from '../OverførGosysModal'

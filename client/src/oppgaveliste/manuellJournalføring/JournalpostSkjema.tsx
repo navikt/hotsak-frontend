@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Button, Checkbox, CheckboxGroup, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+import { Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
 
 import { postJournalfør } from '../../io/http'
 

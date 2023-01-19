@@ -40,14 +40,12 @@ export const ManuellJournalfør: React.FC = () => {
 
   useEffect(() => {
     if (journalpost?.fnrInnsender) {
-      console.log('Fnr settes på nytt')
       setFodselsnummer(journalpost.fnrInnsender)
     }
   }, [journalpost?.fnrInnsender])
 
   useEffect(() => {
     if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {
-      console.log('Dokument settes på nytt')
       setValgtDokumentID(journalpost.dokumenter[0].dokumentID)
     }
   }, [journalpost?.journalpostID, journalpost?.dokumenter])

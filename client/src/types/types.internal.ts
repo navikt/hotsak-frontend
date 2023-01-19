@@ -34,10 +34,28 @@ export interface Brillesak {
 }
 
 export interface RegistrerSøknadData {
-  maalform: string
+  maalform: MålformType
   brillestyrke: Brilleseddel
   bestillingsdato: string
   brillepris: string
+  bestiltHosOptiker: VilkårSvar | ''
+  komplettBrille: VilkårSvar | ''
+  saksbehandlersBegrunnelse: string
+}
+
+export interface VurderVilkårRequest extends RegistrerSøknadData {
+  sakId: string
+}
+
+export enum VilkårSvar {
+  JA = 'JA',
+  NEI = 'NEI',
+  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
+}
+
+export enum MålformType {
+  BOKMÅL = 'BOKMÅL',
+  NYNORSK = 'NYNORSK',
 }
 
 export interface Brilleseddel {

@@ -29,16 +29,7 @@ export const OppgavelisteTabs: React.FC = () => {
           <Tabs.Tab
             value="oppgaveliste"
             label="Oppgaveliste"
-            icon={
-              <Task
-                focusable="false"
-                aria-hidden="true"
-                role="img"
-                title="oppgaveliste"
-                onResize={undefined}
-                onResizeCapture={undefined}
-              />
-            }
+            icon={<Task focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
           />
           <Tabs.Tab
             value="dokumenter"

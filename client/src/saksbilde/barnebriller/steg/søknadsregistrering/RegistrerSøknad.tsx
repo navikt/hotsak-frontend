@@ -31,14 +31,13 @@ const TreKolonner = styled.div`
 const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
   const { setValgtDokumentID } = useDokumentContext()
-  const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
+  const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalpost[0])
   const handleError = useErrorHandler()
 
   const journalpostID = sak?.journalpost[0]
 
   useEffect(() => {
     if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {
-      console.log('Dokument settes på nytt')
       setValgtDokumentID(journalpost.dokumenter[0].dokumentID)
     }
   }, [journalpost?.journalpostID, journalpost?.dokumenter])

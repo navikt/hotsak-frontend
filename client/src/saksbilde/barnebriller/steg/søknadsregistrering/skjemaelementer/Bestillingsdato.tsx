@@ -1,6 +1,6 @@
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
-import { Radio, RadioGroup, UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react'
+import { UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react'
 
 export function Bestillingsdato() {
   const { control, setValue } = useFormContext<{ bestillingsdato?: Date }>()

@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
-import { VilkårSvar } from '../../../types/types.internal'
+import { VilkårSvar } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
   const { control } = useFormContext<{ bestiltHosOptiker: VilkårSvar }>()

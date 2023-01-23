@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { Radio, RadioGroup } from '@navikt/ds-react'
 
-import { MålformType } from '../../../types/types.internal'
+import { MålformType } from '../../../../../types/types.internal'
 
 export function Målform() {
   const { control } = useFormContext<{ maalform: string }>()

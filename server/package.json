@@ -41,7 +41,7 @@
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf ./dist",
-    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development SESSION_SECRET=whatever HM_SAKSBEHANDLING_API_URL=http://localhost:8083/api GRUNNDATA_API_URL=http://localhost:8083/api BRILLEKALKULATOR_API_URL=http://localhost:8083/api AZURE_APP_WELL_KNOWN_URL=http://host.docker.internal:8080/default/.well-known/openid-configuration ts-node-dev --respawn --transpile-only src/server.ts",
     "lint": "eslint . --ext .ts"
   }
 }

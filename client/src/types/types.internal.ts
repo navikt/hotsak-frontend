@@ -74,6 +74,22 @@ export enum StegType {
   UTBETALING = 'UTBETALING',
 }
 
+export interface BeregnSatsResponse {
+  sats: SatsType
+  satsBeskrivelse: string
+  satsBeløp: number
+}
+
+export type BeregnSatsRequest = Brilleseddel
+export enum SatsType {
+  SATS_1 = 'SATS_1',
+  SATS_2 = 'SATS_2',
+  SATS_3 = 'SATS_3',
+  SATS_4 = 'SATS_4',
+  SATS_5 = 'SATS_5',
+  INGEN = 'INGEN',
+}
+
 export interface Person {
   fnr: string
   fødselsdato: string

@@ -1,3 +1,4 @@
+import brillekalkulatorHandlers from './beregnSats'
 import dokumentHandlers from './dokumenter'
 import endringsloggHandlers from './endringslogg'
 import grunndataHandlers from './grunndata'
@@ -16,6 +17,7 @@ const handlers = [
   ...personInfoHandlers,
   ...hjelpemiddelHandlers,
   ...dokumentHandlers,
+  ...brillekalkulatorHandlers,
 ]
 
 export default handlers

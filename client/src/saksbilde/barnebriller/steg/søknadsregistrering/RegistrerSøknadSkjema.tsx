@@ -15,27 +15,26 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import { usePersonContext } from '../../../../personoversikt/PersonContext'
-import { usePersonInfo } from '../../../../personoversikt/personInfoHook'
 import { MålformType, RegistrerSøknadData, VurderVilkårRequest } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
-import { Bestillingsdato } from '../../skjemaelementer/Bestillingsdato'
-import { BestiltHosOptiker } from '../../skjemaelementer/BestiltHotOptiker'
-import { KomplettBrille } from '../../skjemaelementer/KomplettBrille'
-import { Målform } from '../../skjemaelementer/Målform'
-import { Øye } from '../../skjemaelementer/Øye'
+import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
+import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
+import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
+import { KomplettBrille } from './skjemaelementer/KomplettBrille'
+import { Målform } from './skjemaelementer/Målform'
 
 const Container = styled.div`
   overflow: auto;
   padding-top: var(--a-spacing-6);
 `
 
-const Kolonner = styled.div`
+/*const Kolonner = styled.div`
   display: flex;
   gap: 1rem;
   width: 100%;
   align-self: flex-end;
   align-items: flex-end;
-`
+`*/
 
 export const RegistrerSøknadSkjema: React.FC = () => {
   const navigate = useNavigate()
@@ -43,7 +42,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
+  //const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const [error, setError] = useState('')
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const handleError = useErrorHandler()
@@ -116,17 +115,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
               />
             </Avstand>
 
-            <Avstand paddingTop={4}>
-              <Heading level="2" size="xsmall" spacing>
-                § 2 Brillestyrke
-              </Heading>
-              <Øye type="høyre" />
-              <Øye type="venstre" />
-            </Avstand>
-
-            <Avstand paddingTop={6}>
-              <KomplettBrille />
-            </Avstand>
+            <BrillestyrkeForm />
+            <KomplettBrille />
 
             <Avstand paddingTop={4}>
               <BestiltHosOptiker />

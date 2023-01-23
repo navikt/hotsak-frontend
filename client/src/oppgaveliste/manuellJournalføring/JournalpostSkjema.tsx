@@ -37,7 +37,7 @@ export const JournalpostSkjema: React.FC = () => {
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
 
   const journalfør = () => {

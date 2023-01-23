@@ -3,12 +3,11 @@ import styled from 'styled-components'
 
 import { Heading, Select } from '@navikt/ds-react'
 
-import { capitalize } from '../../../utils/stringFormating'
+import { capitalize } from '../../../../../utils/stringFormating'
 
-import { Brilleseddel } from '../../../types/types.internal'
-//import { enhet } from '../enhet'
-import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from '../config'
-import { FormatertStyrke } from '../steg/søknadsregistrering/FormatertStyrke'
+import { Brilleseddel } from '../../../../../types/types.internal'
+import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from '../../../config'
+import { FormatertStyrke } from '../FormatertStyrke'
 
 export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const { type } = props

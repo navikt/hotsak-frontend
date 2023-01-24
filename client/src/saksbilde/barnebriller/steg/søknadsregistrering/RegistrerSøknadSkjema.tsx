@@ -22,28 +22,21 @@ import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
 import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
 import { KomplettBrille } from './skjemaelementer/KomplettBrille'
 import { Målform } from './skjemaelementer/Målform'
+import { validator, validering } from './skjemaelementer/validering/validering'
 
 const Container = styled.div`
   overflow: auto;
   padding-top: var(--a-spacing-6);
 `
 
-/*const Kolonner = styled.div`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  align-self: flex-end;
-  align-items: flex-end;
-`*/
-
 export const RegistrerSøknadSkjema: React.FC = () => {
   const navigate = useNavigate()
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
-  const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  //const { fodselsnummer, setFodselsnummer } = usePersonContext()
   //const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
-  const [error, setError] = useState('')
+  //const [error, setError] = useState('')
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const handleError = useErrorHandler()
 
@@ -79,6 +72,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     },
   })
 
+  const {
+    formState: { errors },
+  } = methods
+
   if (isLoading || !journalpost) {
     return (
       <div>
@@ -100,6 +97,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             onSubmit={methods.handleSubmit((data) => {
               vurderVilkår(data)
             })}
+            autoComplete="off"
           >
             <Målform />
             <Avstand paddingTop={4}>
@@ -110,8 +108,12 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                 id="brillepris"
                 label="Pris på brillen"
                 description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og tilpasning."
+                error={errors.brillepris?.message}
                 size="small"
-                {...methods.register('brillepris')}
+                {...methods.register('brillepris', {
+                  required: 'Du må oppgi en brillepris',
+                  validate: validator(validering.beløp, 'Ugyldig brillepris'),
+                })}
               />
             </Avstand>
 

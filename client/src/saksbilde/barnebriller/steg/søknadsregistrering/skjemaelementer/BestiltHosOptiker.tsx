@@ -5,7 +5,10 @@ import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { VilkårSvar } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
-  const { control } = useFormContext<{ bestiltHosOptiker: VilkårSvar }>()
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<{ bestiltHosOptiker: VilkårSvar }>()
 
   return (
     <>
@@ -15,8 +18,14 @@ export function BestiltHosOptiker() {
       <Controller
         name="bestiltHosOptiker"
         control={control}
+        rules={{ required: 'Velg en verdi' }}
         render={({ field }) => (
-          <RadioGroup legend="Er brillen bestilt hos optiker" size="small" {...field}>
+          <RadioGroup
+            legend="Er brillen bestilt hos optiker"
+            size="small"
+            {...field}
+            error={errors.bestiltHosOptiker?.message}
+          >
             <Radio value={VilkårSvar.JA}>Ja</Radio>
             <Radio value={VilkårSvar.NEI}>Nei</Radio>
             <Radio value={VilkårSvar.DOKUMENTASJON_MANGLER}>Dokumentasjon mangler</Radio>

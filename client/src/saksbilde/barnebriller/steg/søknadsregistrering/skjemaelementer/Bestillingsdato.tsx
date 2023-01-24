@@ -3,13 +3,24 @@ import { useFormContext } from 'react-hook-form'
 import { UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react'
 
 export function Bestillingsdato() {
-  const { control, setValue } = useFormContext<{ bestillingsdato?: Date }>()
+  const { formState, setValue, setError } = useFormContext<{ bestillingsdato?: Date }>()
+
+  const { errors } = formState
 
   const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
     toDate: new Date(),
     fromDate: new Date('Aug 1 2022'),
     onDateChange: (dato) =>
       setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),
+
+    onValidate: (val) => {
+      if (!val.isValidDate) {
+        setError('bestillingsdato', { type: 'custom', message: 'Ugyldig bestillingsdato ' })
+      }
+
+      //errors?.bestillingsdato.message = 'Ugyldig bestillingsdato'
+    },
+    required: true,
   })
 
   return (
@@ -20,6 +31,7 @@ export function Bestillingsdato() {
         label="Bestillingsdato"
         id="bestillingsdato"
         value={inputProps.value}
+        error={errors.bestillingsdato?.message}
       />
     </UNSAFE_DatePicker>
   )

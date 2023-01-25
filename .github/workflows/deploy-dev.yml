@@ -105,9 +105,9 @@ jobs:
       - name: deploy to labs
         uses: nais/deploy/actions/deploy@v1
         env:
+          DEPLOY_SERVER: deploy.nais.io:443
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: labs-gcp
-          DEPLOY_SERVER: deploy.nais.io:443
           RESOURCE: .nais/labs.yaml
           VAR: image=${{ env.IMAGE }}
 

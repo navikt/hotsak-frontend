@@ -44,6 +44,8 @@ spec:
       value: http://dummy
     - name: PORT
       value: '3000'
+    - name: BRILLEKALKULATOR_API_URL
+      value: dummy
     - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST

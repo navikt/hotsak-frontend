@@ -1,11 +1,21 @@
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react'
 
 export function Bestillingsdato() {
-  const { formState, setValue, setError } = useFormContext<{ bestillingsdato?: Date }>()
-
+  const { formState, setValue, setError, clearErrors, watch } = useFormContext<{ bestillingsdato?: Date }>()
   const { errors } = formState
+
+  const Valgtdato = watch('bestillingsdato')
+
+  useEffect(() => {
+    if (formState.isSubmitting && !Valgtdato) {
+      setError('bestillingsdato', { type: 'custom', message: 'Ingen bestillingsdato valgt' })
+    } else if (formState.errors.bestillingsdato && Valgtdato) {
+      clearErrors('bestillingsdato')
+    }
+  }, [formState, Valgtdato])
 
   const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
     toDate: new Date(),
@@ -14,11 +24,11 @@ export function Bestillingsdato() {
       setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),
 
     onValidate: (val) => {
-      if (!val.isValidDate) {
-        setError('bestillingsdato', { type: 'custom', message: 'Ugyldig bestillingsdato ' })
-      }
+      console.log('validerer')
 
-      //errors?.bestillingsdato.message = 'Ugyldig bestillingsdato'
+      if (!val.isValidDate) {
+        setError('bestillingsdato', { type: 'custom', message: 'Ugyldig bestillingsdato' })
+      }
     },
     required: true,
   })

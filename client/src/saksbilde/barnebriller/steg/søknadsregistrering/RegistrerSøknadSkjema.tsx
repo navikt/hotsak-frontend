@@ -58,7 +58,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       maalform: MålformType.BOKMÅL,
-      bestillingsdato: '',
+      bestillingsdato: undefined,
       brillestyrke: {
         høyreSfære: '',
         høyreSylinder: '',

@@ -4,7 +4,7 @@ import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 
-export const VurderVilkår: React.FC = () => {
+export const Vedtak: React.FC = () => {
   const { sak } = useBrillesak()
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
@@ -13,8 +13,18 @@ export const VurderVilkår: React.FC = () => {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
-          {`Denne saken har ikke fullført steget "Registrer søknad" enda. Resultat av vilkårsvurderingen kan ikke vises
-          før det er fullført.`}
+          {`Denne saken har ikke fullført steget "Registrer søknad" enda. Denne siden kan ikke vises før det er fullført.`}
+        </Alert>
+      </AlertContainer>
+    )
+  }
+
+  if (sak?.steg === StegType.VURDERE_VILKÅR) {
+    return (
+      <AlertContainer>
+        <Alert variant="info" size="small">
+          {`Denne saken har ikke fullført steget "Vilkårsvurdering" enda. Vedtaket kan ikke fattes før vilkårsvurdering er`}
+          fullført.
         </Alert>
       </AlertContainer>
     )
@@ -23,7 +33,7 @@ export const VurderVilkår: React.FC = () => {
   return (
     <>
       <Heading level="1" size="small">
-        Vilkårsvurdering
+        Vedtak
       </Heading>
       <div>Da har vi kommet til {`${sak?.steg}`}</div>
       <pre>{JSON.stringify(sak)}</pre>

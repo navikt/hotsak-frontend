@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import styled from 'styled-components'
 
-import { useDokumentContext } from '../../oppgaveliste/dokumenter/DokumentContext'
+import { Tabs } from '@navikt/ds-react'
 
 import { AlertError } from '../../feilsider/AlertError'
 import { Oppgavetype, StegType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { useBrillesak } from '../sakHook'
 import RegistrerSøknad from './steg/søknadsregistrering/RegistrerSøknad'
+import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 
 const BarnebrilleBildeContainer = styled.div`
@@ -19,9 +20,7 @@ const BarnebrilleBildeContainer = styled.div`
 `
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
-  const { setValgtDokumentID } = useDokumentContext()
-  //const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(sak?.bruker?.fnr)
-  //const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+  const [valgtTab, setValgtTab] = useState(sak?.steg.toString() || StegType.INNHENTE_FAKTA.toString())
   const handleError = useErrorHandler()
 
   if (isError) {
@@ -36,14 +35,28 @@ const BarnebrilleContent: React.FC = React.memo(() => {
 
   if (!sak) return <div>Fant ikke saken</div>
 
-  switch (sak.steg) {
-    case StegType.INNHENTE_FAKTA:
-      return <RegistrerSøknad />
-    case StegType.VURDERE_VILKÅR:
-      return <VurderVilkår />
-    default:
-      return <div>Ikke implementert enda</div>
-  }
+  const { steg } = sak
+
+  return (
+    <TabContainer>
+      <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
+        <Tabs.List>
+          <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
+          <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkårsvurdering" />
+          <Tabs.Tab value={StegType.VEDTAK.toString()} label="3. Vedtak" />
+        </Tabs.List>
+        <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
+          <RegistrerSøknad />
+        </Tabs.Panel>
+        <Tabs.Panel value={StegType.VURDERE_VILKÅR.toString()}>
+          <VurderVilkår />
+        </Tabs.Panel>
+        <Tabs.Panel value={StegType.VEDTAK.toString()}>
+          <Vedtak />
+        </Tabs.Panel>
+      </Tabs>
+    </TabContainer>
+  )
 })
 
 const LasterBarnebrilleBilde = () => (
@@ -59,5 +72,9 @@ export const BarnebrilleBilde = () => (
     </React.Suspense>
   </ErrorBoundary>
 )
+
+const TabContainer = styled.div`
+  padding-top: var(--a-spacing-4);
+`
 
 export default BarnebrilleBilde

@@ -18,7 +18,6 @@ import { LasterPersonlinje } from '../../../Personlinje'
 import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
-import { Stegindikator } from './../../Stegindikator'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
 const TreKolonner = styled.div`
@@ -57,20 +56,17 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <>
-      <Stegindikator />
-      <Container>
-        <AutoFlexContainer>
-          <TreKolonner>
-            <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
-              <RegistrerSøknadSkjema />
-            </VenstreMeny>
-            <DokumentPanel journalpostID={journalpostID} />
-            <Historikk />
-          </TreKolonner>
-        </AutoFlexContainer>
-      </Container>
-    </>
+    <Container>
+      <AutoFlexContainer>
+        <TreKolonner>
+          <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
+            <RegistrerSøknadSkjema />
+          </VenstreMeny>
+          <DokumentPanel journalpostID={journalpostID} />
+          <Historikk />
+        </TreKolonner>
+      </AutoFlexContainer>
+    </Container>
   )
 })
 

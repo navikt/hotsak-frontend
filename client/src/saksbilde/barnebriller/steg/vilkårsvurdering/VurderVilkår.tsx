@@ -1,4 +1,4 @@
-import { Alert, Heading } from '@navikt/ds-react'
+import { Alert, Button, Heading, Table } from '@navikt/ds-react'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
 import { StegType } from '../../../../types/types.internal'
@@ -23,10 +23,37 @@ export const VurderVilkår: React.FC = () => {
   return (
     <>
       <Heading level="1" size="small">
-        Vilkårsvurdering
+        Foreløpig resultat
       </Heading>
-      <div>Da har vi kommet til {`${sak?.steg}`}</div>
-      <pre>{JSON.stringify(sak)}</pre>
+
+      <Table size="small">
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Basert på</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Overstyr</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {sak.vilkårsvurdering?.vilkår.map(({ identifikator, vilkårOppfylt, begrunnelse }) => {
+            return (
+              <Table.Row key={identifikator}>
+                <Table.DataCell>{vilkårOppfylt}</Table.DataCell>
+                <Table.DataCell>Automatisk</Table.DataCell>
+                <Table.DataCell>{begrunnelse}</Table.DataCell>
+                <Table.DataCell>§2</Table.DataCell>
+                <Table.DataCell>
+                  <Button variant="tertiary" size="xsmall">
+                    Overstyr
+                  </Button>
+                </Table.DataCell>
+              </Table.Row>
+            )
+          })}
+        </Table.Body>
+      </Table>
     </>
   )
 }

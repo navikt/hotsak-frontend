@@ -1301,6 +1301,60 @@
       "etternavn": "Åberg",
       "telefon": ""
     },
+    "fakta": {
+      "maalform": "BOKMÅL",
+      "brillestyrke": {
+        "høyreSfære": "2.5",
+        "høyreSylinder": "6.0",
+        "venstreSfære": "3.0",
+        "venstreSylinder": "4.5"
+      },
+      "bestillingsdato": "2023-01-03T23:00:00.000Z",
+      "brillepris": "699",
+      "bestiltHosOptiker": "JA",
+      "komplettBrille": "NEI",
+      "saksbehandlersBegrunnelse": "Friteksbegrunnelse fra saksbehandler"
+    },
+    "vilkårsvurdering": {
+      "vilkår": [
+        {
+          "resultat": "JA",
+          "begrunnelse": "Barnet har ikke vedtak om brille i kalenderåret",
+          "beskrivelse": "Har barnet allerede vedtak om brille i kalenderåret?",
+          "identifikator": "HarIkkeVedtakIKalenderåret v1"
+        },
+        {
+          "resultat": "JA",
+          "begrunnelse": "Barnet var under 18 år på bestillingsdato",
+          "beskrivelse": "Var barnet under 18 år på bestillingsdato?",
+          "identifikator": "Under18ÅrPåBestillingsdato v1"
+        },
+        {
+          "resultat": "JA",
+          "begrunnelse": "Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge",
+          "beskrivelse": "Er barnet medlem av folketrygden?",
+          "identifikator": "MedlemAvFolketrygden v1"
+        },
+        {
+          "resultat": "JA",
+          "begrunnelse": "Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0",
+          "beskrivelse": "Er brillestyrken innenfor de fastsatte rammene?",
+          "identifikator": "Brillestyrke v1"
+        },
+        {
+          "resultat": "NEI",
+          "begrunnelse": "Bestillingsdato kan ikke være før 01.08.2022",
+          "beskrivelse": "Er bestillingsdato 01.08.2022 eller senere?",
+          "identifikator": "Bestillingsdato v1"
+        },
+        {
+          "resultat": "JA",
+          "begrunnelse": "Bestillingsdato er 22.01.2022 eller senere",
+          "beskrivelse": "Er bestillingsdato innenfor siste 6 måneder fra dagens dato?",
+          "identifikator": "BestillingsdatoTilbakeITid v1"
+        }
+      ]
+    },
     "status": "TILDELT_SAKSBEHANDLER",
     "steg": "VURDERE_VILKÅR",
     "journalpost": ["33445566"],

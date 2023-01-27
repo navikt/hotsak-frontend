@@ -30,8 +30,27 @@ export interface Brillesak {
   saksbehandler: Saksbehandler
   status: OppgaveStatusType
   steg: StegType
+  fakta?: Fakta
+  vilkårsvurdering?: Vilkårsvurdering
   journalpost: string[]
   enhet: Enhet[]
+}
+
+export interface Vilkårsvurdering {
+  vilkår: Vilkår[]
+}
+
+export interface Vilkår {
+  identifikator: string
+  vilkårOppfylt: VilkårsResultat
+  begrunnelse?: string
+}
+
+export enum VilkårsResultat {
+  JA,
+  NEI,
+  KANSKJE,
+  DOKUMENTASJON_MANGLER,
 }
 
 export interface RegistrerSøknadData {
@@ -43,6 +62,8 @@ export interface RegistrerSøknadData {
   komplettBrille: VilkårSvar | ''
   saksbehandlersBegrunnelse: string
 }
+
+export type Fakta = RegistrerSøknadData
 
 export interface VurderVilkårRequest extends RegistrerSøknadData {
   sakId: string

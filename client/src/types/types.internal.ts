@@ -1,4 +1,5 @@
-import { Dayjs } from 'dayjs'
+type LocalDate = string
+type LocalDateTime = string
 
 export interface Sak {
   saksid: string
@@ -102,6 +103,7 @@ export interface BeregnSatsResponse {
 }
 
 export type BeregnSatsRequest = Brilleseddel
+
 export enum SatsType {
   SATS_1 = 'SATS_1',
   SATS_2 = 'SATS_2',
@@ -210,6 +212,7 @@ export enum KontaktPersonType {
   HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
   ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
+
 export interface HjelpemiddelType {
   id: number
   hmsnr: string
@@ -277,16 +280,24 @@ export enum GreitÅViteType {
 }
 
 export interface Oppgave {
-  sakstype: Oppgavetype
-  opprettetDato: Dayjs
-  mottattDato: string
-  formidlerNavn: string
   saksid: string
-  personinformasjon: PersoninfoOppgave
+  sakstype: Oppgavetype
   status: OppgaveStatusType
   statusEndret: string
+  beskrivelse: string
+  mottatt: LocalDateTime
+  innsender: string
+  bruker: OppgaveBruker
   saksbehandler?: Saksbehandler
-  søknadOm: string
+}
+
+export interface OppgaveBruker {
+  fnr: string
+  fornavn: string
+  mellomnavn?: string
+  etternavn: string
+  funksjonsnedsettelser: string[]
+  bosted: string
 }
 
 export interface Journalpost {
@@ -551,6 +562,7 @@ export interface PersonoversiktType {
 export interface Saksoversikt {
   hotsakSaker: Saksoversikt_Sak[]
 }
+
 export interface Saksoversikt_Sak {
   sakstype?: Oppgavetype
   saksid: string

@@ -4,22 +4,22 @@ import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Tooltip } from '../../felleskomponenter/Tooltip'
-import { PersoninfoOppgave } from '../../types/types.internal'
+import { OppgaveBruker } from '../../types/types.internal'
 
 interface HjelpemiddelbrukerProps {
-  person: PersoninfoOppgave
+  bruker: OppgaveBruker
   saksID: string
 }
 
-const getFormattedName = (personinfo: PersoninfoOppgave): string => {
-  const { fornavn, mellomnavn, etternavn } = personinfo
+const getFormattedName = (bruker: OppgaveBruker): string => {
+  const { fornavn, mellomnavn, etternavn } = bruker
 
   return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)
 }
 
-export const Hjelpemiddelbruker = React.memo(({ person, saksID }: HjelpemiddelbrukerProps) => {
+export const Hjelpemiddelbruker = React.memo(({ bruker, saksID }: HjelpemiddelbrukerProps) => {
   const id = `hjelpemiddelbruker-${saksID}`
-  const formatertNavn = getFormattedName(person)
+  const formatertNavn = getFormattedName(bruker)
 
   return (
     <div data-for={id} data-tip={formatertNavn}>

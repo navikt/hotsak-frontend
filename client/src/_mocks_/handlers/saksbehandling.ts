@@ -114,7 +114,7 @@ const saksbehandlingHandlers = [
     sakshistorikk[historikkIdx]['hendelser'].push(sfHendelse)
 
     oppgaveliste[oppgaveIdx]['status'] = 'VEDTAK_FATTET'
-    oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
+    oppgaveliste[oppgaveIdx]['beskrivelse'] = soknadsbeskrivelse
 
     saker[sakIdx]['søknadGjelder'] = soknadsbeskrivelse
     saker[sakIdx]['status'] = 'VEDTAK_FATTET'
@@ -144,7 +144,7 @@ const saksbehandlingHandlers = [
     sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
 
     oppgaveliste[oppgaveIdx]['status'] = 'SENDT_GOSYS'
-    oppgaveliste[oppgaveIdx]['søknadOm'] = soknadsbeskrivelse
+    oppgaveliste[oppgaveIdx]['beskrivelse'] = soknadsbeskrivelse
 
     saker[sakIdx]['status'] = 'SENDT_GOSYS'
     saker[sakIdx]['statusEndret'] = '2021-10-05T21:52:40.815302'
@@ -200,7 +200,7 @@ const saksbehandlingHandlers = [
           : true
       )
       .filter((oppgave) =>
-        områdeFilter ? oppgave.personinformasjon.funksjonsnedsettelse.includes(områdeFilter.toLowerCase()) : true
+        områdeFilter ? oppgave.bruker.funksjonsnedsettelser.includes(områdeFilter.toLowerCase()) : true
       )
       .filter((oppgave) => (sakstypeFilter ? oppgave.sakstype.toLowerCase() === sakstypeFilter.toLowerCase() : true))
 

@@ -2,15 +2,14 @@
   {
     "sakstype": "BESTILLING",
     "saksid": "112233",
-    "søknadOm": "Bestilling av: Dusjkrakk",
-    "mottattDato": "2022-05-04T13:55:45",
-    "formidlerNavn": "Bjarne Bestillersen",
-    "personinformasjon": {
+    "beskrivelse": "Bestilling av: Dusjkrakk",
+    "mottatt": "2022-05-04T13:55:45",
+    "innsender": "Bjarne Bestillersen",
+    "bruker": {
       "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Anders",
       "etternavn": "Amundsen",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
@@ -26,15 +25,14 @@
   {
     "sakstype": "BESTILLING",
     "saksid": "223344",
-    "søknadOm": "Bestilling av: Rullator",
-    "mottattDato": "2021-09-24T13:55:45",
-    "formidlerNavn": "Bjarne Bestillersen",
-    "personinformasjon": {
+    "beskrivelse": "Bestilling av: Rullator",
+    "mottatt": "2021-09-24T13:55:45",
+    "innsender": "Bjarne Bestillersen",
+    "bruker": {
       "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Beate",
       "etternavn": "Storebø",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": { "navn": "Silje Saksbehandler" },
@@ -50,15 +48,14 @@
   {
     "sakstype": "BESTILLING",
     "saksid": "223345",
-    "søknadOm": "Bestilling av: Rullator; terskeleliminator; dusjkrakk",
-    "mottattDato": "2021-09-24T13:55:45",
-    "formidlerNavn": "Bjarne Bestillersen",
-    "personinformasjon": {
+    "beskrivelse": "Bestilling av: Rullator; terskeleliminator; dusjkrakk",
+    "mottatt": "2021-09-24T13:55:45",
+    "innsender": "Bjarne Bestillersen",
+    "bruker": {
       "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Beate",
       "etternavn": "Storebø",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": { "navn": "Silje Saksbehandler" },
@@ -74,15 +71,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "111111",
-    "søknadOm": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",
-    "mottattDato": "2021-09-19T13:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Søknad om: Toalettforhøyer; kalender-/minnesystem; støttehåndtak; tidsur; komfyr-/elvakt",
+    "mottatt": "2021-09-19T13:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "19044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Petter Andreas",
       "etternavn": "Hansen",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
@@ -98,15 +94,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "222222",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-09-24T13:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-09-24T13:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "13044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Mia Cathrine",
       "etternavn": "Svendsen",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
@@ -123,15 +118,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "5878444",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-09-20T13:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-09-20T13:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "130441386551",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Per Bjørkli",
       "etternavn": "Hansen",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": {
@@ -152,15 +146,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "1234567",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-06-25T13:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-06-25T13:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "06115559891",
-      "funksjonsnedsettelse": ["kognisjon"],
+      "funksjonsnedsettelser": ["kognisjon"],
       "fornavn": "Iver",
       "etternavn": "Slettan",
-      "poststed": "Lade",
       "bosted": "Trondheim"
     },
     "saksbehandler": {
@@ -180,15 +173,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "999999",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-06-25T16:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-06-25T16:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "16120101181",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Sondre",
       "etternavn": "Hansen",
-      "poststed": "Lade",
       "bosted": "Trondheim"
     },
     "saksbehandler": {
@@ -208,15 +200,14 @@
   {
     "sakstype": "BESTILLING",
     "saksid": "10111213",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-06-25T16:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-06-25T16:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "16120101181",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Sondre",
       "etternavn": "Hansen",
-      "poststed": "Lade",
       "bosted": "Trondheim"
     },
     "saksbehandler": {
@@ -236,15 +227,14 @@
   {
     "sakstype": "SØKNAD",
     "saksid": "888888",
-    "søknadOm": "Hjelpemidler",
-    "mottattDato": "2021-09-19T13:55:45",
-    "formidlerNavn": "Kari Johansen",
-    "personinformasjon": {
+    "beskrivelse": "Hjelpemidler",
+    "mottatt": "2021-09-19T13:55:45",
+    "innsender": "Kari Johansen",
+    "bruker": {
       "fnr": "19044238651",
-      "funksjonsnedsettelse": ["bevegelse"],
+      "funksjonsnedsettelser": ["bevegelse"],
       "fornavn": "Geir",
       "etternavn": "Dalby",
-      "poststed": "Trondheim",
       "bosted": "Trondheim"
     },
     "saksbehandler": {
@@ -264,17 +254,15 @@
   {
     "sakstype": "TILSKUDD",
     "saksid": "9876",
-    "søknadOm": "Briller til barn",
-    "mottattDato": "2023-01-05T13:55:45",
-    "formidlerNavn": "Mor Motyngre",
-    "personinformasjon": {
+    "beskrivelse": "Briller til barn",
+    "mottatt": "2023-01-05T13:55:45",
+    "innsender": "Mor Motyngre",
+    "bruker": {
       "fnr": "20071359671",
-      "funksjonsnedsettelse": ["syn"],
+      "funksjonsnedsettelser": ["syn"],
       "fornavn": "Spencer",
       "etternavn": "Tjøstheim",
-      "poststed": "",
-      "bosted": "",
-      "telefon": ""
+      "bosted": ""
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "statusEndret": "2023-01-05T14:31:42.815302",
@@ -293,17 +281,15 @@
   {
     "sakstype": "TILSKUDD",
     "saksid": "9877",
-    "søknadOm": "Vilkårsvurdering steg",
-    "mottattDato": "2023-01-05T13:55:45",
-    "formidlerNavn": "Far forelder",
-    "personinformasjon": {
+    "beskrivelse": "Vilkårsvurdering steg",
+    "mottatt": "2023-01-05T13:55:45",
+    "innsender": "Far forelder",
+    "bruker": {
       "fnr": "20071359671",
-      "funksjonsnedsettelse": ["syn"],
+      "funksjonsnedsettelser": ["syn"],
       "fornavn": "Ove",
       "etternavn": "Hoff",
-      "poststed": "",
-      "bosted": "",
-      "telefon": ""
+      "bosted": ""
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "statusEndret": "2023-01-05T14:31:42.815302",

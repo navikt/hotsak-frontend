@@ -97,47 +97,44 @@ export const Oppgaveliste: React.FC = () => {
       name: 'Område',
       width: 152,
       render: (oppgave: Oppgave) => (
-        <Funksjonsnedsettelse
-          funksjonsnedsettelser={oppgave.personinformasjon.funksjonsnedsettelse}
-          saksID={oppgave.saksid}
-        />
+        <Funksjonsnedsettelse funksjonsnedsettelser={oppgave.bruker.funksjonsnedsettelser} saksID={oppgave.saksid} />
       ),
     },
     {
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
       width: 192,
-      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.søknadOm)} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.beskrivelse)} saksID={oppgave.saksid} />,
     },
     {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
       width: 188,
-      render: (oppgave: Oppgave) => <Hjelpemiddelbruker person={oppgave.personinformasjon} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Hjelpemiddelbruker bruker={oppgave.bruker} saksID={oppgave.saksid} />,
     },
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: Oppgave) => <Fødselsnummer fødselsnummer={oppgave.personinformasjon.fnr} />,
+      render: (oppgave: Oppgave) => <Fødselsnummer fødselsnummer={oppgave.bruker.fnr} />,
     },
     {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.personinformasjon.bosted} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.bruker.bosted} saksID={oppgave.saksid} />,
     },
     {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.formidlerNavn} />,
+      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.innsender} />,
     },
     {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: Oppgave) => <Motatt dato={oppgave.mottattDato} />,
+      render: (oppgave: Oppgave) => <Motatt dato={oppgave.mottatt} />,
     },
     { key: 'MENU', sortable: false, render: (oppgave: Oppgave) => <MenyKnapp oppgave={oppgave} onMutate={mutate} /> },
   ]

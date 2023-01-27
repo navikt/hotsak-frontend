@@ -96,6 +96,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Petter Andreas",
+        "etternavn": "Hansen"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -271,6 +282,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "13044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-06-19",
+      "kjønn": "KVINNE",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Mia Cathrine",
+        "etternavn": "Svendsen"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -353,6 +375,17 @@
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
       "brukerErDigital": "true"
+    },
+    "bruker": {
+      "fnr": "130441386551",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-06-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Per",
+        "etternavn": "Bjørkli"
+      }
     },
     "levering": {
       "kontaktPerson": {
@@ -446,6 +479,17 @@
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
       "brukerErDigital": "true"
+    },
+    "bruker": {
+      "fnr": "06115559891",
+      "brukernummer": "454545",
+      "fødselsdato": "2001-12-16",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Iver",
+        "etternavn": "Slettan"
+      }
     },
     "levering": {
       "kontaktperson": {
@@ -541,6 +585,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "16120101181",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-06-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Sondre Hansen",
+        "etternavn": "Bjørkli"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -634,6 +689,17 @@
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
       "brukerErDigital": "true"
+    },
+    "bruker": {
+      "fnr": "16120101181",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-06-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Sondre Hansen",
+        "etternavn": "Bjørkli"
+      }
     },
     "levering": {
       "kontaktperson": {
@@ -743,6 +809,17 @@
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
       "brukerErDigital": "true"
+    },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Geir",
+        "etternavn": "Dalby"
+      }
     },
     "levering": {
       "kontaktperson": {
@@ -861,6 +938,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Petter Andreas",
+        "etternavn": "Hansen"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -962,6 +1050,17 @@
       "gtType": "KOMMUNE",
       "egenAnsatt": "false",
       "brukerErDigital": "true"
+    },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Petter Andreas",
+        "etternavn": "Hansen"
+      }
     },
     "levering": {
       "kontaktperson": {
@@ -1107,6 +1206,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Petter Andreas",
+        "etternavn": "Hansen"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -1215,6 +1325,17 @@
       "egenAnsatt": "false",
       "brukerErDigital": "true"
     },
+    "bruker": {
+      "fnr": "19044238651",
+      "brukernummer": "454269",
+      "fødselsdato": "1942-12-19",
+      "kjønn": "MANN",
+      "telefon": "45454545",
+      "navn": {
+        "fornavn": "Petter Andreas",
+        "etternavn": "Hansen"
+      }
+    },
     "levering": {
       "kontaktperson": {
         "navn": "Nullable kontaktpersonnavn",
@@ -1254,15 +1375,18 @@
     "bruker": {
       "fnr": "20071359671",
       "fødselsdato": "2013-07-20",
-      "fornavn": "Spencer",
-      "etternavn": "Tjøstheim",
+      "navn": {
+        "fornavn": "Spencer",
+        "etternavn": "Tjøstheim"
+      },
       "telefon": ""
     },
     "innsender": {
       "fnr": "09418208349",
-      "fødselsdato": "2013-07-20",
-      "fornavn": "Albert",
-      "etternavn": "Åberg",
+      "navn": {
+        "fornavn": "Albert",
+        "etternavn": "Åberg"
+      },
       "telefon": ""
     },
     "status": "TILDELT_SAKSBEHANDLER",
@@ -1281,7 +1405,6 @@
       }
     ]
   },
-
   {
     "sakstype": "BARNEBRILLER",
     "saksid": "9877",
@@ -1290,15 +1413,19 @@
     "bruker": {
       "fnr": "20071359671",
       "fødselsdato": "2013-07-20",
-      "fornavn": "Ove",
-      "etternavn": "Hoff",
+      "navn": {
+        "fornavn": "Ove",
+        "etternavn": "Hoff"
+      },
       "telefon": ""
     },
     "innsender": {
       "fnr": "09418208349",
       "fødselsdato": "2013-07-20",
-      "fornavn": "Albert",
-      "etternavn": "Åberg",
+      "navn": {
+        "fornavn": "Albert",
+        "etternavn": "Åberg"
+      },
       "telefon": ""
     },
     "fakta": {

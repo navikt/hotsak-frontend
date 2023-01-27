@@ -31,12 +31,10 @@ const SaksbildeContent = React.memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  const person = sak.personinformasjon ? sak.personinformasjon : sak.bruker
-
   return (
     <>
       <SaksbildeContainer className="saksbilde">
-        <Personlinje person={person} />
+        <Personlinje person={sak.bruker} />
         {(() => {
           switch (sak!.sakstype) {
             case Oppgavetype.BESTILLING:

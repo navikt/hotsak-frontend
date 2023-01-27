@@ -16,7 +16,7 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { Kjønn, Person, Personinfo, PersonoversiktType } from '../types/types.internal'
+import { Kjønn, Person, PersonoversiktType } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 }
 
 interface PersonlinjeProps {
-  person?: Personinfo | PersonoversiktType | Person | undefined
+  person?: PersonoversiktType | Person
 }
 
 const LoadingText = styled.div`
@@ -100,8 +100,14 @@ const beregnAlder = (fødselsdato: string) => {
   return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
 }
 
-export const formaterNavn = (person: Personinfo | PersonoversiktType | Person) => {
-  return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn} ` : ''} ${person.etternavn}`)
+export const formaterNavn = (person: PersonoversiktType | Person) => {
+  if ((person as Person).navn) {
+    const { fornavn, mellomnavn, etternavn } = (person as Person).navn
+    return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
+  } else {
+    const { fornavn, mellomnavn, etternavn } = person as PersonoversiktType
+    return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
+  }
 }
 
 export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {

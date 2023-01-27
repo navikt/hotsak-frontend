@@ -113,12 +113,16 @@ export enum SatsType {
   INGEN = 'INGEN',
 }
 
-export interface Person {
-  fnr: string
-  fødselsdato: string
+export interface Navn {
   fornavn: string
   mellomnavn?: string
   etternavn: string
+}
+
+export interface Person {
+  fnr: string
+  fødselsdato: string
+  navn: Navn
   telefon?: string
   brukernummer?: string
   kjønn?: Kjønn

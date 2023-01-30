@@ -33,7 +33,7 @@ export interface Brillesak {
   steg: StegType
   fakta?: Fakta
   vilkårsvurdering?: Vilkårsvurdering
-  journalpost: string[]
+  journalposter: string[]
   enhet: Enhet[]
 }
 

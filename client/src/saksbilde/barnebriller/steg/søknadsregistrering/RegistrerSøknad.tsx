@@ -30,10 +30,10 @@ const TreKolonner = styled.div`
 const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
   const { setValgtDokumentID } = useDokumentContext()
-  const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalpost[0])
+  const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalposter[0])
   const handleError = useErrorHandler()
 
-  const journalpostID = sak?.journalpost[0]
+  const journalpostID = sak?.journalposter[0]
 
   useEffect(() => {
     if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {

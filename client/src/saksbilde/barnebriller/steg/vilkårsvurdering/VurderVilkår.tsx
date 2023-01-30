@@ -1,11 +1,16 @@
-import { Alert, Button, Heading, Table } from '@navikt/ds-react'
+import { useState } from 'react'
+
+import { Edit } from '@navikt/ds-icons'
+import { Alert, Button, Heading, Link, Panel, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
-import { StegType } from '../../../../types/types.internal'
+import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { StegType, VilkårsResultat, VilkårSvar } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 
 export const VurderVilkår: React.FC = () => {
   const { sak } = useBrillesak()
+  const [overstyrRad, setOverstyrRad] = useState()
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
@@ -22,38 +27,96 @@ export const VurderVilkår: React.FC = () => {
 
   return (
     <>
-      <Heading level="1" size="small">
-        Foreløpig resultat
-      </Heading>
+      <Panel>
+        <Heading level="1" size="small" spacing>
+          Foreløpig resultat
+        </Heading>
 
-      <Table size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Basert på</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Overstyr</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {sak.vilkårsvurdering?.vilkår.map(({ identifikator, vilkårOppfylt, begrunnelse }) => {
-            return (
-              <Table.Row key={identifikator}>
-                <Table.DataCell>{vilkårOppfylt}</Table.DataCell>
-                <Table.DataCell>Automatisk</Table.DataCell>
-                <Table.DataCell>{begrunnelse}</Table.DataCell>
-                <Table.DataCell>§2</Table.DataCell>
-                <Table.DataCell>
-                  <Button variant="tertiary" size="xsmall">
-                    Overstyr
-                  </Button>
-                </Table.DataCell>
-              </Table.Row>
-            )
-          })}
-        </Table.Body>
-      </Table>
+        <Table size="small">
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Basert på</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Overstyr</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {sak.vilkårsvurdering?.vilkår.map(
+              ({
+                identifikator,
+                resultatAuto,
+                begrunnelseAuto,
+                beskrivelse,
+                resultatSaksbehandler,
+                begrunnelseSaksbehandler,
+                lovReferanse,
+                lovdataLenke,
+              }) => {
+                const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
+                const begrunnelse = (begrunnelseSaksbehandler ? begrunnelseSaksbehandler : begrunnelseAuto) ?? ''
+                const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
+                // TODO koble fakta felter med vilkår
+                return (
+                  <Table.Row key={identifikator}>
+                    <Table.DataCell>
+                      <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
+                        {beskrivelse}
+                      </Alert>
+                    </Table.DataCell>
+                    <Table.DataCell>{begrunnelse}</Table.DataCell>
+                    <Table.DataCell>{vurdert}</Table.DataCell>
+
+                    <Table.DataCell>
+                      <Link href={lovdataLenke} target="_blank">
+                        {lovReferanse}
+                      </Link>
+                    </Table.DataCell>
+                    <Table.DataCell>
+                      <Button variant="tertiary" size="xsmall" icon={<Edit />}>
+                        Vurder
+                      </Button>
+                    </Table.DataCell>
+                  </Table.Row>
+                )
+              }
+            )}
+          </Table.Body>
+        </Table>
+        <ButtonContainer>
+          <Button variant="primary" size="small">
+            Til vedtak
+          </Button>
+        </ButtonContainer>
+      </Panel>
     </>
   )
+
+  /*function SaksbehandlersVurdering() {
+    return (
+      <form>
+        <Heading level='2' size='xsmall'>Din vurdering</Heading>
+        <RadioGroup
+          legend="Er vilkåret oppfylt"
+          size="small"
+        >
+          <Radio value={VilkårSvar.JA}>Ja</Radio>
+          <Radio value={VilkårSvar.NEI}>Nei</Radio>
+        </RadioGroup>
+      </form>
+    )
+  }*/
+
+  function alertVariant(vilkårOppfylt: VilkårsResultat) {
+    switch (vilkårOppfylt) {
+      case VilkårsResultat.JA:
+        return 'success'
+      case VilkårsResultat.NEI:
+      case VilkårsResultat.DOKUMENTASJON_MANGLER:
+        return 'error'
+      case VilkårsResultat.KANSKJE:
+        return 'warning'
+    }
+  }
 }

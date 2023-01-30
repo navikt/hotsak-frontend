@@ -7,7 +7,7 @@ import { BeregnSatsRequest, BeregnSatsResponse, Brilleseddel, SatsType } from '.
 const brillekalkulatorHandlers = [
   rest.post<BeregnSatsRequest, any, BeregnSatsResponse>(apiUrl('/brillesedler'), (req, res, ctx) => {
     return res(
-      ctx.delay(700),
+      ctx.delay(100),
       ctx.json(
         beregnSats({
           høyreSfære: req.body.høyreSfære,

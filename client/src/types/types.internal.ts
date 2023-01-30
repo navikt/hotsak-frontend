@@ -38,20 +38,32 @@ export interface Brillesak {
 }
 
 export interface Vilkårsvurdering {
+  id: string
+  sakId: string
+  resultat: VilkårsResultat
+  sats: SatsType
+  satsBeløp: string
+  satsBeskrivelse: string
+  beløp: string
   vilkår: Vilkår[]
 }
 
 export interface Vilkår {
   identifikator: string
-  vilkårOppfylt: VilkårsResultat
-  begrunnelse?: string
+  beskrivelse: string
+  resultatAuto?: VilkårsResultat
+  begrunnelseAuto?: string
+  resultatSaksbehandler?: VilkårsResultat
+  begrunnelseSaksbehandler?: string
+  lovReferanse?: string
+  lovdataLenke?: string
 }
 
 export enum VilkårsResultat {
-  JA,
-  NEI,
-  KANSKJE,
-  DOKUMENTASJON_MANGLER,
+  JA = 'JA',
+  NEI = 'NEI',
+  KANSKJE = 'KANSKJE',
+  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
 }
 
 export interface RegistrerSøknadData {

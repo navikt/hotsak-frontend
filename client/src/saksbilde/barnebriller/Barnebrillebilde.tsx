@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import styled from 'styled-components'
 
@@ -26,6 +26,12 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   if (isError) {
     handleError(isError)
   }
+
+  useEffect(() => {
+    if (sak && sak.steg !== valgtTab) {
+      setValgtTab(sak.steg)
+    }
+  }, [sak?.steg, valgtTab])
 
   if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(

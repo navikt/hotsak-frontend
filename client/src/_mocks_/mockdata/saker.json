@@ -1443,42 +1443,77 @@
       "saksbehandlersBegrunnelse": "Friteksbegrunnelse fra saksbehandler"
     },
     "vilkårsvurdering": {
+      "id": "1234",
+      "sakId": "9877",
+      "resultat": "NEI",
+      "sats": "SATS_1",
+      "satsBeløp": "750",
+      "satsBeskrivelse": "Briller med sfærisk styrke på minst ett glass ≥ 1,00D ≤ 4,00D og/eller cylinderstyrke ≥ 1,00D ≤ 4,00D",
+      "beløp": "699",
       "vilkår": [
         {
-          "resultat": "JA",
-          "begrunnelse": "Barnet har ikke vedtak om brille i kalenderåret",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet har ikke vedtak om brille i kalenderåret",
           "beskrivelse": "Har barnet allerede vedtak om brille i kalenderåret?",
           "identifikator": "HarIkkeVedtakIKalenderåret v1"
         },
         {
-          "resultat": "JA",
-          "begrunnelse": "Barnet var under 18 år på bestillingsdato",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet var under 18 år på bestillingsdato",
           "beskrivelse": "Var barnet under 18 år på bestillingsdato?",
           "identifikator": "Under18ÅrPåBestillingsdato v1"
         },
         {
-          "resultat": "JA",
-          "begrunnelse": "Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge",
           "beskrivelse": "Er barnet medlem av folketrygden?",
           "identifikator": "MedlemAvFolketrygden v1"
         },
         {
-          "resultat": "JA",
-          "begrunnelse": "Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0",
           "beskrivelse": "Er brillestyrken innenfor de fastsatte rammene?",
           "identifikator": "Brillestyrke v1"
         },
         {
-          "resultat": "NEI",
-          "begrunnelse": "Bestillingsdato kan ikke være før 01.08.2022",
+          "resultatAuto": "NEI",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Bestillingsdato kan ikke være før 01.08.2022",
           "beskrivelse": "Er bestillingsdato 01.08.2022 eller senere?",
           "identifikator": "Bestillingsdato v1"
         },
         {
-          "resultat": "JA",
-          "begrunnelse": "Bestillingsdato er 22.01.2022 eller senere",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Bestillingsdato er 22.01.2022 eller senere",
           "beskrivelse": "Er bestillingsdato innenfor siste 6 måneder fra dagens dato?",
           "identifikator": "BestillingsdatoTilbakeITid v1"
+        },
+        {
+          "resultatSaksbehandler": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseSaksbehandler": "Komplett brille",
+          "beskrivelse": "Er det bestilt en komplett brille?",
+          "identifikator": "komplettBrille"
+        },
+        {
+          "resultatSaksbehandler": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseSaksbehandler": "Bestilt hos optiker",
+          "beskrivelse": "Er brillen bestilt hos optiker?",
+          "identifikator": "bestiltHosOptiker"
         }
       ]
     },

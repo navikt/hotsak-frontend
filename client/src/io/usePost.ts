@@ -29,8 +29,11 @@ export function usePost<B, T>(url: string): { post(body: B): Promise<void>; rese
 const http = {
   async post<B, T>(path: string, body: B): Promise<Resultat<T>> {
     try {
-      const url = apiUrl(path)
-      const response = await fetch(url, {
+      // const url = apiUrl(path)
+
+      console.log('apiURL', path)
+
+      const response = await fetch(path, {
         method: 'post',
         cache: 'no-store',
         headers: {
@@ -44,7 +47,7 @@ const http = {
         return { data }
       }
       return {
-        error: HttpError.kallFeilet(url, response),
+        error: HttpError.kallFeilet(path, response),
       }
     } catch (err: unknown) {
       return {
@@ -54,14 +57,14 @@ const http = {
   },
 }
 
-export function baseUrl(url = '') {
+/*export function baseUrl(url = '') {
   if (process.env.NODE_ENV === 'production') {
-    return `/hjelpemidler/barnebriller${url}`
+    return `/hjelpemidler/barnebriller/${url}`
   } else {
     return url
   }
-}
+}*/
 
 export function apiUrl(url: string) {
-  return baseUrl(`/api${url}`)
+  return `/api${url}`
 }

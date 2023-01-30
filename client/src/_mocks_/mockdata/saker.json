@@ -1391,7 +1391,7 @@
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "steg": "INNHENTE_FAKTA",
-    "journalpost": ["33445566"],
+    "journalposter": ["33445566"],
     "statusEndret": "2023-01-05T14:31:42.815302",
     "saksbehandler": {
       "epost": "silje.saksbehandler@nav.no",
@@ -1519,7 +1519,7 @@
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "steg": "VURDERE_VILKÅR",
-    "journalpost": ["33445566"],
+    "journalposter": ["33445566"],
     "statusEndret": "2023-01-05T14:31:42.815302",
     "saksbehandler": {
       "epost": "silje.saksbehandler@nav.no",

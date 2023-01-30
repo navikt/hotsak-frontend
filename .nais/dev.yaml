@@ -60,7 +60,7 @@ spec:
     - name: GRUNNDATA_API_URL
       value: http://hm-grunndata-api.teamdigihot.svc.cluster.local
     - name: BRILLEKALKULATOR_API_URL
-      value: http://hm-brille-api.teamdigihot.svc.cluster.local
+      value: http://hm-brille-api.teamdigihot.svc.cluster.local/api
     - name: PORT
       value: '3000'
     - name: CLIENT_ID_HOTSAK_API

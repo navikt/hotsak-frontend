@@ -5,7 +5,7 @@ import { apiUrl } from '../../io/usePost'
 import { BeregnSatsRequest, BeregnSatsResponse, Brilleseddel, SatsType } from '../../types/types.internal'
 
 const brillekalkulatorHandlers = [
-  rest.post<BeregnSatsRequest, any, BeregnSatsResponse>(apiUrl('/brillesedler'), (req, res, ctx) => {
+  rest.post<BeregnSatsRequest, any, BeregnSatsResponse>('/brillekalkulator-api/brillesedler', (req, res, ctx) => {
     return res(
       ctx.delay(100),
       ctx.json(

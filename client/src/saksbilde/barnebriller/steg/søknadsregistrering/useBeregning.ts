@@ -13,7 +13,7 @@ export function useBeregning(): BeregnSatsResponse | undefined {
   const venstreSylinder = watch('brillestyrke.venstreSylinder')
 
   // const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/brillesedler')
-  const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/brillesedler')
+  const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/api/brillesedler')
 
   useEffect(() => {
     if (høyreSfære && høyreSylinder && venstreSfære && venstreSylinder) {

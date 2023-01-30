@@ -44,6 +44,8 @@ const options = (): ProxyOptions => ({
 
 const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
 
+console.log('BRILLEAPI ' + envProperties.BRILLEKALKULATOR_API_URL)
+
 const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehalfOf
   hotsakApiId = config.oidc.clientIDHotsakApi

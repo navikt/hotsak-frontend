@@ -33,7 +33,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const navigate = useNavigate()
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
-  const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalpost[0])
+  const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
   //const { fodselsnummer, setFodselsnummer } = usePersonContext()
   //const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   //const [error, setError] = useState('')

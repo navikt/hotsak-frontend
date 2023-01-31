@@ -68,7 +68,7 @@ export enum VilkårsResultat {
 
 export interface RegistrerSøknadData {
   målform: MålformType
-  brillestyrke: Brilleseddel
+  brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
   bestiltHosOptiker: VilkårSvar | ''
@@ -81,7 +81,7 @@ export type Fakta = RegistrerSøknadData
 export interface VurderVilkårRequest {
   sakId: string
   målform: MålformType
-  brillestyrke: Brilleseddel
+  brilleseddel: Brilleseddel
   bestillingsdato: string
   brillepris: string
   bestiltHosOptiker: VilkårSvar | ''

@@ -6,11 +6,11 @@ import { usePost } from '../../../../io/usePost'
 import { BeregnSatsRequest, BeregnSatsResponse, Brilleseddel } from '../../../../types/types.internal'
 
 export function useBeregning(): BeregnSatsResponse | undefined {
-  const { watch } = useFormContext<{ brillestyrke: Brilleseddel }>()
-  const høyreSfære = watch('brillestyrke.høyreSfære')
-  const høyreSylinder = watch('brillestyrke.høyreSylinder')
-  const venstreSfære = watch('brillestyrke.venstreSfære')
-  const venstreSylinder = watch('brillestyrke.venstreSylinder')
+  const { watch } = useFormContext<{ brilleseddel: Brilleseddel }>()
+  const høyreSfære = watch('brilleseddel.høyreSfære')
+  const høyreSylinder = watch('brilleseddel.høyreSylinder')
+  const venstreSfære = watch('brilleseddel.venstreSfære')
+  const venstreSylinder = watch('brilleseddel.venstreSylinder')
 
   // const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/brillesedler')
   const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/api/brillesedler')

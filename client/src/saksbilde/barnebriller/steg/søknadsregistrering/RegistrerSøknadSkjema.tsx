@@ -1,5 +1,5 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { format, formatISO, parse } from 'date-fns'
+import { formatISO } from 'date-fns'
 import { useState } from 'react'
 import { useErrorHandler } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,7 +15,6 @@ import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokum
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
-import { usePersonContext } from '../../../../personoversikt/PersonContext'
 import { MålformType, RegistrerSøknadData, VurderVilkårRequest } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
@@ -63,7 +62,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     defaultValues: {
       målform: MålformType.BOKMÅL,
       bestillingsdato: undefined,
-      brillestyrke: {
+      brilleseddel: {
         høyreSfære: '',
         høyreSylinder: '',
         venstreSfære: '',

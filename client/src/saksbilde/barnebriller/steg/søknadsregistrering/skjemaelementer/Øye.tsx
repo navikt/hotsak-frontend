@@ -14,7 +14,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const {
     control,
     formState: { errors },
-  } = useFormContext<{ brillestyrke: Brilleseddel }>()
+  } = useFormContext<{ brilleseddel: Brilleseddel }>()
   return (
     <>
       <Heading level="3" size="xsmall">
@@ -23,7 +23,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
 
       <Grid>
         <Controller
-          name={`brillestyrke.${type}Sfære`}
+          name={`brilleseddel.${type}Sfære`}
           control={control}
           rules={{
             required: 'Mangler verdi',
@@ -32,7 +32,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
             <Select
               label={'Sfære (SPH)'}
               size="small"
-              error={errors.brillestyrke?.[`${type}Sfære`]?.message}
+              error={errors.brilleseddel?.[`${type}Sfære`]?.message}
               {...field}
             >
               <option value="">Velg sfære</option>
@@ -46,7 +46,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
         />
 
         <Controller
-          name={`brillestyrke.${type}Sylinder`}
+          name={`brilleseddel.${type}Sylinder`}
           control={control}
           rules={{
             required: 'Mangler verdi',
@@ -56,7 +56,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               style={{ maxWidth: '330px' }}
               label="Cylinder (CYL)"
               size="small"
-              error={errors.brillestyrke?.[`${type}Sylinder`]?.message}
+              error={errors.brilleseddel?.[`${type}Sylinder`]?.message}
               {...field}
             >
               <option value="">Velg sylinder</option>

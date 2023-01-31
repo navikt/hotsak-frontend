@@ -1,4 +1,5 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
+import { format, formatISO, parse } from 'date-fns'
 import { useState } from 'react'
 import { useErrorHandler } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -41,9 +42,12 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const handleError = useErrorHandler()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
+    const { bestillingsdato, ...rest } = { ...formData }
+
     const vurderVilkårRequest: VurderVilkårRequest = {
       sakId: sakID!,
-      ...formData,
+      bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
+      ...rest,
     }
 
     setVenterPåVilkårsvurdering(true)
@@ -57,7 +61,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
-      maalform: MålformType.BOKMÅL,
+      målform: MålformType.BOKMÅL,
       bestillingsdato: undefined,
       brillestyrke: {
         høyreSfære: '',

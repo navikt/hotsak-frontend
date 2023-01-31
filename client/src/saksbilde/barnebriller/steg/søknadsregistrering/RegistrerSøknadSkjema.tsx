@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useErrorHandler } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
+import { useLocation } from 'react-router'
 import styled from 'styled-components'
 
 import { Button, Heading, Loader, Textarea } from '@navikt/ds-react'
@@ -30,6 +31,7 @@ const Container = styled.div`
 `
 
 export const RegistrerSøknadSkjema: React.FC = () => {
+  const location = useLocation()
   const navigate = useNavigate()
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
@@ -55,6 +57,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       .then(() => {
         setVenterPåVilkårsvurdering(false)
         mutate()
+        //navigate
+        //navigate(`/sak/${sakID}`)
+        //location.reload(true)
       })
   }
 
@@ -144,7 +149,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                   disabled={venterPåVilkårsvurdering}
                   loading={venterPåVilkårsvurdering}
                 >
-                  Neste steg
+                  Vurder vilkår
                 </Button>
               </ButtonContainer>
             </Avstand>

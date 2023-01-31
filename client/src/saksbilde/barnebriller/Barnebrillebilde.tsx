@@ -20,7 +20,7 @@ const BarnebrilleBildeContainer = styled.div`
 `
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
-  const [valgtTab, setValgtTab] = useState(sak?.steg.toString() || StegType.INNHENTE_FAKTA.toString())
+  const [valgtTab, setValgtTab] = useState(sak?.steg.toString())
   const handleError = useErrorHandler()
 
   if (isError) {
@@ -28,10 +28,10 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   }
 
   useEffect(() => {
-    if (sak && sak.steg !== valgtTab) {
-      setValgtTab(sak.steg)
+    if (sak) {
+      setValgtTab(sak?.steg)
     }
-  }, [sak?.steg, valgtTab])
+  }, [sak?.steg])
 
   if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(

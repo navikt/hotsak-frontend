@@ -30,7 +30,7 @@ const dokumentHandlers = [
 
     switch (dokumentID) {
       case '2345':
-        dokument = kvittering
+        return res(ctx.delay(500), ctx.status(500), ctx.text('Dokumentet finnes ikke'))
         break
       case '3456':
         dokument = brilleseddel
@@ -77,23 +77,23 @@ const dokumentHandlers = [
   }),
 
   /*
-  // Sjekker at innlogget saksbehandler har rettighet til å journalføre 
-  // Sjekker at journalposten ikke allerede har status endelig journalført 
-  // Sender journalføringsevent på rapid 
-  // Endrer status til endelig journalført (eller bør det skje asynkront når vi faktisk får ok tilbake fra joark sink?) 
-  // Oppretter ny sak av type ? og returnerer saksnummer i response (passer det inn i dagens sak tabell eller gir det mer mening med en egen tabell for behandling av "papirsøknader")
-  // Hva slags statuser skal en sak ha her? (må vi granulere UNDER_BEHANDLING mer? Typ informasjonsinnhenting/punching, vilkårsvurdering, brev, simulering osv?)
-  
-  // Sakshistorikk oppdateres 
-  POST /api/journalpost/journalfør 
+    // Sjekker at innlogget saksbehandler har rettighet til å journalføre
+    // Sjekker at journalposten ikke allerede har status endelig journalført
+    // Sender journalføringsevent på rapid
+    // Endrer status til endelig journalført (eller bør det skje asynkront når vi faktisk får ok tilbake fra joark sink?)
+    // Oppretter ny sak av type ? og returnerer saksnummer i response (passer det inn i dagens sak tabell eller gir det mer mening med en egen tabell for behandling av "papirsøknader")
+    // Hva slags statuser skal en sak ha her? (må vi granulere UNDER_BEHANDLING mer? Typ informasjonsinnhenting/punching, vilkårsvurdering, brev, simulering osv?)
 
-  {
-    'journalpostID': '123456', 
-    'tittel': 'Tilskudd ved kjøp av briller til barn',
-    'vedlegg': ['Kvittering', 'Brilleseddel'], // vil kun være satt for journalposter sendt inn via skanning. For digitalt innsendte har vi dokumentene som egne filer 
-    'journalføresPåfnr': '345435435', // fnr til barnet 
-}
-  */
+    // Sakshistorikk oppdateres
+    POST /api/journalpost/journalfør
+
+    {
+      'journalpostID': '123456',
+      'tittel': 'Tilskudd ved kjøp av briller til barn',
+      'vedlegg': ['Kvittering', 'Brilleseddel'], // vil kun være satt for journalposter sendt inn via skanning. For digitalt innsendte har vi dokumentene som egne filer
+      'journalføresPåfnr': '345435435', // fnr til barnet
+  }
+    */
 ]
 
 export default dokumentHandlers

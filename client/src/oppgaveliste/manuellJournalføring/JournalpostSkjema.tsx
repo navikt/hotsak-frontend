@@ -9,6 +9,7 @@ import { postJournalfør } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
+import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
@@ -20,15 +21,6 @@ const Container = styled.div`
   overflow: auto;
   padding-top: var(--a-spacing-6);
 `
-
-const Kolonner = styled.div`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  align-self: flex-end;
-  align-items: flex-end;
-`
-
 export const JournalpostSkjema: React.FC = () => {
   const navigate = useNavigate()
   const { journalpostID } = useParams<{ journalpostID: string }>()

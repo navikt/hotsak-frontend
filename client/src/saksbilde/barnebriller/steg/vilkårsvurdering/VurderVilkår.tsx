@@ -1,16 +1,17 @@
 import { useState } from 'react'
 
 import { Edit } from '@navikt/ds-icons'
-import { Alert, Button, Heading, Link, Panel, Radio, RadioGroup, Table } from '@navikt/ds-react'
+import { Alert, Button, Heading, Link, Panel, Table } from '@navikt/ds-react'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
-import { StegType, VilkårsResultat, VilkårSvar } from '../../../../types/types.internal'
+import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
+import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 
 export const VurderVilkår: React.FC = () => {
-  const { sak } = useBrillesak()
-  const [overstyrRad, setOverstyrRad] = useState()
+  const { sak, mutate } = useBrillesak()
+  const [åpneRader, setÅpneRader] = useState<string[]>([])
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
@@ -40,11 +41,13 @@ export const VurderVilkår: React.FC = () => {
               <Table.HeaderCell scope="col">Basert på</Table.HeaderCell>
               <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
               <Table.HeaderCell scope="col">Overstyr</Table.HeaderCell>
+              <Table.HeaderCell />
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {sak.vilkårsvurdering?.vilkår.map(
               ({
+                id,
                 identifikator,
                 resultatAuto,
                 begrunnelseAuto,
@@ -59,26 +62,33 @@ export const VurderVilkår: React.FC = () => {
                 const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
                 // TODO koble fakta felter med vilkår
                 return (
-                  <Table.Row key={identifikator}>
-                    <Table.DataCell>
+                  <Table.ExpandableRow
+                    onClick={() => toggleExpandedRad(id)}
+                    key={identifikator}
+                    colSpan={6}
+                    onOpenChange={() => toggleExpandedRad(id)}
+                    open={åpneRader.includes(id)}
+                    togglePlacement={'right'}
+                    content={<SaksbehandlersVurdering sakID={sak.saksid} vilkårID={id} onMutate={mutate} />}
+                  >
+                    <Table.DataCell scope="row">
                       <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
                         {beskrivelse}
                       </Alert>
                     </Table.DataCell>
                     <Table.DataCell>{begrunnelse}</Table.DataCell>
                     <Table.DataCell>{vurdert}</Table.DataCell>
-
                     <Table.DataCell>
                       <Link href={lovdataLenke} target="_blank">
                         {lovReferanse}
                       </Link>
                     </Table.DataCell>
                     <Table.DataCell>
-                      <Button variant="tertiary" size="xsmall" icon={<Edit />}>
+                      <Button variant="tertiary" size="xsmall" icon={<Edit />} onClick={() => toggleExpandedRad(id)}>
                         Vurder
                       </Button>
                     </Table.DataCell>
-                  </Table.Row>
+                  </Table.ExpandableRow>
                 )
               }
             )}
@@ -93,20 +103,13 @@ export const VurderVilkår: React.FC = () => {
     </>
   )
 
-  /*function SaksbehandlersVurdering() {
-    return (
-      <form>
-        <Heading level='2' size='xsmall'>Din vurdering</Heading>
-        <RadioGroup
-          legend="Er vilkåret oppfylt"
-          size="small"
-        >
-          <Radio value={VilkårSvar.JA}>Ja</Radio>
-          <Radio value={VilkårSvar.NEI}>Nei</Radio>
-        </RadioGroup>
-      </form>
-    )
-  }*/
+  function toggleExpandedRad(id: string) {
+    if (åpneRader.includes(id)) {
+      setÅpneRader(åpneRader.filter((i) => i !== id))
+    } else {
+      setÅpneRader([...åpneRader, id])
+    }
+  }
 
   function alertVariant(vilkårOppfylt: VilkårsResultat) {
     switch (vilkårOppfylt) {

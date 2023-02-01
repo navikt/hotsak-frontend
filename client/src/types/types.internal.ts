@@ -1,3 +1,5 @@
+import { Resultat } from '../io/usePost'
+
 type LocalDate = string
 type LocalDateTime = string
 
@@ -49,6 +51,7 @@ export interface Vilkårsvurdering {
 }
 
 export interface Vilkår {
+  id: string
   identifikator: string
   beskrivelse: string
   resultatAuto?: VilkårsResultat
@@ -74,6 +77,11 @@ export interface RegistrerSøknadData {
   bestiltHosOptiker: VilkårSvar | ''
   komplettBrille: VilkårSvar | ''
   saksbehandlersBegrunnelse: string
+}
+
+export interface OppdaterVilkårData {
+  resultatSaksbehandler: VilkårSvar | ''
+  begrunnelseSaksbehandler: string
 }
 
 export type Fakta = RegistrerSøknadData

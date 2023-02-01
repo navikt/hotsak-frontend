@@ -313,6 +313,7 @@ const saksbehandlingHandlers = [
       beløp: '699',
       vilkår: [
         {
+          id: '1',
           resultatAuto: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -321,6 +322,7 @@ const saksbehandlingHandlers = [
           identifikator: 'HarIkkeVedtakIKalenderåret v1',
         },
         {
+          id: '2',
           resultatAuto: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -329,6 +331,7 @@ const saksbehandlingHandlers = [
           identifikator: 'Under18ÅrPåBestillingsdato v1',
         },
         {
+          id: '3',
           resultatAuto: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -337,6 +340,7 @@ const saksbehandlingHandlers = [
           identifikator: 'MedlemAvFolketrygden v1',
         },
         {
+          id: '4',
           resultatAuto: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -345,6 +349,7 @@ const saksbehandlingHandlers = [
           identifikator: 'Brillestyrke v1',
         },
         {
+          id: '5',
           resultatAuto: 'NEI',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -353,6 +358,7 @@ const saksbehandlingHandlers = [
           identifikator: 'Bestillingsdato v1',
         },
         {
+          id: '6',
           resultatAuto: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -361,6 +367,7 @@ const saksbehandlingHandlers = [
           identifikator: 'BestillingsdatoTilbakeITid v1',
         },
         {
+          id: '7',
           resultatSaksbehandler: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
@@ -369,6 +376,7 @@ const saksbehandlingHandlers = [
           identifikator: 'komplettBrille',
         },
         {
+          id: '8',
           resultatSaksbehandler: 'JA',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',

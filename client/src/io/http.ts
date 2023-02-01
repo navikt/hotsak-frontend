@@ -4,6 +4,7 @@ import type {
   AvvisBestilling,
   EndreHjelpemiddelRequest,
   JournalførRequest,
+  OppdaterVilkårData,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
   Vedtaksgrunnlag,
@@ -168,6 +169,10 @@ export const postJournalfør = async (journalpostRequest: JournalførRequest) =>
 
 export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårRequest) => {
   return post(`${baseUrl}/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
+}
+
+export const putOppdaterVilkår = async (sakID: string, vilkårID: string, oppdaterVilkårData: OppdaterVilkårData) => {
+  return put(`${baseUrl}/api/sak/${sakID}/vilkarsgrunnlag/${vilkårID}`, oppdaterVilkårData)
 }
 
 export const tildelBestilling = async (oppgavereferanse: string) => {

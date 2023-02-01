@@ -3,8 +3,7 @@ import { formatISO } from 'date-fns'
 import { useState } from 'react'
 import { useErrorHandler } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router'
-import { useLocation } from 'react-router'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Button, Heading, Loader, Textarea } from '@navikt/ds-react'
@@ -31,8 +30,6 @@ const Container = styled.div`
 `
 
 export const RegistrerSøknadSkjema: React.FC = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])

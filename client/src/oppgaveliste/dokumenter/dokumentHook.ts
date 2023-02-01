@@ -37,12 +37,12 @@ export function useDokumentListe(): DokumentlisteResponse {
 
   // Avventer å legge inn dette til vi ser om vi trenger filter, paging osv
   /*useEffect(() => {
-      logAmplitudeEvent(amplitude_taxonomy.DOKUMENTLISTE_OPPDATERT, {
-        currentPage,
-        ...sort,
-        ...filters,
-      })
-    }, [currentPage, sort, filters])*/
+        logAmplitudeEvent(amplitude_taxonomy.DOKUMENTLISTE_OPPDATERT, {
+          currentPage,
+          ...sort,
+          ...filters,
+        })
+      }, [currentPage, sort, filters])*/
 
   return {
     dokumenter: data?.data || [],
@@ -69,6 +69,7 @@ export function useDokument(journalpostID?: string): DokumentResponse {
 
   const hentForhåndsvisning = (valgtJournalpostID: string, dokumentID: string) => {
     settHentetDokument(byggHenterRessurs())
+    setIsPdfError(null)
 
     const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostID}/${dokumentID}`)
 

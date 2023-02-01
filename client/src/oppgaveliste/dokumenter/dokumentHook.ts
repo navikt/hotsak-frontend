@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
@@ -18,7 +18,8 @@ interface DokumentlisteResponse {
 interface DokumentResponse {
   journalpost: Journalpost | undefined
   isLoading: boolean
-  isError: unknown
+  isError: any
+  isPdfError: any
   hentForhåndsvisning: (journalpostID: string, dokumentID: string) => any
   nullstillDokument: () => any
   hentetDokument: any
@@ -36,12 +37,12 @@ export function useDokumentListe(): DokumentlisteResponse {
 
   // Avventer å legge inn dette til vi ser om vi trenger filter, paging osv
   /*useEffect(() => {
-    logAmplitudeEvent(amplitude_taxonomy.DOKUMENTLISTE_OPPDATERT, {
-      currentPage,
-      ...sort,
-      ...filters,
-    })
-  }, [currentPage, sort, filters])*/
+        logAmplitudeEvent(amplitude_taxonomy.DOKUMENTLISTE_OPPDATERT, {
+          currentPage,
+          ...sort,
+          ...filters,
+        })
+      }, [currentPage, sort, filters])*/
 
   return {
     dokumenter: data?.data || [],
@@ -60,6 +61,7 @@ export function useDokument(journalpostID?: string): DokumentResponse {
   const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
   //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
+  const [isPdfError, setIsPdfError] = useState<any>(null)
 
   const nullstillDokument = () => {
     settHentetDokument(byggTomRessurs)
@@ -67,15 +69,18 @@ export function useDokument(journalpostID?: string): DokumentResponse {
 
   const hentForhåndsvisning = (valgtJournalpostID: string, dokumentID: string) => {
     settHentetDokument(byggHenterRessurs())
+    setIsPdfError(null)
 
     const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostID}/${dokumentID}`)
 
     pdfResponse
       .then((response: PDFResponse) => {
         settHentetDokument(byggDataRessurs(window.URL.createObjectURL(response.data)))
+        setIsPdfError(null)
       })
       .catch((error: any) => {
         settHentetDokument(byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
+        setIsPdfError(error)
       })
   }
 
@@ -83,6 +88,7 @@ export function useDokument(journalpostID?: string): DokumentResponse {
     journalpost: data?.data,
     isLoading: !error && !data,
     isError: error,
+    isPdfError,
     hentForhåndsvisning,
     nullstillDokument,
     hentetDokument,

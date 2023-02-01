@@ -16,7 +16,6 @@ const DokumentDiv = styled.div`
 const FeilmeldingDiv = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
 `
 
 interface DokumentPanelProps {

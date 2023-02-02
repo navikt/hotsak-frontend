@@ -5,6 +5,7 @@ type LocalDateTime = string
 
 export interface Sak {
   saksid: string
+  sakId: string
   sakstype: Oppgavetype
   oppgaveid: string
   søknadGjelder: string
@@ -24,7 +25,7 @@ export interface Sak {
 }
 
 export interface Brillesak {
-  saksid: string
+  sakId: string
   sakstype: Oppgavetype
   soknadGjelder: string
   mottattDato: string

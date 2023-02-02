@@ -2,12 +2,10 @@ import { rest } from 'msw'
 
 import {
   EndreHjelpemiddelRequest,
-  OppdaterVilkårData,
   OppdaterVilkårRequest,
   OppgaveStatusType,
   SakerFilter,
   StegType,
-  Vilkår,
   VurderVilkårRequest,
 } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
@@ -86,7 +84,7 @@ const saksbehandlingHandlers = [
       return res(ctx.status(401), ctx.text('Unauthorized.'))
     }
 
-    return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.saksid === req.params.saksid)[0] || saker[2]))
+    return res(ctx.status(200), ctx.json(saker.filter((sak) => sak.sakId === req.params.saksid)[0] || saker[2]))
   }),
   rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
     const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]

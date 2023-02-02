@@ -68,7 +68,7 @@ export const VurderVilkår: React.FC = () => {
                   onOpenChange={() => toggleExpandedRad(id)}
                   open={åpneRader.includes(id)}
                   togglePlacement={'right'}
-                  content={<SaksbehandlersVurdering sakID={sak.saksid} vilkår={vilkår} onMutate={mutate} />}
+                  content={<SaksbehandlersVurdering sakID={sak.sakId} vilkår={vilkår} onMutate={mutate} />}
                 >
                   <Table.DataCell scope="row">
                     <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>

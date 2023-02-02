@@ -2,27 +2,25 @@ import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Button, Detail, Panel, Radio, RadioGroup } from '@navikt/ds-react'
+import { Button, Detail, Heading, Link, Panel, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { putOppdaterVilkår } from '../../../../io/http'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
-import { OppdaterVilkårData, VilkårSvar } from '../../../../types/types.internal'
+import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/types.internal'
 
 export function SaksbehandlersVurdering({
   sakID,
-  vilkårID,
+  vilkår,
   onMutate,
 }: {
   sakID: string
-  vilkårID: string
+  vilkår: Vilkår
   onMutate: (...args: any[]) => any
 }) {
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
-  console.log('Lager form for ' + sakID, vilkårID)
-
   const methods = useForm<OppdaterVilkårData>({
     defaultValues: {
       resultatSaksbehandler: '',
@@ -48,12 +46,15 @@ export function SaksbehandlersVurdering({
   return (
     <Merknad>
       <SaksbehandlersVurderingPanel>
-        <FormProvider {...methods} key={`${sakID}-${vilkårID}`}>
+        <Heading level="2" size="xsmall" spacing>
+          <Link href={vilkår.lovdataLenke} target="_blank">
+            {`${vilkår.lovReferanse} ${vilkår.beskrivelse}`}
+          </Link>
+        </Heading>
+        <FormProvider {...methods} key={`${sakID}-${vilkår.id}`}>
           <form
             onSubmit={methods.handleSubmit((data) => {
-              console.log('data', data)
-
-              oppdaterVilkår(vilkårID, data)
+              oppdaterVilkår(vilkår.id, data)
             })}
           >
             <Detail uppercase spacing>

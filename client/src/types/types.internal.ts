@@ -84,6 +84,11 @@ export interface OppdaterVilkårData {
   begrunnelseSaksbehandler: string
 }
 
+export interface OppdaterVilkårRequest {
+  resultatSaksbehandler: VilkårSvar
+  begrunnelseSaksbehandler: string
+}
+
 export type Fakta = RegistrerSøknadData
 
 export interface VurderVilkårRequest {

@@ -172,7 +172,7 @@ export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårR
 }
 
 export const putOppdaterVilkår = async (sakID: string, vilkårID: string, oppdaterVilkårData: OppdaterVilkårData) => {
-  return put(`${baseUrl}/api/sak/${sakID}/vilkarsgrunnlag/${vilkårID}`, oppdaterVilkårData)
+  return put(`${baseUrl}/api/sak/${sakID}/vilkar/${vilkårID}`, oppdaterVilkårData)
 }
 
 export const tildelBestilling = async (oppgavereferanse: string) => {

@@ -2,9 +2,12 @@ import { rest } from 'msw'
 
 import {
   EndreHjelpemiddelRequest,
+  OppdaterVilkårData,
+  OppdaterVilkårRequest,
   OppgaveStatusType,
   SakerFilter,
   StegType,
+  Vilkår,
   VurderVilkårRequest,
 } from '../../types/types.internal'
 import historikk from '../mockdata/historikk.json'
@@ -386,8 +389,20 @@ const saksbehandlingHandlers = [
         },
       ],
     }
-
     return res(ctx.status(201))
+  }),
+  rest.put<OppdaterVilkårRequest, any, any>('/api/sak/:saksid/vilkar/:vilkarid', (req, res, ctx) => {
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
+    const vilkårIdx = saker[sakIdx].vilkårsvurdering!.vilkår.findIndex((vilkår) => vilkår.id === req.params.vilkarid)
+
+    const { resultatSaksbehandler, begrunnelseSaksbehandler } = req.body
+
+    const vilkår = saker[sakIdx].vilkårsvurdering!.vilkår[vilkårIdx]
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    saker[sakIdx].vilkårsvurdering.vilkår[vilkårIdx] = { ...vilkår, resultatSaksbehandler, begrunnelseSaksbehandler }
+
+    return res(ctx.status(200), ctx.json({}))
   }),
 ]
 

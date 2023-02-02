@@ -39,14 +39,14 @@ export const VurderVilkår: React.FC = () => {
               <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
               <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
               <Table.HeaderCell scope="col">Basert på</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Begrunnelse saksbehandler</Table.HeaderCell>
               <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Overstyr</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {sak.vilkårsvurdering?.vilkår.map(
-              ({
+            {sak.vilkårsvurdering?.vilkår.map((vilkår) => {
+              const {
                 id,
                 identifikator,
                 resultatAuto,
@@ -55,43 +55,33 @@ export const VurderVilkår: React.FC = () => {
                 resultatSaksbehandler,
                 begrunnelseSaksbehandler,
                 lovReferanse,
-                lovdataLenke,
-              }) => {
-                const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
-                const begrunnelse = (begrunnelseSaksbehandler ? begrunnelseSaksbehandler : begrunnelseAuto) ?? ''
-                const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
-                // TODO koble fakta felter med vilkår
-                return (
-                  <Table.ExpandableRow
-                    onClick={() => toggleExpandedRad(id)}
-                    key={identifikator}
-                    colSpan={6}
-                    onOpenChange={() => toggleExpandedRad(id)}
-                    open={åpneRader.includes(id)}
-                    togglePlacement={'right'}
-                    content={<SaksbehandlersVurdering sakID={sak.saksid} vilkårID={id} onMutate={mutate} />}
-                  >
-                    <Table.DataCell scope="row">
-                      <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
-                        {beskrivelse}
-                      </Alert>
-                    </Table.DataCell>
-                    <Table.DataCell>{begrunnelse}</Table.DataCell>
-                    <Table.DataCell>{vurdert}</Table.DataCell>
-                    <Table.DataCell>
-                      <Link href={lovdataLenke} target="_blank">
-                        {lovReferanse}
-                      </Link>
-                    </Table.DataCell>
-                    <Table.DataCell>
-                      <Button variant="tertiary" size="xsmall" icon={<Edit />} onClick={() => toggleExpandedRad(id)}>
-                        Vurder
-                      </Button>
-                    </Table.DataCell>
-                  </Table.ExpandableRow>
-                )
-              }
-            )}
+              } = vilkår
+              const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
+              //const saksbehandlersBegrunnelse = (begrunnelseSaksbehandler ? begrunnelseSaksbehandler : begrunnelseAuto) ?? ''
+              const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
+              // TODO koble fakta felter med vilkår
+              return (
+                <Table.ExpandableRow
+                  onClick={() => toggleExpandedRad(id)}
+                  key={identifikator}
+                  colSpan={6}
+                  onOpenChange={() => toggleExpandedRad(id)}
+                  open={åpneRader.includes(id)}
+                  togglePlacement={'right'}
+                  content={<SaksbehandlersVurdering sakID={sak.saksid} vilkår={vilkår} onMutate={mutate} />}
+                >
+                  <Table.DataCell scope="row">
+                    <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
+                      {beskrivelse}
+                    </Alert>
+                  </Table.DataCell>
+                  <Table.DataCell>{begrunnelseAuto}</Table.DataCell>
+                  <Table.DataCell>{begrunnelseSaksbehandler}</Table.DataCell>
+                  <Table.DataCell>{vurdert}</Table.DataCell>
+                  <Table.DataCell>{lovReferanse}</Table.DataCell>
+                </Table.ExpandableRow>
+              )
+            })}
           </Table.Body>
         </Table>
         <ButtonContainer>

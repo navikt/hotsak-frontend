@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Button, Heading, Loader, Textarea } from '@navikt/ds-react'
+import { Button, Heading, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering } from '../../../../io/http'
 import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
@@ -52,8 +52,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     postVilkårsvurdering(vurderVilkårRequest)
       .catch(() => setVenterPåVilkårsvurdering(false))
       .then(() => {
-        setVenterPåVilkårsvurdering(false)
         mutate()
+        setVenterPåVilkårsvurdering(false)
         //navigate
         //navigate(`/sak/${sakID}`)
         //location.reload(true)

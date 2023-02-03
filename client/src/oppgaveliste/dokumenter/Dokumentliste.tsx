@@ -42,13 +42,13 @@ export const Dokumentliste: React.FC = () => {
     {
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
-      width: 300,
+      width: 400,
       render: (journalpost: Journalpost) => <TekstCell value={journalpost.tittel} />,
     },
     {
       key: 'STATUS',
       name: 'Status',
-      width: 140,
+      width: 150,
       render: (journalpost: Journalpost) => <TekstCell value={DokumentStatusLabel.get(journalpost.status)!} />,
     },
     {

@@ -14,11 +14,11 @@ import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/typ
 export function SaksbehandlersVurdering({
   sakID,
   vilkår,
-  onMutate,
+  onSaved,
 }: {
   sakID: string
   vilkår: Vilkår
-  onMutate: (...args: any[]) => any
+  onSaved: () => any
 }) {
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const methods = useForm<OppdaterVilkårData>({
@@ -39,7 +39,7 @@ export function SaksbehandlersVurdering({
       .catch(() => setVenterPåVilkårsvurdering(false))
       .then(() => {
         setVenterPåVilkårsvurdering(false)
-        onMutate()
+        onSaved()
       })
   }
 

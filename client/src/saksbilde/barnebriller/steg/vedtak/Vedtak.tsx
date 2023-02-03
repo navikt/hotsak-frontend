@@ -1,6 +1,6 @@
 import { Alert, Heading } from '@navikt/ds-react'
 
-import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
+import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 

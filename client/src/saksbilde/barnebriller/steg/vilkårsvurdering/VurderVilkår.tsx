@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
 import { Edit } from '@navikt/ds-icons'
-import { Alert, Button, Heading, Link, Panel, Table } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Link, Panel, Table } from '@navikt/ds-react'
 
-import { AlertContainer } from '../../../../felleskomponenter/AlterContainer'
+import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
-import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType, Vilkår, VilkårsResultat, Vilkårsvurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 
@@ -26,13 +26,20 @@ export const VurderVilkår: React.FC = () => {
     )
   }
 
+  const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
+  const alertType = alertVariant(oppsummertResultat)
+
   return (
     <>
       <Panel>
         <Heading level="1" size="small" spacing>
           Foreløpig resultat
         </Heading>
-
+        <AlertContainerBred>
+          <Alert variant={alertType} size="small">
+            <BodyLong>{alertTekst(alertType)}</BodyLong>
+          </Alert>
+        </AlertContainerBred>
         <Table size="small">
           <Table.Header>
             <Table.Row>
@@ -68,15 +75,24 @@ export const VurderVilkår: React.FC = () => {
                   onOpenChange={() => toggleExpandedRad(id)}
                   open={åpneRader.includes(id)}
                   togglePlacement={'right'}
-                  content={<SaksbehandlersVurdering sakID={sak.sakId} vilkår={vilkår} onMutate={mutate} />}
+                  content={
+                    <SaksbehandlersVurdering
+                      sakID={sak.sakId}
+                      vilkår={vilkår}
+                      onSaved={() => {
+                        mutate()
+                        toggleExpandedRad(id)
+                      }}
+                    />
+                  }
                 >
                   <Table.DataCell scope="row">
                     <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
                       {beskrivelse}
                     </Alert>
                   </Table.DataCell>
-                  <Table.DataCell>{begrunnelseAuto}</Table.DataCell>
-                  <Table.DataCell>{begrunnelseSaksbehandler}</Table.DataCell>
+                  <Table.DataCell>{begrunnelseAuto || '-'}</Table.DataCell>
+                  <Table.DataCell>{begrunnelseSaksbehandler || '-'}</Table.DataCell>
                   <Table.DataCell>{vurdert}</Table.DataCell>
                   <Table.DataCell>{lovReferanse}</Table.DataCell>
                 </Table.ExpandableRow>
@@ -98,6 +114,37 @@ export const VurderVilkår: React.FC = () => {
       setÅpneRader(åpneRader.filter((i) => i !== id))
     } else {
       setÅpneRader([...åpneRader, id])
+    }
+  }
+
+  function oppsummertStatus(vilkår: Vilkår[]): VilkårsResultat {
+    const vilkårsResultat = vilkår
+      .map((v) => (v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto))
+      .reduce((samletStatus, vilkårStatus) => {
+        if (
+          vilkårStatus === VilkårsResultat.NEI ||
+          vilkårStatus === VilkårsResultat.KANSKJE ||
+          vilkårStatus === VilkårsResultat.DOKUMENTASJON_MANGLER
+        ) {
+          return vilkårStatus
+        } else {
+          return samletStatus
+        }
+      }, VilkårsResultat.JA)
+
+    console.log('Oppsummering', vilkårsResultat)
+
+    return vilkårsResultat!
+  }
+
+  function alertTekst(alertVariant: 'success' | 'error' | 'warning') {
+    switch (alertVariant) {
+      case 'success':
+        return 'Alle vilkårene er oppfylt'
+      case 'error':
+        return 'Ett eller flere vilkår er ikke oppfylt'
+      case 'warning':
+        return 'Ett eller flere vilkår må vurderes'
     }
   }
 

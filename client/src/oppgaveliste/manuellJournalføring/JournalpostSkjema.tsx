@@ -99,8 +99,8 @@ export const JournalpostSkjema: React.FC = () => {
                 onClick={() => {
                   setFodselsnummer(journalføresPåFnr)
                 }}
-                disabled={journalfører}
-                loading={journalfører}
+                disabled={henterPerson}
+                loading={henterPerson}
               >
                 Endre bruker
               </Button>

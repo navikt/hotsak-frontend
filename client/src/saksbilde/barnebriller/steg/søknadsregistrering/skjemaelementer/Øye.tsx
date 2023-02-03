@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Heading, Select } from '@navikt/ds-react'
+import { Detail, Select } from '@navikt/ds-react'
 
 import { capitalize } from '../../../../../utils/stringFormating'
 
@@ -17,9 +17,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
   } = useFormContext<{ brilleseddel: Brilleseddel }>()
   return (
     <>
-      <Heading level="3" size="xsmall">
-        {`${capitalize(type)} øye`}
-      </Heading>
+      <Detail>{`${capitalize(type)} øye`}</Detail>
 
       <Grid>
         <Controller

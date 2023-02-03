@@ -1,22 +1,24 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
-import { VilkårSvar } from '../../../../../types/types.internal'
+import { Avstand } from '../../../../../felleskomponenter/Avstand'
+import { ManuellVurdering, VilkårSvar } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
   const {
     control,
+    register,
     formState: { errors },
-  } = useFormContext<{ bestiltHosOptiker: VilkårSvar }>()
+  } = useFormContext<{ bestiltHosOptiker: ManuellVurdering }>()
 
   return (
-    <>
+    <Avstand paddingTop={8}>
       <Heading level="2" size="xsmall" spacing>
         § 2 Brillen må være bestilt hos optiker
       </Heading>
       <Controller
-        name="bestiltHosOptiker"
+        name="bestiltHosOptiker.vilkårOppfylt"
         control={control}
         rules={{ required: 'Velg en verdi' }}
         render={({ field }) => (
@@ -24,7 +26,7 @@ export function BestiltHosOptiker() {
             legend="Er brillen bestilt hos optiker"
             size="small"
             {...field}
-            error={errors.bestiltHosOptiker?.message}
+            error={errors.bestiltHosOptiker?.vilkårOppfylt?.message}
           >
             <Radio value={VilkårSvar.JA}>Ja</Radio>
             <Radio value={VilkårSvar.NEI}>Nei</Radio>
@@ -32,6 +34,14 @@ export function BestiltHosOptiker() {
           </RadioGroup>
         )}
       />
-    </>
+      <Avstand paddingTop={4}>
+        <Textarea
+          size="small"
+          label="Begrunnelse"
+          description="Skriv din individuelle begrunnelse"
+          {...register('bestiltHosOptiker.begrunnelse')}
+        ></Textarea>
+      </Avstand>
+    </Avstand>
   )
 }

@@ -75,9 +75,14 @@ export interface RegistrerSøknadData {
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
-  bestiltHosOptiker: VilkårSvar | ''
-  komplettBrille: VilkårSvar | ''
+  bestiltHosOptiker: ManuellVurdering
+  komplettBrille: ManuellVurdering
   saksbehandlersBegrunnelse: string
+}
+
+export interface ManuellVurdering {
+  vilkårOppfylt: VilkårSvar | ''
+  begrunnelse?: string
 }
 
 export interface OppdaterVilkårData {
@@ -98,8 +103,8 @@ export interface VurderVilkårRequest {
   brilleseddel: Brilleseddel
   bestillingsdato: string
   brillepris: string
-  bestiltHosOptiker: VilkårSvar | ''
-  komplettBrille: VilkårSvar | ''
+  bestiltHosOptiker: ManuellVurdering
+  komplettBrille: ManuellVurdering
   saksbehandlersBegrunnelse: string
 }
 

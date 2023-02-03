@@ -1,16 +1,17 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { errorSelector } from 'recoil'
 
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { VilkårSvar } from '../../../../../types/types.internal'
+import { ManuellVurdering, VilkårSvar } from '../../../../../types/types.internal'
 
 export function KomplettBrille() {
   const {
     control,
+    register,
     formState: { errors },
-  } = useFormContext<{ komplettBrille: VilkårSvar }>()
+  } = useFormContext<{ komplettBrille: ManuellVurdering }>()
 
   return (
     <>
@@ -19,7 +20,7 @@ export function KomplettBrille() {
           § 2 Komplett brille
         </Heading>
         <Controller
-          name="komplettBrille"
+          name="komplettBrille.vilkårOppfylt"
           control={control}
           rules={{ required: 'Velg en verdi' }}
           render={({ field }) => (
@@ -27,7 +28,7 @@ export function KomplettBrille() {
               legend="Er det en komplett brille?"
               size="small"
               {...field}
-              error={errors.komplettBrille?.message}
+              error={errors.komplettBrille?.vilkårOppfylt?.message}
             >
               <Radio value={VilkårSvar.JA}>Ja</Radio>
               <Radio value={VilkårSvar.NEI}>Nei</Radio>
@@ -35,6 +36,14 @@ export function KomplettBrille() {
             </RadioGroup>
           )}
         />
+      </Avstand>
+      <Avstand paddingTop={4}>
+        <Textarea
+          size="small"
+          label="Begrunnelse"
+          description="Skriv din individuelle begrunnelse"
+          {...register('komplettBrille.begrunnelse')}
+        ></Textarea>
       </Avstand>
     </>
   )

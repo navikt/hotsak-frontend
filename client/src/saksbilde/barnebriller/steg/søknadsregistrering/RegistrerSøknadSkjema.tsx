@@ -71,8 +71,14 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         venstreSylinder: '',
       },
       brillepris: '',
-      bestiltHosOptiker: '',
-      komplettBrille: '',
+      bestiltHosOptiker: {
+        vilkårOppfylt: '',
+        begrunnelse: '',
+      },
+      komplettBrille: {
+        vilkårOppfylt: '',
+        begrunnelse: '',
+      },
       saksbehandlersBegrunnelse: '',
     },
   })
@@ -121,22 +127,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                 })}
               />
             </Avstand>
-
             <BrillestyrkeForm />
             <KomplettBrille />
-
-            <Avstand paddingTop={4}>
-              <BestiltHosOptiker />
-            </Avstand>
-            <Avstand paddingTop={4}>
-              <Textarea
-                size="small"
-                label="Begrunnelse"
-                description="Skriv din individuelle begrunnelse"
-                {...methods.register('saksbehandlersBegrunnelse')}
-              ></Textarea>
-            </Avstand>
-
+            <BestiltHosOptiker />
             <Avstand paddingLeft={2}>
               <ButtonContainer>
                 <Button

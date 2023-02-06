@@ -1,4 +1,3 @@
-//import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
@@ -45,11 +44,11 @@ export const JournalpostSkjema: React.FC = () => {
       .then((opprettetSakResponse: any) => {
         const opprettetSakID = opprettetSakResponse.data.sakId
 
+        setJournalfører(false)
         if (!opprettetSakID) {
           throw new Error('Klarte ikke å opprette sak')
         }
 
-        setJournalfører(false)
         navigate(`/sak/${opprettetSakID}`)
       })
   }

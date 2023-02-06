@@ -1441,19 +1441,21 @@
       },
       "telefon": ""
     },
-    "fakta": {
+    "vilkårsgrunnlag": {
       "målform": "BOKMÅL",
       "brilleseddel": {
         "høyreSfære": "2.5",
-        "høyreSylinder": "6.0",
-        "venstreSfære": "3.0",
+        "høyreSylinder": "6",
+        "venstreSfære": "3",
         "venstreSylinder": "4.5"
       },
-      "bestillingsdato": "2023-01-03T23:00:00.000Z",
+      "bestillingsdato": "2023-01-03",
       "brillepris": "699",
-      "bestiltHosOptiker": "JA",
-      "komplettBrille": "NEI",
-      "saksbehandlersBegrunnelse": "Friteksbegrunnelse fra saksbehandler"
+      "bestiltHosOptiker": { "vilkårOppfylt": "JA" },
+      "komplettBrille": {
+        "vilkårOppfylt": "NEI",
+        "begrunnelse": "Her er det jo bare bestilt innfatning. De ække lov!!"
+      }
     },
     "vilkårsvurdering": {
       "id": "1234",

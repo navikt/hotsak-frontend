@@ -1,5 +1,3 @@
-import { Resultat } from '../io/usePost'
-
 type LocalDate = string
 type LocalDateTime = string
 
@@ -34,7 +32,7 @@ export interface Brillesak {
   saksbehandler: Saksbehandler
   status: OppgaveStatusType
   steg: StegType
-  fakta?: Fakta
+  vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
   journalposter: string[]
   enhet: Enhet[]
@@ -77,7 +75,6 @@ export interface RegistrerSøknadData {
   brillepris: string
   bestiltHosOptiker: ManuellVurdering
   komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse: string
 }
 
 export interface ManuellVurdering {
@@ -95,8 +92,6 @@ export interface OppdaterVilkårRequest {
   begrunnelseSaksbehandler: string
 }
 
-export type Fakta = RegistrerSøknadData
-
 export interface VurderVilkårRequest {
   sakId: string
   målform: MålformType
@@ -105,8 +100,9 @@ export interface VurderVilkårRequest {
   brillepris: string
   bestiltHosOptiker: ManuellVurdering
   komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse: string
 }
+
+export type Vilkårsgrunnlag = RegistrerSøknadData
 
 export enum VilkårSvar {
   JA = 'JA',

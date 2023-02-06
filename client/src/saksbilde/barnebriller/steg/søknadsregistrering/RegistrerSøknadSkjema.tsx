@@ -33,9 +33,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
-  //const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  //const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
-  //const [error, setError] = useState('')
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const handleError = useErrorHandler()
 
@@ -54,32 +51,28 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       .then(() => {
         mutate()
         setVenterPåVilkårsvurdering(false)
-        //navigate
-        //navigate(`/sak/${sakID}`)
-        //location.reload(true)
       })
   }
 
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
-      målform: MålformType.BOKMÅL,
-      bestillingsdato: undefined,
+      målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
+      bestillingsdato: sak?.vilkårsgrunnlag?.bestillingsdato || undefined,
       brilleseddel: {
-        høyreSfære: '',
-        høyreSylinder: '',
-        venstreSfære: '',
-        venstreSylinder: '',
+        høyreSfære: sak?.vilkårsgrunnlag?.brilleseddel.høyreSfære || '',
+        høyreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.høyreSylinder || '',
+        venstreSfære: sak?.vilkårsgrunnlag?.brilleseddel.venstreSfære || '',
+        venstreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.venstreSylinder || '',
       },
-      brillepris: '',
+      brillepris: sak?.vilkårsgrunnlag?.brillepris || '',
       bestiltHosOptiker: {
-        vilkårOppfylt: '',
-        begrunnelse: '',
+        vilkårOppfylt: sak?.vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt || '',
+        begrunnelse: sak?.vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse || '',
       },
       komplettBrille: {
-        vilkårOppfylt: '',
-        begrunnelse: '',
+        vilkårOppfylt: sak?.vilkårsgrunnlag?.komplettBrille.vilkårOppfylt || '',
+        begrunnelse: sak?.vilkårsgrunnlag?.komplettBrille.begrunnelse || '',
       },
-      saksbehandlersBegrunnelse: '',
     },
   })
 

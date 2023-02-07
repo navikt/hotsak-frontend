@@ -55,31 +55,35 @@ export const Vedtak: React.FC = () => {
         <Tag variant={alertType} size="small">
           {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
         </Tag>
-        <Avstand paddingBottom={6} />
-        <Rad>
-          <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
-          <Kolonne>
-            <Etikett>{`${vilkårsvurdering?.satsBeløp} kr`}</Etikett>
-          </Kolonne>
-        </Rad>
-        <Rad>
-          <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
-          <Kolonne>
-            <Etikett>{vilkårsvurdering?.beløp} kr</Etikett>
-          </Kolonne>
-        </Rad>
-        <Rad>
-          <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
-          <Kolonne>
-            <Etikett>{capitalizeName(`${sak.innsender.navn.fornavn} ${sak.innsender.navn.etternavn}`)}</Etikett>
-          </Kolonne>
-        </Rad>
-        <Rad>
-          <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
-          <Kolonne>
-            <Etikett>{formaterKontonummer(kontonummer?.kontonummer)}</Etikett>
-          </Kolonne>
-        </Rad>
+        {status === VilkårsResultat.JA && (
+          <>
+            <Avstand paddingBottom={6} />
+            <Rad>
+              <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
+              <Kolonne>
+                <Etikett>{`${vilkårsvurdering?.satsBeløp} kr`}</Etikett>
+              </Kolonne>
+            </Rad>
+            <Rad>
+              <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
+              <Kolonne>
+                <Etikett>{vilkårsvurdering?.beløp} kr</Etikett>
+              </Kolonne>
+            </Rad>
+            <Rad>
+              <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
+              <Kolonne>
+                <Etikett>{capitalizeName(`${sak.innsender.navn.fornavn} ${sak.innsender.navn.etternavn}`)}</Etikett>
+              </Kolonne>
+            </Rad>
+            <Rad>
+              <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
+              <Kolonne>
+                <Etikett>{formaterKontonummer(kontonummer?.kontonummer)}</Etikett>
+              </Kolonne>
+            </Rad>
+          </>
+        )}
         <Avstand paddingBottom={6} />
         <Button size="small" variant="primary">
           Send til godkjenning

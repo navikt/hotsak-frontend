@@ -7,6 +7,10 @@ export const capitalizeName = (value: string) =>
     .map((value) => capitalize(value))
     .join(' ')
 
+export const formaterKontonummer = (kontonummer?: string) => {
+  return `${kontonummer?.slice(0, 4)}.${kontonummer?.slice(4, 6)}.${kontonummer?.slice(6)}`
+}
+
 export const formaterFødselsnummer = (fødselsnummer: string) => {
   return `${fødselsnummer.slice(0, 6)} ${fødselsnummer.slice(6)}`
 }

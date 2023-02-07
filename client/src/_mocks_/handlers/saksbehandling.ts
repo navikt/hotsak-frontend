@@ -402,6 +402,12 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
+  rest.put<any, any, any>('/api/sak/:saksid/steg/fatte_vedtak', (req, res, ctx) => {
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
+    saker[sakIdx].steg = StegType.VEDTAK
+
+    return res(ctx.status(200), ctx.json({}))
+  }),
 ]
 
 export default saksbehandlingHandlers

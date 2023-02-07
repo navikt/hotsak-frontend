@@ -22,7 +22,7 @@ export interface PDFResponse {
   data: Blob
 }
 
-const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NODE_ENV === 'production' ? '' : ''
+export const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NODE_ENV === 'production' ? '' : ''
 
 type Headers = { [key: string]: any }
 

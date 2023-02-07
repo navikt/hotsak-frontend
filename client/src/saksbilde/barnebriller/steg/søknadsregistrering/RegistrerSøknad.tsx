@@ -13,19 +13,13 @@ import {
 } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
 import { Flex } from '../../../../felleskomponenter/Flex'
+import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { Oppgavetype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
 import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
-
-const TreKolonner = styled.div`
-  display: grid;
-  grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto ${hotsakRegistrerSøknadHøyreKolonne};
-  grid-template-rows: 1fr;
-  height: calc(100vh - ${headerHøydeRem}rem);
-`
 
 const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()

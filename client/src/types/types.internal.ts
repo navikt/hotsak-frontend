@@ -136,6 +136,15 @@ export interface BeregnSatsResponse {
   satsBeløp: number
 }
 
+export interface KontonummerResponse {
+  kontohaver: string
+  kontonummer: string
+}
+
+export interface KontonummerRequest {
+  brukersFodselsnummer: string
+}
+
 export type BeregnSatsRequest = Brilleseddel
 
 export enum SatsType {

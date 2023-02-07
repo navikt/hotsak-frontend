@@ -73,7 +73,7 @@ export const Vedtak: React.FC = () => {
             <Rad>
               <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
               <Kolonne>
-                <Etikett>{capitalizeName(`${sak.innsender.navn.fornavn} ${sak.innsender.navn.etternavn}`)}</Etikett>
+                <Etikett>{capitalizeName(`${sak.innsender.navn}`)}</Etikett>
               </Kolonne>
             </Rad>
             <Rad>

@@ -1435,10 +1435,7 @@
     "innsender": {
       "fnr": "09418208349",
       "fødselsdato": "2013-07-20",
-      "navn": {
-        "fornavn": "Albert",
-        "etternavn": "Åberg"
-      },
+      "navn": "Albert Åberg",
       "telefon": ""
     },
     "vilkårsgrunnlag": {

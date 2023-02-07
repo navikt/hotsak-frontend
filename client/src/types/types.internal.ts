@@ -165,7 +165,7 @@ export interface Navn {
 export interface Person {
   fnr: string
   fødselsdato: string
-  navn: Navn
+  navn: string
   telefon?: string
   brukernummer?: string
   kjønn?: Kjønn

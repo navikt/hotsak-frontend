@@ -125,7 +125,7 @@ export interface Brilleseddel {
 export enum StegType {
   INNHENTE_FAKTA = 'INNHENTE_FAKTA',
   VURDERE_VILKÅR = 'VURDERE_VILKÅR',
-  VEDTAK = 'VEDTAK',
+  FATTE_VEDTAK = 'FATTE_VEDTAK',
   BREV = 'BREV',
   UTBETALING = 'UTBETALING',
 }

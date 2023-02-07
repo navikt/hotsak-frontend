@@ -49,7 +49,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
         <Tabs.List>
           <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
           <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkårsvurdering" />
-          <Tabs.Tab value={StegType.VEDTAK.toString()} label="3. Vedtak" />
+          <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
         <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
           <RegistrerSøknad />
@@ -57,7 +57,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
         <Tabs.Panel value={StegType.VURDERE_VILKÅR.toString()}>
           <VurderVilkår />
         </Tabs.Panel>
-        <Tabs.Panel value={StegType.VEDTAK.toString()}>
+        <Tabs.Panel value={StegType.FATTE_VEDTAK.toString()}>
           <Vedtak />
         </Tabs.Panel>
       </Tabs>

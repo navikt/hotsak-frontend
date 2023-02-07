@@ -404,7 +404,7 @@ const saksbehandlingHandlers = [
   }),
   rest.put<any, any, any>('/api/sak/:saksid/steg/fatte_vedtak', (req, res, ctx) => {
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
-    saker[sakIdx].steg = StegType.VEDTAK
+    saker[sakIdx].steg = StegType.FATTE_VEDTAK
 
     return res(ctx.status(200), ctx.json({}))
   }),

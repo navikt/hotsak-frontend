@@ -27,7 +27,10 @@ export interface Brillesak {
   sakstype: Oppgavetype
   soknadGjelder: string
   mottattDato: string
-  innsender: Person
+  innsender: {
+    fnr: string
+    navn: string
+  }
   bruker: Person
   saksbehandler: Saksbehandler
   status: OppgaveStatusType
@@ -165,7 +168,7 @@ export interface Navn {
 export interface Person {
   fnr: string
   fødselsdato: string
-  navn: string
+  navn: Navn
   telefon?: string
   brukernummer?: string
   kjønn?: Kjønn

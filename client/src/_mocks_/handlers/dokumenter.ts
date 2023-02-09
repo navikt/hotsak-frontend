@@ -30,7 +30,8 @@ const dokumentHandlers = [
 
     switch (dokumentID) {
       case '2345':
-        return res(ctx.delay(500), ctx.status(500), ctx.text('Dokumentet finnes ikke'))
+        //return res(ctx.delay(500), ctx.status(500), ctx.text('Dokumentet finnes ikke'))
+        dokument = kvittering
         break
       case '3456':
         dokument = brilleseddel

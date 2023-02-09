@@ -1395,10 +1395,7 @@
     },
     "innsender": {
       "fnr": "09418208349",
-      "navn": {
-        "fornavn": "Albert",
-        "etternavn": "Åberg"
-      },
+      "navn": "Alber Åberg",
       "telefon": ""
     },
     "status": "TILDELT_SAKSBEHANDLER",

@@ -15,7 +15,7 @@ import { useKontonummer } from './useKontonummer'
 
 export const Vedtak: React.FC = () => {
   const { sak } = useBrillesak()
-  const kontonummer = useKontonummer(sak?.innsender.fnr)
+  const kontonummer = useKontonummer(sak?.sakId, sak?.innsender.fnr)
   const VENSTREKOLONNE_BREDDE = '180px'
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.

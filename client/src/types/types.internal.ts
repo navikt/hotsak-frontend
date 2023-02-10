@@ -146,6 +146,7 @@ export interface KontonummerResponse {
 
 export interface KontonummerRequest {
   brukersFodselsnummer: string
+  sakId: string
 }
 
 export type BeregnSatsRequest = Brilleseddel

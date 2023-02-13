@@ -27,10 +27,6 @@ export const DokumentPanel: React.FC<DokumentPanelProps> = (props) => {
   const { journalpost, hentetDokument, hentForhåndsvisning, isError, isPdfError } = useDokument(journalpostID)
   const { valgtDokumentID } = useDokumentContext()
 
-  //const journalpostID = journalpost?.journalpostID
-
-  console.log('jpid', journalpostID)
-
   useEffect(() => {
     if (journalpostID && valgtDokumentID) {
       hentForhåndsvisning(journalpostID, valgtDokumentID)

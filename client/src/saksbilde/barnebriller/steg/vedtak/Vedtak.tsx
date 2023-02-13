@@ -1,3 +1,6 @@
+import styled from 'styled-components'
+
+import { Divide } from '@navikt/ds-icons'
 import { Alert, Button, Detail, Heading, Panel, Tag } from '@navikt/ds-react'
 
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
@@ -10,7 +13,9 @@ import { Etikett } from '../../../../felleskomponenter/typografi'
 import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
+import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
+import { BrevPanel } from './brev/BrevPanel'
 import { useKontonummer } from './useKontonummer'
 
 export const Vedtak: React.FC = () => {
@@ -89,10 +94,14 @@ export const Vedtak: React.FC = () => {
           Send til godkjenning
         </Button>
       </Panel>
-      <Panel border style={{ height: '100%' }}>
-        Her kommer det snart forhåndsvisning av brev
-      </Panel>
+      <VenstreKolonne>
+        <BrevPanel sakID={sak.sakId} />
+      </VenstreKolonne>
       <Historikk />
     </TreKolonner>
   )
 }
+
+const VenstreKolonne = styled(Panel)`
+  border-left: 1px solid var(--a-border-default);
+`

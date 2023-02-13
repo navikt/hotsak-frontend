@@ -1549,5 +1549,141 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+
+  {
+    "sakstype": "BARNEBRILLER",
+    "saksid": "87756",
+    "sakId": "87756",
+    "soknadGjelder": "Godkjenning steg",
+    "mottattDato": "2023-01-05T13:55:45",
+    "bruker": {
+      "fnr": "20071359671",
+      "fødselsdato": "2013-07-20",
+      "navn": {
+        "fornavn": "Hove",
+        "etternavn": "Off"
+      },
+      "telefon": ""
+    },
+    "innsender": {
+      "fnr": "09418208349",
+      "fødselsdato": "2013-07-20",
+      "navn": "Ålbert Aberg",
+      "telefon": ""
+    },
+    "vilkårsgrunnlag": {
+      "målform": "BOKMÅL",
+      "brilleseddel": {
+        "høyreSfære": "2.5",
+        "høyreSylinder": "6",
+        "venstreSfære": "3",
+        "venstreSylinder": "4.5"
+      },
+      "bestillingsdato": "2023-01-03",
+      "brillepris": "699",
+      "bestiltHosOptiker": { "vilkårOppfylt": "JA" },
+      "komplettBrille": {
+        "vilkårOppfylt": "JA"
+      }
+    },
+    "vilkårsvurdering": {
+      "id": "1234",
+      "sakId": "9877",
+      "resultat": "JA",
+      "sats": "SATS_1",
+      "satsBeløp": "750",
+      "satsBeskrivelse": "Briller med sfærisk styrke på minst ett glass ≥ 1,00D ≤ 4,00D og/eller cylinderstyrke ≥ 1,00D ≤ 4,00D",
+      "beløp": "699",
+      "vilkår": [
+        {
+          "id": "1",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet har ikke vedtak om brille i kalenderåret",
+          "beskrivelse": "Har barnet allerede vedtak om brille i kalenderåret?",
+          "identifikator": "HarIkkeVedtakIKalenderåret v1"
+        },
+        {
+          "id": "2",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet var under 18 år på bestillingsdato",
+          "beskrivelse": "Var barnet under 18 år på bestillingsdato?",
+          "identifikator": "Under18ÅrPåBestillingsdato v1"
+        },
+        {
+          "id": "3",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge",
+          "beskrivelse": "Er barnet medlem av folketrygden?",
+          "identifikator": "MedlemAvFolketrygden v1"
+        },
+        {
+          "id": "4",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0",
+          "beskrivelse": "Er brillestyrken innenfor de fastsatte rammene?",
+          "identifikator": "Brillestyrke v1"
+        },
+        {
+          "id": "5",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Bestillingsdato kan ikke være før 01.08.2022",
+          "beskrivelse": "Er bestillingsdato 01.08.2022 eller senere?",
+          "identifikator": "Bestillingsdato v1"
+        },
+        {
+          "id": "6",
+          "resultatAuto": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseAuto": "Bestillingsdato er 22.01.2022 eller senere",
+          "beskrivelse": "Er bestillingsdato innenfor siste 6 måneder fra dagens dato?",
+          "identifikator": "BestillingsdatoTilbakeITid v1"
+        },
+        {
+          "id": "7",
+          "resultatSaksbehandler": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseSaksbehandler": "Komplett brille",
+          "beskrivelse": "Er det bestilt en komplett brille?",
+          "identifikator": "komplettBrille"
+        },
+        {
+          "id": "8",
+          "resultatSaksbehandler": "JA",
+          "lovReferanse": "§2",
+          "lovdataLenke": "https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364",
+          "begrunnelseSaksbehandler": "Bestilt hos optiker",
+          "beskrivelse": "Er brillen bestilt hos optiker?",
+          "identifikator": "bestiltHosOptiker"
+        }
+      ]
+    },
+    "status": "TILDELT_SAKSBEHANDLER",
+    "steg": "FATTE_VEDTAK",
+    "journalposter": ["33445566"],
+    "statusEndret": "2023-01-05T14:31:42.815302",
+    "saksbehandler": {
+      "epost": "silje.saksbehandler@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

@@ -48,7 +48,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
       <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
         <Tabs.List>
           <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
-          <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkårsvurdering" />
+          <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkår" />
           <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
         <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>

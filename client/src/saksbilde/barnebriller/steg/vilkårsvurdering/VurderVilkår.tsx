@@ -42,9 +42,6 @@ export const VurderVilkår: React.FC = () => {
   const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
   const alertType = alertVariant(oppsummertResultat)
 
-  console.log(sak.vilkårsvurdering!.vilkår)
-  console.log(oppsummertResultat)
-
   return (
     <>
       <Panel>

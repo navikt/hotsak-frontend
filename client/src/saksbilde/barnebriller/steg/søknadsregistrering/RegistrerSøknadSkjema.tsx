@@ -111,7 +111,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
               <Tekstfelt
                 id="brillepris"
                 label="Pris på brillen"
-                description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og tilpasning."
+                description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell synsundersøkelse skal ikke inkluderes i prisen."
                 error={errors.brillepris?.message}
                 size="small"
                 {...methods.register('brillepris', {

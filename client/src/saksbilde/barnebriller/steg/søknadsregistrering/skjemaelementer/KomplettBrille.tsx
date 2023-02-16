@@ -17,7 +17,7 @@ export function KomplettBrille() {
     <>
       <Avstand paddingTop={6}>
         <Heading level="2" size="xsmall" spacing>
-          § 2 Komplett brille
+          § 2 Bestillingen må inneholde glass
         </Heading>
         <Controller
           name="komplettBrille.vilkårOppfylt"
@@ -25,7 +25,8 @@ export function KomplettBrille() {
           rules={{ required: 'Velg en verdi' }}
           render={({ field }) => (
             <RadioGroup
-              legend="Er det en komplett brille?"
+              legend="Inneholder bestillingen glass"
+              description="Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning."
               size="small"
               {...field}
               error={errors.komplettBrille?.vilkårOppfylt?.message}

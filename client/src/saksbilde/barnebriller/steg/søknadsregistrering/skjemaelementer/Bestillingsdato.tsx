@@ -38,7 +38,7 @@ export function Bestillingsdato() {
       <UNSAFE_DatePicker.Input
         {...inputProps}
         size="small"
-        label="Bestillingsdato"
+        label="Brillens bestillingsdato"
         id="bestillingsdato"
         value={inputProps.value}
         error={errors.bestillingsdato?.message}

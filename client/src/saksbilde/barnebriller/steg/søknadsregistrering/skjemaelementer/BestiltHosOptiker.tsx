@@ -24,6 +24,7 @@ export function BestiltHosOptiker() {
         render={({ field }) => (
           <RadioGroup
             legend="Er brillen bestilt hos optiker"
+            description="For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne."
             size="small"
             {...field}
             error={errors.bestiltHosOptiker?.vilkårOppfylt?.message}

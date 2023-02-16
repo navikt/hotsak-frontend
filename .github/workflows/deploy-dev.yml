@@ -1,4 +1,4 @@
-name: Build, deploy to dev-gcp
+name: Build, deploy to dev/labs and create release
 on:
   push:
     paths-ignore:
@@ -8,9 +8,9 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - hjelpemiddelId-for-endreBestilling
+
 env:
-  IMAGE: 'ghcr.io/navikt/hotsak-frontend:${{ github.sha }}'
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
 
@@ -19,9 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           start: npm run dev
           wait-on: 'http://localhost:3001'
@@ -30,70 +30,38 @@ jobs:
           record: false
 
   build:
+    name: Build, deploy to dev/labs and create release
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '16'
-      - uses: actions/checkout@v1
-        name: Checkout code
-      - name: Cache node deps
-        id: cache-node
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      - name: set timezone
-        run: export TZ=utc
-      - name: install deps
-        run: npm ci && npm run ci:all
-      #- name: validate ts
-      #  run: npm run validate-ts
-      - name: test
-        run: npm run test
-      - name: build bundle
-        run: npm run build
-      #- name: run e2e-test
-      #  run: npm run e2e-test
-      #- name: Archive Cypress artifacts
-      #  uses: actions/upload-artifact@v1
-      #  with:
-      #    name: videos
-      #    path: e2e-tests/cypress/videos
-      - name: pre-deploy
-        uses: navikt/digihot-deploy/actions/pre-deploy@v2
+      - uses: actions/checkout@v3
+      - uses: navikt/digihot-deploy/actions/pre-deploy@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_IMAGE: ghcr.io/navikt/hotsak-frontend
-      - name: build docker image
-        run: |
-          npm --prefix server prune --production
-          docker build . -t $IMAGE
-      - name: push docker image
-        run: |
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push $IMAGE
-        #run: |
-        #  echo "$GITHUB_TOKEN" | docker login --username "$GITHUB_REPOSITORY" --password-stdin ghcr.io
-        #  docker push ${{ env.IMAGE }}:${{ needs.set_version.outputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: deploy to dev
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ env.IMAGE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+      - name: Deploy to dev
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
-          VAR: image=${{ env.IMAGE }}
-      - name: post-deploy
-        uses: navikt/digihot-deploy/actions/post-deploy@v2
+      - uses: navikt/digihot-deploy/actions/post-deploy@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: draft release
-        uses: actions/create-release@latest
+      - uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -102,12 +70,10 @@ jobs:
           body: ${{ env.CHANGE_LOG }}
           draft: true
           prerelease: false
-      - name: deploy to labs
+      - name: Deploy to labs
         uses: nais/deploy/actions/deploy@v1
         env:
           DEPLOY_SERVER: deploy.nais.io:443
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: labs-gcp
           RESOURCE: .nais/labs.yaml
-          VAR: image=${{ env.IMAGE }}
-

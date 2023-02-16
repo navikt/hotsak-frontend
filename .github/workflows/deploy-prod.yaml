@@ -1,12 +1,14 @@
-name: deploy-prod
+name: Deploy to prod
+
 on:
   release:
     types: [published]
+
 jobs:
   deploy-prod:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: get release tag
         env:
           VERSION_TAG: ${{ github.event.release.tag_name }}
@@ -16,12 +18,11 @@ jobs:
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
           echo $IMAGE
       - uses: nais/deploy/actions/deploy@v1
-        name: deploy to prod-gcp
+        name: Deploy to prod
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: .nais/prod.yaml
-      - name: post-production
-        uses: navikt/digihot-deploy/actions/post-production@v2
+      - uses: navikt/digihot-deploy/actions/post-production@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

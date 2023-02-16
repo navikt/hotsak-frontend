@@ -4,7 +4,9 @@ export function oppsummertStatus(vilkår: Vilkår[]): VilkårsResultat {
   const vilkårsResultat = vilkår
     .map((v) => (v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto))
     .reduce((samletStatus, vilkårStatus) => {
-      if (
+      if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
+        return samletStatus
+      } else if (
         vilkårStatus === VilkårsResultat.NEI ||
         vilkårStatus === VilkårsResultat.KANSKJE ||
         vilkårStatus === VilkårsResultat.DOKUMENTASJON_MANGLER

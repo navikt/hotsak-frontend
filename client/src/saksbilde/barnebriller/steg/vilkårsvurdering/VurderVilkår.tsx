@@ -6,10 +6,11 @@ import { baseUrl, put } from '../../../../io/http'
 
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
-import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { alertVariant, oppsummertStatus } from './oppsummertStatus'
+import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
   const { sak, mutate } = useBrillesak()
@@ -41,6 +42,9 @@ export const VurderVilkår: React.FC = () => {
   const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
   const alertType = alertVariant(oppsummertResultat)
 
+  console.log(sak.vilkårsvurdering!.vilkår)
+  console.log(oppsummertResultat)
+
   return (
     <>
       <Panel>
@@ -56,9 +60,9 @@ export const VurderVilkår: React.FC = () => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Begrunnelse</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Begrunnelse saksbehandler</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Baseres på</Table.HeaderCell>
               <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Begrunnelse saksbehandler</Table.HeaderCell>
               <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
@@ -102,9 +106,9 @@ export const VurderVilkår: React.FC = () => {
                       {beskrivelse}
                     </Alert>
                   </Table.DataCell>
-                  <Table.DataCell>{begrunnelseAuto || '-'}</Table.DataCell>
-                  <Table.DataCell>{begrunnelseSaksbehandler || '-'}</Table.DataCell>
+                  <Table.DataCell>{metadataFor(identifikator)?.basertPå.join(', ') || '-'}</Table.DataCell>
                   <Table.DataCell>{vurdert}</Table.DataCell>
+                  <Table.DataCell>{begrunnelseSaksbehandler || '-'}</Table.DataCell>
                   <Table.DataCell>{lovReferanse}</Table.DataCell>
                 </Table.ExpandableRow>
               )

@@ -333,7 +333,7 @@ const saksbehandlingHandlers = [
         },
         {
           id: '3',
-          resultatAuto: 'JA',
+          resultatAuto: 'KANSKJE',
           lovReferanse: '§2',
           lovdataLenke: 'https://lovdata.no/dokument/SF/forskrift/2022-07-19-1364',
           begrunnelseAuto: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',

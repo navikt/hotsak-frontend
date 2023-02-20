@@ -62,7 +62,23 @@ export interface Vilkår {
   begrunnelseSaksbehandler?: string
   lovReferanse?: string
   lovdataLenke?: string
+  grunnlag: { [k: string]: string }
 }
+
+export interface Grunnlag {
+  bestillingsdato?: string
+  eksisterendeVedtakDato?: string
+  barnetsAlder?: string
+  datoOrdningenStartet?: string
+  seksMånederSiden?: string
+}
+
+export interface GrunnlagMetadata {
+  etikett: string
+  beskrivelse: string
+}
+
+export type GrunnlagType = keyof Grunnlag
 
 export enum VilkårsResultat {
   JA = 'JA',

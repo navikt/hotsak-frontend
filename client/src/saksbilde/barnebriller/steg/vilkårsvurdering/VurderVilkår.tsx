@@ -82,7 +82,7 @@ export const VurderVilkår: React.FC = () => {
               return (
                 <Table.ExpandableRow
                   onClick={() => toggleExpandedRad(id)}
-                  key={identifikator}
+                  key={id}
                   colSpan={6}
                   onOpenChange={() => toggleExpandedRad(id)}
                   open={åpneRader.includes(id)}

@@ -9,7 +9,9 @@ import { putOppdaterVilkår } from '../../../../io/http'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
+import { Etikett } from '../../../../felleskomponenter/typografi'
 import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/types.internal'
+import { grunnlagMetadata } from './vilkårMetada'
 
 export function SaksbehandlersVurdering({
   sakID,
@@ -43,6 +45,8 @@ export function SaksbehandlersVurdering({
       })
   }
 
+  const grunnlag = vilkår.grunnlag
+
   return (
     <Merknad>
       <SaksbehandlersVurderingPanel>
@@ -51,6 +55,20 @@ export function SaksbehandlersVurdering({
             {`${vilkår.lovReferanse} ${vilkår.beskrivelse}`}
           </Link>
         </Heading>
+
+        <Detail>VURDERINGEN BASERER SEG PÅ:</Detail>
+        {Object.keys(vilkår.grunnlag).map((grunnlagKey: string) => {
+          const metadata = grunnlagMetadata.get(grunnlagKey)
+          const verdi = grunnlag[grunnlagKey]
+
+          return (
+            <Avstand paddingBottom={6} key={grunnlagKey}>
+              <Etikett>{`${metadata?.etikett}: ${verdi}`}</Etikett>
+              <Detail>{metadata?.beskrivelse}</Detail>
+            </Avstand>
+          )
+        })}
+
         <FormProvider {...methods} key={`${sakID}-${vilkår.id}`}>
           <form
             onSubmit={methods.handleSubmit((data) => {

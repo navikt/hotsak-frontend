@@ -3,34 +3,43 @@ import { GrunnlagMetadata } from '../../../../types/types.internal'
 const vilkårMetadata = [
   {
     identifikator: 'Under18ÅrPåBestillingsdato v1',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Barnets alder (PDL)', 'Bestillingsdato'],
   },
   {
     identifikator: 'MedlemAvFolketrygden v1',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Medlemskap på bestillingsdato'],
   },
   {
     identifikator: 'bestiltHosOptiker',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
     identifikator: 'komplettBrille',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
     identifikator: 'HarIkkeVedtakIKalenderåret v1',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Bestillingsdato', 'Vedtakshistorikk (Hotsak, Krav-appen)'],
   },
   {
     identifikator: 'Brillestyrke v1',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Brillestyrke'],
   },
   {
     identifikator: 'BestillingsdatoTilbakeITid v1',
+    beskrivelse:
+      'Kravet må settes fram innen seks måneder regnet fra den datoen brillen ble bestilt. Fristen på 6 måneder gjelder fra da kravet tidligst kunne vært fremsatt (Folketrygdloven § 22-13, 2 ledd). Brillen må være bestilt etter at forskriften trådte i kraft 1. august 2022.',
     basertPå: ['Bestillingsdato'],
   },
   {
     identifikator: 'Bestillingsdato v1',
+    beskrivelse: 'Her kommer en litt med utfyllende tekst som sier noe juridisk korrekt om vilkåret.',
     basertPå: ['Bestillingsdato'],
   },
 ]
@@ -74,7 +83,7 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
     {
       etikett: 'Siste gyldige bestillingsdato',
       beskrivelse:
-        'Man kan kun søke om tilskudd til briller 6 måneder tilbake i tid. Bestillingsdato kan ikke være før denne.@',
+        'Man kan kun søke om tilskudd til briller 6 måneder tilbake i tid. Bestillingsdato kan ikke være før denne.',
     },
   ],
 ])

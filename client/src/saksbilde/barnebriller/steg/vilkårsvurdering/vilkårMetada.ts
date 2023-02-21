@@ -86,4 +86,32 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
         'Man kan kun søke om tilskudd til briller 6 måneder tilbake i tid. Bestillingsdato kan ikke være før denne.',
     },
   ],
+  [
+    'høyreSfære',
+    {
+      etikett: 'Høyre sfære',
+      beskrivelse: '',
+    },
+  ],
+  [
+    'høyreSylinder',
+    {
+      etikett: 'Høyre sylinder',
+      beskrivelse: '',
+    },
+  ],
+  [
+    'venstreSfære',
+    {
+      etikett: 'Venstre sfære',
+      beskrivelse: '',
+    },
+  ],
+  [
+    'venstreSylinder',
+    {
+      etikett: 'Venstre sylinder',
+      beskrivelse: '',
+    },
+  ],
 ])

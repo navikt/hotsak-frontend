@@ -11,7 +11,7 @@
     "dato": "2022-10-03",
     "tittel": "Endre artikkelnummer på bestilling av hjelpemidler som ikke er på rammeavtale",
     "innhold": "Det er nå mulig å endre artikkelnummer på hjelpemidler i en bestilling som ikke lenger ligger i hjelpemiddeldatabasen. Hvis artikkelnummeret ikke finnes i hjelpemiddeldatabasen, henter vi informasjon om hjelpemidlet fra OEBS.\n",
-    "lest": "2022-10-03T15:16:13.258321"
+    "lest": null
   },
   {
     "id": "7",

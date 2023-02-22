@@ -56,13 +56,13 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
   }, [isOnScreen])
   return (
     <>
-      <dt>
+      <dt ref={innslagRef}>
         <Ulest fading={isFading}>{dato}</Ulest>
         <Label as="h3" spacing>
           {innslag.tittel}
         </Label>
       </dt>
-      <dd ref={innslagRef}>
+      <dd>
         <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
         <div />
       </dd>

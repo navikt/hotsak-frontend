@@ -189,6 +189,7 @@ export interface Person {
   telefon?: string
   brukernummer?: string
   kjønn?: Kjønn
+  kontonummer?: string
 }
 
 export enum VedtaksgrunnlagType {

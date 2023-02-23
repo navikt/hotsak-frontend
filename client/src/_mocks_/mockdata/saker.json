@@ -1387,6 +1387,7 @@
     "bruker": {
       "fnr": "20071359671",
       "fødselsdato": "2013-07-20",
+      "kontonummer": "11112233333",
       "navn": {
         "fornavn": "Spencer",
         "etternavn": "Tjøstheim"
@@ -1422,6 +1423,7 @@
     "mottattDato": "2023-01-05T13:55:45Z",
     "bruker": {
       "fnr": "20071359671",
+      "kontonummer": "11112233333",
       "fødselsdato": "2013-07-20",
       "navn": {
         "fornavn": "Ove",
@@ -1610,6 +1612,7 @@
     "bruker": {
       "fnr": "20071359671",
       "fødselsdato": "2013-07-20",
+      "kontonummer": "11112233333",
       "navn": {
         "fornavn": "Hove",
         "etternavn": "Off"

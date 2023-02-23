@@ -6,11 +6,7 @@ import { useDokumentContext } from '../../../../oppgaveliste/dokumenter/Dokument
 import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { DokumentPanel } from '../../../../oppgaveliste/manuellJournalføring/DokumentPanel'
 
-import {
-  headerHøydeRem,
-  hotsakRegistrerSøknadHøyreKolonne,
-  hotsakRegistrerSøknadKolonne,
-} from '../../../../GlobalStyles'
+import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
 import { Flex } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'

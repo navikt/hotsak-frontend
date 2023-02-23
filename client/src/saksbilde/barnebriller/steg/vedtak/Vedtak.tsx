@@ -1,8 +1,9 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Divide } from '@navikt/ds-icons'
 import { Alert, Button, Detail, Heading, Panel, Tag } from '@navikt/ds-react'
 
+import { baseUrl, post } from '../../../../io/http'
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
@@ -16,12 +17,25 @@ import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
-import { useKontonummer } from './useKontonummer'
 
 export const Vedtak: React.FC = () => {
-  const { sak } = useBrillesak()
-  const kontonummer = useKontonummer(sak?.sakId, sak?.innsender.fnr)
+  const { sak, mutate } = useBrillesak()
+  //const kontonummer = useKontonummer(sak?.sakId, sak?.innsender.fnr)
   const VENSTREKOLONNE_BREDDE = '180px'
+
+  const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
+
+  useEffect(() => {
+    if (status === VilkårsResultat.JA && !sak?.bruker.kontonummer) {
+      console.log('Mangler kontonummer for bruker, kaller endepunkt for å få hentet inn det')
+      post(`${baseUrl}/api/personinfo/kontonr/`, {
+        brukersFodselsnummer: sak?.innsender.fnr,
+        sakId: sak?.sakId,
+      }).then(() => {
+        mutate()
+      })
+    }
+  }, [sak?.innsender.fnr, sak?.bruker.kontonummer, sak?.sakId, status, mutate])
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
@@ -46,8 +60,8 @@ export const Vedtak: React.FC = () => {
     )
   }
 
-  const { vilkårsvurdering } = sak
-  const status = oppsummertStatus(vilkårsvurdering!.vilkår)
+  const { bruker, vilkårsvurdering } = sak
+
   const alertType = alertVariant(status)
 
   return (
@@ -81,18 +95,29 @@ export const Vedtak: React.FC = () => {
                 <Etikett>{capitalizeName(`${sak.innsender.navn}`)}</Etikett>
               </Kolonne>
             </Rad>
-            <Rad>
-              <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
-              <Kolonne>
-                <Etikett>{formaterKontonummer(kontonummer?.kontonummer)}</Etikett>
-              </Kolonne>
-            </Rad>
+            {bruker.kontonummer ? (
+              <Rad>
+                <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
+                <Kolonne>
+                  <Etikett>{formaterKontonummer(bruker?.kontonummer)}</Etikett>
+                </Kolonne>
+              </Rad>
+            ) : (
+              <Avstand paddingTop={6}>
+                <Alert size="small" variant="warning">
+                  <Etikett>Mangler kontonummer på bruker</Etikett>
+                  <Detail>Bruker må kontaktes for å legge inn kontonummer før saken kan sendes til godkjenning.</Detail>
+                </Alert>
+              </Avstand>
+            )}
           </>
         )}
         <Avstand paddingBottom={6} />
-        <Button size="small" variant="primary">
-          Send til godkjenning
-        </Button>
+        {bruker.kontonummer && (
+          <Button size="small" variant="primary">
+            Send til godkjenning
+          </Button>
+        )}
       </Panel>
       <VenstreKolonne>
         <BrevPanel sakID={sak.sakId} />

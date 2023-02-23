@@ -24,7 +24,7 @@ export const formaterDato = (dato?: string) => {
 }
 
 export const norskTimestamp = (dato: string) => {
-  return dayjs(dato).format(NORSK_TIDSPUNKTFORMAT)
+  return dayjs(dato.endsWith('Z') ? dato : `${dato}Z`).format(NORSK_TIDSPUNKTFORMAT)
 }
 
 export const findLatest = (dates: Dayjs[]): Dayjs => {

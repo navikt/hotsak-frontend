@@ -3,7 +3,7 @@
     "journalpostID": "11223344",
     "journalstatus": "MOTTATT",
     "status": "MOTTATT",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45",
+    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
     "tittel": "NAV 10-07.34 Tilskudd ved kjøp av briller til barn",
     "fnrInnsender": "15084300133",
     "enhet": null,
@@ -53,7 +53,7 @@
     "journalpostID": "22334455",
     "journalstatus": "MOTTATT",
     "status": "TILDELT_SAKSBEHANDLER",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45",
+    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "enhet": [
@@ -115,7 +115,7 @@
     "journalpostID": "33445566",
     "journalstatus": "MOTTATT",
     "status": "TILDELT_SAKSBEHANDLER",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45",
+    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "enhet": [

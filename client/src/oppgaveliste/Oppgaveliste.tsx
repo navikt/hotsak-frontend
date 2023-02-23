@@ -32,7 +32,7 @@ import { Fødselsnummer } from './kolonner/Fødselsnummer'
 import { Gjelder } from './kolonner/Gjelder'
 import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
 import { MenyKnapp } from './kolonner/MenyKnapp'
-import { Motatt } from './kolonner/Motatt'
+import { Mottatt } from './kolonner/Mottatt'
 import { OppgaveType } from './kolonner/OpgaveType'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
@@ -134,7 +134,7 @@ export const Oppgaveliste: React.FC = () => {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: Oppgave) => <Motatt dato={oppgave.mottatt} />,
+      render: (oppgave: Oppgave) => <Mottatt dato={oppgave.mottatt} />,
     },
     { key: 'MENU', sortable: false, render: (oppgave: Oppgave) => <MenyKnapp oppgave={oppgave} onMutate={mutate} /> },
   ]

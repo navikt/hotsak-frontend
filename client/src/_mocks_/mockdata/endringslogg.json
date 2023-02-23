@@ -18,48 +18,48 @@
     "dato": "2022-09-05",
     "tittel": "Endre artikkelnummer på en bestilling fra HOTSAK",
     "innhold": "Det er nå mulig å endre artikkelnummer på en bestilling før ordren opprettes i OeBS. Dette har vi utviklet på bakgrunn av at en har behov for å tømme lager for tilsvarende hjelpemidler. Dette kan f.eks. være nødvendig på grunn av gjenbruk eller endringer i rammeavtaler der en har lagerbeholdning på forrige produkt. Foreløpig gjelder dette kun hovedhjelpemidler og ikke tilbehør. Det jobber vi med, og vil varsle når det er klart.\n",
-    "lest": "2022-09-05T22:52:39.329645"
+    "lest": "2022-09-05T22:52:39.329645Z"
   },
   {
     "id": "6",
     "dato": "2022-08-18",
     "tittel": "Ny funksjon i digital behovsmelding",
     "innhold": "I dag har vi lansert en funksjon i digital behovsmelding der kommunal formidler må begrunne behovet for mer enn 1 stk. av et produkt. Begrunnelsen for behovet vil også være synlig i HOTSAK.\n",
-    "lest": "2022-08-18T11:51:31.500851"
+    "lest": "2022-08-18T11:51:31.500851Z"
   },
   {
     "id": "5",
     "dato": "2022-06-10",
     "tittel": "Flere saker inn i HOTSAK: Institusjon/sykehjem",
     "innhold": "Vi har nå åpnet for at digitale søknader hvor formidler har krysset av for at innbygger bor på institusjon/sykehjem nå vil kunne rutes til HOTSAK. Det forutsetter at ikke andre kriterier vi holder utenfor trer inn (f.eks. søknad om lavere rangert hjelpemiddel).\n\nVi minner om at søknader i HOTSAK fortsatt må saksbehandles på lik linje som saker som går til Gosys/Infotrygd, da det ikke er noen begrensninger i digital søknad på hvilke artikler en kan søke på til bruk på institusjon. Vi gjør foreløpig ingen sjekk i HOTSAK på at innbygger faktisk bor på institusjon - opplysningen er hentet fra det formidler har oppgitt i søknaden.\n",
-    "lest": "2022-03-25T15:05:25.135916"
+    "lest": "2022-03-25T15:05:25.135916Z"
   },
   {
     "id": "4",
     "dato": "2022-05-30",
     "tittel": "Enkel kopiering av formidlers navn og telefonnummer",
     "innhold": "Etter tilbakemeldinger har vi satt opp kopiering av formidlers navn og telefonnummer i venstrekolonnen (ikon) for å spare tastetrykk når dere skal ta denne informasjonen med videre.\n\nArtikkelnummer i hovedbildet vil nå vises i fet skrift (bold).\n",
-    "lest": "2022-03-25T15:05:25.084342"
+    "lest": "2022-03-25T15:05:25.084342Z"
   },
   {
     "id": "3",
     "dato": "2022-04-08",
     "tittel": "Første versjon av søkefunksjon og personoversikt",
     "innhold": "Søket henter navn og telefonnummer fra Persondataløsningen i NAV (PDL).\nBrukernummer og utlånshistorikk hentes fra OEBS.\nSaker som viser på personoversikten hentes foreløpig kun fra HOTSAK.\nHvis bruker har kode 6, 7 eller er egen ansatt, får man melding om at du ikke har tilgang til å søke opp bruker. Da vises verken personlinja eller saks-/utlånsoversikten.\nDet er også lagt inn en sjekk mot brukers geografiske tilknytning slik at saksbehandler kun får lov til å slå opp brukere tilknyttet den sentralen saksbehandler jobber på.\n\n\nVi mangler foreløpig en validering på at man søker på gyldig fødselsnummer. Hvis man søker på noe som ikke er et fødselsnummer (f.eks. navn eller brukernummer), vil man få en melding om at bruker ikke finnes. Dette er noe som vi vil jobbe videre med.\nI tillegg til å søke opp en person med fødselsnummer, kan en også gå til personoversikten ved å klikke på navnet til personen i personlinja når man er inne på en sak.\n",
-    "lest": "2022-03-25T15:05:25.0401"
+    "lest": "2022-03-25T15:05:25.0401Z"
   },
   {
     "id": "2",
     "dato": "2022-04-05",
     "tittel": "Vi har fjernet varselet \"Tilleggsinformasjon i søknaden\"",
     "innhold": "Vi har fjernet varselet \"Tilleggsinformasjon i søknaden\" som var markert med et oransje varsel og utropstegn under \"Greit å vite\"-informasjonen til venstre i saksbildet.\nEtter tidligere diskusjon med pilotsentralene ble vi enig om at det holder med den blå markeringen i margen foran fritekst/avkrysninger i hovedbildet der formidler har lagt til dette i søknaden.\nDette gjelder for nye søknader som kommer inn. Varselet under \"Greit å vite\" vil fortsatt vises på saker som er registrert før denne endringen.\n",
-    "lest": "2022-03-29T11:07:56.078417"
+    "lest": "2022-03-29T11:07:56.078417Z"
   },
   {
     "id": "1",
     "dato": "2022-04-05",
     "tittel": "Hotsak har fått endringslogg!",
     "innhold": "Her vil du få varsler når vi gjør endringer i HOTSAK som vi ønsker å gjøre deg oppmerksom på. Når en har åpnet meldinger og de har vært synlig på skjermen i 5 sekunder, vil varselet forsvinne.\n",
-    "lest": "2022-03-29T11:07:56.345531"
+    "lest": "2022-03-29T11:07:56.345531Z"
   }
 ]

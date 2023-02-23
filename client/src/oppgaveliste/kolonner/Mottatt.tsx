@@ -8,7 +8,7 @@ interface MottattProps {
   dato: string
 }
 
-export const Motatt = React.memo(({ dato }: MottattProps) => {
+export const Mottatt = React.memo(({ dato }: MottattProps) => {
   return (
     <div>
       <Tekst>{norskTimestamp(dato)}</Tekst>

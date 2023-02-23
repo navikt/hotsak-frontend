@@ -128,21 +128,6 @@ export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
   }
 }
 
-export const httpHtml = async <T = any>(url: string): Promise<SaksbehandlingApiResponse> => {
-  const headers = { headers: { Accept: 'text/html' } }
-  const response = await fetch(`${baseUrl}/${url}`, headers)
-
-  if (response.status >= 400) {
-    const errorMessage = await getErrorMessage(response)
-    throw new ResponseError(response.status, errorMessage)
-  }
-
-  return {
-    status: response.status,
-    data: await getData(response),
-  }
-}
-
 export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiResponse<T>> => {
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)

@@ -3,7 +3,9 @@ import styled from 'styled-components'
 
 import { Loader } from '@navikt/ds-react'
 
+import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../../felleskomponenter/Feilmelding'
+import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { RessursStatus } from '../../../../../types/types.internal'
 import { useBrev } from './brevHook'
 
@@ -47,9 +49,10 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
       <FeilmeldingDiv>
-        <div>
-          <Loader size="3xlarge" title="Henter forhåndsvisning av brev..." />
-        </div>
+        <Loader size="medium" title="Genererer forhåndsvisning av brev..." />
+        <Avstand paddingLeft={4}>
+          <Etikett>Genererer forhåndsvisning av brev...</Etikett>
+        </Avstand>
       </FeilmeldingDiv>
     )
   } else

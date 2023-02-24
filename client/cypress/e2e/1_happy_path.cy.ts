@@ -14,16 +14,16 @@ describe('Happy path', () => {
       )}.ignored-part`
     )
   })
-  before(() => {
-    cy.visit('/')
-  })
 
   it('burde kunne starte en ufordelt sak', () => {
+    cy.visit('/')
     cy.get('[data-cy="btn-tildel-sak-222222"]').click()
     cy.url().should('include', '/sak/222222/hjelpemidler')
   })
 
   it('burde kunne innvilge en søknad', () => {
+    cy.visit('/sak/222222/hjelpemidler')
+    cy.get('[data-cy="btn-tildel-sak-222222"]').click()
     cy.get('[data-cy="btn-vis-vedtak-modal"]').should('have.text', 'Innvilg søknaden').click()
     cy.get('h1').contains('Vil du innvilge søknaden?').should('be.visible')
     cy.get('p')
@@ -37,7 +37,6 @@ describe('Happy path', () => {
   })
 
   it('burde kunne overføre til Gosys', () => {
-    // re-visit URL to clear state
     cy.visit('/sak/222222/hjelpemidler')
     cy.get('[data-cy="btn-tildel-sak-222222"]').click()
     cy.get('[data-cy="btn-vis-gosys-modal"]').should('have.text', 'Overfør til Gosys').click()

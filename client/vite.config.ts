@@ -50,6 +50,7 @@ export default defineConfig((env) => ({
   },
   server: {
     port: 3001,
+    strictPort: true,
   },
   test: {
     globals: true,

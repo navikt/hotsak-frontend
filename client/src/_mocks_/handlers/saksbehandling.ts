@@ -8,24 +8,9 @@ import {
   StegType,
   VurderVilkårRequest,
 } from '../../types/types.internal'
-import historikk from '../mockdata/historikk.json'
-import oppgaveliste from '../mockdata/oppgaveliste.json'
-import saker from '../mockdata/saker.json'
-
-const sakshistorikk = [
-  { saksid: '111111', hendelser: deepClone(historikk) },
-  { saksid: '222222', hendelser: deepClone(historikk) },
-  { saksid: '5878444', hendelser: deepClone(historikk) },
-  { saksid: '1234567', hendelser: deepClone(historikk) },
-  { saksid: '888888', hendelser: deepClone(historikk) },
-  { saksid: '999999', hendelser: deepClone(historikk) },
-  { saksid: '112233', hendelser: deepClone(historikk) },
-  { saksid: '223344', hendelser: deepClone(historikk) },
-]
-
-function deepClone(array: any[]) {
-  return JSON.parse(JSON.stringify(array))
-}
+import { mutableSaker as saker } from './modell'
+import { mutalbleOppgaveliste as oppgaveliste } from './modell'
+import { mutableSakshistorikk as sakshistorikk } from './modell'
 
 const saksbehandlingHandlers = [
   rest.post(`/api/tildeling/:saksnummer`, (req, res, ctx) => {

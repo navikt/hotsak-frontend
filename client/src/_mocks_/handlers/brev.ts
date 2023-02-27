@@ -8,7 +8,7 @@ const brevHandlers = [
     const buffer = await fetch(innvilgetBrev).then((res) => res.arrayBuffer())
 
     return res(
-      ctx.delay(3000),
+      ctx.delay(1000),
       ctx.set('Content-Length', buffer.byteLength.toString()),
       ctx.set('Content-Type', 'application/pdf'),
       ctx.body(buffer)

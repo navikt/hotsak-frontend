@@ -32,13 +32,22 @@ export interface Brillesak {
     navn: string
   }
   bruker: Person
-  saksbehandler: Saksbehandler
+  saksbehandler?: Saksbehandler
   status: OppgaveStatusType
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
   journalposter: string[]
   enhet: Enhet[]
+  totrinnskontroll?: TotrinnsKontroll
+}
+
+export interface TotrinnsKontroll {
+  saksbehandler: Saksbehandler
+  godkjenner?: Saksbehandler
+  resultat?: string
+  begrunnelse?: string
+  opprettet?: LocalDateTime
 }
 
 export interface Vilkårsvurdering {
@@ -446,6 +455,7 @@ export enum OppgaveStatusType {
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
   SENDT_GOSYS = 'SENDT_GOSYS',
   AVVIST = 'AVVIST',
+  AVVENTER_GODKJENNING = 'AVVENTER_GODKJENNING',
   VEDTAK_FATTET = 'VEDTAK_FATTET',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',

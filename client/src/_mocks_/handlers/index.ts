@@ -9,6 +9,7 @@ import kontonummerHandlers from './kontonummer'
 import personInfoHandlers from './personoversikt'
 import saksbehandlingHandlers from './saksbehandling'
 import saksoversiktHandlers from './saksoversikt'
+import totrinnsKontrollHandlers from './totrinnkontroll'
 
 const handlers = [
   ...saksbehandlingHandlers,
@@ -22,6 +23,7 @@ const handlers = [
   ...brillekalkulatorHandlers,
   ...kontonummerHandlers,
   ...brevHandlers,
+  ...totrinnsKontrollHandlers,
 ]
 
 export default handlers

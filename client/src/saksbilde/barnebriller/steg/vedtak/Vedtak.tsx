@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Alert, Button, Detail, Heading, Panel, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
+import { formaterDato } from '../../../../utils/date'
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
@@ -11,7 +12,7 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { Etikett } from '../../../../felleskomponenter/typografi'
-import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
@@ -19,7 +20,9 @@ import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertS
 import { BrevPanel } from './brev/BrevPanel'
 
 export const Vedtak: React.FC = () => {
+  const [loading, setLoading] = useState(false)
   const { sak, mutate } = useBrillesak()
+
   //const kontonummer = useKontonummer(sak?.sakId, sak?.innsender.fnr)
   const VENSTREKOLONNE_BREDDE = '180px'
 
@@ -36,6 +39,16 @@ export const Vedtak: React.FC = () => {
       })
     }
   }, [sak?.innsender.fnr, sak?.bruker.kontonummer, sak?.sakId, status, mutate])
+
+  const sendTilGodkjenning = () => {
+    setLoading(true)
+    post(`/api/sak/${sak!.sakId}/kontroll`, {})
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        mutate()
+      })
+  }
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
@@ -113,10 +126,23 @@ export const Vedtak: React.FC = () => {
           </>
         )}
         <Avstand paddingBottom={6} />
-        {bruker.kontonummer && (
-          <Button size="small" variant="primary">
-            Send til godkjenning
-          </Button>
+
+        {sak.status === OppgaveStatusType.AVVENTER_GODKJENNING ? (
+          <Alert variant="info" size="small">
+            {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
+          </Alert>
+        ) : (
+          bruker.kontonummer && (
+            <Button
+              loading={loading}
+              disabled={loading}
+              size="small"
+              variant="primary"
+              onClick={() => sendTilGodkjenning()}
+            >
+              Send til godkjenning
+            </Button>
+          )
         )}
       </Panel>
       <VenstreKolonne>

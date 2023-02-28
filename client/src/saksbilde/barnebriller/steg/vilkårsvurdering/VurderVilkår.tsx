@@ -8,12 +8,14 @@ import { AlertContainer, AlertContainerBred } from '../../../../felleskomponente
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { alertVariant, oppsummertStatus } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
   const { sak, mutate } = useBrillesak()
+  const { setValgtTab } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
 
@@ -21,6 +23,7 @@ export const VurderVilkår: React.FC = () => {
     put(`${baseUrl}/api/sak/${sakID}/steg/fatte_vedtak`)
       .catch(() => setLagrer(false))
       .then(() => {
+        setValgtTab(StegType.FATTE_VEDTAK)
         mutate()
         setLagrer(false)
       })

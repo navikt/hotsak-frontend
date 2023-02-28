@@ -154,6 +154,7 @@ export enum StegType {
   INNHENTE_FAKTA = 'INNHENTE_FAKTA',
   VURDERE_VILKÅR = 'VURDERE_VILKÅR',
   FATTE_VEDTAK = 'FATTE_VEDTAK',
+  GODKJENNE = 'GODKJENNE',
   BREV = 'BREV',
   UTBETALING = 'UTBETALING',
 }
@@ -455,7 +456,7 @@ export enum OppgaveStatusType {
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
   SENDT_GOSYS = 'SENDT_GOSYS',
   AVVIST = 'AVVIST',
-  AVVENTER_GODKJENNING = 'AVVENTER_GODKJENNING',
+  AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
   VEDTAK_FATTET = 'VEDTAK_FATTET',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
@@ -469,6 +470,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
+  [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
 ])
 
 export enum VedtakStatusType {

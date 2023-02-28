@@ -127,7 +127,7 @@ export const Vedtak: React.FC = () => {
         )}
         <Avstand paddingBottom={6} />
 
-        {sak.status === OppgaveStatusType.AVVENTER_GODKJENNING ? (
+        {sak.status === OppgaveStatusType.AVVENTER_GODKJENNER ? (
           <Alert variant="info" size="small">
             {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
           </Alert>

@@ -1793,8 +1793,8 @@
 
   {
     "sakstype": "BARNEBRILLER",
-    "saksid": "87756",
-    "sakId": "87756",
+    "saksid": "87757",
+    "sakId": "87757",
     "soknadGjelder": "Denna er klar for totrinnskontroll",
     "mottattDato": "2023-01-05T13:55:45Z",
     "bruker": {
@@ -1963,7 +1963,7 @@
       ]
     },
     "status": "TILDELT_SAKSBEHANDLER",
-    "steg": "FATTE_VEDTAK",
+    "steg": "GODKJENNE",
     "journalposter": ["33445566"],
     "statusEndret": "2023-01-05T14:31:42.815302Z",
 

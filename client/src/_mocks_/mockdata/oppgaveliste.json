@@ -331,5 +331,27 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+  {
+    "sakstype": "TILSKUDD",
+    "saksid": "87757",
+    "beskrivelse": "Denna skal til totrinnskontroll",
+    "mottatt": "2023-01-05T13:55:45Z",
+    "innsender": "Far forelder",
+    "bruker": {
+      "fnr": "20071359671",
+      "funksjonsnedsettelser": ["syn"],
+      "fornavn": "Hove",
+      "etternavn": "Off",
+      "bosted": ""
+    },
+    "status": "AVVENTER_GODKJENNER",
+    "statusEndret": "2023-01-05T14:31:42.815302Z",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

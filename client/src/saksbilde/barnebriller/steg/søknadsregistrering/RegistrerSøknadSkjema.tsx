@@ -15,8 +15,9 @@ import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokum
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
-import { MålformType, RegistrerSøknadData, VurderVilkårRequest } from '../../../../types/types.internal'
+import { MålformType, RegistrerSøknadData, StegType, VurderVilkårRequest } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
 import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
 import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
@@ -33,6 +34,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
+  const { setValgtTab } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const handleError = useErrorHandler()
 
@@ -49,6 +51,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     postVilkårsvurdering(vurderVilkårRequest)
       .catch(() => setVenterPåVilkårsvurdering(false))
       .then(() => {
+        setValgtTab(StegType.VURDERE_VILKÅR)
         mutate()
         setVenterPåVilkårsvurdering(false)
       })

@@ -55,7 +55,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           disabled={isFetching}
           loading={isFetching}
         >
-          Start saken
+          Ta saken
         </Button>
       }
     </>

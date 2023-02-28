@@ -8,6 +8,7 @@ import { AlertError } from '../../feilsider/AlertError'
 import { Oppgavetype, StegType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { useBrillesak } from '../sakHook'
+import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import RegistrerSøknad from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
@@ -20,7 +21,7 @@ const BarnebrilleBildeContainer = styled.div`
 `
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
-  const [valgtTab, setValgtTab] = useState(sak?.steg.toString())
+  const { valgtTab, setValgtTab } = useManuellSaksbehandlingContext()
   const handleError = useErrorHandler()
 
   if (isError) {
@@ -29,9 +30,11 @@ const BarnebrilleContent: React.FC = React.memo(() => {
 
   useEffect(() => {
     if (sak) {
+      console.log('Setter valgt tab i useEffect første gang ', sak.steg)
+
       setValgtTab(sak?.steg)
     }
-  }, [sak?.steg])
+  }, [])
 
   if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(
@@ -40,8 +43,6 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   }
 
   if (!sak) return <div>Fant ikke saken</div>
-
-  const { steg } = sak
 
   return (
     <TabContainer>
@@ -74,7 +75,9 @@ const LasterBarnebrilleBilde = () => (
 export const BarnebrilleBilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterBarnebrilleBilde />}>
-      <BarnebrilleContent />
+      <ManuellSaksbehandlingProvider>
+        <BarnebrilleContent />
+      </ManuellSaksbehandlingProvider>
     </React.Suspense>
   </ErrorBoundary>
 )

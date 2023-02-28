@@ -29,10 +29,10 @@ const totrinnsKontrollHandlers = [
 
     //sakshistorikk[historikkIdx]['hendelser'].push(hendelse)
     saker[sakIdx]['saksbehandler'] = undefined
-    saker[sakIdx]['status'] = 'AVVENTER_GODKJENNING'
+    saker[sakIdx]['status'] = 'AVVENTER_GODKJENNER'
     saker[sakIdx]['totrinnskontroll'] = totrinnkontroll
     oppgaveliste[oppgaveIdx]['saksbehandler'] = null
-    oppgaveliste[oppgaveIdx]['status'] = 'AVVENTER_GODKJENNING'
+    oppgaveliste[oppgaveIdx]['status'] = 'AVVENTER_GODKJENNER'
 
     return res(ctx.delay(500), ctx.status(201), ctx.json({}))
   }),

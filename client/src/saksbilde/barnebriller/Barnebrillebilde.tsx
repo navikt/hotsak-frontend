@@ -31,8 +31,11 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   useEffect(() => {
     if (sak) {
       console.log('Setter valgt tab i useEffect første gang ', sak.steg)
-
-      setValgtTab(sak?.steg)
+      if (sak.steg === StegType.GODKJENNE) {
+        setValgtTab(StegType.INNHENTE_FAKTA)
+      } else {
+        setValgtTab(sak?.steg)
+      }
     }
   }, [])
 

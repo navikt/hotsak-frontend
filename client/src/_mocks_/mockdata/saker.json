@@ -1914,8 +1914,8 @@
           "lovdataLenke": "https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3",
           "resultatAuto": "JA",
           "begrunnelseAuto": "Barnet har ikke vedtak om brille i kalenderåret",
-          "resultatSaksbehandler": null,
-          "begrunnelseSaksbehandler": null,
+          "resultatSaksbehandler": "JA",
+          "begrunnelseSaksbehandler": "Her har det vært noe tull med andre saker så dato stemmer ikke. Overprøver dette vilkåret basert på informasjon i vedlegg til søknaden.",
           "grunnlag": {}
         },
         {

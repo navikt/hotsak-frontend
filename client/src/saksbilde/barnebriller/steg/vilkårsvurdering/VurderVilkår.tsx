@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useParams } from 'react-router'
 
 import { Alert, BodyLong, Button, Heading, Panel, Table } from '@navikt/ds-react'
 
@@ -6,6 +7,7 @@ import { baseUrl, put } from '../../../../io/http'
 
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
 import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -14,22 +16,29 @@ import { alertVariant, oppsummertStatus } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
+  const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, mutate } = useBrillesak()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
 
-  function gåTilNesteSteg(sakID: string) {
-    put(`${baseUrl}/api/sak/${sakID}/steg/fatte_vedtak`)
-      .catch(() => setLagrer(false))
-      .then(() => {
-        setValgtTab(StegType.FATTE_VEDTAK)
-        mutate()
-        setLagrer(false)
-      })
+  function gåTilNesteSteg(sakID: string, steg: StegType) {
+    if (steg === StegType.GODKJENNE) {
+      setValgtTab(StegType.FATTE_VEDTAK)
+    } else {
+      put(`${baseUrl}/api/sak/${sakID}/steg/fatte_vedtak`)
+        .catch(() => setLagrer(false))
+        .then(() => {
+          setValgtTab(StegType.FATTE_VEDTAK)
+          mutate()
+          setLagrer(false)
+        })
+    }
   }
 
-  if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
+  if (!sak) {
+    return <Feilmelding>{`Fant ikke sak med saknummer ${saksnummer}`}</Feilmelding>
+  } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (sak?.steg === StegType.INNHENTE_FAKTA) {
     return (
@@ -73,7 +82,6 @@ export const VurderVilkår: React.FC = () => {
                 id,
                 identifikator,
                 resultatAuto,
-                begrunnelseAuto,
                 beskrivelse,
                 resultatSaksbehandler,
                 begrunnelseSaksbehandler,
@@ -92,6 +100,7 @@ export const VurderVilkår: React.FC = () => {
                   togglePlacement={'right'}
                   content={
                     <SaksbehandlersVurdering
+                      lesevisning={sak.steg === StegType.GODKJENNE}
                       sakID={sak.sakId}
                       vilkår={vilkår}
                       onSaved={() => {
@@ -119,11 +128,11 @@ export const VurderVilkår: React.FC = () => {
           <Button
             variant="primary"
             size="small"
-            onClick={() => gåTilNesteSteg(sak.sakId)}
+            onClick={() => gåTilNesteSteg(sak.sakId, sak.steg)}
             disabled={lagrer}
             loading={lagrer}
           >
-            Til vedtak
+            Neste
           </Button>
         </ButtonContainer>
       </Panel>

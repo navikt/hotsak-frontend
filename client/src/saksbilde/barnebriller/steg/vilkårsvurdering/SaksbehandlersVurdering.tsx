@@ -1,50 +1,25 @@
-import { useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Button, Detail, Heading, Link, Panel, Radio, RadioGroup } from '@navikt/ds-react'
-
-import { putOppdaterVilkår } from '../../../../io/http'
+import { Detail, Heading, Link, Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Kolonner } from '../../../../felleskomponenter/Kolonner'
-import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/types.internal'
+import { Vilkår } from '../../../../types/types.internal'
+import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
+import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
 import { grunnlagMetadata, metadataFor } from './vilkårMetada'
 
 export function SaksbehandlersVurdering({
   sakID,
+  lesevisning,
   vilkår,
   onSaved,
 }: {
   sakID: string
+  lesevisning: boolean
   vilkår: Vilkår
   onSaved: () => any
 }) {
-  const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
-  const methods = useForm<OppdaterVilkårData>({
-    defaultValues: {
-      resultatSaksbehandler: '',
-      begrunnelseSaksbehandler: '',
-    },
-  })
-
-  const {
-    control,
-    formState: { errors },
-  } = methods
-
-  const oppdaterVilkår = (vilkårID: string, data: OppdaterVilkårData) => {
-    setVenterPåVilkårsvurdering(true)
-    putOppdaterVilkår(sakID, vilkårID, data)
-      .catch(() => setVenterPåVilkårsvurdering(false))
-      .then(() => {
-        setVenterPåVilkårsvurdering(false)
-        onSaved()
-      })
-  }
-
   const grunnlag = vilkår.grunnlag
 
   return (
@@ -57,68 +32,28 @@ export function SaksbehandlersVurdering({
             </Link>
           </Heading>
           <Brødtekst>{metadataFor(vilkår.identifikator)?.beskrivelse}</Brødtekst>
-          <Avstand paddingTop={6}>
+          <Avstand paddingTop={6} paddingBottom={4}>
             <Detail>VURDERINGEN BASERER SEG PÅ:</Detail>
           </Avstand>
+          {vilkår.resultatSaksbehandler && <Etikett>Saksbehandler sin vurdering</Etikett>}
+
           {Object.keys(vilkår.grunnlag).map((grunnlagKey: string) => {
             const metadata = grunnlagMetadata.get(grunnlagKey)
             const verdi = grunnlag[grunnlagKey]
 
             return (
-              <Avstand paddingBottom={6} key={grunnlagKey}>
+              <Avstand paddingBottom={4} key={grunnlagKey}>
                 <Etikett>{`${metadata?.etikett}: ${verdi}`}</Etikett>
                 <Detail>{metadata?.beskrivelse}</Detail>
               </Avstand>
             )
           })}
 
-          <FormProvider {...methods} key={`${sakID}-${vilkår.id}`}>
-            <form
-              onSubmit={methods.handleSubmit((data) => {
-                oppdaterVilkår(vilkår.id, data)
-              })}
-            >
-              <Detail uppercase spacing>
-                Din vurdering
-              </Detail>
-              <Controller
-                name="resultatSaksbehandler"
-                control={control}
-                rules={{ required: 'Velg en verdi' }}
-                render={({ field }) => (
-                  <RadioGroup
-                    legend="Er vilkåret oppfylt"
-                    size="small"
-                    {...field}
-                    error={errors.resultatSaksbehandler?.message}
-                  >
-                    <Radio value={VilkårSvar.JA}>Ja</Radio>
-                    <Radio value={VilkårSvar.NEI}>Nei</Radio>
-                  </RadioGroup>
-                )}
-              />
-
-              <Avstand paddingTop={4}>
-                <Tekstområde
-                  size="small"
-                  label="Begrunnelse"
-                  description="Skriv din individuelle begrunnelse"
-                  error={errors.begrunnelseSaksbehandler?.message}
-                  {...methods.register('begrunnelseSaksbehandler', { required: 'Skriv inn begrunnelse' })}
-                ></Tekstområde>
-              </Avstand>
-              <Avstand paddingTop={4}>
-                <Kolonner>
-                  <Button variant="primary" size="small" type="submit" loading={venterPåVilkårsvurdering}>
-                    Lagre
-                  </Button>
-                  <Button variant="secondary" size="small">
-                    Avbryt
-                  </Button>
-                </Kolonner>
-              </Avstand>
-            </form>
-          </FormProvider>
+          {lesevisning ? (
+            <SaksbehandlersVurderingLesevisning sakID={sakID} vilkår={vilkår} />
+          ) : (
+            <SaksbehandlersVurderingForm sakID={sakID} vilkår={vilkår} onSaved={onSaved} />
+          )}
         </Container>
       </SaksbehandlersVurderingPanel>
     </Merknad>

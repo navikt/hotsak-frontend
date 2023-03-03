@@ -1,4 +1,8 @@
-export const capitalize = (value: string): string => value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+export const capitalize = (value?: string): string => {
+  if (!value) {
+    return ''
+  } else return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+}
 
 export const capitalizeName = (value: string) =>
   value

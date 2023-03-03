@@ -71,7 +71,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
   )
 }
 
-const Grid = styled.div`
+export const Grid = styled.div`
   display: grid;
   grid-template-columns: 150px 150px;
   gap: var(--a-spacing-5);

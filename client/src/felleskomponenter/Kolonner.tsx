@@ -12,7 +12,15 @@ export const Kolonner = styled.div`
 
 export const TreKolonner = styled.div`
   display: grid;
-  grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto ${hotsakRegistrerSøknadHøyreKolonne};
+  /*grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto ${hotsakRegistrerSøknadHøyreKolonne};*/
+  grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto;
+  grid-template-rows: 1fr;
+  height: calc(100vh - ${headerHøydeRem}rem);
+`
+
+export const ToKolonner = styled.div`
+  display: grid;
+  grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto;
   grid-template-rows: 1fr;
   height: calc(100vh - ${headerHøydeRem}rem);
 `

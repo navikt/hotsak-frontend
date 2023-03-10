@@ -115,6 +115,16 @@ export interface OppdaterVilkårData {
   begrunnelseSaksbehandler: string
 }
 
+export interface TotrinnsKontrollData {
+  vurdering: TotrinnsKontrollVurdering | ''
+  begrunnelse?: string
+}
+
+export enum TotrinnsKontrollVurdering {
+  GODKJENT = 'godkjent',
+  RETURNERT = 'returnert',
+}
+
 export interface OppdaterVilkårRequest {
   resultatSaksbehandler: VilkårSvar
   begrunnelseSaksbehandler: string
@@ -616,6 +626,7 @@ export const OmrådeFilterLabel = new Map<string, string>([
 export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
+  TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
 }
 
 export interface OverforGosysTilbakemelding {

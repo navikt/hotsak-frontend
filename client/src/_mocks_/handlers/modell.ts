@@ -14,6 +14,7 @@ export const mutableSakshistorikk = [
   { saksid: '999999', hendelser: deepClone(historikk) },
   { saksid: '112233', hendelser: deepClone(historikk) },
   { saksid: '223344', hendelser: deepClone(historikk) },
+  { saksid: '87757', hendelser: deepClone(historikk) },
 ]
 
 function deepClone(array: any[]) {

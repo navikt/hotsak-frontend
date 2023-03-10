@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { Tabs } from '@navikt/ds-react'
 
+import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { Oppgavetype, StegType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { useBrillesak } from '../sakHook'
+import { BarnebrilleSidebar } from './BarnebrilleSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import RegistrerSøknad from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
@@ -48,7 +50,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <TabContainer>
+    <>
       <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
         <Tabs.List>
           <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
@@ -65,7 +67,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           <Vedtak />
         </Tabs.Panel>
       </Tabs>
-    </TabContainer>
+    </>
   )
 })
 
@@ -79,11 +81,19 @@ export const BarnebrilleBilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterBarnebrilleBilde />}>
       <ManuellSaksbehandlingProvider>
-        <BarnebrilleContent />
+        <MainGrid>
+          <BarnebrilleContent />
+          <BarnebrilleSidebar />
+        </MainGrid>
       </ManuellSaksbehandlingProvider>
     </React.Suspense>
   </ErrorBoundary>
 )
+
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr ${brilleSidebarBredde};
+`
 
 const TabContainer = styled.div`
   padding-top: var(--a-spacing-4);

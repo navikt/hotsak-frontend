@@ -5,6 +5,7 @@ export const hotsaktVenstremenyWidth = '340px'
 export const hotsakRegistrerSøknadKolonne = '520px'
 export const hotsakRegistrerSøknadHøyreKolonne = '300px'
 export const hotsakHistorikkWidth = '492px'
+export const brilleSidebarBredde = '320px'
 export const headerHøydeRem = '3'
 
 export const AppRoot = createGlobalStyle`
@@ -14,6 +15,4 @@ export const AppRoot = createGlobalStyle`
     color: var(--a-text-default)
 
   }
-
-  
 `

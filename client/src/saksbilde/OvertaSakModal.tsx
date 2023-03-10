@@ -24,6 +24,7 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({
 }) => {
   return (
     <DialogBoks
+      width="600px"
       shouldCloseOnOverlayClick={false}
       open={open}
       onClose={() => {

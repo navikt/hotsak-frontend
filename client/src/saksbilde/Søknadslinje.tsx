@@ -1,29 +1,11 @@
 import styled from 'styled-components'
 
-import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { Flex } from '../felleskomponenter/Flex'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { HøyrekolonneTabs, Oppgavetype } from '../types/types.internal'
 import { TabLink } from './TabLink'
 import { HøyrekolonneHeader } from './høyrekolonne/HøyrekolonneHeader'
-
-const Container = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  height: 48px;
-  box-sizing: border-box;
-  border-bottom: 1px solid var(--a-border-default);
-  padding: 0 0 0 2rem;
-  min-width: ${hotsakTotalMinWidth};
-
-  > div:last-of-type {
-    margin-left: 1rem;
-  }
-`
-
-const TabList = styled.span`
-  display: flex;
-`
+import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 
 export enum Location {
   Hjelpemidler,
@@ -38,9 +20,13 @@ export interface SøknadslinjeProps {
   currentTab: HøyrekolonneTabs
 }
 
+const TabList = styled.span`
+  display: flex;
+`
+
 export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
   return (
-    <Container>
+    <SøknadslinjeContainer>
       <Flex>
         <TabList role="tablist">
           <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
@@ -55,7 +41,7 @@ export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabCha
         </TabList>
       </Flex>
       <HøyrekolonneHeader id={id} type={type} onTabChange={onTabChange} currentTab={currentTab} />
-    </Container>
+    </SøknadslinjeContainer>
   )
 }
 

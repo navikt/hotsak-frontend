@@ -54,7 +54,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
             {sak.steg === StegType.GODKJENNE ? <RegistrerSøknadLesevisning /> : <RegistrerSøknadSkjema />}
           </VenstreMeny>
           <DokumentPanel journalpostID={journalpostID} />
-          <Historikk />
+          {/*<Historikk />*/}
         </TreKolonner>
       </AutoFlexContainer>
     </Container>

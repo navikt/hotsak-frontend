@@ -15,6 +15,7 @@ interface BekreftVedtakModalProps {
 export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, onBekreft, loading, onClose }) => {
   return (
     <DialogBoks
+      width="600px"
       shouldCloseOnOverlayClick={false}
       open={open}
       onClose={() => {
@@ -26,9 +27,9 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
           Vil du innvilge søknaden?
         </Heading>
         <Tekst>
-          Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS. Innbygger
-          vil få beskjed om vedtaket på Ditt NAV.
+          Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
         </Tekst>
+        <Tekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Tekst>
         <ButtonContainer>
           <Button
             variant="primary"
@@ -40,14 +41,7 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
           >
             Innvilg søknaden
           </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() => {
-              onClose()
-            }}
-            disabled={loading}
-          >
+          <Button variant="secondary" size="small" onClick={() => onClose()} disabled={loading}>
             Avbryt
           </Button>
         </ButtonContainer>

@@ -15,6 +15,9 @@ export const KolonneOppsett = styled.ul`
   width: ${hotsakHistorikkWidth};
   min-width: ${hotsakHistorikkWidth};
   max-width: ${hotsakHistorikkWidth};
+  height: 95vh;
+  margin: 0;
+  padding: 0;
   flex: 1;
   flex-shrink: 0;
   padding: 0 24px;
@@ -36,5 +39,7 @@ export const Høyrekolonne: React.FC<HøyrekolonneProps> = ({ currentTab }) => {
       return <Historikk />
     case HøyrekolonneTabs.HJELPEMIDDELOVERSIKT:
       return <Hjelpemiddeloversikt />
+    default:
+      ;<></>
   }
 }

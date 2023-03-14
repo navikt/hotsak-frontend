@@ -318,6 +318,7 @@
     "sakstype": "SØKNAD",
     "saksid": "5878444",
     "sakId": "5878444",
+    "statusEndret": "2021-10-05T21:52:40.815302Z",
     "søknadGjelder": "Rullator",
     "hjelpemidler": [
       {
@@ -408,6 +409,11 @@
       "ansvarFor": "ansvar for"
     },
     "status": "SENDT_GOSYS",
+    "saksbehandler": {
+      "epost": "a.b@nav.no",
+      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
+      "navn": "Silje Saksbehandler"
+    },
     "enhet": [
       {
         "enhetsnummer": "6969",
@@ -1962,11 +1968,10 @@
         }
       ]
     },
-    "status": "TILDELT_SAKSBEHANDLER",
+    "status": "AVVENTER_SAKSBEHANDLER",
     "steg": "GODKJENNE",
     "journalposter": ["33445566"],
     "statusEndret": "2023-01-05T14:31:42.815302Z",
-
     "enhet": [
       {
         "enhetsnummer": "6969",

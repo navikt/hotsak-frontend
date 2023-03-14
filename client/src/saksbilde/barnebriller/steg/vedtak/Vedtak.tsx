@@ -13,9 +13,7 @@ import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
-import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
-import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 
@@ -148,7 +146,6 @@ export const Vedtak: React.FC = () => {
       <VenstreKolonne>
         <BrevPanel sakID={sak.sakId} />
       </VenstreKolonne>
-      <Historikk />
     </TreKolonner>
   )
 }

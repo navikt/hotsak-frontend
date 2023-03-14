@@ -4,18 +4,17 @@ import styled from 'styled-components'
 import { Clock, Decision } from '@navikt/ds-icons'
 import { Tabs } from '@navikt/ds-react'
 
-import { hotsakHistorikkWidth } from '../../GlobalStyles'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
-import { Historikk } from '../høyrekolonne/historikk/Historikk'
-import { useBrillesak, useSak } from '../sakHook'
+import { useBrillesak } from '../sakHook'
+import { BrilleHistorikk } from './BrilleHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
 
-const Header = styled.div`
-  display: flex;
-  height: 48px;
-  width: ${hotsakHistorikkWidth};
-  background-color: azure;
+const Sidebar = styled(Tabs)`
+  border-left: 1px solid var(--a-border-default);
+  height: 90vh;
+  margin: 0;
+  padding: 0;
 `
 export const BarnebrilleSidebar: React.FC = () => {
   const { sak } = useBrillesak()
@@ -28,7 +27,7 @@ export const BarnebrilleSidebar: React.FC = () => {
   }, [])
 
   return (
-    <Tabs
+    <Sidebar
       defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
       value={valgtSidebarTab}
       loop
@@ -39,11 +38,11 @@ export const BarnebrilleSidebar: React.FC = () => {
         <Tabs.Tab value={HøyrekolonneTabs.TOTRINNSKONTROLL} icon={<Decision />} />
       </Tabs.List>
       <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
-        <Historikk />
+        <BrilleHistorikk />
       </Tabs.Panel>
       <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-    </Tabs>
+    </Sidebar>
   )
 }

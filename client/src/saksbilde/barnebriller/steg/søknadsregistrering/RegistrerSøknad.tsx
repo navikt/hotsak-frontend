@@ -12,7 +12,6 @@ import { Flex } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { Oppgavetype, StegType } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
-import { Historikk } from '../../../høyrekolonne/historikk/Historikk'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
@@ -51,7 +50,11 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
       <AutoFlexContainer>
         <TreKolonner>
           <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
-            {sak.steg === StegType.GODKJENNE ? <RegistrerSøknadLesevisning /> : <RegistrerSøknadSkjema />}
+            {sak.steg === StegType.GODKJENNE || sak.steg === StegType.FERDIG_BEHANDLET ? (
+              <RegistrerSøknadLesevisning />
+            ) : (
+              <RegistrerSøknadSkjema />
+            )}
           </VenstreMeny>
           <DokumentPanel journalpostID={journalpostID} />
           {/*<Historikk />*/}

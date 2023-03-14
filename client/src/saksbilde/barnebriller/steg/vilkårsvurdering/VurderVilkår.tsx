@@ -100,7 +100,7 @@ export const VurderVilkår: React.FC = () => {
                   togglePlacement={'right'}
                   content={
                     <SaksbehandlersVurdering
-                      lesevisning={sak.steg === StegType.GODKJENNE}
+                      lesevisning={sak.steg === StegType.GODKJENNE || sak.steg === StegType.FERDIG_BEHANDLET}
                       sakID={sak.sakId}
                       vilkår={vilkår}
                       onSaved={() => {

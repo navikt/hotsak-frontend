@@ -38,6 +38,7 @@ export interface Brillesak {
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
   journalposter: string[]
+  vedtak: VedtakType
   enhet: Enhet[]
   totrinnskontroll?: TotrinnsKontroll
 }
@@ -45,7 +46,7 @@ export interface Brillesak {
 export interface TotrinnsKontroll {
   saksbehandler: Saksbehandler
   godkjenner?: Saksbehandler
-  resultat?: string
+  godkjenningsstatus?: string
   begrunnelse?: string
   opprettet?: LocalDateTime
 }
@@ -165,8 +166,7 @@ export enum StegType {
   VURDERE_VILKÅR = 'VURDERE_VILKÅR',
   FATTE_VEDTAK = 'FATTE_VEDTAK',
   GODKJENNE = 'GODKJENNE',
-  BREV = 'BREV',
-  UTBETALING = 'UTBETALING',
+  FERDIG_BEHANDLET = 'FERDIG_BEHANDLET',
 }
 
 export interface BeregnSatsResponse {

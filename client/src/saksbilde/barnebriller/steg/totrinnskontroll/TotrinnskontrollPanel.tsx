@@ -1,24 +1,21 @@
 import React, { useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Button, Panel, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-
-import { baseUrl, put } from '../../../../io/http'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
+import { Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
-import { StegType, TotrinnsKontrollData, TotrinnsKontrollVurdering } from '../../../../types/types.internal'
+import { StegType, TotrinnsKontrollData } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
-import { GodkjenneTotrinnskontrollModal } from './GodkjenneTotrinnskontrollModal'
+import { TotrinnskontrollForm } from './TotrinnskontrollForm'
+import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
 
 export const TotrinnskontrollPanel: React.FC = () => {
-  const [loading, setLoading] = useState(false)
-  const [visGodkjenningsModal, setVisGodkjenningsModal] = useState(false)
   const saksbehandler = useInnloggetSaksbehandler()
-  const { sak, isError, isLoading, mutate } = useBrillesak()
+
+  const { sak, isError } = useBrillesak()
 
   const methods = useForm<TotrinnsKontrollData>({
     defaultValues: {
@@ -27,52 +24,29 @@ export const TotrinnskontrollPanel: React.FC = () => {
     },
   })
 
-  const {
-    control,
-    watch,
-    formState: { errors },
-    handleSubmit,
-    getValues,
-  } = methods
-
-  const vurdering = watch('vurdering')
-
-  /* const lagreTotrinnskontroll = (sakID: string, data: TotrinnsKontrollData) => {
-    setLoading(true)
-    put(`${baseUrl}/api/sak/${sakID}/kontroll`, data)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        mutate(`api/sak/${sakID}`)
-        mutate(`api/sak/${sakID}/historikk`)
-      })
-  }*/
-
-  const lagreTotrinnskontroll = () => {
-    const formData = getValues()
-    //console.log("Kaller handle submit", getValues());
-    //lagreTotrinnskontroll(sak!.sakId, data)
-
-    setLoading(true)
-    put(`${baseUrl}/api/sak/${sak!.sakId}/kontroll`, formData)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        mutate(`api/sak/${sak!.sakId}`)
-        mutate(`api/sak/${sak!.sakId}/historikk`)
-      })
-  }
-
   if (isError || !sak) {
     return <div>Feil ved henting av sak</div>
   }
 
-  if (
-    sak.steg !== StegType.GODKJENNE ||
-    (sak.saksbehandler && sak?.saksbehandler.objectId !== saksbehandler.objectId)
-  ) {
+  if (!sak.saksbehandler || sak?.saksbehandler.objectId === '') {
+    return <div>{`Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten`}</div>
+  }
+
+  if (sak.saksbehandler && sak?.saksbehandler.objectId !== saksbehandler.objectId) {
+    ;<div>
+      <Brødtekst>En annen saksbehandler har allerede tatt denne saken </Brødtekst>
+    </div>
+  }
+
+  const totrinnskontrollFullført =
+    sak.totrinnskontroll?.godkjenningsstatus === 'REVURDERING' ||
+    sak.totrinnskontroll?.godkjenningsstatus === 'GODKJENT'
+
+  if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
     return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll enda</div>
   }
+
+  //const totrinnkontrollMulig = sak.steg === StegType.GODKJENNE && sak?.saksbehandler.objectId !== saksbehandler.objectId
 
   return (
     <Container>
@@ -80,60 +54,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
       <Avstand paddingTop={4} />
       <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort</Brødtekst>
       <Avstand paddingTop={6} />
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(() => {
-            if (vurdering === TotrinnsKontrollVurdering.GODKJENT) {
-              setVisGodkjenningsModal(true)
-            } else {
-              lagreTotrinnskontroll()
-            }
-          })}
-        >
-          <Controller
-            name="vurdering"
-            control={control}
-            rules={{ required: 'Velg en verdi' }}
-            render={({ field }) => (
-              <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.vurdering?.message}>
-                <Radio value={TotrinnsKontrollVurdering.GODKJENT}>Godkjenn</Radio>
-                <Radio value={TotrinnsKontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
-              </RadioGroup>
-            )}
-          />
-
-          {vurdering === TotrinnsKontrollVurdering.RETURNERT && (
-            <Avstand paddingTop={4}>
-              <Textarea
-                size="small"
-                label="Begrunn vurderingen din"
-                description="Skriv hvorfor saken returneres, så det er enkelt å forstå hva som vurderes og gjøres om."
-                error={errors.begrunnelse?.message}
-                {...methods.register('begrunnelse', { required: 'Du må begrunne vurderingen din ' })}
-              ></Textarea>
-            </Avstand>
-          )}
-
-          <Avstand paddingTop={4}>
-            <Button variant="primary" type="submit" size="small" loading={loading}>
-              {vurdering === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
-            </Button>
-          </Avstand>
-        </form>
-      </FormProvider>
-
-      <GodkjenneTotrinnskontrollModal
-        open={visGodkjenningsModal}
-        onBekreft={() => {
-          lagreTotrinnskontroll()
-          logAmplitudeEvent(amplitude_taxonomy.TOTRINNSKONTROLL_GODKJENT)
-        }}
-        loading={loading}
-        onClose={() => {
-          errors
-          setVisGodkjenningsModal(false)
-        }}
-      />
+      {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
     </Container>
   )
 }

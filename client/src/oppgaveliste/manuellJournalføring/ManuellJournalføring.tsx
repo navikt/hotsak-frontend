@@ -52,7 +52,7 @@ export const ManuellJournalfør: React.FC = () => {
 
   if (personInfoError) {
     if (personInfoError.statusCode === 403) {
-      return <Feilmelding>Du har ikke tilgang til å søke opp denne personen</Feilmelding>
+      return <Feilmelding>Du har ikke tilgang til å se informasjon om denne brukeren</Feilmelding>
     } else if (personInfoError.statusCode === 404) {
       return <Feilmelding>Person ikke funnet i PDL</Feilmelding>
     } else {

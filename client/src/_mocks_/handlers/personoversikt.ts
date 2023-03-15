@@ -17,7 +17,7 @@ const personInfoHandlers = [
       return res(ctx.status(200), ctx.json(personInfo[3]))
     } else if (brukersFodselsnummer === '13041163393') {
       //sperret person med kode 6 eller 7
-      return res(ctx.status(403), ctx.text('Du har ikke tilgang til å søke opp denne personen'))
+      return res(ctx.status(403), ctx.text('Du har ikke tilgang til å se informasjon om denne brukeren'))
     } else if (brukersFodselsnummer === '16120101181') {
       //sperret person med kode 6 eller 7
       return res(ctx.status(404), ctx.text('Person ikke funnet'))

@@ -53,6 +53,22 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   if (vilkår === 'storreBehov') {
     return `Hjelpemiddelet(ene) er egnet til å avhjelpe funksjonsnedsettelsen og ${navn} vil være i stand til å bruke det.`
   }
+
+  if (vilkår === 'PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1') {
+    return `Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.`
+  }
+
+  if (vilkår === 'VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1') {
+    return `${navn} har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.`
+  }
+
+  if (vilkår === 'KAN_IKKE_LOESES_MED_ENKLERE_HJELPEMIDLER_V1') {
+    return `${navn} sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av NAV.`
+  }
+
+  if (vilkår === 'I_STAND_TIL_AA_BRUKE_HJELEPMIDLENE_V1') {
+    return `${navn} vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.`
+  }
 }
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {

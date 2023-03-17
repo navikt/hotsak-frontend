@@ -2,7 +2,8 @@ import React from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../felleskomponenter/Button'
+import { DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface BekreftVedtakModalProps {
@@ -30,7 +31,7 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
           Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
         </Tekst>
         <Tekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -44,7 +45,7 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
           <Button variant="secondary" size="small" onClick={() => onClose()} disabled={loading}>
             Avbryt
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </DialogBoks.Content>
     </DialogBoks>
   )

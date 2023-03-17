@@ -37,19 +37,15 @@ export const DokumentIkkeTildelt = ({ journalpostID, gåTilSak = false }: IkkeTi
   }
 
   return (
-    <>
-      {
-        <Button
-          size={gåTilSak ? 'xsmall' : 'small'}
-          variant={gåTilSak ? 'tertiary' : 'secondary'}
-          onClick={tildel}
-          data-cy={`btn-tildel-dokumentoppgave-${journalpostID}`}
-          disabled={isFetching}
-          loading={isFetching}
-        >
-          Start journalføring
-        </Button>
-      }
-    </>
+    <Button
+      size={gåTilSak ? 'xsmall' : 'small'}
+      variant={gåTilSak ? 'tertiary' : 'secondary'}
+      onClick={tildel}
+      data-cy={`btn-tildel-dokumentoppgave-${journalpostID}`}
+      disabled={isFetching}
+      loading={isFetching}
+    >
+      Start journalføring
+    </Button>
   )
 }

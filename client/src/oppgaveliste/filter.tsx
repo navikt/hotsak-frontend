@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Select } from '@navikt/ds-react'
 
-import { ButtonContainer } from '../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../felleskomponenter/Button'
 
 const FilterList = styled.div`
   margin: 1rem 1.5rem 0.5rem;
@@ -46,11 +46,11 @@ export const Filters: React.FC<FiltersProps> = ({ children, onClear }) => {
   return (
     <FilterList>
       {children}
-      <ButtonContainer>
+      <Knappepanel>
         <Button variant="tertiary" size="small" onClick={() => onClear()}>
           Tilbakestill filtre
         </Button>
-      </ButtonContainer>
+      </Knappepanel>
     </FilterList>
   )
 }

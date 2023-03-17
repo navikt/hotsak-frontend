@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { Button, Checkbox, CheckboxGroup, Heading, Textarea } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../felleskomponenter/Button'
+import { DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 import type { OverforGosysTilbakemelding } from '../types/types.internal'
 
@@ -54,7 +55,7 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, on
           value={begrunnelse}
           onChange={(e) => setBegrunnelse(e.target.value)}
         />
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -79,7 +80,7 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, on
           <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
             Avbryt
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </DialogBoks.Content>
     </DialogBoks>
   )

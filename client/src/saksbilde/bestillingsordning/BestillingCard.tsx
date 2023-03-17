@@ -10,10 +10,11 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
+import { Knappepanel } from '../../felleskomponenter/Button'
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, HjelpemiddelArtikkel, Sak, AvvisBestilling } from '../../types/types.internal'
+import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
@@ -30,14 +31,6 @@ export const TagGrid = styled.div`
   grid-template-columns: 4.3rem auto;
   grid-column-gap: 0.75rem;
   grid-row-gap: 0.125rem;
-`
-
-const ButtonContainer = styled.div`
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  padding-top: 1rem;
-  align-self: flex-end;
 `
 
 const Knapp = styled(Button)`
@@ -135,9 +128,9 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
       <Card>
         <CardTitle>BESTILLING IKKE STARTET</CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
-        </ButtonContainer>
+        </Knappepanel>
       </Card>
     )
   }
@@ -150,7 +143,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
         <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler.navn)}</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Knapp
             variant="primary"
             size="small"
@@ -159,7 +152,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           >
             Overta bestillingen
           </Knapp>
-        </ButtonContainer>
+        </Knappepanel>
         <OvertaSakModal
           open={visOvertaSakModal}
           saksbehandler={saksbehandler.navn}
@@ -176,7 +169,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
   } else {
     return (
       <Card>
-        <ButtonContainer>
+        <Knappepanel>
           <Knapp
             variant="primary"
             size="small"
@@ -193,7 +186,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           >
             Avvis
           </Knapp>
-        </ButtonContainer>
+        </Knappepanel>
         <OpprettOrdreModal
           open={visOpprettOrdeModal}
           onBekreft={() => {

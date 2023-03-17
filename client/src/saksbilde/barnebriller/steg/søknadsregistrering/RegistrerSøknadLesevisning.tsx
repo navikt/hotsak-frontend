@@ -9,7 +9,7 @@ import { formaterDato } from '../../../../utils/date'
 import { capitalize } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
@@ -150,11 +150,11 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
         </Avstand>
 
         <Avstand paddingLeft={2}>
-          <ButtonContainer>
+          <Knappepanel>
             <Button variant="primary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
               Neste
             </Button>
-          </ButtonContainer>
+          </Knappepanel>
         </Avstand>
       </Avstand>
     </Container>

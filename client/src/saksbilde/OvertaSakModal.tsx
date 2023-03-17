@@ -2,7 +2,8 @@ import React from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../felleskomponenter/Button'
+import { DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface OvertaSakModalProps {
@@ -36,7 +37,7 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({
           {`Vil du overta ${type}en?`}
         </Heading>
         <Tekst>{`Denne ${type}en er allerede tildelt ${saksbehandler}, er du sikker på at du vil overta ${type}en?`}</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -57,7 +58,7 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({
           >
             Avbryt
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </DialogBoks.Content>
     </DialogBoks>
   )

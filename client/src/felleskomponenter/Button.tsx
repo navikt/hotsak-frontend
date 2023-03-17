@@ -10,8 +10,8 @@ export const Button = styled.button`
 
 const VenstrestilteKnapper = styled.div`
   display: flex;
+  justify-content: flex-start;
   gap: 1rem;
-  margin-left: auto;
   padding-top: 2rem;
 `
 

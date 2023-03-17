@@ -13,18 +13,3 @@ export const DialogBoks = styled(Modal)<DialogboksProps>`
   padding-top: 1rem;
   padding-bottom: 1rem;
 `
-
-export const ButtonContainer = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div style={{ display: 'flex' }}>
-      <ButtonPanel> {children}</ButtonPanel>
-    </div>
-  )
-}
-
-export const ButtonPanel = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-left: auto;
-  padding-top: 2rem;
-`

@@ -1,12 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import { Button, Heading, Modal } from '@navikt/ds-react'
 
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { DialogBoks } from '../../../../felleskomponenter/Dialogboks'
-import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
-import { TotrinnsKontrollVurdering } from '../../../../types/types.internal'
 
 interface GodkjenneTotrinnskontrollModalProps {
   open: boolean
@@ -35,7 +33,7 @@ export const GodkjenneTotrinnskontrollModal: React.FC<GodkjenneTotrinnskontrollM
           {`Vil du godkjenne vedtaket`}
         </Heading>
         <Brødtekst>{`Vedtaket blir fattet og brevet sendes til adressen til barnet.`}</Brødtekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="tertiary"
             size="small"
@@ -49,7 +47,7 @@ export const GodkjenneTotrinnskontrollModal: React.FC<GodkjenneTotrinnskontrollM
           <Button variant="primary" size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
             {`Godkjenn vedtak`}
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </Modal.Content>
     </DialogBoks>
   )

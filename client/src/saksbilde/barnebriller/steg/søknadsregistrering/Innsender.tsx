@@ -50,9 +50,7 @@ export const Innsender = () => {
         </SkjemaAlert>
       )}
       {kontoinformasjon && (
-        <SkjemaAlert variant="info">{`Kontonummer for ${kontoinformasjon?.kontohaver}: ${formaterKontonummer(
-          kontoinformasjon?.kontonummer
-        )}`}</SkjemaAlert>
+        <SkjemaAlert variant="info">{`Kontonummer: ${formaterKontonummer(kontoinformasjon?.kontonummer)}`}</SkjemaAlert>
       )}
     </>
   )

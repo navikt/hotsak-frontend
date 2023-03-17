@@ -13,7 +13,7 @@ import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import { MålformType, RegistrerSøknadData, StegType, VurderVilkårRequest } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
@@ -131,7 +131,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             <KomplettBrille />
             <BestiltHosOptiker />
             <Avstand paddingLeft={2}>
-              <ButtonContainer>
+              <Knappepanel>
                 <Button
                   type="submit"
                   variant="primary"
@@ -141,7 +141,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                 >
                   Vurder vilkår
                 </Button>
-              </ButtonContainer>
+              </Knappepanel>
             </Avstand>
           </form>
         </FormProvider>

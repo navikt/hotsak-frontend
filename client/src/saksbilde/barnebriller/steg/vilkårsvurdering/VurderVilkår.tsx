@@ -6,7 +6,7 @@ import { Alert, BodyLong, Button, Heading, Panel, Table } from '@navikt/ds-react
 import { baseUrl, put } from '../../../../io/http'
 
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
-import { ButtonContainer } from '../../../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
@@ -124,7 +124,7 @@ export const VurderVilkår: React.FC = () => {
             })}
           </Table.Body>
         </Table>
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -134,7 +134,7 @@ export const VurderVilkår: React.FC = () => {
           >
             Neste
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </Panel>
     </>
   )

@@ -49,6 +49,10 @@ export const Vedtak: React.FC = () => {
       })
   }
 
+  function kanGåVidereTilTotrinnskontroll(): boolean {
+    return status === VilkårsResultat.NEI || bruker.kontonummer !== undefined
+  }
+
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (sak?.steg === StegType.INNHENTE_FAKTA) {
@@ -132,7 +136,7 @@ export const Vedtak: React.FC = () => {
             {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
           </Alert>
         ) : (
-          bruker.kontonummer && (
+          kanGåVidereTilTotrinnskontroll() && (
             <Button
               loading={loading}
               disabled={loading}

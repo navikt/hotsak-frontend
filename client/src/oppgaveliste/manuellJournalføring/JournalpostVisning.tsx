@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Heading, Loader } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
-import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../felleskomponenter/Button'
 import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
@@ -84,9 +84,9 @@ export const JournalpostVisning: React.FC = () => {
         {journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler ? (
           <Brødtekst>{`Oppgaven er tildelt saksbehandler ${journalpost.saksbehandler?.navn}`}</Brødtekst>
         ) : (
-          <ButtonContainer>
+          <Knappepanel>
             <DokumentIkkeTildelt journalpostID={journalpost.journalpostID} gåTilSak={false} />
-          </ButtonContainer>
+          </Knappepanel>
         )}
       </Avstand>
     </Container>

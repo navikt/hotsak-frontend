@@ -10,6 +10,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
+import { Knappepanel } from '../../felleskomponenter/Button'
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -37,14 +38,6 @@ export const TagGrid = styled.div`
   grid-template-columns: 4.3rem auto;
   grid-column-gap: 0.75rem;
   grid-row-gap: 0.125rem;
-`
-
-const ButtonContainer = styled.div`
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  padding-top: 1rem;
-  align-self: flex-end;
 `
 
 const StatusTekst = styled.div`
@@ -148,9 +141,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
       <Card>
         <CardTitle>SAK IKKE STARTET</CardTitle>
         <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
-        </ButtonContainer>
+        </Knappepanel>
       </Card>
     )
   }
@@ -160,7 +153,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Knapp
             variant="primary"
             size="small"
@@ -169,7 +162,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
           >
             Overta saken
           </Knapp>
-        </ButtonContainer>
+        </Knappepanel>
         <OvertaSakModal
           open={visOvertaSakModal}
           saksbehandler={saksbehandler.navn}
@@ -185,14 +178,14 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   } else {
     return (
       <Card>
-        <ButtonContainer>
+        <Knappepanel>
           <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
             <span>Innvilg søknaden</span>
           </Knapp>
           <Knapp variant="secondary" size="small" onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
             Overfør til Gosys
           </Knapp>
-        </ButtonContainer>
+        </Knappepanel>
         <BekreftVedtakModal
           open={visVedtakModal}
           onBekreft={() => {

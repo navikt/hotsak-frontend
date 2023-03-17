@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { Button, Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../felleskomponenter/Button'
+import { DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
 import type { AvvisBestilling } from '../../types/types.internal'
 
@@ -51,7 +52,7 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
           value={begrunnelse}
           onChange={(e) => setBegrunnelse(e.target.value)}
         />
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -74,7 +75,7 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
           <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
             Avbryt
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </DialogBoks.Content>
     </DialogBoks>
   )

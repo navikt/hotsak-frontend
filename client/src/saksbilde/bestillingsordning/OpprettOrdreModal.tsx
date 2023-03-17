@@ -2,7 +2,8 @@ import React from 'react'
 
 import { Button, Heading } from '@navikt/ds-react'
 
-import { ButtonContainer, DialogBoks } from '../../felleskomponenter/Dialogboks'
+import { Knappepanel } from '../../felleskomponenter/Button'
+import { DialogBoks } from '../../felleskomponenter/Dialogboks'
 import { Tekst } from '../../felleskomponenter/typografi'
 
 interface OpprettOrdreModalProps {
@@ -30,7 +31,7 @@ export const OpprettOrdreModal: React.FC<OpprettOrdreModalProps> = ({ open, onBe
           og tilbehør i bestillingen vil legges inn som ordrelinjer. Merk at det kan gå noen minutter før ordren er
           klargjort. Du trenger ikke gjøre noe mer med saken.
         </Tekst>
-        <ButtonContainer>
+        <Knappepanel>
           <Button
             variant="primary"
             size="small"
@@ -51,7 +52,7 @@ export const OpprettOrdreModal: React.FC<OpprettOrdreModalProps> = ({ open, onBe
           >
             Avbryt
           </Button>
-        </ButtonContainer>
+        </Knappepanel>
       </DialogBoks.Content>
     </DialogBoks>
   )

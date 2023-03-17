@@ -8,7 +8,6 @@ import { postJournalfør } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
-import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
@@ -129,9 +128,6 @@ export const JournalpostSkjema: React.FC = () => {
               size="small"
               onClick={(e) => {
                 e.preventDefault()
-                /*if (manglerVedlegg) {
-                  setError('Du må velge minst en årsak i listen over.')
-                } else*/
                 journalfør()
               }}
               data-cy="btn-journalfør"

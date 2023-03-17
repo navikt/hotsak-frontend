@@ -18,6 +18,7 @@ export function Bestillingsdato() {
   }, [formState, Valgtdato])
 
   const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
+    fromDate: new Date('Jan 1 1970'),
     toDate: new Date(),
     onDateChange: (dato) =>
       setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),

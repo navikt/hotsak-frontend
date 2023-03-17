@@ -8,17 +8,21 @@ export const Button = styled.button`
   outline: none;
 `
 
-const VenstrestilteKnapper = styled.div`
+interface KnappeProps {
+  gap?: string
+}
+
+const VenstrestilteKnapper = styled.div<KnappeProps>`
   display: flex;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: ${(props) => (props.gap ? props.gap : '1rem')};
   padding-top: 2rem;
 `
 
-export const Knappepanel = ({ children }: { children: React.ReactNode }) => {
+export const Knappepanel = ({ children, gap }: { children: React.ReactNode; gap?: string }) => {
   return (
     <div style={{ display: 'flex' }}>
-      <VenstrestilteKnapper> {children}</VenstrestilteKnapper>
+      <VenstrestilteKnapper gap={gap}> {children}</VenstrestilteKnapper>
     </div>
   )
 }

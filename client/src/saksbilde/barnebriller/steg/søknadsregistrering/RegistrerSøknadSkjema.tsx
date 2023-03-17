@@ -18,6 +18,7 @@ import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import { MålformType, RegistrerSøknadData, StegType, VurderVilkårRequest } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { Innsender } from './Innsender'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
 import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
 import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
@@ -107,6 +108,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
+            <Avstand paddingTop={6}>
+              <Innsender />
+            </Avstand>
             <Avstand paddingTop={4}>
               <Bestillingsdato />
             </Avstand>

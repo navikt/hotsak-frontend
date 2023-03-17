@@ -1,7 +1,5 @@
 import { rest } from 'msw'
 
-import { apiUrl } from '../../io/usePost'
-
 import { BeregnSatsRequest, BeregnSatsResponse, Brilleseddel, SatsType } from '../../types/types.internal'
 
 const brillekalkulatorHandlers = [

@@ -11,6 +11,7 @@ import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
+import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
@@ -26,7 +27,7 @@ export const Vedtak: React.FC = () => {
 
   const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (status === VilkårsResultat.JA && !sak?.bruker.kontonummer) {
       console.log('Mangler kontonummer for bruker, kaller endepunkt for å få hentet inn det')
       post(`${baseUrl}/api/personinfo/kontonr/`, {
@@ -36,7 +37,7 @@ export const Vedtak: React.FC = () => {
         mutate()
       })
     }
-  }, [sak?.innsender.fnr, sak?.bruker.kontonummer, sak?.sakId, status, mutate])
+  }, [sak?.innsender.fnr, sak?.bruker.kontonummer, sak?.sakId, status, mutate])*/
 
   const sendTilGodkjenning = () => {
     setLoading(true)
@@ -114,12 +115,13 @@ export const Vedtak: React.FC = () => {
                 </Kolonne>
               </Rad>
             ) : (
-              <Avstand paddingTop={6}>
-                <Alert size="small" variant="warning">
-                  <Etikett>Mangler kontonummer på bruker</Etikett>
-                  <Detail>Bruker må kontaktes for å legge inn kontonummer før saken kan sendes til godkjenning.</Detail>
-                </Alert>
-              </Avstand>
+              <SkjemaAlert variant="warning">
+                <Etikett>Mangler kontonummer på bruker</Etikett>
+                <Detail>
+                  Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
+                  vedkommende for å be dem registrere et kontonummer.
+                </Detail>
+              </SkjemaAlert>
             )}
           </>
         )}

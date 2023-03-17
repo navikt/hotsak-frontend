@@ -17,7 +17,7 @@ import { JournalpostVisning } from './JournalpostVisning'
 
 const ToKolonner = styled.div`
   display: grid;
-  grid-template-columns: 40rem 1fr;
+  grid-template-columns: 35rem 1fr;
   grid-template-rows: 1fr;
   height: calc(100vh - ${headerHøydeRem}rem);
 `

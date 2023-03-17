@@ -131,6 +131,15 @@ export interface OppdaterVilkårRequest {
   begrunnelseSaksbehandler: string
 }
 
+export interface KontonummerRequest {
+  brukersFodselsnummer: string
+  sakId: string
+}
+
+export interface KontonummerResponse {
+  kontohaver: string
+  kontonummer: string
+}
 export interface VurderVilkårRequest {
   sakId: string
   målform: MålformType

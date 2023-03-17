@@ -12,7 +12,6 @@ export function useBeregning(): BeregnSatsResponse | undefined {
   const venstreSfære = watch('brilleseddel.venstreSfære')
   const venstreSylinder = watch('brilleseddel.venstreSylinder')
 
-  // const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/brillesedler')
   const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/api/brillesedler')
 
   useEffect(() => {

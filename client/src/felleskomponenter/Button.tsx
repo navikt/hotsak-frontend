@@ -7,3 +7,18 @@ export const Button = styled.button`
   border: none;
   outline: none;
 `
+
+const VenstrestilteKnapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+  padding-top: 2rem;
+`
+
+export const Knappepanel = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div style={{ display: 'flex' }}>
+      <VenstrestilteKnapper> {children}</VenstrestilteKnapper>
+    </div>
+  )
+}

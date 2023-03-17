@@ -12,6 +12,7 @@ import type {
   VurderVilkårRequest,
 } from '../types/types.internal'
 
+export const IKKE_FUNNET = 404
 export interface SaksbehandlingApiResponse<T = any> {
   status: number
   data: T
@@ -154,6 +155,18 @@ export const hentBrukerdataMedPost = async (
     data: response.data,
   }
 }
+
+/*export const hentDataMedPost = async (
+    url: string,
+    brukersFodselsnummer: string
+  ): Promise<SaksbehandlingApiResponse> => {
+    const response = await post(`${baseUrl}/${url}`, { brukersFodselsnummer }, {})
+  
+    return {
+      status: response.status,
+      data: response.data,
+    }
+  }*/
 
 export const postTildeling = async (oppgavereferanse: string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})

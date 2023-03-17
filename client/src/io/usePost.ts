@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useErrorHandler } from 'react-error-boundary'
 
+//import { useErrorHandler } from 'react-error-boundary'
 import { HttpError } from './error'
 
 export interface Resultat<T> {
@@ -11,7 +11,7 @@ export interface Resultat<T> {
 
 export function usePost<B, T>(url: string): { post(body: B): Promise<void>; reset(): void } & Resultat<T> {
   const [[resultat, loading], setResultat] = useState<[Resultat<T>, boolean]>([{}, false])
-  useErrorHandler(resultat.error)
+  //useErrorHandler(resultat.error)
   return {
     async post(body) {
       setResultat([{}, true])
@@ -26,13 +26,9 @@ export function usePost<B, T>(url: string): { post(body: B): Promise<void>; rese
   }
 }
 
-const http = {
+export const http = {
   async post<B, T>(path: string, body: B): Promise<Resultat<T>> {
     try {
-      // const url = apiUrl(path)
-
-      console.log('apiURL', path)
-
       const response = await fetch(path, {
         method: 'post',
         cache: 'no-store',
@@ -56,14 +52,6 @@ const http = {
     }
   },
 }
-
-/*export function baseUrl(url = '') {
-  if (process.env.NODE_ENV === 'production') {
-    return `/hjelpemidler/barnebriller/${url}`
-  } else {
-    return url
-  }
-}*/
 
 export function apiUrl(url: string) {
   return `/api${url}`

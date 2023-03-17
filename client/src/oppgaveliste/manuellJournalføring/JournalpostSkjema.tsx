@@ -7,6 +7,7 @@ import { Button, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
 import { postJournalfør } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
+import { Knappepanel } from '../../felleskomponenter/Button'
 import { ButtonContainer } from '../../felleskomponenter/Dialogboks'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { usePersonContext } from '../../personoversikt/PersonContext'
@@ -19,6 +20,7 @@ import { Dokumenter } from './Dokumenter'
 const Container = styled.div`
   overflow: auto;
   padding-top: var(--a-spacing-6);
+  padding-right: var(--a-spacing-4);
 `
 export const JournalpostSkjema: React.FC = () => {
   const navigate = useNavigate()
@@ -120,7 +122,7 @@ export const JournalpostSkjema: React.FC = () => {
         </Avstand>
         <Dokumenter journalpostID={journalpostID} />
         <Avstand paddingLeft={2}>
-          <ButtonContainer>
+          <Knappepanel>
             <Button
               type="submit"
               variant="primary"
@@ -138,7 +140,7 @@ export const JournalpostSkjema: React.FC = () => {
             >
               Journalfør
             </Button>
-          </ButtonContainer>
+          </Knappepanel>
         </Avstand>
       </form>
     </Container>

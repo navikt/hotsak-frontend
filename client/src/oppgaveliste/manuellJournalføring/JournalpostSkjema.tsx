@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Applicant } from '@navikt/ds-icons'
-import { Button, ExpansionCard, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
+import { Button, ExpansionCard, Heading, Loader, TextField } from '@navikt/ds-react'
 
 import { postJournalfør } from '../../io/http'
 
@@ -82,7 +82,7 @@ export const JournalpostSkjema: React.FC = () => {
         <Heading size="small" level="2" spacing>
           Bruker
         </Heading>
-        <Avstand marginRight={3}>
+        <Avstand marginRight={3} paddingLeft={1}>
           <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
             <ExpansionCard.Header>
               <ExpansionCard.Title as="h3" size="small">

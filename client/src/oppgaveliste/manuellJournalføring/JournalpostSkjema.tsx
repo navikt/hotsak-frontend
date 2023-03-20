@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
+import { Applicant } from '@navikt/ds-icons'
 import { Button, ExpansionCard, Heading, Loader, Panel, TextField } from '@navikt/ds-react'
 
 import { postJournalfør } from '../../io/http'
@@ -9,6 +10,7 @@ import { postJournalfør } from '../../io/http'
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
+import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
@@ -81,37 +83,38 @@ export const JournalpostSkjema: React.FC = () => {
           Bruker
         </Heading>
         <Avstand marginRight={3}>
-          <Panel>
-            <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
-              <ExpansionCard.Header>
-                <ExpansionCard.Title as="h1" size="small">
-                  {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
-                </ExpansionCard.Title>
-              </ExpansionCard.Header>
-              <ExpansionCard.Content>
-                <Kolonner>
-                  <TextField
-                    label="Endre bruker"
-                    description="Skriv inn fødselsnummer eller D-nummer"
-                    size="small"
-                    value={journalføresPåFnr}
-                    onChange={(e) => setJournalføresPåFnr(e.target.value)}
-                  />
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={() => {
-                      setFodselsnummer(journalføresPåFnr)
-                    }}
-                    disabled={henterPerson}
-                    loading={henterPerson}
-                  >
-                    Endre bruker
-                  </Button>
-                </Kolonner>
-              </ExpansionCard.Content>
-            </ExpansionCard>
-          </Panel>
+          <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
+            <ExpansionCard.Header>
+              <ExpansionCard.Title as="h3" size="small">
+                <IconContainer>
+                  <Applicant />
+                </IconContainer>
+                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
+              </ExpansionCard.Title>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+              <Kolonner>
+                <TextField
+                  label="Endre bruker"
+                  description="Skriv inn fødselsnummer eller D-nummer"
+                  size="small"
+                  value={journalføresPåFnr}
+                  onChange={(e) => setJournalføresPåFnr(e.target.value)}
+                />
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    setFodselsnummer(journalføresPåFnr)
+                  }}
+                  disabled={henterPerson}
+                  loading={henterPerson}
+                >
+                  Endre bruker
+                </Button>
+              </Kolonner>
+            </ExpansionCard.Content>
+          </ExpansionCard>
         </Avstand>
         <Avstand paddingTop={8} marginRight={3} marginLeft={2}>
           <Heading size="small" level="2" spacing>

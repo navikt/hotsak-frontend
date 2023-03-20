@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
+import { IconContainer } from '../felleskomponenter/ikoner/Ikon'
 import { TabButton } from './TabButton'
 
 const Content = styled.span`
@@ -29,10 +30,6 @@ const TabLinkButton = styled(TabButton)`
         font-weight: 600;
       }
     `}
-`
-
-const IconContainer = styled.span`
-  margin-right: 0.5rem;
 `
 
 interface TabLinkProps {

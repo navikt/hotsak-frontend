@@ -1,4 +1,5 @@
 import React, { SVGProps } from 'react'
+import styled from 'styled-components'
 
 export interface IkonProps extends SVGProps<any> {
   height?: number
@@ -19,3 +20,7 @@ export const Ikon: React.FC<IkonProps> = ({
     {children}
   </svg>
 )
+
+export const IconContainer = styled.span`
+  margin-right: 0.5rem;
+`

@@ -10,11 +10,13 @@ import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { useKontonummer } from './useKontonummer'
 
-export const Innsender = () => {
+export const Utbetalingsmottaker = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const [textFieldValue, setTextFieldValue] = useState('')
   const [innsenderFnr, setInnsenderFnr] = useState('')
   const { data: kontoinformasjon, error, loading } = useKontonummer(saksnummer!, innsenderFnr)
+
+  const kontonummerFunnet = kontoinformasjon?.kontonummer && kontoinformasjon.kontonummer !== ''
 
   return (
     <>
@@ -38,9 +40,11 @@ export const Innsender = () => {
           Hent kontonummer
         </Button>
       </Kolonner>
-      {error?.status === IKKE_FUNNET && (
+      {kontoinformasjon && !kontonummerFunnet && (
         <SkjemaAlert variant="error">
-          {`Fant ikke kontonummer for ${innsenderFnr}. Kontakt personen og be dem legge inn kontonummer hos NAV.`}
+          {`Fant ikke kontonummer for ${
+            kontoinformasjon?.navn && kontoinformasjon.navn !== '' ? kontoinformasjon.navn : innsenderFnr
+          }. Kontakt personen og be dem legge inn kontonummer hos NAV.`}
         </SkjemaAlert>
       )}
 
@@ -49,8 +53,10 @@ export const Innsender = () => {
           {`Klarte ikke å hente kontonummer for ${innsenderFnr}. Prøv igjen om noen minutter. Hvis problemet ikke løser seg, kontakt DigiHoT.`}
         </SkjemaAlert>
       )}
-      {kontoinformasjon && (
-        <SkjemaAlert variant="info">{`Kontonummer: ${formaterKontonummer(kontoinformasjon?.kontonummer)}`}</SkjemaAlert>
+      {kontonummerFunnet && (
+        <SkjemaAlert variant="info">{`Kontonummer for ${kontoinformasjon.navn}: ${formaterKontonummer(
+          kontoinformasjon?.kontonummer
+        )}`}</SkjemaAlert>
       )}
     </>
   )

@@ -40,6 +40,7 @@ export interface Brillesak {
   journalposter: string[]
   vedtak: VedtakType
   enhet: Enhet[]
+  utbetalingsmottaker?: Utbetalingsmottaker
   totrinnskontroll?: TotrinnsKontroll
 }
 
@@ -132,14 +133,18 @@ export interface OppdaterVilkårRequest {
 }
 
 export interface KontonummerRequest {
-  brukersFodselsnummer: string
+  fnr: string
   sakId: string
 }
 
 export interface KontonummerResponse {
-  kontohaver: string
-  kontonummer: string
+  fnr?: string
+  navn?: string
+  kontonummer?: string
 }
+
+export type Utbetalingsmottaker = KontonummerResponse
+
 export interface VurderVilkårRequest {
   sakId: string
   målform: MålformType
@@ -184,16 +189,6 @@ export interface BeregnSatsResponse {
   satsBeløp: number
 }
 
-export interface KontonummerResponse {
-  kontohaver: string
-  kontonummer: string
-}
-
-export interface KontonummerRequest {
-  brukersFodselsnummer: string
-  sakId: string
-}
-
 export type BeregnSatsRequest = Brilleseddel
 
 export enum SatsType {
@@ -218,7 +213,7 @@ export interface Person {
   telefon?: string
   brukernummer?: string
   kjønn?: Kjønn
-  kontonummer?: string
+  //kontonummer?: string
 }
 
 export enum VedtaksgrunnlagType {

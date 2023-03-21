@@ -22,22 +22,8 @@ export const Vedtak: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { sak, mutate } = useBrillesak()
 
-  //const kontonummer = useKontonummer(sak?.sakId, sak?.innsender.fnr)
   const VENSTREKOLONNE_BREDDE = '180px'
-
   const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
-
-  /*useEffect(() => {
-    if (status === VilkårsResultat.JA && !sak?.bruker.kontonummer) {
-      console.log('Mangler kontonummer for bruker, kaller endepunkt for å få hentet inn det')
-      post(`${baseUrl}/api/personinfo/kontonr/`, {
-        brukersFodselsnummer: sak?.innsender.fnr,
-        sakId: sak?.sakId,
-      }).then(() => {
-        mutate()
-      })
-    }
-  }, [sak?.innsender.fnr, sak?.bruker.kontonummer, sak?.sakId, status, mutate])*/
 
   const sendTilGodkjenning = () => {
     setLoading(true)
@@ -50,7 +36,7 @@ export const Vedtak: React.FC = () => {
   }
 
   function kanGåVidereTilTotrinnskontroll(): boolean {
-    return status === VilkårsResultat.NEI || bruker.kontonummer !== undefined
+    return status === VilkårsResultat.NEI || sak?.utbetalingsmottaker?.kontonummer !== undefined
   }
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
@@ -108,24 +94,43 @@ export const Vedtak: React.FC = () => {
             <Rad>
               <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
               <Kolonne>
-                <Etikett>{capitalizeName(`${sak.innsender.navn}`)}</Etikett>
+                <Etikett>{capitalizeName(`${sak.utbetalingsmottaker?.navn}`)}</Etikett>
               </Kolonne>
             </Rad>
-            {bruker.kontonummer ? (
+            {sak.utbetalingsmottaker?.kontonummer ? (
               <Rad>
                 <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
                 <Kolonne>
-                  <Etikett>{formaterKontonummer(bruker?.kontonummer)}</Etikett>
+                  <Etikett>{formaterKontonummer(sak.utbetalingsmottaker?.kontonummer)}</Etikett>
                 </Kolonne>
               </Rad>
             ) : (
-              <SkjemaAlert variant="warning">
-                <Etikett>Mangler kontonummer på bruker</Etikett>
-                <Detail>
-                  Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
-                  vedkommende for å be dem registrere et kontonummer.
-                </Detail>
-              </SkjemaAlert>
+              <>
+                <SkjemaAlert variant="warning">
+                  <Etikett>Mangler kontonummer på bruker</Etikett>
+                  <Detail>
+                    Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
+                    vedkommende for å be dem registrere et kontonummer.
+                  </Detail>
+                </SkjemaAlert>
+                <Avstand paddingTop={4} />
+                <Button
+                  variant="secondary"
+                  size="small"
+                  loading={loading}
+                  disabled={loading}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    post('/api/utbetalingsmottaker', { fnr: sak.utbetalingsmottaker?.fnr, sakId: sak.sakId }).then(
+                      () => {
+                        mutate()
+                      }
+                    )
+                  }}
+                >
+                  Hent kontonummer på nytt
+                </Button>
+              </>
             )}
           </>
         )}

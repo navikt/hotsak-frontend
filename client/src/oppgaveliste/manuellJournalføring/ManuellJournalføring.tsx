@@ -32,7 +32,7 @@ export const ManuellJournalfør: React.FC = () => {
   const { setValgtDokumentID } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
-  const { personInfo, /*isLoading: personInfoLoading,*/ isError: personInfoError } = usePersonInfo(fodselsnummer)
+  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
 
   const journalpostTildeltSaksbehandler =
     journalpost?.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
@@ -63,7 +63,7 @@ export const ManuellJournalfør: React.FC = () => {
   return (
     <>
       {/* Loading state på personlinje */}
-      <Personlinje person={personInfo} />
+      <Personlinje person={personInfo} loading={personInfoLoading} />
       <Container>
         <ToKolonner>
           {journalpostTildeltSaksbehandler ? <JournalpostSkjema /> : <JournalpostVisning />}

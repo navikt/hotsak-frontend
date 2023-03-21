@@ -4,17 +4,17 @@ import { usePost } from '../../../../io/usePost'
 
 import { KontonummerRequest, KontonummerResponse } from '../../../../types/types.internal'
 
-export function useKontonummer(sakId: string, fnrInnsender: string) {
-  const { post, data, error, loading } = usePost<KontonummerRequest, KontonummerResponse>('/api/personinfo/kontonr')
+export function useKontonummer(sakId: string, fnr: string) {
+  const { post, data, error, loading } = usePost<KontonummerRequest, KontonummerResponse>('/api/utbetalingsmottaker')
 
   useEffect(() => {
-    if (sakId && fnrInnsender && fnrInnsender !== '') {
+    if (sakId && fnr && fnr !== '') {
       post({
+        fnr: fnr,
         sakId,
-        brukersFodselsnummer: fnrInnsender,
       })
     }
-  }, [sakId, fnrInnsender])
+  }, [sakId, fnr])
 
   return { data, error, loading }
 }

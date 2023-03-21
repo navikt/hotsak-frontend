@@ -11,6 +11,7 @@ import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { Toast } from '../felleskomponenter/Toast'
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
 import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
@@ -55,6 +56,7 @@ const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
 
 interface PersonlinjeProps {
   person?: PersonoversiktType | Person
+  loading: boolean
 }
 
 const LoadingText = styled.div`
@@ -110,7 +112,7 @@ export const formaterNavn = (person: PersonoversiktType | Person) => {
   }
 }
 
-export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
+export const Personlinje: React.FC<PersonlinjeProps> = ({ person, loading }) => {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -181,3 +183,20 @@ export const Personlinje: React.FC<PersonlinjeProps> = ({ person }) => {
     </Container>
   )
 }
+
+const LasterPersonoversikt: React.FC = () => {
+  return (
+    <>
+      <LasterPersonlinje />
+      <Toast>Henter saksoversikt</Toast>
+    </>
+  )
+}
+
+/*const Personoversikt: React.FC = () => (
+    <ErrorBoundary FallbackComponent={AlertError}>
+      <React.Suspense fallback={<LasterPersonoversikt />}>
+        <PersonoversiktContent />
+      </React.Suspense>
+    </ErrorBoundary>
+  )*/

@@ -1759,7 +1759,8 @@
     },
     "utbetalingsmottaker": {
       "fnr": "09418208349",
-      "navn": "Far Farsen"
+      "navn": "Far Farsen",
+      "kontonummer": null
     },
     "vilkårsgrunnlag": {
       "målform": "BOKMÅL",

@@ -17,13 +17,6 @@ export const TotrinnskontrollPanel: React.FC = () => {
 
   const { sak, isError } = useBrillesak()
 
-  const methods = useForm<TotrinnsKontrollData>({
-    defaultValues: {
-      vurdering: '',
-      begrunnelse: '',
-    },
-  })
-
   if (isError || !sak) {
     return <div>Feil ved henting av sak</div>
   }
@@ -33,9 +26,11 @@ export const TotrinnskontrollPanel: React.FC = () => {
   }
 
   if (sak.saksbehandler && sak?.saksbehandler.objectId !== saksbehandler.objectId) {
-    ;<div>
-      <Brødtekst>En annen saksbehandler har allerede tatt denne saken </Brødtekst>
-    </div>
+    return (
+      <div>
+        <Brødtekst>En annen saksbehandler har allerede tatt denne saken </Brødtekst>
+      </div>
+    )
   }
 
   const totrinnskontrollFullført =

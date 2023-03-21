@@ -12,6 +12,8 @@ const kontonummerHandlers = [
     saker[sakIdx]['utbetalingsmottaker'] = {
       fnr: fnr,
       navn: 'Far Farsen',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       kontonummer: '11112233333',
     }
 

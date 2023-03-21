@@ -22,7 +22,7 @@ export const TotrinnskontrollForm: React.FC = () => {
 
   const methods = useForm<TotrinnsKontrollData>({
     defaultValues: {
-      vurdering: '',
+      resultat: '',
       begrunnelse: '',
     },
   })
@@ -35,7 +35,7 @@ export const TotrinnskontrollForm: React.FC = () => {
     getValues,
   } = methods
 
-  const vurdering = watch('vurdering')
+  const resultat = watch('resultat')
 
   const lagreTotrinnskontroll = () => {
     const formData = getValues()
@@ -55,7 +55,7 @@ export const TotrinnskontrollForm: React.FC = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(() => {
-            if (vurdering === TotrinnsKontrollVurdering.GODKJENT) {
+            if (resultat === TotrinnsKontrollVurdering.GODKJENT) {
               setVisGodkjenningsModal(true)
             } else {
               lagreTotrinnskontroll()
@@ -63,18 +63,18 @@ export const TotrinnskontrollForm: React.FC = () => {
           })}
         >
           <Controller
-            name="vurdering"
+            name="resultat"
             control={control}
             rules={{ required: 'Velg en verdi' }}
             render={({ field }) => (
-              <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.vurdering?.message}>
+              <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.resultat?.message}>
                 <Radio value={TotrinnsKontrollVurdering.GODKJENT}>Godkjenn</Radio>
                 <Radio value={TotrinnsKontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
               </RadioGroup>
             )}
           />
 
-          {vurdering === TotrinnsKontrollVurdering.RETURNERT && (
+          {resultat === TotrinnsKontrollVurdering.RETURNERT && (
             <Avstand paddingTop={4}>
               <Textarea
                 size="small"
@@ -89,7 +89,7 @@ export const TotrinnskontrollForm: React.FC = () => {
           <Avstand paddingTop={4}>
             {
               /*totrinnkontrollMulig &&*/ <Button variant="primary" type="submit" size="small" loading={loading}>
-                {vurdering === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
+                {resultat === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
               </Button>
             }
           </Avstand>

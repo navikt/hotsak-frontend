@@ -44,7 +44,7 @@ const totrinnsKontrollHandlers = [
 
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
-    const vurdering: TotrinnsKontrollVurdering | '' = req.body.vurdering
+    const vurdering: TotrinnsKontrollVurdering | '' = req.body.resultat
     const begrunnelse = req.body.begrunnelse
 
     if (vurdering === TotrinnsKontrollVurdering.RETURNERT) {

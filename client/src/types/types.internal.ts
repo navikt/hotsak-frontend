@@ -118,13 +118,13 @@ export interface OppdaterVilkårData {
 }
 
 export interface TotrinnsKontrollData {
-  vurdering: TotrinnsKontrollVurdering | ''
+  resultat: TotrinnsKontrollVurdering | ''
   begrunnelse?: string
 }
 
 export enum TotrinnsKontrollVurdering {
-  GODKJENT = 'godkjent',
-  RETURNERT = 'returnert',
+  GODKJENT = 'GODKJENT',
+  RETURNERT = 'RETURNERT',
 }
 
 export interface OppdaterVilkårRequest {

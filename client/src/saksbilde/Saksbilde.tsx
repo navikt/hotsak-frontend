@@ -34,7 +34,7 @@ const SaksbildeContent = React.memo(() => {
   return (
     <>
       <SaksbildeContainer className="saksbilde">
-        <Personlinje person={sak.bruker} />
+        <Personlinje person={sak.bruker} loading={false} />
         {(() => {
           switch (sak!.sakstype) {
             case Oppgavetype.BESTILLING:

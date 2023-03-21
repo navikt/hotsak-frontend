@@ -71,7 +71,7 @@ const PersonoversiktContent: React.FC = () => {
         <LasterPersonoversikt />
       ) : (
         <>
-          <Personlinje person={personInfo} />
+          <Personlinje loading={personInfoLoading} person={personInfo} />
           <Alert size="small" variant="info">
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>

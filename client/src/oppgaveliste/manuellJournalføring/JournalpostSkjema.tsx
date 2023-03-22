@@ -10,6 +10,7 @@ import { postJournalfør } from '../../io/http'
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
+import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
@@ -20,6 +21,7 @@ import { Dokumenter } from './Dokumenter'
 
 const Container = styled.div`
   overflow: auto;
+  border-right: 1px solid var(--a-border-default);
   padding-top: var(--a-spacing-6);
   padding-right: var(--a-spacing-4);
 `
@@ -56,20 +58,11 @@ export const JournalpostSkjema: React.FC = () => {
       })
   }
 
-  if (henterPerson || !personInfo) {
+  if (henterPerson || !personInfo || isLoading || !journalpost) {
     return (
-      <div>
-        <Loader /> Henter personinfo
-      </div>
-    )
-  }
-
-  if (isLoading || !journalpost) {
-    return (
-      <div>
-        <Loader />
-        Henter journalpost...
-      </div>
+      <Container>
+        <Toast>Henter journalpost</Toast>
+      </Container>
     )
   }
 

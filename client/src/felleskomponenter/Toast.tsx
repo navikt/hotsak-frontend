@@ -6,7 +6,7 @@ import { Loader } from '@navikt/ds-react'
 import { Tekst } from './typografi'
 
 const ToastView = styled.div`
-  position: fixed;
+  //position: fixed;
   top: 10rem;
   left: 11%;
   display: flex;
@@ -32,7 +32,7 @@ interface ToastProps {
 export const Toast: React.FC<ToastProps> = ({ children }) => {
   return (
     <ToastView aria-live="polite">
-      <Tekst>{children}</Tekst> <Loader title="Henter oppgaver" size="xsmall" />
+      <Tekst>{children}</Tekst> <Loader variant="inverted" title="Systemet laster" size="xsmall" />
     </ToastView>
   )
 }

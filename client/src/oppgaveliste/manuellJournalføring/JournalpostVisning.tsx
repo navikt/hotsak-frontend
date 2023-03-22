@@ -2,10 +2,11 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Heading, Loader } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
+import { Toast } from '../../felleskomponenter/Toast'
 import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
@@ -18,19 +19,8 @@ import { Dokumenter } from './Dokumenter'
 
 const Container = styled.div`
   overflow: auto;
+  border-right: 1px solid var(--a-border-default);
   padding-top: var(--a-spacing-6);
-`
-
-const Kolonner = styled.div`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  align-self: flex-end;
-  align-items: flex-end;
-`
-
-const IconContainer = styled.span`
-  margin-right: 0.4rem;
 `
 
 export const JournalpostVisning: React.FC = () => {
@@ -40,20 +30,11 @@ export const JournalpostVisning: React.FC = () => {
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()
 
-  if (henterPerson || !personInfo) {
+  if (henterPerson || !personInfo || isLoading || !journalpost) {
     return (
-      <div>
-        <Loader /> Henter personinfo
-      </div>
-    )
-  }
-
-  if (isLoading || !journalpost) {
-    return (
-      <div>
-        <Loader />
-        Henter journalpost...
-      </div>
+      <Container>
+        <Toast>Henter journalpost</Toast>
+      </Container>
     )
   }
 

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Loader } from '@navikt/ds-react'
 
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
+import { Toast } from '../../felleskomponenter/Toast'
 import { RessursStatus } from '../../types/types.internal'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { useDokument } from '../dokumenter/dokumentHook'
@@ -47,7 +48,7 @@ export const DokumentPanel: React.FC<DokumentPanelProps> = (props) => {
     return (
       <FeilmeldingDiv>
         <div>
-          <Loader size="3xlarge" title="Henter dokument..." />
+          <Toast>Henter dokument...</Toast>
         </div>
       </FeilmeldingDiv>
     )

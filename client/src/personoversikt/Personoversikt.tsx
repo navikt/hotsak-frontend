@@ -12,7 +12,6 @@ import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/Feilmelding'
 import { Flex } from '../felleskomponenter/Flex'
-import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
@@ -115,14 +114,13 @@ const LasterPersonoversikt: React.FC = () => {
   return (
     <>
       <LasterPersonlinje />
-      <Toast>Henter saksoversikt</Toast>
     </>
   )
 }
 
 const Personoversikt: React.FC = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterPersonoversikt />}>
+    <React.Suspense fallback={<LasterPersonlinje />}>
       <PersonoversiktContent />
     </React.Suspense>
   </ErrorBoundary>

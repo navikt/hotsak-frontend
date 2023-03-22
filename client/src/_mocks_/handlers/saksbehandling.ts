@@ -441,7 +441,7 @@ const saksbehandlingHandlers = [
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
     saker[sakIdx].steg = StegType.FATTE_VEDTAK
 
-    return res(ctx.status(200), ctx.json({}))
+    return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),
 ]
 

@@ -26,7 +26,7 @@ const personInfoHandlers = [
     } else {
       const person = personInfo[2]
       person.fnr = brukersFodselsnummer
-      return res(ctx.status(200), ctx.json(person))
+      return res(ctx.delay(1000), ctx.status(200), ctx.json(person))
     }
   }),
 ]

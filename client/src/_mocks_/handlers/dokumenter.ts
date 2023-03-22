@@ -47,6 +47,7 @@ const dokumentHandlers = [
 
     const buffer = await fetch(dokument).then((res) => res.arrayBuffer())
     return res(
+      ctx.delay(500),
       ctx.set('Content-Length', buffer.byteLength.toString()),
       ctx.set('Content-Type', 'application/pdf'),
       ctx.body(buffer)

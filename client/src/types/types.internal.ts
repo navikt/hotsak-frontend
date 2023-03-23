@@ -468,6 +468,7 @@ export enum JournalpostStatusType {
 export enum OppgaveStatusType {
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
+  TILDELT_GODKJENNER = 'TILDELT_GODKJENNER',
   SENDT_GOSYS = 'SENDT_GOSYS',
   AVVIST = 'AVVIST',
   AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
@@ -482,6 +483,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+  [OppgaveStatusType.TILDELT_GODKJENNER, 'Under behandling'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],

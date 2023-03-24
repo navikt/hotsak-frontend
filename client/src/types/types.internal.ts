@@ -485,7 +485,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
-  [OppgaveStatusType.TILDELT_GODKJENNER, 'Under behandling'],
+  [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],

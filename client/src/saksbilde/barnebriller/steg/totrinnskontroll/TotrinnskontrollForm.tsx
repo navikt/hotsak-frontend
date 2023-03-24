@@ -52,7 +52,7 @@ export const TotrinnskontrollForm: React.FC = () => {
   }
 
   const totrinnkontrollMulig =
-    sak?.steg === StegType.GODKJENNE && sak?.saksbehandler?.objectId !== saksbehandler.objectId
+    sak?.steg === StegType.GODKJENNE && sak?.totrinnskontroll?.saksbehandler.objectId !== saksbehandler.objectId
   return (
     <>
       {!totrinnkontrollMulig ? (

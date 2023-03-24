@@ -6,7 +6,7 @@ import { Panel } from '@navikt/ds-react'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
-import { StegType } from '../../../../types/types.internal'
+import { Brillesak, Saksbehandler, StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
@@ -39,8 +39,6 @@ export const TotrinnskontrollPanel: React.FC = () => {
   if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
     return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll enda</div>
   }
-
-  //const totrinnkontrollMulig = sak.steg === StegType.GODKJENNE && sak?.saksbehandler.objectId !== saksbehandler.objectId
 
   return (
     <Container>

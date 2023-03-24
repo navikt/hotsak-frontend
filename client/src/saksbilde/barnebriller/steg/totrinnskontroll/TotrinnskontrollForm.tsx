@@ -8,6 +8,7 @@ import { baseUrl, put } from '../../../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnsKontrollData, TotrinnsKontrollVurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
@@ -50,51 +51,57 @@ export const TotrinnskontrollForm: React.FC = () => {
       })
   }
 
+  const totrinnkontrollMulig =
+    sak?.steg === StegType.GODKJENNE && sak?.saksbehandler?.objectId !== saksbehandler.objectId
   return (
     <>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(() => {
-            if (resultat === TotrinnsKontrollVurdering.GODKJENT) {
-              setVisGodkjenningsModal(true)
-            } else {
-              lagreTotrinnskontroll()
-            }
-          })}
-        >
-          <Controller
-            name="resultat"
-            control={control}
-            rules={{ required: 'Velg en verdi' }}
-            render={({ field }) => (
-              <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.resultat?.message}>
-                <Radio value={TotrinnsKontrollVurdering.GODKJENT}>Godkjenn</Radio>
-                <Radio value={TotrinnsKontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
-              </RadioGroup>
+      {!totrinnkontrollMulig ? (
+        <SkjemaAlert variant="info">Det er ikke mulig å godkjenne totrinnskontroll for egen sak</SkjemaAlert>
+      ) : (
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(() => {
+              if (resultat === TotrinnsKontrollVurdering.GODKJENT) {
+                setVisGodkjenningsModal(true)
+              } else {
+                lagreTotrinnskontroll()
+              }
+            })}
+          >
+            <Controller
+              name="resultat"
+              control={control}
+              rules={{ required: 'Velg en verdi' }}
+              render={({ field }) => (
+                <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.resultat?.message}>
+                  <Radio value={TotrinnsKontrollVurdering.GODKJENT}>Godkjenn</Radio>
+                  <Radio value={TotrinnsKontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
+                </RadioGroup>
+              )}
+            />
+
+            {resultat === TotrinnsKontrollVurdering.RETURNERT && (
+              <Avstand paddingTop={4}>
+                <Textarea
+                  size="small"
+                  label="Begrunn vurderingen din"
+                  description="Skriv hvorfor saken returneres, så det er enkelt å forstå hva som vurderes og gjøres om."
+                  error={errors.begrunnelse?.message}
+                  {...methods.register('begrunnelse', { required: 'Du må begrunne vurderingen din ' })}
+                ></Textarea>
+              </Avstand>
             )}
-          />
 
-          {resultat === TotrinnsKontrollVurdering.RETURNERT && (
             <Avstand paddingTop={4}>
-              <Textarea
-                size="small"
-                label="Begrunn vurderingen din"
-                description="Skriv hvorfor saken returneres, så det er enkelt å forstå hva som vurderes og gjøres om."
-                error={errors.begrunnelse?.message}
-                {...methods.register('begrunnelse', { required: 'Du må begrunne vurderingen din ' })}
-              ></Textarea>
+              {
+                <Button variant="primary" type="submit" size="small" loading={loading}>
+                  {resultat === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
+                </Button>
+              }
             </Avstand>
-          )}
-
-          <Avstand paddingTop={4}>
-            {
-              /*totrinnkontrollMulig &&*/ <Button variant="primary" type="submit" size="small" loading={loading}>
-                {resultat === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
-              </Button>
-            }
-          </Avstand>
-        </form>
-      </FormProvider>
+          </form>
+        </FormProvider>
+      )}
 
       <GodkjenneTotrinnskontrollModal
         open={visGodkjenningsModal}

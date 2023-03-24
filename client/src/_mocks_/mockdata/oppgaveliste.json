@@ -316,7 +316,7 @@
       "funksjonsnedsettelser": ["syn"],
       "fornavn": "Hove",
       "etternavn": "Off",
-      "bosted": ""
+      "bosted": "Fjesneso"
     },
     "status": "TILDELT_SAKSBEHANDLER",
     "statusEndret": "2023-01-05T14:31:42.815302Z",
@@ -342,8 +342,7 @@
       "fnr": "20071359671",
       "funksjonsnedsettelser": ["syn"],
       "fornavn": "Hove",
-      "etternavn": "Off",
-      "bosted": ""
+      "etternavn": "Off"
     },
     "status": "AVVENTER_GODKJENNER",
     "statusEndret": "2023-01-05T14:31:42.815302Z",

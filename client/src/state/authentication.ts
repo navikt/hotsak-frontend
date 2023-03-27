@@ -1,6 +1,6 @@
 import fetchIntercept from 'fetch-intercept'
 import { useEffect } from 'react'
-import { atom, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { atom, selector, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
@@ -19,8 +19,8 @@ export interface InnloggetSaksbehandler {
   erInnlogget?: boolean
 }
 
-export const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
-  key: 'auth',
+const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
+  key: 'InnloggetSaksbehandler',
   default: {
     id: '',
     objectId: '',
@@ -33,13 +33,20 @@ export const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
   },
 })
 
+const visOppgavelisteTabsState = selector<boolean>({
+  key: 'VisOppgavelisteTabs',
+  get: ({ get }) => {
+    const { grupper, enheter } = get(innloggetSaksbehandlerState)
+    return grupper.includes('BRILLEADMIN_BRUKERE') || enheter.includes('2103')
+  },
+})
+
 export function useInnloggetSaksbehandler(): InnloggetSaksbehandler {
   return useRecoilValue<InnloggetSaksbehandler>(innloggetSaksbehandlerState)
 }
 
 export function useVisOppgavelisteTabs() {
-  const { grupper, enheter } = useInnloggetSaksbehandler()
-  return grupper.includes('BRILLEADMIN_BRUKERE') || enheter.includes('2103')
+  return useRecoilValue<boolean>(visOppgavelisteTabsState)
 }
 
 export const useAuthentication = (): void => {

@@ -1,64 +1,75 @@
 import fetchIntercept from 'fetch-intercept'
 import { useEffect } from 'react'
 import { atom, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import useSwr from 'swr'
 
-import { extractValues, Keys } from '../utils/cookie'
+import { httpGet } from '../io/http'
 
-import type { Saksbehandler } from '../types/types.internal'
+type Gruppe = string | 'TEAMDIGIHOT' | 'HOTSAK_BRUKERE' | 'BRILLEADMIN_BRUKERE'
+type Enhet = string | '2103' | '4710'
 
-interface AuthInfo {
-  name: string
-  ident?: string
-  email?: string
-  oid?: string
-  isLoggedIn?: boolean
+export interface InnloggetSaksbehandler {
+  id: string
+  objectId: string
+  navn: string
+  epost: string
+  navIdent: string
+  grupper: Gruppe[]
+  enheter: Enhet[]
+  erInnlogget?: boolean
 }
 
-export const authState = atom<AuthInfo>({
+export const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
   key: 'auth',
   default: {
-    name: '',
-    ident: undefined,
-    email: undefined,
-    oid: undefined,
-    isLoggedIn: undefined,
+    id: '',
+    objectId: '',
+    navn: '',
+    epost: '',
+    navIdent: '',
+    grupper: [],
+    enheter: [],
+    erInnlogget: undefined,
   },
 })
 
-export const useInnloggetSaksbehandler = (): Saksbehandler => {
-  const authInfo = useRecoilValue<AuthInfo>(authState)
-  return {
-    objectId: authInfo.oid!,
-    navn: authInfo.name!,
-    epost: authInfo.email!,
-  }
+export function useInnloggetSaksbehandler(): InnloggetSaksbehandler {
+  return useRecoilValue<InnloggetSaksbehandler>(innloggetSaksbehandlerState)
+}
+
+export function useVisOppgavelisteTabs() {
+  const { grupper, enheter } = useInnloggetSaksbehandler()
+  return grupper.includes('BRILLEADMIN_BRUKERE') || enheter.includes('2103')
 }
 
 export const useAuthentication = (): void => {
-  const [authInfo, setAuthInfo] = useRecoilState(authState)
-  const resetAuthInfo = useResetRecoilState(authState)
-  const [name, ident, email, oid] = extractValues([Keys.NAME, Keys.IDENT, Keys.EMAIL, Keys.OID])
+  const { data, error } = useSwr<{ data: InnloggetSaksbehandler }>('api/tilgang', httpGet)
+  const [innloggetSaksbehandler, setInnloggetSaksbehandler] = useRecoilState(innloggetSaksbehandlerState)
+  const resetInnloggetSaksbehandler = useResetRecoilState(innloggetSaksbehandlerState)
 
   useEffect(() => {
-    if (name && name !== authInfo.name) {
-      setAuthInfo({
-        name,
-        ident,
-        email,
-        oid,
-        isLoggedIn: true,
+    if (data && data.data.id !== innloggetSaksbehandler.id) {
+      setInnloggetSaksbehandler({
+        ...data.data,
+        erInnlogget: true,
       })
     }
-  }, [name, ident, email, oid, authInfo, setAuthInfo])
+  }, [data, innloggetSaksbehandler, setInnloggetSaksbehandler])
+
+  useEffect(() => {
+    if (error) {
+      resetInnloggetSaksbehandler()
+    }
+  }, [error, resetInnloggetSaksbehandler])
 
   useEffect(() => {
     fetchIntercept.register({
       response: (res) => {
         if (res.status === 401) {
-          resetAuthInfo()
+          resetInnloggetSaksbehandler()
         }
         return res
       },
     })
-  }, [resetAuthInfo])
+  }, [resetInnloggetSaksbehandler])
 }

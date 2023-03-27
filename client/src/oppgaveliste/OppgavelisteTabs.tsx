@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { FileContent, Task } from '@navikt/ds-icons'
 import { Tabs } from '@navikt/ds-react'
 
+import { useVisOppgavelisteTabs } from '../state/authentication'
+
 const TabContainer = styled.div`
   padding-top: var(--a-spacing-4);
 `
@@ -11,9 +13,14 @@ const TabContainer = styled.div`
 export const OppgavelisteTabs: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const visOppgavelisteTabs = useVisOppgavelisteTabs()
 
   const valgtTab = location.pathname.split('/').pop() || 'oppgaveliste'
   const navigateTo = valgtTab === 'oppgaveliste' ? '/oppgaveliste/dokumenter' : '/'
+
+  if (!visOppgavelisteTabs) {
+    return null
+  }
 
   return (
     <TabContainer>

@@ -9,20 +9,22 @@ import kontonummerHandlers from './kontonummer'
 import personInfoHandlers from './personoversikt'
 import saksbehandlingHandlers from './saksbehandling'
 import saksoversiktHandlers from './saksoversikt'
+import tilgangHandlers from './tilgang'
 import totrinnsKontrollHandlers from './totrinnkontroll'
 
 const handlers = [
-  ...saksbehandlingHandlers,
-  ...grunndataHandlers,
-  ...hjelpemiddeloversiktHandlers,
-  ...saksoversiktHandlers,
-  ...endringsloggHandlers,
-  ...personInfoHandlers,
-  ...hjelpemiddelHandlers,
-  ...dokumentHandlers,
-  ...brillekalkulatorHandlers,
-  ...kontonummerHandlers,
   ...brevHandlers,
+  ...brillekalkulatorHandlers,
+  ...dokumentHandlers,
+  ...endringsloggHandlers,
+  ...grunndataHandlers,
+  ...hjelpemiddelHandlers,
+  ...hjelpemiddeloversiktHandlers,
+  ...kontonummerHandlers,
+  ...personInfoHandlers,
+  ...saksbehandlingHandlers,
+  ...saksoversiktHandlers,
+  ...tilgangHandlers,
   ...totrinnsKontrollHandlers,
 ]
 

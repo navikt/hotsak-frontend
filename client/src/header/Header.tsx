@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 
 import { System } from '@navikt/ds-icons'
@@ -8,7 +7,7 @@ import { Link } from '@navikt/ds-react'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
 
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { authState } from '../state/authentication'
+import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Søk } from './Søk'
 import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
 
@@ -23,10 +22,14 @@ const Lenke = styled.a`
 `
 
 export const Toppmeny: React.FC = () => {
-  const { name, ident, isLoggedIn } = useRecoilValue(authState)
-  const brukerinfo = isLoggedIn ? { navn: name, ident: ident ?? '' } : { navn: 'Ikke pålogget', ident: '' }
+  const { erInnlogget, enheter, ...rest } = useInnloggetSaksbehandler()
+  const saksbehandler = erInnlogget ? rest : { navn: 'Ikke pålogget', navIdent: '' }
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
+
+  if (erInnlogget === undefined) {
+    return null
+  }
 
   return (
     <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -61,7 +64,12 @@ export const Toppmeny: React.FC = () => {
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown>
-        <Header.UserButton as={Dropdown.Toggle} name={brukerinfo.navn} description={brukerinfo.ident} />
+        <Header.UserButton
+          as={Dropdown.Toggle}
+          title={enheter.join(', ')}
+          name={saksbehandler.navn}
+          description={saksbehandler.navIdent}
+        />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             <Lenke href="/logout">

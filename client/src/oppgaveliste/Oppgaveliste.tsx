@@ -152,7 +152,7 @@ export const Oppgaveliste: React.FC = () => {
   return (
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
-      {window.appSettings.MILJO !== 'prod-gcp' && <OppgavelisteTabs />}
+      <OppgavelisteTabs />
       <Filters onClear={clearFilters}>
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {

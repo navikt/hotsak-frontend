@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil'
 
 import App from './App'
 
-test.skip('renders app', () => {
+test('renders app', () => {
   render(
     <RecoilRoot>
       <App />

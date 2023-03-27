@@ -27,10 +27,6 @@ export const Toppmeny: React.FC = () => {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
-  if (erInnlogget === undefined) {
-    return null
-  }
-
   return (
     <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <Header.Title href="/">HOTSAK</Header.Title>

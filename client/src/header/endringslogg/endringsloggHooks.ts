@@ -1,5 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import useSwr from 'swr'
+
 import { httpGet, postEndringslogginnslagLest } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
@@ -22,9 +23,7 @@ export function useEndringslogg(): {
   fading: boolean
   merkSomLest: MerkSomLestCallback
 } {
-  const { data, error, mutate } = useSwr<{ data: ReadonlyArray<EndringsloggInnslag> }>('api/endringslogg', httpGet, {
-    refreshInterval: 10000,
-  })
+  const { data, error, mutate } = useSwr<{ data: ReadonlyArray<EndringsloggInnslag> }>('api/endringslogg', httpGet)
   const innslag: ReadonlyArray<EndringsloggInnslag> = data ? data.data : []
   const loading = !data && !error
   const uleste = innslag.some(({ lest }: EndringsloggInnslag) => !lest)

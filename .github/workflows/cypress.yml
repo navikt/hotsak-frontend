@@ -1,9 +1,9 @@
 name: Cypress tests
 
 on:
-  push:
-    branches-ignore:
-      - main # deploy-dev.yml har egen cypress test
+#  push:
+#    branches-ignore:
+#      - main # deploy-dev.yml har egen cypress test
 
 jobs:
   cypress-run:

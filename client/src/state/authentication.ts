@@ -5,8 +5,16 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
-type Gruppe = string | 'TEAMDIGIHOT' | 'HOTSAK_BRUKERE' | 'BRILLEADMIN_BRUKERE'
-type Enhet = string | '2103' | '4710'
+export enum Gruppe {
+  TEAMDIGIHOT = 'TEAMDIGIHOT',
+  HOTSAK_BRUKERE = 'HOTSAK_BRUKERE',
+  BRILLEADMIN_BRUKERE = 'BRILLEADMIN_BRUKERE',
+}
+
+const Enhet = {
+  NAV_VIKAFOSSEN: '2103',
+  NAV_HJELPEMIDDELSENTRAL_AGDER: '4710',
+}
 
 export interface InnloggetSaksbehandler {
   id: string
@@ -15,7 +23,7 @@ export interface InnloggetSaksbehandler {
   epost: string
   navIdent: string
   grupper: Gruppe[]
-  enheter: Enhet[]
+  enheter: string[]
   erInnlogget?: boolean
 }
 
@@ -37,7 +45,12 @@ const visOppgavelisteTabsState = selector<boolean>({
   key: 'VisOppgavelisteTabs',
   get: ({ get }) => {
     const { grupper, enheter } = get(innloggetSaksbehandlerState)
-    return grupper.includes('BRILLEADMIN_BRUKERE') || enheter.includes('2103')
+    return (
+      window.appSettings.MILJO !== 'prod-gcp' ||
+      grupper.includes(Gruppe.TEAMDIGIHOT) ||
+      grupper.includes(Gruppe.BRILLEADMIN_BRUKERE) ||
+      enheter.includes(Enhet.NAV_VIKAFOSSEN)
+    )
   },
 })
 

@@ -1,6 +1,6 @@
-import logger from '../logging'
-import { OidcConfig } from '../types'
-import { setup as proxy } from './proxy'
+import logger from '../logging.mjs'
+import type { OidcConfig } from '../types.d.mts'
+import { setup as proxy } from './proxy.mjs'
 import { Client, custom, Issuer } from 'openid-client'
 
 let azureClient

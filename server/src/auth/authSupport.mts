@@ -1,4 +1,4 @@
-import logger from '../logging'
+import logger from '../logging.mjs'
 
 interface IsValidInProps {
   seconds: number

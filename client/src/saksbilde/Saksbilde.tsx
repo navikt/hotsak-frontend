@@ -1,5 +1,5 @@
 import React from 'react'
-import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
@@ -21,12 +21,12 @@ const SaksbildeContainer = styled.div`
 
 const SaksbildeContent = React.memo(() => {
   const { sak, isLoading, isError } = useSak()
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   if (isLoading) return <LasterSaksbilde />
 
   if (isError) {
-    handleError(isError)
+    showBoundary(isError)
   }
 
   if (!sak) return <div>Fant ikke sak</div>

@@ -1,15 +1,16 @@
-import auth from './auth/authSupport'
-import azure from './auth/azure'
-import onBehalfOf from './auth/onBehalfOf'
-import config from './config'
-import logger from './logging'
-import { ipAddressFromRequest } from './requestData'
-import setupProxy from './reverse-proxy'
-import { sessionStore } from './sessionStore'
+import auth from './auth/authSupport.mjs'
+import azure from './auth/azure.mjs'
+import onBehalfOf from './auth/onBehalfOf.mjs'
+import config from './config.mjs'
+import logger from './logging.mjs'
+import { ipAddressFromRequest } from './requestData.mjs'
+import setupProxy from './reverse-proxy.mjs'
+import { sessionStore } from './sessionStore.mjs'
 import cookieParser from 'cookie-parser'
 import express from 'express'
 import { BaseClient } from 'openid-client'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 const app = express()
 const port = config.server.port
@@ -107,6 +108,8 @@ const createCookieFromToken = (token: string) =>
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const distPath = __dirname + '/../../client/dist'
 const htmlPath = path.join(distPath, 'index.html')
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { useDokumentContext } from '../../../../oppgaveliste/dokumenter/DokumentContext'
@@ -21,7 +21,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
   const { setValgtDokumentID } = useDokumentContext()
   const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalposter[0])
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   const journalpostID = sak?.journalposter[0]
 
@@ -34,7 +34,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   if (isLoading) return <LasterRegistrerSøknadBilde />
 
   if (isError) {
-    handleError(isError)
+    showBoundary(isError)
   }
 
   if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {

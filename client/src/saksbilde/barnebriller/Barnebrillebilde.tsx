@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { Tabs } from '@navikt/ds-react'
@@ -24,10 +24,10 @@ const BarnebrilleBildeContainer = styled.div`
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
   const { valgtTab, setValgtTab } = useManuellSaksbehandlingContext()
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   if (isError) {
-    handleError(isError)
+    showBoundary(isError)
   }
 
   useEffect(() => {

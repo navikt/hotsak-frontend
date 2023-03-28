@@ -1,4 +1,4 @@
-import logger from '../logging'
+import logger from '../logging.mjs'
 import { custom, Issuer } from 'openid-client'
 import tunnel from 'tunnel'
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -7,7 +7,7 @@ import { hotsakTotalMinWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { Flex, FlexColumn } from '../../felleskomponenter/Flex'
 import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
-import { LasterPersonlinje, Personlinje } from '../Personlinje'
+import { LasterPersonlinje } from '../Personlinje'
 import Søknadslinje from '../Søknadslinje'
 import { Bruker } from '../bruker/Bruker'
 import { Formidlerside } from '../formidler/Formidlerside'
@@ -51,12 +51,12 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   if (isLoading) return <LasterBestillingsbilde />
 
   if (isError) {
-    handleError(isError)
+    showBoundary(isError)
   }
 
   const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0

@@ -1,4 +1,4 @@
-import { OidcConfig, ServerConfig } from './types'
+import type { OidcConfig, ServerConfig } from './types.d.mts'
 import env from 'dotenv'
 
 env.config()

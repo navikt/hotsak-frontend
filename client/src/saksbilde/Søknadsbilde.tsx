@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ErrorBoundary, useErrorHandler } from 'react-error-boundary'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -53,12 +53,12 @@ const SaksbildeContent: React.FC = React.memo(() => {
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   if (isLoading) return <LasterSaksbilde />
 
   if (isError) {
-    handleError(isError)
+    showBoundary(isError)
   }
 
   const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0

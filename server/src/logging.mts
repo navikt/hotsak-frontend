@@ -1,4 +1,4 @@
-import authSupport from './auth/authSupport'
+import authSupport from './auth/authSupport.mjs'
 import type { Request } from 'express'
 import fs from 'fs'
 import winston from 'winston'

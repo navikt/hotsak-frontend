@@ -36,4 +36,4 @@ WORKDIR /app/server
 
 COPY --from=server-dependencies /app/node_modules ./node_modules
 
-CMD [ "-r", "source-map-support/register", "-r", "dotenv/config", "dist/server.js" ]
+CMD [ "-r", "source-map-support/register", "-r", "dotenv/config", "dist/server.mjs" ]

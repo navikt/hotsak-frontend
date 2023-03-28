@@ -1,4 +1,4 @@
-import type { AppConfig, OnBehalfOf } from './types'
+import type { AppConfig, OnBehalfOf } from './types.d.mts'
 import type { Request } from 'express'
 import proxy, { ProxyOptions } from 'express-http-proxy'
 import * as core from 'express-serve-static-core'

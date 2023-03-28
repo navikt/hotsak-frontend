@@ -1,5 +1,7 @@
 import { rest } from 'msw'
 
+import { Gruppe } from '../../state/authentication'
+
 const tilgangHandlers = [
   rest.get('/api/tilgang', (req, res, ctx) => {
     return res(
@@ -11,7 +13,7 @@ const tilgangHandlers = [
         navn: 'Silje Saksbehandler',
         epost: 'silje.saksbehandler@nav.no',
         navIdent: 'S112233',
-        grupper: ['HOTSAK_BRUKERE', 'BRILLEADMIN_BRUKERE'],
+        grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
         enheter: ['2970', '4710', '4711'],
       })
     )

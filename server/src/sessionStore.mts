@@ -1,5 +1,5 @@
-import logger from './logging'
-import { AppConfig } from './types'
+import logger from './logging.mjs'
+import type { AppConfig } from './types.d.mts'
 import expressSession from 'express-session'
 
 export const sessionStore = (config: AppConfig) => {

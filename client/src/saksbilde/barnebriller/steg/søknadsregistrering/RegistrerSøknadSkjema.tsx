@@ -1,7 +1,7 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formatISO } from 'date-fns'
 import { useState } from 'react'
-import { useErrorHandler } from 'react-error-boundary'
+import { useErrorBoundary } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
@@ -37,7 +37,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
-  const handleError = useErrorHandler()
+  const { showBoundary } = useErrorBoundary()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { bestillingsdato, ...rest } = { ...formData }

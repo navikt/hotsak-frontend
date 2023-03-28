@@ -1,4 +1,4 @@
-import type { OidcConfig } from '../types'
+import type { OidcConfig } from '../types.d.mts'
 import fetch from 'node-fetch'
 
 export default (config: OidcConfig) => {

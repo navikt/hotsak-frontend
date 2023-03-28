@@ -1,6 +1,6 @@
 name: Cypress tests
 
-on:
+on: workflow_dispatch
 #  push:
 #    branches-ignore:
 #      - main # deploy-dev.yml har egen cypress test

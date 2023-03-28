@@ -3,7 +3,7 @@ import { rest } from 'msw'
 import { Gruppe } from '../../state/authentication'
 
 const tilgangHandlers = [
-  rest.get('/api/tilgang', (req, res, ctx) => {
+  rest.get('/api/saksbehandler', (req, res, ctx) => {
     return res(
       ctx.delay(250),
       ctx.status(200),

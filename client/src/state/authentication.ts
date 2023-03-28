@@ -63,7 +63,7 @@ export function useVisOppgavelisteTabs() {
 }
 
 export const useAuthentication = (): void => {
-  const { data, error } = useSwr<{ data: InnloggetSaksbehandler }>('api/tilgang', httpGet)
+  const { data, error } = useSwr<{ data: InnloggetSaksbehandler }>('api/saksbehandler', httpGet)
   const [innloggetSaksbehandler, setInnloggetSaksbehandler] = useRecoilState(innloggetSaksbehandlerState)
   const resetInnloggetSaksbehandler = useResetRecoilState(innloggetSaksbehandlerState)
 

@@ -84,7 +84,9 @@ export const Oppgaveliste: React.FC = () => {
       key: 'STATUS',
       name: 'Status',
       width: 154,
-      render: (oppgave: Oppgave) => <Status status={OppgaveStatusLabel.get(oppgave.status)!} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => (
+        <Status status={OppgaveStatusLabel.get(oppgave.status) ?? ''} saksID={oppgave.saksid} />
+      ),
     },
     {
       key: 'TYPE',

@@ -479,7 +479,7 @@ export enum OppgaveStatusType {
   ALLE = 'ALLE',
 }
 
-export const OppgaveStatusLabel = new Map<string, string>([
+export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.ALLE, 'Alle'],
   [OppgaveStatusType.VEDTAK_FATTET, 'Innvilget'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
@@ -489,6 +489,7 @@ export const OppgaveStatusLabel = new Map<string, string>([
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
+  [OppgaveStatusType.RETURNERT, 'Returnert'],
 ])
 
 export enum VedtakStatusType {

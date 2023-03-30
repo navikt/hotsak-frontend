@@ -14,7 +14,7 @@ export const Utbetalingsmottaker = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const [textFieldValue, setTextFieldValue] = useState('')
   const [innsenderFnr, setInnsenderFnr] = useState('')
-  const { data: kontoinformasjon, error, loading } = useKontonummer(saksnummer!, innsenderFnr)
+  const { data: kontoinformasjon, error, loading } = useKontonummer(Number(saksnummer), innsenderFnr)
 
   const kontonummerFunnet = kontoinformasjon?.kontonummer && kontoinformasjon.kontonummer !== ''
 

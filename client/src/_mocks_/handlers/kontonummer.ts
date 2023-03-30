@@ -5,7 +5,7 @@ import { mutableSaker as saker } from './modell'
 const kontonummerHandlers = [
   rest.post<{ sakId: string; fnr: string }>(`/api/utbetalingsmottaker`, (req, res, ctx) => {
     const fnr = req?.body.fnr
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.body.sakId)
+    const sakIdx = saker.findIndex((sak) => sak.saksid === req.body.sakId.toString())
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

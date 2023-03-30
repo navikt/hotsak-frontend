@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Alert, Button, Detail, Heading, Panel, Tag } from '@navikt/ds-react'
 
-import { baseUrl, post } from '../../../../io/http'
+import { post } from '../../../../io/http'
 import { formaterDato } from '../../../../utils/date'
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 
@@ -20,6 +21,7 @@ import { BrevPanel } from './brev/BrevPanel'
 
 export const Vedtak: React.FC = () => {
   const [loading, setLoading] = useState(false)
+  const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, mutate } = useBrillesak()
 
   const VENSTREKOLONNE_BREDDE = '180px'
@@ -28,7 +30,11 @@ export const Vedtak: React.FC = () => {
   const sendTilGodkjenning = () => {
     setLoading(true)
     post(`/api/sak/${sak!.sakId}/kontroll`, {})
-      .catch(() => setLoading(false))
+      .catch((e) => {
+        setLoading(false)
+
+        // TODO Håndtere feil her
+      })
       .then(() => {
         setLoading(false)
         mutate()
@@ -121,11 +127,12 @@ export const Vedtak: React.FC = () => {
                   disabled={loading}
                   onClick={(e) => {
                     e.preventDefault()
-                    post('/api/utbetalingsmottaker', { fnr: sak.utbetalingsmottaker?.fnr, sakId: sak.sakId }).then(
-                      () => {
-                        mutate()
-                      }
-                    )
+                    post('/api/utbetalingsmottaker', {
+                      fnr: sak.utbetalingsmottaker?.fnr,
+                      sakId: Number(saksnummer),
+                    }).then(() => {
+                      mutate()
+                    })
                   }}
                 >
                   Hent kontonummer på nytt

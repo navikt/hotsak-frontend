@@ -134,7 +134,7 @@ export interface OppdaterVilkårRequest {
 
 export interface KontonummerRequest {
   fnr: string
-  sakId: string
+  sakId: number
 }
 
 export interface KontonummerResponse {

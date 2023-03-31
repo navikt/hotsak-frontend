@@ -6,6 +6,7 @@ import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
+import { SkjemaAlert } from '../../felleskomponenter/SkjemaAlert'
 import { Toast } from '../../felleskomponenter/Toast'
 import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
@@ -40,6 +41,24 @@ export const JournalpostVisning: React.FC = () => {
 
   const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.objectId !== saksbehandler.objectId
 
+  const StatusVisning: React.FC = () => {
+    if (!journalpost) return <></>
+    else if (journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler) {
+      return <Brødtekst>{`Oppgaven er tildelt saksbehandler ${journalpost.saksbehandler?.navn}`}</Brødtekst>
+    } else if (
+      journalpost.status === DokumentOppgaveStatusType.AVVENTER_JOURNALFØRING ||
+      journalpost.status === DokumentOppgaveStatusType.JOURNALFØRT
+    ) {
+      return <SkjemaAlert variant="info">Journalposten er sendt til journalføring</SkjemaAlert>
+    } else {
+      return (
+        <Knappepanel>
+          <DokumentIkkeTildelt journalpostID={journalpost.journalpostID} gåTilSak={false} />
+        </Knappepanel>
+      )
+    }
+  }
+
   return (
     <Container>
       <Heading level="1" size="small" spacing>
@@ -61,14 +80,8 @@ export const JournalpostVisning: React.FC = () => {
       <Avstand paddingTop={4}>
         <Dokumenter journalpostID={journalpostID} />
       </Avstand>
-      <Avstand paddingTop={6}>
-        {journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler ? (
-          <Brødtekst>{`Oppgaven er tildelt saksbehandler ${journalpost.saksbehandler?.navn}`}</Brødtekst>
-        ) : (
-          <Knappepanel>
-            <DokumentIkkeTildelt journalpostID={journalpost.journalpostID} gåTilSak={false} />
-          </Knappepanel>
-        )}
+      <Avstand paddingTop={6} paddingRight={6}>
+        <StatusVisning />
       </Avstand>
     </Container>
   )

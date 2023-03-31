@@ -23,7 +23,7 @@ const Lenke = styled.a`
 
 export const Toppmeny: React.FC = () => {
   const { erInnlogget, enheter, ...rest } = useInnloggetSaksbehandler()
-  const saksbehandler = erInnlogget ? rest : { navn: 'Ikke pålogget', navIdent: '' }
+  const saksbehandler = erInnlogget ? rest : { navn: '', navIdent: '' }
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 

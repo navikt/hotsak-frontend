@@ -15,8 +15,8 @@ declare global {
   interface Window {
     msw: any
     appSettings: {
-      USE_MSW: boolean | undefined
-      MILJO: string | undefined
+      USE_MSW?: boolean
+      MILJO?: 'labs-gcp' | 'dev-gcp' | 'prod-gcp' | string
     }
   }
 }

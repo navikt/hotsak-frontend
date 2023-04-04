@@ -420,7 +420,7 @@ export interface Dokument {
   ]
 }
 
-export interface JournalførRequest {
+export interface JournalføringRequest {
   journalpostID: string
   tittel: string
   journalføresPåFnr: string

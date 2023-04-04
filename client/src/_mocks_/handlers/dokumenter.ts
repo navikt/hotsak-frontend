@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-import { DokumentOppgaveStatusType, JournalførRequest, OpprettetSakResponse } from '../../types/types.internal'
+import { DokumentOppgaveStatusType, JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import kvittering from '../mockdata/brillekvittering.pdf'
 import brilleseddel from '../mockdata/brilleseddel.pdf'
 //import { Journalpost } from '../../types/types.internal'
@@ -53,10 +53,10 @@ const dokumentHandlers = [
       ctx.body(buffer)
     )
   }),
-  rest.post<JournalførRequest, any, OpprettetSakResponse>(
+  rest.post<JournalføringRequest, any, OpprettetSakResponse>(
     `/api/journalpost/:journalpostID/journalforing`,
     async (req, res, ctx) => {
-      const journalpost: JournalførRequest = await req.json()
+      const journalpost: JournalføringRequest = await req.json()
       const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
       dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
 
@@ -76,6 +76,9 @@ const dokumentHandlers = [
     dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+  }),
+  rest.post('/api/journalpost/:journalpostID/tilbakeforing', (req, res, ctx) => {
+    return res(ctx.delay(500), ctx.status(204))
   }),
 
   /*

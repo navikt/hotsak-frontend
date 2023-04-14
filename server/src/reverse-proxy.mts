@@ -14,7 +14,7 @@ let hotsakApiId: string
 const options = (): ProxyOptions => ({
   parseReqBody: false,
   proxyReqOptDecorator: (options, req) => {
-    if (process.env.NAIS_CLUSTER_NAME !== 'labs-gcp') {
+    if (process.env.USE_MSW !== 'true') {
       return new Promise((resolve, reject) => {
         const hotsakToken = req.headers['authorization']!.split(' ')[1]
 
@@ -43,8 +43,6 @@ const options = (): ProxyOptions => ({
 })
 
 const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
-
-console.log('BRILLEAPI ' + envProperties.BRILLEKALKULATOR_API_URL)
 
 const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehalfOf

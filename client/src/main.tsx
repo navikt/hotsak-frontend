@@ -16,7 +16,7 @@ declare global {
     msw: any
     appSettings: {
       USE_MSW?: boolean
-      MILJO?: 'labs-gcp' | 'dev-gcp' | 'prod-gcp' | string
+      MILJO?: 'local' | 'dev-gcp' | 'prod-gcp' | string
     }
   }
 }

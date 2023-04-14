@@ -11,7 +11,7 @@ function htmlPlugin({ development }: { development?: boolean }): Plugin {
           tag: 'script',
           children: `window.appSettings = {
             USE_MSW: true,
-            MILJO: 'labs-gcp'
+            MILJO: 'local'
           }`,
         })
       } else {

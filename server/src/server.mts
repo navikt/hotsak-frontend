@@ -61,7 +61,7 @@ setUpAuthentication()
 
 // Protected routes
 app.use('/*', async (req, res, next) => {
-  if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
+  if (process.env.NODE_ENV === 'development' || process.env.USE_MSW === 'true') {
     res.cookie('hotsak', auth.createTokenForTest(), {
       secure: false,
       sameSite: true,

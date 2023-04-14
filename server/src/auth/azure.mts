@@ -8,7 +8,7 @@ const proxyAgent = proxy(Issuer, custom)
 
 const setup = (config: OidcConfig) => {
   return new Promise<void | Client>((resolve, reject) => {
-    if (process.env.NODE_ENV === 'development' || process.env.NAIS_CLUSTER_NAME === 'labs-gcp') {
+    if (process.env.NODE_ENV === 'development' || process.env.USE_MSW === 'true') {
       resolve()
     } else {
       Issuer.discover(config.wellKnownEndpoint)

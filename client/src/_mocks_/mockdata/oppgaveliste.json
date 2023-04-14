@@ -13,6 +13,7 @@
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
+    "kanTildeles": true,
     "status": "AVVENTER_SAKSBEHANDLER",
     "statusEndret": "2022-05-11T13:37:45Z",
     "enhet": [
@@ -82,6 +83,7 @@
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
+    "kanTildeles": true,
     "status": "AVVENTER_SAKSBEHANDLER",
     "statusEndret": "2022-05-11T13:37:45Z",
     "enhet": [
@@ -105,6 +107,7 @@
       "bosted": "Trondheim"
     },
     "saksbehandler": null,
+    "kanTildeles": true,
     "status": "AVVENTER_SAKSBEHANDLER",
     "statusEndret": "2022-05-11T13:37:45Z",
     "enhet": [
@@ -337,7 +340,7 @@
     "saksid": "87757",
     "beskrivelse": "Denna skal til totrinnskontroll",
     "mottatt": "2023-01-05T13:55:45Z",
-    "innsender": "Far forelder",
+    "innsender": "Far Forelder",
     "bruker": {
       "fnr": "20071359671",
       "funksjonsnedsettelser": ["syn"],
@@ -345,14 +348,32 @@
       "etternavn": "Off"
     },
     "status": "AVVENTER_GODKJENNER",
+    "saksbehandler": null,
+    "kanTildeles": true,
     "statusEndret": "2023-01-05T14:31:42.815302Z",
-    "totrinnskontroll": {
-      "saksbehandler": {
-        "epost": "silje.saksbehandler@nav.no",
-        "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-        "navn": "Silje Saksbehandler"
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
       }
+    ]
+  },
+  {
+    "sakstype": "TILSKUDD",
+    "saksid": "87758",
+    "beskrivelse": "Kan ikke godkjenne egen sak",
+    "mottatt": "2023-04-06T17:55:45Z",
+    "innsender": "Mor Forelder",
+    "bruker": {
+      "fnr": "20071359671",
+      "funksjonsnedsettelser": ["syn"],
+      "fornavn": "Lupin",
+      "etternavn": "Rose"
     },
+    "status": "AVVENTER_GODKJENNER",
+    "saksbehandler": null,
+    "kanTildeles": false,
+    "statusEndret": "2023-04-06T17:55:45Z",
     "enhet": [
       {
         "enhetsnummer": "6969",

@@ -381,7 +381,9 @@ export interface Oppgave {
   mottatt: LocalDateTime
   innsender: string
   bruker: OppgaveBruker
-  saksbehandler?: Saksbehandler
+  enhet: Enhet
+  saksbehandler?: Saksbehandler | null
+  kanTildeles: boolean
 }
 
 export interface OppgaveBruker {
@@ -508,16 +510,6 @@ export enum Kjønn {
   MANN = 'MANN',
   KVINNE = 'KVINNE',
   UKJENT = 'UKJENT',
-}
-
-export interface PersoninfoOppgave {
-  fornavn: string
-  mellomnavn: string | null
-  etternavn: string
-  fnr: string
-  funksjonsnedsettelse: string[]
-  poststed: string
-  bosted: string
 }
 
 export interface Personinfo {

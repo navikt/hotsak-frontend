@@ -3,7 +3,57 @@
     "journalpostID": "11223344",
     "journalstatus": "MOTTATT",
     "status": "MOTTATT",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
+    "journalpostOpprettetTid": "2023-02-04T13:55:45Z",
+    "tittel": "NAV 10-07.34 Tilskudd ved kjøp av briller til barn",
+    "fnrInnsender": "15084300133",
+    "enhet": null,
+    "saksbehandler": null,
+    "dokumenter": [
+      {
+        "dokumentID": "1234",
+        "tittel": "NAV 10-07.34 Tilskudd ved kjøp av briller til barn",
+        "brevkode:": "NAV 10-07.34",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [
+          {
+            "format": "ORIGINAL",
+            "skjerming": null
+          },
+          { "format": "ARKIV", "skjerming": null }
+        ]
+      },
+      {
+        "dokumentID": "2345",
+        "tittel": "Originalkvittering",
+        "brevkode:": "X5",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [{ "format": "ARKIV", "skjerming": null }]
+      },
+      {
+        "dokumentID": "3456",
+        "tittel": "Originalkvittering",
+        "brevkode:": "X5",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [{ "format": "ARKIV", "skjerming": null }]
+      },
+      {
+        "dokumentID": "4567",
+        "tittel": "Kvitteringsside for dokumentinnsending",
+        "brevkode:": "L7",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [{ "format": "ARKIV", "skjerming": null }]
+      }
+    ]
+  },
+  {
+    "journalpostID": "4372743",
+    "journalstatus": "MOTTATT",
+    "status": "MOTTATT",
+    "journalpostOpprettetTid": "2023-02-06T13:55:45Z",
     "tittel": "NAV 10-07.34 Tilskudd ved kjøp av briller til barn",
     "fnrInnsender": "15084300133",
     "enhet": null,
@@ -53,7 +103,7 @@
     "journalpostID": "22334455",
     "journalstatus": "MOTTATT",
     "status": "TILDELT_SAKSBEHANDLER",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
+    "journalpostOpprettetTid": "2023-04-10T17:55:45Z",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "enhet": [
@@ -110,12 +160,11 @@
       }
     ]
   },
-
   {
     "journalpostID": "33445566",
     "journalstatus": "MOTTATT",
     "status": "TILDELT_SAKSBEHANDLER",
-    "journalpostOpprettetTid": "2022-05-04T13:55:45Z",
+    "journalpostOpprettetTid": "2023-03-22T10:55:45Z",
     "fnrInnsender": "15084300133",
     "tittel": "Tilskudd ved kjøp av briller til barn",
     "enhet": [
@@ -128,6 +177,67 @@
       "epost": "a.b@nav.no",
       "objectId": "3fd4105e-09b8-4d9d-b61c-8ad46c63f819",
       "navn": "Silje Saksbehandler"
+    },
+    "dokumenter": [
+      {
+        "dokumentID": "1234",
+        "tittel": "Tilskudd ved kjøp av briller til barn",
+        "brevkode:": "NAV 10-07.34",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [
+          {
+            "format": "ORIGINAL",
+            "skjerming": null
+          },
+          { "format": "ARKIV", "skjerming": null }
+        ]
+      },
+      {
+        "dokumentID": "2345",
+        "tittel": "Originalkvittering",
+        "brevkode:": "X5",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [{ "format": "ARKIV", "skjerming": null }]
+      },
+      {
+        "dokumentID": "3456",
+        "tittel": "Originalkvittering",
+        "brevkode:": "X5",
+        "skjerming": null,
+        "vedlegg": [],
+        "varianter": [
+          { "format": "ARKIV", "skjerming": null },
+          {
+            "dokumentID": "4567",
+            "tittel": "Kvitteringsside for dokumentinnsending",
+            "brevkode:": "L7",
+            "skjerming": null,
+            "vedlegg": [],
+            "varianter": [{ "format": "ARKIV", "skjerming": null }]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "journalpostID": "2343457",
+    "journalstatus": "MOTTATT",
+    "status": "TILDELT_SAKSBEHANDLER",
+    "journalpostOpprettetTid": "2023-03-22T10:55:45Z",
+    "fnrInnsender": "15084300133",
+    "tittel": "Tilskudd ved kjøp av briller til barn",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ],
+    "saksbehandler": {
+      "epost": "a.b@nav.no",
+      "objectId": "3fd4105e-09b8-4d9d-b61c-8ad46c63f819",
+      "navn": "Banal Bikkje"
     },
     "dokumenter": [
       {

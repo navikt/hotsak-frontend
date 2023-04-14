@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import { Panel, Table } from '@navikt/ds-react'
+import { Panel, SortState, Table } from '@navikt/ds-react'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
@@ -56,7 +56,7 @@ export const Oppgaveliste: React.FC = () => {
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
-  const [sort, setSort] = useLocalStorageState('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
+  const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const { oppgaver, isLoading, totalCount, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -206,7 +206,7 @@ export const Oppgaveliste: React.FC = () => {
                   sort={sort}
                   onSortChange={(sortKey) => {
                     setSort({
-                      orderBy: sortKey || 'mottatt',
+                      orderBy: sortKey || 'MOTTATT',
                       direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
                     })
                   }}

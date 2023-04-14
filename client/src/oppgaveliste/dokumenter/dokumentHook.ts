@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router'
 import useSwr from 'swr'
 
 import { httpGet, httpGetPdf, PDFResponse } from '../../io/http'
@@ -44,9 +43,10 @@ export function useDokumentListe(): DokumentlisteResponse {
         })
       }, [currentPage, sort, filters])*/
 
+  const dokumenter = data?.data || []
   return {
-    dokumenter: data?.data || [],
-    totalCount: data?.data.length || 0,
+    dokumenter,
+    totalCount: dokumenter.length,
     isLoading: !error && !data,
     error,
     mutate,

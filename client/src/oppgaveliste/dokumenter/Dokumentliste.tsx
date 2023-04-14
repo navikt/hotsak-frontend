@@ -4,8 +4,10 @@ import styled from 'styled-components'
 import { Panel, Table } from '@navikt/ds-react'
 
 import { TekstCell } from '../../felleskomponenter/table/Celle'
+import { Column } from '../../felleskomponenter/table/Column'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
+import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
 import { norskTimestamp } from '../../utils/date'
 import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
@@ -13,7 +15,7 @@ import { isError } from '../../utils/type'
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi'
-import { Journalpost, DokumentStatusLabel } from '../../types/types.internal'
+import { DokumentStatusLabel, Journalpost } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { DokumentTildeling } from './DokumentTildeling'
 // Flytte til felles
@@ -32,38 +34,50 @@ const ScrollWrapper = styled.div`
 export const Dokumentliste: React.FC = () => {
   const { dokumenter, isLoading, error } = useDokumentListe()
 
-  const kolonner = [
+  const kolonner: Column<Journalpost>[] = [
     {
-      key: 'EIER',
+      key: 'saksbehandler',
       name: 'Eier',
       width: 160,
       render: (journalpost: Journalpost) => <DokumentTildeling dokumentOppgave={journalpost} />,
+      accessor(value: Journalpost): string {
+        return value.saksbehandler?.navn || ''
+      },
     },
     {
-      key: 'BESKRIVELSE',
+      key: 'tittel',
       name: 'Beskrivelse',
       width: 400,
       render: (journalpost: Journalpost) => <TekstCell value={journalpost.tittel} />,
     },
     {
-      key: 'STATUS',
+      key: 'status',
       name: 'Status',
       width: 150,
       render: (journalpost: Journalpost) => <TekstCell value={DokumentStatusLabel.get(journalpost.status)!} />,
     },
     {
-      key: 'INNSENDER',
+      key: 'fnrInnsender',
       name: 'Innsender',
       width: 135,
       render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnrInnsender)} />,
     },
     {
-      key: 'MOTTATT_DATO',
+      key: 'journalpostOpprettetTid',
       name: 'Mottatt dato',
       width: 152,
       render: (journalpost: Journalpost) => <TekstCell value={norskTimestamp(journalpost.journalpostOpprettetTid)} />,
     },
   ]
+
+  const {
+    sort,
+    sortedElements: sorterteDokumenter,
+    onSortChange,
+  } = useSortedElements<Journalpost>(dokumenter, kolonner, {
+    orderBy: 'journalpostOpprettetTid',
+    direction: 'descending',
+  })
 
   if (error) {
     if (isError(error)) {
@@ -74,7 +88,7 @@ export const Dokumentliste: React.FC = () => {
   }
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
-  const hasData = dokumenter && dokumenter.length > 0
+  const hasData = sorterteDokumenter && sorterteDokumenter.length > 0
   return (
     <>
       <Skjermlesertittel>Mottatte dokumenter</Skjermlesertittel>
@@ -86,24 +100,19 @@ export const Dokumentliste: React.FC = () => {
           <Panel>
             {hasData ? (
               <ScrollWrapper>
-                <Table
-                  style={{ width: 'initial' }}
-                  zebraStripes
-                  size="small"
-                  sort={{ orderBy: 'MOTTATT_DATO', direction: 'ascending' }}
-                >
+                <Table style={{ width: 'initial' }} zebraStripes size="small" sort={sort} onSortChange={onSortChange}>
                   <caption className="sr-only">Mottatt dokumenter</caption>
                   <Table.Header>
                     <Table.Row>
                       {kolonner.map(({ key, name, width }) => (
-                        <KolonneHeader key={key} sortKey={key} width={width}>
+                        <KolonneHeader key={key} sortKey={key} width={width} sortable>
                           {name}
                         </KolonneHeader>
                       ))}
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {dokumenter.map((dokument) => (
+                    {sorterteDokumenter.map((dokument) => (
                       <LinkRow key={dokument.journalpostID} path={`/oppgaveliste/dokumenter/${dokument.journalpostID}`}>
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell

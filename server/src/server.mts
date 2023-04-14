@@ -94,7 +94,7 @@ app.use('/*', async (req, res, next) => {
   }
 })
 
-// todo: removee signature etc
+// todo: remove signature etc
 const createCookieFromToken = (token: string) =>
   `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64')}.${Buffer.from(
     JSON.stringify({

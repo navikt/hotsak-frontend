@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
-function useLocalStorageState(
+function useLocalStorageState<S = undefined>(
   key: string,
-  defaultValue: any,
+  defaultValue: S,
   { serialize = JSON.stringify, deserialize = JSON.parse } = {}
-) {
-  const [state, setState] = React.useState(() => {
+): [S, Dispatch<SetStateAction<S>>] {
+  const [state, setState] = React.useState<S>(() => {
     const localStorageValue = window.localStorage.getItem(key)
 
     if (localStorageValue) {

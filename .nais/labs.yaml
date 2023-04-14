@@ -2,17 +2,16 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   labels:
-    app: hotsak-frontend
+    app: hotsak-frontend-labs
     team: teamdigihot
-  name: hotsak-frontend
+  name: hotsak-frontend-labs
   namespace: teamdigihot
 spec:
   image: {{image}}
   team: teamdigihot
   port: 3000
   ingresses:
-    - https://hm-saksbehandling.labs.nais.io
-    - https://hotsak.labs.nais.io
+    - https://hotsak.ekstern.dev.nav.no
   liveness:
     path: /isalive
   readiness:
@@ -41,14 +40,14 @@ spec:
     - name: API_URL
       value: ''
     - name: GRUNNDATA_API_URL
-      value: http://dummy
+      value: ''
     - name: PORT
       value: '3000'
     - name: BRILLEKALKULATOR_API_URL
-      value: dummy
+      value: ''
     - name: CLIENT_ID_HOTSAK_API
-      value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
+      value: ''
     - name: REDIS_HOST
-      value: saksbehandling-redis.teamdigihot.svc.cluster.local
+      value: ''
     - name: USE_MSW
       value: 'true'

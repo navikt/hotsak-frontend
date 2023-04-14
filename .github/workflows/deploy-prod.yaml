@@ -1,4 +1,4 @@
-name: Deploy to prod
+name: Deploy til prod-gcp
 
 on:
   release:
@@ -18,7 +18,7 @@ jobs:
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
           echo $IMAGE
       - uses: nais/deploy/actions/deploy@v1
-        name: Deploy to prod
+        name: Deploy til prod-gcp
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp

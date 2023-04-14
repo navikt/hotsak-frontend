@@ -38,16 +38,16 @@ spec:
     - secret: hm-saksbehandling
   env:
     - name: API_URL
-      value: ''
+      value: 'http://hotsak/api'
     - name: GRUNNDATA_API_URL
-      value: ''
+      value: 'http://grunndata/api'
     - name: PORT
       value: '3000'
     - name: BRILLEKALKULATOR_API_URL
-      value: ''
+      value: 'http://brille/api'
     - name: CLIENT_ID_HOTSAK_API
       value: ''
     - name: REDIS_HOST
-      value: ''
+      value: 'http://redis'
     - name: USE_MSW
       value: 'true'

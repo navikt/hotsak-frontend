@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { Column } from './Column'
 
+type SortDirection = 'ascending' | 'descending'
+
 export interface Sort<T> {
   orderBy: keyof T
-  direction: 'ascending' | 'descending'
+  direction: SortDirection
 }
 
 export function useSortedElements<T>(elements: T[], columns: Column<T>[], initialSort: Sort<T>) {

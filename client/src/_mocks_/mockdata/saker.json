@@ -2117,5 +2117,42 @@
       },
       "opprettet": "2023-01-27T14:31:42.815302Z"
     }
+  },
+  {
+    "sakstype": "BARNEBRILLER",
+    "saksid": "87760",
+    "sakId": "87760",
+    "soknadGjelder": "Denna er klar for totrinnskontroll",
+    "mottattDato": "2023-01-05T13:55:45Z",
+    "bruker": {
+      "fnr": "20071359671",
+      "fødselsdato": "2013-07-20",
+      "kontonummer": "11112233333",
+      "navn": {
+        "fornavn": "Hove",
+        "etternavn": "Off"
+      },
+      "telefon": ""
+    },
+    "innsender": {
+      "fnr": "09418208349",
+      "fødselsdato": "2013-07-20",
+      "navn": "Ålbert Aberg",
+      "telefon": ""
+    },
+    "vilkårsgrunnlag": null,
+    "vilkårsvurdering": null,
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "steg": "INNHENTE_FAKTA",
+    "journalposter": ["33445566"],
+    "statusEndret": "2023-01-05T14:31:42.815302Z",
+    "saksbehandler": null,
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ],
+    "totrinnskontroll": null
   }
 ]

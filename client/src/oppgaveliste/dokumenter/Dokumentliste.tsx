@@ -40,8 +40,8 @@ export const Dokumentliste: React.FC = () => {
       name: 'Eier',
       width: 160,
       render: (journalpost: Journalpost) => <DokumentTildeling dokumentOppgave={journalpost} />,
-      accessor(value: Journalpost): string {
-        return value.saksbehandler?.navn || ''
+      accessor(verdi: Journalpost): string {
+        return verdi.saksbehandler?.navn || ''
       },
     },
     {

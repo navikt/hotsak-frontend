@@ -90,7 +90,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               <Brødtekst>{vilkårsgrunnlag?.brilleseddel.venstreSfære}</Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
-              <Brødtekst>{`- ${vilkårsgrunnlag?.brilleseddel.venstreSylinder}`}</Brødtekst>
+              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.venstreSylinder}`}</Brødtekst>}
             </Kolonne>
           </Rad>
           <Avstand paddingBottom={4} />
@@ -108,23 +108,25 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               <Brødtekst>{vilkårsgrunnlag?.brilleseddel.høyreSfære}</Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
-              <Brødtekst>{`- ${vilkårsgrunnlag?.brilleseddel.høyreSylinder}`}</Brødtekst>
+              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.høyreSylinder}`}</Brødtekst>}
             </Kolonne>
           </Rad>
           <Avstand paddingTop={4} />
-          <Alert variant="info" role="alert">
-            <Brødtekst>
-              {`Brillestyrke gir sats ${vilkårsvurdering?.sats.replace('SATS_', '')} - inntil ${beløp.formater(
-                sak?.vilkårsvurdering?.satsBeløp
-              )} kroner. `}
-            </Brødtekst>
-            {Number(vilkårsvurdering!.beløp) < Number(vilkårsvurdering!.satsBeløp) && (
+          {vilkårsvurdering && (
+            <Alert variant="info" role="alert">
               <Brødtekst>
-                {`Basert på brilleprisen, kan barnet få `}
-                <strong>{`${beløp.formater(vilkårsvurdering?.beløp)} kr i støtte`}</strong>{' '}
+                {`Brillestyrke gir sats ${vilkårsvurdering.sats.replace('SATS_', '')} - inntil ${beløp.formater(
+                  vilkårsvurdering.satsBeløp
+                )} kroner. `}
               </Brødtekst>
-            )}
-          </Alert>
+              {Number(vilkårsvurdering.beløp) < Number(vilkårsvurdering.satsBeløp) && (
+                <Brødtekst>
+                  {`Basert på brilleprisen, kan barnet få `}
+                  <strong>{`${beløp.formater(vilkårsvurdering.beløp)} kr i støtte`}</strong>{' '}
+                </Brødtekst>
+              )}
+            </Alert>
+          )}
         </Avstand>
 
         <Avstand paddingTop={6}>

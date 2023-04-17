@@ -380,5 +380,28 @@
         "enhetsnavn": "Enhetsnavn"
       }
     ]
+  },
+  {
+    "sakstype": "TILSKUDD",
+    "saksid": "87760",
+    "beskrivelse": "Briller til barn",
+    "mottatt": "2023-04-06T17:55:45Z",
+    "innsender": "Bo Sjeldentunnel",
+    "bruker": {
+      "fnr": "20071359671",
+      "funksjonsnedsettelser": ["syn"],
+      "fornavn": "Tulipan",
+      "etternavn": "Biff"
+    },
+    "status": "AVVENTER_SAKSBEHANDLER",
+    "saksbehandler": null,
+    "kanTildeles": true,
+    "statusEndret": "2023-04-06T17:55:45Z",
+    "enhet": [
+      {
+        "enhetsnummer": "6969",
+        "enhetsnavn": "Enhetsnavn"
+      }
+    ]
   }
 ]

@@ -7,5 +7,5 @@ export interface Column<T> {
   sortable?: boolean
 
   render(verdi: T): ReactElement | null
-  accessor?(value: T): string
+  accessor?(verdi: T): string
 }

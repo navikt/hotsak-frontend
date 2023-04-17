@@ -92,6 +92,7 @@ export const VurderVilkår: React.FC = () => {
               const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
               const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
               // TODO koble fakta felter med vilkår
+              const lesevisning = identifikator === 'bestiltHosOptiker' || identifikator === 'komplettBrille'
               return (
                 <Table.ExpandableRow
                   onClick={() => toggleExpandedRad(id)}
@@ -102,7 +103,7 @@ export const VurderVilkår: React.FC = () => {
                   togglePlacement={'right'}
                   content={
                     <SaksbehandlersVurdering
-                      lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
+                      lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
                       sakID={sak.sakId}
                       vilkår={vilkår}
                       onSaved={() => {

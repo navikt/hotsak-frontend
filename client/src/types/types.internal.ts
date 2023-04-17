@@ -1,7 +1,16 @@
 type LocalDate = string
 type LocalDateTime = string
 
-export interface Sak {
+export interface Saksinformasjon {
+  saksbehandler?: Saksbehandler
+}
+
+export interface HarSaksinformasjon {
+  saksinformasjon: Saksinformasjon
+  saksbehandler?: Saksbehandler
+}
+
+export interface Sak extends HarSaksinformasjon {
   saksid: string
   sakId: string
   sakstype: Oppgavetype
@@ -15,14 +24,13 @@ export interface Sak {
   bruker?: Person
   levering: Levering
   oppfølgingsansvarlig: Oppfølgingsansvarlig
-  saksbehandler: Saksbehandler
   status: OppgaveStatusType
   statusEndret: string
   vedtak: VedtakType
   enhet: Enhet[]
 }
 
-export interface Brillesak {
+export interface Brillesak extends HarSaksinformasjon {
   sakId: string
   sakstype: Oppgavetype
   soknadGjelder: string
@@ -32,7 +40,6 @@ export interface Brillesak {
     navn: string
   }
   bruker: Person
-  saksbehandler?: Saksbehandler
   status: OppgaveStatusType
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
@@ -446,6 +453,7 @@ export enum Oppgavetype {
 }
 
 export interface Saksbehandler {
+  id: string
   objectId: string
   epost: string
   navn: string

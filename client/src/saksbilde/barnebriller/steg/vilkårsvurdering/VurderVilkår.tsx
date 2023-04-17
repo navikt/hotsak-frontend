@@ -8,6 +8,7 @@ import { baseUrl, put } from '../../../../io/http'
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
+import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -21,6 +22,7 @@ export const VurderVilkår: React.FC = () => {
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   function gåTilNesteSteg(sakID: string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
@@ -100,7 +102,7 @@ export const VurderVilkår: React.FC = () => {
                   togglePlacement={'right'}
                   content={
                     <SaksbehandlersVurdering
-                      lesevisning={sak.steg === StegType.GODKJENNE || sak.steg === StegType.FERDIG_BEHANDLET}
+                      lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
                       sakID={sak.sakId}
                       vilkår={vilkår}
                       onSaved={() => {

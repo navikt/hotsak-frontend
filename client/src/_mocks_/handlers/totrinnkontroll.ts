@@ -3,7 +3,7 @@ import { rest } from 'msw'
 import { TotrinnsKontrollVurdering } from '../../types/types.internal'
 import { TotrinnsKontrollData } from '../../types/types.internal'
 import { mutableSaker as saker } from './modell'
-import { mutalbleOppgaveliste as oppgaveliste } from './modell'
+import { mutableOppgaveliste as oppgaveliste } from './modell'
 import { mutableSakshistorikk as sakshistorikk } from './modell'
 
 const totrinnsKontrollHandlers = [

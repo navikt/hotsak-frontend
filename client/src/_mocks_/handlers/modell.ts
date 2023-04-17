@@ -3,7 +3,7 @@ import oppgaveliste from '../mockdata/oppgaveliste.json'
 import saker from '../mockdata/saker.json'
 
 export const mutableSaker = saker
-export const mutalbleOppgaveliste = oppgaveliste
+export const mutableOppgaveliste = oppgaveliste
 
 export const mutableSakshistorikk = [
   { saksid: '111111', hendelser: deepClone(historikk) },

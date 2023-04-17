@@ -10,7 +10,8 @@ import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
 import { Flex } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
-import { Oppgavetype, StegType } from '../../../../types/types.internal'
+import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
+import { Oppgavetype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
@@ -22,6 +23,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { setValgtDokumentID } = useDokumentContext()
   const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalposter[0])
   const { showBoundary } = useErrorBoundary()
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   const journalpostID = sak?.journalposter[0]
 
@@ -50,11 +52,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
       <AutoFlexContainer>
         <TreKolonner>
           <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
-            {sak.steg === StegType.GODKJENNE || sak.steg === StegType.FERDIG_BEHANDLET ? (
-              <RegistrerSøknadLesevisning />
-            ) : (
-              <RegistrerSøknadSkjema />
-            )}
+            {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
           </VenstreMeny>
           <DokumentPanel journalpostID={journalpostID} />
           {/*<Historikk />*/}

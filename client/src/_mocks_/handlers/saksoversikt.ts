@@ -3,8 +3,8 @@ import { rest } from 'msw'
 import saksoversikt from '../mockdata/saksoversikt.json'
 
 const saksoversiktHandlers = [
-  rest.post<{ brukersFodselsnummer: any }>(`/api/saksoversikt`, (req, res, ctx) => {
-    const brukersFodselsnummer = req?.body?.brukersFodselsnummer
+  rest.post<{ brukersFodselsnummer: any }>(`/api/saksoversikt`, async (req, res, ctx) => {
+    const brukersFodselsnummer = (await req.json()).brukersFodselsnummer
 
     if (brukersFodselsnummer === '19044238651') {
       // Petter Andreas

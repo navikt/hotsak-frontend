@@ -111,7 +111,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
           >
             <Målform />
             <Avstand paddingTop={6}>
-              <Utbetalingsmottaker />
+              <Utbetalingsmottaker defaultInnsenderFnr={sak?.utbetalingsmottaker?.fnr} />
             </Avstand>
             <Avstand paddingTop={4}>
               <Bestillingsdato />

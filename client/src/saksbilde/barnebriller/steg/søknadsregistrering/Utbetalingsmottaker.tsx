@@ -10,10 +10,15 @@ import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { useKontonummer } from './useKontonummer'
 
-export const Utbetalingsmottaker = () => {
+export interface UtbetalingsmottakerProps {
+  defaultInnsenderFnr?: string
+}
+
+export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
+  const { defaultInnsenderFnr } = props
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const [textFieldValue, setTextFieldValue] = useState('')
-  const [innsenderFnr, setInnsenderFnr] = useState('')
+  const [textFieldValue, setTextFieldValue] = useState(defaultInnsenderFnr || '')
+  const [innsenderFnr, setInnsenderFnr] = useState(defaultInnsenderFnr || '')
   const { data: kontoinformasjon, error, loading } = useKontonummer(Number(saksnummer), innsenderFnr)
 
   const kontonummerFunnet = kontoinformasjon?.kontonummer && kontoinformasjon.kontonummer !== ''

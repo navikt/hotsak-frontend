@@ -101,7 +101,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           </Tag>
           <StatusTekst>
             <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
-            <Tekst>{`av ${bestilling.saksbehandler.navn}.`}</Tekst>
+            <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
             <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
           </StatusTekst>
         </Card>
@@ -117,7 +117,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
         </Tag>
         <StatusTekst>
           <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${bestilling.saksbehandler.navn}.`}</Tekst>
+          <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
         </StatusTekst>
       </Card>
     )
@@ -137,12 +137,12 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
 
   if (
     bestilling.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    bestilling.saksbehandler.objectId !== saksbehandler.objectId
+    bestilling.saksbehandler?.objectId !== saksbehandler.objectId
   ) {
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
-        <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler.navn)}</Tekst>
+        <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
           <Knapp
             variant="primary"

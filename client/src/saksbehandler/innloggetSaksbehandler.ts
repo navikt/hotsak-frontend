@@ -1,9 +1,10 @@
 import { Saksbehandler } from '../types/types.internal'
 
 const saksbehandler: Saksbehandler = {
-  objectId: '23ea7485-1324-4b25-a763-assdfdfa',
-  epost: 'a.b@nav.no',
+  id: '3fd4105e-09b8-4d9d-b61c-8ad46c63f819',
+  objectId: '3fd4105e-09b8-4d9d-b61c-8ad46c63f819',
   navn: 'Silje Saksbehandler',
+  epost: 'silje.saksbehandler@nav.no',
 }
 
 export default saksbehandler

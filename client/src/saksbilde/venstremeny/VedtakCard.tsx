@@ -129,7 +129,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         </Tag>
         <StatusTekst>
           <Tekst>{`${norskTimestamp(sak.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${sak.saksbehandler.navn}.`}</Tekst>
+          <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
         </StatusTekst>
       </Card>
@@ -148,11 +148,14 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     )
   }
 
-  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler.objectId !== saksbehandler.objectId) {
+  if (
+    sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    sak.saksbehandler?.objectId !== saksbehandler.objectId
+  ) {
     return (
       <Card>
         <CardTitle>SAKSBEHANDLER</CardTitle>
-        <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler.navn)}</Tekst>
+        <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
           <Knapp
             variant="primary"

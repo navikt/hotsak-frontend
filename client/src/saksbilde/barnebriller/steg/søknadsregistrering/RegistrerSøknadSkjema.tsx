@@ -1,5 +1,6 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formatISO } from 'date-fns'
+import 'date-fns'
 import { useState } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -11,6 +12,7 @@ import { Button, Heading, Loader } from '@navikt/ds-react'
 import { postVilkårsvurdering } from '../../../../io/http'
 import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
+import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
@@ -61,7 +63,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      bestillingsdato: sak?.vilkårsgrunnlag?.bestillingsdato || undefined,
+      bestillingsdato: toDate(sak?.vilkårsgrunnlag?.bestillingsdato),
       brilleseddel: {
         høyreSfære: sak?.vilkårsgrunnlag?.brilleseddel.høyreSfære || '',
         høyreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.høyreSylinder || '',

@@ -7,21 +7,22 @@ export function Bestillingsdato() {
   const { formState, setValue, setError, clearErrors, watch } = useFormContext<{ bestillingsdato?: Date }>()
   const { errors } = formState
 
-  const Valgtdato = watch('bestillingsdato')
+  const valgtDato = watch('bestillingsdato')
 
   useEffect(() => {
-    if (formState.isSubmitting && !Valgtdato) {
+    if (formState.isSubmitting && !valgtDato) {
       setError('bestillingsdato', { type: 'custom', message: 'Ingen bestillingsdato valgt' })
-    } else if (formState.errors.bestillingsdato && Valgtdato) {
+    } else if (formState.errors.bestillingsdato && valgtDato) {
       clearErrors('bestillingsdato')
     }
-  }, [formState, Valgtdato])
+  }, [formState, valgtDato])
 
   const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
     fromDate: new Date('Jan 1 1970'),
     toDate: new Date(),
-    onDateChange: (dato) =>
-      setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true }),
+    onDateChange: (dato) => {
+      setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
+    },
 
     onValidate: (val) => {
       console.log('validerer')
@@ -31,6 +32,7 @@ export function Bestillingsdato() {
       }
     },
     required: true,
+    defaultSelected: formState.defaultValues?.bestillingsdato,
   })
 
   return (

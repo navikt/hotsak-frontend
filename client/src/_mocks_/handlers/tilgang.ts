@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-import { innloggetSaksbehandler } from './saksbehandler'
+import { innloggetSaksbehandler } from '../mockdata/saksbehandlere'
 
 const tilgangHandlers = [
   rest.get('/api/saksbehandler', (req, res, ctx) => {

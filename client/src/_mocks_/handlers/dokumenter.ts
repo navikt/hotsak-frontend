@@ -5,6 +5,7 @@ import kvittering from '../mockdata/brillekvittering.pdf'
 import brilleseddel from '../mockdata/brilleseddel.pdf'
 //import { Journalpost } from '../../types/types.internal'
 import dokumentliste from '../mockdata/dokumentliste.json'
+import { journalposterByJournalpostId } from '../mockdata/journalposter'
 import kvitteringsside from '../mockdata/kvitteringsside.pdf'
 import pdfSoknad from '../mockdata/manuellBrilleSoknad.pdf'
 
@@ -14,10 +15,16 @@ const dokumentHandlers = [
     return res(ctx.status(200), ctx.json(dokumentliste))
   }),
   rest.get(`/api/journalpost/:journalpostID`, (req, res, ctx) => {
-    const journalpost = dokumentliste.filter((dokument) => dokument.journalpostID === req.params.journalpostID)
+    const journalpostID = req.params.journalpostID as string
 
-    if (journalpost.length === 1) {
-      return res(ctx.status(200), ctx.json(journalpost[0]))
+    const journalpost = journalposterByJournalpostId[journalpostID]
+    if (journalpost) {
+      return res(ctx.delay(200), ctx.status(200), ctx.json(journalpost))
+    }
+
+    const journalposter = dokumentliste.filter((dokument) => dokument.journalpostID === req.params.journalpostID)
+    if (journalposter.length === 1) {
+      return res(ctx.status(200), ctx.json(journalposter[0]))
     } else {
       return res(ctx.status(404))
     }
@@ -80,25 +87,6 @@ const dokumentHandlers = [
   rest.post('/api/journalpost/:journalpostID/tilbakeforing', (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(204))
   }),
-
-  /*
-    // Sjekker at innlogget saksbehandler har rettighet til å journalføre
-    // Sjekker at journalposten ikke allerede har status endelig journalført
-    // Sender journalføringsevent på rapid
-    // Endrer status til endelig journalført (eller bør det skje asynkront når vi faktisk får ok tilbake fra joark sink?)
-    // Oppretter ny sak av type ? og returnerer saksnummer i response (passer det inn i dagens sak tabell eller gir det mer mening med en egen tabell for behandling av "papirsøknader")
-    // Hva slags statuser skal en sak ha her? (må vi granulere UNDER_BEHANDLING mer? Typ informasjonsinnhenting/punching, vilkårsvurdering, brev, simulering osv?)
-
-    // Sakshistorikk oppdateres
-    POST /api/journalpost/journalfør
-
-    {
-      'journalpostID': '123456',
-      'tittel': 'Tilskudd ved kjøp av briller til barn',
-      'vedlegg': ['Kvittering', 'Brilleseddel'], // vil kun være satt for journalposter sendt inn via skanning. For digitalt innsendte har vi dokumentene som egne filer
-      'journalføresPåfnr': '345435435', // fnr til barnet
-  }
-    */
 ]
 
 export default dokumentHandlers

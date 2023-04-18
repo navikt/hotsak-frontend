@@ -38,7 +38,10 @@ export function SaksbehandlersVurdering({
           {vilkår.resultatSaksbehandler && <Etikett>Saksbehandler sin vurdering</Etikett>}
 
           {Object.keys(vilkår.grunnlag).map((grunnlagKey: string) => {
-            const metadata = grunnlagMetadata.get(grunnlagKey)
+            const metadata = grunnlagMetadata.get(grunnlagKey) || {
+              etikett: grunnlagKey,
+              beskrivelse: '',
+            }
             const verdi = grunnlag[grunnlagKey]
 
             return (

@@ -33,8 +33,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
   }
 
   const totrinnskontrollFullført =
-    sak.totrinnskontroll?.godkjenningsstatus === 'REVURDERING' ||
-    sak.totrinnskontroll?.godkjenningsstatus === 'GODKJENT'
+    sak.totrinnskontroll?.resultat === 'RETURNERT' || sak.totrinnskontroll?.resultat === 'GODKJENT'
 
   if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
     return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll enda</div>

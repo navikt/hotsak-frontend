@@ -1,8 +1,10 @@
-type LocalDate = string
-type LocalDateTime = string
+export type LocalDate = string
+export type Instant = string
+export type Saksnummer = string
 
 export interface Saksinformasjon {
   saksbehandler?: Saksbehandler
+  opprettet: Instant
 }
 
 export interface HarSaksinformasjon {
@@ -31,37 +33,39 @@ export interface Sak extends HarSaksinformasjon {
 }
 
 export interface Brillesak extends HarSaksinformasjon {
-  sakId: string
+  sakId: Saksnummer
   sakstype: Oppgavetype
   soknadGjelder: string
-  mottattDato: string
   innsender: {
     fnr: string
     navn: string
   }
   bruker: Person
   status: OppgaveStatusType
+  statusEndret: Instant
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
   journalposter: string[]
-  vedtak: VedtakType
-  enhet: Enhet[]
+  vedtak?: VedtakType
+  enhet: Enhet
   utbetalingsmottaker?: Utbetalingsmottaker
-  totrinnskontroll?: TotrinnsKontroll
+  totrinnskontroll?: Totrinnskontroll
 }
 
-export interface TotrinnsKontroll {
+export interface Totrinnskontroll {
   saksbehandler: Saksbehandler
   godkjenner?: Saksbehandler
-  godkjenningsstatus?: string
+  resultat?: 'GODKJENT' | 'RETURNERT'
   begrunnelse?: string
-  opprettet?: LocalDateTime
+  opprettet?: Instant
+  godkjent?: Instant
 }
 
 export interface Vilkårsvurdering {
   id: string
   sakId: string
+  opprettet: Instant
   resultat: VilkårsResultat
   sats: SatsType
   satsBeløp: string
@@ -216,12 +220,12 @@ export interface Navn {
 
 export interface Person {
   fnr: string
-  fødselsdato: string
   navn: Navn
+  fødselsdato: LocalDate
+  kjønn?: Kjønn
   telefon?: string
   brukernummer?: string
-  kjønn?: Kjønn
-  //kontonummer?: string
+  kontonummer?: string
 }
 
 export enum VedtaksgrunnlagType {
@@ -385,7 +389,7 @@ export interface Oppgave {
   status: OppgaveStatusType
   statusEndret: string
   beskrivelse: string
-  mottatt: LocalDateTime
+  mottatt: Instant
   innsender: string
   bruker: OppgaveBruker
   enhet: Enhet
@@ -421,12 +425,10 @@ export interface Dokument {
   brevkode: string
   skjerming?: string
   vedlegg: any[]
-  varianter: [
-    {
-      format: DokumentFormat
-      skjerming?: string
-    }
-  ]
+  varianter: Array<{
+    format: DokumentFormat
+    skjerming?: string
+  }>
 }
 
 export interface JournalføringRequest {

@@ -1,10 +1,11 @@
 import { rest } from 'msw'
 
-import { TotrinnsKontrollVurdering } from '../../types/types.internal'
-import { TotrinnsKontrollData } from '../../types/types.internal'
-import { mutableSaker as saker } from './modell'
-import { mutableOppgaveliste as oppgaveliste } from './modell'
-import { mutableSakshistorikk as sakshistorikk } from './modell'
+import { TotrinnsKontrollData, TotrinnsKontrollVurdering } from '../../types/types.internal'
+import {
+  mutableOppgaveliste as oppgaveliste,
+  mutableSaker as saker,
+  mutableSakshistorikk as sakshistorikk,
+} from './modell'
 
 const totrinnsKontrollHandlers = [
   rest.post(`/api/sak/:saksnummer/kontroll`, (req, res, ctx) => {
@@ -38,25 +39,26 @@ const totrinnsKontrollHandlers = [
 
     return res(ctx.delay(500), ctx.status(201), ctx.json({}))
   }),
-  rest.put<TotrinnsKontrollData, any, any>(`/api/sak/:saksnummer/kontroll`, (req, res, ctx) => {
+  rest.put<TotrinnsKontrollData, any, any>(`/api/sak/:saksnummer/kontroll`, async (req, res, ctx) => {
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
 
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
-    const vurdering: TotrinnsKontrollVurdering | '' = req.body.resultat
-    const begrunnelse = req.body.begrunnelse
+    const body = await req.json()
+    const vurdering: TotrinnsKontrollVurdering | '' = body.resultat
+    const begrunnelse = body.begrunnelse
 
     if (vurdering === TotrinnsKontrollVurdering.RETURNERT) {
       saker[sakIdx]['saksbehandler'] = {
         epost: 'silje.saksbehandler@nav.no',
-        objectId: '23ea7485-1324-4b25-a763-assdfdfa',
+        objectId: '3fd4105e-09b8-4d9d-b61c-8ad46c63f819',
         navn: 'Silje Saksbehandler',
       }
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      saker[sakIdx]['totrinnskontroll']['godkjenningsstatus'] = 'REVURDERING'
+      saker[sakIdx]['totrinnskontroll']['resultat'] = 'RETURNERT'
       saker[sakIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
       saker[sakIdx]['steg'] = 'GODKJENNE'
       oppgaveliste[oppgaveIdx]['status'] = 'RETURNERT'
@@ -68,7 +70,7 @@ const totrinnsKontrollHandlers = [
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      saker[sakIdx]['totrinnskontroll']['godkjenningsstatus'] = 'GODKJENT'
+      saker[sakIdx]['totrinnskontroll']['resultat'] = 'GODKJENT'
       saker[sakIdx]['status'] = 'VEDTAK_FATTET'
       ;(saker[sakIdx]['vedtak'] = {
         vedtaksdato: '2021-03-29',

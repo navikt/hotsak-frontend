@@ -8,6 +8,7 @@ import {
   StegType,
   VurderVilkårRequest,
 } from '../../types/types.internal'
+import { barnebrilleoppgaver, barnebrillesaker, barnebrillesakerBySakId } from '../mockdata/barnebrillesaker'
 import { mutableSaker as saker } from './modell'
 import { mutableOppgaveliste as oppgaveliste } from './modell'
 import { mutableSakshistorikk as sakshistorikk } from './modell'
@@ -61,19 +62,19 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(201), ctx.json({}))
   }),
-  rest.get(`/api/sak/:saksid`, (req, res, ctx) => {
-    if (req.params.saksid === '666') {
+  rest.get(`/api/sak/:sakId`, (req, res, ctx) => {
+    const sakId = req.params.sakId as string
+    if (sakId === '666') {
       return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))
     }
-    if (req.params.saksid === '999') {
+    if (sakId === '999') {
       return res(ctx.status(401), ctx.text('Unauthorized.'))
     }
-
-    return res(
-      ctx.delay(200),
-      ctx.status(200),
-      ctx.json(saker.filter((sak) => sak.sakId === req.params.saksid)[0] || saker[2])
-    )
+    const barnebrillesak = barnebrillesakerBySakId[sakId]
+    if (barnebrillesak) {
+      return res(ctx.delay(200), ctx.status(200), ctx.json(barnebrillesak))
+    }
+    return res(ctx.delay(200), ctx.status(200), ctx.json(saker.filter((sak) => sak.sakId === sakId)[0] || saker[2]))
   }),
   rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
     const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
@@ -179,7 +180,7 @@ const saksbehandlingHandlers = [
 
     const startIndex = currentPage - 1
     const endIndex = startIndex + pageSize
-    const filtrerteOppgaver = oppgaveliste
+    const filtrerteOppgaver = [...oppgaveliste, ...barnebrilleoppgaver]
       .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))
       .filter((oppgave) =>
         sakerFilter && sakerFilter === SakerFilter.MINE ? oppgave.saksbehandler?.navn === 'Silje Saksbehandler' : true
@@ -243,7 +244,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/v2/:saksnummer', (req, res, ctx) => {
+  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/v2/:saksnummer', async (req, res, ctx) => {
     const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
 
@@ -254,7 +255,7 @@ const saksbehandlingHandlers = [
       endretHmsBeskrivelse: endretHmsBeskrivelse,
       begrunnelse: endretBegrunnelse,
       begrunnelseFritekst: endretBegrunnelseFritekst,
-    } = req.body
+    } = await req.json<EndreHjelpemiddelRequest>()
     const hjelpemiddelIdx = saker[bestillingIdx]['hjelpemidler']!.findIndex((hjm) => hjm.hmsnr === hmsNr)
     const hjm = saker[bestillingIdx]['hjelpemidler']![hjelpemiddelIdx]
 

@@ -16,7 +16,7 @@ export const TotrinnskontrollLesevisning: React.FC = () => {
   return (
     <>
       <Etikett>Vurdering</Etikett>
-      <Brødtekst>{capitalize(sak?.totrinnskontroll?.godkjenningsstatus)}</Brødtekst>
+      <Brødtekst>{capitalize(sak?.totrinnskontroll?.resultat)}</Brødtekst>
 
       {sak?.totrinnskontroll?.begrunnelse && (
         <>
@@ -26,12 +26,12 @@ export const TotrinnskontrollLesevisning: React.FC = () => {
       )}
 
       <Avstand paddingTop={4}>
-        {sak?.totrinnskontroll?.godkjenningsstatus === 'REVURDERING' && (
+        {sak?.totrinnskontroll?.resultat === 'RETURNERT' && (
           <Alert size="small" variant="info">
             Sendt i retur til saksbehandler {formaterDato(sak?.totrinnskontroll?.opprettet)}
           </Alert>
         )}
-        {sak?.totrinnskontroll?.godkjenningsstatus === 'GODKJENT' && sak.status === OppgaveStatusType.VEDTAK_FATTET && (
+        {sak?.totrinnskontroll?.resultat === 'GODKJENT' && sak.status === OppgaveStatusType.VEDTAK_FATTET && (
           <Alert size="small" variant="success">
             Vedtaket er fattet {formaterDato(sak?.vedtak?.vedtaksdato)}
           </Alert>

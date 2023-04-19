@@ -106,7 +106,6 @@ export enum VilkårsResultat {
   JA = 'JA',
   NEI = 'NEI',
   KANSKJE = 'KANSKJE',
-  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
 }
 
 export interface RegistrerSøknadData {
@@ -171,7 +170,6 @@ export type Vilkårsgrunnlag = RegistrerSøknadData
 export enum VilkårSvar {
   JA = 'JA',
   NEI = 'NEI',
-  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
 }
 
 export enum MålformType {

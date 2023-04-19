@@ -31,7 +31,6 @@ export function BestiltHosOptiker() {
           >
             <Radio value={VilkårSvar.JA}>Ja</Radio>
             <Radio value={VilkårSvar.NEI}>Nei</Radio>
-            <Radio value={VilkårSvar.DOKUMENTASJON_MANGLER}>Dokumentasjon mangler</Radio>
           </RadioGroup>
         )}
       />

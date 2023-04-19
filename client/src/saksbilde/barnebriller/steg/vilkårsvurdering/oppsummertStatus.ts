@@ -6,11 +6,7 @@ export function oppsummertStatus(vilkår: Vilkår[]): VilkårsResultat {
     .reduce((samletStatus, vilkårStatus) => {
       if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
         return samletStatus
-      } else if (
-        vilkårStatus === VilkårsResultat.NEI ||
-        vilkårStatus === VilkårsResultat.KANSKJE ||
-        vilkårStatus === VilkårsResultat.DOKUMENTASJON_MANGLER
-      ) {
+      } else if (vilkårStatus === VilkårsResultat.NEI || vilkårStatus === VilkårsResultat.KANSKJE) {
         return vilkårStatus
       } else {
         return samletStatus
@@ -24,7 +20,6 @@ export function alertVariant(vilkårOppfylt: VilkårsResultat) {
     case VilkårsResultat.JA:
       return 'success'
     case VilkårsResultat.NEI:
-    case VilkårsResultat.DOKUMENTASJON_MANGLER:
       return 'error'
     case VilkårsResultat.KANSKJE:
       return 'warning'

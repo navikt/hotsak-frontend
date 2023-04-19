@@ -1,5 +1,4 @@
 import { Controller, useFormContext } from 'react-hook-form'
-import { errorSelector } from 'recoil'
 
 import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
@@ -33,7 +32,6 @@ export function KomplettBrille() {
             >
               <Radio value={VilkårSvar.JA}>Ja</Radio>
               <Radio value={VilkårSvar.NEI}>Nei</Radio>
-              <Radio value={VilkårSvar.DOKUMENTASJON_MANGLER}>Dokumentasjon mangler</Radio>
             </RadioGroup>
           )}
         />

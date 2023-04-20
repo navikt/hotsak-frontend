@@ -10,7 +10,7 @@ interface TildelingProps {
 
 export const Tildeling = React.memo(({ oppgave }: TildelingProps) => {
   if (oppgave.saksbehandler) {
-    return <Tildelt name={oppgave.saksbehandler.navn} saksid={oppgave.saksid} />
+    return <Tildelt name={oppgave.saksbehandler.navn} />
   }
   if (oppgave.kanTildeles) {
     return <IkkeTildelt oppgavereferanse={oppgave.saksid} gåTilSak={true} />

@@ -10,7 +10,7 @@ import { Boble } from '../../../felleskomponenter/Boble'
 import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { BodyLongMedEllipsis } from '../../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../../felleskomponenter/Tooltip'
+import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 import { useSak } from '../../sakHook'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
@@ -126,8 +126,9 @@ const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
                 <BodyLong size="small">{artikkel.hmsnr}</BodyLong>
               </Kolonne>
               <Kolonne width="230px" data-for={id} data-tip={artikkelBeskrivelse}>
-                <BodyLongMedEllipsis size="small">{artikkelBeskrivelse}</BodyLongMedEllipsis>
-                {artikkelBeskrivelse.length > 28 && <Tooltip id={id} />}
+                <TooltipWrapper visTooltip={artikkelBeskrivelse.length > 28} content={artikkelBeskrivelse}>
+                  <BodyLongMedEllipsis size="small">{artikkelBeskrivelse}</BodyLongMedEllipsis>
+                </TooltipWrapper>
               </Kolonne>
               <Kolonne width="50px" marginLeft="auto">
                 <Boble>

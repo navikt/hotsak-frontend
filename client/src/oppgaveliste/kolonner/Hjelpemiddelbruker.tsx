@@ -3,12 +3,11 @@ import React from 'react'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../felleskomponenter/Tooltip'
+import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { OppgaveBruker } from '../../types/types.internal'
 
 interface HjelpemiddelbrukerProps {
   bruker: OppgaveBruker
-  saksID: string
 }
 
 const getFormattedName = (bruker: OppgaveBruker): string => {
@@ -17,14 +16,12 @@ const getFormattedName = (bruker: OppgaveBruker): string => {
   return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)
 }
 
-export const Hjelpemiddelbruker = React.memo(({ bruker, saksID }: HjelpemiddelbrukerProps) => {
-  const id = `hjelpemiddelbruker-${saksID}`
+export const Hjelpemiddelbruker = React.memo(({ bruker }: HjelpemiddelbrukerProps) => {
   const formatertNavn = getFormattedName(bruker)
 
   return (
-    <div data-for={id} data-tip={formatertNavn}>
+    <TooltipWrapper visTooltip={formatertNavn.length > 20} content={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
-      {formatertNavn.length > 23 && <Tooltip id={id} />}
-    </div>
+    </TooltipWrapper>
   )
 })

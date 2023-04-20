@@ -1,19 +1,18 @@
 import React from 'react'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../felleskomponenter/Tooltip'
+import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 
 interface BostedProps {
   bosted?: string
-  saksID: string
 }
 
-export const Bosted = React.memo(({ bosted, saksID }: BostedProps) => {
-  const id = `bosted-${saksID}`
+export const Bosted = React.memo(({ bosted }: BostedProps) => {
+  const bostedTekst = bosted ? bosted : '-'
+
   return (
-    <div data-for={id} data-tip={bosted}>
-      <TekstMedEllipsis>{bosted ? bosted : '-'}</TekstMedEllipsis>
-      {bosted && bosted.length > 18 && <Tooltip id={id} />}
-    </div>
+    <TooltipWrapper visTooltip={bostedTekst.length > 18} content={bostedTekst}>
+      <TekstMedEllipsis>{bostedTekst}</TekstMedEllipsis>
+    </TooltipWrapper>
   )
 })

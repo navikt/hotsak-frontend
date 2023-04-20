@@ -1,20 +1,16 @@
 import React from 'react'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../felleskomponenter/Tooltip'
+import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 
 interface TildeltProps {
   name: string
-  saksid: string
 }
 
-export const Tildelt = ({ name, saksid }: TildeltProps) => {
-  const id = `tildelt-${saksid}`
-
+export const Tildelt = ({ name }: TildeltProps) => {
   return (
-    <div data-tip={name} data-for={id}>
+    <TooltipWrapper visTooltip={name.length > 15} content={name}>
       <TekstMedEllipsis>{name}</TekstMedEllipsis>
-      {name.length > 15 && <Tooltip id={id} />}
-    </div>
+    </TooltipWrapper>
   )
 }

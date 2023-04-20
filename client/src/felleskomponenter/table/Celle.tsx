@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Link as ExternalLink } from '@navikt/ds-react'
 
 import { TekstMedEllipsis } from '../TekstMedEllipsis'
-import { Tooltip } from '../Tooltip'
+import { TooltipWrapper } from '../TooltipWrapper'
 import { Tekst } from '../typografi'
 import { DataCell } from './KolonneHeader'
 
@@ -67,24 +67,25 @@ export const LinkCell = React.memo(({ to, value, id, minLength }: LinkCellProps)
     <div data-for={id} data-tip={value}>
       {to ? (
         <Link to={to}>
-          <TekstMedEllipsis>{value}</TekstMedEllipsis>
-          {value.length > minLength && <Tooltip id={id} />}
+          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
+            <TekstMedEllipsis>{value}</TekstMedEllipsis>
+          </TooltipWrapper>
         </Link>
       ) : (
         <>
-          <TekstMedEllipsis>{value}</TekstMedEllipsis>
-          {value.length > minLength && <Tooltip id={id} />}
+          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
+            <TekstMedEllipsis>{value}</TekstMedEllipsis>
+          </TooltipWrapper>
         </>
       )}
     </div>
   )
 })
 
-export const EllipsisCell = React.memo(({ value, minLength, id }: EllipsisCellProps) => {
+export const EllipsisCell = React.memo(({ value, minLength }: EllipsisCellProps) => {
   return (
-    <div data-for={id} data-tip={value}>
+    <TooltipWrapper visTooltip={value.length > minLength} content={value}>
       <TekstMedEllipsis>{value}</TekstMedEllipsis>
-      {value.length > minLength && <Tooltip id={id} />}
-    </div>
+    </TooltipWrapper>
   )
 })

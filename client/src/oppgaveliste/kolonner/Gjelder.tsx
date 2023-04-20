@@ -1,23 +1,26 @@
 import React from 'react'
 
+import { Tooltip } from '@navikt/ds-react'
+
 import { capitalize } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../felleskomponenter/Tooltip'
 
 interface GjelderProps {
   søknadOm: string
-  saksID: string
 }
 
-export const Gjelder = React.memo(({ søknadOm, saksID }: GjelderProps) => {
-  const id = `gjelder-${saksID}`
+export const Gjelder = React.memo(({ søknadOm }: GjelderProps) => {
   const søknadGjelder = capitalize(søknadOm.replace('Søknad om:', '').replace('Bestilling av:', '').trim())
 
-  return (
-    <div data-for={id} data-tip={søknadGjelder}>
-      <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
-      {søknadGjelder.length > 20 && <Tooltip id={id} />}
-    </div>
-  )
+  const visTooltip = søknadGjelder.length > 20
+
+  if (visTooltip) {
+    return (
+      <Tooltip content={søknadGjelder}>
+        <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
+      </Tooltip>
+    )
+  }
+  return <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
 })

@@ -3,21 +3,18 @@ import React from 'react'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
-import { Tooltip } from '../../felleskomponenter/Tooltip'
+import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 
 interface FormidlerProps {
   formidlerNavn: string
-  saksID: string
 }
 
-export const FormidlerCelle = React.memo(({ formidlerNavn, saksID }: FormidlerProps) => {
-  const id = `formidler-${saksID}`
+export const FormidlerCelle = React.memo(({ formidlerNavn }: FormidlerProps) => {
   const formatertNavn = capitalizeName(formidlerNavn)
 
   return (
-    <div data-for={id} data-tip={formatertNavn}>
+    <TooltipWrapper visTooltip={formatertNavn.length > 19} content={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
-      {formatertNavn.length > 19 && <Tooltip id={id} />}
-    </div>
+    </TooltipWrapper>
   )
 })

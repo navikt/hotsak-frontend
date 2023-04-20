@@ -84,9 +84,7 @@ export const Oppgaveliste: React.FC = () => {
       key: 'STATUS',
       name: 'Status',
       width: 154,
-      render: (oppgave: Oppgave) => (
-        <Status status={OppgaveStatusLabel.get(oppgave.status) ?? ''} saksID={oppgave.saksid} />
-      ),
+      render: (oppgave: Oppgave) => <Status status={OppgaveStatusLabel.get(oppgave.status) ?? ''} />,
     },
     {
       key: 'TYPE',
@@ -99,20 +97,20 @@ export const Oppgaveliste: React.FC = () => {
       name: 'Område',
       width: 152,
       render: (oppgave: Oppgave) => (
-        <Funksjonsnedsettelse funksjonsnedsettelser={oppgave.bruker.funksjonsnedsettelser} saksID={oppgave.saksid} />
+        <Funksjonsnedsettelse funksjonsnedsettelser={oppgave.bruker.funksjonsnedsettelser} />
       ),
     },
     {
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
       width: 192,
-      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.beskrivelse)} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.beskrivelse)} />,
     },
     {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
       width: 188,
-      render: (oppgave: Oppgave) => <Hjelpemiddelbruker bruker={oppgave.bruker} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Hjelpemiddelbruker bruker={oppgave.bruker} />,
     },
     {
       key: 'FØDSELSNUMMER',
@@ -124,13 +122,13 @@ export const Oppgaveliste: React.FC = () => {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.bruker.bosted} saksID={oppgave.saksid} />,
+      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.bruker.bosted} />,
     },
     {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: Oppgave) => <FormidlerCelle saksID={oppgave.saksid} formidlerNavn={oppgave.innsender} />,
+      render: (oppgave: Oppgave) => <FormidlerCelle formidlerNavn={oppgave.innsender} />,
     },
     {
       key: 'MOTTATT',

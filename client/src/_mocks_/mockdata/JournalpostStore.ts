@@ -61,17 +61,11 @@ class JournalpostStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    return Promise.all([
-      this.lagre(lagJournalpost()),
-      this.lagre(lagJournalpost()),
-      this.lagre(lagJournalpost()),
-      this.lagre(lagJournalpost()),
-      this.lagre(lagJournalpost()),
-    ])
+    return this.lagreAlle([lagJournalpost(), lagJournalpost(), lagJournalpost(), lagJournalpost(), lagJournalpost()])
   }
 
-  async lagre(journalpost: Journalpost) {
-    return this.journalposter.add(journalpost, journalpost.journalpostID)
+  async lagreAlle(journalposter: Journalpost[]) {
+    return this.journalposter.bulkAdd(journalposter, { allKeys: true })
   }
 
   async hent(journalpostId: string) {

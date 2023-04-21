@@ -59,10 +59,6 @@ class SaksbehandlerStore extends Dexie {
     ])
   }
 
-  async lagre(saksbehandler: InnloggetSaksbehandler) {
-    return this.saksbehandlere.add(saksbehandler)
-  }
-
   async lagreAlle(saksbehandlere: InnloggetSaksbehandler[]) {
     return this.saksbehandlere.bulkAdd(saksbehandlere, { allKeys: true })
   }

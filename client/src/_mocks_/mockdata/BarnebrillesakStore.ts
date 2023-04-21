@@ -245,12 +245,6 @@ class BarnebrillesakStore extends Dexie {
     ])
   }
 
-  async lagre(sak: Omit<LagretBarnebrillesak, 'sakId'>) {
-    const journalposter = await journalpostStore.alle()
-    sak.journalposter = [journalposter[0].journalpostID]
-    return this.saker.add(sak as any) // fixme
-  }
-
   async lagreAlle(saker: Array<Omit<LagretBarnebrillesak, 'sakId'>>) {
     const journalposter = await journalpostStore.alle()
     return this.saker.bulkAdd(

@@ -9,8 +9,11 @@ export function KomplettBrille() {
   const {
     control,
     register,
+    watch,
     formState: { errors },
   } = useFormContext<{ komplettBrille: ManuellVurdering }>()
+
+  const vilkårOppfylt = watch('komplettBrille.vilkårOppfylt')
 
   return (
     <>
@@ -36,14 +39,16 @@ export function KomplettBrille() {
           )}
         />
       </Avstand>
-      <Avstand paddingTop={4}>
-        <Textarea
-          size="small"
-          label="Begrunnelse"
-          description="Skriv din individuelle begrunnelse"
-          {...register('komplettBrille.begrunnelse')}
-        ></Textarea>
-      </Avstand>
+      {vilkårOppfylt === VilkårSvar.NEI && (
+        <Avstand paddingTop={4}>
+          <Textarea
+            size="small"
+            label="Begrunnelse"
+            description="Skriv din individuelle begrunnelse"
+            {...register('komplettBrille.begrunnelse')}
+          ></Textarea>
+        </Avstand>
+      )}
     </>
   )
 }

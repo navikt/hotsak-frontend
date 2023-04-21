@@ -9,8 +9,11 @@ export function BestiltHosOptiker() {
   const {
     control,
     register,
+    watch,
     formState: { errors },
   } = useFormContext<{ bestiltHosOptiker: ManuellVurdering }>()
+
+  const vilkårOppfylt = watch('bestiltHosOptiker.vilkårOppfylt')
 
   return (
     <Avstand paddingTop={8}>
@@ -34,14 +37,16 @@ export function BestiltHosOptiker() {
           </RadioGroup>
         )}
       />
-      <Avstand paddingTop={4}>
-        <Textarea
-          size="small"
-          label="Begrunnelse"
-          description="Skriv din individuelle begrunnelse"
-          {...register('bestiltHosOptiker.begrunnelse')}
-        ></Textarea>
-      </Avstand>
+      {vilkårOppfylt === VilkårSvar.NEI && (
+        <Avstand paddingTop={4}>
+          <Textarea
+            size="small"
+            label="Begrunnelse"
+            description="Skriv din individuelle begrunnelse"
+            {...register('bestiltHosOptiker.begrunnelse')}
+          ></Textarea>
+        </Avstand>
+      )}
     </Avstand>
   )
 }

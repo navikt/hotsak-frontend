@@ -14,7 +14,6 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
     navIdent: '',
     grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
     enheter: ['2970', '4710', '4711'],
-    erInnlogget: true,
     ...saksbehandler,
   }
 }

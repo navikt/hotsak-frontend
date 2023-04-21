@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Loader } from '@navikt/ds-react'
-
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
 import { Toast } from '../../felleskomponenter/Toast'
 import { RessursStatus } from '../../types/types.internal'

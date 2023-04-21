@@ -263,7 +263,8 @@ class BarnebrillesakStore extends Dexie {
       return
     }
     const vilkårsgrunnlag = await this.vilkårsgrunnlag.get(sakId)
-    const vilkårsvurdering = await this.vilkårsvurderinger.get(sakId)
+    const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sakId).first()
+
     if (vilkårsvurdering) {
       const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
       return {

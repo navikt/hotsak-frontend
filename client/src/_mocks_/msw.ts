@@ -1,10 +1,9 @@
-import { worker } from './browser'
-import { barnebrillesakStore } from './mockdata/BarnebrillesakStore'
-import { journalpostStore } from './mockdata/JournalpostStore'
-import { saksbehandlerStore } from './mockdata/SaksbehandlerStore'
-
 export const initMSW = async () => {
   if (window.appSettings.USE_MSW === true) {
+    const { barnebrillesakStore } = await import('./mockdata/BarnebrillesakStore')
+    const { journalpostStore } = await import('./mockdata/JournalpostStore')
+    const { saksbehandlerStore } = await import('./mockdata/SaksbehandlerStore')
+
     await saksbehandlerStore.populer()
     await journalpostStore.populer()
     await barnebrillesakStore.populer()

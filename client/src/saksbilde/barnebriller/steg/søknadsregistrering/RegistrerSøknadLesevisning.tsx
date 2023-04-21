@@ -76,24 +76,6 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             § 2 Brillestyrke
           </Heading>
 
-          <Detail>VENSTRE ØYE</Detail>
-          <Rad>
-            <Kolonne width="150px">
-              <Etikett>Sfære (SPH)</Etikett>
-            </Kolonne>
-            <Kolonne width="150px">
-              <Etikett>Sylinder (CYL)</Etikett>
-            </Kolonne>
-          </Rad>
-          <Rad>
-            <Kolonne width="150px">
-              <Brødtekst>{vilkårsgrunnlag?.brilleseddel.venstreSfære}</Brødtekst>
-            </Kolonne>
-            <Kolonne width="150px">
-              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.venstreSylinder}`}</Brødtekst>}
-            </Kolonne>
-          </Rad>
-          <Avstand paddingBottom={4} />
           <Detail>HØYRE ØYE</Detail>
           <Rad>
             <Kolonne width="150px">
@@ -111,6 +93,25 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.høyreSylinder}`}</Brødtekst>}
             </Kolonne>
           </Rad>
+          <Avstand paddingBottom={4} />
+          <Detail>VENSTRE ØYE</Detail>
+          <Rad>
+            <Kolonne width="150px">
+              <Etikett>Sfære (SPH)</Etikett>
+            </Kolonne>
+            <Kolonne width="150px">
+              <Etikett>Sylinder (CYL)</Etikett>
+            </Kolonne>
+          </Rad>
+          <Rad>
+            <Kolonne width="150px">
+              <Brødtekst>{vilkårsgrunnlag?.brilleseddel.venstreSfære}</Brødtekst>
+            </Kolonne>
+            <Kolonne width="150px">
+              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.venstreSylinder}`}</Brødtekst>}
+            </Kolonne>
+          </Rad>
+
           <Avstand paddingTop={4} />
           {vilkårsvurdering && (
             <Alert variant="info" role="alert">

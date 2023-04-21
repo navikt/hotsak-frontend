@@ -5,6 +5,8 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
+import type { UUID } from '../types/types.internal'
+
 export enum Gruppe {
   TEAMDIGIHOT = 'TEAMDIGIHOT',
   HOTSAK_BRUKERE = 'HOTSAK_BRUKERE',
@@ -17,8 +19,8 @@ const Enhet = {
 }
 
 export interface InnloggetSaksbehandler {
-  id: string
-  objectId: string
+  id: UUID
+  objectId: UUID
   navn: string
   epost: string
   navIdent: string
@@ -68,7 +70,7 @@ export const useAuthentication = (): void => {
   const resetInnloggetSaksbehandler = useResetRecoilState(innloggetSaksbehandlerState)
 
   useEffect(() => {
-    if (data && data.data.id !== innloggetSaksbehandler.id) {
+    if (data && data.data && data.data.id !== innloggetSaksbehandler.id) {
       setInnloggetSaksbehandler({
         ...data.data,
         erInnlogget: true,

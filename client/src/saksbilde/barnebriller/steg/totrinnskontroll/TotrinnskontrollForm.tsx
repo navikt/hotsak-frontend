@@ -10,7 +10,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitu
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
-import { StegType, TotrinnsKontrollData, TotrinnsKontrollVurdering } from '../../../../types/types.internal'
+import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { GodkjenneTotrinnskontrollModal } from './GodkjenneTotrinnskontrollModal'
 
@@ -21,7 +21,7 @@ export const TotrinnskontrollForm: React.FC = () => {
   const saksbehandler = useInnloggetSaksbehandler()
   const { sak } = useBrillesak()
 
-  const methods = useForm<TotrinnsKontrollData>({
+  const methods = useForm<TotrinnskontrollData>({
     defaultValues: {
       resultat: '',
       begrunnelse: '',
@@ -61,7 +61,7 @@ export const TotrinnskontrollForm: React.FC = () => {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit(() => {
-              if (resultat === TotrinnsKontrollVurdering.GODKJENT) {
+              if (resultat === TotrinnskontrollVurdering.GODKJENT) {
                 setVisGodkjenningsModal(true)
               } else {
                 lagreTotrinnskontroll()
@@ -74,13 +74,13 @@ export const TotrinnskontrollForm: React.FC = () => {
               rules={{ required: 'Velg en verdi' }}
               render={({ field }) => (
                 <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.resultat?.message}>
-                  <Radio value={TotrinnsKontrollVurdering.GODKJENT}>Godkjenn</Radio>
-                  <Radio value={TotrinnsKontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
+                  <Radio value={TotrinnskontrollVurdering.GODKJENT}>Godkjenn</Radio>
+                  <Radio value={TotrinnskontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
                 </RadioGroup>
               )}
             />
 
-            {resultat === TotrinnsKontrollVurdering.RETURNERT && (
+            {resultat === TotrinnskontrollVurdering.RETURNERT && (
               <Avstand paddingTop={4}>
                 <Textarea
                   size="small"
@@ -95,7 +95,7 @@ export const TotrinnskontrollForm: React.FC = () => {
             <Avstand paddingTop={4}>
               {
                 <Button variant="primary" type="submit" size="small" loading={loading}>
-                  {resultat === TotrinnsKontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
+                  {resultat === TotrinnskontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
                 </Button>
               }
             </Avstand>

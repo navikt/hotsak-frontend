@@ -1,9 +1,11 @@
 export type LocalDate = string
 export type Instant = string
-export type Saksnummer = string
+export type ID = string // fixme -> egentlig string | number
+export type UUID = string
+export type Amount = string | number
 
 export interface Saksinformasjon {
-  saksbehandler?: Saksbehandler
+  // saksbehandler?: Saksbehandler
   opprettet: Instant
 }
 
@@ -33,7 +35,7 @@ export interface Sak extends HarSaksinformasjon {
 }
 
 export interface Brillesak extends HarSaksinformasjon {
-  sakId: Saksnummer
+  sakId: ID
   sakstype: Oppgavetype
   soknadGjelder: string
   innsender: {
@@ -63,20 +65,29 @@ export interface Totrinnskontroll {
 }
 
 export interface Vilkårsvurdering {
-  id: string
-  sakId: string
+  id: ID
+  sakId: ID
   opprettet: Instant
   resultat: VilkårsResultat
   sats: SatsType
-  satsBeløp: string
+  satsBeløp: Amount
   satsBeskrivelse: string
-  beløp: string
+  beløp: Amount
   vilkår: Vilkår[]
 }
 
 export interface Vilkår {
-  id: string
-  identifikator: string
+  id: string // fixme -> egentlig number
+  identifikator:
+    | 'Under18ÅrPåBestillingsdato v1'
+    | 'MedlemAvFolketrygden v1'
+    | 'bestiltHosOptiker'
+    | 'komplettBrille'
+    | 'HarIkkeVedtakIKalenderåret v1'
+    | 'Brillestyrke v1'
+    | 'BestillingsdatoTilbakeITid v1'
+    | 'Bestillingsdato v1'
+    | string
   beskrivelse: string
   resultatAuto?: VilkårsResultat
   begrunnelseAuto?: string
@@ -84,7 +95,7 @@ export interface Vilkår {
   begrunnelseSaksbehandler?: string
   lovReferanse?: string
   lovdataLenke?: string
-  grunnlag: { [k: string]: string }
+  grunnlag: Record<string, string | number>
 }
 
 export interface Grunnlag {
@@ -127,12 +138,12 @@ export interface OppdaterVilkårData {
   begrunnelseSaksbehandler: string
 }
 
-export interface TotrinnsKontrollData {
-  resultat: TotrinnsKontrollVurdering | ''
+export interface TotrinnskontrollData {
+  resultat: TotrinnskontrollVurdering | ''
   begrunnelse?: string
 }
 
-export enum TotrinnsKontrollVurdering {
+export enum TotrinnskontrollVurdering {
   GODKJENT = 'GODKJENT',
   RETURNERT = 'RETURNERT',
 }
@@ -156,16 +167,26 @@ export interface KontonummerResponse {
 export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
-  sakId: string
+  sakId: ID
   målform: MålformType
-  brilleseddel: Brilleseddel
-  bestillingsdato: string
+  bestillingsdato: LocalDate
   brillepris: string
+  brilleseddel: Brilleseddel
   bestiltHosOptiker: ManuellVurdering
   komplettBrille: ManuellVurdering
+  saksbehandlersBegrunnelse?: string
 }
 
-export type Vilkårsgrunnlag = RegistrerSøknadData
+export interface Vilkårsgrunnlag {
+  sakId: ID
+  målform: MålformType
+  bestillingsdato: LocalDate
+  brillepris: string
+  brilleseddel: Brilleseddel
+  bestiltHosOptiker: ManuellVurdering
+  komplettBrille: ManuellVurdering
+  saksbehandlersBegrunnelse?: string
+}
 
 export enum VilkårSvar {
   JA = 'JA',
@@ -177,11 +198,13 @@ export enum MålformType {
   NYNORSK = 'NYNORSK',
 }
 
+export type Diopter = string | number
+
 export interface Brilleseddel {
-  høyreSfære: string
-  høyreSylinder: string
-  venstreSfære: string
-  venstreSylinder: string
+  høyreSfære: Diopter
+  høyreSylinder: Diopter
+  venstreSfære: Diopter
+  venstreSylinder: Diopter
 }
 
 export enum StegType {
@@ -196,7 +219,7 @@ export enum StegType {
 export interface BeregnSatsResponse {
   sats: SatsType
   satsBeskrivelse: string
-  satsBeløp: number
+  satsBeløp: Amount
 }
 
 export type BeregnSatsRequest = Brilleseddel
@@ -220,10 +243,22 @@ export interface Person {
   fnr: string
   navn: Navn
   fødselsdato: LocalDate
+  kommune: Kommune
+  bydel?: Bydel
   kjønn?: Kjønn
   telefon?: string
   brukernummer?: string
   kontonummer?: string
+}
+
+export interface Kommune {
+  nummer: string
+  navn: string
+}
+
+export interface Bydel {
+  nummer: string
+  navn: string
 }
 
 export enum VedtaksgrunnlagType {
@@ -382,7 +417,7 @@ export enum GreitÅViteType {
 }
 
 export interface Oppgave {
-  saksid: string
+  saksid: ID
   sakstype: Oppgavetype
   status: OppgaveStatusType
   statusEndret: string

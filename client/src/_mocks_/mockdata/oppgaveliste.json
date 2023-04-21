@@ -117,7 +117,6 @@
       }
     ]
   },
-
   {
     "sakstype": "SØKNAD",
     "saksid": "5878444",
@@ -145,7 +144,6 @@
       }
     ]
   },
-
   {
     "sakstype": "SØKNAD",
     "saksid": "1234567",
@@ -247,156 +245,6 @@
     },
     "status": "VEDTAK_FATTET",
     "statusEndret": "2022-05-11T13:37:45Z",
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "9876",
-    "beskrivelse": "Briller til barn",
-    "mottatt": "2023-01-05T13:55:45Z",
-    "innsender": "Mor Motyngre",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Spencer",
-      "etternavn": "Tjøstheim",
-      "bosted": ""
-    },
-    "status": "TILDELT_SAKSBEHANDLER",
-    "statusEndret": "2023-01-05T14:31:42.815302Z",
-    "saksbehandler": {
-      "epost": "silje.saksbehandler@nav.no",
-      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-      "navn": "Silje Saksbehandler"
-    },
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "9877",
-    "beskrivelse": "Vilkårsvurdering steg",
-    "mottatt": "2023-01-05T13:55:45Z",
-    "innsender": "Far forelder",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Ove",
-      "etternavn": "Hoff",
-      "bosted": ""
-    },
-    "status": "TILDELT_SAKSBEHANDLER",
-    "statusEndret": "2023-01-05T14:31:42.815302Z",
-    "saksbehandler": {
-      "epost": "silje.saksbehandler@nav.no",
-      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-      "navn": "Silje Saksbehandler"
-    },
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "87756",
-    "beskrivelse": "Send til godkjenning, alt grønt",
-    "mottatt": "2023-01-05T13:55:45Z",
-    "innsender": "Far forelder",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Hove",
-      "etternavn": "Off",
-      "bosted": "Fjesneso"
-    },
-    "status": "TILDELT_SAKSBEHANDLER",
-    "statusEndret": "2023-01-05T14:31:42.815302Z",
-    "saksbehandler": {
-      "epost": "silje.saksbehandler@nav.no",
-      "objectId": "23ea7485-1324-4b25-a763-assdfdfa",
-      "navn": "Silje Saksbehandler"
-    },
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "87757",
-    "beskrivelse": "Denna skal til totrinnskontroll",
-    "mottatt": "2023-01-05T13:55:45Z",
-    "innsender": "Far Forelder",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Hove",
-      "etternavn": "Off"
-    },
-    "status": "AVVENTER_GODKJENNER",
-    "saksbehandler": null,
-    "kanTildeles": true,
-    "statusEndret": "2023-01-05T14:31:42.815302Z",
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "87758",
-    "beskrivelse": "Kan ikke godkjenne egen sak",
-    "mottatt": "2023-04-06T17:55:45Z",
-    "innsender": "Mor Forelder",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Lupin",
-      "etternavn": "Rose"
-    },
-    "status": "AVVENTER_GODKJENNER",
-    "saksbehandler": null,
-    "kanTildeles": false,
-    "statusEndret": "2023-04-06T17:55:45Z",
-    "enhet": [
-      {
-        "enhetsnummer": "6969",
-        "enhetsnavn": "Enhetsnavn"
-      }
-    ]
-  },
-  {
-    "sakstype": "TILSKUDD",
-    "saksid": "87760",
-    "beskrivelse": "Briller til barn",
-    "mottatt": "2023-04-06T17:55:45Z",
-    "innsender": "Bo Sjeldentunnel",
-    "bruker": {
-      "fnr": "20071359671",
-      "funksjonsnedsettelser": ["syn"],
-      "fornavn": "Tulipan",
-      "etternavn": "Biff"
-    },
-    "status": "AVVENTER_SAKSBEHANDLER",
-    "saksbehandler": null,
-    "kanTildeles": true,
-    "statusEndret": "2023-04-06T17:55:45Z",
     "enhet": [
       {
         "enhetsnummer": "6969",

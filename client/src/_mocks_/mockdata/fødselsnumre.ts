@@ -5,9 +5,9 @@ import { lagTilfeldigFødselsdato, lagTilfeldigInteger } from './felles'
 /**
  * NB! Implementasjonen lager ikke gyldige fødselsnumre.
  */
-export function lagTilfeldigFødselsnummer(fødselsdato: Dayjs | number): string {
-  if (typeof fødselsdato === 'number') {
-    fødselsdato = lagTilfeldigFødselsdato(fødselsdato)
+export function lagTilfeldigFødselsnummer(fødselsdatoEllerAlder: Dayjs | number): string {
+  if (typeof fødselsdatoEllerAlder === 'number') {
+    fødselsdatoEllerAlder = lagTilfeldigFødselsdato(fødselsdatoEllerAlder)
   }
-  return fødselsdato.format('DDMMYY') + lagTilfeldigInteger(0, 99999).toString().padStart(5, '0')
+  return fødselsdatoEllerAlder.format('DDMMYY') + lagTilfeldigInteger(0, 99999).toString().padStart(5, '0')
 }

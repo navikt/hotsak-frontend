@@ -1,10 +1,16 @@
 import dayjs, { Dayjs } from 'dayjs'
 
+import type { UUID } from '../../types/types.internal'
+
 export function groupBy<T>(items: T[], keyFn: (value: T) => string): Record<string, T> {
   return items.reduce<Record<string, T>>((records, value) => {
     records[keyFn(value)] = value
     return records
   }, {})
+}
+
+export function tilfeldigInnslag<T>(array: T[]): T {
+  return array[lagTilfeldigInteger(0, array.length - 1)]
 }
 
 export function idGenerator(): () => number {
@@ -14,7 +20,7 @@ export function idGenerator(): () => number {
 
 export const nextId = idGenerator()
 
-export function lagUUID(): string {
+export function lagUUID(): UUID {
   return crypto.randomUUID()
 }
 

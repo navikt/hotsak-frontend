@@ -2,6 +2,7 @@ import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
+import { SWRConfig } from 'swr'
 
 import { DokumentProvider } from './oppgaveliste/dokumenter/DokumentContext'
 import Dokumentliste from './oppgaveliste/dokumenter/Dokumentliste'
@@ -14,6 +15,7 @@ import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Toppmeny } from './header/Header'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
+import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -26,6 +28,7 @@ function App() {
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
         <Toppmeny />
+        <Utviklingsverktøy />
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <React.Suspense fallback={<div />}>
             {/*<Varsler />*/}
@@ -48,7 +51,6 @@ function App() {
                     </RequireAuth>
                   }
                 />
-
                 <Route
                   path="/oppgaveliste/dokumenter/:journalpostID"
                   element={
@@ -94,9 +96,21 @@ function logUserStats(): void {
 function withRoutingAndState(Component: React.ComponentType) {
   return (): JSX.Element => (
     <BrowserRouter>
-      <RecoilRoot>
-        <Component />
-      </RecoilRoot>
+      <SWRConfig
+        value={{
+          async fetcher(...args) {
+            const response = await fetch(args[0])
+            if (response.ok) {
+              return response.json()
+            }
+            return Promise.reject('noe gikk galt')
+          },
+        }}
+      >
+        <RecoilRoot>
+          <Component />
+        </RecoilRoot>
+      </SWRConfig>
     </BrowserRouter>
   )
 }

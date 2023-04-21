@@ -1,30 +1,25 @@
 import { rest } from 'msw'
 
+import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
+import { barnebrillesakStore } from '../mockdata/BarnebrillesakStore'
+import { saksbehandlerStore } from '../mockdata/SaksbehandlerStore'
 import {
-  EndreHjelpemiddelRequest,
-  OppdaterVilkårRequest,
-  OppgaveStatusType,
-  SakerFilter,
-  StegType,
-  VurderVilkårRequest,
-} from '../../types/types.internal'
-import { barnebrilleoppgaver, barnebrillesaker, barnebrillesakerBySakId } from '../mockdata/barnebrillesaker'
-import { mutableSaker as saker } from './modell'
-import { mutableOppgaveliste as oppgaveliste } from './modell'
-import { mutableSakshistorikk as sakshistorikk } from './modell'
+  mutableOppgaveliste as oppgaveliste,
+  mutableSaker as saker,
+  mutableSakshistorikk as sakshistorikk,
+} from './modell'
 
 const saksbehandlingHandlers = [
-  rest.post(`/api/tildeling/:saksnummer`, (req, res, ctx) => {
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
-
-    const saksbehandler = {
-      epost: 'silje.saksbehandler@nav.no',
-      objectId: '23ea7485-1324-4b25-a763-assdfdfa',
-      navn: 'Silje Saksbehandler',
+  rest.post<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
+    const { sakId } = req.params
+    const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
+    if (await barnebrillesakStore.tildelSaksbehandler(sakId)) {
+      return res(ctx.delay(500), ctx.status(200))
     }
 
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const sakIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === sakId)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
 
     const hendelse = {
       id: '2',
@@ -39,14 +34,17 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['saksbehandler'] = saksbehandler
     oppgaveliste[oppgaveIdx]['status'] = 'TILDELT_SAKSBEHANDLER'
 
-    return res(ctx.delay(500), ctx.status(201), ctx.json({}))
+    return res(ctx.delay(500), ctx.status(200))
   }),
-  rest.delete(`/api/tildeling/:oppgaveref`, (req, res, ctx) => {
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.oppgaveref)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.oppgaveref)
+  rest.delete<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
+    const { sakId } = req.params
+    if (await barnebrillesakStore.fjernTildeling(sakId)) {
+      return res(ctx.status(200))
+    }
 
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.oppgaveref)
-
+    const sakIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === sakId)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
     const hendelse = {
       id: '2',
       hendelse: 'Saksbehandler har fjernet tildeling av saken',
@@ -60,9 +58,9 @@ const saksbehandlingHandlers = [
     oppgaveliste[oppgaveIdx]['saksbehandler'] = null
     oppgaveliste[oppgaveIdx]['status'] = 'AVVENTER_SAKSBEHANDLER'
 
-    return res(ctx.status(201), ctx.json({}))
+    return res(ctx.status(200))
   }),
-  rest.get(`/api/sak/:sakId`, (req, res, ctx) => {
+  rest.get(`/api/sak/:sakId`, async (req, res, ctx) => {
     const sakId = req.params.sakId as string
     if (sakId === '666') {
       return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))
@@ -70,22 +68,23 @@ const saksbehandlingHandlers = [
     if (sakId === '999') {
       return res(ctx.status(401), ctx.text('Unauthorized.'))
     }
-    const barnebrillesak = barnebrillesakerBySakId[sakId]
+    const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
       return res(ctx.delay(200), ctx.status(200), ctx.json(barnebrillesak))
     }
     return res(ctx.delay(200), ctx.status(200), ctx.json(saker.filter((sak) => sak.sakId === sakId)[0] || saker[2]))
   }),
-  rest.get(`/api/sak/:saksid/historikk`, (req, res, ctx) => {
-    const hist = sakshistorikk.filter((it) => it.saksid === req.params.saksid).map((it) => it.hendelser)[0]
-    return res(ctx.status(200), ctx.json(hist))
+  rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/historikk`, (req, res, ctx) => {
+    const historikk = sakshistorikk.filter((it) => it.saksid === req.params.sakId).map((it) => it.hendelser)[0]
+    return res(ctx.status(200), ctx.json(historikk))
   }),
-  rest.put<{ søknadsbeskrivelse: any }>('/api/vedtak-v2/:saksnummer', (req, res, ctx) => {
-    const soknadsbeskrivelse = req?.body?.søknadsbeskrivelse
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
+    const { søknadsbeskrivelse: soknadsbeskrivelse } = await req.json()
+    const { sakId } = req.params
+    const sakIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === sakId)
 
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
 
     const vedtakHendelse = {
       id: '4',
@@ -119,12 +118,13 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.put<{ søknadsbeskrivelse: any }>('/api/tilbakefoer/:saksnummer', (req, res, ctx) => {
-    const soknadsbeskrivelse = req?.body?.søknadsbeskrivelse
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/tilbakefoer/:sakId', async (req, res, ctx) => {
+    const { søknadsbeskrivelse: soknadsbeskrivelse } = await req.json()
+    const { sakId } = req.params
+    const sakIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === sakId)
 
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
     const hendelse = {
       id: '5',
       hendelse: 'Saken ble overført Gosys',
@@ -142,12 +142,11 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', (req, res, ctx) => {
-    const årsaker = `${req?.body?.tilbakemelding?.valgtArsak}`
+  rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', async (req, res, ctx) => {
+    const { tilbakemelding } = await req.json()
+    const årsaker = `${tilbakemelding?.valgtArsak}`
     const begrunnelse =
-      req?.body?.tilbakemelding?.begrunnelse && req?.body?.tilbakemelding?.begrunnelse !== ''
-        ? `${req?.body?.tilbakemelding?.begrunnelse}`
-        : ''
+      tilbakemelding?.begrunnelse && tilbakemelding?.begrunnelse !== '' ? `${tilbakemelding?.begrunnelse}` : ''
 
     const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
     const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
@@ -170,7 +169,7 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.get(`/api/oppgaver`, (req, res, ctx) => {
+  rest.get(`/api/oppgaver`, async (req, res, ctx) => {
     const statusFilter = req.url.searchParams.get('status')
     const sakerFilter = req.url.searchParams.get('saksbehandler')
     const områdeFilter = req.url.searchParams.get('område')
@@ -180,7 +179,7 @@ const saksbehandlingHandlers = [
 
     const startIndex = currentPage - 1
     const endIndex = startIndex + pageSize
-    const filtrerteOppgaver = [...oppgaveliste, ...barnebrilleoppgaver]
+    const filtrerteOppgaver = [...oppgaveliste, ...(await barnebrillesakStore.oppgaver())]
       .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))
       .filter((oppgave) =>
         sakerFilter && sakerFilter === SakerFilter.MINE ? oppgave.saksbehandler?.navn === 'Silje Saksbehandler' : true
@@ -208,11 +207,12 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(200), ctx.status(200), ctx.json(response))
   }),
-  rest.put('/api/bestilling/ferdigstill/:saksnummer', (req, res, ctx) => {
-    const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === req.params.saksnummer)
+  rest.put<any, { sakId: string }, any>('/api/bestilling/ferdigstill/:sakId', (req, res, ctx) => {
+    const { sakId } = req.params
+    const bestillingIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const oppgaveIdx = oppgaveliste.findIndex((oppgave) => oppgave.saksid === sakId)
 
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
 
     const vedtakHendelse = {
       id: '4',
@@ -244,9 +244,10 @@ const saksbehandlingHandlers = [
 
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
-  rest.put<EndreHjelpemiddelRequest, any, any>('/api/bestilling/v2/:saksnummer', async (req, res, ctx) => {
-    const bestillingIdx = saker.findIndex((sak) => sak.saksid === req.params.saksnummer)
-    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === req.params.saksnummer)
+  rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/v2/:sakId', async (req, res, ctx) => {
+    const { sakId } = req.params
+    const bestillingIdx = saker.findIndex((sak) => sak.saksid === sakId)
+    const historikkIdx = sakshistorikk.findIndex((it) => it.saksid === sakId)
 
     const {
       hmsNr: hmsNr,
@@ -289,163 +290,8 @@ const saksbehandlingHandlers = [
 
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.post<VurderVilkårRequest, any, any>('/api/sak/:saksid/vilkarsgrunnlag', (req, res, ctx) => {
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
-    saker[sakIdx].steg = StegType.VURDERE_VILKÅR
-
-    saker[sakIdx].vilkårsvurdering = {
-      id: '1234',
-      sakId: '9877',
-      resultat: 'NEI',
-      sats: 'SATS_1',
-      satsBeløp: '750',
-      satsBeskrivelse:
-        'Briller med sfærisk styrke på minst ett glass ≥ 1,00D ≤ 4,00D og/eller cylinderstyrke ≥ 1,00D ≤ 4,00D',
-      beløp: '699',
-      vilkår: [
-        {
-          id: '394',
-          identifikator: 'Under18ÅrPåBestillingsdato v1',
-          beskrivelse: 'Var barnet under 18 år på bestillingsdato?',
-          lovReferanse: '§2',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-          resultatAuto: 'NEI',
-          begrunnelseAuto: 'Barnet var 18 år eller eldre på bestillingsdato',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {
-            barnetsAlder: '79',
-            bestillingsdato: '2023-02-15',
-          },
-        },
-        {
-          id: '395',
-          identifikator: 'MedlemAvFolketrygden v1',
-          beskrivelse: 'Er barnet medlem av folketrygden?',
-          lovReferanse: '§2',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-          resultatAuto: 'JA',
-          begrunnelseAuto: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {
-            bestillingsdato: '2023-02-15',
-          },
-        },
-        {
-          id: '399',
-          identifikator: 'bestiltHosOptiker',
-          beskrivelse: 'Brille er bestilt hos optiker',
-          lovReferanse: '§2',
-          lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-          resultatAuto: null,
-          begrunnelseAuto: null,
-          resultatSaksbehandler: 'JA',
-          begrunnelseSaksbehandler: '',
-          grunnlag: {},
-        },
-        {
-          id: '400',
-          identifikator: 'komplettBrille',
-          beskrivelse: 'Brille må være komplett',
-          lovReferanse: '§2',
-          lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-          resultatAuto: null,
-          begrunnelseAuto: null,
-          resultatSaksbehandler: 'JA',
-          begrunnelseSaksbehandler: '',
-          grunnlag: {},
-        },
-        {
-          id: '393',
-          identifikator: 'HarIkkeVedtakIKalenderåret v1',
-          beskrivelse: 'Har barnet allerede vedtak om brille i kalenderåret?',
-          lovReferanse: '§3',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
-          resultatAuto: 'NEI',
-          begrunnelseAuto: 'Barnet har allerede vedtak om brille i kalenderåret',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {
-            bestillingsdato: '2023-02-15',
-            eksisterendeVedtakDato: '2023-02-03',
-          },
-        },
-        {
-          id: '401',
-          identifikator: 'HarIkkeVedtakIKalenderåret v1',
-          beskrivelse: 'Har barnet allerede manuelt Hotsak-vedtak om brille i kalenderåret?',
-          lovReferanse: '§3',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
-          resultatAuto: 'JA',
-          begrunnelseAuto: 'Barnet har ikke vedtak om brille i kalenderåret',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {},
-        },
-        {
-          id: '396',
-          identifikator: 'Brillestyrke v1',
-          beskrivelse: 'Er brillestyrken innenfor de fastsatte rammene?',
-          lovReferanse: '§4',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
-          resultatAuto: 'JA',
-          begrunnelseAuto: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {},
-        },
-        {
-          id: '398',
-          identifikator: 'BestillingsdatoTilbakeITid v1',
-          beskrivelse: 'Er bestillingsdato innenfor siste 6 måneder fra dagens dato?',
-          lovReferanse: '§6',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
-          resultatAuto: 'JA',
-          begrunnelseAuto: 'Bestillingsdato er 17.08.2022 eller senere',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {
-            bestillingsdato: '2023-02-15',
-            seksMånederSiden: '2022-08-17',
-          },
-        },
-        {
-          id: '397',
-          identifikator: 'Bestillingsdato v1',
-          beskrivelse: 'Er bestillingsdato 01.08.2022 eller senere?',
-          lovReferanse: '§13',
-          lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§13',
-          resultatAuto: 'JA',
-          begrunnelseAuto: 'Bestillingsdato er 01.08.2022 eller senere',
-          resultatSaksbehandler: null,
-          begrunnelseSaksbehandler: null,
-          grunnlag: {
-            bestillingsdato: '2023-02-15',
-            datoOrdningenStartet: '2022-08-01',
-          },
-        },
-      ],
-    }
-    return res(ctx.status(201))
-  }),
-  rest.put<OppdaterVilkårRequest, any, any>('/api/sak/:saksid/vilkar/:vilkarid', (req, res, ctx) => {
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
-    const vilkårIdx = saker[sakIdx].vilkårsvurdering!.vilkår.findIndex((vilkår) => vilkår.id === req.params.vilkarid)
-
-    const { resultatSaksbehandler, begrunnelseSaksbehandler } = req.body
-
-    const vilkår = saker[sakIdx].vilkårsvurdering!.vilkår[vilkårIdx]
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    saker[sakIdx].vilkårsvurdering.vilkår[vilkårIdx] = { ...vilkår, resultatSaksbehandler, begrunnelseSaksbehandler }
-
-    return res(ctx.status(200), ctx.json({}))
-  }),
-  rest.put<any, any, any>('/api/sak/:saksid/steg/fatte_vedtak', (req, res, ctx) => {
-    const sakIdx = saker.findIndex((sak) => sak.saksid === req.params.saksid)
-    saker[sakIdx].steg = StegType.FATTE_VEDTAK
-
+  rest.put<any, { sakId: string }, any>('/api/sak/:sakId/steg/fatte_vedtak', async (req, res, ctx) => {
+    await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),
 ]

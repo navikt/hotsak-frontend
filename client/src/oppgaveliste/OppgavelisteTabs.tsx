@@ -40,7 +40,7 @@ export const OppgavelisteTabs: React.FC = () => {
           />
           <Tabs.Tab
             value="dokumenter"
-            label="Dokumenter"
+            label="Journalføring"
             icon={<FileContent focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
           />
         </Tabs.List>

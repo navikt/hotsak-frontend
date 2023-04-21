@@ -5,12 +5,14 @@ import endringsloggHandlers from './endringslogg'
 import grunndataHandlers from './grunndata'
 import hjelpemiddelHandlers from './hjelpemiddel'
 import hjelpemiddeloversiktHandlers from './hjelpemiddeloversikt'
-import kontonummerHandlers from './kontonummer'
 import personInfoHandlers from './personoversikt'
+import saksbehandlerHandlers from './saksbehandler'
 import saksbehandlingHandlers from './saksbehandling'
 import saksoversiktHandlers from './saksoversikt'
-import tilgangHandlers from './tilgang'
-import totrinnsKontrollHandlers from './totrinnkontroll'
+import totrinnsKontrollHandlers from './totrinnskontroll'
+import utbetalingsmottakerHandlers from './utbetalingsmottaker'
+import utviklingsverktøyHandlers from './utviklingsverktøy'
+import vilkårsvurderingHandlers from './vilkårsvurdering'
 
 const handlers = [
   ...brevHandlers,
@@ -20,12 +22,14 @@ const handlers = [
   ...grunndataHandlers,
   ...hjelpemiddelHandlers,
   ...hjelpemiddeloversiktHandlers,
-  ...kontonummerHandlers,
+  ...utbetalingsmottakerHandlers,
   ...personInfoHandlers,
   ...saksbehandlingHandlers,
   ...saksoversiktHandlers,
-  ...tilgangHandlers,
+  ...saksbehandlerHandlers,
   ...totrinnsKontrollHandlers,
+  ...vilkårsvurderingHandlers,
+  ...utviklingsverktøyHandlers,
 ]
 
 export default handlers

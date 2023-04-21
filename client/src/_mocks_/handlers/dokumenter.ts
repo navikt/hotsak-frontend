@@ -1,23 +1,22 @@
 import { rest } from 'msw'
 
 import { DokumentOppgaveStatusType, JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
+import { journalpostStore } from '../mockdata/JournalpostStore'
 import kvittering from '../mockdata/brillekvittering.pdf'
 import brilleseddel from '../mockdata/brilleseddel.pdf'
-//import { Journalpost } from '../../types/types.internal'
 import dokumentliste from '../mockdata/dokumentliste.json'
-import { journalposterByJournalpostId } from '../mockdata/journalposter'
 import kvitteringsside from '../mockdata/kvitteringsside.pdf'
 import pdfSoknad from '../mockdata/manuellBrilleSoknad.pdf'
 
 const dokumentHandlers = [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
-  rest.get(`/api/journalposter`, (req, res, ctx) => {
+  rest.get(`/api/journalposter`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(dokumentliste))
   }),
-  rest.get(`/api/journalpost/:journalpostID`, (req, res, ctx) => {
+  rest.get(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
     const journalpostID = req.params.journalpostID as string
 
-    const journalpost = journalposterByJournalpostId[journalpostID]
+    const journalpost = await journalpostStore.hent(journalpostID)
     if (journalpost) {
       return res(ctx.delay(200), ctx.status(200), ctx.json(journalpost))
     }

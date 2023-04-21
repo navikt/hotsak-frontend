@@ -1,14 +1,14 @@
 import dayjs from 'dayjs'
+import Dexie, { Table } from 'dexie'
 
 import type { Journalpost } from '../../types/types.internal'
 import { DokumentFormat, DokumentOppgaveStatusType, JournalpostStatusType } from '../../types/types.internal'
 import { enheter } from './enheter'
-import { groupBy, nextId } from './felles'
-import { innloggetSaksbehandler } from './saksbehandlere'
+import { nextId } from './felles'
 
 const nå = dayjs()
 
-export function lagJournalpost(journalpostId: string = nextId().toString()): Journalpost {
+function lagJournalpost(journalpostId: string = nextId().toString()): Journalpost {
   return {
     journalpostID: journalpostId,
     journalstatus: JournalpostStatusType.MOTTATT,
@@ -17,7 +17,6 @@ export function lagJournalpost(journalpostId: string = nextId().toString()): Jou
     fnrInnsender: '15084300133',
     tittel: 'Tilskudd ved kjøp av briller til barn',
     enhet: enheter.agder,
-    saksbehandler: innloggetSaksbehandler.s1,
     dokumenter: [
       {
         dokumentID: nextId().toString(),
@@ -44,15 +43,44 @@ export function lagJournalpost(journalpostId: string = nextId().toString()): Jou
   }
 }
 
-export const journalposter: Journalpost[] = [
-  lagJournalpost(),
-  lagJournalpost(),
-  lagJournalpost(),
-  lagJournalpost(),
-  lagJournalpost(),
-]
+class JournalpostStore extends Dexie {
+  private readonly journalposter!: Table<Journalpost, string>
 
-export const journalposterByJournalpostId: Record<string, Journalpost> = groupBy(
-  journalposter,
-  ({ journalpostID }) => journalpostID
-)
+  constructor() {
+    super('JournalpostStore')
+    if (!window.appSettings.USE_MSW) {
+      return
+    }
+    this.version(1).stores({
+      journalposter: '++journalpostID',
+    })
+  }
+
+  async populer() {
+    const count = await this.journalposter.count()
+    if (count !== 0) {
+      return []
+    }
+    return Promise.all([
+      this.lagre(lagJournalpost()),
+      this.lagre(lagJournalpost()),
+      this.lagre(lagJournalpost()),
+      this.lagre(lagJournalpost()),
+      this.lagre(lagJournalpost()),
+    ])
+  }
+
+  async lagre(journalpost: Journalpost) {
+    return this.journalposter.add(journalpost, journalpost.journalpostID)
+  }
+
+  async hent(journalpostId: string) {
+    return this.journalposter.get(journalpostId)
+  }
+
+  async alle() {
+    return this.journalposter.toArray()
+  }
+}
+
+export const journalpostStore = new JournalpostStore()

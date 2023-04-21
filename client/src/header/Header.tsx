@@ -60,12 +60,7 @@ export const Toppmeny: React.FC = () => {
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown>
-        <Header.UserButton
-          as={Dropdown.Toggle}
-          title={enheter.join(', ')}
-          name={saksbehandler.navn}
-          description={saksbehandler.navIdent}
-        />
+        <Header.UserButton as={Dropdown.Toggle} name={saksbehandler.navn} description={saksbehandler.navIdent} />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             <Lenke href="/logout">

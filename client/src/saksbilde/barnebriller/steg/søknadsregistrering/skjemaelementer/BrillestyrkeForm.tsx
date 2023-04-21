@@ -15,8 +15,8 @@ export function BrillestyrkeForm() {
         <Heading level="2" size="xsmall" spacing>
           § 2 Brillestyrke
         </Heading>
-        <Øye type="venstre" />
         <Øye type="høyre" />
+        <Øye type="venstre" />
       </Avstand>
 
       {beregning && (

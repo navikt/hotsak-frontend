@@ -4,6 +4,21 @@ import { Gruppe, InnloggetSaksbehandler } from '../../state/authentication'
 import { UUID } from '../../types/types.internal'
 import { lagUUID } from './felles'
 
+function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): InnloggetSaksbehandler {
+  const id = lagUUID()
+  return {
+    id,
+    objectId: id,
+    navn: '',
+    epost: '',
+    navIdent: '',
+    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
+    enheter: ['2970', '4710', '4711'],
+    erInnlogget: true,
+    ...saksbehandler,
+  }
+}
+
 class SaksbehandlerStore extends Dexie {
   private readonly saksbehandlere!: Table<InnloggetSaksbehandler, UUID>
 
@@ -22,45 +37,34 @@ class SaksbehandlerStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const s1 = lagUUID()
-    const s2 = lagUUID()
-    const s3 = lagUUID()
-    return Promise.all([
-      this.lagre({
-        id: s1,
-        objectId: s1,
+    return this.lagreAlle([
+      lagSaksbehandler({
         navn: 'Silje Saksbehandler',
         epost: 'silje.saksbehandler@nav.no',
         navIdent: 'S112233',
-        grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
-        enheter: ['2970', '4710', '4711'],
         erInnlogget: true,
       }),
-      this.lagre({
-        id: s2,
-        objectId: s2,
+      lagSaksbehandler({
         navn: 'Vurderer Vilkårsen',
         epost: 'vurderer.vilkårsen@nav.no',
         navIdent: 'V998877',
-        grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
-        enheter: ['2970', '4710', '4711'],
         erInnlogget: false,
       }),
-      this.lagre({
-        id: s3,
-        objectId: s3,
+      lagSaksbehandler({
         navn: 'Journalfører Journalposten',
         epost: 'journalfører.journalposten@nav.no',
         navIdent: 'J123456',
-        grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
-        enheter: ['2970', '4710', '4711'],
         erInnlogget: false,
       }),
     ])
   }
 
   async lagre(saksbehandler: InnloggetSaksbehandler) {
-    return this.saksbehandlere.add(saksbehandler, saksbehandler.id)
+    return this.saksbehandlere.add(saksbehandler)
+  }
+
+  async lagreAlle(saksbehandlere: InnloggetSaksbehandler[]) {
+    return this.saksbehandlere.bulkAdd(saksbehandlere, { allKeys: true })
   }
 
   async hent(id: UUID) {

@@ -65,10 +65,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
       bestillingsdato: toDate(sak?.vilkårsgrunnlag?.bestillingsdato),
       brilleseddel: {
-        høyreSfære: sak?.vilkårsgrunnlag?.brilleseddel.høyreSfære || '',
-        høyreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.høyreSylinder || '',
-        venstreSfære: sak?.vilkårsgrunnlag?.brilleseddel.venstreSfære || '',
-        venstreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.venstreSylinder || '',
+        høyreSfære: sak?.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
+        høyreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.høyreSylinder.toString() || '',
+        venstreSfære: sak?.vilkårsgrunnlag?.brilleseddel.venstreSfære.toString() || '',
+        venstreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.venstreSylinder.toString() || '',
       },
       brillepris: sak?.vilkårsgrunnlag?.brillepris || '',
       bestiltHosOptiker: {

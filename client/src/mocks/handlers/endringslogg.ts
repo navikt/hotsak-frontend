@@ -1,6 +1,7 @@
-import { rest, RestHandler } from 'msw'
+import { rest } from 'msw'
 
-import endringslogg from '../mockdata/endringslogg.json'
+import { StoreHandlersFactory } from '../data'
+import endringslogg from '../data/endringslogg.json'
 
 const endringsloggKopi: Array<{
   id: string
@@ -12,7 +13,7 @@ const endringsloggKopi: Array<{
   ...innslag,
 }))
 
-const endringsloggHandlers: RestHandler[] = [
+export const endringsloggHandlers: StoreHandlersFactory = () => [
   rest.post<{ endringslogginnslagId: string }>('/api/endringslogg/leste', (req, res, ctx) => {
     const innslag = endringsloggKopi.find(({ id }) => id === req.body.endringslogginnslagId)
     if (innslag) {
@@ -24,5 +25,3 @@ const endringsloggHandlers: RestHandler[] = [
     return res(ctx.status(200), ctx.json(endringsloggKopi))
   }),
 ]
-
-export default endringsloggHandlers

@@ -1,8 +1,9 @@
 import { rest } from 'msw'
 
-import saksoversikt from '../mockdata/saksoversikt.json'
+import { StoreHandlersFactory } from '../data'
+import saksoversikt from '../data/saksoversikt.json'
 
-const saksoversiktHandlers = [
+export const saksoversiktHandlers: StoreHandlersFactory = () => [
   rest.post<{ brukersFodselsnummer: any }>(`/api/saksoversikt`, async (req, res, ctx) => {
     const brukersFodselsnummer = (await req.json()).brukersFodselsnummer
 
@@ -21,5 +22,3 @@ const saksoversiktHandlers = [
     }
   }),
 ]
-
-export default saksoversiktHandlers

@@ -1,8 +1,9 @@
 import { rest } from 'msw'
 
-import personInfo from '../mockdata/personInfo.json'
+import type { StoreHandlersFactory } from '../data'
+import personInfo from '../data/personInfo.json'
 
-const personInfoHandlers = [
+export const personInfoHandlers: StoreHandlersFactory = () => [
   rest.post<{ brukersFodselsnummer: string }>(`/api/personinfo`, async (req, res, ctx) => {
     const { brukersFodselsnummer } = await req.json()
 
@@ -30,5 +31,3 @@ const personInfoHandlers = [
     }
   }),
 ]
-
-export default personInfoHandlers

@@ -1,9 +1,9 @@
 import { rest } from 'msw'
 
 import type { BeregnSatsRequest, BeregnSatsResponse } from '../../types/types.internal'
-import { beregnSats } from '../mockdata/beregnSats'
+import { beregnSats } from '../data/beregnSats'
 
-const brillekalkulatorHandlers = [
+export const brillekalkulatorHandlers = () => [
   rest.post<BeregnSatsRequest, any, BeregnSatsResponse>('/brillekalkulator-api/api/brillesedler', (req, res, ctx) => {
     return res(
       ctx.delay(100),
@@ -18,5 +18,3 @@ const brillekalkulatorHandlers = [
     )
   }),
 ]
-
-export default brillekalkulatorHandlers

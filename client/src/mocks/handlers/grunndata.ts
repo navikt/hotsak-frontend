@@ -1,13 +1,12 @@
 import { graphql } from 'msw'
 
-import grunndata from '../mockdata/grunndataGraphQL.json'
+import type { StoreHandlersFactory } from '../data'
+import grunndata from '../data/grunndataGraphQL.json'
 
-const grunndataHandlers = [
+export const grunndataHandlers: StoreHandlersFactory = () => [
   graphql.query('HentProdukt', (req, res, ctx) => {
     const { hmsnr } = req.variables
     const filtrert = grunndata.filter((produkt) => produkt.hmsnr === hmsnr)
     return res(ctx.data({ produkter: filtrert }))
   }),
 ]
-
-export default grunndataHandlers

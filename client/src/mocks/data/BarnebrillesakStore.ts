@@ -18,8 +18,8 @@ import {
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
-import { journalpostStore } from './JournalpostStore'
-import { saksbehandlerStore } from './SaksbehandlerStore'
+import { JournalpostStore } from './JournalpostStore'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { beregnSats } from './beregnSats'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
@@ -212,13 +212,16 @@ function lagBarnebrillesak(): Omit<LagretBarnebrillesak, 'sakId'> {
   }
 }
 
-class BarnebrillesakStore extends Dexie {
+export class BarnebrillesakStore extends Dexie {
   private readonly saker!: Table<LagretBarnebrillesak, number>
   private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, number>
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, number>
   private readonly vilkår!: Table<LagretVilkår, number>
 
-  constructor() {
+  constructor(
+    private readonly saksbehandlerStore: SaksbehandlerStore,
+    private readonly journalpostStore: JournalpostStore
+  ) {
     super('BarnebrillesakStore')
     if (!window.appSettings.USE_MSW) {
       return
@@ -246,7 +249,7 @@ class BarnebrillesakStore extends Dexie {
   }
 
   async lagreAlle(saker: Array<Omit<LagretBarnebrillesak, 'sakId'>>) {
-    const journalposter = await journalpostStore.alle()
+    const journalposter = await this.journalpostStore.alle()
     return this.saker.bulkAdd(
       saker.map((sak) => ({
         ...sak,
@@ -305,13 +308,13 @@ class BarnebrillesakStore extends Dexie {
     }))
   }
 
-  async tildelSaksbehandler(sakId: ID | number) {
+  async tildel(sakId: ID | number) {
     sakId = Number(sakId)
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
     }
-    const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     await this.saker.update(sakId, {
       saksbehandler: saksbehandler,
       status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
@@ -319,7 +322,7 @@ class BarnebrillesakStore extends Dexie {
     return true
   }
 
-  async fjernTildeling(sakId: ID | number) {
+  async frigi(sakId: ID | number) {
     sakId = Number(sakId)
     const sak = await this.hent(sakId)
     if (!sak) {
@@ -379,7 +382,7 @@ class BarnebrillesakStore extends Dexie {
 
   async sendTilGodkjenning(sakId: ID | number) {
     sakId = Number(sakId)
-    const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     const totrinnskontroll: Totrinnskontroll = {
       saksbehandler,
       opprettet: dayjs().toISOString(),
@@ -401,7 +404,7 @@ class BarnebrillesakStore extends Dexie {
     }
 
     const lagretTotrinnskontroll = sak.totrinnskontroll
-    const godkjenner = await saksbehandlerStore.innloggetSaksbehandler()
+    const godkjenner = await this.saksbehandlerStore.innloggetSaksbehandler()
     if (resultat === 'GODKJENT') {
       const totrinnskontroll: Partial<Totrinnskontroll> = {
         ...lagretTotrinnskontroll,
@@ -436,4 +439,3 @@ class BarnebrillesakStore extends Dexie {
     return 0
   }
 }
-export const barnebrillesakStore = new BarnebrillesakStore()

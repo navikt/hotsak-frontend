@@ -1,9 +1,9 @@
 import { rest } from 'msw'
 
-import { UUID } from '../../types/types.internal'
-import { saksbehandlerStore } from '../mockdata/SaksbehandlerStore'
+import type { UUID } from '../../types/types.internal'
+import type { StoreHandlersFactory } from '../data'
 
-const utviklingsverktøyHandlers = [
+export const utviklingsverktøyHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) => [
   rest.put<{ saksbehandlerId: UUID }>('/utvikling/saksbehandler', async (req, res, ctx) => {
     const { saksbehandlerId } = await req.json()
     await saksbehandlerStore.byttInnloggetSaksbehandler(saksbehandlerId)
@@ -14,5 +14,3 @@ const utviklingsverktøyHandlers = [
     return res(ctx.status(200), ctx.json(saksbehandlere))
   }),
 ]
-
-export default utviklingsverktøyHandlers

@@ -1,19 +1,18 @@
 import { rest } from 'msw'
 
 import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
-import { barnebrillesakStore } from '../mockdata/BarnebrillesakStore'
-import { saksbehandlerStore } from '../mockdata/SaksbehandlerStore'
+import type { StoreHandlersFactory } from '../data'
 import {
   mutableOppgaveliste as oppgaveliste,
   mutableSaker as saker,
   mutableSakshistorikk as sakshistorikk,
 } from './modell'
 
-const saksbehandlingHandlers = [
+export const saksbehandlingHandlers: StoreHandlersFactory = ({ saksbehandlerStore, barnebrillesakStore }) => [
   rest.post<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
     const { sakId } = req.params
     const saksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
-    if (await barnebrillesakStore.tildelSaksbehandler(sakId)) {
+    if (await barnebrillesakStore.tildel(sakId)) {
       return res(ctx.delay(500), ctx.status(200))
     }
 
@@ -38,7 +37,7 @@ const saksbehandlingHandlers = [
   }),
   rest.delete<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
     const { sakId } = req.params
-    if (await barnebrillesakStore.fjernTildeling(sakId)) {
+    if (await barnebrillesakStore.frigi(sakId)) {
       return res(ctx.status(200))
     }
 
@@ -295,5 +294,3 @@ const saksbehandlingHandlers = [
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),
 ]
-
-export default saksbehandlingHandlers

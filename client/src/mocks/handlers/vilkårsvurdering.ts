@@ -1,9 +1,9 @@
 import { rest } from 'msw'
 
 import { OppdaterVilkårRequest, VurderVilkårRequest } from '../../types/types.internal'
-import { barnebrillesakStore } from '../mockdata/BarnebrillesakStore'
+import type { StoreHandlersFactory } from '../data'
 
-const vilkårsvurderingHandlers = [
+export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   rest.post<VurderVilkårRequest, { sakId: string }, any>('/api/sak/:sakId/vilkarsgrunnlag', async (req, res, ctx) => {
     const sakId = req.params.sakId
     const vurderVilkårRequest = await req.json<VurderVilkårRequest>()
@@ -20,5 +20,3 @@ const vilkårsvurderingHandlers = [
     }
   ),
 ]
-
-export default vilkårsvurderingHandlers

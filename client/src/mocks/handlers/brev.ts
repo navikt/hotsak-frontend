@@ -1,8 +1,9 @@
 import { rest } from 'msw'
 
-import innvilgetBrev from '../mockdata/innvilgelsesBrev.pdf'
+import type { StoreHandlersFactory } from '../data'
+import innvilgetBrev from '../data/innvilgelsesBrev.pdf'
 
-const brevHandlers = [
+export const brevHandlers: StoreHandlersFactory = () => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   rest.get(`/api/sak/:sakID/brev`, async (req, res, ctx) => {
     const buffer = await fetch(innvilgetBrev).then((res) => res.arrayBuffer())
@@ -15,5 +16,3 @@ const brevHandlers = [
     )
   }),
 ]
-
-export default brevHandlers

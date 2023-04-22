@@ -1,10 +1,17 @@
 import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
-import type { Journalpost } from '../../types/types.internal'
-import { DokumentFormat, DokumentOppgaveStatusType, JournalpostStatusType } from '../../types/types.internal'
+import {
+  DokumentFormat,
+  DokumentOppgaveStatusType,
+  ID,
+  Journalpost,
+  JournalpostStatusType,
+} from '../../types/types.internal'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { enheter } from './enheter'
-import { nextId } from './felles'
+import { lagTilfeldigInteger, nextId } from './felles'
+import { lagTilfeldigFødselsnummer } from './fødselsnumre'
 
 const nå = dayjs()
 
@@ -14,7 +21,7 @@ function lagJournalpost(journalpostId: string = nextId().toString()): Journalpos
     journalstatus: JournalpostStatusType.MOTTATT,
     status: DokumentOppgaveStatusType.JOURNALFØRT,
     journalpostOpprettetTid: nå.toISOString(),
-    fnrInnsender: '15084300133',
+    fnrInnsender: lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
     tittel: 'Tilskudd ved kjøp av briller til barn',
     enhet: enheter.agder,
     dokumenter: [
@@ -43,10 +50,10 @@ function lagJournalpost(journalpostId: string = nextId().toString()): Journalpos
   }
 }
 
-class JournalpostStore extends Dexie {
+export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<Journalpost, string>
 
-  constructor() {
+  constructor(private readonly saksbehandlerStore: SaksbehandlerStore) {
     super('JournalpostStore')
     if (!window.appSettings.USE_MSW) {
       return
@@ -75,6 +82,12 @@ class JournalpostStore extends Dexie {
   async alle() {
     return this.journalposter.toArray()
   }
-}
 
-export const journalpostStore = new JournalpostStore()
+  async tildel(sakId: ID | number) {
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+  }
+
+  async frigi(sakId: ID | number) {
+    // todo
+  }
+}

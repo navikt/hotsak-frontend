@@ -1,10 +1,10 @@
 import { rest } from 'msw'
 
-import { KontonummerRequest, KontonummerResponse } from '../../types/types.internal'
-import { barnebrillesakStore } from '../mockdata/BarnebrillesakStore'
-import { lagTilfeldigNavn } from '../mockdata/navn'
+import type { KontonummerRequest, KontonummerResponse } from '../../types/types.internal'
+import type { StoreHandlersFactory } from '../data'
+import { lagTilfeldigNavn } from '../data/navn'
 
-const utbetalingsmottakerHandlers = [
+export const utbetalingsmottakerHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   rest.post<KontonummerRequest, any, KontonummerResponse>(`/api/utbetalingsmottaker`, async (req, res, ctx) => {
     const { sakId, fnr } = await req.json<KontonummerRequest>()
     if (fnr === '404') {
@@ -17,5 +17,3 @@ const utbetalingsmottakerHandlers = [
     return res(ctx.delay(500), ctx.status(200), ctx.json(utbetalingsmottaker))
   }),
 ]
-
-export default utbetalingsmottakerHandlers

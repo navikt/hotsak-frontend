@@ -5,11 +5,11 @@ import '@navikt/ds-css'
 import '@navikt/ds-css-internal'
 import { Modal } from '@navikt/ds-react'
 
-import { initAmplitude } from './utils/amplitude'
+import { setupAmplitude } from './utils/amplitude'
 
 import App from './App'
 import { AppRoot } from './GlobalStyles'
-import { initMSW } from './_mocks_/msw'
+import { setupMsw } from './mocks'
 
 declare global {
   interface Window {
@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-initMSW()
+setupMsw()
   .then(() => {
     const container = document.getElementById('root')!
     if (Modal.setAppElement) {
@@ -34,5 +34,5 @@ initMSW()
       </>
     )
   })
-  .then(() => initAmplitude())
+  .then(() => setupAmplitude())
   .catch((err) => console.error(err))

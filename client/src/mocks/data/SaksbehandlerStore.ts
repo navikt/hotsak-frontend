@@ -18,7 +18,7 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
   }
 }
 
-class SaksbehandlerStore extends Dexie {
+export class SaksbehandlerStore extends Dexie {
   private readonly saksbehandlere!: Table<InnloggetSaksbehandler, UUID>
 
   constructor() {
@@ -85,5 +85,3 @@ class SaksbehandlerStore extends Dexie {
     })
   }
 }
-
-export const saksbehandlerStore = new SaksbehandlerStore()

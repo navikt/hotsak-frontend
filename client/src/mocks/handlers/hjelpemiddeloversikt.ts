@@ -1,8 +1,9 @@
 import { rest } from 'msw'
 
-import hjelpemiddeloversikt from '../mockdata/hjelpemiddeloversikt.json'
+import type { StoreHandlersFactory } from '../data'
+import hjelpemiddeloversikt from '../data/hjelpemiddeloversikt.json'
 
-const hjelpemiddeloversiktHandlers = [
+export const hjelpemiddeloversiktHandlers: StoreHandlersFactory = () => [
   rest.post<{ brukersFodselsnummer: any }>(`/api/hjelpemiddeloversikt`, (req, res, ctx) => {
     const brukersFodselsnummer = req?.body?.brukersFodselsnummer
 
@@ -23,5 +24,3 @@ const hjelpemiddeloversiktHandlers = [
     }
   }),
 ]
-
-export default hjelpemiddeloversiktHandlers

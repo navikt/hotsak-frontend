@@ -1,6 +1,6 @@
-import historikk from '../mockdata/historikk.json'
-import oppgaveliste from '../mockdata/oppgaveliste.json'
-import saker from '../mockdata/saker.json'
+import historikk from '../data/historikk.json'
+import oppgaveliste from '../data/oppgaveliste.json'
+import saker from '../data/saker.json'
 
 export const mutableSaker = saker
 export const mutableOppgaveliste = oppgaveliste

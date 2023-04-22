@@ -24,7 +24,7 @@ export enum amplitude_taxonomy {
   TOTRINNSKONTROLL_GODKJENT = 'totrinnskontroll godkjent',
 }
 
-export const initAmplitude = (): void => {
+export function setupAmplitude(): void {
   if (amplitude) {
     amplitude.getInstance().init('default', '', {
       apiEndpoint: 'amplitude.nav.no/collect-auto',

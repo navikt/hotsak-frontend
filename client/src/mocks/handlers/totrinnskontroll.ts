@@ -1,9 +1,9 @@
 import { rest } from 'msw'
 
 import type { TotrinnskontrollData } from '../../types/types.internal'
-import { barnebrillesakStore } from '../mockdata/BarnebrillesakStore'
+import type { StoreHandlersFactory } from '../data'
 
-const totrinnsKontrollHandlers = [
+export const totrinnskontrollHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   rest.post<any, { sakId: string }, any>(`/api/sak/:sakId/kontroll`, async (req, res, ctx) => {
     const sakId = req.params.sakId
     await barnebrillesakStore.sendTilGodkjenning(sakId)
@@ -16,5 +16,3 @@ const totrinnsKontrollHandlers = [
     return res(ctx.delay(500), ctx.status(201), ctx.json({}))
   }),
 ]
-
-export default totrinnsKontrollHandlers

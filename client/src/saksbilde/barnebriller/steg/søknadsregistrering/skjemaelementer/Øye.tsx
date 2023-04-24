@@ -6,7 +6,7 @@ import { Detail, Select } from '@navikt/ds-react'
 import { capitalize } from '../../../../../utils/stringFormating'
 
 import { Brilleseddel } from '../../../../../types/types.internal'
-import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER, MIN_STYRKE } from '../../../config'
+import { MAX_SFÆRE, MAX_STYRKE, MAX_SYLINDER } from '../../../config'
 import { FormatertStyrke } from '../FormatertStyrke'
 
 export function Øye(props: { type: 'venstre' | 'høyre' }) {
@@ -34,7 +34,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               {...field}
             >
               <option value="">Velg sfære</option>
-              {range(1, MAX_SFÆRE).map((it) => (
+              {range(0, MAX_SFÆRE).map((it) => (
                 <option key={it} value={it}>
                   <FormatertStyrke verdi={it} type="sfære" />
                 </option>
@@ -58,7 +58,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               {...field}
             >
               <option value="">Velg sylinder</option>
-              {range(1, MAX_SYLINDER).map((it) => (
+              {range(0, MAX_SYLINDER).map((it) => (
                 <option key={it} value={it}>
                   <FormatertStyrke verdi={it} type="sylinder" />
                 </option>
@@ -82,10 +82,8 @@ export const Grid = styled.div`
 
 function range(start: number, stop: number, step = 0.25): number[] {
   const size = (stop - start) * 4 + 1
-  const padding = 1 / step
-  const valg = Array(size + padding)
+  const valg = Array(size)
     .fill(step)
     .map((x, y) => x * y)
-    .slice(padding)
-  return [MIN_STYRKE, ...valg, MAX_STYRKE]
+  return [...valg, MAX_STYRKE]
 }

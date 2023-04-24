@@ -9,7 +9,7 @@ import { AlertContainer, AlertContainerBred } from '../../../../felleskomponente
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType } from '../../../../types/types.internal'
+import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
@@ -54,7 +54,12 @@ export const VurderVilkår: React.FC = () => {
   }
 
   const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
-  const alertType = alertVariant(oppsummertResultat)
+  const alertBoksType =
+    oppsummertResultat === VilkårsResultat.JA
+      ? 'success'
+      : oppsummertResultat === VilkårsResultat.NEI
+      ? 'info'
+      : 'warning'
 
   return (
     <>
@@ -63,8 +68,8 @@ export const VurderVilkår: React.FC = () => {
           Foreløpig resultat
         </Heading>
         <AlertContainerBred>
-          <Alert variant={alertType} size="small">
-            <BodyLong>{alertTekst(alertType)}</BodyLong>
+          <Alert variant={alertBoksType} size="small">
+            <BodyLong>{alertTekst(alertBoksType)}</BodyLong>
           </Alert>
         </AlertContainerBred>
         <Table size="small">
@@ -153,11 +158,11 @@ export const VurderVilkår: React.FC = () => {
     }
   }
 
-  function alertTekst(alertVariant: 'success' | 'error' | 'warning') {
+  function alertTekst(alertVariant: 'success' | 'warning' | 'info') {
     switch (alertVariant) {
       case 'success':
         return 'Alle vilkårene er oppfylt'
-      case 'error':
+      case 'info':
         return 'Ett eller flere vilkår er ikke oppfylt'
       case 'warning':
         return 'Ett eller flere vilkår må vurderes'

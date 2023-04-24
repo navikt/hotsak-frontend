@@ -4,7 +4,7 @@ import { usePost } from '../../../../io/usePost'
 
 import { KontonummerRequest, KontonummerResponse } from '../../../../types/types.internal'
 
-export function useKontonummer(sakId: number, fnr: string) {
+export function useKontonummer(sakId?: string, fnr?: string) {
   const { post, data, error, loading } = usePost<KontonummerRequest, KontonummerResponse>('/api/utbetalingsmottaker')
 
   useEffect(() => {

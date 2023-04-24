@@ -36,7 +36,7 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernTildeling(oppgave.saksid)
+    deleteFjernTildeling(oppgave.sakId)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)

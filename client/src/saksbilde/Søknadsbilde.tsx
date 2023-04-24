@@ -68,7 +68,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
   return (
     <>
       <Søknadslinje
-        id={sak.saksid}
+        id={sak.sakId}
         type={Oppgavetype.SØKNAD}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
@@ -80,7 +80,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
               <SøknadCard
                 oppgaveType={Oppgavetype.SØKNAD}
                 søknadGjelder={sak.søknadGjelder}
-                saksnr={sak.saksid}
+                saksnr={sak.sakId}
                 mottattDato={sak.mottattDato}
                 bosituasjon={sak.personinformasjon.bosituasjon}
                 bruksarena={sak.personinformasjon.bruksarena}

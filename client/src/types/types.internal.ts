@@ -1,12 +1,5 @@
-export type LocalDate = string
-export type Instant = string
-export type ID = string // fixme -> egentlig string | number
-export type UUID = string
-export type Amount = string | number
-
 export interface Saksinformasjon {
-  // saksbehandler?: Saksbehandler
-  opprettet: Instant
+  opprettet: string
 }
 
 export interface HarSaksinformasjon {
@@ -15,36 +8,32 @@ export interface HarSaksinformasjon {
 }
 
 export interface Sak extends HarSaksinformasjon {
-  saksid: string
   sakId: string
   sakstype: Oppgavetype
-  oppgaveid: string
   søknadGjelder: string
   hjelpemidler: HjelpemiddelType[]
   formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
   personinformasjon: Personinfo
-  bruker?: Person
+  innsender: Innsender
+  bruker: Bruker
   levering: Levering
   oppfølgingsansvarlig: Oppfølgingsansvarlig
   status: OppgaveStatusType
   statusEndret: string
-  vedtak: VedtakType
-  enhet: Enhet[]
+  vedtak?: VedtakType
+  enhet: Enhet
 }
 
-export interface Brillesak extends HarSaksinformasjon {
-  sakId: ID
+export interface Barnebrillesak extends HarSaksinformasjon {
+  sakId: string
   sakstype: Oppgavetype
-  soknadGjelder: string
-  innsender: {
-    fnr: string
-    navn: string
-  }
-  bruker: Person
+  søknadGjelder: string
+  innsender: Innsender
+  bruker: Bruker
   status: OppgaveStatusType
-  statusEndret: Instant
+  statusEndret: string
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
@@ -60,24 +49,24 @@ export interface Totrinnskontroll {
   godkjenner?: Saksbehandler
   resultat?: 'GODKJENT' | 'RETURNERT'
   begrunnelse?: string
-  opprettet?: Instant
-  godkjent?: Instant
+  opprettet?: string
+  godkjent?: string
 }
 
 export interface Vilkårsvurdering {
-  id: ID
-  sakId: ID
-  opprettet: Instant
+  id: string
+  sakId: string
+  opprettet: string
   resultat: VilkårsResultat
   sats: SatsType
-  satsBeløp: Amount
+  satsBeløp: number
   satsBeskrivelse: string
-  beløp: Amount
+  beløp: string
   vilkår: Vilkår[]
 }
 
 export interface Vilkår {
-  id: string // fixme -> egentlig number
+  id: string
   identifikator:
     | 'Under18ÅrPåBestillingsdato v1'
     | 'MedlemAvFolketrygden v1'
@@ -155,7 +144,7 @@ export interface OppdaterVilkårRequest {
 
 export interface KontonummerRequest {
   fnr: string
-  sakId: number
+  sakId: string
 }
 
 export interface KontonummerResponse {
@@ -167,9 +156,9 @@ export interface KontonummerResponse {
 export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
-  sakId: ID
+  sakId: string
   målform: MålformType
-  bestillingsdato: LocalDate
+  bestillingsdato: string
   brillepris: string
   brilleseddel: Brilleseddel
   bestiltHosOptiker: ManuellVurdering
@@ -178,9 +167,9 @@ export interface VurderVilkårRequest {
 }
 
 export interface Vilkårsgrunnlag {
-  sakId: ID
+  sakId: string
   målform: MålformType
-  bestillingsdato: LocalDate
+  bestillingsdato: string
   brillepris: string
   brilleseddel: Brilleseddel
   bestiltHosOptiker: ManuellVurdering
@@ -219,7 +208,7 @@ export enum StegType {
 export interface BeregnSatsResponse {
   sats: SatsType
   satsBeskrivelse: string
-  satsBeløp: Amount
+  satsBeløp: number
 }
 
 export type BeregnSatsRequest = Brilleseddel
@@ -239,15 +228,20 @@ export interface Navn {
   etternavn: string
 }
 
-export interface Person {
+export interface Innsender {
   fnr: string
+  navn: string
+}
+
+export interface Bruker {
+  fnr: string
+  brukernummer?: string
   navn: Navn
-  fødselsdato: LocalDate
+  fødselsdato: string
   kommune: Kommune
   bydel?: Bydel
   kjønn?: Kjønn
   telefon?: string
-  brukernummer?: string
   kontonummer?: string
 }
 
@@ -395,6 +389,7 @@ export interface Tilbehør {
 }
 
 export interface Formidler {
+  fnr: string
   navn: string
   poststed: string
   arbeidssted: string
@@ -417,12 +412,12 @@ export enum GreitÅViteType {
 }
 
 export interface Oppgave {
-  saksid: ID
+  sakId: string
   sakstype: Oppgavetype
   status: OppgaveStatusType
   statusEndret: string
   beskrivelse: string
-  mottatt: Instant
+  mottatt: string
   innsender: string
   bruker: OppgaveBruker
   enhet: Enhet
@@ -556,17 +551,18 @@ export enum Kjønn {
 }
 
 export interface Personinfo {
+  fnr: string
+  brukernummer?: string
   fornavn: string
-  mellomnavn: string | null
+  mellomnavn?: string | null
   etternavn: string
   fødselsdato: string | undefined
   kjønn: Kjønn
-  fnr: string
-  brukernummer?: string
   adresse: string
   kilde: PersonInfoKilde
   signaturtype: SignaturType
   telefon: string
+  funksjonsnedsettelser: string[]
   funksjonsnedsettelse: string[]
   bruksarena: Bruksarena
   bosituasjon: Bosituasjon
@@ -683,15 +679,19 @@ export interface AvvisBestilling {
   begrunnelse: string
 }
 
-export interface PersonoversiktType {
-  fornavn: string
-  mellomnavn: string | null
-  etternavn: string
-  fødselsdato: string | undefined
-  kjønn: Kjønn
+export interface Person {
   fnr: string
   brukernummer?: string
+  fødselsdato?: string
+  kjønn: Kjønn
   telefon?: string
+  fornavn: string
+  mellomnavn?: string
+  etternavn: string
+  harAdressebeskyttelse: boolean
+  kommune: Kommune
+  bydel?: Bydel
+  enhet: Enhet
 }
 
 export interface Saksoversikt {
@@ -699,16 +699,15 @@ export interface Saksoversikt {
 }
 
 export interface Saksoversikt_Sak {
+  sakId: string
   sakstype?: Oppgavetype
-  saksid: string
-  søknadGjelder: string
   mottattDato: string
-  område: string[]
-  saksbehandler?: string
-  fagsystem: string
   status: OppgaveStatusType
   statusEndretDato: string
-  enhet: Enhet[]
+  søknadGjelder: string
+  saksbehandler?: string
+  område: string[]
+  fagsystem: string
 }
 
 export interface EndreHjelpemiddelRequest {

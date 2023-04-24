@@ -9,10 +9,13 @@ export async function setupMsw() {
   }
 
   const store = await setupStore()
-  const { saksbehandlerStore, journalpostStore, barnebrillesakStore } = store
+  const { saksbehandlerStore, personStore, hjelpemiddelStore, journalpostStore, sakStore, barnebrillesakStore } = store
 
   await saksbehandlerStore.populer()
+  await personStore.populer()
+  await hjelpemiddelStore.populer()
   await journalpostStore.populer()
+  await sakStore.populer()
   await barnebrillesakStore.populer()
 
   const worker = setupWorker(...setupHandlers(store))

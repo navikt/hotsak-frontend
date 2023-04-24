@@ -1,26 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs'
 
-import type { UUID } from '../../types/types.internal'
-
-export function groupBy<T>(items: T[], keyFn: (value: T) => string): Record<string, T> {
-  return items.reduce<Record<string, T>>((records, value) => {
-    records[keyFn(value)] = value
-    return records
-  }, {})
-}
-
 export function tilfeldigInnslag<T>(array: T[]): T {
   return array[lagTilfeldigInteger(0, array.length - 1)]
 }
 
-export function idGenerator(): () => number {
-  let value = 99_999
-  return (): number => (value += 1)
-}
-
-export const nextId = idGenerator()
-
-export function lagUUID(): UUID {
+export function lagUUID(): string {
   return crypto.randomUUID()
 }
 
@@ -30,16 +14,20 @@ export function lagTilfeldigInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-export function lagTilfeldigDato(year: number): Dayjs {
-  const d = dayjs(new Date(year, lagTilfeldigInteger(0, 11), 1))
+export function lagTilfeldigDato(år: number): Dayjs {
+  const d = dayjs(new Date(år, lagTilfeldigInteger(0, 11), 1))
   const day = lagTilfeldigInteger(1, d.daysInMonth())
   return d.set('day', day)
 }
 
-export function lagTilfeldigFødselsdato(age: number): Dayjs {
+export function lagTilfeldigFødselsdato(alder: number): Dayjs {
   return dayjs()
-    .subtract(age, 'years')
+    .subtract(alder, 'years')
     .add(lagTilfeldigInteger(1, 365) - 1, 'days')
+}
+
+export function lagTilfeldigTelefonnummer(): string {
+  return lagTilfeldigInteger(1, 99_999_999).toString().padEnd(8, '0')
 }
 
 dayjs.extend((_, c) => {

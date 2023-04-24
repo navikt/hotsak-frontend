@@ -1,4 +1,4 @@
-import { Amount, BeregnSatsResponse, Brilleseddel, SatsType } from '../../types/types.internal'
+import { BeregnSatsResponse, Brilleseddel, SatsType } from '../../types/types.internal'
 
 const satser: Record<SatsType, BeregnSatsResponse> = {
   [SatsType.SATS_1]: {
@@ -35,7 +35,10 @@ const satser: Record<SatsType, BeregnSatsResponse> = {
   },
 }
 
-export function beregnSats(brilleseddel: Brilleseddel, brillepris?: Amount): BeregnSatsResponse & { beløp: string } {
+export function beregnSats(
+  brilleseddel: Brilleseddel,
+  brillepris?: string | number
+): BeregnSatsResponse & { beløp: string } {
   const høyreSfære = Number(brilleseddel.høyreSfære)
   const høyreSylinder = Number(brilleseddel.høyreSylinder)
   const venstreSfære = Number(brilleseddel.venstreSfære)

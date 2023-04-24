@@ -171,7 +171,7 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel sakID={sak.sakId} />
+        <BrevPanel sakId={sak.sakId} />
       </VenstreKolonne>
     </TreKolonner>
   )

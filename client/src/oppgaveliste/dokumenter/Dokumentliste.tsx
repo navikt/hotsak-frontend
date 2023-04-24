@@ -19,7 +19,7 @@ import { DokumentStatusLabel, Journalpost } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { DokumentTildeling } from './DokumentTildeling'
 // Flytte til felles
-import { useDokumentListe } from './dokumentHook'
+import { useDokumentliste } from './dokumentHook'
 
 const Container = styled.div`
   min-height: 300px;
@@ -32,7 +32,7 @@ const ScrollWrapper = styled.div`
 `
 
 export const Dokumentliste: React.FC = () => {
-  const { dokumenter, isLoading, error } = useDokumentListe()
+  const { dokumenter, isLoading, error } = useDokumentliste()
 
   const kolonner: Column<Journalpost>[] = [
     {

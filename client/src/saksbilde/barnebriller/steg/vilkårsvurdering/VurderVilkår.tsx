@@ -24,11 +24,11 @@ export const VurderVilkår: React.FC = () => {
   const [lagrer, setLagrer] = useState(false)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
-  function gåTilNesteSteg(sakID: string, steg: StegType) {
+  function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
       setValgtTab(StegType.FATTE_VEDTAK)
     } else {
-      put(`${baseUrl}/api/sak/${sakID}/steg/fatte_vedtak`)
+      put(`${baseUrl}/api/sak/${sakId}/steg/fatte_vedtak`)
         .catch(() => setLagrer(false))
         .then(() => {
           setValgtTab(StegType.FATTE_VEDTAK)
@@ -39,7 +39,7 @@ export const VurderVilkår: React.FC = () => {
   }
 
   if (!sak) {
-    return <Feilmelding>{`Fant ikke sak med saknummer ${saksnummer}`}</Feilmelding>
+    return <Feilmelding>{`Fant ikke sak med saksnummer ${saksnummer}`}</Feilmelding>
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (sak?.steg === StegType.INNHENTE_FAKTA) {
@@ -109,7 +109,7 @@ export const VurderVilkår: React.FC = () => {
                   content={
                     <SaksbehandlersVurdering
                       lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
-                      sakID={sak.sakId}
+                      sakId={sak.sakId}
                       vilkår={vilkår}
                       onSaved={() => {
                         mutate()

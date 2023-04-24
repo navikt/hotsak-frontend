@@ -1,11 +1,12 @@
 import { rest } from 'msw'
 
 import { StoreHandlersFactory } from '../data'
-import saksoversikt from '../data/saksoversikt.json'
 
-export const saksoversiktHandlers: StoreHandlersFactory = () => [
+export const saksoversiktHandlers: StoreHandlersFactory = ({ saksoversiktStore }) => [
   rest.post<{ brukersFodselsnummer: any }>(`/api/saksoversikt`, async (req, res, ctx) => {
     const brukersFodselsnummer = (await req.json()).brukersFodselsnummer
+
+    const saksoversikt = await saksoversiktStore.alle()
 
     if (brukersFodselsnummer === '19044238651') {
       // Petter Andreas

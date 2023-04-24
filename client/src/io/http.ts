@@ -156,7 +156,7 @@ export const hentBrukerdataMedPost = async ([
   }
 }
 
-export const postTildeling = async (oppgavereferanse: string) => {
+export const postTildeling = async (oppgavereferanse: number | string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
@@ -176,38 +176,49 @@ export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårR
   return post(`${baseUrl}/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
 }
 
-export const putOppdaterVilkår = async (sakID: string, vilkårID: string, oppdaterVilkårData: OppdaterVilkårData) => {
-  return put(`${baseUrl}/api/sak/${sakID}/vilkar/${vilkårID}`, oppdaterVilkårData)
+export const putOppdaterVilkår = async (
+  sakId: number | string,
+  vilkårId: string,
+  oppdaterVilkårData: OppdaterVilkårData
+) => {
+  return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const tildelBestilling = async (oppgavereferanse: string) => {
-  return post(`${baseUrl}/api/bestilling/tildeling/${oppgavereferanse}`, {})
+export const tildelBestilling = async (sakId: string) => {
+  return post(`${baseUrl}/api/bestilling/tildeling/${sakId}`, {})
 }
 
-export const deleteFjernTildeling = async (oppgavereferanse: string) => {
-  return del(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
+export const deleteFjernTildeling = async (sakId: number | string) => {
+  return del(`${baseUrl}/api/tildeling/${sakId}`, {})
 }
 
-export const putVedtak = async (saksnummer: string, status: VedtakStatusType, vedtaksgrunnlag: Vedtaksgrunnlag[]) => {
-  return put(`${baseUrl}/api/vedtak-v2/${saksnummer}`, { status, vedtaksgrunnlag })
+export const putVedtak = async (
+  sakId: number | string,
+  status: VedtakStatusType,
+  vedtaksgrunnlag: Vedtaksgrunnlag[]
+) => {
+  return put(`${baseUrl}/api/vedtak-v2/${sakId}`, { status, vedtaksgrunnlag })
 }
 
-export const putFerdigstillBestilling = async (bestillingsnummer: string, status: OppgaveStatusType) => {
+export const putFerdigstillBestilling = async (bestillingsnummer: number | string, status: OppgaveStatusType) => {
   return put(`${baseUrl}/api/bestilling/ferdigstill/${bestillingsnummer}`, { status })
 }
 
-export const putSendTilGosys = async (saksnummer: string, tilbakemelding: OverforGosysTilbakemelding) => {
-  return put(`${baseUrl}/api/tilbakefoer/${saksnummer}`, { tilbakemelding })
+export const putSendTilGosys = async (sakId: number | string, tilbakemelding: OverforGosysTilbakemelding) => {
+  return put(`${baseUrl}/api/tilbakefoer/${sakId}`, { tilbakemelding })
 }
 
-export const putAvvisBestilling = async (saksnummer: string, tilbakemelding: AvvisBestilling) => {
-  return put(`${baseUrl}/api/bestilling/avvis/${saksnummer}`, { tilbakemelding })
+export const putAvvisBestilling = async (sakId: number | string, tilbakemelding: AvvisBestilling) => {
+  return put(`${baseUrl}/api/bestilling/avvis/${sakId}`, { tilbakemelding })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {
   return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
 }
 
-export const putEndreHjelpemiddel = async (saksnummer: string, endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+export const putEndreHjelpemiddel = async (
+  saksnummer: number | string,
+  endreHjelpemiddel: EndreHjelpemiddelRequest
+) => {
   return put(`${baseUrl}/api/bestilling/v2/${saksnummer}`, endreHjelpemiddel)
 }

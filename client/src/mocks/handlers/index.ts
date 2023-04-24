@@ -6,7 +6,7 @@ import { endringsloggHandlers } from './endringslogg'
 import { grunndataHandlers } from './grunndata'
 import { hjelpemiddelHandlers } from './hjelpemiddel'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
-import { personInfoHandlers } from './personoversikt'
+import { personoversiktHandlers } from './personoversikt'
 import { saksbehandlerHandlers } from './saksbehandler'
 import { saksbehandlingHandlers } from './saksbehandling'
 import { saksoversiktHandlers } from './saksoversikt'
@@ -24,7 +24,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...utbetalingsmottakerHandlers(store),
-  ...personInfoHandlers(store),
+  ...personoversiktHandlers(store),
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),
   ...saksbehandlerHandlers(store),

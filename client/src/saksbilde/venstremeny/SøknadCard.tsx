@@ -18,7 +18,7 @@ import { Grid } from './Grid'
 interface SøknadCardProps {
   oppgaveType: Oppgavetype
   søknadGjelder: string
-  saksnr: string
+  saksnr: number | string
   mottattDato: string
   bruksarena: Bruksarena
   funksjonsnedsettelse: string[]

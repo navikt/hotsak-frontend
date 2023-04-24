@@ -1,10 +1,9 @@
 import { rest } from 'msw'
 
-import type { UUID } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
 export const utviklingsverktøyHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) => [
-  rest.put<{ saksbehandlerId: UUID }>('/utvikling/saksbehandler', async (req, res, ctx) => {
+  rest.put<{ saksbehandlerId: string }>('/utvikling/saksbehandler', async (req, res, ctx) => {
     const { saksbehandlerId } = await req.json()
     await saksbehandlerStore.byttInnloggetSaksbehandler(saksbehandlerId)
     return res(ctx.status(204))

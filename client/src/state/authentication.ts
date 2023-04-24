@@ -5,8 +5,6 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
-import type { UUID } from '../types/types.internal'
-
 export enum Gruppe {
   TEAMDIGIHOT = 'TEAMDIGIHOT',
   HOTSAK_BRUKERE = 'HOTSAK_BRUKERE',
@@ -19,8 +17,8 @@ const Enhet = {
 }
 
 export interface InnloggetSaksbehandler {
-  id: UUID
-  objectId: UUID
+  id: string
+  objectId: string
   navn: string
   epost: string
   navIdent: string

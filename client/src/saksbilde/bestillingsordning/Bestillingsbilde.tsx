@@ -66,7 +66,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
   return (
     <BestillingsbildeContainer>
       <Søknadslinje
-        id={sak.saksid}
+        id={sak.sakId}
         type={Oppgavetype.BESTILLING}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
@@ -78,7 +78,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
               <SøknadCard
                 oppgaveType={Oppgavetype.BESTILLING}
                 søknadGjelder={sak.søknadGjelder}
-                saksnr={sak.saksid}
+                saksnr={sak.sakId}
                 mottattDato={sak.mottattDato}
                 bosituasjon={sak.personinformasjon.bosituasjon}
                 bruksarena={sak.personinformasjon.bruksarena}

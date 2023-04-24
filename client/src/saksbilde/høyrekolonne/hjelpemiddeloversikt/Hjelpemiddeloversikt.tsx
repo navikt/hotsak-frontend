@@ -82,7 +82,7 @@ export const Hjelpemiddeloversikt: React.FC = () => {
       {isFromVedtak ? (
         <>
           <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-          <Rad>Per {formaterDato(sak?.vedtak.vedtaksdato)}, da vedtaket ble gjort </Rad>
+          <Rad>Per {formaterDato(sak?.vedtak?.vedtaksdato)}, da vedtaket ble gjort </Rad>
         </>
       ) : (
         <>

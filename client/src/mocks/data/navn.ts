@@ -57,13 +57,13 @@ const etternavn = [
   'Bakgård',
 ]
 
-export function lagTilfeldigNavn(): Navn & { navn: string } {
+export function lagTilfeldigNavn(): Navn & { fulltNavn: string } {
   const navn: Navn = {
     fornavn: tilfeldigInnslag(fornavn),
     etternavn: tilfeldigInnslag(etternavn),
   }
   return {
     ...navn,
-    navn: `${navn.fornavn} ${navn.etternavn}`,
+    fulltNavn: `${navn.fornavn} ${navn.etternavn}`,
   }
 }

@@ -14,16 +14,16 @@ interface BrevResponse {
   //isLoading: boolean
   //isError: any
   isDokumentError: any
-  hentForhåndsvisning: (sakId: string) => any
+  hentForhåndsvisning: (sakId: number | string) => any
   nullstillDokument: () => any
   hentetDokument: any
   settHentetDokument: any
   // mutate: (...args: any[]) => any
 }
 
-export function useBrev(sakID?: string): BrevResponse {
-  //const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/sak/${sakID}/brev/forhandsvisning`, httpGet)
-  //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
+export function useBrev(sakId?: number | string): BrevResponse {
+  //const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/sak/${sakId}/brev/forhandsvisning`, httpGet)
+  //const [valgtDokumentId, settValgtDokumentId] = React.useState<string>('')
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
   const [isDokumentError, setIsDokumentError] = useState<any>(null)
 
@@ -31,11 +31,11 @@ export function useBrev(sakID?: string): BrevResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = (sakID: string) => {
+  const hentForhåndsvisning = (sakId: number | string) => {
     settHentetDokument(byggHenterRessurs())
     setIsDokumentError(null)
 
-    const response = httpGetPdf(`api/sak/${sakID}/brev`)
+    const response = httpGetPdf(`api/sak/${sakId}/brev`)
 
     response
       .then((response: PDFResponse) => {

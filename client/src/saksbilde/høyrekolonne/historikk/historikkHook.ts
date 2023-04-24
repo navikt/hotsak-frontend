@@ -14,7 +14,7 @@ interface DataResponse {
 export function useHistorikk(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { data, error } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet, {
-    refreshInterval: 10000,
+    refreshInterval: 10_000,
   })
 
   return {
@@ -27,7 +27,7 @@ export function useHistorikk(): DataResponse {
 export function useBestillingsHistorikk(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { data, error } = useSwr<{ data: Hendelse[] }>(`api/bestilling/${saksnummer}/historikk`, httpGet, {
-    refreshInterval: 10000,
+    refreshInterval: 10_000,
   })
 
   return {

@@ -11,11 +11,11 @@ import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/types.internal'
 
 export function SaksbehandlersVurderingForm({
-  sakID,
+  sakId,
   vilkår,
   onSaved,
 }: {
-  sakID: string
+  sakId: number | string
   vilkår: Vilkår
   onSaved: () => any
 }) {
@@ -34,7 +34,7 @@ export function SaksbehandlersVurderingForm({
 
   const oppdaterVilkår = (vilkårID: string, data: OppdaterVilkårData) => {
     setVenterPåVilkårsvurdering(true)
-    putOppdaterVilkår(sakID, vilkårID, data)
+    putOppdaterVilkår(sakId, vilkårID, data)
       .catch(() => setVenterPåVilkårsvurdering(false))
       .then(() => {
         setVenterPåVilkårsvurdering(false)
@@ -43,7 +43,7 @@ export function SaksbehandlersVurderingForm({
   }
 
   return (
-    <FormProvider {...methods} key={`${sakID}-${vilkår.id}`}>
+    <FormProvider {...methods} key={`${sakId}-${vilkår.id}`}>
       <form
         onSubmit={methods.handleSubmit((data) => {
           oppdaterVilkår(vilkår.id, data)

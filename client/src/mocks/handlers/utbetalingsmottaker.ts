@@ -8,7 +8,7 @@ export const utbetalingsmottakerHandlers: StoreHandlersFactory = ({ barnebrilles
   rest.post<KontonummerRequest, any, KontonummerResponse>(`/api/utbetalingsmottaker`, async (req, res, ctx) => {
     const { sakId, fnr } = await req.json<KontonummerRequest>()
     if (fnr === '404') {
-      return res(ctx.delay(500), ctx.status(200), ctx.json({ fnr, navn: lagTilfeldigNavn().navn }))
+      return res(ctx.delay(500), ctx.status(200), ctx.json({ fnr, navn: lagTilfeldigNavn().fulltNavn }))
     }
     if (fnr === '500') {
       return res(ctx.status(500))

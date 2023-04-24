@@ -53,7 +53,7 @@ const Knapp = styled(Button)`
 `
 
 export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
-  const { saksid } = sak
+  const { sakId } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
@@ -65,7 +65,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const opprettVedtak = () => {
     setLoading(true)
     putVedtak(
-      saksid,
+      sakId,
       VedtakStatusType.INNVILGET,
       hjelpemiddelArtikler ? [vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler)] : []
     )
@@ -73,33 +73,33 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
       .then(() => {
         setLoading(false)
         setVisVedtakModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
   const overtaSak = () => {
     setLoading(true)
-    postTildeling(saksid)
+    postTildeling(sakId)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisOvertaSakModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
       })
   }
 
   const sendTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
     setLoading(true)
-    putSendTilGosys(saksid, tilbakemelding)
+    putSendTilGosys(sakId, tilbakemelding)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisGosysModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
@@ -142,7 +142,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         <CardTitle>SAK IKKE STARTET</CardTitle>
         <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
         </Knappepanel>
       </Card>
     )

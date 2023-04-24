@@ -1,14 +1,13 @@
 import { rest } from 'msw'
 
-import { DokumentOppgaveStatusType, JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
+import { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import kvittering from '../data/brillekvittering.pdf'
 import brilleseddel from '../data/brilleseddel.pdf'
-import dokumentliste from '../data/dokumentliste.json'
 import kvitteringsside from '../data/kvitteringsside.pdf'
 import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
 
-export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   rest.get(`/api/journalposter`, async (req, res, ctx) => {
     const journalposter = await journalpostStore.alle()
@@ -58,26 +57,15 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore }) => 
   rest.post<JournalføringRequest, any, OpprettetSakResponse>(
     `/api/journalpost/:journalpostID/journalforing`,
     async (req, res, ctx) => {
-      const journalpost: JournalføringRequest = await req.json()
-      const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === journalpost.journalpostID)
-      dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.JOURNALFØRT
-
-      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: '9876' }))
+      const journalføring = await req.json<JournalføringRequest>()
+      await journalpostStore.journalfør(journalføring.journalpostID)
+      const sakId = await barnebrillesakStore.opprettSak(journalføring)
+      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: sakId.toString() }))
     }
   ),
-  rest.post(`/api/journalpost/:journalpostID/tildeling`, (req, res, ctx) => {
-    const journalpostIdx = dokumentliste.findIndex((dokument) => dokument.journalpostID === req.params.journalpostID)
-
-    const saksbehandler = {
-      epost: 'silje.saksbehandler@nav.no',
-      objectId: '23ea7485-1324-4b25-a763-assdfdfa',
-      navn: 'Silje Saksbehandler',
-    }
-
-    dokumentliste[journalpostIdx]['saksbehandler'] = saksbehandler
-    dokumentliste[journalpostIdx]['status'] = DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER
-
-    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+  rest.post<any, { journalpostID: string }>(`/api/journalpost/:journalpostID/tildeling`, async (req, res, ctx) => {
+    await journalpostStore.tildel(req.params.journalpostID)
+    return res(ctx.delay(500), ctx.status(200))
   }),
   rest.post('/api/journalpost/:journalpostID/tilbakeforing', (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(204))

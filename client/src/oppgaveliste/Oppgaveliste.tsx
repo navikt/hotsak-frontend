@@ -222,11 +222,11 @@ export const Oppgaveliste: React.FC = () => {
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
                       <LinkRow
-                        key={oppgave.saksid}
+                        key={oppgave.sakId}
                         path={
                           oppgave.sakstype !== Oppgavetype.TILSKUDD
-                            ? `/sak/${oppgave.saksid}/hjelpemidler`
-                            : `/sak/${oppgave.saksid}`
+                            ? `/sak/${oppgave.sakId}/hjelpemidler`
+                            : `/sak/${oppgave.sakId}`
                         }
                       >
                         {kolonner.map(({ render, width, key }) => (

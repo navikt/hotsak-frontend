@@ -16,10 +16,10 @@ export interface UtbetalingsmottakerProps {
 
 export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
   const { defaultInnsenderFnr } = props
-  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
   const [textFieldValue, setTextFieldValue] = useState(defaultInnsenderFnr || '')
   const [innsenderFnr, setInnsenderFnr] = useState(defaultInnsenderFnr || '')
-  const { data: kontoinformasjon, error, loading } = useKontonummer(Number(saksnummer), innsenderFnr)
+  const { data: kontoinformasjon, error, loading } = useKontonummer(sakId, innsenderFnr)
 
   const kontonummerFunnet = kontoinformasjon?.kontonummer && kontoinformasjon.kontonummer !== ''
 

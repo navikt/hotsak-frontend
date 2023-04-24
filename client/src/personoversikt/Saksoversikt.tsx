@@ -44,7 +44,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
           value={capitalize(sak.område.join(', '))}
-          id={`funksjonsnedsettelse-${sak.saksid}`}
+          id={`funksjonsnedsettelse-${sak.sakId}`}
           minLength={18}
         />
       ),
@@ -56,7 +56,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
           value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
-          id={`kategori-${sak.saksid}`}
+          id={`kategori-${sak.sakId}`}
           minLength={20}
         />
       ),
@@ -70,7 +70,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
           <Oppgaveetikett
             type={sak.sakstype ? sak.sakstype : Oppgavetype.SØKNAD}
             showLabel={true}
-            labelLinkTo={`/sak/${sak.saksid}/hjelpemidler`}
+            labelLinkTo={`/sak/${sak.sakId}/hjelpemidler`}
           />
         </div>
       ),
@@ -102,7 +102,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
       name: 'Saksbehandler',
       width: 160,
       render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.saksid}`} minLength={20} />
+        <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.sakId}`} minLength={20} />
       ),
     },
     {
@@ -111,7 +111,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
       width: 120,
       render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.fagsystem} />,
     },
-    { key: 'SAKSID', name: 'Saksid', width: 100, render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.saksid} /> },
+    { key: 'SAKSID', name: 'Saksid', width: 100, render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.sakId} /> },
   ]
 
   const hasData = saker && saker.length > 0
@@ -137,7 +137,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ saker, henterSaker }
                 </Table.Header>
                 <Table.Body>
                   {saker.map((sak) => (
-                    <Table.Row key={sak.saksid}>
+                    <Table.Row key={sak.sakId}>
                       {kolonner.map(({ render, width, key }) => (
                         <DataCelle key={key} width={width}>
                           {render(sak)}

@@ -1,11 +1,11 @@
 import { rest } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
-import hjelpemiddeloversikt from '../data/hjelpemiddeloversikt.json'
+import { hjelpemiddeloversikt } from '../data/hjelpemiddeloversikt'
 
 export const hjelpemiddeloversiktHandlers: StoreHandlersFactory = () => [
-  rest.post<{ brukersFodselsnummer: any }>(`/api/hjelpemiddeloversikt`, (req, res, ctx) => {
-    const brukersFodselsnummer = req?.body?.brukersFodselsnummer
+  rest.post<{ brukersFodselsnummer: any }>(`/api/hjelpemiddeloversikt`, async (req, res, ctx) => {
+    const { brukersFodselsnummer } = await req.json()
 
     if (brukersFodselsnummer === '06115559891') {
       return res(ctx.status(200), ctx.json([]))

@@ -3,7 +3,7 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
-import { Brillesak, Sak } from '../types/types.internal'
+import { Barnebrillesak, Sak } from '../types/types.internal'
 
 interface DataResponse {
   sak: Sak | undefined
@@ -12,7 +12,7 @@ interface DataResponse {
 }
 
 interface BrillesakResponse {
-  sak: Brillesak | undefined
+  sak: Barnebrillesak | undefined
   isLoading: boolean
   isError: any
   mutate: (...args: any[]) => any
@@ -20,7 +20,7 @@ interface BrillesakResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10000 })
+  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10_000 })
 
   return {
     sak: data?.data,
@@ -32,7 +32,7 @@ export function useSak(): DataResponse {
 // Duplisert frem til vi vet om de ulike sakstypene vil ha samme payload eller om det blir to ulike varianter/endepunkt
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error, mutate } = useSwr<{ data: Brillesak }>(`api/sak/${saksnummer}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: Barnebrillesak }>(`api/sak/${saksnummer}`, httpGet)
 
   return {
     sak: data?.data,

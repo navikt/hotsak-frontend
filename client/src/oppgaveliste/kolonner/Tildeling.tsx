@@ -13,7 +13,7 @@ export const Tildeling = React.memo(({ oppgave }: TildelingProps) => {
     return <Tildelt name={oppgave.saksbehandler.navn} />
   }
   if (oppgave.kanTildeles) {
-    return <IkkeTildelt oppgavereferanse={oppgave.saksid} gåTilSak={true} />
+    return <IkkeTildelt oppgavereferanse={oppgave.sakId} gåTilSak={true} />
   }
   return <>-</>
 })

@@ -20,20 +20,20 @@ const FeilmeldingDiv = styled.div`
 `
 
 interface BrevPanelProps {
-  sakID: string
+  sakId: number | string
 }
 
 export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
-  const { sakID } = props
-  const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev(sakID)
+  const { sakId } = props
+  const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev(sakId)
 
   useEffect(() => {
-    if (sakID) {
-      hentForhåndsvisning(sakID)
+    if (sakId) {
+      hentForhåndsvisning(sakId)
     }
-  }, [sakID])
+  }, [sakId])
 
-  if (!sakID) {
+  if (!sakId) {
     return <div>Mangler sakID</div>
   } else if (isDokumentError) {
     {

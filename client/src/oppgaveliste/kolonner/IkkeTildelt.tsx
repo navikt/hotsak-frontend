@@ -10,7 +10,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 interface IkkeTildeltProps {
-  oppgavereferanse: string
+  oppgavereferanse: number | string
   gåTilSak: boolean
 }
 

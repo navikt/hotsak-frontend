@@ -28,10 +28,11 @@ interface DokumentResponse {
 
 const dokumentlisteBasePath = 'api/journalposter'
 const journalpostBasePath = 'api/journalpost'
+const ingenDokumenter: Journalpost[] = []
 
-export function useDokumentListe(): DokumentlisteResponse {
+export function useDokumentliste(): DokumentlisteResponse {
   const { data, error, mutate } = useSwr<{ data: Journalpost[] }>(dokumentlisteBasePath, httpGet, {
-    refreshInterval: 10000,
+    refreshInterval: 10_000,
   })
 
   // Avventer å legge inn dette til vi ser om vi trenger filter, paging osv
@@ -43,7 +44,7 @@ export function useDokumentListe(): DokumentlisteResponse {
         })
       }, [currentPage, sort, filters])*/
 
-  const dokumenter = data?.data || []
+  const dokumenter = data?.data || ingenDokumenter
   return {
     dokumenter,
     totalCount: dokumenter.length,
@@ -54,12 +55,7 @@ export function useDokumentListe(): DokumentlisteResponse {
 }
 
 export function useDokument(journalpostID?: string): DokumentResponse {
-  //const { journalpostID } = useParams<{ journalpostID: string }>()
-
-  //const valgtJournalpostID = journalpost ? journalpost : journalpostID
-
   const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
-  //const [valgtDokumentID, settValgtDokumentID] = React.useState<string>('')
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
   const [isPdfError, setIsPdfError] = useState<any>(null)
 

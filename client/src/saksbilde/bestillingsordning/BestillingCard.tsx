@@ -46,7 +46,7 @@ const StatusTekst = styled.div`
 `
 
 export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) => {
-  const { saksid } = bestilling
+  const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdeModal, setVisOpprettOrdreModal] = useState(false)
@@ -57,38 +57,38 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
 
   const ferdigstillBestilling = () => {
     setLoading(true)
-    putFerdigstillBestilling(saksid, OppgaveStatusType.FERDIGSTILT)
+    putFerdigstillBestilling(sakId, OppgaveStatusType.FERDIGSTILT)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisOpprettOrdreModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
   const overtaBestilling = () => {
     setLoading(true)
-    postTildeling(saksid)
+    postTildeling(sakId)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisOvertaSakModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
         logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)
       })
   }
 
   const avvvisBestilling = (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    putAvvisBestilling(saksid, tilbakemelding)
+    putAvvisBestilling(sakId, tilbakemelding)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisAvvisModal(false)
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
@@ -129,7 +129,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
         <CardTitle>BESTILLING IKKE STARTET</CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={saksid} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
         </Knappepanel>
       </Card>
     )

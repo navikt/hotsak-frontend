@@ -34,7 +34,7 @@ const Container = styled.div`
 `
 
 export const RegistrerSøknadSkjema: React.FC = () => {
-  const { saksnummer: sakID } = useParams<{ saksnummer: string }>()
+  const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
   const { setValgtTab } = useManuellSaksbehandlingContext()
@@ -45,7 +45,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     const { bestillingsdato, ...rest } = { ...formData }
 
     const vurderVilkårRequest: VurderVilkårRequest = {
-      sakId: sakID!,
+      sakId: sakId!,
       bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
       ...rest,
     }

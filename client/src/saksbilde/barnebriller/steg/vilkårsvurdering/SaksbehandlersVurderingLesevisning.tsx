@@ -4,7 +4,7 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { Vilkår } from '../../../../types/types.internal'
 
-export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakID: string; vilkår: Vilkår }) {
+export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakId: number | string; vilkår: Vilkår }) {
   return (
     <Avstand paddingTop={6}>
       <Etikett>Er vilkåret oppfylt?</Etikett>

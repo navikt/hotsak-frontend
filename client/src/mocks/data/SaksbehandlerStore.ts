@@ -1,7 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
 import { Gruppe, InnloggetSaksbehandler } from '../../state/authentication'
-import { UUID } from '../../types/types.internal'
 import { lagUUID } from './felles'
 
 function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): InnloggetSaksbehandler {
@@ -19,15 +18,12 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
 }
 
 export class SaksbehandlerStore extends Dexie {
-  private readonly saksbehandlere!: Table<InnloggetSaksbehandler, UUID>
+  private readonly saksbehandlere!: Table<InnloggetSaksbehandler, string>
 
   constructor() {
     super('SaksbehandlerStore')
-    if (!window.appSettings.USE_MSW) {
-      return
-    }
     this.version(1).stores({
-      saksbehandlere: '++id',
+      saksbehandlere: 'id',
     })
   }
 
@@ -62,7 +58,7 @@ export class SaksbehandlerStore extends Dexie {
     return this.saksbehandlere.bulkAdd(saksbehandlere, { allKeys: true })
   }
 
-  async hent(id: UUID) {
+  async hent(id: string) {
     return this.saksbehandlere.get(id)
   }
 
@@ -71,10 +67,14 @@ export class SaksbehandlerStore extends Dexie {
   }
 
   async innloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
-    return this.saksbehandlere.filter(({ erInnlogget }) => erInnlogget === true).first() as any // fixme
+    const innloggetSaksbehandler = await this.saksbehandlere.filter(({ erInnlogget }) => erInnlogget === true).first()
+    if (!innloggetSaksbehandler) {
+      throw new Error('Fant ingen saksbehandler med erInnlogget = true')
+    }
+    return innloggetSaksbehandler
   }
 
-  async byttInnloggetSaksbehandler(id: UUID) {
+  async byttInnloggetSaksbehandler(id: string) {
     return this.transaction('rw', this.saksbehandlere, async () => {
       await this.saksbehandlere.toCollection().modify({
         erInnlogget: false,

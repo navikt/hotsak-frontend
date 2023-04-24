@@ -4,18 +4,18 @@ import { Detail, Heading, Link, Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { ID, Vilkår } from '../../../../types/types.internal'
+import { Vilkår } from '../../../../types/types.internal'
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
 import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
 import { grunnlagMetadata, metadataFor } from './vilkårMetada'
 
 export function SaksbehandlersVurdering({
-  sakID,
+  sakId,
   lesevisning,
   vilkår,
   onSaved,
 }: {
-  sakID: ID
+  sakId: string
   lesevisning: boolean
   vilkår: Vilkår
   onSaved: () => any
@@ -53,9 +53,9 @@ export function SaksbehandlersVurdering({
           })}
 
           {lesevisning ? (
-            <SaksbehandlersVurderingLesevisning sakID={sakID} vilkår={vilkår} />
+            <SaksbehandlersVurderingLesevisning sakId={sakId} vilkår={vilkår} />
           ) : (
-            <SaksbehandlersVurderingForm sakID={sakID} vilkår={vilkår} onSaved={onSaved} />
+            <SaksbehandlersVurderingForm sakId={sakId} vilkår={vilkår} onSaved={onSaved} />
           )}
         </Container>
       </SaksbehandlersVurderingPanel>

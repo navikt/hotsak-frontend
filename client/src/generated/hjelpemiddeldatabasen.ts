@@ -22,15 +22,17 @@ export interface HMDBAvtalepost {
   nummer: Scalars['String']
 }
 
-export enum HMDBBehovsmeldingstype {
-  Bestilling = 'BESTILLING',
-  Soknad = 'SOKNAD',
-}
-
 export interface HMDBBestillingsordning {
   __typename?: 'Bestillingsordning'
   erIBestillingsordning: Scalars['Boolean']
   hmsnr: Scalars['String']
+}
+
+export interface HMDBGodkjenningskurs {
+  __typename?: 'Godkjenningskurs'
+  isokode: Scalars['String']
+  kursId: Scalars['Int']
+  tittel: Scalars['String']
 }
 
 export interface HMDBKategori {
@@ -93,7 +95,9 @@ export interface HMDBProdukt {
   kategori?: Maybe<Scalars['String']>
   leverandor?: Maybe<HMDBLeverandor>
   leverandorId?: Maybe<Scalars['String']>
+  /** @deprecated Bruk pakrevdGodkjenningskurs, replace with pakrevdGodkjenningskurs */
   paakrevdGodkjenningskurs?: Maybe<HMDBPaakrevdGodkjenningskursDto>
+  pakrevdGodkjenningskurs?: Maybe<HMDBGodkjenningskurs>
   produktId: Scalars['String']
   produktUrl: Scalars['String']
   produktbeskrivelse: Scalars['String']
@@ -117,11 +121,12 @@ export interface HMDBProduktPage {
 export interface HMDBProdukterFilterInput {
   artikkelId?: InputMaybe<Array<Scalars['String']>>
   avtalepostId?: InputMaybe<Array<Scalars['String']>>
-  behovsmeldingstype?: InputMaybe<HMDBBehovsmeldingstype>
+  erIBestillingsordning?: InputMaybe<Scalars['Boolean']>
   hmsnr?: InputMaybe<Array<Scalars['String']>>
   isokode?: InputMaybe<Array<Scalars['String']>>
   kategori?: InputMaybe<Array<Scalars['String']>>
   produktId?: InputMaybe<Array<Scalars['String']>>
+  tilgjengeligForDigitalSoknad?: InputMaybe<Scalars['Boolean']>
 }
 
 export interface HMDBProduktfilterInput {
@@ -138,14 +143,20 @@ export enum HMDBProdukttype {
 export interface HMDBQuery {
   __typename?: 'Query'
   avtaleposter: Array<HMDBAvtalepost>
-  /** Sjekk om et tilbehør er prisforhandlet */
+  /**
+   * Sjekk om et tilbehør er prisforhandlet
+   * @deprecated Bruk prisforhandletTilbehor
+   */
   erPrisforhandletTilbehoer: Scalars['Boolean']
   /**
    * Hent alle produkter
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
   hentAlleProdukter: HMDBProduktPage
-  /** Sjekk om et produkt/tilbehør er på bestillingsordning */
+  /**
+   * Sjekk om et produkt/tilbehør er på bestillingsordning
+   * @deprecated Bruk produkter med erIBestillingsordning = true
+   */
   hentErIBestillingsOrdning: Array<HMDBBestillingsordning>
   /**
    * Hent produkter med hmsnr
@@ -165,6 +176,7 @@ export interface HMDBQuery {
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
   sortiment: Array<HMDBProdukt>
+  tilbehor: Array<HMDBTilbehor>
 }
 
 export interface HMDBQueryErPrisforhandletTilbehoerArgs {
@@ -197,8 +209,8 @@ export interface HMDBQueryProdukterArgs {
   filter?: InputMaybe<HMDBProdukterFilterInput>
 }
 
-export interface HMDBQuerySortimentArgs {
-  filter?: InputMaybe<HMDBProdukterFilterInput>
+export interface HMDBQueryTilbehorArgs {
+  filter?: InputMaybe<HMDBTilbehorFilterInput>
 }
 
 /** Teknisk datum med ledetekst, verdi og evt. enhet */
@@ -213,6 +225,19 @@ export interface HMDBTekniskeDataTriple {
 /** Teknisk datum med ledetekst, verdi og evt. enhet */
 export interface HMDBTekniskeDataTripleVisningstekstArgs {
   separator?: InputMaybe<Scalars['String']>
+}
+
+export interface HMDBTilbehor {
+  __typename?: 'Tilbehor'
+  hmsnr?: Maybe<Scalars['String']>
+  leverandorId?: Maybe<Scalars['String']>
+  rammeavtaleId?: Maybe<Scalars['String']>
+}
+
+export interface HMDBTilbehorFilterInput {
+  hmsnr?: InputMaybe<Array<Scalars['String']>>
+  leverandorId?: InputMaybe<Array<Scalars['String']>>
+  rammeavtaleId?: InputMaybe<Array<Scalars['String']>>
 }
 
 export type HMDBHentProduktQueryVariables = Exact<{

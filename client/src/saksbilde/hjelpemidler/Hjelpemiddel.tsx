@@ -83,7 +83,7 @@ interface HjelpemiddelProps {
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
-  const { personinformasjon, status, saksid } = sak
+  const { personinformasjon, status, sakId } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
@@ -95,11 +95,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(endretProdukt ? endretProdukt.hmsNr : undefined)
 
   const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
-    await putEndreHjelpemiddel(saksid, endreHjelpemiddel)
+    await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.log('error endre hjelpemiddel'))
       .then(() => {
-        mutate(`api/sak/${saksid}`)
-        mutate(`api/sak/${saksid}/historikk`)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)
   }

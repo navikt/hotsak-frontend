@@ -2,8 +2,10 @@ import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
-  Brillesak,
-  ID,
+  Barnebrillesak,
+  Hendelse,
+  JournalføringRequest,
+  Kjønn,
   OppdaterVilkårRequest,
   Oppgave,
   OppgaveStatusType,
@@ -18,38 +20,44 @@ import {
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
+import { IdGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
+import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { beregnSats } from './beregnSats'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
-import { lagTilfeldigFødselsdato } from './felles'
-import { lagTilfeldigFødselsnummer } from './fødselsnumre'
+import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
+import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 
-const nå = dayjs()
 const datoOrdningenStartet = '2022-08-01'
 
-type LagretBarnebrillesak = Omit<Brillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
+type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
 type LagretVilkårsvurdering = Omit<Vilkårsvurdering, 'vilkår'>
-type LagretVilkår = Vilkår & { vilkårsvurderingId: number }
 
-function lagVilkårsgrunnlag(sakId: ID | number, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
+interface LagretVilkår extends Vilkår {
+  vilkårsvurderingId: string
+}
+
+interface LagretHendelse extends Hendelse {
+  sakId: string
+}
+
+function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
   return {
     ...vurderVilkårRequest,
-    sakId: sakId as string, // fixme
+    sakId,
   }
 }
 
-function lagVilkårsvurdering(
-  sakId: ID | number,
-  vurderVilkårRequest: VurderVilkårRequest
-): Omit<LagretVilkårsvurdering, 'id'> {
+function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
   const { brillepris, brilleseddel } = vurderVilkårRequest
   const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
   return {
-    sakId: sakId as string, // fixme
+    id: sakId,
+    sakId,
     resultat: VilkårsResultat.JA,
     sats,
     satsBeløp,
@@ -60,7 +68,7 @@ function lagVilkårsvurdering(
 }
 
 function lagVilkår(
-  vilkårsvurderingId: number,
+  vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
   const { bestillingsdato, brilleseddel } = vurderVilkårRequest
@@ -180,14 +188,15 @@ function lagVilkår(
   ]
 }
 
-function lagBarnebrillesak(): Omit<LagretBarnebrillesak, 'sakId'> {
+function lagBarnebrillesak(sakId: number, opprettet = dayjs().toISOString()): LagretBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
   return {
+    sakId: sakId.toString(),
     saksinformasjon: {
-      opprettet: nå.toISOString(),
+      opprettet,
     },
     sakstype: Oppgavetype.BARNEBRILLER,
-    soknadGjelder: 'Briller til barn',
+    søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
       fødselsdato: fødselsdatoBruker.toISODateString(),
@@ -197,14 +206,14 @@ function lagBarnebrillesak(): Omit<LagretBarnebrillesak, 'sakId'> {
       },
       kontonummer: '11111111113',
       navn: lagTilfeldigNavn(),
-      telefon: '10203040',
+      telefon: lagTilfeldigTelefonnummer(),
     },
     innsender: {
       fnr: lagTilfeldigFødselsnummer(42),
-      navn: lagTilfeldigNavn().navn,
+      navn: lagTilfeldigNavn().fulltNavn,
     },
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: nå.toISOString(),
+    statusEndret: opprettet,
 
     steg: StegType.INNHENTE_FAKTA,
     enhet: enheter.oslo,
@@ -213,24 +222,25 @@ function lagBarnebrillesak(): Omit<LagretBarnebrillesak, 'sakId'> {
 }
 
 export class BarnebrillesakStore extends Dexie {
-  private readonly saker!: Table<LagretBarnebrillesak, number>
-  private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, number>
-  private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, number>
+  private readonly saker!: Table<LagretBarnebrillesak, string>
+  private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, string>
+  private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
   private readonly vilkår!: Table<LagretVilkår, number>
+  private readonly hendelser!: Table<LagretHendelse, string>
 
   constructor(
+    private readonly idGenerator: IdGenerator,
     private readonly saksbehandlerStore: SaksbehandlerStore,
+    private readonly personStore: PersonStore,
     private readonly journalpostStore: JournalpostStore
   ) {
     super('BarnebrillesakStore')
-    if (!window.appSettings.USE_MSW) {
-      return
-    }
     this.version(1).stores({
-      saker: '++sakId',
-      vilkårsgrunnlag: '++sakId',
-      vilkårsvurderinger: '++id,sakId',
+      saker: 'sakId',
+      vilkårsgrunnlag: 'sakId',
+      vilkårsvurderinger: 'id,sakId',
       vilkår: '++id,vilkårsvurderingId',
+      hendelser: '++id,sakId',
     })
   }
 
@@ -239,47 +249,34 @@ export class BarnebrillesakStore extends Dexie {
     if (count !== 0) {
       return []
     }
+    const lagBarnebrillesakMedId = () => lagBarnebrillesak(this.idGenerator.nesteId())
     return this.lagreAlle([
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
     ])
   }
 
-  async lagreAlle(saker: Array<Omit<LagretBarnebrillesak, 'sakId'>>) {
+  async lagreAlle(saker: LagretBarnebrillesak[]) {
     const journalposter = await this.journalpostStore.alle()
+    await this.personStore.lagreAlle(
+      saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
+        ...navn,
+        ...rest,
+        kjønn: kjønn || Kjønn.UKJENT,
+        harAdressebeskyttelse: false,
+        enhet: enheter.agder,
+      }))
+    )
     return this.saker.bulkAdd(
       saker.map((sak) => ({
         ...sak,
         journalposter: [journalposter[0].journalpostID],
-      })) as any, // fixme
+      })),
       { allKeys: true }
     )
-  }
-
-  async hent(sakId: ID | number): Promise<Brillesak | undefined> {
-    sakId = Number(sakId)
-    const sak = await this.saker.get(sakId)
-    if (!sak) {
-      return
-    }
-    const vilkårsgrunnlag = await this.vilkårsgrunnlag.get(sakId)
-    const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sakId).first()
-
-    if (vilkårsvurdering) {
-      const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
-      return {
-        ...sak,
-        vilkårsgrunnlag,
-        vilkårsvurdering: {
-          ...vilkårsvurdering,
-          vilkår,
-        },
-      }
-    }
-    return sak
   }
 
   async alle() {
@@ -289,11 +286,11 @@ export class BarnebrillesakStore extends Dexie {
   async oppgaver() {
     const saker = await this.alle()
     return saker.map<Oppgave>(({ bruker, ...sak }) => ({
-      saksid: sak.sakId,
+      sakId: sak.sakId,
       sakstype: Oppgavetype.TILSKUDD,
       status: sak.status,
       statusEndret: sak.statusEndret,
-      beskrivelse: sak.soknadGjelder,
+      beskrivelse: sak.søknadGjelder,
       mottatt: sak.saksinformasjon.opprettet,
       innsender: sak.innsender.navn,
       bruker: {
@@ -308,8 +305,44 @@ export class BarnebrillesakStore extends Dexie {
     }))
   }
 
-  async tildel(sakId: ID | number) {
-    sakId = Number(sakId)
+  async hent(sakId: string): Promise<Barnebrillesak | undefined> {
+    const sak = await this.saker.get(sakId)
+    if (!sak) {
+      return
+    }
+    const vilkårsgrunnlag = await this.vilkårsgrunnlag.get(sakId)
+    const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sakId).first()
+    if (vilkårsvurdering) {
+      const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
+      return {
+        ...sak,
+        vilkårsgrunnlag,
+        vilkårsvurdering: {
+          ...vilkårsvurdering,
+          vilkår,
+        },
+      }
+    }
+    return sak
+  }
+
+  async lagreHendelse(sakId: string, hendelse: string, detaljer?: string) {
+    const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
+    return this.hendelser.put({
+      id: this.idGenerator.nesteId().toString(),
+      opprettet: dayjs().toISOString(),
+      sakId,
+      hendelse,
+      detaljer,
+      bruker,
+    })
+  }
+
+  async hentHendelser(sakId: string) {
+    return this.hendelser.where('sakId').equals(sakId).toArray()
+  }
+
+  async tildel(sakId: string) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -319,11 +352,11 @@ export class BarnebrillesakStore extends Dexie {
       saksbehandler: saksbehandler,
       status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
     })
+    await this.lagreHendelse(sakId, 'Saksbehandler har tatt saken')
     return true
   }
 
-  async frigi(sakId: ID | number) {
-    sakId = Number(sakId)
+  async frigi(sakId: string) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -332,21 +365,20 @@ export class BarnebrillesakStore extends Dexie {
       saksbehandler: undefined,
       status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     })
+    await this.lagreHendelse(sakId, 'Saksbehandler er meldt av saken')
     return true
   }
 
-  async oppdaterSteg(sakId: ID | number, steg: StegType) {
-    sakId = Number(sakId)
+  async oppdaterSteg(sakId: string, steg: StegType) {
     return this.saker.update(sakId, {
       steg,
     })
   }
 
-  async oppdaterUtbetalingsmottaker(sakId: ID | number, fnr: string): Promise<Utbetalingsmottaker> {
-    sakId = Number(sakId)
+  async oppdaterUtbetalingsmottaker(sakId: string, fnr: string): Promise<Utbetalingsmottaker> {
     const utbetalingsmottaker: Utbetalingsmottaker = {
       fnr,
-      navn: lagTilfeldigNavn().navn,
+      navn: lagTilfeldigNavn().fulltNavn,
       kontonummer: '11111111113',
     }
     await this.saker.update(sakId, {
@@ -355,13 +387,12 @@ export class BarnebrillesakStore extends Dexie {
     return utbetalingsmottaker
   }
 
-  async vurderVilkår(sakId: ID | number, vurderVilkårRequest: VurderVilkårRequest) {
-    sakId = Number(sakId)
+  async vurderVilkår(sakId: string, vurderVilkårRequest: VurderVilkårRequest) {
     return this.transaction('rw', this.saker, this.vilkårsgrunnlag, this.vilkårsvurderinger, this.vilkår, async () => {
       const vilkårsgrunnlag = lagVilkårsgrunnlag(sakId, vurderVilkårRequest)
-      await this.vilkårsgrunnlag.put(vilkårsgrunnlag, Number(sakId))
+      await this.vilkårsgrunnlag.put(vilkårsgrunnlag, sakId)
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
-      const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering as any) // fixme
+      const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
@@ -369,8 +400,8 @@ export class BarnebrillesakStore extends Dexie {
   }
 
   async oppdaterVilkår(
-    sakId: ID | number,
-    vilkårId: ID | number,
+    sakId: string,
+    vilkårId: number | string,
     { resultatSaksbehandler, begrunnelseSaksbehandler }: OppdaterVilkårRequest
   ) {
     vilkårId = Number(vilkårId)
@@ -380,8 +411,7 @@ export class BarnebrillesakStore extends Dexie {
     })
   }
 
-  async sendTilGodkjenning(sakId: ID | number) {
-    sakId = Number(sakId)
+  async sendTilGodkjenning(sakId: string) {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     const totrinnskontroll: Totrinnskontroll = {
       saksbehandler,
@@ -395,8 +425,7 @@ export class BarnebrillesakStore extends Dexie {
     })
   }
 
-  async ferdigstillTotrinnskontroll(sakId: ID | number, { resultat, begrunnelse }: TotrinnskontrollData) {
-    sakId = Number(sakId)
+  async ferdigstillTotrinnskontroll(sakId: string, { resultat, begrunnelse }: TotrinnskontrollData) {
     const nå = dayjs().toISOString()
     const sak = await this.hent(sakId)
     if (!sak || !sak.totrinnskontroll) {
@@ -437,5 +466,12 @@ export class BarnebrillesakStore extends Dexie {
     }
 
     return 0
+  }
+
+  async opprettSak(journalføring: JournalføringRequest) {
+    const sak = lagBarnebrillesak(this.idGenerator.nesteId())
+    sak.bruker.fnr = journalføring.journalføresPåFnr
+    sak.journalposter = [journalføring.journalpostID]
+    return this.saker.add(sak)
   }
 }

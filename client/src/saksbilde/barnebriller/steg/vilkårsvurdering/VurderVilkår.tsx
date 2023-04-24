@@ -128,6 +128,9 @@ export const VurderVilkår: React.FC = () => {
           </Table.Body>
         </Table>
         <Knappepanel>
+          <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
+            Forrige
+          </Button>
           <Button
             variant="primary"
             size="small"

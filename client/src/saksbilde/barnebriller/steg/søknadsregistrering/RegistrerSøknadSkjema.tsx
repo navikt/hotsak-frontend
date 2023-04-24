@@ -141,7 +141,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                   disabled={venterPåVilkårsvurdering}
                   loading={venterPåVilkårsvurdering}
                 >
-                  Vurder vilkår
+                  Neste
                 </Button>
               </Knappepanel>
             </Avstand>

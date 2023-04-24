@@ -10,18 +10,21 @@ import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFor
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 
 export const Vedtak: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { saksnummer } = useParams<{ saksnummer: string }>()
+  const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
 
   const VENSTREKOLONNE_BREDDE = '180px'
@@ -149,15 +152,21 @@ export const Vedtak: React.FC = () => {
           </Alert>
         ) : (
           kanGåVidereTilTotrinnskontroll() && (
-            <Button
-              loading={loading}
-              disabled={loading}
-              size="small"
-              variant="primary"
-              onClick={() => sendTilGodkjenning()}
-            >
-              Send til godkjenning
-            </Button>
+            <Knappepanel>
+              {' '}
+              <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
+                Forrige
+              </Button>
+              <Button
+                loading={loading}
+                disabled={loading}
+                size="small"
+                variant="primary"
+                onClick={() => sendTilGodkjenning()}
+              >
+                Send til godkjenning
+              </Button>
+            </Knappepanel>
           )
         )}
       </Panel>

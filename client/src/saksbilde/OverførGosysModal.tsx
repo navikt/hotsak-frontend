@@ -11,13 +11,20 @@ import type { OverforGosysTilbakemelding } from '../types/types.internal'
 interface OverførGosysModalProps {
   open: boolean
   loading: boolean
+  årsaker: ReadonlyArray<string>
 
   onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
 
   onClose(): void
 }
 
-export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
+  open,
+  årsaker = ['Annet'],
+  loading,
+  onBekreft,
+  onClose,
+}) => {
   // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')
@@ -43,9 +50,9 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, on
           onChange={setValgteArsaker}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke i Gosys.</Tekst>
-          {overforGosysArsaker.map((arsak, index) => (
-            <Checkbox key={arsak} value={arsak} data-cy={`overfor-soknad-arsak-${index}`}>
-              {arsak}
+          {årsaker.map((årsak, index) => (
+            <Checkbox key={årsak} value={årsak} data-cy={`overfor-soknad-arsak-${index}`}>
+              {årsak}
             </Checkbox>
           ))}
         </OverforGosysArsakCheckboxGroup>
@@ -85,13 +92,6 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({ open, on
     </DialogBoks>
   )
 }
-
-const overforGosysArsaker: ReadonlyArray<string> = [
-  'Mulighet for å legge inn mer informasjon i saken',
-  'Mulighet for å gjøre skriftlige vedtak i Hotsak',
-  'Personen som skal jobbe videre med saken jobber ikke i Hotsak i dag',
-  'Annet',
-]
 
 const OverforGosysArsakCheckboxGroup = styled(CheckboxGroup)`
   margin: var(--a-spacing-4) 0;

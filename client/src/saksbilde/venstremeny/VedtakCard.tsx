@@ -201,6 +201,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         />
         <OverførGosysModal
           open={visGosysModal}
+          årsaker={overforGosysArsaker}
           onBekreft={(tilbakemelding) => {
             sendTilGosys(tilbakemelding)
             logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
@@ -213,3 +214,10 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     )
   }
 }
+
+const overforGosysArsaker: ReadonlyArray<string> = [
+  'Mulighet for å legge inn mer informasjon i saken',
+  'Mulighet for å gjøre skriftlige vedtak i Hotsak',
+  'Personen som skal jobbe videre med saken jobber ikke i Hotsak i dag',
+  'Annet',
+]

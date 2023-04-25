@@ -1,7 +1,7 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formatISO } from 'date-fns'
 import 'date-fns'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
@@ -9,15 +9,23 @@ import styled from 'styled-components'
 
 import { Button, Heading, Loader } from '@navikt/ds-react'
 
-import { postVilkårsvurdering } from '../../../../io/http'
+import { postVilkårsvurdering, putSendTilGosys } from '../../../../io/http'
 import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Eksperiment } from '../../../../felleskomponenter/Eksperiment'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
-import { MålformType, RegistrerSøknadData, StegType, VurderVilkårRequest } from '../../../../types/types.internal'
+import {
+  MålformType,
+  OverforGosysTilbakemelding,
+  RegistrerSøknadData,
+  StegType,
+  VurderVilkårRequest,
+} from '../../../../types/types.internal'
+import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { Utbetalingsmottaker } from './Utbetalingsmottaker'
@@ -40,6 +48,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const { showBoundary } = useErrorBoundary()
+  const [visGosysModal, setVisGosysModal] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { bestillingsdato, ...rest } = { ...formData }
@@ -57,6 +67,18 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         setValgtTab(StegType.VURDERE_VILKÅR)
         mutate()
         setVenterPåVilkårsvurdering(false)
+      })
+  }
+
+  const sendTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
+    setLoading(true)
+    putSendTilGosys(sakId!, tilbakemelding)
+      .catch(() => setLoading(false))
+      .then(() => {
+        setLoading(false)
+        setVisGosysModal(false)
+        mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
@@ -143,11 +165,33 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                 >
                   Neste
                 </Button>
+                <Eksperiment>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="small"
+                    onClick={() => setVisGosysModal(true)}
+                    data-cy="btn-vis-gosys-modal"
+                  >
+                    Overfør til Gosys
+                  </Button>
+                </Eksperiment>
               </Knappepanel>
             </Avstand>
           </form>
         </FormProvider>
       </Avstand>
+      <OverførGosysModal
+        open={visGosysModal}
+        årsaker={overforGosysArsaker}
+        loading={loading}
+        onBekreft={(tilbakemelding) => {
+          sendTilGosys(tilbakemelding)
+        }}
+        onClose={() => setVisGosysModal(false)}
+      />
     </Container>
   )
 }
+
+const overforGosysArsaker: ReadonlyArray<string> = ['Amblyopi', 'Annet']

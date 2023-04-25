@@ -168,10 +168,6 @@ export const postJournalføring = async (journalføringRequest: JournalføringRe
   return post(`${baseUrl}/api/journalpost/${journalføringRequest.journalpostID}/journalforing`, journalføringRequest)
 }
 
-export const postTilbakeføring = async (journalpostID: string) => {
-  return post(`${baseUrl}/api/journalpost/${journalpostID}/tilbakeforing`, { journalpostID })
-}
-
 export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårRequest) => {
   return post(`${baseUrl}/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
 }

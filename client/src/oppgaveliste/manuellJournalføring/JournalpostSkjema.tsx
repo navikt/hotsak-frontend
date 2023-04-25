@@ -3,13 +3,12 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Applicant } from '@navikt/ds-icons'
-import { Button, ExpansionCard, Heading, Loader, TextField } from '@navikt/ds-react'
+import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
 
-import { postJournalføring, postTilbakeføring } from '../../io/http'
+import { postJournalføring } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
@@ -19,7 +18,6 @@ import { formaterNavn } from '../../saksbilde/Personlinje'
 import { JournalføringRequest } from '../../types/types.internal'
 import { useDokument } from '../dokumenter/dokumentHook'
 import { Dokumenter } from './Dokumenter'
-import { FlyttGosysModal } from './FlyttGosysModal'
 
 const Container = styled.div`
   overflow: auto;
@@ -37,8 +35,6 @@ export const JournalpostSkjema: React.FC = () => {
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   // const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
-  const [visFlyttGosysModal, setVisFlyttGosysModal] = useState(false)
-  const [tilbakefører, setTilbakefører] = useState(false)
 
   const journalfør = () => {
     const journalføringRequest: JournalføringRequest = {
@@ -58,17 +54,6 @@ export const JournalpostSkjema: React.FC = () => {
         navigate(`/sak/${opprettetSakID}`)
       })
       .catch(() => setJournalfører(false))
-  }
-
-  const tilbakefør = () => {
-    setTilbakefører(true)
-    postTilbakeføring(journalpost!.journalpostID)
-      .then(() => {
-        navigate('/oppgaveliste/dokumenter')
-      })
-      .catch(() => {
-        setTilbakefører(false)
-      })
   }
 
   if (henterPerson || !personInfo || isLoading || !journalpost) {
@@ -146,38 +131,14 @@ export const JournalpostSkjema: React.FC = () => {
                 journalfør()
               }}
               data-cy="btn-journalfør"
-              disabled={journalfører || tilbakefører}
+              disabled={journalfører}
               loading={journalfører}
             >
               Journalfør
             </Button>
-            <Eksperiment>
-              <Button
-                type="button"
-                variant="secondary"
-                size="small"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setVisFlyttGosysModal(true)
-                }}
-                data-cy="btn-flytt-til-gosys-modal"
-                disabled={journalfører || tilbakefører}
-                loading={tilbakefører}
-              >
-                Flytt til Gosys
-              </Button>
-            </Eksperiment>
           </Knappepanel>
         </Avstand>
       </form>
-      <FlyttGosysModal
-        open={visFlyttGosysModal}
-        loading={tilbakefører}
-        onBekreft={tilbakefør}
-        onClose={() => {
-          setVisFlyttGosysModal(false)
-        }}
-      />
     </Container>
   )
 }

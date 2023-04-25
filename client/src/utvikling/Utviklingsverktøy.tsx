@@ -23,6 +23,9 @@ export function Utviklingsverktøy() {
   const [erSkjult, setErSkjult] = useState(false)
 
   useEffect(() => {
+    if (!window.appSettings.USE_MSW) {
+      return
+    }
     window.store.saksbehandlere().then(setSaksbehandlere).catch(console.warn)
   }, [])
 

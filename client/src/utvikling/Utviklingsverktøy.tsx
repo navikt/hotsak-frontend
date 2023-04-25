@@ -1,9 +1,9 @@
-import React, { ChangeEventHandler, useState } from 'react'
+import React, { ChangeEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import useSwr from 'swr'
 
-import { Button, Checkbox, CheckboxGroup, Heading, Select } from '@navikt/ds-react'
+import { Button, Heading, Select } from '@navikt/ds-react'
 
+import { Avstand } from '../felleskomponenter/Avstand'
 import { InnloggetSaksbehandler, useInnloggetSaksbehandler } from '../state/authentication'
 
 const Wrapper = styled.div`
@@ -19,12 +19,12 @@ const Wrapper = styled.div`
 
 export function Utviklingsverktøy() {
   const { id: innloggetSaksbehandlerId } = useInnloggetSaksbehandler()
-  const { data: saksbehandlere = [] } = useSwr<InnloggetSaksbehandler[]>('/utvikling/saksbehandlere')
+  const [saksbehandlere, setSaksbehandlere] = useState<InnloggetSaksbehandler[]>([])
   const [erSkjult, setErSkjult] = useState(false)
 
-  const handleChange = (values: string[]) => {
-    // todo
-  }
+  useEffect(() => {
+    window.store.saksbehandlere().then(setSaksbehandlere).catch(console.warn)
+  }, [])
 
   const handleSkjul = (skjult: boolean) => {
     setErSkjult(skjult)
@@ -52,12 +52,7 @@ export function Utviklingsverktøy() {
   }
 
   const byttSaksbehandler: ChangeEventHandler<HTMLSelectElement> = async (event) => {
-    await fetch('/utvikling/saksbehandler', {
-      method: 'put',
-      body: JSON.stringify({
-        saksbehandlerId: event.target.value,
-      }),
-    })
+    await window.store.byttInnloggetSaksbehandler(event.target.value)
     window.location.reload()
   }
 
@@ -75,21 +70,30 @@ export function Utviklingsverktøy() {
         -
       </Button>
       <Heading size="xsmall">[UTVIKLINGSVERKTØY]</Heading>
-      <Select label="Innlogget saksbehandler" value={innloggetSaksbehandlerId} onChange={byttSaksbehandler}>
+      <Select
+        size="small"
+        label="Innlogget saksbehandler"
+        value={innloggetSaksbehandlerId}
+        onChange={byttSaksbehandler}
+      >
         {saksbehandlere.map(({ id, navn }) => (
           <option key={id} value={id}>
             {navn}
           </option>
         ))}
       </Select>
-      {false && (
-        <CheckboxGroup size="small" legend="Tilganger" hideLegend onChange={handleChange}>
-          <Heading size="xsmall">Roller</Heading>
-          <Checkbox value="foo" tabIndex={-1}>
-            bar
-          </Checkbox>
-        </CheckboxGroup>
-      )}
+      <Avstand marginTop={3}>
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={async () => {
+            await window.store.delete()
+            window.location.reload()
+          }}
+        >
+          Slett testdata
+        </Button>
+      </Avstand>
     </Wrapper>
   )
 }

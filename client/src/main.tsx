@@ -11,16 +11,6 @@ import App from './App'
 import { AppRoot } from './GlobalStyles'
 import { setupMsw } from './mocks'
 
-declare global {
-  interface Window {
-    msw: any
-    appSettings: {
-      USE_MSW?: boolean
-      MILJO?: 'local' | 'dev-gcp' | 'prod-gcp' | string
-    }
-  }
-}
-
 setupMsw()
   .then(() => {
     const container = document.getElementById('root')!

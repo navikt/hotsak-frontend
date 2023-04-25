@@ -12,7 +12,6 @@ import { saksbehandlingHandlers } from './saksbehandling'
 import { saksoversiktHandlers } from './saksoversikt'
 import { totrinnskontrollHandlers } from './totrinnskontroll'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker'
-import { utviklingsverktøyHandlers } from './utviklingsverktøy'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
@@ -30,5 +29,4 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...saksbehandlerHandlers(store),
   ...totrinnskontrollHandlers(store),
   ...vilkårsvurderingHandlers(store),
-  ...utviklingsverktøyHandlers(store),
 ]

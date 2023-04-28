@@ -193,4 +193,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   )
 }
 
-const overforGosysArsaker: ReadonlyArray<string> = ['Amblyopi', 'Annet']
+const overforGosysArsaker: ReadonlyArray<string> = [
+  'Behandlingsbriller/linser ordinære vilkår',
+  'Behandlingsbriller/linser særskilte vilkår',
+  'Annet',
+]

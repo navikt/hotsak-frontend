@@ -17,6 +17,7 @@ import { beløp } from '../../../../formaters/beløp'
 import { StegType, VilkårSvar } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { FormatertStyrke } from './FormatertStyrke'
 
 const Container = styled.div`
   overflow: auto;
@@ -87,10 +88,14 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           </Rad>
           <Rad>
             <Kolonne width="150px">
-              <Brødtekst>{vilkårsgrunnlag?.brilleseddel.høyreSfære}</Brødtekst>
+              <Brødtekst>
+                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.høyreSfære} />
+              </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
-              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.høyreSylinder}`}</Brødtekst>}
+              <Brødtekst>
+                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
+              </Brødtekst>
             </Kolonne>
           </Rad>
           <Avstand paddingBottom={4} />
@@ -105,10 +110,14 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           </Rad>
           <Rad>
             <Kolonne width="150px">
-              <Brødtekst>{vilkårsgrunnlag?.brilleseddel.venstreSfære}</Brødtekst>
+              <Brødtekst>
+                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.venstreSfære} />
+              </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
-              {vilkårsgrunnlag && <Brødtekst>{`- ${vilkårsgrunnlag.brilleseddel.venstreSylinder}`}</Brødtekst>}
+              <Brødtekst>
+                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
+              </Brødtekst>
             </Kolonne>
           </Rad>
 

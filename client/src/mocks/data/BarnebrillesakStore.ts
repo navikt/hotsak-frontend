@@ -394,6 +394,7 @@ export class BarnebrillesakStore extends Dexie {
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
+      await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
     })

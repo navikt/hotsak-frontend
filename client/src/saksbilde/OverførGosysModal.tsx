@@ -12,6 +12,7 @@ interface OverførGosysModalProps {
   open: boolean
   loading: boolean
   årsaker: ReadonlyArray<string>
+  legend?: string
 
   onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
 
@@ -20,12 +21,12 @@ interface OverførGosysModalProps {
 
 export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
   open,
-  årsaker = ['Annet'],
   loading,
+  årsaker = ['Annet'],
+  legend = 'Hva må til for at du skulle kunne behandlet denne saken i Hotsak?',
   onBekreft,
   onClose,
 }) => {
-  // Modal && Modal.setAppElement("#root")
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')
   const [error, setError] = useState('')
@@ -44,7 +45,7 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
           dukker opp i Gosys.
         </Tekst>
         <OverforGosysArsakCheckboxGroup
-          legend="Hva må til for at du skulle kunne behandlet denne saken i Hotsak?"
+          legend={legend}
           error={(manglerArsak || manglerBegrunnelse) && error}
           value={valgteArsaker}
           onChange={setValgteArsaker}

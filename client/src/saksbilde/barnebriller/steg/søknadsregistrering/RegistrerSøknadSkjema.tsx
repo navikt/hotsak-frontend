@@ -165,17 +165,15 @@ export const RegistrerSøknadSkjema: React.FC = () => {
                 >
                   Neste
                 </Button>
-                <Eksperiment>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="small"
-                    onClick={() => setVisGosysModal(true)}
-                    data-cy="btn-vis-gosys-modal"
-                  >
-                    Overfør til Gosys
-                  </Button>
-                </Eksperiment>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="small"
+                  onClick={() => setVisGosysModal(true)}
+                  data-cy="btn-vis-gosys-modal"
+                >
+                  Overfør til Gosys
+                </Button>
               </Knappepanel>
             </Avstand>
           </form>
@@ -183,8 +181,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       </Avstand>
       <OverførGosysModal
         open={visGosysModal}
-        årsaker={overforGosysArsaker}
         loading={loading}
+        årsaker={overforGosysArsaker}
+        legend="Hvorfor vil du overføre saken?"
         onBekreft={(tilbakemelding) => {
           sendTilGosys(tilbakemelding)
         }}

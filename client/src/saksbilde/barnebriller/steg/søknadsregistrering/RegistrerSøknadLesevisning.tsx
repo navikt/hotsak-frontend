@@ -94,7 +94,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
+                <FormatertStyrke type="sylinder" verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>
@@ -116,7 +116,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
+                <FormatertStyrke type="sylinder" verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>

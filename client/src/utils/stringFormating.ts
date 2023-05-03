@@ -1,7 +1,7 @@
 export const capitalize = (value?: string): string => {
   if (!value) {
     return ''
-  } else return value.charAt(0).toUpperCase() + value.slice(1)
+  } else return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
 }
 
 export const capitalizeName = (value: string) => {
@@ -14,7 +14,7 @@ export const capitalizeName = (value: string) => {
 function capitalizeMedSkilletegn(value: string, skilletegn: string) {
   return value
     .split(skilletegn)
-    .map((v) => capitalize(v))
+    .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
     .join(skilletegn)
 }
 export const formaterKontonummer = (kontonummer?: string) => {

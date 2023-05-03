@@ -1,16 +1,22 @@
 export const capitalize = (value?: string): string => {
   if (!value) {
     return ''
-  } else return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+  } else return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-export const capitalizeName = (value: string) =>
-  value
-    .toLowerCase()
-    .split(' ')
-    .map((value) => capitalize(value))
-    .join(' ')
+export const capitalizeName = (value: string) => {
+  const lowercaseValue = value.toLowerCase()
 
+  const storBokstavEtterBindestrek = capitalizeMedSkilletegn(lowercaseValue, '-')
+  return capitalizeMedSkilletegn(storBokstavEtterBindestrek, ' ')
+}
+
+function capitalizeMedSkilletegn(value: string, skilletegn: string) {
+  return value
+    .split(skilletegn)
+    .map((v) => capitalize(v))
+    .join(skilletegn)
+}
 export const formaterKontonummer = (kontonummer?: string) => {
   return kontonummer ? `${kontonummer?.slice(0, 4)}.${kontonummer?.slice(4, 6)}.${kontonummer?.slice(6)}` : ''
 }

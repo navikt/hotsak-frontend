@@ -9,7 +9,7 @@ declare global {
     }
     store: {
       saksbehandlere(): Promise<InnloggetSaksbehandler[]>
-      byttInnloggetSaksbehandler(id: string): Promise<any>
+      byttInnloggetSaksbehandler(id: string): void
       delete(): Promise<any>
     }
   }

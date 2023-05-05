@@ -3,21 +3,8 @@ import Dexie, { Table } from 'dexie'
 import { Gruppe, InnloggetSaksbehandler } from '../../state/authentication'
 import { lagUUID } from './felles'
 
-function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): InnloggetSaksbehandler {
-  const id = lagUUID()
-  return {
-    id,
-    objectId: id,
-    navn: '',
-    epost: '',
-    navIdent: '',
-    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
-    enheter: ['2970', '4710', '4711'],
-    ...saksbehandler,
-  }
-}
-
 export class SaksbehandlerStore extends Dexie {
+  private readonly sessionKey = 'innloggetSaksbehandlerId'
   private readonly saksbehandlere!: Table<InnloggetSaksbehandler, string>
 
   constructor() {
@@ -29,29 +16,31 @@ export class SaksbehandlerStore extends Dexie {
 
   async populer() {
     const count = await this.saksbehandlere.count()
-    if (count !== 0) {
-      return []
+    if (count === 0) {
+      sessionStorage.removeItem(this.sessionKey)
+      await this.lagreAlle([
+        lagSaksbehandler({
+          navn: 'Silje Saksbehandler',
+          epost: 'silje.saksbehandler@nav.no',
+          navIdent: 'S112233',
+        }),
+        lagSaksbehandler({
+          navn: 'Vurderer Vilkårsen',
+          epost: 'vurderer.vilkårsen@nav.no',
+          navIdent: 'V998877',
+        }),
+        lagSaksbehandler({
+          navn: 'Journalfører Journalposten',
+          epost: 'journalfører.journalposten@nav.no',
+          navIdent: 'J123456',
+        }),
+      ])
     }
-    return this.lagreAlle([
-      lagSaksbehandler({
-        navn: 'Silje Saksbehandler',
-        epost: 'silje.saksbehandler@nav.no',
-        navIdent: 'S112233',
-        erInnlogget: true,
-      }),
-      lagSaksbehandler({
-        navn: 'Vurderer Vilkårsen',
-        epost: 'vurderer.vilkårsen@nav.no',
-        navIdent: 'V998877',
-        erInnlogget: false,
-      }),
-      lagSaksbehandler({
-        navn: 'Journalfører Journalposten',
-        epost: 'journalfører.journalposten@nav.no',
-        navIdent: 'J123456',
-        erInnlogget: false,
-      }),
-    ])
+    if (!this.getInnloggetSaksbehandlerId()) {
+      const [saksbehandler] = await this.saksbehandlere.toArray()
+      this.setInnloggetSaksbehandlerId(saksbehandler.id)
+    }
+    return
   }
 
   async lagreAlle(saksbehandlere: InnloggetSaksbehandler[]) {
@@ -67,21 +56,34 @@ export class SaksbehandlerStore extends Dexie {
   }
 
   async innloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
-    const innloggetSaksbehandler = await this.saksbehandlere.filter(({ erInnlogget }) => erInnlogget === true).first()
-    if (!innloggetSaksbehandler) {
-      throw new Error('Fant ingen saksbehandler med erInnlogget = true')
-    }
-    return innloggetSaksbehandler
+    const id = this.getInnloggetSaksbehandlerId() || ''
+    return this.saksbehandlere.get(id) as any // fixme
   }
 
-  async byttInnloggetSaksbehandler(id: string) {
-    return this.transaction('rw', this.saksbehandlere, async () => {
-      await this.saksbehandlere.toCollection().modify({
-        erInnlogget: false,
-      })
-      return this.saksbehandlere.update(id, {
-        erInnlogget: true,
-      })
-    })
+  byttInnloggetSaksbehandler(id: string) {
+    this.setInnloggetSaksbehandlerId(id)
+  }
+
+  private getInnloggetSaksbehandlerId(): string | null {
+    return sessionStorage.getItem(this.sessionKey)
+  }
+
+  private setInnloggetSaksbehandlerId(id: string): void {
+    sessionStorage.setItem(this.sessionKey, id)
+  }
+}
+
+function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): InnloggetSaksbehandler {
+  const id = lagUUID()
+  return {
+    id,
+    objectId: id,
+    navn: '',
+    epost: '',
+    navIdent: '',
+    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
+    enheter: ['2970', '4710', '4711'],
+    erInnlogget: true,
+    ...saksbehandler,
   }
 }

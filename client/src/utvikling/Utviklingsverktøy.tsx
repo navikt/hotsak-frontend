@@ -55,7 +55,7 @@ export function Utviklingsverktøy() {
   }
 
   const byttSaksbehandler: ChangeEventHandler<HTMLSelectElement> = async (event) => {
-    await window.store.byttInnloggetSaksbehandler(event.target.value)
+    window.store.byttInnloggetSaksbehandler(event.target.value)
     window.location.reload()
   }
 

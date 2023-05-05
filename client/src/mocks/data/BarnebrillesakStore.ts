@@ -13,6 +13,7 @@ import {
   StegType,
   Totrinnskontroll,
   TotrinnskontrollData,
+  TotrinnskontrollVurdering,
   Utbetalingsmottaker,
   Vilkår,
   Vilkårsgrunnlag,
@@ -435,7 +436,7 @@ export class BarnebrillesakStore extends Dexie {
 
     const lagretTotrinnskontroll = sak.totrinnskontroll
     const godkjenner = await this.saksbehandlerStore.innloggetSaksbehandler()
-    if (resultat === 'GODKJENT') {
+    if (resultat === TotrinnskontrollVurdering.GODKJENT) {
       const totrinnskontroll: Partial<Totrinnskontroll> = {
         ...lagretTotrinnskontroll,
         godkjenner,
@@ -451,7 +452,7 @@ export class BarnebrillesakStore extends Dexie {
       })
     }
 
-    if (resultat === 'RETURNERT') {
+    if (resultat === TotrinnskontrollVurdering.RETURNERT) {
       const totrinnskontroll: Partial<Totrinnskontroll> = {
         ...lagretTotrinnskontroll,
         godkjenner,

@@ -153,7 +153,6 @@ export const Vedtak: React.FC = () => {
         ) : (
           kanGåVidereTilTotrinnskontroll() && (
             <Knappepanel>
-              {' '}
               <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
                 Forrige
               </Button>

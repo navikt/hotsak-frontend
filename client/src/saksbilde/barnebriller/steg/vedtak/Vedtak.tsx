@@ -75,11 +75,13 @@ export const Vedtak: React.FC = () => {
 
   const alertType = alertVariant(status)
 
+  const vedtakFattet = sak.status === OppgaveStatusType.VEDTAK_FATTET
+
   return (
     <TreKolonner>
       <Panel>
         <Heading level="1" size="small" spacing>
-          Forslag til vedtak
+          {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
         </Heading>
         <Detail>RESULTAT</Detail>
         <Tag variant={alertType} size="small">
@@ -145,29 +147,31 @@ export const Vedtak: React.FC = () => {
           </>
         )}
         <Avstand paddingBottom={6} />
-
-        {sak.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.steg === StegType.GODKJENNE ? (
-          <Alert variant="info" size="small">
-            {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
-          </Alert>
-        ) : (
-          kanGåVidereTilTotrinnskontroll() && (
-            <Knappepanel>
-              {' '}
-              <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
-                Forrige
-              </Button>
-              <Button
-                loading={loading}
-                disabled={loading}
-                size="small"
-                variant="primary"
-                onClick={() => sendTilGodkjenning()}
-              >
-                Send til godkjenning
-              </Button>
-            </Knappepanel>
-          )
+        {!vedtakFattet && (
+          <>
+            {sak.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.steg === StegType.GODKJENNE ? (
+              <Alert variant="info" size="small">
+                {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
+              </Alert>
+            ) : (
+              kanGåVidereTilTotrinnskontroll() && (
+                <Knappepanel>
+                  <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
+                    Forrige
+                  </Button>
+                  <Button
+                    loading={loading}
+                    disabled={loading}
+                    size="small"
+                    variant="primary"
+                    onClick={() => sendTilGodkjenning()}
+                  >
+                    Send til godkjenning
+                  </Button>
+                </Knappepanel>
+              )
+            )}
+          </>
         )}
       </Panel>
       <VenstreKolonne>

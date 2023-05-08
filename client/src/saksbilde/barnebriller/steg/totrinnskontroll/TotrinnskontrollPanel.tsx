@@ -6,7 +6,7 @@ import { Panel } from '@navikt/ds-react'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
-import { Barnebrillesak, Saksbehandler, StegType } from '../../../../types/types.internal'
+import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
@@ -17,33 +17,38 @@ export const TotrinnskontrollPanel: React.FC = () => {
   const { sak, isError } = useBrillesak()
 
   if (isError || !sak) {
-    return <div>Feil ved henting av sak</div>
+    return <Container>Feil ved henting av sak</Container>
   }
 
-  if (!sak.saksbehandler || sak?.saksbehandler.objectId === '') {
-    return <div>{`Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten`}</div>
+  if (!sak.saksbehandler || sak.saksbehandler.objectId === '') {
+    return <Container>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Container>
   }
 
-  if (sak.saksbehandler && sak?.saksbehandler.objectId !== saksbehandler.objectId) {
+  if (
+    sak.status !== OppgaveStatusType.VEDTAK_FATTET &&
+    sak.saksbehandler &&
+    sak.saksbehandler.objectId !== saksbehandler.objectId
+  ) {
     return (
-      <div>
-        <Brødtekst>En annen saksbehandler har allerede tatt denne saken </Brødtekst>
-      </div>
+      <Container>
+        <Brødtekst>En annen saksbehandler har allerede tatt denne saken.</Brødtekst>
+      </Container>
     )
   }
 
   const totrinnskontrollFullført =
-    sak.totrinnskontroll?.resultat === 'RETURNERT' || sak.totrinnskontroll?.resultat === 'GODKJENT'
+    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
+    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
 
   if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
-    return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll enda</div>
+    return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll ennå.</div>
   }
 
   return (
     <Container>
       <Etikett>TOTRINNSKONTROLL</Etikett>
       <Avstand paddingTop={4} />
-      <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort</Brødtekst>
+      <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Brødtekst>
       <Avstand paddingTop={6} />
       {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
     </Container>

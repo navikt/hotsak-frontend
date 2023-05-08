@@ -26,8 +26,8 @@ export async function setupMsw() {
     async saksbehandlere() {
       return saksbehandlerStore.alle()
     },
-    async byttInnloggetSaksbehandler(id: string) {
-      return saksbehandlerStore.byttInnloggetSaksbehandler(id)
+    byttInnloggetSaksbehandler(id: string) {
+      saksbehandlerStore.byttInnloggetSaksbehandler(id)
     },
     async delete() {
       return Promise.all([

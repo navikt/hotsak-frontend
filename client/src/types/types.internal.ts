@@ -516,13 +516,16 @@ export enum OppgaveStatusType {
   AVVIST = 'AVVIST',
   AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
   VEDTAK_FATTET = 'VEDTAK_FATTET',
+  INNVILGET = 'INNVILGET',
+  AVSLÅTT = 'AVSLÅTT',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
 }
 
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.ALLE, 'Alle'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Innvilget'],
+  [OppgaveStatusType.INNVILGET, 'Innvilget'],
+  [OppgaveStatusType.AVSLÅTT, 'Avslått'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],

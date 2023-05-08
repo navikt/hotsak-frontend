@@ -66,7 +66,7 @@ export const VurderVilkår: React.FC = () => {
     <>
       <Panel>
         <Heading level="1" size="small" spacing>
-          Foreløpig resultat
+          Oversikt vilkår
         </Heading>
         <AlertContainerBred>
           <Alert variant={alertBoksType} size="small">

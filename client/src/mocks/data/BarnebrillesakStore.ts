@@ -13,6 +13,7 @@ import {
   StegType,
   Totrinnskontroll,
   TotrinnskontrollData,
+  TotrinnskontrollVurdering,
   Utbetalingsmottaker,
   Vilkår,
   Vilkårsgrunnlag,
@@ -346,11 +347,13 @@ export class BarnebrillesakStore extends Dexie {
       return false
     }
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    await this.saker.update(sakId, {
-      saksbehandler: saksbehandler,
-      status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+    this.transaction('rw', this.saker, this.hendelser, () => {
+      this.saker.update(sakId, {
+        saksbehandler: saksbehandler,
+        status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+      })
+      this.lagreHendelse(sakId, 'Saksbehandler har tatt saken')
     })
-    await this.lagreHendelse(sakId, 'Saksbehandler har tatt saken')
     return true
   }
 
@@ -359,11 +362,13 @@ export class BarnebrillesakStore extends Dexie {
     if (!sak) {
       return false
     }
-    await this.saker.update(sakId, {
-      saksbehandler: undefined,
-      status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+    this.transaction('rw', this.saker, this.hendelser, () => {
+      this.saker.update(sakId, {
+        saksbehandler: undefined,
+        status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+      })
+      this.lagreHendelse(sakId, 'Saksbehandler er meldt av saken')
     })
-    await this.lagreHendelse(sakId, 'Saksbehandler er meldt av saken')
     return true
   }
 
@@ -416,11 +421,14 @@ export class BarnebrillesakStore extends Dexie {
       saksbehandler,
       opprettet: dayjs().toISOString(),
     }
-    return this.saker.update(sakId, {
-      saksbehandler: undefined,
-      steg: StegType.GODKJENNE,
-      status: OppgaveStatusType.AVVENTER_GODKJENNER,
-      totrinnskontroll,
+    return this.transaction('rw', this.saker, this.hendelser, () => {
+      this.saker.update(sakId, {
+        saksbehandler: undefined,
+        steg: StegType.GODKJENNE,
+        status: OppgaveStatusType.AVVENTER_GODKJENNER,
+        totrinnskontroll,
+      })
+      this.lagreHendelse(sakId, 'Sak sendt til godkjenning')
     })
   }
 
@@ -433,38 +441,40 @@ export class BarnebrillesakStore extends Dexie {
 
     const lagretTotrinnskontroll = sak.totrinnskontroll
     const godkjenner = await this.saksbehandlerStore.innloggetSaksbehandler()
-    if (resultat === 'GODKJENT') {
-      const totrinnskontroll: Partial<Totrinnskontroll> = {
-        ...lagretTotrinnskontroll,
-        godkjenner,
-        resultat,
-        begrunnelse,
-        godkjent: nå,
+    return this.transaction('rw', this.saker, this.hendelser, () => {
+      if (resultat === TotrinnskontrollVurdering.GODKJENT) {
+        const totrinnskontroll: Partial<Totrinnskontroll> = {
+          ...lagretTotrinnskontroll,
+          godkjenner,
+          resultat,
+          begrunnelse,
+          godkjent: nå,
+        }
+        this.saker.update(sakId, {
+          saksbehandler: totrinnskontroll.saksbehandler,
+          steg: StegType.FERDIG_BEHANDLET,
+          status: OppgaveStatusType.VEDTAK_FATTET,
+          totrinnskontroll,
+        })
+        this.lagreHendelse(sakId, 'Vedtak fattet')
       }
-      return this.saker.update(sakId, {
-        saksbehandler: totrinnskontroll.saksbehandler,
-        steg: StegType.FERDIG_BEHANDLET,
-        status: OppgaveStatusType.VEDTAK_FATTET,
-        totrinnskontroll,
-      })
-    }
 
-    if (resultat === 'RETURNERT') {
-      const totrinnskontroll: Partial<Totrinnskontroll> = {
-        ...lagretTotrinnskontroll,
-        godkjenner,
-        resultat,
-        begrunnelse,
+      if (resultat === TotrinnskontrollVurdering.RETURNERT) {
+        const totrinnskontroll: Partial<Totrinnskontroll> = {
+          ...lagretTotrinnskontroll,
+          godkjenner,
+          resultat,
+          begrunnelse,
+        }
+        this.saker.update(sakId, {
+          saksbehandler: totrinnskontroll.saksbehandler,
+          steg: StegType.REVURDERE,
+          status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
+          totrinnskontroll,
+        })
+        this.lagreHendelse(sakId, 'Sak returnert til saksbehandler')
       }
-      return this.saker.update(sakId, {
-        saksbehandler: totrinnskontroll.saksbehandler,
-        steg: StegType.REVURDERE,
-        status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
-        totrinnskontroll,
-      })
-    }
-
-    return 0
+    })
   }
 
   async opprettSak(journalføring: JournalføringRequest) {

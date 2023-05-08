@@ -8,12 +8,13 @@ import { baseUrl, put } from '../../../../io/http'
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
+import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
-import { alertVariant, oppsummertStatus } from './oppsummertStatus'
+import { alertVariant, oppsummertStatus, vilkårStatusTekst } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
@@ -75,11 +76,12 @@ export const VurderVilkår: React.FC = () => {
         <Table size="small">
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell scope="col">Resultat</Table.HeaderCell>
               <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
               <Table.HeaderCell scope="col">Baseres på</Table.HeaderCell>
               <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Begrunnelse saksbehandler</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Paragraf</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Detaljer</Table.HeaderCell>
+              <Table.HeaderCell scope="col">§ i forskrift</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
           </Table.Header>
@@ -118,15 +120,28 @@ export const VurderVilkår: React.FC = () => {
                     />
                   }
                 >
-                  <Table.DataCell scope="row">
+                  <Table.DataCell scope="row" style={{ width: '120px', verticalAlign: 'top' }}>
                     <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
-                      {beskrivelse}
+                      {vilkårStatusTekst(vilkårOppfylt)}
                     </Alert>
                   </Table.DataCell>
-                  <Table.DataCell>{metadataFor(identifikator)?.basertPå.join(', ') || '-'}</Table.DataCell>
-                  <Table.DataCell>{vurdert}</Table.DataCell>
-                  <Table.DataCell>{begrunnelseSaksbehandler || '-'}</Table.DataCell>
-                  <Table.DataCell>{lovReferanse}</Table.DataCell>
+                  <Table.DataCell scope="row" style={{ width: '500px' }}>
+                    {beskrivelse}
+                  </Table.DataCell>
+                  <Table.DataCell scope="row" style={{ width: '300px' }}>
+                    {metadataFor(identifikator)?.basertPå.map((metadata) => (
+                      <Brødtekst key="metadata">{metadata}</Brødtekst>
+                    )) || '-'}
+                  </Table.DataCell>
+                  <Table.DataCell scope="row" style={{ width: '150px' }}>
+                    {vurdert}
+                  </Table.DataCell>
+                  <Table.DataCell scope="row" style={{ width: '400px' }}>
+                    {begrunnelseSaksbehandler || '-'}
+                  </Table.DataCell>
+                  <Table.DataCell scope="row" style={{ width: '150px' }}>
+                    {lovReferanse}
+                  </Table.DataCell>
                 </Table.ExpandableRow>
               )
             })}

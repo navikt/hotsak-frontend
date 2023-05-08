@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
-import { Detail, Heading, Link, Panel } from '@navikt/ds-react'
+import { Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { Vilkår } from '../../../../types/types.internal'
+import { StegType, Vilkår } from '../../../../types/types.internal'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
 import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
 import { grunnlagMetadata, metadataFor } from './vilkårMetada'
@@ -20,6 +21,7 @@ export function SaksbehandlersVurdering({
   vilkår: Vilkår
   onSaved: () => any
 }) {
+  const { setValgtTab } = useManuellSaksbehandlingContext()
   const grunnlag = vilkår.grunnlag
 
   return (
@@ -28,30 +30,47 @@ export function SaksbehandlersVurdering({
         <Container>
           <Heading level="2" size="xsmall" spacing>
             <Link href={vilkår.lovdataLenke} target="_blank">
-              {`${vilkår.lovReferanse} ${vilkår.beskrivelse}`}
+              {`${vilkår.lovReferanse}`}
             </Link>
           </Heading>
           <Brødtekst>{metadataFor(vilkår.identifikator)?.beskrivelse}</Brødtekst>
           <Avstand paddingTop={6} paddingBottom={4}>
-            <Detail>VURDERINGEN BASERER SEG PÅ:</Detail>
+            <Detail>VURDERINGEN ER BASERERT PÅ:</Detail>
           </Avstand>
           {vilkår.resultatSaksbehandler && <Etikett>Saksbehandler sin vurdering</Etikett>}
+          {Object.keys(vilkår.grunnlag)
+            .filter((grunnlagKey: string) => {
+              return grunnlagMetadata.get(grunnlagKey) !== undefined
+            })
+            .map((grunnlagKey: string) => {
+              const metadata = grunnlagMetadata.get(grunnlagKey)
+              const verdi = grunnlag[grunnlagKey]
 
-          {Object.keys(vilkår.grunnlag).map((grunnlagKey: string) => {
-            const metadata = grunnlagMetadata.get(grunnlagKey) || {
-              etikett: grunnlagKey,
-              beskrivelse: '',
-            }
-            const verdi = grunnlag[grunnlagKey]
-
-            return (
-              <Avstand paddingBottom={4} key={grunnlagKey}>
-                <Etikett>{`${metadata?.etikett}: ${verdi}`}</Etikett>
-                <Detail>{metadata?.beskrivelse}</Detail>
-              </Avstand>
-            )
-          })}
-
+              return (
+                <Avstand paddingBottom={4} key={grunnlagKey}>
+                  <Label as="p" size="small">
+                    {metadata?.etikett}
+                  </Label>
+                  <Label as="p" size="small">
+                    {verdi}
+                  </Label>
+                  <Detail>{metadata?.beskrivelse}</Detail>
+                  {metadata?.lagtInnAvSaksbehandler && (
+                    <>
+                      <Detail>Lagt inn av saksbehandler.</Detail>
+                      <Avstand paddingTop={4}>
+                        <Detail>
+                          Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
+                          <Link href="#" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
+                            Registrer søknad
+                          </Link>
+                        </Detail>
+                      </Avstand>
+                    </>
+                  )}
+                </Avstand>
+              )
+            })}
           {lesevisning ? (
             <SaksbehandlersVurderingLesevisning sakId={sakId} vilkår={vilkår} />
           ) : (

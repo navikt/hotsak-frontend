@@ -97,6 +97,7 @@ export interface Grunnlag {
 
 export interface GrunnlagMetadata {
   etikett: string
+  lagtInnAvSaksbehandler: boolean
   beskrivelse: string
 }
 

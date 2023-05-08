@@ -25,3 +25,14 @@ export function alertVariant(vilkårOppfylt: VilkårsResultat) {
       return 'warning'
   }
 }
+
+export function vilkårStatusTekst(vilkårOppfylt: VilkårsResultat) {
+  switch (vilkårOppfylt) {
+    case VilkårsResultat.JA:
+      return 'Oppfylt'
+    case VilkårsResultat.NEI:
+      return 'Ikke oppfylt'
+    case VilkårsResultat.KANSKJE:
+      return 'Må vurderes'
+  }
+}

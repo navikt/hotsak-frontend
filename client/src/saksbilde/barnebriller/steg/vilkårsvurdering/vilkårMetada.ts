@@ -78,11 +78,11 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
     },
   ],
   [
-    'seksMånederSiden',
+    'lanseringsdatoForManuellInnsending',
     {
       etikett: 'Fristen på 6 måneder gjelder fra',
       lagtInnAvSaksbehandler: false,
-      beskrivelse: '',
+      beskrivelse: 'Lanseringsdato for Søknad om tilskudd ved kjøp av briller til barn',
     },
   ],
   [

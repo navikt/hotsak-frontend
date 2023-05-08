@@ -523,7 +523,6 @@ export enum OppgaveStatusType {
 
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.ALLE, 'Alle'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Innvilget'],
   [OppgaveStatusType.INNVILGET, 'Innvilget'],
   [OppgaveStatusType.AVSLÅTT, 'Avslått'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],

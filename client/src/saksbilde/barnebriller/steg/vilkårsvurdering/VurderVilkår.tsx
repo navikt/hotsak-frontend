@@ -131,7 +131,7 @@ export const VurderVilkår: React.FC = () => {
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '300px' }}>
                     {metadataFor(identifikator)?.basertPå.map((metadata) => (
-                      <Brødtekst key="metadata">{metadata}</Brødtekst>
+                      <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
                     )) || '-'}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '150px' }}>

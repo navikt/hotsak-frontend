@@ -61,7 +61,7 @@ export const VurderVilkår: React.FC = () => {
       : oppsummertResultat === VilkårsResultat.NEI
       ? 'info'
       : 'warning'
-
+  console.log('Dummy')
   return (
     <>
       <Panel>

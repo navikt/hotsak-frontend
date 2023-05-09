@@ -15,6 +15,7 @@ import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
+import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -26,6 +27,7 @@ export const Vedtak: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   const VENSTREKOLONNE_BREDDE = '180px'
   const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
@@ -45,6 +47,7 @@ export const Vedtak: React.FC = () => {
   }
 
   function kanGåVidereTilTotrinnskontroll(): boolean {
+    if (!saksbehandlerKanRedigereBarnebrillesak) return false
     return status === VilkårsResultat.NEI || sak?.utbetalingsmottaker?.kontonummer !== undefined
   }
 

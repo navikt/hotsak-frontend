@@ -24,7 +24,12 @@ export const TotrinnskontrollPanel: React.FC = () => {
     return <Container>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Container>
   }
 
+  const totrinnskontrollFullført =
+    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
+    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
+
   if (
+    !totrinnskontrollFullført &&
     sak.status !== OppgaveStatusType.VEDTAK_FATTET &&
     sak.saksbehandler &&
     sak.saksbehandler.objectId !== saksbehandler.objectId
@@ -36,12 +41,8 @@ export const TotrinnskontrollPanel: React.FC = () => {
     )
   }
 
-  const totrinnskontrollFullført =
-    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
-    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
-
   if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
-    return <div>Lesevisning eller tomt resultat hvis ingen totrinnskontroll ennå.</div>
+    return <Container>Lesevisning eller tomt resultat hvis ingen totrinnskontroll ennå.</Container>
   }
 
   return (

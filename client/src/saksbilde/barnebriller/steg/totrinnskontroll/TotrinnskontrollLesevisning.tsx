@@ -7,7 +7,7 @@ import { capitalize } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { OppgaveStatusType } from '../../../../types/types.internal'
+import { OppgaveStatusType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 
 export const TotrinnskontrollLesevisning: React.FC = () => {
@@ -26,16 +26,17 @@ export const TotrinnskontrollLesevisning: React.FC = () => {
       )}
 
       <Avstand paddingTop={4}>
-        {sak?.totrinnskontroll?.resultat === 'RETURNERT' && (
+        {sak?.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (
           <Alert size="small" variant="info">
             Sendt i retur til saksbehandler {formaterDato(sak?.totrinnskontroll?.opprettet)}
           </Alert>
         )}
-        {sak?.totrinnskontroll?.resultat === 'GODKJENT' && sak.status === OppgaveStatusType.VEDTAK_FATTET && (
-          <Alert size="small" variant="success">
-            Vedtaket er fattet {formaterDato(sak?.vedtak?.vedtaksdato)}
-          </Alert>
-        )}
+        {sak?.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
+          sak.status === OppgaveStatusType.VEDTAK_FATTET && (
+            <Alert size="small" variant="success">
+              Vedtaket er fattet {formaterDato(sak?.vedtak?.vedtaksdato)}
+            </Alert>
+          )}
       </Avstand>
     </>
   )

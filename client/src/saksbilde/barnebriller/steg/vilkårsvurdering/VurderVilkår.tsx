@@ -96,10 +96,11 @@ export const VurderVilkår: React.FC = () => {
                 begrunnelseSaksbehandler,
                 lovReferanse,
               } = vilkår
+              const vilkårMetadata = metadataFor(identifikator)
               const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
               const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
-              // TODO koble fakta felter med vilkår
-              const lesevisning = identifikator === 'bestiltHosOptiker' || identifikator === 'komplettBrille'
+              const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
+
               return (
                 <Table.ExpandableRow
                   onClick={() => toggleExpandedRad(id)}

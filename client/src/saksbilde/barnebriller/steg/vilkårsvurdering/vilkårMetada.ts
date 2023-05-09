@@ -3,38 +3,46 @@ import { GrunnlagMetadata } from '../../../../types/types.internal'
 const vilkårMetadata = [
   {
     identifikator: 'Under18ÅrPåBestillingsdato v1',
+    overstyrbarAvSaksbehandler: false,
     basertPå: ['Bestillingsdato', 'Barnets alder (PDL)'],
   },
   {
     identifikator: 'MedlemAvFolketrygden v1',
+    overstyrbarAvSaksbehandler: true,
     basertPå: ['Medlemskap på bestillingsdato'],
   },
   {
     identifikator: 'bestiltHosOptiker',
+    overstyrbarAvSaksbehandler: false,
     beskrivelse: 'For at en virksomhet/nettbutikk skal kunne godkjennes, må det være en optiker tilknyttet denne.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
     identifikator: 'komplettBrille',
+    overstyrbarAvSaksbehandler: false,
     beskrivelse: 'Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
     identifikator: 'HarIkkeVedtakIKalenderåret v1',
+    overstyrbarAvSaksbehandler: false,
     basertPå: ['Bestillingsdato', 'Vedtakshistorikk (Hotsak, Krav-appen)'],
   },
   {
     identifikator: 'Brillestyrke v1',
+    overstyrbarAvSaksbehandler: false,
     basertPå: ['Brillestyrke'],
   },
   {
     identifikator: 'BestillingsdatoTilbakeITid v1',
+    overstyrbarAvSaksbehandler: false,
     beskrivelse:
       'Kravet må settes fram innen seks måneder regnet fra den datoen brillen ble bestilt. Fristen på 6 måneder gjelder fra da kravet tidligst kunne vært fremsatt (Folketrygdloven § 22-13, 2.).',
     basertPå: ['Bestillingsdato'],
   },
   {
     identifikator: 'Bestillingsdato v1',
+    overstyrbarAvSaksbehandler: false,
     beskrivelse: 'Brillen må være bestilt etter at forskriften trådte i kraft, 1. august 2022.',
     basertPå: ['Bestillingsdato'],
   },

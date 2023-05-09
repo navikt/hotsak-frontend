@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { ManuellVurdering, VilkårSvar } from '../../../../../types/types.internal'
+import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
   const {
@@ -32,12 +32,12 @@ export function BestiltHosOptiker() {
             {...field}
             error={errors.bestiltHosOptiker?.vilkårOppfylt?.message}
           >
-            <Radio value={VilkårSvar.JA}>Ja</Radio>
-            <Radio value={VilkårSvar.NEI}>Nei</Radio>
+            <Radio value={VilkårsResultat.JA}>Ja</Radio>
+            <Radio value={VilkårsResultat.NEI}>Nei</Radio>
           </RadioGroup>
         )}
       />
-      {vilkårOppfylt === VilkårSvar.NEI && (
+      {vilkårOppfylt === VilkårsResultat.NEI && (
         <Avstand paddingTop={4}>
           <Textarea
             size="small"

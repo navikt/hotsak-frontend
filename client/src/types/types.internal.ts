@@ -119,12 +119,12 @@ export interface RegistrerSøknadData {
 }
 
 export interface ManuellVurdering {
-  vilkårOppfylt: VilkårSvar | ''
+  vilkårOppfylt: VilkårsResultat | ''
   begrunnelse?: string
 }
 
 export interface OppdaterVilkårData {
-  resultatSaksbehandler: VilkårSvar | ''
+  resultatSaksbehandler: VilkårsResultat | ''
   begrunnelseSaksbehandler: string
 }
 
@@ -139,7 +139,7 @@ export enum TotrinnskontrollVurdering {
 }
 
 export interface OppdaterVilkårRequest {
-  resultatSaksbehandler: VilkårSvar
+  resultatSaksbehandler: VilkårsResultat
   begrunnelseSaksbehandler: string
 }
 
@@ -176,11 +176,6 @@ export interface Vilkårsgrunnlag {
   bestiltHosOptiker: ManuellVurdering
   komplettBrille: ManuellVurdering
   saksbehandlersBegrunnelse?: string
-}
-
-export enum VilkårSvar {
-  JA = 'JA',
-  NEI = 'NEI',
 }
 
 export enum MålformType {

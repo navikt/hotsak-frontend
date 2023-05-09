@@ -14,7 +14,7 @@ import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { beløp } from '../../../../formaters/beløp'
-import { StegType, VilkårSvar } from '../../../../types/types.internal'
+import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
@@ -145,7 +145,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           </Heading>
           <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
           <Brødtekst>{capitalize(vilkårsgrunnlag?.komplettBrille.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.komplettBrille.vilkårOppfylt === VilkårSvar.NEI && (
+          {vilkårsgrunnlag?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
             <Brødtekst>{vilkårsgrunnlag?.komplettBrille.begrunnelse}</Brødtekst>
           )}
         </Avstand>
@@ -156,7 +156,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           </Heading>
           <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
           <Brødtekst>{capitalize(vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt === VilkårSvar.NEI && (
+          {vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
             <Brødtekst>{vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse}</Brødtekst>
           )}
         </Avstand>

@@ -8,7 +8,7 @@ import { putOppdaterVilkår } from '../../../../io/http'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
-import { OppdaterVilkårData, Vilkår, VilkårSvar } from '../../../../types/types.internal'
+import { OppdaterVilkårData, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 
 export function SaksbehandlersVurderingForm({
   sakId,
@@ -22,8 +22,8 @@ export function SaksbehandlersVurderingForm({
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const methods = useForm<OppdaterVilkårData>({
     defaultValues: {
-      resultatSaksbehandler: '',
-      begrunnelseSaksbehandler: '',
+      resultatSaksbehandler: vilkår.resultatSaksbehandler ? vilkår.resultatSaksbehandler : vilkår.resultatAuto || '',
+      begrunnelseSaksbehandler: vilkår.begrunnelseSaksbehandler || '',
     },
   })
 
@@ -63,8 +63,8 @@ export function SaksbehandlersVurderingForm({
               {...field}
               error={errors.resultatSaksbehandler?.message}
             >
-              <Radio value={VilkårSvar.JA}>Ja</Radio>
-              <Radio value={VilkårSvar.NEI}>Nei</Radio>
+              <Radio value={VilkårsResultat.JA}>Ja</Radio>
+              <Radio value={VilkårsResultat.NEI}>Nei</Radio>
             </RadioGroup>
           )}
         />

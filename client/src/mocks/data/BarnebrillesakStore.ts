@@ -101,6 +101,7 @@ function lagVilkår(
       begrunnelseSaksbehandler: undefined,
       grunnlag: {
         bestillingsdato,
+        forenkletSjekkResultat: 'Oppfylt',
       },
     },
     {

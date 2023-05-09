@@ -21,7 +21,6 @@ export function SaksbehandlersVurdering({
   vilkår: Vilkår
   onSaved: () => any
 }) {
-  const { setValgtTab } = useManuellSaksbehandlingContext()
   const grunnlag = vilkår.grunnlag
 
   return (
@@ -37,7 +36,12 @@ export function SaksbehandlersVurdering({
           <Avstand paddingTop={6} paddingBottom={4}>
             <Detail>VURDERINGEN ER BASERERT PÅ:</Detail>
           </Avstand>
-          {vilkår.resultatSaksbehandler && <Etikett>Saksbehandler sin vurdering</Etikett>}
+          {vilkår.resultatSaksbehandler && (
+            <>
+              <Etikett>Saksbehandler sin vurdering</Etikett>
+              <RedigerGrunnlagLink />
+            </>
+          )}
           {Object.keys(vilkår.grunnlag)
             .filter((grunnlagKey: string) => {
               return grunnlagMetadata.get(grunnlagKey) !== undefined
@@ -58,14 +62,7 @@ export function SaksbehandlersVurdering({
                   {metadata?.lagtInnAvSaksbehandler && (
                     <>
                       <Detail>Lagt inn av saksbehandler.</Detail>
-                      <Avstand paddingTop={4}>
-                        <Detail>
-                          Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
-                          <Link href="#" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
-                            Registrer søknad
-                          </Link>
-                        </Detail>
-                      </Avstand>
+                      <RedigerGrunnlagLink />
                     </>
                   )}
                 </Avstand>
@@ -79,6 +76,20 @@ export function SaksbehandlersVurdering({
         </Container>
       </SaksbehandlersVurderingPanel>
     </Merknad>
+  )
+}
+
+const RedigerGrunnlagLink = () => {
+  const { setValgtTab } = useManuellSaksbehandlingContext()
+  return (
+    <Avstand paddingTop={4}>
+      <Detail>
+        Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
+        <Link href="#" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
+          Registrer søknad
+        </Link>
+      </Detail>
+    </Avstand>
   )
 }
 

@@ -86,6 +86,15 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
     },
   ],
   [
+    'forenkletSjekkResultat',
+    {
+      etikett: 'Forenklet sjekk av medlemskap på bestillingsdato',
+      lagtInnAvSaksbehandler: false,
+      beskrivelse: 'Automatisk sjekk',
+    },
+  ],
+
+  [
     'høyreSfære',
     {
       etikett: 'Høyre sfære',

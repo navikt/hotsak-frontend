@@ -64,9 +64,9 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
   [
     'eksisterendeVedtakDato',
     {
-      etikett: 'Eksisterende vedtaksdato',
+      etikett: 'Tidligere vedtak i perioden',
       lagtInnAvSaksbehandler: false,
-      beskrivelse: 'Dato for når barnet sist har bestilt brille på denne ordningen.',
+      beskrivelse: '',
     },
   ],
   [

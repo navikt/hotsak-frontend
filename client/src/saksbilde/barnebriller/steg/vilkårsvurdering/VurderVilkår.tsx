@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
+import styled from 'styled-components'
 
 import { Alert, BodyLong, Button, Heading, Panel, Table } from '@navikt/ds-react'
 
 import { baseUrl, put } from '../../../../io/http'
 
 import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
+import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
-import { Brødtekst } from '../../../../felleskomponenter/typografi'
+import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
@@ -55,24 +57,14 @@ export const VurderVilkår: React.FC = () => {
   }
 
   const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
-  const alertBoksType =
-    oppsummertResultat === VilkårsResultat.JA
-      ? 'success'
-      : oppsummertResultat === VilkårsResultat.NEI
-      ? 'info'
-      : 'warning'
-  console.log('Dummy')
+
   return (
     <>
       <Panel>
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        <AlertContainerBred>
-          <Alert variant={alertBoksType} size="small">
-            <BodyLong>{alertTekst(alertBoksType)}</BodyLong>
-          </Alert>
-        </AlertContainerBred>
+        <Oppsummering vilkår={sak.vilkårsvurdering?.vilkår || []} oppsummertResultat={oppsummertResultat} />
         <Table size="small">
           <Table.Header>
             <Table.Row>
@@ -173,15 +165,58 @@ export const VurderVilkår: React.FC = () => {
       setÅpneRader([...åpneRader, id])
     }
   }
+}
 
-  function alertTekst(alertVariant: 'success' | 'warning' | 'info') {
-    switch (alertVariant) {
-      case 'success':
-        return 'Alle vilkårene er oppfylt'
-      case 'info':
-        return 'Ett eller flere vilkår er ikke oppfylt'
-      case 'warning':
-        return 'Ett eller flere vilkår må vurderes'
-    }
+const ListeElement = styled.li`
+  list-style: disc;
+`
+
+const Vilkårbeskrivelser = ({ vilkår, resultat }: { vilkår?: Vilkår[]; resultat: VilkårsResultat }) => {
+  if (resultat === VilkårsResultat.JA || !vilkår) {
+    return <></>
+  }
+
+  return (
+    <ul>
+      {vilkår
+        .filter((v) => {
+          const vilkårresultat = v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto
+          return vilkårresultat === resultat
+        })
+        .map((v) => (
+          <ListeElement key={v.id}>{v.beskrivelse}</ListeElement>
+        ))}
+    </ul>
+  )
+}
+
+const Oppsummering = ({ oppsummertResultat, vilkår }: { oppsummertResultat: VilkårsResultat; vilkår: Vilkår[] }) => {
+  const alertBoksType =
+    oppsummertResultat === VilkårsResultat.JA
+      ? 'success'
+      : oppsummertResultat === VilkårsResultat.NEI
+      ? 'info'
+      : 'warning'
+
+  return (
+    <AlertContainerBred>
+      <Alert variant={alertBoksType} size="small">
+        <BodyLong>{AlertTekst(alertBoksType)}</BodyLong>
+        <Avstand paddingTop={3}>
+          <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
+        </Avstand>
+      </Alert>
+    </AlertContainerBred>
+  )
+}
+
+function AlertTekst(alertVariant: 'success' | 'warning' | 'info') {
+  switch (alertVariant) {
+    case 'success':
+      return <Etikett>Alle vilkårene er oppfylt</Etikett>
+    case 'info':
+      return <Etikett>Søknaden vil bli avslått fordi det finnes vilkår som ikke er oppfylt:</Etikett>
+    case 'warning':
+      return <Etikett>Noen av vilkårende må vurderes</Etikett>
   }
 }

@@ -14,10 +14,12 @@ export function SaksbehandlersVurderingForm({
   sakId,
   vilkår,
   onSaved,
+  onCanceled,
 }: {
   sakId: number | string
   vilkår: Vilkår
   onSaved: () => any
+  onCanceled: () => any
 }) {
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const methods = useForm<OppdaterVilkårData>({
@@ -83,7 +85,14 @@ export function SaksbehandlersVurderingForm({
             <Button variant="primary" size="small" type="submit" loading={venterPåVilkårsvurdering}>
               Lagre
             </Button>
-            <Button variant="secondary" size="small">
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={(e) => {
+                e.preventDefault()
+                onCanceled()
+              }}
+            >
               Avbryt
             </Button>
           </Kolonner>

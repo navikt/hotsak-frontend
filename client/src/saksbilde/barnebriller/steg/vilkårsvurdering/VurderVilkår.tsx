@@ -106,6 +106,7 @@ export const VurderVilkår: React.FC = () => {
                       lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
                       sakId={sak.sakId}
                       vilkår={vilkår}
+                      onCanceled={() => toggleExpandedRad(id)}
                       onSaved={() => {
                         mutate()
                         toggleExpandedRad(id)

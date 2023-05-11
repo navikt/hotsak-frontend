@@ -15,11 +15,13 @@ export function SaksbehandlersVurdering({
   lesevisning,
   vilkår,
   onSaved,
+  onCanceled,
 }: {
   sakId: string
   lesevisning: boolean
   vilkår: Vilkår
   onSaved: () => any
+  onCanceled: () => any
 }) {
   const grunnlag = vilkår.grunnlag
 
@@ -71,7 +73,7 @@ export function SaksbehandlersVurdering({
           {lesevisning ? (
             <SaksbehandlersVurderingLesevisning sakId={sakId} vilkår={vilkår} />
           ) : (
-            <SaksbehandlersVurderingForm sakId={sakId} vilkår={vilkår} onSaved={onSaved} />
+            <SaksbehandlersVurderingForm sakId={sakId} vilkår={vilkår} onSaved={onSaved} onCanceled={onCanceled} />
           )}
         </Container>
       </SaksbehandlersVurderingPanel>

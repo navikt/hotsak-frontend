@@ -31,6 +31,8 @@ spec:
         - application: hm-saksbehandling
         - application: hm-grunndata-api
         - application: hm-brille-api
+      external: 
+        - host: sentry.gc.nav.no
   azure:
     application:
       enabled: true

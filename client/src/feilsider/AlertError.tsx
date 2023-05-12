@@ -1,4 +1,5 @@
-import React from 'react'
+import * as Sentry from '@sentry/browser'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
@@ -14,6 +15,11 @@ export const AlertError: React.FC<{
 }> = (props) => {
   const { error } = props
   const error_: any = error
+
+  useEffect(() => {
+    if (error) Sentry.captureException(error)
+  }, [error])
+
   if (Object.prototype.hasOwnProperty.call(error_, 'statusCode')) {
     if (error_.statusCode === 401) {
       throw error

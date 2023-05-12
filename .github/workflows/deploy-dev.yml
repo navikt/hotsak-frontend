@@ -58,6 +58,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
+          VAR: commit=${{ github.sha }}
       - uses: navikt/digihot-deploy/actions/post-deploy@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,3 +77,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/labs.yaml
+          VAR: commit=${{ github.sha }}

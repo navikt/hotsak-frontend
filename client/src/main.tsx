@@ -6,6 +6,7 @@ import '@navikt/ds-css-internal'
 import { Modal } from '@navikt/ds-react'
 
 import { setupAmplitude } from './utils/amplitude'
+import { initSentry } from './utils/sentry'
 
 import App from './App'
 import { AppRoot } from './GlobalStyles'
@@ -26,3 +27,5 @@ setupMsw()
   })
   .then(() => setupAmplitude())
   .catch((err) => console.error(err))
+
+initSentry()

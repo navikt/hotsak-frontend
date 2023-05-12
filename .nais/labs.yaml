@@ -51,3 +51,5 @@ spec:
       value: 'http://redis'
     - name: USE_MSW
       value: 'true'
+    - name: GIT_COMMIT
+      value: {{commit}}

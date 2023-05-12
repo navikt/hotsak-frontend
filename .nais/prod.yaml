@@ -67,3 +67,5 @@ spec:
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
       value: 'false'
+    - name: GIT_COMMIT
+      value: {{commit}}

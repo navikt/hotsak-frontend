@@ -10,6 +10,7 @@ function htmlPlugin({ development }: { development?: boolean }): Plugin {
         tags.push({
           tag: 'script',
           children: `window.appSettings = {
+            GIT_COMMIT: 'ukjent',
             USE_MSW: true,
             MILJO: 'local'
           }`,

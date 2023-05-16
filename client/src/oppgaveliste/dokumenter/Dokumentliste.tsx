@@ -13,7 +13,9 @@ import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
 
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
+import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 import { Toast } from '../../felleskomponenter/Toast'
+import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi'
 import { DokumentStatusLabel, Journalpost } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
@@ -60,7 +62,14 @@ export const Dokumentliste: React.FC = () => {
       key: 'innsender',
       name: 'Innsender',
       width: 135,
-      render: (journalpost: Journalpost) => <TekstCell value={journalpost.innsender?.navn || ''} />,
+      render: (journalpost: Journalpost) => {
+        const formatertNavn = journalpost.innsender?.navn || ''
+        return (
+          <TooltipWrapper visTooltip={formatertNavn.length > 20} content={formatertNavn}>
+            <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
+          </TooltipWrapper>
+        )
+      },
       accessor(verdi: Journalpost): string {
         return verdi.innsender?.navn || ''
       },

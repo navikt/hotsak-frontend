@@ -57,8 +57,17 @@ export const Dokumentliste: React.FC = () => {
       render: (journalpost: Journalpost) => <TekstCell value={DokumentStatusLabel.get(journalpost.status)!} />,
     },
     {
-      key: 'fnrInnsender',
+      key: 'innsender',
       name: 'Innsender',
+      width: 135,
+      render: (journalpost: Journalpost) => <TekstCell value={journalpost.innsender?.navn || ''} />,
+      accessor(verdi: Journalpost): string {
+        return verdi.innsender?.navn || ''
+      },
+    },
+    {
+      key: 'fnrInnsender',
+      name: 'Fødselsnr.',
       width: 135,
       render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnrInnsender)} />,
     },

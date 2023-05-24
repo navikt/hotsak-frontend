@@ -26,9 +26,10 @@ spec:
     min: 1
   accessPolicy:
     inbound: 
-      - application: azure-token-generator
-        namespace: aura
-        cluster: dev-gcp
+      rules:
+        - application: azure-token-generator
+          namespace: aura
+          cluster: dev-gcp
     outbound:
       rules:
         - application: hm-mocks

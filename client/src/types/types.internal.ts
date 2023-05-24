@@ -441,6 +441,20 @@ export interface Journalpost {
   enhet?: Enhet
   saksbehandler?: Saksbehandler
   dokumenter: Dokument[]
+  innsender: JournalpostInnsender
+  bruker?: JournalpostBruker
+}
+
+export interface JournalpostInnsender {
+  fnr: string
+  navn: string
+  adressebeskyttelse?: string
+}
+
+export interface JournalpostBruker {
+  fnr: string
+  navn: string
+  adressebeskyttelse?: string
 }
 
 export interface Dokument {

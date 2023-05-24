@@ -3,7 +3,7 @@ import { GrunnlagMetadata } from '../../../../types/types.internal'
 const vilkårMetadata = [
   {
     identifikator: 'Under18ÅrPåBestillingsdato v1',
-    overstyrbarAvSaksbehandler: false,
+    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     basertPå: ['Bestillingsdato', 'Barnets alder (PDL)'],
   },
   {
@@ -25,7 +25,7 @@ const vilkårMetadata = [
   },
   {
     identifikator: 'HarIkkeVedtakIKalenderåret v1',
-    overstyrbarAvSaksbehandler: false,
+    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     basertPå: ['Bestillingsdato', 'Vedtakshistorikk (Hotsak, Krav-appen)'],
   },
   {

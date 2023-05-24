@@ -14,7 +14,8 @@ import { lagPerson, PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { enheter } from './enheter'
 import { lagTilfeldigInteger } from './felles'
-import { fødselsdatoFraFødselsnummer, kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer'
+import { lagTilfeldigFødselsnummer } from './fødselsnummer'
+import { lagTilfeldigNavn } from './navn'
 
 type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 
@@ -27,14 +28,19 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagJournalpost(journalpostId: number): LagretJournalpost {
+  const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   return {
     journalpostID: journalpostId.toString(),
     journalstatus: JournalpostStatusType.MOTTATT,
     status: DokumentOppgaveStatusType.JOURNALFØRT,
     journalpostOpprettetTid: dayjs().toISOString(),
-    fnrInnsender: lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50)),
+    fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
     enhet: enheter.agder,
+    innsender: {
+      fnr: fnrInnsender,
+      navn: lagTilfeldigNavn().fulltNavn,
+    },
   }
 }
 

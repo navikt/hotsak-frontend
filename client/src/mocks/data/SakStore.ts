@@ -210,7 +210,6 @@ export class SakStore extends Dexie {
         ...navn,
         ...rest,
         kjønn: kjønn || Kjønn.UKJENT,
-        harAdressebeskyttelse: false,
         enhet: enheter.agder,
       }))
     )

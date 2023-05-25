@@ -9,9 +9,6 @@ export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) =>
     if (!person) {
       return res(ctx.status(404), ctx.text('Person ikke funnet'))
     }
-    if (person.harAdressebeskyttelse) {
-      return res(ctx.status(403), ctx.text('Du har ikke tilgang til å se informasjon om denne brukeren'))
-    }
     return res(ctx.delay(1000), ctx.status(200), ctx.json(person))
   }),
 ]

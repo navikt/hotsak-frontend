@@ -52,7 +52,6 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
     fødselsdato: fødselsdato.toISODateString(),
     kjønn: kjønnFraFødselsnummer(fnr),
     telefon: lagTilfeldigTelefonnummer(),
-    harAdressebeskyttelse: false,
     kommune: {
       nummer: '9999',
       navn: lagTilfeldigBosted(),

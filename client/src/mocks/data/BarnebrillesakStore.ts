@@ -274,7 +274,6 @@ export class BarnebrillesakStore extends Dexie {
         ...navn,
         ...rest,
         kjønn: kjønn || Kjønn.UKJENT,
-        harAdressebeskyttelse: false,
         enhet: enheter.agder,
       }))
     )

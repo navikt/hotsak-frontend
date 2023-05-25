@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Link } from '@navikt/ds-react'
+import { Link, Tag } from '@navikt/ds-react'
 import { CopyToClipboard } from '@navikt/ds-react-internal'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
@@ -16,7 +16,7 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { Kjønn, Bruker, Person } from '../types/types.internal'
+import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
 
 const Container = styled.div`
   display: flex;
@@ -117,7 +117,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
 
   if (!person) return <Container />
 
-  const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
+  const { fnr, brukernummer, kjønn, fødselsdato, telefon, adressebeskyttelse } = person
   return (
     <Container>
       {kjønn && <Kjønnsikon kjønn={kjønn} />}
@@ -177,6 +177,14 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
             size="small"
             copyText={telefon}
           ></Clipboard>
+        </>
+      )}
+      {adressebeskyttelse && (
+        <>
+          <Separator>|</Separator>
+          <Tag size="small" variant="error">
+            {AdressebeskyttelseAlert[adressebeskyttelse]}
+          </Tag>
         </>
       )}
     </Container>

@@ -227,6 +227,7 @@ export interface Navn {
 export interface Innsender {
   fnr: string
   navn: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface Bruker {
@@ -239,6 +240,19 @@ export interface Bruker {
   kjønn?: Kjønn
   telefon?: string
   kontonummer?: string
+  adressebeskyttelse?: Adressebeskyttelse
+}
+
+export enum Adressebeskyttelse {
+  FORTROLIG = 'FORTROLIG',
+  STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
+  STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
+}
+
+export const AdressebeskyttelseAlert = {
+  [Adressebeskyttelse.FORTROLIG]: 'Fortrolig adresse',
+  [Adressebeskyttelse.STRENGT_FORTROLIG]: 'Strengt fortrolig adresse',
+  [Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND]: 'Strengt fortrolig adresse utland',
 }
 
 export interface Kommune {
@@ -448,13 +462,13 @@ export interface Journalpost {
 export interface JournalpostInnsender {
   fnr: string
   navn: string
-  adressebeskyttelse?: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface JournalpostBruker {
   fnr: string
   navn: string
-  adressebeskyttelse?: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface Dokument {
@@ -701,7 +715,7 @@ export interface Person {
   fornavn: string
   mellomnavn?: string
   etternavn: string
-  harAdressebeskyttelse: boolean
+  adressebeskyttelse?: Adressebeskyttelse
   kommune: Kommune
   bydel?: Bydel
   enhet: Enhet

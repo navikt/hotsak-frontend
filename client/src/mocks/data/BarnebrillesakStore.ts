@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
+  Adressebeskyttelse,
   Barnebrillesak,
   Hendelse,
   JournalføringRequest,
@@ -188,8 +189,9 @@ function lagVilkår(
   ]
 }
 
-function lagBarnebrillesak(sakId: number, opprettet = dayjs().toISOString()): LagretBarnebrillesak {
+function lagBarnebrillesak(sakId: number, adressebeskyttelse?: Adressebeskyttelse): LagretBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
+  const opprettet = dayjs().toISOString()
   return {
     sakId: sakId.toString(),
     saksinformasjon: {
@@ -200,6 +202,7 @@ function lagBarnebrillesak(sakId: number, opprettet = dayjs().toISOString()): La
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
       fødselsdato: fødselsdatoBruker.toISODateString(),
+      adressebeskyttelse,
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
@@ -211,6 +214,7 @@ function lagBarnebrillesak(sakId: number, opprettet = dayjs().toISOString()): La
     innsender: {
       fnr: lagTilfeldigFødselsnummer(42),
       navn: lagTilfeldigNavn().fulltNavn,
+      adressebeskyttelse,
     },
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet,
@@ -249,13 +253,17 @@ export class BarnebrillesakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagBarnebrillesakMedId = () => lagBarnebrillesak(this.idGenerator.nesteId())
+    const lagBarnebrillesakMedId = (adressebeskyttelse?: Adressebeskyttelse) =>
+      lagBarnebrillesak(this.idGenerator.nesteId(), adressebeskyttelse)
     return this.lagreAlle([
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(Adressebeskyttelse.FORTROLIG),
+      lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG),
+      lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND),
     ])
   }
 

@@ -67,7 +67,4 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     await journalpostStore.tildel(req.params.journalpostID)
     return res(ctx.delay(500), ctx.status(200))
   }),
-  rest.post('/api/journalpost/:journalpostID/tilbakeforing', (req, res, ctx) => {
-    return res(ctx.delay(500), ctx.status(204))
-  }),
 ]

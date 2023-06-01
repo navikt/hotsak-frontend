@@ -3,20 +3,24 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { Applicant } from '@navikt/ds-icons'
-import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
+import { Alert, Button, ExpansionCard, Heading, Radio, RadioGroup, Table, TextField } from '@navikt/ds-react'
 
 import { postJournalføring } from '../../io/http'
+import { formaterDato } from '../../utils/date'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
+import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
+import { useSaksoversikt } from '../../personoversikt/saksoversiktHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
-import { JournalføringRequest } from '../../types/types.internal'
+import { BehandlingstatusType, JournalføringRequest, OppgaveStatusLabel, Oppgavetype } from '../../types/types.internal'
 import { useDokument } from '../dokumenter/dokumentHook'
+import { OppgaveType } from '../kolonner/OpgaveType'
 import { Dokumenter } from './Dokumenter'
 
 const Container = styled.div`
@@ -30,8 +34,14 @@ export const JournalpostSkjema: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { journalpost, /*isError,*/ isLoading } = useDokument(journalpostID)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
+  const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
+  const {
+    saksoversikt,
+    isLoading: henterSaker,
+    isError,
+  } = useSaksoversikt(fodselsnummer, Oppgavetype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   // const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
@@ -41,6 +51,7 @@ export const JournalpostSkjema: React.FC = () => {
       journalpostID: journalpost!.journalpostID,
       tittel: journalpostTittel,
       journalføresPåFnr: fodselsnummer,
+      sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
     }
     setJournalfører(true)
     postJournalføring(journalføringRequest)
@@ -120,6 +131,69 @@ export const JournalpostSkjema: React.FC = () => {
           />
         </Avstand>
         <Dokumenter journalpostID={journalpostID} />
+        <Avstand paddingTop={10}>
+          <Heading size="small" level="2" spacing>
+            Knytt til eksisterende sak
+          </Heading>
+          <Avstand paddingTop={4} paddingBottom={4}>
+            {saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0 && (
+              <Alert variant="info" size="small">
+                <Brødtekst>
+                  Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende
+                  sak, marker saken du vil knytte dokumentene til.
+                </Brødtekst>
+              </Alert>
+            )}
+          </Avstand>
+          <RadioGroup
+            legend=""
+            size="small"
+            hideLegend={true}
+            value={valgtEksisterendeSakId}
+            onChange={(value: string) => setValgtEksisterendeSakId(value)}
+          >
+            <Table size="small">
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell scope="col" />
+                  <Table.HeaderCell scope="col">Saksid</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Status</Table.HeaderCell>
+                  <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {saksoversikt?.hotsakSaker.map((s) => (
+                  <Table.Row key={s.sakId}>
+                    <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
+                      <Radio value={s.sakId}>{''}</Radio>
+                    </Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                      {s.sakstype && <OppgaveType oppgaveType={s.sakstype} />}
+                    </Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                      {OppgaveStatusLabel.get(s.status)}
+                    </Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                      {formaterDato(s.statusEndretDato)}
+                    </Table.DataCell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </RadioGroup>
+        </Avstand>
+        <Avstand paddingTop={4}>
+          {valgtEksisterendeSakId !== '' && (
+            <Alert variant="info" size="small">
+              <Brødtekst>Dokumentene du journalfører vil knyttes til saken du har valgt i liste over.</Brødtekst>
+              <Button variant="tertiary" size="small" onClick={() => setValgtEksisterendeSakId('')}>
+                Fjern knytning til sak
+              </Button>
+            </Alert>
+          )}
+        </Avstand>
         <Avstand paddingLeft={2}>
           <Knappepanel>
             <Button
@@ -134,7 +208,7 @@ export const JournalpostSkjema: React.FC = () => {
               disabled={journalfører}
               loading={journalfører}
             >
-              Journalfør
+              {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
             </Button>
           </Knappepanel>
         </Avstand>

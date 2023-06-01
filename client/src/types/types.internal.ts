@@ -487,6 +487,7 @@ export interface JournalføringRequest {
   journalpostID: string
   tittel: string
   journalføresPåFnr: string
+  sakId?: string
 }
 
 export interface OpprettetSakResponse {
@@ -543,6 +544,12 @@ export enum OppgaveStatusType {
   AVSLÅTT = 'AVSLÅTT',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
+}
+
+export enum BehandlingstatusType {
+  ÅPEN = 'ÅPEN',
+  SAKSBEHANDLING_AVSLUTTET = 'SAKSBEHANDLING_AVSLUTTET',
+  PÅ_VENT = 'PÅ_VENT',
 }
 
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([

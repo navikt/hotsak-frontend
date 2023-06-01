@@ -147,8 +147,10 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
 export const hentBrukerdataMedPost = async ([
   url,
   brukersFodselsnummer,
+  saksType,
+  behandlingsStatus,
 ]: string[]): Promise<SaksbehandlingApiResponse> => {
-  const response = await post(`${baseUrl}/${url}`, { brukersFodselsnummer }, {})
+  const response = await post(`${baseUrl}/${url}`, { brukersFodselsnummer, saksType, behandlingsStatus }, {})
 
   return {
     status: response.status,

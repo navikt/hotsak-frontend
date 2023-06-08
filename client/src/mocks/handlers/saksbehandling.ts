@@ -3,7 +3,7 @@ import { rest } from 'msw'
 import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
-export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore }) => [
+export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
   rest.post<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
     const { sakId } = req.params
     if (await sakStore.tildel(sakId)) {
@@ -46,6 +46,26 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     const { sakId } = req.params
     const hendelser = await Promise.all([sakStore.hentHendelser(sakId), barnebrillesakStore.hentHendelser(sakId)])
     return res(ctx.delay(200), ctx.status(200), ctx.json(hendelser.flat()))
+  }),
+  rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/dokumenter`, async (req, res, ctx) => {
+    const { sakId } = req.params
+    const sak = await barnebrillesakStore.hent(sakId)
+
+    if (!sak) {
+      return res(ctx.status(404))
+    }
+    const journalposter = sak.journalposter
+
+    const dokumenter = await Promise.all(
+      journalposter.map(async (journalpostID) => {
+        const journalpostDokument = await journalpostStore.hent(journalpostID)
+        if (journalpostDokument) {
+          return journalpostDokument.dokumenter
+        }
+      })
+    )
+
+    return res(ctx.status(200), ctx.json(dokumenter.flat()))
   }),
   rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))

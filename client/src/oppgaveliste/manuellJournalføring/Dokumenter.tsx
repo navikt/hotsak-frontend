@@ -1,23 +1,13 @@
-import { useParams } from 'react-router'
-
 import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
+import { useJournalposter } from '../../saksbilde/journalpostHook'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
-import { useDokument } from '../dokumenter/dokumentHook'
 import { DokumentVelger } from './DokumentVelger'
 
-interface DokumenterProps {
-  journalpostID?: string
-}
-
-export const Dokumenter: React.FC<DokumenterProps> = ({ journalpostID }) => {
-  const { journalpost } = useDokument(journalpostID)
-  const { valgtDokumentID, setValgtDokumentID } = useDokumentContext()
-
-  if (!journalpostID) {
-    return <></>
-  }
+export const Dokumenter: React.FC = () => {
+  const { dokumenter } = useJournalposter()
+  const { valgtDokument, setValgtDokument } = useDokumentContext()
 
   return (
     <Avstand paddingTop={6} paddingBottom={2}>
@@ -25,13 +15,13 @@ export const Dokumenter: React.FC<DokumenterProps> = ({ journalpostID }) => {
         Dokumenter
       </Heading>
       <ul>
-        {journalpost?.dokumenter.map((dokument) => (
+        {dokumenter.map((dokument) => (
           <DokumentVelger
             key={dokument.dokumentID}
-            valgtDokumentID={valgtDokumentID}
+            valgtDokumentID={valgtDokument.dokumentID}
             dokument={dokument}
             onClick={() => {
-              setValgtDokumentID(dokument.dokumentID)
+              setValgtDokument({ journalpostID: dokument.journalpostId, dokumentID: dokument.dokumentID })
             }}
           />
         ))}

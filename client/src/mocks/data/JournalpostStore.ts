@@ -10,7 +10,7 @@ import {
   JournalpostStatusType,
 } from '../../types/types.internal'
 import { IdGenerator } from './IdGenerator'
-import { lagPerson, PersonStore } from './PersonStore'
+import { PersonStore, lagPerson } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { enheter } from './enheter'
 import { lagTilfeldigInteger } from './felles'
@@ -32,7 +32,7 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
   return {
     journalpostID: journalpostId.toString(),
     journalstatus: JournalpostStatusType.MOTTATT,
-    status: DokumentOppgaveStatusType.JOURNALFØRT,
+    status: DokumentOppgaveStatusType.MOTTATT,
     journalpostOpprettetTid: dayjs().toISOString(),
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',

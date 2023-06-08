@@ -3,7 +3,6 @@ import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { useDokumentContext } from '../../../../oppgaveliste/dokumenter/DokumentContext'
-import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { DokumentPanel } from '../../../../oppgaveliste/manuellJournalføring/DokumentPanel'
 
 import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
@@ -13,6 +12,7 @@ import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Oppgavetype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
+import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
@@ -20,18 +20,19 @@ import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
 const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { sak, isLoading, isError } = useBrillesak()
-  const { setValgtDokumentID } = useDokumentContext()
-  const { journalpost /*, isError,*/ /*isLoading: henterJournalpost*/ } = useDokument(sak?.journalposter[0])
+  const { dokumenter } = useJournalposter()
+  const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
-  const journalpostID = sak?.journalposter[0]
+  const journalpostID = dokumenter[0]?.journalpostId
+  const dokumentID = dokumenter[0]?.dokumentID
 
   useEffect(() => {
-    if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {
-      setValgtDokumentID(journalpost.dokumenter[0].dokumentID)
+    if (dokumenter && dokumenter.length > 0) {
+      setValgtDokument({ journalpostID, dokumentID })
     }
-  }, [journalpost?.journalpostID, journalpost?.dokumenter])
+  }, [journalpostID, dokumentID])
 
   if (isLoading) return <LasterRegistrerSøknadBilde />
 
@@ -54,7 +55,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
           <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
             {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
           </VenstreMeny>
-          <DokumentPanel journalpostID={journalpostID} />
+          <DokumentPanel />
           {/*<Historikk />*/}
         </TreKolonner>
       </AutoFlexContainer>

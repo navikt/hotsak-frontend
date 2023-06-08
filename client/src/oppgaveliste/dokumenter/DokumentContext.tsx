@@ -1,22 +1,27 @@
 import React, { useContext, useState } from 'react'
 
+type ValgtDokumentType = {
+  journalpostID: string
+  dokumentID: string
+}
+
 type DokumentContextType = {
-  valgtDokumentID: string
-  setValgtDokumentID: (valgtDokumentID: string) => void
+  valgtDokument: ValgtDokumentType
+  setValgtDokument: (valgtDokument: ValgtDokumentType) => void
 }
 
 const initialState = {
-  valgtDokumentID: '',
+  valgtDokument: { journalpostID: '', dokumentID: '' },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setValgtDokumentID: () => {},
+  setValgtDokument: () => {},
 }
 
 const DokumentContext = React.createContext<DokumentContextType>(initialState)
 
 const DokumentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [valgtDokumentID, setValgtDokumentID] = useState(initialState.valgtDokumentID)
+  const [valgtDokument, setValgtDokument] = useState(initialState.valgtDokument)
 
-  return <DokumentContext.Provider value={{ valgtDokumentID, setValgtDokumentID }}>{children}</DokumentContext.Provider>
+  return <DokumentContext.Provider value={{ valgtDokument, setValgtDokument }}>{children}</DokumentContext.Provider>
 }
 
 function useDokumentContext(): DokumentContextType {

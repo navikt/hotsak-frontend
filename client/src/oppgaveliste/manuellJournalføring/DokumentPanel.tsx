@@ -22,19 +22,18 @@ interface DokumentPanelProps {
 }
 
 export const DokumentPanel: React.FC<DokumentPanelProps> = (props) => {
-  const { journalpostID } = props
-  const { journalpost, hentetDokument, hentForhåndsvisning, isError, isPdfError } = useDokument(journalpostID)
-  const { valgtDokumentID } = useDokumentContext()
+  const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
+  const { valgtDokument } = useDokumentContext()
+
+  const { journalpostID, dokumentID } = valgtDokument
 
   useEffect(() => {
-    if (journalpostID && valgtDokumentID) {
-      hentForhåndsvisning(journalpostID, valgtDokumentID)
+    if (journalpostID && dokumentID) {
+      hentForhåndsvisning(journalpostID, dokumentID)
     }
-  }, [journalpostID, valgtDokumentID])
+  }, [journalpostID, dokumentID])
 
-  if (!journalpostID || !valgtDokumentID) {
-    return <div>Mangler journalpostID eller dokumentID </div>
-  } else if (isError || isPdfError) {
+  if (!journalpostID || isPdfError) {
     return (
       <FeilmeldingDiv>
         <div>

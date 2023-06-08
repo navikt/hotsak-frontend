@@ -15,15 +15,11 @@ interface DokumentlisteResponse {
 }
 
 interface DokumentResponse {
-  journalpost: Journalpost | undefined
-  isLoading: boolean
-  isError: any
   isPdfError: any
   hentForhåndsvisning: (journalpostID: string, dokumentID: string) => any
   nullstillDokument: () => any
   hentetDokument: any
   settHentetDokument: any
-  mutate: (...args: any[]) => any
 }
 
 const dokumentlisteBasePath = 'api/journalposter'
@@ -54,8 +50,7 @@ export function useDokumentliste(): DokumentlisteResponse {
   }
 }
 
-export function useDokument(journalpostID?: string): DokumentResponse {
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`${journalpostBasePath}/${journalpostID}`, httpGet)
+export function useDokument(): DokumentResponse {
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
   const [isPdfError, setIsPdfError] = useState<any>(null)
 
@@ -81,14 +76,10 @@ export function useDokument(journalpostID?: string): DokumentResponse {
   }
 
   return {
-    journalpost: data?.data,
-    isLoading: !error && !data,
-    isError: error,
     isPdfError,
     hentForhåndsvisning,
     nullstillDokument,
     hentetDokument,
     settHentetDokument,
-    mutate,
   }
 }

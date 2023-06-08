@@ -7,10 +7,10 @@ import { Feilmelding } from '../../felleskomponenter/Feilmelding'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { Personlinje } from '../../saksbilde/Personlinje'
+import { useJournalpost } from '../../saksbilde/journalpostHook'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { DokumentOppgaveStatusType } from '../../types/types.internal'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
-import { useDokument } from '../dokumenter/dokumentHook'
 import { DokumentPanel } from './DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
@@ -28,8 +28,8 @@ const Container = styled.div`
 
 export const ManuellJournalfør: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost /*, isLoading, isError*/ } = useDokument(journalpostID)
-  const { setValgtDokumentID } = useDokumentContext()
+  const { journalpost } = useJournalpost(journalpostID)
+  const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
@@ -38,6 +38,8 @@ export const ManuellJournalfør: React.FC = () => {
     journalpost?.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     journalpost.saksbehandler?.objectId === saksbehandler.objectId
 
+  const dokumenter = journalpost?.dokumenter
+
   useEffect(() => {
     if (journalpost?.fnrInnsender) {
       setFodselsnummer(journalpost.fnrInnsender)
@@ -45,10 +47,11 @@ export const ManuellJournalfør: React.FC = () => {
   }, [journalpost?.fnrInnsender])
 
   useEffect(() => {
-    if (journalpost?.dokumenter && journalpost.dokumenter.length > 0) {
-      setValgtDokumentID(journalpost.dokumenter[0].dokumentID)
+    if (journalpostID && dokumenter && dokumenter.length > 0) {
+      const førsteDokment = dokumenter[0]
+      setValgtDokument({ journalpostID, dokumentID: førsteDokment.dokumentID })
     }
-  }, [journalpost?.journalpostID, journalpost?.dokumenter])
+  }, [journalpostID, dokumenter])
 
   if (personInfoError) {
     if (personInfoError.statusCode === 403) {

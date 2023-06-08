@@ -25,8 +25,6 @@ export function Bestillingsdato() {
     },
 
     onValidate: (val) => {
-      console.log('validerer')
-
       if (!val.isValidDate) {
         setError('bestillingsdato', { type: 'custom', message: 'Ugyldig bestillingsdato' })
       }

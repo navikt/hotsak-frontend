@@ -255,12 +255,14 @@ export class BarnebrillesakStore extends Dexie {
     }
     const lagBarnebrillesakMedId = (adressebeskyttelse?: Adressebeskyttelse) =>
       lagBarnebrillesak(this.idGenerator.nesteId(), adressebeskyttelse)
+
     return this.lagreAlle([
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
+      lagBarnebrillesak(1111),
       lagBarnebrillesakMedId(Adressebeskyttelse.FORTROLIG),
       lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG),
       lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND),
@@ -490,5 +492,22 @@ export class BarnebrillesakStore extends Dexie {
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostID]
     return this.saker.add(sak)
+  }
+
+  async knyttJournalpostTilSak(journalføring: JournalføringRequest) {
+    const sakId = journalføring.sakId
+
+    if (!sakId) {
+      return
+    }
+
+    const eksisterendeSak = await this.saker.get(sakId)
+
+    if (!eksisterendeSak) {
+      return
+    }
+
+    const eksisterendeJournalposter = eksisterendeSak.journalposter
+    this.saker.update(sakId, { journalposter: [...eksisterendeJournalposter, journalføring.journalpostID] })
   }
 }

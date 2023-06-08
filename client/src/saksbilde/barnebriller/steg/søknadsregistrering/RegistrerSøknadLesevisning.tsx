@@ -27,10 +27,9 @@ const Container = styled.div`
 export const RegistrerSøknadLesevisning: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
-  const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
   const { setValgtTab } = useManuellSaksbehandlingContext()
 
-  if (isLoading || !journalpost) {
+  if (isLoading) {
     return (
       <div>
         <Loader />
@@ -56,7 +55,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
       <Heading level="1" size="xsmall" spacing>
         Registrer søknad
       </Heading>
-      <Dokumenter journalpostID={journalpost.journalpostID} />
+      <Dokumenter />
       <Avstand paddingTop={4} paddingLeft={2}>
         <Etikett>Målform</Etikett>
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>

@@ -1,4 +1,3 @@
-//import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
@@ -12,10 +11,10 @@ import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
+import { useJournalpost } from '../../saksbilde/journalpostHook'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { DokumentOppgaveStatusType } from '../../types/types.internal'
 import { DokumentIkkeTildelt } from '../dokumenter/DokumentIkkeTildelt'
-import { useDokument } from '../dokumenter/dokumentHook'
 import { Dokumenter } from './Dokumenter'
 
 const Container = styled.div`
@@ -26,7 +25,7 @@ const Container = styled.div`
 
 export const JournalpostVisning: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading } = useDokument(journalpostID)
+  const { journalpost, /*isError,*/ isLoading } = useJournalpost(journalpostID)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()
@@ -78,7 +77,7 @@ export const JournalpostVisning: React.FC = () => {
         <Brødtekst>{journalpost.tittel}</Brødtekst>
       </Avstand>
       <Avstand paddingTop={4}>
-        <Dokumenter journalpostID={journalpostID} />
+        <Dokumenter />
       </Avstand>
       <Avstand paddingTop={6} paddingRight={6}>
         <StatusVisning />

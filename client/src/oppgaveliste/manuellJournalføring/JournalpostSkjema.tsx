@@ -18,8 +18,8 @@ import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useSaksoversikt } from '../../personoversikt/saksoversiktHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
+import { useJournalpost } from '../../saksbilde/journalpostHook'
 import { BehandlingstatusType, JournalføringRequest, OppgaveStatusLabel, Oppgavetype } from '../../types/types.internal'
-import { useDokument } from '../dokumenter/dokumentHook'
 import { OppgaveType } from '../kolonner/OpgaveType'
 import { Dokumenter } from './Dokumenter'
 
@@ -32,7 +32,7 @@ const Container = styled.div`
 export const JournalpostSkjema: React.FC = () => {
   const navigate = useNavigate()
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading } = useDokument(journalpostID)
+  const { journalpost, /*isError,*/ isLoading } = useJournalpost(journalpostID)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -43,7 +43,6 @@ export const JournalpostSkjema: React.FC = () => {
     isError,
   } = useSaksoversikt(fodselsnummer, Oppgavetype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
-  // const [error, setError] = useState('')
   const [journalfører, setJournalfører] = useState(false)
 
   const journalfør = () => {
@@ -67,7 +66,7 @@ export const JournalpostSkjema: React.FC = () => {
       .catch(() => setJournalfører(false))
   }
 
-  if (henterPerson || !personInfo || isLoading || !journalpost) {
+  if (henterPerson || !personInfo || isLoading) {
     return (
       <Container>
         <Toast>Henter journalpost</Toast>
@@ -130,7 +129,7 @@ export const JournalpostSkjema: React.FC = () => {
             onChange={(e) => setJournalpostTittel(e.target.value)}
           />
         </Avstand>
-        <Dokumenter journalpostID={journalpostID} />
+        <Dokumenter />
         <Avstand paddingTop={10}>
           <Heading size="small" level="2" spacing>
             Knytt til eksisterende sak

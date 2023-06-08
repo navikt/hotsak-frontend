@@ -13,6 +13,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     const journalposter = await journalpostStore.alle()
     return res(ctx.delay(200), ctx.status(200), ctx.json(journalposter))
   }),
+
   rest.get<any, { journalpostID: string }, any>(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
     const journalpostID = req.params.journalpostID
     const journalpost = await journalpostStore.hent(journalpostID)
@@ -26,7 +27,6 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     `/api/journalpost/:journalpostID/:dokumentID`,
     async (req, res, ctx) => {
       const dokumentID = req.params.dokumentID
-
       let dokument
 
       switch (dokumentID) {
@@ -58,9 +58,18 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     `/api/journalpost/:journalpostID/journalforing`,
     async (req, res, ctx) => {
       const journalføring = await req.json<JournalføringRequest>()
+
+      const eksisternedeSakId = journalføring.sakId
+
       await journalpostStore.journalfør(journalføring.journalpostID)
-      const sakId = await barnebrillesakStore.opprettSak(journalføring)
-      return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: sakId.toString() }))
+
+      if (eksisternedeSakId) {
+        barnebrillesakStore.knyttJournalpostTilSak(journalføring)
+        return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: eksisternedeSakId }))
+      } else {
+        const sakId = await barnebrillesakStore.opprettSak(journalføring)
+        return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: sakId.toString() }))
+      }
     }
   ),
   rest.post<any, { journalpostID: string }>(`/api/journalpost/:journalpostID/tildeling`, async (req, res, ctx) => {

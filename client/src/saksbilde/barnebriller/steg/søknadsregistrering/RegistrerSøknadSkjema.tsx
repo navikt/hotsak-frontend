@@ -1,6 +1,6 @@
 //import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { formatISO } from 'date-fns'
 import 'date-fns'
+import { formatISO } from 'date-fns'
 import React, { useState } from 'react'
 import { useErrorBoundary } from 'react-error-boundary'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -10,13 +10,11 @@ import styled from 'styled-components'
 import { Button, Heading, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering, putSendTilGosys } from '../../../../io/http'
-import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Eksperiment } from '../../../../felleskomponenter/Eksperiment'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import {
   MålformType,
@@ -44,7 +42,6 @@ const Container = styled.div`
 export const RegistrerSøknadSkjema: React.FC = () => {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
-  const { journalpost, /*isError,*/ isLoading: henterJournalpost } = useDokument(sak?.journalposter[0])
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const { showBoundary } = useErrorBoundary()
@@ -108,7 +105,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     formState: { errors },
   } = methods
 
-  if (isLoading || !journalpost) {
+  if (isLoading) {
     return (
       <div>
         <Loader />
@@ -122,7 +119,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       <Heading level="1" size="xsmall" spacing>
         Registrer søknad
       </Heading>
-      <Dokumenter journalpostID={journalpost.journalpostID} />
+      <Dokumenter />
       <Avstand paddingTop={4} paddingLeft={2}>
         <FormProvider {...methods}>
           <form

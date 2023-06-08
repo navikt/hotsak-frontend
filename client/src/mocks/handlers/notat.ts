@@ -13,7 +13,7 @@ export const notatHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => 
   }),
   rest.get<undefined, { sakId: string }>(`/api/sak/:sakId/notater`, async (req, res, ctx) => {
     const notater = await barnebrillesakStore.hentNotater(req.params.sakId)
-    return res(ctx.delay(100), ctx.status(200), ctx.json(notater))
+    return res(ctx.delay(500), ctx.status(200), ctx.json(notater))
   }),
   rest.delete<undefined, { sakId: string; notatId: string }>(
     `/api/sak/:sakId/notater/:notatId`,

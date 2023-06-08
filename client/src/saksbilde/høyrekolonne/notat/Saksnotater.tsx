@@ -21,14 +21,14 @@ export interface SaksnotaterProps {
 
 export function Saksnotater(props: SaksnotaterProps) {
   const { sakId, lesemodus } = props
-  const { notater, mutate } = useSaksnotater(sakId)
+  const { notater, mutate, isLoading } = useSaksnotater(sakId)
   const saksbehandler = useInnloggetSaksbehandler()
   const [lagrer, setLagrer] = useState(false)
   const [sletter, setSletter] = useState(NaN)
 
   const { register, handleSubmit } = useForm<{ innhold: string }>()
 
-  if (!sakId) {
+  if (!sakId || isLoading) {
     return null
   }
 
@@ -46,33 +46,37 @@ export function Saksnotater(props: SaksnotaterProps) {
       <Heading level="2" size="xsmall">
         Notater
       </Heading>
-      <ul>
-        {notater.map((notat) => (
-          <li key={notat.id || notat.opprettet}>
-            <NotatPanel border>
-              <NotatHeader>
-                <div>
-                  <Label as="div" size="small">
-                    {notat.saksbehandler.navn}
-                  </Label>
-                  <div>{norskTimestamp(notat.opprettet)}</div>
-                </div>
-                {!lesemodus && saksbehandler.id === notat.saksbehandler.id && (
-                  <Button
-                    type="button"
-                    size="small"
-                    icon={<TrashIcon aria-label="Slett notat" />}
-                    variant="tertiary-neutral"
-                    onClick={() => slettNotat(notat.id)}
-                    loading={notat.id === sletter}
-                  />
-                )}
-              </NotatHeader>
-              <BodyLong>{notat.innhold}</BodyLong>
-            </NotatPanel>
-          </li>
-        ))}
-      </ul>
+      {notater.length ? (
+        <ul>
+          {notater.map((notat) => (
+            <li key={notat.id || notat.opprettet}>
+              <NotatPanel border>
+                <NotatHeader>
+                  <div>
+                    <Label as="div" size="small">
+                      {notat.saksbehandler.navn}
+                    </Label>
+                    <div>{norskTimestamp(notat.opprettet)}</div>
+                  </div>
+                  {!lesemodus && saksbehandler.id === notat.saksbehandler.id && (
+                    <Button
+                      type="button"
+                      size="small"
+                      icon={<TrashIcon aria-label="Slett notat" />}
+                      variant="tertiary-neutral"
+                      onClick={() => slettNotat(notat.id)}
+                      loading={notat.id === sletter}
+                    />
+                  )}
+                </NotatHeader>
+                <BodyLong>{notat.innhold}</BodyLong>
+              </NotatPanel>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <BodyLong spacing>Ingen</BodyLong>
+      )}
       {!lesemodus && (
         <form
           onSubmit={handleSubmit(async ({ innhold }) => {
@@ -103,10 +107,11 @@ export function Saksnotater(props: SaksnotaterProps) {
 }
 
 function useSaksnotater(sakId?: string) {
-  const { data: notater = [], mutate } = useSwr<Notat[]>(sakId ? `/api/sak/${sakId}/notater` : null)
+  const { data: notater = [], mutate, isLoading } = useSwr<Notat[]>(sakId ? `/api/sak/${sakId}/notater` : null)
   return {
     notater,
     mutate,
+    isLoading,
   }
 }
 

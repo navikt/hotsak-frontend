@@ -220,3 +220,11 @@ export const putEndreHjelpemiddel = async (
 ) => {
   return put(`${baseUrl}/api/bestilling/v2/${saksnummer}`, endreHjelpemiddel)
 }
+
+export const postSaksnotat = async (sakId: string, type: 'INTERNT', innhold: string) => {
+  return post(`${baseUrl}/api/sak/${sakId}/notater`, { type, innhold })
+}
+
+export const slettSaksnotat = async (sakId: string, notatId: number) => {
+  return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
+}

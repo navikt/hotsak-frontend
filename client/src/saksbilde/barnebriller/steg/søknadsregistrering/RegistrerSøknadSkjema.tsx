@@ -16,7 +16,6 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Eksperiment } from '../../../../felleskomponenter/Eksperiment'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import {
   MålformType,

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { SaveFile } from '@navikt/ds-icons'
+import { FloppydiskIcon } from '@navikt/aksel-icons'
 import { Button, ErrorMessage, Panel, Radio, RadioGroup, TextField } from '@navikt/ds-react'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
@@ -155,7 +155,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
                 size="small"
                 style={{ marginRight: '1rem' }}
                 loading={submitting}
-                icon={<SaveFile />}
+                icon={<FloppydiskIcon />}
                 onClick={async () => {
                   if (!validationError()) {
                     setSubmitting(true)

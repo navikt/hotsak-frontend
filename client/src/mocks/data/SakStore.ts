@@ -75,7 +75,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
   }
 }
 
-function lagSak(sakId: number): LagretSak {
+function lagSak(sakId: number, sakstype = Oppgavetype.SØKNAD): LagretSak {
   const bruker = lagBruker()
   const opprettet = dayjs()
   const formidler: Formidler = {
@@ -95,7 +95,7 @@ function lagSak(sakId: number): LagretSak {
     saksinformasjon: {
       opprettet: opprettet.toISOString(),
     },
-    sakstype: Oppgavetype.SØKNAD,
+    sakstype,
     søknadGjelder: 'Hjelpemidler',
     hjelpemidler: [
       {
@@ -200,8 +200,14 @@ export class SakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagSakMedId = () => lagSak(this.idGenerator.nesteId())
-    return this.lagreAlle([lagSakMedId(), lagSakMedId(), lagSakMedId(), lagSakMedId(), lagSakMedId()])
+    const lagSakMedId = (sakstype = Oppgavetype.SØKNAD) => lagSak(this.idGenerator.nesteId(), sakstype)
+    return this.lagreAlle([
+      lagSakMedId(),
+      lagSakMedId(),
+      lagSakMedId(),
+      lagSakMedId(),
+      lagSakMedId(Oppgavetype.BESTILLING),
+    ])
   }
 
   async lagreAlle(saker: LagretSak[]) {

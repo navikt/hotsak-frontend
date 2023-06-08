@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { EllipsisCircleH } from '@navikt/ds-icons'
+import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { Dropdown } from '@navikt/ds-react-internal'
 
@@ -50,9 +50,14 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
       {
         <span style={{ display: 'flex', marginBlock: -2 }}>
           <Dropdown onSelect={fjernTildeling}>
-            <Button variant="tertiary" size="xsmall" as={Dropdown.Toggle} onClick={menyClick} disabled={disabled()}>
-              <EllipsisCircleH />
-            </Button>
+            <Button
+              variant="tertiary"
+              size="xsmall"
+              as={Dropdown.Toggle}
+              onClick={menyClick}
+              disabled={disabled()}
+              icon={<MenuElipsisHorizontalCircleIcon />}
+            />
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
                 <Dropdown.Menu.List.Item disabled={disabled()}>

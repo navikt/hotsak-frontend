@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { System } from '@navikt/ds-icons'
+import { MenuGridIcon } from '@navikt/aksel-icons'
 import { Link } from '@navikt/ds-react'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
 
@@ -41,7 +41,7 @@ export const Toppmeny: React.FC = () => {
       <EndringsloggDropdown />
       <Dropdown>
         <Header.Button as={Dropdown.Toggle}>
-          <System title="Systemer og oppslagsverk" />
+          <MenuGridIcon title="Systemer og oppslagsverk" />
         </Header.Button>
         <Dropdown.Menu>
           <Dropdown.Menu.GroupedList>

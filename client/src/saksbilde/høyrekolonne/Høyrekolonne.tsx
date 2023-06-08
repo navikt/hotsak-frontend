@@ -41,5 +41,7 @@ export const Høyrekolonne: React.FC<HøyrekolonneProps> = ({ currentTab }) => {
       return <Hjelpemiddeloversikt />
     case HøyrekolonneTabs.TOTRINNSKONTROLL:
       return <></>
+    case HøyrekolonneTabs.NOTAT:
+      return <></>
   }
 }

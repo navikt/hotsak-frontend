@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 
 export const Button = styled.button`
@@ -8,18 +9,18 @@ export const Button = styled.button`
   outline: none;
 `
 
-interface KnappeProps {
+interface VenstrestilteKnapperProps {
   gap?: string
 }
 
-const VenstrestilteKnapper = styled.div<KnappeProps>`
+const VenstrestilteKnapper = styled.div<VenstrestilteKnapperProps>`
   display: flex;
   justify-content: flex-start;
   gap: ${(props) => (props.gap ? props.gap : '1rem')};
   padding-top: 2rem;
 `
 
-export const Knappepanel = ({ children, gap }: { children: React.ReactNode; gap?: string }) => {
+export const Knappepanel = ({ children, gap }: { children: ReactNode; gap?: string }) => {
   return (
     <div style={{ display: 'flex' }}>
       <VenstrestilteKnapper gap={gap}> {children}</VenstrestilteKnapper>

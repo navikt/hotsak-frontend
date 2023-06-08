@@ -7,6 +7,7 @@ import {
   Hendelse,
   JournalføringRequest,
   Kjønn,
+  Notat,
   OppdaterVilkårRequest,
   Oppgave,
   OppgaveStatusType,
@@ -231,6 +232,7 @@ export class BarnebrillesakStore extends Dexie {
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
   private readonly vilkår!: Table<LagretVilkår, number>
   private readonly hendelser!: Table<LagretHendelse, string>
+  private readonly notater!: Table<Omit<Notat, 'id'>, number>
 
   constructor(
     private readonly idGenerator: IdGenerator,
@@ -245,6 +247,7 @@ export class BarnebrillesakStore extends Dexie {
       vilkårsvurderinger: 'id,sakId',
       vilkår: '++id,vilkårsvurderingId',
       hendelser: '++id,sakId',
+      notater: '++id,sakId',
     })
   }
 
@@ -490,5 +493,24 @@ export class BarnebrillesakStore extends Dexie {
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostID]
     return this.saker.add(sak)
+  }
+
+  async lagreNotat(sakId: string, type: 'INTERNT', innhold: string) {
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    return this.notater.add({
+      sakId,
+      saksbehandler,
+      type,
+      innhold,
+      opprettet: dayjs().toISOString(),
+    })
+  }
+
+  async slettNotat(notatId: number) {
+    return this.notater.delete(notatId)
+  }
+
+  async hentNotater(sakId: string) {
+    return this.notater.where('sakId').equals(sakId).toArray()
   }
 }

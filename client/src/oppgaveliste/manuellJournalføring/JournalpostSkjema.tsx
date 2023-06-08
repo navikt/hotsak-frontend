@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Applicant } from '@navikt/ds-icons'
+import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Alert, Button, ExpansionCard, Heading, Radio, RadioGroup, Table, TextField } from '@navikt/ds-react'
 
 import { postJournalføring } from '../../io/http'
@@ -89,7 +89,7 @@ export const JournalpostSkjema: React.FC = () => {
             <ExpansionCard.Header>
               <ExpansionCard.Title as="h3" size="small">
                 <IconContainer>
-                  <Applicant />
+                  <PersonEnvelopeIcon />
                 </IconContainer>
                 {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
               </ExpansionCard.Title>

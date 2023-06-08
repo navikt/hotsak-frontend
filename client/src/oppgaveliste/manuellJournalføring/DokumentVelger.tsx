@@ -1,4 +1,4 @@
-import { Eye } from '@navikt/ds-icons'
+import { EyeIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
@@ -17,7 +17,7 @@ export const DokumentVelger: React.FC<DokumentVelgerProps> = ({ dokument, valgtD
         {dokument.dokumentID === valgtDokumentID ? (
           <Button
             role={'link'}
-            icon={<Eye aria-hidden />}
+            icon={<EyeIcon aria-hidden />}
             iconPosition="right"
             size="small"
             variant="tertiary"

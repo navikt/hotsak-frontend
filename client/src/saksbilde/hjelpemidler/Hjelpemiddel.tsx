@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Collapse, Expand } from '@navikt/ds-icons'
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Button, Link } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -227,7 +227,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           <Rad style={{ justifyContent: 'flex-end' }}>
             <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(false)}>
               Avbryt
-              <Collapse />
+              <ChevronUpIcon />
             </Button>
           </Rad>
         )}
@@ -235,7 +235,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           <Rad style={{ justifyContent: 'flex-end' }}>
             <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(true)}>
               Endre
-              <Expand />
+              <ChevronDownIcon />
             </Button>
           </Rad>
         )}

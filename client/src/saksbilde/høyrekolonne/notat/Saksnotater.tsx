@@ -20,13 +20,12 @@ export interface SaksnotaterProps {
 }
 
 export function Saksnotater(props: SaksnotaterProps) {
+  const saksbehandler = useInnloggetSaksbehandler()
   const { sakId, lesemodus } = props
   const { notater, mutate, isLoading } = useSaksnotater(sakId)
-  const saksbehandler = useInnloggetSaksbehandler()
+  const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
   const [sletter, setSletter] = useState(NaN)
-
-  const { register, handleSubmit } = useForm<{ innhold: string }>()
 
   if (!sakId || isLoading) {
     return null
@@ -40,6 +39,22 @@ export function Saksnotater(props: SaksnotaterProps) {
       setSletter(NaN)
     }
   }
+
+  const lagreNotat = handleSubmit(async ({ innhold }) => {
+    const nyttNotat: Notat = {
+      id: Math.random(),
+      sakId,
+      saksbehandler,
+      type: 'INTERNT',
+      innhold,
+      opprettet: dayjs().toISOString(),
+    }
+    setLagrer(true)
+    await postSaksnotat(nyttNotat.sakId, nyttNotat.type, nyttNotat.innhold)
+    await mutate()
+    reset({ innhold: '' })
+    setLagrer(false)
+  })
 
   return (
     <Panel as="aside">
@@ -78,22 +93,7 @@ export function Saksnotater(props: SaksnotaterProps) {
         <BodyLong spacing>Ingen</BodyLong>
       )}
       {!lesemodus && (
-        <form
-          onSubmit={handleSubmit(async ({ innhold }) => {
-            const nyttNotat: Notat = {
-              id: Math.random(),
-              sakId,
-              saksbehandler,
-              type: 'INTERNT',
-              innhold,
-              opprettet: dayjs().toISOString(),
-            }
-            setLagrer(true)
-            await postSaksnotat(nyttNotat.sakId, nyttNotat.type, nyttNotat.innhold)
-            await mutate()
-            setLagrer(false)
-          })}
-        >
+        <form onSubmit={lagreNotat}>
           <Textarea label="Nytt notat" defaultValue="" {...register('innhold', { required: true })} />
           <Knappepanel>
             <Button type="submit" size="small" variant="secondary-neutral" loading={lagrer} icon={<FloppydiskIcon />}>

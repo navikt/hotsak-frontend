@@ -482,7 +482,7 @@ export interface JournalpostBruker {
 }
 
 export interface Dokument {
-  journalpostId: string
+  journalpostID: string
   dokumentID: string
   tittel: string
   brevkode: string

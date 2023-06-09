@@ -21,7 +21,7 @@ export const Dokumenter: React.FC = () => {
             valgtDokumentID={valgtDokument.dokumentID}
             dokument={dokument}
             onClick={() => {
-              setValgtDokument({ journalpostID: dokument.journalpostId, dokumentID: dokument.dokumentID })
+              setValgtDokument({ journalpostID: dokument.journalpostID, dokumentID: dokument.dokumentID })
             }}
           />
         ))}

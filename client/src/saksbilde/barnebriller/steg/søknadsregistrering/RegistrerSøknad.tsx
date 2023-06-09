@@ -25,7 +25,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { showBoundary } = useErrorBoundary()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
-  const journalpostID = dokumenter[0]?.journalpostId
+  const journalpostID = dokumenter[0]?.journalpostID
   const dokumentID = dokumenter[0]?.dokumentID
 
   useEffect(() => {

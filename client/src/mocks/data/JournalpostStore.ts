@@ -83,8 +83,8 @@ export class JournalpostStore extends Dexie {
     super('JournalpostStore')
     this.version(1).stores({
       journalposter: 'journalpostID',
-      dokumenter: '++dokumentID,journalpostId',
-      hendelser: '++id,journalpostId',
+      dokumenter: '++dokumentID,journalpostID',
+      hendelser: '++id,journalpostID',
     })
   }
 
@@ -124,7 +124,7 @@ export class JournalpostStore extends Dexie {
     if (!journalpost) {
       return
     }
-    const dokumenter = await this.dokumenter.where('journalpostId').equals(journalpostId).toArray()
+    const dokumenter = await this.dokumenter.where('journalpostID').equals(journalpostId).toArray()
     return {
       ...journalpost,
       dokumenter,

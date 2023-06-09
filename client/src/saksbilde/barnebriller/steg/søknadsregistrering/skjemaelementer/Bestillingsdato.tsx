@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { UNSAFE_DatePicker, UNSAFE_useDatepicker } from '@navikt/ds-react'
+import { DatePicker, useDatepicker } from '@navikt/ds-react'
 
 export function Bestillingsdato() {
   const { formState, setValue, setError, clearErrors, watch } = useFormContext<{ bestillingsdato?: Date }>()
@@ -17,7 +17,7 @@ export function Bestillingsdato() {
     }
   }, [formState, valgtDato])
 
-  const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
+  const { datepickerProps, inputProps } = useDatepicker({
     fromDate: new Date('Jan 1 1970'),
     toDate: new Date(),
     onDateChange: (dato) => {
@@ -34,8 +34,8 @@ export function Bestillingsdato() {
   })
 
   return (
-    <UNSAFE_DatePicker dropdownCaption {...datepickerProps}>
-      <UNSAFE_DatePicker.Input
+    <DatePicker dropdownCaption {...datepickerProps}>
+      <DatePicker.Input
         {...inputProps}
         size="small"
         label="Brillens bestillingsdato"
@@ -43,6 +43,6 @@ export function Bestillingsdato() {
         value={inputProps.value}
         error={errors.bestillingsdato?.message}
       />
-    </UNSAFE_DatePicker>
+    </DatePicker>
   )
 }

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router'
 import styled from 'styled-components'
 
-import { FileContent, Task } from '@navikt/ds-icons'
+import { FileTextIcon, TasklistIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
 import { useVisOppgavelisteTabs } from '../state/authentication'
@@ -36,12 +36,12 @@ export const OppgavelisteTabs: React.FC = () => {
           <Tabs.Tab
             value="oppgaveliste"
             label="Oppgaveliste"
-            icon={<Task focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
+            icon={<TasklistIcon focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
           />
           <Tabs.Tab
             value="dokumenter"
             label="Journalføring"
-            icon={<FileContent focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
+            icon={<FileTextIcon focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
           />
         </Tabs.List>
       </Tabs>

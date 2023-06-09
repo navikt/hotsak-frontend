@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { Information } from '@navikt/ds-icons'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { Dropdown, Header } from '@navikt/ds-react-internal'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
@@ -24,7 +24,7 @@ export const EndringsloggDropdown: React.FC = () => {
         }}
       >
         {!endringslogg.loading && <Uleste fading={endringslogg.fading} />}
-        <Information title="Endringslogg" width={20} height={20} />
+        <InformationSquareIcon title="Endringslogg" width={20} height={20} />
       </Header.Button>
       <EndringsloggDropdownMenu ref={dropdownMenuRef}>
         <Endringslogg endringslogginnslag={endringslogg.innslag} merkSomLest={endringslogg.merkSomLest} />

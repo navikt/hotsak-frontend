@@ -286,6 +286,16 @@ export interface Hendelse {
   detaljer?: string
 }
 
+export interface Notat {
+  id: number
+  sakId: string
+  saksbehandler: Saksbehandler
+  type: 'INTERNT'
+  innhold: string
+  opprettet: string
+  slettet?: string
+}
+
 export interface HjelpemiddelArtikkel {
   antall: number
   antallEnhet: string
@@ -702,6 +712,7 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
+  NOTAT = 'NOTAT',
 }
 
 export interface OverforGosysTilbakemelding {

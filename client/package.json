@@ -14,7 +14,7 @@
     "@sentry/tracing": "^7.51.2",
     "@types/uuid": "^9.0.1",
     "amplitude-js": "8.21.8",
-    "date-fns": "2.29.3",
+    "date-fns": "2.30.0",
     "dayjs": "1.11.7",
     "dexie": "3.2.3",
     "fetch-intercept": "2.4.0",

@@ -52,7 +52,7 @@ export const BarnebrilleSidebar: React.FC = () => {
       </Tabs.Panel>
       <Eksperiment>
         <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
-          <Saksnotater sakId={sak?.sakId} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
+          <Saksnotater sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
         </Tabs.Panel>
       </Eksperiment>
     </Sidebar>

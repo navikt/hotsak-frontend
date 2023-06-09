@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import useSwr from 'swr'
 
-import { FloppydiskIcon, TrashIcon } from '@navikt/aksel-icons'
+import { TrashIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Heading, Label, Panel, Textarea } from '@navikt/ds-react'
 
 import { postSaksnotat, slettSaksnotat } from '../../../io/http'
@@ -16,12 +16,12 @@ import { Notat } from '../../../types/types.internal'
 
 export interface SaksnotaterProps {
   sakId?: string
-  lesemodus: boolean
+  lesevisning: boolean
 }
 
 export function Saksnotater(props: SaksnotaterProps) {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { sakId, lesemodus } = props
+  const { sakId, lesevisning } = props
   const { notater, mutate, isLoading } = useSaksnotater(sakId)
   const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
@@ -73,7 +73,7 @@ export function Saksnotater(props: SaksnotaterProps) {
                     </Label>
                     <div>{norskTimestamp(notat.opprettet)}</div>
                   </div>
-                  {!lesemodus && saksbehandler.id === notat.saksbehandler.id && (
+                  {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
                     <Button
                       type="button"
                       size="small"
@@ -92,7 +92,7 @@ export function Saksnotater(props: SaksnotaterProps) {
       ) : (
         <BodyLong spacing>Ingen</BodyLong>
       )}
-      {!lesemodus && (
+      {!lesevisning && (
         <form onSubmit={lagreNotat}>
           <Textarea label="Nytt notat" defaultValue="" {...register('innhold', { required: true })} />
           <Knappepanel>

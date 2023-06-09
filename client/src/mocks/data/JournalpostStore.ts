@@ -20,7 +20,7 @@ import { lagTilfeldigNavn } from './navn'
 type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 
 interface LagretDokument extends Dokument {
-  journalpostId: string
+  journalpostID: string
 }
 
 interface LagretHendelse extends Hendelse {
@@ -44,24 +44,24 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
   }
 }
 
-function lagDokumenter(journalpostId: string): Array<Omit<LagretDokument, 'dokumentID'>> {
+function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokumentID'>> {
   return [
     {
-      journalpostId,
+      journalpostID,
       tittel: 'Tilskudd ved kjøp av briller til barn',
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
     {
-      journalpostId,
+      journalpostID,
       tittel: 'Originalkvittering',
       brevkode: 'X5',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ARKIV }],
     },
     {
-      journalpostId,
+      journalpostID,
       tittel: 'Kvitteringsside for dokumentinnsending',
       brevkode: 'L7',
       vedlegg: [],

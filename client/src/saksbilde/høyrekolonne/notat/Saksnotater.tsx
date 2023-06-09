@@ -96,8 +96,8 @@ export function Saksnotater(props: SaksnotaterProps) {
         <form onSubmit={lagreNotat}>
           <Textarea label="Nytt notat" defaultValue="" {...register('innhold', { required: true })} />
           <Knappepanel>
-            <Button type="submit" size="small" variant="secondary-neutral" loading={lagrer} icon={<FloppydiskIcon />}>
-              Lagre
+            <Button type="submit" size="small" variant="secondary-neutral" loading={lagrer}>
+              Lagre notat
             </Button>
           </Knappepanel>
         </form>

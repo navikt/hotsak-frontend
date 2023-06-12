@@ -27,7 +27,7 @@ export const KnyttTilEksisterendeSak: React.FC<Props> = (props) => {
       <HeadingMedHjelpetekst level="2" hjelpetekst={åpneSakerHjelpetekst} placement="right-end">
         Knytt til eksisterende sak
       </HeadingMedHjelpetekst>
-      <Avstand paddingTop={4} paddingBottom={4} />
+      <Avstand paddingBottom={2} />
       {harÅpneSaker && (
         <RadioGroup
           legend=""

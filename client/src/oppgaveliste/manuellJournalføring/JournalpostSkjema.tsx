@@ -128,7 +128,7 @@ export const JournalpostSkjema: React.FC = () => {
           />
         </Avstand>
         <Dokumenter dokumenter={journalpost?.dokumenter || []} />
-        <Avstand paddingTop={10} />
+        <Avstand paddingTop={4} />
         <KnyttTilEksisterendeSak
           åpneSaker={saksoversikt?.hotsakSaker || []}
           valgtEksisterendeSakId={valgtEksisterendeSakId}

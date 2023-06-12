@@ -14,7 +14,7 @@ export const HeadingMedHjelpetekst: React.FC<Props> = (props) => {
   const { children, hjelpetekst, placement, level } = props
   return (
     <Container>
-      <Heading size="small" level={level} spacing>
+      <Heading size="xsmall" level={level} spacing>
         {children}
       </Heading>
       <HelpText placement={placement}>{hjelpetekst}</HelpText>

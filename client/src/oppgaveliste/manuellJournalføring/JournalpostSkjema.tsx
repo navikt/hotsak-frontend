@@ -3,13 +3,14 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
-import { Alert, Button, ExpansionCard, Heading, Radio, RadioGroup, Table, TextField } from '@navikt/ds-react'
+import { Alert, Button, ExpansionCard, Heading, HelpText, Radio, RadioGroup, Table, TextField } from '@navikt/ds-react'
 
 import { postJournalføring } from '../../io/http'
 import { formaterDato } from '../../utils/date'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
+import { HeadingMedHjelpetekst } from '../../felleskomponenter/HeadingMedHjelpetekst'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
@@ -75,6 +76,9 @@ export const JournalpostSkjema: React.FC = () => {
   }
 
   const harÅpneSaker = saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0
+  const åpneSakerHjelpetekst = harÅpneSaker
+    ? ' Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende  sak, marker saken du vil knytte dokumentene til.'
+    : 'Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.'
 
   return (
     <Container>
@@ -133,23 +137,10 @@ export const JournalpostSkjema: React.FC = () => {
         </Avstand>
         <Dokumenter dokumenter={journalpost?.dokumenter || []} />
         <Avstand paddingTop={10}>
-          <Heading size="small" level="2" spacing>
+          <HeadingMedHjelpetekst level="2" hjelpetekst={åpneSakerHjelpetekst} placement="right-end">
             Knytt til eksisterende sak
-          </Heading>
-          <Avstand paddingTop={4} paddingBottom={4}>
-            {harÅpneSaker ? (
-              <Alert variant="info" size="small">
-                <Brødtekst>
-                  Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende
-                  sak, marker saken du vil knytte dokumentene til.
-                </Brødtekst>
-              </Alert>
-            ) : (
-              <Brødtekst>
-                Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.
-              </Brødtekst>
-            )}
-          </Avstand>
+          </HeadingMedHjelpetekst>
+          <Avstand paddingTop={4} paddingBottom={4}></Avstand>
           {harÅpneSaker && (
             <RadioGroup
               legend=""

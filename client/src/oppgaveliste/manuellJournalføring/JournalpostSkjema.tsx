@@ -74,6 +74,8 @@ export const JournalpostSkjema: React.FC = () => {
     )
   }
 
+  const harÅpneSaker = saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0
+
   return (
     <Container>
       <Heading level="1" size="small" spacing>
@@ -135,7 +137,7 @@ export const JournalpostSkjema: React.FC = () => {
             Knytt til eksisterende sak
           </Heading>
           <Avstand paddingTop={4} paddingBottom={4}>
-            {saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0 ? (
+            {harÅpneSaker ? (
               <Alert variant="info" size="small">
                 <Brødtekst>
                   Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende
@@ -148,44 +150,46 @@ export const JournalpostSkjema: React.FC = () => {
               </Brødtekst>
             )}
           </Avstand>
-          <RadioGroup
-            legend=""
-            size="small"
-            hideLegend={true}
-            value={valgtEksisterendeSakId}
-            onChange={(value: string) => setValgtEksisterendeSakId(value)}
-          >
-            <Table size="small">
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell scope="col" />
-                  <Table.HeaderCell scope="col">Saksid</Table.HeaderCell>
-                  <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-                  <Table.HeaderCell scope="col">Status</Table.HeaderCell>
-                  <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {saksoversikt?.hotsakSaker.map((s) => (
-                  <Table.Row key={s.sakId}>
-                    <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
-                      <Radio value={s.sakId}>{''}</Radio>
-                    </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {s.sakstype && <OppgaveType oppgaveType={s.sakstype} />}
-                    </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {OppgaveStatusLabel.get(s.status)}
-                    </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {formaterDato(s.statusEndretDato)}
-                    </Table.DataCell>
+          {harÅpneSaker && (
+            <RadioGroup
+              legend=""
+              size="small"
+              hideLegend={true}
+              value={valgtEksisterendeSakId}
+              onChange={(value: string) => setValgtEksisterendeSakId(value)}
+            >
+              <Table size="small">
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell scope="col" />
+                    <Table.HeaderCell scope="col">Saksid</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Status</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
                   </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </RadioGroup>
+                </Table.Header>
+                <Table.Body>
+                  {saksoversikt?.hotsakSaker.map((s) => (
+                    <Table.Row key={s.sakId}>
+                      <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
+                        <Radio value={s.sakId}>{''}</Radio>
+                      </Table.DataCell>
+                      <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
+                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                        {s.sakstype && <OppgaveType oppgaveType={s.sakstype} />}
+                      </Table.DataCell>
+                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                        {OppgaveStatusLabel.get(s.status)}
+                      </Table.DataCell>
+                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                        {formaterDato(s.statusEndretDato)}
+                      </Table.DataCell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </RadioGroup>
+          )}
         </Avstand>
         <Avstand paddingTop={4}>
           {valgtEksisterendeSakId !== '' && (

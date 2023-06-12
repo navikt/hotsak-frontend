@@ -129,19 +129,23 @@ export const JournalpostSkjema: React.FC = () => {
             onChange={(e) => setJournalpostTittel(e.target.value)}
           />
         </Avstand>
-        <Dokumenter />
+        <Dokumenter dokumenter={journalpost?.dokumenter || []} />
         <Avstand paddingTop={10}>
           <Heading size="small" level="2" spacing>
             Knytt til eksisterende sak
           </Heading>
           <Avstand paddingTop={4} paddingBottom={4}>
-            {saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0 && (
+            {saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0 ? (
               <Alert variant="info" size="small">
                 <Brødtekst>
                   Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende
                   sak, marker saken du vil knytte dokumentene til.
                 </Brødtekst>
               </Alert>
+            ) : (
+              <Brødtekst>
+                Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.
+              </Brødtekst>
             )}
           </Avstand>
           <RadioGroup

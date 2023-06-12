@@ -24,6 +24,7 @@ import {
   VurderVilkårRequest,
 } from '../../../../types/types.internal'
 import { OverførGosysModal } from '../../../OverførGosysModal'
+import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { Utbetalingsmottaker } from './Utbetalingsmottaker'
@@ -47,6 +48,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { showBoundary } = useErrorBoundary()
   const [visGosysModal, setVisGosysModal] = useState(false)
   const [loading, setLoading] = useState(false)
+  const { dokumenter } = useJournalposter()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { bestillingsdato, ...rest } = { ...formData }
@@ -119,7 +121,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       <Heading level="1" size="xsmall" spacing>
         Registrer søknad
       </Heading>
-      <Dokumenter />
+      <Dokumenter dokumenter={dokumenter} />
       <Avstand paddingTop={4} paddingLeft={2}>
         <FormProvider {...methods}>
           <form

@@ -15,6 +15,7 @@ import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { beløp } from '../../../../formaters/beløp'
 import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
@@ -28,6 +29,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, isError, mutate } = useBrillesak()
   const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { dokumenter } = useJournalposter()
 
   if (isLoading) {
     return (
@@ -55,7 +57,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
       <Heading level="1" size="xsmall" spacing>
         Registrer søknad
       </Heading>
-      <Dokumenter />
+      <Dokumenter dokumenter={dokumenter} />
       <Avstand paddingTop={4} paddingLeft={2}>
         <Etikett>Målform</Etikett>
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>

@@ -1,12 +1,16 @@
 import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
-import { useJournalposter } from '../../saksbilde/journalpostHook'
+import { Dokument } from '../../types/types.internal'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { DokumentVelger } from './DokumentVelger'
 
-export const Dokumenter: React.FC = () => {
-  const { dokumenter } = useJournalposter()
+interface DokumenterProps {
+  dokumenter: Dokument[]
+}
+
+export const Dokumenter: React.FC<DokumenterProps> = (props) => {
+  const { dokumenter } = props
   const { valgtDokument, setValgtDokument } = useDokumentContext()
 
   return (

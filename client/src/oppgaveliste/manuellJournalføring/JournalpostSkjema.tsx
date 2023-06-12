@@ -3,26 +3,23 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
-import { Alert, Button, ExpansionCard, Heading, HelpText, Radio, RadioGroup, Table, TextField } from '@navikt/ds-react'
+import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
 
 import { postJournalføring } from '../../io/http'
-import { formaterDato } from '../../utils/date'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Button'
-import { HeadingMedHjelpetekst } from '../../felleskomponenter/HeadingMedHjelpetekst'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
-import { Brødtekst } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useSaksoversikt } from '../../personoversikt/saksoversiktHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
 import { useJournalpost } from '../../saksbilde/journalpostHook'
-import { BehandlingstatusType, JournalføringRequest, OppgaveStatusLabel, Oppgavetype } from '../../types/types.internal'
-import { OppgaveType } from '../kolonner/OpgaveType'
+import { BehandlingstatusType, JournalføringRequest, Oppgavetype } from '../../types/types.internal'
 import { Dokumenter } from './Dokumenter'
+import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
 
 const Container = styled.div`
   overflow: auto;
@@ -74,11 +71,6 @@ export const JournalpostSkjema: React.FC = () => {
       </Container>
     )
   }
-
-  const harÅpneSaker = saksoversikt?.hotsakSaker && saksoversikt?.hotsakSaker.length > 0
-  const åpneSakerHjelpetekst = harÅpneSaker
-    ? ' Det finnes åpne saker på denne personen i Hotsak. Hvis du vil knytte dokummentene til en eksisterende  sak, marker saken du vil knytte dokumentene til.'
-    : 'Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.'
 
   return (
     <Container>
@@ -136,62 +128,12 @@ export const JournalpostSkjema: React.FC = () => {
           />
         </Avstand>
         <Dokumenter dokumenter={journalpost?.dokumenter || []} />
-        <Avstand paddingTop={10}>
-          <HeadingMedHjelpetekst level="2" hjelpetekst={åpneSakerHjelpetekst} placement="right-end">
-            Knytt til eksisterende sak
-          </HeadingMedHjelpetekst>
-          <Avstand paddingTop={4} paddingBottom={4}></Avstand>
-          {harÅpneSaker && (
-            <RadioGroup
-              legend=""
-              size="small"
-              hideLegend={true}
-              value={valgtEksisterendeSakId}
-              onChange={(value: string) => setValgtEksisterendeSakId(value)}
-            >
-              <Table size="small">
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell scope="col" />
-                    <Table.HeaderCell scope="col">Saksid</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Sakstype</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Status</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {saksoversikt?.hotsakSaker.map((s) => (
-                    <Table.Row key={s.sakId}>
-                      <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
-                        <Radio value={s.sakId}>{''}</Radio>
-                      </Table.DataCell>
-                      <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
-                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                        {s.sakstype && <OppgaveType oppgaveType={s.sakstype} />}
-                      </Table.DataCell>
-                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                        {OppgaveStatusLabel.get(s.status)}
-                      </Table.DataCell>
-                      <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                        {formaterDato(s.statusEndretDato)}
-                      </Table.DataCell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-            </RadioGroup>
-          )}
-        </Avstand>
-        <Avstand paddingTop={4}>
-          {valgtEksisterendeSakId !== '' && (
-            <Alert variant="info" size="small">
-              <Brødtekst>Dokumentene du journalfører vil knyttes til saken du har valgt i liste over.</Brødtekst>
-              <Button variant="tertiary" size="small" onClick={() => setValgtEksisterendeSakId('')}>
-                Fjern knytning til sak
-              </Button>
-            </Alert>
-          )}
-        </Avstand>
+        <Avstand paddingTop={10} />
+        <KnyttTilEksisterendeSak
+          åpneSaker={saksoversikt?.hotsakSaker || []}
+          valgtEksisterendeSakId={valgtEksisterendeSakId}
+          onChange={setValgtEksisterendeSakId}
+        />
         <Avstand paddingLeft={2}>
           <Knappepanel>
             <Button

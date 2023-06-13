@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { ClockIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { Saksnotater } from '../høyrekolonne/notat/Saksnotater'
@@ -40,9 +39,7 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.List>
         <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
         <Tabs.Tab value={HøyrekolonneTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
-        <Eksperiment>
-          <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<PencilWritingIcon />} />
-        </Eksperiment>
+        <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<PencilWritingIcon />} />
       </Tabs.List>
       <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
         <BrilleHistorikk />
@@ -50,11 +47,9 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-      <Eksperiment>
-        <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
-          <Saksnotater sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-        </Tabs.Panel>
-      </Eksperiment>
+      <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
+        <Saksnotater sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+      </Tabs.Panel>
     </Sidebar>
   )
 }

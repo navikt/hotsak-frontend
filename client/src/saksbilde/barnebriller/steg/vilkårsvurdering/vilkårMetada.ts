@@ -42,7 +42,7 @@ const vilkårMetadata = [
   },
   {
     identifikator: 'Bestillingsdato v1',
-    overstyrbarAvSaksbehandler: false,
+    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     beskrivelse: 'Brillen må være bestilt etter at forskriften trådte i kraft, 1. august 2022.',
     basertPå: ['Bestillingsdato'],
   },

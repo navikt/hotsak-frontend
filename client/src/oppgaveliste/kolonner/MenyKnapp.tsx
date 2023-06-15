@@ -1,10 +1,11 @@
+import { log } from 'console'
 import React, { useState } from 'react'
 
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { Dropdown } from '@navikt/ds-react-internal'
 
-import { deleteFjernTildeling } from '../../io/http'
+import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -23,12 +24,34 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
     event.stopPropagation()
   }
 
-  const disabled = () => {
+  const fjernTilDelingDisabled = () => {
     return (
       !oppgave.saksbehandler ||
       oppgave.saksbehandler.objectId !== saksbehandler.objectId ||
       oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
     )
+  }
+
+  const overtaSakDisablet = () => {
+    return (
+      !oppgave.saksbehandler ||
+      oppgave.saksbehandler.objectId === saksbehandler.objectId ||
+      oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    )
+  }
+
+  const overtaSak = (event: React.MouseEvent) => {
+    event.stopPropagation()
+
+    if (!saksbehandler || isFetching) return
+    setIsFetching(true)
+    postTildeling(oppgave.sakId)
+      .catch(() => setIsFetching(false))
+      .then(() => {
+        logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
+        setIsFetching(false)
+        onMutate()
+      })
   }
 
   const fjernTildeling = (event: React.MouseEvent) => {
@@ -49,19 +72,22 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
     <>
       {
         <span style={{ display: 'flex', marginBlock: -2 }}>
-          <Dropdown onSelect={fjernTildeling}>
+          <Dropdown>
             <Button
               variant="tertiary"
               size="xsmall"
               as={Dropdown.Toggle}
               onClick={menyClick}
-              disabled={disabled()}
+              disabled={fjernTilDelingDisabled() && overtaSakDisablet()}
               icon={<MenuElipsisHorizontalCircleIcon />}
             />
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item disabled={disabled()}>
+                <Dropdown.Menu.List.Item value="asd" disabled={fjernTilDelingDisabled()} onClick={fjernTildeling}>
                   Fjern tildeling {isFetching && <Loader size="xsmall" />}
+                </Dropdown.Menu.List.Item>
+                <Dropdown.Menu.List.Item disabled={overtaSakDisablet()} onClick={overtaSak}>
+                  Overta saken {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
               </Dropdown.Menu.List>
             </Dropdown.Menu>

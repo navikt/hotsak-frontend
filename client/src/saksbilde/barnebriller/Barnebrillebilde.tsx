@@ -2,7 +2,10 @@ import React, { useEffect } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
+import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
+
+import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
 
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
@@ -22,7 +25,7 @@ const BarnebrilleBildeContainer = styled.div`
   height: 96vh;
 `
 const BarnebrilleContent: React.FC = React.memo(() => {
-  const { sak, isLoading, isError } = useBrillesak()
+  const { sak, isLoading, isError, mutate } = useBrillesak()
   const { valgtTab, setValgtTab } = useManuellSaksbehandlingContext()
   const { showBoundary } = useErrorBoundary()
 
@@ -53,24 +56,28 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <>
-      <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
+    <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
+      <FlexWrapper>
         <Tabs.List>
           <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
           <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkår" />
           <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
-        <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
-          <RegistrerSøknad />
-        </Tabs.Panel>
-        <Tabs.Panel value={StegType.VURDERE_VILKÅR.toString()}>
-          <VurderVilkår />
-        </Tabs.Panel>
-        <Tabs.Panel value={StegType.FATTE_VEDTAK.toString()}>
-          <Vedtak />
-        </Tabs.Panel>
-      </Tabs>
-    </>
+        <Border>
+          <MenyKnapp oppgave={sak} onMutate={mutate} knappeTekst="Meny" knappeIkon={<ChevronDownIcon />} />
+        </Border>
+      </FlexWrapper>
+
+      <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
+        <RegistrerSøknad />
+      </Tabs.Panel>
+      <Tabs.Panel value={StegType.VURDERE_VILKÅR.toString()}>
+        <VurderVilkår />
+      </Tabs.Panel>
+      <Tabs.Panel value={StegType.FATTE_VEDTAK.toString()}>
+        <Vedtak />
+      </Tabs.Panel>
+    </Tabs>
   )
 })
 
@@ -93,13 +100,20 @@ export const BarnebrilleBilde = () => (
   </ErrorBoundary>
 )
 
+const FlexWrapper = styled.div`
+  display: flex;
+  margin-left: 'auto';
+`
+
+const Border = styled.div`
+  display: flex;
+  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
+  padding-right: 2rem;
+`
+
 const MainGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr ${brilleSidebarBredde};
-`
-
-const TabContainer = styled.div`
-  padding-top: var(--a-spacing-4);
 `
 
 export default BarnebrilleBilde

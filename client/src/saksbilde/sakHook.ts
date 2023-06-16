@@ -9,6 +9,7 @@ interface DataResponse {
   sak: Sak | undefined
   isLoading: boolean
   isError: any
+  mutate: (...args: any[]) => any
 }
 
 interface BrillesakResponse {
@@ -20,18 +21,20 @@ interface BrillesakResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10_000 })
+  const { data, error, mutate } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10_000 })
 
   return {
     sak: data?.data,
     isLoading: !error && !data,
     isError: error,
+    mutate,
   }
 }
 
 // Duplisert frem til vi vet om de ulike sakstypene vil ha samme payload eller om det blir to ulike varianter/endepunkt
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
+
   const { data, error, mutate } = useSwr<{ data: Barnebrillesak }>(`api/sak/${saksnummer}`, httpGet)
 
   return {

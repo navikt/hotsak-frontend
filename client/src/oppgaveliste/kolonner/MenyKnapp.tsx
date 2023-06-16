@@ -1,4 +1,3 @@
-import { log } from 'console'
 import React, { useState } from 'react'
 
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
@@ -9,14 +8,16 @@ import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { Oppgave, OppgaveStatusType } from '../../types/types.internal'
+import { Barnebrillesak, Oppgave, OppgaveStatusType, Sak } from '../../types/types.internal'
 
 interface MenyKnappProps {
-  oppgave: Oppgave
+  oppgave: Oppgave | Sak | Barnebrillesak
+  knappeTekst?: string
+  knappeIkon?: any
   onMutate: (...args: any[]) => any
 }
 
-export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
+export const MenyKnapp = ({ oppgave, onMutate, knappeTekst, knappeIkon }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
 
@@ -79,11 +80,13 @@ export const MenyKnapp = ({ oppgave, onMutate }: MenyKnappProps) => {
               as={Dropdown.Toggle}
               onClick={menyClick}
               disabled={fjernTilDelingDisabled() && overtaSakDisablet()}
-              icon={<MenuElipsisHorizontalCircleIcon />}
-            />
+              icon={knappeIkon ? knappeIkon : <MenuElipsisHorizontalCircleIcon />}
+            >
+              {knappeTekst}
+            </Button>
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item value="asd" disabled={fjernTilDelingDisabled()} onClick={fjernTildeling}>
+                <Dropdown.Menu.List.Item disabled={fjernTilDelingDisabled()} onClick={fjernTildeling}>
                   Fjern tildeling {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
                 <Dropdown.Menu.List.Item disabled={overtaSakDisablet()} onClick={overtaSak}>

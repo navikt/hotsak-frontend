@@ -30,7 +30,6 @@ export const Vedtak: React.FC = () => {
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   const VENSTREKOLONNE_BREDDE = '180px'
-  const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
 
   const sendTilGodkjenning = () => {
     setLoading(true)
@@ -70,6 +69,7 @@ export const Vedtak: React.FC = () => {
   }
 
   const { bruker, vilkårsvurdering } = sak
+  const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
 
   const alertType = alertVariant(status)
 

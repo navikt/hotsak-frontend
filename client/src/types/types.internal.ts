@@ -190,6 +190,7 @@ export interface Brilleseddel {
   høyreSylinder: Diopter
   venstreSfære: Diopter
   venstreSylinder: Diopter
+  bestillingsdato?: string
 }
 
 export enum StegType {

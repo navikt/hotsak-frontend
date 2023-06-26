@@ -83,22 +83,22 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
-      målform: sak?.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      bestillingsdato: toDate(sak?.vilkårsgrunnlag?.bestillingsdato),
+      målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
+      bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.bestillingsdato),
       brilleseddel: {
-        høyreSfære: sak?.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
-        høyreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.høyreSylinder.toString() || '',
-        venstreSfære: sak?.vilkårsgrunnlag?.brilleseddel.venstreSfære.toString() || '',
-        venstreSylinder: sak?.vilkårsgrunnlag?.brilleseddel.venstreSylinder.toString() || '',
+        høyreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
+        høyreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSylinder.toString() || '',
+        venstreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSfære.toString() || '',
+        venstreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSylinder.toString() || '',
       },
-      brillepris: sak?.vilkårsgrunnlag?.brillepris || '',
+      brillepris: sak?.data.vilkårsgrunnlag?.brillepris || '',
       bestiltHosOptiker: {
-        vilkårOppfylt: sak?.vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt || '',
-        begrunnelse: sak?.vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse || '',
       },
       komplettBrille: {
-        vilkårOppfylt: sak?.vilkårsgrunnlag?.komplettBrille.vilkårOppfylt || '',
-        begrunnelse: sak?.vilkårsgrunnlag?.komplettBrille.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.komplettBrille.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.komplettBrille.begrunnelse || '',
       },
     },
   })
@@ -132,7 +132,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
           >
             <Målform />
             <Avstand paddingTop={6}>
-              <Utbetalingsmottaker defaultInnsenderFnr={sak?.utbetalingsmottaker?.fnr} />
+              <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
             </Avstand>
             <Avstand paddingTop={4}>
               <Bestillingsdato />

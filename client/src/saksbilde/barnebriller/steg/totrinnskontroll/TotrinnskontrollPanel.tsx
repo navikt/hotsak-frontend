@@ -20,19 +20,19 @@ export const TotrinnskontrollPanel: React.FC = () => {
     return <Container>Feil ved henting av sak</Container>
   }
 
-  if (!sak.saksbehandler || sak.saksbehandler.objectId === '') {
+  if (!sak.data.saksbehandler || sak.data.saksbehandler.objectId === '') {
     return <Container>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Container>
   }
 
   const totrinnskontrollFullført =
-    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
-    sak.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
+    sak.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT ||
+    sak.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT
 
   if (
     !totrinnskontrollFullført &&
-    sak.status !== OppgaveStatusType.VEDTAK_FATTET &&
-    sak.saksbehandler &&
-    sak.saksbehandler.objectId !== saksbehandler.objectId
+    sak.data.status !== OppgaveStatusType.VEDTAK_FATTET &&
+    sak.data.saksbehandler &&
+    sak.data.saksbehandler.objectId !== saksbehandler.objectId
   ) {
     return (
       <Container>
@@ -41,7 +41,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
     )
   }
 
-  if (!totrinnskontrollFullført && sak.steg !== StegType.GODKJENNE) {
+  if (!totrinnskontrollFullført && sak.data.steg !== StegType.GODKJENNE) {
     return <Container>Lesevisning eller tomt resultat hvis ingen totrinnskontroll ennå.</Container>
   }
 

@@ -20,7 +20,6 @@ export const TotrinnskontrollForm: React.FC = () => {
   const [visGodkjenningsModal, setVisGodkjenningsModal] = useState(false)
   const saksbehandler = useInnloggetSaksbehandler()
   const { sak } = useBrillesak()
-
   const methods = useForm<TotrinnskontrollData>({
     defaultValues: {
       resultat: '',
@@ -42,17 +41,18 @@ export const TotrinnskontrollForm: React.FC = () => {
     const formData = getValues()
 
     setLoading(true)
-    put(`${baseUrl}/api/sak/${sak!.sakId}/kontroll`, formData)
+    put(`${baseUrl}/api/sak/${sak!.data.sakId}/kontroll`, formData)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
-        mutate(`api/sak/${sak!.sakId}`)
-        mutate(`api/sak/${sak!.sakId}/historikk`)
+        mutate(`api/sak/${sak!.data.sakId}`)
+        mutate(`api/sak/${sak!.data.sakId}/historikk`)
       })
   }
 
   const totrinnkontrollMulig =
-    sak?.steg === StegType.GODKJENNE && sak?.totrinnskontroll?.saksbehandler.objectId !== saksbehandler.objectId
+    sak?.data.steg === StegType.GODKJENNE &&
+    sak?.data.totrinnskontroll?.saksbehandler.objectId !== saksbehandler.objectId
   return (
     <>
       {!totrinnkontrollMulig ? (

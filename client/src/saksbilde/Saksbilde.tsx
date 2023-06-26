@@ -29,14 +29,14 @@ const SaksbildeContent = React.memo(() => {
     showBoundary(isError)
   }
 
-  if (!sak) return <div>Fant ikke sak</div>
+  if (!sak?.data) return <div>Fant ikke sak</div>
 
   return (
     <>
       <SaksbildeContainer className="saksbilde">
-        <Personlinje person={sak.bruker} loading={false} />
+        <Personlinje person={sak.data.bruker} loading={false} />
         {(() => {
-          switch (sak!.sakstype) {
+          switch (sak.data.sakstype) {
             case Oppgavetype.BESTILLING:
               return <Bestillingsbilde />
             case Oppgavetype.BARNEBRILLER:

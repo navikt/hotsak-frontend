@@ -32,8 +32,8 @@ const Teller = styled.div`
 export const HøyrekolonneHeader: React.FC<SøknadslinjeProps> = ({ onTabChange, currentTab }) => {
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading } = useHjelpemiddeloversikt(
-    sak?.personinformasjon.fnr,
-    sak?.vedtak?.vedtaksgrunnlag
+    sak?.data.personinformasjon.fnr,
+    sak?.data.vedtak?.vedtaksgrunnlag
   )
 
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => {

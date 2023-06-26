@@ -3,17 +3,17 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
-import { Barnebrillesak, Sak } from '../types/types.internal'
+import { BarnebrillesakResponse, Sakresponse } from '../types/types.internal'
 
 interface DataResponse {
-  sak: Sak | undefined
+  sak: Sakresponse | undefined
   isLoading: boolean
   isError: any
   mutate: (...args: any[]) => any
 }
 
 interface BrillesakResponse {
-  sak: Barnebrillesak | undefined
+  sak: BarnebrillesakResponse | undefined
   isLoading: boolean
   isError: any
   mutate: (...args: any[]) => any
@@ -21,7 +21,9 @@ interface BrillesakResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error, mutate } = useSwr<{ data: Sak }>(`api/sak/${saksnummer}`, httpGet, { refreshInterval: 10_000 })
+  const { data, error, mutate } = useSwr<{ data: Sakresponse }>(`api/sak/${saksnummer}`, httpGet, {
+    refreshInterval: 10_000,
+  })
 
   return {
     sak: data?.data,
@@ -35,7 +37,7 @@ export function useSak(): DataResponse {
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
 
-  const { data, error, mutate } = useSwr<{ data: Barnebrillesak }>(`api/sak/${saksnummer}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: BarnebrillesakResponse }>(`api/sak/${saksnummer}`, httpGet)
 
   return {
     sak: data?.data,

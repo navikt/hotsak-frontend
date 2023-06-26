@@ -27,13 +27,13 @@ export const Vedtak: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
   const VENSTREKOLONNE_BREDDE = '180px'
 
   const sendTilGodkjenning = () => {
     setLoading(true)
-    post(`/api/sak/${sak!.sakId}/kontroll`, {})
+    post(`/api/sak/${sak!.data.sakId}/kontroll`, {})
       .catch((e) => {
         setLoading(false)
 
@@ -47,7 +47,7 @@ export const Vedtak: React.FC = () => {
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
-  if (sak?.steg === StegType.INNHENTE_FAKTA) {
+  if (sak?.data.steg === StegType.INNHENTE_FAKTA) {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
@@ -57,7 +57,7 @@ export const Vedtak: React.FC = () => {
     )
   }
 
-  if (sak?.steg === StegType.VURDERE_VILKÅR) {
+  if (sak?.data.steg === StegType.VURDERE_VILKÅR) {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
@@ -68,17 +68,18 @@ export const Vedtak: React.FC = () => {
     )
   }
 
-  const { bruker, vilkårsvurdering } = sak
-  const status = oppsummertStatus(sak?.vilkårsvurdering!.vilkår || [])
+  const { bruker, vilkårsvurdering } = sak.data
+  const status = oppsummertStatus(sak?.data.vilkårsvurdering!.vilkår || [])
 
   const alertType = alertVariant(status)
 
-  const vedtakFattet = sak.status === OppgaveStatusType.VEDTAK_FATTET
-  const visAlertGodkjenning = sak.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.steg === StegType.GODKJENNE
+  const vedtakFattet = sak.data.status === OppgaveStatusType.VEDTAK_FATTET
+  const visAlertGodkjenning =
+    sak.data.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
   const visSendTilGodkjenning =
     saksbehandlerKanRedigereBarnebrillesak &&
-    sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    (status === VilkårsResultat.NEI || sak?.utbetalingsmottaker?.kontonummer !== undefined)
+    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
 
   return (
     <TreKolonner>
@@ -108,14 +109,14 @@ export const Vedtak: React.FC = () => {
             <Rad>
               <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
               <Kolonne>
-                <Etikett>{capitalizeName(`${sak.utbetalingsmottaker?.navn}`)}</Etikett>
+                <Etikett>{capitalizeName(`${sak.data.utbetalingsmottaker?.navn}`)}</Etikett>
               </Kolonne>
             </Rad>
-            {sak.utbetalingsmottaker?.kontonummer ? (
+            {sak.data.utbetalingsmottaker?.kontonummer ? (
               <Rad>
                 <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
                 <Kolonne>
-                  <Etikett>{formaterKontonummer(sak.utbetalingsmottaker?.kontonummer)}</Etikett>
+                  <Etikett>{formaterKontonummer(sak.data.utbetalingsmottaker?.kontonummer)}</Etikett>
                 </Kolonne>
               </Rad>
             ) : (
@@ -136,7 +137,7 @@ export const Vedtak: React.FC = () => {
                   onClick={(e) => {
                     e.preventDefault()
                     post('/api/utbetalingsmottaker', {
-                      fnr: sak.utbetalingsmottaker?.fnr,
+                      fnr: sak.data.utbetalingsmottaker?.fnr,
                       sakId: Number(saksnummer),
                     }).then(() => {
                       mutate()
@@ -154,7 +155,7 @@ export const Vedtak: React.FC = () => {
             <Avstand paddingBottom={6} />
             {visAlertGodkjenning && (
               <Alert variant="info" size="small">
-                {`Sendt til godkjenning ${formaterDato(sak.totrinnskontroll?.opprettet)}.`}
+                {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
               </Alert>
             )}
             {visSendTilGodkjenning && (
@@ -177,7 +178,7 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel sakId={sak.sakId} />
+        <BrevPanel sakId={sak.data.sakId} />
       </VenstreKolonne>
     </TreKolonner>
   )

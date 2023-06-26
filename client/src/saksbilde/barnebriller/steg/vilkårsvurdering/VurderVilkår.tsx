@@ -25,7 +25,7 @@ export const VurderVilkår: React.FC = () => {
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
@@ -45,7 +45,7 @@ export const VurderVilkår: React.FC = () => {
     return <Feilmelding>{`Fant ikke sak med saksnummer ${saksnummer}`}</Feilmelding>
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
-  if (sak?.steg === StegType.INNHENTE_FAKTA) {
+  if (sak?.data.steg === StegType.INNHENTE_FAKTA) {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
@@ -56,7 +56,7 @@ export const VurderVilkår: React.FC = () => {
     )
   }
 
-  const oppsummertResultat = oppsummertStatus(sak.vilkårsvurdering!.vilkår)
+  const oppsummertResultat = oppsummertStatus(sak.data.vilkårsvurdering!.vilkår)
 
   return (
     <>
@@ -64,7 +64,7 @@ export const VurderVilkår: React.FC = () => {
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        <Oppsummering vilkår={sak.vilkårsvurdering?.vilkår || []} oppsummertResultat={oppsummertResultat} />
+        <Oppsummering vilkår={sak.data.vilkårsvurdering?.vilkår || []} oppsummertResultat={oppsummertResultat} />
         <Table size="small">
           <Table.Header>
             <Table.Row>
@@ -78,7 +78,7 @@ export const VurderVilkår: React.FC = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {sak.vilkårsvurdering?.vilkår.map((vilkår) => {
+            {sak.data.vilkårsvurdering?.vilkår.map((vilkår) => {
               const {
                 id,
                 identifikator,
@@ -104,7 +104,7 @@ export const VurderVilkår: React.FC = () => {
                   content={
                     <SaksbehandlersVurdering
                       lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
-                      sakId={sak.sakId}
+                      sakId={sak.data.sakId}
                       vilkår={vilkår}
                       onCanceled={() => toggleExpandedRad(id)}
                       onSaved={() => {
@@ -148,7 +148,7 @@ export const VurderVilkår: React.FC = () => {
           <Button
             variant="primary"
             size="small"
-            onClick={() => gåTilNesteSteg(sak.sakId, sak.steg)}
+            onClick={() => gåTilNesteSteg(sak.data.sakId, sak.data.steg)}
             disabled={lagrer}
             loading={lagrer}
           >

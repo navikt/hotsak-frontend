@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ClockIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { ClockIcon, EnvelopeClosedIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -21,10 +21,10 @@ const Sidebar = styled(Tabs)`
 export const BarnebrilleSidebar: React.FC = () => {
   const { sak } = useBrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
   useEffect(() => {
-    if (sak?.steg === StegType.GODKJENNE) {
+    if (sak?.data.steg === StegType.GODKJENNE) {
       setValgtSidebarTab(HøyrekolonneTabs.TOTRINNSKONTROLL)
     }
   }, [])
@@ -39,6 +39,7 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.List>
         <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
         <Tabs.Tab value={HøyrekolonneTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
+        <Tabs.Tab value={HøyrekolonneTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
         <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<PencilWritingIcon />} />
       </Tabs.List>
       <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
@@ -47,8 +48,11 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
+      <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV.toString()}>
+        {/*<SendBrevPanel sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />*/}
+      </Tabs.Panel>
       <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
-        <Saksnotater sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+        <Saksnotater sakId={sak?.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
     </Sidebar>
   )

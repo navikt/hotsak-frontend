@@ -50,7 +50,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
     )
   }
 
-  const { vilkårsgrunnlag, vilkårsvurdering } = sak
+  const { vilkårsgrunnlag, vilkårsvurdering } = sak.data
 
   return (
     <Container>

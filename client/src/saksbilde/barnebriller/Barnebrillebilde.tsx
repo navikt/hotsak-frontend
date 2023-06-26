@@ -36,20 +36,20 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   useEffect(() => {
     if (sak) {
       if (
-        sak.steg === StegType.GODKJENNE ||
-        sak.steg === StegType.FERDIG_BEHANDLET ||
-        sak.steg === StegType.REVURDERE
+        sak.data.steg === StegType.GODKJENNE ||
+        sak.data.steg === StegType.FERDIG_BEHANDLET ||
+        sak.data.steg === StegType.REVURDERE
       ) {
         setValgtTab(StegType.INNHENTE_FAKTA)
       } else {
-        setValgtTab(sak?.steg)
+        setValgtTab(sak?.data.steg)
       }
     }
   }, [])
 
-  if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {
+  if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(
-      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.sakstype} `
+      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype} `
     )
   }
 
@@ -64,7 +64,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
         <Border>
-          <MenyKnapp oppgave={sak} onMutate={mutate} knappeTekst="Meny" knappeIkon={<ChevronDownIcon />} />
+          <MenyKnapp oppgave={sak.data} onMutate={mutate} knappeTekst="Meny" knappeIkon={<ChevronDownIcon />} />
         </Border>
       </FlexWrapper>
 

@@ -23,7 +23,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
   const { dokumenter } = useJournalposter()
   const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
   const journalpostID = dokumenter[0]?.journalpostID
   const dokumentID = dokumenter[0]?.dokumentID
@@ -40,9 +40,9 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
     showBoundary(isError)
   }
 
-  if (sak?.sakstype !== Oppgavetype.BARNEBRILLER) {
+  if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(
-      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.sakstype} `
+      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype} `
     )
   }
 

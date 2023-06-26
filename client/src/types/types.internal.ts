@@ -7,6 +7,16 @@ export interface HarSaksinformasjon {
   saksbehandler?: Saksbehandler
 }
 
+export interface Sakresponse {
+  kanTildeles: boolean
+  data: Sak
+}
+
+export interface BarnebrillesakResponse {
+  kanTildeles: boolean
+  data: Barnebrillesak
+}
+
 export interface Sak extends HarSaksinformasjon {
   sakId: string
   sakstype: Oppgavetype
@@ -712,6 +722,7 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
+  SEND_BREV = 'SEND_BREV',
   NOTAT = 'NOTAT',
 }
 

@@ -41,8 +41,8 @@ const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
 export const Hjelpemiddeloversikt: React.FC = () => {
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak } = useHjelpemiddeloversikt(
-    sak?.personinformasjon.fnr,
-    sak?.vedtak?.vedtaksgrunnlag
+    sak?.data.personinformasjon.fnr,
+    sak?.data.vedtak?.vedtaksgrunnlag
   )
 
   if (isError) {
@@ -82,7 +82,7 @@ export const Hjelpemiddeloversikt: React.FC = () => {
       {isFromVedtak ? (
         <>
           <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-          <Rad>Per {formaterDato(sak?.vedtak?.vedtaksdato)}, da vedtaket ble gjort </Rad>
+          <Rad>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort </Rad>
         </>
       ) : (
         <>

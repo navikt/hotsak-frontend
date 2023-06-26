@@ -34,11 +34,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     }
     const sak = await sakStore.hent(sakId)
     if (sak) {
-      return res(ctx.delay(200), ctx.status(200), ctx.json(sak))
+      return res(ctx.delay(200), ctx.status(200), ctx.json({ kanTildeles: true, data: sak }))
     }
     const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
-      return res(ctx.delay(200), ctx.status(200), ctx.json(barnebrillesak))
+      return res(ctx.delay(200), ctx.status(200), ctx.json({ kanTildeles: true, data: barnebrillesak }))
     }
     return res(ctx.delay(200), ctx.status(404))
   }),

@@ -52,7 +52,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
   //useRefreshPersonVedUrlEndring();
   const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
-  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.personinformasjon.fnr)
+  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
 
   if (isLoading) return <LasterSaksbilde />
@@ -68,7 +68,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
   return (
     <>
       <Søknadslinje
-        id={sak.sakId}
+        id={sak.data.sakId}
         type={Oppgavetype.SØKNAD}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
@@ -79,42 +79,49 @@ const SaksbildeContent: React.FC = React.memo(() => {
             <VenstreMeny>
               <SøknadCard
                 oppgaveType={Oppgavetype.SØKNAD}
-                søknadGjelder={sak.søknadGjelder}
-                saksnr={sak.sakId}
-                mottattDato={sak.mottattDato}
-                bosituasjon={sak.personinformasjon.bosituasjon}
-                bruksarena={sak.personinformasjon.bruksarena}
-                funksjonsnedsettelse={sak.personinformasjon.funksjonsnedsettelse}
+                søknadGjelder={sak.data.søknadGjelder}
+                saksnr={sak.data.sakId}
+                mottattDato={sak.data.mottattDato}
+                bosituasjon={sak.data.personinformasjon.bosituasjon}
+                bruksarena={sak.data.personinformasjon.bruksarena}
+                funksjonsnedsettelse={sak.data.personinformasjon.funksjonsnedsettelse}
               />
               <FormidlerCard
                 tittel="FORMIDLER"
-                formidlerNavn={sak.formidler.navn}
-                formidlerTelefon={sak.formidler.telefon}
-                kommune={sak.formidler.poststed}
+                formidlerNavn={sak.data.formidler.navn}
+                formidlerTelefon={sak.data.formidler.telefon}
+                kommune={sak.data.formidler.poststed}
               />
               <GreitÅViteCard
-                greitÅViteFakta={sak.greitÅViteFaktum}
+                greitÅViteFakta={sak.data.greitÅViteFaktum}
                 harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
               />
-              <VedtakCard sak={sak} hjelpemiddelArtikler={hjelpemiddelArtikler} />
+              <VedtakCard sak={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>
                 <Routes>
                   <Route
                     path="/hjelpemidler"
-                    element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak} />}
+                    element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak.data} />}
                   />
                   <Route
                     path="/bruker"
                     element={
-                      <Bruker person={sak.personinformasjon} levering={sak.levering} formidler={sak.formidler} />
+                      <Bruker
+                        person={sak.data.personinformasjon}
+                        levering={sak.data.levering}
+                        formidler={sak.data.formidler}
+                      />
                     }
                   />
                   <Route
                     path="/formidler"
                     element={
-                      <Formidlerside formidler={sak.formidler} oppfølgingsansvarling={sak.oppfølgingsansvarlig} />
+                      <Formidlerside
+                        formidler={sak.data.formidler}
+                        oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
+                      />
                     }
                   />
                 </Routes>

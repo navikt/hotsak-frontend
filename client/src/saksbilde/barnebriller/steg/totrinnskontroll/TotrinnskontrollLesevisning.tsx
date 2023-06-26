@@ -16,25 +16,25 @@ export const TotrinnskontrollLesevisning: React.FC = () => {
   return (
     <>
       <Etikett>Vurdering</Etikett>
-      <Brødtekst>{capitalize(sak?.totrinnskontroll?.resultat)}</Brødtekst>
+      <Brødtekst>{capitalize(sak?.data.totrinnskontroll?.resultat)}</Brødtekst>
 
-      {sak?.totrinnskontroll?.begrunnelse && (
+      {sak?.data.totrinnskontroll?.begrunnelse && (
         <>
           <Etikett>Begrunn vurderingen din</Etikett>
-          <Brødtekst>{sak.totrinnskontroll.begrunnelse}</Brødtekst>
+          <Brødtekst>{sak.data.totrinnskontroll.begrunnelse}</Brødtekst>
         </>
       )}
 
       <Avstand paddingTop={4}>
-        {sak?.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (
+        {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (
           <Alert size="small" variant="info">
-            Sendt i retur til saksbehandler {formaterDato(sak?.totrinnskontroll?.opprettet)}
+            Sendt i retur til saksbehandler {formaterDato(sak?.data.totrinnskontroll?.opprettet)}
           </Alert>
         )}
-        {sak?.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
-          sak.status === OppgaveStatusType.VEDTAK_FATTET && (
+        {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
+          sak.data.status === OppgaveStatusType.VEDTAK_FATTET && (
             <Alert size="small" variant="success">
-              Vedtaket er fattet {formaterDato(sak?.vedtak?.vedtaksdato)}
+              Vedtaket er fattet {formaterDato(sak?.data.vedtak?.vedtaksdato)}
             </Alert>
           )}
       </Avstand>

@@ -1,4 +1,7 @@
+import { log } from 'console'
 import { rest } from 'msw'
+
+import { OppgaveType } from '../../oppgaveliste/kolonner/OpgaveType'
 
 import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
@@ -33,12 +36,24 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       return res(ctx.status(401), ctx.text('Unauthorized.'))
     }
     const sak = await sakStore.hent(sakId)
+
     if (sak) {
-      return res(ctx.delay(200), ctx.status(200), ctx.json({ kanTildeles: true, data: sak }))
+      return res(
+        ctx.delay(200),
+        ctx.status(200),
+        ctx.json({ kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER, data: sak })
+      )
     }
     const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
-      return res(ctx.delay(200), ctx.status(200), ctx.json({ kanTildeles: true, data: barnebrillesak }))
+      return res(
+        ctx.delay(200),
+        ctx.status(200),
+        ctx.json({
+          kanTildeles: barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+          data: barnebrillesak,
+        })
+      )
     }
     return res(ctx.delay(200), ctx.status(404))
   }),

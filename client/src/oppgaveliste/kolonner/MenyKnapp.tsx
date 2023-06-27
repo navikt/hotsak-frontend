@@ -8,45 +8,52 @@ import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { Barnebrillesak, Oppgave, OppgaveStatusType, Sak } from '../../types/types.internal'
+import { OppgaveStatusType, Saksbehandler } from '../../types/types.internal'
+import { useTildeling } from './useTildeling'
 
 interface MenyKnappProps {
-  oppgave: Oppgave | Sak | Barnebrillesak
+  sakID: string
+  status: OppgaveStatusType
+  tildeletSaksbehander?: Saksbehandler
+  kanTildeles: boolean
   knappeTekst?: string
   knappeIkon?: any
   onMutate: (...args: any[]) => any
 }
 
-export const MenyKnapp = ({ oppgave, onMutate, knappeTekst, knappeIkon }: MenyKnappProps) => {
+export const MenyKnapp = ({
+  sakID,
+  status,
+  tildeletSaksbehander,
+  kanTildeles,
+  onMutate,
+  knappeTekst,
+  knappeIkon,
+}: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
+  const { onTildel } = useTildeling({ sakId: sakID, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
 
   const menyClick = (event: React.MouseEvent) => {
     event.stopPropagation()
   }
 
-  const fjernTilDelingDisabled = () => {
-    return (
-      !oppgave.saksbehandler ||
-      oppgave.saksbehandler.objectId !== saksbehandler.objectId ||
-      oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
-    )
-  }
+  const fjernTilDelingDisabled =
+    !tildeletSaksbehander ||
+    tildeletSaksbehander.objectId !== saksbehandler.objectId ||
+    status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
-  const overtaSakDisablet = () => {
-    return (
-      !oppgave.saksbehandler ||
-      oppgave.saksbehandler.objectId === saksbehandler.objectId ||
-      oppgave.status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
-    )
-  }
+  const kanOvertaSak =
+    tildeletSaksbehander &&
+    tildeletSaksbehander.objectId !== saksbehandler.objectId &&
+    status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const overtaSak = (event: React.MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgave.sakId)
+    postTildeling(sakID)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -60,7 +67,7 @@ export const MenyKnapp = ({ oppgave, onMutate, knappeTekst, knappeIkon }: MenyKn
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernTildeling(oppgave.sakId)
+    deleteFjernTildeling(sakID)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)
@@ -79,19 +86,25 @@ export const MenyKnapp = ({ oppgave, onMutate, knappeTekst, knappeIkon }: MenyKn
               size="xsmall"
               as={Dropdown.Toggle}
               onClick={menyClick}
-              disabled={fjernTilDelingDisabled() && overtaSakDisablet()}
               icon={knappeIkon ? knappeIkon : <MenuElipsisHorizontalCircleIcon />}
             >
               {knappeTekst}
             </Button>
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item disabled={fjernTilDelingDisabled()} onClick={fjernTildeling}>
+                <Dropdown.Menu.List.Item disabled={fjernTilDelingDisabled} onClick={fjernTildeling}>
                   Fjern tildeling {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
-                <Dropdown.Menu.List.Item disabled={overtaSakDisablet()} onClick={overtaSak}>
-                  Overta saken {isFetching && <Loader size="xsmall" />}
-                </Dropdown.Menu.List.Item>
+                {kanOvertaSak && (
+                  <Dropdown.Menu.List.Item onClick={overtaSak}>
+                    Overta saken {isFetching && <Loader size="xsmall" />}
+                  </Dropdown.Menu.List.Item>
+                )}
+                {kanTildeles && !kanOvertaSak && (
+                  <Dropdown.Menu.List.Item onClick={onTildel}>
+                    Ta saken {isFetching && <Loader size="xsmall" />}
+                  </Dropdown.Menu.List.Item>
+                )}
               </Dropdown.Menu.List>
             </Dropdown.Menu>
           </Dropdown>

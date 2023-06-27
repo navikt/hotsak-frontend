@@ -64,7 +64,15 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
         <Border>
-          <MenyKnapp oppgave={sak.data} onMutate={mutate} knappeTekst="Meny" knappeIkon={<ChevronDownIcon />} />
+          <MenyKnapp
+            sakID={sak.data.sakId}
+            tildeletSaksbehander={sak.data.saksbehandler}
+            status={sak.data.status}
+            kanTildeles={sak.kanTildeles}
+            onMutate={mutate}
+            knappeTekst="Meny"
+            knappeIkon={<ChevronDownIcon />}
+          />
         </Border>
       </FlexWrapper>
 

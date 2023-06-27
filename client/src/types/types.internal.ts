@@ -452,7 +452,7 @@ export interface Oppgave {
   innsender: string
   bruker: OppgaveBruker
   enhet: Enhet
-  saksbehandler?: Saksbehandler | null
+  saksbehandler?: Saksbehandler
   kanTildeles: boolean
 }
 

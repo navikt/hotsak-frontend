@@ -136,7 +136,19 @@ export const Oppgaveliste: React.FC = () => {
       width: 140,
       render: (oppgave: Oppgave) => <Mottatt dato={oppgave.mottatt} />,
     },
-    { key: 'MENU', sortable: false, render: (oppgave: Oppgave) => <MenyKnapp oppgave={oppgave} onMutate={mutate} /> },
+    {
+      key: 'MENU',
+      sortable: false,
+      render: (oppgave: Oppgave) => (
+        <MenyKnapp
+          sakID={oppgave.sakId}
+          status={oppgave.status}
+          tildeletSaksbehander={oppgave.saksbehandler}
+          kanTildeles={oppgave.kanTildeles}
+          onMutate={mutate}
+        />
+      ),
+    },
   ]
 
   if (error) {

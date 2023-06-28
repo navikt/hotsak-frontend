@@ -50,7 +50,11 @@ export const Dokumentliste: React.FC = () => {
       key: 'tittel',
       name: 'Beskrivelse',
       width: 400,
-      render: (journalpost: Journalpost) => <TekstCell value={journalpost.tittel} />,
+      render: (journalpost: Journalpost) => (
+        <TooltipWrapper visTooltip={journalpost.tittel.length > 40} content={journalpost.tittel}>
+          <TekstMedEllipsis>{journalpost.tittel}</TekstMedEllipsis>
+        </TooltipWrapper>
+      ),
     },
     {
       key: 'status',

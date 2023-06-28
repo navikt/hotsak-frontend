@@ -25,12 +25,11 @@ interface FilterProps {
 }
 
 export const FilterDropdown: React.FC<FilterProps> = ({ label, value, options, handleChange }) => {
-  const filterOptions = Array.from(options.keys())
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>
-      {filterOptions.map((it) => (
-        <option key={it} value={it}>
-          {options.get(it)}
+      {[...options.entries()].sort(sorterAlfabetiskPåVerdi).map(([key, value]) => (
+        <option key={key} value={value}>
+          {value}
         </option>
       ))}
     </Dropdown>
@@ -40,6 +39,16 @@ export const FilterDropdown: React.FC<FilterProps> = ({ label, value, options, h
 interface FiltersProps {
   children: React.ReactNode
   onClear: (...args: any[]) => any
+}
+
+function sorterAlfabetiskPåVerdi(a: [string, string], b: [string, string]) {
+  if (a[1] < b[1]) {
+    return -1
+  }
+  if (a[1] > b[1]) {
+    return 1
+  }
+  return 0
 }
 
 export const Filters: React.FC<FiltersProps> = ({ children, onClear }) => {

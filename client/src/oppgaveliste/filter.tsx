@@ -27,11 +27,13 @@ interface FilterProps {
 export const FilterDropdown: React.FC<FilterProps> = ({ label, value, options, handleChange }) => {
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>
-      {[...options.entries()].sort(sorterAlfabetiskPåVerdi).map(([key, value]) => (
-        <option key={key} value={value}>
-          {value}
-        </option>
-      ))}
+      {[...options.entries()].sort(sorterAlfabetiskPåVerdi).map(([key, value]) => {
+        return (
+          <option key={key} value={key}>
+            {value}
+          </option>
+        )
+      })}
     </Dropdown>
   )
 }

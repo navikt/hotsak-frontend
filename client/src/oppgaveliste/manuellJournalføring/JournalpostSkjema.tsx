@@ -120,7 +120,7 @@ export const JournalpostSkjema: React.FC = () => {
             Journalpost
           </Heading>
           <TextField
-            label="Dokumentittel"
+            label="Dokumenttittel"
             description="Tittelen blir synlig i fagsystemer og for bruker"
             size="small"
             value={journalpostTittel}

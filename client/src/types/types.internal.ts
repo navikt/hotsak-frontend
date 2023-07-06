@@ -307,6 +307,12 @@ export interface Notat {
   slettet?: string
 }
 
+export interface BrevTekst {
+  sakId: string
+  brevtekst: string
+  brevmal: string
+}
+
 export interface HjelpemiddelArtikkel {
   antall: number
   antallEnhet: string
@@ -722,9 +728,22 @@ export const OmrådeFilterLabel = new Map<string, string>([
 export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
+}
+
+export enum BarnebrilleSidebarTabs {
+  SAKSHISTORIKK = 'SAKSHISTORIKK',
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
-  //SEND_BREV = 'SEND_BREV',
+  SEND_BREV = 'SEND_BREV',
   NOTAT = 'NOTAT',
+}
+
+export enum Brevmal {
+  INNHENTE_OPPLYSNINGER = 'INNHENTE_OPPLYSNINGER',
+}
+
+export enum Brevtype {
+  VEDTAKSBREV = 'VEDTAKSBREV',
+  INNHENTE_OPPLYSNINGER_BREV = 'INNHENTE_OPPLYSNINGER_BREV',
 }
 
 export interface OverforGosysTilbakemelding {

@@ -16,7 +16,7 @@ import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
@@ -178,7 +178,7 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel sakId={sak.data.sakId} />
+        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.VEDTAKSBREV} />
       </VenstreKolonne>
     </TreKolonner>
   )
@@ -186,4 +186,7 @@ export const Vedtak: React.FC = () => {
 
 const VenstreKolonne = styled(Panel)`
   border-left: 1px solid var(--a-border-default);
+  padding: 0;
+  margin: 0;
+  height: 100%;
 `

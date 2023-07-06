@@ -2,6 +2,7 @@ import { isNumber } from '../utils/type'
 
 import type {
   AvvisBestilling,
+  BrevTekst,
   EndreHjelpemiddelRequest,
   JournalføringRequest,
   OppdaterVilkårData,
@@ -227,4 +228,8 @@ export const postSaksnotat = async (sakId: string, type: 'INTERNT', innhold: str
 
 export const slettSaksnotat = async (sakId: string, notatId: number) => {
   return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
+}
+
+export const postBrevutkast = async (brevTekst: BrevTekst) => {
+  return post(`${baseUrl}/api/sak/${brevTekst.sakId}/utkast`, brevTekst)
 }

@@ -6,12 +6,12 @@ import { Loader } from '@navikt/ds-react'
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../../felleskomponenter/Feilmelding'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
-import { RessursStatus } from '../../../../../types/types.internal'
+import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
 import { useBrev } from './brevHook'
 
 const DokumentDiv = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 140px);
 `
 
 const FeilmeldingDiv = styled.div`
@@ -21,15 +21,19 @@ const FeilmeldingDiv = styled.div`
 
 interface BrevPanelProps {
   sakId: number | string
+  brevtype: Brevtype
+  fullSize: boolean
 }
 
 export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
-  const { sakId } = props
-  const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev(sakId)
+  const { sakId, brevtype, fullSize } = props
+  const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev()
 
   useEffect(() => {
+    console.log('Kjører useEffect med sakid', sakId)
+
     if (sakId) {
-      hentForhåndsvisning(sakId)
+      hentForhåndsvisning(sakId, brevtype)
     }
   }, [sakId])
 
@@ -57,10 +61,30 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
     )
   } else
     return (
-      <DokumentDiv>
+      <div>
         {hentetDokument.status === RessursStatus.SUKSESS && (
-          <iframe title={'dokument'} src={hentetDokument.data} width={'100%'} height={'100%'}></iframe>
+          <DokumentIFrame fullSize={fullSize} dokumentData={hentetDokument.data} />
         )}
-      </DokumentDiv>
+      </div>
     )
 }
+
+const DokumentIFrame = ({ fullSize, dokumentData }: { fullSize: boolean; dokumentData: any }) => {
+  if (fullSize) {
+    console.log('fullsize')
+
+    return (
+      <DokumentDiv>
+        <iframe title={'dokument'} src={dokumentData} width={'100%'} height={'100%'}></iframe>
+      </DokumentDiv>
+    )
+  } else {
+    return <StyledIFrame title={'Dokument'} src={dokumentData} tabIndex={0}></StyledIFrame>
+  }
+}
+
+const StyledIFrame = styled.iframe`
+  margin: 0rem 0.5rem;
+  aspect-ratio: 1/1.5;
+  width: 95%;
+`

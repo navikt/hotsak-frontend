@@ -8,22 +8,20 @@ import {
   byggTomRessurs,
 } from '../../../../../oppgaveliste/dokumenter/ressursFunksjoner'
 
-import { Ressurs } from '../../../../../types/types.internal'
+import { Brevtype, Ressurs } from '../../../../../types/types.internal'
 
 interface BrevResponse {
   //isLoading: boolean
   //isError: any
   isDokumentError: any
-  hentForhåndsvisning: (sakId: number | string) => any
+  hentForhåndsvisning: (sakId: number | string, brevtype?: Brevtype) => any
   nullstillDokument: () => any
   hentetDokument: any
   settHentetDokument: any
   // mutate: (...args: any[]) => any
 }
 
-export function useBrev(sakId?: number | string): BrevResponse {
-  //const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/sak/${sakId}/brev/forhandsvisning`, httpGet)
-  //const [valgtDokumentId, settValgtDokumentId] = React.useState<string>('')
+export function useBrev(): BrevResponse {
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
   const [isDokumentError, setIsDokumentError] = useState<any>(null)
 
@@ -31,11 +29,11 @@ export function useBrev(sakId?: number | string): BrevResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = (sakId: number | string) => {
+  const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.VEDTAKSBREV) => {
     settHentetDokument(byggHenterRessurs())
     setIsDokumentError(null)
 
-    const response = httpGetPdf(`api/sak/${sakId}/brev`)
+    const response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
 
     response
       .then((response: PDFResponse) => {

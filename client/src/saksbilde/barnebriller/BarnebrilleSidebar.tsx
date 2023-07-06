@@ -4,8 +4,10 @@ import styled from 'styled-components'
 import { ClockIcon, EnvelopeClosedIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
+import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
+import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
 import { Saksnotater } from '../høyrekolonne/notat/Saksnotater'
 import { useBrillesak } from '../sakHook'
 import { BrilleHistorikk } from './BrilleHistorikk'
@@ -25,7 +27,7 @@ export const BarnebrilleSidebar: React.FC = () => {
 
   useEffect(() => {
     if (sak?.data.steg === StegType.GODKJENNE) {
-      setValgtSidebarTab(HøyrekolonneTabs.TOTRINNSKONTROLL)
+      setValgtSidebarTab(BarnebrilleSidebarTabs.TOTRINNSKONTROLL)
     }
   }, [])
 
@@ -34,24 +36,29 @@ export const BarnebrilleSidebar: React.FC = () => {
       defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
       value={valgtSidebarTab}
       loop
+      iconPosition="top"
       onChange={setValgtSidebarTab}
     >
       <Tabs.List>
-        <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
-        <Tabs.Tab value={HøyrekolonneTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
-        {/*<Tabs.Tab value={HøyrekolonneTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />*/}
-        <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<PencilWritingIcon />} />
+        <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
+        <Tabs.Tab value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
+        <Eksperiment>
+          <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
+        </Eksperiment>
+        <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<PencilWritingIcon />} />
       </Tabs.List>
-      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
+      <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>
         <BrilleHistorikk />
       </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
+      <Tabs.Panel value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-      {/*<Tabs.Panel value={HøyrekolonneTabs.SEND_BREV.toString()}>
-        <SendBrevPanel sakId={sak?.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-      </Tabs.Panel>*/}
-      <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
+      <Eksperiment>
+        <Tabs.Panel value={BarnebrilleSidebarTabs.SEND_BREV.toString()}>
+          <SendBrevPanel sakId={sak?.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+        </Tabs.Panel>
+      </Eksperiment>
+      <Tabs.Panel value={BarnebrilleSidebarTabs.NOTAT.toString()}>
         <Saksnotater sakId={sak?.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
     </Sidebar>

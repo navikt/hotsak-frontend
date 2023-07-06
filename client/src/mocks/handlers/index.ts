@@ -1,6 +1,7 @@
 import type { StoreHandlersFactory } from '../data'
 import { brillekalkulatorHandlers } from './beregnSats'
 import { brevHandlers } from './brev'
+import { brevtekstHandlers } from './brevTekst'
 import { dokumentHandlers } from './dokumenter'
 import { endringsloggHandlers } from './endringslogg'
 import { grunndataHandlers } from './grunndata'
@@ -25,6 +26,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...hjelpemiddeloversiktHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...notatHandlers(store),
+  ...brevtekstHandlers(store),
   ...personoversiktHandlers(store),
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),

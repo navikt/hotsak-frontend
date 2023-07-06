@@ -4,6 +4,7 @@ import Dexie, { Table } from 'dexie'
 import {
   Adressebeskyttelse,
   Barnebrillesak,
+  BrevTekst,
   Hendelse,
   JournalføringRequest,
   Kjønn,
@@ -233,6 +234,7 @@ export class BarnebrillesakStore extends Dexie {
   private readonly vilkår!: Table<LagretVilkår, number>
   private readonly hendelser!: Table<LagretHendelse, string>
   private readonly notater!: Table<Omit<Notat, 'id'>, number>
+  private readonly brevtekst!: Table<BrevTekst, string>
 
   constructor(
     private readonly idGenerator: IdGenerator,
@@ -248,6 +250,7 @@ export class BarnebrillesakStore extends Dexie {
       vilkår: '++id,vilkårsvurderingId',
       hendelser: '++id,sakId',
       notater: '++id,sakId',
+      brevtekst: 'sakId',
     })
   }
 
@@ -531,5 +534,13 @@ export class BarnebrillesakStore extends Dexie {
 
   async hentNotater(sakId: string) {
     return this.notater.where('sakId').equals(sakId).toArray()
+  }
+
+  async lagreBrevtekst(sakId: string, brevmal: string, brevtekst: string) {
+    this.brevtekst.put({ brevmal, brevtekst, sakId }, sakId)
+  }
+
+  async hentBrevtekst(sakId: string) {
+    return this.brevtekst.where('sakId').equals(sakId).first()
   }
 }

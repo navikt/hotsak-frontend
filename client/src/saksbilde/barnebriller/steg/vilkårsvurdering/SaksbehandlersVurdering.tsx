@@ -34,7 +34,7 @@ export function SaksbehandlersVurdering({
               {`${vilkår.lovReferanse}`}
             </Link>
           </Heading>
-          <Brødtekst>{metadataFor(vilkår.identifikator)?.beskrivelse}</Brødtekst>
+          <Brødtekst>{metadataFor(vilkår.vilkårId)?.beskrivelse}</Brødtekst>
           <Avstand paddingTop={6} paddingBottom={4}>
             <Detail>VURDERINGEN ER BASERT PÅ:</Detail>
           </Avstand>

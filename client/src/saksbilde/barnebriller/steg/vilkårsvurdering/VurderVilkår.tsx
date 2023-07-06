@@ -81,14 +81,14 @@ export const VurderVilkår: React.FC = () => {
             {sak.data.vilkårsvurdering?.vilkår.map((vilkår) => {
               const {
                 id,
-                identifikator,
+                vilkårId,
                 resultatAuto,
                 beskrivelse,
                 resultatSaksbehandler,
                 begrunnelseSaksbehandler,
                 lovReferanse,
               } = vilkår
-              const vilkårMetadata = metadataFor(identifikator)
+              const vilkårMetadata = metadataFor(vilkårId)
               const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
               const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
@@ -123,7 +123,7 @@ export const VurderVilkår: React.FC = () => {
                     {beskrivelse}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '300px' }}>
-                    {metadataFor(identifikator)?.basertPå.map((metadata) => (
+                    {vilkårMetadata?.basertPå.map((metadata) => (
                       <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
                     )) || '-'}
                   </Table.DataCell>

@@ -2,38 +2,45 @@ import { GrunnlagMetadata } from '../../../../types/types.internal'
 
 const vilkårMetadata = [
   {
+    vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
     identifikator: 'Under18ÅrPåBestillingsdato v1',
     overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     basertPå: ['Bestillingsdato', 'Barnets alder (PDL)'],
   },
   {
+    vilkårId: 'MEDLEM_AV_FOLKETRYGDEN',
     identifikator: 'MedlemAvFolketrygden v1',
     overstyrbarAvSaksbehandler: true,
     basertPå: ['Medlemskap på bestillingsdato'],
   },
   {
+    vilkårId: 'BESTILT_HOS_OPTIKER',
     identifikator: 'bestiltHosOptiker',
     overstyrbarAvSaksbehandler: false,
     beskrivelse: 'For at en virksomhet/nettbutikk skal kunne godkjennes, må det være en optiker tilknyttet denne.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
+    vilkårId: 'KOMPLETT_BRILLE',
     identifikator: 'komplettBrille',
     overstyrbarAvSaksbehandler: false,
     beskrivelse: 'Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
+    vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
     identifikator: 'HarIkkeVedtakIKalenderåret v1',
     overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     basertPå: ['Bestillingsdato', 'Vedtakshistorikk (Hotsak, Krav-appen)'],
   },
   {
+    vilkårId: 'BRILLESTYRKE',
     identifikator: 'Brillestyrke v1',
     overstyrbarAvSaksbehandler: false,
     basertPå: ['Brillestyrke'],
   },
   {
+    vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
     identifikator: 'BestillingsdatoTilbakeITid v1',
     overstyrbarAvSaksbehandler: false,
     beskrivelse:
@@ -41,6 +48,7 @@ const vilkårMetadata = [
     basertPå: ['Bestillingsdato'],
   },
   {
+    vilkårId: 'BESTILLINGSDATO',
     identifikator: 'Bestillingsdato v1',
     overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
     beskrivelse: 'Brillen må være bestilt etter at forskriften trådte i kraft, 1. august 2022.',
@@ -49,7 +57,7 @@ const vilkårMetadata = [
 ]
 
 export function metadataFor(vilkårID: string) {
-  return vilkårMetadata.find((vilkår) => vilkår.identifikator === vilkårID)
+  return vilkårMetadata.find((vilkår) => vilkår.vilkårId === vilkårID)
 }
 
 export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([

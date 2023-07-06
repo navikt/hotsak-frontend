@@ -78,7 +78,7 @@ function lagVilkår(
   return [
     {
       vilkårsvurderingId,
-      identifikator: 'Under18ÅrPåBestillingsdato v1',
+      vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
       beskrivelse: 'Barnet må være under 18 år på bestillingsdato',
       lovReferanse: '§ 2, 4. ledd',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
@@ -93,7 +93,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'MedlemAvFolketrygden v1',
+      vilkårId: 'MEDLEM_AV_FOLKETRYGDEN',
       beskrivelse: 'Medlem av folketrygden',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
@@ -108,7 +108,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'bestiltHosOptiker',
+      vilkårId: 'BESTILT_HOS_OPTIKER',
       beskrivelse: 'Brillen må bestilles hos optiker',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
@@ -119,7 +119,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'komplettBrille',
+      vilkårId: 'KOMPLETT_BRILLE',
       beskrivelse: 'Bestillingen inneholder brilleglass',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
@@ -130,7 +130,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'HarIkkeVedtakIKalenderåret v1',
+      vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
       beskrivelse: 'Ikke fått støtte til barnebriller tidligere i år - manuelt Hotsak-vedtak',
       lovReferanse: '§ 3',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
@@ -142,7 +142,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'Brillestyrke v1',
+      vilkårId: 'BRILLESTYRKE',
       beskrivelse: 'Brillestyrken er innenfor fastsatte styrker',
       lovReferanse: '§ 2, 2. ledd',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
@@ -156,7 +156,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'BestillingsdatoTilbakeITid v1',
+      vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
       beskrivelse: 'Bestillingsdato innenfor gyldig periode',
       lovReferanse: '§ 6, 2. ledd',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
@@ -174,7 +174,7 @@ function lagVilkår(
     },
     {
       vilkårsvurderingId,
-      identifikator: 'Bestillingsdato v1',
+      vilkårId: 'BESTILLINGSDATO',
       beskrivelse: 'Bestillingen er gjort etter at loven trådte i kraft',
       lovReferanse: '§ 13',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§13',

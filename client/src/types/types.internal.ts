@@ -77,16 +77,7 @@ export interface Vilkårsvurdering {
 
 export interface Vilkår {
   id: string
-  identifikator:
-    | 'Under18ÅrPåBestillingsdato v1'
-    | 'MedlemAvFolketrygden v1'
-    | 'bestiltHosOptiker'
-    | 'komplettBrille'
-    | 'HarIkkeVedtakIKalenderåret v1'
-    | 'Brillestyrke v1'
-    | 'BestillingsdatoTilbakeITid v1'
-    | 'Bestillingsdato v1'
-    | string
+  vilkårId: string
   beskrivelse: string
   resultatAuto?: VilkårsResultat
   begrunnelseAuto?: string

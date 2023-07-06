@@ -39,9 +39,5 @@ export const Høyrekolonne: React.FC<HøyrekolonneProps> = ({ currentTab }) => {
       return <Historikk />
     case HøyrekolonneTabs.HJELPEMIDDELOVERSIKT:
       return <Hjelpemiddeloversikt />
-    case HøyrekolonneTabs.TOTRINNSKONTROLL:
-      return <></>
-    case HøyrekolonneTabs.NOTAT:
-      return <></>
   }
 }

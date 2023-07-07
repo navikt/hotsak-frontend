@@ -21,13 +21,13 @@ interface BrillesakResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error, mutate } = useSwr<{ data: Sakresponse }>(`api/sak/${saksnummer}`, httpGet, {
+  const { data, error, isLoading, mutate } = useSwr<{ data: Sakresponse }>(`api/sak/${saksnummer}`, httpGet, {
     refreshInterval: 10_000,
   })
 
   return {
     sak: data?.data,
-    isLoading: !error && !data,
+    isLoading: isLoading,
     isError: error,
     mutate,
   }
@@ -37,11 +37,15 @@ export function useSak(): DataResponse {
 export function useBrillesak(): BrillesakResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
 
-  const { data, error, mutate } = useSwr<{ data: BarnebrillesakResponse }>(`api/sak/${saksnummer}`, httpGet)
+  const { data, error, isLoading, mutate } = useSwr<{ data: BarnebrillesakResponse }>(
+    `api/sak/${saksnummer}`,
+    httpGet,
+    { refreshInterval: 0 }
+  )
 
   return {
     sak: data?.data,
-    isLoading: !error && !data,
+    isLoading: isLoading,
     isError: error,
     mutate: mutate,
   }

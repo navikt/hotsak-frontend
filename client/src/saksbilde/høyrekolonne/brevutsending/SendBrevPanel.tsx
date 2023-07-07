@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import useSwr from 'swr'
@@ -14,13 +13,13 @@ import { BrevTekst, Brevmal } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 
 export interface SendBrevProps {
-  sakId?: string
+  sakId: string
   lesevisning: boolean
 }
 
 export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
-  const { data, mutate, isLoading } = useBrevtekst(sakId)
+  const { data, isLoading } = useBrevtekst(sakId)
   const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
@@ -31,7 +30,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const debounceVentetid = 1000
 
   useEffect(() => {
-    console.log('USEEFF')
     if (data?.brevtekst) {
       setFritekst(data.brevtekst)
     }
@@ -52,7 +50,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
 
   const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setFritekst(event.target.value)
-
     clearTimeout(timer)
 
     const newTimer = setTimeout(() => {
@@ -131,15 +128,11 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   )
 })
 
-function useBrevtekst(sakId?: string) {
-  console.log('UBT', sakId)
+function useBrevtekst(sakId: string) {
+  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/utkast`)
 
-  const { data, mutate, isLoading } = useSwr<BrevTekst>(sakId ? `/api/sak/${sakId}/utkast` : null, {
-    refreshInterval: 0,
-  })
   return {
     data,
-    mutate,
     isLoading,
   }
 }

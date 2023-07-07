@@ -24,14 +24,4 @@ export const brevHandlers: StoreHandlersFactory = () => [
       ctx.body(dokumentData)
     )
   }),
-  rest.get(`/api/sak/:sakID/utkast/forhandsvisning`, async (req, res, ctx) => {
-    const buffer = await fetch(manglerDokumentasjonBrev).then((res) => res.arrayBuffer())
-
-    return res(
-      ctx.delay(1000),
-      ctx.set('Content-Length', buffer.byteLength.toString()),
-      ctx.set('Content-Type', 'application/pdf'),
-      ctx.body(buffer)
-    )
-  }),
 ]

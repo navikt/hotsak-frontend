@@ -2,15 +2,17 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import useSwr from 'swr'
+import { useSWRConfig } from 'swr'
 
 import { Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
-import { postBrevutkast } from '../../../io/http'
+import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
-import { BrevTekst, Brevmal } from '../../../types/types.internal'
+import { BrevTekst, Brevmal, Brevtype } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
+import { SendBrevModal } from './SendBrevModal'
 
 export interface SendBrevProps {
   sakId: string
@@ -23,11 +25,12 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
-  const [lagerForhåndsvisning, setLagerForhåndsvisning] = useState(false)
+  const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [fritekst, setFritekst] = useState(data?.brevtekst || '')
   const debounceVentetid = 1000
+  const { mutate } = useSWRConfig()
 
   useEffect(() => {
     if (data?.brevtekst) {
@@ -46,6 +49,17 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         <Skeleton variant="rectangle" width="80%" height={90} />
       </Avstand>
     )
+  }
+
+  //Kun sende brev hvis tatt saken og i under behandling status
+
+  const sendBrev = async () => {
+    setSenderBrev(true)
+    await postBrevutsending(sakId, Brevtype.INNHENTE_OPPLYSNINGER_BREV)
+    setSenderBrev(false)
+    setVisSendBrevModal(false)
+    mutate(`api/sak/${sakId}`)
+    mutate(`api/sak/${sakId}/historikk`)
   }
 
   const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,7 +122,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
               <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
                 Forhåndsvis
               </Button>
-              <Button type="submit" size="small" variant="primary" loading={senderBrev}>
+              <Button type="submit" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
                 Send brev
               </Button>
             </Knappepanel>
@@ -122,6 +136,14 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         //loading={loading}
         onClose={() => {
           setVisForhåndsvisningsModal(false)
+        }}
+      />
+      <SendBrevModal
+        open={visSendBrevModal}
+        loading={senderBrev}
+        onClose={() => setVisSendBrevModal(false)}
+        onBekreft={() => {
+          sendBrev()
         }}
       />
     </>

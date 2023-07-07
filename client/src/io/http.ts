@@ -3,6 +3,7 @@ import { isNumber } from '../utils/type'
 import type {
   AvvisBestilling,
   BrevTekst,
+  Brevtype,
   EndreHjelpemiddelRequest,
   JournalføringRequest,
   OppdaterVilkårData,
@@ -232,4 +233,8 @@ export const slettSaksnotat = async (sakId: string, notatId: number) => {
 
 export const postBrevutkast = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/utkast`, brevTekst)
+}
+
+export const postBrevutsending = async (sakId: string, brevtype: Brevtype) => {
+  return post(`${baseUrl}/api/sak/${sakId}/brevutsending`, { brevtype })
 }

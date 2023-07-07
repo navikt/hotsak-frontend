@@ -147,4 +147,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),
+  rest.post<any, { sakId: string }, any>('/api/sak/:sakId/brevutsending', async (req, res, ctx) => {
+    await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
+    return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
+  }),
 ]

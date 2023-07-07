@@ -30,8 +30,6 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
   const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev()
 
   useEffect(() => {
-    console.log('Kjører useEffect med sakid', sakId)
-
     if (sakId) {
       hentForhåndsvisning(sakId, brevtype)
     }
@@ -71,8 +69,6 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
 
 const DokumentIFrame = ({ fullSize, dokumentData }: { fullSize: boolean; dokumentData: any }) => {
   if (fullSize) {
-    console.log('fullsize')
-
     return (
       <DokumentDiv>
         <iframe title={'dokument'} src={dokumentData} width={'100%'} height={'100%'}></iframe>

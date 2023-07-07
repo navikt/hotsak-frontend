@@ -11,6 +11,7 @@ import {
   Notat,
   OppdaterVilkårRequest,
   Oppgave,
+  OppgaveStatusLabel,
   OppgaveStatusType,
   Oppgavetype,
   StegType,
@@ -392,6 +393,21 @@ export class BarnebrillesakStore extends Dexie {
     return this.saker.update(sakId, {
       steg,
     })
+  }
+
+  async oppdaterStatus(sakId: string, status: OppgaveStatusType) {
+    const sak = await this.hent(sakId)
+    if (!sak) {
+      return false
+    }
+    this.transaction('rw', this.saker, this.hendelser, () => {
+      this.saker.update(sakId, {
+        status: status,
+      })
+      this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
+      this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
+    })
+    return true
   }
 
   async oppdaterUtbetalingsmottaker(sakId: string, fnr: string): Promise<Utbetalingsmottaker> {

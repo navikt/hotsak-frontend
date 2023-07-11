@@ -502,6 +502,27 @@ export interface Dokument {
   }>
 }
 
+export enum SaksdokumentType {
+  INNKOMMENDE = 'INNKOMMENDE',
+  UTGÅENDE = 'UTGÅENDE',
+}
+
+export interface Saksdokument {
+  journalpostID: string
+  type: SaksdokumentType
+  opprettetDato: string
+  dokumentID: string
+  saksbehandler: Saksbehandler
+  tittel: string
+  brevkode?: string
+  skjerming?: string
+  vedlegg?: any[]
+  varianter?: Array<{
+    format: DokumentFormat
+    skjerming?: string
+  }>
+}
+
 export interface JournalføringRequest {
   journalpostID: string
   tittel: string

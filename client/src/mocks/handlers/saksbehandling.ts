@@ -1,7 +1,4 @@
-import { log } from 'console'
 import { rest } from 'msw'
-
-import { OppgaveType } from '../../oppgaveliste/kolonner/OpgaveType'
 
 import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
@@ -64,23 +61,34 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
   }),
   rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/dokumenter`, async (req, res, ctx) => {
     const { sakId } = req.params
-    const sak = await barnebrillesakStore.hent(sakId)
+    const dokumentType = req.url.searchParams.get('type')
 
-    if (!sak) {
-      return res(ctx.status(404))
+    // Hvis ingen type er angitt som query param, bruker gammel oppførsel som henter journalposter fra sak.
+    // Ligger her for å bevare bakoverkompabilitet
+    // På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra joark.
+    if (!dokumentType) {
+      const sak = await barnebrillesakStore.hent(sakId)
+
+      if (!sak) {
+        return res(ctx.status(404))
+      }
+      const journalposter = sak.journalposter
+
+      const dokumenter = await Promise.all(
+        journalposter.map(async (journalpostID) => {
+          const journalpostDokument = await journalpostStore.hent(journalpostID)
+          if (journalpostDokument) {
+            return journalpostDokument.dokumenter
+          }
+        })
+      )
+
+      return res(ctx.status(200), ctx.json(dokumenter.flat()))
+    } else {
+      const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId, dokumentType)
+
+      return res(ctx.status(200), ctx.json(saksdokumenter))
     }
-    const journalposter = sak.journalposter
-
-    const dokumenter = await Promise.all(
-      journalposter.map(async (journalpostID) => {
-        const journalpostDokument = await journalpostStore.hent(journalpostID)
-        if (journalpostDokument) {
-          return journalpostDokument.dokumenter
-        }
-      })
-    )
-
-    return res(ctx.status(200), ctx.json(dokumenter.flat()))
   }),
   rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
@@ -147,7 +155,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),
-  rest.post<any, { sakId: string }, any>('/api/sak/:sakId/brevutsending', async (req, res, ctx) => {
+  rest.post<any, { sakId: string }, any>('/api/sak/:sakId/brevsending', async (req, res, ctx) => {
     await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),

@@ -232,9 +232,9 @@ export const slettSaksnotat = async (sakId: string, notatId: number) => {
 }
 
 export const postBrevutkast = async (brevTekst: BrevTekst) => {
-  return post(`${baseUrl}/api/sak/${brevTekst.sakId}/utkast`, brevTekst)
+  return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevutkast`, brevTekst)
 }
 
-export const postBrevutsending = async (sakId: string, brevtype: Brevtype) => {
-  return post(`${baseUrl}/api/sak/${sakId}/brevutsending`, { brevtype })
+export const postBrevutsending = async (brevTekst: BrevTekst) => {
+  return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevsending`, brevTekst)
 }

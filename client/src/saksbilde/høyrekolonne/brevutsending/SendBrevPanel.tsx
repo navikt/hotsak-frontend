@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import useSwr from 'swr'
-import { useSWRConfig } from 'swr'
+import useSwr, { useSWRConfig } from 'swr'
 
 import { Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
@@ -10,7 +9,7 @@ import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
-import { BrevTekst, Brevmal, Brevtype } from '../../../types/types.internal'
+import { BrevTekst, Brevmal } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 
@@ -53,9 +52,17 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
 
   //Kun sende brev hvis tatt saken og i under behandling status
 
+  function byggBrevPayload(): BrevTekst {
+    return {
+      sakId: sakId,
+      brevmal: Brevmal.INNHENTE_OPPLYSNINGER,
+      brevtekst: fritekst,
+    }
+  }
+
   const sendBrev = async () => {
     setSenderBrev(true)
-    await postBrevutsending(sakId, Brevtype.INNHENTE_OPPLYSNINGER_BREV)
+    await postBrevutsending(byggBrevPayload())
     setSenderBrev(false)
     setVisSendBrevModal(false)
     mutate(`api/sak/${sakId}`)
@@ -74,14 +81,8 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   }
 
   const lagreUtkast = async () => {
-    const brevutkast: BrevTekst = {
-      sakId: sakId,
-      brevmal: Brevmal.INNHENTE_OPPLYSNINGER,
-      brevtekst: fritekst,
-    }
-
     setLagrer(true)
-    await postBrevutkast(brevutkast)
+    await postBrevutkast(byggBrevPayload())
     setLagrer(false)
   }
 
@@ -128,6 +129,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
             </Knappepanel>
           </form>
         </Avstand>
+        {/*<UtgåendeBrev sakId={sakId} />*/}
       </Panel>
 
       <ForhåndsvisningsModal

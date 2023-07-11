@@ -14,6 +14,8 @@ import {
   OppgaveStatusLabel,
   OppgaveStatusType,
   Oppgavetype,
+  Saksdokument,
+  SaksdokumentType,
   StegType,
   Totrinnskontroll,
   TotrinnskontrollData,
@@ -236,6 +238,7 @@ export class BarnebrillesakStore extends Dexie {
   private readonly hendelser!: Table<LagretHendelse, string>
   private readonly notater!: Table<Omit<Notat, 'id'>, number>
   private readonly brevtekst!: Table<BrevTekst, string>
+  private readonly saksdokumenter!: Table<Saksdokument, string>
 
   constructor(
     private readonly idGenerator: IdGenerator,
@@ -252,6 +255,7 @@ export class BarnebrillesakStore extends Dexie {
       hendelser: '++id,sakId',
       notater: '++id,sakId',
       brevtekst: 'sakId',
+      saksdokumenter: '++id,sakId',
     })
   }
 
@@ -558,5 +562,25 @@ export class BarnebrillesakStore extends Dexie {
 
   async hentBrevtekst(sakId: string) {
     return this.brevtekst.where('sakId').equals(sakId).first()
+  }
+
+  async hentSaksdokumenter(sakId: string, dokumentType: string) {
+    // TODO filterer på dokumenttype også
+    return this.saksdokumenter.where('sakId').equals(sakId).toArray()
+  }
+
+  async lagreSaksdokument(sakId: string, tittel: string) {
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    this.saksdokumenter.add(
+      {
+        journalpostID: '12345678',
+        type: SaksdokumentType.UTGÅENDE,
+        opprettetDato: dayjs().toISOString(),
+        saksbehandler: saksbehandler,
+        dokumentID: '87654321',
+        tittel: tittel,
+      },
+      sakId
+    )
   }
 }

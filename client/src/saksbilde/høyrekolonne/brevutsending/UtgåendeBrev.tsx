@@ -25,14 +25,14 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
   if (saksdokumenter?.length === 0) {
     return (
       <Container>
-        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
+        <KolonneTittel>TIDLIGERE BREV</KolonneTittel>
         <div>Ingen brev sendt</div>
       </Container>
     )
   } else
     return (
       <Container>
-        <KolonneTittel>HISTORIKK</KolonneTittel>
+        <KolonneTittel>TIDLIGERE BREV</KolonneTittel>
         {saksdokumenter
           .sort((a, b) => sorterKronologisk(a.opprettetDato, b.opprettetDato))
           .map((it) => (

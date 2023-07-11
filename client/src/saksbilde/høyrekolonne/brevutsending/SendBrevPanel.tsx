@@ -12,6 +12,7 @@ import { Knappepanel } from '../../../felleskomponenter/Button'
 import { BrevTekst, Brevmal } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
+import { UtgåendeBrev } from './UtgåendeBrev'
 
 export interface SendBrevProps {
   sakId: string
@@ -37,7 +38,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     }
   }, [data?.brevtekst])
 
-  if (isLoading || !sakId) {
+  if (!data) {
     return (
       <Avstand paddingTop={6} paddingLeft={4}>
         <Heading level="2" as={Skeleton} size="small" spacing>
@@ -63,10 +64,12 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const sendBrev = async () => {
     setSenderBrev(true)
     await postBrevutsending(byggBrevPayload())
+
+    mutate(`/api/sak/${sakId}`)
+    mutate(`/api/sak/${sakId}/dokumenter?type=UTGÅENDE`)
+
     setSenderBrev(false)
     setVisSendBrevModal(false)
-    mutate(`api/sak/${sakId}`)
-    mutate(`api/sak/${sakId}/historikk`)
   }
 
   const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -129,7 +132,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
             </Knappepanel>
           </form>
         </Avstand>
-        {/*<UtgåendeBrev sakId={sakId} />*/}
+        <UtgåendeBrev sakId={sakId} />
       </Panel>
 
       <ForhåndsvisningsModal
@@ -153,7 +156,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
 })
 
 function useBrevtekst(sakId: string) {
-  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/utkast`)
+  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast`)
 
   return {
     data,

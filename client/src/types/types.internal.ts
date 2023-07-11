@@ -508,6 +508,7 @@ export enum SaksdokumentType {
 }
 
 export interface Saksdokument {
+  sakId: string
   journalpostID: string
   type: SaksdokumentType
   opprettetDato: string

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import useSwr, { useSWRConfig } from 'swr'
 
-import { Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
 import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
@@ -99,41 +99,47 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           Send brev
         </Heading>
         <Avstand paddingTop={6}>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <Select size="small" label="Velg brevmal">
-              <option value={Brevmal.INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
-            </Select>
-            <Avstand paddingTop={6} />
-            <Textarea
-              minRows={5}
-              maxRows={20}
-              label="Fritekst"
-              description="Beskriv hva som mangler av dokumentasjon"
-              size="small"
-              value={fritekst}
-              onChange={(event) => onTextChange(event)}
-            />
-            <Bakgrunnslagring>
-              {lagrer && (
-                <>
-                  <span>
-                    <Loader size="xsmall" />
-                  </span>
-                  <span>
-                    <Detail>Lagrer</Detail>
-                  </span>
-                </>
-              )}
-            </Bakgrunnslagring>
-            <Knappepanel>
-              <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
-                Forhåndsvis
-              </Button>
-              <Button type="submit" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
-                Send brev
-              </Button>
-            </Knappepanel>
-          </form>
+          {lesevisning ? (
+            <Alert variant="info" size="small">
+              Saken må være under behandling og du må være tildelt saken for å kunne send brev.
+            </Alert>
+          ) : (
+            <form onSubmit={(e) => e.preventDefault()}>
+              <Select size="small" label="Velg brevmal">
+                <option value={Brevmal.INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
+              </Select>
+              <Avstand paddingTop={6} />
+              <Textarea
+                minRows={5}
+                maxRows={20}
+                label="Fritekst"
+                description="Beskriv hva som mangler av dokumentasjon"
+                size="small"
+                value={fritekst}
+                onChange={(event) => onTextChange(event)}
+              />
+              <Bakgrunnslagring>
+                {lagrer && (
+                  <>
+                    <span>
+                      <Loader size="xsmall" />
+                    </span>
+                    <span>
+                      <Detail>Lagrer</Detail>
+                    </span>
+                  </>
+                )}
+              </Bakgrunnslagring>
+              <Knappepanel>
+                <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
+                  Forhåndsvis
+                </Button>
+                <Button type="submit" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
+                  Send brev
+                </Button>
+              </Knappepanel>
+            </form>
+          )}
         </Avstand>
         <UtgåendeBrev sakId={sakId} />
       </Panel>

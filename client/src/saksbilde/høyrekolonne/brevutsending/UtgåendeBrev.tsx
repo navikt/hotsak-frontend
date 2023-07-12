@@ -43,7 +43,8 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
 })
 
 function useSaksdokumenter(sakId: string) {
-  const { data, isLoading } = useSwr<Saksdokument[]>(`/api/sak/${sakId}/dokumenter?type=${SaksdokumentType.UTGÅENDE}`)
+  const url = `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(SaksdokumentType.UTGÅENDE)}`
+  const { data, isLoading } = useSwr<Saksdokument[]>(url)
 
   return {
     data,

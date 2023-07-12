@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import useSwr, { useSWRConfig } from 'swr'
 
-import { Alert, Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
+import { Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
 import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
+import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevmal } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
@@ -21,15 +21,16 @@ export interface SendBrevProps {
 
 export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
-  const { data, isLoading } = useBrevtekst(sakId)
+  const { data } = useBrevtekst(sakId)
   const brevtekst = data?.data.brevtekst
-  const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [fritekst, setFritekst] = useState(brevtekst || '')
+  const [submitAttempt, setSubmitAttempt] = useState(false)
+  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const debounceVentetid = 1000
   const { mutate } = useSWRConfig()
 
@@ -38,6 +39,22 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
       setFritekst(brevtekst)
     }
   }, [brevtekst])
+
+  useEffect(() => {
+    if (submitAttempt) {
+      valider()
+    }
+  }, [fritekst, submitAttempt])
+
+  const valider = () => {
+    if (fritekst === '') {
+      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
+      return false
+    } else {
+      setValideringsfeil(undefined)
+      return true
+    }
+  }
 
   if (!data) {
     return (
@@ -51,8 +68,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
       </Avstand>
     )
   }
-
-  //Kun sende brev hvis tatt saken og i under behandling status
 
   function byggBrevPayload(tekst?: string): BrevTekst {
     return {
@@ -100,9 +115,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         </Heading>
         <Avstand paddingTop={6}>
           {lesevisning ? (
-            <Alert variant="info" size="small">
-              Saken må være under behandling og du må være tildelt saken for å kunne send brev.
-            </Alert>
+            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne send brev.</Brødtekst>
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
               <Select size="small" label="Velg brevmal">
@@ -113,6 +126,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
                 minRows={5}
                 maxRows={20}
                 label="Fritekst"
+                error={valideringsFeil}
                 description="Beskriv hva som mangler av dokumentasjon"
                 size="small"
                 value={fritekst}
@@ -134,7 +148,17 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
                 <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
                   Forhåndsvis
                 </Button>
-                <Button type="submit" size="small" variant="primary" onClick={() => setVisSendBrevModal(true)}>
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="primary"
+                  onClick={() => {
+                    setSubmitAttempt(true)
+                    if (valider()) {
+                      setVisSendBrevModal(true)
+                    }
+                  }}
+                >
                   Send brev
                 </Button>
               </Knappepanel>
@@ -147,7 +171,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
       <ForhåndsvisningsModal
         open={visForhåndsvisningsModal}
         sakId={sakId}
-        //loading={loading}
         onClose={() => {
           setVisForhåndsvisningsModal(false)
         }}

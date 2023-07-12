@@ -11,7 +11,7 @@ export const brevtekstHandlers: StoreHandlersFactory = ({ barnebrillesakStore })
     await barnebrillesakStore.lagreBrevtekst(req.params.sakId, brevmal, data.brevtekst)
     return res(ctx.delay(500), ctx.status(201))
   }),
-  rest.get<undefined, { sakId: string }>(`/api/sak/:sakId/brevutkast`, async (req, res, ctx) => {
+  rest.get<undefined, { sakId: string }>(`/api/sak/:sakId/brevutkast/:brevmal`, async (req, res, ctx) => {
     const brevTekst = await barnebrillesakStore.hentBrevtekst(req.params.sakId)
 
     if (brevTekst) {

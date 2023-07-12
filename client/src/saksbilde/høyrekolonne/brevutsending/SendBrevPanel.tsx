@@ -9,7 +9,7 @@ import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
-import { BrevTekst, Brevmal } from '../../../types/types.internal'
+import { Brevmal, BrevTekst } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
@@ -164,8 +164,8 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   )
 })
 
-function useBrevtekst(sakId: string) {
-  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast`)
+function useBrevtekst(sakId: string, brevmal = Brevmal.INNHENTE_OPPLYSNINGER) {
+  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast/${brevmal}`)
 
   return {
     data,

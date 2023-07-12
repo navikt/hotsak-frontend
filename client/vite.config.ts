@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 import { defineConfig, HtmlTagDescriptor, Plugin, splitVendorChunkPlugin } from 'vite'
 
 function htmlPlugin({ development }: { development?: boolean }): Plugin {

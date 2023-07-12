@@ -22,21 +22,22 @@ export interface SendBrevProps {
 export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
   const { data, isLoading } = useBrevtekst(sakId)
+  const brevtekst = data?.data.brevtekst
   const { register, handleSubmit, reset } = useForm<{ innhold: string }>()
   const [lagrer, setLagrer] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
-  const [fritekst, setFritekst] = useState(data?.brevtekst || '')
+  const [fritekst, setFritekst] = useState(brevtekst || '')
   const debounceVentetid = 1000
   const { mutate } = useSWRConfig()
 
   useEffect(() => {
-    if (data?.brevtekst) {
-      setFritekst(data.brevtekst)
+    if (brevtekst) {
+      setFritekst(brevtekst)
     }
-  }, [data?.brevtekst])
+  }, [brevtekst])
 
   if (!data) {
     return (
@@ -53,11 +54,13 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
 
   //Kun sende brev hvis tatt saken og i under behandling status
 
-  function byggBrevPayload(): BrevTekst {
+  function byggBrevPayload(tekst?: string): BrevTekst {
     return {
       sakId: sakId,
       brevmal: Brevmal.INNHENTE_OPPLYSNINGER,
-      brevtekst: fritekst,
+      data: {
+        brevtekst: tekst ? tekst : fritekst,
+      },
     }
   }
 
@@ -77,15 +80,15 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     clearTimeout(timer)
 
     const newTimer = setTimeout(() => {
-      lagreUtkast()
+      lagreUtkast(event.target.value)
     }, debounceVentetid)
 
     setTimer(newTimer)
   }
 
-  const lagreUtkast = async () => {
+  const lagreUtkast = async (tekst: string) => {
     setLagrer(true)
-    await postBrevutkast(byggBrevPayload())
+    await postBrevutkast(byggBrevPayload(tekst))
     setLagrer(false)
   }
 

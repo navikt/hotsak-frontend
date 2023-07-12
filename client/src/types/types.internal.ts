@@ -300,7 +300,7 @@ export interface Notat {
 
 export interface BrevTekst {
   sakId: string
-  brevtekst: string
+  data: { brevtekst: string }
   brevmal: string
 }
 

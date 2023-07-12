@@ -557,7 +557,7 @@ export class BarnebrillesakStore extends Dexie {
   }
 
   async lagreBrevtekst(sakId: string, brevmal: string, brevtekst: string) {
-    this.brevtekst.put({ brevmal, brevtekst, sakId }, sakId)
+    this.brevtekst.put({ brevmal, data: { brevtekst: brevtekst }, sakId }, sakId)
   }
 
   async fjernBrevtekst(sakId: string) {

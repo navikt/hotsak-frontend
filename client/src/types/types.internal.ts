@@ -503,8 +503,9 @@ export interface Dokument {
 }
 
 export enum SaksdokumentType {
-  INNKOMMENDE = 'INNKOMMENDE',
+  INNGÅENDE = 'INNGÅENDE',
   UTGÅENDE = 'UTGÅENDE',
+  NOTAT = 'NOTAT',
 }
 
 export interface Saksdokument {

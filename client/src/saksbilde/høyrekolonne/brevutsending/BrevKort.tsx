@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { Link } from '@navikt/ds-react'
+
 import { norskTimestamp } from '../../../utils/date'
 
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
-import { Hendelse, Saksdokument } from '../../../types/types.internal'
+import { Saksdokument } from '../../../types/types.internal'
 
 const Container = styled.li`
   margin: 0;
@@ -21,11 +23,21 @@ const ContentContainer = styled.div`
   flex-direction: column;
 `
 
-export const BrevKort: React.FC<Saksdokument> = ({ tittel, opprettetDato, saksbehandler }) => {
+export const BrevKort: React.FC<Saksdokument> = ({
+  tittel,
+  opprettetDato,
+  saksbehandler,
+  journalpostID,
+  dokumentID,
+}) => {
   return (
     <Container>
       <ContentContainer>
-        <Etikett>{tittel}</Etikett>
+        <Etikett>
+          <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
+            {tittel}
+          </Link>
+        </Etikett>
         {opprettetDato && <Undertittel>{norskTimestamp(opprettetDato)}</Undertittel>}
 
         <Tekst>{saksbehandler.navn}</Tekst>

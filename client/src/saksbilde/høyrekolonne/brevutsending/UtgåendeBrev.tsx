@@ -53,12 +53,7 @@ function useSaksdokumenter(sakId: string) {
 }
 
 export const Container = styled.ul`
-  //height: 95vh;
-  //margin: 0;
-  //padding: 0;
   flex: 1;
   flex-shrink: 0;
-  //padding: 0 24px;
   box-sizing: border-box;
-  //border-left: 1px solid var(--a-border-default);
 `

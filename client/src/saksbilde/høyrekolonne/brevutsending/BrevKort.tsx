@@ -8,6 +8,9 @@ import { norskTimestamp } from '../../../utils/date'
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import { Saksdokument } from '../../../types/types.internal'
 
+const ByggDummyDataUrl = React.lazy(() => import('../../../mocks/mockDokument'))
+const erLokaltEllerLabs = window.appSettings.USE_MSW === true
+
 const Container = styled.li`
   margin: 0;
   padding: 16px 0;
@@ -34,9 +37,13 @@ export const BrevKort: React.FC<Saksdokument> = ({
     <Container>
       <ContentContainer>
         <Etikett>
-          <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
-            {tittel}
-          </Link>
+          {erLokaltEllerLabs ? (
+            <ByggDummyDataUrl tittel={tittel} />
+          ) : (
+            <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
+              {tittel}
+            </Link>
+          )}
         </Etikett>
         {opprettetDato && <Undertittel>{norskTimestamp(opprettetDato)}</Undertittel>}
 

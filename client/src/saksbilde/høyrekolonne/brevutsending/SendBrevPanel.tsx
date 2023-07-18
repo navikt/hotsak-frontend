@@ -74,7 +74,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     return {
       sakId: sakId,
       målform,
-      brevmal: Brevmal.INNHENTE_OPPLYSNINGER,
+      brevmal: Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
       data: {
         brevtekst: tekst ? tekst : fritekst,
       },
@@ -121,7 +121,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
               <Select size="small" label="Velg brevmal">
-                <option value={Brevmal.INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
+                <option value={Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
               </Select>
               <Avstand paddingTop={6} />
               <RadioGroup
@@ -201,7 +201,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   )
 })
 
-function useBrevtekst(sakId: string, brevmal = Brevmal.INNHENTE_OPPLYSNINGER) {
+function useBrevtekst(sakId: string, brevmal = Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
   const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast/${brevmal}`)
 
   return {

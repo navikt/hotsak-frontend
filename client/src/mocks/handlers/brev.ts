@@ -11,7 +11,7 @@ export const brevHandlers: StoreHandlersFactory = () => [
     const brevtype = req.params.brevtype
 
     let dokumentData
-    if (brevtype === Brevtype.VEDTAKSBREV) {
+    if (brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
       dokumentData = await fetch(innvilgetBrev).then((res) => res.arrayBuffer())
     } else {
       dokumentData = await fetch(manglerDokumentasjonBrev).then((res) => res.arrayBuffer())

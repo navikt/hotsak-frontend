@@ -29,7 +29,7 @@ export function useBrev(): BrevResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.VEDTAKSBREV) => {
+  const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {
     settHentetDokument(byggHenterRessurs())
     setIsDokumentError(null)
 

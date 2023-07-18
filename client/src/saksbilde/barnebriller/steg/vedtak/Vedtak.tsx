@@ -178,7 +178,7 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.VEDTAKSBREV} />
+        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
       </VenstreKolonne>
     </TreKolonner>
   )

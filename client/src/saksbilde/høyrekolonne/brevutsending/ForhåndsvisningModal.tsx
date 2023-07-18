@@ -27,7 +27,7 @@ export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ o
       }}
     >
       <Modal.Content>
-        <BrevPanel sakId={sakId} brevtype={Brevtype.INNHENTE_OPPLYSNINGER_BREV} fullSize={false} />
+        <BrevPanel sakId={sakId} brevtype={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER} fullSize={false} />
       </Modal.Content>
     </StyledModal>
   )

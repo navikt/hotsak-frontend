@@ -3,13 +3,19 @@ import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { Tabs } from '@navikt/ds-react'
+import { Tabs, Tag } from '@navikt/ds-react'
 
 import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
 
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
-import { Oppgavetype, StegType } from '../../types/types.internal'
+import {
+  OppgaveStatusLabel,
+  OppgaveStatusType,
+  Oppgavetype,
+  StegType,
+  VedtakStatusType,
+} from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { useBrillesak } from '../sakHook'
 import { BarnebrilleSidebar } from './BarnebrilleSidebar'
@@ -25,7 +31,7 @@ const BarnebrilleBildeContainer = styled.div`
   height: 96vh;
 `
 const BarnebrilleContent: React.FC = React.memo(() => {
-  const { sak, isLoading, isError, mutate } = useBrillesak()
+  const { sak, isError, mutate } = useBrillesak()
   const { valgtTab, setValgtTab } = useManuellSaksbehandlingContext()
   const { showBoundary } = useErrorBoundary()
 
@@ -64,6 +70,11 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
         </Tabs.List>
         <Border>
+          <TagWrapper>
+            <Tag size="small" variant={tagVariant(sak.data.status, sak.data?.vedtak?.status)}>
+              {OppgaveStatusLabel.get(sak.data.status)}
+            </Tag>
+          </TagWrapper>
           <MenyKnapp
             sakID={sak.data.sakId}
             tildeletSaksbehander={sak.data.saksbehandler}
@@ -107,6 +118,27 @@ export const BarnebrilleBilde = () => (
     </React.Suspense>
   </ErrorBoundary>
 )
+
+const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) => {
+  switch (status) {
+    case OppgaveStatusType.AVVENTER_DOKUMENTASJON:
+      return 'warning'
+    case OppgaveStatusType.VEDTAK_FATTET:
+      if (vedtakStatus && vedtakStatus === VedtakStatusType.INNVILGET) return 'success'
+      if (vedtakStatus && vedtakStatus === VedtakStatusType.AVSLÅTT) return 'error'
+      break
+    case OppgaveStatusType.AVVIST:
+    case OppgaveStatusType.RETURNERT:
+      return 'error'
+    default:
+      return 'info'
+  }
+}
+
+const TagWrapper = styled.div`
+  white-space: nowrap;
+  margin: auto;
+`
 
 const FlexWrapper = styled.div`
   display: flex;

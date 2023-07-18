@@ -613,6 +613,7 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
 
 export enum VedtakStatusType {
   INNVILGET = 'INNVILGET',
+  AVSLÅTT = 'AVSLÅTT',
 }
 
 export const VedtakStatusLabel = new Map<string, string>([[VedtakStatusType.INNVILGET, 'Innvilget']])

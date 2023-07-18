@@ -86,10 +86,12 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     await postBrevutsending(byggBrevPayload())
 
     mutate(`/api/sak/${sakId}`)
-    mutate(`/api/sak/${sakId}/dokumenter?type=UTGÅENDE`)
+    mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
 
     setSenderBrev(false)
     setVisSendBrevModal(false)
+    setSubmitAttempt(false)
+    setFritekst('')
   }
 
   const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

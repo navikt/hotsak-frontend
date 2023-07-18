@@ -126,7 +126,7 @@ const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) 
     case OppgaveStatusType.VEDTAK_FATTET:
       if (vedtakStatus && vedtakStatus === VedtakStatusType.INNVILGET) return 'success'
       if (vedtakStatus && vedtakStatus === VedtakStatusType.AVSLÅTT) return 'error'
-      break
+      else return 'info'
     case OppgaveStatusType.AVVIST:
     case OppgaveStatusType.RETURNERT:
       return 'error'

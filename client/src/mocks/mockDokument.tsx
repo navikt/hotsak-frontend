@@ -10,8 +10,6 @@ function base64ToArrayBuffer(_base64Str: string) {
 }
 
 const ByggDummyDataUrl = ({ tittel }: { tittel: string }) => {
-  console.log("It's a lazy, lazy, lazy life")
-
   const byte = base64ToArrayBuffer(pdf)
   const blob = new Blob([byte], { type: 'application/pdf' })
   const url = URL.createObjectURL(blob)

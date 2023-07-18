@@ -2,14 +2,14 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import useSwr, { useSWRConfig } from 'swr'
 
-import { Button, Detail, Heading, Loader, Panel, Select, Skeleton, Textarea } from '@navikt/ds-react'
+import { Button, Detail, Heading, Loader, Panel, Radio, RadioGroup, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
 import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
-import { Brevmal, BrevTekst } from '../../../types/types.internal'
+import { Brevmal, BrevTekst, MålformType } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
@@ -28,6 +28,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
@@ -72,6 +73,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   function byggBrevPayload(tekst?: string): BrevTekst {
     return {
       sakId: sakId,
+      målform,
       brevmal: Brevmal.INNHENTE_OPPLYSNINGER,
       data: {
         brevtekst: tekst ? tekst : fritekst,
@@ -115,12 +117,24 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         </Heading>
         <Avstand paddingTop={6}>
           {lesevisning ? (
-            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne send brev.</Brødtekst>
+            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
               <Select size="small" label="Velg brevmal">
                 <option value={Brevmal.INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
               </Select>
+              <Avstand paddingTop={6} />
+              <RadioGroup
+                legend="Målform"
+                size="small"
+                value={målform}
+                onChange={(val: MålformType) => {
+                  setMålform(val)
+                }}
+              >
+                <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
+                <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
+              </RadioGroup>
               <Avstand paddingTop={6} />
               <Textarea
                 minRows={5}

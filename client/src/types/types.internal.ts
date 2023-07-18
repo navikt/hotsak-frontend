@@ -300,6 +300,7 @@ export interface Notat {
 
 export interface BrevTekst {
   sakId: string
+  målform: MålformType
   data: { brevtekst: string }
   brevmal: string
 }

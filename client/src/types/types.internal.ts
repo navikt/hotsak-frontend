@@ -616,7 +616,10 @@ export enum VedtakStatusType {
   AVSLÅTT = 'AVSLÅTT',
 }
 
-export const VedtakStatusLabel = new Map<string, string>([[VedtakStatusType.INNVILGET, 'Innvilget']])
+export const VedtakStatusLabel = new Map<VedtakStatusType, string>([
+  [VedtakStatusType.INNVILGET, 'Innvilget'],
+  [VedtakStatusType.AVSLÅTT, 'Avslått'],
+])
 
 export interface Error {
   message: string

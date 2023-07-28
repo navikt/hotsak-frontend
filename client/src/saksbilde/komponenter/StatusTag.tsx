@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { Tag } from '@navikt/ds-react'
 
-import { OppgaveStatusLabel, OppgaveStatusType, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusLabel, OppgaveStatusType, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
 
 export const StatusTag = ({
   sakStatus,
@@ -14,7 +14,9 @@ export const StatusTag = ({
   return (
     <TagWrapper>
       <Tag size="small" variant={tagVariant(sakStatus, vedtakStatus)}>
-        {OppgaveStatusLabel.get(sakStatus)}
+        {sakStatus === OppgaveStatusType.VEDTAK_FATTET && vedtakStatus
+          ? VedtakStatusLabel.get(vedtakStatus)
+          : OppgaveStatusLabel.get(sakStatus)}
       </Tag>
     </TagWrapper>
   )

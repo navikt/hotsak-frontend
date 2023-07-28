@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Loader } from '@navikt/ds-react'
+import { Alert, Loader } from '@navikt/ds-react'
 
 import { Tekst } from './typografi'
 
@@ -25,6 +25,16 @@ const ToastView = styled.div`
   }
 `
 
+const InfoToastWrapper = styled.div`
+  position: fixed;
+  bottom: 200px;
+  right: 100px;
+  z-index: 999999;
+
+  align-items: center;
+  border-radius: 4px;
+`
+
 interface ToastProps {
   children: React.ReactNode
 }
@@ -34,5 +44,15 @@ export const Toast: React.FC<ToastProps> = ({ children }) => {
     <ToastView aria-live="polite">
       <Tekst>{children}</Tekst> <Loader variant="inverted" title="Systemet laster" size="xsmall" />
     </ToastView>
+  )
+}
+
+export const InfoToast: React.FC<ToastProps> = ({ children }) => {
+  return (
+    <InfoToastWrapper aria-live="polite">
+      <Alert variant="info">
+        <Tekst>{children}</Tekst>
+      </Alert>
+    </InfoToastWrapper>
   )
 }

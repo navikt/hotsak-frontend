@@ -1,3 +1,5 @@
+import { Integrations } from '@sentry/react'
+
 export interface Saksinformasjon {
   opprettet: string
 }
@@ -109,6 +111,14 @@ export enum VilkårsResultat {
   NEI = 'NEI',
   KANSKJE = 'KANSKJE',
 }
+
+/*export interface SaksgrunnlagRequest extends RegistrerSøknadData{
+    type: 'BARNEBRILLER_MANGLER_OPPLYSNINGER' | 'BARNEBRILLER_REGISTRERE_SAKSGRUNNLAG',
+}
+
+export interface OpplysningerMangler  {
+
+}*/
 
 export interface RegistrerSøknadData {
   målform: MålformType

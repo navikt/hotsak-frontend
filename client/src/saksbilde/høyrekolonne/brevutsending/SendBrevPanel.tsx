@@ -8,6 +8,7 @@ import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
+import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { Brevmal, BrevTekst, MålformType } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
@@ -31,6 +32,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
+  const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const debounceVentetid = 1000
   const { mutate } = useSWRConfig()
@@ -92,6 +94,11 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     setVisSendBrevModal(false)
     setSubmitAttempt(false)
     setFritekst('')
+    setVisSendtBrevToast(true)
+
+    setTimeout(() => {
+      setVisSendtBrevToast(false)
+    }, 3000)
   }
 
   const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -199,6 +206,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           sendBrev()
         }}
       />
+      {visSendtBrevToast && <InfoToast>Brevet ble sendt</InfoToast>}
     </>
   )
 })

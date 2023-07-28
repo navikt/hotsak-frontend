@@ -491,6 +491,12 @@ export class BarnebrillesakStore extends Dexie {
           saksbehandler: totrinnskontroll.saksbehandler,
           steg: StegType.FERDIG_BEHANDLET,
           status: OppgaveStatusType.VEDTAK_FATTET,
+          vedtak: {
+            vedtaksdato: nå,
+            status: 'INNVILGET',
+            saksbehandlerNavn: sak.saksbehandler?.navn,
+            saksbehandlerRef: sak.saksbehandler?.objectId,
+          },
           totrinnskontroll,
         })
         this.lagreHendelse(sakId, 'Vedtak fattet')

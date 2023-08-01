@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { MenuGridIcon } from '@navikt/aksel-icons'
-import { Link } from '@navikt/ds-react'
-import { Dropdown, Header } from '@navikt/ds-react-internal'
+import { Dropdown, InternalHeader, Link } from '@navikt/ds-react'
 
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useInnloggetSaksbehandler } from '../state/authentication'
@@ -28,8 +27,8 @@ export const Toppmeny: React.FC = () => {
   const navigate = useNavigate()
 
   return (
-    <Header style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <Header.Title href="/">HOTSAK</Header.Title>
+    <InternalHeader>
+      <InternalHeader.Title href="/">HOTSAK</InternalHeader.Title>
       <SøkeContainer>
         <Søk
           onSearch={(value: string) => {
@@ -38,11 +37,11 @@ export const Toppmeny: React.FC = () => {
           }}
         />
       </SøkeContainer>
-      <EndringsloggDropdown />
       <Dropdown>
-        <Header.Button as={Dropdown.Toggle}>
-          <MenuGridIcon title="Systemer og oppslagsverk" />
-        </Header.Button>
+        <InternalHeader.Button as={Dropdown.Toggle} className="ml-auto">
+          <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
+        </InternalHeader.Button>
+        <EndringsloggDropdown />
         <Dropdown.Menu>
           <Dropdown.Menu.GroupedList>
             <Dropdown.Menu.GroupedList.Heading>Systemer og oppslagsverk</Dropdown.Menu.GroupedList.Heading>
@@ -60,15 +59,20 @@ export const Toppmeny: React.FC = () => {
         </Dropdown.Menu>
       </Dropdown>
       <Dropdown>
-        <Header.UserButton as={Dropdown.Toggle} name={saksbehandler.navn} description={saksbehandler.navIdent} />
+        <InternalHeader.UserButton
+          name={saksbehandler.navn}
+          description={saksbehandler.navIdent}
+          as={Dropdown.Toggle}
+          className="ml-auto"
+        />
         <Dropdown.Menu>
           <Dropdown.Menu.List>
-            <Lenke href="/logout">
-              <Dropdown.Menu.List.Item>Logg ut</Dropdown.Menu.List.Item>
-            </Lenke>
+            <Dropdown.Menu.List.Item>
+              <Lenke href="/logout">Logg ut</Lenke>
+            </Dropdown.Menu.List.Item>
           </Dropdown.Menu.List>
         </Dropdown.Menu>
       </Dropdown>
-    </Header>
+    </InternalHeader>
   )
 }

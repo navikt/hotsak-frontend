@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
-import { Button, Loader } from '@navikt/ds-react'
-import { Dropdown } from '@navikt/ds-react-internal'
+import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
 import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'

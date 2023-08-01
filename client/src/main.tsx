@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client'
 import 'reset-css'
 
 import '@navikt/ds-css'
-import '@navikt/ds-css-internal'
 import { Modal } from '@navikt/ds-react'
 
 import { setupAmplitude } from './utils/amplitude'

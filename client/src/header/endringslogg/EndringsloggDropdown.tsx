@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { InformationSquareIcon } from '@navikt/aksel-icons'
-import { Dropdown, Header } from '@navikt/ds-react-internal'
+import { Dropdown, InternalHeader } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
@@ -14,7 +14,7 @@ export const EndringsloggDropdown: React.FC = () => {
   const dropdownMenuRef = useRef<HTMLDivElement>(null)
   return (
     <Dropdown>
-      <Header.Button
+      <InternalHeader.Button
         as={Dropdown.Toggle}
         style={{ position: 'relative' }}
         onClick={() => {
@@ -25,7 +25,7 @@ export const EndringsloggDropdown: React.FC = () => {
       >
         {!endringslogg.loading && <Uleste fading={endringslogg.fading} />}
         <InformationSquareIcon title="Endringslogg" width={20} height={20} />
-      </Header.Button>
+      </InternalHeader.Button>
       <EndringsloggDropdownMenu ref={dropdownMenuRef}>
         <Endringslogg endringslogginnslag={endringslogg.innslag} merkSomLest={endringslogg.merkSomLest} />
       </EndringsloggDropdownMenu>

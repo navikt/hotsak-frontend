@@ -3,8 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { Link, Tag } from '@navikt/ds-react'
-import { CopyToClipboard } from '@navikt/ds-react-internal'
+import { CopyButton, Link, Tag, Tooltip } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
@@ -33,10 +32,6 @@ const Container = styled.div`
   > svg {
     margin-right: 0.5rem;
   }
-`
-
-const Clipboard = styled(CopyToClipboard)`
-  color: var(--a-text-default);
 `
 
 const Separator = styled.div`
@@ -137,14 +132,9 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
       {fnr ? (
         <>
           <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
-          <Clipboard
-            popoverText="Fødselsnummer kopiert"
-            title="Kopier fødselsnummer"
-            variant="tertiary"
-            size="small"
-            copyText={fnr}
-            popoverPlacement="bottom"
-          />
+          <Tooltip content="Kopier fødselsnumer">
+            <CopyButton title="Kopier fødselsnummer" size="small" copyText={fnr} />
+          </Tooltip>
         </>
       ) : (
         <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
@@ -154,14 +144,9 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
         <>
           <Separator>|</Separator>
           <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
-          <Clipboard
-            popoverText="Brukernummer kopiert"
-            title="Kopier brukernummer"
-            popoverPlacement="bottom"
-            variant="tertiary"
-            size="small"
-            copyText={brukernummer}
-          ></Clipboard>
+          <Tooltip content="Kopier brukernummer">
+            <CopyButton title="Kopier brukernummer" size="small" copyText={brukernummer}></CopyButton>
+          </Tooltip>
         </>
       )}
 
@@ -169,14 +154,9 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
         <>
           <Separator>|</Separator>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
-          <Clipboard
-            popoverText="Telefonnummer er kopiert"
-            title="Kopier telefonnummer"
-            popoverPlacement="bottom"
-            variant="tertiary"
-            size="small"
-            copyText={telefon}
-          ></Clipboard>
+          <Tooltip content="Kopier telefonnummer">
+            <CopyButton title="Kopier telefonnummer" size="small" copyText={telefon}></CopyButton>
+          </Tooltip>
         </>
       )}
       {adressebeskyttelse && (

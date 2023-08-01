@@ -32,6 +32,9 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     if (sakId === '999') {
       return res(ctx.status(401), ctx.text('Unauthorized.'))
     }
+    if (sakId === '500') {
+      return res(ctx.status(500), ctx.text('Teknisk feil'))
+    }
     const sak = await sakStore.hent(sakId)
 
     if (sak) {

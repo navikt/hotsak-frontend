@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Accordion, BodyShort, Heading, Link, Panel } from '@navikt/ds-react'
-import { CopyToClipboard } from '@navikt/ds-react-internal'
+import { Accordion, BodyShort, CopyButton, Heading, Link, Panel } from '@navikt/ds-react'
 
 import { isError } from '../utils/type'
 
@@ -27,11 +26,7 @@ export const Feilside: React.FC<{ statusCode: number; error?: Error }> = ({ stat
                   <Code>{utviklerinformasjon}</Code>
                 </div>
                 <div style={{ marginLeft: 10 }}>
-                  <CopyToClipboard
-                    copyText={utviklerinformasjon}
-                    title="Kopier feilmelding"
-                    popoverText="Kopier informasjon til utviklere"
-                  />
+                  <CopyButton copyText={utviklerinformasjon} text="Kopier feilmelding" activeText="Kopiert" />
                 </div>
               </div>
             </Accordion.Content>

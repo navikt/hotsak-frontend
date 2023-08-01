@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { CopyToClipboard } from '@navikt/ds-react-internal'
+import { CopyButton, Tooltip } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -25,11 +25,6 @@ const CopyContainer = styled.div`
   align-items: center;
 `
 
-const Clipboard = styled(CopyToClipboard)`
-  color: var(--a-text-default);
-  padding: 0.1rem var(--a-spacing-3) 0.1rem var(--a-spacing-3);
-`
-
 export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
@@ -40,28 +35,18 @@ export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerN
         </IconContainer>
         <CopyContainer>
           <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
-          <Clipboard
-            popoverText="Navn kopiert"
-            title="Kopier formidler navn"
-            variant="tertiary"
-            size="small"
-            copyText={formidlerNavn}
-            popoverPlacement="bottom"
-          />
+          <Tooltip content="Kopier formidler navn" placement="bottom">
+            <CopyButton title="Kopier formidler navn" size="small" copyText={formidlerNavn} />
+          </Tooltip>
         </CopyContainer>
         <IconContainer>
           <TelefonIkon />
         </IconContainer>
         <CopyContainer>
           <Tekst>{formidlerTelefon}</Tekst>
-          <Clipboard
-            popoverText="Telefonnummer kopiert"
-            title="Kopier telefonnummer"
-            variant="tertiary"
-            size="small"
-            copyText={formidlerTelefon}
-            popoverPlacement="bottom"
-          />
+          <Tooltip content="Kopier telefonnummer" placement="bottom">
+            <CopyButton title="Kopier telefonnummer" size="small" copyText={formidlerTelefon} />
+          </Tooltip>
         </CopyContainer>
       </CenterGrid>
     </Card>

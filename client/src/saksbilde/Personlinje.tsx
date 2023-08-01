@@ -132,7 +132,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
       {fnr ? (
         <>
           <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
-          <Tooltip content="Kopier fødselsnumer">
+          <Tooltip content="Kopier fødselsnumer" placement="bottom">
             <CopyButton title="Kopier fødselsnummer" size="small" copyText={fnr} />
           </Tooltip>
         </>
@@ -144,7 +144,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
         <>
           <Separator>|</Separator>
           <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
-          <Tooltip content="Kopier brukernummer">
+          <Tooltip content="Kopier brukernummer" placement="bottom">
             <CopyButton title="Kopier brukernummer" size="small" copyText={brukernummer}></CopyButton>
           </Tooltip>
         </>
@@ -154,7 +154,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
         <>
           <Separator>|</Separator>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
-          <Tooltip content="Kopier telefonnummer">
+          <Tooltip content="Kopier telefonnummer" placement="bottom">
             <CopyButton title="Kopier telefonnummer" size="small" copyText={telefon}></CopyButton>
           </Tooltip>
         </>

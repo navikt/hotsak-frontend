@@ -25,16 +25,16 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
   if (saksdokumenter?.length === 0) {
     return (
       <Container>
-        <KolonneTittel>TIDLIGERE BREV</KolonneTittel>
+        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
         <div>Ingen brev sendt</div>
       </Container>
     )
   } else
     return (
       <Container>
-        <KolonneTittel>TIDLIGERE BREV</KolonneTittel>
+        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
         {saksdokumenter
-          .sort((a, b) => sorterKronologisk(a.opprettetDato, b.opprettetDato))
+          .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))
           .map((it) => (
             <BrevKort key={it.dokumentID} {...it} />
           ))}

@@ -26,13 +26,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
 `
 
-export const BrevKort: React.FC<Saksdokument> = ({
-  tittel,
-  opprettetDato,
-  saksbehandler,
-  journalpostID,
-  dokumentID,
-}) => {
+export const BrevKort: React.FC<Saksdokument> = ({ tittel, opprettet, saksbehandler, journalpostID, dokumentID }) => {
   return (
     <Container>
       <ContentContainer>
@@ -45,7 +39,7 @@ export const BrevKort: React.FC<Saksdokument> = ({
             </Link>
           )}
         </Etikett>
-        {opprettetDato && <Undertittel>{norskTimestamp(opprettetDato)}</Undertittel>}
+        {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
 
         <Tekst>{saksbehandler.navn}</Tekst>
       </ContentContainer>

@@ -523,7 +523,7 @@ export interface Saksdokument {
   sakId: string
   journalpostID: string
   type: SaksdokumentType
-  opprettetDato: string
+  opprettet: string
   dokumentID: string
   saksbehandler: Saksbehandler
   tittel: string

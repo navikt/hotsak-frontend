@@ -587,7 +587,7 @@ export class BarnebrillesakStore extends Dexie {
       sakId: sakId,
       journalpostID: '12345678',
       type: SaksdokumentType.UTGÅENDE,
-      opprettetDato: dayjs().toISOString(),
+      opprettet: dayjs().toISOString(),
       saksbehandler: saksbehandler,
       dokumentID: dokumentId.toString(),
       tittel: tittel,

@@ -39,10 +39,10 @@ export function beregnSats(
   brilleseddel: Brilleseddel,
   brillepris?: string | number
 ): BeregnSatsResponse & { beløp: string } {
-  const høyreSfære = Math.abs(Number(brilleseddel.høyreSfære))
-  const høyreSylinder = Math.abs(Number(brilleseddel.høyreSylinder))
-  const venstreSfære = Math.abs(Number(brilleseddel.venstreSfære))
-  const venstreSylinder = Math.abs(Number(brilleseddel.venstreSylinder))
+  const høyreSfære = Number(brilleseddel.høyreSfære)
+  const høyreSylinder = Number(brilleseddel.høyreSylinder)
+  const venstreSfære = Number(brilleseddel.venstreSfære)
+  const venstreSylinder = Number(brilleseddel.venstreSylinder)
 
   const sfære = Math.max(høyreSfære, venstreSfære)
   const sylinder = Math.max(høyreSylinder, venstreSylinder)

@@ -43,7 +43,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
                 Velg sfære
               </option>
               {range(0, MAX_SFÆRE).map((it) => (
-                <option key={it} value={desimaltallMedFortegn(it)}>
+                <option key={it} value={it}>
                   <FormatertStyrke verdi={it} />
                 </option>
               ))}

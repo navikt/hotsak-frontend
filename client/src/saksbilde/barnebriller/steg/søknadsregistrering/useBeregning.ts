@@ -1,4 +1,3 @@
-import { log } from 'console'
 import { formatISO } from 'date-fns'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -23,10 +22,10 @@ export function useBeregning(): BeregnSatsResponse | undefined {
   useEffect(() => {
     if (høyreSfære && høyreSylinder && venstreSfære && venstreSylinder) {
       post({
-        høyreSfære: høyreSfære,
-        høyreSylinder: høyreSylinder,
-        venstreSfære: venstreSfære,
-        venstreSylinder: venstreSylinder,
+        høyreSfære: Math.abs(Number(høyreSfære)),
+        høyreSylinder: Math.abs(Number(høyreSylinder)),
+        venstreSfære: Math.abs(Number(venstreSfære)),
+        venstreSylinder: Math.abs(Number(venstreSylinder)),
         bestillingsdato,
       }).catch((e) => {
         console.error(e)

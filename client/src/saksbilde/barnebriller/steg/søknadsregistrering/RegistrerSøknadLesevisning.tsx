@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { Alert, Button, Detail, Heading, Loader } from '@navikt/ds-react'
 
-import { useDokument } from '../../../../oppgaveliste/dokumenter/dokumentHook'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 import { formaterDato } from '../../../../utils/date'
 import { capitalize } from '../../../../utils/stringFormating'
@@ -90,12 +89,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           <Rad>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.høyreSfære} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.høyreSfære} />
               </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sylinder" verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>
@@ -112,12 +111,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           <Rad>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sfære" verdi={vilkårsgrunnlag?.brilleseddel.venstreSfære} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.venstreSfære} />
               </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke type="sylinder" verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>

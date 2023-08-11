@@ -8,7 +8,7 @@ export function FormatertStyrke(props: FormatertStyrkeProps) {
     return null
   }
 
-  return <>{formatter.format(Number(verdi))}</>
+  return <>{desimaltallMedFortegn(verdi)}</>
 }
 
 const formatter = new Intl.NumberFormat('nb', {
@@ -16,3 +16,7 @@ const formatter = new Intl.NumberFormat('nb', {
   maximumFractionDigits: 2,
   signDisplay: 'exceptZero',
 })
+
+export function desimaltallMedFortegn(verdi: string | number) {
+  return formatter.format(Number(verdi))
+}

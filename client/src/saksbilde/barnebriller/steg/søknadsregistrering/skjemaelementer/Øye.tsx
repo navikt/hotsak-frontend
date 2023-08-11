@@ -7,7 +7,7 @@ import { capitalize } from '../../../../../utils/stringFormating'
 
 import { Brilleseddel } from '../../../../../types/types.internal'
 import { MAX_SFÆRE, MAX_SYLINDER } from '../../../config'
-import { FormatertStyrke } from '../FormatertStyrke'
+import { FormatertStyrke, desimaltallMedFortegn } from '../FormatertStyrke'
 
 export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const { type } = props
@@ -43,7 +43,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
                 Velg sfære
               </option>
               {range(0, MAX_SFÆRE).map((it) => (
-                <option key={it} value={it}>
+                <option key={it} value={desimaltallMedFortegn(it)}>
                   <FormatertStyrke verdi={it} />
                 </option>
               ))}

@@ -90,7 +90,7 @@ export const VurderVilkår: React.FC = () => {
               } = vilkår
               const vilkårMetadata = metadataFor(vilkårId)
               const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
-              const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk'
+              const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk - basert på saksbehandlers input'
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
 
               return (

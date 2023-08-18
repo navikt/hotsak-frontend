@@ -72,10 +72,10 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     )
   }
 
-  function byggBrevPayload(tekst?: string): BrevTekst {
+  function byggBrevPayload(tekst?: string, valgtMålform?: MålformType): BrevTekst {
     return {
       sakId: sakId,
-      målform,
+      målform: valgtMålform || målform,
       brevmal: Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
       data: {
         brevtekst: tekst ? tekst : fritekst,
@@ -112,9 +112,9 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     setTimer(newTimer)
   }
 
-  const lagreUtkast = async (tekst: string) => {
+  const lagreUtkast = async (tekst: string, valgtMålform?: MålformType) => {
     setLagrer(true)
-    await postBrevutkast(byggBrevPayload(tekst))
+    await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
     setLagrer(false)
   }
 
@@ -137,8 +137,9 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
                 legend="Målform"
                 size="small"
                 value={målform}
-                onChange={(val: MålformType) => {
-                  setMålform(val)
+                onChange={(value: MålformType) => {
+                  setMålform(value)
+                  lagreUtkast(fritekst, value)
                 }}
               >
                 <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>

@@ -20,6 +20,7 @@ const Sidebar = styled(Tabs)`
   margin: 0;
   padding: 0;
 `
+
 export const BarnebrilleSidebar: React.FC = () => {
   const { sak } = useBrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
@@ -46,9 +47,7 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.List>
         <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
         <Tabs.Tab value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
-        <Eksperiment>
-          <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
-        </Eksperiment>
+        <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
         <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<PencilWritingIcon />} />
       </Tabs.List>
       <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>

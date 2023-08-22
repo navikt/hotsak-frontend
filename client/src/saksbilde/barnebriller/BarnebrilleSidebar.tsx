@@ -56,11 +56,9 @@ export const BarnebrilleSidebar: React.FC = () => {
       <Tabs.Panel value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-      <Eksperiment>
-        <Tabs.Panel value={BarnebrilleSidebarTabs.SEND_BREV.toString()}>
-          <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-        </Tabs.Panel>
-      </Eksperiment>
+      <Tabs.Panel value={BarnebrilleSidebarTabs.SEND_BREV.toString()}>
+        <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+      </Tabs.Panel>
       <Tabs.Panel value={BarnebrilleSidebarTabs.NOTAT.toString()}>
         <Saksnotater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>

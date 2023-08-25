@@ -1,5 +1,6 @@
 import { rest } from 'msw'
 
+import { Adressebeskyttelse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
 export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) => [
@@ -10,5 +11,15 @@ export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) =>
       return res(ctx.status(404), ctx.text('Person ikke funnet'))
     }
     return res(ctx.delay(1000), ctx.status(200), ctx.json(person))
+  }),
+  rest.post<{ brukersFodselsnummer: string }>(`/api/personinfo/tilgangsattributter`, async (req, res, ctx) => {
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        adressebeskyttelseGradering: [Adressebeskyttelse.FORTROLIG],
+        erSkjermetPerson: false,
+      })
+    )
   }),
 ]

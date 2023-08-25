@@ -15,6 +15,7 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
+import { useTilgangsattributterPerson } from '../personoversikt/personInfoHook'
 import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
 
 const Container = styled.div`
@@ -110,9 +111,13 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
+  const { attributter } = useTilgangsattributterPerson(person?.fnr)
+
   if (!person) return <Container />
 
-  const { fnr, brukernummer, kjønn, fødselsdato, telefon, adressebeskyttelse } = person
+  const [adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
+
+  const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
     <Container>
       {kjønn && <Kjønnsikon kjønn={kjønn} />}

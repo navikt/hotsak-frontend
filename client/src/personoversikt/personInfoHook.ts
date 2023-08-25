@@ -2,7 +2,7 @@ import useSwr from 'swr'
 
 import { hentBrukerdataMedPost } from '../io/http'
 
-import { Person } from '../types/types.internal'
+import { Adressebeskyttelse, Person } from '../types/types.internal'
 
 interface PersonInfoResponse {
   personInfo: Person | undefined
@@ -18,6 +18,23 @@ export function usePersonInfo(brukersFodselsnummer?: string): PersonInfoResponse
 
   return {
     personInfo: data?.data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+export function useTilgangsattributterPerson(brukersFodselsnummer?: string) {
+  const { data, error } = useSwr<{
+    data:
+      | {
+          adressebeskyttelseGradering: Adressebeskyttelse[]
+          erSkjermetPerson: boolean
+        }
+      | undefined
+  }>(brukersFodselsnummer ? ['api/personinfo/tilgangsattributter', brukersFodselsnummer] : null, hentBrukerdataMedPost)
+
+  return {
+    attributter: data?.data,
     isLoading: !error && !data,
     isError: error,
   }

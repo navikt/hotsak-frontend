@@ -127,10 +127,10 @@ export const VurderVilkår: React.FC = () => {
                       <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
                     )) || '-'}
                   </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '150px' }}>
+                  <Table.DataCell scope="row" style={{ width: '250px' }}>
                     {vurdert}
                   </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '400px' }}>
+                  <Table.DataCell scope="row" style={{ width: '250px' }}>
                     {begrunnelseSaksbehandler || '-'}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '150px' }}>

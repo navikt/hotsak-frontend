@@ -34,7 +34,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               error={errors.brilleseddel?.[`${type}Sfære`]?.message}
               {...field}
             >
-              {range(-MAX_SFÆRE, -0.5).map((it) => (
+              {range(-MAX_SFÆRE, 0).map((it) => (
                 <option key={it} value={it}>
                   <FormatertStyrke verdi={it} />
                 </option>
@@ -42,7 +42,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               <option value="" disabled>
                 Velg sfære
               </option>
-              {range(0, MAX_SFÆRE).map((it) => (
+              {range(0.25, MAX_SFÆRE).map((it) => (
                 <option key={it} value={it}>
                   <FormatertStyrke verdi={it} />
                 </option>
@@ -64,7 +64,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
               error={errors.brilleseddel?.[`${type}Sylinder`]?.message}
               {...field}
             >
-              {range(-MAX_SYLINDER, -0.5).map((it) => (
+              {range(-MAX_SYLINDER, 0).map((it) => (
                 <option key={it} value={it}>
                   <FormatertStyrke verdi={it} />
                 </option>

@@ -239,6 +239,7 @@ export interface Navn {
 export interface Innsender {
   fnr: string
   navn: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface Bruker {
@@ -251,6 +252,7 @@ export interface Bruker {
   kjønn?: Kjønn
   telefon?: string
   kontonummer?: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export enum Adressebeskyttelse {
@@ -489,11 +491,13 @@ export interface Journalpost {
 export interface JournalpostInnsender {
   fnr: string
   navn: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface JournalpostBruker {
   fnr: string
   navn: string
+  adressebeskyttelse?: Adressebeskyttelse
 }
 
 export interface Dokument {
@@ -792,6 +796,7 @@ export interface Person {
   fornavn: string
   mellomnavn?: string
   etternavn: string
+  adressebeskyttelse?: Adressebeskyttelse
   kommune: Kommune
   bydel?: Bydel
   enhet: Enhet

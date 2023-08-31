@@ -33,9 +33,21 @@ export function useTilgangsattributterPerson(brukersFodselsnummer?: string) {
       | undefined
   }>(brukersFodselsnummer ? ['api/personinfo/tilgangsattributter', brukersFodselsnummer] : null, hentBrukerdataMedPost)
 
-  return {
-    attributter: data?.data,
-    isLoading: !error && !data,
-    isError: error,
+  // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
+  // feilsøking rundt problemer med Micronaut og database connections
+  if (window.appSettings.MILJO === 'prod-gcp') {
+    console.log('Vi er i prod ')
+    return {
+      attributter: undefined,
+      isLoading: undefined,
+      isError: undefined,
+    }
+  } else {
+    console.log('Vi er ikke i prod, henter tilgangsattributter fra eget endepunkt')
+    return {
+      attributter: data?.data,
+      isLoading: !error && !data,
+      isError: error,
+    }
   }
 }

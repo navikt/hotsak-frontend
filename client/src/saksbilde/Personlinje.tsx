@@ -113,21 +113,21 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
 
   // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
   // feilsøking rundt problemer med Micronaut og database connections
-  const kunFnrIDev = window.appSettings.MILJO === 'prod-gcp' ? undefined : person?.fnr
-  //const { attributter } = useTilgangsattributterPerson(person?.fnr)
-  const { attributter } = useTilgangsattributterPerson(kunFnrIDev)
+  //const kunFnrIDev = window.appSettings.MILJO === 'prod-gcp' ? undefined : person?.fnr
+  const { attributter } = useTilgangsattributterPerson(person?.fnr)
+  //const { attributter } = useTilgangsattributterPerson(kunFnrIDev)
 
   if (!person) return <Container />
 
-  let adressebeskyttelse
-  if (attributter) {
+  //let adressebeskyttelse
+  /* if (attributter) {
     ;[adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
-  }
+  }*/
   // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
   // feilsøking rundt problemer med Micronaut og database connections
-  else {
-    adressebeskyttelse = person.adressebeskyttelse
-  }
+  // else {
+  const adressebeskyttelse = person.adressebeskyttelse
+  //}
 
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (

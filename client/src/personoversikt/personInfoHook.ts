@@ -35,19 +35,19 @@ export function useTilgangsattributterPerson(brukersFodselsnummer?: string) {
 
   // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
   // feilsøking rundt problemer med Micronaut og database connections
-  ///if (window.appSettings.MILJO === 'prod-gcp') {
-  //console.log('Vi er i prod ')
-  return {
-    attributter: undefined,
-    isLoading: undefined,
-    isError: undefined,
-  }
-  /* } else {
+  if (window.appSettings.MILJO === 'prod-gcp') {
+    console.log('Vi er i prod ')
+    return {
+      attributter: undefined,
+      isLoading: undefined,
+      isError: undefined,
+    }
+  } else {
     console.log('Vi er ikke i prod, henter tilgangsattributter fra eget endepunkt')
     return {
       attributter: data?.data,
       isLoading: !error && !data,
       isError: error,
     }
-  }*/
+  }
 }

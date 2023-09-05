@@ -51,7 +51,7 @@ export const Dokumentliste: React.FC = () => {
       name: 'Beskrivelse',
       width: 400,
       render: (journalpost: Journalpost) => {
-        const journalpostTittel = journalpost.tittel || ''
+        const journalpostTittel = journalpost.tittel || 'Uten tittel'
         return (
           <TooltipWrapper visTooltip={journalpostTittel.length > 40} content={journalpostTittel}>
             <TekstMedEllipsis>{journalpost.tittel}</TekstMedEllipsis>

@@ -120,8 +120,10 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
   if (!person) return <Container />
 
   let adressebeskyttelse
+  let erSkjermetPerson = undefined
   if (attributter) {
     ;[adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
+    erSkjermetPerson = attributter.erSkjermetPerson
   }
   // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
   // feilsøking rundt problemer med Micronaut og database connections
@@ -181,6 +183,14 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
           <Separator>|</Separator>
           <Tag size="small" variant="error">
             {AdressebeskyttelseAlert[adressebeskyttelse]}
+          </Tag>
+        </>
+      )}
+      {erSkjermetPerson && (
+        <>
+          <Separator>|</Separator>
+          <Tag size="small" variant="error">
+            Skjermet
           </Tag>
         </>
       )}

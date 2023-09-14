@@ -48,7 +48,7 @@ export class ResponseError extends Error {
 }
 
 export function isResponseError(value: unknown): value is ResponseError {
-  return value instanceof ResponseError || isNumber((value as any).statusCode)
+  return value instanceof ResponseError || isNumber((value as any)?.statusCode)
 }
 
 const getData = async (response: Response) => {
@@ -135,8 +135,13 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
+  console.log('Response', response.status)
+
   if (response.status >= 400) {
     const errorMessage = await getErrorMessage(response)
+
+    console.log('Catch', response.status, errorMessage)
+
     throw new ResponseError(response.status, errorMessage)
   }
 

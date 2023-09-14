@@ -1,7 +1,7 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
-import { httpGet } from '../io/http'
+import { ResponseError, httpGet } from '../io/http'
 
 import { Dokument, Journalpost } from '../types/types.internal'
 
@@ -14,7 +14,7 @@ interface JournalpostResponse {
 interface DokumentResponse {
   dokumenter: Dokument[]
   isLoading: boolean
-  isError: any
+  isError: ResponseError
 }
 
 export function useJournalpost(journalpostID?: string): JournalpostResponse {

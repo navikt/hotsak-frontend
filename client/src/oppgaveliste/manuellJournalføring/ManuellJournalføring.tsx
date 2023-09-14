@@ -28,7 +28,7 @@ const Container = styled.div`
 
 export const ManuellJournalfør: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost } = useJournalpost(journalpostID)
+  const { journalpost, isError } = useJournalpost(journalpostID)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
@@ -52,6 +52,16 @@ export const ManuellJournalfør: React.FC = () => {
       setValgtDokument({ journalpostID, dokumentID: førsteDokment.dokumentID })
     }
   }, [journalpostID, dokumenter])
+
+  if (isError) {
+    if (isError?.statusCode === 403) {
+      return <Feilmelding>Du har ikke tilgang til å se denne journalposten.</Feilmelding>
+    } else if (isError?.statusCode === 404) {
+      return <Feilmelding>Journalpost {journalpostID} ikke funnet.</Feilmelding>
+    } else {
+      return <Feilmelding>Teknisk feil. Klarte ikke å hente journalposten.</Feilmelding>
+    }
+  }
 
   if (personInfoError) {
     if (personInfoError.statusCode === 403) {

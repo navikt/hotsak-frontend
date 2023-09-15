@@ -683,6 +683,8 @@ export enum Bruksarena {
 
 export enum Bosituasjon {
   HJEMME = 'HJEMME',
+  HJEMME_EGEN_BOLIG = 'HJEMME_EGEN_BOLIG',
+  HJEMME_OMSORG_FELLES = 'HJEMME_OMSORG_FELLES',
   INSTITUSJON = 'INSTITUSJON',
 }
 

@@ -112,15 +112,17 @@ export enum VilkårsResultat {
   KANSKJE = 'KANSKJE',
 }
 
-/*export interface SaksgrunnlagRequest extends RegistrerSøknadData{
-    type: 'BARNEBRILLER_MANGLER_OPPLYSNINGER' | 'BARNEBRILLER_REGISTRERE_SAKSGRUNNLAG',
+export interface RegistrerSøknadData {
+  målform: MålformType
+  opplysningspliktOppfylt: ManuellVurdering
+  brilleseddel: Brilleseddel
+  bestillingsdato: Date
+  brillepris: string
+  bestiltHosOptiker: ManuellVurdering
+  komplettBrille: ManuellVurdering
 }
 
-export interface OpplysningerMangler  {
-
-}*/
-
-export interface RegistrerSøknadData {
+export interface Brillegrunnlag {
   målform: MålformType
   brilleseddel: Brilleseddel
   bestillingsdato: Date
@@ -169,13 +171,16 @@ export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
   sakId: string
+  sakstype: Oppgavetype
   målform: MålformType
-  bestillingsdato: string
-  brillepris: string
-  brilleseddel: Brilleseddel
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse?: string
+  opplysningspliktOppfylt: ManuellVurdering
+  grunnlag?: {
+    bestillingsdato: string
+    brillepris: string
+    brilleseddel: Brilleseddel
+    bestiltHosOptiker: ManuellVurdering
+    komplettBrille: ManuellVurdering
+  }
 }
 
 export interface Vilkårsgrunnlag {

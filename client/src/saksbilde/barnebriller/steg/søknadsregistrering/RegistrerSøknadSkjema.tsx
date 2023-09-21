@@ -18,9 +18,11 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import {
   MålformType,
+  Oppgavetype,
   OverforGosysTilbakemelding,
   RegistrerSøknadData,
   StegType,
+  VilkårsResultat,
   VurderVilkårRequest,
 } from '../../../../types/types.internal'
 import { OverførGosysModal } from '../../../OverførGosysModal'
@@ -51,12 +53,20 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { dokumenter } = useJournalposter()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { bestillingsdato, ...rest } = { ...formData }
+    //const brillegrunnlag = formData.grunnlag
+    const { bestillingsdato, opplysningspliktOppfylt, målform, ...rest } = { ...formData }
+
+    // brillegrunnlag.bestillingsdato = formatISO(bestillingsdato, { representation: 'date' })
 
     const vurderVilkårRequest: VurderVilkårRequest = {
       sakId: sakId!,
-      bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
-      ...rest,
+      sakstype: Oppgavetype.BARNEBRILLER,
+      opplysningspliktOppfylt: opplysningspliktOppfylt,
+      målform: målform,
+      grunnlag: {
+        bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
+        ...rest,
+      },
     }
 
     setVenterPåVilkårsvurdering(true)
@@ -84,6 +94,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
+      opplysningspliktOppfylt: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: '',
+      },
       bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.bestillingsdato),
       brilleseddel: {
         høyreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
@@ -131,6 +145,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
+            {/*<OpplysningspliktOppfylt sakstatus={sak?.data.status} />*/}
+
+            {/* Punchedata i egen komponent */}
             <Avstand paddingTop={6}>
               <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
             </Avstand>

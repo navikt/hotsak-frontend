@@ -54,14 +54,18 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
+  // TODO Håndtere at grunnlag kan være null hvis opplysningsplikt ikke er oppfylt
   return {
-    ...vurderVilkårRequest,
+    // eslint-disable-next-line
+    ...vurderVilkårRequest?.grunnlag!!,
     sakId,
+    målform: vurderVilkårRequest.målform,
   }
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  const { brillepris, brilleseddel } = vurderVilkårRequest
+  // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+  const { brillepris, brilleseddel } = vurderVilkårRequest.grunnlag!
   const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
   return {
     id: sakId,
@@ -79,7 +83,8 @@ function lagVilkår(
   vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
-  const { bestillingsdato, brilleseddel } = vurderVilkårRequest
+  // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+  const { bestillingsdato, brilleseddel } = vurderVilkårRequest.grunnlag!
   return [
     {
       vilkårsvurderingId,

@@ -57,15 +57,17 @@ function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårR
   // TODO Håndtere at grunnlag kan være null hvis opplysningsplikt ikke er oppfylt
   return {
     // eslint-disable-next-line
-    ...vurderVilkårRequest?.grunnlag!!,
+    data: { ...vurderVilkårRequest?.data!! },
     sakId,
+    sakstype: vurderVilkårRequest.sakstype,
+    opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
     målform: vurderVilkårRequest.målform,
   }
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
   // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-  const { brillepris, brilleseddel } = vurderVilkårRequest.grunnlag!
+  const { brillepris, brilleseddel } = vurderVilkårRequest.data!
   const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
   return {
     id: sakId,
@@ -84,7 +86,7 @@ function lagVilkår(
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
   // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-  const { bestillingsdato, brilleseddel } = vurderVilkårRequest.grunnlag!
+  const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!
   return [
     {
       vilkårsvurderingId,

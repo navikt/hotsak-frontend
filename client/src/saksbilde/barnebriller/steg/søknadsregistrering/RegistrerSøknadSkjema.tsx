@@ -53,17 +53,14 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { dokumenter } = useJournalposter()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
-    //const brillegrunnlag = formData.grunnlag
     const { bestillingsdato, opplysningspliktOppfylt, målform, ...rest } = { ...formData }
-
-    // brillegrunnlag.bestillingsdato = formatISO(bestillingsdato, { representation: 'date' })
 
     const vurderVilkårRequest: VurderVilkårRequest = {
       sakId: sakId!,
       sakstype: Oppgavetype.BARNEBRILLER,
       opplysningspliktOppfylt: opplysningspliktOppfylt,
       målform: målform,
-      grunnlag: {
+      data: {
         bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
         ...rest,
       },
@@ -98,21 +95,21 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: '',
       },
-      bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.bestillingsdato),
+      bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
       brilleseddel: {
-        høyreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
-        høyreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSylinder.toString() || '',
-        venstreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSfære.toString() || '',
-        venstreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSylinder.toString() || '',
+        høyreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSfære.toString() || '',
+        høyreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder.toString() || '',
+        venstreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSfære.toString() || '',
+        venstreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder.toString() || '',
       },
-      brillepris: sak?.data.vilkårsgrunnlag?.brillepris || '',
+      brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       bestiltHosOptiker: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt || '',
-        begrunnelse: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse || '',
       },
       komplettBrille: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.komplettBrille.vilkårOppfylt || '',
-        begrunnelse: sak?.data.vilkårsgrunnlag?.komplettBrille.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.begrunnelse || '',
       },
     },
   })

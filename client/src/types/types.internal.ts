@@ -174,7 +174,7 @@ export interface VurderVilkårRequest {
   sakstype: Oppgavetype
   målform: MålformType
   opplysningspliktOppfylt: ManuellVurdering
-  grunnlag?: {
+  data?: {
     bestillingsdato: string
     brillepris: string
     brilleseddel: Brilleseddel
@@ -183,7 +183,9 @@ export interface VurderVilkårRequest {
   }
 }
 
-export interface Vilkårsgrunnlag {
+export type Vilkårsgrunnlag = VurderVilkårRequest
+
+/*export interface Vilkårsgrunnlag {
   sakId: string
   målform: MålformType
   bestillingsdato: string
@@ -192,7 +194,7 @@ export interface Vilkårsgrunnlag {
   bestiltHosOptiker: ManuellVurdering
   komplettBrille: ManuellVurdering
   saksbehandlersBegrunnelse?: string
-}
+}*/
 
 export enum MålformType {
   BOKMÅL = 'BOKMÅL',

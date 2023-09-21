@@ -71,9 +71,25 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   }
 }
 
+const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
+  switch (bosituasjon) {
+    case Bosituasjon.HJEMME:
+      return 'Hjemme (egen bolig, omsorgsbolig eller bofelleskap)'
+    case Bosituasjon.HJEMME_EGEN_BOLIG:
+      return 'Hjemme i egen bolig'
+    case Bosituasjon.HJEMME_OMSORG_FELLES:
+      return 'Hjemme i omsorgsbolig, bofellesskap eller servicebolig'
+    case Bosituasjon.INSTITUSJON:
+      return 'Institusjon'
+    default:
+      return 'Ukjent bosituasjon'
+  }
+}
+
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
+
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
@@ -91,11 +107,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Etikett>Telefon</Etikett>
           <Tekst>{person.telefon}</Tekst>
           <Etikett>Boform</Etikett>
-          <Tekst>
-            {person.bosituasjon === Bosituasjon.HJEMME
-              ? 'Hjemme (egen bolig, omsorgsbolig eller bofelleskap)'
-              : 'Institusjon (sykehjem)'}
-          </Tekst>
+          <Tekst>{getTextForBosituasjon(person.bosituasjon)}</Tekst>
           <Etikett>Bruksarena</Etikett>
           <Tekst>{capitalize(person.bruksarena)}</Tekst>
           <Etikett>Funksjonsnedsettelse</Etikett>

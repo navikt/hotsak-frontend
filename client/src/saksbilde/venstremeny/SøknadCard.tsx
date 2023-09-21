@@ -29,8 +29,12 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
   switch (bosituasjon) {
     case Bosituasjon.HJEMME:
       return 'Hjemmeboende'
+    case Bosituasjon.HJEMME_EGEN_BOLIG:
+      return 'Hjemmeboende i egen bolig'
+    case Bosituasjon.HJEMME_OMSORG_FELLES:
+      return 'Hjemmeboende i omsorgsbolig e.l.'
     case Bosituasjon.INSTITUSJON:
-      return 'Institusjon (sykehjem)'
+      return 'Institusjon'
     default:
       return 'Ukjent bosituasjon'
   }

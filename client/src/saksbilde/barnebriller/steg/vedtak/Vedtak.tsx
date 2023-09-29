@@ -19,7 +19,7 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/u
 import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { alertVariant, oppsummertStatus } from '../vilkårsvurdering/oppsummertStatus'
+import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 
 export const Vedtak: React.FC = () => {
@@ -69,7 +69,7 @@ export const Vedtak: React.FC = () => {
   }
 
   const { bruker, vilkårsvurdering } = sak.data
-  const status = oppsummertStatus(sak?.data.vilkårsvurdering!.vilkår || [])
+  const status = sak?.data.vilkårsvurdering!.resultat
 
   const alertType = alertVariant(status)
 
@@ -95,15 +95,18 @@ export const Vedtak: React.FC = () => {
           <>
             <Avstand paddingBottom={6} />
             <Rad>
-              <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
+              <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace(
+                'SATS_',
+                'Sats '
+              )}:`}</Kolonne>
               <Kolonne>
-                <Etikett>{`${vilkårsvurdering?.satsBeløp} kr`}</Etikett>
+                <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
               </Kolonne>
             </Rad>
             <Rad>
               <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
               <Kolonne>
-                <Etikett>{vilkårsvurdering?.beløp} kr</Etikett>
+                <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
               </Kolonne>
             </Rad>
             <Rad>

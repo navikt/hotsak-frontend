@@ -54,11 +54,11 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
-  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       sakId,
       sakstype: vurderVilkårRequest.sakstype,
-      opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
+      opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
       målform: vurderVilkårRequest.målform,
     }
   } else if (vurderVilkårRequest.data) {
@@ -66,7 +66,7 @@ function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårR
       data: { ...vurderVilkårRequest.data },
       sakId,
       sakstype: vurderVilkårRequest.sakstype,
-      opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
+      opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
       målform: vurderVilkårRequest.målform,
     }
   }
@@ -74,7 +74,7 @@ function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårR
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       id: sakId,
       sakId,
@@ -105,7 +105,7 @@ function lagVilkår(
   vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
-  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId)
   } else if (vurderVilkårRequest.data) {
     const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!

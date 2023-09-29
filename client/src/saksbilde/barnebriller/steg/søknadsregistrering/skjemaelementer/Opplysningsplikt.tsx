@@ -5,15 +5,15 @@ import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
-export function OpplysningspliktOppfylt() {
-  const { control, watch } = useFormContext<{ opplysningspliktOppfylt: ManuellVurdering }>()
+export function Opplysningsplikt() {
+  const { control, watch } = useFormContext<{ opplysningsplikt: ManuellVurdering }>()
 
-  const opplysningspliktOppfylt = watch('opplysningspliktOppfylt')
+  const opplysningsplikt = watch('opplysningsplikt')
 
   return (
     <Avstand paddingTop={6}>
       <Controller
-        name="opplysningspliktOppfylt.vilkårOppfylt"
+        name="opplysningsplikt.vilkårOppfylt"
         control={control}
         render={({ field }) => (
           <RadioGroup legend="Er opplysningsplikten oppfylt?" size="small" {...field}>
@@ -22,7 +22,7 @@ export function OpplysningspliktOppfylt() {
           </RadioGroup>
         )}
       />
-      {opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI && (
+      {opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI && (
         <Alert variant="warning" size="small">
           Denne vurderingen vil gjøre at søkeren får avslag med begrunnelsen at opplysningsplikten ikke er oppfylt
           (ftrl. $ 21-3)

@@ -29,7 +29,7 @@ import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-import { OpplysningspliktOppfylt } from './skjemaelementer/OpplysningspliktOppfylt'
+import { Opplysningsplikt } from './skjemaelementer/Opplysningsplikt'
 
 const Container = styled.div`
   overflow: auto;
@@ -49,17 +49,17 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { opplysningspliktOppfylt, målform, ...grunnlag } = { ...formData }
+    const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
 
     let vurderVilkårRequest
 
-    if (opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.JA) {
+    if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.JA) {
       const { bestillingsdato, ...rest } = { ...grunnlag }
 
       vurderVilkårRequest = {
         sakId: sakId!,
         sakstype: Oppgavetype.BARNEBRILLER,
-        opplysningspliktOppfylt: opplysningspliktOppfylt,
+        opplysningsplikt: opplysningsplikt,
         målform: målform,
         data: {
           bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
@@ -70,7 +70,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       vurderVilkårRequest = {
         sakId: sakId!,
         sakstype: Oppgavetype.BARNEBRILLER,
-        opplysningspliktOppfylt: opplysningspliktOppfylt,
+        opplysningsplikt: opplysningsplikt,
         målform: målform,
         data: undefined,
       }
@@ -101,8 +101,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      opplysningspliktOppfylt: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningspliktOppfylt.vilkårOppfylt || '',
+      opplysningsplikt: {
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt || '',
         begrunnelse: '',
       },
       bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
@@ -138,7 +138,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     )
   }
 
-  const opplysningspliktOppfylt = watch('opplysningspliktOppfylt')
+  const opplysningsplikt = watch('opplysningsplikt')
 
   const visSkjemaelementForOpplysningsplikt: boolean = antallJournalposter > 1
 
@@ -146,7 +146,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const skjulSkjemaFelter =
     visSkjemaelementForOpplysningsplikt &&
-    (opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI || opplysningspliktOppfylt.vilkårOppfylt === '')
+    (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
 
   return (
     <Container>
@@ -163,7 +163,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {visSkjemaelementForOpplysningsplikt && <OpplysningspliktOppfylt />}
+            {visSkjemaelementForOpplysningsplikt && <Opplysningsplikt />}
             {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
 
             <Avstand paddingLeft={2}>

@@ -118,7 +118,7 @@ export enum VilkårsResultat {
 
 export interface RegistrerSøknadData {
   målform: MålformType
-  opplysningspliktOppfylt: ManuellVurdering
+  opplysningsplikt: ManuellVurdering
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
@@ -176,7 +176,7 @@ export interface VurderVilkårRequest {
   sakId: string
   sakstype: Oppgavetype
   målform: MålformType
-  opplysningspliktOppfylt: ManuellVurdering
+  opplysningsplikt: ManuellVurdering
   data?: {
     brilleseddel: Brilleseddel
     bestillingsdato: string

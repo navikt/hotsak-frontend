@@ -1,3 +1,4 @@
+import { log } from 'console'
 import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
@@ -38,14 +39,13 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
-
-const datoOrdningenStartet = '2022-08-01'
+import { vurderteVilkår_IKKE_VURDERT, vurderteVilkår_JA } from './vurderteVilkår'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
 type LagretVilkårsvurdering = Omit<Vilkårsvurdering, 'vilkår'>
 
-interface LagretVilkår extends Vilkår {
+export interface LagretVilkår extends Vilkår {
   vilkårsvurderingId: string
 }
 
@@ -54,30 +54,50 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
-  // TODO Håndtere at grunnlag kan være null hvis opplysningsplikt ikke er oppfylt
-  return {
-    // eslint-disable-next-line
-    data: { ...vurderVilkårRequest?.data!! },
-    sakId,
-    sakstype: vurderVilkårRequest.sakstype,
-    opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
-    målform: vurderVilkårRequest.målform,
+  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+    return {
+      sakId,
+      sakstype: vurderVilkårRequest.sakstype,
+      opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
+      målform: vurderVilkårRequest.målform,
+    }
+  } else if (vurderVilkårRequest.data) {
+    return {
+      data: { ...vurderVilkårRequest.data },
+      sakId,
+      sakstype: vurderVilkårRequest.sakstype,
+      opplysningspliktOppfylt: vurderVilkårRequest.opplysningspliktOppfylt,
+      målform: vurderVilkårRequest.målform,
+    }
   }
+  throw new Error('Noe feil med vilkårsvurdering payload')
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-  const { brillepris, brilleseddel } = vurderVilkårRequest.data!
-  const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
-  return {
-    id: sakId,
-    sakId,
-    resultat: VilkårsResultat.JA,
-    sats,
-    satsBeløp,
-    satsBeskrivelse,
-    beløp,
-    opprettet: dayjs().toISOString(),
+  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+    return {
+      id: sakId,
+      sakId,
+      resultat: VilkårsResultat.NEI,
+      opprettet: dayjs().toISOString(),
+    }
+  } else if (vurderVilkårRequest.data) {
+    const { brillepris, brilleseddel } = vurderVilkårRequest.data
+    const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
+    return {
+      id: sakId,
+      sakId,
+      resultat: VilkårsResultat.JA,
+      data: {
+        sats,
+        satsBeløp,
+        satsBeskrivelse,
+        beløp,
+      },
+      opprettet: dayjs().toISOString(),
+    }
+  } else {
+    throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkårsvurdering()')
   }
 }
 
@@ -85,121 +105,15 @@ function lagVilkår(
   vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
-  // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
-  const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!
-  return [
-    {
-      vilkårsvurderingId,
-      vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
-      beskrivelse: 'Barnet må være under 18 år på bestillingsdato',
-      lovReferanse: '§ 2, 4. ledd',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {
-        barnetsAlder: '06.09 2016 (6 år)', // fixme
-        bestillingsdato,
-      },
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'MEDLEM_AV_FOLKETRYGDEN',
-      beskrivelse: 'Medlem av folketrygden',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {
-        bestillingsdato,
-        forenkletSjekkResultat: 'Oppfylt',
-      },
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BESTILT_HOS_OPTIKER',
-      beskrivelse: 'Brillen må bestilles hos optiker',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.JA,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'KOMPLETT_BRILLE',
-      beskrivelse: 'Bestillingen inneholder brilleglass',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.JA,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
-      beskrivelse: 'Ikke fått støtte til barnebriller tidligere i år - manuelt Hotsak-vedtak',
-      lovReferanse: '§ 3',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet har ikke vedtak om brille i kalenderåret',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BRILLESTYRKE',
-      beskrivelse: 'Brillestyrken er innenfor fastsatte styrker',
-      lovReferanse: '§ 2, 2. ledd',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {
-        ...brilleseddel,
-      },
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
-      beskrivelse: 'Bestillingsdato innenfor gyldig periode',
-      lovReferanse: '§ 6, 2. ledd',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Bestillingsdato er innenfor gyldig periode',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {
-        bestillingsdato,
-        seksMånederSiden: dayjs(bestillingsdato).subtract(6, 'month').toISOString(),
-        førsteJournalpostOpprettet: '2023-04-18', // fixme
-        lanseringsdatoForManuellInnsending: '2023-03-15',
-        første6MndFristForManuelleBarnebrillesøknader: '16.09 2023',
-      },
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BESTILLINGSDATO',
-      beskrivelse: 'Bestillingen er gjort etter at loven trådte i kraft',
-      lovReferanse: '§ 13',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§13',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Bestillingsdato er 01.08.2022 eller senere',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {
-        bestillingsdato,
-        datoOrdningenStartet,
-      },
-    },
-  ]
+  if (vurderVilkårRequest.opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI) {
+    return vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId)
+  } else if (vurderVilkårRequest.data) {
+    const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!
+
+    return vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
+  } else {
+    throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
+  }
 }
 
 function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
@@ -340,6 +254,7 @@ export class BarnebrillesakStore extends Dexie {
     const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sakId).first()
     if (vilkårsvurdering) {
       const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
+
       return {
         ...sak,
         vilkårsgrunnlag,
@@ -439,6 +354,7 @@ export class BarnebrillesakStore extends Dexie {
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
+
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)

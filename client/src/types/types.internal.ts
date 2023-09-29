@@ -70,11 +70,15 @@ export interface Vilkårsvurdering {
   sakId: string
   opprettet: string
   resultat: VilkårsResultat
+  data?: Satsberegning
+  vilkår: Vilkår[]
+}
+
+export interface Satsberegning {
   sats: SatsType
   satsBeløp: number
   satsBeskrivelse: string
   beløp: string
-  vilkår: Vilkår[]
 }
 
 export interface Vilkår {
@@ -123,7 +127,6 @@ export interface RegistrerSøknadData {
 }
 
 export interface Brillegrunnlag {
-  målform: MålformType
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
@@ -175,26 +178,15 @@ export interface VurderVilkårRequest {
   målform: MålformType
   opplysningspliktOppfylt: ManuellVurdering
   data?: {
+    brilleseddel: Brilleseddel
     bestillingsdato: string
     brillepris: string
-    brilleseddel: Brilleseddel
     bestiltHosOptiker: ManuellVurdering
     komplettBrille: ManuellVurdering
   }
 }
 
 export type Vilkårsgrunnlag = VurderVilkårRequest
-
-/*export interface Vilkårsgrunnlag {
-  sakId: string
-  målform: MålformType
-  bestillingsdato: string
-  brillepris: string
-  brilleseddel: Brilleseddel
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse?: string
-}*/
 
 export enum MålformType {
   BOKMÅL = 'BOKMÅL',

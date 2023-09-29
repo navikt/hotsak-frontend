@@ -1,17 +1,19 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Radio, RadioGroup } from '@navikt/ds-react'
+import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { VilkårsResultat } from '../../../../../types/types.internal'
+import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function OpplysningspliktOppfylt() {
-  const { control } = useFormContext<{ opplysningspliktOppfylt: boolean }>()
+  const { control, watch } = useFormContext<{ opplysningspliktOppfylt: ManuellVurdering }>()
+
+  const opplysningspliktOppfylt = watch('opplysningspliktOppfylt')
 
   return (
     <Avstand paddingTop={6}>
       <Controller
-        name="opplysningspliktOppfylt"
+        name="opplysningspliktOppfylt.vilkårOppfylt"
         control={control}
         render={({ field }) => (
           <RadioGroup legend="Er opplysningsplikten oppfylt?" size="small" {...field}>
@@ -20,6 +22,12 @@ export function OpplysningspliktOppfylt() {
           </RadioGroup>
         )}
       />
+      {opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI && (
+        <Alert variant="warning" size="small">
+          Denne vurderingen vil gjøre at søkeren får avslag med begrunnelsen at opplysningsplikten ikke er oppfylt
+          (ftrl. $ 21-3)
+        </Alert>
+      )}
     </Avstand>
   )
 }

@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
-import styled from 'styled-components'
 
-import { Alert, BodyLong, Button, Heading, Panel, Table } from '@navikt/ds-react'
+import { Alert, Button, Heading, Panel, Table } from '@navikt/ds-react'
 
 import { baseUrl, put } from '../../../../io/http'
 
-import { AlertContainer, AlertContainerBred } from '../../../../felleskomponenter/AlertContainer'
-import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
-import { alertVariant, oppsummertStatus, vilkårStatusTekst } from './oppsummertStatus'
+import { Resultat } from './kolonner/Resultat'
+import { VurdertAv } from './kolonner/VurdertAv'
+import { Oppsummering } from './oppsummering/Oppsummering'
 import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
@@ -56,7 +56,10 @@ export const VurderVilkår: React.FC = () => {
     )
   }
 
-  const oppsummertResultat = oppsummertStatus(sak.data.vilkårsvurdering!.vilkår)
+  if (!sak.data?.vilkårsvurdering) {
+    return <Feilmelding>{`Vilkårsvurderingen manlgler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
+  }
+  const oppsummertResultat = sak.data.vilkårsvurdering.resultat
 
   return (
     <>
@@ -88,9 +91,9 @@ export const VurderVilkår: React.FC = () => {
                 begrunnelseSaksbehandler,
                 lovReferanse,
               } = vilkår
+
               const vilkårMetadata = metadataFor(vilkårId)
-              const vilkårOppfylt = (resultatSaksbehandler ? resultatSaksbehandler : resultatAuto)!
-              const vurdert = resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk - basert på saksbehandlers input'
+              const vilkårOppfylt = resultatSaksbehandler ? resultatSaksbehandler : resultatAuto
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
 
               return (
@@ -114,10 +117,8 @@ export const VurderVilkår: React.FC = () => {
                     />
                   }
                 >
-                  <Table.DataCell scope="row" style={{ width: '120px', verticalAlign: 'top' }}>
-                    <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
-                      {vilkårStatusTekst(vilkårOppfylt)}
-                    </Alert>
+                  <Table.DataCell scope="row" style={{ width: '180px', verticalAlign: 'top' }}>
+                    <Resultat vilkårOppfylt={vilkårOppfylt} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '500px' }}>
                     {beskrivelse}
@@ -128,7 +129,7 @@ export const VurderVilkår: React.FC = () => {
                     )) || '-'}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    {vurdert}
+                    <VurdertAv vilkårOppfylt={vilkårOppfylt} resultatSaksbehandler={resultatSaksbehandler} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '250px' }}>
                     {begrunnelseSaksbehandler || '-'}
@@ -165,59 +166,5 @@ export const VurderVilkår: React.FC = () => {
     } else {
       setÅpneRader([...åpneRader, id])
     }
-  }
-}
-
-const ListeElement = styled.li`
-  list-style: disc;
-`
-
-const Vilkårbeskrivelser = ({ vilkår, resultat }: { vilkår?: Vilkår[]; resultat: VilkårsResultat }) => {
-  if (resultat === VilkårsResultat.JA || !vilkår) {
-    return <></>
-  }
-
-  return (
-    <ul>
-      {vilkår
-        .filter((v) => {
-          const vilkårresultat = v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto
-          return vilkårresultat === resultat
-        })
-        .map((v) => (
-          <ListeElement key={v.id}>{v.beskrivelse}</ListeElement>
-        ))}
-    </ul>
-  )
-}
-
-const Oppsummering = ({ oppsummertResultat, vilkår }: { oppsummertResultat: VilkårsResultat; vilkår: Vilkår[] }) => {
-  const alertBoksType =
-    oppsummertResultat === VilkårsResultat.JA
-      ? 'success'
-      : oppsummertResultat === VilkårsResultat.NEI
-      ? 'info'
-      : 'warning'
-
-  return (
-    <AlertContainerBred>
-      <Alert variant={alertBoksType} size="small">
-        <BodyLong>{AlertTekst(alertBoksType)}</BodyLong>
-        <Avstand paddingTop={3}>
-          <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
-        </Avstand>
-      </Alert>
-    </AlertContainerBred>
-  )
-}
-
-function AlertTekst(alertVariant: 'success' | 'warning' | 'info') {
-  switch (alertVariant) {
-    case 'success':
-      return <Etikett>Alle vilkårene er oppfylt</Etikett>
-    case 'info':
-      return <Etikett>Søknaden vil bli avslått fordi det finnes vilkår som ikke er oppfylt:</Etikett>
-    case 'warning':
-      return <Etikett>Noen av vilkårende må vurderes</Etikett>
   }
 }

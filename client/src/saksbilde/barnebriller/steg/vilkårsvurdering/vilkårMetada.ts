@@ -2,6 +2,12 @@ import { GrunnlagMetadata } from '../../../../types/types.internal'
 
 const vilkårMetadata = [
   {
+    vilkårId: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
+    identifikator: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
+    overstyrbarAvSaksbehandler: false,
+    basertPå: ['Opplysningene i saken'],
+  },
+  {
     vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
     identifikator: 'Under18ÅrPåBestillingsdato v1',
     overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,

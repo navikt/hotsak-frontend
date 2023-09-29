@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 import { DatePicker, useDatepicker } from '@navikt/ds-react'
 
 export function Bestillingsdato() {
-  const { formState, setValue, setError, clearErrors, watch } = useFormContext<{ bestillingsdato?: Date }>()
+  const { formState, setValue, setError, clearErrors, watch } = useFormContext<{ bestillingsdato: Date }>()
   const { errors } = formState
 
   const valgtDato = watch('bestillingsdato')
@@ -21,7 +21,7 @@ export function Bestillingsdato() {
     fromDate: new Date('Jan 1 1970'),
     toDate: new Date(),
     onDateChange: (dato) => {
-      setValue('bestillingsdato', dato, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
+      setValue('bestillingsdato', dato!, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
     },
 
     onValidate: (val) => {

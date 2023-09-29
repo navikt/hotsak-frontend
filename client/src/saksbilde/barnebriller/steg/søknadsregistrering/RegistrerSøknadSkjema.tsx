@@ -1,4 +1,3 @@
-//import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import 'date-fns'
 import { formatISO } from 'date-fns'
 import React, { useState } from 'react'
@@ -15,27 +14,22 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import {
   MålformType,
+  OppgaveStatusType,
   Oppgavetype,
   OverforGosysTilbakemelding,
   RegistrerSøknadData,
   StegType,
   VilkårsResultat,
-  VurderVilkårRequest,
 } from '../../../../types/types.internal'
 import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { Utbetalingsmottaker } from './Utbetalingsmottaker'
-import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
-import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
-import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
-import { KomplettBrille } from './skjemaelementer/KomplettBrille'
+import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-import { validator, validering } from './skjemaelementer/validering/validering'
+import { OpplysningspliktOppfylt } from './skjemaelementer/OpplysningspliktOppfylt'
 
 const Container = styled.div`
   overflow: auto;
@@ -52,18 +46,34 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { dokumenter } = useJournalposter()
 
-  const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { bestillingsdato, opplysningspliktOppfylt, målform, ...rest } = { ...formData }
+  const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
 
-    const vurderVilkårRequest: VurderVilkårRequest = {
-      sakId: sakId!,
-      sakstype: Oppgavetype.BARNEBRILLER,
-      opplysningspliktOppfylt: opplysningspliktOppfylt,
-      målform: målform,
-      data: {
-        bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
-        ...rest,
-      },
+  const vurderVilkår = (formData: RegistrerSøknadData) => {
+    const { opplysningspliktOppfylt, målform, ...grunnlag } = { ...formData }
+
+    let vurderVilkårRequest
+
+    if (opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.JA) {
+      const { bestillingsdato, ...rest } = { ...grunnlag }
+
+      vurderVilkårRequest = {
+        sakId: sakId!,
+        sakstype: Oppgavetype.BARNEBRILLER,
+        opplysningspliktOppfylt: opplysningspliktOppfylt,
+        målform: målform,
+        data: {
+          bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
+          ...rest,
+        },
+      }
+    } else {
+      vurderVilkårRequest = {
+        sakId: sakId!,
+        sakstype: Oppgavetype.BARNEBRILLER,
+        opplysningspliktOppfylt: opplysningspliktOppfylt,
+        målform: målform,
+        data: undefined,
+      }
     }
 
     setVenterPåVilkårsvurdering(true)
@@ -92,7 +102,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
       opplysningspliktOppfylt: {
-        vilkårOppfylt: VilkårsResultat.JA,
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningspliktOppfylt.vilkårOppfylt || '',
         begrunnelse: '',
       },
       bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
@@ -116,6 +126,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const {
     formState: { errors },
+    watch,
   } = methods
 
   if (isLoading) {
@@ -126,6 +137,16 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       </div>
     )
   }
+
+  const opplysningspliktOppfylt = watch('opplysningspliktOppfylt')
+
+  const visSkjemaelementForOpplysningsplikt: boolean = antallJournalposter > 1
+
+  console.log('VAO', visSkjemaelementForOpplysningsplikt)
+
+  const skjulSkjemaFelter =
+    visSkjemaelementForOpplysningsplikt &&
+    (opplysningspliktOppfylt.vilkårOppfylt === VilkårsResultat.NEI || opplysningspliktOppfylt.vilkårOppfylt === '')
 
   return (
     <Container>
@@ -142,31 +163,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {/*<OpplysningspliktOppfylt sakstatus={sak?.data.status} />*/}
+            {visSkjemaelementForOpplysningsplikt && <OpplysningspliktOppfylt />}
+            {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
 
-            {/* Punchedata i egen komponent */}
-            <Avstand paddingTop={6}>
-              <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
-            </Avstand>
-            <Avstand paddingTop={4}>
-              <Bestillingsdato />
-            </Avstand>
-            <Avstand paddingTop={4}>
-              <Tekstfelt
-                id="brillepris"
-                label="Pris på brillen"
-                description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell synsundersøkelse skal ikke inkluderes i prisen."
-                error={errors.brillepris?.message}
-                size="small"
-                {...methods.register('brillepris', {
-                  required: 'Du må oppgi en brillepris',
-                  validate: validator(validering.beløp, 'Ugyldig brillepris'),
-                })}
-              />
-            </Avstand>
-            <BrillestyrkeForm />
-            <KomplettBrille />
-            <BestiltHosOptiker />
             <Avstand paddingLeft={2}>
               <Knappepanel>
                 <Button

@@ -125,14 +125,14 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           {vilkårsvurdering && (
             <Alert variant="info" role="alert">
               <Brødtekst>
-                {`Brillestyrke gir sats ${vilkårsvurdering.sats.replace('SATS_', '')} - inntil ${beløp.formater(
-                  vilkårsvurdering.satsBeløp
+                {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace('SATS_', '')} - inntil ${beløp.formater(
+                  vilkårsvurdering?.data?.satsBeløp
                 )} kroner. `}
               </Brødtekst>
-              {Number(vilkårsvurdering.beløp) < Number(vilkårsvurdering.satsBeløp) && (
+              {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
                 <Brødtekst>
                   {`Basert på brilleprisen, kan barnet få `}
-                  <strong>{`${beløp.formater(vilkårsvurdering.beløp)} kr i støtte`}</strong>{' '}
+                  <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
                 </Brødtekst>
               )}
             </Alert>

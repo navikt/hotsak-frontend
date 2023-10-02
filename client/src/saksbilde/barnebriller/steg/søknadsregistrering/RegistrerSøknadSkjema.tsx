@@ -140,9 +140,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const opplysningsplikt = watch('opplysningsplikt')
 
-  const visSkjemaelementForOpplysningsplikt: boolean = antallJournalposter > 1
-
-  console.log('VAO', visSkjemaelementForOpplysningsplikt)
+  const visSkjemaelementForOpplysningsplikt: boolean =
+    sak?.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
 
   const skjulSkjemaFelter =
     visSkjemaelementForOpplysningsplikt &&

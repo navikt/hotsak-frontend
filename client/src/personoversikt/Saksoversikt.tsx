@@ -139,7 +139,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
     {
       key: 'SAKSBEHANDLER',
       name: 'Saksbehandler',
-      width: 160,
+      width: 170,
       render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
         <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.sakId}`} minLength={20} />
       ),

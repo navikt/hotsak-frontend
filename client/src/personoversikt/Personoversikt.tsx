@@ -73,9 +73,15 @@ const PersonoversiktContent: React.FC = () => {
       ) : (
         <>
           <Personlinje loading={personInfoLoading} person={personInfo} />
-          <Alert size="small" variant="info">
+          <Alert size="small" variant="info" style={{ margin: '0.2rem' }}>
             Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
           </Alert>
+          {!saksoversikt?.barnebrilleSaker && (
+            <Alert size="small" variant="warning" style={{ margin: '0.2rem' }}>
+              Vi får ikke kontakt med baksystemet til direkteoppgjørsløsningen for barnebriller akkurat nå. Disse sakene
+              vises derfor ikke i listen over brukers saker under.
+            </Alert>
+          )}
           <SaksoversiktLinje
             sakerCount={hotsakSaker.length + barnebrilleSaker.length}
             hjelpemidlerCount={antallUtlånteHjelpemidler}

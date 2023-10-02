@@ -805,7 +805,7 @@ export interface Person {
 
 export interface Saksoversikt {
   hotsakSaker: Saksoversikt_Sak[]
-  barnebrilleSaker: Saksoversikt_Barnebrille_Sak[]
+  barnebrilleSaker?: Saksoversikt_Barnebrille_Sak[]
 }
 
 export interface Saksoversikt_Sak {

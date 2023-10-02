@@ -1,4 +1,3 @@
-//import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import 'date-fns'
 import { formatISO } from 'date-fns'
 import React, { useState } from 'react'
@@ -15,25 +14,22 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
 import {
   MålformType,
+  OppgaveStatusType,
+  Oppgavetype,
   OverforGosysTilbakemelding,
   RegistrerSøknadData,
   StegType,
-  VurderVilkårRequest,
+  VilkårsResultat,
 } from '../../../../types/types.internal'
 import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { Utbetalingsmottaker } from './Utbetalingsmottaker'
-import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
-import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
-import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
-import { KomplettBrille } from './skjemaelementer/KomplettBrille'
+import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-import { validator, validering } from './skjemaelementer/validering/validering'
+import { Opplysningsplikt } from './skjemaelementer/Opplysningsplikt'
 
 const Container = styled.div`
   overflow: auto;
@@ -50,13 +46,34 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { dokumenter } = useJournalposter()
 
-  const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { bestillingsdato, ...rest } = { ...formData }
+  const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
 
-    const vurderVilkårRequest: VurderVilkårRequest = {
-      sakId: sakId!,
-      bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
-      ...rest,
+  const vurderVilkår = (formData: RegistrerSøknadData) => {
+    const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
+
+    let vurderVilkårRequest
+
+    if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.JA) {
+      const { bestillingsdato, ...rest } = { ...grunnlag }
+
+      vurderVilkårRequest = {
+        sakId: sakId!,
+        sakstype: Oppgavetype.BARNEBRILLER,
+        opplysningsplikt: opplysningsplikt,
+        målform: målform,
+        data: {
+          bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
+          ...rest,
+        },
+      }
+    } else {
+      vurderVilkårRequest = {
+        sakId: sakId!,
+        sakstype: Oppgavetype.BARNEBRILLER,
+        opplysningsplikt: opplysningsplikt,
+        målform: målform,
+        data: undefined,
+      }
     }
 
     setVenterPåVilkårsvurdering(true)
@@ -84,27 +101,32 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.bestillingsdato),
-      brilleseddel: {
-        høyreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSfære.toString() || '',
-        høyreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.høyreSylinder.toString() || '',
-        venstreSfære: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSfære.toString() || '',
-        venstreSylinder: sak?.data.vilkårsgrunnlag?.brilleseddel.venstreSylinder.toString() || '',
+      opplysningsplikt: {
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt || '',
+        begrunnelse: '',
       },
-      brillepris: sak?.data.vilkårsgrunnlag?.brillepris || '',
+      bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
+      brilleseddel: {
+        høyreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSfære.toString() || '',
+        høyreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder.toString() || '',
+        venstreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSfære.toString() || '',
+        venstreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder.toString() || '',
+      },
+      brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       bestiltHosOptiker: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt || '',
-        begrunnelse: sak?.data.vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse || '',
       },
       komplettBrille: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.komplettBrille.vilkårOppfylt || '',
-        begrunnelse: sak?.data.vilkårsgrunnlag?.komplettBrille.begrunnelse || '',
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt || '',
+        begrunnelse: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.begrunnelse || '',
       },
     },
   })
 
   const {
     formState: { errors },
+    watch,
   } = methods
 
   if (isLoading) {
@@ -115,6 +137,16 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       </div>
     )
   }
+
+  const opplysningsplikt = watch('opplysningsplikt')
+
+  const visSkjemaelementForOpplysningsplikt: boolean = antallJournalposter > 1
+
+  console.log('VAO', visSkjemaelementForOpplysningsplikt)
+
+  const skjulSkjemaFelter =
+    visSkjemaelementForOpplysningsplikt &&
+    (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
 
   return (
     <Container>
@@ -131,28 +163,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            <Avstand paddingTop={6}>
-              <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
-            </Avstand>
-            <Avstand paddingTop={4}>
-              <Bestillingsdato />
-            </Avstand>
-            <Avstand paddingTop={4}>
-              <Tekstfelt
-                id="brillepris"
-                label="Pris på brillen"
-                description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell synsundersøkelse skal ikke inkluderes i prisen."
-                error={errors.brillepris?.message}
-                size="small"
-                {...methods.register('brillepris', {
-                  required: 'Du må oppgi en brillepris',
-                  validate: validator(validering.beløp, 'Ugyldig brillepris'),
-                })}
-              />
-            </Avstand>
-            <BrillestyrkeForm />
-            <KomplettBrille />
-            <BestiltHosOptiker />
+            {visSkjemaelementForOpplysningsplikt && <Opplysningsplikt />}
+            {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
+
             <Avstand paddingLeft={2}>
               <Knappepanel>
                 <Button

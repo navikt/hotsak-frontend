@@ -1,32 +1,26 @@
-import { Vilkår, VilkårsResultat } from '../../../../types/types.internal'
+import { VilkårsResultat } from '../../../../types/types.internal'
 
-export function oppsummertStatus(vilkår: Vilkår[]): VilkårsResultat {
-  const vilkårsResultat = vilkår
-    .map((v) => (v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto))
-    .reduce((samletStatus, vilkårStatus) => {
-      if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
-        return samletStatus
-      } else if (vilkårStatus === VilkårsResultat.NEI || vilkårStatus === VilkårsResultat.KANSKJE) {
-        return vilkårStatus
-      } else {
-        return samletStatus
-      }
-    }, VilkårsResultat.JA)
-  return vilkårsResultat!
-}
+export function alertVariant(vilkårOppfylt?: VilkårsResultat) {
+  if (!vilkårOppfylt) {
+    return 'error'
+  }
 
-export function alertVariant(vilkårOppfylt: VilkårsResultat) {
   switch (vilkårOppfylt) {
     case VilkårsResultat.JA:
       return 'success'
-    case VilkårsResultat.NEI:
-      return 'error'
+
     case VilkårsResultat.KANSKJE:
       return 'warning'
+    case VilkårsResultat.NEI:
+      return 'error'
   }
 }
 
-export function vilkårStatusTekst(vilkårOppfylt: VilkårsResultat) {
+export function vilkårStatusTekst(vilkårOppfylt?: VilkårsResultat) {
+  if (!vilkårOppfylt) {
+    return 'Skal ikke vurderes'
+  }
+
   switch (vilkårOppfylt) {
     case VilkårsResultat.JA:
       return 'Oppfylt'

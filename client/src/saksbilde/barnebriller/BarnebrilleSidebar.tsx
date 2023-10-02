@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { ClockIcon, EnvelopeClosedIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'

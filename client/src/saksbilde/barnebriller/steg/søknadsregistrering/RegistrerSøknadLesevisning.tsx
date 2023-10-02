@@ -62,11 +62,11 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>
         <Avstand paddingTop={4}>
           <Etikett>Bestillingsdato</Etikett>
-          <Brødtekst>{formaterDato(vilkårsgrunnlag?.bestillingsdato.toString())}</Brødtekst>
+          <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato.toString())}</Brødtekst>
         </Avstand>
         <Avstand paddingTop={4}>
           <Etikett>Pris på brillen</Etikett>
-          <Brødtekst>{vilkårsgrunnlag?.brillepris}</Brødtekst>
+          <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
           <Detail>
             Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
             synsundersøkelse skal ikke inkluderes i prisen.
@@ -89,12 +89,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           <Rad>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.høyreSfære} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSfære} />
               </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.høyreSylinder} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>
@@ -111,12 +111,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           <Rad>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.venstreSfære} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSfære} />
               </Brødtekst>
             </Kolonne>
             <Kolonne width="150px">
               <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.brilleseddel.venstreSylinder} />
+                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder} />
               </Brødtekst>
             </Kolonne>
           </Rad>
@@ -125,14 +125,14 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           {vilkårsvurdering && (
             <Alert variant="info" role="alert">
               <Brødtekst>
-                {`Brillestyrke gir sats ${vilkårsvurdering.sats.replace('SATS_', '')} - inntil ${beløp.formater(
-                  vilkårsvurdering.satsBeløp
+                {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace('SATS_', '')} - inntil ${beløp.formater(
+                  vilkårsvurdering?.data?.satsBeløp
                 )} kroner. `}
               </Brødtekst>
-              {Number(vilkårsvurdering.beløp) < Number(vilkårsvurdering.satsBeløp) && (
+              {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
                 <Brødtekst>
                   {`Basert på brilleprisen, kan barnet få `}
-                  <strong>{`${beløp.formater(vilkårsvurdering.beløp)} kr i støtte`}</strong>{' '}
+                  <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
                 </Brødtekst>
               )}
             </Alert>
@@ -144,9 +144,9 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             § 2 Bestillingen må inneholde glass
           </Heading>
           <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
-          <Brødtekst>{capitalize(vilkårsgrunnlag?.komplettBrille.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
-            <Brødtekst>{vilkårsgrunnlag?.komplettBrille.begrunnelse}</Brødtekst>
+          <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt)}</Brødtekst>
+          {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
+            <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
           )}
         </Avstand>
 
@@ -155,9 +155,9 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             § 2 Brillen må være bestilt hos optiker
           </Heading>
           <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
-          <Brødtekst>{capitalize(vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
-            <Brødtekst>{vilkårsgrunnlag?.bestiltHosOptiker.begrunnelse}</Brødtekst>
+          <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
+          {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
+            <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
           )}
         </Avstand>
 

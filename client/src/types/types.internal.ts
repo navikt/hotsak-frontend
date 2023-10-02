@@ -70,11 +70,15 @@ export interface Vilkårsvurdering {
   sakId: string
   opprettet: string
   resultat: VilkårsResultat
+  data?: Satsberegning
+  vilkår: Vilkår[]
+}
+
+export interface Satsberegning {
   sats: SatsType
   satsBeløp: number
   satsBeskrivelse: string
   beløp: string
-  vilkår: Vilkår[]
 }
 
 export interface Vilkår {
@@ -112,16 +116,17 @@ export enum VilkårsResultat {
   KANSKJE = 'KANSKJE',
 }
 
-/*export interface SaksgrunnlagRequest extends RegistrerSøknadData{
-    type: 'BARNEBRILLER_MANGLER_OPPLYSNINGER' | 'BARNEBRILLER_REGISTRERE_SAKSGRUNNLAG',
-}
-
-export interface OpplysningerMangler  {
-
-}*/
-
 export interface RegistrerSøknadData {
   målform: MålformType
+  opplysningsplikt: ManuellVurdering
+  brilleseddel: Brilleseddel
+  bestillingsdato: Date
+  brillepris: string
+  bestiltHosOptiker: ManuellVurdering
+  komplettBrille: ManuellVurdering
+}
+
+export interface Brillegrunnlag {
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
@@ -169,25 +174,19 @@ export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
   sakId: string
+  sakstype: Oppgavetype
   målform: MålformType
-  bestillingsdato: string
-  brillepris: string
-  brilleseddel: Brilleseddel
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse?: string
+  opplysningsplikt: ManuellVurdering
+  data?: {
+    brilleseddel: Brilleseddel
+    bestillingsdato: string
+    brillepris: string
+    bestiltHosOptiker: ManuellVurdering
+    komplettBrille: ManuellVurdering
+  }
 }
 
-export interface Vilkårsgrunnlag {
-  sakId: string
-  målform: MålformType
-  bestillingsdato: string
-  brillepris: string
-  brilleseddel: Brilleseddel
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
-  saksbehandlersBegrunnelse?: string
-}
+export type Vilkårsgrunnlag = VurderVilkårRequest
 
 export enum MålformType {
   BOKMÅL = 'BOKMÅL',
@@ -683,6 +682,8 @@ export enum Bruksarena {
 
 export enum Bosituasjon {
   HJEMME = 'HJEMME',
+  HJEMME_EGEN_BOLIG = 'HJEMME_EGEN_BOLIG',
+  HJEMME_OMSORG_FELLES = 'HJEMME_OMSORG_FELLES',
   INSTITUSJON = 'INSTITUSJON',
 }
 

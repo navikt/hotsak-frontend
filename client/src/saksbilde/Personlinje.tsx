@@ -111,23 +111,13 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
-  // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
-  // feilsøking rundt problemer med Micronaut og database connections
-  const kunFnrIDev = window.appSettings.MILJO === 'prod-gcp' ? undefined : person?.fnr
-  //const { attributter } = useTilgangsattributterPerson(person?.fnr)
-  const { attributter } = useTilgangsattributterPerson(kunFnrIDev)
+  const { attributter } = useTilgangsattributterPerson(person?.fnr)
 
   if (!person) return <Container />
 
-  let adressebeskyttelse
-  if (attributter) {
-    ;[adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
-  }
-  // Midlertidig workaround for å håndtere at endepunk for tilgangsatributter ikke er i prod enda på grunn av
-  // feilsøking rundt problemer med Micronaut og database connections
-  else {
-    adressebeskyttelse = person.adressebeskyttelse
-  }
+  let erSkjermetPerson = undefined
+  const [adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
+  erSkjermetPerson = attributter?.erSkjermetPerson
 
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
@@ -181,6 +171,14 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => 
           <Separator>|</Separator>
           <Tag size="small" variant="error">
             {AdressebeskyttelseAlert[adressebeskyttelse]}
+          </Tag>
+        </>
+      )}
+      {erSkjermetPerson && (
+        <>
+          <Separator>|</Separator>
+          <Tag size="small" variant="error">
+            Skjermet
           </Tag>
         </>
       )}

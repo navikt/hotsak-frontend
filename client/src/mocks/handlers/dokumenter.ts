@@ -17,8 +17,13 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
   rest.get<any, { journalpostID: string }, any>(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
     const journalpostID = req.params.journalpostID
     const journalpost = await journalpostStore.hent(journalpostID)
+
     if (journalpost) {
       return res(ctx.delay(200), ctx.status(200), ctx.json(journalpost))
+    } else if (journalpostID === '403') {
+      return res(ctx.status(403))
+    } else if (journalpostID === '500') {
+      return res(ctx.status(500))
     } else {
       return res(ctx.status(404))
     }

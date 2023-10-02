@@ -325,14 +325,22 @@ export class BarnebrillesakStore extends Dexie {
     if (!sak) {
       return false
     }
-    this.transaction('rw', this.saker, this.hendelser, () => {
-      this.saker.update(sakId, {
-        status: status,
+
+    if (sak.status === status) {
+      return false
+      console.log('Stati er like')
+    } else {
+      console.log('Endrer status fra ', sak.status, 'til', status)
+
+      this.transaction('rw', this.saker, this.hendelser, () => {
+        this.saker.update(sakId, {
+          status: status,
+        })
+        this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
+        this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
       })
-      this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
-      this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
-    })
-    return true
+      return true
+    }
   }
 
   async oppdaterUtbetalingsmottaker(sakId: string, fnr: string): Promise<Utbetalingsmottaker> {
@@ -354,9 +362,9 @@ export class BarnebrillesakStore extends Dexie {
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
-
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
+      await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
     })
   }

@@ -110,7 +110,6 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
               to={`/api/journalpost/${barnebrilleSak.journalpostId}/${barnebrilleSak.dokumentId}`}
               target={'_blank'}
             >
-              <FileIcon title="a11y-title" fontSize="1rem" style={{ marginRight: '0.2rem' }} />
               {tittelWithIcon}
             </Link>
           )

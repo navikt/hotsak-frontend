@@ -59,7 +59,7 @@ const PersonoversiktContent: React.FC = () => {
 
   const hotsakSaker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
   const barnebrilleSaker =
-    saksoversikt?.barnebrilleSaker.sort((a, b) => sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)) || []
+    saksoversikt?.barnebrilleSaker?.sort((a, b) => sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)) || []
   const hjelpemidler = hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return (antall += artikkel.antall)

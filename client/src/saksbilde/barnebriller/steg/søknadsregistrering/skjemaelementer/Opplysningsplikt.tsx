@@ -23,10 +23,12 @@ export function Opplysningsplikt() {
         )}
       />
       {opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI && (
-        <Alert variant="warning" size="small">
-          Denne vurderingen vil gjøre at søkeren får avslag med begrunnelsen at opplysningsplikten ikke er oppfylt
-          (ftrl. $ 21-3)
-        </Alert>
+        <Avstand paddingTop={6}>
+          <Alert variant="warning" size="small">
+            Denne vurderingen vil gjøre at søkeren får avslag med begrunnelsen at opplysningsplikten ikke er oppfylt
+            (ftrl. $ 21-3)
+          </Alert>
+        </Avstand>
       )}
     </Avstand>
   )

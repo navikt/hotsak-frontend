@@ -48,24 +48,11 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
   return [
     {
       journalpostID,
+
       tittel: 'Tilskudd ved kjøp av briller til barn',
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
-    },
-    {
-      journalpostID,
-      tittel: 'Originalkvittering',
-      brevkode: 'X5',
-      vedlegg: [],
-      varianter: [{ format: DokumentFormat.ARKIV }],
-    },
-    {
-      journalpostID,
-      tittel: 'Kvitteringsside for dokumentinnsending',
-      brevkode: 'L7',
-      vedlegg: [],
-      varianter: [{ format: DokumentFormat.ARKIV }],
     },
   ]
 }

@@ -311,7 +311,7 @@ export interface BrevTekst {
   sakId: string
   målform: MålformType
   data: { brevtekst: string }
-  brevmal: string
+  brevtype: string
 }
 
 export interface HjelpemiddelArtikkel {
@@ -767,10 +767,6 @@ export enum BarnebrilleSidebarTabs {
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
   SEND_BREV = 'SEND_BREV',
   NOTAT = 'NOTAT',
-}
-
-export enum Brevmal {
-  BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
 }
 
 export enum Brevtype {

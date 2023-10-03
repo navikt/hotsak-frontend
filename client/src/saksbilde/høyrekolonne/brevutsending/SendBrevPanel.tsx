@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import styled from 'styled-components'
 import useSwr, { useSWRConfig } from 'swr'
 
 import { Button, Detail, Heading, Loader, Panel, Radio, RadioGroup, Select, Skeleton, Textarea } from '@navikt/ds-react'
@@ -9,8 +8,9 @@ import { postBrevutkast, postBrevutsending } from '../../../io/http'
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
 import { InfoToast } from '../../../felleskomponenter/Toast'
+import { Bakgrunnslagring } from '../../../felleskomponenter/brev/Bakgrunnslagring'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
-import { Brevmal, BrevTekst, MålformType } from '../../../types/types.internal'
+import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
@@ -76,7 +76,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     return {
       sakId: sakId,
       målform: valgtMålform || målform,
-      brevmal: Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
+      brevtype: Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
       data: {
         brevtekst: tekst ? tekst : fritekst,
       },
@@ -130,7 +130,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
               <Select size="small" label="Velg brevmal">
-                <option value={Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
+                <option value={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
               </Select>
               <Avstand paddingTop={6} />
               <RadioGroup
@@ -212,21 +212,11 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   )
 })
 
-function useBrevtekst(sakId: string, brevmal = Brevmal.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
-  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast/${brevmal}`)
+function useBrevtekst(sakId: string, brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
+  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast/${brevtype}`)
 
   return {
     data,
     isLoading,
   }
 }
-
-const Bakgrunnslagring = styled.div`
-  display: flex;
-  justify-content: right;
-  vertical-align: baseline;
-  gap: 0.4rem;
-  padding-top: 0.5rem;
-  padding-right: 0.6rem;
-  height: var(--a-spacing-4);
-`

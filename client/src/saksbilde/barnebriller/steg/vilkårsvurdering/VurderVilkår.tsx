@@ -76,7 +76,7 @@ export const VurderVilkår: React.FC = () => {
               <Table.HeaderCell scope="col">Baseres på</Table.HeaderCell>
               <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
               <Table.HeaderCell scope="col">Detaljer</Table.HeaderCell>
-              <Table.HeaderCell scope="col">§ i forskrift</Table.HeaderCell>
+              <Table.HeaderCell scope="col">Hjemmel</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
           </Table.Header>

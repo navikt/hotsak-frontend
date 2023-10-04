@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-import { OppdaterVilkårRequest, VurderVilkårRequest } from '../../types/types.internal'
+import { OppdaterVilkårRequest, OppgaveStatusType, VurderVilkårRequest } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
 export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
@@ -8,6 +8,7 @@ export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ barnebrillesak
     const sakId = req.params.sakId
     const vurderVilkårRequest = await req.json<VurderVilkårRequest>()
     await barnebrillesakStore.vurderVilkår(sakId, vurderVilkårRequest)
+    await barnebrillesakStore.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
     return res(ctx.status(201))
   }),
   rest.put<OppdaterVilkårRequest, { sakId: string; vilkarId: string }, any>(

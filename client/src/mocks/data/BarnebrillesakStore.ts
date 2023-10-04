@@ -1,4 +1,3 @@
-import { log } from 'console'
 import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
@@ -24,8 +23,8 @@ import {
   TotrinnskontrollVurdering,
   Utbetalingsmottaker,
   Vilkår,
-  Vilkårsgrunnlag,
   VilkårsResultat,
+  Vilkårsgrunnlag,
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
@@ -325,14 +324,22 @@ export class BarnebrillesakStore extends Dexie {
     if (!sak) {
       return false
     }
-    this.transaction('rw', this.saker, this.hendelser, () => {
-      this.saker.update(sakId, {
-        status: status,
+
+    if (sak.status === status) {
+      return false
+      console.log('Stati er like')
+    } else {
+      console.log('Endrer status fra ', sak.status, 'til', status)
+
+      this.transaction('rw', this.saker, this.hendelser, () => {
+        this.saker.update(sakId, {
+          status: status,
+        })
+        this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
+        this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
       })
-      this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
-      this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
-    })
-    return true
+      return true
+    }
   }
 
   async oppdaterUtbetalingsmottaker(sakId: string, fnr: string): Promise<Utbetalingsmottaker> {
@@ -354,9 +361,9 @@ export class BarnebrillesakStore extends Dexie {
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
-
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
+      await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
     })
   }
@@ -484,8 +491,8 @@ export class BarnebrillesakStore extends Dexie {
     return this.notater.where('sakId').equals(sakId).toArray()
   }
 
-  async lagreBrevtekst(sakId: string, brevmal: string, brevtekst: string) {
-    this.brevtekst.put({ brevmal, målform: MålformType.BOKMÅL, data: { brevtekst: brevtekst }, sakId }, sakId)
+  async lagreBrevtekst(sakId: string, brevtype: string, brevtekst: string) {
+    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: { brevtekst: brevtekst }, sakId }, sakId)
   }
 
   async fjernBrevtekst(sakId: string) {

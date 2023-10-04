@@ -1,3 +1,4 @@
+import { log } from 'console'
 import 'date-fns'
 import { formatISO } from 'date-fns'
 import React, { useState } from 'react'
@@ -53,26 +54,29 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
     let vurderVilkårRequest
 
-    if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.JA) {
-      const { bestillingsdato, ...rest } = { ...grunnlag }
-
-      vurderVilkårRequest = {
-        sakId: sakId!,
-        sakstype: Oppgavetype.BARNEBRILLER,
-        opplysningsplikt: opplysningsplikt,
-        målform: målform,
-        data: {
-          bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
-          ...rest,
-        },
-      }
-    } else {
+    if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
       vurderVilkårRequest = {
         sakId: sakId!,
         sakstype: Oppgavetype.BARNEBRILLER,
         opplysningsplikt: opplysningsplikt,
         målform: målform,
         data: undefined,
+      }
+    } else {
+      const { bestillingsdato, ...rest } = { ...grunnlag }
+
+      vurderVilkårRequest = {
+        sakId: sakId!,
+        sakstype: Oppgavetype.BARNEBRILLER,
+        opplysningsplikt: {
+          vilkårOppfylt: VilkårsResultat.JA,
+          begrunnelse: '',
+        },
+        målform: målform,
+        data: {
+          bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
+          ...rest,
+        },
       }
     }
 
@@ -140,9 +144,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const opplysningsplikt = watch('opplysningsplikt')
 
-  const visSkjemaelementForOpplysningsplikt: boolean = antallJournalposter > 1
-
-  console.log('VAO', visSkjemaelementForOpplysningsplikt)
+  const visSkjemaelementForOpplysningsplikt: boolean =
+    sak?.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
 
   const skjulSkjemaFelter =
     visSkjemaelementForOpplysningsplikt &&

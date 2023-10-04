@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
+import useSWR from 'swr'
 
-import { Alert, Button, Detail, Heading, Panel, Tag } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Loader, Panel, Tag, Textarea } from '@navikt/ds-react'
 
-import { post } from '../../../../io/http'
+import { post, postBrevutkast } from '../../../../io/http'
 import { formaterDato } from '../../../../utils/date'
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 
@@ -14,9 +15,17 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
+import { Bakgrunnslagring } from '../../../../felleskomponenter/brev/Bakgrunnslagring'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
+import {
+  BrevTekst,
+  Brevtype,
+  MålformType,
+  OppgaveStatusType,
+  StegType,
+  VilkårsResultat,
+} from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
@@ -28,6 +37,15 @@ export const Vedtak: React.FC = () => {
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const { data } = useBrevtekst(saksnummer)
+
+  const brevtekst = data?.data.brevtekst
+  const [fritekst, setFritekst] = useState(brevtekst || '')
+  const [submitAttempt, setSubmitAttempt] = useState(false)
+  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
+  const [lagrer, setLagrer] = useState(false)
+  const debounceVentetid = 2000
 
   const VENSTREKOLONNE_BREDDE = '180px'
 
@@ -43,6 +61,62 @@ export const Vedtak: React.FC = () => {
         setLoading(false)
         mutate()
       })
+  }
+
+  useEffect(() => {
+    if (brevtekst) {
+      setFritekst(brevtekst)
+    }
+  }, [brevtekst])
+
+  useEffect(() => {
+    if (lagrer) {
+      // kall forhåndsvisning
+    }
+  }, [lagrer])
+
+  useEffect(() => {
+    if (submitAttempt) {
+      valider()
+    }
+  }, [fritekst, submitAttempt])
+
+  const valider = () => {
+    if (fritekst === '') {
+      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
+      return false
+    } else {
+      setValideringsfeil(undefined)
+      return true
+    }
+  }
+
+  const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setFritekst(event.target.value)
+    clearTimeout(timer)
+
+    const newTimer = setTimeout(() => {
+      lagreUtkast(event.target.value)
+    }, debounceVentetid)
+
+    setTimer(newTimer)
+  }
+
+  function byggBrevPayload(tekst?: string): BrevTekst {
+    return {
+      sakId: saksnummer!,
+      målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
+      brevtype: Brevtype.BARNEBRILLER_VEDTAK,
+      data: {
+        brevtekst: tekst ? tekst : fritekst,
+      },
+    }
+  }
+
+  const lagreUtkast = async (tekst: string) => {
+    setLagrer(true)
+    await postBrevutkast(byggBrevPayload(tekst))
+    setLagrer(false)
   }
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
@@ -80,6 +154,14 @@ export const Vedtak: React.FC = () => {
     saksbehandlerKanRedigereBarnebrillesak &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
+
+  const opplysningspliktVilkår = sak.data.vilkårsvurdering?.vilkår.find(
+    (vilkår) => vilkår.vilkårId === 'MEDLEMMETS_OPPLYSNINGSPLIKT'
+  )
+
+  const visFritekstFelt =
+    opplysningspliktVilkår?.resultatSaksbehandler === VilkårsResultat.NEI &&
+    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (
     <TreKolonner>
@@ -155,6 +237,33 @@ export const Vedtak: React.FC = () => {
         )}
         {!vedtakFattet && (
           <>
+            {visFritekstFelt && (
+              <>
+                <Avstand paddingTop={6} />
+                <Textarea
+                  minRows={5}
+                  maxRows={20}
+                  label="Beskriv hvilke opplysninger som mangler"
+                  error={valideringsFeil}
+                  description="Vises i brevet som en del av begrunnelsen for avslaget"
+                  size="small"
+                  value={fritekst}
+                  onChange={(event) => onTextChange(event)}
+                />
+                <Bakgrunnslagring>
+                  {lagrer && (
+                    <>
+                      <span>
+                        <Loader size="xsmall" />
+                      </span>
+                      <span>
+                        <Detail>Lagrer</Detail>
+                      </span>
+                    </>
+                  )}
+                </Bakgrunnslagring>
+              </>
+            )}
             <Avstand paddingBottom={6} />
             {visAlertGodkjenning && (
               <Alert variant="info" size="small">
@@ -181,7 +290,12 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
+        <BrevPanel
+          sakId={sak.data.sakId}
+          fullSize={true}
+          brevtype={Brevtype.BARNEBRILLER_VEDTAK}
+          hentForhåndsvisningPåNytt={lagrer}
+        />
       </VenstreKolonne>
     </TreKolonner>
   )
@@ -193,3 +307,13 @@ const VenstreKolonne = styled(Panel)`
   margin: 0;
   height: 100%;
 `
+
+// Todo fix nullable når flytter til egen komponent
+function useBrevtekst(sakId?: string, brevtype = Brevtype.BARNEBRILLER_VEDTAK) {
+  const { data, isLoading } = useSWR<BrevTekst>(sakId ? `/api/sak/${sakId}/brevutkast/${brevtype}` : null)
+
+  return {
+    data,
+    isLoading,
+  }
+}

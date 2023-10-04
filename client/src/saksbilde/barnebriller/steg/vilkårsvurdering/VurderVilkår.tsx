@@ -31,7 +31,7 @@ export const VurderVilkår: React.FC = () => {
     if (steg === StegType.GODKJENNE) {
       setValgtTab(StegType.FATTE_VEDTAK)
     } else {
-      put(`${baseUrl}/api/sak/${sakId}/steg/fatte_vedtak`)
+      put(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`)
         .catch(() => setLagrer(false))
         .then(() => {
           setValgtTab(StegType.FATTE_VEDTAK)

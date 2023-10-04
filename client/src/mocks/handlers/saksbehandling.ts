@@ -154,7 +154,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     } = await req.json<EndreHjelpemiddelRequest>()
     return res(ctx.status(200), ctx.json({}))
   }),
-  rest.put<any, { sakId: string }, any>('/api/sak/:sakId/steg/fatte_vedtak', async (req, res, ctx) => {
+  rest.put<any, { sakId: string }, any>('/api/sak/:sakId/vilkarsvurdering', async (req, res, ctx) => {
     await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
     return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
   }),

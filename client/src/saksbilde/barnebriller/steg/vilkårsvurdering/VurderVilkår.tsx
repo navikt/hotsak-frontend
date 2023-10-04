@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 
 import { Alert, Button, Heading, Panel, Table } from '@navikt/ds-react'
 
-import { baseUrl, put } from '../../../../io/http'
+import { baseUrl, post, put } from '../../../../io/http'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
@@ -31,7 +31,7 @@ export const VurderVilkår: React.FC = () => {
     if (steg === StegType.GODKJENNE) {
       setValgtTab(StegType.FATTE_VEDTAK)
     } else {
-      put(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`)
+      post(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`, {})
         .catch(() => setLagrer(false))
         .then(() => {
           setValgtTab(StegType.FATTE_VEDTAK)

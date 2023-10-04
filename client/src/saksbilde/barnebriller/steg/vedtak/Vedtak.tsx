@@ -106,7 +106,7 @@ export const Vedtak: React.FC = () => {
     return {
       sakId: saksnummer!,
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      brevtype: Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
+      brevtype: Brevtype.BARNEBRILLER_VEDTAK,
       data: {
         brevtekst: tekst ? tekst : fritekst,
       },

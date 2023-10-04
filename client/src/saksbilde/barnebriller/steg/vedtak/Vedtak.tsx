@@ -155,8 +155,12 @@ export const Vedtak: React.FC = () => {
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
 
+  const opplysningspliktVilkår = sak.data.vilkårsvurdering?.vilkår.find(
+    (vilkår) => vilkår.vilkårId === 'MEDLEMMETS_OPPLYSNINGSPLIKT'
+  )
+
   const visFritekstFelt =
-    sak.data.vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI &&
+    opplysningspliktVilkår?.resultatSaksbehandler === VilkårsResultat.NEI &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (

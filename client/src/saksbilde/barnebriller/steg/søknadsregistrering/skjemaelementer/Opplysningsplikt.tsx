@@ -1,8 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Alert, Radio, RadioGroup } from '@navikt/ds-react'
+import { Alert, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
+import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function Opplysningsplikt() {
@@ -12,6 +13,8 @@ export function Opplysningsplikt() {
 
   return (
     <Avstand paddingTop={6}>
+      <Etikett>Innbyggers opplysningsplikt (frtl. $ 21-3)</Etikett>
+      <Avstand paddingTop={4} />
       <Controller
         name="opplysningsplikt.vilkårOppfylt"
         control={control}

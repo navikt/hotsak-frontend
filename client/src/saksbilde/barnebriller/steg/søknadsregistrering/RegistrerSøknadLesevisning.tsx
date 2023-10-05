@@ -51,6 +51,8 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
 
   const { vilkårsgrunnlag, vilkårsvurdering } = sak.data
 
+  const opplysningspliktIkkeOppfylt = vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI
+
   return (
     <Container>
       <Heading level="1" size="xsmall" spacing>
@@ -60,107 +62,120 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
       <Avstand paddingTop={4} paddingLeft={2}>
         <Etikett>Målform</Etikett>
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>
-        <Avstand paddingTop={4}>
-          <Etikett>Bestillingsdato</Etikett>
-          <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato.toString())}</Brødtekst>
-        </Avstand>
-        <Avstand paddingTop={4}>
-          <Etikett>Pris på brillen</Etikett>
-          <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
-          <Detail>
-            Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
-            synsundersøkelse skal ikke inkluderes i prisen.
-          </Detail>
-        </Avstand>
-        <Avstand paddingTop={10}>
-          <Heading level="2" size="xsmall" spacing>
-            § 2 Brillestyrke
-          </Heading>
 
-          <Detail>HØYRE ØYE</Detail>
-          <Rad>
-            <Kolonne width="150px">
-              <Etikett>Sfære (SPH)</Etikett>
-            </Kolonne>
-            <Kolonne width="150px">
-              <Etikett>Sylinder (CYL)</Etikett>
-            </Kolonne>
-          </Rad>
-          <Rad>
-            <Kolonne width="150px">
-              <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSfære} />
-              </Brødtekst>
-            </Kolonne>
-            <Kolonne width="150px">
-              <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder} />
-              </Brødtekst>
-            </Kolonne>
-          </Rad>
-          <Avstand paddingBottom={4} />
-          <Detail>VENSTRE ØYE</Detail>
-          <Rad>
-            <Kolonne width="150px">
-              <Etikett>Sfære (SPH)</Etikett>
-            </Kolonne>
-            <Kolonne width="150px">
-              <Etikett>Sylinder (CYL)</Etikett>
-            </Kolonne>
-          </Rad>
-          <Rad>
-            <Kolonne width="150px">
-              <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSfære} />
-              </Brødtekst>
-            </Kolonne>
-            <Kolonne width="150px">
-              <Brødtekst>
-                <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder} />
-              </Brødtekst>
-            </Kolonne>
-          </Rad>
+        {opplysningspliktIkkeOppfylt ? (
+          <Avstand paddingTop={4}>
+            <Heading level="2" size="xsmall" spacing>
+              Innbyggers opplysningsplikt (frtl. $ 21-3)
+            </Heading>
+            <Etikett>Er opplysningsplikten oppfylt?</Etikett>
+            <Brødtekst>{capitalize(vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt)}</Brødtekst>
+          </Avstand>
+        ) : (
+          <>
+            <Avstand paddingTop={4}>
+              <Etikett>Bestillingsdato</Etikett>
+              <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato.toString())}</Brødtekst>
+            </Avstand>
+            <Avstand paddingTop={4}>
+              <Etikett>Pris på brillen</Etikett>
+              <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
+              <Detail>
+                Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
+                synsundersøkelse skal ikke inkluderes i prisen.
+              </Detail>
+            </Avstand>
+            <Avstand paddingTop={10}>
+              <Heading level="2" size="xsmall" spacing>
+                § 2 Brillestyrke
+              </Heading>
 
-          <Avstand paddingTop={4} />
-          {vilkårsvurdering && (
-            <Alert variant="info" role="alert">
-              <Brødtekst>
-                {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace('SATS_', '')} - inntil ${beløp.formater(
-                  vilkårsvurdering?.data?.satsBeløp
-                )} kroner. `}
-              </Brødtekst>
-              {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
-                <Brødtekst>
-                  {`Basert på brilleprisen, kan barnet få `}
-                  <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
-                </Brødtekst>
+              <Detail>HØYRE ØYE</Detail>
+              <Rad>
+                <Kolonne width="150px">
+                  <Etikett>Sfære (SPH)</Etikett>
+                </Kolonne>
+                <Kolonne width="150px">
+                  <Etikett>Sylinder (CYL)</Etikett>
+                </Kolonne>
+              </Rad>
+              <Rad>
+                <Kolonne width="150px">
+                  <Brødtekst>
+                    <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSfære} />
+                  </Brødtekst>
+                </Kolonne>
+                <Kolonne width="150px">
+                  <Brødtekst>
+                    <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder} />
+                  </Brødtekst>
+                </Kolonne>
+              </Rad>
+              <Avstand paddingBottom={4} />
+              <Detail>VENSTRE ØYE</Detail>
+              <Rad>
+                <Kolonne width="150px">
+                  <Etikett>Sfære (SPH)</Etikett>
+                </Kolonne>
+                <Kolonne width="150px">
+                  <Etikett>Sylinder (CYL)</Etikett>
+                </Kolonne>
+              </Rad>
+              <Rad>
+                <Kolonne width="150px">
+                  <Brødtekst>
+                    <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSfære} />
+                  </Brødtekst>
+                </Kolonne>
+                <Kolonne width="150px">
+                  <Brødtekst>
+                    <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder} />
+                  </Brødtekst>
+                </Kolonne>
+              </Rad>
+
+              <Avstand paddingTop={4} />
+              {vilkårsvurdering && (
+                <Alert variant="info" role="alert">
+                  <Brødtekst>
+                    {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
+                      'SATS_',
+                      ''
+                    )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
+                  </Brødtekst>
+                  {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
+                    <Brødtekst>
+                      {`Basert på brilleprisen, kan barnet få `}
+                      <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
+                    </Brødtekst>
+                  )}
+                </Alert>
               )}
-            </Alert>
-          )}
-        </Avstand>
+            </Avstand>
 
-        <Avstand paddingTop={6}>
-          <Heading level="2" size="xsmall" spacing>
-            § 2 Bestillingen må inneholde glass
-          </Heading>
-          <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
-          <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
-            <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
-          )}
-        </Avstand>
+            <Avstand paddingTop={6}>
+              <Heading level="2" size="xsmall" spacing>
+                § 2 Bestillingen må inneholde glass
+              </Heading>
+              <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
+              <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt)}</Brødtekst>
+              {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
+                <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
+              )}
+            </Avstand>
 
-        <Avstand paddingTop={6}>
-          <Heading level="2" size="xsmall" spacing>
-            § 2 Brillen må være bestilt hos optiker
-          </Heading>
-          <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
-          <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
-          {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
-            <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
-          )}
-        </Avstand>
-
+            <Avstand paddingTop={6}>
+              <Heading level="2" size="xsmall" spacing>
+                § 2 Brillen må være bestilt hos optiker
+              </Heading>
+              <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
+              <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
+              {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
+                <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
+              )}
+            </Avstand>
+          </>
+        )}
         <Avstand paddingLeft={2}>
           <Knappepanel>
             <Button variant="primary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>

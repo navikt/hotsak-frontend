@@ -14,10 +14,6 @@ const Container = styled.div`
   padding: 0 0 0 2rem;
   min-width: ${hotsakTotalMinWidth};
   white-space: nowrap;
-
-  > div:last-of-type {
-    margin-left: 1rem;
-  }
 `
 
 const TabList = styled.span`
@@ -31,7 +27,7 @@ interface SaksoversiktLinjeProps {
 
 export const SaksoversiktLinje: React.FC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
   return (
-    <Container>
+    <Container style={{ marginTop: '1rem' }}>
       <Flex>
         <TabList role="tablist">
           <TabLink to={`/personoversikt/saker`} title={`Saker (${sakerCount})`}>

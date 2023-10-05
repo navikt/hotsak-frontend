@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { FileIcon } from '@navikt/aksel-icons'
-import { Table } from '@navikt/ds-react'
+import { Alert, Table } from '@navikt/ds-react'
 
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -38,7 +38,7 @@ const ScrollWrapper = styled.div`
 
 interface SaksoversiktProps {
   hotsakSaker: Saksoversikt_Sak[]
-  barnebrilleSaker: Saksoversikt_Barnebrille_Sak[]
+  barnebrilleSaker?: Saksoversikt_Barnebrille_Sak[]
   henterSaker: boolean
 }
 
@@ -98,7 +98,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
         const tittel = OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'
         const tittelWithIcon = (
           <>
-            <FileIcon title="a11y-title" fontSize="1rem" style={{ marginRight: '0.2rem' }} />
+            <FileIcon title="a11y-title" fontSize="1.2rem" style={{ marginRight: '0.2rem', marginBottom: '-0.2rem' }} />
             {tittel}
           </>
         )
@@ -157,7 +157,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
   const saker: Saksoversikt_Sak_Felles_Type[] =
     hotsakSaker
       .map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a, barnebrilleSak: undefined }))
-      .concat(barnebrilleSaker.map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a.sak, barnebrilleSak: a })))
+      .concat(barnebrilleSaker?.map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a.sak, barnebrilleSak: a })) || [])
       .sort((a, b) => sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)) || []
 
   const hasData = saker && saker.length > 0
@@ -169,6 +169,16 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
         <Toast>Henter saksoversikt</Toast>
       ) : (
         <Container>
+          {!barnebrilleSaker && (
+            <Alert size="small" variant="warning" style={{ margin: '0.2rem 0 1rem 0', width: 'fit-content' }}>
+              Vi kan for øyeblikket ikke vise barnebrillesaker fra direkteoppgjørsløsningen for optikere.
+            </Alert>
+          )}
+          <div>
+            <Alert size="small" variant="info" inline={true} style={{ margin: '0 0 1rem 0' }}>
+              Her ser du saker for brukeren i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd.
+            </Alert>
+          </div>
           {hasData ? (
             <ScrollWrapper>
               <Table style={{ width: 'initial' }} zebraStripes size="small">

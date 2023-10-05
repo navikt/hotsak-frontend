@@ -10,6 +10,7 @@ const Container = styled.div`
   justify-content: space-between;
   height: 48px;
   box-sizing: border-box;
+  margin-top: 1rem;
   border-bottom: 1px solid var(--a-border-default);
   padding: 0 0 0 2rem;
   min-width: ${hotsakTotalMinWidth};
@@ -27,7 +28,7 @@ interface SaksoversiktLinjeProps {
 
 export const SaksoversiktLinje: React.FC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
   return (
-    <Container style={{ marginTop: '1rem' }}>
+    <Container>
       <Flex>
         <TabList role="tablist">
           <TabLink to={`/personoversikt/saker`} title={`Saker (${sakerCount})`}>

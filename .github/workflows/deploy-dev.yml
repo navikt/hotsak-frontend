@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - bosted
+      - barnebrille-saker-direkteoppgjorslosningen
 
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}

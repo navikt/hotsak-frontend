@@ -801,6 +801,7 @@ export interface Person {
 
 export interface Saksoversikt {
   hotsakSaker: Saksoversikt_Sak[]
+  barnebrilleSaker?: Saksoversikt_Barnebrille_Sak[]
 }
 
 export interface Saksoversikt_Sak {
@@ -813,6 +814,17 @@ export interface Saksoversikt_Sak {
   saksbehandler?: string
   område: string[]
   fagsystem: string
+}
+
+export interface Saksoversikt_Barnebrille_Sak {
+  sak: Saksoversikt_Sak
+  journalpostId?: number
+  dokumentId?: string
+}
+
+export interface Saksoversikt_Sak_Felles_Type {
+  sak: Saksoversikt_Sak
+  barnebrilleSak?: Saksoversikt_Barnebrille_Sak
 }
 
 export interface EndreHjelpemiddelRequest {

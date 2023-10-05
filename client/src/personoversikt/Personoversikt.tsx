@@ -30,7 +30,7 @@ const Container = styled(Flex)`
 `
 
 const Content = styled.div`
-  padding: 0 1.4rem;
+  padding: 0 2rem;
   padding-top: 1rem;
   flex: 2;
   box-sizing: border-box;
@@ -57,7 +57,10 @@ const PersonoversiktContent: React.FC = () => {
     }
   }
 
-  const saker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+  const hotsakSaker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+  const barnebrilleSaker = saksoversikt?.barnebrilleSaker?.sort((a, b) =>
+    sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)
+  )
   const hjelpemidler = hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return (antall += artikkel.antall)
@@ -71,10 +74,10 @@ const PersonoversiktContent: React.FC = () => {
       ) : (
         <>
           <Personlinje loading={personInfoLoading} person={personInfo} />
-          <Alert size="small" variant="info">
-            Her ser du saker på bruker i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd
-          </Alert>
-          <SaksoversiktLinje sakerCount={saker.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
+          <SaksoversiktLinje
+            sakerCount={hotsakSaker.length + (barnebrilleSaker?.length || 0)}
+            hjelpemidlerCount={antallUtlånteHjelpemidler}
+          />
           <Container>
             <Content>
               <Routes>
@@ -84,7 +87,11 @@ const PersonoversiktContent: React.FC = () => {
                     isError ? (
                       <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
                     ) : (
-                      <Saksoversikt saker={saker} henterSaker={isLoading} />
+                      <Saksoversikt
+                        hotsakSaker={hotsakSaker}
+                        barnebrilleSaker={barnebrilleSaker}
+                        henterSaker={isLoading}
+                      />
                     )
                   }
                 />

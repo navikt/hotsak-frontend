@@ -143,7 +143,7 @@ export const Oppgaveliste: React.FC = () => {
         <MenyKnapp
           sakID={oppgave.sakId}
           status={oppgave.status}
-          tildeletSaksbehander={oppgave.saksbehandler}
+          tildeltSaksbehandler={oppgave.saksbehandler}
           kanTildeles={oppgave.kanTildeles}
           onMutate={mutate}
         />

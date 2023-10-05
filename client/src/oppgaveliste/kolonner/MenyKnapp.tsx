@@ -13,7 +13,7 @@ import { useTildeling } from './useTildeling'
 interface MenyKnappProps {
   sakID: string
   status: OppgaveStatusType
-  tildeletSaksbehander?: Saksbehandler
+  tildeltSaksbehandler?: Saksbehandler
   kanTildeles: boolean
   knappeTekst?: string
   knappeIkon?: any
@@ -23,7 +23,7 @@ interface MenyKnappProps {
 export const MenyKnapp = ({
   sakID,
   status,
-  tildeletSaksbehander,
+  tildeltSaksbehandler,
   kanTildeles,
   onMutate,
   knappeTekst,
@@ -37,15 +37,17 @@ export const MenyKnapp = ({
     event.stopPropagation()
   }
 
-  const fjernTilDelingDisabled =
-    !tildeletSaksbehander ||
-    tildeletSaksbehander.objectId !== saksbehandler.objectId ||
+  const kanOvertaSakStatuser = [OppgaveStatusType.TILDELT_SAKSBEHANDLER, OppgaveStatusType.AVVENTER_DOKUMENTASJON]
+
+  const fjernTildelingDisabled =
+    !tildeltSaksbehandler ||
+    tildeltSaksbehandler.objectId !== saksbehandler.objectId ||
     status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const kanOvertaSak =
-    tildeletSaksbehander &&
-    tildeletSaksbehander.objectId !== saksbehandler.objectId &&
-    status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    tildeltSaksbehandler &&
+    tildeltSaksbehandler.objectId !== saksbehandler.objectId &&
+    kanOvertaSakStatuser.includes(status)
 
   const overtaSak = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -91,7 +93,7 @@ export const MenyKnapp = ({
             </Button>
             <Dropdown.Menu onClick={menyClick}>
               <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item disabled={fjernTilDelingDisabled} onClick={fjernTildeling}>
+                <Dropdown.Menu.List.Item disabled={fjernTildelingDisabled} onClick={fjernTildeling}>
                   Fjern tildeling {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
                 {kanOvertaSak && (

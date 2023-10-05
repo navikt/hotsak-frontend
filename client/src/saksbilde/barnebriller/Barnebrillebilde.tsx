@@ -68,7 +68,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
             sakID={sak.data.sakId}
-            tildeletSaksbehander={sak.data.saksbehandler}
+            tildeltSaksbehandler={sak.data.saksbehandler}
             status={sak.data.status}
             kanTildeles={sak.kanTildeles}
             onMutate={mutate}

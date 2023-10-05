@@ -36,6 +36,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1002',
       },
     ],
+    barnebrilleSaker: [],
   },
   {
     hotsakSaker: [
@@ -83,6 +84,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1006',
       },
     ],
+    barnebrilleSaker: [],
   },
   {
     hotsakSaker: [
@@ -138,6 +140,23 @@ const saksoversikt: Saksoversikt[] = [
         saksbehandler: 'Silje Saksbehandler',
         fagsystem: 'HOTSAK',
         sakId: '1111',
+      },
+    ],
+    barnebrilleSaker: [
+      {
+        sak: {
+          sakstype: Oppgavetype.TILSKUDD,
+          mottattDato: '2023-09-12',
+          område: ['syn'],
+          søknadGjelder: 'Briller til barn',
+          status: OppgaveStatusType.INNVILGET,
+          statusEndretDato: '2023-09-12',
+          saksbehandler: 'Maskinelt behandlet',
+          fagsystem: 'BARNEBRILLER',
+          sakId: '2222',
+        },
+        journalpostId: 1000,
+        dokumentId: '2000',
       },
     ],
   },

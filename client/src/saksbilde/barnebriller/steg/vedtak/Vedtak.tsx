@@ -47,7 +47,7 @@ export const Vedtak: React.FC = () => {
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const [lagrer, setLagrer] = useState(false)
-  const debounceVentetid = 2000
+  const debounceVentetid = 1000
 
   const VENSTREKOLONNE_BREDDE = '180px'
 

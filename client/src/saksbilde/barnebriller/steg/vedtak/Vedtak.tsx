@@ -30,6 +30,7 @@ import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
+import { useBrev } from './brev/brevHook'
 
 export const Vedtak: React.FC = () => {
   const [loading, setLoading] = useState(false)
@@ -38,6 +39,7 @@ export const Vedtak: React.FC = () => {
   const { sak, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { data } = useBrevtekst(saksnummer)
+  const { hentForhåndsvisning } = useBrev()
 
   const brevtekst = data?.data.brevtekst
   const [fritekst, setFritekst] = useState(brevtekst || '')
@@ -68,12 +70,6 @@ export const Vedtak: React.FC = () => {
       setFritekst(brevtekst)
     }
   }, [brevtekst])
-
-  useEffect(() => {
-    if (lagrer) {
-      // kall forhåndsvisning
-    }
-  }, [lagrer])
 
   useEffect(() => {
     if (submitAttempt) {
@@ -261,6 +257,16 @@ export const Vedtak: React.FC = () => {
                       </span>
                     </>
                   )}
+                  <Button
+                    loading={false}
+                    size="small"
+                    variant="secondary"
+                    onClick={() => {
+                      hentForhåndsvisning(sak.data.sakId, Brevtype.BARNEBRILLER_VEDTAK)
+                    }}
+                  >
+                    Forhåndsvis
+                  </Button>
                 </Bakgrunnslagring>
               </>
             )}
@@ -290,12 +296,7 @@ export const Vedtak: React.FC = () => {
         )}
       </Panel>
       <VenstreKolonne>
-        <BrevPanel
-          sakId={sak.data.sakId}
-          fullSize={true}
-          brevtype={Brevtype.BARNEBRILLER_VEDTAK}
-          hentForhåndsvisningPåNytt={lagrer}
-        />
+        <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
       </VenstreKolonne>
     </TreKolonner>
   )

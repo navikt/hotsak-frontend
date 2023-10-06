@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { httpGetPdf, PDFResponse } from '../../../../../io/http'
+import { useDokumentContext } from '../../../../../oppgaveliste/dokumenter/DokumentContext'
 import {
   byggDataRessurs,
   byggFeiletRessurs,
@@ -18,15 +19,14 @@ interface BrevResponse {
   nullstillDokument: () => any
   hentetDokument: any
   settHentetDokument: any
-  // mutate: (...args: any[]) => any
 }
 
-export function useBrev(): BrevResponse {
-  const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
-  const [isDokumentError, setIsDokumentError] = useState<any>(null)
+export function useBrev(brevressurs?: Ressurs<string>, brevRessursError?: boolean): BrevResponse {
+  const { hentetDokument, settHentetDokument } = useDokumentContext()
+  const [isDokumentError, setIsDokumentError] = useState<any>(brevRessursError || null)
 
   const nullstillDokument = () => {
-    settHentetDokument(byggTomRessurs)
+    settHentetDokument(byggTomRessurs())
   }
 
   const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {

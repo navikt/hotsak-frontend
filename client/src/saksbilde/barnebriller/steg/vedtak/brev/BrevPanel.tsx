@@ -23,26 +23,21 @@ interface BrevPanelProps {
   sakId: number | string
   brevtype: Brevtype
   fullSize: boolean
-  hentForhåndsvisningPåNytt?: boolean
 }
 
 export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
-  const { sakId, brevtype, fullSize, hentForhåndsvisningPåNytt } = props
+  const { sakId, brevtype, fullSize } = props
   const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev()
 
   useEffect(() => {
-    if (sakId || hentForhåndsvisningPåNytt) {
-      console.log('Henter forhåndsvisning på nytt')
+    if (sakId) {
       hentForhåndsvisning(sakId, brevtype)
     }
-  }, [sakId, hentForhåndsvisningPåNytt])
+  }, [sakId])
 
   if (!sakId) {
     return <div>Mangler sakID</div>
   } else if (isDokumentError) {
-    {
-      /*  TODO Bruke en error boundy her?*/
-    }
     return (
       <FeilmeldingDiv>
         <div>

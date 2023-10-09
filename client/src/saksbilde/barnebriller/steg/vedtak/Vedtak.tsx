@@ -289,7 +289,12 @@ export const Vedtak: React.FC = () => {
                   disabled={loading}
                   size="small"
                   variant="primary"
-                  onClick={() => sendTilGodkjenning()}
+                  onClick={() => {
+                    setSubmitAttempt(true)
+                    if (valider()) {
+                      sendTilGodkjenning()
+                    }
+                  }}
                 >
                   Send til godkjenning
                 </Button>

@@ -246,17 +246,7 @@ export const Vedtak: React.FC = () => {
                   value={fritekst}
                   onChange={(event) => onTextChange(event)}
                 />
-                <Bakgrunnslagring>
-                  {lagrer && (
-                    <>
-                      <span>
-                        <Loader size="xsmall" />
-                      </span>
-                      <span>
-                        <Detail>Lagrer</Detail>
-                      </span>
-                    </>
-                  )}
+                <Container>
                   <Button
                     loading={false}
                     size="small"
@@ -267,7 +257,19 @@ export const Vedtak: React.FC = () => {
                   >
                     Forhåndsvis
                   </Button>
-                </Bakgrunnslagring>
+                  <Bakgrunnslagring style={{ marginLeft: 'auto' }}>
+                    {lagrer && (
+                      <>
+                        <span>
+                          <Loader size="xsmall" />
+                        </span>
+                        <span>
+                          <Detail>Lagrer</Detail>
+                        </span>
+                      </>
+                    )}
+                  </Bakgrunnslagring>
+                </Container>
               </>
             )}
             <Avstand paddingBottom={6} />
@@ -301,6 +303,11 @@ export const Vedtak: React.FC = () => {
     </TreKolonner>
   )
 }
+
+const Container = styled.div`
+  display: flex;
+  padding-top: 0.5rem;
+`
 
 const VenstreKolonne = styled(Panel)`
   border-left: 1px solid var(--a-border-default);

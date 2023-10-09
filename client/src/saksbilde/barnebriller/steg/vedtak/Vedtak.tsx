@@ -156,6 +156,7 @@ export const Vedtak: React.FC = () => {
   )
 
   const visFritekstFelt =
+    visSendTilGodkjenning &&
     opplysningspliktVilkår?.resultatSaksbehandler === VilkårsResultat.NEI &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 

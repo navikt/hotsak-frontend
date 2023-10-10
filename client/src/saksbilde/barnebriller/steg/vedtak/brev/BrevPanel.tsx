@@ -48,7 +48,7 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
       <FeilmeldingDiv>
-        <Loader size="medium" title="Genererer forhåndsvisning av brev..." />
+        <Loader size="medium" title="Henter brev..." />
         <Avstand paddingLeft={4}>
           <Etikett>Genererer forhåndsvisning av brev...</Etikett>
         </Avstand>

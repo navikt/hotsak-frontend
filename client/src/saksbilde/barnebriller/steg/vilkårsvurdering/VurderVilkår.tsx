@@ -172,8 +172,8 @@ export const VurderVilkår: React.FC = () => {
 
     console.log('a', a, 'b', b)
 
-    if (a.toLocaleLowerCase().startsWith('frtl')) return -1
-    if (b.toLocaleLowerCase().startsWith('frtl')) return 1
+    if (a.startsWith('§') && !b.startsWith('§')) return 1
+    if (!a.startsWith('§') && b.startsWith('§')) return -1
 
     return a.localeCompare(b)
   }

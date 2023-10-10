@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
@@ -169,8 +170,10 @@ export const VurderVilkår: React.FC = () => {
     if (!a) return 1
     if (!b) return -1
 
-    if (a.toLocaleLowerCase().startsWith('frtl') && b.startsWith('§')) return -1
-    if (b.toLocaleLowerCase().startsWith('frtl') && a.startsWith('§')) return 1
+    console.log('a', a, 'b', b)
+
+    if (a.toLocaleLowerCase().startsWith('frtl')) return -1
+    if (b.toLocaleLowerCase().startsWith('frtl')) return 1
 
     return a.localeCompare(b)
   }

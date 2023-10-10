@@ -67,7 +67,12 @@ export const VurderVilkår: React.FC = () => {
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        <Oppsummering vilkår={sak.data.vilkårsvurdering?.vilkår || []} oppsummertResultat={oppsummertResultat} />
+        <Oppsummering
+          vilkår={
+            sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
+          }
+          oppsummertResultat={oppsummertResultat}
+        />
         <Table size="small">
           <Table.Header>
             <Table.Row>
@@ -159,6 +164,16 @@ export const VurderVilkår: React.FC = () => {
       </Panel>
     </>
   )
+
+  function sorterPåLovreferanse(a?: string, b?: string): number {
+    if (!a) return 1
+    if (!b) return -1
+
+    if (a.toLocaleLowerCase().startsWith('frtl') && b.startsWith('§')) return -1
+    if (b.toLocaleLowerCase().startsWith('frtl') && a.startsWith('§')) return 1
+
+    return a.localeCompare(b)
+  }
 
   function toggleExpandedRad(id: string) {
     if (åpneRader.includes(id)) {

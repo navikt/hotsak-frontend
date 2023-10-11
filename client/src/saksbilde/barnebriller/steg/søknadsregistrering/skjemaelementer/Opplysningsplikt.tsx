@@ -6,38 +6,27 @@ import { formaterDato } from '../../../../../utils/date'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
-import { Brevkode, ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
-import { useSaksdokumenter } from '../../../useSaksdokumenter'
+import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
-export function Opplysningsplikt({ sakId }: { sakId: string }) {
+export function Opplysningsplikt({ brevSendtDato }: { brevSendtDato: string }) {
   const { control, watch } = useFormContext<{ opplysningsplikt: ManuellVurdering }>()
 
   const opplysningsplikt = watch('opplysningsplikt')
-
-  const { data: saksdokumenter } = useSaksdokumenter(sakId!)
-
-  console.log('Saksdokumenter', saksdokumenter)
-
-  const etterspørreOpplysningerBrev = saksdokumenter?.find(
-    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
-  )
-  const brevSendtDato = etterspørreOpplysningerBrev?.opprettet
 
   return (
     <Avstand paddingTop={6}>
       <Etikett>Innbyggers opplysningsplikt (frtl. $ 21-3)</Etikett>
       <Avstand paddingTop={4} />
-      {etterspørreOpplysningerBrev && (
-        <>
-          <Alert variant="info" size="small">
-            <Brødtekst>{`Brev for å innhente opplysninger ble sendt ${formaterDato(
-              etterspørreOpplysningerBrev.opprettet
-            )}. Hvis innbygger ikke sender de manglende opplysningene innen
+
+      <>
+        <Alert variant="info" size="small">
+          <Brødtekst>{`Brev for å innhente opplysninger ble sendt ${formaterDato(
+            brevSendtDato
+          )}. Hvis innbygger ikke sender de manglende opplysningene innen
         3 uker fra brevet ble mottatt, er ikke opplysningsplikten oppfylt.`}</Brødtekst>
-          </Alert>
-          <Avstand paddingBottom={6} />
-        </>
-      )}
+        </Alert>
+        <Avstand paddingBottom={6} />
+      </>
       <Controller
         name="opplysningsplikt.vilkårOppfylt"
         control={control}

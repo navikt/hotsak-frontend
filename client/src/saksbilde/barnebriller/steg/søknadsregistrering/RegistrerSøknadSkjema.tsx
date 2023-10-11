@@ -15,6 +15,7 @@ import { toDate } from '../../../../utils/date'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import {
+  Brevkode,
   MålformType,
   OppgaveStatusType,
   Oppgavetype,
@@ -27,6 +28,7 @@ import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
 import { Opplysningsplikt } from './skjemaelementer/Opplysningsplikt'
@@ -49,8 +51,18 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const sakStatus = sak?.data.status
   const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
 
-  const visSkjemaelementForOpplysningsplikt: boolean =
+  const kanHaEtterspørreOpplysningerBrev: boolean =
     sakStatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
+
+  const { data: saksdokumenter } = useSaksdokumenter(sakId!, kanHaEtterspørreOpplysningerBrev)
+
+  console.log('Saksdokumenter', saksdokumenter)
+
+  const etterspørreOpplysningerBrev = saksdokumenter?.find(
+    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
+  )
+
+  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
@@ -148,7 +160,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const opplysningsplikt = watch('opplysningsplikt')
 
   const skjulSkjemaFelter =
-    visSkjemaelementForOpplysningsplikt &&
+    etterspørreOpplysningerBrevFinnes &&
     (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
 
   return (
@@ -166,7 +178,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {visSkjemaelementForOpplysningsplikt && <Opplysningsplikt sakId={sakId} />}
+            {etterspørreOpplysningerBrevFinnes && (
+              <Opplysningsplikt brevSendtDato={etterspørreOpplysningerBrev.opprettet} />
+            )}
             {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
 
             <Avstand paddingLeft={2}>

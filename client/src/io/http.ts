@@ -135,12 +135,8 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
   const headers = { headers: { Accept: 'application/json' } }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
-  console.log('Response', response.status)
-
   if (response.status >= 400) {
     const errorMessage = await getErrorMessage(response)
-
-    console.log('Catch', response.status, errorMessage)
 
     throw new ResponseError(response.status, errorMessage)
   }

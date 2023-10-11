@@ -518,6 +518,10 @@ export enum SaksdokumentType {
   NOTAT = 'NOTAT',
 }
 
+export enum Brevkode {
+  INNHENTE_OPPLYSNINGER_BARNEBRILLER = 'innhente_opplysninger_barnebriller',
+}
+
 export interface Saksdokument {
   sakId: string
   journalpostID: string

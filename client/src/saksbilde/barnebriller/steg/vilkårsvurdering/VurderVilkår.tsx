@@ -1,10 +1,9 @@
-import { log } from 'console'
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
 import { Alert, Button, Heading, Panel, Table } from '@navikt/ds-react'
 
-import { baseUrl, post, put } from '../../../../io/http'
+import { baseUrl, post } from '../../../../io/http'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
@@ -169,8 +168,6 @@ export const VurderVilkår: React.FC = () => {
   function sorterPåLovreferanse(a?: string, b?: string): number {
     if (!a) return 1
     if (!b) return -1
-
-    console.log('a', a, 'b', b)
 
     if (a.startsWith('§') && !b.startsWith('§')) return 1
     if (!a.startsWith('§') && b.startsWith('§')) return -1

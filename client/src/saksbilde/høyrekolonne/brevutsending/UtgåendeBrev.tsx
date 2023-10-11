@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import useSwr from 'swr'
 
 import { sorterKronologisk } from '../../../utils/date'
 
-import { Saksdokument, SaksdokumentType } from '../../../types/types.internal'
+import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { KolonneTittel } from '../Høyrekolonne'
 import { BrevKort } from './BrevKort'
 
@@ -41,16 +40,6 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
       </Container>
     )
 })
-
-function useSaksdokumenter(sakId: string) {
-  const url = `/api/sak/${sakId}/dokumenter?type=${encodeURIComponent(SaksdokumentType.UTGÅENDE)}`
-  const { data, isLoading } = useSwr<Saksdokument[]>(url)
-
-  return {
-    data,
-    isLoading,
-  }
-}
 
 export const Container = styled.ul`
   flex: 1;

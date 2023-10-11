@@ -1,4 +1,3 @@
-import { log } from 'console'
 import 'date-fns'
 import { formatISO } from 'date-fns'
 import React, { useState } from 'react'
@@ -46,8 +45,12 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const [visGosysModal, setVisGosysModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const { dokumenter } = useJournalposter()
-
+  const sendteBrev = []
+  const sakStatus = sak?.data.status
   const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
+
+  const visSkjemaelementForOpplysningsplikt: boolean =
+    sakStatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
@@ -144,9 +147,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const opplysningsplikt = watch('opplysningsplikt')
 
-  const visSkjemaelementForOpplysningsplikt: boolean =
-    sak?.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
-
   const skjulSkjemaFelter =
     visSkjemaelementForOpplysningsplikt &&
     (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
@@ -166,7 +166,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {visSkjemaelementForOpplysningsplikt && <Opplysningsplikt />}
+            {visSkjemaelementForOpplysningsplikt && <Opplysningsplikt sakId={sakId} />}
             {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
 
             <Avstand paddingLeft={2}>

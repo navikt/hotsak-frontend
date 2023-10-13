@@ -48,7 +48,7 @@ const vilkårMetadata = [
   {
     vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
     identifikator: 'BestillingsdatoTilbakeITid v1',
-    overstyrbarAvSaksbehandler: false,
+    overstyrbarAvSaksbehandler: true,
     beskrivelse:
       'Kravet må settes fram innen seks måneder regnet fra den datoen brillen ble bestilt. Fristen på 6 måneder gjelder fra da kravet tidligst kunne vært fremsatt (Folketrygdloven § 22-13, 2.).',
     basertPå: ['Bestillingsdato'],

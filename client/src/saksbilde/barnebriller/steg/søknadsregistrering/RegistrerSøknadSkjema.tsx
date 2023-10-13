@@ -54,17 +54,20 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const kanHaEtterspørreOpplysningerBrev: boolean =
     sakStatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
 
+  const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
+
   const { data: saksdokumenter } = useSaksdokumenter(
     sakId!,
-    window.appSettings.MILJO === 'dev-gcp' ? false : kanHaEtterspørreOpplysningerBrev
+    toggleAvEtterspørreOpplysninger ? false : kanHaEtterspørreOpplysningerBrev
   )
 
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
 
-  const etterspørreOpplysningerBrevFinnes =
-    window.appSettings.MILJO === 'dev-gcp' ? false : etterspørreOpplysningerBrev !== undefined
+  const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
+    ? false
+    : etterspørreOpplysningerBrev !== undefined
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
@@ -161,11 +164,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const opplysningsplikt = watch('opplysningsplikt')
 
-  const skjulSkjemaFelter =
-    window.appSettings.MILJO === 'dev-gcp'
-      ? false
-      : etterspørreOpplysningerBrevFinnes &&
-        (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
+  const skjulSkjemaFelter = toggleAvEtterspørreOpplysninger
+    ? false
+    : etterspørreOpplysningerBrevFinnes &&
+      (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
 
   return (
     <Container>

@@ -54,15 +54,17 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const kanHaEtterspørreOpplysningerBrev: boolean =
     sakStatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
 
-  const { data: saksdokumenter } = useSaksdokumenter(sakId!, kanHaEtterspørreOpplysningerBrev)
-
-  console.log('Saksdokumenter', saksdokumenter)
+  const { data: saksdokumenter } = useSaksdokumenter(
+    sakId!,
+    window.appSettings.MILJO === 'dev-gcp' ? false : kanHaEtterspørreOpplysningerBrev
+  )
 
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
 
-  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
+  const etterspørreOpplysningerBrevFinnes =
+    window.appSettings.MILJO === 'dev-gcp' ? false : etterspørreOpplysningerBrev !== undefined
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
@@ -160,8 +162,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const opplysningsplikt = watch('opplysningsplikt')
 
   const skjulSkjemaFelter =
-    etterspørreOpplysningerBrevFinnes &&
-    (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
+    window.appSettings.MILJO === 'dev-gcp'
+      ? false
+      : etterspørreOpplysningerBrevFinnes &&
+        (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
 
   return (
     <Container>
@@ -179,7 +183,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
           >
             <Målform />
             {etterspørreOpplysningerBrevFinnes && (
-              <Opplysningsplikt brevSendtDato={etterspørreOpplysningerBrev.opprettet} />
+              <Opplysningsplikt brevSendtDato={etterspørreOpplysningerBrev!.opprettet} />
             )}
             {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
 

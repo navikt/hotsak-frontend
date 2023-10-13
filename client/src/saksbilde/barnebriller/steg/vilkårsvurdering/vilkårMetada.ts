@@ -36,7 +36,7 @@ const vilkårMetadata = [
   {
     vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
     identifikator: 'HarIkkeVedtakIKalenderåret v1',
-    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
+    overstyrbarAvSaksbehandler: true,
     basertPå: ['Bestillingsdato', 'Vedtakshistorikk (Hotsak, Krav-appen)'],
   },
   {

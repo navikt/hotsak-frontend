@@ -7,7 +7,7 @@ import { capitalize } from '../../../../../utils/stringFormating'
 
 import { Brilleseddel } from '../../../../../types/types.internal'
 import { MAX_SFÆRE, MAX_SYLINDER } from '../../../config'
-import { FormatertStyrke, desimaltallMedFortegn } from '../FormatertStyrke'
+import { FormatertStyrke } from '../FormatertStyrke'
 
 export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const { type } = props
@@ -24,9 +24,9 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
         <Controller
           name={`brilleseddel.${type}Sfære`}
           control={control}
-          rules={{
+          /*rules={{
             required: 'Mangler verdi',
-          }}
+          }}*/
           render={({ field }) => (
             <Select
               label={'Sfære (SPH)'}
@@ -54,9 +54,9 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
         <Controller
           name={`brilleseddel.${type}Sylinder`}
           control={control}
-          rules={{
+          /*rules={{
             required: 'Mangler verdi',
-          }}
+          }}*/
           render={({ field }) => (
             <Select
               label="Cylinder (CYL)"

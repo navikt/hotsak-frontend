@@ -3,13 +3,35 @@ import dayjs from 'dayjs'
 import { Brilleseddel, VilkårsResultat } from '../../types/types.internal'
 import { LagretVilkår } from './BarnebrillesakStore'
 
+const vilkårSomTrengerBestillingsdato = [
+  'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
+  'MEDLEM_AV_FOLKETRYGDEN',
+  'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
+  'BESTILLINGSDATO_TILBAKE_I_TID',
+]
+
+export function vurderteVilkår_ManglerBestillingsdato(
+  vilkårsvurderingId: string,
+  bestillingsdato: string,
+  brilleseddel: Brilleseddel
+) {
+  const vilkår = vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
+
+  return vilkår.map((v) => {
+    if (vilkårSomTrengerBestillingsdato.includes(v.vilkårId)) {
+      v.resultatAuto = VilkårsResultat.DOKUMENTASJON_MANGLER
+    }
+    return v
+  })
+}
+
 export function vurderteVilkår_JA(
   vilkårsvurderingId: string,
   bestillingsdato: string,
   brilleseddel: Brilleseddel
 ): Array<Omit<LagretVilkår, 'id'>> {
   return [
-    {
+    /*{
       vilkårsvurderingId,
       vilkårId: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
       beskrivelse: 'Opplysningsplikten',
@@ -20,7 +42,7 @@ export function vurderteVilkår_JA(
       resultatSaksbehandler: VilkårsResultat.JA,
       begrunnelseSaksbehandler: undefined,
       grunnlag: {},
-    },
+    },*/
     {
       vilkårsvurderingId,
       vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
@@ -180,7 +202,7 @@ export function vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId: string): Array
       begrunnelseSaksbehandler: undefined,
       grunnlag: {},
     },
-    {
+    /* {
       vilkårsvurderingId,
       vilkårId: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
       beskrivelse: 'Opplysningsplikten',
@@ -191,7 +213,7 @@ export function vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId: string): Array
       resultatSaksbehandler: VilkårsResultat.NEI,
       begrunnelseSaksbehandler: undefined,
       grunnlag: {},
-    },
+    },*/
 
     {
       vilkårsvurderingId,

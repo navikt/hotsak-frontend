@@ -22,7 +22,6 @@ import {
   OverforGosysTilbakemelding,
   RegistrerSøknadData,
   StegType,
-  VilkårsResultat,
 } from '../../../../types/types.internal'
 import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useJournalposter } from '../../../journalpostHook'
@@ -31,7 +30,6 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-import { Opplysningsplikt } from './skjemaelementer/Opplysningsplikt'
 
 const Container = styled.div`
   overflow: auto;
@@ -65,40 +63,40 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
 
-  const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
+  /*const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
     ? false
-    : etterspørreOpplysningerBrev !== undefined
+    : etterspørreOpplysningerBrev !== undefined*/
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { opplysningsplikt, målform, ...grunnlag } = { ...formData }
+    const { /*opplysningsplikt,*/ målform, ...grunnlag } = { ...formData }
 
-    let vurderVilkårRequest
+    //let vurderVilkårRequest
 
-    if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+    /* if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
       vurderVilkårRequest = {
         sakId: sakId!,
         sakstype: Oppgavetype.BARNEBRILLER,
-        opplysningsplikt: opplysningsplikt,
+        //opplysningsplikt: opplysningsplikt,
         målform: målform,
         data: undefined,
       }
-    } else {
-      const { bestillingsdato, ...rest } = { ...grunnlag }
+    } else {*/
+    const { bestillingsdato, ...rest } = { ...grunnlag }
 
-      vurderVilkårRequest = {
-        sakId: sakId!,
-        sakstype: Oppgavetype.BARNEBRILLER,
-        opplysningsplikt: {
+    const vurderVilkårRequest = {
+      sakId: sakId!,
+      sakstype: Oppgavetype.BARNEBRILLER,
+      /*opplysningsplikt: {
           vilkårOppfylt: VilkårsResultat.JA,
           begrunnelse: '',
-        },
-        målform: målform,
-        data: {
-          bestillingsdato: formatISO(bestillingsdato, { representation: 'date' }),
-          ...rest,
-        },
-      }
+        },*/
+      målform: målform,
+      data: {
+        bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,
+        ...rest,
+      },
     }
+    //}
 
     setVenterPåVilkårsvurdering(true)
     postVilkårsvurdering(vurderVilkårRequest)
@@ -125,16 +123,16 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      opplysningsplikt: {
+      /*opplysningsplikt: {
         vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt || '',
         begrunnelse: '',
-      },
+      },*/
       bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
       brilleseddel: {
-        høyreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSfære.toString() || '',
-        høyreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.høyreSylinder.toString() || '',
-        venstreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSfære.toString() || '',
-        venstreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel.venstreSylinder.toString() || '',
+        høyreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.høyreSfære.toString() || '',
+        høyreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.høyreSylinder.toString() || '',
+        venstreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.venstreSfære.toString() || '',
+        venstreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.venstreSylinder.toString() || '',
       },
       brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       bestiltHosOptiker: {
@@ -162,12 +160,12 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     )
   }
 
-  const opplysningsplikt = watch('opplysningsplikt')
+  //const opplysningsplikt = watch('opplysningsplikt')
 
-  const skjulSkjemaFelter = toggleAvEtterspørreOpplysninger
+  /* const skjulSkjemaFelter = toggleAvEtterspørreOpplysninger
     ? false
     : etterspørreOpplysningerBrevFinnes &&
-      (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')
+      (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')*/
 
   return (
     <Container>
@@ -184,10 +182,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {etterspørreOpplysningerBrevFinnes && (
+            {/*etterspørreOpplysningerBrevFinnes && (
               <Opplysningsplikt brevSendtDato={etterspørreOpplysningerBrev!.opprettet} />
-            )}
-            {!skjulSkjemaFelter && <RegistrerBrillegrunnlag />}
+            )*/}
+            {/*!skjulSkjemaFelter &&**/ <RegistrerBrillegrunnlag />}
 
             <Avstand paddingLeft={2}>
               <Knappepanel>

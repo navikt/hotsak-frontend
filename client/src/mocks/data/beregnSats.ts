@@ -36,13 +36,13 @@ const satser: Record<SatsType, BeregnSatsResponse> = {
 }
 
 export function beregnSats(
-  brilleseddel: Brilleseddel,
+  brilleseddel?: Brilleseddel,
   brillepris?: string | number
 ): BeregnSatsResponse & { beløp: string } {
-  const høyreSfære = Number(brilleseddel.høyreSfære)
-  const høyreSylinder = Number(brilleseddel.høyreSylinder)
-  const venstreSfære = Number(brilleseddel.venstreSfære)
-  const venstreSylinder = Number(brilleseddel.venstreSylinder)
+  const høyreSfære = Number(brilleseddel?.høyreSfære)
+  const høyreSylinder = Number(brilleseddel?.høyreSylinder)
+  const venstreSfære = Number(brilleseddel?.venstreSfære)
+  const venstreSylinder = Number(brilleseddel?.venstreSylinder)
 
   const sfære = Math.max(høyreSfære, venstreSfære)
   const sylinder = Math.max(høyreSylinder, venstreSylinder)

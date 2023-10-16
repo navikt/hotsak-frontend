@@ -54,34 +54,34 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /*if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       sakId,
       sakstype: vurderVilkårRequest.sakstype,
       opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
       målform: vurderVilkårRequest.målform,
     }
-  } else if (vurderVilkårRequest.data) {
-    return {
-      data: { ...vurderVilkårRequest.data },
-      sakId,
-      sakstype: vurderVilkårRequest.sakstype,
-      opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
-      målform: vurderVilkårRequest.målform,
-    }
+  } else if (vurderVilkårRequest.data) {*/
+  return {
+    data: { ...vurderVilkårRequest.data },
+    sakId,
+    sakstype: vurderVilkårRequest.sakstype,
+    //opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
+    målform: vurderVilkårRequest.målform,
+    //}
   }
   throw new Error('Noe feil med vilkårsvurdering payload')
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /* if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       id: sakId,
       sakId,
       resultat: VilkårsResultat.NEI,
       opprettet: dayjs().toISOString(),
     }
-  } else if (vurderVilkårRequest.data) {
+  } else*/ if (vurderVilkårRequest.data) {
     const { brillepris, brilleseddel } = vurderVilkårRequest.data
     const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
     return {
@@ -105,15 +105,18 @@ function lagVilkår(
   vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /* if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId)
-  } else if (vurderVilkårRequest.data) {
-    const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!
+  } else*/
 
-    return vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
-  } else {
-    throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
-  }
+  //if(vurderVilkårRequest.data.)
+  //if (vurderVilkårRequest.data) {
+  const { bestillingsdato, brilleseddel, bestiltHosOptiker, brillepris, komplettBrille } = vurderVilkårRequest.data!
+
+  return vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
+  //} else {
+  // throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
+  //}
 }
 
 function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {

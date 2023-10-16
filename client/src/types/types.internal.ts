@@ -1,5 +1,3 @@
-import { Integrations } from '@sentry/react'
-
 export interface Saksinformasjon {
   opprettet: string
 }
@@ -114,11 +112,12 @@ export enum VilkårsResultat {
   JA = 'JA',
   NEI = 'NEI',
   KANSKJE = 'KANSKJE',
+  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
 }
 
 export interface RegistrerSøknadData {
   målform: MålformType
-  opplysningsplikt: ManuellVurdering
+  //opplysningsplikt: ManuellVurdering
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
@@ -176,11 +175,11 @@ export interface VurderVilkårRequest {
   sakId: string
   sakstype: Oppgavetype
   målform: MålformType
-  opplysningsplikt: ManuellVurdering
-  data?: {
-    brilleseddel: Brilleseddel
-    bestillingsdato: string
-    brillepris: string
+  //opplysningsplikt: ManuellVurdering
+  data: {
+    brilleseddel?: Brilleseddel
+    bestillingsdato?: string
+    brillepris?: string
     bestiltHosOptiker: ManuellVurdering
     komplettBrille: ManuellVurdering
   }

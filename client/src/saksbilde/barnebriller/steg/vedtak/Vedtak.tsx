@@ -291,7 +291,7 @@ export const Vedtak: React.FC = () => {
                   variant="primary"
                   onClick={() => {
                     setSubmitAttempt(true)
-                    if (valider()) {
+                    if (!visFritekstFelt || valider()) {
                       sendTilGodkjenning()
                     }
                   }}

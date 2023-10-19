@@ -106,7 +106,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: 'Barnet var under 18 år på bestillingsdato',
       },
-
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       //resultatAuto: VilkårsResultat.JA,
       //begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
       //resultatSaksbehandler: undefined,
@@ -126,6 +127,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {
         bestillingsdato,
         forenkletSjekkResultat: 'Oppfylt',
@@ -141,6 +144,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: '',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {},
     },
     {
@@ -153,6 +158,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: '',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {},
     },
     {
@@ -165,6 +172,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: 'Barnet har ikke vedtak om brille i kalenderåret',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {},
     },
     {
@@ -177,6 +186,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {
         ...brilleseddel,
       },
@@ -191,6 +202,8 @@ function vurderteVilkår_JA(
         vilkårOppfylt: VilkårsResultat.JA,
         begrunnelse: 'Bestillingsdato er innenfor gyldig periode',
       },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
       grunnlag: {
         bestillingsdato,
         seksMånederSiden: dayjs(bestillingsdato)?.subtract(6, 'month').toISOString(),

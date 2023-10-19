@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -25,7 +26,7 @@ export function Bestillingsdato() {
     },
 
     onValidate: (val) => {
-      if (!val.isValidDate) {
+      if (!val.isEmpty && !val.isValidDate) {
         setError('bestillingsdato', { type: 'custom', message: 'Ugyldig bestillingsdato' })
       }
     },

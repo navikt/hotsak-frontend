@@ -79,14 +79,16 @@ export interface Satsberegning {
   beløp: string
 }
 
-export interface Vilkår {
+export interface Vilkår extends Vurdering {
   id: string
   vilkårId: string
   beskrivelse: string
-  resultatAuto?: VilkårsResultat
-  begrunnelseAuto?: string
-  resultatSaksbehandler?: VilkårsResultat
-  begrunnelseSaksbehandler?: string
+  maskinellVurdering?: Vurdering
+  manuellVurdering?: Vurdering
+  //resultatAuto?: VilkårsResultat
+  //begrunnelseAuto?: string
+  //resultatSaksbehandler?: VilkårsResultat
+  //begrunnelseSaksbehandler?: string
   lovReferanse?: string
   lovdataLenke?: string
   grunnlag: Record<string, string | number>
@@ -121,20 +123,20 @@ export interface RegistrerSøknadData {
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
+  bestiltHosOptiker: Vurdering
+  komplettBrille: Vurdering
 }
 
 export interface Brillegrunnlag {
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
-  bestiltHosOptiker: ManuellVurdering
-  komplettBrille: ManuellVurdering
+  bestiltHosOptiker: Vurdering
+  komplettBrille: Vurdering
 }
 
-export interface ManuellVurdering {
-  vilkårOppfylt: VilkårsResultat | ''
+export interface Vurdering {
+  vilkårOppfylt?: VilkårsResultat
   begrunnelse?: string
 }
 
@@ -180,8 +182,8 @@ export interface VurderVilkårRequest {
     brilleseddel?: Brilleseddel
     bestillingsdato?: string
     brillepris?: string
-    bestiltHosOptiker: ManuellVurdering
-    komplettBrille: ManuellVurdering
+    bestiltHosOptiker: Vurdering
+    komplettBrille: Vurdering
   }
 }
 

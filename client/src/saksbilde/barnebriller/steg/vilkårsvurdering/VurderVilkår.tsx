@@ -88,15 +88,18 @@ export const VurderVilkår: React.FC = () => {
               const {
                 id,
                 vilkårId,
-                resultatAuto,
                 beskrivelse,
-                resultatSaksbehandler,
-                begrunnelseSaksbehandler,
+                //maskinellVurdering,
+                manuellVurdering,
                 lovReferanse,
+                vilkårOppfylt,
+                begrunnelse,
               } = vilkår
 
+              console.log('Oppsummert begrunnelse', begrunnelse)
+
               const vilkårMetadata = metadataFor(vilkårId)
-              const vilkårOppfylt = resultatSaksbehandler ? resultatSaksbehandler : resultatAuto
+              //const vilkårOppfylt = resultatSaksbehandler ? resultatSaksbehandler : resultatAuto
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
 
               return (
@@ -132,10 +135,10 @@ export const VurderVilkår: React.FC = () => {
                     )) || '-'}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    <VurdertAv vilkårOppfylt={vilkårOppfylt} resultatSaksbehandler={resultatSaksbehandler} />
+                    <VurdertAv vilkårOppfylt={vilkårOppfylt} resultatSaksbehandler={manuellVurdering?.vilkårOppfylt} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    {begrunnelseSaksbehandler || '-'}
+                    {manuellVurdering?.begrunnelse || '-'}
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '150px' }}>
                     {lovReferanse}

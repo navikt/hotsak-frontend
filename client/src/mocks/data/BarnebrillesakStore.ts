@@ -384,6 +384,7 @@ export class BarnebrillesakStore extends Dexie {
     })
   }
 
+  // TODO se på payload for overstyting av vilkår
   async oppdaterVilkår(
     sakId: string,
     vilkårId: number | string,

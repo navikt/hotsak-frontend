@@ -21,13 +21,7 @@ export const Oppsummering = ({ oppsummertResultat, vilkår }: OppSummeringProps)
     <AlertContainerBred>
       <Alert variant={alertBoksType} size="small">
         {AlertTekst(alertBoksType /*, opplysningsplikt*/)}
-        {
-          /*opplysningsplikt && */ oppsummertResultat === VilkårsResultat.JA && (
-            <Avstand paddingTop={3}>
-              <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
-            </Avstand>
-          )
-        }
+        <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
       </Alert>
     </AlertContainerBred>
   )

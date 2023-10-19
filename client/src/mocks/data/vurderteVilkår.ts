@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-import { Brilleseddel, ManuellVurdering, VilkårsResultat } from '../../types/types.internal'
+import { Brilleseddel, Vurdering, VilkårsResultat } from '../../types/types.internal'
 import { LagretVilkår } from './BarnebrillesakStore'
 
 const vilkårSomTrengerBestillingsdato = [
@@ -24,8 +24,8 @@ const tomStyrke: Brilleseddel = {
 export function vurderteVilkår(
   vilkårsvurderingId: string,
   brilleseddel: Brilleseddel = tomStyrke,
-  komplettBrille: ManuellVurdering,
-  bestiltHosOptiker: ManuellVurdering,
+  komplettBrille: Vurdering,
+  bestiltHosOptiker: Vurdering,
   bestillingsdato?: string
 ) {
   let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)
@@ -66,10 +66,11 @@ function oppdaterStatus(
     return vilkår.map((v) => {
       if (aktuelleVilkår.includes(v.vilkårId)) {
         if (vurdertType === 'SAKSBEHANDLER') {
-          v.resultatSaksbehandler = nyttResultat
+          v.manuellVurdering = { vilkårOppfylt: nyttResultat }
         } else {
-          v.resultatAuto = nyttResultat
+          v.manuellVurdering = { vilkårOppfylt: nyttResultat }
         }
+        v.vilkårOppfylt = nyttResultat
       }
       return v
     })
@@ -101,10 +102,15 @@ function vurderteVilkår_JA(
       beskrivelse: 'Barnet må være under 18 år på bestillingsdato',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
+      maskinellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: 'Barnet var under 18 år på bestillingsdato',
+      },
+
+      //resultatAuto: VilkårsResultat.JA,
+      //begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
+      //resultatSaksbehandler: undefined,
+      //begrunnelseSaksbehandler: undefined,
       grunnlag: {
         barnetsAlder: '06.09 2016 (6 år)', // fixme
         bestillingsdato,
@@ -116,10 +122,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Medlem av folketrygden',
       lovReferanse: 'frtl. § 10-7 a',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
+      maskinellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
+      },
       grunnlag: {
         bestillingsdato,
         forenkletSjekkResultat: 'Oppfylt',
@@ -131,9 +137,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Brillen må bestilles hos optiker',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.JA,
+      manuellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: '',
+      },
       grunnlag: {},
     },
     {
@@ -142,9 +149,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Bestillingen inneholder brilleglass',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.JA,
+      manuellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: '',
+      },
       grunnlag: {},
     },
     {
@@ -153,10 +161,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Ikke fått støtte til barnebriller tidligere i år - manuelt Hotsak-vedtak',
       lovReferanse: '§ 3',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Barnet har ikke vedtak om brille i kalenderåret',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
+      maskinellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: 'Barnet har ikke vedtak om brille i kalenderåret',
+      },
       grunnlag: {},
     },
     {
@@ -165,10 +173,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Brillestyrken er innenfor fastsatte styrker',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
+      maskinellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
+      },
       grunnlag: {
         ...brilleseddel,
       },
@@ -179,10 +187,10 @@ function vurderteVilkår_JA(
       beskrivelse: 'Bestillingsdato innenfor gyldig periode',
       lovReferanse: '§ 6',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
-      resultatAuto: VilkårsResultat.JA,
-      begrunnelseAuto: 'Bestillingsdato er innenfor gyldig periode',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
+      maskinellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: 'Bestillingsdato er innenfor gyldig periode',
+      },
       grunnlag: {
         bestillingsdato,
         seksMånederSiden: dayjs(bestillingsdato)?.subtract(6, 'month').toISOString(),

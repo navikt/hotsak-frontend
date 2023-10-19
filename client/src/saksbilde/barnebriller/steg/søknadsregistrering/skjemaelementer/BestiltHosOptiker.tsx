@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
+import { Vurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
   const {
@@ -11,7 +11,7 @@ export function BestiltHosOptiker() {
     register,
     watch,
     formState: { errors },
-  } = useFormContext<{ bestiltHosOptiker: ManuellVurdering }>()
+  } = useFormContext<{ bestiltHosOptiker: Vurdering }>()
 
   const vilkårOppfylt = watch('bestiltHosOptiker.vilkårOppfylt')
 

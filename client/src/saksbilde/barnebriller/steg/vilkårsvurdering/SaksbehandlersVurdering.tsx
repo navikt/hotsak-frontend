@@ -38,7 +38,7 @@ export function SaksbehandlersVurdering({
           <Avstand paddingTop={6} paddingBottom={4}>
             <Detail>VURDERINGEN ER BASERT PÅ:</Detail>
           </Avstand>
-          {vilkår.resultatSaksbehandler && (
+          {vilkår.manuellVurdering && (
             <>
               <Etikett>Saksbehandler sin vurdering</Etikett>
               <RedigerGrunnlagLink />

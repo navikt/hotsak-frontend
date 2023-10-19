@@ -60,9 +60,6 @@ function oppdaterStatus(
   nyttResultat: VilkårsResultat = VilkårsResultat.DOKUMENTASJON_MANGLER
 ): Array<Omit<LagretVilkår, 'id'>> {
   if (predikatResultat) {
-    console.log('Treffer på PR')
-    console.log(vilkår, aktuelleVilkår)
-
     return vilkår.map((v) => {
       if (aktuelleVilkår.includes(v.vilkårId)) {
         if (vurdertType === 'SAKSBEHANDLER') {

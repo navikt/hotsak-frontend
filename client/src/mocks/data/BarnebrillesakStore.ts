@@ -320,6 +320,28 @@ export class BarnebrillesakStore extends Dexie {
     }
   }
 
+  beregnSamletVurdering(vilkår: Array<Omit<LagretVilkår, 'id'>>) {
+    const samletVurdering = vilkår
+      .map((v) => v.vilkårOppfylt)
+      .reduce((samletStatus, vilkårOppfylt) => {
+        if (samletStatus === VilkårsResultat.KANSKJE || samletStatus === VilkårsResultat.NEI) {
+          return samletStatus
+        } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.KANSKJE) {
+          return vilkårOppfylt
+        } else if (vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) {
+          return VilkårsResultat.NEI
+        } else {
+          return samletStatus
+        }
+      }, VilkårsResultat.JA)
+
+    if (!samletVurdering) {
+      throw Error('Feil med utlednings av samlet status')
+    }
+
+    return samletVurdering
+  }
+
   async oppdaterUtbetalingsmottaker(sakId: string, fnr: string): Promise<Utbetalingsmottaker> {
     const utbetalingsmottaker: Utbetalingsmottaker = {
       fnr,
@@ -342,7 +364,10 @@ export class BarnebrillesakStore extends Dexie {
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
 
-      //vilkår.map(v => v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto ).reduce(a, b, [])
+      const samletVurdering = this.beregnSamletVurdering(vilkår)
+      vilkårsvurdering.resultat = samletVurdering
+
+      await this.vilkårsvurderinger.update(vilkårsvurderingId, vilkårsvurdering)
 
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme

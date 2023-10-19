@@ -13,8 +13,7 @@ export const Vilkårbeskrivelser = ({ vilkår, resultat }: { vilkår?: Vilkår[]
       <ul>
         {vilkår
           .filter((v) => {
-            //const vilkårresultat = v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto
-            return v.vilkårOppfylt === resultat
+            return v.vilkårOppfylt === resultat || v.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
           })
           .map((v) => (
             <ListeElement key={v.id}>{v.beskrivelse}</ListeElement>

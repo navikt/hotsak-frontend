@@ -151,14 +151,13 @@ export const Vedtak: React.FC = () => {
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
 
-  const opplysningspliktVilkår = sak.data.vilkårsvurdering?.vilkår.find(
-    (vilkår) => vilkår.vilkårId === 'MEDLEMMETS_OPPLYSNINGSPLIKT'
+  const vilkårSomManglerDokumentasjon = sak.data.vilkårsvurdering?.vilkår.find(
+    (vilkår) => vilkår.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
   )
 
-  // TODO fix logikk her nå som opplysningsplikt ikke finnes
   const visFritekstFelt =
     visSendTilGodkjenning &&
-    opplysningspliktVilkår?.begrunnelse === VilkårsResultat.NEI &&
+    vilkårSomManglerDokumentasjon &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (

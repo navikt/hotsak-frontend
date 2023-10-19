@@ -84,18 +84,6 @@ function vurderteVilkår_JA(
   bestillingsdato: string = dayjs().toISOString()
 ): Array<Omit<LagretVilkår, 'id'>> {
   return [
-    /*{
-      vilkårsvurderingId,
-      vilkårId: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
-      beskrivelse: 'Opplysningsplikten',
-      lovReferanse: 'ftrl. § 21-3',
-      lovdataLenke: 'https://lovdata.no/dokument/NL/lov/1997-02-28-19/KAPITTEL_8-1#%C2%A721-3',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.JA,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },*/
     {
       vilkårsvurderingId,
       vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
@@ -108,10 +96,6 @@ function vurderteVilkår_JA(
       },
       vilkårOppfylt: VilkårsResultat.JA,
       begrunnelse: '',
-      //resultatAuto: VilkårsResultat.JA,
-      //begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
-      //resultatSaksbehandler: undefined,
-      //begrunnelseSaksbehandler: undefined,
       grunnlag: {
         barnetsAlder: '06.09 2016 (6 år)', // fixme
         bestillingsdato,

@@ -155,9 +155,10 @@ export const Vedtak: React.FC = () => {
     (vilkår) => vilkår.vilkårId === 'MEDLEMMETS_OPPLYSNINGSPLIKT'
   )
 
+  // TODO fix logikk her nå som opplysningsplikt ikke finnes
   const visFritekstFelt =
     visSendTilGodkjenning &&
-    opplysningspliktVilkår?.resultatSaksbehandler === VilkårsResultat.NEI &&
+    opplysningspliktVilkår?.begrunnelse === VilkårsResultat.NEI &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (

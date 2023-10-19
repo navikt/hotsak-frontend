@@ -24,8 +24,8 @@ export function SaksbehandlersVurderingForm({
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const methods = useForm<OppdaterVilkårData>({
     defaultValues: {
-      resultatSaksbehandler: vilkår.resultatSaksbehandler ? vilkår.resultatSaksbehandler : vilkår.resultatAuto || '',
-      begrunnelseSaksbehandler: vilkår.begrunnelseSaksbehandler || '',
+      resultatSaksbehandler: vilkår.vilkårOppfylt || '',
+      begrunnelseSaksbehandler: vilkår.manuellVurdering?.begrunnelse || '',
     },
   })
 

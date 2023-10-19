@@ -10,7 +10,7 @@ const vilkårMetadata = [
   {
     vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
     identifikator: 'Under18ÅrPåBestillingsdato v1',
-    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
+    overstyrbarAvSaksbehandler: true,
     basertPå: ['Bestillingsdato', 'Barnets alder (PDL)'],
   },
   {
@@ -42,7 +42,7 @@ const vilkårMetadata = [
   {
     vilkårId: 'BRILLESTYRKE',
     identifikator: 'Brillestyrke v1',
-    overstyrbarAvSaksbehandler: false,
+    overstyrbarAvSaksbehandler: true,
     basertPå: ['Brillestyrke'],
   },
   {
@@ -56,7 +56,7 @@ const vilkårMetadata = [
   {
     vilkårId: 'BESTILLINGSDATO',
     identifikator: 'Bestillingsdato v1',
-    overstyrbarAvSaksbehandler: window.appSettings.MILJO === 'dev-gcp' ? true : false,
+    overstyrbarAvSaksbehandler: true,
     beskrivelse: 'Brillen må være bestilt etter at forskriften trådte i kraft, 1. august 2022.',
     basertPå: ['Bestillingsdato'],
   },

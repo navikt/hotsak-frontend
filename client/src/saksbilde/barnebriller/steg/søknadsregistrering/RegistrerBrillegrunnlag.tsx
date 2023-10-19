@@ -43,7 +43,7 @@ export const RegistrerBrillegrunnlag: React.FC = () => {
           error={errors?.brillepris?.message}
           size="small"
           {...register('brillepris', {
-            required: 'Du må oppgi en brillepris',
+            //required: 'Du må oppgi en brillepris',
             validate: validator(validering.beløp, 'Ugyldig brillepris'),
           })}
         />

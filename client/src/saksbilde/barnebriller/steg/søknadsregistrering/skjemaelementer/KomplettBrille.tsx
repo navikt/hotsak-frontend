@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
+import { Vurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function KomplettBrille() {
   const {
@@ -11,7 +11,7 @@ export function KomplettBrille() {
     register,
     watch,
     formState: { errors },
-  } = useFormContext<{ komplettBrille: ManuellVurdering }>()
+  } = useFormContext<{ komplettBrille: Vurdering }>()
 
   const vilkårOppfylt = watch('komplettBrille.vilkårOppfylt')
 
@@ -35,6 +35,7 @@ export function KomplettBrille() {
             >
               <Radio value={VilkårsResultat.JA}>Ja</Radio>
               <Radio value={VilkårsResultat.NEI}>Nei</Radio>
+              <Radio value={VilkårsResultat.DOKUMENTASJON_MANGLER}>Dokumentasjon mangler</Radio>
             </RadioGroup>
           )}
         />

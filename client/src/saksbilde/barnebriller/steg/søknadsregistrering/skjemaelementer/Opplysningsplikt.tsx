@@ -6,10 +6,10 @@ import { formaterDato } from '../../../../../utils/date'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
-import { ManuellVurdering, VilkårsResultat } from '../../../../../types/types.internal'
+import { Vurdering, VilkårsResultat } from '../../../../../types/types.internal'
 
 export function Opplysningsplikt({ brevSendtDato }: { brevSendtDato: string }) {
-  const { control, watch } = useFormContext<{ opplysningsplikt: ManuellVurdering }>()
+  const { control, watch } = useFormContext<{ opplysningsplikt: Vurdering }>()
 
   const opplysningsplikt = watch('opplysningsplikt')
 

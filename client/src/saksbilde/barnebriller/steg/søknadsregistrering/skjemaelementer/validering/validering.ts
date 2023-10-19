@@ -12,6 +12,9 @@ export const validering = {
 
 export function validator(test: (verdi: string, nå: Date) => boolean, error: string): (verdi: string) => true | string {
   return (verdi) => {
+    if (!verdi) {
+      return true
+    }
     return test(verdi, new Date()) || error
   }
 }

@@ -8,13 +8,11 @@ export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakId: number 
   return (
     <Avstand paddingTop={6}>
       <Etikett>Er vilkåret oppfylt?</Etikett>
-      <Brødtekst>
-        {capitalize(vilkår.resultatSaksbehandler ? vilkår.resultatSaksbehandler : vilkår.resultatAuto)}
-      </Brødtekst>
-      {vilkår.begrunnelseSaksbehandler && (
+      <Brødtekst>{capitalize(vilkår.vilkårOppfylt)}</Brødtekst>
+      {vilkår.manuellVurdering?.begrunnelse && (
         <Avstand paddingTop={6}>
           <Etikett>Begrunnelse</Etikett>
-          <Brødtekst>{vilkår.begrunnelseSaksbehandler}</Brødtekst>
+          <Brødtekst>{vilkår.manuellVurdering.begrunnelse}</Brødtekst>
         </Avstand>
       )}
     </Avstand>

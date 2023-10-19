@@ -39,7 +39,7 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
-import { vurderteVilkår_IKKE_VURDERT, vurderteVilkår_JA } from './vurderteVilkår'
+import { vurderteVilkår } from './vurderteVilkår'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
@@ -54,36 +54,39 @@ interface LagretHendelse extends Hendelse {
 }
 
 function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /*if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       sakId,
       sakstype: vurderVilkårRequest.sakstype,
       opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
       målform: vurderVilkårRequest.målform,
     }
-  } else if (vurderVilkårRequest.data) {
-    return {
-      data: { ...vurderVilkårRequest.data },
-      sakId,
-      sakstype: vurderVilkårRequest.sakstype,
-      opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
-      målform: vurderVilkårRequest.målform,
-    }
+  } else if (vurderVilkårRequest.data) {*/
+  return {
+    data: { ...vurderVilkårRequest.data },
+    sakId,
+    sakstype: vurderVilkårRequest.sakstype,
+    //opplysningsplikt: vurderVilkårRequest.opplysningsplikt,
+    målform: vurderVilkårRequest.målform,
+    //}
   }
   throw new Error('Noe feil med vilkårsvurdering payload')
 }
 
 function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /* if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return {
       id: sakId,
       sakId,
       resultat: VilkårsResultat.NEI,
       opprettet: dayjs().toISOString(),
     }
-  } else if (vurderVilkårRequest.data) {
+  } else*/ if (vurderVilkårRequest.data) {
     const { brillepris, brilleseddel } = vurderVilkårRequest.data
     const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
+
+    //const resultat =
+
     return {
       id: sakId,
       sakId,
@@ -105,15 +108,22 @@ function lagVilkår(
   vilkårsvurderingId: string,
   vurderVilkårRequest: VurderVilkårRequest
 ): Array<Omit<LagretVilkår, 'id'>> {
-  if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
+  /* if (vurderVilkårRequest.opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
     return vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId)
-  } else if (vurderVilkårRequest.data) {
-    const { bestillingsdato, brilleseddel } = vurderVilkårRequest.data!
+  } else*/
 
-    return vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
-  } else {
-    throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
-  }
+  //if(vurderVilkårRequest.data.)
+  //if (vurderVilkårRequest.data) {
+  const { bestillingsdato, brilleseddel, bestiltHosOptiker, komplettBrille } = vurderVilkårRequest.data!
+
+  //if(!bestillingsdato) {
+  return vurderteVilkår(vilkårsvurderingId, brilleseddel!, komplettBrille, bestiltHosOptiker, bestillingsdato)
+  //}
+
+  //  return vurderteVilkår_JA(vilkårsvurderingId, brilleseddel!, bestillingsdato)
+  //} else {
+  // throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
+  //}
 }
 
 function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
@@ -358,10 +368,15 @@ export class BarnebrillesakStore extends Dexie {
   async vurderVilkår(sakId: string, vurderVilkårRequest: VurderVilkårRequest) {
     return this.transaction('rw', this.saker, this.vilkårsgrunnlag, this.vilkårsvurderinger, this.vilkår, async () => {
       const vilkårsgrunnlag = lagVilkårsgrunnlag(sakId, vurderVilkårRequest)
+
       await this.vilkårsgrunnlag.put(vilkårsgrunnlag, sakId)
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
+
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
+
+      //vilkår.map(v => v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto ).reduce(a, b, [])
+
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
       await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
@@ -369,6 +384,7 @@ export class BarnebrillesakStore extends Dexie {
     })
   }
 
+  // TODO se på payload for overstyting av vilkår
   async oppdaterVilkår(
     sakId: string,
     vilkårId: number | string,

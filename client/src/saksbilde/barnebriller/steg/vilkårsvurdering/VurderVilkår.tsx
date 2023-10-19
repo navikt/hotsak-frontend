@@ -61,18 +61,16 @@ export const VurderVilkår: React.FC = () => {
   }
   const oppsummertResultat = sak.data.vilkårsvurdering.resultat
 
+  const vilkår =
+    sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
+
   return (
     <>
       <Panel>
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        <Oppsummering
-          vilkår={
-            sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
-          }
-          oppsummertResultat={oppsummertResultat}
-        />
+        <Oppsummering vilkår={vilkår} oppsummertResultat={oppsummertResultat} />
         <Table size="small">
           <Table.Header>
             <Table.Row>
@@ -86,7 +84,7 @@ export const VurderVilkår: React.FC = () => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {sak.data.vilkårsvurdering?.vilkår.map((vilkår) => {
+            {vilkår.map((vilkår) => {
               const {
                 id,
                 vilkårId,

@@ -39,7 +39,7 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
-import { vurderteVilkår_IKKE_VURDERT, vurderteVilkår_JA } from './vurderteVilkår'
+import { vurderteVilkår } from './vurderteVilkår'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
@@ -84,6 +84,9 @@ function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkår
   } else*/ if (vurderVilkårRequest.data) {
     const { brillepris, brilleseddel } = vurderVilkårRequest.data
     const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
+
+    //const resultat =
+
     return {
       id: sakId,
       sakId,
@@ -111,9 +114,13 @@ function lagVilkår(
 
   //if(vurderVilkårRequest.data.)
   //if (vurderVilkårRequest.data) {
-  const { bestillingsdato, brilleseddel, bestiltHosOptiker, brillepris, komplettBrille } = vurderVilkårRequest.data!
+  const { bestillingsdato, brilleseddel, bestiltHosOptiker, komplettBrille } = vurderVilkårRequest.data!
 
-  return vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
+  //if(!bestillingsdato) {
+  return vurderteVilkår(vilkårsvurderingId, brilleseddel!, komplettBrille, bestiltHosOptiker, bestillingsdato)
+  //}
+
+  //  return vurderteVilkår_JA(vilkårsvurderingId, brilleseddel!, bestillingsdato)
   //} else {
   // throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkår()')
   //}
@@ -361,10 +368,15 @@ export class BarnebrillesakStore extends Dexie {
   async vurderVilkår(sakId: string, vurderVilkårRequest: VurderVilkårRequest) {
     return this.transaction('rw', this.saker, this.vilkårsgrunnlag, this.vilkårsvurderinger, this.vilkår, async () => {
       const vilkårsgrunnlag = lagVilkårsgrunnlag(sakId, vurderVilkårRequest)
+
       await this.vilkårsgrunnlag.put(vilkårsgrunnlag, sakId)
       const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
+
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
       const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
+
+      //vilkår.map(v => v.resultatSaksbehandler ? v.resultatSaksbehandler : v.resultatAuto ).reduce(a, b, [])
+
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
       await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
       await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)

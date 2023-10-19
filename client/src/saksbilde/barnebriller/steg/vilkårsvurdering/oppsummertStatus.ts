@@ -31,6 +31,6 @@ export function vilkårStatusTekst(vilkårOppfylt?: VilkårsResultat) {
     case VilkårsResultat.KANSKJE:
       return 'Må vurderes'
     case VilkårsResultat.DOKUMENTASJON_MANGLER:
-      return 'Fancy nei'
+      return 'Mangler opplysninger'
   }
 }

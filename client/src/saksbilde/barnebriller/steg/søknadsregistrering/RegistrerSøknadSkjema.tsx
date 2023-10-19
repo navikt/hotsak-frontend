@@ -16,6 +16,7 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import {
   Brevkode,
+  Brilleseddel,
   MålformType,
   OppgaveStatusType,
   Oppgavetype,
@@ -59,9 +60,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     toggleAvEtterspørreOpplysninger ? false : kanHaEtterspørreOpplysningerBrev
   )
 
-  const etterspørreOpplysningerBrev = saksdokumenter?.find(
+  /*const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
-  )
+  )*/
 
   /*const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
     ? false
@@ -81,7 +82,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         data: undefined,
       }
     } else {*/
-    const { bestillingsdato, ...rest } = { ...grunnlag }
+    const { bestillingsdato, brilleseddel, ...rest } = { ...grunnlag }
 
     const vurderVilkårRequest = {
       sakId: sakId!,
@@ -93,6 +94,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       målform: målform,
       data: {
         bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,
+        brilleseddel: !tomBrilleseddel(brilleseddel) ? brilleseddel : undefined,
         ...rest,
       },
     }
@@ -118,6 +120,15 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
       })
+  }
+
+  function tomBrilleseddel(brilleseddel?: Brilleseddel) {
+    if (!brilleseddel) {
+      return true
+    }
+
+    const { høyreSfære, høyreSylinder, venstreSfære, venstreSylinder } = brilleseddel
+    return høyreSfære === '' && høyreSylinder === '' && venstreSfære === '' && venstreSylinder === ''
   }
 
   const methods = useForm<RegistrerSøknadData>({

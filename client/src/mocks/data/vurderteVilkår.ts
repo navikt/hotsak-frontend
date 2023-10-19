@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-import { Brilleseddel, VilkårsResultat } from '../../types/types.internal'
+import { Brilleseddel, ManuellVurdering, VilkårsResultat } from '../../types/types.internal'
 import { LagretVilkår } from './BarnebrillesakStore'
 
 const vilkårSomTrengerBestillingsdato = [
@@ -10,25 +10,77 @@ const vilkårSomTrengerBestillingsdato = [
   'BESTILLINGSDATO_TILBAKE_I_TID',
 ]
 
-export function vurderteVilkår_ManglerBestillingsdato(
-  vilkårsvurderingId: string,
-  bestillingsdato: string,
-  brilleseddel: Brilleseddel
-) {
-  const vilkår = vurderteVilkår_JA(vilkårsvurderingId, bestillingsdato, brilleseddel)
+const vilkårSomTrengerBrilleseddel = ['BRILLESTYRKE']
+const vilkårSomTrengerKomplettBrille = ['KOMPLETT_BRILLE']
+const vilkårSomTrengerBestiltHosOptiker = ['BESTILT_HOS_OPTIKER']
 
-  return vilkår.map((v) => {
-    if (vilkårSomTrengerBestillingsdato.includes(v.vilkårId)) {
-      v.resultatAuto = VilkårsResultat.DOKUMENTASJON_MANGLER
-    }
-    return v
-  })
+const tomStyrke: Brilleseddel = {
+  høyreSfære: '0.0',
+  høyreSylinder: '0.0',
+  venstreSfære: '0.0',
+  venstreSylinder: '0.0',
 }
 
-export function vurderteVilkår_JA(
+export function vurderteVilkår(
   vilkårsvurderingId: string,
-  bestillingsdato: string,
-  brilleseddel: Brilleseddel
+  brilleseddel: Brilleseddel = tomStyrke,
+  komplettBrille: ManuellVurdering,
+  bestiltHosOptiker: ManuellVurdering,
+  bestillingsdato?: string
+) {
+  let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)
+
+  vurderteVilkår = oppdaterStatus(vurderteVilkår, !bestillingsdato, vilkårSomTrengerBestillingsdato)
+  vurderteVilkår = oppdaterStatus(vurderteVilkår, brilleseddel === tomStyrke, vilkårSomTrengerBrilleseddel)
+
+  vurderteVilkår = oppdaterStatus(
+    vurderteVilkår,
+    true,
+    vilkårSomTrengerKomplettBrille,
+    'SAKSBEHANDLER',
+    komplettBrille.vilkårOppfylt || VilkårsResultat.JA
+  )
+
+  vurderteVilkår = oppdaterStatus(
+    vurderteVilkår,
+    true,
+    vilkårSomTrengerBestiltHosOptiker,
+    'SAKSBEHANDLER',
+    bestiltHosOptiker.vilkårOppfylt || VilkårsResultat.JA
+  )
+
+  return vurderteVilkår
+}
+
+function oppdaterStatus(
+  vilkår: Array<Omit<LagretVilkår, 'id'>>,
+  predikatResultat: boolean,
+  aktuelleVilkår: string[],
+  vurdertType: 'SAKSBEHANDLER' | 'MASKINELL' = 'MASKINELL',
+  nyttResultat: VilkårsResultat = VilkårsResultat.DOKUMENTASJON_MANGLER
+): Array<Omit<LagretVilkår, 'id'>> {
+  if (predikatResultat) {
+    console.log('Treffer på PR')
+    console.log(vilkår, aktuelleVilkår)
+
+    return vilkår.map((v) => {
+      if (aktuelleVilkår.includes(v.vilkårId)) {
+        if (vurdertType === 'SAKSBEHANDLER') {
+          v.resultatSaksbehandler = nyttResultat
+        } else {
+          v.resultatAuto = nyttResultat
+        }
+      }
+      return v
+    })
+  }
+  return vilkår
+}
+
+function vurderteVilkår_JA(
+  vilkårsvurderingId: string,
+  brilleseddel: Brilleseddel,
+  bestillingsdato: string = dayjs().toISOString()
 ): Array<Omit<LagretVilkår, 'id'>> {
   return [
     /*{
@@ -111,7 +163,7 @@ export function vurderteVilkår_JA(
       vilkårsvurderingId,
       vilkårId: 'BRILLESTYRKE',
       beskrivelse: 'Brillestyrken er innenfor fastsatte styrker',
-      lovReferanse: '§ 2, 2. ledd',
+      lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
       resultatAuto: VilkårsResultat.JA,
       begrunnelseAuto: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
@@ -133,109 +185,9 @@ export function vurderteVilkår_JA(
       begrunnelseSaksbehandler: undefined,
       grunnlag: {
         bestillingsdato,
-        seksMånederSiden: dayjs(bestillingsdato).subtract(6, 'month').toISOString(),
+        seksMånederSiden: dayjs(bestillingsdato)?.subtract(6, 'month').toISOString(),
         førsteJournalpostOpprettet: '2023-04-18', // fixme
       },
-    },
-  ]
-}
-
-export function vurderteVilkår_IKKE_VURDERT(vilkårsvurderingId: string): Array<Omit<LagretVilkår, 'id'>> {
-  return [
-    {
-      vilkårsvurderingId,
-      vilkårId: 'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
-      beskrivelse: 'Barnet må være under 18 år på bestillingsdato',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: 'Barnet var under 18 år på bestillingsdato',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BRILLESTYRKE',
-      beskrivelse: 'Brillestyrken er innenfor fastsatte styrker',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§4',
-      resultatAuto: undefined,
-      begrunnelseAuto: 'Høyre sfære oppfyller vilkår om brillestyrke ≥ 1.0',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
-      beskrivelse: 'Ikke fått støtte til barnebriller tidligere i år - manuelt Hotsak-vedtak',
-      lovReferanse: '§ 3',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
-      resultatAuto: undefined,
-      begrunnelseAuto: 'Barnet har ikke vedtak om brille i kalenderåret',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
-      beskrivelse: 'Bestillingsdato innenfor gyldig periode',
-      lovReferanse: '§ 6',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
-      resultatAuto: undefined,
-      begrunnelseAuto: 'Bestillingsdato er innenfor gyldig periode',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'MEDLEM_AV_FOLKETRYGDEN',
-      beskrivelse: 'Medlem av folketrygden',
-      lovReferanse: 'frtl. § 10-7a',
-      lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: 'Barnet er antatt medlem i folketrygden basert på folkeregistrert adresse i Norge',
-      resultatSaksbehandler: undefined,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    /* {
-      vilkårsvurderingId,
-      vilkårId: 'MEDLEMMETS_OPPLYSNINGSPLIKT',
-      beskrivelse: 'Opplysningsplikten',
-      lovReferanse: 'frtl. § 21-3',
-      lovdataLenke: 'https://lovdata.no/dokument/NL/lov/1997-02-28-19/KAPITTEL_8-1#%C2%A721-3',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: VilkårsResultat.NEI,
-      begrunnelseSaksbehandler: undefined,
-      grunnlag: {},
-    },*/
-
-    {
-      vilkårsvurderingId,
-      vilkårId: 'BESTILT_HOS_OPTIKER',
-      beskrivelse: 'Brillen må bestilles hos optiker',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: undefined,
-      grunnlag: {},
-    },
-    {
-      vilkårsvurderingId,
-      vilkårId: 'KOMPLETT_BRILLE',
-      beskrivelse: 'Bestillingen inneholder brilleglass',
-      lovReferanse: '§ 2',
-      lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
-      resultatAuto: undefined,
-      begrunnelseAuto: undefined,
-      resultatSaksbehandler: undefined,
-      grunnlag: {},
     },
   ]
 }

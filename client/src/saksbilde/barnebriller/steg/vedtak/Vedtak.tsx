@@ -20,6 +20,7 @@ import { Etikett } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import {
   BrevTekst,
+  Brevkode,
   Brevtype,
   MålformType,
   OppgaveStatusType,
@@ -28,6 +29,7 @@ import {
 } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { useBrev } from './brev/brevHook'
@@ -115,9 +117,29 @@ export const Vedtak: React.FC = () => {
     setLagrer(false)
   }
 
+  const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
+
+  const samletVurdering = sak?.data.vilkårsvurdering?.vilkår.reduce((samletStatus, vilkår) => {
+    if (samletStatus === VilkårsResultat.NEI) {
+      return samletStatus
+    } else if (
+      vilkår.vilkårOppfylt === VilkårsResultat.NEI ||
+      vilkår.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
+    ) {
+      return vilkår.vilkårOppfylt
+    } else {
+      return samletStatus
+    }
+  }, VilkårsResultat.JA)
+
+  const { data: saksdokumenter } = useSaksdokumenter(
+    saksnummer!,
+    toggleAvEtterspørreOpplysninger ? false : samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER
+  )
+
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
-  if (sak?.data.steg === StegType.INNHENTE_FAKTA) {
+  if (sak.data.steg === StegType.INNHENTE_FAKTA) {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
@@ -127,7 +149,7 @@ export const Vedtak: React.FC = () => {
     )
   }
 
-  if (sak?.data.steg === StegType.VURDERE_VILKÅR) {
+  if (sak.data.steg === StegType.VURDERE_VILKÅR) {
     return (
       <AlertContainer>
         <Alert variant="info" size="small">
@@ -139,25 +161,42 @@ export const Vedtak: React.FC = () => {
   }
 
   const { bruker, vilkårsvurdering } = sak.data
-  const status = sak?.data.vilkårsvurdering!.resultat
+  const status = sak.data.vilkårsvurdering!.resultat
 
   const alertType = alertVariant(status)
 
   const vedtakFattet = sak.data.status === OppgaveStatusType.VEDTAK_FATTET
+
   const visAlertGodkjenning =
     sak.data.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
+
   const visSendTilGodkjenning =
     saksbehandlerKanRedigereBarnebrillesak &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
 
-  const vilkårSomManglerDokumentasjon = sak.data.vilkårsvurdering?.vilkår.find(
+  /* const vilkårSomManglerDokumentasjon = sak.data.vilkårsvurdering?.vilkår.find(
     (vilkår) => vilkår.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
+  )*/
+
+  /*const harVilkårHvorDokumentasjonMangler =
+    sak.data.vilkårsvurdering?.vilkår.find((v) => v.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) !==
+    undefined*/
+
+  const etterspørreOpplysningerBrev = saksdokumenter?.find(
+    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
 
+  const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
+    ? false
+    : etterspørreOpplysningerBrev !== undefined
+
+  const manglerPåkrevdEtterspørreOpplysningerBrev =
+    samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER && !etterspørreOpplysningerBrevFinnes
+
   const visFritekstFelt =
+    samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER &&
     visSendTilGodkjenning &&
-    vilkårSomManglerDokumentasjon &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (
@@ -273,13 +312,23 @@ export const Vedtak: React.FC = () => {
                 </Container>
               </>
             )}
+            {manglerPåkrevdEtterspørreOpplysningerBrev && (
+              <SkjemaAlert variant="warning">
+                <Etikett>Mangler innhente opplysninger brev</Etikett>
+                <Detail>
+                  Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en
+                  sak på grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende
+                  opplysninger og bruker ikke har sendt inn dette før fristen på 3 uker.
+                </Detail>
+              </SkjemaAlert>
+            )}
             <Avstand paddingBottom={6} />
             {visAlertGodkjenning && (
               <Alert variant="info" size="small">
                 {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
               </Alert>
             )}
-            {visSendTilGodkjenning && (
+            {visSendTilGodkjenning && !manglerPåkrevdEtterspørreOpplysningerBrev && (
               <Knappepanel>
                 <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
                   Forrige

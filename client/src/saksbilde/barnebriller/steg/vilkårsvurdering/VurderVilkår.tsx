@@ -13,6 +13,7 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/u
 import { StegType } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { useSamletVurdering } from '../../useSamletVurdering'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
@@ -26,6 +27,7 @@ export const VurderVilkår: React.FC = () => {
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const samletVurdering = useSamletVurdering(sak?.data)
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
@@ -59,10 +61,14 @@ export const VurderVilkår: React.FC = () => {
   if (!sak.data?.vilkårsvurdering) {
     return <Feilmelding>{`Vilkårsvurderingen manlgler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
   }
-  const oppsummertResultat = sak.data.vilkårsvurdering.resultat
+  //const oppsummertResultat = sak.data.vilkårsvurdering.resultat
+
+  // TODO: Skeleton
 
   const vilkår =
     sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
+
+  console.log('SV', samletVurdering)
 
   return (
     <>
@@ -70,7 +76,7 @@ export const VurderVilkår: React.FC = () => {
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        <Oppsummering vilkår={vilkår} oppsummertResultat={oppsummertResultat} />
+        {samletVurdering && <Oppsummering vilkår={vilkår} oppsummertResultat={samletVurdering} />}
         <Table size="small">
           <Table.Header>
             <Table.Row>

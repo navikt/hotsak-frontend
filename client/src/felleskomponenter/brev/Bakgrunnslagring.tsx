@@ -51,7 +51,7 @@ export const Fritekst = ({
         maxRows={20}
         label="Fritekst"
         error={valideringsFeil}
-        description="Beskriv hva som mangler av dokumentasjon"
+        description="Beskriv hva som mangler av opplysninger"
         size="small"
         value={fritekst}
         onChange={(event) => onTextChange(event)}

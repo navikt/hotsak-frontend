@@ -5,7 +5,7 @@ import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Vilkår, VilkårsResultat } from '../../../../../types/types.internal'
 import { Vilkårbeskrivelser } from './Vilkårbeskrivelser'
 
-export const Oppsummering = ({ oppsummertResultat, vilkår }: OppSummeringProps) => {
+export const Oppsummering = ({ oppsummertResultat, vilkår }: OppsummeringProps) => {
   const alertBoksType =
     oppsummertResultat === VilkårsResultat.JA
       ? 'success'
@@ -16,25 +16,27 @@ export const Oppsummering = ({ oppsummertResultat, vilkår }: OppSummeringProps)
   return (
     <AlertContainerBred>
       <Alert variant={alertBoksType} size="small">
-        {AlertTekst(alertBoksType)}
+        {AlertTekst(oppsummertResultat)}
         <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
       </Alert>
     </AlertContainerBred>
   )
 }
 
-function AlertTekst(alertVariant: 'success' | 'warning' | 'info') {
-  switch (alertVariant) {
-    case 'success':
+function AlertTekst(oppsummertResultat: VilkårsResultat) {
+  switch (oppsummertResultat) {
+    case VilkårsResultat.JA:
       return <Etikett>Alle vilkårene er oppfylt</Etikett>
-    case 'info':
+    case VilkårsResultat.NEI:
       return <Etikett>Søknaden vil bli avslått fordi det finnes vilkår som ikke er oppfylt:</Etikett>
-    case 'warning':
+    case VilkårsResultat.DOKUMENTASJON_MANGLER:
+      return <Etikett>Søknaden vil bli avslått fordi det mangler nødvendige opplysninger til å fatte vedtak:</Etikett>
+    case VilkårsResultat.KANSKJE:
       return <Etikett>Noen av vilkårende må vurderes</Etikett>
   }
 }
 
-interface OppSummeringProps {
+interface OppsummeringProps {
   oppsummertResultat: VilkårsResultat
   vilkår: Vilkår[]
 }

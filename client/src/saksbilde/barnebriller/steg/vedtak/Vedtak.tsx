@@ -30,6 +30,7 @@ import {
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
+import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { useBrev } from './brev/brevHook'
@@ -49,6 +50,7 @@ export const Vedtak: React.FC = () => {
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const [lagrer, setLagrer] = useState(false)
+  const samletVurdering = useSamletVurdering(sak?.data)
   const debounceVentetid = 1000
 
   const VENSTREKOLONNE_BREDDE = '180px'
@@ -118,20 +120,6 @@ export const Vedtak: React.FC = () => {
   }
 
   const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
-
-  const samletVurdering = sak?.data.vilkårsvurdering?.vilkår.reduce((samletStatus, vilkår) => {
-    if (samletStatus === VilkårsResultat.NEI) {
-      return samletStatus
-    } else if (
-      vilkår.vilkårOppfylt === VilkårsResultat.NEI ||
-      vilkår.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
-    ) {
-      return vilkår.vilkårOppfylt
-    } else {
-      return samletStatus
-    }
-  }, VilkårsResultat.JA)
-
   const { data: saksdokumenter } = useSaksdokumenter(
     saksnummer!,
     toggleAvEtterspørreOpplysninger ? false : samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER

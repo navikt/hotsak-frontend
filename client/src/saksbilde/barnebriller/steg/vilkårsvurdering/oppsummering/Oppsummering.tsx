@@ -1,15 +1,11 @@
 import { Alert } from '@navikt/ds-react'
 
 import { AlertContainerBred } from '../../../../../felleskomponenter/AlertContainer'
-import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Vilkår, VilkårsResultat } from '../../../../../types/types.internal'
 import { Vilkårbeskrivelser } from './Vilkårbeskrivelser'
 
 export const Oppsummering = ({ oppsummertResultat, vilkår }: OppSummeringProps) => {
-  /* const opplysningsplikt =
-    vilkår.find((v) => v.vilkårId === 'MEDLEMMETS_OPPLYSNINGSPLIKT')?.resultatAuto === VilkårsResultat.JA*/
-
   const alertBoksType =
     oppsummertResultat === VilkårsResultat.JA
       ? 'success'
@@ -20,20 +16,14 @@ export const Oppsummering = ({ oppsummertResultat, vilkår }: OppSummeringProps)
   return (
     <AlertContainerBred>
       <Alert variant={alertBoksType} size="small">
-        {AlertTekst(alertBoksType /*, opplysningsplikt*/)}
+        {AlertTekst(alertBoksType)}
         <Vilkårbeskrivelser vilkår={vilkår} resultat={oppsummertResultat} />
       </Alert>
     </AlertContainerBred>
   )
 }
 
-function AlertTekst(alertVariant: 'success' | 'warning' | 'info' /*opplysningsplikt: boolean*/) {
-  /*if (!opplysningsplikt) {
-    return (
-      <Brødtekst>Siden vilkåret for opplysningsplikt ikke er oppfylt, skal ikke de andre vilkårene vurderes</Brødtekst>
-    )
-  }*/
-
+function AlertTekst(alertVariant: 'success' | 'warning' | 'info') {
   switch (alertVariant) {
     case 'success':
       return <Etikett>Alle vilkårene er oppfylt</Etikett>

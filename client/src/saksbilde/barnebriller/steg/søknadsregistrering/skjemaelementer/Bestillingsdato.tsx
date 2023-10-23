@@ -11,9 +11,7 @@ export function Bestillingsdato() {
   const valgtDato = watch('bestillingsdato')
 
   useEffect(() => {
-    /*if (formState.isSubmitting && !valgtDato) {
-      setError('bestillingsdato', { type: 'custom', message: 'Ingen bestillingsdato valgt' })
-    } else*/ if (formState.errors.bestillingsdato && valgtDato) {
+    if (formState.errors.bestillingsdato && valgtDato) {
       clearErrors('bestillingsdato')
     }
   }, [formState, valgtDato, clearErrors])

@@ -175,14 +175,6 @@ export const Vedtak: React.FC = () => {
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
 
-  /* const vilkårSomManglerDokumentasjon = sak.data.vilkårsvurdering?.vilkår.find(
-    (vilkår) => vilkår.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER
-  )*/
-
-  /*const harVilkårHvorDokumentasjonMangler =
-    sak.data.vilkårsvurdering?.vilkår.find((v) => v.vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) !==
-    undefined*/
-
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )

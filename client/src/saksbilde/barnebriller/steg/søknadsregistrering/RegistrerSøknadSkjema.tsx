@@ -15,7 +15,6 @@ import { toDate } from '../../../../utils/date'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import {
-  Brevkode,
   Brilleseddel,
   MålformType,
   OppgaveStatusType,
@@ -60,37 +59,13 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     toggleAvEtterspørreOpplysninger ? false : kanHaEtterspørreOpplysningerBrev
   )
 
-  /*const etterspørreOpplysningerBrev = saksdokumenter?.find(
-    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
-  )*/
-
-  /*const etterspørreOpplysningerBrevFinnes = toggleAvEtterspørreOpplysninger
-    ? false
-    : etterspørreOpplysningerBrev !== undefined*/
-
   const vurderVilkår = (formData: RegistrerSøknadData) => {
-    const { /*opplysningsplikt,*/ målform, ...grunnlag } = { ...formData }
-
-    //let vurderVilkårRequest
-
-    /* if (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI) {
-      vurderVilkårRequest = {
-        sakId: sakId!,
-        sakstype: Oppgavetype.BARNEBRILLER,
-        //opplysningsplikt: opplysningsplikt,
-        målform: målform,
-        data: undefined,
-      }
-    } else {*/
+    const { målform, ...grunnlag } = { ...formData }
     const { bestillingsdato, brilleseddel, ...rest } = { ...grunnlag }
 
     const vurderVilkårRequest = {
       sakId: sakId!,
       sakstype: Oppgavetype.BARNEBRILLER,
-      /*opplysningsplikt: {
-          vilkårOppfylt: VilkårsResultat.JA,
-          begrunnelse: '',
-        },*/
       målform: målform,
       data: {
         bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,
@@ -98,7 +73,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         ...rest,
       },
     }
-    //}
 
     setVenterPåVilkårsvurdering(true)
     postVilkårsvurdering(vurderVilkårRequest)
@@ -134,10 +108,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const methods = useForm<RegistrerSøknadData>({
     defaultValues: {
       målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      /*opplysningsplikt: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.opplysningsplikt.vilkårOppfylt || '',
-        begrunnelse: '',
-      },*/
       bestillingsdato: toDate(sak?.data.vilkårsgrunnlag?.data?.bestillingsdato),
       brilleseddel: {
         høyreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.høyreSfære.toString() || '',
@@ -171,13 +141,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     )
   }
 
-  //const opplysningsplikt = watch('opplysningsplikt')
-
-  /* const skjulSkjemaFelter = toggleAvEtterspørreOpplysninger
-    ? false
-    : etterspørreOpplysningerBrevFinnes &&
-      (opplysningsplikt.vilkårOppfylt === VilkårsResultat.NEI || opplysningsplikt.vilkårOppfylt === '')*/
-
   return (
     <Container>
       <Heading level="1" size="xsmall" spacing>
@@ -193,10 +156,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
             autoComplete="off"
           >
             <Målform />
-            {/*etterspørreOpplysningerBrevFinnes && (
-              <Opplysningsplikt brevSendtDato={etterspørreOpplysningerBrev!.opprettet} />
-            )*/}
-            {/*!skjulSkjemaFelter &&**/ <RegistrerBrillegrunnlag />}
+            <RegistrerBrillegrunnlag />
 
             <Avstand paddingLeft={2}>
               <Knappepanel>

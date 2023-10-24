@@ -1,23 +1,24 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
-import { Alert, Button, Heading, Panel, Table } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
+import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType } from '../../../../types/types.internal'
+import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
-import { Oppsummering } from './oppsummering/Oppsummering'
+import { alertVariant } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
 
 export const VurderVilkår: React.FC = () => {
@@ -68,7 +69,8 @@ export const VurderVilkår: React.FC = () => {
   const vilkår =
     sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
 
-  console.log('SV', samletVurdering)
+  const status = sak.data.vilkårsvurdering!.resultat
+  const alertType = alertVariant(status)
 
   return (
     <>
@@ -76,7 +78,12 @@ export const VurderVilkår: React.FC = () => {
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        {samletVurdering && <Oppsummering vilkår={vilkår} oppsummertResultat={samletVurdering} />}
+        {/*samletVurdering && <Oppsummering vilkår={vilkår} oppsummertResultat={samletVurdering} />*/}
+        <Detail>RESULTAT</Detail>
+        <Tag variant={alertType} size="small">
+          {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
+        </Tag>
+        <Avstand paddingTop={6} />
         <Table size="small">
           <Table.Header>
             <Table.Row>

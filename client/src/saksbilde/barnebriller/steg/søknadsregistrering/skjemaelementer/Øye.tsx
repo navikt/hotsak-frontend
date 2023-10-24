@@ -13,8 +13,18 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
   const { type } = props
   const {
     control,
+    watch,
     formState: { errors },
   } = useFormContext<{ brilleseddel: Brilleseddel }>()
+
+  const høyreSfære = watch('brilleseddel.høyreSfære')
+  const høyreSylinder = watch('brilleseddel.høyreSylinder')
+  const venstreSfære = watch('brilleseddel.venstreSfære')
+  const venstreSylinder = watch('brilleseddel.venstreSylinder')
+
+  function tomBrilleseddel(): boolean {
+    return !høyreSfære && !høyreSylinder && !venstreSfære && !venstreSylinder
+  }
 
   return (
     <>
@@ -24,9 +34,9 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
         <Controller
           name={`brilleseddel.${type}Sfære`}
           control={control}
-          /*rules={{
-            required: 'Mangler verdi',
-          }}*/
+          rules={{
+            required: !tomBrilleseddel() && 'Mangler verdi',
+          }}
           render={({ field }) => (
             <Select
               label={'Sfære (SPH)'}
@@ -54,9 +64,9 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
         <Controller
           name={`brilleseddel.${type}Sylinder`}
           control={control}
-          /*rules={{
-            required: 'Mangler verdi',
-          }}*/
+          rules={{
+            required: !tomBrilleseddel() && 'Mangler verdi',
+          }}
           render={({ field }) => (
             <Select
               label="Cylinder (CYL)"

@@ -110,6 +110,8 @@ export interface GrunnlagMetadata {
 
 export type GrunnlagType = keyof Grunnlag
 
+export const IKKE_VALGT = ''
+
 export enum VilkårsResultat {
   JA = 'JA',
   NEI = 'NEI',

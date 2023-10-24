@@ -98,19 +98,9 @@ export const VurderVilkår: React.FC = () => {
           </Table.Header>
           <Table.Body>
             {vilkår.map((vilkår) => {
-              const {
-                id,
-                vilkårId,
-                beskrivelse,
-                //maskinellVurdering,
-                manuellVurdering,
-                lovReferanse,
-                vilkårOppfylt,
-                begrunnelse,
-              } = vilkår
+              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt, begrunnelse } = vilkår
 
               const vilkårMetadata = metadataFor(vilkårId)
-              //const vilkårOppfylt = resultatSaksbehandler ? resultatSaksbehandler : resultatAuto
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
 
               return (

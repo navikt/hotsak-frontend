@@ -14,7 +14,7 @@ export function alertVariant(vilkårOppfylt?: VilkårsResultat) {
     case VilkårsResultat.NEI:
       return 'error'
     case VilkårsResultat.DOKUMENTASJON_MANGLER:
-      return 'warning'
+      return 'info'
   }
 }
 

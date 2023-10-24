@@ -109,8 +109,6 @@ export const VurderVilkår: React.FC = () => {
                 begrunnelse,
               } = vilkår
 
-              console.log('Oppsummert begrunnelse', begrunnelse)
-
               const vilkårMetadata = metadataFor(vilkårId)
               //const vilkårOppfylt = resultatSaksbehandler ? resultatSaksbehandler : resultatAuto
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler

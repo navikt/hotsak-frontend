@@ -177,6 +177,7 @@ export const Vedtak: React.FC = () => {
   const visFritekstFelt =
     samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER &&
     visSendTilGodkjenning &&
+    !manglerPåkrevdEtterspørreOpplysningerBrev &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return (

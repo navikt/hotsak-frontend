@@ -90,7 +90,7 @@ function lagVilkår(
 ): Array<Omit<LagretVilkår, 'id'>> {
   const { bestillingsdato, brilleseddel, bestiltHosOptiker, komplettBrille } = vurderVilkårRequest.data!
 
-  return vurderteVilkår(vilkårsvurderingId, brilleseddel!, komplettBrille, bestiltHosOptiker, bestillingsdato)
+  return vurderteVilkår(vilkårsvurderingId, brilleseddel!, komplettBrille!, bestiltHosOptiker, bestillingsdato)
 }
 
 function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {

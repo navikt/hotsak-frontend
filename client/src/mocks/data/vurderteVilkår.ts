@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-import { Brilleseddel, Vurdering, VilkårsResultat } from '../../types/types.internal'
+import { Brilleseddel, VilkårsResultat, VurderingData } from '../../types/types.internal'
 import { LagretVilkår } from './BarnebrillesakStore'
 
 const vilkårSomTrengerBestillingsdato = [
@@ -24,8 +24,8 @@ const tomStyrke: Brilleseddel = {
 export function vurderteVilkår(
   vilkårsvurderingId: string,
   brilleseddel: Brilleseddel = tomStyrke,
-  komplettBrille: Vurdering,
-  bestiltHosOptiker: Vurdering,
+  komplettBrille: VurderingData,
+  bestiltHosOptiker: VurderingData,
   bestillingsdato?: string
 ) {
   let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)

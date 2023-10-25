@@ -17,7 +17,6 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import {
   Brilleseddel,
   MålformType,
-  OppgaveStatusType,
   Oppgavetype,
   OverforGosysTilbakemelding,
   RegistrerSøknadData,
@@ -27,7 +26,6 @@ import { OverførGosysModal } from '../../../OverførGosysModal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
 
@@ -45,19 +43,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const [visGosysModal, setVisGosysModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const { dokumenter } = useJournalposter()
-  const sendteBrev = []
-  const sakStatus = sak?.data.status
-  const antallJournalposter = new Set(dokumenter.map((dokument) => dokument.journalpostID)).size
-
-  const kanHaEtterspørreOpplysningerBrev: boolean =
-    sakStatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON || antallJournalposter > 1
-
-  const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
-
-  const { data: saksdokumenter } = useSaksdokumenter(
-    sakId!,
-    toggleAvEtterspørreOpplysninger ? false : kanHaEtterspørreOpplysningerBrev
-  )
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { målform, ...grunnlag } = { ...formData }
@@ -117,11 +102,11 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       },
       brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       bestiltHosOptiker: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt,
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt || '',
         begrunnelse: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse || '',
       },
       komplettBrille: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt,
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt || '',
         begrunnelse: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.begrunnelse || '',
       },
     },

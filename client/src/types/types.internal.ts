@@ -110,8 +110,6 @@ export interface GrunnlagMetadata {
 
 export type GrunnlagType = keyof Grunnlag
 
-export const IKKE_VALGT = ''
-
 export enum VilkårsResultat {
   JA = 'JA',
   NEI = 'NEI',
@@ -121,7 +119,6 @@ export enum VilkårsResultat {
 
 export interface RegistrerSøknadData {
   målform: MålformType
-  //opplysningsplikt: ManuellVurdering
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
@@ -138,7 +135,7 @@ export interface Brillegrunnlag {
 }
 
 export interface Vurdering {
-  vilkårOppfylt?: VilkårsResultat
+  vilkårOppfylt?: VilkårsResultat | ''
   begrunnelse?: string
 }
 

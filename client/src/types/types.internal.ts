@@ -122,8 +122,8 @@ export interface RegistrerSøknadData {
   brilleseddel: Brilleseddel
   bestillingsdato: Date
   brillepris: string
-  bestiltHosOptiker: Vurdering
-  komplettBrille: Vurdering
+  bestiltHosOptiker: VurderingData
+  komplettBrille: VurderingData
 }
 
 export interface Brillegrunnlag {
@@ -134,8 +134,13 @@ export interface Brillegrunnlag {
   komplettBrille: Vurdering
 }
 
-export interface Vurdering {
+export interface VurderingData {
   vilkårOppfylt?: VilkårsResultat | ''
+  begrunnelse?: string
+}
+
+export interface Vurdering {
+  vilkårOppfylt?: VilkårsResultat
   begrunnelse?: string
 }
 
@@ -181,8 +186,8 @@ export interface VurderVilkårRequest {
     brilleseddel?: Brilleseddel
     bestillingsdato?: string
     brillepris?: string
-    bestiltHosOptiker: Vurdering
-    komplettBrille: Vurdering
+    bestiltHosOptiker: VurderingData
+    komplettBrille: VurderingData
   }
 }
 

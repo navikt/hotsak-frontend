@@ -122,7 +122,7 @@ export const Vedtak: React.FC = () => {
   const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
   const { data: saksdokumenter } = useSaksdokumenter(
     saksnummer!,
-    toggleAvEtterspørreOpplysninger ? false : samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER
+    toggleAvEtterspørreOpplysninger ? false : samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
@@ -172,10 +172,10 @@ export const Vedtak: React.FC = () => {
     : etterspørreOpplysningerBrev !== undefined
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
-    samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER && !etterspørreOpplysningerBrevFinnes
+    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !etterspørreOpplysningerBrevFinnes
 
   const visFritekstFelt =
-    samletVurdering === VilkårsResultat.DOKUMENTASJON_MANGLER &&
+    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
     visSendTilGodkjenning &&
     !manglerPåkrevdEtterspørreOpplysningerBrev &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER

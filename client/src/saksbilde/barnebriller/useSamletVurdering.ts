@@ -10,7 +10,7 @@ export function useSamletVurdering(sak?: Barnebrillesak): VilkårsResultat | und
     .reduce((samletStatus, vilkårOppfylt) => {
       if (samletStatus === VilkårsResultat.NEI) {
         return samletStatus
-      } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) {
+      } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
         return vilkårOppfylt
       } else {
         return samletStatus

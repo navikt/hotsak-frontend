@@ -10,7 +10,7 @@ export const VurdertAv = ({
 }) => {
   if (!vilkårOppfylt) {
     return <Brødtekst>Ikke grunnlag for vurdering</Brødtekst>
-  } else if (vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) {
+  } else if (vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
     return <Brødtekst>-</Brødtekst>
   } else {
     return (

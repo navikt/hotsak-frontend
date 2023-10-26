@@ -35,7 +35,7 @@ export function KomplettBrille() {
             >
               <Radio value={VilkårsResultat.JA}>Ja</Radio>
               <Radio value={VilkårsResultat.NEI}>Nei</Radio>
-              <Radio value={VilkårsResultat.DOKUMENTASJON_MANGLER}>Opplysninger mangler</Radio>
+              <Radio value={VilkårsResultat.OPPLYSNINGER_MANGLER}>Opplysninger mangler</Radio>
             </RadioGroup>
           )}
         />

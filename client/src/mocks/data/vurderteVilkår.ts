@@ -57,7 +57,7 @@ function oppdaterStatus(
   predikatResultat: boolean,
   aktuelleVilkår: string[],
   vurdertType: 'SAKSBEHANDLER' | 'MASKINELL' = 'MASKINELL',
-  nyttResultat: VilkårsResultat = VilkårsResultat.DOKUMENTASJON_MANGLER
+  nyttResultat: VilkårsResultat = VilkårsResultat.OPPLYSNINGER_MANGLER
 ): Array<Omit<LagretVilkår, 'id'>> {
   if (predikatResultat) {
     return vilkår.map((v) => {

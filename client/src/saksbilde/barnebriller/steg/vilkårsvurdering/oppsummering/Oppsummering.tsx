@@ -29,7 +29,7 @@ function AlertTekst(oppsummertResultat: VilkårsResultat) {
       return <Etikett>Alle vilkårene er oppfylt</Etikett>
     case VilkårsResultat.NEI:
       return <Etikett>Søknaden vil bli avslått fordi det finnes vilkår som ikke er oppfylt:</Etikett>
-    case VilkårsResultat.DOKUMENTASJON_MANGLER:
+    case VilkårsResultat.OPPLYSNINGER_MANGLER:
       return <Etikett>Søknaden vil bli avslått fordi det mangler nødvendige opplysninger til å fatte vedtak:</Etikett>
     case VilkårsResultat.KANSKJE:
       return <Etikett>Noen av vilkårende må vurderes</Etikett>

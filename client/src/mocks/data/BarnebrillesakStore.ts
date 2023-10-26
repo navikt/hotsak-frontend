@@ -328,7 +328,7 @@ export class BarnebrillesakStore extends Dexie {
           return samletStatus
         } else if (vilkårOppfylt === VilkårsResultat.NEI || vilkårOppfylt === VilkårsResultat.KANSKJE) {
           return vilkårOppfylt
-        } else if (vilkårOppfylt === VilkårsResultat.DOKUMENTASJON_MANGLER) {
+        } else if (vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
           return VilkårsResultat.NEI
         } else {
           return samletStatus

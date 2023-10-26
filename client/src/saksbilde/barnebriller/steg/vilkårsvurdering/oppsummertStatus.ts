@@ -13,7 +13,7 @@ export function alertVariant(vilkårOppfylt?: VilkårsResultat) {
       return 'warning'
     case VilkårsResultat.NEI:
       return 'error'
-    case VilkårsResultat.DOKUMENTASJON_MANGLER:
+    case VilkårsResultat.OPPLYSNINGER_MANGLER:
       return 'info'
   }
 }
@@ -30,7 +30,7 @@ export function vilkårStatusTekst(vilkårOppfylt?: VilkårsResultat) {
       return 'Ikke oppfylt'
     case VilkårsResultat.KANSKJE:
       return 'Må vurderes'
-    case VilkårsResultat.DOKUMENTASJON_MANGLER:
+    case VilkårsResultat.OPPLYSNINGER_MANGLER:
       return 'Mangler opplysninger'
   }
 }

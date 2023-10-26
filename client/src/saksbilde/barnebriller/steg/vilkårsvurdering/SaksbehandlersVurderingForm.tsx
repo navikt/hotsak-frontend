@@ -67,6 +67,7 @@ export function SaksbehandlersVurderingForm({
             >
               <Radio value={VilkårsResultat.JA}>Ja</Radio>
               <Radio value={VilkårsResultat.NEI}>Nei</Radio>
+              <Radio value={VilkårsResultat.OPPLYSNINGER_MANGLER}>Opplysning mangler</Radio>
             </RadioGroup>
           )}
         />

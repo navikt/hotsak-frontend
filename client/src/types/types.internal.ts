@@ -114,7 +114,7 @@ export enum VilkårsResultat {
   JA = 'JA',
   NEI = 'NEI',
   KANSKJE = 'KANSKJE',
-  DOKUMENTASJON_MANGLER = 'DOKUMENTASJON_MANGLER',
+  OPPLYSNINGER_MANGLER = 'OPPLYSNINGER_MANGLER',
 }
 
 export interface RegistrerSøknadData {

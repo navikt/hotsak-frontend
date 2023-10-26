@@ -165,6 +165,10 @@ export const postTildeling = async (oppgavereferanse: number | string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
+export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
+  return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
+}
+
 export const postJournalføringStartet = async (journalpostID: string) => {
   return post(`${baseUrl}/api/journalpost/${journalpostID}/tildeling`, {})
 }

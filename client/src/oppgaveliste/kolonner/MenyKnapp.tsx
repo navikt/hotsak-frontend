@@ -6,6 +6,7 @@ import { Button, Dropdown, Loader } from '@navikt/ds-react'
 import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
+import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
@@ -31,6 +32,7 @@ export const MenyKnapp = ({
 }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const { onTildel } = useTildeling({ sakId: sakID, gåTilSak: false })
+  const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakID, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
 
   const menyClick = (event: React.MouseEvent) => {
@@ -48,6 +50,11 @@ export const MenyKnapp = ({
     tildeltSaksbehandler &&
     tildeltSaksbehandler.objectId !== saksbehandler.objectId &&
     kanOvertaSakStatuser.includes(status)
+
+  const kanFortsetteBehandling =
+    tildeltSaksbehandler &&
+    tildeltSaksbehandler.objectId === saksbehandler.objectId &&
+    status === OppgaveStatusType.AVVENTER_DOKUMENTASJON
 
   const overtaSak = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -104,6 +111,11 @@ export const MenyKnapp = ({
                 {kanTildeles && !kanOvertaSak && (
                   <Dropdown.Menu.List.Item onClick={onTildel}>
                     Ta saken {isFetching && <Loader size="xsmall" />}
+                  </Dropdown.Menu.List.Item>
+                )}
+                {kanFortsetteBehandling && (
+                  <Dropdown.Menu.List.Item onClick={onFortsettBehandling}>
+                    Fortsett behandling {endrerStatus && <Loader size="xsmall" />}
                   </Dropdown.Menu.List.Item>
                 )}
               </Dropdown.Menu.List>

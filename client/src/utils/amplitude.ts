@@ -22,6 +22,8 @@ export enum amplitude_taxonomy {
   BESTILLING_FERDIGSTILT = 'godkjent bestilling',
   BESTILLING_AVVIST = 'avvist bestilling hotsak',
   TOTRINNSKONTROLL_GODKJENT = 'totrinnskontroll godkjent',
+  FORTSETT_BEHANDLING_FRA_OPPGAVELISTE = 'fortsetter behandling fra oppgaveliste',
+  FORTSETT_BEHANDLING_FRA_SAK = 'fortsetter behandling fra sak',
 }
 
 export function setupAmplitude(): void {

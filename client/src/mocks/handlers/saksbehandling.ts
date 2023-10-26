@@ -99,6 +99,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
   rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/tilbakefoer/:sakId', async (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
+  rest.put<{ status: OppgaveStatusType }, { sakId: string }, any>('/api/sak/:sakId/status', async (req, res, ctx) => {
+    const sakId = req.params.sakId
+    const status = req.body.status
+    barnebrillesakStore.oppdaterStatus(sakId, status)
+    return res(ctx.delay(300), ctx.status(200))
+  }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', async (req, res, ctx) => {
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),

@@ -103,6 +103,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     const sakId = req.params.sakId
     const status = req.body.status
     barnebrillesakStore.oppdaterStatus(sakId, status)
+    barnebrillesakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
     return res(ctx.delay(300), ctx.status(200))
   }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }>('/api/bestilling/avvis/:saksnummer', async (req, res, ctx) => {

@@ -3,13 +3,14 @@ import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { Tabs } from '@navikt/ds-react'
+import { Alert, Tabs } from '@navikt/ds-react'
 
 import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
 
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
-import { Oppgavetype, StegType } from '../../types/types.internal'
+import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
+import { OppgaveStatusType, Oppgavetype, StegType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { StatusTag } from '../komponenter/StatusTag'
 import { useBrillesak } from '../sakHook'
@@ -77,7 +78,13 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           />
         </Border>
       </FlexWrapper>
-
+      {sak.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
+        <AlertContainerMedium>
+          <Alert variant="info" size="small">
+            Saken avventer opplysninger, og er satt på vent. Fortsett behandlingen av saken via menyen til høyre.
+          </Alert>
+        </AlertContainerMedium>
+      )}
       <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
         <RegistrerSøknad />
       </Tabs.Panel>

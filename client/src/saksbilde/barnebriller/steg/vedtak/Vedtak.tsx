@@ -119,7 +119,7 @@ export const Vedtak: React.FC = () => {
     setLagrer(false)
   }
 
-  const toggleAvEtterspørreOpplysninger = window.appSettings.MILJO === 'prod-gcp'
+  const toggleAvEtterspørreOpplysninger = false // window.appSettings.MILJO === 'prod-gcp'
   const { data: saksdokumenter } = useSaksdokumenter(
     saksnummer!,
     toggleAvEtterspørreOpplysninger ? false : samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER

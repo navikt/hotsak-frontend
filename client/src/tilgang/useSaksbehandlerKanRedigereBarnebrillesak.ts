@@ -9,7 +9,7 @@ export function useSaksbehandlerKanRedigereBarnebrillesak(sak?: Barnebrillesak):
     saksbehandlerErTildeltSak &&
     sak?.steg !== StegType.GODKJENNE &&
     sak?.steg !== StegType.FERDIG_BEHANDLET &&
-    true // sak?.status !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
+    sak?.status !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
   useDebugValue(saksbehandlerKanRedigereBarnebrillesak)
   return saksbehandlerKanRedigereBarnebrillesak
 }

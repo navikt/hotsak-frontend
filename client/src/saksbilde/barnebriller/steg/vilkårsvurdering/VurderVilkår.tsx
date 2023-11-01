@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
-import { Alert, Button, Detail, Heading, Panel, Table, Tag } from '@navikt/ds-react'
+import { Alert, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
 
@@ -11,7 +11,7 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSamletVurdering } from '../../useSamletVurdering'
@@ -29,6 +29,16 @@ export const VurderVilkår: React.FC = () => {
   const [lagrer, setLagrer] = useState(false)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
+
+  //const [errors, setErrors] = useState<string[]>([])
+
+  /*function valider() {
+    const uavklarteVilkår: Vilkår[] =
+      sak?.data.vilkårsvurdering?.vilkår.filter((vilkår) => vilkår.vilkårOppfylt === VilkårsResultat.KANSKJE) || []
+
+    setErrors(uavklarteVilkår.map((vilkår) => vilkår.beskrivelse))
+    return uavklarteVilkår?.length === 0
+  }*/
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
@@ -83,6 +93,16 @@ export const VurderVilkår: React.FC = () => {
         <Tag variant={alertType} size="small">
           {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
         </Tag>
+
+        {/*errors.length > 0 && (
+            <Avstand paddingTop={6}>
+          <ErrorSummary heading="Vilkår mangler vurdering og må vurders av saksbehandler" size="small">
+            {errors.map((error) => (
+              <ErrorSummary.Item>{error}</ErrorSummary.Item>
+            ))}
+          </ErrorSummary>
+          </Avstand>
+            )*/}
         <Avstand paddingTop={6} />
         <Table size="small">
           <Table.Header>
@@ -156,7 +176,11 @@ export const VurderVilkår: React.FC = () => {
           <Button
             variant="primary"
             size="small"
-            onClick={() => gåTilNesteSteg(sak.data.sakId, sak.data.steg)}
+            onClick={() => {
+              //if (valider()) {
+              gåTilNesteSteg(sak.data.sakId, sak.data.steg)
+              // }
+            }}
             disabled={lagrer}
             loading={lagrer}
           >

@@ -8,7 +8,7 @@ export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakId: number 
   return (
     <Avstand paddingTop={6}>
       <Etikett>Er vilkåret oppfylt?</Etikett>
-      <Brødtekst>{capitalize(vilkår.vilkårOppfylt)}</Brødtekst>
+      <Brødtekst>{capitalize(vilkår.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
       {vilkår.manuellVurdering?.begrunnelse && (
         <Avstand paddingTop={6}>
           <Etikett>Begrunnelse</Etikett>

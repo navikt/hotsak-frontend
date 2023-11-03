@@ -383,9 +383,13 @@ export class BarnebrillesakStore extends Dexie {
     { resultatSaksbehandler, begrunnelseSaksbehandler }: OppdaterVilkårRequest
   ) {
     vilkårId = Number(vilkårId)
+
     return this.vilkår.update(vilkårId, {
-      resultatSaksbehandler,
-      begrunnelseSaksbehandler,
+      manuellVurdering: {
+        vilkårOppfylt: resultatSaksbehandler,
+        begrunnelse: begrunnelseSaksbehandler,
+      },
+      vilkårOppfylt: resultatSaksbehandler,
     })
   }
 

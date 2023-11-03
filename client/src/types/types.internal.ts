@@ -85,10 +85,6 @@ export interface Vilkår extends Vurdering {
   beskrivelse: string
   maskinellVurdering?: Vurdering
   manuellVurdering?: Vurdering
-  //resultatAuto?: VilkårsResultat
-  //begrunnelseAuto?: string
-  //resultatSaksbehandler?: VilkårsResultat
-  //begrunnelseSaksbehandler?: string
   lovReferanse?: string
   lovdataLenke?: string
   grunnlag: Record<string, string | number>

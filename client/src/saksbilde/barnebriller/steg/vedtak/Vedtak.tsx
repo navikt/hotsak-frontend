@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import styled from 'styled-components'
 import useSWR from 'swr'
 
-import { Alert, Button, Detail, Heading, Loader, Panel, Tag, Textarea } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Loader, Panel, Skeleton, Tag, Textarea } from '@navikt/ds-react'
 
 import { post, postBrevutkast } from '../../../../io/http'
 import { formaterDato } from '../../../../utils/date'
@@ -119,7 +119,7 @@ export const Vedtak: React.FC = () => {
     setLagrer(false)
   }
 
-  const { data: saksdokumenter } = useSaksdokumenter(
+  const { data: saksdokumenter, isLoading: henterSaksdokumenter } = useSaksdokumenter(
     saksnummer!,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
@@ -169,7 +169,9 @@ export const Vedtak: React.FC = () => {
   const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
 
   const manglerPåkrevdEtterspørreOpplysningerBrev =
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !etterspørreOpplysningerBrevFinnes
+    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
+    !etterspørreOpplysningerBrevFinnes &&
+    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const visFritekstFelt =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
@@ -177,159 +179,179 @@ export const Vedtak: React.FC = () => {
     !manglerPåkrevdEtterspørreOpplysningerBrev &&
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
+  const visSkeleton =
+    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
+    henterSaksdokumenter
+
   return (
     <TreKolonner>
-      <Panel>
-        <Heading level="1" size="small" spacing>
-          {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
-        </Heading>
-        <Detail>RESULTAT</Detail>
-        <Tag variant={alertType} size="small">
-          {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
-        </Tag>
-        {status === VilkårsResultat.JA && (
-          <>
-            <Avstand paddingBottom={6} />
-            <Rad>
-              <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace(
-                'SATS_',
-                'Sats '
-              )}:`}</Kolonne>
-              <Kolonne>
-                <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
-              </Kolonne>
-            </Rad>
-            <Rad>
-              <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
-              <Kolonne>
-                <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
-              </Kolonne>
-            </Rad>
-            <Rad>
-              <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
-              <Kolonne>
-                <Etikett>{capitalizeName(`${sak.data.utbetalingsmottaker?.navn}`)}</Etikett>
-              </Kolonne>
-            </Rad>
-            {sak.data.utbetalingsmottaker?.kontonummer ? (
+      {visSkeleton ? (
+        <Avstand paddingTop={6}>
+          <Heading level="1" size="small" spacing>
+            Forslag til vedtak
+          </Heading>
+          <Skeleton variant="rectangle" width="40%" height={60} />
+          <Avstand paddingTop={2} />
+          <Skeleton variant="rectangle" width="80%" height={20} />
+          <Avstand paddingTop={2} />
+          <Skeleton variant="rectangle" width="80%" height={20} />
+          <Avstand paddingTop={6} />
+          <Skeleton variant="rectangle" width="80%" height={90} />
+        </Avstand>
+      ) : (
+        <Panel>
+          <Heading level="1" size="small" spacing>
+            {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
+          </Heading>
+          <Detail>RESULTAT</Detail>
+          <Tag variant={alertType} size="small">
+            {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
+          </Tag>
+          {status === VilkårsResultat.JA && (
+            <>
+              <Avstand paddingBottom={6} />
               <Rad>
-                <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
+                <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace(
+                  'SATS_',
+                  'Sats '
+                )}:`}</Kolonne>
                 <Kolonne>
-                  <Etikett>{formaterKontonummer(sak.data.utbetalingsmottaker?.kontonummer)}</Etikett>
+                  <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
                 </Kolonne>
               </Rad>
-            ) : (
-              <>
-                <SkjemaAlert variant="warning">
-                  <Etikett>Mangler kontonummer på bruker</Etikett>
-                  <Detail>
-                    Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
-                    vedkommende for å be dem registrere et kontonummer.
-                  </Detail>
-                </SkjemaAlert>
-                <Avstand paddingTop={4} />
-                <Button
-                  variant="secondary"
-                  size="small"
-                  loading={loading}
-                  disabled={loading}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    post('/api/utbetalingsmottaker', {
-                      fnr: sak.data.utbetalingsmottaker?.fnr,
-                      sakId: Number(saksnummer),
-                    }).then(() => {
-                      mutate()
-                    })
-                  }}
-                >
-                  Hent kontonummer på nytt
-                </Button>
-              </>
-            )}
-          </>
-        )}
-        {!vedtakFattet && (
-          <>
-            {visFritekstFelt && (
-              <>
-                <Avstand paddingTop={6} />
-                <Textarea
-                  minRows={5}
-                  maxRows={20}
-                  label="Beskriv hvilke opplysninger som mangler"
-                  error={valideringsFeil}
-                  description="Vises i brevet som en del av begrunnelsen for avslaget"
-                  size="small"
-                  value={fritekst}
-                  onChange={(event) => onTextChange(event)}
-                />
-                <Container>
+              <Rad>
+                <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
+                <Kolonne>
+                  <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
+                </Kolonne>
+              </Rad>
+              <Rad>
+                <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
+                <Kolonne>
+                  <Etikett>{capitalizeName(`${sak.data.utbetalingsmottaker?.navn}`)}</Etikett>
+                </Kolonne>
+              </Rad>
+              {sak.data.utbetalingsmottaker?.kontonummer ? (
+                <Rad>
+                  <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
+                  <Kolonne>
+                    <Etikett>{formaterKontonummer(sak.data.utbetalingsmottaker?.kontonummer)}</Etikett>
+                  </Kolonne>
+                </Rad>
+              ) : (
+                <>
+                  <SkjemaAlert variant="warning">
+                    <Etikett>Mangler kontonummer på bruker</Etikett>
+                    <Detail>
+                      Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
+                      vedkommende for å be dem registrere et kontonummer.
+                    </Detail>
+                  </SkjemaAlert>
+                  <Avstand paddingTop={4} />
                   <Button
-                    loading={false}
-                    size="small"
                     variant="secondary"
-                    onClick={() => {
-                      hentForhåndsvisning(sak.data.sakId, Brevtype.BARNEBRILLER_VEDTAK)
+                    size="small"
+                    loading={loading}
+                    disabled={loading}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      post('/api/utbetalingsmottaker', {
+                        fnr: sak.data.utbetalingsmottaker?.fnr,
+                        sakId: Number(saksnummer),
+                      }).then(() => {
+                        mutate()
+                      })
                     }}
                   >
-                    Forhåndsvis
+                    Hent kontonummer på nytt
                   </Button>
-                  <Bakgrunnslagring style={{ marginLeft: 'auto' }}>
-                    {lagrer && (
-                      <>
-                        <span>
-                          <Loader size="xsmall" />
-                        </span>
-                        <span>
-                          <Detail>Lagrer</Detail>
-                        </span>
-                      </>
-                    )}
-                  </Bakgrunnslagring>
-                </Container>
-              </>
-            )}
-            {manglerPåkrevdEtterspørreOpplysningerBrev && (
-              <SkjemaAlert variant="warning">
-                <Etikett>Mangler innhente opplysninger brev</Etikett>
-                <Detail>
-                  Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en
-                  sak på grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende
-                  opplysninger og bruker ikke har sendt inn dette før fristen på 3 uker.
-                </Detail>
-              </SkjemaAlert>
-            )}
-            <Avstand paddingBottom={6} />
-            {visAlertGodkjenning && (
-              <Alert variant="info" size="small">
-                {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
-              </Alert>
-            )}
-            {visSendTilGodkjenning && !manglerPåkrevdEtterspørreOpplysningerBrev && (
-              <Knappepanel>
-                <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
-                  Forrige
-                </Button>
-                <Button
-                  loading={loading}
-                  disabled={loading}
-                  size="small"
-                  variant="primary"
-                  onClick={() => {
-                    setSubmitAttempt(true)
-                    if (!visFritekstFelt || valider()) {
-                      sendTilGodkjenning()
-                    }
-                  }}
-                >
-                  Send til godkjenning
-                </Button>
-              </Knappepanel>
-            )}
-          </>
-        )}
-      </Panel>
+                </>
+              )}
+            </>
+          )}
+          {!vedtakFattet && (
+            <>
+              {visFritekstFelt && (
+                <>
+                  <Avstand paddingTop={6} />
+                  <Textarea
+                    minRows={5}
+                    maxRows={20}
+                    label="Beskriv hvilke opplysninger som mangler"
+                    error={valideringsFeil}
+                    description="Vises i brevet som en del av begrunnelsen for avslaget"
+                    size="small"
+                    value={fritekst}
+                    onChange={(event) => onTextChange(event)}
+                  />
+                  <Container>
+                    <Button
+                      loading={false}
+                      size="small"
+                      variant="secondary"
+                      onClick={() => {
+                        hentForhåndsvisning(sak.data.sakId, Brevtype.BARNEBRILLER_VEDTAK)
+                      }}
+                    >
+                      Forhåndsvis
+                    </Button>
+                    <Bakgrunnslagring style={{ marginLeft: 'auto' }}>
+                      {lagrer && (
+                        <>
+                          <span>
+                            <Loader size="xsmall" />
+                          </span>
+                          <span>
+                            <Detail>Lagrer</Detail>
+                          </span>
+                        </>
+                      )}
+                    </Bakgrunnslagring>
+                  </Container>
+                </>
+              )}
+              {manglerPåkrevdEtterspørreOpplysningerBrev && (
+                <SkjemaAlert variant="warning">
+                  <Etikett>Mangler innhente opplysninger brev</Etikett>
+                  <Detail>
+                    Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en
+                    sak på grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende
+                    opplysninger og bruker ikke har sendt inn dette før fristen på 3 uker.
+                  </Detail>
+                </SkjemaAlert>
+              )}
+              <Avstand paddingBottom={6} />
+              {visAlertGodkjenning && (
+                <Alert variant="info" size="small">
+                  {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
+                </Alert>
+              )}
+              {visSendTilGodkjenning && !manglerPåkrevdEtterspørreOpplysningerBrev && (
+                <Knappepanel>
+                  <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
+                    Forrige
+                  </Button>
+                  <Button
+                    loading={loading}
+                    disabled={loading}
+                    size="small"
+                    variant="primary"
+                    onClick={() => {
+                      setSubmitAttempt(true)
+                      if (!visFritekstFelt || valider()) {
+                        sendTilGodkjenning()
+                      }
+                    }}
+                  >
+                    Send til godkjenning
+                  </Button>
+                </Knappepanel>
+              )}
+            </>
+          )}
+        </Panel>
+      )}
       <VenstreKolonne>
         <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
       </VenstreKolonne>

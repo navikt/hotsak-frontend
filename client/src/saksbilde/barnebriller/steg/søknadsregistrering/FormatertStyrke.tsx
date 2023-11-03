@@ -4,7 +4,7 @@ interface FormatertStyrkeProps {
 
 export function FormatertStyrke(props: FormatertStyrkeProps) {
   const { verdi } = props
-  if (verdi == null || verdi === '') {
+  if (!verdi || verdi === '') {
     return null
   }
 

@@ -91,7 +91,6 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             <Rad>
               <Kolonne width="150px">
                 <Brødtekst>
-                  vilkårsgrunnlag?.data?.brilleseddel ?{' '}
                   <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.høyreSfære} />
                 </Brødtekst>
               </Kolonne>
@@ -125,7 +124,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             </Rad>
 
             <Avstand paddingTop={4} />
-            {vilkårsvurdering && (
+            {vilkårsvurdering && vilkårsgrunnlag?.data.brilleseddel && (
               <Alert variant="info" role="alert">
                 <Brødtekst>
                   {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
@@ -148,7 +147,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               § 2 Bestillingen må inneholde glass
             </Heading>
             <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
-            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt)}</Brødtekst>
+            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
             {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
               <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
             )}
@@ -159,7 +158,9 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               § 2 Brillen må være bestilt hos optiker
             </Heading>
             <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
-            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt)}</Brødtekst>
+            <Brødtekst>
+              {capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt).replace('_', ' ')}
+            </Brødtekst>
             {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
               <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
             )}

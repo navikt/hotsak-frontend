@@ -32,8 +32,11 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
+import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { BrevPanel } from './brev/BrevPanel'
 import { useBrev } from './brev/brevHook'
+
+export const VENSTREKOLONNE_BREDDE = '180px'
 
 export const Vedtak: React.FC = () => {
   const [loading, setLoading] = useState(false)
@@ -52,8 +55,6 @@ export const Vedtak: React.FC = () => {
   const [lagrer, setLagrer] = useState(false)
   const samletVurdering = useSamletVurdering(sak?.data)
   const debounceVentetid = 1000
-
-  const VENSTREKOLONNE_BREDDE = '180px'
 
   const sendTilGodkjenning = () => {
     setLoading(true)
@@ -208,68 +209,8 @@ export const Vedtak: React.FC = () => {
           <Tag variant={alertType} size="small">
             {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
           </Tag>
-          {status === VilkårsResultat.JA && (
-            <>
-              <Avstand paddingBottom={6} />
-              <Rad>
-                <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace(
-                  'SATS_',
-                  'Sats '
-                )}:`}</Kolonne>
-                <Kolonne>
-                  <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
-                </Kolonne>
-              </Rad>
-              <Rad>
-                <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
-                <Kolonne>
-                  <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
-                </Kolonne>
-              </Rad>
-              <Rad>
-                <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
-                <Kolonne>
-                  <Etikett>{capitalizeName(`${sak.data.utbetalingsmottaker?.navn}`)}</Etikett>
-                </Kolonne>
-              </Rad>
-              {sak.data.utbetalingsmottaker?.kontonummer ? (
-                <Rad>
-                  <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
-                  <Kolonne>
-                    <Etikett>{formaterKontonummer(sak.data.utbetalingsmottaker?.kontonummer)}</Etikett>
-                  </Kolonne>
-                </Rad>
-              ) : (
-                <>
-                  <SkjemaAlert variant="warning">
-                    <Etikett>Mangler kontonummer på bruker</Etikett>
-                    <Detail>
-                      Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
-                      vedkommende for å be dem registrere et kontonummer.
-                    </Detail>
-                  </SkjemaAlert>
-                  <Avstand paddingTop={4} />
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    loading={loading}
-                    disabled={loading}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      post('/api/utbetalingsmottaker', {
-                        fnr: sak.data.utbetalingsmottaker?.fnr,
-                        sakId: Number(saksnummer),
-                      }).then(() => {
-                        mutate()
-                      })
-                    }}
-                  >
-                    Hent kontonummer på nytt
-                  </Button>
-                </>
-              )}
-            </>
-          )}
+          {status === VilkårsResultat.JA && <InnvilgetVedtakVisning sak={sak.data} mutate={mutate} />}
+
           {!vedtakFattet && (
             <>
               {visFritekstFelt && (

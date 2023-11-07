@@ -3,7 +3,6 @@ import { isNumber } from '../utils/type'
 import type {
   AvvisBestilling,
   BrevTekst,
-  Brevtype,
   EndreHjelpemiddelRequest,
   JournalføringRequest,
   OppdaterVilkårData,
@@ -30,7 +29,10 @@ export const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NO
 type Headers = { [key: string]: any }
 
 export class ResponseError extends Error {
-  constructor(readonly statusCode: number, message?: string) {
+  constructor(
+    readonly statusCode: number,
+    message?: string
+  ) {
     super(message)
   }
 
@@ -147,7 +149,7 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
   }
 }
 
-export const hentBrukerdataMedPost = async ([
+export const hentBrukerdataMedPost: any = async ([
   url,
   brukersFodselsnummer,
   saksType,

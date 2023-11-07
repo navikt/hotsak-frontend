@@ -1,9 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-import { Button, Heading, Modal } from '@navikt/ds-react'
-
-import { Knappepanel } from '../../../felleskomponenter/Button'
-import { DialogBoks } from '../../../felleskomponenter/Dialogboks'
+import { Button, Modal } from '@navikt/ds-react'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 
 interface SendBrevModalProps {
@@ -14,36 +11,36 @@ interface SendBrevModalProps {
 }
 
 export const SendBrevModal: React.FC<SendBrevModalProps> = ({ open, onBekreft, loading, onClose }) => {
+  const ref = useRef<HTMLDialogElement>(null)
   return (
-    <DialogBoks
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
       width="500px"
-      shouldCloseOnOverlayClick={false}
       open={open}
       onClose={() => {
         onClose()
       }}
+      header={{ heading: 'Vil du sende brevet?' }}
     >
-      <Modal.Content>
-        <Heading level="1" size="medium" spacing>
-          {`Vil du sende brevet?`}
-        </Heading>
+      <Modal.Body>
         <Brødtekst>{`Brevet sendes til adressen til barnet, og saken settes på vent.`}</Brødtekst>
-        <Knappepanel>
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={() => {
-              onClose()
-            }}
-            disabled={loading}
-          >
-            Avbryt
-          </Button>
-          <Button variant="primary" size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
-            {`Send brev`}
-          </Button>
-        </Knappepanel>
-      </Modal.Content>
-    </DialogBoks>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="tertiary"
+          size="small"
+          onClick={() => {
+            onClose()
+          }}
+          disabled={loading}
+        >
+          Avbryt
+        </Button>
+        <Button variant="primary" size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
+          {`Send brev`}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   )
 }

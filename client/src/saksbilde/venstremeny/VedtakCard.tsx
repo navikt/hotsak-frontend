@@ -107,7 +107,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     return (
       <>
         <Card>
-          <CardTitle>VEDTAK</CardTitle>
+          <CardTitle level="1" size="medium">
+            VEDTAK
+          </CardTitle>
           <Tag data-cy="tag-soknad-status" variant="success" size="small">
             Innvilget
           </Tag>
@@ -123,7 +125,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   if (sak.status === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <Card>
-        <CardTitle>OVERFØRT</CardTitle>
+        <CardTitle level="1" size="medium">
+          OVERFØRT
+        </CardTitle>
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Overført til Gosys
         </Tag>
@@ -139,7 +143,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   if (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <Card>
-        <CardTitle>SAK IKKE STARTET</CardTitle>
+        <CardTitle level="1" size="medium">
+          SAK IKKE STARTET
+        </CardTitle>
         <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
           <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
@@ -154,7 +160,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   ) {
     return (
       <Card>
-        <CardTitle>SAKSBEHANDLER</CardTitle>
+        <CardTitle level="1" size="medium">
+          SAKSBEHANDLER
+        </CardTitle>
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
           <Knapp

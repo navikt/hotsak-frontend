@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-
-import { Knappepanel } from '../../felleskomponenter/Button'
-import { DialogBoks } from '../../felleskomponenter/Dialogboks'
+import { Button, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import type { AvvisBestilling } from '../../types/types.internal'
 
@@ -18,17 +15,20 @@ interface AvvisBestillingModalProps {
 }
 
 export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
-  // Modal && Modal.setAppElement("#root")
+  const ref = useRef<HTMLDialogElement>(null)
   const [valgtArsak, setValgtArsak] = useState<string>('')
   const [begrunnelse, setBegrunnelse] = useState<string>('')
   const [error, setError] = useState('')
 
   return (
-    <DialogBoks shouldCloseOnOverlayClick={false} open={open} onClose={onClose}>
-      <DialogBoks.Content>
-        <Heading level="1" size="medium" spacing>
-          Vil du avvise bestillingen?
-        </Heading>
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
+      open={open}
+      onClose={onClose}
+      header={{ heading: 'Vil du avvise bestillingen?' }}
+    >
+      <Modal.Body>
         <Tekst>
           Bestillingen avvises i Hotsak. Bruker og formidler vil se oppdatert status på nav.no innen neste virkedag. Det
           er ikke behov for å gjøre noe videre med saken i Gosys.
@@ -52,32 +52,32 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
           value={begrunnelse}
           onChange={(e) => setBegrunnelse(e.target.value)}
         />
-        <Knappepanel>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => {
-              if (valgtArsak !== '') {
-                onBekreft({
-                  valgtArsak,
-                  begrunnelse,
-                })
-              } else {
-                setError('Du må velge en årsak i listen over.')
-              }
-            }}
-            data-cy="btn-overfor-soknad"
-            disabled={loading}
-            loading={loading}
-          >
-            Avvis bestillingen
-          </Button>
-          <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
-            Avbryt
-          </Button>
-        </Knappepanel>
-      </DialogBoks.Content>
-    </DialogBoks>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => {
+            if (valgtArsak !== '') {
+              onBekreft({
+                valgtArsak,
+                begrunnelse,
+              })
+            } else {
+              setError('Du må velge en årsak i listen over.')
+            }
+          }}
+          data-cy="btn-overfor-soknad"
+          disabled={loading}
+          loading={loading}
+        >
+          Avvis bestillingen
+        </Button>
+        <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
+          Avbryt
+        </Button>
+      </Modal.Footer>
+    </Modal>
   )
 }
 

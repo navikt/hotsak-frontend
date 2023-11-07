@@ -1,5 +1,4 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useRef } from 'react'
 
 import { Modal } from '@navikt/ds-react'
 
@@ -12,23 +11,22 @@ interface ForhåndsvisningModalProps {
   onClose: () => void
 }
 
-const StyledModal = styled(Modal)`
-  width: 70%;
-  height: 90%;
-`
-
 export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ open, sakId, onClose }) => {
+  const ref = useRef<HTMLDialogElement>(null)
   return (
-    <StyledModal
-      shouldCloseOnOverlayClick={false}
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
       open={open}
       onClose={() => {
         onClose()
       }}
+      width="70%"
+      header={{ heading: '' }}
     >
-      <Modal.Content>
+      <Modal.Body>
         <BrevPanel sakId={sakId} brevtype={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER} fullSize={false} />
-      </Modal.Content>
-    </StyledModal>
+      </Modal.Body>
+    </Modal>
   )
 }

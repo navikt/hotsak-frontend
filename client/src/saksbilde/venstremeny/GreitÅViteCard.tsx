@@ -43,7 +43,9 @@ export const GreitÅViteCard: React.FC<GreitÅViteCardProps> = ({ greitÅViteFak
   if (fakta.length > 0) {
     return (
       <Card>
-        <CardTitle>GREIT Å VITE</CardTitle>
+        <CardTitle level="1" size="medium">
+          GREIT Å VITE
+        </CardTitle>
         <Grid>
           {fakta
             .sort((a, b) => {

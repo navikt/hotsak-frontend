@@ -126,7 +126,9 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
   if (bestilling.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <Card>
-        <CardTitle>BESTILLING IKKE STARTET</CardTitle>
+        <CardTitle level="1" size="medium">
+          BESTILLING IKKE STARTET
+        </CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
           <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
@@ -141,7 +143,9 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
   ) {
     return (
       <Card>
-        <CardTitle>SAKSBEHANDLER</CardTitle>
+        <CardTitle level="1" size="medium">
+          SAKSBEHANDLER
+        </CardTitle>
         <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
           <Knapp

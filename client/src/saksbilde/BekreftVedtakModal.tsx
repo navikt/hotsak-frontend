@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-import { Button, Heading } from '@navikt/ds-react'
+import { Button, Modal } from '@navikt/ds-react'
 
 import { Knappepanel } from '../felleskomponenter/Button'
-import { DialogBoks } from '../felleskomponenter/Dialogboks'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface BekreftVedtakModalProps {
@@ -14,19 +13,19 @@ interface BekreftVedtakModalProps {
 }
 
 export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, onBekreft, loading, onClose }) => {
+  const ref = useRef<HTMLDialogElement>(null)
   return (
-    <DialogBoks
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
       width="600px"
-      shouldCloseOnOverlayClick={false}
       open={open}
       onClose={() => {
         onClose()
       }}
+      header={{ heading: 'Vil du innvilge søknaden?' }}
     >
-      <DialogBoks.Content>
-        <Heading level="1" size="medium" spacing={true}>
-          Vil du innvilge søknaden?
-        </Heading>
+      <Modal.Body>
         <Tekst>
           Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
         </Tekst>
@@ -46,7 +45,7 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
             Avbryt
           </Button>
         </Knappepanel>
-      </DialogBoks.Content>
-    </DialogBoks>
+      </Modal.Body>
+    </Modal>
   )
 }

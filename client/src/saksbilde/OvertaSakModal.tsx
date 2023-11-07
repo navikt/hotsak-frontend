@@ -1,9 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
-import { Button, Heading } from '@navikt/ds-react'
-
-import { Knappepanel } from '../felleskomponenter/Button'
-import { DialogBoks } from '../felleskomponenter/Dialogboks'
+import { Button, Modal } from '@navikt/ds-react'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface OvertaSakModalProps {
@@ -23,43 +20,43 @@ export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({
   onClose,
   type = 'sak',
 }) => {
+  const ref = useRef<HTMLDialogElement>(null)
   return (
-    <DialogBoks
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
       width="600px"
-      shouldCloseOnOverlayClick={false}
       open={open}
       onClose={() => {
         onClose()
       }}
+      header={{ heading: `Vil du overta ${type}en?` }}
     >
-      <DialogBoks.Content>
-        <Heading level="1" size="medium" spacing>
-          {`Vil du overta ${type}en?`}
-        </Heading>
+      <Modal.Body>
         <Tekst>{`Denne ${type}en er allerede tildelt ${saksbehandler}, er du sikker på at du vil overta ${type}en?`}</Tekst>
-        <Knappepanel>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => onBekreft()}
-            data-cy={`btn-overta-${type}`}
-            disabled={loading}
-            loading={loading}
-          >
-            {`Overta ${type}en`}
-          </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() => {
-              onClose()
-            }}
-            disabled={loading}
-          >
-            Avbryt
-          </Button>
-        </Knappepanel>
-      </DialogBoks.Content>
-    </DialogBoks>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => onBekreft()}
+          data-cy={`btn-overta-${type}`}
+          disabled={loading}
+          loading={loading}
+        >
+          {`Overta ${type}en`}
+        </Button>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={() => {
+            onClose()
+          }}
+          disabled={loading}
+        >
+          Avbryt
+        </Button>
+      </Modal.Footer>
+    </Modal>
   )
 }

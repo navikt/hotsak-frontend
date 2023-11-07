@@ -31,7 +31,7 @@ const SøknadEtikett = styled(Etikett)`
   background: var(--a-purple-100);
   border: 1px solid var(--a-purple-500);
 
-  :before {
+  &:before {
     content: 'S';
   }
 `
@@ -44,7 +44,7 @@ const BestillingEtikett = styled(Etikett)`
   background: var(--a-green-100);
   border: 1px solid var(--a-green-500);
 
-  :before {
+  &:before {
     content: 'B';
   }
 `
@@ -53,7 +53,7 @@ const TilskuddEtikett = styled(Etikett)`
   background: var(--a-blue-100);
   border: 1px solid var(--a-blue-500);
 
-  :before {
+  &:before {
     content: 'T';
   }
 `

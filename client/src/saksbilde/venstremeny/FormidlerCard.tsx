@@ -28,7 +28,9 @@ const CopyContainer = styled.div`
 export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
   return (
     <Card>
-      <CardTitle>{tittel}</CardTitle>
+      <CardTitle level="1" size="medium">
+        {tittel}
+      </CardTitle>
       <CenterGrid>
         <IconContainer>
           <Personikon />

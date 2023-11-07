@@ -54,7 +54,7 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
         <IconContainer>
           <Oppgaveetikett type={oppgaveType} />
         </IconContainer>
-        <CardTitle>
+        <CardTitle level="1" size="medium">
           {oppgaveType === Oppgavetype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
         </CardTitle>
         <IconContainer />

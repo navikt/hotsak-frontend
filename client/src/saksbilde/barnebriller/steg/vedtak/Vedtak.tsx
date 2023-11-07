@@ -1,126 +1,34 @@
-import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
-import useSWR from 'swr'
 
-import { Alert, Button, Detail, Heading, Loader, Panel, Skeleton, Tag, Textarea } from '@navikt/ds-react'
+import { Alert, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
 
-import { post, postBrevutkast } from '../../../../io/http'
 import { formaterDato } from '../../../../utils/date'
-import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
-import { Bakgrunnslagring } from '../../../../felleskomponenter/brev/Bakgrunnslagring'
-import { Etikett } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import {
-  BrevTekst,
-  Brevkode,
-  Brevtype,
-  MålformType,
-  OppgaveStatusType,
-  StegType,
-  VilkårsResultat,
-} from '../../../../types/types.internal'
+import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
+import { Redigeringsvisning } from './Redigeringsvisning'
 import { BrevPanel } from './brev/BrevPanel'
-import { useBrev } from './brev/brevHook'
 
 export const VENSTREKOLONNE_BREDDE = '180px'
 
 export const Vedtak: React.FC = () => {
-  const [loading, setLoading] = useState(false)
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
-  const { data } = useBrevtekst(saksnummer)
-  const { hentForhåndsvisning } = useBrev()
-
-  const brevtekst = data?.data.brevtekst
-  const [fritekst, setFritekst] = useState(brevtekst || '')
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
-  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const [lagrer, setLagrer] = useState(false)
   const samletVurdering = useSamletVurdering(sak?.data)
-  const debounceVentetid = 1000
 
-  const sendTilGodkjenning = () => {
-    setLoading(true)
-    post(`/api/sak/${sak!.data.sakId}/kontroll`, {})
-      .catch((e) => {
-        setLoading(false)
-
-        // TODO Håndtere feil her
-      })
-      .then(() => {
-        setLoading(false)
-        mutate()
-      })
-  }
-
-  useEffect(() => {
-    if (brevtekst) {
-      setFritekst(brevtekst)
-    }
-  }, [brevtekst])
-
-  useEffect(() => {
-    if (submitAttempt) {
-      valider()
-    }
-  }, [fritekst, submitAttempt])
-
-  const valider = () => {
-    if (fritekst === '') {
-      setValideringsfeil('Du kan ikke sende brevet uten å ha lagt til tekst')
-      return false
-    } else {
-      setValideringsfeil(undefined)
-      return true
-    }
-  }
-
-  const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setFritekst(event.target.value)
-    clearTimeout(timer)
-
-    const newTimer = setTimeout(() => {
-      lagreUtkast(event.target.value)
-    }, debounceVentetid)
-
-    setTimer(newTimer)
-  }
-
-  function byggBrevPayload(tekst?: string): BrevTekst {
-    return {
-      sakId: saksnummer!,
-      målform: sak?.data.vilkårsgrunnlag?.målform || MålformType.BOKMÅL,
-      brevtype: Brevtype.BARNEBRILLER_VEDTAK,
-      data: {
-        brevtekst: tekst ? tekst : fritekst,
-      },
-    }
-  }
-
-  const lagreUtkast = async (tekst: string) => {
-    setLagrer(true)
-    await postBrevutkast(byggBrevPayload(tekst))
-    setLagrer(false)
-  }
-
-  const { data: saksdokumenter, isLoading: henterSaksdokumenter } = useSaksdokumenter(
+  const { isLoading: henterSaksdokumenter } = useSaksdokumenter(
     saksnummer!,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
@@ -148,37 +56,12 @@ export const Vedtak: React.FC = () => {
     )
   }
 
-  const { bruker, vilkårsvurdering } = sak.data
   const status = sak.data.vilkårsvurdering!.resultat
-
   const alertType = alertVariant(status)
-
   const vedtakFattet = sak.data.status === OppgaveStatusType.VEDTAK_FATTET
 
   const visAlertGodkjenning =
     sak.data.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
-
-  const visSendTilGodkjenning =
-    saksbehandlerKanRedigereBarnebrillesak &&
-    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    (status === VilkårsResultat.NEI || sak?.data.utbetalingsmottaker?.kontonummer !== undefined)
-
-  const etterspørreOpplysningerBrev = saksdokumenter?.find(
-    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
-  )
-
-  const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined
-
-  const manglerPåkrevdEtterspørreOpplysningerBrev =
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
-    !etterspørreOpplysningerBrevFinnes &&
-    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-
-  const visFritekstFelt =
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
-    visSendTilGodkjenning &&
-    !manglerPåkrevdEtterspørreOpplysningerBrev &&
-    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const visSkeleton =
     sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
@@ -211,85 +94,13 @@ export const Vedtak: React.FC = () => {
           </Tag>
           {status === VilkårsResultat.JA && <InnvilgetVedtakVisning sak={sak.data} mutate={mutate} />}
 
-          {!vedtakFattet && (
-            <>
-              {visFritekstFelt && (
-                <>
-                  <Avstand paddingTop={6} />
-                  <Textarea
-                    minRows={5}
-                    maxRows={20}
-                    label="Beskriv hvilke opplysninger som mangler"
-                    error={valideringsFeil}
-                    description="Vises i brevet som en del av begrunnelsen for avslaget"
-                    size="small"
-                    value={fritekst}
-                    onChange={(event) => onTextChange(event)}
-                  />
-                  <Container>
-                    <Button
-                      loading={false}
-                      size="small"
-                      variant="secondary"
-                      onClick={() => {
-                        hentForhåndsvisning(sak.data.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-                      }}
-                    >
-                      Forhåndsvis
-                    </Button>
-                    <Bakgrunnslagring style={{ marginLeft: 'auto' }}>
-                      {lagrer && (
-                        <>
-                          <span>
-                            <Loader size="xsmall" />
-                          </span>
-                          <span>
-                            <Detail>Lagrer</Detail>
-                          </span>
-                        </>
-                      )}
-                    </Bakgrunnslagring>
-                  </Container>
-                </>
-              )}
-              {manglerPåkrevdEtterspørreOpplysningerBrev && (
-                <SkjemaAlert variant="warning">
-                  <Etikett>Mangler innhente opplysninger brev</Etikett>
-                  <Detail>
-                    Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en
-                    sak på grunn av manglende opplysninger før det er sendt brev til bruker for å innhenter manglende
-                    opplysninger og bruker ikke har sendt inn dette før fristen på 3 uker.
-                  </Detail>
-                </SkjemaAlert>
-              )}
-              <Avstand paddingBottom={6} />
-              {visAlertGodkjenning && (
-                <Alert variant="info" size="small">
-                  {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
-                </Alert>
-              )}
-              {visSendTilGodkjenning && !manglerPåkrevdEtterspørreOpplysningerBrev && (
-                <Knappepanel>
-                  <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
-                    Forrige
-                  </Button>
-                  <Button
-                    loading={loading}
-                    disabled={loading}
-                    size="small"
-                    variant="primary"
-                    onClick={() => {
-                      setSubmitAttempt(true)
-                      if (!visFritekstFelt || valider()) {
-                        sendTilGodkjenning()
-                      }
-                    }}
-                  >
-                    Send til godkjenning
-                  </Button>
-                </Knappepanel>
-              )}
-            </>
+          {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}
+          {visAlertGodkjenning && (
+            <Avstand paddingTop={6}>
+              <Alert variant="info" size="small">
+                {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
+              </Alert>
+            </Avstand>
           )}
         </Panel>
       )}
@@ -300,24 +111,9 @@ export const Vedtak: React.FC = () => {
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  padding-top: 0.5rem;
-`
-
 const VenstreKolonne = styled(Panel)`
   border-left: 1px solid var(--a-border-default);
   padding: 0;
   margin: 0;
   height: 100%;
 `
-
-// Todo fix nullable når flytter til egen komponent
-function useBrevtekst(sakId?: string, brevtype = Brevtype.BARNEBRILLER_VEDTAK) {
-  const { data, isLoading } = useSWR<BrevTekst>(sakId ? `/api/sak/${sakId}/brevutkast/${brevtype}` : null)
-
-  return {
-    data,
-    isLoading,
-  }
-}

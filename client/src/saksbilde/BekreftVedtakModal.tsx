@@ -1,8 +1,6 @@
 import React, { useRef } from 'react'
 
 import { Button, Modal } from '@navikt/ds-react'
-
-import { Knappepanel } from '../felleskomponenter/Button'
 import { Tekst } from '../felleskomponenter/typografi'
 
 interface BekreftVedtakModalProps {
@@ -30,22 +28,22 @@ export const BekreftVedtakModal: React.FC<BekreftVedtakModalProps> = ({ open, on
           Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
         </Tekst>
         <Tekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Tekst>
-        <Knappepanel>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => onBekreft()}
-            data-cy="btn-innvilg-soknad"
-            disabled={loading}
-            loading={loading}
-          >
-            Innvilg søknaden
-          </Button>
-          <Button variant="secondary" size="small" onClick={() => onClose()} disabled={loading}>
-            Avbryt
-          </Button>
-        </Knappepanel>
       </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => onBekreft()}
+          data-cy="btn-innvilg-soknad"
+          disabled={loading}
+          loading={loading}
+        >
+          Innvilg søknaden
+        </Button>
+        <Button variant="secondary" size="small" onClick={() => onClose()} disabled={loading}>
+          Avbryt
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }

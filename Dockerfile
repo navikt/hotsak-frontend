@@ -1,5 +1,6 @@
+FROM node:20.9.0-alpine as node
 # build client
-FROM node:20.9.0-alpine as client-builder
+FROM node as client-builder
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 RUN npm ci
@@ -7,7 +8,7 @@ COPY client .
 RUN npm run test:ci && npm run build
 
 # build server
-FROM node:20.9.0-alpine as server-builder
+FROM node as server-builder
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci
@@ -15,13 +16,13 @@ COPY server .
 RUN npm run build
 
 # install server dependencies
-FROM node:18.14.0-alpine as server-dependencies
+FROM node as server-dependencies
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci --omit dev
 
 # runtime
-FROM gcr.io/distroless/nodejs:20 as runtime
+FROM gcr.io/distroless/nodejs20-debian12 as runtime
 WORKDIR /app
 
 ARG NODE_ENV=production

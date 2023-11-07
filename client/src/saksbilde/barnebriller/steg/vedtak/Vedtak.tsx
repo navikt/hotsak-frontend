@@ -5,13 +5,13 @@ import { Alert, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../../utils/date'
 
+import { useEffect } from 'react'
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
-import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
@@ -23,10 +23,13 @@ export const VENSTREKOLONNE_BREDDE = '180px'
 
 export const Vedtak: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { setValgtTab } = useManuellSaksbehandlingContext()
   const { sak, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
+
+  useEffect(() => {
+    mutate()
+  }, [])
 
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(
     saksnummer!,
@@ -55,6 +58,8 @@ export const Vedtak: React.FC = () => {
       </AlertContainer>
     )
   }
+
+  useEffect
 
   const status = sak.data.vilkårsvurdering!.resultat
   const alertType = alertVariant(status)

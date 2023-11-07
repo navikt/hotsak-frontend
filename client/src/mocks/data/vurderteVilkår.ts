@@ -132,7 +132,7 @@ function vurderteVilkår_JA(
     {
       vilkårsvurderingId,
       vilkårId: 'KOMPLETT_BRILLE',
-      beskrivelse: 'Bestillingen inneholder brilleglass',
+      beskrivelse: 'Bestillingen må inneholde brilleglass',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
       manuellVurdering: {
@@ -176,7 +176,7 @@ function vurderteVilkår_JA(
     {
       vilkårsvurderingId,
       vilkårId: 'BESTILLINGSDATO_TILBAKE_I_TID',
-      beskrivelse: 'Bestillingsdato innenfor gyldig periode',
+      beskrivelse: 'Bestillingsdato må være innenfor gyldig periode',
       lovReferanse: '§ 6',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§6',
       maskinellVurdering: {

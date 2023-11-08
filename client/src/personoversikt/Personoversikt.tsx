@@ -2,40 +2,20 @@ import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
-import styled from 'styled-components'
-
-import { Alert } from '@navikt/ds-react'
 
 import { sorterKronologisk } from '../utils/date'
-
-import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/Feilmelding'
-import { Flex } from '../felleskomponenter/Flex'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
 import HjelpemiddeloversiktTabell from './HjelpemiddeloversiktTabell'
 import { usePersonContext } from './PersonContext'
 import Saksoversikt from './Saksoversikt'
-import SaksoversiktLinje from './SaksoversiktLinje'
+import { SaksoversiktLinje } from './SaksoversiktLinje'
 import { usePersonInfo } from './personInfoHook'
 import { useSaksoversikt } from './saksoversiktHook'
-
-const Container = styled(Flex)`
-  flex: 1;
-  min-width: ${hotsakTotalMinWidth};
-  overflow: auto;
-  overflow-x: hidden;
-`
-
-const Content = styled.div`
-  padding: 0 2rem;
-  padding-top: 1rem;
-  flex: 2;
-  box-sizing: border-box;
-  max-width: 100vw;
-`
+import { Avstand } from '../felleskomponenter/Avstand'
 
 const PersonoversiktContent: React.FC = () => {
   const { fodselsnummer } = usePersonContext()
@@ -78,39 +58,37 @@ const PersonoversiktContent: React.FC = () => {
             sakerCount={hotsakSaker.length + (barnebrilleSaker?.length || 0)}
             hjelpemidlerCount={antallUtlånteHjelpemidler}
           />
-          <Container>
-            <Content>
-              <Routes>
-                <Route
-                  path="/saker"
-                  element={
-                    isError ? (
-                      <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
-                    ) : (
-                      <Saksoversikt
-                        hotsakSaker={hotsakSaker}
-                        barnebrilleSaker={barnebrilleSaker}
-                        henterSaker={isLoading}
-                      />
-                    )
-                  }
-                />
-                <Route
-                  path="/hjelpemidler"
-                  element={
-                    hjelpemiddeloversiktError ? (
-                      <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
-                    ) : (
-                      <HjelpemiddeloversiktTabell
-                        artikler={hjelpemidler}
-                        henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
-                      />
-                    )
-                  }
-                />
-              </Routes>
-            </Content>
-          </Container>
+          <Avstand paddingTop={4} paddingLeft={8} paddingRight={8}>
+            <Routes>
+              <Route
+                path="/saker"
+                element={
+                  isError ? (
+                    <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
+                  ) : (
+                    <Saksoversikt
+                      hotsakSaker={hotsakSaker}
+                      barnebrilleSaker={barnebrilleSaker}
+                      henterSaker={isLoading}
+                    />
+                  )
+                }
+              />
+              <Route
+                path="/hjelpemidler"
+                element={
+                  hjelpemiddeloversiktError ? (
+                    <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
+                  ) : (
+                    <HjelpemiddeloversiktTabell
+                      artikler={hjelpemidler}
+                      henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
+                    />
+                  )
+                }
+              />
+            </Routes>
+          </Avstand>
         </>
       )}
     </>

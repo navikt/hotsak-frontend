@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 
 import { Alert, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
@@ -14,7 +14,6 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/u
 import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { useSamletVurdering } from '../../useSamletVurdering'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
@@ -27,18 +26,35 @@ export const VurderVilkår: React.FC = () => {
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
+  const [submitAttempt, setSubmitAttempt] = useState<boolean>(false)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
-  const samletVurdering = useSamletVurdering(sak?.data)
+  const errorRef = useRef<HTMLDivElement>(null)
+  const [hasError, setHasError] = useState(false)
+  const [errors, setErrors] = useState<string[]>([])
 
-  //const [errors, setErrors] = useState<string[]>([])
+  function clearErrors() {
+    setErrors([])
+  }
 
-  /*function valider() {
+  function valider() {
     const uavklarteVilkår: Vilkår[] =
       sak?.data.vilkårsvurdering?.vilkår.filter((vilkår) => vilkår.vilkårOppfylt === VilkårsResultat.KANSKJE) || []
-
+    setHasError(uavklarteVilkår.length > 0)
     setErrors(uavklarteVilkår.map((vilkår) => vilkår.beskrivelse))
     return uavklarteVilkår?.length === 0
-  }*/
+  }
+
+  useEffect(() => {
+    errorRef?.current && errorRef.current.focus()
+  }, [hasError])
+
+  useEffect(() => {
+    if (submitAttempt) {
+      valider()
+    } else if (sak?.data.vilkårsvurdering?.resultat !== VilkårsResultat.KANSKJE) {
+      clearErrors()
+    }
+  }, [submitAttempt, sak?.data.vilkårsvurdering?.resultat])
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
@@ -72,10 +88,6 @@ export const VurderVilkår: React.FC = () => {
   if (!sak.data?.vilkårsvurdering) {
     return <Feilmelding>{`Vilkårsvurderingen manlgler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
   }
-  //const oppsummertResultat = sak.data.vilkårsvurdering.resultat
-
-  // TODO: Skeleton
-
   const vilkår =
     sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []
 
@@ -88,21 +100,20 @@ export const VurderVilkår: React.FC = () => {
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
-        {/*samletVurdering && <Oppsummering vilkår={vilkår} oppsummertResultat={samletVurdering} />*/}
         <Detail>RESULTAT</Detail>
         <Tag variant={alertType} size="small">
           {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
         </Tag>
 
-        {/*errors.length > 0 && (
-            <Avstand paddingTop={6}>
-          <ErrorSummary heading="Vilkår mangler vurdering og må vurders av saksbehandler" size="small">
-            {errors.map((error) => (
-              <ErrorSummary.Item>{error}</ErrorSummary.Item>
-            ))}
-          </ErrorSummary>
+        {errors.length > 0 && (
+          <Avstand paddingTop={6}>
+            <ErrorSummary heading="Vilkår mangler vurdering og må vurders av saksbehandler" size="small" ref={errorRef}>
+              {errors.map((error) => (
+                <ErrorSummary.Item key={error}>{error}</ErrorSummary.Item>
+              ))}
+            </ErrorSummary>
           </Avstand>
-            )*/}
+        )}
         <Avstand paddingTop={6} />
         <Table size="small">
           <Table.Header>
@@ -118,7 +129,7 @@ export const VurderVilkår: React.FC = () => {
           </Table.Header>
           <Table.Body>
             {vilkår.map((vilkår) => {
-              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt, begrunnelse } = vilkår
+              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt } = vilkår
 
               const vilkårMetadata = metadataFor(vilkårId)
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
@@ -177,9 +188,10 @@ export const VurderVilkår: React.FC = () => {
             variant="primary"
             size="small"
             onClick={() => {
-              //if (valider()) {
-              gåTilNesteSteg(sak.data.sakId, sak.data.steg)
-              // }
+              if (valider()) {
+                gåTilNesteSteg(sak.data.sakId, sak.data.steg)
+              }
+              setSubmitAttempt(true)
             }}
             disabled={lagrer}
             loading={lagrer}

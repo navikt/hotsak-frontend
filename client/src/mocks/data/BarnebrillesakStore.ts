@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
-  Adressebeskyttelse,
   Barnebrillesak,
   BrevTekst,
   Brevkode,
@@ -161,8 +160,7 @@ export class BarnebrillesakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagBarnebrillesakMedId = (adressebeskyttelse?: Adressebeskyttelse) =>
-      lagBarnebrillesak(this.idGenerator.nesteId())
+    const lagBarnebrillesakMedId = () => lagBarnebrillesak(this.idGenerator.nesteId())
 
     return this.lagreAlle([
       lagBarnebrillesakMedId(),
@@ -171,9 +169,9 @@ export class BarnebrillesakStore extends Dexie {
       lagBarnebrillesakMedId(),
       lagBarnebrillesakMedId(),
       lagBarnebrillesak(1111),
-      lagBarnebrillesakMedId(Adressebeskyttelse.FORTROLIG),
-      lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG),
-      lagBarnebrillesakMedId(Adressebeskyttelse.STRENGT_FORTROLIG_UTLAND),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
+      lagBarnebrillesakMedId(),
     ])
   }
 
@@ -232,11 +230,16 @@ export class BarnebrillesakStore extends Dexie {
     if (vilkårsvurdering) {
       const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
 
+      const { resultat, ...rest } = vilkårsvurdering
+
+      const samletVurdering = this.beregnSamletVurdering(vilkår)
+
       return {
         ...sak,
         vilkårsgrunnlag,
         vilkårsvurdering: {
-          ...vilkårsvurdering,
+          resultat: samletVurdering,
+          ...rest,
           vilkår,
         },
       }
@@ -516,7 +519,7 @@ export class BarnebrillesakStore extends Dexie {
     return this.brevtekst.where('sakId').equals(sakId).first()
   }
 
-  async hentSaksdokumenter(sakId: string, dokumentType: string) {
+  async hentSaksdokumenter(sakId: string /*, dokumentType: string*/) {
     // TODO filterer på dokumenttype også
     return this.saksdokumenter.where('sakId').equals(sakId).toArray()
   }

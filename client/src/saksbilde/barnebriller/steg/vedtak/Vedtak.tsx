@@ -23,7 +23,7 @@ export const VENSTREKOLONNE_BREDDE = '180px'
 
 export const Vedtak: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { sak, mutate } = useBrillesak()
+  const { sak /*, isLoading,*/, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
 
@@ -58,8 +58,6 @@ export const Vedtak: React.FC = () => {
       </AlertContainer>
     )
   }
-
-  useEffect
 
   const status = sak.data.vilkårsvurdering!.resultat
   const alertType = alertVariant(status)

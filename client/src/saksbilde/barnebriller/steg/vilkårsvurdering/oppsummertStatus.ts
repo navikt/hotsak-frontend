@@ -19,10 +19,6 @@ export function alertVariant(vilkårOppfylt?: VilkårsResultat) {
 }
 
 export function vilkårStatusTekst(vilkårOppfylt?: VilkårsResultat) {
-  /*if (!vilkårOppfylt) {
-    return 'Skal ikke vurderes'
-  }*/
-
   switch (vilkårOppfylt) {
     case VilkårsResultat.JA:
       return 'Oppfylt'

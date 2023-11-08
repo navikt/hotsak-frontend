@@ -88,7 +88,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     await postBrevutsending(byggBrevPayload())
 
     mutate(`/api/sak/${sakId}`)
-    mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
+    //mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
 
     setSenderBrev(false)
     setVisSendBrevModal(false)
@@ -98,6 +98,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
 
     setTimeout(() => {
       setVisSendtBrevToast(false)
+      mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
     }, 3000)
   }
 

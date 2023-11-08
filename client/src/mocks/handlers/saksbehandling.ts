@@ -169,6 +169,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     await barnebrillesakStore.lagreSaksdokument(req.params.sakId, 'Innhent opplysninger')
     await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
     await barnebrillesakStore.fjernBrevtekst(req.params.sakId)
-    return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
+    return res(ctx.delay(3000), ctx.status(200), ctx.json({}))
   }),
 ]

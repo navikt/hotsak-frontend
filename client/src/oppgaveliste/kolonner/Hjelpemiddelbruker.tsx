@@ -11,13 +11,11 @@ interface HjelpemiddelbrukerProps {
 
 const getFormattedName = (bruker: OppgaveBruker): string => {
   const { fornavn, mellomnavn, etternavn } = bruker
-
   return capitalizeName(`${etternavn}, ${fornavn} ${mellomnavn ? `${mellomnavn}` : ''}`)
 }
 
 export const Hjelpemiddelbruker = React.memo(({ bruker }: HjelpemiddelbrukerProps) => {
   const formatertNavn = getFormattedName(bruker)
-
   return (
     <TooltipWrapper visTooltip={formatertNavn.length > 20} content={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>

@@ -74,17 +74,11 @@ const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
   if (labelLinkTo) {
     return (
       <Link to={labelLinkTo}>
-        <LabelContainer as="div" size="small">
-          {children}
-        </LabelContainer>
+        <LabelContainer size="small">{children}</LabelContainer>
       </Link>
     )
   } else {
-    return (
-      <LabelContainer as="div" size="small">
-        {children}
-      </LabelContainer>
-    )
+    return <LabelContainer size="small">{children}</LabelContainer>
   }
 }
 

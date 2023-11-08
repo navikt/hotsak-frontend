@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import useSwr, { useSWRConfig } from 'swr'
+import useSwr from 'swr'
 
 import { Button, Detail, Heading, Loader, Panel, Radio, RadioGroup, Select, Skeleton, Textarea } from '@navikt/ds-react'
 
@@ -14,6 +14,8 @@ import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
+import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
+import { useBrillesak } from '../../sakHook'
 
 export interface SendBrevProps {
   sakId: string
@@ -34,8 +36,9 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
+  const { mutate: hentBrillesak } = useBrillesak()
+  const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const debounceVentetid = 1000
-  const { mutate } = useSWRConfig()
 
   useEffect(() => {
     if (brevtekst) {
@@ -87,18 +90,18 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     setSenderBrev(true)
     await postBrevutsending(byggBrevPayload())
 
-    mutate(`/api/sak/${sakId}`)
-    //mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
-
     setSenderBrev(false)
     setVisSendBrevModal(false)
     setSubmitAttempt(false)
     setFritekst('')
     setVisSendtBrevToast(true)
+    hentBrillesak()
+    hentSaksdokumenter()
 
     setTimeout(() => {
       setVisSendtBrevToast(false)
-      mutate(`/api/sak/${sakId}/dokumenter?type=${encodeURIComponent('UTGÅENDE')}`)
+      hentBrillesak()
+      hentSaksdokumenter()
     }, 3000)
   }
 

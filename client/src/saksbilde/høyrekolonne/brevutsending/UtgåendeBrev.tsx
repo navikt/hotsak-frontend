@@ -6,6 +6,7 @@ import { sorterKronologisk } from '../../../utils/date'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { KolonneTittel } from '../Høyrekolonne'
 import { BrevKort } from './BrevKort'
+import { Loader } from '@navikt/ds-react'
 
 export interface UtgåendeBrevProps {
   sakId: string
@@ -17,8 +18,12 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
   const { data: saksdokumenter, isLoading } = useSaksdokumenter(sakId)
 
   if (isLoading || !saksdokumenter) {
-    // TODO
-    return <></>
+    return (
+      <Container>
+        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
+        <Loader size="small">Henter brev...</Loader>
+      </Container>
+    )
   }
 
   if (saksdokumenter?.length === 0) {

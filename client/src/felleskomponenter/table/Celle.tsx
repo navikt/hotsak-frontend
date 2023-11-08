@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom'
 
 import { Link as ExternalLink } from '@navikt/ds-react'
 
-import { TekstMedEllipsis } from '../TekstMedEllipsis'
 import { TooltipWrapper } from '../TooltipWrapper'
-import { Tekst } from '../typografi'
+import { Tekst, TekstMedEllipsis } from '../typografi'
 import { DataCell } from './KolonneHeader'
 
 interface DataCelleProps {
@@ -41,11 +40,7 @@ interface ExternalLinkCellProps {
 }
 
 export const TekstCell = React.memo(({ value }: TekstCellProps) => {
-  return (
-    <div>
-      <Tekst>{value}</Tekst>
-    </div>
-  )
+  return <Tekst>{value}</Tekst>
 })
 
 export const ExternalLinkCell = React.memo(({ to, value, target }: ExternalLinkCellProps) => {

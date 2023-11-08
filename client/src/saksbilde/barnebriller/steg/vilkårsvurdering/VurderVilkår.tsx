@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
-import { Alert, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
 
@@ -11,10 +11,9 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { useSamletVurdering } from '../../useSamletVurdering'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
@@ -28,7 +27,7 @@ export const VurderVilkår: React.FC = () => {
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
-  const samletVurdering = useSamletVurdering(sak?.data)
+  //const samletVurdering = useSamletVurdering(sak?.data)
 
   //const [errors, setErrors] = useState<string[]>([])
 
@@ -118,7 +117,7 @@ export const VurderVilkår: React.FC = () => {
           </Table.Header>
           <Table.Body>
             {vilkår.map((vilkår) => {
-              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt, begrunnelse } = vilkår
+              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt } = vilkår
 
               const vilkårMetadata = metadataFor(vilkårId)
               const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler

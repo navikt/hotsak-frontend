@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { capitalize } from '../utils/stringFormating'
 
 import { Oppgavetype } from '../types/types.internal'
+import { BodyShort } from '@navikt/ds-react'
 
 interface EtikettProps {
   størrelse?: 's' | 'l'
@@ -36,7 +37,7 @@ const SøknadEtikett = styled(Etikett)`
   }
 `
 
-const LabelContainer = styled.div`
+const LabelContainer = styled(BodyShort)`
   margin-left: 0.5rem;
 `
 
@@ -73,11 +74,17 @@ const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
   if (labelLinkTo) {
     return (
       <Link to={labelLinkTo}>
-        <LabelContainer>{children}</LabelContainer>
+        <LabelContainer as="div" size="small">
+          {children}
+        </LabelContainer>
       </Link>
     )
   } else {
-    return <LabelContainer>{children}</LabelContainer>
+    return (
+      <LabelContainer as="div" size="small">
+        {children}
+      </LabelContainer>
+    )
   }
 }
 

@@ -17,6 +17,12 @@ export const Tekst: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   <BodyShort size="small">{children}</BodyShort>
 )
 
+export const TekstMedEllipsis: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <BodyShort size="small" truncate>
+    {children}
+  </BodyShort>
+)
+
 export const Brødtekst: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <FlytendeTekst size="small">{children}</FlytendeTekst>
 )

@@ -48,7 +48,7 @@ type KolonneProps = {
 }
 
 type RadProps = {
-  paddingTop?: string
+  $paddingTop?: string
 }
 
 export const Rad = styled('div')<RadProps>`
@@ -56,7 +56,7 @@ export const Rad = styled('div')<RadProps>`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  padding-top: ${(props) => props.paddingTop || '0.1rem'};
+  padding-top: ${(props) => props.$paddingTop || '0.1rem'};
   padding-bottom: 0.2rem;
 `
 

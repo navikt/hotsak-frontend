@@ -1,25 +1,7 @@
 import React from 'react'
-import styled from 'styled-components'
-
-import { hotsakTotalMinWidth } from '../GlobalStyles'
-import { Flex } from '../felleskomponenter/Flex'
 import { TabLink } from '../saksbilde/TabLink'
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 48px;
-  box-sizing: border-box;
-  margin-top: 1rem;
-  border-bottom: 1px solid var(--a-border-default);
-  padding: 0 0 0 2rem;
-  min-width: ${hotsakTotalMinWidth};
-  white-space: nowrap;
-`
-
-const TabList = styled.span`
-  display: flex;
-`
+import { Tabs } from '@navikt/ds-react'
+import { spacingVar } from '../felleskomponenter/Avstand'
 
 interface SaksoversiktLinjeProps {
   sakerCount: number
@@ -28,19 +10,15 @@ interface SaksoversiktLinjeProps {
 
 export const SaksoversiktLinje: React.FC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
   return (
-    <Container>
-      <Flex>
-        <TabList role="tablist">
-          <TabLink to={`/personoversikt/saker`} title={`Saker (${sakerCount})`}>
-            {`Saker (${sakerCount})`}
-          </TabLink>
-          <TabLink to={`/personoversikt/hjelpemidler`} title={`Utlånsoversikt (${hjelpemidlerCount})`}>
-            {`Utlånsoversikt (${hjelpemidlerCount})`}
-          </TabLink>
-        </TabList>
-      </Flex>
-    </Container>
+    <Tabs>
+      <Tabs.List style={{ padding: `0 ${spacingVar(8)}` }}>
+        <TabLink to={`/personoversikt/saker`} title={`Saker (${sakerCount})`}>
+          {`Saker (${sakerCount})`}
+        </TabLink>
+        <TabLink to={`/personoversikt/hjelpemidler`} title={`Utlånsoversikt (${hjelpemidlerCount})`}>
+          {`Utlånsoversikt (${hjelpemidlerCount})`}
+        </TabLink>
+      </Tabs.List>
+    </Tabs>
   )
 }
-
-export default SaksoversiktLinje

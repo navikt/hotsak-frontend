@@ -46,7 +46,7 @@ const Rangering = styled('div')<RangeringProps>`
     margin-left: 0.5rem;
     padding: 1px;
     border-radius: 50%;
-    background-color: ${(props) => (Number(props.rank) === 1 ? 'var(--a-gray-200)' : 'var(--a-orange-400)')};
+    background-color: ${(props) => (Number(props.$rank) === 1 ? 'var(--a-gray-200)' : 'var(--a-orange-400)')};
     color: inherit;
     font-weight: inherit;
   }
@@ -73,7 +73,7 @@ const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) 
 }
 
 interface RangeringProps {
-  rank?: number
+  $rank?: number
 }
 
 interface HjelpemiddelProps {
@@ -112,7 +112,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <EtikettKolonne>
           <Rad>
             {!forenkletVisning && (
-              <Rangering rank={hjelpemiddel.rangering}>
+              <Rangering $rank={hjelpemiddel.rangering}>
                 <Tekst>Rangering:</Tekst>
                 <Tekst>{hjelpemiddel.rangering}</Tekst>
               </Rangering>

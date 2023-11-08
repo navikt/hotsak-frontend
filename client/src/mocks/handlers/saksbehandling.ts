@@ -88,7 +88,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
       return res(ctx.status(200), ctx.json(dokumenter.flat()))
     } else {
-      const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId, dokumentType)
+      const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId /*, dokumentType*/)
 
       return res(ctx.status(200), ctx.json(saksdokumenter))
     }
@@ -150,15 +150,15 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
   rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/v2/:sakId', async (req, res, ctx) => {
-    const { sakId } = req.params
-    const {
+    //const { sakId } = req.params
+    /*const {
       hmsNr: hmsNr,
       hmsBeskrivelse: hmsBeskrivelse,
       endretHmsNr: endretHmsNr,
       endretHmsBeskrivelse: endretHmsBeskrivelse,
       begrunnelse: endretBegrunnelse,
       begrunnelseFritekst: endretBegrunnelseFritekst,
-    } = await req.json<EndreHjelpemiddelRequest>()
+    } = */ await req.json<EndreHjelpemiddelRequest>()
     return res(ctx.status(200), ctx.json({}))
   }),
   rest.post<any, { sakId: string }, any>('/api/sak/:sakId/vilkarsvurdering', async (req, res, ctx) => {

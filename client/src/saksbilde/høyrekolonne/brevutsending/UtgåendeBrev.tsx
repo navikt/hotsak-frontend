@@ -7,6 +7,7 @@ import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { KolonneTittel } from '../Høyrekolonne'
 import { BrevKort } from './BrevKort'
 import { Loader } from '@navikt/ds-react'
+import { Brevkode } from '../../../types/types.internal'
 
 export interface UtgåendeBrevProps {
   sakId: string
@@ -38,6 +39,7 @@ export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
       <Container>
         <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
         {saksdokumenter
+          .filter((dokument) => dokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER)
           .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))
           .map((it) => (
             <BrevKort key={it.dokumentID} {...it} />

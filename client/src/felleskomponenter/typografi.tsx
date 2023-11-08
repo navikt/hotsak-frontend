@@ -17,6 +17,14 @@ export const Tekst: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   <BodyShort size="small">{children}</BodyShort>
 )
 
+export const TekstMedEllipsis = React.forwardRef<HTMLParagraphElement, { children: React.ReactNode }>(
+  ({ children, ...rest }, ref) => (
+    <BodyShort ref={ref} size="small" {...rest} truncate>
+      {children}
+    </BodyShort>
+  )
+)
+
 export const Brødtekst: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <FlytendeTekst size="small">{children}</FlytendeTekst>
 )

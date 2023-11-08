@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
+import { TekstMedEllipsis } from '../../felleskomponenter/typografi'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 
 interface BostedProps {

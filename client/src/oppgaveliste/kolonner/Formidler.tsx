@@ -2,7 +2,7 @@ import React from 'react'
 
 import { capitalizeName } from '../../utils/stringFormating'
 
-import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
+import { TekstMedEllipsis } from '../../felleskomponenter/typografi'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 
 interface FormidlerProps {
@@ -11,7 +11,6 @@ interface FormidlerProps {
 
 export const FormidlerCelle = React.memo(({ formidlerNavn }: FormidlerProps) => {
   const formatertNavn = capitalizeName(formidlerNavn)
-
   return (
     <TooltipWrapper visTooltip={formatertNavn.length > 19} content={formatertNavn}>
       <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>

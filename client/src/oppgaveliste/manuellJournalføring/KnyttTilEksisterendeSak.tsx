@@ -6,7 +6,7 @@ import { Avstand } from '../../felleskomponenter/Avstand'
 import { HeadingMedHjelpetekst } from '../../felleskomponenter/HeadingMedHjelpetekst'
 import { Brødtekst } from '../../felleskomponenter/typografi'
 import { OppgaveStatusLabel, Saksoversikt_Sak } from '../../types/types.internal'
-import { OppgaveType } from '../kolonner/OpgaveType'
+import { OppgaveType } from '../kolonner/OppgaveType'
 
 interface Props {
   åpneSaker: Saksoversikt_Sak[]

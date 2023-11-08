@@ -13,6 +13,5 @@ export const AppRoot = createGlobalStyle`
     font-family: 'Source Sans Pro', Helvetica, sans-serif;
     font-size: 1rem;
     color: var(--a-text-default)
-
   }
 `

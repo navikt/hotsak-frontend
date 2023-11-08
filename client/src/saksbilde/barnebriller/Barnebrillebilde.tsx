@@ -51,7 +51,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
 
   if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(
-      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype} `
+      `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype}`
     )
   }
 

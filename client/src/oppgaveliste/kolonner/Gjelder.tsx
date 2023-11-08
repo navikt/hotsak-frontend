@@ -1,10 +1,8 @@
 import React from 'react'
 
-import { Tooltip } from '@navikt/ds-react'
+import { BodyShort, Tooltip } from '@navikt/ds-react'
 
 import { capitalize } from '../../utils/stringFormating'
-
-import { TekstMedEllipsis } from '../../felleskomponenter/TekstMedEllipsis'
 
 interface GjelderProps {
   søknadOm: string
@@ -18,9 +16,15 @@ export const Gjelder = React.memo(({ søknadOm }: GjelderProps) => {
   if (visTooltip) {
     return (
       <Tooltip content={søknadGjelder}>
-        <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
+        <BodyShort size="small" truncate>
+          {søknadGjelder}
+        </BodyShort>
       </Tooltip>
     )
   }
-  return <TekstMedEllipsis>{søknadGjelder}</TekstMedEllipsis>
+  return (
+    <BodyShort size="small" truncate>
+      {søknadGjelder}
+    </BodyShort>
+  )
 })

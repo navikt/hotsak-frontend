@@ -23,7 +23,7 @@ export const EndringsloggDropdown: React.FC = () => {
           }
         }}
       >
-        {!endringslogg.loading && <Uleste fading={endringslogg.fading} />}
+        {!endringslogg.loading && <Uleste $fading={endringslogg.fading} />}
         <InformationSquareIcon title="Endringslogg" width={20} height={20} />
       </InternalHeader.Button>
       <EndringsloggDropdownMenu ref={dropdownMenuRef}>
@@ -33,7 +33,7 @@ export const EndringsloggDropdown: React.FC = () => {
   )
 }
 
-const Uleste = styled.div<{ fading: boolean }>`
+const Uleste = styled.div<{ $fading: boolean }>`
   position: absolute;
   top: 7px;
   right: 7px;
@@ -41,9 +41,9 @@ const Uleste = styled.div<{ fading: boolean }>`
   height: 14px;
   border-radius: 50%;
   background-color: var(--a-icon-warning);
-  visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
-  opacity: ${(props) => (props.fading ? 0 : undefined)};
-  transition: ${(props) => (props.fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
+  visibility: ${(props) => (props.$fading ? 'hidden' : undefined)};
+  opacity: ${(props) => (props.$fading ? 0 : undefined)};
+  transition: ${(props) => (props.$fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
 `
 
 const EndringsloggDropdownMenu = styled(Dropdown.Menu)`

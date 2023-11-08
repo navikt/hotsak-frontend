@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { BodyLong, Label } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Label } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../utils/date'
 import { capitalize } from '../../../utils/stringFormating'
@@ -9,7 +9,6 @@ import { capitalize } from '../../../utils/stringFormating'
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
-import { BodyLongMedEllipsis } from '../../../felleskomponenter/TekstMedEllipsis'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 import { useSak } from '../../sakHook'
@@ -120,19 +119,21 @@ const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
           <div key={id}>
             <Rad>
               <Kolonne width="85px">
-                <BodyLong size="small">{formaterDato(artikkel.datoUtsendelse)}</BodyLong>
+                <BodyShort size="small">{formaterDato(artikkel.datoUtsendelse)}</BodyShort>
               </Kolonne>
               <Kolonne width="52px">
-                <BodyLong size="small">{artikkel.hmsnr}</BodyLong>
+                <BodyShort size="small">{artikkel.hmsnr}</BodyShort>
               </Kolonne>
               <Kolonne width="230px" data-for={id} data-tip={artikkelBeskrivelse}>
                 <TooltipWrapper visTooltip={artikkelBeskrivelse.length > 28} content={artikkelBeskrivelse}>
-                  <BodyLongMedEllipsis size="small">{artikkelBeskrivelse}</BodyLongMedEllipsis>
+                  <BodyShort size="small" truncate>
+                    {artikkelBeskrivelse}
+                  </BodyShort>
                 </TooltipWrapper>
               </Kolonne>
               <Kolonne width="50px" marginLeft="auto">
                 <Boble>
-                  <BodyLong size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyLong>
+                  <BodyShort size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyShort>
                 </Boble>
               </Kolonne>
             </Rad>

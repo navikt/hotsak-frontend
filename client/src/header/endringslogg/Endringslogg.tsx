@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
-import { Ingress, Label } from '@navikt/ds-react'
+import { BodyLong, Label } from '@navikt/ds-react'
 
 import { ISO_DATOFORMAT } from '../../utils/date'
 
@@ -57,7 +57,7 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
   return (
     <>
       <dt ref={innslagRef}>
-        <Ulest fading={isFading}>{dato}</Ulest>
+        <Ulest $fading={isFading}>{dato}</Ulest>
         <Label as="h3" spacing>
           {innslag.tittel}
         </Label>
@@ -71,7 +71,7 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
   )
 }
 
-const Overskrift = styled(Ingress)`
+const Overskrift = styled(BodyLong)`
   margin: 0 !important;
   color: var(--a-text-on-inverted);
   background-color: var(--a-surface-inverted);
@@ -89,7 +89,7 @@ const Liste = styled.dl`
   }
 `
 
-const Ulest = styled.span<{ fading: boolean }>`
+const Ulest = styled.span<{ $fading: boolean }>`
   position: relative;
 
   &:before {
@@ -102,8 +102,8 @@ const Ulest = styled.span<{ fading: boolean }>`
     border-radius: 50%;
     background-color: var(--a-icon-warning);
     content: '';
-    visibility: ${(props) => (props.fading ? 'hidden' : undefined)};
-    opacity: ${(props) => (props.fading ? 0 : undefined)};
-    transition: ${(props) => (props.fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
+    visibility: ${(props) => (props.$fading ? 'hidden' : undefined)};
+    opacity: ${(props) => (props.$fading ? 0 : undefined)};
+    transition: ${(props) => (props.$fading ? 'visibility 0s 2s, opacity 2s linear' : undefined)};
   }
 `

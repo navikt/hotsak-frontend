@@ -11,7 +11,7 @@ interface EtikettProps {
   størrelse?: 's' | 'l'
 }
 
-const Etikett = styled.div<EtikettProps>`
+const Etikett = styled.div<{ $størrelse?: 's' | 'l' }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -23,9 +23,9 @@ const Etikett = styled.div<EtikettProps>`
   border-radius: 0.25rem;
   pointer-events: none;
 
-  width: ${(props) => (props.størrelse === 'l' ? '20px' : '16px')};
-  height: ${(props) => (props.størrelse === 'l' ? '20px' : '16px')};
-  font-size: ${(props) => (props.størrelse === 'l' ? '14px' : '12px')};
+  width: ${(props) => (props.$størrelse === 'l' ? '20px' : '16px')};
+  height: ${(props) => (props.$størrelse === 'l' ? '20px' : '16px')};
+  font-size: ${(props) => (props.$størrelse === 'l' ? '14px' : '12px')};
 `
 
 const SøknadEtikett = styled(Etikett)`
@@ -98,29 +98,29 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
     case Oppgavetype.SØKNAD:
       return showLabel ? (
         <>
-          <SøknadEtikett størrelse={størrelse} aria-hidden />
+          <SøknadEtikett $størrelse={størrelse} aria-hidden />
           <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
-        <SøknadEtikett størrelse={størrelse} />
+        <SøknadEtikett $størrelse={størrelse} />
       )
     case Oppgavetype.BESTILLING:
       return showLabel ? (
         <>
-          <BestillingEtikett størrelse={størrelse} aria-hidden />
+          <BestillingEtikett $størrelse={størrelse} aria-hidden />
           <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
-        <BestillingEtikett størrelse={størrelse} aria-hidden />
+        <BestillingEtikett $størrelse={størrelse} aria-hidden />
       )
     case Oppgavetype.TILSKUDD:
       return showLabel ? (
         <>
-          <TilskuddEtikett størrelse={størrelse} aria-hidden />
+          <TilskuddEtikett $størrelse={størrelse} aria-hidden />
           <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
         </>
       ) : (
-        <TilskuddEtikett størrelse={størrelse} aria-hidden />
+        <TilskuddEtikett $størrelse={størrelse} aria-hidden />
       )
     default:
       return null

@@ -17,15 +17,51 @@ export interface AvstandProps {
 }
 
 export function Avstand(props: AvstandProps) {
-  const { children, centered, ...rest } = props
+  const {
+    children,
+    margin,
+    marginTop,
+    marginRight,
+    marginBottom,
+    marginLeft,
+    padding,
+    paddingTop,
+    paddingRight,
+    paddingBottom,
+    paddingLeft,
+    centered,
+  } = props
   return (
-    <Box aria-hidden={!children} $centered={centered} {...rest}>
+    <Box
+      aria-hidden={!children}
+      $margin={margin}
+      $marginTop={marginTop}
+      $marginRight={marginRight}
+      $marginBottom={marginBottom}
+      $marginLeft={marginLeft}
+      $padding={padding}
+      $paddingTop={paddingTop}
+      $paddingRight={paddingRight}
+      $paddingBottom={paddingBottom}
+      $paddingLeft={paddingLeft}
+      $centered={centered}
+    >
       {children}
     </Box>
   )
 }
 
-type MarginPadding = Omit<AvstandProps, 'centered' | 'children'> & {
+interface MarginPadding {
+  $margin?: string
+  $marginTop?: number
+  $marginRight?: number
+  $marginBottom?: number
+  $marginLeft?: number
+  $padding?: string
+  $paddingTop?: number
+  $paddingRight?: number
+  $paddingBottom?: number
+  $paddingLeft?: number
   $centered?: boolean
 }
 
@@ -36,16 +72,16 @@ const Box = styled.div<MarginPadding>`
 
 export function spacer(props: MarginPadding) {
   return {
-    margin: props.margin,
-    'margin-top': spacingVar(props.marginTop),
-    'margin-right': spacingVar(props.marginRight),
-    'margin-bottom': spacingVar(props.marginBottom),
-    'margin-left': spacingVar(props.marginLeft),
-    padding: props.padding,
-    'padding-top': spacingVar(props.paddingTop),
-    'padding-right': spacingVar(props.paddingRight),
-    'padding-bottom': spacingVar(props.paddingBottom),
-    'padding-left': spacingVar(props.paddingLeft),
+    margin: props.$margin,
+    'margin-top': spacingVar(props.$marginTop),
+    'margin-right': spacingVar(props.$marginRight),
+    'margin-bottom': spacingVar(props.$marginBottom),
+    'margin-left': spacingVar(props.$marginLeft),
+    padding: props.$padding,
+    'padding-top': spacingVar(props.$paddingTop),
+    'padding-right': spacingVar(props.$paddingRight),
+    'padding-bottom': spacingVar(props.$paddingBottom),
+    'padding-left': spacingVar(props.$paddingLeft),
   }
 }
 

@@ -102,7 +102,7 @@ export const VurderVilkår: React.FC = () => {
         </Heading>
         <Detail>RESULTAT</Detail>
         <Tag variant={alertType} size="small">
-          {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
+          {status === VilkårsResultat.JA ? 'Innvilget' : status === VilkårsResultat.KANSKJE ? 'Må vurderes' : 'Avslag'}
         </Tag>
 
         {errors.length > 0 && (

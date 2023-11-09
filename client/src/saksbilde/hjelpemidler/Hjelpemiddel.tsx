@@ -69,7 +69,7 @@ const TilleggsInfo = styled(Rad)`
 `
 
 const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <Kolonne width="150px">{children}</Kolonne>
+  return <Kolonne $width="150px">{children}</Kolonne>
 }
 
 interface RangeringProps {
@@ -170,7 +170,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                         <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
-                        <Kolonne width="700px">
+                        <Kolonne $width="700px">
                           {tilleggsinfo.innholdsliste.map((element) => (
                             <Rad key={element}>{element}</Rad>
                           ))}
@@ -185,7 +185,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                       <Etikett>Kroppsmål:</Etikett>
                     </Rad>
                     <Rad>
-                      <Kolonne width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
+                      <Kolonne $width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
                     </Rad>
                   </>
                 )}

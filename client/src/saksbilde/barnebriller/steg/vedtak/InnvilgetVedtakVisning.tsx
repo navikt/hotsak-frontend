@@ -25,26 +25,26 @@ export const InnvilgetVedtakVisning: React.FC<InnvilgetVedtakVisningProps> = (pr
     <>
       <Avstand paddingBottom={6} />
       <Rad>
-        <Kolonne width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
+        <Kolonne $width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
         <Kolonne>
           <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
         </Kolonne>
       </Rad>
       <Rad>
-        <Kolonne width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
+        <Kolonne $width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
         <Kolonne>
           <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
         </Kolonne>
       </Rad>
       <Rad>
-        <Kolonne width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
+        <Kolonne $width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
         <Kolonne>
           <Etikett>{capitalizeName(`${sak.utbetalingsmottaker?.navn}`)}</Etikett>
         </Kolonne>
       </Rad>
       {sak.utbetalingsmottaker?.kontonummer ? (
         <Rad>
-          <Kolonne width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
+          <Kolonne $width={VENSTREKOLONNE_BREDDE}>Kontonummer:</Kolonne>
           <Kolonne>
             <Etikett>{formaterKontonummer(sak.utbetalingsmottaker?.kontonummer)}</Etikett>
           </Kolonne>

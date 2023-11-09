@@ -24,7 +24,7 @@ interface EndreHjelpemiddelProps {
 }
 
 const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <Kolonne width="150px">{children}</Kolonne>
+  return <Kolonne $width="150px">{children}</Kolonne>
 }
 
 const EndreHjelpemiddelPanel = styled(Panel)`
@@ -90,7 +90,7 @@ export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
             </Rad>
             <Rad>Her kan du erstatte artikkelnummeret begrunner har lagt inn.</Rad>
             <Rad style={{ marginTop: '1rem' }}>
-              <Kolonne width="10rem">
+              <Kolonne $width="10rem">
                 <Rad style={{ width: '8rem' }}>
                   <TextField
                     label="Artikkelnummer"

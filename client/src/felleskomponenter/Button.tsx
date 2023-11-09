@@ -10,20 +10,20 @@ export const Button = styled.button`
 `
 
 interface VenstrestilteKnapperProps {
-  gap?: string
+  $gap?: string
 }
 
 const VenstrestilteKnapper = styled.div<VenstrestilteKnapperProps>`
   display: flex;
   justify-content: flex-start;
-  gap: ${(props) => (props.gap ? props.gap : '1rem')};
+  gap: ${(props) => (props.$gap ? props.$gap : '1rem')};
   padding-top: 2rem;
 `
 
 export const Knappepanel = ({ children, gap }: { children: ReactNode; gap?: string }) => {
   return (
     <div style={{ display: 'flex' }}>
-      <VenstrestilteKnapper gap={gap}> {children}</VenstrestilteKnapper>
+      <VenstrestilteKnapper $gap={gap}> {children}</VenstrestilteKnapper>
     </div>
   )
 }

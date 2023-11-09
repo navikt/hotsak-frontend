@@ -118,20 +118,20 @@ const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
         return (
           <div key={id}>
             <Rad>
-              <Kolonne width="85px">
+              <Kolonne $width="85px">
                 <BodyShort size="small">{formaterDato(artikkel.datoUtsendelse)}</BodyShort>
               </Kolonne>
-              <Kolonne width="52px">
+              <Kolonne $width="52px">
                 <BodyShort size="small">{artikkel.hmsnr}</BodyShort>
               </Kolonne>
-              <Kolonne width="230px" data-for={id} data-tip={artikkelBeskrivelse}>
+              <Kolonne $width="230px" data-for={id} data-tip={artikkelBeskrivelse}>
                 <TooltipWrapper visTooltip={artikkelBeskrivelse.length > 28} content={artikkelBeskrivelse}>
                   <BodyShort size="small" truncate>
                     {artikkelBeskrivelse}
                   </BodyShort>
                 </TooltipWrapper>
               </Kolonne>
-              <Kolonne width="50px" marginLeft="auto">
+              <Kolonne $width="50px" $marginLeft="auto">
                 <Boble>
                   <BodyShort size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyShort>
                 </Boble>

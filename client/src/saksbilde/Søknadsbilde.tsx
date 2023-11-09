@@ -75,7 +75,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
       />
       <Container data-testid="saksbilde-fullstendig">
         <AutoFlexContainer>
-          <Flex flex={1} style={{ height: '100%' }}>
+          <Flex $flex={1} style={{ height: '100%' }}>
             <VenstreMeny>
               <SøknadCard
                 oppgaveType={Oppgavetype.SØKNAD}

@@ -1,54 +1,31 @@
 import styled from 'styled-components'
-
-type BasicValue = 'normal' | 'stretch'
-
-type GlobalValue = 'inherit' | 'initial' | 'unset'
-
-type PositionalValue =
-  | 'center'
-  | 'start'
-  | 'end'
-  | 'flex-end'
-  | 'flex-start'
-  | 'space-between'
-  | 'space-around'
-  | 'space-evenly'
-
-type BaselineValue = 'baseline' | 'first baseline' | 'last baseline' | 'safe center' | 'unsafe center'
-
-type AlignValue = BasicValue | GlobalValue | PositionalValue | BaselineValue
+import type { Property } from 'csstype'
 
 interface FlexProps {
-  alignItems?: AlignValue
-  alignContent?: AlignValue
-  justifyItems?: AlignValue
-  justifyContent?: AlignValue
-  flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse' | GlobalValue
-  flex?: number
+  $alignContent?: Property.AlignContent
+  $alignItems?: Property.AlignItems
+  $flex?: Property.Flex
+  $flexDirection?: Property.FlexDirection
+  $justifyContent?: Property.JustifyContent
+  $justifyItems?: Property.JustifyItems
 }
 
 export const Flex = styled.div<FlexProps>`
   display: flex;
-  ${({ alignItems }) => alignItems && `align-items: ${alignItems};`}
-  ${({ alignContent }) => alignContent && `align-content: ${alignContent};`}
-    ${({ justifyItems }) => justifyItems && `justify-items: ${justifyItems};`}
-    ${({ justifyContent }) => justifyContent && `justify-content: ${justifyContent};`}
-    ${({ flexDirection }) => flexDirection && `flex-direction: ${flexDirection};`}
-    ${({ flex }) => flex !== undefined && `flex: ${flex};`}
+  ${({ $alignContent }) => $alignContent && `align-content: ${$alignContent};`}
+  ${({ $alignItems }) => $alignItems && `align-items: ${$alignItems};`}
+  ${({ $flex }) => $flex !== undefined && `flex: ${$flex};`}
+  ${({ $flexDirection }) => $flexDirection && `flex-direction: ${$flexDirection};`}
+  ${({ $justifyContent }) => $justifyContent && `justify-content: ${$justifyContent};`}
+  ${({ $justifyItems }) => $justifyItems && `justify-items: ${$justifyItems};`}
 `
 
 export const FlexColumn = styled(Flex)`
   flex-direction: column;
 `
 
-type KolonneProps = {
-  width?: string
-  textAlign?: string
-  marginLeft?: string
-}
-
-type RadProps = {
-  $paddingTop?: string
+interface RadProps {
+  $paddingTop?: Property.PaddingTop
 }
 
 export const Rad = styled('div')<RadProps>`
@@ -60,12 +37,18 @@ export const Rad = styled('div')<RadProps>`
   padding-bottom: 0.2rem;
 `
 
+interface KolonneProps {
+  $marginLeft?: Property.MarginLeft
+  $textAlign?: Property.TextAlign
+  $width?: Property.Width
+}
+
 export const Kolonne = styled('div')<KolonneProps>`
   display: flex;
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  text-align: ${(props) => props.textAlign || 'left'};
-  max-width: ${(props) => props.width || 'auto'};
-  ${(props) => props.marginLeft && `margin-left: ${props.marginLeft};`}
+  text-align: ${({ $textAlign }) => $textAlign || 'left'};
+  max-width: ${({ $width }) => $width || 'auto'};
+  ${({ $marginLeft }) => $marginLeft && `margin-left: ${$marginLeft};`}
 `

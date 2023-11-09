@@ -26,7 +26,7 @@ const Container = styled.div`
 
 export const RegistrerSøknadLesevisning: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { sak, isLoading, isError, mutate } = useBrillesak()
+  const { sak, isLoading } = useBrillesak()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const { dokumenter } = useJournalposter()
 
@@ -81,20 +81,20 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
 
             <Detail>HØYRE ØYE</Detail>
             <Rad>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Etikett>Sfære (SPH)</Etikett>
               </Kolonne>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Etikett>Sylinder (CYL)</Etikett>
               </Kolonne>
             </Rad>
             <Rad>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Brødtekst>
                   <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.høyreSfære} />
                 </Brødtekst>
               </Kolonne>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Brødtekst>
                   <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.høyreSylinder} />
                 </Brødtekst>
@@ -103,20 +103,20 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             <Avstand paddingBottom={4} />
             <Detail>VENSTRE ØYE</Detail>
             <Rad>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Etikett>Sfære (SPH)</Etikett>
               </Kolonne>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Etikett>Sylinder (CYL)</Etikett>
               </Kolonne>
             </Rad>
             <Rad>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Brødtekst>
                   <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.venstreSfære} />
                 </Brødtekst>
               </Kolonne>
-              <Kolonne width="150px">
+              <Kolonne $width="150px">
                 <Brødtekst>
                   <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.venstreSylinder} />
                 </Brødtekst>

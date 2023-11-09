@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ClockIcon, EnvelopeClosedIcon, PencilWritingIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { ClockIcon, DocPencilIcon, EnvelopeClosedIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -47,7 +47,7 @@ export const BarnebrilleSidebar: React.FC = () => {
         <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
         <Tabs.Tab value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
         <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
-        <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<PencilWritingIcon />} />
+        <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<DocPencilIcon />} />
       </Tabs.List>
       <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>
         <BrilleHistorikk />

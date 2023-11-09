@@ -3,8 +3,8 @@ import Dexie, { Table } from 'dexie'
 
 import {
   Barnebrillesak,
-  BrevTekst,
   Brevkode,
+  BrevTekst,
   Hendelse,
   JournalføringRequest,
   Kjønn,
@@ -23,8 +23,8 @@ import {
   TotrinnskontrollVurdering,
   Utbetalingsmottaker,
   Vilkår,
-  VilkårsResultat,
   Vilkårsgrunnlag,
+  VilkårsResultat,
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
@@ -79,7 +79,7 @@ function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkår
       opprettet: dayjs().toISOString(),
     }
   } else {
-    throw new Error('Noe er feil med VurderVilkårReqest payload i lagVilkårsvurdering()')
+    throw new Error('Noe er feil med VurderVilkårRequest-payload i lagVilkårsvurdering()')
   }
 }
 
@@ -316,7 +316,7 @@ export class BarnebrillesakStore extends Dexie {
         this.saker.update(sakId, {
           status: status,
         })
-        this.lagreHendelse(sakId, `Sakstatus endret: ${OppgaveStatusLabel.get(status)}`)
+        this.lagreHendelse(sakId, `Saksstatus endret: ${OppgaveStatusLabel.get(status)}`)
         this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
       })
       return true
@@ -339,7 +339,7 @@ export class BarnebrillesakStore extends Dexie {
       }, VilkårsResultat.JA)
 
     if (!samletVurdering) {
-      throw Error('Feil med utlednings av samlet status')
+      throw Error('Feil med utledning av samlet status')
     }
 
     return samletVurdering
@@ -379,7 +379,7 @@ export class BarnebrillesakStore extends Dexie {
     })
   }
 
-  // TODO se på payload for overstyting av vilkår
+  // TODO se på payload for overstyring av vilkår
   async oppdaterVilkår(
     sakId: string,
     vilkårId: number | string,

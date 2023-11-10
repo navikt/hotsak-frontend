@@ -9,7 +9,7 @@ import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
 import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Bakgrunnslagring } from '../../../felleskomponenter/brev/Bakgrunnslagring'
-import { Brødtekst } from '../../../felleskomponenter/typografi'
+import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
@@ -125,74 +125,70 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   return (
     <>
       <Panel as="aside">
-        <Heading level="2" size="xsmall">
-          Send brev
-        </Heading>
-        <Avstand paddingTop={6}>
-          {lesevisning ? (
-            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
-          ) : (
-            <form onSubmit={(e) => e.preventDefault()}>
-              <Select size="small" label="Velg brevmal">
-                <option value={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
-              </Select>
-              <Avstand paddingTop={6} />
-              <RadioGroup
-                legend="Målform"
+        <Mellomtittel>Send brev</Mellomtittel>
+        {lesevisning ? (
+          <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
+        ) : (
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Select size="small" label="Velg brevmal">
+              <option value={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
+            </Select>
+            <Avstand paddingTop={6} />
+            <RadioGroup
+              legend="Målform"
+              size="small"
+              value={målform}
+              onChange={(value: MålformType) => {
+                setMålform(value)
+                lagreUtkast(fritekst, value)
+              }}
+            >
+              <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
+              <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
+            </RadioGroup>
+            <Avstand paddingTop={6} />
+            <Textarea
+              minRows={5}
+              maxRows={20}
+              label="Fritekst"
+              error={valideringsFeil}
+              description="Beskriv hva som mangler av dokumentasjon"
+              size="small"
+              value={fritekst}
+              onChange={(event) => onTextChange(event)}
+            />
+            <Bakgrunnslagring>
+              {lagrer && (
+                <>
+                  <span>
+                    <Loader size="xsmall" />
+                  </span>
+                  <span>
+                    <Detail>Lagrer</Detail>
+                  </span>
+                </>
+              )}
+            </Bakgrunnslagring>
+            <Knappepanel>
+              <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
+                Forhåndsvis
+              </Button>
+              <Button
+                type="submit"
                 size="small"
-                value={målform}
-                onChange={(value: MålformType) => {
-                  setMålform(value)
-                  lagreUtkast(fritekst, value)
+                variant="primary"
+                onClick={() => {
+                  setSubmitAttempt(true)
+                  if (valider()) {
+                    setVisSendBrevModal(true)
+                  }
                 }}
               >
-                <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
-                <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
-              </RadioGroup>
-              <Avstand paddingTop={6} />
-              <Textarea
-                minRows={5}
-                maxRows={20}
-                label="Fritekst"
-                error={valideringsFeil}
-                description="Beskriv hva som mangler av dokumentasjon"
-                size="small"
-                value={fritekst}
-                onChange={(event) => onTextChange(event)}
-              />
-              <Bakgrunnslagring>
-                {lagrer && (
-                  <>
-                    <span>
-                      <Loader size="xsmall" />
-                    </span>
-                    <span>
-                      <Detail>Lagrer</Detail>
-                    </span>
-                  </>
-                )}
-              </Bakgrunnslagring>
-              <Knappepanel>
-                <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
-                  Forhåndsvis
-                </Button>
-                <Button
-                  type="submit"
-                  size="small"
-                  variant="primary"
-                  onClick={() => {
-                    setSubmitAttempt(true)
-                    if (valider()) {
-                      setVisSendBrevModal(true)
-                    }
-                  }}
-                >
-                  Send brev
-                </Button>
-              </Knappepanel>
-            </form>
-          )}
-        </Avstand>
+                Send brev
+              </Button>
+            </Knappepanel>
+          </form>
+        )}
         <UtgåendeBrev sakId={sakId} />
       </Panel>
 

@@ -2,13 +2,14 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { TrashIcon } from '@navikt/aksel-icons'
-import { BodyLong, BodyShort, Button, Heading, Label, Panel } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Button, Detail, Label, Panel } from '@navikt/ds-react'
 import { norskTimestamp } from '../../../utils/date'
 import { useInnloggetSaksbehandler } from '../../../state/authentication'
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { SlettSaksnotatModal } from './SlettSaksnotatModal'
 import { LagreSaksnotatForm } from './LagreSaksnotatForm'
 import { useSaksnotater } from './useSaksnotater'
+import { Mellomtittel } from '../../../felleskomponenter/typografi'
 
 export interface SaksnotaterProps {
   sakId?: string
@@ -27,14 +28,12 @@ export function Saksnotater(props: SaksnotaterProps) {
 
   return (
     <Panel as="aside">
-      <Heading level="1" size="xsmall" spacing>
-        Notater
-      </Heading>
+      <Mellomtittel>Notater</Mellomtittel>
       {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
       {!lesevisning && (
         <SlettSaksnotatModal sakId={sakId} notatId={notatId} mutate={mutate} onClose={() => setNotatId(NaN)} />
       )}
-      <Avstand marginTop={8}>
+      <Avstand marginTop={lesevisning ? 0 : 8}>
         {notater.length ? (
           <ul>
             {notater.map((notat) => (
@@ -42,10 +41,10 @@ export function Saksnotater(props: SaksnotaterProps) {
                 <NotatPanel border>
                   <NotatHeader>
                     <div>
-                      <Label as="div" size="small">
+                      <Label as="h2" size="small">
                         {notat.saksbehandler.navn}
                       </Label>
-                      <BodyShort size="small">{norskTimestamp(notat.opprettet)}</BodyShort>
+                      <Detail>{norskTimestamp(notat.opprettet)}</Detail>
                     </div>
                     {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
                       <Button
@@ -57,13 +56,13 @@ export function Saksnotater(props: SaksnotaterProps) {
                       />
                     )}
                   </NotatHeader>
-                  <BodyLong>{notat.innhold}</BodyLong>
+                  <BodyLong size="small">{notat.innhold}</BodyLong>
                 </NotatPanel>
               </li>
             ))}
           </ul>
         ) : (
-          <BodyShort>Ingen notater.</BodyShort>
+          <BodyShort size="small">Ingen saksnotater.</BodyShort>
         )}
       </Avstand>
     </Panel>
@@ -80,5 +79,5 @@ const NotatHeader = styled.header`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: var(--a-spacing-3);
+  margin-bottom: var(--a-spacing-2);
 `

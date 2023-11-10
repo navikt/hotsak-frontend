@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { BodyShort, BodyLong, Detail, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Detail, Heading, Label } from '@navikt/ds-react'
 
 const FlytendeTekst = styled(BodyLong)`
   white-space: normal;
@@ -35,8 +35,12 @@ export const BrytbarBrødtekst: React.FC<{ children: React.ReactNode }> = ({ chi
 
 export const Etikett: React.FC<{ children: React.ReactNode }> = ({ children }) => <Label size="small">{children}</Label>
 
-export const Undertittel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Detail size="small">{children}</Detail>
+export const Undertittel: React.FC<{ children: React.ReactNode }> = ({ children }) => <Detail>{children}</Detail>
+
+export const Mellomtittel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <UppercaseHeading level="1" size="small" spacing>
+    {children}
+  </UppercaseHeading>
 )
 
 export const Skjermlesertittel: React.FC<{ level?: '1' | '2' | '3' | '4' | '5' | '6'; children: React.ReactNode }> = ({
@@ -47,3 +51,9 @@ export const Skjermlesertittel: React.FC<{ level?: '1' | '2' | '3' | '4' | '5' |
     {children}
   </Heading>
 )
+
+const UppercaseHeading = styled(Heading)`
+  color: var(--a-text-subtle);
+  font-size: var(--a-font-size-medium);
+  text-transform: uppercase;
+`

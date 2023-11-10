@@ -580,7 +580,7 @@ export enum DokumentOppgaveStatusType {
 
 export const DokumentStatusLabel = new Map<string, string>([
   [DokumentOppgaveStatusType.MOTTATT, 'Mottatt'],
-  [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+  [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under journalføring'],
   [DokumentOppgaveStatusType.JOURNALFØRT, 'Journalført'],
 ])
 

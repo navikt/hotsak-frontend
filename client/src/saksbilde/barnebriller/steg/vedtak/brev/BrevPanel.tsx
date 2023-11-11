@@ -36,7 +36,7 @@ export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
   }, [sakId])
 
   if (!sakId) {
-    return <div>Mangler sakID</div>
+    return <div>Saksnummer mangler.</div>
   } else if (isDokumentError) {
     return (
       <FeilmeldingDiv>

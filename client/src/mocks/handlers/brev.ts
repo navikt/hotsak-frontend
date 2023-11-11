@@ -7,7 +7,7 @@ import manglerDokumentasjonBrev from '../data/merinfobrev.pdf'
 
 export const brevHandlers: StoreHandlersFactory = () => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
-  rest.get(`/api/sak/:sakID/brev/:brevtype`, async (req, res, ctx) => {
+  rest.get(`/api/sak/:sakId/brev/:brevtype`, async (req, res, ctx) => {
     const brevtype = req.params.brevtype
 
     let dokumentData

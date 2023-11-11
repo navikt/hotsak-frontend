@@ -7,21 +7,13 @@ import styled from 'styled-components'
 
 import { Button, Heading, Loader } from '@navikt/ds-react'
 
-import { postVilkårsvurdering, putSendTilGosys } from '../../../../io/http'
+import { postVilkårsvurdering } from '../../../../io/http'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import {
-  Brilleseddel,
-  MålformType,
-  Oppgavetype,
-  OverforGosysTilbakemelding,
-  RegistrerSøknadData,
-  StegType,
-} from '../../../../types/types.internal'
-import { OverførGosysModal } from '../../../OverførGosysModal'
+import { Brilleseddel, MålformType, Oppgavetype, RegistrerSøknadData, StegType } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -38,8 +30,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
   const { sak, isLoading, mutate } = useBrillesak()
   const { setValgtTab } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
-  const [visGosysModal, setVisGosysModal] = useState(false)
-  const [loading, setLoading] = useState(false)
   const { dokumenter } = useJournalposter()
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
@@ -64,18 +54,6 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         setValgtTab(StegType.VURDERE_VILKÅR)
         mutate()
         setVenterPåVilkårsvurdering(false)
-      })
-  }
-
-  const sendTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
-    setLoading(true)
-    putSendTilGosys(sakId!, tilbakemelding)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        setVisGosysModal(false)
-        mutate(`api/sak/${sakId}`)
-        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
@@ -145,35 +123,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
               >
                 Neste
               </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                size="small"
-                onClick={() => setVisGosysModal(true)}
-                data-cy="btn-vis-gosys-modal"
-              >
-                Overfør til Gosys
-              </Button>
             </Knappepanel>
           </form>
         </FormProvider>
       </Avstand>
-      <OverførGosysModal
-        open={visGosysModal}
-        loading={loading}
-        årsaker={overforGosysArsaker}
-        legend="Hvorfor vil du overføre saken?"
-        onBekreft={(tilbakemelding) => {
-          sendTilGosys(tilbakemelding)
-        }}
-        onClose={() => setVisGosysModal(false)}
-      />
     </Container>
   )
 }
-
-const overforGosysArsaker: ReadonlyArray<string> = [
-  'Behandlingsbriller/linser ordinære vilkår',
-  'Behandlingsbriller/linser særskilte vilkår',
-  'Annet',
-]

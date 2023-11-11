@@ -10,9 +10,10 @@ import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
+import { OverførGosysModal, useOverførGosys } from '../../saksbilde/OverførGosysModal'
 
 interface MenyKnappProps {
-  sakID: string
+  sakId: string
   status: OppgaveStatusType
   tildeltSaksbehandler?: Saksbehandler
   kanTildeles: boolean
@@ -22,7 +23,7 @@ interface MenyKnappProps {
 }
 
 export const MenyKnapp = ({
-  sakID,
+  sakId,
   status,
   tildeltSaksbehandler,
   kanTildeles,
@@ -31,9 +32,10 @@ export const MenyKnapp = ({
   knappeIkon,
 }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { onTildel } = useTildeling({ sakId: sakID, gåTilSak: false })
-  const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakID, gåTilSak: false })
+  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: false })
+  const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
 
   const menyClick = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -56,12 +58,17 @@ export const MenyKnapp = ({
     tildeltSaksbehandler.objectId === saksbehandler.objectId &&
     status === OppgaveStatusType.AVVENTER_DOKUMENTASJON
 
+  const kanOverføreTilGosys =
+    tildeltSaksbehandler &&
+    tildeltSaksbehandler.objectId === saksbehandler.objectId &&
+    status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+
   const overtaSak = (event: React.MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakID)
+    postTildeling(sakId)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -75,7 +82,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernTildeling(sakID)
+    deleteFjernTildeling(sakId)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)
@@ -86,43 +93,54 @@ export const MenyKnapp = ({
 
   return (
     <>
-      {
-        <span style={{ display: 'flex', marginBlock: -2 }}>
-          <Dropdown>
-            <Button
-              variant="tertiary"
-              size="xsmall"
-              as={Dropdown.Toggle}
-              onClick={menyClick}
-              icon={knappeIkon ? knappeIkon : <MenuElipsisHorizontalCircleIcon />}
-            >
-              {knappeTekst}
-            </Button>
-            <Dropdown.Menu onClick={menyClick}>
-              <Dropdown.Menu.List>
-                <Dropdown.Menu.List.Item disabled={fjernTildelingDisabled} onClick={fjernTildeling}>
-                  Fjern tildeling {isFetching && <Loader size="xsmall" />}
+      <div style={{ display: 'flex', marginBlock: -2 }}>
+        <Dropdown>
+          <Button
+            variant="tertiary"
+            size="xsmall"
+            as={Dropdown.Toggle}
+            onClick={menyClick}
+            icon={knappeIkon ? knappeIkon : <MenuElipsisHorizontalCircleIcon />}
+          >
+            {knappeTekst}
+          </Button>
+          <Dropdown.Menu onClick={menyClick}>
+            <Dropdown.Menu.List>
+              <Dropdown.Menu.List.Item disabled={fjernTildelingDisabled} onClick={fjernTildeling}>
+                Fjern tildeling {isFetching && <Loader size="xsmall" />}
+              </Dropdown.Menu.List.Item>
+              {kanOvertaSak && (
+                <Dropdown.Menu.List.Item onClick={overtaSak}>
+                  Overta saken {isFetching && <Loader size="xsmall" />}
                 </Dropdown.Menu.List.Item>
-                {kanOvertaSak && (
-                  <Dropdown.Menu.List.Item onClick={overtaSak}>
-                    Overta saken {isFetching && <Loader size="xsmall" />}
-                  </Dropdown.Menu.List.Item>
-                )}
-                {kanTildeles && !kanOvertaSak && (
-                  <Dropdown.Menu.List.Item onClick={onTildel}>
-                    Ta saken {isFetching && <Loader size="xsmall" />}
-                  </Dropdown.Menu.List.Item>
-                )}
-                {kanFortsetteBehandling && (
-                  <Dropdown.Menu.List.Item onClick={onFortsettBehandling}>
-                    Fortsett behandling {endrerStatus && <Loader size="xsmall" />}
-                  </Dropdown.Menu.List.Item>
-                )}
-              </Dropdown.Menu.List>
-            </Dropdown.Menu>
-          </Dropdown>
-        </span>
-      }
+              )}
+              {kanTildeles && !kanOvertaSak && (
+                <Dropdown.Menu.List.Item onClick={onTildel}>
+                  Ta saken {isFetching && <Loader size="xsmall" />}
+                </Dropdown.Menu.List.Item>
+              )}
+              {kanFortsetteBehandling && (
+                <Dropdown.Menu.List.Item onClick={onFortsettBehandling}>
+                  Fortsett behandling {endrerStatus && <Loader size="xsmall" />}
+                </Dropdown.Menu.List.Item>
+              )}
+              {kanOverføreTilGosys && (
+                <Dropdown.Menu.List.Item onClick={visOverførGosys}>
+                  Overfør til Gosys {endrerStatus && <Loader size="xsmall" />}
+                </Dropdown.Menu.List.Item>
+              )}
+            </Dropdown.Menu.List>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+      <OverførGosysModal legend="Hvorfor vil du overføre saken?" {...overførGosys} />
     </>
   )
 }
+
+// fixme -> hardkodet til verdier for barnebrillesaker
+const overførGosysÅrsaker: ReadonlyArray<string> = [
+  'Behandlingsbriller/linser ordinære vilkår',
+  'Behandlingsbriller/linser særskilte vilkår',
+  'Annet',
+]

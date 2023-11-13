@@ -7,9 +7,9 @@ import { norskTimestamp } from '../../../utils/date'
 
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import { Saksdokument } from '../../../types/types.internal'
+import { useErMockMiljø } from '../../../utils/useerMockMiljø'
 
 const ByggDummyDataUrl = React.lazy(() => import('../../../mocks/mockDokument'))
-const erLokaltEllerLabs = window.appSettings.USE_MSW === true
 
 const Container = styled.li`
   margin: 0;
@@ -27,11 +27,13 @@ const ContentContainer = styled.div`
 `
 
 export const BrevKort: React.FC<Saksdokument> = ({ tittel, opprettet, saksbehandler, journalpostID, dokumentID }) => {
+  const erMockMiljø = useErMockMiljø()
+
   return (
     <Container>
       <ContentContainer>
         <Etikett>
-          {erLokaltEllerLabs ? (
+          {erMockMiljø ? (
             <ByggDummyDataUrl tittel={tittel} />
           ) : (
             <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">

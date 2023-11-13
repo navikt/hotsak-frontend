@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Brødtekst, Mellomtittel } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
@@ -17,7 +17,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
   const { sak, isError } = useBrillesak()
 
   if (isError || !sak) {
-    return <Container>Feil ved henting av sak</Container>
+    return <Container>Feil ved henting av sak.</Container>
   }
 
   if (!sak.data.saksbehandler || sak.data.saksbehandler.objectId === '') {
@@ -47,11 +47,11 @@ export const TotrinnskontrollPanel: React.FC = () => {
 
   return (
     <Container>
-      <Etikett>TOTRINNSKONTROLL</Etikett>
-      <Avstand paddingTop={4} />
+      <Mellomtittel>Totrinnskontroll</Mellomtittel>
       <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Brødtekst>
-      <Avstand paddingTop={6} />
-      {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
+      <Avstand paddingTop={6}>
+        {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
+      </Avstand>
     </Container>
   )
 }

@@ -81,5 +81,3 @@ export const RegistrerSøknad = () => (
     </React.Suspense>
   </ErrorBoundary>
 )
-
-export default RegistrerSøknad

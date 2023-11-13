@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button, Tag } from '@navikt/ds-react'
 
-import { postTildeling, putSendTilGosys, putVedtak } from '../../io/http'
+import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
@@ -17,13 +17,12 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
   HjelpemiddelArtikkel,
   OppgaveStatusType,
-  OverforGosysTilbakemelding,
   Sak,
   vedtaksgrunnlagUtlaanshistorikk,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { BekreftVedtakModal } from '../BekreftVedtakModal'
-import { OverførGosysModal } from '../OverførGosysModal'
+import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
@@ -57,8 +56,8 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
-  const [visGosysModal, setVisGosysModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
@@ -88,18 +87,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
-      })
-  }
-
-  const sendTilGosys = (tilbakemelding: OverforGosysTilbakemelding) => {
-    setLoading(true)
-    putSendTilGosys(sakId, tilbakemelding)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        setVisGosysModal(false)
-        mutate(`api/sak/${sakId}`)
-        mutate(`api/sak/${sakId}/historikk`)
       })
   }
 
@@ -193,7 +180,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
           <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
             <span>Innvilg søknaden</span>
           </Knapp>
-          <Knapp variant="secondary" size="small" onClick={() => setVisGosysModal(true)} data-cy="btn-vis-gosys-modal">
+          <Knapp variant="secondary" size="small" onClick={visOverførGosys} data-cy="btn-vis-gosys-modal">
             Overfør til Gosys
           </Knapp>
         </Knappepanel>
@@ -208,22 +195,19 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
           onClose={() => setVisVedtakModal(false)}
         />
         <OverførGosysModal
-          open={visGosysModal}
-          årsaker={overforGosysArsaker}
-          onBekreft={(tilbakemelding) => {
-            sendTilGosys(tilbakemelding)
+          {...overførGosys}
+          onBekreft={async (tilbakemelding) => {
+            await overførGosys.onBekreft(tilbakemelding)
             logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
             logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
           }}
-          loading={loading}
-          onClose={() => setVisGosysModal(false)}
         />
       </Card>
     )
   }
 }
 
-const overforGosysArsaker: ReadonlyArray<string> = [
+const overførGosysÅrsaker: ReadonlyArray<string> = [
   'Mulighet for å legge inn mer informasjon i saken',
   'Mulighet for å gjøre skriftlige vedtak i Hotsak',
   'Personen som skal jobbe videre med saken jobber ikke i Hotsak i dag',

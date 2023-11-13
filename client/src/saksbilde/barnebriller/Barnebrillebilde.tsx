@@ -16,7 +16,7 @@ import { StatusTag } from '../komponenter/StatusTag'
 import { useBrillesak } from '../sakHook'
 import { BarnebrilleSidebar } from './BarnebrilleSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
-import RegistrerSøknad from './steg/søknadsregistrering/RegistrerSøknad'
+import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 
@@ -68,7 +68,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
         <Border>
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
-            sakID={sak.data.sakId}
+            sakId={sak.data.sakId}
             tildeltSaksbehandler={sak.data.saksbehandler}
             status={sak.data.status}
             kanTildeles={sak.kanTildeles}
@@ -119,7 +119,7 @@ export const BarnebrilleBilde = () => (
 
 const FlexWrapper = styled.div`
   display: flex;
-  margin-left: 'auto';
+  margin-left: auto;
 `
 
 const Border = styled.div`

@@ -4,14 +4,16 @@ import styled from 'styled-components'
 import { Button, Checkbox, CheckboxGroup, Modal, Textarea } from '@navikt/ds-react'
 import { Tekst } from '../felleskomponenter/typografi'
 import type { OverforGosysTilbakemelding } from '../types/types.internal'
+import { putSendTilGosys } from '../io/http'
+import { useSWRConfig } from 'swr'
 
-interface OverførGosysModalProps {
+export interface OverførGosysModalProps {
   open: boolean
   loading: boolean
   årsaker: ReadonlyArray<string>
   legend?: string
 
-  onBekreft(tilbakemelding: OverforGosysTilbakemelding): void
+  onBekreft(tilbakemelding: OverforGosysTilbakemelding): void | Promise<void>
 
   onClose(): void
 }
@@ -97,3 +99,35 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
 const OverforGosysArsakCheckboxGroup = styled(CheckboxGroup)`
   margin: var(--a-spacing-4) 0;
 `
+
+export function useOverførGosys(
+  sakId: string,
+  årsaker: ReadonlyArray<string> = ['Annet']
+): OverførGosysModalProps & {
+  onOpen(): void
+} {
+  const { mutate } = useSWRConfig()
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  return {
+    open,
+    loading,
+    årsaker,
+    onOpen() {
+      setOpen(true)
+    },
+    onClose() {
+      setOpen(false)
+    },
+    async onBekreft(tilbakemelding) {
+      setLoading(true)
+      try {
+        await putSendTilGosys(sakId, tilbakemelding)
+        await mutate(`api/sak/${sakId}`, `api/sak/${sakId}/historikk`)
+      } finally {
+        setLoading(false)
+        setOpen(false)
+      }
+    },
+  }
+}

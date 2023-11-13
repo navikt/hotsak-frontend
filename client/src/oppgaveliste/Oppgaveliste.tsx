@@ -141,7 +141,7 @@ export const Oppgaveliste: React.FC = () => {
       sortable: false,
       render: (oppgave: Oppgave) => (
         <MenyKnapp
-          sakID={oppgave.sakId}
+          sakId={oppgave.sakId}
           status={oppgave.status}
           tildeltSaksbehandler={oppgave.saksbehandler}
           kanTildeles={oppgave.kanTildeles}

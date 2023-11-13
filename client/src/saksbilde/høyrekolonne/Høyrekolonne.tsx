@@ -17,7 +17,6 @@ export const KolonneOppsett = styled.ul`
   max-width: ${hotsakHistorikkWidth};
   height: 95vh;
   margin: 0;
-  padding: 0;
   flex: 1;
   flex-shrink: 0;
   padding: 0 24px;

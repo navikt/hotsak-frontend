@@ -4,7 +4,7 @@ import { BodyShort, Link, Table, Tooltip } from '@navikt/ds-react'
 import React from 'react'
 import { Etikett } from '../../felleskomponenter/typografi'
 import { Dokument } from '../../types/types.internal'
-import { useErMockMiljø } from '../../utils/useerMockMiljø'
+import { useErMockMiljø } from '../../utils/useErMockMiljø'
 
 const ByggDummyDataUrl = React.lazy(() => import('../../mocks/mockDokument'))
 

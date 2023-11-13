@@ -49,7 +49,23 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
     {
       journalpostID,
 
-      tittel: 'Tilskudd ved kjøp av briller til barn',
+      tittel: 'NAV 10-07.34: Tilskudd ved kjøp av briller til barn',
+      brevkode: 'NAV 10-07.34',
+      vedlegg: [],
+      varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
+    },
+    {
+      journalpostID,
+
+      tittel: 'Ettersendelse: Skikkelig lang tittel som en ganske lang og ikke så veldig kort kan du på en måte si',
+      brevkode: 'NAV 10-07.34',
+      vedlegg: [],
+      varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
+    },
+    {
+      journalpostID,
+
+      tittel: 'Ettersendelse: Brilleseddel',
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],

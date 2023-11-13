@@ -7,7 +7,7 @@ import { norskTimestamp } from '../../../utils/date'
 
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import { Saksdokument } from '../../../types/types.internal'
-import { useErMockMiljø } from '../../../utils/useerMockMiljø'
+import { useErMockMiljø } from '../../../utils/useErMockMiljø'
 
 const ByggDummyDataUrl = React.lazy(() => import('../../../mocks/mockDokument'))
 

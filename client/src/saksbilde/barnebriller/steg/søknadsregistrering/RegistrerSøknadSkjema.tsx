@@ -50,9 +50,9 @@ export const RegistrerSøknadSkjema: React.FC = () => {
     setVenterPåVilkårsvurdering(true)
     postVilkårsvurdering(vurderVilkårRequest)
       .catch(() => setVenterPåVilkårsvurdering(false))
-      .then(() => {
+      .then(async () => {
+        await mutate()
         setValgtTab(StegType.VURDERE_VILKÅR)
-        mutate()
         setVenterPåVilkårsvurdering(false)
       })
   }

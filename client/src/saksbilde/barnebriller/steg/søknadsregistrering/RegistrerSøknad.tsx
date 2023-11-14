@@ -56,7 +56,6 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
             {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
           </VenstreMeny>
           <DokumentPanel />
-          {/*<Historikk />*/}
         </TreKolonner>
       </AutoFlexContainer>
     </Container>

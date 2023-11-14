@@ -60,6 +60,7 @@ export const VurderVilkår: React.FC = () => {
     if (steg === StegType.GODKJENNE) {
       setValgtTab(StegType.FATTE_VEDTAK)
     } else {
+      setLagrer(true)
       post(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`, {})
         .catch(() => setLagrer(false))
         .then(async () => {

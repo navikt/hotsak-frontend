@@ -5,7 +5,6 @@ import { Alert, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../../utils/date'
 
-import { useEffect } from 'react'
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
@@ -26,10 +25,6 @@ export const Vedtak: React.FC = () => {
   const { sak /*, isLoading,*/, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
-
-  useEffect(() => {
-    mutate()
-  }, [])
 
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(
     saksnummer!,

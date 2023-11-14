@@ -62,9 +62,9 @@ export const VurderVilkår: React.FC = () => {
     } else {
       post(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`, {})
         .catch(() => setLagrer(false))
-        .then(() => {
+        .then(async () => {
+          await mutate()
           setValgtTab(StegType.FATTE_VEDTAK)
-          mutate()
           setLagrer(false)
         })
     }

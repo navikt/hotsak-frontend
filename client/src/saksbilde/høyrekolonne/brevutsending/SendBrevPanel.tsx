@@ -207,7 +207,9 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           sendBrev()
         }}
       />
-      {visSendtBrevToast && <InfoToast>Brevet ble sendt</InfoToast>}
+      {visSendtBrevToast && (
+        <InfoToast>Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over. </InfoToast>
+      )}
     </>
   )
 })

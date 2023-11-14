@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Alert, Loader } from '@navikt/ds-react'
 
 import { Tekst } from './typografi'
+import { hotsakRegistrerSøknadHøyreKolonne } from '../GlobalStyles'
 
 const ToastView = styled.div`
   //position: fixed;
@@ -18,7 +19,10 @@ const ToastView = styled.div`
   color: white;
   width: max-content;
   margin: 1rem;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.14),
+    0 1px 18px 0 rgba(0, 0, 0, 0.12);
 
   > p:first-child {
     padding-right: 0.5rem;
@@ -27,12 +31,13 @@ const ToastView = styled.div`
 
 const InfoToastWrapper = styled.div`
   position: fixed;
-  bottom: 200px;
-  right: 100px;
+  bottom: 300px;
+  right: 10px;
   z-index: 999999;
 
   align-items: center;
   border-radius: 4px;
+  width: ${hotsakRegistrerSøknadHøyreKolonne};
 `
 
 interface ToastProps {
@@ -50,7 +55,7 @@ export const Toast: React.FC<ToastProps> = ({ children }) => {
 export const InfoToast: React.FC<ToastProps> = ({ children }) => {
   return (
     <InfoToastWrapper aria-live="polite">
-      <Alert variant="info">
+      <Alert variant="success">
         <Tekst>{children}</Tekst>
       </Alert>
     </InfoToastWrapper>

@@ -16,6 +16,7 @@ import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { useBrillesak } from '../../sakHook'
+import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
 
 export interface SendBrevProps {
   sakId: string
@@ -38,7 +39,9 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { mutate: hentBrillesak } = useBrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
+  const { hentForhåndsvisning } = useBrev()
   const debounceVentetid = 1000
+  const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
   useEffect(() => {
     if (brevtekst) {
@@ -79,7 +82,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     return {
       sakId: sakId,
       målform: valgtMålform || målform,
-      brevtype: Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER,
+      brevtype,
       data: {
         brevtekst: tekst ? tekst : fritekst,
       },
@@ -131,7 +134,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         ) : (
           <form onSubmit={(e) => e.preventDefault()}>
             <Select size="small" label="Velg brevmal">
-              <option value={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER}>Innhente opplysninger</option>
+              <option value={brevtype}>Innhente opplysninger</option>
             </Select>
             <Avstand paddingTop={6} />
             <RadioGroup
@@ -170,7 +173,15 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
               )}
             </Bakgrunnslagring>
             <Knappepanel>
-              <Button type="submit" size="small" variant="tertiary" onClick={() => setVisForhåndsvisningsModal(true)}>
+              <Button
+                type="submit"
+                size="small"
+                variant="tertiary"
+                onClick={() => {
+                  hentForhåndsvisning(sakId, brevtype)
+                  setVisForhåndsvisningsModal(true)
+                }}
+              >
                 Forhåndsvis
               </Button>
               <Button
@@ -191,10 +202,10 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         )}
         <UtgåendeBrev sakId={sakId} />
       </Panel>
-
       <ForhåndsvisningsModal
         open={visForhåndsvisningsModal}
         sakId={sakId}
+        brevtype={brevtype}
         onClose={() => {
           setVisForhåndsvisningsModal(false)
         }}

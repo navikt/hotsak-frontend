@@ -27,13 +27,14 @@ interface BrevPanelProps {
 
 export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
   const { sakId, brevtype, fullSize } = props
-  const { hentetDokument, hentForhåndsvisning, isDokumentError } = useBrev()
+  const { hentedeBrev, hentForhåndsvisning, isDokumentError } = useBrev()
+  const hentetDokument = hentedeBrev[brevtype]
 
   useEffect(() => {
-    if (sakId) {
+    if (sakId && brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
       hentForhåndsvisning(sakId, brevtype)
     }
-  }, [sakId])
+  }, [sakId, brevtype])
 
   if (!sakId) {
     return <div>Saksnummer mangler.</div>

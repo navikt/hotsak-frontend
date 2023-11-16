@@ -8,10 +8,11 @@ import { BrevPanel } from '../../barnebriller/steg/vedtak/brev/BrevPanel'
 interface ForhåndsvisningModalProps {
   open: boolean
   sakId: string
-  onClose: () => void
+  brevtype: Brevtype
+  onClose(): void
 }
 
-export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ open, sakId, onClose }) => {
+export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ open, sakId, brevtype, onClose }) => {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <Modal
@@ -25,7 +26,7 @@ export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ o
       header={{ heading: '' }}
     >
       <Modal.Body>
-        <BrevPanel sakId={sakId} brevtype={Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER} fullSize={false} />
+        <BrevPanel sakId={sakId} brevtype={brevtype} fullSize={false} />
       </Modal.Body>
     </Modal>
   )

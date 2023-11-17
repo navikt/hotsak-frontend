@@ -10,6 +10,7 @@ import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
+import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Oppgavetype, StepType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { StatusTag } from '../komponenter/StatusTag'
@@ -38,6 +39,7 @@ const Topplinje = styled(HStack)`
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isError, mutate } = useBrillesak()
   const { step } = useManuellSaksbehandlingContext()
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { showBoundary } = useErrorBoundary()
 
   if (isError) {
@@ -55,7 +57,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   return (
     <div>
       <Topplinje wrap={false}>
-        <Hotstepper steg={sak.data.steg} />
+        <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack align={'end'}>
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
@@ -83,7 +85,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   )
 })
 
-const Steg: React.FC<{ aktivtStep: StepType }> = ({ aktivtStep }) => {
+const Steg: React.FC<{ aktivtStep?: StepType }> = ({ aktivtStep }) => {
   switch (aktivtStep) {
     case StepType.REGISTRER:
       return <RegistrerSøknad />

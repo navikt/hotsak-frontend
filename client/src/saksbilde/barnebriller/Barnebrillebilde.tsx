@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { Alert, Tabs } from '@navikt/ds-react'
+import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 
 import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
 
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
-import { OppgaveStatusType, Oppgavetype, StegType } from '../../types/types.internal'
+import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
+import { OppgaveStatusType, Oppgavetype, StepType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { StatusTag } from '../komponenter/StatusTag'
 import { useBrillesak } from '../sakHook'
@@ -19,6 +20,7 @@ import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from '
 import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
+import { Hotstepper } from './stegindikator/Hotstepper'
 
 const BarnebrilleBildeContainer = styled.div`
   display: flex;
@@ -26,28 +28,23 @@ const BarnebrilleBildeContainer = styled.div`
   flex: 1;
   height: 96vh;
 `
+
+const Topplinje = styled(HStack)`
+  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
+  padding-right: 2rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+`
+
 const BarnebrilleContent: React.FC = React.memo(() => {
   const { sak, isError, mutate } = useBrillesak()
-  const { valgtTab, setValgtTab } = useManuellSaksbehandlingContext()
+  const { step } = useManuellSaksbehandlingContext()
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { showBoundary } = useErrorBoundary()
 
   if (isError) {
     showBoundary(isError)
   }
-
-  useEffect(() => {
-    if (sak) {
-      if (
-        sak.data.steg === StegType.GODKJENNE ||
-        sak.data.steg === StegType.FERDIG_BEHANDLET ||
-        sak.data.steg === StegType.REVURDERE
-      ) {
-        setValgtTab(StegType.INNHENTE_FAKTA)
-      } else {
-        setValgtTab(sak?.data.steg)
-      }
-    }
-  }, [])
 
   if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
     throw new Error(
@@ -58,14 +55,11 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <Tabs defaultValue={StegType.INNHENTE_FAKTA.toString()} value={valgtTab} loop onChange={setValgtTab}>
-      <FlexWrapper>
-        <Tabs.List>
-          <Tabs.Tab value={StegType.INNHENTE_FAKTA.toString()} label="1. Registrer søknad" />
-          <Tabs.Tab value={StegType.VURDERE_VILKÅR.toString()} label="2. Vilkår" />
-          <Tabs.Tab value={StegType.FATTE_VEDTAK.toString()} label="3. Vedtak" />
-        </Tabs.List>
-        <Border>
+    <div>
+      <Topplinje wrap={false}>
+        <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
+        <Spacer />
+        <HStack align={'end'}>
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
             sakId={sak.data.sakId}
@@ -76,8 +70,8 @@ const BarnebrilleContent: React.FC = React.memo(() => {
             knappeTekst="Meny"
             knappeIkon={<ChevronDownIcon />}
           />
-        </Border>
-      </FlexWrapper>
+        </HStack>
+      </Topplinje>
       {sak.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <Alert variant="info" size="small">
@@ -85,18 +79,22 @@ const BarnebrilleContent: React.FC = React.memo(() => {
           </Alert>
         </AlertContainerMedium>
       )}
-      <Tabs.Panel value={StegType.INNHENTE_FAKTA.toString()}>
-        <RegistrerSøknad />
-      </Tabs.Panel>
-      <Tabs.Panel value={StegType.VURDERE_VILKÅR.toString()}>
-        <VurderVilkår />
-      </Tabs.Panel>
-      <Tabs.Panel value={StegType.FATTE_VEDTAK.toString()}>
-        <Vedtak />
-      </Tabs.Panel>
-    </Tabs>
+
+      <Steg aktivtStep={step} />
+    </div>
   )
 })
+
+const Steg: React.FC<{ aktivtStep?: StepType }> = ({ aktivtStep }) => {
+  switch (aktivtStep) {
+    case StepType.REGISTRER:
+      return <RegistrerSøknad />
+    case StepType.VILKÅR:
+      return <VurderVilkår />
+    case StepType.FATTE_VEDTAK:
+      return <Vedtak />
+  }
+}
 
 const LasterBarnebrilleBilde = () => (
   <BarnebrilleBildeContainer>
@@ -108,29 +106,13 @@ export const BarnebrilleBilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
     <React.Suspense fallback={<LasterBarnebrilleBilde />}>
       <ManuellSaksbehandlingProvider>
-        <MainGrid>
+        <HGrid columns={`auto ${brilleSidebarBredde} `}>
           <BarnebrilleContent />
           <BarnebrilleSidebar />
-        </MainGrid>
+        </HGrid>
       </ManuellSaksbehandlingProvider>
     </React.Suspense>
   </ErrorBoundary>
 )
-
-const FlexWrapper = styled.div`
-  display: flex;
-  margin-left: auto;
-`
-
-const Border = styled.div`
-  display: flex;
-  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
-  padding-right: 2rem;
-`
-
-const MainGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr ${brilleSidebarBredde};
-`
 
 export default BarnebrilleBilde

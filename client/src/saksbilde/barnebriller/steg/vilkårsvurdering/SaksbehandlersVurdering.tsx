@@ -4,7 +4,7 @@ import { Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { StegType, Vilkår } from '../../../../types/types.internal'
+import { StepType, Vilkår } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
 import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
@@ -82,12 +82,12 @@ export function SaksbehandlersVurdering({
 }
 
 const RedigerGrunnlagLink = () => {
-  const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { setStep } = useManuellSaksbehandlingContext()
   return (
     <Avstand paddingTop={4}>
       <Detail>
         Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
-        <Link href="#" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
+        <Link href="#" onClick={() => setStep(StepType.REGISTRER)}>
           Registrer søknad
         </Link>
       </Detail>

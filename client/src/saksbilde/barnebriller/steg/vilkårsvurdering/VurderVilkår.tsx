@@ -11,7 +11,7 @@ import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { StegType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
+import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
@@ -23,7 +23,7 @@ import { metadataFor } from './vilkårMetada'
 export const VurderVilkår: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, mutate } = useBrillesak()
-  const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { setStep } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState<boolean>(false)
@@ -58,14 +58,14 @@ export const VurderVilkår: React.FC = () => {
 
   function gåTilNesteSteg(sakId: number | string, steg: StegType) {
     if (steg === StegType.GODKJENNE) {
-      setValgtTab(StegType.FATTE_VEDTAK)
+      setStep(StepType.FATTE_VEDTAK)
     } else {
       setLagrer(true)
       post(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`, {})
         .catch(() => setLagrer(false))
         .then(async () => {
           await mutate()
-          setValgtTab(StegType.FATTE_VEDTAK)
+          setStep(StepType.FATTE_VEDTAK)
           setLagrer(false)
         })
     }
@@ -181,25 +181,31 @@ export const VurderVilkår: React.FC = () => {
             })}
           </Table.Body>
         </Table>
-        <Knappepanel>
-          <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.INNHENTE_FAKTA)}>
-            Forrige
-          </Button>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => {
-              if (valider()) {
-                gåTilNesteSteg(sak.data.sakId, sak.data.steg)
-              }
-              setSubmitAttempt(true)
-            }}
-            disabled={lagrer}
-            loading={lagrer}
-          >
-            Neste
-          </Button>
-        </Knappepanel>
+        {
+          <Knappepanel>
+            <Button variant="secondary" size="small" onClick={() => setStep(StepType.REGISTRER)}>
+              Forrige
+            </Button>
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => {
+                if (saksbehandlerKanRedigereBarnebrillesak) {
+                  if (valider()) {
+                    gåTilNesteSteg(sak.data.sakId, sak.data.steg)
+                  }
+                  setSubmitAttempt(true)
+                } else {
+                  setStep(StepType.FATTE_VEDTAK)
+                }
+              }}
+              disabled={lagrer}
+              loading={lagrer}
+            >
+              Neste
+            </Button>
+          </Knappepanel>
+        }
       </Panel>
     </>
   )

@@ -13,7 +13,7 @@ import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { beløp } from '../../../../formaters/beløp'
-import { StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -27,7 +27,7 @@ const Container = styled.div`
 export const RegistrerSøknadLesevisning: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, isLoading } = useBrillesak()
-  const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { setStep } = useManuellSaksbehandlingContext()
   const { dokumenter } = useJournalposter()
 
   if (isLoading) {
@@ -166,13 +166,21 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             )}
           </Avstand>
         </>
-        <Avstand paddingLeft={2}>
-          <Knappepanel>
-            <Button variant="primary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
-              Neste
-            </Button>
-          </Knappepanel>
-        </Avstand>
+        {
+          <Avstand paddingLeft={2}>
+            <Knappepanel>
+              <Button
+                variant="primary"
+                size="small"
+                onClick={() => {
+                  setStep(StepType.VILKÅR)
+                }}
+              >
+                Neste
+              </Button>
+            </Knappepanel>
+          </Avstand>
+        }
       </Avstand>
     </Container>
   )

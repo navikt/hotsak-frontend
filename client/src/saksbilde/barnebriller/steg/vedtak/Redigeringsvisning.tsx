@@ -18,7 +18,7 @@ import {
   Brevtype,
   MålformType,
   OppgaveStatusType,
-  StegType,
+  StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -33,13 +33,14 @@ interface RedigeringsvisningProps {
 
 export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => {
   const { sak, mutate } = props
-  const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { setStep } = useManuellSaksbehandlingContext()
   const [loading, setLoading] = useState(false)
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { data } = useBrevtekst(sak.sakId)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [lagrer, setLagrer] = useState(false)
+
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const brevtekst = data?.data.brevtekst
   const [fritekst, setFritekst] = useState(brevtekst || '')
@@ -47,7 +48,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
 
   const debounceVentetid = 1000
 
-  const { data: saksdokumenter, isLoading: henterSaksdokumenter } = useSaksdokumenter(
+  const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
@@ -64,10 +65,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
     sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const visFritekstFelt =
-    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
-    //visSendTilGodkjenning &&
-    !manglerPåkrevdEtterspørreOpplysningerBrev //&&
-  //sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !manglerPåkrevdEtterspørreOpplysningerBrev
 
   useEffect(() => {
     if (brevtekst) {
@@ -111,7 +109,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
   const sendTilGodkjenning = () => {
     setLoading(true)
     post(`/api/sak/${sak.sakId}/kontroll`, {})
-      .catch((e) => {
+      .catch(() => {
         setLoading(false)
 
         // TODO Håndtere feil her
@@ -190,11 +188,12 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
             </Alert>
           )*/}
       {
-        /*visSendTilGodkjenning && */ !manglerPåkrevdEtterspørreOpplysningerBrev && (
-          <Knappepanel>
-            <Button variant="secondary" size="small" onClick={() => setValgtTab(StegType.VURDERE_VILKÅR)}>
-              Forrige
-            </Button>
+        /*visSendTilGodkjenning && */
+        <Knappepanel>
+          <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+            Forrige
+          </Button>
+          {!manglerPåkrevdEtterspørreOpplysningerBrev && (
             <Button
               loading={loading}
               disabled={loading}
@@ -209,8 +208,8 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
             >
               Send til godkjenning
             </Button>
-          </Knappepanel>
-        )
+          )}
+        </Knappepanel>
       }
     </>
   )

@@ -40,6 +40,6 @@ const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) 
 
 const TagWrapper = styled.div`
   white-space: nowrap;
-  margin: auto;
-  padding-right: var(--a-spacing-4);
+  //margin: auto;
+  //padding-right: var(--a-spacing-4);
 `

@@ -13,7 +13,7 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
-import { Brilleseddel, MålformType, Oppgavetype, RegistrerSøknadData, StegType } from '../../../../types/types.internal'
+import { Brilleseddel, MålformType, Oppgavetype, RegistrerSøknadData, StepType } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -28,7 +28,7 @@ const Container = styled.div`
 export const RegistrerSøknadSkjema: React.FC = () => {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, mutate } = useBrillesak()
-  const { setValgtTab } = useManuellSaksbehandlingContext()
+  const { setStep } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const { dokumenter } = useJournalposter()
 
@@ -52,7 +52,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       .catch(() => setVenterPåVilkårsvurdering(false))
       .then(async () => {
         await mutate()
-        setValgtTab(StegType.VURDERE_VILKÅR)
+        setStep(StepType.VILKÅR)
         setVenterPåVilkårsvurdering(false)
       })
   }

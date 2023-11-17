@@ -1,16 +1,18 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Alert, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
+import { Alert, Button, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../../utils/date'
 
 import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { Brevtype, OppgaveStatusType, StegType, VilkårsResultat } from '../../../../types/types.internal'
+import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { useBrillesak } from '../../../sakHook'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
@@ -25,7 +27,7 @@ export const Vedtak: React.FC = () => {
   const { sak /*, isLoading,*/, mutate } = useBrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
-
+  const { setStep } = useManuellSaksbehandlingContext()
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(
     saksnummer!,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
@@ -99,6 +101,13 @@ export const Vedtak: React.FC = () => {
                 {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
               </Alert>
             </Avstand>
+          )}
+          {!saksbehandlerKanRedigereBarnebrillesak && (
+            <Knappepanel>
+              <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+                Forrige
+              </Button>
+            </Knappepanel>
           )}
         </Panel>
       )}

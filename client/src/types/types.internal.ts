@@ -213,6 +213,12 @@ export enum StegType {
   FERDIG_BEHANDLET = 'FERDIG_BEHANDLET',
 }
 
+export enum StepType {
+  REGISTRER = 1,
+  VILKÅR = 2,
+  FATTE_VEDTAK = 3,
+}
+
 export interface BeregnSatsResponse {
   sats: SatsType
   satsBeskrivelse: string

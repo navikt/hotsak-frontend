@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react'
 
-import { HøyrekolonneTabs } from '../../types/types.internal'
+import { HøyrekolonneTabs, StepType } from '../../types/types.internal'
 
 type ManuellSaksbehandlingContextType = {
-  valgtTab: string
-  setValgtTab: (valgtTab: string) => void
+  step: number
+  setStep: (steg: number) => void
   valgtSidebarTab: string
   setValgtSidebarTab: (valgtSidebareTab: string) => void
 }
 
 const initialState = {
-  valgtTab: '',
+  step: StepType.REGISTRER,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setValgtTab: () => {},
+  setStep: () => {},
   valgtSidebarTab: HøyrekolonneTabs.SAKSHISTORIKK.toString(),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setValgtSidebarTab: () => {},
@@ -21,11 +21,11 @@ const initialState = {
 const ManuellSaksbehandlingContext = React.createContext<ManuellSaksbehandlingContextType>(initialState)
 
 const ManuellSaksbehandlingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [valgtTab, setValgtTab] = useState(initialState.valgtTab)
   const [valgtSidebarTab, setValgtSidebarTab] = useState(initialState.valgtSidebarTab)
+  const [step, setStep] = useState(initialState.step)
 
   return (
-    <ManuellSaksbehandlingContext.Provider value={{ valgtTab, setValgtTab, valgtSidebarTab, setValgtSidebarTab }}>
+    <ManuellSaksbehandlingContext.Provider value={{ step, setStep, valgtSidebarTab, setValgtSidebarTab }}>
       {children}
     </ManuellSaksbehandlingContext.Provider>
   )

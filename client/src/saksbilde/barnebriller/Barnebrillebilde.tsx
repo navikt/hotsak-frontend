@@ -85,7 +85,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
   )
 })
 
-const Steg: React.FC<{ aktivtStep?: StepType }> = ({ aktivtStep }) => {
+const Steg: React.FC<{ aktivtStep: StepType }> = ({ aktivtStep }) => {
   switch (aktivtStep) {
     case StepType.REGISTRER:
       return <RegistrerSøknad />

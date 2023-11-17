@@ -1,37 +1,57 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 
-import { Ressurs } from '../../types/types.internal'
+import { Brevtype, Ressurs } from '../../types/types.internal'
 import { byggTomRessurs } from './ressursFunksjoner'
 
-type ValgtDokumentType = {
+interface ValgtDokumentType {
   journalpostID: string
   dokumentID: string
 }
 
-type DokumentContextType = {
+interface DokumentContextType {
   valgtDokument: ValgtDokumentType
-  setValgtDokument: (valgtDokument: ValgtDokumentType) => void
+  setValgtDokument(valgtDokument: ValgtDokumentType): void
   hentetDokument: Ressurs<string>
-  settHentetDokument: (hentetDokument: Ressurs<string>) => void
+  settHentetDokument(hentetDokument: Ressurs<string>): void
+  hentedeBrev: Record<Brevtype, Ressurs<string>>
+  settHentetBrev(brevtype: Brevtype, hentetBrev: Ressurs<string>): void
 }
 
-const initialState = {
+const initialState: DokumentContextType = {
   valgtDokument: { journalpostID: '', dokumentID: '' },
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setValgtDokument: () => {},
+  setValgtDokument() {},
   hentetDokument: byggTomRessurs<string>(),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  settHentetDokument: () => {},
+  settHentetDokument() {},
+  hentedeBrev: {
+    [Brevtype.BARNEBRILLER_VEDTAK]: byggTomRessurs<string>(),
+    [Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER]: byggTomRessurs<string>(),
+  },
+  settHentetBrev() {},
 }
 
 const DokumentContext = React.createContext<DokumentContextType>(initialState)
 
 const DokumentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [valgtDokument, setValgtDokument] = useState(initialState.valgtDokument)
-  const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs<string>())
+  const [valgtDokument, setValgtDokument] = useState<DokumentContextType['valgtDokument']>(initialState.valgtDokument)
+  const [hentetDokument, settHentetDokument] = useState(initialState.hentetDokument)
+  const [hentedeBrev, setHentedeBrev] = useState(initialState.hentedeBrev)
+
+  const settHentetBrev = useCallback<DokumentContextType['settHentetBrev']>(
+    (brevtype, hentetBrev) => setHentedeBrev({ ...hentedeBrev, [brevtype]: hentetBrev }),
+    [hentedeBrev]
+  )
 
   return (
-    <DokumentContext.Provider value={{ valgtDokument, setValgtDokument, hentetDokument, settHentetDokument }}>
+    <DokumentContext.Provider
+      value={{
+        valgtDokument,
+        setValgtDokument,
+        hentetDokument,
+        settHentetDokument,
+        hentedeBrev,
+        settHentetBrev,
+      }}
+    >
       {children}
     </DokumentContext.Provider>
   )

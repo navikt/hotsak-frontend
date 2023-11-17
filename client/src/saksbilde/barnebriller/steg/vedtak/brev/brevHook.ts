@@ -15,33 +15,32 @@ interface BrevResponse {
   //isLoading: boolean
   //isError: any
   isDokumentError: any
-  hentForhåndsvisning: (sakId: number | string, brevtype?: Brevtype) => any
-  nullstillDokument: () => any
-  hentetDokument: any
-  settHentetDokument: any
+  hentForhåndsvisning(sakId: number | string, brevtype?: Brevtype): any
+  nullstillDokument(brevtype: Brevtype): any
+  hentedeBrev: Record<Brevtype, Ressurs<string>>
 }
 
 export function useBrev(brevressurs?: Ressurs<string>, brevRessursError?: boolean): BrevResponse {
-  const { hentetDokument, settHentetDokument } = useDokumentContext()
+  const { hentedeBrev, settHentetBrev } = useDokumentContext()
   const [isDokumentError, setIsDokumentError] = useState<any>(brevRessursError || null)
 
-  const nullstillDokument = () => {
-    settHentetDokument(byggTomRessurs())
+  const nullstillDokument = (brevtype: Brevtype) => {
+    settHentetBrev(brevtype, byggTomRessurs())
   }
 
   const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {
-    settHentetDokument(byggHenterRessurs())
+    settHentetBrev(brevtype, byggHenterRessurs())
     setIsDokumentError(null)
 
     const response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
 
     response
       .then((response: PDFResponse) => {
-        settHentetDokument(byggDataRessurs(window.URL.createObjectURL(response.data)))
+        settHentetBrev(brevtype, byggDataRessurs(window.URL.createObjectURL(response.data)))
         setIsDokumentError(null)
       })
       .catch((error: any) => {
-        settHentetDokument(byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
+        settHentetBrev(brevtype, byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
         setIsDokumentError(error)
       })
   }
@@ -53,8 +52,7 @@ export function useBrev(brevressurs?: Ressurs<string>, brevRessursError?: boolea
     isDokumentError,
     hentForhåndsvisning,
     nullstillDokument,
-    hentetDokument,
-    settHentetDokument,
+    hentedeBrev,
     //mutate,
   }
 }

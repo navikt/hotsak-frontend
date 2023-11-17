@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 
-import { Alert, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
+import { Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
 
-import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
@@ -74,17 +73,6 @@ export const VurderVilkår: React.FC = () => {
   if (!sak) {
     return <Feilmelding>{`Fant ikke sak med saksnummer ${saksnummer}`}</Feilmelding>
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
-
-  if (sak?.data.steg === StegType.INNHENTE_FAKTA) {
-    return (
-      <AlertContainer>
-        <Alert variant="info" size="small">
-          {`Denne saken har ikke fullført steget "Registrer søknad" enda. Resultat av vilkårsvurderingen kan ikke vises
-          før det er fullført.`}
-        </Alert>
-      </AlertContainer>
-    )
-  }
 
   if (!sak.data?.vilkårsvurdering) {
     return <Feilmelding>{`Vilkårsvurderingen manlgler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>

@@ -5,7 +5,6 @@ import { Alert, Button, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds
 
 import { formaterDato } from '../../../../utils/date'
 
-import { AlertContainer } from '../../../../felleskomponenter/AlertContainer'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
@@ -34,27 +33,6 @@ export const Vedtak: React.FC = () => {
   )
 
   if (!sak) return <div>Fant ikke saken</div> // TODO: Håndere dette bedre/høyrere opp i komponent treet.
-
-  if (sak.data.steg === StegType.INNHENTE_FAKTA) {
-    return (
-      <AlertContainer>
-        <Alert variant="info" size="small">
-          {`Denne saken har ikke fullført steget "Registrer søknad" enda. Denne siden kan ikke vises før det er fullført.`}
-        </Alert>
-      </AlertContainer>
-    )
-  }
-
-  if (sak.data.steg === StegType.VURDERE_VILKÅR) {
-    return (
-      <AlertContainer>
-        <Alert variant="info" size="small">
-          {`Denne saken har ikke fullført steget "Vilkårsvurdering" enda. Vedtaket kan ikke fattes før vilkårsvurdering er`}
-          fullført.
-        </Alert>
-      </AlertContainer>
-    )
-  }
 
   const status = sak.data.vilkårsvurdering!.resultat
   const alertType = alertVariant(status)

@@ -1,22 +1,22 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useSwr from 'swr'
 
-import { Button, Detail, Heading, Loader, Panel, Radio, RadioGroup, Select, Skeleton, Textarea } from '@navikt/ds-react'
+import { Button, Heading, Panel, Radio, RadioGroup, Select, Skeleton } from '@navikt/ds-react'
 
 import { postBrevutkast, postBrevutsending } from '../../../io/http'
 
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
 import { InfoToast } from '../../../felleskomponenter/Toast'
-import { Bakgrunnslagring } from '../../../felleskomponenter/brev/Bakgrunnslagring'
+import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
+import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
+import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
+import { useBrillesak } from '../../sakHook'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
-import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { useBrillesak } from '../../sakHook'
-import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
 
 export interface SendBrevProps {
   sakId: string
@@ -31,7 +31,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
-  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
@@ -40,7 +39,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { mutate: hentBrillesak } = useBrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
-  const debounceVentetid = 1000
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
   useEffect(() => {
@@ -108,17 +106,6 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     }, 3000)
   }
 
-  const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setFritekst(event.target.value)
-    clearTimeout(timer)
-
-    const newTimer = setTimeout(() => {
-      lagreUtkast(event.target.value)
-    }, debounceVentetid)
-
-    setTimer(newTimer)
-  }
-
   const lagreUtkast = async (tekst: string, valgtMålform?: MålformType) => {
     setLagrer(true)
     await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
@@ -150,28 +137,15 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
               <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
             </RadioGroup>
             <Avstand paddingTop={6} />
-            <Textarea
-              minRows={5}
-              maxRows={20}
+            <Fritekst
               label="Fritekst"
-              error={valideringsFeil}
-              description="Beskriv hva som mangler av dokumentasjon"
-              size="small"
-              value={fritekst}
-              onChange={(event) => onTextChange(event)}
+              beskrivelse="Beskriv hva som mangler av dokumentasjon"
+              fritekst={fritekst}
+              valideringsfeil={valideringsFeil}
+              onLagre={lagreUtkast}
+              lagrer={lagrer}
+              onTextChange={setFritekst}
             />
-            <Bakgrunnslagring>
-              {lagrer && (
-                <>
-                  <span>
-                    <Loader size="xsmall" />
-                  </span>
-                  <span>
-                    <Detail>Lagrer</Detail>
-                  </span>
-                </>
-              )}
-            </Bakgrunnslagring>
             <Knappepanel>
               <Button
                 type="submit"

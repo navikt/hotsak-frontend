@@ -3,8 +3,6 @@ import styled from 'styled-components'
 
 import { Detail, Loader, Textarea } from '@navikt/ds-react'
 
-import { MålformType } from '../../types/types.internal'
-
 export const Bakgrunnslagring = styled.div`
   display: flex;
 
@@ -18,24 +16,27 @@ export const Bakgrunnslagring = styled.div`
 `
 
 export const Fritekst = ({
-  sakId,
-  tekst,
-  målform,
+  label,
+  fritekst,
+  beskrivelse,
+  valideringsfeil,
   onLagre,
+  lagrer,
+  onTextChange,
 }: {
-  sakId: string
-  målform: MålformType
-  tekst?: string
+  label: string
+  fritekst: string
+  beskrivelse: string
+  valideringsfeil?: string
   onLagre: /*TODO*/ any
+  lagrer: boolean
+  onTextChange: any
 }) => {
-  const [fritekst, setFritekst] = useState(tekst || '')
-  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const [lagrer, setLagrer] = useState(false)
   const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const debounceVentetid = 1000
 
-  const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setFritekst(event.target.value)
+  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    onTextChange(event.target.value)
     clearTimeout(timer)
 
     const newTimer = setTimeout(() => {
@@ -44,17 +45,18 @@ export const Fritekst = ({
 
     setTimer(newTimer)
   }
+
   return (
     <>
       <Textarea
         minRows={5}
         maxRows={20}
-        label="Fritekst"
-        error={valideringsFeil}
-        description="Beskriv hva som mangler av opplysninger"
+        label={label}
+        error={valideringsfeil}
+        description={beskrivelse}
         size="small"
         value={fritekst}
-        onChange={(event) => onTextChange(event)}
+        onChange={(event) => onChange(event)}
       />
       <Bakgrunnslagring>
         {lagrer && (

@@ -1,15 +1,15 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import useSWR from 'swr'
 
-import { Button, Detail, Loader, Textarea } from '@navikt/ds-react'
+import { Button, Detail } from '@navikt/ds-react'
 
 import { post, postBrevutkast } from '../../../../io/http'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
-import { Bakgrunnslagring } from '../../../../felleskomponenter/brev/Bakgrunnslagring'
+import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import {
   Barnebrillesak,
@@ -38,15 +38,11 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { data } = useBrevtekst(sak.sakId)
-  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [lagrer, setLagrer] = useState(false)
-
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const brevtekst = data?.data.brevtekst
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const { hentForhåndsvisning } = useBrev()
-
-  const debounceVentetid = 1000
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
@@ -120,30 +116,19 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
       })
   }
 
-  const onTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setFritekst(event.target.value)
-    clearTimeout(timer)
-
-    const newTimer = setTimeout(() => {
-      lagreUtkast(event.target.value)
-    }, debounceVentetid)
-
-    setTimer(newTimer)
-  }
   return (
     <>
       {visFritekstFelt && (
         <>
           <Avstand paddingTop={6} />
-          <Textarea
-            minRows={5}
-            maxRows={20}
+          <Fritekst
             label="Beskriv hvilke opplysninger som mangler"
-            error={valideringsFeil}
-            description="Vises i brevet som en del av begrunnelsen for avslaget"
-            size="small"
-            value={fritekst}
-            onChange={(event) => onTextChange(event)}
+            beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
+            valideringsfeil={valideringsFeil}
+            fritekst={fritekst}
+            onLagre={lagreUtkast}
+            lagrer={lagrer}
+            onTextChange={setFritekst}
           />
           <Container>
             <Button
@@ -156,18 +141,6 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
             >
               Forhåndsvis
             </Button>
-            <Bakgrunnslagring style={{ marginLeft: 'auto' }}>
-              {lagrer && (
-                <>
-                  <span>
-                    <Loader size="xsmall" />
-                  </span>
-                  <span>
-                    <Detail>Lagrer</Detail>
-                  </span>
-                </>
-              )}
-            </Bakgrunnslagring>
           </Container>
         </>
       )}
@@ -182,35 +155,27 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
         </SkjemaAlert>
       )}
       <Avstand paddingBottom={6} />
-      {/*visAlertGodkjenning && (
-            <Alert variant="info" size="small">
-              {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
-            </Alert>
-          )*/}
-      {
-        /*visSendTilGodkjenning && */
-        <Knappepanel>
-          <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
-            Forrige
+      <Knappepanel>
+        <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+          Forrige
+        </Button>
+        {!manglerPåkrevdEtterspørreOpplysningerBrev && (
+          <Button
+            loading={loading}
+            disabled={loading}
+            size="small"
+            variant="primary"
+            onClick={() => {
+              setSubmitAttempt(true)
+              if (!visFritekstFelt || valider()) {
+                sendTilGodkjenning()
+              }
+            }}
+          >
+            Send til godkjenning
           </Button>
-          {!manglerPåkrevdEtterspørreOpplysningerBrev && (
-            <Button
-              loading={loading}
-              disabled={loading}
-              size="small"
-              variant="primary"
-              onClick={() => {
-                setSubmitAttempt(true)
-                if (!visFritekstFelt || valider()) {
-                  sendTilGodkjenning()
-                }
-              }}
-            >
-              Send til godkjenning
-            </Button>
-          )}
-        </Knappepanel>
-      }
+        )}
+      </Knappepanel>
     </>
   )
 }

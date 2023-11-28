@@ -32,7 +32,7 @@ const BarnebrilleBildeContainer = styled.div`
 const Topplinje = styled(HStack)`
   box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
   padding-right: 2rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.5em;
   padding-top: 0.5rem;
 `
 
@@ -59,7 +59,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
       <Topplinje wrap={false}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
-        <HStack align={'end'}>
+        <HStack align={'center'}>
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
             sakId={sak.data.sakId}

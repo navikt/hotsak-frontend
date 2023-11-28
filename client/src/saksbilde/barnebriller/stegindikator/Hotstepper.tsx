@@ -1,8 +1,9 @@
-import { Box, Stepper } from '@navikt/ds-react'
+import { Box } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import { StegType, StepType } from '../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../ManuellSaksbehandlingTabContext'
+import { Stepper } from '../stepper'
 
 export const Hotstepper: React.FC<{ steg: StegType; lesemodus: boolean }> = ({ steg, lesemodus }) => {
   const { step, setStep } = useManuellSaksbehandlingContext()
@@ -48,5 +49,5 @@ export const Hotstepper: React.FC<{ steg: StegType; lesemodus: boolean }> = ({ s
 }
 
 const StepperContainer = styled(Box)`
-  width: 350px;
+  width: 400px;
 `

@@ -144,7 +144,7 @@ export const VurderVilkår: React.FC = () => {
                     />
                   }
                 >
-                  <Table.DataCell scope="row" style={{ width: '180px', verticalAlign: 'top' }}>
+                  <Table.DataCell scope="row" style={{ width: '180px' }}>
                     <Resultat vilkårOppfylt={vilkårOppfylt} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '500px' }}>

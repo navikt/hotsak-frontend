@@ -79,7 +79,7 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
           'hot-stepper__step--non-interactive': !isInteractive,
           /*"hot-stepper__step--completed": completed,*/
         })}
-        onClick={(e) => {
+        onClick={(e: any) => {
           isInteractive && context.onStepChange(unsafe_index + 1)
           rest?.onClick?.(e)
         }}

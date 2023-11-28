@@ -96,7 +96,7 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
     {
       etikett: 'Forskriften trådte i kraft',
       lagtInnAvSaksbehandler: false,
-      beskrivelse: 'Forskrift om stønad til briller til barn',
+      beskrivelse: 'Forskrift om stønad til briller til barn.',
     },
   ],
   [
@@ -104,15 +104,18 @@ export const grunnlagMetadata = new Map<string, GrunnlagMetadata>([
     {
       etikett: 'Fristen på 6 måneder gjelder fra',
       lagtInnAvSaksbehandler: false,
-      beskrivelse: 'Lanseringsdato for Søknad om tilskudd ved kjøp av briller til barn',
+      beskrivelse: 'Lanseringsdato for søknad om tilskudd ved kjøp av briller til barn.',
     },
   ],
   [
     'forenkletSjekkResultat',
     {
-      etikett: 'Forenklet sjekk av medlemskap på bestillingsdato',
+      etikett: 'Forenklet sjekk av medlemskap',
       lagtInnAvSaksbehandler: false,
-      beskrivelse: 'Automatisk sjekk',
+      beskrivelse: 'Automatisk sjekk.',
+      transform(verdi) {
+        return verdi === 'Uavklart medlemskap - må utredes av saksbehandler' ? 'Oppfylt' : verdi
+      },
     },
   ],
 

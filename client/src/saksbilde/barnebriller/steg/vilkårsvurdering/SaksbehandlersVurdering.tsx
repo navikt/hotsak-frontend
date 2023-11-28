@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
@@ -50,16 +50,17 @@ export function SaksbehandlersVurdering({
             })
             .map((grunnlagKey: string) => {
               const metadata = grunnlagMetadata.get(grunnlagKey)
-              const verdi = grunnlag[grunnlagKey]
+              const transform = metadata?.transform
+              const verdi = transform ? transform(grunnlag[grunnlagKey]) : grunnlag[grunnlagKey]
 
               return (
                 <Avstand paddingBottom={4} key={grunnlagKey}>
                   <Label as="p" size="small">
                     {metadata?.etikett}
                   </Label>
-                  <Label as="p" size="small">
+                  <BodyShort as="p" size="small">
                     {verdi}
-                  </Label>
+                  </BodyShort>
                   <Detail>{metadata?.beskrivelse}</Detail>
                   {metadata?.lagtInnAvSaksbehandler && (
                     <>

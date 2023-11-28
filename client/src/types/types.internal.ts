@@ -102,6 +102,7 @@ export interface GrunnlagMetadata {
   etikett: string
   lagtInnAvSaksbehandler: boolean
   beskrivelse: string
+  transform?(verdi: string | number): string | number
 }
 
 export type GrunnlagType = keyof Grunnlag

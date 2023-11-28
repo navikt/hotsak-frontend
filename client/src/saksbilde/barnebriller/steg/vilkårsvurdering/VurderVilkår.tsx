@@ -148,7 +148,7 @@ export const VurderVilkår: React.FC = () => {
                     <Resultat vilkårOppfylt={vilkårOppfylt} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '500px' }}>
-                    {beskrivelse}
+                    <Brødtekst>{beskrivelse}</Brødtekst>
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '300px' }}>
                     {vilkårMetadata?.basertPå.map((metadata) => (
@@ -159,10 +159,10 @@ export const VurderVilkår: React.FC = () => {
                     <VurdertAv vilkårOppfylt={vilkårOppfylt} resultatSaksbehandler={manuellVurdering?.vilkårOppfylt} />
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    {manuellVurdering?.begrunnelse || '-'}
+                    <Brødtekst>{manuellVurdering?.begrunnelse || '-'}</Brødtekst>
                   </Table.DataCell>
                   <Table.DataCell scope="row" style={{ width: '150px' }}>
-                    {lovReferanse}
+                    <Brødtekst>{lovReferanse}</Brødtekst>
                   </Table.DataCell>
                 </Table.ExpandableRow>
               )

@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Button, Heading, Loader } from '@navikt/ds-react'
+import { Button, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering } from '../../../../io/http'
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
@@ -22,7 +22,6 @@ import { Målform } from './skjemaelementer/Målform'
 
 const Container = styled.div`
   overflow: auto;
-  padding-top: var(--a-spacing-6);
 `
 
 export const RegistrerSøknadSkjema: React.FC = () => {
@@ -99,11 +98,8 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   return (
     <Container>
-      <Heading level="1" size="xsmall" spacing>
-        Registrer søknad
-      </Heading>
       <Dokumenter dokumenter={dokumenter} />
-      <Avstand marginTop={4}>
+      <Avstand marginTop={4} paddingLeft={2} paddingRight={2}>
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit((data) => {

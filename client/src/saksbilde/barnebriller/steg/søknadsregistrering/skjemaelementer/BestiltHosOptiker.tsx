@@ -1,9 +1,10 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { HStack, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { Vurdering, VilkårsResultat } from '../../../../../types/types.internal'
+import { Etikett } from '../../../../../felleskomponenter/typografi'
+import { VilkårsResultat, Vurdering } from '../../../../../types/types.internal'
 
 export function BestiltHosOptiker() {
   const {
@@ -17,17 +18,20 @@ export function BestiltHosOptiker() {
 
   return (
     <Avstand paddingTop={8}>
-      <Heading level="2" size="xsmall" spacing>
-        § 2 Brillen må være bestilt hos optiker
-      </Heading>
       <Controller
         name="bestiltHosOptiker.vilkårOppfylt"
         control={control}
         rules={{ required: 'Velg en verdi' }}
         render={({ field }) => (
           <RadioGroup
-            legend="Er brillen bestilt hos optiker"
-            description="For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne."
+            legend={
+              <HStack wrap={false} gap="2" align={'center'}>
+                <Etikett>§2 Er brillen bestilt hos optiker?</Etikett>
+                <HelpText>
+                  For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).
+                </HelpText>
+              </HStack>
+            }
             size="small"
             {...field}
             error={errors.bestiltHosOptiker?.vilkårOppfylt?.message}

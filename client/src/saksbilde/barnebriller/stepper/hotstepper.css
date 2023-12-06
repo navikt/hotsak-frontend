@@ -4,11 +4,11 @@
   --navds-stepper-line-length: 1rem;
 
   color: var(--ac-stepper-text, var(--a-surface-action));
-  font-weight: 600;
+  font-weight: normal;
   line-height: 1;
   list-style: none;
-  padding-left: 0;
-  margin: 0;
+  /*   padding-left: 0;
+  margin: 0; */
 }
 
 .hot-stepper--horizontal {
@@ -101,6 +101,7 @@ button.hot-stepper__step {
   grid-column: circle;
   display: inline-block;
   white-space: nowrap;
+  font-weight: 100;
   /*place-items: center; */
   flex-shrink: 0;
   /* width: var(--navds-stepper-circle-size);
@@ -194,6 +195,8 @@ button.hot-stepper__step {
 /* Active step */
 :where(.hot-stepper__step--active) .hot-stepper__text__only {
   color: var(--ac-stepper-active, var(--a-text-action-selected));
+  border-style: solid;
+  font-weight: bolder;
 }
 
 :where(.hot-stepper__step:hover) .hot-stepper__text__only {

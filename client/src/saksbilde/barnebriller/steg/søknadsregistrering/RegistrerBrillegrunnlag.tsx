@@ -2,8 +2,10 @@ import 'date-fns'
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
+import { HStack, HelpText } from '@navikt/ds-react'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Tekstfelt } from '../../../../felleskomponenter/skjema/Tekstfelt'
+import { Etikett } from '../../../../felleskomponenter/typografi'
 import { useBrillesak } from '../../../sakHook'
 import { Utbetalingsmottaker } from './Utbetalingsmottaker'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
@@ -20,29 +22,36 @@ export const RegistrerBrillegrunnlag: React.FC = () => {
   } = useFormContext<{ brillepris: string }>()
 
   return (
-    <Avstand paddingLeft={2} paddingRight={2}>
+    <>
       <Avstand paddingTop={6}>
         <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
       </Avstand>
+      <BrillestyrkeForm />
       <Avstand paddingTop={4}>
         <Bestillingsdato />
       </Avstand>
       <Avstand paddingTop={4}>
         <Tekstfelt
           id="brillepris"
-          label="Pris på brillen"
-          description="Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell synsundersøkelse skal ikke inkluderes i prisen."
+          label={
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>Pris på brillen</Etikett>
+              <HelpText>
+                Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
+                synsundersøkelse skal ikke inkluderes i prisen.
+              </HelpText>
+            </HStack>
+          }
           error={errors?.brillepris?.message}
           size="small"
           {...register('brillepris', {
-            //required: 'Du må oppgi en brillepris',
             validate: validator(validering.beløp, 'Ugyldig brillepris'),
           })}
         />
       </Avstand>
-      <BrillestyrkeForm />
+
       <KomplettBrille />
       <BestiltHosOptiker />
-    </Avstand>
+    </>
   )
 }

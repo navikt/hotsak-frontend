@@ -1,6 +1,7 @@
-import { Alert, BodyLong, Heading } from '@navikt/ds-react'
+import { Alert, BodyLong } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
+import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
 import { beløp } from '../../../../../formaters/beløp'
 import { SatsType } from '../../../../../types/types.internal'
 import { useBeregning } from '../useBeregning'
@@ -11,28 +12,23 @@ export function BrillestyrkeForm() {
 
   return (
     <>
-      <Avstand paddingTop={4}>
-        <Heading level="2" size="xsmall" spacing>
-          § 2 Brillestyrke
-        </Heading>
+      <Avstand paddingTop={6}>
         <Øye type="høyre" />
         <Øye type="venstre" />
       </Avstand>
 
       {beregning && (
-        <Avstand paddingBottom={5} paddingTop={5}>
+        <Avstand paddingBottom={1} paddingTop={1}>
           {beregning.sats === SatsType.INGEN ? (
             <Alert variant="warning">
               <BodyLong>Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt</BodyLong>
             </Alert>
           ) : (
             <Alert variant="info" role="alert">
-              <Heading level="2" spacing size="small">
-                {`Brillestøtte på opp til ${beløp.formater(beregning.satsBeløp)} kroner`}
-              </Heading>
-              <BodyLong>
+              <Etikett>{`Brillestøtte på opp til ${beløp.formater(beregning.satsBeløp)} kroner`}</Etikett>
+              <Brødtekst>
                 {`Barnet kan få støtte fra sats ${beregning.sats.replace('SATS_', '')}: ${beregning.satsBeskrivelse}`}
-              </BodyLong>
+              </Brødtekst>
             </Alert>
           )}
         </Avstand>

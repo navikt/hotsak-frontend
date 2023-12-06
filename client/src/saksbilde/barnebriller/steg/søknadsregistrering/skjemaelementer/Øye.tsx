@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Detail, Select } from '@navikt/ds-react'
+import { Select } from '@navikt/ds-react'
 
 import { capitalize } from '../../../../../utils/stringFormating'
 
@@ -28,8 +28,6 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
 
   return (
     <>
-      <Detail>{`${capitalize(type)} øye`}</Detail>
-
       <Grid>
         <Controller
           name={`brilleseddel.${type}Sfære`}
@@ -39,7 +37,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
           }}
           render={({ field }) => (
             <Select
-              label={'Sfære (SPH)'}
+              label={`${capitalize(type)} sfære (SPH)`}
               size="small"
               error={errors.brilleseddel?.[`${type}Sfære`]?.message}
               {...field}
@@ -69,7 +67,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
           }}
           render={({ field }) => (
             <Select
-              label="Cylinder (CYL)"
+              label={`${capitalize(type)} cylinder (CYL)`}
               size="small"
               error={errors.brilleseddel?.[`${type}Sylinder`]?.message}
               {...field}
@@ -92,7 +90,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 140px 140px;
+  grid-template-columns: 145px 155px;
   gap: var(--a-spacing-5);
   padding-top: var(--a-spacing-3);
   padding-bottom: var(--a-spacing-3);

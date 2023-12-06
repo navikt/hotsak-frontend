@@ -1,8 +1,9 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Heading, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { HStack, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
+import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { VilkårsResultat, Vurdering } from '../../../../../types/types.internal'
 
 export function KomplettBrille() {
@@ -18,17 +19,18 @@ export function KomplettBrille() {
   return (
     <>
       <Avstand paddingTop={6}>
-        <Heading level="2" size="xsmall" spacing>
-          § 2 Bestillingen må inneholde glass
-        </Heading>
         <Controller
           name="komplettBrille.vilkårOppfylt"
           control={control}
           rules={{ required: 'Velg en verdi' }}
           render={({ field }) => (
             <RadioGroup
-              legend="Inneholder bestillingen glass"
-              description="Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning."
+              legend={
+                <HStack wrap={false} gap="2" align={'center'}>
+                  <Etikett>§2 Inneholder bestillingen glass?</Etikett>
+                  <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
+                </HStack>
+              }
               size="small"
               {...field}
               error={errors.komplettBrille?.vilkårOppfylt?.message}

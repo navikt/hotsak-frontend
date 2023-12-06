@@ -56,7 +56,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
 
   return (
     <div>
-      <Topplinje wrap={false}>
+      <Topplinje wrap={false} align={'end'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack align={'center'}>

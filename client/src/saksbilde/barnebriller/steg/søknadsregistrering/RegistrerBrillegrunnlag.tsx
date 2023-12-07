@@ -23,14 +23,14 @@ export const RegistrerBrillegrunnlag: React.FC = () => {
 
   return (
     <>
-      <Avstand paddingTop={6}>
+      <Avstand paddingTop={10}>
         <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
       </Avstand>
       <BrillestyrkeForm />
-      <Avstand paddingTop={4}>
+      <Avstand paddingTop={10}>
         <Bestillingsdato />
       </Avstand>
-      <Avstand paddingTop={4}>
+      <Avstand paddingTop={10}>
         <Tekstfelt
           id="brillepris"
           label={

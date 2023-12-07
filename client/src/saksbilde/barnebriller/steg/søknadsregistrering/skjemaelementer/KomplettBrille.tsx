@@ -18,7 +18,7 @@ export function KomplettBrille() {
 
   return (
     <>
-      <Avstand paddingTop={6}>
+      <Avstand paddingTop={10}>
         <Controller
           name="komplettBrille.vilkårOppfylt"
           control={control}

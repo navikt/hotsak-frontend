@@ -92,8 +92,7 @@ export const Grid = styled.div`
   display: grid;
   grid-template-columns: 145px 155px;
   gap: var(--a-spacing-5);
-  padding-top: var(--a-spacing-3);
-  padding-bottom: var(--a-spacing-3);
+
   align-items: start;
 `
 

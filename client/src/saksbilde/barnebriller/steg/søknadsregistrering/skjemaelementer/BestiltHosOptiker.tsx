@@ -17,7 +17,7 @@ export function BestiltHosOptiker() {
   const vilkårOppfylt = watch('bestiltHosOptiker.vilkårOppfylt')
 
   return (
-    <Avstand paddingTop={8}>
+    <Avstand paddingTop={10}>
       <Controller
         name="bestiltHosOptiker.vilkårOppfylt"
         control={control}

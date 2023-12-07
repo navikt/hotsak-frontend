@@ -12,8 +12,10 @@ export function BrillestyrkeForm() {
 
   return (
     <>
-      <Avstand paddingTop={6}>
+      <Avstand paddingTop={10}>
         <Øye type="høyre" />
+      </Avstand>
+      <Avstand paddingTop={8}>
         <Øye type="venstre" />
       </Avstand>
 

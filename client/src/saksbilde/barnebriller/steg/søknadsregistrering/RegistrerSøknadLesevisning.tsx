@@ -54,7 +54,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
     <Container>
       <Avstand paddingTop={4} paddingBottom={2} />
       <Dokumenter dokumenter={dokumenter} />
-      <Avstand paddingTop={4} paddingLeft={2}>
+      <Avstand paddingTop={10} paddingLeft={2}>
         <Etikett>Målform</Etikett>
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>
 
@@ -80,7 +80,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 </Brødtekst>
               </Kolonne>
             </Rad>
-            <Avstand paddingBottom={4} />
+            <Avstand paddingBottom={8} />
             <Rad>
               <Kolonne $width="150px">
                 <Etikett>Venstre sfære (SPH)</Etikett>
@@ -101,29 +101,32 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 </Brødtekst>
               </Kolonne>
             </Rad>
-            <Avstand paddingTop={4} />
+
             {vilkårsvurdering && vilkårsgrunnlag?.data.brilleseddel && (
-              <Alert variant="info" role="alert">
-                <Brødtekst>
-                  {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
-                    'SATS_',
-                    ''
-                  )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
-                </Brødtekst>
-                {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
+              <>
+                <Avstand paddingTop={2} />
+                <Alert variant="info" role="alert">
                   <Brødtekst>
-                    {`Basert på brilleprisen, kan barnet få `}
-                    <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
+                    {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
+                      'SATS_',
+                      ''
+                    )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
                   </Brødtekst>
-                )}
-              </Alert>
+                  {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
+                    <Brødtekst>
+                      {`Basert på brilleprisen, kan barnet få `}
+                      <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
+                    </Brødtekst>
+                  )}
+                </Alert>
+              </>
             )}
           </Avstand>
-          <Avstand paddingTop={4}>
+          <Avstand paddingTop={10}>
             <Etikett>Brillens bestillingsdato</Etikett>
             <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Brødtekst>
           </Avstand>
-          <Avstand paddingTop={4}>
+          <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>Pris på brillen</Etikett>
               <HelpText>
@@ -134,7 +137,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
           </Avstand>
 
-          <Avstand paddingTop={6}>
+          <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>§2 Inneholder bestillingen glass?</Etikett>
               <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
@@ -145,7 +148,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             )}
           </Avstand>
 
-          <Avstand paddingTop={6}>
+          <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>§2 Er brillen bestilt hos optiker?</Etikett>
               <HelpText>

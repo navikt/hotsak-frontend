@@ -98,6 +98,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   return (
     <Container>
+      <Avstand paddingTop={4} paddingBottom={2} />
       <Dokumenter dokumenter={dokumenter} />
       <Avstand marginTop={4} paddingLeft={2} paddingRight={2}>
         <FormProvider {...methods}>

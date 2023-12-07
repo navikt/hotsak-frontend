@@ -1,6 +1,5 @@
 import { rest } from 'msw'
 
-import { Adressebeskyttelse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
 export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) => [
@@ -17,7 +16,7 @@ export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) =>
       ctx.delay(500),
       ctx.status(200),
       ctx.json({
-        adressebeskyttelseGradering: [Adressebeskyttelse.FORTROLIG],
+        //adressebeskyttelseGradering: [Adressebeskyttelse.FORTROLIG],
         erSkjermetPerson: false,
       })
     )

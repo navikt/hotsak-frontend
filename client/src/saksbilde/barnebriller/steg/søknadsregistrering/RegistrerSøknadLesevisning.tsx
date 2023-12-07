@@ -1,7 +1,7 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Alert, Button, Detail, Heading, Loader } from '@navikt/ds-react'
+import { Alert, Button, HStack, HelpText, Loader } from '@navikt/ds-react'
 
 import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
 import { formaterDato } from '../../../../utils/date'
@@ -21,7 +21,6 @@ import { FormatertStyrke } from './FormatertStyrke'
 
 const Container = styled.div`
   overflow: auto;
-  padding-top: var(--a-spacing-6);
 `
 
 export const RegistrerSøknadLesevisning: React.FC = () => {
@@ -53,39 +52,20 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
 
   return (
     <Container>
-      <Heading level="1" size="xsmall" spacing>
-        Registrer søknad
-      </Heading>
+      <Avstand paddingTop={4} paddingBottom={2} />
       <Dokumenter dokumenter={dokumenter} />
       <Avstand paddingTop={4} paddingLeft={2}>
         <Etikett>Målform</Etikett>
         <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>
 
         <>
-          <Avstand paddingTop={4}>
-            <Etikett>Bestillingsdato</Etikett>
-            <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Brødtekst>
-          </Avstand>
-          <Avstand paddingTop={4}>
-            <Etikett>Pris på brillen</Etikett>
-            <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
-            <Detail>
-              Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
-              synsundersøkelse skal ikke inkluderes i prisen.
-            </Detail>
-          </Avstand>
           <Avstand paddingTop={10}>
-            <Heading level="2" size="xsmall" spacing>
-              § 2 Brillestyrke
-            </Heading>
-
-            <Detail>HØYRE ØYE</Detail>
             <Rad>
               <Kolonne $width="150px">
-                <Etikett>Sfære (SPH)</Etikett>
+                <Etikett>Høyre sfære (SPH)</Etikett>
               </Kolonne>
               <Kolonne $width="150px">
-                <Etikett>Sylinder (CYL)</Etikett>
+                <Etikett>Høyre sylinder (CYL)</Etikett>
               </Kolonne>
             </Rad>
             <Rad>
@@ -101,13 +81,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               </Kolonne>
             </Rad>
             <Avstand paddingBottom={4} />
-            <Detail>VENSTRE ØYE</Detail>
             <Rad>
               <Kolonne $width="150px">
-                <Etikett>Sfære (SPH)</Etikett>
+                <Etikett>Venstre sfære (SPH)</Etikett>
               </Kolonne>
               <Kolonne $width="150px">
-                <Etikett>Sylinder (CYL)</Etikett>
+                <Etikett>Venstre sylinder (CYL)</Etikett>
               </Kolonne>
             </Rad>
             <Rad>
@@ -122,7 +101,6 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 </Brødtekst>
               </Kolonne>
             </Rad>
-
             <Avstand paddingTop={4} />
             {vilkårsvurdering && vilkårsgrunnlag?.data.brilleseddel && (
               <Alert variant="info" role="alert">
@@ -141,12 +119,26 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               </Alert>
             )}
           </Avstand>
+          <Avstand paddingTop={4}>
+            <Etikett>Brillens bestillingsdato</Etikett>
+            <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Brødtekst>
+          </Avstand>
+          <Avstand paddingTop={4}>
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>Pris på brillen</Etikett>
+              <HelpText>
+                Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell
+                synsundersøkelse skal ikke inkluderes i prisen.
+              </HelpText>
+            </HStack>
+            <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
+          </Avstand>
 
           <Avstand paddingTop={6}>
-            <Heading level="2" size="xsmall" spacing>
-              § 2 Bestillingen må inneholde glass
-            </Heading>
-            <Brødtekst>Inneholder bestillingen glass?</Brødtekst>
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>§2 Inneholder bestillingen glass?</Etikett>
+              <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
+            </HStack>
             <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
             {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
               <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
@@ -154,10 +146,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           </Avstand>
 
           <Avstand paddingTop={6}>
-            <Heading level="2" size="xsmall" spacing>
-              § 2 Brillen må være bestilt hos optiker
-            </Heading>
-            <Brødtekst>Er brillen bestilt hos optiker?</Brødtekst>
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>§2 Er brillen bestilt hos optiker?</Etikett>
+              <HelpText>
+                For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).
+              </HelpText>
+            </HStack>
             <Brødtekst>
               {capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt).replace('_', ' ')}
             </Brødtekst>

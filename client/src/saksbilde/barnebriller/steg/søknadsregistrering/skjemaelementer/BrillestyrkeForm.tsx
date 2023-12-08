@@ -20,7 +20,7 @@ export function BrillestyrkeForm() {
       </Avstand>
 
       {beregning && (
-        <Avstand paddingBottom={1} paddingTop={1}>
+        <Avstand paddingBottom={1} paddingTop={3}>
           {beregning.sats === SatsType.INGEN ? (
             <Alert variant="warning">
               <BodyLong>Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt</BodyLong>

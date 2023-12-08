@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import useSwr from 'swr'
 
 import { Button, Heading, Panel, Radio, RadioGroup, Select, Skeleton } from '@navikt/ds-react'
 
@@ -11,6 +10,7 @@ import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
+import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { useBrillesak } from '../../sakHook'
@@ -25,7 +25,7 @@ export interface SendBrevProps {
 
 export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
-  const { data } = useBrevtekst(sakId)
+  const { data } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
   const brevtekst = data?.data.brevtekst
   const [lagrer, setLagrer] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
@@ -198,12 +198,3 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     </>
   )
 })
-
-function useBrevtekst(sakId: string, brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER) {
-  const { data, isLoading } = useSwr<BrevTekst>(`/api/sak/${sakId}/brevutkast/${brevtype}`)
-
-  return {
-    data,
-    isLoading,
-  }
-}

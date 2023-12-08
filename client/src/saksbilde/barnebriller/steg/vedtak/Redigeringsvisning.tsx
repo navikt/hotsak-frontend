@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import useSWR from 'swr'
 
 import { Button, Detail } from '@navikt/ds-react'
 
@@ -10,7 +9,7 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Button'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
-import { Etikett } from '../../../../felleskomponenter/typografi'
+import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import {
   Barnebrillesak,
   BrevTekst,
@@ -22,6 +21,7 @@ import {
   VilkårsResultat,
 } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { useBrevtekst } from '../../brevutkast/useBrevtekst'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/brevHook'
@@ -37,7 +37,11 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
   const [loading, setLoading] = useState(false)
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { data } = useBrevtekst(sak.sakId)
+  const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
+  const { data: usendtUtkastTilInnhenteOpplysningerBrev } = useBrevtekst(
+    sak.sakId,
+    Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
+  )
   const [lagrer, setLagrer] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const brevtekst = data?.data.brevtekst
@@ -48,6 +52,9 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
     sak.sakId,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
+
+  console.log('Utkasttekst', usendtUtkastTilInnhenteOpplysningerBrev?.data.brevtekst)
+  console.log('Fritekst', data?.data.brevtekst)
 
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
@@ -116,6 +123,8 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
       })
   }
 
+  console.log('utkast eller?', usendtUtkastTilInnhenteOpplysningerBrev?.data.brevtekst)
+
   return (
     <>
       {visFritekstFelt && (
@@ -154,6 +163,15 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
           </Detail>
         </SkjemaAlert>
       )}
+
+      {usendtUtkastTilInnhenteOpplysningerBrev && (
+        <SkjemaAlert variant="warning">
+          <Brødtekst>
+            Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
+          </Brødtekst>
+        </SkjemaAlert>
+      )}
+
       <Avstand paddingBottom={6} />
       <Knappepanel>
         <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
@@ -186,11 +204,11 @@ const Container = styled.div`
 `
 
 // Todo fix nullable når flytter til egen komponent
-function useBrevtekst(sakId?: string, brevtype = Brevtype.BARNEBRILLER_VEDTAK) {
+/*function useBrevtekst(sakId?: string, brevtype = Brevtype.BARNEBRILLER_VEDTAK) {
   const { data, isLoading } = useSWR<BrevTekst>(sakId ? `/api/sak/${sakId}/brevutkast/${brevtype}` : null)
 
   return {
     data,
     isLoading,
   }
-}
+}*/

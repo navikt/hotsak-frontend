@@ -1,15 +1,20 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 
-export function Knappepanel({ children, gap }: { children: ReactNode; gap?: string }) {
-  return <Container $gap={gap}>{children}</Container>
+export function Knappepanel({ children, gap, spacing }: { children: ReactNode; gap?: string; spacing?: number }) {
+  return (
+    <Container $gap={gap} $spacing={spacing ? spacing : 6}>
+      {children}
+    </Container>
+  )
 }
 
 const Container = styled.div<{
   $gap?: string
+  $spacing: number
 }>`
   display: flex;
   justify-content: flex-start;
   gap: ${(props) => (props.$gap ? props.$gap : '1rem')};
-  margin-top: var(--a-spacing-10);
+  margin-top: var(--a-spacing-${(props) => props.$spacing});
 `

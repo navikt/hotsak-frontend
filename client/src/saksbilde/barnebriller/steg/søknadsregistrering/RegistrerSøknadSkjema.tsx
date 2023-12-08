@@ -110,7 +110,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
           >
             <Målform />
             <RegistrerBrillegrunnlag />
-            <Knappepanel>
+            <Knappepanel spacing={10}>
               <Button
                 type="submit"
                 variant="primary"

@@ -29,9 +29,11 @@ const ToastView = styled.div`
   }
 `
 
-const InfoToastWrapper = styled.div`
+const InfoToastWrapper = styled.div<{
+  $bottomPosition: string
+}>`
   position: fixed;
-  bottom: 300px;
+  bottom: ${(props) => props.$bottomPosition};
   right: 10px;
   z-index: 999999;
 
@@ -41,6 +43,7 @@ const InfoToastWrapper = styled.div`
 `
 
 interface ToastProps {
+  bottomPosition: string
   children: React.ReactNode
 }
 
@@ -52,9 +55,9 @@ export const Toast: React.FC<ToastProps> = ({ children }) => {
   )
 }
 
-export const InfoToast: React.FC<ToastProps> = ({ children }) => {
+export const InfoToast: React.FC<ToastProps> = ({ children, bottomPosition }) => {
   return (
-    <InfoToastWrapper aria-live="polite">
+    <InfoToastWrapper $bottomPosition={bottomPosition} aria-live="polite">
       <Alert variant="success">
         <Tekst>{children}</Tekst>
       </Alert>

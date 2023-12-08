@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, Heading, Panel, Radio, RadioGroup, Select, Skeleton } from '@navikt/ds-react'
 
-import { postBrevutkast, postBrevutsending } from '../../../io/http'
+import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
 
+import { TrashIcon } from '@navikt/aksel-icons'
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../felleskomponenter/Button'
 import { InfoToast } from '../../../felleskomponenter/Toast'
@@ -25,9 +26,10 @@ export interface SendBrevProps {
 
 export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
-  const { data } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
+  const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
   const brevtekst = data?.data.brevtekst
   const [lagrer, setLagrer] = useState(false)
+  const [sletter, setSletter] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
@@ -35,6 +37,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
+  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { mutate: hentBrillesak } = useBrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
@@ -106,6 +109,19 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     }, 3000)
   }
 
+  const slettUtkast = async () => {
+    setSletter(true)
+    await deleteBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
+    setFritekst('')
+    setVisSlettetUtkastToast(true)
+    setTimeout(() => {
+      setVisSlettetUtkastToast(false)
+    }, 3000)
+    hentBrevtekst()
+
+    setSletter(false)
+  }
+
   const lagreUtkast = async (tekst: string, valgtMålform?: MålformType) => {
     setLagrer(true)
     await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
@@ -171,6 +187,15 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
               >
                 Send brev
               </Button>
+              <Button
+                icon={<TrashIcon />}
+                variant="danger"
+                size="small"
+                loading={sletter}
+                onClick={() => {
+                  slettUtkast()
+                }}
+              />
             </Knappepanel>
           </form>
         )}
@@ -193,8 +218,11 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         }}
       />
       {visSendtBrevToast && (
-        <InfoToast>Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over. </InfoToast>
+        <InfoToast bottomPosition="300px">
+          Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.{' '}
+        </InfoToast>
       )}
+      {visSlettetUtkastToast && <InfoToast bottomPosition="400px">Utkast slettet</InfoToast>}
     </>
   )
 })

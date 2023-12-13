@@ -38,7 +38,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
-  const { data: usendtUtkastTilInnhenteOpplysningerBrev } = useBrevtekst(
+  const { data: utkastTilInnhenteOpplysningerBrev } = useBrevtekst(
     sak.sakId,
     Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
   )
@@ -53,9 +53,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 
-  console.log('Utkasttekst', usendtUtkastTilInnhenteOpplysningerBrev?.data.brevtekst)
-  console.log('Fritekst', data?.data.brevtekst)
-
+  const usendtUtkastTilInnhenteOpplysningerBrev = utkastTilInnhenteOpplysningerBrev?.data.brevtekst
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
@@ -122,8 +120,6 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
         mutate()
       })
   }
-
-  console.log('utkast eller?', usendtUtkastTilInnhenteOpplysningerBrev?.data.brevtekst)
 
   return (
     <>

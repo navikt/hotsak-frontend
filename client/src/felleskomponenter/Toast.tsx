@@ -47,7 +47,7 @@ interface ToastProps {
   children: React.ReactNode
 }
 
-export const Toast: React.FC<ToastProps> = ({ children }) => {
+export const Toast: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ToastView aria-live="polite">
       <Tekst>{children}</Tekst> <Loader variant="inverted" title="Systemet laster" size="xsmall" />

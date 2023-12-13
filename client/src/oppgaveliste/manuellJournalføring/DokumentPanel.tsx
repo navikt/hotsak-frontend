@@ -21,7 +21,7 @@ interface DokumentPanelProps {
   journalpostID?: string
 }
 
-export const DokumentPanel: React.FC<DokumentPanelProps> = (props) => {
+export const DokumentPanel: React.FC<DokumentPanelProps> = () => {
   const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
   const { valgtDokument } = useDokumentContext()
 

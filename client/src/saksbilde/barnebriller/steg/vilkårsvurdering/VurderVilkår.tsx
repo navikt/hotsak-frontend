@@ -6,7 +6,7 @@ import { Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navik
 import { baseUrl, post } from '../../../../io/http'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'

@@ -6,7 +6,7 @@ import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io
 
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Avstand } from '../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../felleskomponenter/Knappepanel'
 import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
@@ -18,6 +18,7 @@ import { useBrillesak } from '../../sakHook'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
+import { SlettUtkastModal } from './SlettUtkastModal'
 
 export interface SendBrevProps {
   sakId: string
@@ -33,6 +34,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
   const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
+  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
@@ -113,6 +115,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
     setSletter(true)
     await deleteBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
     setFritekst('')
+    setVisSlettUtkastModal(false)
     setVisSlettetUtkastToast(true)
     setTimeout(() => {
       setVisSlettetUtkastToast(false)
@@ -191,9 +194,8 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
                 icon={<TrashIcon />}
                 variant="danger"
                 size="small"
-                loading={sletter}
                 onClick={() => {
-                  slettUtkast()
+                  setVisSlettUtkastModal(true)
                 }}
               />
             </Knappepanel>
@@ -215,6 +217,14 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         onClose={() => setVisSendBrevModal(false)}
         onBekreft={() => {
           sendBrev()
+        }}
+      />
+      <SlettUtkastModal
+        open={visSlettUtkastModal}
+        loading={sletter}
+        onClose={() => setVisSlettUtkastModal(false)}
+        onBekreft={() => {
+          slettUtkast()
         }}
       />
       {visSendtBrevToast && (

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../felleskomponenter/Button'
+import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { SkjemaAlert } from '../../felleskomponenter/SkjemaAlert'
 import { Toast } from '../../felleskomponenter/Toast'
 import { Brødtekst } from '../../felleskomponenter/typografi'

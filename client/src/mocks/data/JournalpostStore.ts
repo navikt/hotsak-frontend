@@ -54,7 +54,7 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
-    {
+    /*{
       journalpostID,
 
       tittel: 'Ettersendelse: Skikkelig lang tittel som en ganske lang og ikke så veldig kort kan du på en måte si',
@@ -69,7 +69,7 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
-    },
+    },*/
   ]
 }
 

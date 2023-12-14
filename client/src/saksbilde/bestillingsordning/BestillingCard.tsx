@@ -10,7 +10,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
-import { Knappepanel } from '../../felleskomponenter/Button'
+import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'

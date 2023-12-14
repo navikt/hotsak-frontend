@@ -6,7 +6,7 @@ import { Button, Detail } from '@navikt/ds-react'
 import { post, postBrevutkast } from '../../../../io/http'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
@@ -198,13 +198,3 @@ const Container = styled.div`
   display: flex;
   padding-top: 0.5rem;
 `
-
-// Todo fix nullable når flytter til egen komponent
-/*function useBrevtekst(sakId?: string, brevtype = Brevtype.BARNEBRILLER_VEDTAK) {
-  const { data, isLoading } = useSWR<BrevTekst>(sakId ? `/api/sak/${sakId}/brevutkast/${brevtype}` : null)
-
-  return {
-    data,
-    isLoading,
-  }
-}*/

@@ -8,7 +8,7 @@ import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
 import { postJournalføring } from '../../io/http'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../felleskomponenter/Button'
+import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Kolonner } from '../../felleskomponenter/Kolonner'
 import { Toast } from '../../felleskomponenter/Toast'
 import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
@@ -37,8 +37,8 @@ export const JournalpostSkjema: React.FC = () => {
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const {
     saksoversikt,
-    isLoading: henterSaker,
-    isError,
+    // isLoading: henterSaker,
+    //isError,
   } = useSaksoversikt(fodselsnummer, Oppgavetype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   const [journalfører, setJournalfører] = useState(false)
@@ -127,8 +127,9 @@ export const JournalpostSkjema: React.FC = () => {
             onChange={(e) => setJournalpostTittel(e.target.value)}
           />
         </Avstand>
+        <Avstand paddingTop={10} />
         <Dokumenter dokumenter={journalpost?.dokumenter || []} />
-        <Avstand paddingTop={4} />
+        <Avstand paddingTop={10} />
         <KnyttTilEksisterendeSak
           åpneSaker={saksoversikt?.hotsakSaker || []}
           valgtEksisterendeSakId={valgtEksisterendeSakId}

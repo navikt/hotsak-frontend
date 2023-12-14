@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, Select } from '@navikt/ds-react'
 
-import { Knappepanel } from '../felleskomponenter/Button'
+import { Knappepanel } from '../felleskomponenter/Knappepanel'
 
 const FilterList = styled.div`
   margin: 1rem 1.5rem 0.5rem;

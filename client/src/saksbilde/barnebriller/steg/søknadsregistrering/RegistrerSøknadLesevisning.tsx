@@ -8,7 +8,7 @@ import { formaterDato } from '../../../../utils/date'
 import { capitalize } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'

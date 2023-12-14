@@ -12,7 +12,7 @@ import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokum
 import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Brilleseddel, MålformType, Oppgavetype, RegistrerSøknadData, StepType } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'

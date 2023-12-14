@@ -6,7 +6,7 @@ import { Alert, Button, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds
 import { formaterDato } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Button'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'

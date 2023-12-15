@@ -14,11 +14,10 @@ import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
+import { BekreftelsesModal } from '../../komponenter/BekreftelsesModal'
 import { useBrillesak } from '../../sakHook'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
-import { SendBrevModal } from './SendBrevModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
-import { SlettUtkastModal } from './SlettUtkastModal'
 
 export interface SendBrevProps {
   sakId: string
@@ -211,15 +210,22 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           setVisForhåndsvisningsModal(false)
         }}
       />
-      <SendBrevModal
+      <BekreftelsesModal
+        heading="Vil du sende brevet?"
+        buttonLabel="Send brev"
         open={visSendBrevModal}
         loading={senderBrev}
         onClose={() => setVisSendBrevModal(false)}
         onBekreft={() => {
           sendBrev()
         }}
-      />
-      <SlettUtkastModal
+      >
+        <Brødtekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Brødtekst>
+      </BekreftelsesModal>
+      <BekreftelsesModal
+        heading="Vil du slette utkastet?"
+        buttonLabel="Slett utkast"
+        buttonVariant="danger"
         open={visSlettUtkastModal}
         loading={sletter}
         onClose={() => setVisSlettUtkastModal(false)}
@@ -229,7 +235,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
       />
       {visSendtBrevToast && (
         <InfoToast bottomPosition="300px">
-          Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.{' '}
+          Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.
         </InfoToast>
       )}
       {visSlettetUtkastToast && <InfoToast bottomPosition="400px">Utkast slettet</InfoToast>}

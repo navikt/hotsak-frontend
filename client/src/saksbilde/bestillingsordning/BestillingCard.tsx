@@ -10,16 +10,17 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { OvertaSakModal } from '../OvertaSakModal'
+import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
-import { OpprettOrdreModal } from './OpprettOrdreModal'
 
 interface BestillingCardProps {
   bestilling: Sak
@@ -191,8 +192,11 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
             Avvis
           </Knapp>
         </Knappepanel>
-        <OpprettOrdreModal
+        <BekreftelsesModal
+          width={'600px'}
           open={visOpprettOrdeModal}
+          heading="Vil du godkjenne bestillingen?"
+          buttonLabel="Godkjenn"
           onBekreft={() => {
             ferdigstillBestilling()
             logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -200,7 +204,16 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           }}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-        />
+        >
+          <Brødtekst>
+            Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OEBS. Alle hjelpemidler
+            og tilbehør i bestillingen vil legges inn som ordrelinjer.
+          </Brødtekst>
+          <Avstand paddingTop={3}></Avstand>
+          <Brødtekst>
+            Merk at det kan gå noen minutter før ordren er klargjort. Du trenger ikke gjøre noe mer med saken.
+          </Brødtekst>
+        </BekreftelsesModal>
         <AvvisBestillingModal
           open={visAvvisModal}
           onBekreft={(tilbakemelding) => {

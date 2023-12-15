@@ -9,10 +9,11 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitu
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
+import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { BekreftelsesModal } from '../../../komponenter/BekreftelsesModal'
 import { useBrillesak } from '../../../sakHook'
-import { GodkjenneTotrinnskontrollModal } from './GodkjenneTotrinnskontrollModal'
 
 export const TotrinnskontrollForm: React.FC = () => {
   const [loading, setLoading] = useState(false)
@@ -31,7 +32,6 @@ export const TotrinnskontrollForm: React.FC = () => {
     control,
     watch,
     formState: { errors },
-    handleSubmit,
     getValues,
   } = methods
 
@@ -103,7 +103,9 @@ export const TotrinnskontrollForm: React.FC = () => {
         </FormProvider>
       )}
 
-      <GodkjenneTotrinnskontrollModal
+      <BekreftelsesModal
+        heading="Vil du godkjenne vedtaket?"
+        buttonLabel="Godkjenn vedtak"
         open={visGodkjenningsModal}
         onBekreft={() => {
           lagreTotrinnskontroll()
@@ -114,7 +116,9 @@ export const TotrinnskontrollForm: React.FC = () => {
           errors
           setVisGodkjenningsModal(false)
         }}
-      />
+      >
+        <Brødtekst>Vedtaket blir fattet og brevet sendes til adressen til barnet.</Brødtekst>
+      </BekreftelsesModal>
     </>
   )
 }

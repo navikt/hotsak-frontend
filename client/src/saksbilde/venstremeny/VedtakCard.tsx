@@ -11,19 +11,19 @@ import { norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
   HjelpemiddelArtikkel,
   OppgaveStatusType,
   Sak,
-  vedtaksgrunnlagUtlaanshistorikk,
   VedtakStatusType,
+  vedtaksgrunnlagUtlaanshistorikk,
 } from '../../types/types.internal'
-import { BekreftVedtakModal } from '../BekreftVedtakModal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
+import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 
@@ -184,8 +184,11 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             Overfør til Gosys
           </Knapp>
         </Knappepanel>
-        <BekreftVedtakModal
+        <BekreftelsesModal
+          heading="Vil du innvilge søknaden?"
           open={visVedtakModal}
+          width="600px"
+          buttonLabel="Innvilg søknaden"
           onBekreft={() => {
             opprettVedtak()
             logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
@@ -193,7 +196,12 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
           }}
           loading={loading}
           onClose={() => setVisVedtakModal(false)}
-        />
+        >
+          <Brødtekst>
+            Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
+          </Brødtekst>
+          <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
+        </BekreftelsesModal>
         <OverførGosysModal
           {...overførGosys}
           onBekreft={async (tilbakemelding) => {

@@ -1,8 +1,9 @@
-import { Button, Modal } from '@navikt/ds-react'
-import { slettSaksnotat } from '../../../io/http'
 import { useState } from 'react'
 import type { KeyedMutator } from 'swr'
+import { Brødtekst } from '../../../felleskomponenter/typografi'
+import { slettSaksnotat } from '../../../io/http'
 import type { Notat } from '../../../types/types.internal'
+import { BekreftelsesModal } from '../../komponenter/BekreftelsesModal'
 
 export interface SlettSaksnotatModalProps {
   sakId: string
@@ -26,16 +27,16 @@ export function SlettSaksnotatModal(props: SlettSaksnotatModalProps) {
   }
 
   return (
-    <Modal open={!!notatId} onClose={onClose} closeOnBackdropClick={false} header={{ heading: 'Er du sikker?' }}>
-      <Modal.Body>Er du sikker på at du vil slette notatet?</Modal.Body>
-      <Modal.Footer>
-        <Button type="button" variant="danger" loading={loading} onClick={onDelete}>
-          Slett
-        </Button>
-        <Button type="button" variant="secondary" onClick={onClose}>
-          Avbryt
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <BekreftelsesModal
+      open={!!notatId}
+      onBekreft={onDelete}
+      onClose={onClose}
+      heading="Er du sikker?"
+      loading={loading}
+      buttonLabel="Slett"
+      buttonVariant="danger"
+    >
+      <Brødtekst>Er du sikker på at du vil slette notatet?</Brødtekst>
+    </BekreftelsesModal>
   )
 }

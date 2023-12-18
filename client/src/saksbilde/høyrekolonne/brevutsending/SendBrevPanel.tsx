@@ -86,7 +86,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
       målform: valgtMålform || målform,
       brevtype,
       data: {
-        brevtekst: tekst ? tekst : fritekst,
+        brevtekst: tekst != undefined ? tekst : fritekst,
       },
     }
   }

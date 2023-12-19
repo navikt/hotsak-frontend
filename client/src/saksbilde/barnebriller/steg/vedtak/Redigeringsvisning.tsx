@@ -9,7 +9,7 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Etikett } from '../../../../felleskomponenter/typografi'
 import {
   Barnebrillesak,
   BrevTekst,
@@ -53,7 +53,8 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 
-  const usendtUtkastTilInnhenteOpplysningerBrev = utkastTilInnhenteOpplysningerBrev?.data.brevtekst
+  const usendtUtkastTilInnhenteOpplysningerBrev =
+    utkastTilInnhenteOpplysningerBrev?.data.brevtekst && utkastTilInnhenteOpplysningerBrev?.data.brevtekst !== ''
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
     (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
@@ -162,9 +163,9 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
 
       {usendtUtkastTilInnhenteOpplysningerBrev && (
         <SkjemaAlert variant="warning">
-          <Brødtekst>
+          <Detail>
             Det er laget et brev i saken som ikke er sendt ut. Gå til brev-fanen for å sende eller slette brevet.
-          </Brødtekst>
+          </Detail>
         </SkjemaAlert>
       )}
 

@@ -13,6 +13,7 @@ const Container = styled.aside<VenstremenyProps>`
   box-sizing: border-box;
   width: ${(props) => props.width || hotsaktVenstremenyWidth};
   min-width: 19.5rem;
+  padding-top: var(--a-spacing-4);
 
   padding-bottom: var(--a-spacing-6);
   padding-left: var(--a-spacing-6);

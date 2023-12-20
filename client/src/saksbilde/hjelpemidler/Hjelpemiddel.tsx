@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
-import { Button, Link } from '@navikt/ds-react'
+import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
 import { capitalize } from '../../utils/stringFormating'
@@ -134,14 +134,21 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
             </Rad>
           )}
           <Rad>
-            <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
-            {produkt ? (
-              <HMSLenke href={produkt.artikkelurl} target="_blank">
-                <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
-              </HMSLenke>
-            ) : (
-              <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
-            )}
+            <HStack align="center" gap="2">
+              <Tooltip content="Kopierer hmsnr">
+                <HStack align="center">
+                  <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
+                  <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />
+                </HStack>
+              </Tooltip>
+              {produkt ? (
+                <HMSLenke href={produkt.artikkelurl} target="_blank">
+                  <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
+                </HMSLenke>
+              ) : (
+                <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
+              )}
+            </HStack>
           </Rad>
           {hjelpemiddel.endretHjelpemiddel && (
             <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>

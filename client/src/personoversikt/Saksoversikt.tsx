@@ -13,7 +13,7 @@ import { capitalize } from '../utils/stringFormating'
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/Toast'
-import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { Brødtekst, Skjermlesertittel } from '../felleskomponenter/typografi'
 import ByggDummyDataUrl from '../mocks/mockDokument'
 import {
   OppgaveStatusLabel,
@@ -48,15 +48,13 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 110,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
-        <TekstCell value={formaterDato(sak.mottattDato)} />
-      ),
+      render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.mottattDato)} />,
     },
     {
       key: 'OMRÅDE',
       name: 'Område',
       width: 152,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
+      render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
           value={capitalize(sak.område.join(', '))}
           id={`funksjonsnedsettelse-${sak.sakId}`}
@@ -68,7 +66,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
       width: 192,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
+      render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
           value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
           id={`kategori-${sak.sakId}`}
@@ -97,10 +95,10 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => {
         const tittel = OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'
         const tittelWithIcon = (
-          <>
+          <Brødtekst>
             <FileIcon title="a11y-title" fontSize="1.2rem" style={{ marginRight: '0.2rem', marginBottom: '-0.2rem' }} />
             {tittel}
-          </>
+          </Brødtekst>
         )
         return barnebrilleSak && !!barnebrilleSak.journalpostId && !!barnebrilleSak.dokumentId ? (
           erLokaltEllerLabs ? (
@@ -122,7 +120,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'BEHANDLET_DATO',
       name: 'Behandlet dato',
       width: 130,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
+      render: (sak: Saksoversikt_Sak) => (
         <TekstCell
           value={
             sak.status === OppgaveStatusType.FERDIGSTILT ||
@@ -139,7 +137,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'SAKSBEHANDLER',
       name: 'Saksbehandler',
       width: 170,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
+      render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.sakId}`} minLength={20} />
       ),
     },
@@ -147,9 +145,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'FAGSYSTEM',
       name: 'Fagsystem',
       width: 120,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
-        <TekstCell value={sak.fagsystem} />
-      ),
+      render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.fagsystem} />,
     },
     { key: 'SAKSID', name: 'Saksid', width: 100, render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.sakId} /> },
   ]

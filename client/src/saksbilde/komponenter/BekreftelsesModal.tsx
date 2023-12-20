@@ -46,8 +46,11 @@ export const BekreftelsesModal: React.FC<BekreftelsesModalProps> = ({
     >
       {children && <Modal.Body>{children}</Modal.Body>}
       <Modal.Footer>
+        <Button variant={buttonVariant} size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
+          {buttonLabel}
+        </Button>
         <Button
-          variant="tertiary"
+          variant="secondary"
           size="small"
           onClick={() => {
             onClose()
@@ -55,9 +58,6 @@ export const BekreftelsesModal: React.FC<BekreftelsesModalProps> = ({
           disabled={loading}
         >
           Avbryt
-        </Button>
-        <Button variant={buttonVariant} size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
-          {buttonLabel}
         </Button>
       </Modal.Footer>
     </Modal>

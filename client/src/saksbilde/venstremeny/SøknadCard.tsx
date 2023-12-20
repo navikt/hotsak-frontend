@@ -3,7 +3,9 @@ import React from 'react'
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
-import { IconContainer } from '../../felleskomponenter/IconContainer'
+import { HStack } from '@navikt/ds-react'
+import { Avstand } from '../../felleskomponenter/Avstand'
+import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { HjemIkon } from '../../felleskomponenter/ikoner/HjemIkon'
 import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
@@ -13,7 +15,6 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { Grid } from './Grid'
 
 interface SøknadCardProps {
   oppgaveType: Oppgavetype
@@ -50,32 +51,43 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
 }) => {
   return (
     <Card>
-      <Grid>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <Oppgaveetikett type={oppgaveType} />
         </IconContainer>
         <CardTitle level="1" size="medium">
           {oppgaveType === Oppgavetype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
         </CardTitle>
-        <IconContainer />
+      </HStack>
+      <Avstand paddingBottom={2} />
+      <HStack align="center" gap="2" wrap={false}>
+        <Ikonplaceholder />
         <Tekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Tekst>
+      </HStack>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <KalenderIkon />
         </IconContainer>
         <Tekst>Mottatt: {formaterDato(mottattDato)}</Tekst>
+      </HStack>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <MappeIkon />
         </IconContainer>
         <Tekst>{capitalize(bruksarena)}</Tekst>
+      </HStack>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <HjemIkon />
         </IconContainer>
         <Tekst>{getTextForBosituasjon(bosituasjon)}</Tekst>
+      </HStack>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <RullestolIkon title="Funksjonsnedsettelse" />
         </IconContainer>
         <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
-      </Grid>
+      </HStack>
     </Card>
   )
 }

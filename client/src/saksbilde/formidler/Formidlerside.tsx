@@ -43,7 +43,7 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Brødtekst>{`${capitalize(formidler.stilling)}`}</Brødtekst>
         <Etikett>Postadresse</Etikett>
         <Brødtekst>{`${capitalize(formidler.postadresse)}`}</Brødtekst>
-        <BrytbarBrødtekst>Telefon</BrytbarBrødtekst>
+        <Etikett>Telefon</Etikett>
         <Brødtekst>{formidler.telefon}</Brødtekst>
         <Etikett>Treffest enklest</Etikett>
         <Brødtekst>{capitalize(formidler.treffestEnklest)}</Brødtekst>

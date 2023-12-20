@@ -88,6 +88,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
               />
               <FormidlerCard
                 tittel="FORMIDLER"
+                stilling={sak.data.formidler.stilling}
                 formidlerNavn={sak.data.formidler.navn}
                 formidlerTelefon={sak.data.formidler.telefon}
                 kommune={sak.data.formidler.poststed}

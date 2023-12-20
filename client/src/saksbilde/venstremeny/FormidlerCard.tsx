@@ -1,60 +1,69 @@
 import React from 'react'
-import styled from 'styled-components'
 
-import { CopyButton, Tooltip } from '@navikt/ds-react'
+import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
-import { IconContainer } from '../../felleskomponenter/IconContainer'
+import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { Grid } from './Grid'
 
 interface FormidlerCardProps {
   tittel: string
   formidlerNavn: string
+  stilling: string
   kommune: string
   formidlerTelefon: string
 }
 
-const CopyContainer = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-export const FormidlerCard: React.FC<FormidlerCardProps> = ({ tittel, formidlerNavn, kommune, formidlerTelefon }) => {
+export const FormidlerCard: React.FC<FormidlerCardProps> = ({
+  tittel,
+  formidlerNavn,
+  kommune,
+  formidlerTelefon,
+  stilling,
+}) => {
   return (
     <Card>
       <CardTitle level="1" size="medium">
         {tittel}
       </CardTitle>
-      <CenterGrid>
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <Personikon />
         </IconContainer>
-        <CopyContainer>
+        <HStack align="center">
           <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
-          <Tooltip content="Kopier formidler navn" placement="bottom">
+          <Tooltip content="Kopier formidler navn" placement="right">
             <CopyButton title="Kopier formidler navn" size="small" copyText={formidlerNavn} />
           </Tooltip>
-        </CopyContainer>
+        </HStack>
+      </HStack>
+
+      <HStack align="center" gap="2">
+        <Ikonplaceholder />
+        <HStack align="center">
+          <Tekst>{`${capitalize(stilling)}`}</Tekst>
+          <Tooltip content="Kopier formidler stilling" placement="right">
+            <CopyButton title="Kopier formidler stilling" size="small" copyText={stilling} />
+          </Tooltip>
+        </HStack>
+      </HStack>
+
+      <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <TelefonIkon />
         </IconContainer>
-        <CopyContainer>
+        <HStack align="center">
           <Tekst>{formidlerTelefon}</Tekst>
-          <Tooltip content="Kopier telefonnummer" placement="bottom">
+          <Tooltip content="Kopier telefonnummer" placement="right">
             <CopyButton title="Kopier telefonnummer" size="small" copyText={formidlerTelefon} />
           </Tooltip>
-        </CopyContainer>
-      </CenterGrid>
+        </HStack>
+      </HStack>
     </Card>
   )
 }
-
-const CenterGrid = styled(Grid)`
-  align-items: center;
-`

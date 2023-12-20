@@ -88,6 +88,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
                 tittel="BESTILLER"
                 formidlerNavn={sak.data.formidler.navn}
                 formidlerTelefon={sak.data.formidler.telefon}
+                stilling={sak.data.formidler.stilling}
                 kommune={sak.data.formidler.poststed}
               />
               <GreitÅViteCard

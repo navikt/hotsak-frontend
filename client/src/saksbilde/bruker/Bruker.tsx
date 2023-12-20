@@ -1,16 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Heading } from '@navikt/ds-react'
+import { CopyButton, HStack, Heading, Tooltip } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Liste } from '../../felleskomponenter/Liste'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
+import { Bosituasjon, Formidler, Levering, PersonInfoKilde, Personinfo } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
@@ -127,9 +128,15 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           {levering.merknad && (
             <>
               <Merknad>
+                <Avstand paddingTop={1} />
                 <Etikett>Merknad til utlevering</Etikett>
               </Merknad>
-              <Brødtekst>{levering.merknad}</Brødtekst>
+              <HStack align="center">
+                <Brødtekst>{levering.merknad}</Brødtekst>
+                <Tooltip content="Kopier merknad til utlevering" placement="right">
+                  <CopyButton size="small" copyText={levering.merknad} />
+                </Tooltip>
+              </HStack>
             </>
           )}
         </Grid>

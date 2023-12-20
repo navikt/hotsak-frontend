@@ -129,8 +129,15 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           <Rad>{produkt?.posttittel}</Rad>
           {endretProdukt && (
             <Rad>
-              <strong>{endretProdukt.hmsNr}</strong>
-              <HMSTekst>{endretHjelpemiddelNavn?.navn}</HMSTekst>
+              <HStack align="center" gap="2">
+                <Tooltip content="Kopierer hmsnr">
+                  <HStack align="center">
+                    <strong>{endretProdukt.hmsNr}</strong>
+                    <CopyButton size="small" copyText={endretProdukt.hmsNr} />
+                  </HStack>
+                </Tooltip>
+                <HMSTekst>{endretHjelpemiddelNavn?.navn}</HMSTekst>
+              </HStack>
             </Rad>
           )}
           <Rad>
@@ -138,7 +145,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
               <Tooltip content="Kopierer hmsnr">
                 <HStack align="center">
                   <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
-                  <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />
+                  {!endretProdukt && <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />}
                 </HStack>
               </Tooltip>
               {produkt ? (

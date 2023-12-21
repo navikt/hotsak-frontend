@@ -8,12 +8,12 @@ import { formaterDato } from '../../../../utils/date'
 import { capitalize } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { beløp } from '../../../../formaters/beløp'
-import { StepType, VilkårsResultat } from '../../../../types/types.internal'
+import { SatsType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -107,10 +107,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 <Avstand paddingTop={2} />
                 <Alert variant="info" role="alert">
                   <Brødtekst>
-                    {`Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
-                      'SATS_',
-                      ''
-                    )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
+                    {vilkårsvurdering?.data?.sats === SatsType.INGEN
+                      ? 'Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt'
+                      : `Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
+                          'SATS_',
+                          ''
+                        )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
                   </Brødtekst>
                   {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
                     <Brødtekst>

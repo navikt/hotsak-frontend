@@ -80,7 +80,7 @@ export const ManuellJournalfør: React.FC = () => {
       <Container>
         <ToKolonner>
           {journalpostTildeltSaksbehandler ? <JournalpostSkjema /> : <JournalpostVisning />}
-          <DokumentPanel journalpostID={journalpostID} />
+          <DokumentPanel />
         </ToKolonner>
       </Container>
     </>

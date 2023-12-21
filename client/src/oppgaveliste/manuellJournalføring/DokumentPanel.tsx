@@ -16,12 +16,7 @@ const FeilmeldingDiv = styled.div`
   display: flex;
   justify-content: center;
 `
-
-interface DokumentPanelProps {
-  journalpostID?: string
-}
-
-export const DokumentPanel: React.FC<DokumentPanelProps> = () => {
+export const DokumentPanel: React.FC = () => {
   const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
   const { valgtDokument } = useDokumentContext()
 

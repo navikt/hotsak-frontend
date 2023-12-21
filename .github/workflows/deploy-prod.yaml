@@ -7,6 +7,8 @@ on:
 jobs:
   deploy-prod:
     runs-on: ubuntu-latest
+    permissions:
+        id-token: write
     steps:
       - uses: actions/checkout@v3
       - name: get release tag
@@ -17,10 +19,9 @@ jobs:
           IMAGE=ghcr.io/$GITHUB_REPOSITORY:$VERSION_TAG
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
           echo $IMAGE
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         name: Deploy til prod-gcp
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: .nais/prod.yaml
           VAR: commit=${{ github.sha }}

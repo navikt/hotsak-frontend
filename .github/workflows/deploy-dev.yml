@@ -59,9 +59,8 @@ jobs:
           cache-to: type=gha,mode=max
           context: .
       - name: Deploy til dev-gcp
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
           VAR: commit=${{ github.sha }}
@@ -80,9 +79,8 @@ jobs:
           prerelease: false
       - name: Deploy to dev-gcp (labs)
         if: github.ref == 'refs/heads/main'
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/labs.yaml
           VAR: commit=${{ github.sha }}

@@ -91,7 +91,7 @@ jobs:
      steps:
         - uses: actions/checkout@v4
         - name: Set versjon
-          run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $VERSION_TAG
+          run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
         - name: Echo versjon
           run: echo $VERSION_TAG
         - uses: navikt/digihot-deploy/actions/post-deploy@v2
@@ -101,7 +101,7 @@ jobs:
           env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-             tag_name: $VERSION_TAG
+             tag_name: $env.VERSION_TAG
              release_name: hotsak-frontend $VERSION_TAG
              #body: ${{ env.CHANGE_LOG }}
              draft: true

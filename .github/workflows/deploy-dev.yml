@@ -43,7 +43,7 @@ jobs:
       - uses: navikt/digihot-deploy/actions/pre-deploy@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_IMAGE: ghcr.io/navikt/hotsak-frontend
+          DOCKER_IMAGE: ${{ steps.docker-build-push.outputs.image }}
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push

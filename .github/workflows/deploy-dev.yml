@@ -36,6 +36,8 @@ jobs:
         id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+        docker_image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - uses: actions/checkout@v4
       - uses: navikt/digihot-deploy/actions/pre-deploy@v2
@@ -80,7 +82,7 @@ jobs:
           env:
              CLUSTER: dev-gcp
              RESOURCE: .nais/labs.yaml
-             IMAGE: ${{ needs.build.outputs.image }}
+             IMAGE: ${{ needs.build.outputs.docker_image }}
 
   deploy-dev:
      name: Deploy til dev-gcp
@@ -93,12 +95,12 @@ jobs:
      steps:
         - uses: actions/checkout@v4
         - name: "Echo"
-          run: echo "Output [${{ needs.build.outputs.image }}]"
+          run: echo "Output [${{ needs.build.outputs.docker_image }}]"
         - uses: nais/deploy/actions/deploy@v2
           env:
              CLUSTER: dev-gcp
              RESOURCE: .nais/dev.yaml
-             IMAGE: ${{ needs.build.outputs.image }}
+             IMAGE: ${{ needs.build.outputs.docker_image }}
         #- uses: navikt/digihot-deploy/actions/post-deploy@v2
         #  env:
         #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

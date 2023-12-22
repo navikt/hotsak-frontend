@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["cypress", "@testing-library/cypress"],
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,

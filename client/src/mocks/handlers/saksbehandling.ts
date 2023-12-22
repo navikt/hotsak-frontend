@@ -1,6 +1,12 @@
 import { rest } from 'msw'
 
-import { EndreHjelpemiddelRequest, OppgaveStatusType, SakerFilter, StegType } from '../../types/types.internal'
+import {
+  EndreHjelpemiddelRequest,
+  OppgaveStatusType,
+  SakerFilter,
+  StegType,
+  VedtakType,
+} from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
@@ -89,11 +95,14 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       return res(ctx.status(200), ctx.json(dokumenter.flat()))
     } else {
       const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId /*, dokumentType*/)
-
       return res(ctx.status(200), ctx.json(saksdokumenter))
     }
   }),
-  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
+  rest.put<VedtakType, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
+    const sakId = req.params.sakId
+    const status = req.body.status
+
+    sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
     return res(ctx.delay(500), ctx.status(200), ctx.json({}))
   }),
   rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/tilbakefoer/:sakId', async (req, res, ctx) => {

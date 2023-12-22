@@ -17,6 +17,7 @@ import {
   Sak,
   SignaturType,
   UtlevertType,
+  VedtakStatusType,
 } from '../../types/types.internal'
 import { IdGenerator } from './IdGenerator'
 import { PersonStore } from './PersonStore'
@@ -297,5 +298,30 @@ export class SakStore extends Dexie {
     })
     await this.lagreHendelse(sakId, 'Saksbehandler er meldt av saken')
     return true
+  }
+
+  async fattVedtak(sakId: string, status: OppgaveStatusType, vedtakStatus: VedtakStatusType) {
+    const nå = dayjs().toISOString()
+    const sak = await this.hent(sakId)
+    if (!sak) {
+      return false
+    }
+
+    if (sak.status === status) {
+      return false
+    } else {
+      this.transaction('rw', this.saker, this.hendelser, () => {
+        this.saker.update(sakId, {
+          status: status,
+          vedtak: {
+            vedtaksdato: nå,
+            status: vedtakStatus,
+            saksbehandlerNavn: sak.saksbehandler?.navn,
+            saksbehandlerRef: sak.saksbehandler?.objectId,
+          },
+        })
+      })
+      return true
+    }
   }
 }

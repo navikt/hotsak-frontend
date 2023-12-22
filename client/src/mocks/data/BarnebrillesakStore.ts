@@ -308,10 +308,7 @@ export class BarnebrillesakStore extends Dexie {
 
     if (sak.status === status) {
       return false
-      console.log('Stati er like')
     } else {
-      console.log('Endrer status fra ', sak.status, 'til', status)
-
       this.transaction('rw', this.saker, this.hendelser, () => {
         this.saker.update(sakId, {
           status: status,

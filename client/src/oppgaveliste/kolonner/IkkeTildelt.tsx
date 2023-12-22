@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
-import { Button, Loader } from '@navikt/ds-react'
+import { Button } from '@navikt/ds-react'
 
 import { postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
@@ -51,6 +51,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           size={gåTilSak ? 'xsmall' : 'small'}
           variant={gåTilSak ? 'tertiary' : 'secondary'}
           onClick={tildel}
+          name="Ta saken"
           data-cy={`btn-tildel-sak-${oppgavereferanse}`}
           disabled={isFetching}
           loading={isFetching}

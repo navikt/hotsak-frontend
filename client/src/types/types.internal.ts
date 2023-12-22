@@ -288,7 +288,7 @@ export enum VedtaksgrunnlagType {
   UTLAANSHISTORIKK = 'UTLAANSHISTORIKK',
 }
 
-export interface VedtakType {
+export interface VedtakPayload {
   sakId: number | string
   status: VedtakStatusType
   vedtaksgrunnlag: Vedtaksgrunnlag[]
@@ -348,14 +348,14 @@ export interface HjelpemiddelArtikkel {
   hjelpemiddeldatabasenURL?: string
 }
 
-/*export interface VedtakType {
+export interface VedtakType {
   vedtaksdato: string
   status: VedtakStatusType
   saksbehandlerOid: string
   saksbehandlerNavn: string
   søknadsId: string
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
-}*/
+}
 
 export interface Enhet {
   enhetsnummer: string

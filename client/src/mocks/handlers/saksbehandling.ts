@@ -5,7 +5,7 @@ import {
   OppgaveStatusType,
   SakerFilter,
   StegType,
-  VedtakType,
+  VedtakPayload,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
@@ -98,7 +98,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       return res(ctx.status(200), ctx.json(saksdokumenter))
     }
   }),
-  rest.put<VedtakType, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
+  rest.put<VedtakPayload, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
     const sakId = req.params.sakId
     const status = req.body.status
 

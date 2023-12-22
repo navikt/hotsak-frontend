@@ -228,11 +228,13 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                     <Rad key={tilbehør.hmsNr}>
                       <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
                       <Kolonne>
-                        <Tooltip content="Kopierer hmsnr">
-                          <HStack align="center">
-                            {tilbehør.hmsNr} <CopyButton size="small" copyText={tilbehør.hmsNr} /> {tilbehør.navn}
-                          </HStack>
-                        </Tooltip>
+                        <HStack align="center">
+                          {tilbehør.hmsNr}{' '}
+                          <Tooltip content="Kopierer hmsnr">
+                            <CopyButton size="small" copyText={tilbehør.hmsNr} />
+                          </Tooltip>
+                          {tilbehør.navn}
+                        </HStack>
                       </Kolonne>
                     </Rad>
                   ))}

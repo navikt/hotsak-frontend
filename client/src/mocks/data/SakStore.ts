@@ -112,7 +112,7 @@ function lagSak(sakId: number, sakstype = Oppgavetype.SØKNAD): LagretSak {
         kategori: 'Terskeleliminatorer og Kjøreramper',
         beskrivelse: 'Topro Terskeleliminator',
         tilleggsinfo: [],
-        tilbehør: [],
+        tilbehør: [{ hmsNr: '1234', antall: 1, navn: 'Tilbehørnavn' }],
       },
       {
         id: -1,

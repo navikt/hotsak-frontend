@@ -84,10 +84,11 @@ jobs:
         - uses: navikt/digihot-deploy/actions/post-deploy@v3
           env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+             VERSION_TAG: ${{ env.VERSION_TAG }}
         - uses: actions/create-release@latest
           env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-             VERSION_TAG: ${{ env.VERSION_TAG }}
+            
           with:
              tag_name: ${{ env.VERSION_TAG }}
              release_name: hotsak-frontend ${{ env.VERSION_TAG }}

@@ -81,6 +81,8 @@ jobs:
              RESOURCE: .nais/dev.yaml
              IMAGE: ${{ needs.build.outputs.docker_image }}
         # Foreløpig en bug med git tag
+        - name: Set versjon
+          run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
         - uses: navikt/digihot-deploy/actions/post-deploy@v3
           env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

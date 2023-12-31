@@ -41,6 +41,11 @@ jobs:
       #- uses: navikt/digihot-deploy/actions/pre-deploy@v2
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pre-deploy
+        uses: navikt/digihot-deploy/actions/pre-deploy@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
@@ -48,7 +53,8 @@ jobs:
            team: teamdigihot
           #  image_suffix: hotsak-frontend
            identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} 
-           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} 
+           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+           tag: ${{ env.VERSION_TAG }}
 
   deploy-labs:
      name: Deploy til labs-gcp
@@ -76,10 +82,12 @@ jobs:
      timeout-minutes: 15
      steps:
         - uses: actions/checkout@v4
+
         - name: Pre-deploy
           uses: navikt/digihot-deploy/actions/pre-deploy@v3
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
         - uses: nais/deploy/actions/deploy@v2
           env:
              CLUSTER: dev-gcp
@@ -95,11 +103,10 @@ jobs:
         - uses: actions/create-release@latest
           env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            
           with:
              tag_name: ${{ env.VERSION_TAG }}
              release_name: hotsak-frontend ${{ env.VERSION_TAG }}
-             #body: ${{ env.CHANGE_LOG }}
+             body: ${{ env.CHANGE_LOG }}
              draft: true
              prerelease: false
 

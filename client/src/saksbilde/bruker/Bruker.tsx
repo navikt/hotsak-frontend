@@ -11,7 +11,7 @@ import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Formidler, Levering, PersonInfoKilde, Personinfo } from '../../types/types.internal'
+import { Bosituasjon, Bruksarena, Formidler, Levering, PersonInfoKilde, Personinfo } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
@@ -116,8 +116,12 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
               <Tekst>{bosituasjon}</Tekst>
             </>
           )}
-          <Etikett>Bruksarena</Etikett>
-          <Tekst>{capitalize(person.bruksarena)}</Tekst>
+          {person.bruksarena !== Bruksarena.UKJENT && (
+            <>
+              <Etikett>Bruksarena</Etikett>
+              <Tekst>{capitalize(person.bruksarena)}</Tekst>
+            </>
+          )}
           <Etikett>Funksjonsnedsettelse</Etikett>
           <Tekst>{capitalize(person.funksjonsnedsettelse.join(', '))}</Tekst>
         </Grid>

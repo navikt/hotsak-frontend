@@ -116,8 +116,12 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
               <Tekst>{bosituasjon}</Tekst>
             </>
           )}
-          <Etikett>Bruksarena</Etikett>
-          <Tekst>{capitalize(person.bruksarena)}</Tekst>
+          {person.bruksarena && (
+            <>
+              <Etikett>Bruksarena</Etikett>
+              <Tekst>{capitalize(person.bruksarena)}</Tekst>
+            </>
+          )}
           <Etikett>Funksjonsnedsettelse</Etikett>
           <Tekst>{capitalize(person.funksjonsnedsettelse.join(', '))}</Tekst>
         </Grid>

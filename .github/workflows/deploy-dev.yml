@@ -81,23 +81,23 @@ jobs:
              CLUSTER: dev-gcp
              RESOURCE: .nais/dev.yaml
              IMAGE: ${{ needs.build.outputs.docker_image }}
-        # Foreløpig en bug med git tag
-        - name: Set versjon
-          run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
-        - uses: navikt/digihot-deploy/actions/post-deploy@v3
-          env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-             #VERSION_TAG: ${{ env.VERSION_TAG }}
-        - uses: actions/create-release@latest
-          env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # # Foreløpig en bug med git tag
+        # - name: Set versjon
+        #   run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
+        # - uses: navikt/digihot-deploy/actions/post-deploy@v3
+        #   env:
+        #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #      #VERSION_TAG: ${{ env.VERSION_TAG }}
+        # - uses: actions/create-release@latest
+        #   env:
+        #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
-          with:
-             tag_name: ${{ env.VERSION_TAG }}
-             release_name: hotsak-frontend ${{ env.VERSION_TAG }}
-             #body: ${{ env.CHANGE_LOG }}
-             draft: true
-             prerelease: false
+        #   with:
+        #      tag_name: ${{ env.VERSION_TAG }}
+        #      release_name: hotsak-frontend ${{ env.VERSION_TAG }}
+        #      #body: ${{ env.CHANGE_LOG }}
+        #      draft: true
+        #      prerelease: false
 
   create-release:
     name: Lag release

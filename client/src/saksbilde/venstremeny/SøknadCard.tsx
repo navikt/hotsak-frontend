@@ -1,9 +1,10 @@
 import React from 'react'
 
+import { HStack } from '@navikt/ds-react'
+
 import { formaterDato } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
 
-import { HStack } from '@navikt/ds-react'
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
@@ -26,8 +27,10 @@ interface SøknadCardProps {
   bosituasjon: Bosituasjon
 }
 
-const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
+const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
   switch (bosituasjon) {
+    case null:
+      return null
     case Bosituasjon.HJEMME:
       return 'Hjemmeboende'
     case Bosituasjon.HJEMME_EGEN_BOLIG:
@@ -49,6 +52,8 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
   funksjonsnedsettelse,
   bosituasjon,
 }) => {
+  const bosituasjonTekst = getTextForBosituasjon(bosituasjon)
+
   return (
     <Card>
       <HStack align="center" gap="2" wrap={false}>
@@ -76,12 +81,14 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
         </IconContainer>
         <Tekst>{capitalize(bruksarena)}</Tekst>
       </HStack>
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <HjemIkon />
-        </IconContainer>
-        <Tekst>{getTextForBosituasjon(bosituasjon)}</Tekst>
-      </HStack>
+      {bosituasjonTekst && (
+        <HStack align="center" gap="2" wrap={false}>
+          <IconContainer>
+            <HjemIkon />
+          </IconContainer>
+          <Tekst>{bosituasjonTekst}</Tekst>
+        </HStack>
+      )}
       <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
           <RullestolIkon title="Funksjonsnedsettelse" />

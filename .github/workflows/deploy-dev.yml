@@ -8,6 +8,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
+      - bosituasjon
 
 jobs:
   test:

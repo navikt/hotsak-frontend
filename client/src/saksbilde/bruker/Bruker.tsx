@@ -72,8 +72,10 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   }
 }
 
-const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
+const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
   switch (bosituasjon) {
+    case null:
+      return null
     case Bosituasjon.HJEMME:
       return 'Hjemme (egen bolig, omsorgsbolig eller bofelleskap)'
     case Bosituasjon.HJEMME_EGEN_BOLIG:
@@ -90,6 +92,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon) => {
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
+  const bosituasjon = getTextForBosituasjon(person.bosituasjon)
 
   return (
     <>
@@ -107,8 +110,12 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
           <Tekst>{adresse}</Tekst>
           <Etikett>Telefon</Etikett>
           <Tekst>{person.telefon}</Tekst>
-          <Etikett>Boform</Etikett>
-          <Tekst>{getTextForBosituasjon(person.bosituasjon)}</Tekst>
+          {bosituasjon && (
+            <>
+              <Etikett>Boform</Etikett>
+              <Tekst>{bosituasjon}</Tekst>
+            </>
+          )}
           <Etikett>Bruksarena</Etikett>
           <Tekst>{capitalize(person.bruksarena)}</Tekst>
           <Etikett>Funksjonsnedsettelse</Etikett>

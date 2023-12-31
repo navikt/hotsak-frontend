@@ -81,50 +81,50 @@ jobs:
              CLUSTER: dev-gcp
              RESOURCE: .nais/dev.yaml
              IMAGE: ${{ needs.build.outputs.docker_image }}
-        # # Foreløpig en bug med git tag
+        # Foreløpig en bug med git tag
         # - name: Set versjon
         #   run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
-        # - uses: navikt/digihot-deploy/actions/post-deploy@v3
-        #   env:
-        #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #      #VERSION_TAG: ${{ env.VERSION_TAG }}
-        # - uses: actions/create-release@latest
-        #   env:
-        #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - uses: navikt/digihot-deploy/actions/post-deploy@v3
+          env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+             #VERSION_TAG: ${{ env.VERSION_TAG }}
+        - uses: actions/create-release@latest
+          env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
-        #   with:
-        #      tag_name: ${{ env.VERSION_TAG }}
-        #      release_name: hotsak-frontend ${{ env.VERSION_TAG }}
-        #      #body: ${{ env.CHANGE_LOG }}
-        #      draft: true
-        #      prerelease: false
-
-  create-release:
-    name: Lag release
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: [deploy-dev]
-    permissions:
-       contents: write
-       id-token: write
-    steps:
-       - uses: actions/checkout@v4
-       - name: Set versjon
-         run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
-       - name: Echo versjon
-         run: echo ${{ env.VERSION_TAG }}
-       - uses: navikt/digihot-deploy/actions/post-deploy@v3
-         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       - uses: actions/create-release@latest
-         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         with:
-            tag_name: ${{ env.VERSION_TAG }}
-            release_name: hotsak-frontend ${{ env.VERSION_TAG }}
+          with:
+             tag_name: ${{ env.VERSION_TAG }}
+             release_name: hotsak-frontend ${{ env.VERSION_TAG }}
              #body: ${{ env.CHANGE_LOG }}
-            draft: true
-            prerelease: false
+             draft: true
+             prerelease: false
+
+  # create-release:
+  #   name: Lag release
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   needs: [deploy-dev]
+  #   permissions:
+  #      contents: write
+  #      id-token: write
+  #   steps:
+  #      - uses: actions/checkout@v4
+  #      - name: Set versjon
+  #        run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
+  #      - name: Echo versjon
+  #        run: echo ${{ env.VERSION_TAG }}
+  #      - uses: navikt/digihot-deploy/actions/post-deploy@v3
+  #        env:
+  #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #      - uses: actions/create-release@latest
+  #        env:
+  #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #        with:
+  #           tag_name: ${{ env.VERSION_TAG }}
+  #           release_name: hotsak-frontend ${{ env.VERSION_TAG }}
+  #            #body: ${{ env.CHANGE_LOG }}
+  #           draft: true
+  #           prerelease: false
 
 
 

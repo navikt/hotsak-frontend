@@ -9,22 +9,44 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         id-token: write
+        contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: get release tag
+
+      # - name: get release tag
+      #   env:
+      #     VERSION_TAG: ${{ github.event.release.tag_name }}
+      #   run: |
+      #     APPLICATION=$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)
+      #     IMAGE=ghcr.io/$GITHUB_REPOSITORY:$VERSION_TAG
+      #     echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
+      #     echo $IMAGE
+      
+      - uses: nais/login@v0
+        name: get image registry
+        id: nais-login
+        with:
+          team: teamdigihot
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      
+      - name: get image
         env:
           VERSION_TAG: ${{ github.event.release.tag_name }}
+          REGISTRY: ${{ steps.nais-login.outputs.registry }}
+          APP: ${{ github.event.repository.name }}
         run: |
-          APPLICATION=$(echo $GITHUB_REPOSITORY | cut -d "/" -f 2)
-          IMAGE=ghcr.io/$GITHUB_REPOSITORY:$VERSION_TAG
+          IMAGE=$REGISTRY/$APP:$VERSION_TAG
           echo "IMAGE=${IMAGE}" >> $GITHUB_ENV
           echo $IMAGE
+
       - uses: nais/deploy/actions/deploy@v2
         name: Deploy til prod-gcp
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/prod.yaml
           VAR: commit=${{ github.sha }}
+
       - uses: navikt/digihot-deploy/actions/post-production@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

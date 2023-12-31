@@ -1,4 +1,5 @@
 name: Bygg, deploy til dev-gcp og lag release
+
 on:
   push:
     paths-ignore:
@@ -8,53 +9,48 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - bosituasjon
 
 jobs:
+
   test:
     name: Kjør Cypress-tester
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run dev
-          wait-on: 'http://ip6-localhost:3001'
-          working-directory: client
-          config-file: cypress.config.ts
-          record: false
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Cypress run
+      uses: cypress-io/github-action@v6
+      with:
+        start: npm run dev
+        wait-on: 'http://ip6-localhost:3001'
+        working-directory: client
+        config-file: cypress.config.ts
+        record: false
 
   build:
     name: Bygg
     permissions:
-        packages: write
-        contents: write
-        id-token: write
+      packages: write
+      contents: write
+      id-token: write
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
-        docker_image: ${{ steps.docker-build-push.outputs.image }}
+      docker_image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
-      #- uses: navikt/digihot-deploy/actions/pre-deploy@v2
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pre-deploy
-        uses: navikt/digihot-deploy/actions/pre-deploy@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: navikt/digihot-deploy/actions/pre-deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Push docker image to GAR
+      - name: Build and push docker image
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
-           team: teamdigihot
-          #  image_suffix: hotsak-frontend
-           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} 
-           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-           tag: ${{ env.VERSION_TAG }}
+          team: teamdigihot
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          tag: ${{ env.VERSION_TAG }}
 
   deploy-labs:
      name: Deploy til labs-gcp
@@ -71,7 +67,7 @@ jobs:
              CLUSTER: dev-gcp
              RESOURCE: .nais/labs.yaml
              IMAGE: ${{ needs.build.outputs.docker_image }}
-
+  
   deploy-dev:
      name: Deploy til dev-gcp
      runs-on: ubuntu-latest
@@ -82,61 +78,27 @@ jobs:
      timeout-minutes: 15
      steps:
         - uses: actions/checkout@v4
-
-        - name: Pre-deploy
-          uses: navikt/digihot-deploy/actions/pre-deploy@v3
+        - uses: navikt/digihot-deploy/actions/pre-deploy@v3
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
         - uses: nais/deploy/actions/deploy@v2
           env:
              CLUSTER: dev-gcp
              RESOURCE: .nais/dev.yaml
              IMAGE: ${{ needs.build.outputs.docker_image }}
-        # Foreløpig en bug med git tag
-        # - name: Set versjon
-        #   run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
-        - uses: navikt/digihot-deploy/actions/post-deploy@v3
+        - name: post-deploy
+          if: github.ref == 'refs/heads/main'
+          uses: navikt/digihot-deploy/actions/post-deploy@v3
           env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-             #VERSION_TAG: ${{ env.VERSION_TAG }}
-        - uses: actions/create-release@latest
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        - name: Create release
+          if: github.ref == 'refs/heads/main'
+          uses: actions/create-release@latest
           env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-             tag_name: ${{ env.VERSION_TAG }}
-             release_name: hotsak-frontend ${{ env.VERSION_TAG }}
-             body: ${{ env.CHANGE_LOG }}
-             draft: true
-             prerelease: false
-
-  # create-release:
-  #   name: Lag release
-  #   if: github.ref == 'refs/heads/main'
-  #   runs-on: ubuntu-latest
-  #   needs: [deploy-dev]
-  #   permissions:
-  #      contents: write
-  #      id-token: write
-  #   steps:
-  #      - uses: actions/checkout@v4
-  #      - name: Set versjon
-  #        run: echo "VERSION_TAG = $(TZ=Europe/Oslo date +'%y.%j.%H%M%S')" >> $GITHUB_ENV
-  #      - name: Echo versjon
-  #        run: echo ${{ env.VERSION_TAG }}
-  #      - uses: navikt/digihot-deploy/actions/post-deploy@v3
-  #        env:
-  #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #      - uses: actions/create-release@latest
-  #        env:
-  #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #        with:
-  #           tag_name: ${{ env.VERSION_TAG }}
-  #           release_name: hotsak-frontend ${{ env.VERSION_TAG }}
-  #            #body: ${{ env.CHANGE_LOG }}
-  #           draft: true
-  #           prerelease: false
-
-
-
-   
+            tag_name: ${{ env.VERSION_TAG }}
+            release_name: ${{ env.APPLICATION }} ${{ env.VERSION_TAG }}
+            body: ${{ env.CHANGE_LOG }}
+            draft: true
+            prerelease: false

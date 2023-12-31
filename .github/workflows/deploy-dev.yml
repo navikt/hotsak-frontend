@@ -76,6 +76,10 @@ jobs:
      timeout-minutes: 15
      steps:
         - uses: actions/checkout@v4
+        - name: Pre-deploy
+          uses: navikt/digihot-deploy/actions/pre-deploy@v3
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         - uses: nais/deploy/actions/deploy@v2
           env:
              CLUSTER: dev-gcp

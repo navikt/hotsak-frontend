@@ -696,7 +696,7 @@ export interface Kroppsmål {
 
 export enum Bruksarena {
   DAGLIGLIV = 'dagligliv',
-  UKJENT = 'ukjent',
+  UKJENT = 'UKJENT',
 }
 
 export enum Bosituasjon {

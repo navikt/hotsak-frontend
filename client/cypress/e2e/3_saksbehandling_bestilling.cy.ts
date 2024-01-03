@@ -3,7 +3,7 @@
 
 import { clearIndexDb, plukkSak } from './testUtils.cy'
 
-describe('Saksbehandling søknad', () => {
+describe('Saksbehandling bestilling', () => {
   beforeEach(() => {
     /*cy.setCookie(
       'hotsak',
@@ -20,52 +20,52 @@ describe('Saksbehandling søknad', () => {
     clearIndexDb()
   })
 
-  it('burde kunne innvilge en søknad', () => {
-    plukkSak('1005')
+  it('burde kunne godkjenne en bestilling', () => {
+    plukkSak('1009')
 
     cy.findByRole('button', {
-      name: /innvilg søknaden/i,
+      name: /godkjenn/i,
     }).click()
 
     const innvilModal = cy
       .findByRole('dialog', {
-        name: /vil du innvilge søknaden/i,
+        name: /vil du godkjenne bestillingen/i,
       })
       .should('be.visible')
 
     innvilModal.within(() => {
       cy.findByRole('button', {
-        name: /innvilg søknaden/i,
+        name: /godkjenn/i,
       }).click()
     })
 
-    cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Innvilget')
+    cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Ferdigstilt')
   })
 
-  it('burde kunne overføre en søknad til Gosys', () => {
-    plukkSak('1005')
+  it('burde kunne avvise bestilling', () => {
+    plukkSak('1009')
 
     cy.findByRole('button', {
-      name: /overfør til gosys/i,
+      name: /avvis/i,
     }).click()
 
-    const overførModal = cy
+    const avvisModal = cy
       .findByRole('dialog', {
-        name: /overfør til gosys/i,
+        name: /vil du avvise bestillingen/i,
       })
       .should('be.visible')
 
-    overførModal.within(() => {
-      cy.findAllByRole('checkbox').first().check()
+    avvisModal.within(() => {
+      cy.findAllByRole('radio').first().check()
       cy.findByRole('button', {
-        name: /overfør til gosys/i,
+        name: /avvis bestillingen/i,
       }).click()
     })
 
-    cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Overført til Gosys')
+    cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Avvist')
   })
 
-  it('Ikke valgt årsak ved overføring til Gosys gir valideringsfeil', () => {
+  /*it('Ikke valgt årsak ved overføring til Gosys gir valideringsfeil', () => {
     plukkSak('1005')
 
     cy.findByRole('button', {
@@ -85,7 +85,8 @@ describe('Saksbehandling søknad', () => {
 
       cy.findByText(/du må velge minst en årsak i listen over/i).should('be.visible')
     })
-  })
+
+  })*/
 
   /*it('burde kunne overføre til Gosys', () => {
     cy.visit('/sak/222222/hjelpemidler')

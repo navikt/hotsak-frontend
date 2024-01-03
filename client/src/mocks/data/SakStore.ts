@@ -300,6 +300,24 @@ export class SakStore extends Dexie {
     return true
   }
 
+  async oppdaterStatus(sakId: string, status: OppgaveStatusType) {
+    const sak = await this.hent(sakId)
+
+    if (!sak) {
+      return false
+    }
+    if (sak.status === status) {
+      return false
+    } else {
+      this.transaction('rw', this.saker, () => {
+        this.saker.update(sakId, {
+          status: status,
+        })
+      })
+      return true
+    }
+  }
+
   async fattVedtak(sakId: string, status: OppgaveStatusType, vedtakStatus: VedtakStatusType) {
     const nå = dayjs().toISOString()
     const sak = await this.hent(sakId)

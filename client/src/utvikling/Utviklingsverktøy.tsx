@@ -74,6 +74,7 @@ export function Utviklingsverktøy() {
       </Button>
       <Heading size="xsmall">[UTVIKLINGSVERKTØY]</Heading>
       <Select
+        data-testid="select-bytt-bruker"
         size="small"
         label="Innlogget saksbehandler"
         value={innloggetSaksbehandlerId}

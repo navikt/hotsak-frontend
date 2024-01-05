@@ -149,12 +149,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
         </CardTitle>
         <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
-          <Knapp
-            variant="primary"
-            size="small"
-            onClick={() => setVisOvertaSakModal(true)}
-            data-cy="btn-vis-overta-sak-modal"
-          >
+          <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
             Overta bestillingen
           </Knapp>
         </Knappepanel>
@@ -175,20 +170,10 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
     return (
       <Card>
         <Knappepanel>
-          <Knapp
-            variant="primary"
-            size="small"
-            onClick={() => setVisOpprettOrdreModal(true)}
-            data-cy="btn-vis-opprett-ordre-modal"
-          >
+          <Knapp variant="primary" size="small" onClick={() => setVisOpprettOrdreModal(true)}>
             <span>Godkjenn</span>
           </Knapp>
-          <Knapp
-            variant="secondary"
-            size="small"
-            onClick={() => setVisAvvisModal(true)}
-            data-cy="btn-avvis-bestilling-modal"
-          >
+          <Knapp variant="secondary" size="small" onClick={() => setVisAvvisModal(true)}>
             Avvis
           </Knapp>
         </Knappepanel>

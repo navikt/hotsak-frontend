@@ -145,7 +145,6 @@ export const JournalpostSkjema: React.FC = () => {
                 e.preventDefault()
                 journalfør()
               }}
-              data-cy="btn-journalfør"
               disabled={journalfører}
               loading={journalfører}
             >

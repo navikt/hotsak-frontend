@@ -52,7 +52,6 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           variant={gåTilSak ? 'tertiary' : 'secondary'}
           onClick={tildel}
           name="Ta saken"
-          data-cy={`btn-tildel-sak-${oppgavereferanse}`}
           disabled={isFetching}
           loading={isFetching}
         >

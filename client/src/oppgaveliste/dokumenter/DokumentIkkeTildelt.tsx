@@ -41,7 +41,6 @@ export const DokumentIkkeTildelt = ({ journalpostID, gåTilSak = false }: IkkeTi
       size={gåTilSak ? 'xsmall' : 'small'}
       variant={gåTilSak ? 'tertiary' : 'secondary'}
       onClick={tildel}
-      data-cy={`btn-tildel-dokumentoppgave-${journalpostID}`}
       disabled={isFetching}
       loading={isFetching}
     >

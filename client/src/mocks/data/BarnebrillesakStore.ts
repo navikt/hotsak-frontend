@@ -3,8 +3,8 @@ import Dexie, { Table } from 'dexie'
 
 import {
   Barnebrillesak,
-  Brevkode,
   BrevTekst,
+  Brevkode,
   Hendelse,
   JournalføringRequest,
   Kjønn,
@@ -23,8 +23,8 @@ import {
   TotrinnskontrollVurdering,
   Utbetalingsmottaker,
   Vilkår,
-  Vilkårsgrunnlag,
   VilkårsResultat,
+  Vilkårsgrunnlag,
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
@@ -399,6 +399,7 @@ export class BarnebrillesakStore extends Dexie {
       saksbehandler,
       opprettet: dayjs().toISOString(),
     }
+
     return this.transaction('rw', this.saker, this.hendelser, () => {
       this.saker.update(sakId, {
         saksbehandler: undefined,

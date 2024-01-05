@@ -67,7 +67,6 @@ export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open
               setError('Du må velge en årsak i listen over.')
             }
           }}
-          data-cy="btn-overfor-soknad"
           disabled={loading}
           loading={loading}
         >

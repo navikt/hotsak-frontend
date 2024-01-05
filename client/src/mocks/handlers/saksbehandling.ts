@@ -56,7 +56,9 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
         ctx.delay(200),
         ctx.status(200),
         ctx.json({
-          kanTildeles: barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+          kanTildeles:
+            barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
+            barnebrillesak.status === OppgaveStatusType.AVVENTER_GODKJENNER,
           data: barnebrillesak,
         })
       )

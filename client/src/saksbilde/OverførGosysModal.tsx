@@ -53,8 +53,8 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
           onChange={setValgteArsaker}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke i Gosys.</Tekst>
-          {årsaker.map((årsak, index) => (
-            <Checkbox key={årsak} value={årsak} data-cy={`overfor-soknad-arsak-${index}`}>
+          {årsaker.map((årsak) => (
+            <Checkbox key={årsak} value={årsak}>
               {årsak}
             </Checkbox>
           ))}
@@ -82,7 +82,6 @@ export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
               })
             }
           }}
-          data-cy="btn-overfor-soknad"
           disabled={loading}
           loading={loading}
         >

@@ -152,12 +152,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         </CardTitle>
         <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
-          <Knapp
-            variant="primary"
-            size="small"
-            onClick={() => setVisOvertaSakModal(true)}
-            data-cy="btn-vis-overta-sak-modal"
-          >
+          <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
             Overta saken
           </Knapp>
         </Knappepanel>
@@ -177,10 +172,10 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     return (
       <Card>
         <Knappepanel gap="0rem">
-          <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)} data-cy="btn-vis-vedtak-modal">
+          <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
             <span>Innvilg søknaden</span>
           </Knapp>
-          <Knapp variant="secondary" size="small" onClick={visOverførGosys} data-cy="btn-vis-gosys-modal">
+          <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
             Overfør til Gosys
           </Knapp>
         </Knappepanel>

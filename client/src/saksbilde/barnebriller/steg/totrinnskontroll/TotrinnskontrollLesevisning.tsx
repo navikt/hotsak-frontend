@@ -27,13 +27,13 @@ export const TotrinnskontrollLesevisning: React.FC = () => {
 
       <Avstand paddingTop={4}>
         {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (
-          <Alert size="small" variant="info">
+          <Alert role="status" size="small" variant="info">
             Sendt i retur til saksbehandler {formaterDato(sak?.data.totrinnskontroll?.opprettet)}
           </Alert>
         )}
         {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
           sak.data.status === OppgaveStatusType.VEDTAK_FATTET && (
-            <Alert size="small" variant="success">
+            <Alert role="status" size="small" variant="success">
               Vedtaket er fattet {formaterDato(sak?.data.vedtak?.vedtaksdato)}
             </Alert>
           )}

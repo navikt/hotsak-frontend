@@ -14,7 +14,7 @@ export const plukkSak = (saksnummer: string) => {
     .click()
 }
 
-export const taBrillesak = (saksnummer: string, saksbehandler: string = 'Silje Saksbehandler') => {
+export const taBrillesak = (saksbehandler: string = 'Silje Saksbehandler') => {
   cy.findByTestId('select-bytt-bruker').select(saksbehandler)
   cy.findAllByRole('button').filter(':contains("Meny")').first().click()
 

@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 /// <reference types="@testing-library/cypress" />
 
-import { clearIndexDb, plukkSak } from './testUtils.cy'
+import { clearIndexDb, plukkSak } from './testUtils'
 
 describe('Saksbehandling bestilling', () => {
   beforeEach(() => {

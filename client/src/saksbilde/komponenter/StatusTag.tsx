@@ -13,7 +13,7 @@ export const StatusTag = ({
 }) => {
   return (
     <TagWrapper>
-      <Tag size="small" variant={tagVariant(sakStatus, vedtakStatus)}>
+      <Tag data-testid="tag-sak-status" size="small" variant={tagVariant(sakStatus, vedtakStatus)}>
         {sakStatus === OppgaveStatusType.VEDTAK_FATTET && vedtakStatus
           ? VedtakStatusLabel.get(vedtakStatus)
           : OppgaveStatusLabel.get(sakStatus)}

@@ -22,6 +22,7 @@ import {
   TotrinnskontrollData,
   TotrinnskontrollVurdering,
   Utbetalingsmottaker,
+  VedtakStatusType,
   Vilkår,
   VilkårsResultat,
   Vilkårsgrunnlag,
@@ -435,7 +436,7 @@ export class BarnebrillesakStore extends Dexie {
           status: OppgaveStatusType.VEDTAK_FATTET,
           vedtak: {
             vedtaksdato: nå,
-            status: 'INNVILGET',
+            status: sak.vilkårsvurdering?.resultat === 'JA' ? VedtakStatusType.INNVILGET : VedtakStatusType.AVSLÅTT,
             saksbehandlerNavn: sak.saksbehandler?.navn,
             saksbehandlerRef: sak.saksbehandler?.objectId,
           },

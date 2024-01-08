@@ -674,8 +674,8 @@ export interface Personinfo {
   telefon: string
   funksjonsnedsettelser: string[]
   funksjonsnedsettelse: string[]
-  bruksarena: Bruksarena
-  bosituasjon: Bosituasjon
+  bruksarena: Bruksarena | null
+  bosituasjon: Bosituasjon | null
   postnummer: string
   poststed: string
   gtNummer: string

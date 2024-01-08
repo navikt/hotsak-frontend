@@ -78,11 +78,11 @@ jobs:
       contents: write
       id-token: write
     timeout-minutes: 15
+    env:
+      VERSION_TAG: ${{ needs.build.outputs.version_tag }}
     steps:
       - uses: actions/checkout@v4
-      - env:
-          VERSION_TAG: ${{ needs.build.outputs.version_tag }}
-        run: echo "Using VERSION_TAG ${{ env.VERSION_TAG }}"
+      - run: echo "Using VERSION_TAG ${{ env.VERSION_TAG }}"
       - uses: nais/deploy/actions/deploy@v2
         env:
             CLUSTER: dev-gcp

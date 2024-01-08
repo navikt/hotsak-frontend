@@ -50,6 +50,9 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
+      - name: Save VERSION_TAG for later jobs
+        id: version-tag
+        run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
 
   deploy-labs:
     name: Deploy til labs-gcp
@@ -77,9 +80,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: navikt/digihot-deploy/actions/pre-deploy@v3
+      - name: Get VERSION_TAG
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_TAG: ${{steps.version-tag.outputs.VERSION_TAG}}
+        run: echo "Using VERSION_TAG ${{ env.VERSION_TAG }}"
       - uses: nais/deploy/actions/deploy@v2
         env:
             CLUSTER: dev-gcp

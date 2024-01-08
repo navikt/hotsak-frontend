@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - nullable-bruksarena
+      - version-tag
 
 jobs:
 
@@ -37,6 +37,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       docker_image: ${{ steps.docker-build-push.outputs.image }}
+      version_tag: ${{ steps.version-tag.outputs.VERSION_TAG}}
     steps:
       - uses: actions/checkout@v4
       - uses: navikt/digihot-deploy/actions/pre-deploy@v3
@@ -50,8 +51,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
-      - name: Save VERSION_TAG for later jobs
-        id: version-tag
+      - id: version-tag
         run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
 
   deploy-labs:
@@ -80,9 +80,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Get VERSION_TAG
-        env:
-          VERSION_TAG: ${{steps.version-tag.outputs.VERSION_TAG}}
+      - env:
+          VERSION_TAG: ${{ needs.build.outputs.version_tag }}
         run: echo "Using VERSION_TAG ${{ env.VERSION_TAG }}"
       - uses: nais/deploy/actions/deploy@v2
         env:

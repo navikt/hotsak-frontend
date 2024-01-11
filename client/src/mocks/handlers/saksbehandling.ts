@@ -45,7 +45,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
     if (sak) {
       return res(
-        ctx.delay(200),
+        //ctx.delay(200),
         ctx.status(200),
         ctx.json({ kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER, data: sak })
       )
@@ -53,7 +53,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
       return res(
-        ctx.delay(200),
+        //ctx.delay(200),
         ctx.status(200),
         ctx.json({
           kanTildeles:
@@ -63,12 +63,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
         })
       )
     }
-    return res(ctx.delay(200), ctx.status(404))
+    return res(/*ctx.delay(200),*/ ctx.status(404))
   }),
   rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/historikk`, async (req, res, ctx) => {
     const { sakId } = req.params
     const hendelser = await Promise.all([sakStore.hentHendelser(sakId), barnebrillesakStore.hentHendelser(sakId)])
-    return res(ctx.delay(200), ctx.status(200), ctx.json(hendelser.flat()))
+    return res(/*ctx.delay(200),*/ ctx.status(200), ctx.json(hendelser.flat()))
   }),
   rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/dokumenter`, async (req, res, ctx) => {
     const { sakId } = req.params
@@ -105,25 +105,25 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     const status = req.body.status
 
     sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
-    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
   }),
   rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/tilbakefoer/:sakId', async (req, res, ctx) => {
     const sakId = req.params.sakId
     sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
-    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
   }),
   rest.put<{ status: OppgaveStatusType }, { sakId: string }, any>('/api/sak/:sakId/status', async (req, res, ctx) => {
     const sakId = req.params.sakId
     const status = req.body.status
     barnebrillesakStore.oppdaterStatus(sakId, status)
     barnebrillesakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
-    return res(ctx.delay(300), ctx.status(200))
+    return res(/*ctx.delay(300),*/ ctx.status(200))
   }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }, { sakId: string }>(
     '/api/bestilling/avvis/:sakId',
     async (req, res, ctx) => {
       sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVIST)
-      return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+      return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
     }
   ),
   rest.get(`/api/oppgaver`, async (req, res, ctx) => {
@@ -161,11 +161,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       currentPage: currentPage,
     }
 
-    return res(ctx.delay(200), ctx.status(200), ctx.json(response))
+    return res(/*ctx.delay(200),*/ ctx.status(200), ctx.json(response))
   }),
   rest.put<any, { sakId: string }, any>('/api/bestilling/ferdigstill/:sakId', (req, res, ctx) => {
     sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.FERDIGSTILT)
-    return res(ctx.delay(500), ctx.status(200), ctx.json({}))
+    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
   }),
   rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/v2/:sakId', async (req, res, ctx) => {
     await req.json<EndreHjelpemiddelRequest>()
@@ -173,12 +173,12 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
   }),
   rest.post<any, { sakId: string }, any>('/api/sak/:sakId/vilkarsvurdering', async (req, res, ctx) => {
     await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
-    return res(ctx.delay(1000), ctx.status(200), ctx.json({}))
+    return res(/*ctx.delay(1000),*/ ctx.status(200), ctx.json({}))
   }),
   rest.post<any, { sakId: string }, any>('/api/sak/:sakId/brevsending', async (req, res, ctx) => {
     await barnebrillesakStore.lagreSaksdokument(req.params.sakId, 'Innhent opplysninger')
     await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
     await barnebrillesakStore.fjernBrevtekst(req.params.sakId)
-    return res(ctx.delay(3000), ctx.status(200), ctx.json({}))
+    return res(/*ctx.delay(3000),*/ ctx.status(200), ctx.json({}))
   }),
 ]

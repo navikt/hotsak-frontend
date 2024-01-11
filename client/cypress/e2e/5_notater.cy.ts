@@ -1,7 +1,6 @@
 /// <reference types="Cypress" />
 /// <reference types="@testing-library/cypress" />
 
-import 'cypress-msw-interceptor'
 import { clearIndexDb, taBrillesak } from './testUtils'
 
 describe('Håndtering av notater på brillesaker', () => {

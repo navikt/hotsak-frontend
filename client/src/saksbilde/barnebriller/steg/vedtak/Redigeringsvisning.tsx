@@ -151,7 +151,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
         </>
       )}
       {manglerPåkrevdEtterspørreOpplysningerBrev && (
-        <SkjemaAlert variant="warning">
+        <SkjemaAlert variant="warning" role="status">
           <Etikett>Mangler innhente opplysninger brev</Etikett>
           <Detail>
             Det er ikke sendt ut brev for å innhente manglende opplysninger i denne saken. Du kan ikke avslå en sak på

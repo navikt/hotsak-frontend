@@ -99,6 +99,7 @@ export const MenyKnapp = ({
             variant="tertiary"
             size="xsmall"
             as={Dropdown.Toggle}
+            title="saksmeny"
             onClick={menyClick}
             icon={knappeIkon ? knappeIkon : <MenuElipsisHorizontalCircleIcon />}
           >

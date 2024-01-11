@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { ClockIcon, DocPencilIcon, EnvelopeClosedIcon, PersonGavelIcon } from '@navikt/aksel-icons'
-import { Tabs } from '@navikt/ds-react'
+import { Tabs, Tooltip } from '@navikt/ds-react'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
@@ -44,10 +44,21 @@ export const BarnebrilleSidebar: React.FC = () => {
       onChange={setValgtSidebarTab}
     >
       <Tabs.List>
-        <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon />} />
-        <Tabs.Tab value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon />} />
-        <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon />} />
-        <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<DocPencilIcon />} />
+        <Tooltip content="Historikk">
+          <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon title="Historikk" />} />
+        </Tooltip>
+        <Tooltip content="Totrinnskontroll">
+          <Tabs.Tab
+            value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL}
+            icon={<PersonGavelIcon title="Totrinnskontroll" />}
+          />
+        </Tooltip>
+        <Tooltip content="Send brev">
+          <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon title="Send brev" />} />
+        </Tooltip>
+        <Tooltip content="Notat">
+          <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
+        </Tooltip>
       </Tabs.List>
       <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>
         <BrilleHistorikk />

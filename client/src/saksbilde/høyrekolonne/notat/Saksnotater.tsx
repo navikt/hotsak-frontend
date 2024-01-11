@@ -35,7 +35,7 @@ export function Saksnotater(props: SaksnotaterProps) {
       )}
       <Avstand marginTop={lesevisning ? 0 : 8}>
         {notater.length ? (
-          <ul>
+          <ul title="Notater">
             {notater.map((notat) => (
               <li key={notat.id || notat.opprettet}>
                 <NotatPanel border>
@@ -50,7 +50,7 @@ export function Saksnotater(props: SaksnotaterProps) {
                       <Button
                         type="button"
                         size="small"
-                        icon={<TrashIcon aria-label="Slett notat" />}
+                        icon={<TrashIcon title="Slett notat" />}
                         variant="tertiary-neutral"
                         onClick={() => setNotatId(notat.id)}
                       />

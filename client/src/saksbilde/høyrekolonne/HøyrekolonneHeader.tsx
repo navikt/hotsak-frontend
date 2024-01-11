@@ -5,7 +5,7 @@ import { HøyrekolonneTabs } from '../../types/types.internal'
 import { SøknadslinjeProps } from '../Søknadslinje'
 import { useSak } from '../sakHook'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/hjelpemiddeloversiktHook'
-import { Tabs } from '@navikt/ds-react'
+import { Tabs, Tooltip } from '@navikt/ds-react'
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
 
 export const HøyrekolonneHeader: React.FC<SøknadslinjeProps> = ({ onTabChange, currentTab }) => {
@@ -22,23 +22,27 @@ export const HøyrekolonneHeader: React.FC<SøknadslinjeProps> = ({ onTabChange,
   return (
     <Tabs style={{ width: hotsakHistorikkWidth }}>
       <Tabs.List>
-        <Tabs.Tab
-          value={HøyrekolonneTabs.SAKSHISTORIKK}
-          icon={<HistorikkIkon width={20} height={20} />}
-          aria-selected={currentTab === HøyrekolonneTabs.SAKSHISTORIKK}
-          onClick={() => onTabChange(HøyrekolonneTabs.SAKSHISTORIKK)}
-        />
-        <Tabs.Tab
-          value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
-          icon={
-            <>
-              <RullestolIkon width={20} height={20} title="Utlånsoversikt" />
-              {!isLoading && !isError && <Teller>{antallUtlånteHjelpemidler}</Teller>}
-            </>
-          }
-          aria-selected={currentTab === HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
-          onClick={() => onTabChange(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)}
-        />
+        <Tooltip content="Historikk">
+          <Tabs.Tab
+            value={HøyrekolonneTabs.SAKSHISTORIKK}
+            icon={<HistorikkIkon width={20} height={20} />}
+            aria-selected={currentTab === HøyrekolonneTabs.SAKSHISTORIKK}
+            onClick={() => onTabChange(HøyrekolonneTabs.SAKSHISTORIKK)}
+          />
+        </Tooltip>
+        <Tooltip content="Utlånsoversikt">
+          <Tabs.Tab
+            value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
+            icon={
+              <>
+                <RullestolIkon width={20} height={20} title="Utlånsoversikt" />
+                {!isLoading && !isError && <Teller>{antallUtlånteHjelpemidler}</Teller>}
+              </>
+            }
+            aria-selected={currentTab === HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
+            onClick={() => onTabChange(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)}
+          />
+        </Tooltip>
       </Tabs.List>
     </Tabs>
   )

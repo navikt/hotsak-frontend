@@ -22,9 +22,9 @@ interface SøknadCardProps {
   søknadGjelder: string
   saksnr: number | string
   mottattDato: string
-  bruksarena: Bruksarena
+  bruksarena: Bruksarena | null
   funksjonsnedsettelse: string[]
-  bosituasjon: Bosituasjon
+  bosituasjon: Bosituasjon | null
 }
 
 const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
@@ -75,7 +75,7 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
         </IconContainer>
         <Tekst>Mottatt: {formaterDato(mottattDato)}</Tekst>
       </HStack>
-      {bruksarena !== Bruksarena.UKJENT && (
+      {bruksarena && bruksarena !== Bruksarena.UKJENT && (
         <HStack align="center" gap="2" wrap={false}>
           <IconContainer>
             <MappeIkon />

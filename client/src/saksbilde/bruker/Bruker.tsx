@@ -116,7 +116,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
               <Tekst>{bosituasjon}</Tekst>
             </>
           )}
-          {person.bruksarena !== Bruksarena.UKJENT && (
+          {person.bruksarena && person.bruksarena !== Bruksarena.UKJENT && (
             <>
               <Etikett>Bruksarena</Etikett>
               <Tekst>{capitalize(person.bruksarena)}</Tekst>

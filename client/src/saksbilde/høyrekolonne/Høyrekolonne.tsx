@@ -2,13 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { hotsakHistorikkWidth } from '../../GlobalStyles'
-import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
+import { HøyrekolonneTabs, Sakstype } from '../../types/types.internal'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 
 interface HøyrekolonneProps {
   currentTab: HøyrekolonneTabs
-  oppgavetype: Oppgavetype
+  sakstype: Sakstype
 }
 
 export const KolonneOppsett = styled.ul`

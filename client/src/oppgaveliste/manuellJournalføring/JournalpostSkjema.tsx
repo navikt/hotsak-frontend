@@ -17,7 +17,7 @@ import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { useSaksoversikt } from '../../personoversikt/saksoversiktHook'
 import { formaterNavn } from '../../saksbilde/Personlinje'
 import { useJournalpost } from '../../saksbilde/journalpostHook'
-import { BehandlingstatusType, JournalføringRequest, Oppgavetype } from '../../types/types.internal'
+import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../../types/types.internal'
 import { Dokumenter } from './Dokumenter'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
 
@@ -39,7 +39,7 @@ export const JournalpostSkjema: React.FC = () => {
     saksoversikt,
     // isLoading: henterSaker,
     //isError,
-  } = useSaksoversikt(fodselsnummer, Oppgavetype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
+  } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   const [journalfører, setJournalfører] = useState(false)
 

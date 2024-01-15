@@ -20,7 +20,7 @@ import { DokumentStatusLabel, Journalpost } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { DokumentTildeling } from './DokumentTildeling'
 // Flytte til felles
-import { useDokumentliste } from './dokumentHook'
+import { useDokumentliste } from './oppgaverHook'
 
 const Container = styled.div`
   min-height: 300px;

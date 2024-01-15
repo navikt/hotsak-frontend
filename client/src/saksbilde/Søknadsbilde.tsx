@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { HøyrekolonneTabs, Oppgavetype } from '../types/types.internal'
+import { HøyrekolonneTabs, Sakstype } from '../types/types.internal'
 import { LasterPersonlinje } from './Personlinje'
 import { Søknadslinje } from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
@@ -69,7 +69,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
     <>
       <Søknadslinje
         id={sak.data.sakId}
-        type={Oppgavetype.SØKNAD}
+        type={Sakstype.SØKNAD}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
       />
@@ -78,7 +78,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
           <Flex $flex={1} style={{ height: '100%' }}>
             <VenstreMeny>
               <SøknadCard
-                oppgaveType={Oppgavetype.SØKNAD}
+                sakstype={Sakstype.SØKNAD}
                 søknadGjelder={sak.data.søknadGjelder}
                 saksnr={sak.data.sakId}
                 mottattDato={sak.data.mottattDato}
@@ -130,7 +130,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
             </FlexColumn>
           </Flex>
         </AutoFlexContainer>
-        <Høyrekolonne currentTab={høyrekolonneTab} oppgavetype={Oppgavetype.SØKNAD} />
+        <Høyrekolonne currentTab={høyrekolonneTab} sakstype={Sakstype.SØKNAD} />
       </Container>
     </>
   )

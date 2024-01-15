@@ -19,7 +19,7 @@ export interface BarnebrillesakResponse {
 
 export interface Sak extends HarSaksinformasjon {
   sakId: string
-  sakstype: Oppgavetype
+  sakstype: Sakstype
   søknadGjelder: string
   hjelpemidler: HjelpemiddelType[]
   formidler: Formidler
@@ -38,7 +38,7 @@ export interface Sak extends HarSaksinformasjon {
 
 export interface Barnebrillesak extends HarSaksinformasjon {
   sakId: string
-  sakstype: Oppgavetype
+  sakstype: Sakstype
   søknadGjelder: string
   innsender: Innsender
   bruker: Bruker
@@ -176,7 +176,7 @@ export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
   sakId: string
-  sakstype: Oppgavetype
+  sakstype: Sakstype
   målform: MålformType
   //opplysningsplikt: ManuellVurdering
   data: {
@@ -463,9 +463,22 @@ export enum GreitÅViteType {
   MERKNAD = 'MERKNAD',
 }
 
+export enum Oppgavetype {
+  JOURNALFØRING = 'JOURNALFØRING',
+  BEHANDLE_SAK = 'BEHANDLE_SAK',
+  GODKJENNE_VEDTAK = 'GODKJENNE_VEDTAK',
+}
+
+/* Midlertidig uheldig navn. Rename til Oppgave når Oppgavetypen er fjernet når vi er ver på å bruke ny oppgavemodell */
+export interface OppgaveV2 {
+  oppgaveId: string
+  oppgavetype: Oppgavetype
+}
+
+/* Bør fjernes når vi er over på ny Oppgavemodell*/
 export interface Oppgave {
   sakId: string
-  sakstype: Oppgavetype
+  sakstype: Sakstype
   status: OppgaveStatusType
   statusEndret: string
   beskrivelse: string
@@ -569,7 +582,7 @@ export enum DokumentFormat {
   ORIGINAL = 'ORIGINAL',
 }
 
-export enum Oppgavetype {
+export enum Sakstype {
   SØKNAD = 'SØKNAD',
   BESTILLING = 'BESTILLING',
   TILSKUDD = 'TILSKUDD',
@@ -825,7 +838,7 @@ export interface Saksoversikt {
 
 export interface Saksoversikt_Sak {
   sakId: string
-  sakstype?: Oppgavetype
+  sakstype?: Sakstype
   mottattDato: string
   status: OppgaveStatusType
   statusEndretDato: string

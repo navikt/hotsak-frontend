@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { hotsakTotalMinWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { Flex, FlexColumn } from '../../felleskomponenter/Flex'
-import { HøyrekolonneTabs, Oppgavetype } from '../../types/types.internal'
+import { HøyrekolonneTabs, Sakstype } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { Søknadslinje } from '../Søknadslinje'
 import { Bruker } from '../bruker/Bruker'
@@ -67,7 +67,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
     <BestillingsbildeContainer>
       <Søknadslinje
         id={sak.data.sakId}
-        type={Oppgavetype.BESTILLING}
+        type={Sakstype.BESTILLING}
         onTabChange={setHøyrekolonneTab}
         currentTab={høyrekolonneTab}
       />
@@ -76,7 +76,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
           <Flex $flex={1} style={{ height: '100%' }}>
             <VenstreMeny>
               <SøknadCard
-                oppgaveType={Oppgavetype.BESTILLING}
+                sakstype={Sakstype.BESTILLING}
                 søknadGjelder={sak.data.søknadGjelder}
                 saksnr={sak.data.sakId}
                 mottattDato={sak.data.mottattDato}
@@ -134,7 +134,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
             </FlexColumn>
           </Flex>
         </AutoFlexContainer>
-        <Høyrekolonne currentTab={høyrekolonneTab} oppgavetype={Oppgavetype.BESTILLING} />
+        <Høyrekolonne currentTab={høyrekolonneTab} sakstype={Sakstype.BESTILLING} />
       </Container>
     </BestillingsbildeContainer>
   )

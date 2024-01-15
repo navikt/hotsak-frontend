@@ -6,7 +6,7 @@ import { Avstand } from '../../felleskomponenter/Avstand'
 import { HeadingMedHjelpetekst } from '../../felleskomponenter/HeadingMedHjelpetekst'
 import { Brødtekst } from '../../felleskomponenter/typografi'
 import { OppgaveStatusLabel, Saksoversikt_Sak } from '../../types/types.internal'
-import { OppgaveType } from '../kolonner/OppgaveType'
+import { SakstypeEtikett } from '../kolonner/SaksType'
 
 interface Props {
   åpneSaker: Saksoversikt_Sak[]
@@ -54,7 +54,7 @@ export const KnyttTilEksisterendeSak: React.FC<Props> = (props) => {
                   </Table.DataCell>
                   <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
                   <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                    {s.sakstype && <OppgaveType oppgaveType={s.sakstype} />}
+                    {s.sakstype && <SakstypeEtikett sakstype={s.sakstype} />}
                   </Table.DataCell>
                   <Table.DataCell style={{ verticalAlign: 'middle' }}>
                     {OppgaveStatusLabel.get(s.status)}

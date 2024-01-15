@@ -2,7 +2,7 @@ import useSwr from 'swr'
 
 import { hentBrukerdataMedPost } from '../io/http'
 
-import { BehandlingstatusType, Oppgavetype, Saksoversikt } from '../types/types.internal'
+import { BehandlingstatusType, Sakstype, Saksoversikt } from '../types/types.internal'
 
 interface SaksoversiktResponse {
   saksoversikt: Saksoversikt | undefined
@@ -12,7 +12,7 @@ interface SaksoversiktResponse {
 
 export function useSaksoversikt(
   brukersFodselsnummer?: string,
-  saksType?: Oppgavetype,
+  saksType?: Sakstype,
   behandlingsStatus?: BehandlingstatusType
 ): SaksoversiktResponse {
   const { data, error } = useSwr<{ data: Saksoversikt }>(

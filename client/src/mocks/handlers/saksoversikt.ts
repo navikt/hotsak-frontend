@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 
-import { OppgaveStatusType, Oppgavetype } from '../../types/types.internal'
+import { OppgaveStatusType, Sakstype } from '../../types/types.internal'
 import { StoreHandlersFactory } from '../data'
 
 export const saksoversiktHandlers: StoreHandlersFactory = ({ saksoversiktStore }) => [
@@ -23,7 +23,7 @@ export const saksoversiktHandlers: StoreHandlersFactory = ({ saksoversiktStore }
     } else if (saksType && behandlingsStatus) {
       const filtrerteSaker = saksoversikt[2].hotsakSaker.filter(
         (sak) =>
-          sak.sakstype === Oppgavetype.TILSKUDD &&
+          sak.sakstype === Sakstype.TILSKUDD &&
           (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
             sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
       )

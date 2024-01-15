@@ -14,7 +14,7 @@ import {
   Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Oppgavetype,
+  Sakstype,
   Saksdokument,
   SaksdokumentType,
   StegType,
@@ -101,7 +101,7 @@ function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
     saksinformasjon: {
       opprettet,
     },
-    sakstype: Oppgavetype.BARNEBRILLER,
+    sakstype: Sakstype.BARNEBRILLER,
     søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
@@ -203,7 +203,7 @@ export class BarnebrillesakStore extends Dexie {
     const saker = await this.alle()
     return saker.map<Oppgave>(({ bruker, ...sak }) => ({
       sakId: sak.sakId,
-      sakstype: Oppgavetype.TILSKUDD,
+      sakstype: Sakstype.TILSKUDD,
       status: sak.status,
       statusEndret: sak.statusEndret,
       beskrivelse: sak.søknadGjelder,

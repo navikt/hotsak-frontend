@@ -1,10 +1,10 @@
-import { OppgaveStatusType, Oppgavetype, Saksoversikt } from '../../types/types.internal'
+import { OppgaveStatusType, Sakstype, Saksoversikt } from '../../types/types.internal'
 
 const saksoversikt: Saksoversikt[] = [
   {
     hotsakSaker: [
       {
-        sakstype: Oppgavetype.BESTILLING,
+        sakstype: Sakstype.BESTILLING,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -15,7 +15,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1000',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-08-18T13:55:45Z',
         område: ['kognisjon'],
         søknadGjelder: 'Kalender',
@@ -26,7 +26,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1001',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -41,7 +41,7 @@ const saksoversikt: Saksoversikt[] = [
   {
     hotsakSaker: [
       {
-        sakstype: Oppgavetype.BESTILLING,
+        sakstype: Sakstype.BESTILLING,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -52,7 +52,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1003',
       },
       {
-        sakstype: Oppgavetype.BESTILLING,
+        sakstype: Sakstype.BESTILLING,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -63,7 +63,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1004',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-08-18T13:55:45Z',
         område: ['kognisjon'],
         søknadGjelder: 'Kalender',
@@ -74,7 +74,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1005',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -89,7 +89,7 @@ const saksoversikt: Saksoversikt[] = [
   {
     hotsakSaker: [
       {
-        sakstype: Oppgavetype.BESTILLING,
+        sakstype: Sakstype.BESTILLING,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -100,7 +100,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1007',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-09-19T13:55:45Z',
         område: ['bevegelse'],
         søknadGjelder: 'Rullator',
@@ -111,7 +111,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1008',
       },
       {
-        sakstype: Oppgavetype.SØKNAD,
+        sakstype: Sakstype.SØKNAD,
         mottattDato: '2021-08-18T13:55:45Z',
         område: ['kognisjon'],
         søknadGjelder: 'Kalender',
@@ -131,7 +131,7 @@ const saksoversikt: Saksoversikt[] = [
         sakId: '1010',
       },
       {
-        sakstype: Oppgavetype.TILSKUDD,
+        sakstype: Sakstype.TILSKUDD,
         mottattDato: '2023-05-17T13:37:45Z',
         område: ['syn'],
         søknadGjelder: 'Briller til barn',
@@ -145,7 +145,7 @@ const saksoversikt: Saksoversikt[] = [
     barnebrilleSaker: [
       {
         sak: {
-          sakstype: Oppgavetype.TILSKUDD,
+          sakstype: Sakstype.TILSKUDD,
           mottattDato: '2023-09-12',
           område: ['syn'],
           søknadGjelder: 'Briller til barn',

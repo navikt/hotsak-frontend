@@ -10,7 +10,7 @@ import { AlertError } from '../../../../feilsider/AlertError'
 import { Flex } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { Oppgavetype } from '../../../../types/types.internal'
+import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
@@ -40,7 +40,7 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
     showBoundary(isError)
   }
 
-  if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
+  if (sak?.data.sakstype !== Sakstype.BARNEBRILLER) {
     throw new Error(
       `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype} `
     )

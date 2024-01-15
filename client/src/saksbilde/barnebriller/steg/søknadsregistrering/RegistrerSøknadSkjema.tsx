@@ -13,7 +13,7 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { Brilleseddel, MålformType, Oppgavetype, RegistrerSøknadData, StepType } from '../../../../types/types.internal'
+import { Brilleseddel, MålformType, Sakstype, RegistrerSøknadData, StepType } from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -37,7 +37,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
     const vurderVilkårRequest = {
       sakId: sakId!,
-      sakstype: Oppgavetype.BARNEBRILLER,
+      sakstype: Sakstype.BARNEBRILLER,
       målform: målform,
       data: {
         bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,

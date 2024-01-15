@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
 
 import { AlertError } from '../feilsider/AlertError'
-import { Oppgavetype } from '../types/types.internal'
+import { Sakstype } from '../types/types.internal'
 import { LasterPersonlinje, Personlinje } from './Personlinje'
 import Søknadsbilde from './Søknadsbilde'
 import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
@@ -37,9 +37,9 @@ const SaksbildeContent = React.memo(() => {
         <Personlinje person={sak.data.bruker} loading={false} />
         {(() => {
           switch (sak.data.sakstype) {
-            case Oppgavetype.BESTILLING:
+            case Sakstype.BESTILLING:
               return <Bestillingsbilde />
-            case Oppgavetype.BARNEBRILLER:
+            case Sakstype.BARNEBRILLER:
               return (
                 <DokumentProvider>
                   <BarnebrilleBilde />

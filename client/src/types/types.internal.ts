@@ -511,6 +511,11 @@ export interface OppgaveV2 {
   }
 }
 
+export interface OppgaverResponse {
+  oppgaver: OppgaveV2[]
+  totalCount: number
+}
+
 export interface Bydel {
   bydelsnummer: string
   bydelsnavn: string

@@ -1,15 +1,16 @@
 import { rest } from 'msw'
 
+import dayjs from 'dayjs'
 import {
   DokumentOppgaveStatusType,
   OmrådeFilter,
   OppgaveV2,
+  OppgaverResponse,
   Oppgavestatus,
   Oppgavetype,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
-import dayjs from 'dayjs'
 
 // TODO: Lag egen oppgavestore for å hente oppgaver
 export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
@@ -45,7 +46,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
         },
       }
     })
-    return res(ctx.delay(200), ctx.status(200), ctx.json(oppgaver))
+
+    const pagedOppgaver: OppgaverResponse = {
+      oppgaver: oppgaver,
+      totalCount: oppgaver.length,
+    }
+
+    return res(ctx.delay(200), ctx.status(200), ctx.json(pagedOppgaver))
   }),
 ]
 

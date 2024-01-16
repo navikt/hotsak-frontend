@@ -32,7 +32,8 @@ const ScrollWrapper = styled.div`
 `
 
 export const Dokumentliste: React.FC = () => {
-  const { oppgaver, isLoading, error } = useOppgaveliste()
+  const { data, isLoading, error } = useOppgaveliste()
+  const oppgaver = data?.oppgaver || []
 
   const kolonner: Column<OppgaveV2>[] = [
     {

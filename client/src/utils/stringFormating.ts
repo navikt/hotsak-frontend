@@ -1,3 +1,5 @@
+import { Navn } from '../types/types.internal'
+
 export const capitalize = (value?: string): string => {
   if (!value) {
     return ''
@@ -23,6 +25,11 @@ export const formaterKontonummer = (kontonummer?: string) => {
 
 export const formaterFødselsnummer = (fødselsnummer: string) => {
   return `${fødselsnummer.slice(0, 6)} ${fødselsnummer.slice(6)}`
+}
+
+export const formatName = (navn: Navn) => {
+  const { fornavn, mellomnavn, etternavn } = navn
+  return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
 }
 
 export const formaterTelefonnummer = (telefon: string) => {

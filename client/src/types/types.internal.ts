@@ -469,11 +469,57 @@ export enum Oppgavetype {
   GODKJENNE_VEDTAK = 'GODKJENNE_VEDTAK',
 }
 
+export enum Oppgavestatus {
+  OPPRETTET = 'OPPRETTET',
+  ÅPNET = 'ÅPNET',
+  UNDER_BEHANDLING = 'UNDER_BEHANDLING',
+  FERDIGSTILT = 'FERDIGSTILT',
+  FEILREGISTRERT = 'FEILREGISTRERT',
+}
+
+export const OppgavestatusLabel = new Map<string, string>([
+  [Oppgavestatus.OPPRETTET, 'Mottatt'],
+  [Oppgavestatus.ÅPNET, 'Mottatt'],
+  [Oppgavestatus.UNDER_BEHANDLING, 'Under journalføring'],
+  [Oppgavestatus.FERDIGSTILT, 'Journalført'],
+  [Oppgavestatus.FEILREGISTRERT, 'Feilregistrert'],
+])
+
 /* Midlertidig uheldig navn. Rename til Oppgave når Oppgavetypen er fjernet når vi er ver på å bruke ny oppgavemodell */
 export interface OppgaveV2 {
-  oppgaveId: string
+  id: string
   oppgavetype: Oppgavetype
+  oppgavestatus: Oppgavestatus
+  beskrivelse: string
+  område: OmrådeFilter
+  enhet: Enhet
+  kommune?: Kommune
+  bydel?: Bydel
+  saksbehandler?: Saksbehandler
+  journalpostId?: string
+  sakId?: string
+  frist: string
+  opprettet: string
+  endret?: string
+  bruker: {
+    fnr: string
+    navn: Navn
+  }
+  innsender: {
+    fnr: string
+    navn: Navn
+  }
 }
+
+export interface Bydel {
+  bydelsnummer: string
+  bydelsnavn: string
+}
+
+/*export interface Kommune {
+  kommunenummer: string
+  kommunenavn: string
+}*/
 
 /* Bør fjernes når vi er over på ny Oppgavemodell*/
 export interface Oppgave {
@@ -604,11 +650,11 @@ export enum DokumentOppgaveStatusType {
   JOURNALFØRT = 'JOURNALFØRT',
 }
 
-export const DokumentStatusLabel = new Map<string, string>([
+/*export const DokumentStatusLabel = new Map<string, string>([
   [DokumentOppgaveStatusType.MOTTATT, 'Mottatt'],
   [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under journalføring'],
   [DokumentOppgaveStatusType.JOURNALFØRT, 'Journalført'],
-])
+])*/
 
 export enum JournalpostStatusType {
   MOTTATT = 'MOTATT',

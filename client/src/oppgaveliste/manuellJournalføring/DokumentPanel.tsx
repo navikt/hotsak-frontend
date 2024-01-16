@@ -5,7 +5,7 @@ import { Feilmelding } from '../../felleskomponenter/Feilmelding'
 import { Toast } from '../../felleskomponenter/Toast'
 import { RessursStatus } from '../../types/types.internal'
 import { useDokumentContext } from '../dokumenter/DokumentContext'
-import { useDokument } from '../dokumenter/oppgaverHook'
+import { useDokument } from '../dokumenter/dokumentHook'
 
 const DokumentDiv = styled.div`
   width: 100%;

@@ -8,6 +8,7 @@ import { grunndataHandlers } from './grunndata'
 import { hjelpemiddelHandlers } from './hjelpemiddel'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
 import { notatHandlers } from './notat'
+import { oppgaveHandlers } from './oppgaver'
 import { personoversiktHandlers } from './personoversikt'
 import { saksbehandlerHandlers } from './saksbehandler'
 import { saksbehandlingHandlers } from './saksbehandling'
@@ -26,6 +27,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...hjelpemiddeloversiktHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...notatHandlers(store),
+  ...oppgaveHandlers(store),
   ...brevtekstHandlers(store),
   ...personoversiktHandlers(store),
   ...saksbehandlingHandlers(store),

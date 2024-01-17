@@ -32,17 +32,11 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
         opprettet: dayjs().toISOString(),
         bruker: {
           fnr: jp.innsender.fnr,
-          navn: {
-            fornavn: jp.innsender.navn.split(' ')[0],
-            etternavn: jp.innsender.navn.split(' ')[0],
-          },
+          fulltNavn: jp.innsender.navn,
         },
         innsender: {
           fnr: jp.innsender.fnr,
-          navn: {
-            fornavn: jp.innsender.navn.split(' ')[0],
-            etternavn: jp.innsender.navn.split(' ')[0],
-          },
+          fulltNavn: jp.innsender.navn,
         },
       }
     })

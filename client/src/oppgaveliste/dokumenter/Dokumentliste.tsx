@@ -9,7 +9,7 @@ import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHe
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
 import { norskTimestamp } from '../../utils/date'
-import { formatName, formaterFødselsnummer } from '../../utils/stringFormating'
+import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
 
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
@@ -69,15 +69,15 @@ export const Dokumentliste: React.FC = () => {
       name: 'Innsender',
       width: 135,
       render: (oppgave: OppgaveV2) => {
-        const formatertNavn = formatName(oppgave.innsender?.navn) || ''
+        const fulltNavn = oppgave.innsender?.fulltNavn || '-'
         return (
-          <TooltipWrapper visTooltip={formatertNavn.length > 20} content={formatertNavn}>
-            <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
+          <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
+            <TekstMedEllipsis>{fulltNavn}</TekstMedEllipsis>
           </TooltipWrapper>
         )
       },
       accessor(verdi: OppgaveV2): string {
-        return formatName(verdi.innsender?.navn) || ''
+        return verdi.innsender?.fulltNavn || ''
       },
     },
     {

@@ -503,11 +503,11 @@ export interface OppgaveV2 {
   endret?: string
   bruker: {
     fnr: string
-    navn: Navn
+    fulltNavn?: string
   }
   innsender: {
     fnr: string
-    navn: Navn
+    fulltNavn?: string
   }
 }
 

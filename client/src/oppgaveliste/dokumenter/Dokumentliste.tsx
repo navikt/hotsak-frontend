@@ -95,7 +95,7 @@ export const Dokumentliste: React.FC = () => {
     {
       key: 'frist',
       name: 'Frist',
-      width: 152,
+      width: 100,
       render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.frist)} />,
     },
   ]

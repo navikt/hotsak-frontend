@@ -9,11 +9,8 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - version-tag
-      - oppgave-endepunkt
 
 jobs:
-
   test:
     name: Kjør Cypress-tester
     runs-on: ubuntu-latest
@@ -67,10 +64,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/labs.yaml
-            IMAGE: ${{ needs.build.outputs.docker_image }}
-  
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/labs.yaml
+          IMAGE: ${{ needs.build.outputs.docker_image }}
+
   deploy-dev:
     name: Deploy til dev-gcp
     runs-on: ubuntu-latest
@@ -86,9 +83,9 @@ jobs:
       - run: echo "Using VERSION_TAG ${{ env.VERSION_TAG }}"
       - uses: nais/deploy/actions/deploy@v2
         env:
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/dev.yaml
-            IMAGE: ${{ needs.build.outputs.docker_image }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dev.yaml
+          IMAGE: ${{ needs.build.outputs.docker_image }}
       - name: post-deploy
         if: github.ref == 'refs/heads/main'
         uses: navikt/digihot-deploy/actions/post-deploy@v3

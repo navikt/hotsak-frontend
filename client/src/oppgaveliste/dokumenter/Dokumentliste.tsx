@@ -65,11 +65,11 @@ export const Dokumentliste: React.FC = () => {
       render: (oppgave: OppgaveV2) => <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />,
     },
     {
-      key: 'innsender',
-      name: 'Innsender',
+      key: 'bruker',
+      name: 'Bruker',
       width: 135,
       render: (oppgave: OppgaveV2) => {
-        const fulltNavn = oppgave.innsender?.fulltNavn || '-'
+        const fulltNavn = oppgave.bruker?.fulltNavn || '-'
         return (
           <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
             <TekstMedEllipsis>{fulltNavn}</TekstMedEllipsis>
@@ -77,14 +77,14 @@ export const Dokumentliste: React.FC = () => {
         )
       },
       accessor(verdi: OppgaveV2): string {
-        return verdi.innsender?.fulltNavn || ''
+        return verdi.bruker?.fulltNavn || ''
       },
     },
     {
       key: 'fnr',
       name: 'Fødselsnr.',
       width: 135,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.innsender.fnr)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
     },
     {
       key: 'opprettet',

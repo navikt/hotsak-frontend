@@ -8,7 +8,7 @@ import { Column } from '../../felleskomponenter/table/Column'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
-import { norskTimestamp } from '../../utils/date'
+import { formaterDato, norskTimestamp } from '../../utils/date'
 import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
 
@@ -96,7 +96,7 @@ export const Dokumentliste: React.FC = () => {
       key: 'frist',
       name: 'Frist',
       width: 152,
-      render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.frist)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.frist)} />,
     },
   ]
 

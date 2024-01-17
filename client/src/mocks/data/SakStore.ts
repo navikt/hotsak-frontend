@@ -12,7 +12,7 @@ import {
   Leveringsmåte,
   Oppgave,
   OppgaveStatusType,
-  Oppgavetype,
+  Sakstype,
   PersonInfoKilde,
   Sak,
   SignaturType,
@@ -76,7 +76,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
   }
 }
 
-function lagSak(sakId: number, sakstype = Oppgavetype.SØKNAD): LagretSak {
+function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
   const bruker = lagBruker()
   const opprettet = dayjs()
   const formidler: Formidler = {
@@ -201,13 +201,13 @@ export class SakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagSakMedId = (sakstype = Oppgavetype.SØKNAD) => lagSak(this.idGenerator.nesteId(), sakstype)
+    const lagSakMedId = (sakstype = Sakstype.SØKNAD) => lagSak(this.idGenerator.nesteId(), sakstype)
     return this.lagreAlle([
       lagSakMedId(),
       lagSakMedId(),
       lagSakMedId(),
       lagSakMedId(),
-      lagSakMedId(Oppgavetype.BESTILLING),
+      lagSakMedId(Sakstype.BESTILLING),
     ])
   }
 

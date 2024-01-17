@@ -16,11 +16,10 @@ import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { DokumentStatusLabel, Journalpost } from '../../types/types.internal'
+import { OppgaveV2, OppgavestatusLabel } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
-import { DokumentTildeling } from './DokumentTildeling'
-// Flytte til felles
-import { useDokumentliste } from './dokumentHook'
+import { useOppgaveliste } from '../oppgaver/oppgaverHook'
+import { OppgaveTildeling } from './DokumentTildeling'
 
 const Container = styled.div`
   min-height: 300px;
@@ -33,64 +32,65 @@ const ScrollWrapper = styled.div`
 `
 
 export const Dokumentliste: React.FC = () => {
-  const { dokumenter, isLoading, error } = useDokumentliste()
+  const { data, isLoading, error } = useOppgaveliste()
+  const oppgaver = data?.oppgaver || []
 
-  const kolonner: Column<Journalpost>[] = [
+  const kolonner: Column<OppgaveV2>[] = [
     {
       key: 'saksbehandler',
       name: 'Eier',
       width: 160,
-      render: (journalpost: Journalpost) => <DokumentTildeling dokumentOppgave={journalpost} />,
-      accessor(verdi: Journalpost): string {
+      render: (oppgave: OppgaveV2) => <OppgaveTildeling dokumentOppgave={oppgave} />,
+      accessor(verdi: OppgaveV2): string {
         return verdi.saksbehandler?.navn || ''
       },
     },
     {
-      key: 'tittel',
+      key: 'beskrivelse',
       name: 'Beskrivelse',
       width: 400,
-      render: (journalpost: Journalpost) => {
-        const journalpostTittel = journalpost.tittel || 'Uten tittel'
+      render: (oppgave: OppgaveV2) => {
+        const oppgaveBeskrivelse = oppgave.beskrivelse || 'Uten tittel'
         return (
-          <TooltipWrapper visTooltip={journalpostTittel.length > 40} content={journalpostTittel}>
-            <TekstMedEllipsis>{journalpost.tittel}</TekstMedEllipsis>
+          <TooltipWrapper visTooltip={oppgaveBeskrivelse.length > 40} content={oppgaveBeskrivelse}>
+            <TekstMedEllipsis>{oppgave.beskrivelse}</TekstMedEllipsis>
           </TooltipWrapper>
         )
       },
     },
     {
-      key: 'status',
+      key: 'oppgavestatus',
       name: 'Status',
       width: 150,
-      render: (journalpost: Journalpost) => <TekstCell value={DokumentStatusLabel.get(journalpost.status)!} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />,
     },
     {
-      key: 'innsender',
-      name: 'Innsender',
+      key: 'bruker',
+      name: 'Bruker',
       width: 135,
-      render: (journalpost: Journalpost) => {
-        const formatertNavn = journalpost.innsender?.navn || ''
+      render: (oppgave: OppgaveV2) => {
+        const fulltNavn = oppgave.bruker?.fulltNavn || '-'
         return (
-          <TooltipWrapper visTooltip={formatertNavn.length > 20} content={formatertNavn}>
-            <TekstMedEllipsis>{formatertNavn}</TekstMedEllipsis>
+          <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
+            <TekstMedEllipsis>{fulltNavn}</TekstMedEllipsis>
           </TooltipWrapper>
         )
       },
-      accessor(verdi: Journalpost): string {
-        return verdi.innsender?.navn || ''
+      accessor(verdi: OppgaveV2): string {
+        return verdi.bruker?.fulltNavn || ''
       },
     },
     {
-      key: 'fnrInnsender',
+      key: 'fnr',
       name: 'Fødselsnr.',
       width: 135,
-      render: (journalpost: Journalpost) => <TekstCell value={formaterFødselsnummer(journalpost.fnrInnsender)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
     },
     {
-      key: 'journalpostOpprettetTid',
+      key: 'opprettet',
       name: 'Mottatt dato',
       width: 152,
-      render: (journalpost: Journalpost) => <TekstCell value={norskTimestamp(journalpost.journalpostOpprettetTid)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.opprettet)} />,
     },
   ]
 
@@ -98,8 +98,8 @@ export const Dokumentliste: React.FC = () => {
     sort,
     sortedElements: sorterteDokumenter,
     onSortChange,
-  } = useSortedElements<Journalpost>(dokumenter, kolonner, {
-    orderBy: 'journalpostOpprettetTid',
+  } = useSortedElements<OppgaveV2>(oppgaver, kolonner, {
+    orderBy: 'opprettet',
     direction: 'descending',
   })
 
@@ -136,19 +136,23 @@ export const Dokumentliste: React.FC = () => {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {sorterteDokumenter.map((dokument) => (
-                      <LinkRow key={dokument.journalpostID} path={`/oppgaveliste/dokumenter/${dokument.journalpostID}`}>
-                        {kolonner.map(({ render, width, key }) => (
-                          <DataCell
-                            key={key}
-                            width={width}
-                            style={{
-                              padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
-                            }}
-                          >
-                            {render(dokument)}
-                          </DataCell>
-                        ))}
+                    {sorterteDokumenter.map((oppgave) => (
+                      <LinkRow key={oppgave.journalpostId} path={`/oppgaveliste/dokumenter/${oppgave.journalpostId}`}>
+                        {kolonner.map(({ render, width, key }) => {
+                          console.log('Key', key)
+
+                          return (
+                            <DataCell
+                              key={key}
+                              width={width}
+                              style={{
+                                padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
+                              }}
+                            >
+                              {render(oppgave)}
+                            </DataCell>
+                          )
+                        })}
                       </LinkRow>
                     ))}
                   </Table.Body>

@@ -34,7 +34,22 @@ export class PersonStore extends Dexie {
   }
 
   async lagreAlle(personer: Person[]) {
-    return this.personer.bulkAdd(personer, { allKeys: true })
+    //const FNR = '20071359671'
+    /*const statbilTestperson: Person = {
+      fornavn: 'Stabil',
+      etternavn: 'Testbruker',
+      fnr: FNR,
+      fødselsdato: lagTilfeldigFødselsdato(9).toISODateString(),
+      kjønn: kjønnFraFødselsnummer(FNR),
+      telefon: lagTilfeldigTelefonnummer(),
+      kommune: {
+        nummer: '9999',
+        navn: lagTilfeldigBosted(),
+      },
+      enhet: enheter.agder,
+    }*/
+
+    return this.personer.bulkAdd(/*[statbilTestperson, ...personer]*/ personer, { allKeys: true })
   }
 
   async hent(fnr: string) {

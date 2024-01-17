@@ -11,7 +11,7 @@ import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { OppgaveStatusType, Oppgavetype, StepType } from '../../types/types.internal'
+import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { StatusTag } from '../komponenter/StatusTag'
 import { useBrillesak } from '../sakHook'
@@ -46,7 +46,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
     showBoundary(isError)
   }
 
-  if (sak?.data.sakstype !== Oppgavetype.BARNEBRILLER) {
+  if (sak?.data.sakstype !== Sakstype.BARNEBRILLER) {
     throw new Error(
       `Feil ved visning av sak. Forventer at sak skal være av type BARNEBRILLER, men var ${sak?.data.sakstype}`
     )

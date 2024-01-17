@@ -17,7 +17,7 @@ import {
   Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Oppgavetype,
+  Sakstype,
   SakerFilter,
   SakerFilterLabel,
   SakstypeFilter,
@@ -33,7 +33,7 @@ import { Gjelder } from './kolonner/Gjelder'
 import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { Mottatt } from './kolonner/Mottatt'
-import { OppgaveType } from './kolonner/OppgaveType'
+import { SakstypeEtikett } from './kolonner/SaksType'
 import { Status } from './kolonner/Status'
 import { Tildeling } from './kolonner/Tildeling'
 import { useLocalStorageState } from './localStorage/localStorageHook'
@@ -90,7 +90,7 @@ export const Oppgaveliste: React.FC = () => {
       key: 'TYPE',
       name: 'Type',
       width: 154,
-      render: (oppgave: Oppgave) => <OppgaveType oppgaveType={oppgave.sakstype} />,
+      render: (oppgave: Oppgave) => <SakstypeEtikett sakstype={oppgave.sakstype} />,
     },
     {
       key: 'FUNKSJONSNEDSETTELSE',
@@ -236,7 +236,7 @@ export const Oppgaveliste: React.FC = () => {
                       <LinkRow
                         key={oppgave.sakId}
                         path={
-                          oppgave.sakstype !== Oppgavetype.TILSKUDD
+                          oppgave.sakstype !== Sakstype.TILSKUDD
                             ? `/sak/${oppgave.sakId}/hjelpemidler`
                             : `/sak/${oppgave.sakId}`
                         }

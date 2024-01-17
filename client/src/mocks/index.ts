@@ -1,5 +1,4 @@
 import { setupWorker } from 'msw'
-
 import { setupStore } from './data'
 import { setupHandlers } from './handlers'
 

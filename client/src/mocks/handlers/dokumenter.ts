@@ -9,10 +9,10 @@ import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
-  rest.get(`/api/journalposter`, async (req, res, ctx) => {
+  /*rest.get(`/api/oppgaver`, async (req, res, ctx) => {
     const journalposter = await journalpostStore.alle()
     return res(ctx.delay(200), ctx.status(200), ctx.json(journalposter))
-  }),
+  }),*/
 
   rest.get<any, { journalpostID: string }, any>(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
     const journalpostID = req.params.journalpostID
@@ -65,8 +65,9 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       const journalføring = await req.json<JournalføringRequest>()
 
       const eksisternedeSakId = journalføring.sakId
+      const tittel = journalføring.tittel
 
-      await journalpostStore.journalfør(journalføring.journalpostID)
+      await journalpostStore.journalfør(journalføring.journalpostID, tittel)
 
       if (eksisternedeSakId) {
         barnebrillesakStore.knyttJournalpostTilSak(journalføring)

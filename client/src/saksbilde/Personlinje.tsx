@@ -7,7 +7,7 @@ import { CopyButton, Link, Tag, Tooltip } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
-import { capitalizeName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
+import { formatName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
@@ -100,14 +100,14 @@ const beregnAlder = (fødselsdato: string) => {
 export const formaterNavn = (person: Person | Bruker) => {
   if ((person as Bruker).navn) {
     const { fornavn, mellomnavn, etternavn } = (person as Bruker).navn
-    return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
+    return formatName({ fornavn, mellomnavn, etternavn })
   } else {
     const { fornavn, mellomnavn, etternavn } = person as Person
-    return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
+    return formatName({ fornavn, mellomnavn, etternavn })
   }
 }
 
-const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person, loading }) => {
+const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }) => {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 

@@ -8,7 +8,6 @@ metadata:
   namespace: teamdigihot
 spec:
   image: {{image}}
-  team: teamdigihot
   port: 3000
   ingresses:
     - https://hotsak.ekstern.dev.nav.no

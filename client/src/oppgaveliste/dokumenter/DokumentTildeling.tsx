@@ -1,19 +1,20 @@
 import { EllipsisCell } from '../../felleskomponenter/table/Celle'
 
-import { Journalpost } from '../../types/types.internal'
+import { OppgaveV2 } from '../../types/types.internal'
 import { DokumentIkkeTildelt } from './DokumentIkkeTildelt'
 
-interface DokumentTildelingProps {
-  dokumentOppgave: Journalpost
+interface OppgaveTildelingProps {
+  dokumentOppgave: OppgaveV2
 }
 
-export const DokumentTildeling = ({ dokumentOppgave }: DokumentTildelingProps) =>
+export const OppgaveTildeling = ({ dokumentOppgave }: OppgaveTildelingProps) =>
   dokumentOppgave.saksbehandler ? (
     <EllipsisCell
       value={dokumentOppgave.saksbehandler.navn}
       minLength={15}
-      id={`tildelt-${dokumentOppgave.journalpostID}`}
+      id={`tildelt-${dokumentOppgave.journalpostId}`}
     />
   ) : (
-    <DokumentIkkeTildelt journalpostID={dokumentOppgave.journalpostID} gåTilSak={true} />
+    // TODO: Fix typer e.l. slik at journalpost ikke er null hvis det er en journalføringsoppgaver
+    <DokumentIkkeTildelt journalpostID={dokumentOppgave.journalpostId!} gåTilSak={true} />
   )

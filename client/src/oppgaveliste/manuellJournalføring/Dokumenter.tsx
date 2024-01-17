@@ -17,7 +17,7 @@ export const Dokumenter: React.FC<DokumenterProps> = (props) => {
       <Heading size={'xsmall'} level={'2'}>
         Dokumenter
       </Heading>
-      <Table size="small">
+      <Table size="small" title="dokumenter">
         <Table.Body>
           {dokumenter.map((dokument) => (
             <DokumentVelger

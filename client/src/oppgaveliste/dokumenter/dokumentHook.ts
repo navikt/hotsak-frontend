@@ -1,18 +1,9 @@
 import React, { useState } from 'react'
-import useSwr from 'swr'
 
-import { httpGet, httpGetPdf, PDFResponse } from '../../io/http'
+import { httpGetPdf, PDFResponse } from '../../io/http'
 
-import { Journalpost, Ressurs } from '../../types/types.internal'
+import { Ressurs } from '../../types/types.internal'
 import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from './ressursFunksjoner'
-
-interface DokumentlisteResponse {
-  dokumenter: Journalpost[]
-  totalCount: number
-  isLoading: boolean
-  error: unknown
-  mutate: (...args: any[]) => any
-}
 
 interface DokumentResponse {
   isPdfError: any
@@ -22,33 +13,7 @@ interface DokumentResponse {
   settHentetDokument: any
 }
 
-const dokumentlisteBasePath = 'api/journalposter'
 const journalpostBasePath = 'api/journalpost'
-const ingenDokumenter: Journalpost[] = []
-
-export function useDokumentliste(): DokumentlisteResponse {
-  const { data, error, mutate } = useSwr<{ data: Journalpost[] }>(dokumentlisteBasePath, httpGet, {
-    refreshInterval: 10_000,
-  })
-
-  // Avventer å legge inn dette til vi ser om vi trenger filter, paging osv
-  /*useEffect(() => {
-        logAmplitudeEvent(amplitude_taxonomy.DOKUMENTLISTE_OPPDATERT, {
-          currentPage,
-          ...sort,
-          ...filters,
-        })
-      }, [currentPage, sort, filters])*/
-
-  const dokumenter = data?.data || ingenDokumenter
-  return {
-    dokumenter,
-    totalCount: dokumenter.length,
-    isLoading: !error && !data,
-    error,
-    mutate,
-  }
-}
 
 export function useDokument(): DokumentResponse {
   const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())

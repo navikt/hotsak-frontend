@@ -18,7 +18,7 @@ import ByggDummyDataUrl from '../mocks/mockDokument'
 import {
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Oppgavetype,
+  Sakstype,
   Saksoversikt_Barnebrille_Sak,
   Saksoversikt_Sak,
   Saksoversikt_Sak_Felles_Type,
@@ -81,7 +81,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
         <div style={{ display: 'flex' }}>
           <Oppgaveetikett
-            type={sak.sakstype ? sak.sakstype : Oppgavetype.SØKNAD}
+            type={sak.sakstype ? sak.sakstype : Sakstype.SØKNAD}
             showLabel={true}
             labelLinkTo={barnebrilleSak ? undefined : `/sak/${sak.sakId}/hjelpemidler`}
           />

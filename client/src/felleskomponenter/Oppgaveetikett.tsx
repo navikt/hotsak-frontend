@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { capitalize } from '../utils/stringFormating'
 
-import { Oppgavetype } from '../types/types.internal'
+import { Sakstype } from '../types/types.internal'
 import { BodyShort } from '@navikt/ds-react'
 
 interface EtikettProps {
@@ -60,7 +60,7 @@ const TilskuddEtikett = styled(Etikett)`
 `
 
 interface OppgaveetikettProps extends EtikettProps {
-  type: Oppgavetype
+  type: Sakstype
   showLabel?: boolean
   labelLinkTo?: string
 }
@@ -89,7 +89,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
   labelLinkTo,
 }) => {
   switch (type) {
-    case Oppgavetype.SØKNAD:
+    case Sakstype.SØKNAD:
       return showLabel ? (
         <>
           <SøknadEtikett $størrelse={størrelse} aria-hidden />
@@ -98,7 +98,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       ) : (
         <SøknadEtikett $størrelse={størrelse} />
       )
-    case Oppgavetype.BESTILLING:
+    case Sakstype.BESTILLING:
       return showLabel ? (
         <>
           <BestillingEtikett $størrelse={størrelse} aria-hidden />
@@ -107,7 +107,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       ) : (
         <BestillingEtikett $størrelse={størrelse} aria-hidden />
       )
-    case Oppgavetype.TILSKUDD:
+    case Sakstype.TILSKUDD:
       return showLabel ? (
         <>
           <TilskuddEtikett $størrelse={størrelse} aria-hidden />

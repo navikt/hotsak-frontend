@@ -10,7 +10,6 @@ metadata:
     snorlax.nais.io/enabled: 'true'
 spec:
   image: {{image}}
-  team: teamdigihot
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no

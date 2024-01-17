@@ -13,12 +13,12 @@ import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
 import { MappeIkon } from '../../felleskomponenter/ikoner/MappeIkon'
 import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Bruksarena, Oppgavetype } from '../../types/types.internal'
+import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 
 interface SøknadCardProps {
-  oppgaveType: Oppgavetype
+  sakstype: Sakstype
   søknadGjelder: string
   saksnr: number | string
   mottattDato: string
@@ -45,7 +45,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
 }
 
 export const SøknadCard: React.FC<SøknadCardProps> = ({
-  oppgaveType,
+  sakstype,
   saksnr,
   mottattDato,
   bruksarena,
@@ -58,10 +58,10 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
     <Card>
       <HStack align="center" gap="2" wrap={false}>
         <IconContainer>
-          <Oppgaveetikett type={oppgaveType} />
+          <Oppgaveetikett type={sakstype} />
         </IconContainer>
         <CardTitle level="1" size="medium">
-          {oppgaveType === Oppgavetype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
+          {sakstype === Sakstype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
         </CardTitle>
       </HStack>
       <Avstand paddingBottom={2} />

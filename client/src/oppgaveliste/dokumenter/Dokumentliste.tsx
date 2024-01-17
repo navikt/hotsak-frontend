@@ -92,6 +92,12 @@ export const Dokumentliste: React.FC = () => {
       width: 152,
       render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.opprettet)} />,
     },
+    {
+      key: 'frist',
+      name: 'Frist',
+      width: 152,
+      render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.frist)} />,
+    },
   ]
 
   const {

@@ -20,8 +20,6 @@ export const fortsettSaksbehandling = () => {
 }
 
 export const taBrillesak = (saksbehandler: string = 'Silje Saksbehandler') => {
-  console.log('Saksbehandler', saksbehandler)
-
   cy.findByTestId('select-bytt-bruker').select(saksbehandler)
   cy.findByTitle(/saksmeny/i).click()
   cy.findByRole('button', { name: /Ta saken/i }).click()

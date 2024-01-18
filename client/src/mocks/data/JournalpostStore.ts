@@ -171,6 +171,9 @@ export class JournalpostStore extends Dexie {
 
   async journalfør(journalpostId: string, tittel: string) {
     const dokument = await this.dokumenter.where('journalpostID').equals(journalpostId).first()
+    const dokumentId = Number(dokument?.dokumentID)
+
+    await this.dokumenter.update(dokumentId, { ...dokument, tittel })
 
     return this.journalposter.update(journalpostId, {
       status: DokumentOppgaveStatusType.JOURNALFØRT,

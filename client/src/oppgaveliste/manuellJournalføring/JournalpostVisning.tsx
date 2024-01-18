@@ -74,7 +74,6 @@ export const JournalpostVisning: React.FC = () => {
         <Heading size="small" level="2" spacing>
           Journalpost
         </Heading>
-        <Brødtekst>{journalpost.tittel}</Brødtekst>
       </Avstand>
       <Avstand paddingTop={4}>
         <Dokumenter dokumenter={journalpost.dokumenter} />

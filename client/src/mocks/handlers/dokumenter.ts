@@ -8,12 +8,6 @@ import kvitteringsside from '../data/kvitteringsside.pdf'
 import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
-  // dokumenter for saksbehandlers enhet hvor status != endelig journalført
-  /*rest.get(`/api/oppgaver`, async (req, res, ctx) => {
-    const journalposter = await journalpostStore.alle()
-    return res(ctx.delay(200), ctx.status(200), ctx.json(journalposter))
-  }),*/
-
   rest.get<any, { journalpostID: string }, any>(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
     const journalpostID = req.params.journalpostID
     const journalpost = await journalpostStore.hent(journalpostID)
@@ -74,6 +68,8 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
         return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: eksisternedeSakId }))
       } else {
         const sakId = await barnebrillesakStore.opprettSak(journalføring)
+        await barnebrillesakStore.tildel(sakId)
+
         return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: sakId.toString() }))
       }
     }

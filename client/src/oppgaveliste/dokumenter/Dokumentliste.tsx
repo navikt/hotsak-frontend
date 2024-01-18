@@ -8,7 +8,7 @@ import { Column } from '../../felleskomponenter/table/Column'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
-import { formaterDato, norskTimestamp } from '../../utils/date'
+import { norskTimestamp } from '../../utils/date'
 import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
 
@@ -92,12 +92,12 @@ export const Dokumentliste: React.FC = () => {
       width: 152,
       render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.opprettet)} />,
     },
-    {
+    /* {
       key: 'frist',
       name: 'Frist',
       width: 100,
       render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.frist)} />,
-    },
+    },*/
   ]
 
   const {
@@ -145,8 +145,6 @@ export const Dokumentliste: React.FC = () => {
                     {sorterteDokumenter.map((oppgave) => (
                       <LinkRow key={oppgave.journalpostId} path={`/oppgaveliste/dokumenter/${oppgave.journalpostId}`}>
                         {kolonner.map(({ render, width, key }) => {
-                          console.log('Key', key)
-
                           return (
                             <DataCell
                               key={key}

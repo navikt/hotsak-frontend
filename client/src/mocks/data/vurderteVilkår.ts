@@ -33,6 +33,16 @@ export function vurderteVilkår(
   vurderteVilkår = oppdaterStatus(vurderteVilkår, !bestillingsdato, vilkårSomTrengerBestillingsdato)
   vurderteVilkår = oppdaterStatus(vurderteVilkår, brilleseddel === tomStyrke, vilkårSomTrengerBrilleseddel)
 
+  if (dayjs(bestillingsdato).subtract(6, 'months').isBefore(dayjs().subtract(6, 'months'))) {
+    vurderteVilkår = oppdaterStatus(
+      vurderteVilkår,
+      true,
+      ['BESTILLINGSDATO_TILBAKE_I_TID'],
+      'MASKINELL',
+      VilkårsResultat.NEI
+    )
+  }
+
   vurderteVilkår = oppdaterStatus(
     vurderteVilkår,
     true,
@@ -65,7 +75,7 @@ function oppdaterStatus(
         if (vurdertType === 'SAKSBEHANDLER') {
           v.manuellVurdering = { vilkårOppfylt: nyttResultat }
         } else {
-          v.manuellVurdering = { vilkårOppfylt: nyttResultat }
+          v.maskinellVurdering = { vilkårOppfylt: nyttResultat }
         }
         v.vilkårOppfylt = nyttResultat
       }

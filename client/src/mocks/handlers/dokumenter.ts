@@ -65,6 +65,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
 
       if (eksisternedeSakId) {
         barnebrillesakStore.knyttJournalpostTilSak(journalføring)
+        await barnebrillesakStore.tildel(eksisternedeSakId)
         return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: eksisternedeSakId }))
       } else {
         const sakId = await barnebrillesakStore.opprettSak(journalføring)

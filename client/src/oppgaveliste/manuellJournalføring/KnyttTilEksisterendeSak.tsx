@@ -36,7 +36,7 @@ export const KnyttTilEksisterendeSak: React.FC<Props> = (props) => {
           value={valgtEksisterendeSakId}
           onChange={(value: string) => onChange(value)}
         >
-          <Table size="small">
+          <Table size="small" title="Åpne saker">
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell scope="col" />

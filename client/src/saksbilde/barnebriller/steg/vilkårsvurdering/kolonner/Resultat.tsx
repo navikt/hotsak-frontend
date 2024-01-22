@@ -14,7 +14,7 @@ export const Resultat = ({
     return <>{vilkårStatusTekst(vilkårOppfylt)}</>
   } else {
     return (
-      <Alert variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
+      <Alert data-testid="alert-vilkårstatus" variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
         <Brødtekst>{vilkårStatusTekst(vilkårOppfylt)}</Brødtekst>
       </Alert>
     )

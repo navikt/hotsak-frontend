@@ -54,6 +54,49 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByTestId('tag-sak-status').should('contain', 'Innvilget')
   })
 
+  it.only('Manuell overstyring av vilkår', () => {
+    const bestillingsdatoForLangtTilbakeITid = '01.01.2023'
+
+    const saksnummer = '1010'
+    cy.visit(`/sak/${saksnummer}`)
+    cy.wait(1000)
+    taBrillesak()
+
+    cy.findByRole('textbox', { name: /fødselsnummer innsender/i }).type('1234')
+    cy.findByRole('button', { name: /hent kontonummer/i }).click()
+    cy.findByRole('combobox', { name: /høyre sfære/i }).select(6)
+    cy.findByRole('combobox', { name: /høyre cylinder/i }).select(4)
+    cy.findByRole('combobox', { name: /venstre sfære/i }).select(6)
+    cy.findByRole('combobox', { name: /venstre cylinder/i }).select(6)
+    cy.findByRole('textbox', { name: /brillens bestillingsdato/i }).type(bestillingsdatoForLangtTilbakeITid)
+    cy.findByRole('textbox', { name: /pris på brillen/i }).type('2000')
+    cy.findByRole('group', { name: /inneholder bestillingen glass/i }).within(() => {
+      cy.findByRole('radio', { name: /ja/i }).check()
+    })
+    cy.findByRole('group', { name: /er brillen bestilt hos optiker/i }).within(() => {
+      cy.findByRole('radio', { name: /ja/i }).check()
+    })
+    cy.findByRole('button', { name: /neste/i }).click()
+    cy.wait(1000)
+
+    cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Avslag')
+    cy.findByRole('table').within(() => {
+      cy.findAllByText('Ikke oppfylt').should('have.length', 1)
+      cy.findByRole('row', { name: /ikke oppfylt/i }).within(() => {
+        cy.findByRole('button', { name: /vis mer/i }).click()
+      })
+    })
+    cy.findByRole('radio', { name: /ja/i }).check()
+    cy.findByRole('textbox', { name: /begrunnelse/i }).type('Begrunnelse for overstyring')
+    cy.findByRole('button', { name: /lagre/i }).click()
+
+    cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Innvilget')
+    cy.findByRole('table').within(() => {
+      cy.findAllByText('Ikke oppfylt').should('have.length', 0)
+      cy.findAllByTestId('alert-vilkårstatus').should('have.length', 7)
+    })
+  })
+
   it('burde kunne avslå en brillesøknad', () => {
     const saksnummer = '1010'
     cy.visit(`/sak/${saksnummer}`)

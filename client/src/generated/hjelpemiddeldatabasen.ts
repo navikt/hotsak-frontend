@@ -91,7 +91,6 @@ export interface HMDBProdukt {
   isokortnavn?: Maybe<Scalars['String']>
   isotekst: Scalars['String']
   isotittel: Scalars['String']
-  kanSokesTilInstitusjon: Scalars['Boolean']
   kategori?: Maybe<Scalars['String']>
   leverandor?: Maybe<HMDBLeverandor>
   leverandorId?: Maybe<Scalars['String']>
@@ -127,6 +126,12 @@ export interface HMDBProdukterFilterInput {
   kategori?: InputMaybe<Array<Scalars['String']>>
   produktId?: InputMaybe<Array<Scalars['String']>>
   tilgjengeligForDigitalSoknad?: InputMaybe<Scalars['Boolean']>
+}
+
+export interface HMDBProdukterPaginertFilterInput {
+  filter?: InputMaybe<HMDBProdukterFilterInput>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
 }
 
 export interface HMDBProduktfilterInput {
@@ -171,6 +176,8 @@ export interface HMDBQuery {
   kategorier: Array<HMDBKategori>
   /** Finn produkter */
   produkter: Array<HMDBProdukt>
+  /** Finn produkter (paginert) */
+  produkterPaginert: HMDBProduktPage
   /**
    * Hent produkter som er tilgjengelige for digital søknad
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
@@ -207,6 +214,10 @@ export interface HMDBQueryKategorierArgs {
 
 export interface HMDBQueryProdukterArgs {
   filter?: InputMaybe<HMDBProdukterFilterInput>
+}
+
+export interface HMDBQueryProdukterPaginertArgs {
+  filter?: InputMaybe<HMDBProdukterPaginertFilterInput>
 }
 
 export interface HMDBQueryTilbehorArgs {

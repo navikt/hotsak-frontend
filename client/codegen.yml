@@ -1,4 +1,4 @@
-schema: "https://hm-grunndata-api.dev.intern.nav.no/graphql"
+schema: "https://hm-grunndata-api.intern.dev.nav.no/graphql"
 documents: "src/saksbilde/hjelpemidler/grunndataHook.ts"
 generates:
   ./src/generated/hjelpemiddeldatabasen.ts:

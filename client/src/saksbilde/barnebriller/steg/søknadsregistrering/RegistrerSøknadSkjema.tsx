@@ -13,7 +13,14 @@ import { toDate } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { Brilleseddel, MålformType, Sakstype, RegistrerSøknadData, StepType } from '../../../../types/types.internal'
+import {
+  Brilleseddel,
+  MålformType,
+  Sakstype,
+  RegistrerSøknadData,
+  StepType,
+  VilkårsResultat,
+} from '../../../../types/types.internal'
 import { useJournalposter } from '../../../journalpostHook'
 import { useBrillesak } from '../../../sakHook'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -33,7 +40,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
 
   const vurderVilkår = (formData: RegistrerSøknadData) => {
     const { målform, ...grunnlag } = { ...formData }
-    const { bestillingsdato, brilleseddel, ...rest } = { ...grunnlag }
+    const { bestillingsdato, brilleseddel, kjøptBrille, ...rest } = { ...grunnlag }
 
     const vurderVilkårRequest = {
       sakId: sakId!,
@@ -41,7 +48,11 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       målform: målform,
       data: {
         bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,
+        brillepris: kjøptBrille.brillepris,
         brilleseddel: !tomBrilleseddel(brilleseddel) ? brilleseddel : undefined,
+        kjøptBrille: {
+          vilkårOppfylt: kjøptBrille.vilkårOppfylt,
+        },
         ...rest,
       },
     }
@@ -75,7 +86,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         venstreSfære: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.venstreSfære.toString() || '',
         venstreSylinder: sak?.data.vilkårsgrunnlag?.data?.brilleseddel?.venstreSylinder.toString() || '',
       },
-      brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
+
       bestiltHosOptiker: {
         vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt || '',
         begrunnelse: sak?.data.vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse || '',
@@ -83,6 +94,10 @@ export const RegistrerSøknadSkjema: React.FC = () => {
       komplettBrille: {
         vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt || '',
         begrunnelse: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.begrunnelse || '',
+      },
+      kjøptBrille: {
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data.kjøptBrille.vilkårOppfylt || VilkårsResultat.JA,
+        brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       },
     },
   })

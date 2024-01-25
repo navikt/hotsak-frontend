@@ -27,6 +27,13 @@ const vilkårMetadata = [
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
+    vilkårId: 'KJØPT_BRILLE',
+    identifikator: 'kjøptBrille',
+    overstyrbarAvSaksbehandler: false,
+    beskrivelse: 'Det gis kun støtte til kjøp av brille. Briller som er del av et abonnement støttes ikke.',
+    basertPå: ['Bestillingsbekreftelsen'],
+  },
+  {
     vilkårId: 'KOMPLETT_BRILLE',
     identifikator: 'komplettBrille',
     overstyrbarAvSaksbehandler: false,

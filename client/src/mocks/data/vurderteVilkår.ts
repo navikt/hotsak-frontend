@@ -13,6 +13,7 @@ const vilkårSomTrengerBestillingsdato = [
 const vilkårSomTrengerBrilleseddel = ['BRILLESTYRKE']
 const vilkårSomTrengerKomplettBrille = ['KOMPLETT_BRILLE']
 const vilkårSomTrengerBestiltHosOptiker = ['BESTILT_HOS_OPTIKER']
+const vilkårSomTrengerKjøptBrille = ['KJØPT_BRILLE']
 
 const tomStyrke: Brilleseddel = {
   høyreSfære: '0.0',
@@ -26,6 +27,7 @@ export function vurderteVilkår(
   brilleseddel: Brilleseddel = tomStyrke,
   komplettBrille: VurderingData,
   bestiltHosOptiker: VurderingData,
+  kjøptBrille: VurderingData,
   bestillingsdato?: string
 ) {
   let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)
@@ -33,7 +35,7 @@ export function vurderteVilkår(
   vurderteVilkår = oppdaterStatus(vurderteVilkår, !bestillingsdato, vilkårSomTrengerBestillingsdato)
   vurderteVilkår = oppdaterStatus(vurderteVilkår, brilleseddel === tomStyrke, vilkårSomTrengerBrilleseddel)
 
-  if (dayjs(bestillingsdato).subtract(6, 'months').isBefore(dayjs().subtract(6, 'months'))) {
+  if (dayjs(bestillingsdato).isBefore(dayjs().subtract(6, 'months'))) {
     vurderteVilkår = oppdaterStatus(
       vurderteVilkår,
       true,
@@ -57,6 +59,14 @@ export function vurderteVilkår(
     vilkårSomTrengerBestiltHosOptiker,
     'SAKSBEHANDLER',
     bestiltHosOptiker.vilkårOppfylt || VilkårsResultat.JA
+  )
+
+  vurderteVilkår = oppdaterStatus(
+    vurderteVilkår,
+    true,
+    vilkårSomTrengerKjøptBrille,
+    'SAKSBEHANDLER',
+    kjøptBrille.vilkårOppfylt || VilkårsResultat.JA
   )
 
   return vurderteVilkår
@@ -129,6 +139,20 @@ function vurderteVilkår_JA(
       vilkårsvurderingId,
       vilkårId: 'BESTILT_HOS_OPTIKER',
       beskrivelse: 'Brillen må bestilles hos optiker',
+      lovReferanse: '§ 2',
+      lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
+      manuellVurdering: {
+        vilkårOppfylt: VilkårsResultat.JA,
+        begrunnelse: '',
+      },
+      vilkårOppfylt: VilkårsResultat.JA,
+      begrunnelse: '',
+      grunnlag: {},
+    },
+    {
+      vilkårsvurderingId,
+      vilkårId: 'KJØPT_BRILLE',
+      beskrivelse: 'Kjøpt brille',
       lovReferanse: '§ 2',
       lovdataLenke: 'https://lovdata.no/forskrift/2022-07-19-1364/§2',
       manuellVurdering: {

@@ -118,9 +118,14 @@ export interface RegistrerSøknadData {
   målform: MålformType
   brilleseddel: Brilleseddel
   bestillingsdato: Date
-  brillepris: string
   bestiltHosOptiker: VurderingData
   komplettBrille: VurderingData
+  kjøptBrille: KjøptBrille
+}
+
+export interface KjøptBrille {
+  vilkårOppfylt?: VilkårsResultat | ''
+  brillepris: string
 }
 
 export interface Brillegrunnlag {
@@ -178,13 +183,13 @@ export interface VurderVilkårRequest {
   sakId: string
   sakstype: Sakstype
   målform: MålformType
-  //opplysningsplikt: ManuellVurdering
   data: {
     brilleseddel?: Brilleseddel
     bestillingsdato?: string
     brillepris?: string
     bestiltHosOptiker: VurderingData
     komplettBrille: VurderingData
+    kjøptBrille: VurderingData
   }
 }
 

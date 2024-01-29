@@ -141,7 +141,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
 
           <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
-              <Etikett>§2 Inneholder bestillingen glass?</Etikett>
+              <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
               <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
             </HStack>
             <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
@@ -152,7 +152,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
 
           <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
-              <Etikett>§2 Er brillen bestilt hos optiker?</Etikett>
+              <Etikett>Er brillen bestilt hos optiker? (§2)</Etikett>
               <HelpText>
                 For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).
               </HelpText>

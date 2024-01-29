@@ -128,6 +128,17 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             <Etikett>Brillens bestillingsdato</Etikett>
             <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Brødtekst>
           </Avstand>
+
+          <Avstand paddingTop={10}>
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>Er det snakk om kjøp av briller? (§2)</Etikett>
+              <HelpText>
+                Det gis kun støtte til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
+              </HelpText>
+            </HStack>
+            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.kjøptBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
+          </Avstand>
+
           <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>Pris på brillen</Etikett>
@@ -136,7 +147,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 synsundersøkelse skal ikke inkluderes i prisen.
               </HelpText>
             </HStack>
-            <Brødtekst>{vilkårsgrunnlag?.data?.brillepris}</Brødtekst>
+            <Brødtekst>{vilkårsgrunnlag?.data?.brillepris || '-'}</Brødtekst>
           </Avstand>
 
           <Avstand paddingTop={10}>

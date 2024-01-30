@@ -45,22 +45,20 @@ export const MenyKnapp = ({
 
   const fjernTildelingDisabled =
     !tildeltSaksbehandler ||
-    tildeltSaksbehandler.objectId !== saksbehandler.objectId ||
+    tildeltSaksbehandler.id !== saksbehandler.id ||
     status !== OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const kanOvertaSak =
-    tildeltSaksbehandler &&
-    tildeltSaksbehandler.objectId !== saksbehandler.objectId &&
-    kanOvertaSakStatuser.includes(status)
+    tildeltSaksbehandler && tildeltSaksbehandler.id !== saksbehandler.id && kanOvertaSakStatuser.includes(status)
 
   const kanFortsetteBehandling =
     tildeltSaksbehandler &&
-    tildeltSaksbehandler.objectId === saksbehandler.objectId &&
+    tildeltSaksbehandler.id === saksbehandler.id &&
     status === OppgaveStatusType.AVVENTER_DOKUMENTASJON
 
   const kanOverføreTilGosys =
     tildeltSaksbehandler &&
-    tildeltSaksbehandler.objectId === saksbehandler.objectId &&
+    tildeltSaksbehandler.id === saksbehandler.id &&
     status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const overtaSak = (event: React.MouseEvent) => {

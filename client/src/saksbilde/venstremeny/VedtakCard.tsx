@@ -18,8 +18,8 @@ import {
   HjelpemiddelArtikkel,
   OppgaveStatusType,
   Sak,
-  VedtakStatusType,
   vedtaksgrunnlagUtlaanshistorikk,
+  VedtakStatusType,
 } from '../../types/types.internal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
@@ -141,10 +141,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     )
   }
 
-  if (
-    sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    sak.saksbehandler?.objectId !== saksbehandler.objectId
-  ) {
+  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== saksbehandler.id) {
     return (
       <Card>
         <CardTitle level="1" size="medium">

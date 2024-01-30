@@ -12,9 +12,9 @@ import {
   Leveringsmåte,
   Oppgave,
   OppgaveStatusType,
-  Sakstype,
   PersonInfoKilde,
   Sak,
+  Sakstype,
   SignaturType,
   UtlevertType,
   VedtakStatusType,
@@ -335,7 +335,7 @@ export class SakStore extends Dexie {
             vedtaksdato: nå,
             status: vedtakStatus,
             saksbehandlerNavn: sak.saksbehandler?.navn,
-            saksbehandlerRef: sak.saksbehandler?.objectId,
+            saksbehandlerRef: sak.saksbehandler?.id,
           },
         })
       })

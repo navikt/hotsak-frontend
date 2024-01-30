@@ -648,9 +648,8 @@ export enum Sakstype {
 
 export interface Saksbehandler {
   id: string
-  objectId: string
-  epost: string
   navn: string
+  epost: string
 }
 
 export enum DokumentOppgaveStatusType {

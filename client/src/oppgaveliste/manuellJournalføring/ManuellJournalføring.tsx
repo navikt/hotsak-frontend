@@ -36,7 +36,7 @@ export const ManuellJournalfør: React.FC = () => {
 
   const journalpostTildeltSaksbehandler =
     journalpost?.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    journalpost.saksbehandler?.objectId === saksbehandler.objectId
+    journalpost.saksbehandler?.id === saksbehandler.id
 
   const dokumenter = journalpost?.dokumenter
 

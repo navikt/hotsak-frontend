@@ -77,7 +77,6 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
   const id = lagUUID()
   return {
     id,
-    objectId: id,
     navn: '',
     epost: '',
     navIdent: '',

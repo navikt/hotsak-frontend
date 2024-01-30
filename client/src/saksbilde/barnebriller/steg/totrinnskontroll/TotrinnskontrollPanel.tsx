@@ -20,7 +20,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
     return <Container>Feil ved henting av sak.</Container>
   }
 
-  if (!sak.data.saksbehandler || sak.data.saksbehandler.objectId === '') {
+  if (!sak.data.saksbehandler || sak.data.saksbehandler.id === '') {
     return <Container>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Container>
   }
 
@@ -32,7 +32,7 @@ export const TotrinnskontrollPanel: React.FC = () => {
     !totrinnskontrollFullført &&
     sak.data.status !== OppgaveStatusType.VEDTAK_FATTET &&
     sak.data.saksbehandler &&
-    sak.data.saksbehandler.objectId !== saksbehandler.objectId
+    sak.data.saksbehandler.id !== saksbehandler.id
   ) {
     return (
       <Container>

@@ -2,12 +2,12 @@ export interface Saksinformasjon {
   opprettet: string
 }
 
-export interface HarSaksinformasjon {
+export interface HarSakskjerne {
   saksinformasjon: Saksinformasjon
   saksbehandler?: Saksbehandler
 }
 
-export interface Sakresponse {
+export interface SakResponse {
   kanTildeles: boolean
   data: Sak
 }
@@ -17,7 +17,7 @@ export interface BarnebrillesakResponse {
   data: Barnebrillesak
 }
 
-export interface Sak extends HarSaksinformasjon {
+export interface Sak extends HarSakskjerne {
   sakId: string
   sakstype: Sakstype
   søknadGjelder: string
@@ -36,7 +36,7 @@ export interface Sak extends HarSaksinformasjon {
   enhet: Enhet
 }
 
-export interface Barnebrillesak extends HarSaksinformasjon {
+export interface Barnebrillesak extends HarSakskjerne {
   sakId: string
   sakstype: Sakstype
   søknadGjelder: string
@@ -248,23 +248,28 @@ export interface Navn {
   etternavn: string
 }
 
+export interface AdressebeskyttelseOgSkjerming {
+  gradering?: Adressebeskyttelse[]
+  skjermet: boolean
+}
+
 export interface Innsender {
   fnr: string
   navn: string
-  adressebeskyttelse?: Adressebeskyttelse
+  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export interface Bruker {
   fnr: string
-  brukernummer?: string
   navn: Navn
   fødselsdato: string
   kommune: Kommune
   bydel?: Bydel
   kjønn?: Kjønn
   telefon?: string
+  brukernummer?: string
   kontonummer?: string
-  adressebeskyttelse?: Adressebeskyttelse
+  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export enum Adressebeskyttelse {
@@ -871,19 +876,17 @@ export interface AvvisBestilling {
   begrunnelse: string
 }
 
-export interface Person {
+export interface Person extends Navn {
   fnr: string
-  brukernummer?: string
+  navn: Navn
   fødselsdato?: string
-  kjønn: Kjønn
   telefon?: string
-  fornavn: string
-  mellomnavn?: string
-  etternavn: string
-  adressebeskyttelse?: Adressebeskyttelse
+  brukernummer?: string
+  kjønn: Kjønn
+  enhet: Enhet
   kommune: Kommune
   bydel?: Bydel
-  enhet: Enhet
+  adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export interface Saksoversikt {

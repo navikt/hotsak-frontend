@@ -31,22 +31,30 @@ export class PersonStore extends Dexie {
       return
     }
 
-    const FNR = '20071359671'
-    const statbilTestperson: Person = {
+    const fnr = '20071359671'
+    const navn = {
       fornavn: 'Stabil',
-      etternavn: 'Testbruker',
-      fnr: FNR,
+      etternavn: 'Person',
+    }
+    const stabilPerson: Person = {
+      ...navn,
+      fnr,
+      navn,
       fødselsdato: lagTilfeldigFødselsdato(9).toISODateString(),
-      kjønn: kjønnFraFødselsnummer(FNR),
       telefon: lagTilfeldigTelefonnummer(),
+      kjønn: kjønnFraFødselsnummer(fnr),
+      enhet: enheter.agder,
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
       },
-      enhet: enheter.agder,
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
     }
 
-    return this.lagreAlle([statbilTestperson])
+    return this.lagreAlle([stabilPerson])
   }
 
   async lagreAlle(personer: Person[]) {
@@ -65,13 +73,18 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
   return {
     ...navn,
     fnr,
+    navn,
     fødselsdato: fødselsdato.toISODateString(),
-    kjønn: kjønnFraFødselsnummer(fnr),
     telefon: lagTilfeldigTelefonnummer(),
+    kjønn: kjønnFraFødselsnummer(fnr),
+    enhet: enheter.agder,
     kommune: {
       nummer: '9999',
       navn: lagTilfeldigBosted(),
     },
-    enhet: enheter.agder,
+    adressebeskyttelseOgSkjerming: {
+      gradering: [],
+      skjermet: false,
+    },
   }
 }

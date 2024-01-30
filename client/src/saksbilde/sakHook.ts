@@ -3,10 +3,10 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 
-import { BarnebrillesakResponse, Sakresponse } from '../types/types.internal'
+import { BarnebrillesakResponse, SakResponse } from '../types/types.internal'
 
 interface DataResponse {
-  sak: Sakresponse | undefined
+  sak: SakResponse | undefined
   isLoading: boolean
   isError: any
   mutate: (...args: any[]) => any
@@ -21,7 +21,7 @@ interface BrillesakResponse {
 
 export function useSak(): DataResponse {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error, isLoading, mutate } = useSwr<{ data: Sakresponse }>(`api/sak/${saksnummer}`, httpGet, {
+  const { data, error, isLoading, mutate } = useSwr<{ data: SakResponse }>(`api/sak/${saksnummer}`, httpGet, {
     refreshInterval: 10_000,
   })
 

@@ -7,7 +7,7 @@ import { CopyButton, Link, Tag, Tooltip } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
-import { formatName, formaterFødselsnummer, formaterTelefonnummer } from '../utils/stringFormating'
+import { formaterFødselsnummer, formaterTelefonnummer, formatName } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
@@ -15,7 +15,6 @@ import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
 import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { useTilgangsattributterPerson } from '../personoversikt/personInfoHook'
 import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
 
 const Container = styled.div`
@@ -111,13 +110,9 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
-  const { attributter } = useTilgangsattributterPerson(person?.fnr)
-
   if (!person) return <Container />
 
-  let erSkjermetPerson = undefined
-  const [adressebeskyttelse] = attributter?.adressebeskyttelseGradering || []
-  erSkjermetPerson = attributter?.erSkjermetPerson
+  const [adressebeskyttelse] = person.adressebeskyttelseOgSkjerming.gradering || []
 
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
@@ -174,7 +169,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }
           </Tag>
         </>
       )}
-      {erSkjermetPerson && (
+      {person.adressebeskyttelseOgSkjerming.skjermet && (
         <>
           <Separator>|</Separator>
           <Tag size="small" variant="error">

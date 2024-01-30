@@ -41,7 +41,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
   return {
     bruker: {
       fnr,
-      brukernummer: '1',
+      navn,
       fødselsdato: fødselsdato.toISODateString(),
       kommune: {
         nummer: '9999',
@@ -49,7 +49,11 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
       },
       kjønn: Kjønn.MANN,
       telefon: lagTilfeldigTelefonnummer(),
-      navn,
+      brukernummer: '1',
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
     },
     personinformasjon: {
       ...navn,
@@ -136,6 +140,10 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
     innsender: {
       fnr: formidler.fnr,
       navn: formidler.navn,
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
     },
     greitÅViteFaktum: [
       {
@@ -216,6 +224,7 @@ export class SakStore extends Dexie {
       saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
         ...navn,
         ...rest,
+        navn,
         kjønn: kjønn || Kjønn.UKJENT,
         enhet: enheter.agder,
       }))

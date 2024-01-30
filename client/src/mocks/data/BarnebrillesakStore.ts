@@ -112,18 +112,26 @@ function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
     søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
+      navn: lagTilfeldigNavn(),
       fødselsdato: fødselsdatoBruker.toISODateString(),
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
       },
-      kontonummer: '11111111113',
-      navn: lagTilfeldigNavn(),
       telefon: lagTilfeldigTelefonnummer(),
+      kontonummer: '11111111113',
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
     },
     innsender: {
       fnr: lagTilfeldigFødselsnummer(42),
       navn: lagTilfeldigNavn().fulltNavn,
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
     },
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet,
@@ -189,6 +197,7 @@ export class BarnebrillesakStore extends Dexie {
       saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
         ...navn,
         ...rest,
+        navn,
         kjønn: kjønn || Kjønn.UKJENT,
         enhet: enheter.agder,
       }))

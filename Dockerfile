@@ -1,6 +1,7 @@
-FROM node:20.9.0-alpine as node
+FROM node:20.11.0-alpine as node
 # build client
 FROM node as client-builder
+ENV HUSKY=0
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 RUN npm ci
@@ -9,6 +10,7 @@ RUN npm run test:ci && npm run build
 
 # build server
 FROM node as server-builder
+ENV HUSKY=0
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci
@@ -17,6 +19,7 @@ RUN npm run build
 
 # install server dependencies
 FROM node as server-dependencies
+ENV HUSKY=0
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci --omit dev

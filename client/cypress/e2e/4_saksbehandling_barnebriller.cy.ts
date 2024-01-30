@@ -54,7 +54,7 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByTestId('tag-sak-status').should('contain', 'Innvilget')
   })
 
-  it.only('Manuell overstyring av vilkår', () => {
+  it('Manuell overstyring av vilkår', () => {
     const bestillingsdatoForLangtTilbakeITid = '01.01.2023'
 
     const saksnummer = '1010'
@@ -181,7 +181,7 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByRole('heading', { name: /oversikt vilkår/i })
     cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Avslag')
     cy.findByRole('table').within(() => {
-      cy.findAllByText('Mangler opplysninger').should('have.length', 8)
+      cy.findAllByText('Mangler opplysninger').should('have.length', 7)
     })
 
     cy.findByRole('button', { name: /neste/i }).click()

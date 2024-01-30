@@ -38,7 +38,7 @@ export const JournalpostVisning: React.FC = () => {
     )
   }
 
-  const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.objectId !== saksbehandler.objectId
+  const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.id !== saksbehandler.id
 
   const StatusVisning: React.FC = () => {
     if (!journalpost) return <></>

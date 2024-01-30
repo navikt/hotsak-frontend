@@ -3,8 +3,8 @@ import Dexie, { Table } from 'dexie'
 
 import {
   Barnebrillesak,
-  BrevTekst,
   Brevkode,
+  BrevTekst,
   Hendelse,
   JournalføringRequest,
   Kjønn,
@@ -14,9 +14,9 @@ import {
   Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Sakstype,
   Saksdokument,
   SaksdokumentType,
+  Sakstype,
   StegType,
   Totrinnskontroll,
   TotrinnskontrollData,
@@ -24,8 +24,8 @@ import {
   Utbetalingsmottaker,
   VedtakStatusType,
   Vilkår,
-  VilkårsResultat,
   Vilkårsgrunnlag,
+  VilkårsResultat,
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
@@ -445,7 +445,7 @@ export class BarnebrillesakStore extends Dexie {
             vedtaksdato: nå,
             status: sak.vilkårsvurdering?.resultat === 'JA' ? VedtakStatusType.INNVILGET : VedtakStatusType.AVSLÅTT,
             saksbehandlerNavn: sak.saksbehandler?.navn,
-            saksbehandlerRef: sak.saksbehandler?.objectId,
+            saksbehandlerRef: sak.saksbehandler?.id,
           },
           totrinnskontroll,
         })

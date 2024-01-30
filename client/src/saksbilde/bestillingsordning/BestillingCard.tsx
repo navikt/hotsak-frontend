@@ -140,7 +140,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
 
   if (
     bestilling.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    bestilling.saksbehandler?.objectId !== saksbehandler.objectId
+    bestilling.saksbehandler?.id !== saksbehandler.id
   ) {
     return (
       <Card>

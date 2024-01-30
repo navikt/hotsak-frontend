@@ -18,7 +18,6 @@ const Enhet = {
 
 export interface InnloggetSaksbehandler {
   id: string
-  objectId: string
   navn: string
   epost: string
   navIdent: string
@@ -31,7 +30,6 @@ const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
   key: 'InnloggetSaksbehandler',
   default: {
     id: '',
-    objectId: '',
     navn: '',
     epost: '',
     navIdent: '',

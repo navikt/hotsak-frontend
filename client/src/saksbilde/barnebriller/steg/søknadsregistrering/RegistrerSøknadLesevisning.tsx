@@ -136,7 +136,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
               </HelpText>
             </HStack>
-            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.kjøptBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
+            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.kjøptBrille?.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
           </Avstand>
 
           <Avstand paddingTop={10}>

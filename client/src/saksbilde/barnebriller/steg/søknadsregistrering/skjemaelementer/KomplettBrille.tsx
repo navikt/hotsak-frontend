@@ -28,7 +28,7 @@ export function KomplettBrille() {
               legend={
                 <HStack wrap={false} gap="2" align={'center'}>
                   <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
-                  <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
+                  <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
                 </HStack>
               }
               size="small"

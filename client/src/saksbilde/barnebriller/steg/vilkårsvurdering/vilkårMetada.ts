@@ -30,14 +30,14 @@ const vilkårMetadata = [
     vilkårId: 'KJØPT_BRILLE',
     identifikator: 'kjøptBrille',
     overstyrbarAvSaksbehandler: false,
-    beskrivelse: 'Det gis kun støtte til kjøp av brille. Briller som er del av et abonnement støttes ikke.',
+    beskrivelse: 'Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {
     vilkårId: 'KOMPLETT_BRILLE',
     identifikator: 'komplettBrille',
     overstyrbarAvSaksbehandler: false,
-    beskrivelse: 'Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning.',
+    beskrivelse: 'Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning.',
     basertPå: ['Bestillingsbekreftelsen'],
   },
   {

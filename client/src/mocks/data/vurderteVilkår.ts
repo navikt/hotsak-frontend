@@ -180,7 +180,7 @@ function vurderteVilkår_JA(
     {
       vilkårsvurderingId,
       vilkårId: 'HAR_IKKE_VEDTAK_I_KALENDERÅRET',
-      beskrivelse: 'Ikke fått støtte til barnebriller tidligere i år - manuelt Hotsak-vedtak',
+      beskrivelse: 'Ikke fått tilskudd til barnebriller tidligere i år - manuelt Hotsak-vedtak',
       lovReferanse: '§ 3',
       lovdataLenke: 'https://lovdata.no/LTI/forskrift/2022-07-19-1364/§3',
       maskinellVurdering: {

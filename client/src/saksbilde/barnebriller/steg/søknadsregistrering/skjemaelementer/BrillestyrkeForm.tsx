@@ -29,7 +29,7 @@ export function BrillestyrkeForm() {
             <Alert variant="info" role="alert">
               <Etikett>{`Brillestøtte på opp til ${beløp.formater(beregning.satsBeløp)} kroner`}</Etikett>
               <Brødtekst>
-                {`Barnet kan få støtte fra sats ${beregning.sats.replace('SATS_', '')}: ${beregning.satsBeskrivelse}`}
+                {`Barnet kan få tilskudd fra sats ${beregning.sats.replace('SATS_', '')}: ${beregning.satsBeskrivelse}`}
               </Brødtekst>
             </Alert>
           )}

@@ -30,7 +30,7 @@ export function KjøptBrille() {
               <HStack wrap={false} gap="2" align={'center'}>
                 <Etikett>Er det snakk om kjøp av briller? (§2)</Etikett>
                 <HelpText>
-                  Det gis kun støtte til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
+                  Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
                 </HelpText>
               </HStack>
             }

@@ -133,7 +133,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>Er det snakk om kjøp av briller? (§2)</Etikett>
               <HelpText>
-                Det gis kun støtte til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
+                Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
               </HelpText>
             </HStack>
             <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.kjøptBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
@@ -153,7 +153,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
           <Avstand paddingTop={10}>
             <HStack wrap={false} gap="2" align={'center'}>
               <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
-              <HelpText>Bestillingen må inneholde glass, det gis ikke støtte til kun innfatning (§2)</HelpText>
+              <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
             </HStack>
             <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
             {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (

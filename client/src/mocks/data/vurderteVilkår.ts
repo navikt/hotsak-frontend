@@ -27,7 +27,7 @@ export function vurderteVilkår(
   brilleseddel: Brilleseddel = tomStyrke,
   komplettBrille: VurderingData,
   bestiltHosOptiker: VurderingData,
-  kjøptBrille: VurderingData,
+  kjøptBrille?: VurderingData,
   bestillingsdato?: string
 ) {
   let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)
@@ -66,7 +66,7 @@ export function vurderteVilkår(
     true,
     vilkårSomTrengerKjøptBrille,
     'SAKSBEHANDLER',
-    kjøptBrille.vilkårOppfylt || VilkårsResultat.JA
+    kjøptBrille?.vilkårOppfylt || VilkårsResultat.JA
   )
 
   return vurderteVilkår

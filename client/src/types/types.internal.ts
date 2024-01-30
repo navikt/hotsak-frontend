@@ -189,7 +189,7 @@ export interface VurderVilkårRequest {
     brillepris?: string
     bestiltHosOptiker: VurderingData
     komplettBrille: VurderingData
-    kjøptBrille: VurderingData
+    kjøptBrille?: VurderingData
   }
 }
 

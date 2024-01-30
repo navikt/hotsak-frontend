@@ -96,7 +96,7 @@ export const RegistrerSøknadSkjema: React.FC = () => {
         begrunnelse: sak?.data.vilkårsgrunnlag?.data?.komplettBrille.begrunnelse || '',
       },
       kjøptBrille: {
-        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data.kjøptBrille.vilkårOppfylt || VilkårsResultat.JA,
+        vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data.kjøptBrille?.vilkårOppfylt || VilkårsResultat.JA,
         brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
       },
     },

@@ -93,7 +93,7 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Innvilget')
     cy.findByRole('table').within(() => {
       cy.findAllByText('Ikke oppfylt').should('have.length', 0)
-      cy.findAllByTestId('alert-vilkårstatus').should('have.length', 7)
+      cy.findAllByTestId('alert-vilkårstatus').should('have.length', 8)
     })
   })
 
@@ -181,7 +181,7 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByRole('heading', { name: /oversikt vilkår/i })
     cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Avslag')
     cy.findByRole('table').within(() => {
-      cy.findAllByText('Mangler opplysninger').should('have.length', 7)
+      cy.findAllByText('Mangler opplysninger').should('have.length', 8)
     })
 
     cy.findByRole('button', { name: /neste/i }).click()

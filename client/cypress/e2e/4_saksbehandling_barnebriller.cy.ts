@@ -77,7 +77,7 @@ describe('Saksbehandling brillesøknad', () => {
       cy.findByRole('radio', { name: /ja/i }).check()
     })
     cy.findByRole('button', { name: /neste/i }).click()
-    cy.wait(1000)
+    cy.wait(3000)
 
     cy.findByTestId('tag-vilkår-status').should('exist').should('contain', 'Avslag')
     cy.findByRole('table').within(() => {

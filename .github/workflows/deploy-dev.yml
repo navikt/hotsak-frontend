@@ -24,6 +24,8 @@ jobs:
           working-directory: client
           config-file: cypress.config.ts
           record: false
+          env: 
+            DEBUG: '@cypress/github-action'
       - name: upload artifact 
         uses: actions/upload-artifact@v4
         with:

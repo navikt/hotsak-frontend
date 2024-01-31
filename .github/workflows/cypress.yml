@@ -19,3 +19,4 @@ jobs:
           working-directory: client
           config-file: cypress.config.ts
           record: false
+          parallel: true

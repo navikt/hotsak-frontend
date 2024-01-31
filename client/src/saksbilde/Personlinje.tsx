@@ -112,7 +112,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }
 
   if (!person) return <Container />
 
-  const [adressebeskyttelse] = person.adressebeskyttelseOgSkjerming.gradering || []
+  const [adressebeskyttelse] = person.adressebeskyttelseOgSkjerming?.gradering || []
 
   const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
   return (
@@ -169,7 +169,7 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }
           </Tag>
         </>
       )}
-      {person.adressebeskyttelseOgSkjerming.skjermet && (
+      {person.adressebeskyttelseOgSkjerming?.skjermet && (
         <>
           <Separator>|</Separator>
           <Tag size="small" variant="error">

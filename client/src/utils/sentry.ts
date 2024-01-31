@@ -73,6 +73,7 @@ export const initSentry = () => {
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
+    ignoreErrors: ['ResizeObserver loop limit exceeded'],
     environment: MILJO,
     denyUrls: [
       // Chrome extensions

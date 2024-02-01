@@ -3,9 +3,6 @@ import 'reset-css'
 
 import '@navikt/ds-css'
 
-import { setupAmplitude } from './utils/amplitude'
-import { initSentry } from './utils/sentry'
-
 import App from './App'
 import { AppRoot } from './GlobalStyles'
 import { setupMsw } from './mocks'
@@ -20,7 +17,12 @@ setupMsw()
       </>
     )
   })
-  .then(() => setupAmplitude())
+  .then(async () => {
+    if (import.meta.env.PROD) {
+      const { setupAmplitude } = await import('./utils/amplitude')
+      const { initSentry } = await import('./utils/sentry')
+      setupAmplitude()
+      initSentry()
+    }
+  })
   .catch((err) => console.error(err))
-
-initSentry()

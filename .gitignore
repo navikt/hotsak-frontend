@@ -24,6 +24,7 @@ yarn-error.log*
 .idea
 .vscode
 yarn-error.log
+client/cypress/screenshots/
 client/cypress/videos/
 client/cypress/fixtures/example.json
 *.iml

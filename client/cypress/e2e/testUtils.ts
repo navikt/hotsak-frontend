@@ -9,7 +9,6 @@ export const clearIndexDb = () => {
 
 export const plukkSak = (saksnummer: string) => {
   cy.visit(`/sak/${saksnummer}/hjelpemidler`)
-  cy.wait(3000)
   cy.findAllByRole('button', { name: /Ta saken/i })
     .first()
     .click()
@@ -22,7 +21,7 @@ export const fortsettSaksbehandling = () => {
 
 export const taBrillesak = (saksbehandler: string = 'Silje Saksbehandler') => {
   cy.findByTestId('select-bytt-bruker').select(saksbehandler)
-  cy.wait(3000)
+  cy.wait(1000)
   cy.findByTitle(/saksmeny/i).click()
   cy.findByRole('button', { name: /Ta saken/i }).click()
 }

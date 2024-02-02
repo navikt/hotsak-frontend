@@ -46,40 +46,6 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
     )
   }
 
-  manglerKontonummer && (
-    <>
-      <SkjemaAlert variant="warning">
-        <Etikett>Mangler kontonummer på bruker</Etikett>
-        <Detail>
-          Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt vedkommende
-          for å be dem registrere et kontonummer.
-        </Detail>
-        <Detail>Saken kan ikke sendes til godkjenning før det finnes et kontonummer registrert på mottaker</Detail>
-      </SkjemaAlert>
-
-      <Avstand paddingTop={4} />
-      <Button
-        variant="secondary"
-        size="small"
-        loading={lagrerUtbetalingsmottaker}
-        disabled={lagrerUtbetalingsmottaker}
-        onClick={(e) => {
-          e.preventDefault()
-          setLagrerUtbetalingsmottaker(true)
-          post('/api/utbetalingsmottaker', {
-            fnr: utbetalingsmottaker?.fnr,
-            sakId: Number(sakId),
-          }).then(() => {
-            setLagrerUtbetalingsmottaker(false)
-            mutate()
-          })
-        }}
-      >
-        Hent kontonummer på nytt
-      </Button>
-    </>
-  )
-
   return (
     <>
       <Rad>
@@ -94,6 +60,39 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
           <Etikett>{formaterKontonummer(utbetalingsmottaker?.kontonummer) || 'Kontonummer mangler'}</Etikett>
         </Kolonne>
       </Rad>
+      {manglerKontonummer && (
+        <Avstand paddingTop={4}>
+          <SkjemaAlert variant="warning">
+            <Etikett>Mangler kontonummer på bruker</Etikett>
+            <Detail>
+              Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
+              vedkommende for å be dem registrere et kontonummer.
+            </Detail>
+            <Detail>Saken kan ikke sendes til godkjenning før det finnes et kontonummer registrert på mottaker</Detail>
+          </SkjemaAlert>
+
+          <Avstand paddingTop={4} />
+          <Button
+            variant="secondary"
+            size="small"
+            loading={lagrerUtbetalingsmottaker}
+            disabled={lagrerUtbetalingsmottaker}
+            onClick={(e) => {
+              e.preventDefault()
+              setLagrerUtbetalingsmottaker(true)
+              post('/api/utbetalingsmottaker', {
+                fnr: utbetalingsmottaker?.fnr,
+                sakId: Number(sakId),
+              }).then(() => {
+                setLagrerUtbetalingsmottaker(false)
+                mutate()
+              })
+            }}
+          >
+            Hent kontonummer på nytt
+          </Button>
+        </Avstand>
+      )}
     </>
   )
 }

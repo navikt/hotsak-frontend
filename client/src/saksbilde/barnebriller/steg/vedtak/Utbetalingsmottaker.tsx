@@ -25,7 +25,7 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
   const mottakerNavn = utbetalingsmottaker?.fnr
   const kontonummer = utbetalingsmottaker?.kontonummer
 
-  const manglerKontonummer = kontonummer == null || kontonummer.length === 0
+  const manglerKontonummer = kontonummer == undefined || kontonummer.length === 0
 
   if (!mottakerNavn) {
     return (

@@ -9,6 +9,7 @@ import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { VENSTREKOLONNE_BREDDE } from './Vedtak'
 import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
+import { log } from 'console'
 
 interface UtbetalingsmottakerProps {
   sakId: string
@@ -26,6 +27,8 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
   const kontonummer = utbetalingsmottaker?.kontonummer
 
   const manglerKontonummer = kontonummer == undefined || kontonummer.length === 0
+
+  console.log('UB', utbetalingsmottaker)
 
   if (!mottakerNavn) {
     return (

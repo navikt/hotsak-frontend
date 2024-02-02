@@ -33,12 +33,6 @@ export const InnvilgetVedtakVisning: React.FC<InnvilgetVedtakVisningProps> = (pr
           <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
         </Kolonne>
       </Rad>
-      <Rad>
-        <Kolonne $width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
-        <Kolonne>
-          <Etikett>{capitalizeName(`${sak.utbetalingsmottaker?.navn}`)}</Etikett>
-        </Kolonne>
-      </Rad>
       <UtbetalingsmottakerVisning sakId={sak.sakId} utbetalingsmottaker={sak.utbetalingsmottaker} mutate={mutate} />
     </>
   )

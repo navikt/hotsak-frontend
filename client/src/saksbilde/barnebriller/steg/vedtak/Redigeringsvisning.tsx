@@ -66,6 +66,9 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
     !etterspørreOpplysningerBrevFinnes &&
     sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
+  const manglerPåkrevdUtbetalingsmottakerVedInnvilgelse =
+    sak.vilkårsvurdering?.resultat === VilkårsResultat.JA && !sak.utbetalingsmottaker?.kontonummer
+
   const visFritekstFelt =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER && !manglerPåkrevdEtterspørreOpplysningerBrev
 
@@ -174,7 +177,7 @@ export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => 
         <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
           Forrige
         </Button>
-        {!manglerPåkrevdEtterspørreOpplysningerBrev && (
+        {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
           <Button
             loading={loading}
             disabled={loading}

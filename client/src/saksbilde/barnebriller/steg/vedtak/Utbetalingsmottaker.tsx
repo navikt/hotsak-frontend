@@ -25,6 +25,8 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
   const mottakerNavn = utbetalingsmottaker?.fnr
   const kontonummer = utbetalingsmottaker?.kontonummer
 
+  const manglerKontonummer = kontonummer == null || kontonummer.length === 0
+
   if (!mottakerNavn) {
     return (
       <SkjemaAlert variant="warning">
@@ -41,7 +43,7 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
     )
   }
 
-  !kontonummer && (
+  manglerKontonummer && (
     <>
       <SkjemaAlert variant="warning">
         <Etikett>Mangler kontonummer på bruker</Etikett>

@@ -47,7 +47,7 @@ spec:
     - name: FINN_HJELPEMIDDEL_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
     - name: PORT
-      value: "3000"
+      value: '3000'
     - name: BRILLEKALKULATOR_API_URL
       value: "http://brille/api"
     - name: CLIENT_ID_HOTSAK_API
@@ -57,4 +57,4 @@ spec:
     - name: USE_MSW
       value: "true"
     - name: GIT_COMMIT
-      value: { { commit } }
+      value: {{commit}}

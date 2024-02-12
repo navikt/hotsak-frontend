@@ -71,7 +71,7 @@ spec:
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT
-      value: "3000"
+      value: '3000'
     - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
@@ -79,4 +79,4 @@ spec:
     - name: USE_MSW
       value: "false"
     - name: GIT_COMMIT
-      value: { { commit } }
+      value: {{commit}}

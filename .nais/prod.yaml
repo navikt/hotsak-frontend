@@ -27,6 +27,7 @@ spec:
         - application: hm-saksbehandling
         - application: hm-grunndata-api
         - application: hm-brille-api
+        - application: hm-grunndata-search
       external: 
         - host: sentry.gc.nav.no
   azure:
@@ -58,6 +59,8 @@ spec:
       value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
     - name: GRUNNDATA_API_URL
       value: http://hm-grunndata-api.teamdigihot.svc.cluster.local
+    - name: FINN_HJELPEMIDDEL_API_URL
+      value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT

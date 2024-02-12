@@ -1,8 +1,8 @@
 import { gql, request } from 'graphql-request'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { HMDBHentProduktQuery, HMDBHentProduktQueryVariables } from '../../generated/hjelpemiddeldatabasen'
-import { Produkt } from '../../types/types.internal'
+import { GrunndataProdukt } from '../../types/types.internal'
 
 const query = gql`
   query HentProdukt($hmsnr: String!) {
@@ -20,7 +20,7 @@ const query = gql`
 `
 
 export function useGrunndata(hmsnummer?: string) {
-  const [produkt, setProdukt] = useState<Produkt | null>(null)
+  const [produkt, setProdukt] = useState<GrunndataProdukt | null>(null)
 
   useEffect(() => {
     ;(async () => {
@@ -34,6 +34,10 @@ export function useGrunndata(hmsnummer?: string) {
             { hmsnr: hmsnummer }
           )
           const [produkt] = data.produkter
+
+          console.log('Data.produkt', data.produkter)
+
+
           const { isokode, isotittel, avtaleposttittel, avtalepostnr, produktUrl, artikkelUrl, artikkelnavn } = produkt
           setProdukt({
             isokode: isokode || '',

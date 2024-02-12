@@ -13,15 +13,16 @@ import { Strek } from '../../felleskomponenter/Strek'
 import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
-  EndreHjelpemiddelRequest,
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-  HjelpemiddelType,
-  OppgaveStatusType,
-  Sak,
+    EndreHjelpemiddelRequest,
+    EndretHjelpemiddelBegrunnelse,
+    EndretHjelpemiddelBegrunnelseLabel,
+    HjelpemiddelType,
+    OppgaveStatusType,
+    Sak,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
+import { useFinnHjelpemiddel } from './finnHjelpemiddelHook'
 import { useGrunndata } from './grunndataHook'
 import { useHjelpemiddel } from './hjelpemiddelHook'
 
@@ -88,7 +89,14 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
 
-  const produkt = useGrunndata(hjelpemiddel.hmsnr)
+  const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
+  // Kaller midlertidig både gammelt grunndata-api og nytt finnhjelpemiddel-api.
+  // Når hjelpemiddeldatabasen skrus av kan kall til grunndata apiet fjernes
+  const grunndataProdukt = useGrunndata(hjelpemiddel.hmsnr)
+
+  console.log('Gp', grunndataProdukt)
+  console.log('FH', produkt);
+  
 
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
 
@@ -123,10 +131,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{produkt?.isotittel}</Etikett>
+              <Etikett>{grunndataProdukt?.isotittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{produkt?.posttittel}</Rad>
+          <Rad>{grunndataProdukt?.posttittel}</Rad>
+          {/*produkt?.posttitler?.map((posttittel) => <Rad key={posttittel}>{posttittel}</Rad>)*/}
           {endretProdukt && (
             <Rad>
               <HStack align="center" gap="2">
@@ -149,9 +158,13 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                 </HStack>
               </Tooltip>
               {produkt ? (
-                <HMSLenke href={produkt.artikkelurl} target="_blank">
-                  <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
-                </HMSLenke>
+                <>
+                  <HMSLenke href={produkt.produkturl} target="_blank">
+                    <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>
+                      {hjelpemiddel.beskrivelse}
+                    </div>
+                  </HMSLenke>
+                </>
               ) : (
                 <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
               )}

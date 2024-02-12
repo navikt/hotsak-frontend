@@ -791,15 +791,23 @@ export enum PersonInfoKilde {
 }
 
 export interface Produkt {
-  isokode: string
   isotittel: string
-  rammeavtalePostId: string
   produkturl: string
-  artikkelurl: string
-  posttittel: string
+  posttitler?: string[]
   artikkelnavn: string
   hmsnr: string
 }
+
+export interface GrunndataProdukt {
+    isokode: string
+    isotittel: string
+    rammeavtalePostId: string
+    produkturl: string
+    artikkelurl: string
+    posttittel: string
+    artikkelnavn: string
+    hmsnr: string
+  }
 
 export enum Filter {
   SAKER,

@@ -1,271 +1,271 @@
-export type Maybe<T> = T | null
-export type InputMaybe<T> = Maybe<T>
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
-  LocalDate: any
-  LocalDateTime: string
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  LocalDate: { input: any; output: any; }
+  LocalDateTime: { input: string; output: string; }
 }
 
 export interface HMDBAvtalepost {
-  __typename?: 'Avtalepost'
-  beskrivelse: Scalars['String']
-  id: Scalars['String']
-  navn: Scalars['String']
-  nummer: Scalars['String']
+  __typename?: 'Avtalepost';
+  beskrivelse: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  navn: Scalars['String']['output'];
+  nummer: Scalars['String']['output'];
 }
 
 export interface HMDBBestillingsordning {
-  __typename?: 'Bestillingsordning'
-  erIBestillingsordning: Scalars['Boolean']
-  hmsnr: Scalars['String']
+  __typename?: 'Bestillingsordning';
+  erIBestillingsordning: Scalars['Boolean']['output'];
+  hmsnr: Scalars['String']['output'];
 }
 
 export interface HMDBGodkjenningskurs {
-  __typename?: 'Godkjenningskurs'
-  isokode: Scalars['String']
-  kursId: Scalars['Int']
-  tittel: Scalars['String']
+  __typename?: 'Godkjenningskurs';
+  isokode: Scalars['String']['output'];
+  kursId: Scalars['Int']['output'];
+  tittel: Scalars['String']['output'];
 }
 
 export interface HMDBKategori {
-  __typename?: 'Kategori'
-  navn: Scalars['String']
-  produkter: Array<HMDBProdukt>
+  __typename?: 'Kategori';
+  navn: Scalars['String']['output'];
+  produkter: Array<HMDBProdukt>;
 }
 
 export interface HMDBLeverandor {
-  __typename?: 'Leverandor'
-  adresse?: Maybe<Scalars['String']>
-  epost?: Maybe<Scalars['String']>
-  generertAv: Scalars['String']
-  generertDato: Scalars['LocalDateTime']
-  id: Scalars['ID']
-  landkode?: Maybe<Scalars['String']>
-  leverandorId: Scalars['String']
-  leverandornavn?: Maybe<Scalars['String']>
-  postnummer?: Maybe<Scalars['String']>
-  poststed?: Maybe<Scalars['String']>
-  telefon?: Maybe<Scalars['String']>
-  www?: Maybe<Scalars['String']>
+  __typename?: 'Leverandor';
+  adresse?: Maybe<Scalars['String']['output']>;
+  epost?: Maybe<Scalars['String']['output']>;
+  generertAv: Scalars['String']['output'];
+  generertDato: Scalars['LocalDateTime']['output'];
+  id: Scalars['ID']['output'];
+  landkode?: Maybe<Scalars['String']['output']>;
+  leverandorId: Scalars['String']['output'];
+  leverandornavn?: Maybe<Scalars['String']['output']>;
+  postnummer?: Maybe<Scalars['String']['output']>;
+  poststed?: Maybe<Scalars['String']['output']>;
+  telefon?: Maybe<Scalars['String']['output']>;
+  www?: Maybe<Scalars['String']['output']>;
 }
 
 export interface HMDBPaakrevdGodkjenningskursDto {
-  __typename?: 'PaakrevdGodkjenningskursDTO'
-  isokode: Scalars['String']
-  kursId: Scalars['Int']
-  tittel: Scalars['String']
+  __typename?: 'PaakrevdGodkjenningskursDTO';
+  isokode: Scalars['String']['output'];
+  kursId: Scalars['Int']['output'];
+  tittel: Scalars['String']['output'];
 }
 
 /** Kombinasjon av produkt/produktserie, artikkel og hjelpemiddel */
 export interface HMDBProdukt {
-  __typename?: 'Produkt'
-  artikkelId: Scalars['String']
-  artikkelUrl: Scalars['String']
-  artikkelbeskrivelse?: Maybe<Scalars['String']>
-  artikkelnavn: Scalars['String']
-  artikkelnr?: Maybe<Scalars['String']>
-  avtalepostId?: Maybe<Scalars['String']>
-  avtalepostbeskrivelse?: Maybe<Scalars['String']>
-  avtalepostnr?: Maybe<Scalars['String']>
-  avtalepostrangering?: Maybe<Scalars['Int']>
-  avtaleposttittel?: Maybe<Scalars['String']>
-  blobType?: Maybe<Scalars['String']>
-  blobUrlLite?: Maybe<Scalars['String']>
-  blobUrlStort?: Maybe<Scalars['String']>
-  blobUse?: Maybe<Scalars['String']>
-  erIBestillingsordning: Scalars['Boolean']
-  generertAv: Scalars['String']
-  generertDato: Scalars['LocalDateTime']
-  harNavAvtale: Scalars['Boolean']
-  hmsnr?: Maybe<Scalars['String']>
-  id: Scalars['ID']
-  isokode: Scalars['String']
-  isokortnavn?: Maybe<Scalars['String']>
-  isotekst: Scalars['String']
-  isotittel: Scalars['String']
-  kategori?: Maybe<Scalars['String']>
-  leverandor?: Maybe<HMDBLeverandor>
-  leverandorId?: Maybe<Scalars['String']>
+  __typename?: 'Produkt';
+  artikkelId: Scalars['String']['output'];
+  artikkelUrl: Scalars['String']['output'];
+  artikkelbeskrivelse?: Maybe<Scalars['String']['output']>;
+  artikkelnavn: Scalars['String']['output'];
+  artikkelnr?: Maybe<Scalars['String']['output']>;
+  avtalepostId?: Maybe<Scalars['String']['output']>;
+  avtalepostbeskrivelse?: Maybe<Scalars['String']['output']>;
+  avtalepostnr?: Maybe<Scalars['String']['output']>;
+  avtalepostrangering?: Maybe<Scalars['Int']['output']>;
+  avtaleposttittel?: Maybe<Scalars['String']['output']>;
+  blobType?: Maybe<Scalars['String']['output']>;
+  blobUrlLite?: Maybe<Scalars['String']['output']>;
+  blobUrlStort?: Maybe<Scalars['String']['output']>;
+  blobUse?: Maybe<Scalars['String']['output']>;
+  erIBestillingsordning: Scalars['Boolean']['output'];
+  generertAv: Scalars['String']['output'];
+  generertDato: Scalars['LocalDateTime']['output'];
+  harNavAvtale: Scalars['Boolean']['output'];
+  hmsnr?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  isokode: Scalars['String']['output'];
+  isokortnavn?: Maybe<Scalars['String']['output']>;
+  isotekst: Scalars['String']['output'];
+  isotittel: Scalars['String']['output'];
+  kategori?: Maybe<Scalars['String']['output']>;
+  leverandor?: Maybe<HMDBLeverandor>;
+  leverandorId?: Maybe<Scalars['String']['output']>;
   /** @deprecated Bruk pakrevdGodkjenningskurs, replace with pakrevdGodkjenningskurs */
-  paakrevdGodkjenningskurs?: Maybe<HMDBPaakrevdGodkjenningskursDto>
-  pakrevdGodkjenningskurs?: Maybe<HMDBGodkjenningskurs>
-  produktId: Scalars['String']
-  produktUrl: Scalars['String']
-  produktbeskrivelse: Scalars['String']
-  produktnavn: Scalars['String']
-  produkttype?: Maybe<HMDBProdukttype>
-  rammeavtaleId?: Maybe<Scalars['String']>
-  rammeavtaleSlutt?: Maybe<Scalars['LocalDate']>
-  rammeavtaleStart?: Maybe<Scalars['LocalDate']>
-  tekniskeData: Array<HMDBTekniskeDataTriple>
-  tekniskeDataSomTekst: Scalars['String']
-  tilgjengeligForDigitalSoknad: Scalars['Boolean']
+  paakrevdGodkjenningskurs?: Maybe<HMDBPaakrevdGodkjenningskursDto>;
+  pakrevdGodkjenningskurs?: Maybe<HMDBGodkjenningskurs>;
+  produktId: Scalars['String']['output'];
+  produktUrl: Scalars['String']['output'];
+  produktbeskrivelse: Scalars['String']['output'];
+  produktnavn: Scalars['String']['output'];
+  produkttype?: Maybe<HMDBProdukttype>;
+  rammeavtaleId?: Maybe<Scalars['String']['output']>;
+  rammeavtaleSlutt?: Maybe<Scalars['LocalDate']['output']>;
+  rammeavtaleStart?: Maybe<Scalars['LocalDate']['output']>;
+  tekniskeData: Array<HMDBTekniskeDataTriple>;
+  tekniskeDataSomTekst: Scalars['String']['output'];
+  tilgjengeligForDigitalSoknad: Scalars['Boolean']['output'];
 }
 
 export interface HMDBProduktPage {
-  __typename?: 'ProduktPage'
-  hasMore: Scalars['Boolean']
-  items: Array<HMDBProdukt>
-  numberOfItems: Scalars['Int']
+  __typename?: 'ProduktPage';
+  hasMore: Scalars['Boolean']['output'];
+  items: Array<HMDBProdukt>;
+  numberOfItems: Scalars['Int']['output'];
 }
 
 export interface HMDBProdukterFilterInput {
-  artikkelId?: InputMaybe<Array<Scalars['String']>>
-  avtalepostId?: InputMaybe<Array<Scalars['String']>>
-  erIBestillingsordning?: InputMaybe<Scalars['Boolean']>
-  hmsnr?: InputMaybe<Array<Scalars['String']>>
-  isokode?: InputMaybe<Array<Scalars['String']>>
-  kategori?: InputMaybe<Array<Scalars['String']>>
-  produktId?: InputMaybe<Array<Scalars['String']>>
-  tilgjengeligForDigitalSoknad?: InputMaybe<Scalars['Boolean']>
+  artikkelId?: InputMaybe<Array<Scalars['String']['input']>>;
+  avtalepostId?: InputMaybe<Array<Scalars['String']['input']>>;
+  erIBestillingsordning?: InputMaybe<Scalars['Boolean']['input']>;
+  hmsnr?: InputMaybe<Array<Scalars['String']['input']>>;
+  isokode?: InputMaybe<Array<Scalars['String']['input']>>;
+  kategori?: InputMaybe<Array<Scalars['String']['input']>>;
+  produktId?: InputMaybe<Array<Scalars['String']['input']>>;
+  tilgjengeligForDigitalSoknad?: InputMaybe<Scalars['Boolean']['input']>;
 }
 
 export interface HMDBProdukterPaginertFilterInput {
-  filter?: InputMaybe<HMDBProdukterFilterInput>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
+  filter?: InputMaybe<HMDBProdukterFilterInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }
 
 export interface HMDBProduktfilterInput {
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 }
 
 export enum HMDBProdukttype {
   Del = 'Del',
   Hovedprodukt = 'Hovedprodukt',
-  Tilbehoer = 'Tilbehoer',
+  Tilbehoer = 'Tilbehoer'
 }
 
 export interface HMDBQuery {
-  __typename?: 'Query'
-  avtaleposter: Array<HMDBAvtalepost>
+  __typename?: 'Query';
+  avtaleposter: Array<HMDBAvtalepost>;
   /**
    * Sjekk om et tilbehør er prisforhandlet
    * @deprecated Bruk prisforhandletTilbehor
    */
-  erPrisforhandletTilbehoer: Scalars['Boolean']
+  erPrisforhandletTilbehoer: Scalars['Boolean']['output'];
   /**
    * Hent alle produkter
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
-  hentAlleProdukter: HMDBProduktPage
+  hentAlleProdukter: HMDBProduktPage;
   /**
    * Sjekk om et produkt/tilbehør er på bestillingsordning
    * @deprecated Bruk produkter med erIBestillingsordning = true
    */
-  hentErIBestillingsOrdning: Array<HMDBBestillingsordning>
+  hentErIBestillingsOrdning: Array<HMDBBestillingsordning>;
   /**
    * Hent produkter med hmsnr
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
-  hentProdukterMedHmsnr: Array<HMDBProdukt>
+  hentProdukterMedHmsnr: Array<HMDBProdukt>;
   /**
    * Hent produkter med hmsnrs
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
-  hentProdukterMedHmsnrs: Array<HMDBProdukt>
-  kategorier: Array<HMDBKategori>
+  hentProdukterMedHmsnrs: Array<HMDBProdukt>;
+  kategorier: Array<HMDBKategori>;
   /** Finn produkter */
-  produkter: Array<HMDBProdukt>
+  produkter: Array<HMDBProdukt>;
   /** Finn produkter (paginert) */
-  produkterPaginert: HMDBProduktPage
+  produkterPaginert: HMDBProduktPage;
   /**
    * Hent produkter som er tilgjengelige for digital søknad
    * @deprecated Bruk produkter i stedet, replace with produkter(filter)
    */
-  sortiment: Array<HMDBProdukt>
-  tilbehor: Array<HMDBTilbehor>
+  sortiment: Array<HMDBProdukt>;
+  tilbehor: Array<HMDBTilbehor>;
 }
+
 
 export interface HMDBQueryErPrisforhandletTilbehoerArgs {
-  hmsnr: Scalars['String']
-  leverandorId: Scalars['String']
-  rammeavtaleId: Scalars['String']
+  hmsnr: Scalars['String']['input'];
+  leverandorId: Scalars['String']['input'];
+  rammeavtaleId: Scalars['String']['input'];
 }
+
 
 export interface HMDBQueryHentAlleProdukterArgs {
-  filter?: InputMaybe<HMDBProduktfilterInput>
+  filter?: InputMaybe<HMDBProduktfilterInput>;
 }
+
 
 export interface HMDBQueryHentErIBestillingsOrdningArgs {
-  hmsnrs: Array<Scalars['String']>
+  hmsnrs: Array<Scalars['String']['input']>;
 }
+
 
 export interface HMDBQueryHentProdukterMedHmsnrArgs {
-  hmsnr: Scalars['String']
+  hmsnr: Scalars['String']['input'];
 }
+
 
 export interface HMDBQueryHentProdukterMedHmsnrsArgs {
-  hmsnrs: Array<Scalars['String']>
+  hmsnrs: Array<Scalars['String']['input']>;
 }
+
 
 export interface HMDBQueryKategorierArgs {
-  navn?: InputMaybe<Array<Scalars['String']>>
+  navn?: InputMaybe<Array<Scalars['String']['input']>>;
 }
+
 
 export interface HMDBQueryProdukterArgs {
-  filter?: InputMaybe<HMDBProdukterFilterInput>
+  filter?: InputMaybe<HMDBProdukterFilterInput>;
 }
+
 
 export interface HMDBQueryProdukterPaginertArgs {
-  filter?: InputMaybe<HMDBProdukterPaginertFilterInput>
+  filter?: InputMaybe<HMDBProdukterPaginertFilterInput>;
 }
 
+
 export interface HMDBQueryTilbehorArgs {
-  filter?: InputMaybe<HMDBTilbehorFilterInput>
+  filter?: InputMaybe<HMDBTilbehorFilterInput>;
 }
 
 /** Teknisk datum med ledetekst, verdi og evt. enhet */
 export interface HMDBTekniskeDataTriple {
-  __typename?: 'TekniskeDataTriple'
-  enhet?: Maybe<Scalars['String']>
-  tekst?: Maybe<Scalars['String']>
-  verdi?: Maybe<Scalars['String']>
-  visningstekst: Scalars['String']
+  __typename?: 'TekniskeDataTriple';
+  enhet?: Maybe<Scalars['String']['output']>;
+  tekst?: Maybe<Scalars['String']['output']>;
+  verdi?: Maybe<Scalars['String']['output']>;
+  visningstekst: Scalars['String']['output'];
 }
+
 
 /** Teknisk datum med ledetekst, verdi og evt. enhet */
 export interface HMDBTekniskeDataTripleVisningstekstArgs {
-  separator?: InputMaybe<Scalars['String']>
+  separator?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface HMDBTilbehor {
-  __typename?: 'Tilbehor'
-  hmsnr?: Maybe<Scalars['String']>
-  leverandorId?: Maybe<Scalars['String']>
-  rammeavtaleId?: Maybe<Scalars['String']>
+  __typename?: 'Tilbehor';
+  hmsnr?: Maybe<Scalars['String']['output']>;
+  leverandorId?: Maybe<Scalars['String']['output']>;
+  rammeavtaleId?: Maybe<Scalars['String']['output']>;
 }
 
 export interface HMDBTilbehorFilterInput {
-  hmsnr?: InputMaybe<Array<Scalars['String']>>
-  leverandorId?: InputMaybe<Array<Scalars['String']>>
-  rammeavtaleId?: InputMaybe<Array<Scalars['String']>>
+  hmsnr?: InputMaybe<Array<Scalars['String']['input']>>;
+  leverandorId?: InputMaybe<Array<Scalars['String']['input']>>;
+  rammeavtaleId?: InputMaybe<Array<Scalars['String']['input']>>;
 }
 
 export type HMDBHentProduktQueryVariables = Exact<{
-  hmsnr: Scalars['String']
-}>
+  hmsnr: Scalars['String']['input'];
+}>;
 
-export type HMDBHentProduktQuery = {
-  __typename?: 'Query'
-  produkter: Array<{
-    __typename?: 'Produkt'
-    artikkelUrl: string
-    produktUrl: string
-    produktnavn: string
-    isotittel: string
-    isokode: string
-    avtaleposttittel?: string | null
-    avtalepostnr?: string | null
-    artikkelnavn: string
-  }>
-}
+
+export type HMDBHentProduktQuery = { __typename?: 'Query', produkter: Array<{ __typename?: 'Produkt', artikkelUrl: string, produktUrl: string, produktnavn: string, isotittel: string, isokode: string, avtaleposttittel?: string | null, avtalepostnr?: string | null, artikkelnavn: string }> };

@@ -51,6 +51,13 @@ export default defineConfig((env) => ({
   },
   server: {
     port: 3001,
+    proxy: {
+      '/finnhjelpemiddel-api': {
+        target: 'https://hm-grunndata-search.intern.dev.nav.no',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/finnhjelpemiddel-api/, ''),
+      },
+    },
     strictPort: true,
   },
   test: {

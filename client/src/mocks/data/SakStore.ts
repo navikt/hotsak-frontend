@@ -135,6 +135,22 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
         tilleggsinfo: [],
         tilbehør: [],
       },
+      {
+        id: -1,
+        hmsnr: '289689',
+        rangering: 1,
+        alleredeUtlevert: false,
+        utlevertInfo: {
+          utlevertType: UtlevertType.FremskuttLager,
+          annenKommentar: '',
+          overførtFraBruker: '',
+        },
+        antall: 1,
+        kategori: 'Alarm- og varslingshjelpemidler',
+        beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
+        tilleggsinfo: [],
+        tilbehør: [],
+      },
     ],
     formidler,
     innsender: {

@@ -12,6 +12,5 @@ services:
       USE_MSW: "true"
       SESSION_SECRET: "whatever"
       HM_SAKSBEHANDLING_API_URL: "http://hotsak/api"
-      GRUNNDATA_API_URL: "http://grunndata/api"
       BRILLEKALKULATOR_API_URL: "http://brille/api"
       AZURE_APP_WELL_KNOWN_URL: "http://azure/.well-known/openid-configuration"

@@ -13,17 +13,16 @@ import { Strek } from '../../felleskomponenter/Strek'
 import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
-    EndreHjelpemiddelRequest,
-    EndretHjelpemiddelBegrunnelse,
-    EndretHjelpemiddelBegrunnelseLabel,
-    HjelpemiddelType,
-    OppgaveStatusType,
-    Sak,
+  EndreHjelpemiddelRequest,
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+  HjelpemiddelType,
+  OppgaveStatusType,
+  Sak,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './finnHjelpemiddelHook'
-import { useGrunndata } from './grunndataHook'
 import { useHjelpemiddel } from './hjelpemiddelHook'
 
 const HjelpemiddelContainer = styled.div`
@@ -90,14 +89,6 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
   const { mutate } = useSWRConfig()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
-  // Kaller midlertidig både gammelt grunndata-api og nytt finnhjelpemiddel-api.
-  // Når hjelpemiddeldatabasen skrus av kan kall til grunndata apiet fjernes
-  const grunndataProdukt = useGrunndata(hjelpemiddel.hmsnr)
-
-  console.log('Gp', grunndataProdukt)
-  console.log('FH', produkt);
-  
-
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
 
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(endretProdukt ? endretProdukt.hmsNr : undefined)
@@ -131,11 +122,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Kolonne>
           <Rad>
             <Kolonne>
-              <Etikett>{grunndataProdukt?.isotittel}</Etikett>
+              <Etikett>{produkt?.isotittel}</Etikett>
             </Kolonne>
           </Rad>
-          <Rad>{grunndataProdukt?.posttittel}</Rad>
-          {/*produkt?.posttitler?.map((posttittel) => <Rad key={posttittel}>{posttittel}</Rad>)*/}
+          {produkt?.posttitler?.map((posttittel) => <Rad key={posttittel}>{posttittel}</Rad>)}
           {endretProdukt && (
             <Rad>
               <HStack align="center" gap="2">

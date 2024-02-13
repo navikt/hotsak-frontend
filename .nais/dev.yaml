@@ -33,7 +33,6 @@ spec:
       rules:
         - application: hm-mocks
         - application: hm-saksbehandling
-        - application: hm-grunndata-api
         - application: hm-brille-api
         - application: hm-grunndata-search
       external:
@@ -64,8 +63,6 @@ spec:
   env:
     - name: API_URL
       value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
-    - name: GRUNNDATA_API_URL
-      value: http://hm-grunndata-api.teamdigihot.svc.cluster.local
     - name: FINN_HJELPEMIDDEL_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
     - name: BRILLEKALKULATOR_API_URL

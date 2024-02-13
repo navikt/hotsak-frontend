@@ -4,7 +4,7 @@ import { brevHandlers } from './brev'
 import { brevtekstHandlers } from './brevTekst'
 import { dokumentHandlers } from './dokumenter'
 import { endringsloggHandlers } from './endringslogg'
-import { grunndataHandlers } from './grunndata'
+import { finnHjelpemiddelHandlers } from './finnHjelpemiddel'
 import { hjelpemiddelHandlers } from './hjelpemiddel'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
 import { notatHandlers } from './notat'
@@ -22,7 +22,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...brillekalkulatorHandlers(),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
-  ...grunndataHandlers(store),
+  ...finnHjelpemiddelHandlers(store),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...utbetalingsmottakerHandlers(store),

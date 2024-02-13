@@ -102,6 +102,7 @@ export interface HMDBProduct {
   isoCategoryText?: Maybe<Scalars['String']['output']>;
   isoCategoryTextShort?: Maybe<Scalars['String']['output']>;
   isoCategoryTitle?: Maybe<Scalars['String']['output']>;
+  isoCategoryTitleShort?: Maybe<Scalars['String']['output']>;
   media: Array<HMDBMediaDoc>;
   productURL: Scalars['String']['output'];
   productVariantURL: Scalars['String']['output'];

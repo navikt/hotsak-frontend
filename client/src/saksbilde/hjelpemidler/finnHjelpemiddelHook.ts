@@ -40,12 +40,9 @@ export function useFinnHjelpemiddel(hmsnummer?: string) {
           const { isoCategoryTitle, productVariantURL, articleName, agreements } = produkt
 
           setProdukt({
-            //isokode: isokode || '',
             isotittel: isoCategoryTitle || '',
             posttitler: agreements?.map((agreement) => agreement?.postTitle || '') || [''],
-            //rammeavtalePostId: avtalepostnr || '',
             produkturl: productVariantURL || '',
-            //artikkelurl: artikkelUrl,
             artikkelnavn: articleName,
             hmsnr: hmsnummer,
           })

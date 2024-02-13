@@ -74,7 +74,6 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "codegen": "graphql-codegen --config finnhjelpemiddel-codegen.yml",
-    "grunndata-codegen": "graphql-codegen --config grunndata-codegen.yml",
     "lint": "eslint . --ext .ts,.tsx",
     "prettier": "prettier -w ./src",
     "clean": "rimraf ./dist"

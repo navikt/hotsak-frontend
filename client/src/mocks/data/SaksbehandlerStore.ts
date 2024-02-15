@@ -81,7 +81,7 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
     epost: '',
     navIdent: '',
     grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
-    enheter: ['2970', '4710', '4711'],
+    enhetsnumre: ['2970', '4710', '4711'],
     erInnlogget: true,
     ...saksbehandler,
   }

@@ -22,7 +22,7 @@ export interface InnloggetSaksbehandler {
   epost: string
   navIdent: string
   grupper: Gruppe[]
-  enheter: string[]
+  enhetsnumre: string[]
   erInnlogget?: boolean
 }
 
@@ -34,7 +34,7 @@ const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
     epost: '',
     navIdent: '',
     grupper: [],
-    enheter: [],
+    enhetsnumre: [],
     erInnlogget: undefined,
   },
 })
@@ -42,12 +42,12 @@ const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
 const visOppgavelisteTabsState = selector<boolean>({
   key: 'VisOppgavelisteTabs',
   get: ({ get }) => {
-    const { grupper, enheter } = get(innloggetSaksbehandlerState)
+    const { grupper, enhetsnumre } = get(innloggetSaksbehandlerState)
     return (
       window.appSettings.MILJO !== 'prod-gcp' ||
       grupper.includes(Gruppe.TEAMDIGIHOT) ||
       grupper.includes(Gruppe.BRILLEADMIN_BRUKERE) ||
-      enheter.includes(Enhet.NAV_VIKAFOSSEN)
+      enhetsnumre.includes(Enhet.NAV_VIKAFOSSEN)
     )
   },
 })

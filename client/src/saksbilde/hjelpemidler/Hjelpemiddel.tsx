@@ -24,6 +24,7 @@ import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './finnHjelpemiddelHook'
 import { useHjelpemiddel } from './hjelpemiddelHook'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -149,7 +150,16 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
               </Tooltip>
               {produkt ? (
                 <>
-                  <HMSLenke href={produkt.produkturl} target="_blank">
+                  <HMSLenke
+                    href={produkt.produkturl}
+                    onClick={() => {
+                      logAmplitudeEvent(amplitude_taxonomy.FINN_HJELPEMIDDEL_LINK_BESØKT, {
+                        hmsnummer: produkt.hmsnr,
+                        artikkelnavn: produkt.artikkelnavn,
+                      })
+                    }}
+                    target="_blank"
+                  >
                     <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>
                       {hjelpemiddel.beskrivelse}
                     </div>

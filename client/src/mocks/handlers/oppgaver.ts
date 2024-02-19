@@ -4,13 +4,14 @@ import dayjs from 'dayjs'
 import {
   DokumentOppgaveStatusType,
   OmrådeFilter,
-  OppgaveV2,
   OppgaverResponse,
   Oppgavestatus,
   Oppgavetype,
+  OppgaveV2,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
+import { formatName } from '../../utils/stringFormating'
 
 // TODO: Lag egen oppgavestore for å hente oppgaver
 export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
@@ -31,11 +32,11 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
         opprettet: dayjs().toISOString(),
         bruker: {
           fnr: jp.innsender.fnr,
-          fulltNavn: jp.innsender.navn,
+          fulltNavn: formatName(jp.innsender.navn),
         },
         innsender: {
           fnr: jp.innsender.fnr,
-          fulltNavn: jp.innsender.navn,
+          fulltNavn: formatName(jp.innsender.navn),
         },
       }
     })

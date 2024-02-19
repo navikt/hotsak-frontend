@@ -1,4 +1,5 @@
-import { Navn } from '../types/types.internal'
+import type { Navn } from '../types/types.internal'
+import { isString } from './type'
 
 export const capitalize = (value?: string): string => {
   if (!value) {
@@ -6,8 +7,8 @@ export const capitalize = (value?: string): string => {
   } else return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
 }
 
-export const capitalizeName = (value: string) => {
-  const lowercaseValue = value.toLowerCase()
+export const capitalizeName = (value: string | Navn) => {
+  const lowercaseValue = formatName(value).toLowerCase()
 
   const storBokstavEtterBindestrek = capitalizeMedSkilletegn(lowercaseValue, '-')
   return capitalizeMedSkilletegn(storBokstavEtterBindestrek, ' ')
@@ -27,7 +28,8 @@ export const formaterFødselsnummer = (fødselsnummer: string) => {
   return `${fødselsnummer.slice(0, 6)} ${fødselsnummer.slice(6)}`
 }
 
-export const formatName = (navn: Navn) => {
+export const formatName = (navn: string | Navn): string => {
+  if (isString(navn)) return navn
   const { fornavn, mellomnavn, etternavn } = navn
   return capitalizeName(`${fornavn} ${mellomnavn ? `${mellomnavn} ` : ''} ${etternavn}`)
 }

@@ -14,6 +14,7 @@ import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { DokumentPanel } from './DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
+import { Loader } from '@navikt/ds-react'
 
 const ToKolonner = styled.div`
   display: grid;
@@ -28,7 +29,7 @@ const Container = styled.div`
 
 export const ManuellJournalfør: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, isError, mutate } = useJournalpost(journalpostID)
+  const { journalpost, isError, isLoading } = useJournalpost(journalpostID)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
@@ -73,8 +74,14 @@ export const ManuellJournalfør: React.FC = () => {
     }
   }
 
-  /* TODO Loading eller skeleton */
-  if (!journalpost) return <div>Fant ikke journalposten</div>
+  if (isLoading) {
+    return (
+      <div>
+        <Loader />
+        Henter journalpost...
+      </div>
+    )
+  }
 
   return (
     <>

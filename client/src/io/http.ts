@@ -170,7 +170,7 @@ export const postTildeling = async (oppgavereferanse: number | string) => {
 
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveId: string) => {
-  return post(`${baseUrl}/api/oppgave/${oppgaveId}/tildeling`, {})
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -202,7 +202,7 @@ export const tildelBestilling = async (sakId: string) => {
 }
 
 export const deleteFjernOppgaveTildeling = async (oppgaveId: string) => {
-  return del(`${baseUrl}/api/oppgave/${oppgaveId}/tildeling`, {})
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {

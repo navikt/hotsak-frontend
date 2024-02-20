@@ -2,7 +2,7 @@ import React from 'react'
 
 import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
 
 import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
@@ -10,10 +10,11 @@ import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
+import type { Navn } from '../../types/types.internal'
 
 interface FormidlerCardProps {
   tittel: string
-  formidlerNavn: string
+  formidlerNavn: string | Navn
   stilling: string
   kommune: string
   formidlerTelefon: string
@@ -38,7 +39,7 @@ export const FormidlerCard: React.FC<FormidlerCardProps> = ({
         <HStack align="center">
           <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
           <Tooltip content="Kopier formidler navn" placement="right">
-            <CopyButton title="Kopier formidler navn" size="small" copyText={formidlerNavn} />
+            <CopyButton title="Kopier formidler navn" size="small" copyText={formatName(formidlerNavn)} />
           </Tooltip>
         </HStack>
       </HStack>

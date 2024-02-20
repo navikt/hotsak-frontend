@@ -255,13 +255,15 @@ export interface AdressebeskyttelseOgSkjerming {
 
 export interface Innsender {
   fnr: string
-  navn: string
+  navn: string | Navn
+  fulltNavn?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
 export interface Bruker {
   fnr: string
   navn: Navn
+  fulltNavn?: string
   fødselsdato: string
   kommune: Kommune
   bydel?: Bydel
@@ -452,7 +454,8 @@ export interface Tilbehør {
 
 export interface Formidler {
   fnr: string
-  navn: string
+  navn: string | Navn
+  fulltNavn?: string
   poststed: string
   arbeidssted: string
   stilling: string
@@ -571,21 +574,15 @@ export interface Journalpost {
   enhet?: Enhet
   saksbehandler?: Saksbehandler
   dokumenter: Dokument[]
-  innsender: JournalpostInnsender
-  bruker?: JournalpostBruker
   oppgave: OppgaveV2
+  innsender: FødselsnummerOgNavn
+  bruker?: FødselsnummerOgNavn
 }
 
-export interface JournalpostInnsender {
+export interface FødselsnummerOgNavn {
   fnr: string
-  navn: string
-  adressebeskyttelse?: Adressebeskyttelse
-}
-
-export interface JournalpostBruker {
-  fnr: string
-  navn: string
-  adressebeskyttelse?: Adressebeskyttelse
+  navn: string | Navn
+  fulltNavn?: string
 }
 
 export interface Dokument {

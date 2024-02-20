@@ -28,7 +28,7 @@ export const OppgaveMenyKnapp = ({ oppgaveId, status, tildeltSaksbehandler, onMu
   const kanOvertaOppgaveStatuser = [Oppgavestatus.UNDER_BEHANDLING]
 
   const kanFjerneTildeling =
-    (tildeltSaksbehandler && tildeltSaksbehandler.id === saksbehandler.id) || status === Oppgavestatus.UNDER_BEHANDLING
+    tildeltSaksbehandler && tildeltSaksbehandler.id === saksbehandler.id && status === Oppgavestatus.UNDER_BEHANDLING
 
   const kanOvertaOppgave =
     tildeltSaksbehandler && tildeltSaksbehandler.id !== saksbehandler.id && kanOvertaOppgaveStatuser.includes(status)

@@ -2,8 +2,11 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
+import { HStack, Loader } from '@navikt/ds-react'
 import { headerHøydeRem } from '../../GlobalStyles'
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../felleskomponenter/Feilmelding'
+import { Etikett } from '../../felleskomponenter/typografi'
 import { usePersonContext } from '../../personoversikt/PersonContext'
 import { usePersonInfo } from '../../personoversikt/personInfoHook'
 import { Personlinje } from '../../saksbilde/Personlinje'
@@ -14,9 +17,6 @@ import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { DokumentPanel } from './DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
-import { Box, HGrid, HStack, Loader } from '@navikt/ds-react'
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { Etikett } from '../../felleskomponenter/typografi'
 
 const ToKolonner = styled.div`
   display: grid;
@@ -112,8 +112,3 @@ export const ManuellJournalfør: React.FC = () => {
     </>
   )
 }
-
-const FeilmeldingDiv = styled.div`
-  display: inline;
-  justify-content: center;
-`

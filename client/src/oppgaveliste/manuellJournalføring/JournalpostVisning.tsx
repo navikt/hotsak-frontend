@@ -16,16 +16,18 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { DokumentOppgaveStatusType } from '../../types/types.internal'
 import { DokumentIkkeTildelt } from '../dokumenter/DokumentIkkeTildelt'
 import { Dokumenter } from './Dokumenter'
+import { OppgaveMenyKnapp } from './OppgaveMenyKnapp'
 
 const Container = styled.div`
   overflow: auto;
   border-right: 1px solid var(--a-border-default);
-  padding-top: var(--a-spacing-6);
+  padding-top: var(--a-spacing-4);
+  padding-right: var(--a-spacing-4);
 `
 
 export const JournalpostVisning: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading } = useJournalpost(journalpostID)
+  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()
@@ -37,6 +39,8 @@ export const JournalpostVisning: React.FC = () => {
       </Container>
     )
   }
+
+  const oppgave = journalpost!.oppgave
 
   const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.id !== saksbehandler.id
 
@@ -60,6 +64,12 @@ export const JournalpostVisning: React.FC = () => {
 
   return (
     <Container>
+      <OppgaveMenyKnapp
+        oppgaveId={oppgave.id}
+        status={oppgave.oppgavestatus}
+        tildeltSaksbehandler={journalpost?.saksbehandler}
+        onMutate={mutate}
+      />
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>

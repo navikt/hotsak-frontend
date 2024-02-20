@@ -573,6 +573,7 @@ export interface Journalpost {
   dokumenter: Dokument[]
   innsender: JournalpostInnsender
   bruker?: JournalpostBruker
+  oppgave: OppgaveV2
 }
 
 export interface JournalpostInnsender {

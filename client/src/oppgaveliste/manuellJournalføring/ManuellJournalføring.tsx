@@ -28,7 +28,7 @@ const Container = styled.div`
 
 export const ManuellJournalfør: React.FC = () => {
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, isError } = useJournalpost(journalpostID)
+  const { journalpost, isError, mutate } = useJournalpost(journalpostID)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
@@ -72,6 +72,9 @@ export const ManuellJournalfør: React.FC = () => {
       return <Feilmelding>Teknisk feil. Klarte ikke å hente person fra PDL.</Feilmelding>
     }
   }
+
+  /* TODO Loading eller skeleton */
+  if (!journalpost) return <div>Fant ikke journalposten</div>
 
   return (
     <>

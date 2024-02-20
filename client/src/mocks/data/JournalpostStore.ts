@@ -8,6 +8,9 @@ import {
   Hendelse,
   Journalpost,
   JournalpostStatusType,
+  OmrådeFilter,
+  Oppgavestatus,
+  Oppgavetype,
 } from '../../types/types.internal'
 import { IdGenerator } from './IdGenerator'
 import { PersonStore, lagPerson } from './PersonStore'
@@ -40,6 +43,24 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
     innsender: {
       fnr: fnrInnsender,
       navn: lagTilfeldigNavn().fulltNavn,
+    },
+    oppgave: {
+      id: journalpostId.toString(),
+      oppgavetype: Oppgavetype.JOURNALFØRING,
+      oppgavestatus: Oppgavestatus.OPPRETTET,
+      beskrivelse: '',
+      område: OmrådeFilter.SYN,
+      enhet: enheter.agder,
+      frist: dayjs().toISOString(),
+      opprettet: dayjs().toISOString(),
+      bruker: {
+        fnr: fnrInnsender,
+        fulltNavn: lagTilfeldigNavn().fulltNavn,
+      },
+      innsender: {
+        fnr: fnrInnsender,
+        fulltNavn: lagTilfeldigNavn().fulltNavn,
+      },
     },
   }
 }
@@ -173,12 +194,17 @@ export class JournalpostStore extends Dexie {
     const dokument = await this.dokumenter.where('journalpostID').equals(journalpostId).first()
     const dokumentId = Number(dokument?.dokumentID)
 
+    
     await this.dokumenter.update(dokumentId, { ...dokument, tittel })
 
     return this.journalposter.update(journalpostId, {
       status: DokumentOppgaveStatusType.JOURNALFØRT,
       tittel,
       dokumenter: [{ ...dokument, tittel }],
+      oppgave: {
+        
+      }
+      
     })
   }
 }

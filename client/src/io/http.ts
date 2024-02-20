@@ -168,6 +168,11 @@ export const postTildeling = async (oppgavereferanse: number | string) => {
   return post(`${baseUrl}/api/tildeling/${oppgavereferanse}`, {})
 }
 
+// Nytt oppgave API
+export const postOppgaveTildeling = async (oppgaveId: string) => {
+  return post(`${baseUrl}/api/oppgave/${oppgaveId}/tildeling`, {})
+}
+
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }
@@ -194,6 +199,10 @@ export const putOppdaterVilkår = async (
 
 export const tildelBestilling = async (sakId: string) => {
   return post(`${baseUrl}/api/bestilling/tildeling/${sakId}`, {})
+}
+
+export const deleteFjernOppgaveTildeling = async (oppgaveId: string) => {
+  return del(`${baseUrl}/api/oppgave/${oppgaveId}/tildeling`, {})
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {

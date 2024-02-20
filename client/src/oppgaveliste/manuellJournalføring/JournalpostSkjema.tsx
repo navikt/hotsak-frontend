@@ -20,17 +20,18 @@ import { useJournalpost } from '../../saksbilde/journalpostHook'
 import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../../types/types.internal'
 import { Dokumenter } from './Dokumenter'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
+import { OppgaveMenyKnapp } from './OppgaveMenyKnapp'
 
 const Container = styled.div`
   overflow: auto;
   border-right: 1px solid var(--a-border-default);
-  padding-top: var(--a-spacing-6);
+  padding-top: var(--a-spacing-4);
   padding-right: var(--a-spacing-4);
 `
 export const JournalpostSkjema: React.FC = () => {
   const navigate = useNavigate()
   const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading } = useJournalpost(journalpostID)
+  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -72,8 +73,16 @@ export const JournalpostSkjema: React.FC = () => {
     )
   }
 
+  const oppgave = journalpost!.oppgave
+
   return (
     <Container>
+      <OppgaveMenyKnapp
+        oppgaveId={oppgave.id}
+        status={oppgave.oppgavestatus}
+        tildeltSaksbehandler={journalpost?.saksbehandler}
+        onMutate={mutate}
+      />
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>

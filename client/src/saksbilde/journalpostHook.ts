@@ -9,6 +9,7 @@ interface JournalpostResponse {
   journalpost: Journalpost | undefined
   isLoading: boolean
   isError: any
+  mutate: (...args: any[]) => any
 }
 
 interface DokumentResponse {
@@ -18,12 +19,13 @@ interface DokumentResponse {
 }
 
 export function useJournalpost(journalpostID?: string): JournalpostResponse {
-  const { data, error } = useSwr<{ data: Journalpost }>(`api/journalpost/${journalpostID}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/journalpost/${journalpostID}`, httpGet)
 
   return {
     journalpost: data?.data,
     isLoading: !error && !data,
     isError: error,
+    mutate
   }
 }
 

@@ -14,7 +14,9 @@ import { useDokumentContext } from '../dokumenter/DokumentContext'
 import { DokumentPanel } from './DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
-import { Loader } from '@navikt/ds-react'
+import { Box, HGrid, HStack, Loader } from '@navikt/ds-react'
+import { Avstand } from '../../felleskomponenter/Avstand'
+import { Etikett } from '../../felleskomponenter/typografi'
 
 const ToKolonner = styled.div`
   display: grid;
@@ -76,10 +78,24 @@ export const ManuellJournalfør: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div>
-        <Loader />
-        Henter journalpost...
-      </div>
+      <>
+        <Personlinje person={personInfo} loading={personInfoLoading} />
+        <Container>
+          <ToKolonner>
+            <Avstand paddingTop={4}>
+              <HStack>
+                <span>
+                  <Loader size="medium" title="Henter journalpost..." />
+                </span>
+                <Avstand paddingLeft={4}>
+                  <Etikett>Henter journalpost...</Etikett>
+                </Avstand>
+              </HStack>
+            </Avstand>
+            <DokumentPanel />
+          </ToKolonner>
+        </Container>
+      </>
     )
   }
 
@@ -96,3 +112,8 @@ export const ManuellJournalfør: React.FC = () => {
     </>
   )
 }
+
+const FeilmeldingDiv = styled.div`
+  display: inline;
+  justify-content: center;
+`

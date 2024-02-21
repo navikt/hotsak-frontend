@@ -10,7 +10,7 @@ import {
 import type { StoreHandlersFactory } from '../data'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
-  rest.post<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
+  rest.post<any, { sakId: string }, any>(`/api/sak/:sakId/tildeling`, async (req, res, ctx) => {
     const { sakId } = req.params
     if (await sakStore.tildel(sakId)) {
       return res(ctx.delay(500), ctx.status(200))
@@ -20,7 +20,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     }
     return res(ctx.delay(500), ctx.status(404))
   }),
-  rest.delete<any, { sakId: string }, any>(`/api/tildeling/:sakId`, async (req, res, ctx) => {
+  rest.delete<any, { sakId: string }, any>(`/api/sak/:sakId/tildeling`, async (req, res, ctx) => {
     const { sakId } = req.params
     if (await sakStore.frigi(sakId)) {
       return res(ctx.status(200))
@@ -100,18 +100,21 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       return res(ctx.status(200), ctx.json(saksdokumenter))
     }
   }),
-  rest.put<VedtakPayload, { sakId: string }, any>('/api/vedtak-v2/:sakId', async (req, res, ctx) => {
+  rest.put<VedtakPayload, { sakId: string }, any>('/api/sak/:sakId/vedtak', async (req, res, ctx) => {
     const sakId = req.params.sakId
     const status = req.body.status
 
     sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
     return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
   }),
-  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>('/api/tilbakefoer/:sakId', async (req, res, ctx) => {
-    const sakId = req.params.sakId
-    sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
-    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
-  }),
+  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>(
+    '/api/sak/:sakId/tilbakeforing',
+    async (req, res, ctx) => {
+      const sakId = req.params.sakId
+      sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
+      return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
+    }
+  ),
   rest.put<{ status: OppgaveStatusType }, { sakId: string }, any>('/api/sak/:sakId/status', async (req, res, ctx) => {
     const sakId = req.params.sakId
     const status = req.body.status
@@ -120,7 +123,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return res(/*ctx.delay(300),*/ ctx.status(200))
   }),
   rest.put<{ tilbakemelding: any; begrunnelse: any }, { sakId: string }>(
-    '/api/bestilling/avvis/:sakId',
+    '/api/bestilling/:sakId/avvisning',
     async (req, res, ctx) => {
       sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVIST)
       return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
@@ -163,11 +166,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
     return res(/*ctx.delay(200),*/ ctx.status(200), ctx.json(response))
   }),
-  rest.put<any, { sakId: string }, any>('/api/bestilling/ferdigstill/:sakId', (req, res, ctx) => {
+  rest.put<any, { sakId: string }, any>('/api/bestilling/:sakId/ferdigstilling', (req, res, ctx) => {
     sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.FERDIGSTILT)
     return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
   }),
-  rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/v2/:sakId', async (req, res, ctx) => {
+  rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/:sakId', async (req, res, ctx) => {
     await req.json<EndreHjelpemiddelRequest>()
     return res(ctx.status(200), ctx.json({}))
   }),

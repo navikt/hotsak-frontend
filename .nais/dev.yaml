@@ -9,7 +9,7 @@ metadata:
   annotations:
     snorlax.nais.io/enabled: "true"
 spec:
-  image: { { image } }
+  image: {{image}}
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no
@@ -74,6 +74,6 @@ spec:
     - name: USE_MSW
       value: "false"
     - name: GIT_COMMIT
-      value: { { commit } }
+      value: {{commit}}
     - name: FARO_URL
       value: https://telemetry.ekstern.dev.nav.no/collect

@@ -159,11 +159,7 @@ export const Oppgaveliste: React.FC = () => {
     }
   }
 
-  //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
-
-  console.log('Oppgaveliste er', oppgaver.length)
-  console.info('Bananer er fjes hver tirsdag', oppgaver.map((o) => o.beskrivelse).join(', '))
 
   return (
     <>

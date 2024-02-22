@@ -9,10 +9,6 @@ metadata:
   annotations:
     snorlax.nais.io/enabled: "true"
 spec:
-  observability:
-    logging:
-      destinations:
-        - id: loki
   image: { { image } }
   port: 3000
   ingresses:
@@ -51,6 +47,10 @@ spec:
     sidecar:
       enabled: true
       autoLogin: false
+  observability:
+    logging:
+      destinations:
+        - id: loki
   resources:
     limits:
       cpu: 500m

@@ -18,9 +18,9 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore }) => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   rest.get(`/api/oppgaver-v2`, async (req, res, ctx) => {
     const journalposter = await journalpostStore.alle()
-    const oppgaver: OppgaveV2[] = journalposter.map((jp, idx) => {
+    const oppgaver: OppgaveV2[] = journalposter.map((jp) => {
       return {
-        id: idx.toString(),
+        id: jp.journalpostID,
         oppgavetype: Oppgavetype.JOURNALFØRING,
         oppgavestatus: journalpostStatus2Oppgavestatus(jp.status),
         beskrivelse: jp.tittel,

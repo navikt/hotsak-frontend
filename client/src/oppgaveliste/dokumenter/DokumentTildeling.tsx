@@ -16,5 +16,9 @@ export const OppgaveTildeling = ({ dokumentOppgave }: OppgaveTildelingProps) =>
     />
   ) : (
     // TODO: Fix typer e.l. slik at journalpost ikke er null hvis det er en journalføringsoppgaver
-    <DokumentIkkeTildelt journalpostID={dokumentOppgave.journalpostId!} gåTilSak={true} />
+    <DokumentIkkeTildelt
+      oppgaveId={dokumentOppgave.id}
+      journalpostID={dokumentOppgave.journalpostId!}
+      gåTilSak={true}
+    />
   )

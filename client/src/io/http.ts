@@ -177,8 +177,8 @@ export const putOppdaterStatus = async (sakId: number | string, nyStatus: Oppgav
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }
 
-export const postJournalføringStartet = async (journalpostID: string) => {
-  return post(`${baseUrl}/api/journalpost/${journalpostID}/tildeling`, {})
+export const postJournalføringStartet = async (oppgaveId: string) => {
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {

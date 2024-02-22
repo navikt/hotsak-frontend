@@ -1,4 +1,4 @@
-import { initializeFaro } from '@grafana/faro-web-sdk'
+import { ConsoleInstrumentation, ErrorsInstrumentation, LogLevel, SessionInstrumentation, WebVitalsInstrumentation, initializeFaro } from '@grafana/faro-web-sdk'
 
 export const initFaro = () => {
   console.log(`Setting up Faro  with url ${window.appSettings.FARO_URL}`)
@@ -8,6 +8,14 @@ export const initFaro = () => {
     app: {
       name: 'hotsak-frontend',
     },
+    instrumentations: [
+        new ErrorsInstrumentation(),
+        new WebVitalsInstrumentation(),
+        new ConsoleInstrumentation({
+          disabledLevels: [LogLevel.TRACE, LogLevel.ERROR], // console.log will be captured
+        }),
+        new SessionInstrumentation(),
+      ],
   })
 }
 

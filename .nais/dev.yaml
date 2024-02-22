@@ -78,6 +78,6 @@ spec:
     - name: USE_MSW
       value: "false"
     - name: GIT_COMMIT
-      value: { { commit } }
+      value: {{commit}}
     - name: FARO_URL
       value: https://telemetry.ekstern.dev.nav.no/collect

@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend
   namespace: teamdigihot
 spec:
-  image: {{image}}
+  image: { { image } }
   port: 3000
   ingresses:
     - https://hotsak.intern.nav.no
@@ -27,8 +27,6 @@ spec:
         - application: hm-saksbehandling
         - application: hm-brille-api
         - application: hm-grunndata-search
-      external: 
-        - host: sentry.gc.nav.no
   azure:
     application:
       enabled: true
@@ -61,12 +59,14 @@ spec:
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT
-      value: '3000'
+      value: "3000"
     - name: CLIENT_ID_HOTSAK_API
       value: api://prod-gcp.teamdigihot.hm-saksbehandling/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: 'false'
+      value: "false"
     - name: GIT_COMMIT
-      value: {{commit}}
+      value: { { commit } }
+    - name: FARO_URL
+      value: https://telemetry.nav.no/collect

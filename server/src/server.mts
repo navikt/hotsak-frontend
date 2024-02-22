@@ -43,6 +43,7 @@ app.get('/settings.js', (req, res) => {
   const appSettings = {
     USE_MSW: process.env.USE_MSW === 'true',
     MILJO: process.env.NAIS_CLUSTER_NAME,
+    FARO_URL: process.env.FARO_URL
   }
   res.type('.js')
   res.send(`window.appSettings = ${JSON.stringify(appSettings)}`)

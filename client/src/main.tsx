@@ -20,9 +20,9 @@ setupMsw()
   .then(async () => {
     if (import.meta.env.PROD) {
       const { setupAmplitude } = await import('./utils/amplitude')
-      const { initSentry } = await import('./utils/sentry')
+      const { initFaro } = await import('./utils/faro')
       setupAmplitude()
-      initSentry()
+      initFaro()
     }
   })
   .catch((err) => console.error(err))

@@ -12,7 +12,8 @@ function htmlPlugin({ development }: { development?: boolean }): Plugin {
           children: `window.appSettings = {
             GIT_COMMIT: 'ukjent',
             USE_MSW: true,
-            MILJO: 'local'
+            MILJO: 'local',
+            FARO_URL: 'http://localhost:12347/collect'
           }`,
         })
       } else {

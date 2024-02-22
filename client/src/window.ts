@@ -7,6 +7,7 @@ declare global {
       USE_MSW?: boolean
       GIT_COMMIT?: string
       MILJO?: 'local' | 'dev-gcp' | 'prod-gcp' | string
+      FARO_URL?: string
     }
     store: {
       saksbehandlere(): Promise<InnloggetSaksbehandler[]>

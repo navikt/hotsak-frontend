@@ -1,10 +1,11 @@
 import {
-    ConsoleInstrumentation,
-    ErrorsInstrumentation,
-    LogLevel,
-    SessionInstrumentation,
-    getWebInstrumentations,
-    initializeFaro
+  ConsoleInstrumentation,
+  ErrorsInstrumentation,
+  LogLevel,
+  SessionInstrumentation,
+  faro,
+  getWebInstrumentations,
+  initializeFaro,
 } from '@grafana/faro-web-sdk'
 
 export const initFaro = () => {
@@ -24,6 +25,8 @@ export const initFaro = () => {
       new SessionInstrumentation(),
     ],
   })
+
+  console.info(`Instrumentations ${faro.instrumentations}`)
 }
 
 /*Sentry.init({

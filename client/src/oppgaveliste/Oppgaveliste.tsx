@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { faro } from '@grafana/faro-core'
 import { Panel, SortState, Table } from '@navikt/ds-react'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -161,6 +161,10 @@ export const Oppgaveliste: React.FC = () => {
 
   //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = oppgaver && oppgaver.length > 0
+
+  console.log('Oppgaveliste er', oppgaver.length)
+  console.info('Bananer er fjes hver tirsdag', oppgaver.map((o) => o.beskrivelse).join(', '))
+
   return (
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>

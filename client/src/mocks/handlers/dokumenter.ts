@@ -75,8 +75,8 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       }
     }
   ),
-  rest.post<any, { journalpostID: string }>(`/api/journalpost/:journalpostID/tildeling`, async (req, res, ctx) => {
-    await journalpostStore.tildel(req.params.journalpostID)
+  rest.post<any, { oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async (req, res, ctx) => {
+    await journalpostStore.tildel(req.params.oppgaveId)
     return res(ctx.delay(500), ctx.status(200))
   }),
 ]

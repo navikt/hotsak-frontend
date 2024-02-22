@@ -56,7 +56,11 @@ export const JournalpostVisning: React.FC = () => {
     } else {
       return (
         <Knappepanel>
-          <DokumentIkkeTildelt journalpostID={journalpost.journalpostID} gåTilSak={false} />
+          <DokumentIkkeTildelt
+            oppgaveId={journalpost.oppgave.id}
+            journalpostID={journalpost.journalpostID}
+            gåTilSak={false}
+          />
         </Knappepanel>
       )
     }

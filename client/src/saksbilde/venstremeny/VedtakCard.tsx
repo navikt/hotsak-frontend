@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Button, Tag } from '@navikt/ds-react'
+import { Button, Tag, TextField } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { norskTimestamp } from '../../utils/date'
+import { formaterDato, norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
@@ -26,6 +26,7 @@ import { OvertaSakModal } from '../OvertaSakModal'
 import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
+import { Avstand } from '../../felleskomponenter/Avstand'
 
 interface VedtakCardProps {
   sak: Sak
@@ -101,7 +102,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             Innvilget
           </Tag>
           <StatusTekst>
-            <Tekst>{`${norskTimestamp(sak.vedtak.vedtaksdato)}`}</Tekst>
+            <Tekst>{`${formaterDato(sak.vedtak.vedtaksdato)}`}</Tekst>
             <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
           </StatusTekst>
         </Card>
@@ -193,6 +194,8 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
           </Brødtekst>
           <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
+          {/*<Avstand paddingTop={6} />
+          <TextField label="Problemsammendrag til SF i OEBS" size="small" value="Personløfter, seng, terskeleliminator" />*/}
         </BekreftelsesModal>
         <OverførGosysModal
           {...overførGosys}

@@ -1,9 +1,12 @@
+import { useState } from 'react'
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { HøyrekolonneTabs, Sakstype } from '../types/types.internal'
 import { TabLink } from './TabLink'
 import { HøyrekolonneHeader } from './høyrekolonne/HøyrekolonneHeader'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
-import { Tabs } from '@navikt/ds-react'
+import { Button, Tabs, VStack } from '@navikt/ds-react'
+import { HeitKrukka } from '../heitKrukka/HeitKrukka'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -13,7 +16,10 @@ export interface SøknadslinjeProps {
 }
 
 export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
+
   return (
+    <>
     <SøknadslinjeContainer>
       <Tabs>
         <Tabs.List>
@@ -28,7 +34,19 @@ export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabCha
           </TabLink>
         </Tabs.List>
       </Tabs>
+      <Eksperiment>
+        <VStack justify="center">
+          <Button size="small" variant="secondary-neutral" onClick={() => setFeedbackOpen(true)} >
+            Kort innpå
+          </Button>
+        </VStack>
+      </Eksperiment>
       <HøyrekolonneHeader id={id} type={type} onTabChange={onTabChange} currentTab={currentTab} />
     </SøknadslinjeContainer>
+
+<Eksperiment>
+    <HeitKrukka open={feedbackOpen} onClose={() => setFeedbackOpen(false)}  />
+    </Eksperiment>
+    </>
   )
 }

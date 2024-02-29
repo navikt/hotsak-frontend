@@ -5,6 +5,7 @@ export interface OidcConfig {
   tokenEndpoint: string
   clientID: string
   clientIDHotsakApi: string
+  clientIDHeitKrukkaApi: string
   responseType: ResponseType[]
   clientSecret: string
   scope: string

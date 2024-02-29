@@ -8,6 +8,7 @@ const oidc: OidcConfig = {
   tokenEndpoint: process.env.AZURE_OPENID_CONFIG_TOKEN_ENDPOINT || 'unknown',
   clientID: process.env.AZURE_APP_CLIENT_ID || 'unknown',
   clientIDHotsakApi: process.env.CLIENT_ID_HOTSAK_API || 'unknown',
+  clientIDHeitKrukkaApi: process.env.CLIENT_ID_HEIT_KRUKKA_API || 'unknown',
   responseType: ['code'],
   clientSecret: process.env.AZURE_APP_CLIENT_SECRET || 'unknown',
   scope: `profile offline_access openid email ${process.env.AZURE_APP_CLIENT_ID}/.default`,

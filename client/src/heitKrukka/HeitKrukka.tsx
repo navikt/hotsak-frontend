@@ -4,11 +4,17 @@ import { Modal } from '@navikt/ds-react'
 
 export interface HeitKrukkaProps {
   open: boolean
+  skjemaUrl?: string
   onClose(): void
 }
 
-export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose }) => {
+export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl }) => {
   const ref = useRef<HTMLDialogElement>(null)
+
+  if (!skjemaUrl) {
+    return null
+  }
+
   return (
     <Modal
       ref={ref}
@@ -19,12 +25,7 @@ export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose }) => {
       header={{ heading: '', closeButton: true }}
     >
       <Modal.Body>
-        <iframe
-          title={'dokument'}
-          src="https://heit-krukka.intern.dev.nav.no/skjema/1"
-          width={'600px'}
-          height={'600px'}
-        />
+        <iframe title={'dokument'} src={skjemaUrl} width={'600px'} height={'600px'} />
       </Modal.Body>
     </Modal>
   )

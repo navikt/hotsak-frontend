@@ -16,7 +16,6 @@ export interface SøknadslinjeProps {
 }
 
 export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabChange, currentTab }) => {
-  const [feedbackOpen, setFeedbackOpen] = useState(false)
 
   return (
     <>
@@ -34,19 +33,10 @@ export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type, onTabCha
           </TabLink>
         </Tabs.List>
       </Tabs>
-      <Eksperiment>
-        <VStack justify="center">
-          <Button size="small" variant="secondary-neutral" onClick={() => setFeedbackOpen(true)} >
-            Kort innpå
-          </Button>
-        </VStack>
-      </Eksperiment>
       <HøyrekolonneHeader id={id} type={type} onTabChange={onTabChange} currentTab={currentTab} />
     </SøknadslinjeContainer>
 
-<Eksperiment>
-    <HeitKrukka open={feedbackOpen} onClose={() => setFeedbackOpen(false)}  />
-    </Eksperiment>
+
     </>
   )
 }

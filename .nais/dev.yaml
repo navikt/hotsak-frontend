@@ -82,3 +82,5 @@ spec:
       value: https://telemetry.ekstern.dev.nav.no/collect
     - name: HEIT_KRUKKA_URL
       value: http://heit-krukka.teamdigihot.svc.cluster.local
+    - name: DEBUG
+      value: express-http-proxy

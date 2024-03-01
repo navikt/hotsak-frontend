@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Button, Tag, TextField } from '@navikt/ds-react'
+import { Button, Tag } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -10,23 +10,25 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
+import { HeitKrukka } from '../../heitKrukka/HeitKrukka'
+import { useHeitKrukka } from '../../heitKrukka/heitKrukkaHook'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
-  HjelpemiddelArtikkel,
-  OppgaveStatusType,
-  Sak,
-  vedtaksgrunnlagUtlaanshistorikk,
-  VedtakStatusType,
+    HjelpemiddelArtikkel,
+    OppgaveStatusType,
+    Sak,
+    VedtakStatusType,
+    vedtaksgrunnlagUtlaanshistorikk,
 } from '../../types/types.internal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { Avstand } from '../../felleskomponenter/Avstand'
 
 interface VedtakCardProps {
   sak: Sak
@@ -61,6 +63,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
+  const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen } = useHeitKrukka()
 
   const opprettVedtak = () => {
     setLoading(true)
@@ -73,6 +76,10 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
       .then(() => {
         setLoading(false)
         setVisVedtakModal(false)
+        if (window.appSettings.MILJO !== 'prod-gcp') {
+            
+          hentSpørreskjema('sporreskjemaSaksbehandlerA_v1', sak.enhet)
+        }
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
       })
@@ -168,44 +175,54 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
     )
   } else {
     return (
-      <Card>
-        <Knappepanel gap="0rem">
-          <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
-            <span>Innvilg søknaden</span>
-          </Knapp>
-          <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
-            Overfør til Gosys
-          </Knapp>
-        </Knappepanel>
-        <BekreftelsesModal
-          heading="Vil du innvilge søknaden?"
-          open={visVedtakModal}
-          width="600px"
-          buttonLabel="Innvilg søknaden"
-          onBekreft={() => {
-            opprettVedtak()
-            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
-            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
-          }}
-          loading={loading}
-          onClose={() => setVisVedtakModal(false)}
-        >
-          <Brødtekst>
-            Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
-          </Brødtekst>
-          <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
-          {/*<Avstand paddingTop={6} />
+      <>
+        <Card>
+          <Knappepanel gap="0rem">
+            <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
+              <span>Innvilg søknaden</span>
+            </Knapp>
+            <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
+              Overfør til Gosys
+            </Knapp>
+          </Knappepanel>
+          <BekreftelsesModal
+            heading="Vil du innvilge søknaden?"
+            open={visVedtakModal}
+            width="600px"
+            buttonLabel="Innvilg søknaden"
+            onBekreft={() => {
+              opprettVedtak()
+              logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
+              logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
+            }}
+            loading={loading}
+            onClose={() => setVisVedtakModal(false)}
+          >
+            <Brødtekst>
+              Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
+            </Brødtekst>
+            <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
+            {/*<Avstand paddingTop={6} />
           <TextField label="Problemsammendrag til SF i OEBS" size="small" value="Personløfter, seng, terskeleliminator" />*/}
-        </BekreftelsesModal>
-        <OverførGosysModal
-          {...overførGosys}
-          onBekreft={async (tilbakemelding) => {
-            await overførGosys.onBekreft(tilbakemelding)
-            logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
-            logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
-          }}
-        />
-      </Card>
+          </BekreftelsesModal>
+          <OverførGosysModal
+            {...overførGosys}
+            onBekreft={async (tilbakemelding) => {
+              await overførGosys.onBekreft(tilbakemelding)
+              logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+              logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+            }}
+          />
+        </Card>
+
+        <Eksperiment>
+          <HeitKrukka
+            open={spørreskjema !== undefined}
+            onClose={() => setSpørreskjemaOpen(false)}
+            skjemaUrl={spørreskjema}
+          />
+        </Eksperiment>
+      </>
     )
   }
 }

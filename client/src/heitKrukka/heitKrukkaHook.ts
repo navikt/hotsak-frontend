@@ -24,7 +24,7 @@ export function useHeitKrukka(): HeitKrukkaResponse {
 
   const hentSpørreskjema = async (skjema: string, enhet: Enhet) => {
     const resultat = await http.post<HeitKrukkaSkjemaRequest, HeitKrukkaSkjemaResponse>(
-      `${baseUrl}/heitkrukka/api/skjema/${skjema}`,
+      `${baseUrl}/heit-krukka/api/skjema/${skjema}`,
       { enhet: enhet.enhetsnavn }
     )
     setSpørreskjema(resultat)

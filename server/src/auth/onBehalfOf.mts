@@ -1,6 +1,5 @@
-import { log } from 'console'
-import type { OidcConfig } from '../types.d.mts'
 import fetch from 'node-fetch'
+import type { OidcConfig } from '../types.d.mts'
 
 export default (config: OidcConfig) => {
   return {
@@ -18,17 +17,13 @@ export default (config: OidcConfig) => {
         body,
       })
 
-      if (targetClientId === 'api://dev-gcp.teamdigihot.heit-krukka/.default') {
-        console.log(`CTE:  ${config.tokenEndpoint}, body: ${body}`)
-        console.log(`hentFor() response ${response.status}`)
-        console.log(await response.json())
-      }
+      const jsonBody = await response.json()
 
       if (response.ok) {
-        const data = (await response.json()) as { access_token: string }
+        const data = jsonBody as { access_token: string }
         return data.access_token
       }
-      return Promise.reject(new Error(`kall feilet med status: ${response.status}`))
+      return Promise.reject(new Error(`kall feilet med status (response  ${response.status}): ${jsonBody}`))
     },
   }
 }

@@ -6,7 +6,6 @@ export const finnHjelpemiddelHandlers: StoreHandlersFactory = ({ hjelpemiddelSto
   graphql.query('HentProdukter', async (req, res, ctx) => {
     const { hmsnrs } = req.variables
     const hjelpemiddel = await hjelpemiddelStore.hent(hmsnrs[0])
-    console.log('Hjelpemiddel', hjelpemiddel)
 
     const mockHjelpemiddel = {
       hmsArtNr: '112233',

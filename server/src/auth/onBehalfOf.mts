@@ -21,7 +21,7 @@ export default (config: OidcConfig) => {
       if (targetClientId === 'api://dev-gcp.teamdigihot.heit-krukka/.default') {
         console.log(`CTE:  ${config.tokenEndpoint}, body: ${body}`)
         console.log(`hentFor() response ${response.status}`)
-        console.log(response.body)
+        console.log(response.json())
       }
 
       if (response.ok) {

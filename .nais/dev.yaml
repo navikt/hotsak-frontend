@@ -36,6 +36,8 @@ spec:
         - application: hm-brille-api
         - application: hm-grunndata-search
         - application: heit-krukka
+      external:
+        - host: heit-krukka.intern.dev.nav.no
   azure:
     application:
       enabled: true
@@ -81,6 +83,6 @@ spec:
     - name: FARO_URL
       value: https://telemetry.ekstern.dev.nav.no/collect
     - name: HEIT_KRUKKA_URL
-      value: http://heit-krukka.teamdigihot.svc.cluster.local
+      value: https://heit-krukka.intern.dev.nav.no
     - name: DEBUG
       value: express-http-proxy

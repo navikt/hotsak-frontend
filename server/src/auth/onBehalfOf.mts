@@ -17,6 +17,11 @@ export default (config: OidcConfig) => {
         method: 'POST',
         body,
       })
+
+      if (targetClientId === 'api://dev-gcp.teamdigihot.heit-krukka/.default') {
+        console.log(`hentFor() response ${response}`)
+      }
+
       if (response.ok) {
         const data = (await response.json()) as { access_token: string }
         return data.access_token

@@ -40,18 +40,48 @@ const options = (tjenesteClientId: string): ProxyOptions => ({
       return options
     }
   },
-  /*proxyReqPathResolver: (req) => {
+  proxyReqPathResolver: (req) => {
     return pathRewriteBasedOnEnvironment(req)
-  },*/
+  },
 })
 
-//const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
+const options2 = (tjenesteClientId: string): ProxyOptions => ({
+    parseReqBody: false,
+    proxyReqOptDecorator: (options, req) => {
+      if (process.env.USE_MSW !== 'true') {
+        return new Promise((resolve, reject) => {
+          const hotsakToken = req.headers['authorization']!.split(' ')[1]
+  
+          if (hotsakToken !== '') {
+            onBehalfOf.hentFor(tjenesteClientId, hotsakToken).then(
+              (onBehalfOfToken) => {
+                options.headers = {
+                  ...options.headers,
+                  Authorization: `Bearer ${onBehalfOfToken}`,
+                }
+                resolve(options)
+              },
+              (error) => reject(error)
+            )
+          } else {
+            return resolve(options)
+          }
+        })
+      } else {
+        return options
+      }
+    },
+   
+  })
+  
+
+const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
 
 const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehalfOf
   const hotsakApiId = config.oidc.clientIDHotsakApi
   const heitKrukkaApiId = config.oidc.clientIDHeitKrukkaApi
-  server.use('/heit-krukka/', proxy(envProperties.HEIT_KRUKKA_URL, options(heitKrukkaApiId)))
+  server.use('/heit-krukka/', proxy(envProperties.HEIT_KRUKKA_URL, options2(heitKrukkaApiId)))
   server.use('/api/', proxy(envProperties.API_URL + '/api', options(hotsakApiId)))
   server.use('/finnhjelpemiddel-api', proxy(envProperties.FINN_HJELPEMIDDEL_API_URL))
   server.use('/brillekalkulator-api', proxy(envProperties.BRILLEKALKULATOR_API_URL))

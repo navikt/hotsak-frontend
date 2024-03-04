@@ -4,7 +4,6 @@ import type { OidcConfig } from '../types.d.mts'
 export default (config: OidcConfig) => {
   return {
     hentFor: async (targetClientId: string, accessToken: string): Promise<string> => {
-      console.log(`hentFor() ${targetClientId}`)
       const body = new URLSearchParams()
       body.append('grant_type', 'urn:ietf:params:oauth:grant-type:jwt-bearer')
       body.append('client_id', config.clientID) // our own

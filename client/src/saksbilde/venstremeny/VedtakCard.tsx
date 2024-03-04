@@ -77,7 +77,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         setLoading(false)
         setVisVedtakModal(false)
         if (window.appSettings.MILJO !== 'prod-gcp') {
-            
           hentSpørreskjema('sporreskjemaSaksbehandlerA_v1', sak.enhet)
         }
         mutate(`api/sak/${sakId}`)
@@ -97,6 +96,8 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
       })
   }
+
+  console.log('Spørreskjema', spørreskjema, 'open', spørreskjemaOpen)
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
@@ -216,11 +217,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         </Card>
 
         <Eksperiment>
-          <HeitKrukka
-            open={spørreskjema !== undefined}
-            onClose={() => setSpørreskjemaOpen(false)}
-            skjemaUrl={spørreskjema}
-          />
+          <HeitKrukka open={spørreskjemaOpen} onClose={() => setSpørreskjemaOpen(false)} skjemaUrl={spørreskjema} />
         </Eksperiment>
       </>
     )

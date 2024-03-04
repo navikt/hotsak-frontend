@@ -31,11 +31,10 @@ export function useHeitKrukka(): HeitKrukkaResponse {
       { enhet: enhet.enhetsnavn }
     )
 
-    //const responseText = await response.text()
-    console.log(`Krukka Response ${resultat}`);
-    
-
     setSpørreskjema(resultat)
+    if (resultat) {
+      setSpørreskjemaOpen(true)
+    }
   }
 
   return { hentSpørreskjema, spørreskjema: spørreskjema?.data?.url, spørreskjemaOpen, setSpørreskjemaOpen }

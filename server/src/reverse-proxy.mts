@@ -40,12 +40,12 @@ const options = (tjenesteClientId: string): ProxyOptions => ({
       return options
     }
   },
-  proxyReqPathResolver: (req) => {
+  /*proxyReqPathResolver: (req) => {
     return pathRewriteBasedOnEnvironment(req)
-  },
+  },*/
 })
 
-const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
+//const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
 
 const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehalfOf

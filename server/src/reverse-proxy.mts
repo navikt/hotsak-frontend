@@ -42,6 +42,8 @@ const options = (tjenesteClientId: string): ProxyOptions => ({
     }
   },
   proxyReqPathResolver: (req) => {
+    console.log(`Proxy path resolver reg orig url: ${req.originalUrl}, rewrote: ${pathRewriteBasedOnEnvironment(req)}`);
+    
     return pathRewriteBasedOnEnvironment(req)
   },
 })
@@ -52,10 +54,13 @@ const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppCo
   onBehalfOf = _onBehalfOf
   const hotsakApiId = config.oidc.clientIDHotsakApi
   const heitKrukkaApiId = config.oidc.clientIDHeitKrukkaApi
+console.log(`Config ${envProperties.HEIT_KRUKKA_URL} `)
+  
+  server.use('/heit-krukka/', proxy(envProperties.HEIT_KRUKKA_URL + '/api', options(heitKrukkaApiId)))
   server.use('/api/', proxy(envProperties.API_URL + '/api', options(hotsakApiId)))
   server.use('/finnhjelpemiddel-api', proxy(envProperties.FINN_HJELPEMIDDEL_API_URL))
   server.use('/brillekalkulator-api', proxy(envProperties.BRILLEKALKULATOR_API_URL))
-  server.use('/heit-krukka/', proxy(envProperties.HEIT_KRUKKA_URL + '/api', options(heitKrukkaApiId)))
+  
 }
 
 export default setupProxy

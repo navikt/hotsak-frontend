@@ -11,12 +11,13 @@ export interface HeitKrukkaProps {
 export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl }) => {
   const ref = useRef<HTMLDialogElement>(null)
 
-  console.log("Krukka modal", skjemaUrl, open);
-  
+  console.log('Krukka modal', skjemaUrl, open)
 
   if (!skjemaUrl) {
     return null
   }
+
+  console.log('Klar for å vise modal', open)
 
   return (
     <Modal

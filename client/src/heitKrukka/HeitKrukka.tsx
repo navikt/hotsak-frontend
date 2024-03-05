@@ -13,9 +13,9 @@ export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl
 
   console.log('Krukka modal', skjemaUrl, open)
 
-  if (!skjemaUrl) {
+  /*if (!skjemaUrl) {
     return null
-  }
+  }*/
 
   console.log('Klar for å vise modal', open)
 

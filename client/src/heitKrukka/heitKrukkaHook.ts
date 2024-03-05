@@ -16,6 +16,7 @@ interface HeitKrukkaResponse {
   hentSpørreskjema: (skjema: string, enhet: Enhet) => any
   spørreskjema?: string
   spørreskjemaOpen: boolean
+  nullstillSkjema: () => void
   setSpørreskjemaOpen: (spørreskjemaOpen: boolean) => void
 }
 
@@ -37,5 +38,13 @@ export function useHeitKrukka(): HeitKrukkaResponse {
     }
   }
 
-  return { hentSpørreskjema, spørreskjema: spørreskjema?.data?.url, spørreskjemaOpen, setSpørreskjemaOpen }
+  const nullstillSkjema = () => setSpørreskjema(null)
+
+  return {
+    hentSpørreskjema,
+    spørreskjema: spørreskjema?.data?.url,
+    nullstillSkjema,
+    spørreskjemaOpen,
+    setSpørreskjemaOpen,
+  }
 }

@@ -63,7 +63,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-  const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen } = useHeitKrukka()
+  const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
 
   const opprettVedtak = () => {
     setLoading(true)
@@ -115,7 +115,14 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
           </StatusTekst>
         </Card>
         <Eksperiment>
-          <HeitKrukka open={spørreskjemaOpen} onClose={() => setSpørreskjemaOpen(false)} skjemaUrl={spørreskjema} />
+          <HeitKrukka
+            open={spørreskjemaOpen}
+            onClose={() => {
+              setSpørreskjemaOpen(false)
+              nullstillSkjema()
+            }}
+            skjemaUrl={spørreskjema}
+          />
         </Eksperiment>
       </>
     )

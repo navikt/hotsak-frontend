@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 
 import { Modal } from '@navikt/ds-react'
+import { Avstand } from '../felleskomponenter/Avstand'
 
 export interface HeitKrukkaProps {
   open: boolean
@@ -13,23 +14,19 @@ export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl
 
   console.log('Krukka modal', skjemaUrl, open)
 
-  /*if (!skjemaUrl) {
-    return null
-  }*/
-
-  console.log('Klar for å vise modal', open)
-
   return (
     <Modal
       ref={ref}
       closeOnBackdropClick={false}
-      open={open }
+      open={open}
       onClose={onClose}
       width="medium"
       header={{ heading: '', closeButton: true }}
     >
       <Modal.Body>
-        <iframe title={'dokument'} src={skjemaUrl} width={'600px'} height={'600px'} />
+        <Avstand paddingLeft={2} paddingRight={2}>
+          <iframe title={'dokument'} src={skjemaUrl} width={'600px'} height={'600px'} />
+        </Avstand>
       </Modal.Body>
     </Modal>
   )

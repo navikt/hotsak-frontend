@@ -46,34 +46,32 @@ const options = (tjenesteClientId: string): ProxyOptions => ({
 })
 
 const options2 = (tjenesteClientId: string): ProxyOptions => ({
-    parseReqBody: false,
-    proxyReqOptDecorator: (options, req) => {
-      if (process.env.USE_MSW !== 'true') {
-        return new Promise((resolve, reject) => {
-          const hotsakToken = req.headers['authorization']!.split(' ')[1]
-  
-          if (hotsakToken !== '') {
-            onBehalfOf.hentFor(tjenesteClientId, hotsakToken).then(
-              (onBehalfOfToken) => {
-                options.headers = {
-                  ...options.headers,
-                  Authorization: `Bearer ${onBehalfOfToken}`,
-                }
-                resolve(options)
-              },
-              (error) => reject(error)
-            )
-          } else {
-            return resolve(options)
-          }
-        })
-      } else {
-        return options
-      }
-    },
-   
-  })
-  
+  parseReqBody: false,
+  proxyReqOptDecorator: (options, req) => {
+    if (process.env.USE_MSW !== 'true') {
+      return new Promise((resolve, reject) => {
+        const hotsakToken = req.headers['authorization']!.split(' ')[1]
+
+        if (hotsakToken !== '') {
+          onBehalfOf.hentFor(tjenesteClientId, hotsakToken).then(
+            (onBehalfOfToken) => {
+              options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${onBehalfOfToken}`,
+              }
+              resolve(options)
+            },
+            (error) => reject(error)
+          )
+        } else {
+          return resolve(options)
+        }
+      })
+    } else {
+      return options
+    }
+  },
+})
 
 const pathRewriteBasedOnEnvironment = (req: Request) => req.originalUrl
 

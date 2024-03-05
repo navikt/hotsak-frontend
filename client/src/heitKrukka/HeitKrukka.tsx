@@ -23,7 +23,7 @@ export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl
     <Modal
       ref={ref}
       closeOnBackdropClick={false}
-      open={open}
+      open={open }
       onClose={onClose}
       width="medium"
       header={{ heading: '', closeButton: true }}

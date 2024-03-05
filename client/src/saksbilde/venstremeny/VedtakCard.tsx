@@ -18,11 +18,11 @@ import { useHeitKrukka } from '../../heitKrukka/heitKrukkaHook'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
-    HjelpemiddelArtikkel,
-    OppgaveStatusType,
-    Sak,
-    VedtakStatusType,
-    vedtaksgrunnlagUtlaanshistorikk,
+  HjelpemiddelArtikkel,
+  OppgaveStatusType,
+  Sak,
+  VedtakStatusType,
+  vedtaksgrunnlagUtlaanshistorikk,
 } from '../../types/types.internal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
@@ -114,6 +114,9 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
           </StatusTekst>
         </Card>
+        <Eksperiment>
+          <HeitKrukka open={spørreskjemaOpen} onClose={() => setSpørreskjemaOpen(false)} skjemaUrl={spørreskjema} />
+        </Eksperiment>
       </>
     )
   }
@@ -215,10 +218,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             }}
           />
         </Card>
-
-        <Eksperiment>
-          <HeitKrukka open={spørreskjemaOpen} onClose={() => setSpørreskjemaOpen(false)} skjemaUrl={spørreskjema} />
-        </Eksperiment>
       </>
     )
   }

@@ -2,18 +2,19 @@ import authSupport from './auth/authSupport.mjs'
 import type { Request } from 'express'
 import fs from 'fs'
 import winston from 'winston'
+import { ecsFormat } from '@elastic/ecs-winston-format'
 
-const sikkerLogPath = () => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')
+const sikkerLogPath = (): string => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')
 
 const stdoutLogger = winston.createLogger({
   level: 'info',
-  format: process.env.NODE_ENV === 'development' ? winston.format.cli() : winston.format.json(),
+  format: process.env.NODE_ENV === 'development' ? winston.format.cli() : ecsFormat(),
   transports: [new winston.transports.Console()],
 })
 
 const sikkerLogger = winston.createLogger({
   level: 'info',
-  format: winston.format.json(),
+  format: ecsFormat(),
   transports: [new winston.transports.File({ filename: sikkerLogPath(), maxsize: 5242880 })],
 })
 
@@ -34,7 +35,7 @@ const sikkerInfo = (message: string, ...meta: any[]) => {
 }
 
 const sikkerWarning = (message: string, ...meta: any[]) => {
-  sikkerLogger.warning(message, ...meta)
+  sikkerLogger.warn(message, ...meta)
 }
 
 const sikkerError = (message: string, ...meta: any[]) => {
@@ -59,7 +60,7 @@ const requestMeta = (req: Request) => {
   }
 }
 
-export default {
+export const logger = {
   info,
   warning,
   error,

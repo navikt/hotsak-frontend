@@ -1,5 +1,5 @@
 import proxy, { ProxyOptions } from 'express-http-proxy'
-import * as core from 'express-serve-static-core'
+import type { Express } from 'express-serve-static-core'
 import type { AppConfig, OnBehalfOf } from './types.d.mts'
 
 const envProperties = {
@@ -36,7 +36,7 @@ const onBehalfOfDecorator: (tjenesteClientId: string) => ProxyOptions['proxyReqO
     }
   }
 
-const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
+export const setupProxy = (server: Express, _onBehalfOf: OnBehalfOf, config: AppConfig) => {
   onBehalfOf = _onBehalfOf
   server.use(
     '/heit-krukka/',
@@ -57,5 +57,3 @@ const setupProxy = (server: core.Express, _onBehalfOf: OnBehalfOf, config: AppCo
   server.use('/finnhjelpemiddel-api', proxy(envProperties.FINN_HJELPEMIDDEL_API_URL))
   server.use('/brillekalkulator-api', proxy(envProperties.BRILLEKALKULATOR_API_URL))
 }
-
-export default setupProxy

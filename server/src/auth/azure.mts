@@ -1,4 +1,4 @@
-import logger from '../logging.mjs'
+import { logger } from '../logging.mjs'
 import type { OidcConfig } from '../types.d.mts'
 import { setup as proxy } from './proxy.mjs'
 import { Client, custom, Issuer } from 'openid-client'
@@ -6,7 +6,7 @@ import { Client, custom, Issuer } from 'openid-client'
 let azureClient
 const proxyAgent = proxy(Issuer, custom)
 
-const setup = (config: OidcConfig) => {
+const setup = (config: OidcConfig): Promise<Client | void> => {
   return new Promise<void | Client>((resolve, reject) => {
     if (process.env.NODE_ENV === 'development' || process.env.USE_MSW === 'true') {
       resolve()
@@ -35,7 +35,7 @@ const setup = (config: OidcConfig) => {
           resolve(azureClient)
         })
         .catch((err) => {
-          console.log('Klarte ikke sette opp azure client')
+          logger.error('Klarte ikke sette opp Azure OpenId Client')
           reject(err)
         })
     }

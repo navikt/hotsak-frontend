@@ -2,9 +2,9 @@ import auth from './auth/authSupport.mjs'
 import azure from './auth/azure.mjs'
 import onBehalfOf from './auth/onBehalfOf.mjs'
 import config from './config.mjs'
-import logger from './logging.mjs'
+import { logger } from './logging.mjs'
 import { ipAddressFromRequest } from './requestData.mjs'
-import setupProxy from './reverse-proxy.mjs'
+import { setupProxy } from './reverse-proxy.mjs'
 import { sessionStore } from './sessionStore.mjs'
 import cookieParser from 'cookie-parser'
 import express from 'express'
@@ -43,7 +43,7 @@ app.get('/settings.js', (req, res) => {
   const appSettings = {
     USE_MSW: process.env.USE_MSW === 'true',
     MILJO: process.env.NAIS_CLUSTER_NAME,
-    FARO_URL: process.env.FARO_URL
+    FARO_URL: process.env.FARO_URL,
   }
   res.type('.js')
   res.send(`window.appSettings = ${JSON.stringify(appSettings)}`)
@@ -95,17 +95,6 @@ app.use('/*', async (req, res, next) => {
   }
 })
 
-// todo: remove signature etc
-const createCookieFromToken = (token: string) =>
-  `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64')}.${Buffer.from(
-    JSON.stringify({
-      name: 'Silje Saksbehandler',
-      email: 'dev@nav.no',
-      NAVident: 'S112233',
-      oid: '23ea7485-1324-4b25-a763-assdfdfa',
-    })
-  ).toString('base64')}.bogussignature`
-
 const _onBehalfOf = onBehalfOf(config.oidc)
 setupProxy(app, _onBehalfOf, config)
 
@@ -117,4 +106,4 @@ const htmlPath = path.join(distPath, 'index.html')
 app.use(express.static(distPath))
 app.use('/*', express.static(htmlPath))
 
-app.listen(port, () => logger.info(`Hotsak frontend backend listening on port ${port}`))
+app.listen(port, () => logger.info(`hotsak-frontend lytter på port ${port}`))

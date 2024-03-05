@@ -1,18 +1,18 @@
-import logger from '../logging.mjs'
+import { logger } from '../logging.mjs'
 
 interface IsValidInProps {
   seconds: number
   token?: string
 }
 
-const isValidIn = ({ seconds, token }: IsValidInProps) => {
+const isValidIn = ({ seconds, token }: IsValidInProps): boolean => {
   if (!token) return false
   const timeToCheck = Math.floor(Date.now() / 1000) + seconds
   const expirationTime = parseInt(claimsFrom(token)['exp'] as string)
   return timeToCheck < expirationTime
 }
 
-const isMemberOf = (token: string, group?: string) => {
+const isMemberOf = (token: string, group?: string): boolean => {
   const claims = claimsFrom(token)
   const groups = claims['groups'] as string[]
   return groups.filter((element: string) => element === group).length === 1
@@ -38,7 +38,7 @@ const createTokenForTest = () =>
   `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64')}.${Buffer.from(
     JSON.stringify({
       name: 'Silje Saksbehandler',
-      email: 'dev@nav.no',
+      email: 'silje.saksbehandler@nav.no',
       NAVident: 'S112233',
       oid: '23ea7485-1324-4b25-a763-assdfdfa',
     })

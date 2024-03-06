@@ -8,6 +8,7 @@ import { PersonStore } from './PersonStore'
 import { SakStore } from './SakStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SaksoversiktStore } from './SaksoversiktStore'
+import { OppgaveStore } from './OppgaveStore'
 
 export async function setupStore() {
   const idGenerator = new IdGenerator(999)
@@ -18,6 +19,7 @@ export async function setupStore() {
   const sakStore = new SakStore(idGenerator, saksbehandlerStore, personStore)
   const barnebrillesakStore = new BarnebrillesakStore(idGenerator, saksbehandlerStore, personStore, journalpostStore)
   const saksoversiktStore = new SaksoversiktStore()
+  const oppgaveStore = new OppgaveStore(idGenerator, sakStore, barnebrillesakStore, journalpostStore)
 
   return {
     saksbehandlerStore,
@@ -27,6 +29,7 @@ export async function setupStore() {
     sakStore,
     barnebrillesakStore,
     saksoversiktStore,
+    oppgaveStore
   }
 }
 

@@ -97,7 +97,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 greitÅViteFakta={sak.data.greitÅViteFaktum}
                 harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
               />
-              <VedtakCard sak={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />
+              <VedtakCard sak={sak.data}/>
             </VenstreMeny>
             <FlexColumn style={{ flex: 1, height: '100%' }}>
               <Content>

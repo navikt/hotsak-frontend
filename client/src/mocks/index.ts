@@ -8,7 +8,15 @@ export async function setupMsw() {
   }
 
   const store = await setupStore()
-  const { saksbehandlerStore, personStore, hjelpemiddelStore, journalpostStore, sakStore, barnebrillesakStore } = store
+  const {
+    saksbehandlerStore,
+    personStore,
+    hjelpemiddelStore,
+    journalpostStore,
+    sakStore,
+    barnebrillesakStore,
+    oppgaveStore,
+  } = store
 
   try {
     await saksbehandlerStore.populer()
@@ -17,6 +25,7 @@ export async function setupMsw() {
     await journalpostStore.populer()
     await sakStore.populer()
     await barnebrillesakStore.populer()
+    await oppgaveStore.populer()
   } catch (e) {
     console.warn(e)
   }
@@ -36,6 +45,7 @@ export async function setupMsw() {
         hjelpemiddelStore.delete(),
         personStore.delete(),
         saksbehandlerStore.delete(),
+        oppgaveStore.delete(),
       ]).catch(console.warn)
     },
   }

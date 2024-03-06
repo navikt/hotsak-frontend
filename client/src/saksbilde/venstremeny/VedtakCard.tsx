@@ -10,19 +10,15 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, norskTimestamp } from '../../utils/date'
 import { capitalizeName } from '../../utils/stringFormating'
 
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
-import { HeitKrukka } from '../../heitKrukka/HeitKrukka'
-import { useHeitKrukka } from '../../heitKrukka/heitKrukkaHook'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import {
-  HjelpemiddelArtikkel,
-  OppgaveStatusType,
-  Sak,
-  VedtakStatusType,
-  vedtaksgrunnlagUtlaanshistorikk,
+    HjelpemiddelArtikkel,
+    OppgaveStatusType,
+    Sak,
+    VedtakStatusType
 } from '../../types/types.internal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
@@ -63,22 +59,21 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-  const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
+  //const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
 
   const opprettVedtak = () => {
     setLoading(true)
     putVedtak(
       sakId,
       VedtakStatusType.INNVILGET,
-      hjelpemiddelArtikler ? [vedtaksgrunnlagUtlaanshistorikk(hjelpemiddelArtikler)] : []
     )
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
         setVisVedtakModal(false)
-        if (window.appSettings.MILJO !== 'prod-gcp') {
+        /*if (window.appSettings.MILJO !== 'prod-gcp') {
           hentSpørreskjema('sporreskjemaSaksbehandlerA_v1', sak.enhet)
-        }
+        }*/
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
       })
@@ -97,7 +92,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
       })
   }
 
-  console.log('Spørreskjema', spørreskjema, 'open', spørreskjemaOpen)
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
@@ -114,7 +108,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
           </StatusTekst>
         </Card>
-        <Eksperiment>
+        {/*<Eksperiment>
           <HeitKrukka
             open={spørreskjemaOpen}
             onClose={() => {
@@ -123,7 +117,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
             }}
             skjemaUrl={spørreskjema}
           />
-        </Eksperiment>
+        </Eksperiment>*/}
       </>
     )
   }

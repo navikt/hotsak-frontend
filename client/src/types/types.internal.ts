@@ -303,16 +303,11 @@ export enum VedtaksgrunnlagType {
 export interface VedtakPayload {
   sakId: number | string
   status: VedtakStatusType
-  vedtaksgrunnlag: Vedtaksgrunnlag[]
 }
 
 export interface Vedtaksgrunnlag {
   type: VedtaksgrunnlagType
   data: any[] | undefined
-}
-
-export const vedtaksgrunnlagUtlaanshistorikk = (utlaanshistorikk: HjelpemiddelArtikkel[]): Vedtaksgrunnlag => {
-  return { type: VedtaksgrunnlagType.UTLAANSHISTORIKK, data: utlaanshistorikk }
 }
 
 export interface Hendelse {
@@ -504,7 +499,9 @@ export interface OppgaveV2 {
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
   beskrivelse: string
-  område: OmrådeFilter
+  //TODO Fiks type på tvers her for å unngå string
+  område: string[]
+  //område: OmrådeFilter[]
   enhet: Enhet
   kommune?: Kommune
   bydel?: Bydel

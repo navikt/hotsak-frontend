@@ -208,9 +208,8 @@ export const deleteFjernTildeling = async (sakId: number | string) => {
 export const putVedtak = async (
   sakId: number | string,
   status: VedtakStatusType,
-  vedtaksgrunnlag: Vedtaksgrunnlag[]
 ) => {
-  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, vedtaksgrunnlag })
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status })
 }
 
 export const putFerdigstillBestilling = async (sakId: number | string, status: OppgaveStatusType) => {

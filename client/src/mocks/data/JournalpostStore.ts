@@ -49,7 +49,7 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
       oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
       beskrivelse: '',
-      område: OmrådeFilter.SYN,
+      område: [OmrådeFilter.SYN],
       enhet: enheter.agder,
       frist: dayjs().toISOString(),
       opprettet: dayjs().toISOString(),

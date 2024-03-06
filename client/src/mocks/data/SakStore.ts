@@ -102,7 +102,7 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
       opprettet: opprettet.toISOString(),
     },
     sakstype,
-    søknadGjelder: 'Hjelpemidler',
+    søknadGjelder: 'Søknad om: terskeleliminator, rullator',
     hjelpemidler: [
       {
         id: -1,

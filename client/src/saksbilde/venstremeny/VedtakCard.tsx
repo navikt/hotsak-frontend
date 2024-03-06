@@ -2,24 +2,20 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Button, Tag } from '@navikt/ds-react'
+import { Button, Tag, TextField } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, norskTimestamp } from '../../utils/date'
-import { capitalizeName } from '../../utils/stringFormating'
+import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import {
-    HjelpemiddelArtikkel,
-    OppgaveStatusType,
-    Sak,
-    VedtakStatusType
-} from '../../types/types.internal'
+import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
@@ -28,7 +24,6 @@ import { CardTitle } from './CardTitle'
 
 interface VedtakCardProps {
   sak: Sak
-  hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
 }
 
 export const TagGrid = styled.div`
@@ -50,7 +45,7 @@ const Knapp = styled(Button)`
   box-sizing: border-box;
 `
 
-export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikler }) => {
+export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
   const { sakId } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -59,14 +54,14 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
+  const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
+    `${sakId}; ${capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}`
+  )
   //const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
 
   const opprettVedtak = () => {
     setLoading(true)
-    putVedtak(
-      sakId,
-      VedtakStatusType.INNVILGET,
-    )
+    putVedtak(sakId, VedtakStatusType.INNVILGET, oebsProblemsammendrag)
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
@@ -91,7 +86,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
       })
   }
-
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
@@ -207,8 +201,14 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak, hjelpemiddelArtikle
               Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
             </Brødtekst>
             <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
-            {/*<Avstand paddingTop={6} />
-          <TextField label="Problemsammendrag til SF i OEBS" size="small" value="Personløfter, seng, terskeleliminator" />*/}
+            <Avstand paddingTop={6} />
+            <TextField
+              label="Problemsammendrag til SF i OEBS"
+              onChange={(event) => setOebsProblemsammendrag(event.target.value)}
+              description="Det er mulig å redigere problemsammendraget under, men det skal stort sett ikke være nødvendig. Teksten er ok med tanke på registreringsinstruksen."
+              size="small"
+              value={oebsProblemsammendrag}
+            />
           </BekreftelsesModal>
           <OverførGosysModal
             {...overførGosys}

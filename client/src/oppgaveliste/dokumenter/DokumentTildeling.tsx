@@ -12,7 +12,6 @@ export const OppgaveTildeling = ({ dokumentOppgave }: OppgaveTildelingProps) =>
     <EllipsisCell
       value={dokumentOppgave.saksbehandler.navn}
       minLength={15}
-      id={`tildelt-${dokumentOppgave.journalpostId}`}
     />
   ) : (
     // TODO: Fix typer e.l. slik at journalpost ikke er null hvis det er en journalføringsoppgaver

@@ -54,13 +54,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'OMRÅDE',
       name: 'Område',
       width: 152,
-      render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell
-          value={capitalize(sak.område.join(', '))}
-          id={`funksjonsnedsettelse-${sak.sakId}`}
-          minLength={18}
-        />
-      ),
+      render: (sak: Saksoversikt_Sak) => <EllipsisCell value={capitalize(sak.område.join(', '))} minLength={18} />,
     },
     {
       key: 'SØKNAD_OM',
@@ -69,7 +63,6 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
           value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
-          id={`kategori-${sak.sakId}`}
           minLength={20}
         />
       ),
@@ -137,9 +130,7 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'SAKSBEHANDLER',
       name: 'Saksbehandler',
       width: 170,
-      render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell value={sak.saksbehandler || ''} id={`tildelt-${sak.sakId}`} minLength={20} />
-      ),
+      render: (sak: Saksoversikt_Sak) => <EllipsisCell value={sak.saksbehandler || ''} minLength={20} />,
     },
     {
       key: 'FAGSYSTEM',

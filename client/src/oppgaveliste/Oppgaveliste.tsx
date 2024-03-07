@@ -144,6 +144,8 @@ export const Oppgaveliste: React.FC = () => {
           sakId={oppgave.sakId}
           status={oppgave.status}
           tildeltSaksbehandler={oppgave.saksbehandler}
+          gåTilSak={true}
+          sakstype={oppgave.sakstype}
           kanTildeles={oppgave.kanTildeles}
           onMutate={mutate}
         />

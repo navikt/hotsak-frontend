@@ -6,8 +6,17 @@ import { postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { Sakstype } from '../../types/types.internal'
 
-export function useTildeling({ sakId, gåTilSak = false }: { sakId: string; gåTilSak: boolean }) {
+export function useTildeling({
+  sakId,
+  gåTilSak = false,
+  sakstype,
+}: {
+  sakId: string
+  gåTilSak: boolean
+  sakstype?: Sakstype
+}) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -29,7 +38,10 @@ export function useTildeling({ sakId, gåTilSak = false }: { sakId: string; gåT
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
-          const destinationUrl = `/sak/${sakId}`
+          const destinationUrl =
+            sakstype === Sakstype.SØKNAD || sakstype === Sakstype.BESTILLING
+              ? `/sak/${sakId}/hjelpemidler`
+              : `/sak/${sakId}`
           navigate(destinationUrl)
         } else {
           mutate(`api/sak/${sakId}`)

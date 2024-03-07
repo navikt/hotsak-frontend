@@ -8,7 +8,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, Saksbehandler } from '../../types/types.internal'
+import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
 import { OverførGosysModal, useOverførGosys } from '../../saksbilde/OverførGosysModal'
 
@@ -16,7 +16,9 @@ interface MenyKnappProps {
   sakId: string
   status: OppgaveStatusType
   tildeltSaksbehandler?: Saksbehandler
+  sakstype?: Sakstype
   kanTildeles: boolean
+  gåTilSak: boolean
   knappeTekst?: string
   knappeIkon?: any
   onMutate: (...args: any[]) => any
@@ -27,12 +29,14 @@ export const MenyKnapp = ({
   status,
   tildeltSaksbehandler,
   kanTildeles,
+  sakstype,
+  gåTilSak = false,
   onMutate,
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: false })
+  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: gåTilSak, sakstype: sakstype })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)

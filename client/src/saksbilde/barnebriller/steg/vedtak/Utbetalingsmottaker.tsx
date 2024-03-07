@@ -28,8 +28,6 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
 
   const manglerKontonummer = kontonummer == undefined || kontonummer.length === 0
 
-  console.log('UB', utbetalingsmottaker)
-
   if (!mottakerNavn) {
     return (
       <SkjemaAlert variant="warning">

@@ -18,7 +18,7 @@ interface MenyKnappProps {
   tildeltSaksbehandler?: Saksbehandler
   sakstype?: Sakstype
   kanTildeles: boolean
-  gåTilSak: boolean
+  gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
   onMutate: (...args: any[]) => any

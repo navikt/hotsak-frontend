@@ -23,7 +23,6 @@ interface TekstCellProps {
 interface EllipsisCellProps {
   value: string
   minLength: number
-  id: string
 }
 
 interface LinkCellProps {

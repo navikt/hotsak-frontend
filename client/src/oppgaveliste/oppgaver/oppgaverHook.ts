@@ -1,6 +1,6 @@
 import useSwr from 'swr'
 import { httpGet } from '../../io/http'
-import { OppgaverResponse } from '../../types/types.internal'
+import { OppgaverResponse, Oppgavetype } from '../../types/types.internal'
 
 const oppgaverBasePath = 'api/oppgaver-v2'
 
@@ -12,9 +12,13 @@ interface OppgaverData {
 }
 
 export function useOppgaveliste(): OppgaverData {
-  const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(oppgaverBasePath, httpGet, {
-    refreshInterval: 10_000,
-  })
+  const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(
+    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}`,
+    httpGet,
+    {
+      refreshInterval: 10_000,
+    }
+  )
 
   return {
     ...data,

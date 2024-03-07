@@ -16,6 +16,8 @@ import { Toppmeny } from './header/Header'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
+import { Eksperiment } from './felleskomponenter/Eksperiment'
+import Oppgavebenk from './oppgavebenk/Oppgavebenk'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
@@ -74,6 +76,17 @@ function App() {
                   element={
                     <RequireAuth>
                       <Personoversikt />
+                    </RequireAuth>
+                  }
+                />
+
+                <Route
+                  path="/oppgavebenk"
+                  element={
+                    <RequireAuth>
+                      <Eksperiment>
+                        <Oppgavebenk />
+                      </Eksperiment>
                     </RequireAuth>
                   }
                 />

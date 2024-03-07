@@ -12,6 +12,8 @@ export enum amplitude_taxonomy {
   CLIENT_INFO = 'client info',
   SAK_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
   SAK_STARTET_FRA_SAK = 'sak startet fra sak',
+  OPPGAVE_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
+  OPPGAVE_STARTET_FRA_SAK = 'sak startet fra sak',
   SAK_FRIGITT = 'sak frigitt',
   ENDRINGSLOGG_APNET = 'endringslogg åpnet',
   ENDRINGSLOGGINNSLAG_LEST = 'endringslogginnslag lest',
@@ -24,7 +26,7 @@ export enum amplitude_taxonomy {
   TOTRINNSKONTROLL_GODKJENT = 'totrinnskontroll godkjent',
   FORTSETT_BEHANDLING_FRA_OPPGAVELISTE = 'fortsetter behandling fra oppgaveliste',
   FORTSETT_BEHANDLING_FRA_SAK = 'fortsetter behandling fra sak',
-  FINN_HJELPEMIDDEL_LINK_BESØKT = 'viser produkt i FinnHjelpemiddel'
+  FINN_HJELPEMIDDEL_LINK_BESØKT = 'viser produkt i FinnHjelpemiddel',
 }
 
 export function setupAmplitude(): void {

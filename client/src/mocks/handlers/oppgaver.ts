@@ -16,7 +16,6 @@ import { enheter } from '../data/enheter'
 export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore, oppgaveStore }) => [
   rest.get(`/api/oppgaver-v2`, async (req, res, ctx) => {
     const oppgavetype = req.url.searchParams.get('oppgavetype')
-    console.log('Oppgavetype', oppgavetype)
 
     // Midlertidig workaround frem til vi har en mer fungerende oppgavemodell i mocken.
     // Hvis oppgavetype er journalføring, kommer kallet fra dokumentlista og da viser vi førelpig journalføringer fra Journalføringstore

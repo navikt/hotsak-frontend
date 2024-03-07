@@ -20,13 +20,11 @@ export class OppgaveStore extends Dexie {
   ) {
     super('OppgaveStore')
     this.version(1).stores({
-      oppgaver: 'oppgaveId',
-      hendelser: '++id,oppgaveId',
+      oppgaver: 'id',
     })
   }
 
   async populer() {
-    console.log('PO', this.oppgaver)
 
     const count = await this.oppgaver.count()
     if (count !== 0) {
@@ -91,10 +89,12 @@ export class OppgaveStore extends Dexie {
         frist: dayjs(journalføring.journalpostOpprettetTid).add(14, 'days').toISOString(),
         opprettet: journalføring.journalpostOpprettetTid,
         endret: journalføring.journalpostOpprettetTid,
-        bruker: { fnr: journalføring.bruker!.fnr, fulltNavn: journalføring.bruker!.fulltNavn },
+        bruker: { fnr: journalføring.oppgave.bruker!.fnr, fulltNavn: journalføring.oppgave.bruker!.fulltNavn },
         innsender: journalføring.innsender,
       }
     })
+
+    console.log(oppgaverFraSak, oppgaverFraBarnebrillesak, oppgaverFraJournalforinger)
 
     return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalforinger])
   }

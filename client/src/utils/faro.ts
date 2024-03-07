@@ -1,11 +1,10 @@
 import {
   ConsoleInstrumentation,
   ErrorsInstrumentation,
-  LogLevel,
-  SessionInstrumentation,
-  faro,
   getWebInstrumentations,
   initializeFaro,
+  LogLevel,
+  SessionInstrumentation,
 } from '@grafana/faro-web-sdk'
 
 export const initFaro = () => {

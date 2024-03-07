@@ -45,7 +45,6 @@ export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = (
       render: (artikkel: HjelpemiddelArtikkel) => (
         <EllipsisCell
           value={artikkel.grunndataKategoriKortnavn || ''}
-          id={`kategori-${artikkel.beskrivelse}`}
           minLength={18}
         />
       ),
@@ -57,7 +56,6 @@ export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = (
       render: (artikkel: HjelpemiddelArtikkel) => (
         <EllipsisCell
           value={artikkel.grunndataProduktNavn || artikkel.beskrivelse}
-          id={`beskrivelse-${artikkel.beskrivelse}`}
           minLength={25}
         />
       ),

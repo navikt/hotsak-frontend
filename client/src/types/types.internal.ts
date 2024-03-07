@@ -515,7 +515,7 @@ export interface OppgaveV2 {
     fnr: string
     fulltNavn?: string
   }
-  innsender: {
+  innsender?: {
     fnr: string
     fulltNavn?: string
   }

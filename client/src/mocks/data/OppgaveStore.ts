@@ -25,7 +25,6 @@ export class OppgaveStore extends Dexie {
   }
 
   async populer() {
-
     const count = await this.oppgaver.count()
     if (count !== 0) {
       return []

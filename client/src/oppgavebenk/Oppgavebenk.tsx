@@ -117,7 +117,7 @@ export const Oppgavebenk: React.FC = () => {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={19} value={oppgave?.innsender.fulltNavn || '-'} />,
+      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={19} value={oppgave?.innsender?.fulltNavn || '-'} />,
     },
     {
       key: 'MOTTATT',

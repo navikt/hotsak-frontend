@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
-import { Heading } from '@navikt/ds-react'
+import { Alert, Heading } from '@navikt/ds-react'
 
 import { Rad } from '../../felleskomponenter/Flex'
-import { Etikett } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { Hjelpemiddel } from './Hjelpemiddel'
+import { useArtiklerForSak } from './useArtiklerForSak'
+import { Avstand } from '../../felleskomponenter/Avstand'
 
 const Container = styled.div`
   padding-top: 1rem;
@@ -30,6 +32,9 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
 
 export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, forenkletVisning = false, sak }) => {
   const { hjelpemidler } = sak
+  const { artikler } = useArtiklerForSak(sak.sakId)
+
+  const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
 
   return (
     <>
@@ -37,6 +42,22 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, fo
         {tittel}
       </Heading>
       <Container>
+        <Avstand paddingBottom={6}>
+          {artiklerSomIkkeFinnesIOebs.length > 0 && (
+            <Alert variant="warning" fullWidth size="small">
+              <>
+                <Brødtekst>{`${artiklerSomIkkeFinnesIOebs.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OEBS og blir derfor ikke 
+            automatisk overført til SF:`}</Brødtekst>
+                <Avstand paddingTop={1} />
+                <ul>
+                  {artiklerSomIkkeFinnesIOebs.map((artikkel) => {
+                    return <li key={artikkel.hmsnr}>{`${artikkel.hmsnr}: ${artikkel.navn}`}</li>
+                  })}
+                </ul>
+              </>
+            </Alert>
+          )}
+        </Avstand>
         {hjelpemidler.map((hjelpemiddel) => {
           return (
             <Hjelpemiddel

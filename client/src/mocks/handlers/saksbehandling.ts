@@ -1,6 +1,7 @@
 import { rest } from 'msw'
 
 import {
+  Artikkel,
   EndreHjelpemiddelRequest,
   OppgaveStatusType,
   SakerFilter,
@@ -183,5 +184,28 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
     await barnebrillesakStore.fjernBrevtekst(req.params.sakId)
     return res(/*ctx.delay(3000),*/ ctx.status(200), ctx.json({}))
+  }),
+  rest.get<any, { sakId: string }, Artikkel[]>('/api/sak/:sakId/artikler', async (req, res, ctx) => {
+    const sak = await sakStore.hent(req.params.sakId)
+
+    if (!sak) {
+      return res(ctx.status(404))
+    }
+
+    const artikler: Artikkel[] = sak?.hjelpemidler
+      .map((hjelpemiddel) => {
+        const artikkel: Artikkel = {
+          hmsnr: hjelpemiddel.hmsnr,
+          navn: hjelpemiddel.beskrivelse,
+          antall: hjelpemiddel.antall,
+          finnesIOebs: hjelpemiddel.hmsnr === '289689' ? false : true,
+        }
+        const tilbehørArtikler: Artikkel[] = hjelpemiddel.tilbehør.map((tilbehør) => {
+          return { hmsnr: tilbehør.hmsNr, navn: tilbehør.navn, antall: tilbehør.antall, finnesIOebs: true }
+        })
+        return [artikkel, ...tilbehørArtikler]
+      })
+      .flat()
+    return res(ctx.status(200), ctx.json(artikler))
   }),
 ]

@@ -335,6 +335,13 @@ export interface BrevTekst {
   brevtype: string
 }
 
+export interface Artikkel {
+  hmsnr: string
+  navn: string
+  antall: number
+  finnesIOebs: boolean
+}
+
 export interface HjelpemiddelArtikkel {
   antall: number
   antallEnhet: string

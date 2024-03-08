@@ -43,7 +43,7 @@ export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, fo
       </Heading>
       <Container>
         <Avstand paddingBottom={6}>
-          {artiklerSomIkkeFinnesIOebs.length > 0 && (
+          {!forenkletVisning && artiklerSomIkkeFinnesIOebs.length > 0 && (
             <Alert variant="warning" fullWidth size="small">
               <>
                 <Brødtekst>{`${artiklerSomIkkeFinnesIOebs.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OEBS og blir derfor ikke 

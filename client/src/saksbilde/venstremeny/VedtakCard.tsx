@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Button, Tag, TextField } from '@navikt/ds-react'
+import { Button, HStack, HelpText, Tag, TextField } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -12,7 +12,7 @@ import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
@@ -197,18 +197,38 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
             loading={loading}
             onClose={() => setVisVedtakModal(false)}
           >
-            <Brødtekst>
-              Ved å innvilge søknaden blir det fattet et vedtak i saken og opprettet en serviceforespørsel i OEBS.
-            </Brødtekst>
-            <Brødtekst>Innbygger vil få beskjed om vedtaket på Ditt NAV.</Brødtekst>
-            <Avstand paddingTop={6} />
-            <TextField
-              label="Problemsammendrag til SF i OEBS"
-              onChange={(event) => setOebsProblemsammendrag(event.target.value)}
-              description="Det er mulig å redigere problemsammendraget under, men det skal stort sett ikke være nødvendig. Teksten er ok med tanke på registreringsinstruksen."
-              size="small"
-              value={oebsProblemsammendrag}
-            />
+            <Avstand paddingTop={6} paddingBottom={6}>
+              <Brødtekst>
+                Dersom du innvilger søknaden vil det bli opprettet en serviceforespørsel (SF) i OeBS.
+              </Brødtekst>
+              <HStack wrap={false} gap="2" align={'center'}>
+                <Brødtekst>Innbygger vil få varsel om vedtaket.</Brødtekst>
+                <HelpText>
+                  <Brødtekst>
+                    Innbygger vil få varsel på innlogget side på nav.no, og via SMS eller E-post om de er registrert i
+                    Kontakt- og reservasjonsregisteret (KRR)
+                  </Brødtekst>
+                </HelpText>
+              </HStack>
+              <Avstand paddingTop={6} />
+              <TextField
+                label={
+                  <HStack wrap={false} gap="2" align={'center'}>
+                    <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                    <HelpText>
+                      <Brødtekst>
+                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
+                        i OeBS som tidligere.
+                      </Brødtekst>
+                    </HelpText>
+                  </HStack>
+                }
+                onChange={(event) => setOebsProblemsammendrag(event.target.value)}
+                size="small"
+                value={oebsProblemsammendrag}
+              />
+            </Avstand>
           </BekreftelsesModal>
           <OverførGosysModal
             {...overførGosys}

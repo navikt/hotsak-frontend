@@ -17,6 +17,10 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Authenticate with GitHub NPM registry
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
+          echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Button, HStack, HelpText, Tag, TextField } from '@navikt/ds-react'
+import { Bleed, Button, HStack, HelpText, Tag, TextField } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -197,28 +197,25 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
             loading={loading}
             onClose={() => setVisVedtakModal(false)}
           >
-            <Avstand paddingTop={6} paddingBottom={6}>
-              <Brødtekst>Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS.</Brødtekst>
-              <HStack wrap={false} gap="2" align={'center'}>
-                <Brødtekst>Innbygger vil få varsel om vedtaket.</Brødtekst>
-                <HelpText>
-                  <Brødtekst>
-                    Innbygger vil få varsel på innlogget side på nav.no, og via SMS eller E-post om de er registrert i
-                    Kontakt- og reservasjonsregisteret (KRR)
-                  </Brødtekst>
-                </HelpText>
-              </HStack>
-              <Avstand paddingTop={6} />
+            <Avstand marginTop={6}>
+              <Brødtekst>
+                Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket
+                på innlogget side på nav.no
+              </Brødtekst>
+              <Avstand paddingTop={12} />
               <TextField
                 label={
                   <HStack wrap={false} gap="2" align={'center'}>
                     <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+
                     <HelpText>
-                      <Brødtekst>
-                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
-                        i OeBS som tidligere.
-                      </Brødtekst>
+                      <Bleed marginInline="full" asChild>
+                        <Brødtekst>
+                          Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
+                          problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
+                          innvilges eller inne på SF i OeBS som tidligere.
+                        </Brødtekst>
+                      </Bleed>
                     </HelpText>
                   </HStack>
                 }

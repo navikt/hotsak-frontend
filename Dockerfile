@@ -1,4 +1,8 @@
 FROM node:20.11.0-alpine as node
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
+    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
+RUN npm config set @navikt:registry=https://npm.pkg.github.com
+
 # build client
 FROM node as client-builder
 ENV HUSKY=0

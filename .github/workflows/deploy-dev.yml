@@ -55,6 +55,7 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
+          build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
       - id: version-tag
         run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
 

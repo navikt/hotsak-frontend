@@ -12,8 +12,12 @@ interface OppgaverData {
 }
 
 export function useOppgaveliste(): OppgaverData {
+  const relvanteStatuser = ['OPPRETTET', 'ÅPNET', 'UNDER_BEHANDLING']
+    .map((status) => `oppgavestatus=${encodeURIComponent(status)}`)
+    .join('&')
+
   const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(
-    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}`,
+    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&${relvanteStatuser}`,
     httpGet,
     {
       refreshInterval: 10_000,

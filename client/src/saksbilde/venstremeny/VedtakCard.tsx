@@ -198,9 +198,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
             onClose={() => setVisVedtakModal(false)}
           >
             <Avstand paddingTop={6} paddingBottom={6}>
-              <Brødtekst>
-                Dersom du innvilger søknaden vil det bli opprettet en serviceforespørsel (SF) i OeBS.
-              </Brødtekst>
+              <Brødtekst>Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS.</Brødtekst>
               <HStack wrap={false} gap="2" align={'center'}>
                 <Brødtekst>Innbygger vil få varsel om vedtaket.</Brødtekst>
                 <HelpText>

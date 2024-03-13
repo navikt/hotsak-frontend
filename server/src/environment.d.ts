@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NAIS_CLUSTER_NAME: string
+      NAIS_CLUSTER_NAME: 'test' | 'local' | 'dev-gcp' | 'prod-gcp'
 
       API_URL: string
       BRILLEKALKULATOR_API_URL: string

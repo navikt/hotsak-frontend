@@ -35,7 +35,7 @@ app.get('/settings.js', (_, res) => {
 // Protected routes
 app.use('/*', async (req, res, next) => {
   if (process.env.USE_MSW === 'true') {
-    logger.stdout.warn('USE_MSW = "true", ingen validering av token', { req, res })
+    logger.stdout.debug('USE_MSW = "true", ingen validering av token', { req, res })
     return next()
   }
 

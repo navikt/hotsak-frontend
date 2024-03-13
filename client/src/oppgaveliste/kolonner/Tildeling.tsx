@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
 import { Oppgave } from '../../types/types.internal'
 import { IkkeTildelt } from './IkkeTildelt'
-import { Tildelt } from './Tildelt'
-import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
 
 interface TildelingProps {
   oppgave: Oppgave

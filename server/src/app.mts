@@ -41,7 +41,7 @@ app.use('/*', async (req, res, next) => {
 
   const token = getToken(req)
   if (!token) {
-    logger.stdout.info("Token mangler, redirect til '/oauth2/login'")
+    logger.stdout.debug("Token mangler, redirect til '/oauth2/login'")
     return res.redirect('/oauth2/login')
   }
 

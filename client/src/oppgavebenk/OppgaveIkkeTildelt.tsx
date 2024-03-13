@@ -7,14 +7,18 @@ import { Button } from '@navikt/ds-react'
 import { postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
+import { OppgaveV2, Oppgavetype } from '../types/types.internal'
 
 interface OppgaveIkkeTildeltProps {
-  oppgavereferanse: string
+  oppgave: OppgaveV2
   gåTilSak: boolean
 }
 
-export const OppgaveIkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: OppgaveIkkeTildeltProps) => {
+export const OppgaveIkkeTildelt = ({ oppgave, gåTilSak = false }: OppgaveIkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
+  const { oppgavetype, sakId, journalpostId } = oppgave
+  const oppgavereferanse = (oppgavetype === Oppgavetype.JOURNALFØRING ? journalpostId : sakId) || ''
+
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
@@ -34,7 +38,8 @@ export const OppgaveIkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: Oppg
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
-          const destinationUrl = `/oppgave/${oppgavereferanse}/`
+          const destinationUrl =
+            oppgavetype === Oppgavetype.JOURNALFØRING ? `/oppgaveliste/dokumenter/${journalpostId}` : `/sak/${sakId}/`
           navigate(destinationUrl)
         } else {
           // TODO vet ikke helt hva vi skal gjøre her enda. Når man er inne på en sak/oppgave, skal vi gå til et felles

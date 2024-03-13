@@ -1,15 +1,15 @@
+import { Panel, SortState, Table } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
-import { faro } from '@grafana/faro-core'
-import { Panel, SortState, Table } from '@navikt/ds-react'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { capitalize } from '../utils/stringFormating'
+import { capitalize, capitalizeName, formatName, formaterFødselsnummer } from '../utils/stringFormating'
 import { isError } from '../utils/type'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
+import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
   OmrådeFilter,
@@ -17,28 +17,21 @@ import {
   Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Sakstype,
   SakerFilter,
   SakerFilterLabel,
+  Sakstype,
   SakstypeFilter,
   SakstypeFilterLabel,
 } from '../types/types.internal'
+import { norskTimestamp } from '../utils/date'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { FilterDropdown, Filters } from './filter'
-import { Bosted } from './kolonner/Bosted'
-import { FormidlerCelle } from './kolonner/Formidler'
-import { Funksjonsnedsettelse } from './kolonner/Funksjonsnedsettelse'
-import { Fødselsnummer } from './kolonner/Fødselsnummer'
-import { Gjelder } from './kolonner/Gjelder'
-import { Hjelpemiddelbruker } from './kolonner/Hjelpemiddelbruker'
 import { MenyKnapp } from './kolonner/MenyKnapp'
-import { Mottatt } from './kolonner/Mottatt'
 import { SakstypeEtikett } from './kolonner/SaksType'
-import { Status } from './kolonner/Status'
-import { Tildeling } from './kolonner/Tildeling'
 import { useLocalStorageState } from './localStorage/localStorageHook'
 import { useOppgaveliste } from './oppgavelisteHook'
 import { Paging } from './paging/Paging'
+import { Tildeling } from './kolonner/Tildeling'
 
 const Container = styled.div`
   min-height: 300px;
@@ -84,7 +77,9 @@ export const Oppgaveliste: React.FC = () => {
       key: 'STATUS',
       name: 'Status',
       width: 154,
-      render: (oppgave: Oppgave) => <Status status={OppgaveStatusLabel.get(oppgave.status) ?? ''} />,
+      render: (oppgave: Oppgave) => (
+        <EllipsisCell minLength={18} value={OppgaveStatusLabel.get(oppgave.status) ?? ''} />
+      ),
     },
     {
       key: 'TYPE',
@@ -97,44 +92,49 @@ export const Oppgaveliste: React.FC = () => {
       name: 'Område',
       width: 152,
       render: (oppgave: Oppgave) => (
-        <Funksjonsnedsettelse funksjonsnedsettelser={oppgave.bruker.funksjonsnedsettelser} />
+        <EllipsisCell minLength={18} value={capitalize(oppgave.bruker.funksjonsnedsettelser.join(', '))} />
       ),
     },
     {
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
       width: 192,
-      render: (oppgave: Oppgave) => <Gjelder søknadOm={capitalize(oppgave.beskrivelse)} />,
+      render: (oppgave: Oppgave) => (
+        <EllipsisCell
+          minLength={20}
+          value={capitalize(oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
+        />
+      ),
     },
     {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
       width: 188,
-      render: (oppgave: Oppgave) => <Hjelpemiddelbruker bruker={oppgave.bruker} />,
+      render: (oppgave: Oppgave) => <EllipsisCell minLength={20} value={formatName(oppgave.bruker)} />,
     },
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: Oppgave) => <Fødselsnummer fødselsnummer={oppgave.bruker.fnr} />,
+      render: (oppgave: Oppgave) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
     },
     {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <Bosted bosted={oppgave.bruker.bosted} />,
+      render: (oppgave: Oppgave) => <EllipsisCell minLength={18} value={oppgave.bruker.bosted} />,
     },
     {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: Oppgave) => <FormidlerCelle formidlerNavn={oppgave.innsender} />,
+      render: (oppgave: Oppgave) => <EllipsisCell minLength={19} value={capitalizeName(oppgave.innsender)} />,
     },
     {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: Oppgave) => <Mottatt dato={oppgave.mottatt} />,
+      render: (oppgave: Oppgave) => <TekstCell value={norskTimestamp(oppgave.mottatt)} />,
     },
     {
       key: 'MENU',

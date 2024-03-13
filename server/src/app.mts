@@ -1,4 +1,4 @@
-import { logger, requestMeta } from './logging.mjs'
+import { logger } from './logging.mjs'
 import { ipAddressFromRequest } from './ipAddressFromRequest.mjs'
 import { reverseProxy } from './reverseProxy.mjs'
 import express from 'express'
@@ -34,8 +34,14 @@ app.get('/settings.js', (_, res) => {
 
 // Protected routes
 app.use('/*', async (req, res, next) => {
+  if (process.env.USE_MSW === 'true') {
+    logger.stdout.warn('USE_MSW = "true", ingen validering av token', { req, res })
+    return next()
+  }
+
   const token = getToken(req)
   if (!token) {
+    logger.stdout.debug("Token mangler, redirect til '/oauth2/login'")
     return res.redirect('/oauth2/login')
   }
 
@@ -44,10 +50,10 @@ app.use('/*', async (req, res, next) => {
     return next()
   }
 
-  const navIdent = tryDecodeJwt(token).NAVident || 'ukjent'
-  const message = `Ugyldig token for navIdent: ${navIdent}, koblet til via: ${ipAddressFromRequest(req)}, validationError: ${validation?.error?.message}`
-  logger.info(message)
-  logger.sikker.info(message, requestMeta(req), validation.error)
+  const navIdent = tryDecodeJwt(token).NAVident || 'unknown'
+  const message = `Ugyldig token for navIdent: ${navIdent}, koblet til via: ${ipAddressFromRequest(req)}`
+  logger.stdout.warn(message, { err: validation.error })
+  logger.sikker.warn(message, { err: validation.error, req, res })
 
   res.sendStatus(401)
 })

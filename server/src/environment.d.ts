@@ -12,7 +12,7 @@ declare global {
       CLIENT_ID_HOTSAK_API: string
       CLIENT_ID_HEIT_KRUKKA_API: string
 
-      NODE_ENV: 'development' | 'production'
+      NODE_ENV: 'development' | 'test' | 'production'
       PORT?: string
 
       USE_MSW?: 'true' | 'false'

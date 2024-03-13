@@ -12,7 +12,7 @@ export default defineConfig({
       HEIT_KRUKKA_URL: 'http://heit-krukka.test',
       CLIENT_ID_HOTSAK_API: 'foo',
       CLIENT_ID_HEIT_KRUKKA_API: 'test',
-      USE_MSW: 'true',
+      USE_MSW: 'false',
 
       AZURE_APP_CLIENT_ID: 'test',
       AZURE_APP_JWK: '',

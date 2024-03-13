@@ -3,4 +3,4 @@ import { logger } from './logging.mjs'
 
 const port = +(process.env.PORT || '3002')
 
-app.listen(port, () => logger.info(`hotsak-frontend lytter på port: ${port}`))
+app.listen(port, () => logger.stdout.info(`hotsak-frontend lytter på port: ${port}`))

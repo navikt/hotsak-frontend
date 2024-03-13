@@ -1,4 +1,4 @@
-import { http, HttpResponse, RequestHandler, graphql } from 'msw'
+import { graphql, http, HttpResponse, RequestHandler } from 'msw'
 import { publicJwk } from '../testSupport.mjs'
 
 export const handlers: RequestHandler[] = [

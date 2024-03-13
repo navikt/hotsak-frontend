@@ -1,10 +1,13 @@
-import authSupport from './auth/authSupport.mjs'
 import type { Request } from 'express'
 import fs from 'fs'
 import winston from 'winston'
 import { ecsFormat } from '@elastic/ecs-winston-format'
+import { getToken } from '@navikt/oasis'
+import { decodeJwt } from 'jose'
 
-const sikkerLogPath = (): string => (fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log')
+function secureLogsPath(): string {
+  return fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log'
+}
 
 const stdoutLogger = winston.createLogger({
   level: 'info',
@@ -15,59 +18,44 @@ const stdoutLogger = winston.createLogger({
 const sikkerLogger = winston.createLogger({
   level: 'info',
   format: ecsFormat(),
-  transports: [new winston.transports.File({ filename: sikkerLogPath(), maxsize: 5242880 })],
+  transports: [new winston.transports.File({ filename: secureLogsPath(), maxsize: 5242880 })],
 })
 
-const info = (message: string, ...meta: any[]) => {
-  stdoutLogger.info(message, ...meta)
+export const logger = {
+  info(message: string, ...meta: any[]): void {
+    stdoutLogger.info(message, ...meta)
+  },
+  warning(message: string, ...meta: any[]): void {
+    stdoutLogger.warn(message, ...meta)
+  },
+  error(message: string, ...meta: any[]): void {
+    stdoutLogger.error(message, ...meta)
+  },
+  sikker: {
+    info(message: string, ...meta: any[]): void {
+      sikkerLogger.info(message, ...meta)
+    },
+    warning(message: string, ...meta: any[]): void {
+      sikkerLogger.warn(message, ...meta)
+    },
+    error(message: string, ...meta: any[]): void {
+      sikkerLogger.error(message, ...meta)
+    },
+  },
 }
 
-const warning = (message: string, ...meta: any[]) => {
-  stdoutLogger.warn(message, ...meta)
-}
-
-const error = (message: string, ...meta: any[]) => {
-  stdoutLogger.error(message, ...meta)
-}
-
-const sikkerInfo = (message: string, ...meta: any[]) => {
-  sikkerLogger.info(message, ...meta)
-}
-
-const sikkerWarning = (message: string, ...meta: any[]) => {
-  sikkerLogger.warn(message, ...meta)
-}
-
-const sikkerError = (message: string, ...meta: any[]) => {
-  sikkerLogger.error(message, ...meta)
-}
-
-const requestMeta = (req: Request) => {
+export function requestMeta(req: Request) {
   return {
-    hotsakUser: authSupport.valueFromClaim('name', req.headers['authorization']?.split(' ')[1]),
-    navIdent: authSupport.valueFromClaim('NAVident', req.headers['authorization']?.split(' ')[1]),
     headers: req.headers,
-    method: req.method,
-    url: req.url,
+    hostname: req.hostname,
     httpVersion: req.httpVersion,
+    ip: req.ip,
+    method: req.method,
+    originalUrl: req.originalUrl,
+    params: req.params,
     path: req.path,
     protocol: req.protocol,
     query: req.query,
-    hostname: req.hostname,
-    ip: req.ip,
-    originalUrl: req.originalUrl,
-    params: req.params,
+    url: req.url,
   }
-}
-
-export const logger = {
-  info,
-  warning,
-  error,
-  sikker: {
-    info: sikkerInfo,
-    warning: sikkerWarning,
-    error: sikkerError,
-  },
-  requestMeta,
 }

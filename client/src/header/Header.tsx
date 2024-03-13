@@ -68,7 +68,7 @@ export const Toppmeny: React.FC = () => {
         <Dropdown.Menu>
           <Dropdown.Menu.List>
             <Dropdown.Menu.List.Item>
-              <Lenke href="/logout">Logg ut</Lenke>
+              <Lenke href="/oauth2/logout">Logg ut</Lenke>
             </Dropdown.Menu.List.Item>
           </Dropdown.Menu.List>
         </Dropdown.Menu>

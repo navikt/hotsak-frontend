@@ -4,10 +4,8 @@ import { logger } from './logging.mjs'
 export function tryDecodeJwt(jwt: string): JWTPayload {
   try {
     return decodeJwt(jwt)
-  } catch (e: unknown) {
-    if (e instanceof Error) {
-      logger.warning(e.message)
-    }
+  } catch (err: unknown) {
+    logger.stdout.warn('Kunne ikke lese JWT-token', { err })
     return {}
   }
 }

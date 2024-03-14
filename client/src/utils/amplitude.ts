@@ -41,6 +41,7 @@ export async function initAmplitude(): Promise<void> {
   const { init, track } = await import('@amplitude/analytics-browser')
   init(apiKey, undefined, {
     serverUrl,
+    defaultTracking: false,
     ingestionMetadata: {
       sourceName: window.location.toString(),
     },

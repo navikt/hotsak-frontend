@@ -10,10 +10,12 @@ function htmlPlugin({ development }: { development?: boolean }): Plugin {
         tags.push({
           tag: 'script',
           children: `window.appSettings = {
-            GIT_COMMIT: 'ukjent',
+            GIT_COMMIT: 'unknown',
             USE_MSW: true,
             MILJO: 'local',
-            FARO_URL: 'http://localhost:12347/collect'
+            FARO_URL: '',
+            AMPLITUDE_API_KEY: '',
+            AMPLITUDE_SERVER_URL: '',
           }`,
         })
       } else {

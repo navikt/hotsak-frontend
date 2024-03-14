@@ -1,14 +1,18 @@
-import {
-  ConsoleInstrumentation,
-  ErrorsInstrumentation,
-  getWebInstrumentations,
-  initializeFaro,
-  LogLevel,
-  SessionInstrumentation,
-} from '@grafana/faro-web-sdk'
+export async function initFaro(): Promise<void> {
+  if (!import.meta.env.PROD) {
+    return
+  }
 
-export const initFaro = () => {
-  console.log(`Setting up Faro  with url ${window.appSettings.FARO_URL}`)
+  console.log(`Setting up Faro with url: ${window.appSettings.FARO_URL}`)
+
+  const {
+    ConsoleInstrumentation,
+    ErrorsInstrumentation,
+    getWebInstrumentations,
+    initializeFaro,
+    LogLevel,
+    SessionInstrumentation,
+  } = await import('@grafana/faro-web-sdk')
 
   initializeFaro({
     url: window.appSettings.FARO_URL,

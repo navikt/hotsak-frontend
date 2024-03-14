@@ -1,11 +1,11 @@
-import { setupWorker } from 'msw'
-import { setupStore } from './data'
-import { setupHandlers } from './handlers'
-
-export async function setupMsw() {
+export async function initMsw(): Promise<unknown> {
   if (!window.appSettings.USE_MSW) {
     return
   }
+
+  const { setupWorker } = await import('msw')
+  const { setupStore } = await import('./data')
+  const { setupHandlers } = await import('./handlers')
 
   const store = await setupStore()
   const {
@@ -26,8 +26,8 @@ export async function setupMsw() {
     await sakStore.populer()
     await barnebrillesakStore.populer()
     await oppgaveStore.populer()
-  } catch (e) {
-    console.warn(e)
+  } catch (err: unknown) {
+    console.warn(err)
   }
 
   window.store = {

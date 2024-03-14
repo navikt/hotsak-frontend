@@ -75,3 +75,7 @@ spec:
       value: https://telemetry.nav.no/collect
     - name: HEIT_KRUKKA_URL
       value: http://heit-krukka.teamdigihot.svc.cluster.local
+    - name: AMPLITUDE_API_KEY
+      value: default
+    - name: AMPLITUDE_SERVER_URL
+      value: amplitude.nav.no/collect-auto

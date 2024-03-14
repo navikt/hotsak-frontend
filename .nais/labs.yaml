@@ -60,3 +60,7 @@ spec:
       value: "true"
     - name: GIT_COMMIT
       value: {{commit}}
+    - name: AMPLITUDE_API_KEY
+      value: default
+    - name: AMPLITUDE_SERVER_URL
+      value: amplitude.nav.no/collect-auto

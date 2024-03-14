@@ -29,7 +29,7 @@ export enum amplitude_taxonomy {
 
 export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<string, any>) => void = (
   eventName,
-  data?
+  data = {}
 ): void => {
   console.debug('Event: ', { eventName, data })
 }
@@ -46,9 +46,13 @@ export async function initAmplitude(): Promise<void> {
       sourceName: window.location.toString(),
     },
   })
-  logAmplitudeEvent = (eventName, data?): void => {
+  logAmplitudeEvent = (eventName, data = {}): void => {
     try {
-      track(eventName, data)
+      track(eventName, {
+        app: 'hotsak-frontend',
+        team: 'teamdigihot',
+        ...data,
+      })
     } catch (err: unknown) {
       console.warn(err)
     }

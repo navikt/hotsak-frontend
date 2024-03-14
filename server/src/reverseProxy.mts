@@ -30,7 +30,6 @@ function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorat
     if (!token) {
       const message = 'Token mangler'
       logger.stdout.warn(message)
-      logger.sikker.warn(message, { req })
       return options
     }
 
@@ -41,10 +40,9 @@ function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorat
         Authorization: `Bearer ${obo.token}`,
       }
     } else {
-      const message = 'Feil under OnBehalfOf-flyt'
-      logger.stdout.warn(message, { err: obo.error })
-      logger.sikker.warn(message, { err: obo.error, req })
-      return Promise.reject(new Error(message, { cause: obo.error }))
+      const error = new Error('Feil under OnBehalfOf-flyt', { cause: obo.error })
+      logger.stdout.warn(error)
+      return Promise.reject(error)
     }
 
     return options

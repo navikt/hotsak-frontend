@@ -63,4 +63,4 @@ spec:
     - name: AMPLITUDE_API_KEY
       value: default
     - name: AMPLITUDE_SERVER_URL
-      value: amplitude.nav.no/collect-auto
+      value: https://amplitude.nav.no/collect-auto

@@ -44,6 +44,7 @@ function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorat
       const message = 'Feil under OnBehalfOf-flyt'
       logger.stdout.warn(message, { err: obo.error })
       logger.sikker.warn(message, { err: obo.error, req })
+      return Promise.reject(new Error(message, { cause: obo.error }))
     }
 
     return options

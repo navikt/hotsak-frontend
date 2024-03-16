@@ -9,7 +9,6 @@ import { Sakstype } from '../types/types.internal'
 import { Personlinje } from './Personlinje'
 import Søknadsbilde from './Søknadsbilde'
 import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
-import Bestillingsbilde from './bestillingsordning/Bestillingsbilde'
 import { SaksLoader } from './loader/SaksLoader'
 import { useSak } from './sakHook'
 
@@ -38,14 +37,13 @@ const SaksbildeContent = React.memo(() => {
         <Personlinje person={sak.data.bruker} loading={false} />
         {(() => {
           switch (sak.data.sakstype) {
-            case Sakstype.BESTILLING:
-              return <Bestillingsbilde />
             case Sakstype.BARNEBRILLER:
               return (
                 <DokumentProvider>
                   <BarnebrilleBilde />
                 </DokumentProvider>
               )
+            case Sakstype.BESTILLING:
             default:
               return <Søknadsbilde />
           }

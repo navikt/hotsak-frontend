@@ -20,6 +20,7 @@ import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { VenstreMeny } from './venstremeny/Venstremeny'
+import { BestillingCard } from './bestillingsordning/BestillingCard'
 
 const SaksbildeContent: React.FC = React.memo(() => {
   const { sak, isError } = useSak()
@@ -34,17 +35,19 @@ const SaksbildeContent: React.FC = React.memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
+  const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
+
   return (
     <>
       <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
         <section>
           <HGrid columns={'auto'}>
-            <Søknadslinje id={sak.data.sakId} type={Sakstype.SØKNAD} />
+            <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
           </HGrid>
           <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
             <VenstreMeny>
               <SøknadCard
-                sakstype={Sakstype.SØKNAD}
+                sakstype={sak.data.sakstype}
                 søknadGjelder={sak.data.søknadGjelder}
                 saksnr={sak.data.sakId}
                 mottattDato={sak.data.mottattDato}
@@ -53,7 +56,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 funksjonsnedsettelse={sak.data.personinformasjon.funksjonsnedsettelse}
               />
               <FormidlerCard
-                tittel="FORMIDLER"
+                tittel={erBestilling ? 'BESTILLER' : 'FORMIDLER'}
                 stilling={sak.data.formidler.stilling}
                 formidlerNavn={sak.data.formidler.navn}
                 formidlerTelefon={sak.data.formidler.telefon}
@@ -63,13 +66,22 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 greitÅViteFakta={sak.data.greitÅViteFaktum}
                 harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
               />
-              <VedtakCard sak={sak.data} />
+              {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} />}
+              {erBestilling && <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />}
             </VenstreMeny>
             <Content>
               <Routes>
                 <Route
                   path="/hjelpemidler"
-                  element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak.data} />}
+                  element={
+                    <HjelpemiddelListe
+                      tittel={
+                        erBestilling ? 'Bestilling av hjelpemidler på bestillingsordningen' : 'Søknad om hjelpemidler'
+                      }
+                      sak={sak.data}
+                      forenkletVisning={erBestilling}
+                    />
+                  }
                 />
                 <Route
                   path="/bruker"

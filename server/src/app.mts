@@ -27,6 +27,8 @@ app.get('/settings.js', (_, res) => {
     USE_MSW: process.env.USE_MSW === 'true',
     MILJO: process.env.NAIS_CLUSTER_NAME,
     FARO_URL: process.env.FARO_URL,
+    AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
+    AMPLITUDE_SERVER_URL: process.env.AMPLITUDE_SERVER_URL,
   }
   res.type('.js')
   res.send(`window.appSettings = ${JSON.stringify(appSettings)}`)
@@ -35,7 +37,7 @@ app.get('/settings.js', (_, res) => {
 // Protected routes
 app.use('/*', async (req, res, next) => {
   if (process.env.USE_MSW === 'true') {
-    logger.stdout.warn('USE_MSW = "true", ingen validering av token', { req, res })
+    logger.stdout.debug('USE_MSW = "true", ingen validering av token')
     return next()
   }
 
@@ -52,8 +54,7 @@ app.use('/*', async (req, res, next) => {
 
   const navIdent = tryDecodeJwt(token).NAVident || 'unknown'
   const message = `Ugyldig token for navIdent: ${navIdent}, koblet til via: ${ipAddressFromRequest(req)}`
-  logger.stdout.warn(message, { err: validation.error })
-  logger.sikker.warn(message, { err: validation.error, req, res })
+  logger.stdout.warn(new Error(message, { cause: validation.error }))
 
   res.sendStatus(401)
 })

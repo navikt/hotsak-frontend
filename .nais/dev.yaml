@@ -84,3 +84,7 @@ spec:
       value: https://telemetry.ekstern.dev.nav.no/collect
     - name: HEIT_KRUKKA_URL
       value: https://heit-krukka.intern.dev.nav.no
+    - name: AMPLITUDE_API_KEY
+      value: default
+    - name: AMPLITUDE_SERVER_URL
+      value: https://amplitude.nav.no/collect-auto

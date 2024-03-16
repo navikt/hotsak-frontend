@@ -1,28 +1,24 @@
+import App from './App'
 import { createRoot } from 'react-dom/client'
+import { AppRoot } from './GlobalStyles'
+import { initMsw } from './mocks'
+import { initAmplitude } from './utils/amplitude'
+import { initFaro } from './utils/faro'
 import 'reset-css'
-
 import '@navikt/ds-css'
 
-import App from './App'
-import { AppRoot } from './GlobalStyles'
-import { setupMsw } from './mocks'
+async function main(): Promise<void> {
+  await initMsw()
+  await initAmplitude()
+  await initFaro()
 
-setupMsw()
-  .then(() => {
-    const container = document.getElementById('root')!
-    createRoot(container).render(
-      <>
-        <AppRoot />
-        <App />
-      </>
-    )
-  })
-  .then(async () => {
-    if (import.meta.env.PROD) {
-      const { setupAmplitude } = await import('./utils/amplitude')
-      const { initFaro } = await import('./utils/faro')
-      setupAmplitude()
-      initFaro()
-    }
-  })
-  .catch((err) => console.error(err))
+  const container = document.getElementById('root')!
+  createRoot(container).render(
+    <>
+      <AppRoot />
+      <App />
+    </>
+  )
+}
+
+main().catch((err) => console.error(err))

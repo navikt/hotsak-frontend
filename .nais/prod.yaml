@@ -64,7 +64,7 @@ spec:
     - name: CLIENT_ID_HOTSAK_API
       value: api://prod-gcp.teamdigihot.hm-saksbehandling/.default
     - name: CLIENT_ID_HEIT_KRUKKA_API
-      value: api://dev-gcp.teamdigihot.heit-krukka/.default
+      value: api://prod-gcp.teamdigihot.heit-krukka/.default
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
@@ -75,3 +75,7 @@ spec:
       value: https://telemetry.nav.no/collect
     - name: HEIT_KRUKKA_URL
       value: http://heit-krukka.teamdigihot.svc.cluster.local
+    - name: AMPLITUDE_API_KEY
+      value: default
+    - name: AMPLITUDE_SERVER_URL
+      value: https://amplitude.nav.no/collect-auto

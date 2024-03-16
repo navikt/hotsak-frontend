@@ -1,5 +1,3 @@
-import amplitude from 'amplitude-js'
-
 export enum amplitude_taxonomy {
   OPPGAVELISTE_BYTT_TAB = 'byttet tab i oppgaveliste',
   OPPGAVELISTE_OPPDATERT = 'oppdaterte oppgaveliste',
@@ -12,8 +10,8 @@ export enum amplitude_taxonomy {
   CLIENT_INFO = 'client info',
   SAK_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
   SAK_STARTET_FRA_SAK = 'sak startet fra sak',
-  OPPGAVE_STARTET_FRA_OPPGAVELISTE = 'sak startet fra oppgaveliste',
-  OPPGAVE_STARTET_FRA_SAK = 'sak startet fra sak',
+  OPPGAVE_STARTET_FRA_OPPGAVELISTE = 'oppgave startet fra oppgaveliste',
+  OPPGAVE_STARTET_FRA_SAK = 'oppgave startet fra sak',
   SAK_FRIGITT = 'sak frigitt',
   ENDRINGSLOGG_APNET = 'endringslogg åpnet',
   ENDRINGSLOGGINNSLAG_LEST = 'endringslogginnslag lest',
@@ -29,37 +27,34 @@ export enum amplitude_taxonomy {
   FINN_HJELPEMIDDEL_LINK_BESØKT = 'viser produkt i FinnHjelpemiddel',
 }
 
-export function setupAmplitude(): void {
-  if (amplitude) {
-    amplitude.getInstance().init('default', '', {
-      apiEndpoint: 'amplitude.nav.no/collect-auto',
-      saveEvents: false,
-      includeUtm: true,
-      includeReferrer: true,
-      platform: window.location.toString(),
-    })
-  }
+export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<string, any>) => void = (
+  eventName,
+  data
+): void => {
+  console.debug('Event: ', { eventName, data })
 }
 
-export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: any): void {
-  if (!import.meta.env.PROD) {
-    console.debug('AmplitudeEvent: ', { eventName, amplitude_taxonomy, data })
-    return
-  }
-  setTimeout(() => {
-    data = {
-      app: 'hotsak-frontend',
-      team: 'teamdigihot',
-      ...data,
-    }
-    try {
-      if (amplitude) {
-        amplitude.getInstance().logEvent(eventName, data)
-      } else {
-        console.debug(eventName, data)
-      }
-    } catch (error) {
-      console.error(error)
-    }
+export async function initAmplitude(): Promise<void> {
+  if (!import.meta.env.PROD) return
+  const { AMPLITUDE_API_KEY: apiKey, AMPLITUDE_SERVER_URL: serverUrl } = window.appSettings
+  if (!(apiKey && serverUrl)) return
+  const { init, track } = await import('@amplitude/analytics-browser')
+  init(apiKey, undefined, {
+    serverUrl,
+    defaultTracking: false,
+    ingestionMetadata: {
+      sourceName: window.location.toString(),
+    },
   })
+  logAmplitudeEvent = (eventName, data): void => {
+    try {
+      track(eventName, {
+        app: 'hotsak-frontend',
+        team: 'teamdigihot',
+        ...data,
+      })
+    } catch (err: unknown) {
+      console.warn(err)
+    }
+  }
 }

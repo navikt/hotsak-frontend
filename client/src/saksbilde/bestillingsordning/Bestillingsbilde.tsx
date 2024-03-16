@@ -1,19 +1,19 @@
 import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
-import styled from 'styled-components'
 
 import { HGrid } from '@navikt/ds-react'
-import { headerHøydeRem, hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../../GlobalStyles'
+import { hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { Sakstype } from '../../types/types.internal'
-import { LasterPersonlinje } from '../Personlinje'
 import { Søknadslinje } from '../Søknadslinje'
 import { Bruker } from '../bruker/Bruker'
 import { Formidlerside } from '../formidler/Formidlerside'
 import { HjelpemiddelListe } from '../hjelpemidler/HjelpemiddelListe'
 import { Høyrekolonne } from '../høyrekolonne/Høyrekolonne'
 import { useHjelpemiddeloversikt } from '../høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
+import { Content, Hovedinnhold, Saksinnhold } from '../komponenter/Sakskomponenter'
+import { SaksLoader } from '../loader/SaksLoader'
 import { useSak } from '../sakHook'
 import { FormidlerCard } from '../venstremeny/FormidlerCard'
 import { GreitÅViteCard } from '../venstremeny/GreitÅViteCard'
@@ -21,35 +21,10 @@ import { SøknadCard } from '../venstremeny/SøknadCard'
 import { VenstreMeny } from '../venstremeny/Venstremeny'
 import { BestillingCard } from './BestillingCard'
 
-const BestillingsbildeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 96vh;
-`
-
-const Content = styled.section`
-  padding: 0 1.4rem;
-
-  padding-top: 1rem;
-  height: 100%;
-  box-sizing: border-box;
-`
-
-const Hovedinnhold = styled(HGrid)`
-  height: 100%;
-`
-
-const Bestillingsinnhold = styled(HGrid)`
-  height: calc(100% - ${headerHøydeRem}rem);
-`
-
 const BestillingsbildeContent: React.FC = React.memo(() => {
-  const { sak, isLoading, isError } = useSak()
+  const { sak, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
-
-  if (isLoading) return <LasterBestillingsbilde />
 
   if (isError) {
     showBoundary(isError)
@@ -66,7 +41,7 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
           <HGrid columns={'auto'}>
             <Søknadslinje id={sak.data.sakId} type={Sakstype.BESTILLING} />
           </HGrid>
-          <Bestillingsinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
+          <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
             <VenstreMeny>
               <SøknadCard
                 sakstype={Sakstype.BESTILLING}
@@ -123,26 +98,17 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
                 />
               </Routes>
             </Content>
-          </Bestillingsinnhold>
+          </Saksinnhold>
         </section>
-
-        <div style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
-          <Høyrekolonne />
-        </div>
+        <Høyrekolonne />
       </Hovedinnhold>
     </>
   )
 })
 
-const LasterBestillingsbilde = () => (
-  <BestillingsbildeContainer className="saksbilde" data-testid="laster-saksbilde">
-    <LasterPersonlinje />
-  </BestillingsbildeContainer>
-)
-
 export const Bestillingsbilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterBestillingsbilde />}>
+    <React.Suspense fallback={<SaksLoader />}>
       <BestillingsbildeContent />
     </React.Suspense>
   </ErrorBoundary>

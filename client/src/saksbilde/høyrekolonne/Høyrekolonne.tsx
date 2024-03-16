@@ -37,39 +37,41 @@ export const Høyrekolonne: React.FC = () => {
   }, 0)
 
   return (
-    <Tabs
-      defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
-      value={valgtHøyrekolonneTab}
-      loop
-      onChange={setValgtHøyrekolonneTab}
-      size="small"
-    >
-      <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
-        <Tooltip content="Historikk">
-          <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<HistorikkIkon width={20} height={20} />} />
-        </Tooltip>
-        <Tooltip content="Utlånsoversikt">
-          <Tabs.Tab
-            value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
-            icon={
-              <>
-                <RullestolIkon width={20} height={20} title="Utlånsoversikt" />
-                {!isLoading && !isError && (
-                  <Tag variant="alt3-moderate" size="small">
-                    {antallUtlånteHjelpemidler}
-                  </Tag>
-                )}
-              </>
-            }
-          />
-        </Tooltip>
-      </Tabs.List>
-      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
-        <Historikk />
-      </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
-        <Hjelpemiddeloversikt />
-      </Tabs.Panel>
-    </Tabs>
+    <aside style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+      <Tabs
+        defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
+        value={valgtHøyrekolonneTab}
+        loop
+        onChange={setValgtHøyrekolonneTab}
+        size="small"
+      >
+        <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
+          <Tooltip content="Historikk">
+            <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<HistorikkIkon width={20} height={20} />} />
+          </Tooltip>
+          <Tooltip content="Utlånsoversikt">
+            <Tabs.Tab
+              value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
+              icon={
+                <>
+                  <RullestolIkon width={20} height={20} title="Utlånsoversikt" />
+                  {!isLoading && !isError && (
+                    <Tag variant="alt3-moderate" size="small">
+                      {antallUtlånteHjelpemidler}
+                    </Tag>
+                  )}
+                </>
+              }
+            />
+          </Tooltip>
+        </Tabs.List>
+        <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
+          <Historikk />
+        </Tabs.Panel>
+        <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
+          <Hjelpemiddeloversikt />
+        </Tabs.Panel>
+      </Tabs>
+    </aside>
   )
 }

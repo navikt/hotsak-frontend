@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { hotsakTotalMinWidth } from '../../GlobalStyles'
+import { HGrid } from '@navikt/ds-react'
+import { headerHøydeRem, hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
-import { Flex, FlexColumn } from '../../felleskomponenter/Flex'
-import { HøyrekolonneTabs, Sakstype } from '../../types/types.internal'
+import { Sakstype } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { Søknadslinje } from '../Søknadslinje'
 import { Bruker } from '../bruker/Bruker'
@@ -28,17 +28,6 @@ const BestillingsbildeContainer = styled.div`
   height: 96vh;
 `
 
-const Container = styled(Flex)`
-  flex: 1;
-  min-width: ${hotsakTotalMinWidth};
-  overflow: auto;
-  overflow-x: hidden;
-`
-
-const AutoFlexContainer = styled.div`
-  flex: auto;
-`
-
 const Content = styled.section`
   padding: 0 1.4rem;
 
@@ -47,8 +36,15 @@ const Content = styled.section`
   box-sizing: border-box;
 `
 
+const Hovedinnhold = styled(HGrid)`
+  height: 100%;
+`
+
+const Bestillingsinnhold = styled(HGrid)`
+  height: calc(100% - ${headerHøydeRem}rem);
+`
+
 const BestillingsbildeContent: React.FC = React.memo(() => {
-  const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
@@ -64,16 +60,13 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
   if (!sak) return <div>Fant ikke bestilling</div>
 
   return (
-    <BestillingsbildeContainer>
-      <Søknadslinje
-        id={sak.data.sakId}
-        type={Sakstype.BESTILLING}
-        onTabChange={setHøyrekolonneTab}
-        currentTab={høyrekolonneTab}
-      />
-      <Container data-testid="bestillingsbilde-fullstendig">
-        <AutoFlexContainer>
-          <Flex $flex={1} style={{ height: '100%' }}>
+    <>
+      <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
+        <section>
+          <HGrid columns={'auto'}>
+            <Søknadslinje id={sak.data.sakId} type={Sakstype.BESTILLING} />
+          </HGrid>
+          <Bestillingsinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
             <VenstreMeny>
               <SøknadCard
                 sakstype={Sakstype.BESTILLING}
@@ -97,46 +90,47 @@ const BestillingsbildeContent: React.FC = React.memo(() => {
               />
               <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />
             </VenstreMeny>
-            <FlexColumn style={{ flex: 1, height: '100%' }}>
-              <Content>
-                <Routes>
-                  <Route
-                    path="/hjelpemidler"
-                    element={
-                      <HjelpemiddelListe
-                        tittel="Bestilling av hjelpemidler på bestillingsordningen"
-                        forenkletVisning={true}
-                        sak={sak.data}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/bruker"
-                    element={
-                      <Bruker
-                        person={sak.data.personinformasjon}
-                        levering={sak.data.levering}
-                        formidler={sak.data.formidler}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/formidler"
-                    element={
-                      <Formidlerside
-                        formidler={sak.data.formidler}
-                        oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
-                      />
-                    }
-                  />
-                </Routes>
-              </Content>
-            </FlexColumn>
-          </Flex>
-        </AutoFlexContainer>
-        <Høyrekolonne currentTab={høyrekolonneTab} sakstype={Sakstype.BESTILLING} />
-      </Container>
-    </BestillingsbildeContainer>
+            <Content>
+              <Routes>
+                <Route
+                  path="/hjelpemidler"
+                  element={
+                    <HjelpemiddelListe
+                      tittel="Bestilling av hjelpemidler på bestillingsordningen"
+                      forenkletVisning={true}
+                      sak={sak.data}
+                    />
+                  }
+                />
+                <Route
+                  path="/bruker"
+                  element={
+                    <Bruker
+                      person={sak.data.personinformasjon}
+                      levering={sak.data.levering}
+                      formidler={sak.data.formidler}
+                    />
+                  }
+                />
+                <Route
+                  path="/formidler"
+                  element={
+                    <Formidlerside
+                      formidler={sak.data.formidler}
+                      oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
+                    />
+                  }
+                />
+              </Routes>
+            </Content>
+          </Bestillingsinnhold>
+        </section>
+
+        <div style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+          <Høyrekolonne />
+        </div>
+      </Hovedinnhold>
+    </>
   )
 })
 

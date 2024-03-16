@@ -7,6 +7,7 @@ export const hotsakRegistrerSøknadHøyreKolonne = '300px'
 export const hotsakHistorikkWidth = '492px'
 export const brilleSidebarBredde = '320px'
 export const headerHøydeRem = '3'
+export const søknadslinjeHøyde = '48px'
 
 export const AppRoot = createGlobalStyle`
   body {

@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { HGrid } from '@navikt/ds-react'
+import { headerHøydeRem, hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
-import { Flex, FlexColumn } from '../felleskomponenter/Flex'
-import { HøyrekolonneTabs, Sakstype } from '../types/types.internal'
+import { Sakstype } from '../types/types.internal'
 import { LasterPersonlinje } from './Personlinje'
 import { Søknadslinje } from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
@@ -28,29 +28,15 @@ const SaksbildeContainer = styled.div`
   height: 96vh;
 `
 
-const Container = styled(Flex)`
-  flex: 1;
-  min-width: ${hotsakTotalMinWidth};
-  overflow: auto;
-  overflow-x: hidden;
-`
-
-const AutoFlexContainer = styled.div`
-  flex: auto;
-`
-
 const Content = styled.section`
   padding: 0 1.4rem;
-
   padding-top: 1rem;
+`
+const Hovedinnhold = styled(HGrid)`
   height: 100%;
-  box-sizing: border-box;
 `
 
 const SaksbildeContent: React.FC = React.memo(() => {
-  //const personTilBehandling = usePerson();
-  //useRefreshPersonVedUrlEndring();
-  const [høyrekolonneTab, setHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK)
   const { sak, isLoading, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
@@ -65,17 +51,18 @@ const SaksbildeContent: React.FC = React.memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
+  const Saksinnhold = styled(HGrid)`
+    height: calc(100% - ${headerHøydeRem}rem);
+  `
+
   return (
     <>
-      <Søknadslinje
-        id={sak.data.sakId}
-        type={Sakstype.SØKNAD}
-        onTabChange={setHøyrekolonneTab}
-        currentTab={høyrekolonneTab}
-      />
-      <Container data-testid="saksbilde-fullstendig">
-        <AutoFlexContainer>
-          <Flex $flex={1} style={{ height: '100%' }}>
+      <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
+        <section>
+          <HGrid columns={'auto'}>
+            <Søknadslinje id={sak.data.sakId} type={Sakstype.SØKNAD} />
+          </HGrid>
+          <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
             <VenstreMeny>
               <SøknadCard
                 sakstype={Sakstype.SØKNAD}
@@ -97,41 +84,42 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 greitÅViteFakta={sak.data.greitÅViteFaktum}
                 harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
               />
-              <VedtakCard sak={sak.data}/>
+              <VedtakCard sak={sak.data} />
             </VenstreMeny>
-            <FlexColumn style={{ flex: 1, height: '100%' }}>
-              <Content>
-                <Routes>
-                  <Route
-                    path="/hjelpemidler"
-                    element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak.data} />}
-                  />
-                  <Route
-                    path="/bruker"
-                    element={
-                      <Bruker
-                        person={sak.data.personinformasjon}
-                        levering={sak.data.levering}
-                        formidler={sak.data.formidler}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/formidler"
-                    element={
-                      <Formidlerside
-                        formidler={sak.data.formidler}
-                        oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
-                      />
-                    }
-                  />
-                </Routes>
-              </Content>
-            </FlexColumn>
-          </Flex>
-        </AutoFlexContainer>
-        <Høyrekolonne currentTab={høyrekolonneTab} sakstype={Sakstype.SØKNAD} />
-      </Container>
+            <Content>
+              <Routes>
+                <Route
+                  path="/hjelpemidler"
+                  element={<HjelpemiddelListe tittel="Søknad om hjelpemidler" sak={sak.data} />}
+                />
+                <Route
+                  path="/bruker"
+                  element={
+                    <Bruker
+                      person={sak.data.personinformasjon}
+                      levering={sak.data.levering}
+                      formidler={sak.data.formidler}
+                    />
+                  }
+                />
+                <Route
+                  path="/formidler"
+                  element={
+                    <Formidlerside
+                      formidler={sak.data.formidler}
+                      oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
+                    />
+                  }
+                />
+              </Routes>
+            </Content>
+          </Saksinnhold>
+        </section>
+
+        <div style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+          <Høyrekolonne />
+        </div>
+      </Hovedinnhold>
     </>
   )
 })

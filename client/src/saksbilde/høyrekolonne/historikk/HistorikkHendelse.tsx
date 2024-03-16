@@ -17,7 +17,7 @@ const Container = styled.li`
 
   &:not(:last-of-type) {
     padding-bottom: var(--a-spacing-4);
-    border-bottom: 1px solid var(--a-border-default);
+    border-bottom: 1px solid var(--a-border-subtle);
   }
 `
 

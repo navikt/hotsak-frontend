@@ -1,6 +1,24 @@
-import type { Property } from 'csstype'
 import styled from 'styled-components'
+import type { Property } from 'csstype'
 
+interface FlexProps {
+  $alignContent?: Property.AlignContent
+  $alignItems?: Property.AlignItems
+  $flex?: Property.Flex
+  $flexDirection?: Property.FlexDirection
+  $justifyContent?: Property.JustifyContent
+  $justifyItems?: Property.JustifyItems
+}
+
+export const Flex = styled.div<FlexProps>`
+  display: flex;
+  ${({ $alignContent }) => $alignContent && `align-content: ${$alignContent};`}
+  ${({ $alignItems }) => $alignItems && `align-items: ${$alignItems};`}
+  ${({ $flex }) => $flex !== undefined && `flex: ${$flex};`}
+  ${({ $flexDirection }) => $flexDirection && `flex-direction: ${$flexDirection};`}
+  ${({ $justifyContent }) => $justifyContent && `justify-content: ${$justifyContent};`}
+  ${({ $justifyItems }) => $justifyItems && `justify-items: ${$justifyItems};`}
+`
 interface RadProps {
   $paddingTop?: Property.PaddingTop
 }

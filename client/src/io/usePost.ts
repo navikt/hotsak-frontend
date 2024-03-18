@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-//import { useErrorHandler } from 'react-error-boundary'
 import { HttpError } from './error'
 
 export interface Resultat<T> {
@@ -11,7 +10,6 @@ export interface Resultat<T> {
 
 export function usePost<B, T>(url: string): { post(body: B): Promise<void>; reset(): void } & Resultat<T> {
   const [[resultat, loading], setResultat] = useState<[Resultat<T>, boolean]>([{}, false])
-  //useErrorHandler(resultat.error)
   return {
     async post(body) {
       setResultat([{}, true])
@@ -35,6 +33,7 @@ export const http = {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
         body: JSON.stringify(body),
       })
@@ -51,8 +50,4 @@ export const http = {
       }
     }
   },
-}
-
-export function apiUrl(url: string) {
-  return `/api${url}`
 }

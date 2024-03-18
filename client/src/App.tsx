@@ -112,7 +112,13 @@ function withRoutingAndState(Component: React.ComponentType) {
       <SWRConfig
         value={{
           async fetcher(...args) {
-            const response = await fetch(args[0])
+            const response = await fetch(args[0], {
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+              },
+            })
             if (response.ok) {
               return response.json()
             }

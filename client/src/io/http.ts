@@ -9,7 +9,6 @@ import type {
   OppdaterVilkårData,
   OppgaveStatusType,
   OverforGosysTilbakemelding,
-  Vedtaksgrunnlag,
   VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
@@ -79,13 +78,14 @@ const getErrorMessage = async (response: Response) => {
   }
 }
 
-const save = async (url: string, method: string, data: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
+const save = async (url: string, method: string, data: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
   const response = await fetch(url, {
     method: method,
     headers: {
-      ...headere,
+      ...headers,
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
     },
     body: JSON.stringify(data),
   })
@@ -100,22 +100,26 @@ const save = async (url: string, method: string, data: any, headere?: Headers): 
   }
 }
 
-export const post = async (url: string, data: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
-  return save(url, 'POST', data, headere)
+export const post = async (url: string, data: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
+  return save(url, 'POST', data, headers)
 }
 
-export const put = async (url: string, data?: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
-  return save(url, 'PUT', data, headere)
+export const put = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
+  return save(url, 'PUT', data, headers)
 }
 
-export const del = async (url: string, data?: any, headere?: Headers): Promise<SaksbehandlingApiResponse> => {
-  return save(url, 'DELETE', data, headere)
+export const del = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
+  return save(url, 'DELETE', data, headers)
 }
 
 export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
-  const headers = { headers: { Accept: 'application/pdf, application/json' } }
+  const headers = {
+    headers: {
+      Accept: 'application/pdf, application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  }
   const response = await fetch(`${baseUrl}/${url}`, headers)
-  // Trenger vi egne statuser fra backend ala Famile sin RessursStatus?
 
   if (response.status >= 400) {
     const errorMessage = await getErrorMessage(response)
@@ -135,7 +139,12 @@ export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
 }
 
 export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiResponse<T>> => {
-  const headers = { headers: { Accept: 'application/json' } }
+  const headers = {
+    headers: {
+      Accept: 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
   if (response.status >= 400) {

@@ -3,8 +3,9 @@ import { logger } from './logging.mjs'
 import { custom } from 'openid-client'
 
 if (process.env.USE_MSW === 'true' && process.env.NAIS_CLUSTER_NAME === 'prod-gcp') {
-  logger.stdout.error('USE_MSW = "true" i prod-gcp!')
-  process.exit(1)
+  const err = new Error('USE_MSW = "true" i prod-gcp!')
+  logger.stdout.error(err)
+  throw err
 }
 
 custom.setHttpOptionsDefaults({

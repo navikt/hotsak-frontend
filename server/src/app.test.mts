@@ -12,12 +12,12 @@ declare module 'supertest' {
   }
 }
 
-// @ts-ignore
+// @ts-expect-error module augmentation fungerer ikke
 supertest.Test.prototype.authorization = function (token: string) {
   return this.set('Authorization', `Bearer ${token}`)
 }
 
-// @ts-ignore
+// @ts-expect-error module augmentation fungerer ikke
 supertest.Test.prototype.contentType = function (contentType: string) {
   return this.expect('Content-Type', contentType)
 }

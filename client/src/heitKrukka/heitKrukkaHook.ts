@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { baseUrl } from '../io/http'
-import { Resultat, http } from '../io/usePost'
+import { http, Resultat } from '../io/usePost'
 import { Enhet } from '../types/types.internal'
-import { response } from 'msw'
 
 interface HeitKrukkaSkjemaRequest {
   enhet: string

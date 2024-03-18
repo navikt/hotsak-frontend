@@ -1,18 +1,22 @@
-import { rest } from 'msw'
+import { delay, http } from 'msw'
 
 import type { TotrinnskontrollData } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
+import { respondCreated } from './response'
 
 export const totrinnskontrollHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
-  rest.post<any, { sakId: string }, any>(`/api/sak/:sakId/kontroll`, async (req, res, ctx) => {
-    const sakId = req.params.sakId
+  http.post<{ sakId: string }>(`/api/sak/:sakId/kontroll`, async ({ params }) => {
+    const sakId = params.sakId
     await barnebrillesakStore.sendTilGodkjenning(sakId)
-    return res(ctx.delay(500), ctx.status(201), ctx.json({}))
+    await delay(500)
+    return respondCreated()
   }),
-  rest.put<TotrinnskontrollData, { sakId: string }, any>(`/api/sak/:sakId/kontroll`, async (req, res, ctx) => {
-    const sakId = req.params.sakId
-    const totrinnskontroll = await req.json<TotrinnskontrollData>()
+
+  http.put<{ sakId: string }, TotrinnskontrollData>(`/api/sak/:sakId/kontroll`, async ({ request, params }) => {
+    const sakId = params.sakId
+    const totrinnskontroll = await request.json()
     await barnebrillesakStore.ferdigstillTotrinnskontroll(sakId, totrinnskontroll)
-    return res(ctx.delay(500), ctx.status(201), ctx.json({}))
+    await delay(500)
+    return respondCreated()
   }),
 ]

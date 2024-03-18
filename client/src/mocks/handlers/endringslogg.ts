@@ -1,6 +1,7 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 
-import { StoreHandlersFactory } from '../data'
+import type { StoreHandlersFactory } from '../data'
+import { respondNoContent } from './response'
 
 const endringslogg = [
   {
@@ -88,14 +89,15 @@ const endringsloggKopi: Array<{
 }))
 
 export const endringsloggHandlers: StoreHandlersFactory = () => [
-  rest.post<{ endringslogginnslagId: string }>('/api/endringslogg/leste', (req, res, ctx) => {
-    const innslag = endringsloggKopi.find(({ id }) => id === req.body.endringslogginnslagId)
+  http.post<never, { endringslogginnslagId: string }>('/api/endringslogg/leste', async ({ request }) => {
+    const { endringslogginnslagId } = await request.json()
+    const innslag = endringsloggKopi.find(({ id }) => id === endringslogginnslagId)
     if (innslag) {
       innslag.lest = new Date().toISOString()
     }
-    return res(ctx.status(204))
+    return respondNoContent()
   }),
-  rest.get('/api/endringslogg', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(endringsloggKopi))
+  http.get('/api/endringslogg', async () => {
+    return HttpResponse.json(endringsloggKopi)
   }),
 ]

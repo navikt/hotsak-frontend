@@ -5,7 +5,7 @@ import { HStack, HelpText, Radio, RadioGroup } from '@navikt/ds-react'
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Tekstfelt } from '../../../../../felleskomponenter/skjema/Tekstfelt'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
-import { KjøptBrille, VilkårsResultat } from '../../../../../types/types.internal'
+import { KjøptBrille as IKjøptBrille, VilkårsResultat } from '../../../../../types/types.internal'
 import { validator, validering } from './validering/validering'
 
 export function KjøptBrille() {
@@ -14,7 +14,7 @@ export function KjøptBrille() {
     register,
     watch,
     formState: { errors },
-  } = useFormContext<{ kjøptBrille: KjøptBrille }>()
+  } = useFormContext<{ kjøptBrille: IKjøptBrille }>()
 
   const vilkårOppfylt = watch('kjøptBrille.vilkårOppfylt')
 

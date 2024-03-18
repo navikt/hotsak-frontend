@@ -1,34 +1,37 @@
-import { rest } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
-import { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
+import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import kvittering from '../data/brillekvittering.pdf'
 import brilleseddel from '../data/brilleseddel.pdf'
 import kvitteringsside from '../data/kvitteringsside.pdf'
 import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
+import { respondForbidden, respondInternalServerError, respondNotFound, respondOK, respondPdf } from './response'
 
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
-  rest.get<any, { journalpostID: string }, any>(`/api/journalpost/:journalpostID`, async (req, res, ctx) => {
-    const journalpostID = req.params.journalpostID
-    const journalpost = await journalpostStore.hent(journalpostID)
+  http.get<{ journalpostId: string }>(`/api/journalpost/:journalpostId`, async ({ params }) => {
+    const journalpostId = params.journalpostId
+    const journalpost = await journalpostStore.hent(journalpostId)
 
+    await delay(200)
     if (journalpost) {
-      return res(ctx.delay(200), ctx.status(200), ctx.json(journalpost))
-    } else if (journalpostID === '403') {
-      return res(ctx.status(403))
-    } else if (journalpostID === '500') {
-      return res(ctx.status(500))
+      return HttpResponse.json(journalpost)
+    } else if (journalpostId === '403') {
+      return respondForbidden()
+    } else if (journalpostId === '500') {
+      return respondInternalServerError()
     } else {
-      return res(ctx.status(404))
+      return respondNotFound()
     }
   }),
-  rest.get<any, { journalpostID: string; dokumentID: string }, any>(
-    `/api/journalpost/:journalpostID/:dokumentID`,
-    async (req, res, ctx) => {
-      const dokumentID = req.params.dokumentID
-      let dokument
 
-      switch (dokumentID) {
+  http.get<{ journalpostId: string; dokumentId: string }>(
+    `/api/journalpost/:journalpostId/:dokumentId`,
+    async ({ params }) => {
+      const dokumentId = params.dokumentId
+
+      let dokument
+      switch (dokumentId) {
         case '2345':
           dokument = kvittering
           break
@@ -45,38 +48,38 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       }
 
       const buffer = await fetch(dokument).then((res) => res.arrayBuffer())
-      return res(
-        ctx.delay(500),
-        ctx.set('Content-Length', buffer.byteLength.toString()),
-        ctx.set('Content-Type', 'application/pdf'),
-        ctx.body(buffer)
-      )
+      await delay(500)
+      return respondPdf(buffer)
     }
   ),
-  rest.post<JournalføringRequest, any, OpprettetSakResponse>(
-    `/api/journalpost/:journalpostID/journalforing`,
-    async (req, res, ctx) => {
-      const journalføring = await req.json<JournalføringRequest>()
+
+  http.post<{ journalpostId: string }, JournalføringRequest, OpprettetSakResponse>(
+    `/api/journalpost/:journalpostId/journalforing`,
+    async ({ request }) => {
+      const journalføring = await request.json()
 
       const eksisternedeSakId = journalføring.sakId
       const tittel = journalføring.tittel
 
       await journalpostStore.journalfør(journalføring.journalpostID, tittel)
+      await delay(500)
 
       if (eksisternedeSakId) {
-        barnebrillesakStore.knyttJournalpostTilSak(journalføring)
+        await barnebrillesakStore.knyttJournalpostTilSak(journalføring)
         await barnebrillesakStore.tildel(eksisternedeSakId)
-        return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: eksisternedeSakId }))
+        return HttpResponse.json({ sakId: eksisternedeSakId })
       } else {
         const sakId = await barnebrillesakStore.opprettSak(journalføring)
         await barnebrillesakStore.tildel(sakId)
 
-        return res(ctx.delay(500), ctx.status(200), ctx.json({ sakId: sakId.toString() }))
+        return HttpResponse.json({ sakId: sakId.toString() })
       }
     }
   ),
-  rest.post<any, { oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async (req, res, ctx) => {
-    await journalpostStore.tildel(req.params.oppgaveId)
-    return res(ctx.delay(500), ctx.status(200))
+
+  http.post<{ oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+    await journalpostStore.tildel(params.oppgaveId)
+    await delay(500)
+    return respondOK()
   }),
 ]

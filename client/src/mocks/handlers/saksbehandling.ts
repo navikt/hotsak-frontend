@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
 import {
   Artikkel,
@@ -9,83 +9,89 @@ import {
   VedtakPayload,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
+import {
+  respondForbidden,
+  respondInternalServerError,
+  respondNotFound,
+  respondOK,
+  respondUnauthorized,
+} from './response'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
-  rest.post<any, { sakId: string }, any>(`/api/sak/:sakId/tildeling`, async (req, res, ctx) => {
-    const { sakId } = req.params
+  http.post<{ sakId: string }>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
+    const { sakId } = params
+    await delay(500)
     if (await sakStore.tildel(sakId)) {
-      return res(ctx.delay(500), ctx.status(200))
+      return respondOK()
     }
     if (await barnebrillesakStore.tildel(sakId)) {
-      return res(ctx.delay(500), ctx.status(200))
+      return respondOK()
     }
-    return res(ctx.delay(500), ctx.status(404))
+    return respondNotFound()
   }),
-  rest.delete<any, { sakId: string }, any>(`/api/sak/:sakId/tildeling`, async (req, res, ctx) => {
-    const { sakId } = req.params
+
+  http.delete<{ sakId: string }>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
+    const { sakId } = params
     if (await sakStore.frigi(sakId)) {
-      return res(ctx.status(200))
+      return respondOK()
     }
     if (await barnebrillesakStore.frigi(sakId)) {
-      return res(ctx.status(200))
+      return respondOK()
     }
-    return res(ctx.status(404))
+    return respondNotFound()
   }),
-  rest.get<any, { sakId: string }, any>(`/api/sak/:sakId`, async (req, res, ctx) => {
-    const { sakId } = req.params
+
+  http.get<{ sakId: string }>(`/api/sak/:sakId`, async ({ params }) => {
+    const { sakId } = params
     if (sakId === '666') {
-      return res(ctx.status(403), ctx.text('Du har ikke tilgang til saker tilhørende andre hjelpemiddelsentraler.'))
+      return respondForbidden()
     }
     if (sakId === '999') {
-      return res(ctx.status(401), ctx.text('Unauthorized.'))
+      return respondUnauthorized()
     }
     if (sakId === '500') {
-      return res(ctx.status(500), ctx.text('Teknisk feil'))
+      return respondInternalServerError()
     }
-    const sak = await sakStore.hent(sakId)
 
+    const sak = await sakStore.hent(sakId)
     if (sak) {
-      return res(
-        //ctx.delay(2000),
-        ctx.status(200),
-        ctx.json({ kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER, data: sak })
-      )
+      return HttpResponse.json({ kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER, data: sak })
     }
+
     const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
-      return res(
-        //ctx.delay(200),
-        ctx.status(200),
-        ctx.json({
-          kanTildeles:
-            barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
-            barnebrillesak.status === OppgaveStatusType.AVVENTER_GODKJENNER,
-          data: barnebrillesak,
-        })
-      )
+      return HttpResponse.json({
+        kanTildeles:
+          barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
+          barnebrillesak.status === OppgaveStatusType.AVVENTER_GODKJENNER,
+        data: barnebrillesak,
+      })
     }
-    return res(/*ctx.delay(200),*/ ctx.status(404))
+
+    return respondNotFound()
   }),
-  rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/historikk`, async (req, res, ctx) => {
-    const { sakId } = req.params
+
+  http.get<any, { sakId: string }, any>(`/api/sak/:sakId/historikk`, async ({ params }) => {
+    const { sakId } = params
     const hendelser = await Promise.all([sakStore.hentHendelser(sakId), barnebrillesakStore.hentHendelser(sakId)])
-    return res(/*ctx.delay(200),*/ ctx.status(200), ctx.json(hendelser.flat()))
+    return HttpResponse.json(hendelser.flat())
   }),
-  rest.get<any, { sakId: string }, any>(`/api/sak/:sakId/dokumenter`, async (req, res, ctx) => {
-    const { sakId } = req.params
-    const dokumentType = req.url.searchParams.get('type')
+
+  http.get<{ sakId: string }>(`/api/sak/:sakId/dokumenter`, async ({ request, params }) => {
+    const { sakId } = params
+    const url = new URL(request.url)
+    const dokumentType = url.searchParams.get('type')
 
     // Hvis ingen type er angitt som query param, bruker gammel oppførsel som henter journalposter fra sak.
     // Ligger her for å bevare bakoverkompabilitet
     // På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra joark.
     if (!dokumentType) {
       const sak = await barnebrillesakStore.hent(sakId)
-
       if (!sak) {
-        return res(ctx.status(404))
+        return respondNotFound()
       }
-      const journalposter = sak.journalposter
 
+      const journalposter = sak.journalposter
       const dokumenter = await Promise.all(
         journalposter.map(async (journalpostID) => {
           const journalpostDokument = await journalpostStore.hent(journalpostID)
@@ -95,48 +101,50 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
         })
       )
 
-      return res(ctx.status(200), ctx.json(dokumenter.flat()))
+      return HttpResponse.json(dokumenter.flat())
     } else {
-      const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId /*, dokumentType*/)
-      return res(ctx.status(200), ctx.json(saksdokumenter))
+      const saksdokumenter = await barnebrillesakStore.hentSaksdokumenter(sakId) // dokumentType
+      return HttpResponse.json(saksdokumenter)
     }
   }),
-  rest.put<VedtakPayload, { sakId: string }, any>('/api/sak/:sakId/vedtak', async (req, res, ctx) => {
-    const sakId = req.params.sakId
-    const status = req.body.status
 
-    sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
-    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
+  http.put<{ sakId: string }, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ request, params }) => {
+    const sakId = params.sakId
+    const { status } = await request.json()
+    await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
+    return respondOK()
   }),
-  rest.put<{ søknadsbeskrivelse: any }, { sakId: string }, any>(
-    '/api/sak/:sakId/tilbakeforing',
-    async (req, res, ctx) => {
-      const sakId = req.params.sakId
-      sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
-      return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
-    }
-  ),
-  rest.put<{ status: OppgaveStatusType }, { sakId: string }, any>('/api/sak/:sakId/status', async (req, res, ctx) => {
-    const sakId = req.params.sakId
-    const status = req.body.status
-    barnebrillesakStore.oppdaterStatus(sakId, status)
-    barnebrillesakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
-    return res(/*ctx.delay(300),*/ ctx.status(200))
+
+  http.put<{ sakId: string }>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
+    const sakId = params.sakId
+    await sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
+    return respondOK()
   }),
-  rest.put<{ tilbakemelding: any; begrunnelse: any }, { sakId: string }>(
+
+  http.put<{ sakId: string }, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
+    const sakId = params.sakId
+    const { status } = await request.json()
+    await barnebrillesakStore.oppdaterStatus(sakId, status)
+    await barnebrillesakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
+    return respondOK()
+  }),
+
+  http.put<{ sakId: string }, { tilbakemelding: any; begrunnelse: any }>(
     '/api/bestilling/:sakId/avvisning',
-    async (req, res, ctx) => {
-      sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVIST)
-      return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
+    async ({ params }) => {
+      sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVIST)
+      return respondOK()
     }
   ),
-  rest.get(`/api/oppgaver`, async (req, res, ctx) => {
-    const statusFilter = req.url.searchParams.get('status')
-    const sakerFilter = req.url.searchParams.get('saksbehandler')
-    const områdeFilter = req.url.searchParams.get('område')
-    const sakstypeFilter = req.url.searchParams.get('type')
-    const currentPage = Number(req.url.searchParams.get('page'))
-    const pageSize = Number(req.url.searchParams.get('limit'))
+
+  http.get(`/api/oppgaver`, async ({ request }) => {
+    const url = new URL(request.url)
+    const statusFilter = url.searchParams.get('status')
+    const sakerFilter = url.searchParams.get('saksbehandler')
+    const områdeFilter = url.searchParams.get('område')
+    const sakstypeFilter = url.searchParams.get('type')
+    const currentPage = Number(url.searchParams.get('page'))
+    const pageSize = Number(url.searchParams.get('limit'))
 
     const startIndex = currentPage - 1
     const endIndex = startIndex + pageSize
@@ -165,31 +173,36 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       currentPage: currentPage,
     }
 
-    return res(/*ctx.delay(200),*/ ctx.status(200), ctx.json(response))
+    return HttpResponse.json(response)
   }),
-  rest.put<any, { sakId: string }, any>('/api/bestilling/:sakId/ferdigstilling', (req, res, ctx) => {
-    sakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.FERDIGSTILT)
-    return res(/*ctx.delay(500),*/ ctx.status(200), ctx.json({}))
+
+  http.put<any, { sakId: string }, any>('/api/bestilling/:sakId/ferdigstilling', async ({ params }) => {
+    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
+    return HttpResponse.json({})
   }),
-  rest.put<EndreHjelpemiddelRequest, { sakId: string }, any>('/api/bestilling/:sakId', async (req, res, ctx) => {
-    await req.json<EndreHjelpemiddelRequest>()
-    return res(ctx.status(200), ctx.json({}))
+
+  http.put<{ sakId: string }, EndreHjelpemiddelRequest>('/api/bestilling/:sakId', async ({ request }) => {
+    await request.json()
+    return HttpResponse.json({})
   }),
-  rest.post<any, { sakId: string }, any>('/api/sak/:sakId/vilkarsvurdering', async (req, res, ctx) => {
-    await barnebrillesakStore.oppdaterSteg(req.params.sakId, StegType.FATTE_VEDTAK)
-    return res(/*ctx.delay(1000),*/ ctx.status(200), ctx.json({}))
+
+  http.post<{ sakId: string }>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {
+    await barnebrillesakStore.oppdaterSteg(params.sakId, StegType.FATTE_VEDTAK)
+    return HttpResponse.json({})
   }),
-  rest.post<any, { sakId: string }, any>('/api/sak/:sakId/brevsending', async (req, res, ctx) => {
-    await barnebrillesakStore.lagreSaksdokument(req.params.sakId, 'Innhent opplysninger')
-    await barnebrillesakStore.oppdaterStatus(req.params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
-    await barnebrillesakStore.fjernBrevtekst(req.params.sakId)
-    return res(/*ctx.delay(3000),*/ ctx.status(200), ctx.json({}))
+
+  http.post<any, { sakId: string }, any>('/api/sak/:sakId/brevsending', async ({ params }) => {
+    await barnebrillesakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
+    await barnebrillesakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
+    await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    return HttpResponse.json({})
   }),
-  rest.get<any, { sakId: string }, Artikkel[]>('/api/sak/:sakId/artikler', async (req, res, ctx) => {
-    const sak = await sakStore.hent(req.params.sakId)
+
+  http.get<{ sakId: string }, any, Artikkel[]>('/api/sak/:sakId/artikler', async ({ params }) => {
+    const sak = await sakStore.hent(params.sakId)
 
     if (!sak) {
-      return res(ctx.status(404))
+      return respondNotFound() as any // fixme
     }
 
     const artikler: Artikkel[] = sak?.hjelpemidler
@@ -206,6 +219,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
         return [artikkel, ...tilbehørArtikler]
       })
       .flat()
-    return res(ctx.status(200), ctx.json(artikler))
+
+    return HttpResponse.json(artikler)
   }),
 ]

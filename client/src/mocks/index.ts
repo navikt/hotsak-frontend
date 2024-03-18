@@ -3,7 +3,7 @@ export async function initMsw(): Promise<unknown> {
     return
   }
 
-  const { setupWorker } = await import('msw')
+  const { setupWorker } = await import('msw/browser')
   const { setupStore } = await import('./data')
   const { setupHandlers } = await import('./handlers')
 
@@ -51,7 +51,9 @@ export async function initMsw(): Promise<unknown> {
   }
 
   const worker = setupWorker(...setupHandlers(store))
-  worker.printHandlers()
+  worker.listHandlers().forEach((handler) => {
+    console.debug(handler.info.header)
+  })
   return worker.start({
     onUnhandledRequest: 'bypass',
   })

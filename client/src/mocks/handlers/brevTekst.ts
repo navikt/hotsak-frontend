@@ -1,34 +1,31 @@
-import { rest } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
-import { BrevTekst, Brevtype } from '../../types/types.internal'
-import { StoreHandlersFactory } from '../data'
+import type { BrevTekst, Brevtype } from '../../types/types.internal'
+import type { StoreHandlersFactory } from '../data'
+import { respondCreated, respondOK } from './response'
 
 type NyBrevtekst = Pick<BrevTekst, 'brevtype' | 'data'>
 
 export const brevtekstHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
-  rest.post<NyBrevtekst, { sakId: string }>(`/api/sak/:sakId/brevutkast`, async (req, res, ctx) => {
-    const { brevtype, data } = await req.json<NyBrevtekst>()
-    await barnebrillesakStore.lagreBrevtekst(req.params.sakId, brevtype, data.brevtekst)
-    return res(ctx.delay(500), ctx.status(201))
+  http.post<{ sakId: string }, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
+    const { brevtype, data } = await request.json()
+    await barnebrillesakStore.lagreBrevtekst(params.sakId, brevtype, data.brevtekst)
+    return respondCreated()
   }),
-  rest.delete<any, { sakId: string; brevtype: Brevtype }>(
-    `/api/sak/:sakId/brevutkast/:brevtype`,
-    async (req, res, ctx) => {
-      barnebrillesakStore.fjernBrevtekst(req.params.sakId)
-      return res(ctx.delay(400), ctx.status(200))
-    }
-  ),
-  rest.get<undefined, { sakId: string }>(`/api/sak/:sakId/brevutkast/:brevtype`, async (req, res, ctx) => {
-    const brevTekst = await barnebrillesakStore.hentBrevtekst(req.params.sakId)
 
+  http.delete<{ sakId: string; brevtype: Brevtype }>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
+    await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    await delay(500)
+    return respondOK()
+  }),
+
+  http.get<{ sakId: string; brevtype: Brevtype }>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
+    const brevTekst = await barnebrillesakStore.hentBrevtekst(params.sakId)
+    await delay(500)
     if (brevTekst) {
-      return res(ctx.delay(500), ctx.status(200), ctx.json(brevTekst))
+      return HttpResponse.json(brevTekst)
     } else {
-      return res(
-        ctx.delay(200),
-        ctx.status(200),
-        ctx.json({ sakId: req.params.sakId, brevtype: '', data: { brevtekst: '' } })
-      )
+      return HttpResponse.json({ sakId: params.sakId, brevtype: '', data: { brevtekst: '' } })
     }
   }),
 ]

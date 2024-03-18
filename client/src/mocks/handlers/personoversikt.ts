@@ -1,14 +1,16 @@
-import { rest } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
+import { respondNotFound } from './response'
 
 export const personoversiktHandlers: StoreHandlersFactory = ({ personStore }) => [
-  rest.post<{ brukersFodselsnummer: string }>(`/api/person`, async (req, res, ctx) => {
-    const { brukersFodselsnummer } = await req.json()
+  http.post<never, { brukersFodselsnummer: string }>(`/api/person`, async ({ request }) => {
+    const { brukersFodselsnummer } = await request.json()
     const person = await personStore.hent(brukersFodselsnummer)
+    await delay(1000)
     if (!person) {
-      return res(ctx.status(404), ctx.text('Person ikke funnet'))
+      return respondNotFound()
     }
-    return res(ctx.delay(1000), ctx.status(200), ctx.json(person))
+    return HttpResponse.json(person)
   }),
 ]

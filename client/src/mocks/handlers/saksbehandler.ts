@@ -1,10 +1,11 @@
-import { rest } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
 
 export const saksbehandlerHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) => [
-  rest.get('/api/saksbehandler', async (req, res, ctx) => {
+  http.get('/api/saksbehandler', async () => {
     const innloggetSaksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
-    return res(ctx.delay(250), ctx.status(200), ctx.json(innloggetSaksbehandler))
+    await delay(250)
+    return HttpResponse.json(innloggetSaksbehandler)
   }),
 ]

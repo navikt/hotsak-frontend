@@ -1,12 +1,13 @@
-import { graphql } from 'msw'
+import { graphql, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
 
 export const finnHjelpemiddelHandlers: StoreHandlersFactory = ({ hjelpemiddelStore }) => [
-  graphql.query('HentProdukter', async (req, res, ctx) => {
-    const { hmsnrs } = req.variables
+  graphql.query('HentProdukter', async ({ variables }) => {
+    const { hmsnrs } = variables
     const hjelpemiddel = await hjelpemiddelStore.hent(hmsnrs[0])
 
+    /*
     const mockHjelpemiddel = {
       hmsArtNr: '112233',
       articleName: 'Hjelpemiddelnavn',
@@ -18,7 +19,10 @@ export const finnHjelpemiddelHandlers: StoreHandlersFactory = ({ hjelpemiddelSto
         },
       ],
     }
+    */
 
-    return res(ctx.data({ products: hjelpemiddel ? [hjelpemiddel] : [] }))
+    return HttpResponse.json({
+      data: { products: hjelpemiddel ? [hjelpemiddel] : [] },
+    })
   }),
 ]

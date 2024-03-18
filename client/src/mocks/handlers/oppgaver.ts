@@ -1,21 +1,24 @@
-import { rest } from 'msw'
-
+import { delay, http, HttpResponse } from 'msw'
 import dayjs from 'dayjs'
+
 import {
-    DokumentOppgaveStatusType,
-    OmrådeFilter,
-    OppgaverResponse,
-    Oppgavestatus,
-    Oppgavetype,
-    OppgaveV2,
+  DokumentOppgaveStatusType,
+  OmrådeFilter,
+  OppgaverResponse,
+  Oppgavestatus,
+  Oppgavetype,
+  OppgaveV2,
 } from '../../types/types.internal'
 import { formatName } from '../../utils/stringFormating'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore, oppgaveStore }) => [
-  rest.get(`/api/oppgaver-v2`, async (req, res, ctx) => {
-    const oppgavetype = req.url.searchParams.get('oppgavetype')
+  http.get(`/api/oppgaver-v2`, async ({ request }) => {
+    const url = new URL(request.url)
+    const oppgavetype = url.searchParams.get('oppgavetype')
+
+    await delay(200)
 
     // Midlertidig workaround frem til vi har en mer fungerende oppgavemodell i mocken.
     // Hvis oppgavetype er journalføring, kommer kallet fra dokumentlista og da viser vi førelpig journalføringer fra Journalføringstore
@@ -51,14 +54,14 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ journalpostStore, oppgav
         totalCount: oppgaver.length,
       }
 
-      return res(ctx.delay(200), ctx.status(200), ctx.json(pagedOppgaver))
+      return HttpResponse.json(pagedOppgaver)
     } else {
       const oppgaver = await oppgaveStore.alle()
       const pagedOppgaver: OppgaverResponse = {
         oppgaver: oppgaver,
         totalCount: oppgaver.length,
       }
-      return res(ctx.delay(200), ctx.status(200), ctx.json(pagedOppgaver))
+      return HttpResponse.json(pagedOppgaver)
     }
   }),
 ]

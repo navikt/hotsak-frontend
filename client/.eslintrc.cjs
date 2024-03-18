@@ -1,9 +1,7 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -14,14 +12,14 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
-    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'react/display-name': 0,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 0,
   },
   settings: {
     react: {
-      version: '17',
+      version: '18',
     },
   },
 }

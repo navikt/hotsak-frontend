@@ -1,0 +1,12 @@
+version: '3'
+services:
+  hotsak-frontend:
+    build: .
+    image: 'hotsak-frontend'
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: '3000'
+      NODE_ENV: 'development'
+      NAIS_CLUSTER_NAME: 'local'
+      USE_MSW: 'true'

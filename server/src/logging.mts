@@ -1,25 +1,38 @@
 import fs from 'fs'
-import winston from 'winston'
+import { LoggerOptions, pino, stdSerializers, transport } from 'pino'
 
-function secureLogsPath(): string {
-  return fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log'
+const options: LoggerOptions = {
+  timestamp() {
+    return `,"@timestamp":"${new Date(Date.now()).toISOString()}"`
+  },
+  level: 'info',
+  messageKey: 'message',
+  formatters: {
+    level(label) {
+      return { level: label }
+    },
+    log(object) {
+      if (object.err instanceof Error) {
+        const err = stdSerializers.err(object.err)
+        object.type = err.type
+        object.message = err.message
+        object.stack_trace = err.stack
+      }
+      delete object.err
+      return object
+    },
+  },
 }
 
-const format = winston.format.combine(
-  winston.format.errors({ stack: true }),
-  winston.format.timestamp({ alias: '@timestamp' }),
-  winston.format.json()
-)
-
 export const logger = {
-  stdout: winston.createLogger({
-    level: 'info',
-    format,
-    transports: [new winston.transports.Console()],
-  }),
-  sikker: winston.createLogger({
-    level: 'info',
-    format,
-    transports: [new winston.transports.File({ filename: secureLogsPath(), maxsize: 5242880 })],
-  }),
+  stdout: pino(options),
+  sikker: pino(
+    options,
+    transport({
+      target: 'pino/file',
+      options: {
+        destination: fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log',
+      },
+    })
+  ),
 }

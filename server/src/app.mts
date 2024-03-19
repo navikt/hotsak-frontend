@@ -1,7 +1,7 @@
 import { logger } from './logging.mjs'
 import { ipAddressFromRequest } from './ipAddressFromRequest.mjs'
 import { reverseProxy } from './reverseProxy.mjs'
-import express from 'express'
+import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { getToken, validateAzureToken } from '@navikt/oasis'
@@ -18,6 +18,7 @@ app.get('/isalive', (_, res) => {
 })
 
 app.get('/isready', (_, res) => {
+  throw new Error('Fail!')
   res.type('text/plain')
   res.send('READY')
 })
@@ -68,5 +69,19 @@ const htmlPath = path.join(distPath, 'index.html')
 
 app.use(express.static(distPath))
 app.use('/*', express.static(htmlPath))
+
+const errorRequestHandler: ErrorRequestHandler = (err, _, res, next) => {
+  logger.stdout.error(err)
+  let message = 'unknown'
+  if (typeof err === 'string') {
+    message = err
+  } else if (err instanceof Error) {
+    message = err.message
+  }
+  res.type('text/plain')
+  res.status(500).send(message)
+}
+
+app.use(errorRequestHandler)
 
 export { app }

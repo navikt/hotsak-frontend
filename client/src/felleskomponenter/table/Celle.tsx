@@ -61,13 +61,13 @@ export const LinkCell = React.memo(({ to, value, id, minLength }: LinkCellProps)
     <div data-for={id} data-tip={value}>
       {to ? (
         <Link to={to}>
-          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
+          <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
             <TekstMedEllipsis>{value}</TekstMedEllipsis>
           </TooltipWrapper>
         </Link>
       ) : (
         <>
-          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
+          <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
             <TekstMedEllipsis>{value}</TekstMedEllipsis>
           </TooltipWrapper>
         </>
@@ -78,7 +78,7 @@ export const LinkCell = React.memo(({ to, value, id, minLength }: LinkCellProps)
 
 export const EllipsisCell = React.memo(({ value, minLength }: EllipsisCellProps) => {
   return (
-    <TooltipWrapper visTooltip={value.length > minLength} content={value}>
+    <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
       <TekstMedEllipsis>{value}</TekstMedEllipsis>
     </TooltipWrapper>
   )

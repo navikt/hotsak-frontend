@@ -18,7 +18,6 @@ app.get('/isalive', (_, res) => {
 })
 
 app.get('/isready', (_, res) => {
-  throw new Error('Fail!')
   res.type('text/plain')
   res.send('READY')
 })

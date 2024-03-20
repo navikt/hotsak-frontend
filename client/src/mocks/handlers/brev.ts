@@ -1,17 +1,17 @@
 import { delay, http } from 'msw'
 
-import { Brevtype } from '../../types/types.internal'
+import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import innvilgelsesbrev from '../data/innvilgelsesBrev.pdf'
 import manglerDokumentasjonBrev from '../data/merinfobrev.pdf'
-import { respondPdf } from './response'
+import { respondNoContent, respondPdf } from './response'
 import type { SakParams } from './params'
 
 interface BrevParams extends SakParams {
   brevtype: string
 }
 
-export const brevHandlers: StoreHandlersFactory = () => [
+export const brevHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   http.get<BrevParams>(`/api/sak/:sakId/brev/:brevtype`, async ({ params }) => {
     let buffer: ArrayBuffer
@@ -22,5 +22,12 @@ export const brevHandlers: StoreHandlersFactory = () => [
     }
     await delay(1000)
     return respondPdf(buffer)
+  }),
+
+  http.post<SakParams>('/api/sak/:sakId/brevsending', async ({ params }) => {
+    await barnebrillesakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
+    await barnebrillesakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
+    await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    return respondNoContent()
   }),
 ]

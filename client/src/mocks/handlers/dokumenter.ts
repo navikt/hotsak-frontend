@@ -6,7 +6,7 @@ import kvittering from '../data/brillekvittering.pdf'
 import brilleseddel from '../data/brilleseddel.pdf'
 import kvitteringsside from '../data/kvitteringsside.pdf'
 import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
-import { respondForbidden, respondInternalServerError, respondNotFound, respondOK, respondPdf } from './response'
+import { respondForbidden, respondInternalServerError, respondNoContent, respondNotFound, respondPdf } from './response'
 
 interface JournalpostParams {
   journalpostId: string
@@ -85,6 +85,6 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
   http.post<{ oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     await journalpostStore.tildel(params.oppgaveId)
     await delay(500)
-    return respondOK()
+    return respondNoContent()
   }),
 ]

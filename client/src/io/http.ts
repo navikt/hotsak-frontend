@@ -89,7 +89,7 @@ const save = async (url: string, method: string, data: any, headers?: Headers): 
     },
     body: JSON.stringify(data),
   })
-  if (response.status > 400) {
+  if (!response.ok) {
     const message = await getErrorMessage(response)
     throw new ResponseError(response.status, message)
   }
@@ -121,7 +121,7 @@ export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
   }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
-  if (response.status >= 400) {
+  if (!response.ok) {
     const errorMessage = await getErrorMessage(response)
     throw new ResponseError(response.status, errorMessage)
   }
@@ -147,7 +147,7 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
   }
   const response = await fetch(`${baseUrl}/${url}`, headers)
 
-  if (response.status >= 400) {
+  if (!response.ok) {
     const errorMessage = await getErrorMessage(response)
 
     throw new ResponseError(response.status, errorMessage)

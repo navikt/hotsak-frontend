@@ -1,53 +1,47 @@
 import { delay, http, HttpResponse } from 'msw'
 
-import {
-  Artikkel,
-  EndreHjelpemiddelRequest,
-  OppgaveStatusType,
-  SakerFilter,
-  StegType,
-  VedtakPayload,
-} from '../../types/types.internal'
+import { Artikkel, OppgaveStatusType, StegType, VedtakPayload } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import {
   respondForbidden,
   respondInternalServerError,
+  respondNoContent,
   respondNotFound,
-  respondOK,
   respondUnauthorized,
 } from './response'
+import type { SakParams } from './params'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
-  http.post<{ sakId: string }>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
+  http.post<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
     const { sakId } = params
     await delay(500)
     if (await sakStore.tildel(sakId)) {
-      return respondOK()
+      return respondNoContent()
     }
     if (await barnebrillesakStore.tildel(sakId)) {
-      return respondOK()
+      return respondNoContent()
     }
     return respondNotFound()
   }),
 
-  http.delete<{ sakId: string }>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
+  http.delete<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
     const { sakId } = params
     if (await sakStore.frigi(sakId)) {
-      return respondOK()
+      return respondNoContent()
     }
     if (await barnebrillesakStore.frigi(sakId)) {
-      return respondOK()
+      return respondNoContent()
     }
     return respondNotFound()
   }),
 
-  http.get<{ sakId: string }>(`/api/sak/:sakId`, async ({ params }) => {
+  http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
     const { sakId } = params
-    if (sakId === '666') {
-      return respondForbidden()
-    }
-    if (sakId === '999') {
+    if (sakId === '401') {
       return respondUnauthorized()
+    }
+    if (sakId === '403') {
+      return respondForbidden()
     }
     if (sakId === '500') {
       return respondInternalServerError()
@@ -71,13 +65,13 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return respondNotFound()
   }),
 
-  http.get<any, { sakId: string }, any>(`/api/sak/:sakId/historikk`, async ({ params }) => {
+  http.get<SakParams>(`/api/sak/:sakId/historikk`, async ({ params }) => {
     const { sakId } = params
     const hendelser = await Promise.all([sakStore.hentHendelser(sakId), barnebrillesakStore.hentHendelser(sakId)])
     return HttpResponse.json(hendelser.flat())
   }),
 
-  http.get<{ sakId: string }>(`/api/sak/:sakId/dokumenter`, async ({ request, params }) => {
+  http.get<SakParams>(`/api/sak/:sakId/dokumenter`, async ({ request, params }) => {
     const { sakId } = params
     const url = new URL(request.url)
     const dokumentType = url.searchParams.get('type')
@@ -108,79 +102,33 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     }
   }),
 
-  http.put<{ sakId: string }, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ request, params }) => {
+  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ request, params }) => {
     const sakId = params.sakId
     const { status } = await request.json()
     await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
-    return respondOK()
+    return respondNoContent()
   }),
 
-  http.put<{ sakId: string }>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
+  http.put<SakParams>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
     const sakId = params.sakId
     await sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
-    return respondOK()
+    return respondNoContent()
   }),
 
-  http.put<{ sakId: string }, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
+  http.put<SakParams, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
     const sakId = params.sakId
     const { status } = await request.json()
     await barnebrillesakStore.oppdaterStatus(sakId, status)
     await barnebrillesakStore.lagreHendelse(sakId, 'Fortsetter behandling av sak')
-    return respondOK()
+    return respondNoContent()
   }),
 
-  http.get(`/api/oppgaver`, async ({ request }) => {
-    const url = new URL(request.url)
-    const statusFilter = url.searchParams.get('status')
-    const sakerFilter = url.searchParams.get('saksbehandler')
-    const områdeFilter = url.searchParams.get('område')
-    const sakstypeFilter = url.searchParams.get('type')
-    const currentPage = Number(url.searchParams.get('page'))
-    const pageSize = Number(url.searchParams.get('limit'))
-
-    const startIndex = currentPage - 1
-    const endIndex = startIndex + pageSize
-    const oppgaver = [...(await sakStore.oppgaver()), ...(await barnebrillesakStore.oppgaver())]
-    const filtrerteOppgaver = oppgaver
-      .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))
-      .filter((oppgave) =>
-        sakerFilter && sakerFilter === SakerFilter.MINE ? oppgave.saksbehandler?.navn === 'Silje Saksbehandler' : true
-      )
-      .filter((oppgave) =>
-        sakerFilter && sakerFilter === SakerFilter.UFORDELTE
-          ? oppgave.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER
-          : true
-      )
-      .filter((oppgave) =>
-        områdeFilter ? oppgave.bruker.funksjonsnedsettelser.includes(områdeFilter.toLowerCase()) : true
-      )
-      .filter((oppgave) => (sakstypeFilter ? oppgave.sakstype.toLowerCase() === sakstypeFilter.toLowerCase() : true))
-
-    const filterApplied = oppgaver.length !== filtrerteOppgaver.length
-
-    const response = {
-      oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
-      totalCount: !filterApplied ? oppgaver.length : filtrerteOppgaver.length,
-      pageSize: pageSize,
-      currentPage: currentPage,
-    }
-
-    return HttpResponse.json(response)
-  }),
-
-  http.post<{ sakId: string }>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {
+  http.post<SakParams>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {
     await barnebrillesakStore.oppdaterSteg(params.sakId, StegType.FATTE_VEDTAK)
-    return HttpResponse.json({})
+    return respondNoContent()
   }),
 
-  http.post<any, { sakId: string }, any>('/api/sak/:sakId/brevsending', async ({ params }) => {
-    await barnebrillesakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
-    await barnebrillesakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
-    await barnebrillesakStore.fjernBrevtekst(params.sakId)
-    return HttpResponse.json({})
-  }),
-
-  http.get<{ sakId: string }, any, Artikkel[]>('/api/sak/:sakId/artikler', async ({ params }) => {
+  http.get<SakParams, never, Artikkel[]>('/api/sak/:sakId/artikler', async ({ params }) => {
     const sak = await sakStore.hent(params.sakId)
 
     if (!sak) {

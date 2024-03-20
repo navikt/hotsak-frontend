@@ -1,12 +1,5 @@
 import { HttpResponse } from 'msw'
 
-/**
- * @deprecated 200 skal ha response body
- */
-export function respondOK(): Response {
-  return new Response(null, { status: 200 })
-}
-
 export function respondCreated(location?: string): Response {
   return new Response(null, {
     status: 201,

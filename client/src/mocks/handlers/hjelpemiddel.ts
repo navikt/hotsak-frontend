@@ -3,11 +3,14 @@ import { http, HttpResponse } from 'msw'
 import type { StoreHandlersFactory } from '../data'
 import { respondNotFound } from './response'
 
+interface HjelpemiddelParams {
+  hmsnr: string
+}
+
 export const hjelpemiddelHandlers: StoreHandlersFactory = ({ hjelpemiddelStore }) => [
-  http.get<{ hmsnr: string }>(`/api/hjelpemiddel/:hmsnr`, async ({ params }) => {
+  http.get<HjelpemiddelParams>(`/api/hjelpemiddel/:hmsnr`, async ({ params }) => {
     const { hmsnr } = params
     const hjelpemiddel = await hjelpemiddelStore.hent(hmsnr)
-
     if (!hjelpemiddel) {
       return respondNotFound()
     }

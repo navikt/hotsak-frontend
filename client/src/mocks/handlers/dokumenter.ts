@@ -8,8 +8,16 @@ import kvitteringsside from '../data/kvitteringsside.pdf'
 import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
 import { respondForbidden, respondInternalServerError, respondNotFound, respondOK, respondPdf } from './response'
 
+interface JournalpostParams {
+  journalpostId: string
+}
+
+interface DokumentParams extends JournalpostParams {
+  dokumentId: string
+}
+
 export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
-  http.get<{ journalpostId: string }>(`/api/journalpost/:journalpostId`, async ({ params }) => {
+  http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)
 
@@ -25,35 +33,32 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     }
   }),
 
-  http.get<{ journalpostId: string; dokumentId: string }>(
-    `/api/journalpost/:journalpostId/:dokumentId`,
-    async ({ params }) => {
-      const dokumentId = params.dokumentId
+  http.get<DokumentParams>(`/api/journalpost/:journalpostId/:dokumentId`, async ({ params }) => {
+    const dokumentId = params.dokumentId
 
-      let dokument
-      switch (dokumentId) {
-        case '2345':
-          dokument = kvittering
-          break
-        case '3456':
-          dokument = brilleseddel
-          break
-        case '4567':
-          dokument = kvitteringsside
-          break
-        case '1234':
-        default:
-          dokument = pdfSoknad
-          break
-      }
-
-      const buffer = await fetch(dokument).then((res) => res.arrayBuffer())
-      await delay(500)
-      return respondPdf(buffer)
+    let dokument
+    switch (dokumentId) {
+      case '2345':
+        dokument = kvittering
+        break
+      case '3456':
+        dokument = brilleseddel
+        break
+      case '4567':
+        dokument = kvitteringsside
+        break
+      case '1234':
+      default:
+        dokument = pdfSoknad
+        break
     }
-  ),
 
-  http.post<{ journalpostId: string }, JournalføringRequest, OpprettetSakResponse>(
+    const buffer = await fetch(dokument).then((res) => res.arrayBuffer())
+    await delay(500)
+    return respondPdf(buffer)
+  }),
+
+  http.post<JournalpostParams, JournalføringRequest, OpprettetSakResponse>(
     `/api/journalpost/:journalpostId/journalforing`,
     async ({ request }) => {
       const journalføring = await request.json()

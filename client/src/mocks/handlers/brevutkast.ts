@@ -2,24 +2,29 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondCreated, respondOK } from './response'
+import { respondNoContent } from './response'
+import type { SakParams } from './params'
 
 type NyBrevtekst = Pick<BrevTekst, 'brevtype' | 'data'>
 
-export const brevtekstHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
-  http.post<{ sakId: string }, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
+interface BrevutkastParams extends SakParams {
+  brevtype: Brevtype
+}
+
+export const brevutkastHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
+  http.post<SakParams, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
     const { brevtype, data } = await request.json()
     await barnebrillesakStore.lagreBrevtekst(params.sakId, brevtype, data.brevtekst)
-    return respondCreated()
+    return respondNoContent()
   }),
 
-  http.delete<{ sakId: string; brevtype: Brevtype }>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
+  http.delete<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
     await barnebrillesakStore.fjernBrevtekst(params.sakId)
     await delay(500)
-    return respondOK()
+    return respondNoContent()
   }),
 
-  http.get<{ sakId: string; brevtype: Brevtype }>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
+  http.get<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
     const brevTekst = await barnebrillesakStore.hentBrevtekst(params.sakId)
     await delay(500)
     if (brevTekst) {

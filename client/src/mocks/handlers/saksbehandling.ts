@@ -129,14 +129,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return respondOK()
   }),
 
-  http.put<{ sakId: string }, { tilbakemelding: any; begrunnelse: any }>(
-    '/api/bestilling/:sakId/avvisning',
-    async ({ params }) => {
-      sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVIST)
-      return respondOK()
-    }
-  ),
-
   http.get(`/api/oppgaver`, async ({ request }) => {
     const url = new URL(request.url)
     const statusFilter = url.searchParams.get('status')
@@ -174,16 +166,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     }
 
     return HttpResponse.json(response)
-  }),
-
-  http.put<any, { sakId: string }, any>('/api/bestilling/:sakId/ferdigstilling', async ({ params }) => {
-    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.FERDIGSTILT)
-    return HttpResponse.json({})
-  }),
-
-  http.put<{ sakId: string }, EndreHjelpemiddelRequest>('/api/bestilling/:sakId', async ({ request }) => {
-    await request.json()
-    return HttpResponse.json({})
   }),
 
   http.post<{ sakId: string }>('/api/sak/:sakId/vilkarsvurdering', async ({ params }) => {

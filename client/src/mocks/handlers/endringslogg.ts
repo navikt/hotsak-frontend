@@ -97,6 +97,7 @@ export const endringsloggHandlers: StoreHandlersFactory = () => [
     }
     return respondNoContent()
   }),
+
   http.get('/api/endringslogg', async () => {
     return HttpResponse.json(endringsloggKopi)
   }),

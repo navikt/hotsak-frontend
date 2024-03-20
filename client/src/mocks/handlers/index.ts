@@ -1,7 +1,6 @@
 import type { StoreHandlersFactory } from '../data'
-import { brillekalkulatorHandlers } from './beregnSats'
+import { brillekalkulatorHandlers } from './brillekalkulator'
 import { brevHandlers } from './brev'
-import { brevtekstHandlers } from './brevTekst'
 import { dokumentHandlers } from './dokumenter'
 import { endringsloggHandlers } from './endringslogg'
 import { finnHjelpemiddelHandlers } from './finnHjelpemiddel'
@@ -9,17 +8,20 @@ import { hjelpemiddelHandlers } from './hjelpemiddel'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
 import { notatHandlers } from './notat'
 import { oppgaveHandlers } from './oppgaver'
-import { personoversiktHandlers } from './personoversikt'
+import { personHandlers } from './person'
 import { saksbehandlerHandlers } from './saksbehandler'
 import { saksbehandlingHandlers } from './saksbehandling'
 import { saksoversiktHandlers } from './saksoversikt'
 import { totrinnskontrollHandlers } from './totrinnskontroll'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering'
+import { bestillingHandlers } from './bestilling'
+import { brevutkastHandlers } from './brevutkast'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
+  ...bestillingHandlers(store),
   ...brevHandlers(store),
-  ...brevtekstHandlers(store),
+  ...brevutkastHandlers(store),
   ...brillekalkulatorHandlers(store),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
@@ -28,7 +30,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...hjelpemiddeloversiktHandlers(store),
   ...notatHandlers(store),
   ...oppgaveHandlers(store),
-  ...personoversiktHandlers(store),
+  ...personHandlers(store),
   ...saksbehandlerHandlers(store),
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),

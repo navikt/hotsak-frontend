@@ -1,3 +1,5 @@
+import { HttpResponse } from 'msw'
+
 /**
  * @deprecated 200 skal ha response body
  */
@@ -35,10 +37,11 @@ export function respondInternalServerError(): Response {
 }
 
 export function respondPdf(buffer: ArrayBuffer): Response {
-  return new Response(buffer, {
+  return HttpResponse.arrayBuffer(buffer, {
     headers: {
       'Content-Length': buffer.byteLength.toString(),
       'Content-Type': 'application/pdf',
     },
+    status: 200,
   })
 }

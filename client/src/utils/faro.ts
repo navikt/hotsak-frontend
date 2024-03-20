@@ -3,8 +3,6 @@ export async function initFaro(): Promise<void> {
     return
   }
 
-  console.log(`Setting up Faro with url: ${window.appSettings.FARO_URL}`)
-
   const {
     ConsoleInstrumentation,
     ErrorsInstrumentation,

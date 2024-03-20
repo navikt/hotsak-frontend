@@ -12,35 +12,23 @@ interface DataCelleProps {
   width: number
 }
 
-export const DataCelle: React.FC<DataCelleProps> = ({ children, width }) => {
+export function DataCelle({ children, width }: DataCelleProps) {
   return <DataCell width={width}>{children}</DataCell>
 }
 
 interface TekstCellProps {
-  value: string
-}
-
-interface EllipsisCellProps {
-  value: string
-  minLength: number
-}
-
-interface LinkCellProps {
-  to?: string
-  id: string
-  value: string
-  minLength: number
-}
-
-interface ExternalLinkCellProps {
-  to?: string
-  value: string
-  target: string
+  value?: string
 }
 
 export const TekstCell = React.memo(({ value }: TekstCellProps) => {
   return <Tekst>{value}</Tekst>
 })
+
+interface ExternalLinkCellProps {
+  to?: string
+  value?: string
+  target?: string
+}
 
 export const ExternalLinkCell = React.memo(({ to, value, target }: ExternalLinkCellProps) => {
   return (
@@ -56,18 +44,26 @@ export const ExternalLinkCell = React.memo(({ to, value, target }: ExternalLinkC
   )
 })
 
-export const LinkCell = React.memo(({ to, value, id, minLength }: LinkCellProps) => {
+interface LinkCellProps {
+  to?: string
+  id: string
+  value?: string
+  minLength: number
+}
+
+export const LinkCell = React.memo(({ to, id, minLength, ...rest }: LinkCellProps) => {
+  const value = rest.value ?? ''
   return (
     <div data-for={id} data-tip={value}>
       {to ? (
         <Link to={to}>
-          <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
+          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
             <TekstMedEllipsis>{value}</TekstMedEllipsis>
           </TooltipWrapper>
         </Link>
       ) : (
         <>
-          <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
+          <TooltipWrapper visTooltip={value.length > minLength} content={value}>
             <TekstMedEllipsis>{value}</TekstMedEllipsis>
           </TooltipWrapper>
         </>
@@ -76,9 +72,15 @@ export const LinkCell = React.memo(({ to, value, id, minLength }: LinkCellProps)
   )
 })
 
-export const EllipsisCell = React.memo(({ value, minLength }: EllipsisCellProps) => {
+interface EllipsisCellProps {
+  value?: string
+  minLength: number
+}
+
+export const EllipsisCell = React.memo(({ minLength, ...rest }: EllipsisCellProps) => {
+  const value = rest.value ?? ''
   return (
-    <TooltipWrapper visTooltip={!!value && value.length > minLength} content={value}>
+    <TooltipWrapper visTooltip={value.length > minLength} content={value}>
       <TekstMedEllipsis>{value}</TekstMedEllipsis>
     </TooltipWrapper>
   )

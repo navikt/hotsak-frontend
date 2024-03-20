@@ -55,7 +55,7 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
-    `${sakId}; ${capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}`
+    `${capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
   )
   //const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
 

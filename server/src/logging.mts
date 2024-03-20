@@ -8,17 +8,16 @@ const options: LoggerOptions = {
   level: 'info',
   messageKey: 'message',
   formatters: {
-    level(label) {
-      return { level: label }
+    level(label, number) {
+      return { level: label, level_value: number }
     },
     log(object) {
       if (object.err instanceof Error) {
         const err = stdSerializers.err(object.err)
-        object.type = err.type
         object.message = err.message
         object.stack_trace = err.stack
+        delete object.err
       }
-      delete object.err
       return object
     },
   },

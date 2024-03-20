@@ -15,6 +15,8 @@ import { Bosituasjon, Bruksarena, Formidler, Levering, PersonInfoKilde, Personin
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
+import { useOebsAdresser } from '../../personoversikt/useOebsAdresser'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 
 interface BrukerProps {
   person: Personinfo
@@ -90,6 +92,7 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
 }
 
 export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
+  const { adresser } = useOebsAdresser(person.fnr)
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
@@ -127,6 +130,21 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
         </Grid>
       </Container>
       <Strek />
+
+      <Eksperiment>
+        <Heading level="1" size="medium" spacing={true}>
+          Oebs-adresser
+        </Heading>
+        <Container>
+          {adresser.map((adresse) => (
+            <Grid key={adresse.leveringAddresse}>
+              <Etikett>Leveringadresse</Etikett>
+              {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
+            </Grid>
+          ))}
+        </Container>
+        <Strek />
+      </Eksperiment>
 
       <Heading level="1" size="medium" spacing={true}>
         Utlevering

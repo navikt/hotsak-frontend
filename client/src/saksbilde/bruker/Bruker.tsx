@@ -132,18 +132,22 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       <Strek />
 
       <Eksperiment>
-        <Heading level="1" size="medium" spacing={true}>
-          Oebs-adresser
-        </Heading>
-        <Container>
-          {adresser.map((adresse) => (
-            <Grid key={adresse.leveringAddresse}>
-              <Etikett>Leveringadresse</Etikett>
-              {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
-            </Grid>
-          ))}
-        </Container>
-        <Strek />
+        {adresser.length > 0 && (
+          <>
+            <Heading level="1" size="medium" spacing={true}>
+              Adresser fra OEBS
+            </Heading>
+            <Container>
+              {adresser.map((adresse) => (
+                <Grid key={adresse.leveringAddresse}>
+                  <Etikett>Leveringsadresse</Etikett>
+                  {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
+                </Grid>
+              ))}
+            </Container>
+            <Strek />
+          </>
+        )}
       </Eksperiment>
 
       <Heading level="1" size="medium" spacing={true}>
@@ -151,7 +155,7 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Heading>
       <Container>
         <Grid>
-          <Etikett>Leveringadresse</Etikett>
+          <Etikett>Leveringsadresse</Etikett>
           <LeveringsMåte levering={levering} brukerAdresse={adresse} />
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
           {levering.merknad && (

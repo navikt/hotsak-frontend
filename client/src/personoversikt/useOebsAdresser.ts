@@ -13,7 +13,9 @@ export interface OebsAdresse {
 
 export function useOebsAdresser(brukersFodselsnummer?: string) {
   const { data } = useSwr<{ data: OebsAdresse[] }>(
-    brukersFodselsnummer ? ['api/person/oebs-adresser', brukersFodselsnummer] : null,
+    window.appSettings.MILJO !== 'prod-gcp' && brukersFodselsnummer
+      ? ['api/person/oebs-adresser', brukersFodselsnummer]
+      : null,
     hentBrukerdataMedPost
   )
   return { adresser: data?.data ?? [] }

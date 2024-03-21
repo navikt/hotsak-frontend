@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@navikt/oasis": "3.2.2",
-    "express": "4.18.3",
+    "express": "4.19.1",
     "express-http-proxy": "2.0.0",
     "jose": "5.2.3",
     "node-fetch": "3.3.2",
@@ -34,7 +34,7 @@
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
     "tsx": "^4.7.1",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.3",
     "vitest": "^1.4.0"
   },
   "scripts": {

@@ -3,15 +3,11 @@ import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
 
-const FeilmeldingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-`
-
-export const AlertError: React.FC<{
+export interface AlertErrorProps {
   error: Error
-}> = (props) => {
+}
+
+export function AlertError(props: AlertErrorProps) {
   const { error } = props
   const error_: any = error
 
@@ -20,13 +16,20 @@ export const AlertError: React.FC<{
       throw error
     }
   }
+
   return (
     <FeilmeldingContainer>
       <Alert size="small" variant="error">
         {error.message
           ? error.message
-          : 'Klare ikke å hente saken. Dette kan skyldes en teknisk feil. Kontakt utviklerne i Digihot'}
+          : 'Klarte ikke å hente saken. Dette kan skyldes en teknisk feil. Kontakt utviklerne i DigiHoT.'}
       </Alert>
     </FeilmeldingContainer>
   )
 }
+
+const FeilmeldingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+`

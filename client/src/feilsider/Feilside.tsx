@@ -2,11 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Accordion, BodyShort, CopyButton, Heading, Link, Panel } from '@navikt/ds-react'
+import { useStackTrace } from './useStackTrace'
 
-import { isError } from '../utils/type'
+export interface FeilsideProps {
+  statusCode: number
+  error?: Error
+}
 
-export const Feilside: React.FC<{ statusCode: number; error?: Error }> = ({ statusCode, error }) => {
-  const utviklerinformasjon = hentUtviklerinformasjon(error)
+export function Feilside({ statusCode, error }: FeilsideProps) {
+  const stackTrace = useStackTrace(error)
   return (
     <Feilpanel>
       <Heading size="large" spacing>
@@ -16,17 +20,17 @@ export const Feilside: React.FC<{ statusCode: number; error?: Error }> = ({ stat
         401: <IkkeLoggetInn />,
         404: <IkkeFunnet />,
       }[statusCode] || <TekniskFeil />}
-      {utviklerinformasjon && (
+      {stackTrace && (
         <Accordion>
           <Accordion.Item>
             <Accordion.Header>Informasjon til utviklere</Accordion.Header>
             <Accordion.Content>
               <div style={{ display: 'flex' }}>
                 <div style={{ flex: 1 }}>
-                  <Code>{utviklerinformasjon}</Code>
+                  <Code>{stackTrace}</Code>
                 </div>
                 <div style={{ marginLeft: 10 }}>
-                  <CopyButton copyText={utviklerinformasjon} text="Kopier feilmelding" activeText="Kopiert" />
+                  <CopyButton copyText={stackTrace} text="Kopier feilmelding" activeText="Kopiert" />
                 </div>
               </div>
             </Accordion.Content>
@@ -50,43 +54,39 @@ const Code = styled.pre`
   white-space: pre-wrap;
 `
 
-const IkkeLoggetInn: React.FC = () => (
-  <>
-    <BodyShort spacing>Du må logge inn for å få tilgang til systemet.</BodyShort>
-    <BodyShort spacing>
-      <Link href="/">Gå til innloggingssiden</Link>.
-    </BodyShort>
-  </>
-)
+function IkkeLoggetInn() {
+  return (
+    <>
+      <BodyShort spacing>Du må logge inn for å få tilgang til systemet.</BodyShort>
+      <BodyShort spacing>
+        <Link href="/">Gå til innloggingssiden</Link>.
+      </BodyShort>
+    </>
+  )
+}
 
-const IkkeFunnet: React.FC = () => (
-  <>
-    <BodyShort spacing>
-      Beklager, siden kan være slettet eller flyttet, eller det var en feil i lenken som førte deg hit.
-    </BodyShort>
-    <BodyShort spacing>
-      Du kan bruke søket for å finne saker tilknyttet en person, eller gå <Link href="/">gå til oppgavelista</Link>.
-    </BodyShort>
-  </>
-)
+function IkkeFunnet() {
+  return (
+    <>
+      <BodyShort spacing>
+        Beklager, siden kan være slettet eller flyttet, eller det var en feil i lenken som førte deg hit.
+      </BodyShort>
+      <BodyShort spacing>
+        Du kan bruke søket for å finne saker tilknyttet en person, eller gå <Link href="/">gå til oppgavelista</Link>.
+      </BodyShort>
+    </>
+  )
+}
 
-const TekniskFeil: React.FC = () => (
-  <>
-    <BodyShort spacing>Beklager, det har skjedd en teknisk feil.</BodyShort>
-  </>
-)
+function TekniskFeil() {
+  return (
+    <>
+      <BodyShort spacing>Beklager, det har skjedd en teknisk feil.</BodyShort>
+    </>
+  )
+}
 
 const overskrift: Record<number, string> = {
   401: 'Ikke logget inn',
   404: 'Fant ikke siden',
-}
-
-function hentUtviklerinformasjon(error?: Error): string {
-  if (!isError(error)) {
-    return ''
-  }
-  if (isError(error.cause)) {
-    return `${error.stack}\nCaused by:\n${hentUtviklerinformasjon(error.cause)}`
-  }
-  return error.stack || ''
 }

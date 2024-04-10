@@ -4,7 +4,11 @@ import { isResponseError } from '../io/http'
 
 import { Feilside } from './Feilside'
 
-export const GlobalFeilside: React.FC<{ error: Error }> = ({ error }) => {
+export interface GlobalFeilsideProps {
+  error: Error
+}
+
+export function GlobalFeilside({ error }: GlobalFeilsideProps) {
   return (
     <>
       {isResponseError(error) ? (

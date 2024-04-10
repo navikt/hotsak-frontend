@@ -201,6 +201,6 @@ export class JournalpostStore extends Dexie {
       tittel,
       dokumenter: [{ ...dokument, tittel }],
       oppgave: {},
-    })
+    } as any) // fixme
   }
 }

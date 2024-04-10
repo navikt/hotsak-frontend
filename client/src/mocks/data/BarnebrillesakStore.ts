@@ -454,11 +454,12 @@ export class BarnebrillesakStore extends Dexie {
           vedtak: {
             vedtaksdato: nå,
             status: sak.vilkårsvurdering?.resultat === 'JA' ? VedtakStatusType.INNVILGET : VedtakStatusType.AVSLÅTT,
-            saksbehandlerNavn: sak.saksbehandler?.navn,
-            saksbehandlerRef: sak.saksbehandler?.id,
+            saksbehandlerNavn: sak.saksbehandler?.navn || '',
+            saksbehandlerRef: sak.saksbehandler?.id || '',
+            soknadUuid: '',
           },
           totrinnskontroll,
-        })
+        } as any) // fixme
         this.lagreHendelse(sakId, 'Vedtak fattet')
       }
 
@@ -474,7 +475,7 @@ export class BarnebrillesakStore extends Dexie {
           steg: StegType.REVURDERE,
           status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
           totrinnskontroll,
-        })
+        } as any) // fixme
         this.lagreHendelse(sakId, 'Sak returnert til saksbehandler')
       }
     })

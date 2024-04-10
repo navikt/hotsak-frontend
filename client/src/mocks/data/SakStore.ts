@@ -360,8 +360,9 @@ export class SakStore extends Dexie {
           vedtak: {
             vedtaksdato: nå,
             status: vedtakStatus,
-            saksbehandlerNavn: sak.saksbehandler?.navn,
-            saksbehandlerRef: sak.saksbehandler?.id,
+            saksbehandlerNavn: sak.saksbehandler?.navn || '',
+            saksbehandlerRef: sak.saksbehandler?.id || '',
+            soknadUuid: '',
           },
         })
       })

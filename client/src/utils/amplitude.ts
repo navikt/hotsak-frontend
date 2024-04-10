@@ -35,7 +35,7 @@ export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<stri
 }
 
 export async function initAmplitude(): Promise<void> {
-  if (!import.meta.env.PROD) return
+  if (!import.meta.env.PROD || window.appSettings.USE_MSW) return
   const { AMPLITUDE_API_KEY: apiKey, AMPLITUDE_SERVER_URL: serverUrl } = window.appSettings
   if (!(apiKey && serverUrl)) return
   const { init, track } = await import('@amplitude/analytics-browser')

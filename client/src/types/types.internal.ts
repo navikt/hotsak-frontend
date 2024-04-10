@@ -365,9 +365,9 @@ export interface HjelpemiddelArtikkel {
 export interface VedtakType {
   vedtaksdato: string
   status: VedtakStatusType
-  saksbehandlerOid: string
+  saksbehandlerRef: string
   saksbehandlerNavn: string
-  søknadsId: string
+  soknadUuid: string
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
 }
 

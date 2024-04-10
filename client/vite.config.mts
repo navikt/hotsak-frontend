@@ -40,6 +40,11 @@ function htmlPlugin({ development }: { development?: boolean }): Plugin {
   }
 }
 
+/**
+ * Sett til true for å gjøre kall til grunndata-search uten mock.
+ */
+const finnHjelpemiddelProxy = false
+
 // https://vitejs.dev/config/
 export default defineConfig((env) => ({
   base: '/',
@@ -54,14 +59,17 @@ export default defineConfig((env) => ({
   },
   server: {
     port: 3001,
-    /* Ta inn denne for å gjøre kall til grunndata-search uten mock.  */
-    /*proxy: {
-      '/finnhjelpemiddel-api': {
-        target: 'https://hm-grunndata-search.intern.dev.nav.no',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/finnhjelpemiddel-api/, ''),
-      },
-    },*/
+    proxy: finnHjelpemiddelProxy
+      ? {
+          '/finnhjelpemiddel-api': {
+            target: 'https://hm-grunndata-search.intern.dev.nav.no',
+            changeOrigin: true,
+            rewrite(path) {
+              return path.replace(/^\/finnhjelpemiddel-api/, '')
+            },
+          },
+        }
+      : undefined,
     strictPort: true,
   },
   test: {

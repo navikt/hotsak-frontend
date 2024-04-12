@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil'
 import { SWRConfig } from 'swr'
 
 import { DokumentProvider } from './oppgaveliste/dokumenter/DokumentContext'
-import Dokumentliste from './oppgaveliste/dokumenter/Dokumentliste'
+import { Dokumentliste } from './oppgaveliste/dokumenter/Dokumentliste'
 import { ManuellJournalfør } from './oppgaveliste/manuellJournalføring/ManuellJournalføring'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 
@@ -17,7 +17,7 @@ import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { Eksperiment } from './felleskomponenter/Eksperiment'
-import Oppgavebenk from './oppgavebenk/Oppgavebenk'
+import { Oppgavebenk } from './oppgavebenk/Oppgavebenk'
 
 const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))

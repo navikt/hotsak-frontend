@@ -16,45 +16,42 @@ import { formaterDato, norskTimestamp } from '../utils/date'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
-const Container = styled.div`
-  min-height: 300px;
-  height: calc(100% - 50px);
-  width: 100%;
-`
-
-const ScrollWrapper = styled.div`
-  overflow: auto;
-`
-
-export const Oppgavebenk: React.FC = () => {
-  //  const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
+export function Oppgavebenk() {
+  //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   //const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   //const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   //const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   //const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   //const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
-  const { oppgaver, isLoading, totalCount, error, mutate } = useOppgavelisteV2(
-    1 /*currentPage, sort, {
-    sakerFilter,
-    statusFilter,
-    sakstypeFilter,
-    områdeFilter,
-  }*/
+  const { oppgaver, isLoading, error } = useOppgavelisteV2(
+    1
+    /*
+      currentPage, sort, {
+      sakerFilter,
+      statusFilter,
+      sakstypeFilter,
+      områdeFilter,
+    }
+    */
   )
 
-  /*const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
+  /*
+  const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
     handler(value)
     setCurrentPage(1)
-  }*/
+  }
+  */
 
-  /*const clearFilters = () => {
+  /*
+  const clearFilters = () => {
     setSakerFilter(SakerFilter.UFORDELTE)
     setStatusFilter(OppgaveStatusType.ALLE)
     setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
     setCurrentPage(1)
-  }*/
+  }
+  */
 
   /*
   frist 
@@ -273,4 +270,12 @@ export const Oppgavebenk: React.FC = () => {
   )
 }
 
-export default Oppgavebenk
+const Container = styled.div`
+  min-height: 300px;
+  height: calc(100% - 50px);
+  width: 100%;
+`
+
+const ScrollWrapper = styled.div`
+  overflow: auto;
+`

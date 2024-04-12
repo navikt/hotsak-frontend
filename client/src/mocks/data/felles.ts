@@ -27,3 +27,9 @@ export function lagTilfeldigFødselsdato(alder: number): Date {
 export function lagTilfeldigTelefonnummer(): string {
   return lagTilfeldigInteger(1, 99_999_999).toString().padEnd(8, '0')
 }
+
+export async function lastDokumentBarnebriller(navn: string): Promise<ArrayBuffer> {
+  const dokument = await import(`./barnebriller_${navn}.pdf`)
+  const response = await fetch(dokument.default)
+  return response.arrayBuffer()
+}

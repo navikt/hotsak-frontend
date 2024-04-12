@@ -2,11 +2,8 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import kvittering from '../data/brillekvittering.pdf'
-import brilleseddel from '../data/brilleseddel.pdf'
-import kvitteringsside from '../data/kvitteringsside.pdf'
-import pdfSoknad from '../data/manuellBrilleSoknad.pdf'
 import { respondForbidden, respondInternalServerError, respondNoContent, respondNotFound, respondPdf } from './response'
+import { lastDokumentBarnebriller } from '../data/felles'
 
 interface JournalpostParams {
   journalpostId: string
@@ -36,24 +33,23 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
   http.get<DokumentParams>(`/api/journalpost/:journalpostId/:dokumentId`, async ({ params }) => {
     const dokumentId = params.dokumentId
 
-    let dokument
+    let buffer
     switch (dokumentId) {
-      case '2345':
-        dokument = kvittering
+      case '2':
+        buffer = await lastDokumentBarnebriller('kvittering')
         break
-      case '3456':
-        dokument = brilleseddel
+      case '3':
+        buffer = await lastDokumentBarnebriller('brilleseddel')
         break
-      case '4567':
-        dokument = kvitteringsside
+      case '4':
+        buffer = await lastDokumentBarnebriller('kvitteringsside')
         break
-      case '1234':
+      case '5':
       default:
-        dokument = pdfSoknad
+        buffer = await lastDokumentBarnebriller('søknad')
         break
     }
 
-    const buffer = await fetch(dokument).then((res) => res.arrayBuffer())
     await delay(500)
     return respondPdf(buffer)
   }),

@@ -4,12 +4,24 @@ import styled from 'styled-components'
 import { Link } from '@navikt/ds-react'
 
 import { norskTimestamp } from '../../../utils/date'
-
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
-import { Saksdokument } from '../../../types/types.internal'
-import { useErMockMiljø } from '../../../utils/useErMockMiljø'
+import type { Saksdokument } from '../../../types/types.internal'
 
-const ByggDummyDataUrl = React.lazy(() => import('../../../mocks/mockDokument'))
+export function BrevKort({ tittel, opprettet, saksbehandler, journalpostID, dokumentID }: Saksdokument) {
+  return (
+    <Container>
+      <ContentContainer>
+        <Etikett>
+          <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
+            {tittel}
+          </Link>
+        </Etikett>
+        {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
+        <Tekst>{saksbehandler.navn}</Tekst>
+      </ContentContainer>
+    </Container>
+  )
+}
 
 const Container = styled.li`
   margin: 0;
@@ -25,26 +37,3 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-export const BrevKort: React.FC<Saksdokument> = ({ tittel, opprettet, saksbehandler, journalpostID, dokumentID }) => {
-  const erMockMiljø = useErMockMiljø()
-
-  return (
-    <Container>
-      <ContentContainer>
-        <Etikett>
-          {erMockMiljø ? (
-            <ByggDummyDataUrl tittel={tittel} />
-          ) : (
-            <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
-              {tittel}
-            </Link>
-          )}
-        </Etikett>
-        {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
-
-        <Tekst>{saksbehandler.navn}</Tekst>
-      </ContentContainer>
-    </Container>
-  )
-}

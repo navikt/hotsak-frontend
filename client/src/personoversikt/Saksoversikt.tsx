@@ -14,17 +14,14 @@ import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/Toast'
 import { Brødtekst, Skjermlesertittel } from '../felleskomponenter/typografi'
-import ByggDummyDataUrl from '../mocks/mockDokument'
 import {
   OppgaveStatusLabel,
   OppgaveStatusType,
-  Sakstype,
   Saksoversikt_Barnebrille_Sak,
   Saksoversikt_Sak,
   Saksoversikt_Sak_Felles_Type,
+  Sakstype,
 } from '../types/types.internal'
-
-const erLokaltEllerLabs = window.appSettings.USE_MSW === true
 
 const Container = styled.div`
   min-height: 300px;
@@ -94,16 +91,9 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
           </Brødtekst>
         )
         return barnebrilleSak && !!barnebrilleSak.journalpostId && !!barnebrilleSak.dokumentId ? (
-          erLokaltEllerLabs ? (
-            <ByggDummyDataUrl tittel={tittelWithIcon} type={'barnebrilleSak'} />
-          ) : (
-            <Link
-              to={`/api/journalpost/${barnebrilleSak.journalpostId}/${barnebrilleSak.dokumentId}`}
-              target={'_blank'}
-            >
-              {tittelWithIcon}
-            </Link>
-          )
+          <Link to={`/api/journalpost/${barnebrilleSak.journalpostId}/${barnebrilleSak.dokumentId}`} target={'_blank'}>
+            {tittelWithIcon}
+          </Link>
         ) : (
           <TekstCell value={tittel} />
         )

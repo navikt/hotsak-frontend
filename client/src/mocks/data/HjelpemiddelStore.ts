@@ -1,11 +1,10 @@
 import Dexie, { Table } from 'dexie'
 
 import { HMDBHentProdukterQuery } from '../../generated/finnhjelpemiddel'
-import finnHjelpemiddelGraphQLMock from './finnHjelpemiddelGraphQLMock.json'
+import products from './products.json'
 
 type LagretHjelpemiddel = HMDBHentProdukterQuery['products'][0]
 
-const fjes: LagretHjelpemiddel = finnHjelpemiddelGraphQLMock.data.products[0]
 export class HjelpemiddelStore extends Dexie {
   private readonly hjelpemidler!: Table<LagretHjelpemiddel, string>
 
@@ -21,7 +20,7 @@ export class HjelpemiddelStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    return this.hjelpemidler.bulkAdd(finnHjelpemiddelGraphQLMock.data.products, { allKeys: true }).catch(console.warn)
+    return this.hjelpemidler.bulkAdd(products.data.products, { allKeys: true }).catch(console.warn)
   }
 
   async hent(hmsnr: string) {
@@ -33,7 +32,7 @@ export class HjelpemiddelStore extends Dexie {
 const mockHjelpemiddel = {
   hmsArtNr: '112233',
   articleName: 'Hjelpemiddelnavn',
-  isoCategoryTitle: 'ISO kategori',
+  isoCategoryTitle: 'ISO-kategori',
   productVariantURL: 'https://finnhjelpemiddel.nav.no/produkt/HMDB-65088',
   agreements: [
     {

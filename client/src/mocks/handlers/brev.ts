@@ -2,10 +2,9 @@ import { delay, http } from 'msw'
 
 import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import innvilgelsesbrev from '../data/innvilgelsesBrev.pdf'
-import manglerDokumentasjonBrev from '../data/merinfobrev.pdf'
 import { respondNoContent, respondPdf } from './response'
 import type { SakParams } from './params'
+import { lastDokumentBarnebriller } from '../data/felles'
 
 interface BrevParams extends SakParams {
   brevtype: string
@@ -16,9 +15,9 @@ export const brevHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   http.get<BrevParams>(`/api/sak/:sakId/brev/:brevtype`, async ({ params }) => {
     let buffer: ArrayBuffer
     if (params.brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
-      buffer = await fetch(innvilgelsesbrev).then((res) => res.arrayBuffer())
+      buffer = await lastDokumentBarnebriller('innvilgelsesbrev')
     } else {
-      buffer = await fetch(manglerDokumentasjonBrev).then((res) => res.arrayBuffer())
+      buffer = await lastDokumentBarnebriller('innhente_opplysninger')
     }
     await delay(1000)
     return respondPdf(buffer)

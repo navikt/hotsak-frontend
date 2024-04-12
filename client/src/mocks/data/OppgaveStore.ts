@@ -1,11 +1,11 @@
-import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
-import { OppgaveV2, Oppgavestatus, Oppgavetype } from '../../types/types.internal'
+import { Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../types/types.internal'
 import { BarnebrillesakStore } from './BarnebrillesakStore'
 import { IdGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
 import { SakStore } from './SakStore'
+import { addBusinessDays, parseISO } from 'date-fns'
 
 type LagretOppgave = OppgaveV2
 
@@ -15,7 +15,7 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly idGenerator: IdGenerator,
     private readonly sakStore: SakStore,
-    private readonly barnebrilleSakStore: BarnebrillesakStore,
+    private readonly barnebrillesakStore: BarnebrillesakStore,
     private readonly journalpostStore: JournalpostStore
   ) {
     super('OppgaveStore')
@@ -31,7 +31,7 @@ export class OppgaveStore extends Dexie {
     }
 
     const saker = await this.sakStore.alle()
-    const barnebrilleSaker = await this.barnebrilleSakStore.alle()
+    const barnebrillesaker = await this.barnebrillesakStore.alle()
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: OppgaveV2[] = saker.map((sak) => {
@@ -46,7 +46,7 @@ export class OppgaveStore extends Dexie {
         bydel: sak.bruker.bydel,
         saksbehandler: sak.saksbehandler,
         sakId: sak.sakId,
-        frist: dayjs(sak.mottattDato).add(14, 'days').toISOString(),
+        frist: addBusinessDays(parseISO(sak.mottattDato), 14).toISOString(),
         opprettet: sak.mottattDato,
         endret: sak.mottattDato,
         bruker: sak.bruker,
@@ -54,28 +54,28 @@ export class OppgaveStore extends Dexie {
       }
     })
 
-    const oppgaverFraBarnebrillesak: OppgaveV2[] = barnebrilleSaker.map((brillesak) => {
-      const opprettet = dayjs()
+    const oppgaverFraBarnebrillesak: OppgaveV2[] = barnebrillesaker.map((sak) => {
+      const now = new Date()
       return {
         id: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
-        beskrivelse: brillesak.søknadGjelder,
+        beskrivelse: sak.søknadGjelder,
         område: ['syn'],
-        enhet: brillesak.enhet,
-        kommune: brillesak.bruker.kommune,
-        bydel: brillesak.bruker.bydel,
-        saksbehandler: brillesak.saksbehandler,
-        sakId: brillesak.sakId,
-        frist: opprettet.add(14, 'days').toISOString(),
-        opprettet: opprettet.toISOString(),
-        endret: opprettet.toISOString(),
-        bruker: brillesak.bruker,
-        innsender: brillesak.innsender,
+        enhet: sak.enhet,
+        kommune: sak.bruker.kommune,
+        bydel: sak.bruker.bydel,
+        saksbehandler: sak.saksbehandler,
+        sakId: sak.sakId,
+        frist: addBusinessDays(now, 14).toISOString(),
+        opprettet: now.toISOString(),
+        endret: now.toISOString(),
+        bruker: sak.bruker,
+        innsender: sak.innsender,
       }
     })
 
-    const oppgaverFraJournalforinger: OppgaveV2[] = journalføringer.map((journalføring) => {
+    const oppgaverFraJournalføringer: OppgaveV2[] = journalføringer.map((journalføring) => {
       return {
         id: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.JOURNALFØRING,
@@ -85,7 +85,7 @@ export class OppgaveStore extends Dexie {
         enhet: journalføring.enhet!,
         saksbehandler: journalføring.saksbehandler,
         journalpostId: journalføring.journalpostID,
-        frist: dayjs(journalføring.journalpostOpprettetTid).add(14, 'days').toISOString(),
+        frist: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
         opprettet: journalføring.journalpostOpprettetTid,
         endret: journalføring.journalpostOpprettetTid,
         bruker: { fnr: journalføring.oppgave.bruker!.fnr, fulltNavn: journalføring.oppgave.bruker!.fulltNavn },
@@ -93,9 +93,7 @@ export class OppgaveStore extends Dexie {
       }
     })
 
-    console.log(oppgaverFraSak, oppgaverFraBarnebrillesak, oppgaverFraJournalforinger)
-
-    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalforinger])
+    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalføringer])
   }
 
   async lagreAlle(oppgaver: LagretOppgave[]) {

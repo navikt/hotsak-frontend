@@ -1,7 +1,6 @@
-import dayjs from 'dayjs'
-
 import { Brilleseddel, VilkårsResultat, VurderingData } from '../../types/types.internal'
 import { LagretVilkår } from './BarnebrillesakStore'
+import { isBefore, subMonths } from 'date-fns'
 
 const vilkårSomTrengerBestillingsdato = [
   'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',
@@ -35,7 +34,7 @@ export function vurderteVilkår(
   vurderteVilkår = oppdaterStatus(vurderteVilkår, !bestillingsdato, vilkårSomTrengerBestillingsdato)
   vurderteVilkår = oppdaterStatus(vurderteVilkår, brilleseddel === tomStyrke, vilkårSomTrengerBrilleseddel)
 
-  if (dayjs(bestillingsdato).isBefore(dayjs().subtract(6, 'months'))) {
+  if (bestillingsdato && isBefore(bestillingsdato, subMonths(new Date(), 6))) {
     vurderteVilkår = oppdaterStatus(
       vurderteVilkår,
       true,
@@ -73,32 +72,32 @@ export function vurderteVilkår(
 }
 
 function oppdaterStatus(
-  vilkår: Array<Omit<LagretVilkår, 'id'>>,
+  alleVilkår: Array<Omit<LagretVilkår, 'id'>>,
   predikatResultat: boolean,
   aktuelleVilkår: string[],
   vurdertType: 'SAKSBEHANDLER' | 'MASKINELL' = 'MASKINELL',
   nyttResultat: VilkårsResultat = VilkårsResultat.OPPLYSNINGER_MANGLER
 ): Array<Omit<LagretVilkår, 'id'>> {
   if (predikatResultat) {
-    return vilkår.map((v) => {
-      if (aktuelleVilkår.includes(v.vilkårId)) {
+    return alleVilkår.map((vilkår) => {
+      if (aktuelleVilkår.includes(vilkår.vilkårId)) {
         if (vurdertType === 'SAKSBEHANDLER') {
-          v.manuellVurdering = { vilkårOppfylt: nyttResultat }
+          vilkår.manuellVurdering = { vilkårOppfylt: nyttResultat }
         } else {
-          v.maskinellVurdering = { vilkårOppfylt: nyttResultat }
+          vilkår.maskinellVurdering = { vilkårOppfylt: nyttResultat }
         }
-        v.vilkårOppfylt = nyttResultat
+        vilkår.vilkårOppfylt = nyttResultat
       }
-      return v
+      return vilkår
     })
   }
-  return vilkår
+  return alleVilkår
 }
 
 function vurderteVilkår_JA(
   vilkårsvurderingId: string,
   brilleseddel: Brilleseddel,
-  bestillingsdato: string = dayjs().toISOString()
+  bestillingsdato: string = new Date().toISOString()
 ): Array<Omit<LagretVilkår, 'id'>> {
   return [
     {
@@ -221,7 +220,7 @@ function vurderteVilkår_JA(
       begrunnelse: '',
       grunnlag: {
         bestillingsdato,
-        seksMånederSiden: dayjs(bestillingsdato)?.subtract(6, 'month').toISOString(),
+        seksMånederSiden: subMonths(bestillingsdato, 6).toISOString(),
         førsteJournalpostOpprettet: '2023-04-18', // fixme
       },
     },

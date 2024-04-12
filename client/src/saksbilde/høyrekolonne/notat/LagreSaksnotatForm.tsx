@@ -3,7 +3,6 @@ import { Avstand } from '../../../felleskomponenter/Avstand'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import type { Notat } from '../../../types/types.internal'
-import dayjs from 'dayjs'
 import { postSaksnotat } from '../../../io/http'
 import { useInnloggetSaksbehandler } from '../../../state/authentication'
 import type { KeyedMutator } from 'swr'
@@ -26,7 +25,7 @@ export function LagreSaksnotatForm(props: LagreSaksnotatFormProps) {
       saksbehandler,
       type: 'INTERNT',
       innhold,
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
     }
     setLoading(true)
     await postSaksnotat(nyttNotat.sakId, nyttNotat.type, nyttNotat.innhold)

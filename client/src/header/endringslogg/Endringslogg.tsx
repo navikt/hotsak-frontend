@@ -1,14 +1,12 @@
-import dayjs from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
 import { BodyLong, Label } from '@navikt/ds-react'
 
-import { ISO_DATOFORMAT } from '../../utils/date'
-
 import { Strek } from '../../felleskomponenter/Strek'
 import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
+import { format } from 'date-fns'
 
 export const Endringslogg: React.FC<{
   endringslogginnslag: ReadonlyArray<EndringsloggInnslag>
@@ -30,7 +28,7 @@ const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLest
   innslag,
   merkSomLest,
 }) => {
-  const dato = dayjs(innslag.dato, ISO_DATOFORMAT).format('DD. MMMM YYYY')
+  const dato = format(innslag.dato, 'PPP')
   const ulest = !innslag.lest
   const timeoutRef = useRef<number | null>(null)
   const innslagRef = useRef<HTMLElement>(null)

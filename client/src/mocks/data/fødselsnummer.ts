@@ -1,22 +1,21 @@
-import dayjs, { Dayjs } from 'dayjs'
-
 import { Kjønn } from '../../types/types.internal'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger } from './felles'
+import { format, parse } from 'date-fns'
 
-const template = 'DDMMYY'
+const template = 'ddMMyy'
 
 /**
  * NB! Implementasjonen lager ikke gyldige fødselsnumre.
  */
-export function lagTilfeldigFødselsnummer(fødselsdatoEllerAlder: Dayjs | number): string {
+export function lagTilfeldigFødselsnummer(fødselsdatoEllerAlder: Date | number): string {
   if (typeof fødselsdatoEllerAlder === 'number') {
     fødselsdatoEllerAlder = lagTilfeldigFødselsdato(fødselsdatoEllerAlder)
   }
-  return fødselsdatoEllerAlder.format(template) + lagTilfeldigInteger(0, 99999).toString().padStart(5, '0')
+  return format(fødselsdatoEllerAlder, template) + lagTilfeldigInteger(0, 99999).toString().padStart(5, '0')
 }
 
-export function fødselsdatoFraFødselsnummer(fnr: string): Dayjs {
-  return dayjs(fnr.slice(0, 6), template)
+export function fødselsdatoFraFødselsnummer(fnr: string): Date {
+  return parse(fnr.slice(0, 6), template, new Date())
 }
 
 export function kjønnFraFødselsnummer(fnr: string): Kjønn {

@@ -1,5 +1,4 @@
 import { delay, http, HttpResponse } from 'msw'
-import dayjs from 'dayjs'
 
 import {
   DokumentOppgaveStatusType,
@@ -14,6 +13,7 @@ import {
 import { formatName } from '../../utils/stringFormating'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
+import { addWeeks } from 'date-fns'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({
   journalpostStore,
@@ -33,25 +33,26 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
     // Enn så lenge er det ikke noe logikk i mocken for å holde oppgavestore oppdatert
     if (oppgavetype === 'JOURNALFØRING') {
       const journalposter = await journalpostStore.alle()
-      const oppgaver: OppgaveV2[] = journalposter.map((jp) => {
+      const now = new Date()
+      const oppgaver: OppgaveV2[] = journalposter.map((journalpost) => {
         return {
-          id: jp.journalpostID,
+          id: journalpost.journalpostID,
           oppgavetype: Oppgavetype.JOURNALFØRING,
-          oppgavestatus: journalpostStatus2Oppgavestatus(jp.status),
-          beskrivelse: jp.tittel,
+          oppgavestatus: journalstatusTilOppgavestatus(journalpost.status),
+          beskrivelse: journalpost.tittel,
           område: [OmrådeFilter.SYN],
           enhet: enheter.agder,
-          saksbehandler: jp.saksbehandler,
-          journalpostId: jp.journalpostID,
-          frist: dayjs().add(3, 'weeks').toISOString(),
-          opprettet: dayjs().toISOString(),
+          saksbehandler: journalpost.saksbehandler,
+          journalpostId: journalpost.journalpostID,
+          frist: addWeeks(now, 3).toISOString(),
+          opprettet: now.toISOString(),
           bruker: {
-            fnr: jp.innsender.fnr,
-            fulltNavn: formatName(jp.innsender.navn),
+            fnr: journalpost.innsender.fnr,
+            fulltNavn: formatName(journalpost.innsender.navn),
           },
           innsender: {
-            fnr: jp.innsender.fnr,
-            fulltNavn: formatName(jp.innsender.navn),
+            fnr: journalpost.innsender.fnr,
+            fulltNavn: formatName(journalpost.innsender.navn),
           },
         }
       })
@@ -112,8 +113,8 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
   }),
 ]
 
-const journalpostStatus2Oppgavestatus = (jouralpostStatus: DokumentOppgaveStatusType): Oppgavestatus => {
-  switch (jouralpostStatus) {
+function journalstatusTilOppgavestatus(journalstatus: DokumentOppgaveStatusType): Oppgavestatus {
+  switch (journalstatus) {
     case DokumentOppgaveStatusType.MOTTATT:
       return Oppgavestatus.OPPRETTET
     case DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER:

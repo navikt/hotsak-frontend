@@ -6,6 +6,7 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
+import { formatISO } from 'date-fns'
 
 type LagretPerson = Person
 
@@ -40,7 +41,7 @@ export class PersonStore extends Dexie {
       ...navn,
       fnr,
       navn,
-      fødselsdato: lagTilfeldigFødselsdato(9).toISODateString(),
+      fødselsdato: formatISO(lagTilfeldigFødselsdato(9), { representation: 'date' }),
       telefon: lagTilfeldigTelefonnummer(),
       kjønn: kjønnFraFødselsnummer(fnr),
       enhet: enheter.agder,
@@ -74,7 +75,7 @@ export function lagPerson(alder: number = lagTilfeldigInteger(5, 95)): Person {
     ...navn,
     fnr,
     navn,
-    fødselsdato: fødselsdato.toISODateString(),
+    fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
     telefon: lagTilfeldigTelefonnummer(),
     kjønn: kjønnFraFødselsnummer(fnr),
     enhet: enheter.agder,

@@ -24,7 +24,7 @@ export function useHeitKrukka(): HeitKrukkaResponse {
   const [spørreskjema, setSpørreskjema] = useState<Resultat<HeitKrukkaSkjemaResponse> | null>(null)
 
   const hentSpørreskjema = async (skjema: string, enhet: Enhet) => {
-    console.log(`POSTER til Krukka ${baseUrl}/heit-krukka/api/skjema/${skjema}`)
+    console.log(`HTTP POST til heit-krukka, url: '${baseUrl}/heit-krukka/api/skjema/${skjema}'`)
 
     const resultat = await http.post<HeitKrukkaSkjemaRequest, HeitKrukkaSkjemaResponse>(
       `${baseUrl}/heit-krukka/api/skjema/${skjema}`,

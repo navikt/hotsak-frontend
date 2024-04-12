@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -6,7 +5,6 @@ import styled from 'styled-components'
 import { CopyButton, Link, Tag, Tooltip } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { ISO_TIDSPUNKTFORMAT } from '../utils/date'
 import { formaterFødselsnummer, formaterTelefonnummer, formatName } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
@@ -16,6 +14,7 @@ import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
+import { differenceInYears } from 'date-fns'
 
 const Container = styled.div`
   display: flex;
@@ -92,8 +91,8 @@ export const LasterPersonlinje = () => (
   </Container>
 )
 
-const beregnAlder = (fødselsdato: string) => {
-  return dayjs().diff(dayjs(fødselsdato, ISO_TIDSPUNKTFORMAT), 'year')
+function beregnAlder(fødselsdato: string): number {
+  return differenceInYears(new Date(), fødselsdato)
 }
 
 export const formaterNavn = (person: Person | Bruker) => {

@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs'
+import { addDays, getDaysInMonth, setDate, subYears } from 'date-fns'
 
 export function tilfeldigInnslag<T>(array: T[]): T {
   return array[lagTilfeldigInteger(0, array.length - 1)]
@@ -14,30 +14,16 @@ export function lagTilfeldigInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-export function lagTilfeldigDato(år: number): Dayjs {
-  const d = dayjs(new Date(år, lagTilfeldigInteger(0, 11), 1))
-  const day = lagTilfeldigInteger(1, d.daysInMonth())
-  return d.set('day', day)
+export function lagTilfeldigDato(år: number): Date {
+  const d = new Date(år, lagTilfeldigInteger(0, 11), 1)
+  const date = lagTilfeldigInteger(1, getDaysInMonth(d))
+  return setDate(d, date)
 }
 
-export function lagTilfeldigFødselsdato(alder: number): Dayjs {
-  return dayjs()
-    .subtract(alder, 'years')
-    .add(lagTilfeldigInteger(1, 365) - 1, 'days')
+export function lagTilfeldigFødselsdato(alder: number): Date {
+  return addDays(subYears(new Date(), alder), lagTilfeldigInteger(1, 365) - 1)
 }
 
 export function lagTilfeldigTelefonnummer(): string {
   return lagTilfeldigInteger(1, 99_999_999).toString().padEnd(8, '0')
-}
-
-dayjs.extend((_, c) => {
-  c.prototype.toISODateString = function () {
-    return this.format('YYYY-MM-DD')
-  }
-})
-
-declare module 'dayjs' {
-  interface Dayjs {
-    toISODateString(): string
-  }
 }

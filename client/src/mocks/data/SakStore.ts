@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
@@ -28,6 +27,7 @@ import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnumme
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { formatName } from '../../utils/stringFormating'
+import { formatISO } from 'date-fns'
 
 type LagretSak = Sak
 
@@ -43,7 +43,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
     bruker: {
       fnr,
       navn,
-      fødselsdato: fødselsdato.toISODateString(),
+      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
@@ -59,7 +59,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
     personinformasjon: {
       ...navn,
       fnr,
-      fødselsdato: fødselsdato.toISODateString(),
+      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
       adresse: 'Blåbærstien 82',
       kilde: PersonInfoKilde.PDL,
       signaturtype: SignaturType.BRUKER_BEKREFTER,
@@ -83,7 +83,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
 
 function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
   const bruker = lagBruker()
-  const opprettet = dayjs()
+  const opprettet = new Date()
   const formidler: Formidler = {
     fnr: lagTilfeldigFødselsnummer(32),
     navn: lagTilfeldigNavn().fulltNavn,
@@ -287,7 +287,7 @@ export class SakStore extends Dexie {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.put({
       id: this.idGenerator.nesteId().toString(),
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
       sakId,
       hendelse,
       detaljer,
@@ -345,7 +345,6 @@ export class SakStore extends Dexie {
   }
 
   async fattVedtak(sakId: string, status: OppgaveStatusType, vedtakStatus: VedtakStatusType) {
-    const nå = dayjs().toISOString()
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -358,7 +357,7 @@ export class SakStore extends Dexie {
         this.saker.update(sakId, {
           status: status,
           vedtak: {
-            vedtaksdato: nå,
+            vedtaksdato: new Date().toISOString(),
             status: vedtakStatus,
             saksbehandlerNavn: sak.saksbehandler?.navn || '',
             saksbehandlerRef: sak.saksbehandler?.id || '',

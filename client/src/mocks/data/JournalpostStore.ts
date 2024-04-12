@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
@@ -13,7 +12,7 @@ import {
   Oppgavetype,
 } from '../../types/types.internal'
 import { IdGenerator } from './IdGenerator'
-import { PersonStore, lagPerson } from './PersonStore'
+import { lagPerson, PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { enheter } from './enheter'
 import { lagTilfeldigInteger } from './felles'
@@ -32,11 +31,12 @@ interface LagretHendelse extends Hendelse {
 
 function lagJournalpost(journalpostId: number): LagretJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
+  const now = new Date()
   return {
     journalpostID: journalpostId.toString(),
     journalstatus: JournalpostStatusType.MOTTATT,
     status: DokumentOppgaveStatusType.MOTTATT,
-    journalpostOpprettetTid: dayjs().toISOString(),
+    journalpostOpprettetTid: now.toISOString(),
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
     enhet: enheter.agder,
@@ -51,8 +51,8 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
       beskrivelse: '',
       område: [OmrådeFilter.SYN],
       enhet: enheter.agder,
-      frist: dayjs().toISOString(),
-      opprettet: dayjs().toISOString(),
+      frist: now.toISOString(),
+      opprettet: now.toISOString(),
       bruker: {
         fnr: fnrInnsender,
         fulltNavn: lagTilfeldigNavn().fulltNavn,
@@ -75,10 +75,11 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
-    /*{
+    /*
+    {
       journalpostID,
 
-      tittel: 'Ettersendelse: Skikkelig lang tittel som en ganske lang og ikke så veldig kort kan du på en måte si',
+      tittel: 'Ettersendelse: Skikkelig lang tittel som er ganske lang og ikke så veldig kort kan du på en måte si',
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
@@ -90,7 +91,8 @@ function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokum
       brevkode: 'NAV 10-07.34',
       vedlegg: [],
       varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
-    },*/
+    },
+    */
   ]
 }
 
@@ -163,7 +165,7 @@ export class JournalpostStore extends Dexie {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.put({
       id: this.idGenerator.nesteId().toString(),
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
       journalpostId,
       hendelse,
       detaljer,

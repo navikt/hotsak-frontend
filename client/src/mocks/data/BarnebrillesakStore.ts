@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import Dexie, { Table } from 'dexie'
 
 import {
@@ -41,6 +40,7 @@ import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { vurderteVilkår } from './vurderteVilkår'
 import { formatName } from '../../utils/stringFormating'
+import { formatISO } from 'date-fns'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
@@ -78,7 +78,7 @@ function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkår
         satsBeskrivelse,
         beløp,
       },
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
     }
   } else {
     throw new Error('Noe er feil med VurderVilkårRequest-payload i lagVilkårsvurdering()')
@@ -103,18 +103,18 @@ function lagVilkår(
 
 function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
-  const opprettet = dayjs().toISOString()
+  const now = new Date().toISOString()
   return {
     sakId: sakId.toString(),
     saksinformasjon: {
-      opprettet,
+      opprettet: now,
     },
     sakstype: Sakstype.BARNEBRILLER,
     søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
       navn: lagTilfeldigNavn(),
-      fødselsdato: fødselsdatoBruker.toISODateString(),
+      fødselsdato: formatISO(fødselsdatoBruker, { representation: 'date' }),
       kommune: {
         nummer: '9999',
         navn: lagTilfeldigBosted(),
@@ -135,7 +135,7 @@ function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
       },
     },
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: opprettet,
+    statusEndret: now,
 
     steg: StegType.INNHENTE_FAKTA,
     enhet: enheter.oslo,
@@ -269,7 +269,7 @@ export class BarnebrillesakStore extends Dexie {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.put({
       id: this.idGenerator.nesteId().toString(),
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
       sakId,
       hendelse,
       detaljer,
@@ -415,7 +415,7 @@ export class BarnebrillesakStore extends Dexie {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     const totrinnskontroll: Totrinnskontroll = {
       saksbehandler,
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
     }
 
     return this.transaction('rw', this.saker, this.hendelser, () => {
@@ -430,7 +430,7 @@ export class BarnebrillesakStore extends Dexie {
   }
 
   async ferdigstillTotrinnskontroll(sakId: string, { resultat, begrunnelse }: TotrinnskontrollData) {
-    const nå = dayjs().toISOString()
+    const nå = new Date().toISOString()
     const sak = await this.hent(sakId)
     if (!sak || !sak.totrinnskontroll) {
       return Promise.reject('noe gikk galt')
@@ -512,7 +512,7 @@ export class BarnebrillesakStore extends Dexie {
       saksbehandler,
       type,
       innhold,
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
     })
   }
 
@@ -549,7 +549,7 @@ export class BarnebrillesakStore extends Dexie {
       journalpostID: '12345678',
       type: SaksdokumentType.UTGÅENDE,
       brevkode: Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER,
-      opprettet: dayjs().toISOString(),
+      opprettet: new Date().toISOString(),
       saksbehandler: saksbehandler,
       dokumentID: dokumentId.toString(),
       tittel: tittel,

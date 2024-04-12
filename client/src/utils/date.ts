@@ -1,53 +1,22 @@
-import dayjs, { Dayjs } from 'dayjs'
-import 'dayjs/locale/nb'
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
-import isoWeek from 'dayjs/plugin/isoWeek'
+import { compareAsc, format, parseISO, setDefaultOptions, toDate } from 'date-fns'
+import { nb } from 'date-fns/locale'
 
-dayjs.extend(isoWeek)
-dayjs.extend(isSameOrBefore)
-dayjs.extend(isSameOrAfter)
-
-dayjs.locale('nb')
-
-export const NORSK_DATOFORMAT = 'DD.MM.YYYY'
-export const NORSK_TIDSPUNKTFORMAT = 'DD.MM.YYYY kl. HH:mm'
-export const NORSK_DATOFORMAT_KORT = 'DD.MM.YY'
-export const ISO_DATOFORMAT = 'YYYY-MM-DD'
-export const ISO_TIDSPUNKTFORMAT = 'YYYY-MM-DDTHH:mm:ss'
+setDefaultOptions({ locale: nb })
 
 export function formaterDato(dato?: string): string {
-  if (!dato) {
-    return ''
-  }
-  return dayjs(dato, ISO_DATOFORMAT).format(NORSK_DATOFORMAT)
+  if (!dato) return ''
+  return format(dato, 'P')
 }
 
 export function norskTimestamp(dato: string): string {
-  return dayjs(dato.endsWith('Z') ? dato : `${dato}Z`).format(NORSK_TIDSPUNKTFORMAT)
+  return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
 }
 
-export function findLatest(dates: Dayjs[]): Dayjs {
-  return Array.from(dates)
-    .sort((a, b) => (b.isAfter(a) ? -1 : a.isAfter(b) ? 1 : 0))
-    .pop()!
+export function tilDato(value?: Date | number | string): Date | undefined {
+  if (!value) return
+  return toDate(value)
 }
 
-export function sorterKronologisk(a: string, b: string): -1 | 0 | 1 {
-  const date = dayjs(a, ISO_TIDSPUNKTFORMAT)
-  const otherDate = dayjs(b, ISO_TIDSPUNKTFORMAT)
-  return date.isAfter(otherDate) ? -1 : otherDate.isAfter(date) ? 1 : 0
-}
-
-export function findEarliest(dates: Dayjs[]): Dayjs {
-  return Array.from(dates)
-    .sort((a, b) => (b.isBefore(a) ? -1 : a.isBefore(b) ? 1 : 0))
-    .pop()!
-}
-
-export function toDate(value?: Date | number | string): Date | undefined {
-  if (!value) {
-    return
-  }
-  return dayjs(value, ISO_DATOFORMAT).toDate()
+export function sorterKronologisk(a: string, b: string): number {
+  return compareAsc(parseISO(a), parseISO(b))
 }

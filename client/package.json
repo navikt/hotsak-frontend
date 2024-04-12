@@ -12,7 +12,6 @@
     "@navikt/ds-react": "6.5.0",
     "@navikt/helse-frontend-varsel": "3.0.1",
     "date-fns": "3.6.0",
-    "dayjs": "1.11.10",
     "dexie": "4.0.4",
     "fetch-intercept": "2.4.0",
     "graphql-request": "6.1.0",

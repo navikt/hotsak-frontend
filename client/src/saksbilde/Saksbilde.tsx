@@ -9,7 +9,7 @@ import { Sakstype } from '../types/types.internal'
 import { Personlinje } from './Personlinje'
 import Søknadsbilde from './Søknadsbilde'
 import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
-import { SaksLoader } from './loader/SaksLoader'
+import { SakLoader } from './SakLoader'
 import { useSak } from './sakHook'
 
 export const SaksbildeContainer = styled.div`
@@ -23,7 +23,7 @@ const SaksbildeContent = React.memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { showBoundary } = useErrorBoundary()
 
-  if (isLoading) return <SaksLoader />
+  if (isLoading) return <SakLoader />
 
   if (isError) {
     showBoundary(isError)
@@ -53,12 +53,12 @@ const SaksbildeContent = React.memo(() => {
   )
 })
 
-export const Saksbilde = () => (
-  <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<SaksLoader />}>
-      <SaksbildeContent />
-    </React.Suspense>
-  </ErrorBoundary>
-)
-
-export default Saksbilde
+export default function Saksbilde() {
+  return (
+    <ErrorBoundary FallbackComponent={AlertError}>
+      <React.Suspense fallback={<SakLoader />}>
+        <SaksbildeContent />
+      </React.Suspense>
+    </ErrorBoundary>
+  )
+}

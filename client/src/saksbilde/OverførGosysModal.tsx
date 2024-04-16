@@ -14,18 +14,17 @@ export interface OverførGosysModalProps {
   legend?: string
 
   onBekreft(tilbakemelding: OverforGosysTilbakemelding): void | Promise<void>
-
   onClose(): void
 }
 
-export const OverførGosysModal: React.FC<OverførGosysModalProps> = ({
+export function OverførGosysModal({
   open,
   loading,
   årsaker = ['Annet'],
   legend = 'Hva må til for at du skulle kunne behandlet denne saken i Hotsak?',
   onBekreft,
   onClose,
-}) => {
+}: OverførGosysModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   const [valgteArsaker, setValgteArsaker] = useState<string[]>([])
   const [begrunnelse, setBegrunnelse] = useState<string>('')

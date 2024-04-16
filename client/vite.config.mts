@@ -1,47 +1,10 @@
 import react from '@vitejs/plugin-react-swc'
-import { defineConfig, HtmlTagDescriptor, Plugin, splitVendorChunkPlugin } from 'vite'
-
-function htmlPlugin({ development }: { development?: boolean }): Plugin {
-  return {
-    name: 'html-transform',
-    transformIndexHtml(html) {
-      const tags: HtmlTagDescriptor[] = []
-      if (development) {
-        tags.push({
-          tag: 'script',
-          children: `window.appSettings = {
-            GIT_COMMIT: 'unknown',
-            USE_MSW: true,
-            MILJO: 'local',
-            FARO_URL: '',
-            AMPLITUDE_API_KEY: '',
-            AMPLITUDE_SERVER_URL: '',
-          }`,
-        })
-      } else {
-        tags.push(
-          {
-            tag: 'script',
-            children: `window.appSettings = {}`,
-          },
-          {
-            tag: 'script',
-            attrs: {
-              src: '/settings.js',
-            },
-          }
-        )
-      }
-      return {
-        html,
-        tags,
-      }
-    },
-  }
-}
+import { defineConfig } from 'vite'
+import { htmlPlugin } from './vite-html-plugin.mjs'
+import { middlewarePlugin } from './vite-middleware-plugin.mjs'
 
 /**
- * Sett til true for å gjøre kall til grunndata-search uten mock.
+ * Sett til true for å gjøre kall til hm-grunndata-search uten mock.
  */
 const finnHjelpemiddelProxy = false
 
@@ -49,9 +12,9 @@ const finnHjelpemiddelProxy = false
 export default defineConfig((env) => ({
   base: '/',
   plugins: [
+    middlewarePlugin({ development: env.mode === 'test' || env.mode === 'development' }),
     htmlPlugin({ development: env.mode === 'test' || env.mode === 'development' }),
     react(),
-    splitVendorChunkPlugin(),
   ],
   build: {
     manifest: true,

@@ -4,5 +4,5 @@
     "module": "esnext",
     "moduleResolution": "node"
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.mts", "vite-html-plugin.mts", "vite-middleware-plugin.mts"]
 }

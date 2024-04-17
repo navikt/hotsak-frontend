@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { CopyButton, HStack, Heading, Tooltip } from '@navikt/ds-react'
+import { CopyButton, Heading, HStack, Tooltip } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -11,17 +11,17 @@ import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Bruksarena, Formidler, Levering, PersonInfoKilde, Personinfo } from '../../types/types.internal'
+import { Bosituasjon, Bruksarena, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { LeveringsMåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
 import { useOebsAdresser } from '../../personoversikt/useOebsAdresser'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 
 interface BrukerProps {
   person: Personinfo
   levering: Levering
   formidler: Formidler
+  visOebsAdresser: boolean
 }
 
 const TittelIkon = styled(Personikon)`
@@ -91,8 +91,8 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
   }
 }
 
-export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) => {
-  const { adresser } = useOebsAdresser(person.fnr)
+export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler, visOebsAdresser }) => {
+  const { adresser } = useOebsAdresser(visOebsAdresser, person.fnr)
   const formatertNavn = formaterNavn(person)
   const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
@@ -131,24 +131,22 @@ export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler }) =
       </Container>
       <Strek />
 
-      <Eksperiment>
-        {adresser.length > 0 && (
-          <>
-            <Heading level="1" size="medium" spacing={true}>
-              Adresser fra OEBS
-            </Heading>
-            <Container>
-              {adresser.map((adresse) => (
-                <Grid key={adresse.leveringAddresse}>
-                  <Etikett>Leveringsadresse</Etikett>
-                  {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
-                </Grid>
-              ))}
-            </Container>
-            <Strek />
-          </>
-        )}
-      </Eksperiment>
+      {adresser.length > 0 && (
+        <>
+          <Heading level="1" size="medium" spacing={true}>
+            Adresser fra OEBS
+          </Heading>
+          <Container>
+            {adresser.map((adresse) => (
+              <Grid key={adresse.leveringAddresse}>
+                <Etikett>Leveringsadresse</Etikett>
+                {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
+              </Grid>
+            ))}
+          </Container>
+          <Strek />
+        </>
+      )}
 
       <Heading level="1" size="medium" spacing={true}>
         Utlevering

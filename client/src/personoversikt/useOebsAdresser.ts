@@ -11,9 +11,9 @@ export interface OebsAdresse {
   bydel?: string
 }
 
-export function useOebsAdresser(brukersFodselsnummer?: string) {
+export function useOebsAdresser(visOebsAdresser: boolean, brukersFodselsnummer?: string) {
   const { data } = useSwr<{ data: OebsAdresse[] }>(
-    window.appSettings.MILJO !== 'prod-gcp' && brukersFodselsnummer
+    window.appSettings.MILJO !== 'prod-gcp' && visOebsAdresser && brukersFodselsnummer
       ? ['api/person/oebs-adresser', brukersFodselsnummer]
       : null,
     hentBrukerdataMedPost

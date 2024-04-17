@@ -90,6 +90,10 @@ const SaksbildeContent: React.FC = React.memo(() => {
                       person={sak.data.personinformasjon}
                       levering={sak.data.levering}
                       formidler={sak.data.formidler}
+                      visOebsAdresser={sak.data.greitÅViteFaktum.some(
+                        (fakta) =>
+                          fakta.beskrivelse === 'Det er ikke samsvar mellom adresse i Persondataløsningen i NAV og OeBS'
+                      )}
                     />
                   }
                 />

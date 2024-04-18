@@ -9,7 +9,7 @@
     "node": ">=20.11.0"
   },
   "dependencies": {
-    "@navikt/oasis": "3.2.3",
+    "@navikt/oasis": "3.2.4",
     "express": "4.19.2",
     "express-http-proxy": "2.0.0",
     "jose": "5.2.4",

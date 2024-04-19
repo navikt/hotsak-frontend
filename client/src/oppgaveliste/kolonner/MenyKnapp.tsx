@@ -10,7 +10,8 @@ import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
-import { OverførGosysModal, useOverførGosys } from '../../saksbilde/OverførGosysModal'
+import { useOverførGosys } from '../../saksbilde/OverførGosysModal'
+import { OverførGosysModal2 } from '../../saksbilde/OverførGosysModal2'
 
 interface MenyKnappProps {
   sakId: string
@@ -136,7 +137,11 @@ export const MenyKnapp = ({
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <OverførGosysModal legend="Hvorfor vil du overføre saken?" {...overførGosys} />
+      <OverførGosysModal2
+        spørreundersøkelseId="barnebrillesak_overført_gosys_v1"
+        legend="Hvorfor vil du overføre saken?"
+        {...overførGosys}
+      />
     </>
   )
 }

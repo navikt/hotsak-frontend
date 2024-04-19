@@ -6,6 +6,7 @@ import { Tekst } from '../felleskomponenter/typografi'
 import type { OverforGosysTilbakemelding } from '../types/types.internal'
 import { putSendTilGosys } from '../io/http'
 import { useSWRConfig } from 'swr'
+import { IBesvarelse } from '../innsikt/Besvarelse'
 
 export interface OverførGosysModalProps {
   open: boolean
@@ -13,7 +14,7 @@ export interface OverførGosysModalProps {
   årsaker: ReadonlyArray<string>
   legend?: string
 
-  onBekreft(tilbakemelding: OverforGosysTilbakemelding): void | Promise<void>
+  onBekreft(tilbakemelding: OverforGosysTilbakemelding | IBesvarelse): void | Promise<void>
   onClose(): void
 }
 

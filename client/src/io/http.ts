@@ -12,6 +12,7 @@ import type {
   VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
+import type { IBesvarelse } from '../innsikt/Besvarelse'
 
 export const IKKE_FUNNET = 404
 export interface SaksbehandlingApiResponse<T = any> {
@@ -230,7 +231,10 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
   return put(`${baseUrl}/api/bestilling/${sakId}`, endreHjelpemiddel)
 }
 
-export const putSendTilGosys = async (sakId: number | string, tilbakemelding: OverforGosysTilbakemelding) => {
+export const putSendTilGosys = async (
+  sakId: number | string,
+  tilbakemelding: OverforGosysTilbakemelding | IBesvarelse
+) => {
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding })
 }
 

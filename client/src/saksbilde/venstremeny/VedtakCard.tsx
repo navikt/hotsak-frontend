@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { Bleed, Button, HStack, HelpText, Tag, TextField } from '@navikt/ds-react'
+import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -16,11 +16,12 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
-import { OverførGosysModal, useOverførGosys } from '../OverførGosysModal'
+import { useOverførGosys } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
+import { OverførGosysModal2 } from '../OverførGosysModal2'
 
 interface VedtakCardProps {
   sak: Sak
@@ -225,7 +226,8 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
               />
             </Avstand>
           </BekreftelsesModal>
-          <OverførGosysModal
+          <OverførGosysModal2
+            spørreundersøkelseId="sak_overført_gosys_v1"
             {...overførGosys}
             onBekreft={async (tilbakemelding) => {
               await overførGosys.onBekreft(tilbakemelding)

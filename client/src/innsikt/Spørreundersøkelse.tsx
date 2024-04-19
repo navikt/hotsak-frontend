@@ -1,0 +1,77 @@
+import { SpørreundersøkelseId } from './spørreundersøkelser'
+import { useSpørreundersøkelse } from './useSpørreundersøkelse'
+import { FormProvider, useForm } from 'react-hook-form'
+import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
+import { Spørsmål } from './Spørsmål'
+import React, { useRef } from 'react'
+import type { IBesvarelse } from './Besvarelse'
+
+export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
+  loading?: boolean
+  spørreundersøkelseId: SpørreundersøkelseId
+  size?: 'medium' | 'small'
+  knappetekst?: string
+
+  onBesvar(besvarelse: IBesvarelse): void | Promise<void>
+  onClose?(): void
+}
+
+export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
+  const { open, loading, spørreundersøkelseId, size, knappetekst = 'Besvar', onBesvar, onClose } = props
+  const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse(spørreundersøkelseId)
+  const { spørsmål } = spørreundersøkelse
+  const form = useForm<IBesvarelse>({ defaultValues })
+  const { formState, reset, handleSubmit } = form
+  const ref = useRef<HTMLDialogElement>(null)
+  return (
+    <Modal
+      ref={ref}
+      header={{ heading: spørreundersøkelse.tittel, size }}
+      open={open}
+      onCancel={() => {
+        reset(defaultValues)
+      }}
+      onBeforeClose={() => {
+        reset(defaultValues)
+        return true
+      }}
+      onClose={onClose}
+      width={800}
+    >
+      <FormProvider {...form}>
+        <form
+          onSubmit={handleSubmit(async (data) => {
+            return onBesvar(data)
+          })}
+        >
+          <Modal.Body style={{ paddingTop: 0 }}>
+            <VStack gap="5">
+              {spørreundersøkelse.beskrivelse && (
+                <ReadMore header={spørreundersøkelse.beskrivelse.header} size={size}>
+                  {spørreundersøkelse.beskrivelse.body}
+                </ReadMore>
+              )}
+              {spørsmål.map((spørsmål) => (
+                <Spørsmål key={spørsmål.tekst} spørsmål={spørsmål} nivå={0} size={size} />
+              ))}
+            </VStack>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              size="small"
+              variant="primary"
+              type="submit"
+              disabled={loading || formState.isSubmitting}
+              loading={loading || formState.isSubmitting}
+            >
+              {knappetekst}
+            </Button>
+            <Button variant="secondary" size="small" onClick={onClose} disabled={loading || formState.isSubmitting}>
+              Avbryt
+            </Button>
+          </Modal.Footer>
+        </form>
+      </FormProvider>
+    </Modal>
+  )
+}

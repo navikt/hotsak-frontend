@@ -24,7 +24,7 @@ export interface IFritekst extends ISpørsmål {
 
 export interface IOppfølgingsspørsmål extends ISpørsmål {
   type: 'oppfølgingsspørsmål'
-  spørsmål: IEnkeltvalg | IFlervalg | IFritekst
+  spørsmål: ReadonlyArray<IEnkeltvalg | IFlervalg | IFritekst>
 }
 
 export interface ISpørreundersøkelse {

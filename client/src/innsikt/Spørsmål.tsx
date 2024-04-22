@@ -1,4 +1,4 @@
-import { IEnkeltvalg, IFlervalg, IFritekst } from './spørreundersøkelser'
+import type { IEnkeltvalg, IFlervalg, IFritekst } from './spørreundersøkelser'
 import { Enkeltvalg } from './Enkeltvalg'
 import { Flervalg } from './Flervalg'
 import { Fritekst } from './Fritekst'

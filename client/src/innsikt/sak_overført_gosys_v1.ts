@@ -16,70 +16,82 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
         {
           tekst: 'Må kontakte formidler/bruker',
           type: 'oppfølgingsspørsmål',
-          spørsmål: {
-            tekst: 'Hvilke opplysninger / hva må du vite?',
-            type: 'flervalg',
-            svar: [
-              'Avklaring: er det en byttesak?',
-              'Begrunnelse: bruker har tilsvarende hjelpemiddel fra før, hvorfor trenger de en til?',
-              'Begrunnelse for tilbehør',
-              'Mer om brukers behov og situasjon',
-              'Trenger pristilbud',
-              {
-                tekst: 'Annet',
-                type: 'oppfølgingsspørsmål',
-                spørsmål: {
-                  tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker',
-                  type: 'fritekst',
-                  påkrevd: true,
+          spørsmål: [
+            {
+              tekst: 'Hvilke opplysninger / hva må du vite?',
+              type: 'flervalg',
+              svar: [
+                'Avklaring: er det en byttesak?',
+                'Begrunnelse: bruker har tilsvarende hjelpemiddel fra før, hvorfor trenger de en til?',
+                'Begrunnelse for tilbehør',
+                'Mer om brukers behov og situasjon',
+                'Trenger pristilbud',
+                {
+                  tekst: 'Annet',
+                  type: 'oppfølgingsspørsmål',
+                  spørsmål: [
+                    {
+                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker',
+                      type: 'fritekst',
+                      påkrevd: true,
+                    },
+                  ],
                 },
-              },
-            ],
-            påkrevd: true,
-          },
+              ],
+              påkrevd: true,
+            },
+          ],
         },
         {
           tekst: 'Må ha skriftlig vedtak',
           type: 'oppfølgingsspørsmål',
-          spørsmål: {
-            tekst: 'Hva slags type vedtak?',
-            type: 'enkeltvalg',
-            svar: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
-            påkrevd: true,
-          },
+          spørsmål: [
+            {
+              tekst: 'Hva slags type vedtak?',
+              type: 'enkeltvalg',
+              svar: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
+              påkrevd: true,
+            },
+          ],
         },
         'Må vurderes av noen som ikke jobber i Hotsak',
         {
           tekst: 'Skal henlegges',
           type: 'oppfølgingsspørsmål',
-          spørsmål: {
-            tekst: 'Hvorfor skal saken henlegges?',
-            type: 'enkeltvalg',
-            svar: [
-              'Duplikat-sak',
-              'MORS',
-              {
-                tekst: 'Annet',
-                type: 'oppfølgingsspørsmål',
-                spørsmål: {
-                  tekst: 'Utdyp hvorfor saken skal henlegges',
-                  beskrivelse: '',
-                  type: 'fritekst',
-                  påkrevd: true,
+          spørsmål: [
+            {
+              tekst: 'Hvorfor skal saken henlegges?',
+              type: 'enkeltvalg',
+              svar: [
+                'Duplikat-sak',
+                'MORS',
+                {
+                  tekst: 'Annet',
+                  type: 'oppfølgingsspørsmål',
+                  spørsmål: [
+                    {
+                      tekst: 'Utdyp hvorfor saken skal henlegges',
+                      beskrivelse: '',
+                      type: 'fritekst',
+                      påkrevd: true,
+                    },
+                  ],
                 },
-              },
-            ],
-            påkrevd: true,
-          },
+              ],
+              påkrevd: true,
+            },
+          ],
         },
         {
           tekst: 'Annet',
           type: 'oppfølgingsspørsmål',
-          spørsmål: {
-            tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
-            type: 'fritekst',
-            påkrevd: true,
-          },
+          spørsmål: [
+            {
+              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
+              type: 'fritekst',
+              påkrevd: true,
+            },
+          ],
         },
       ],
       påkrevd: true,

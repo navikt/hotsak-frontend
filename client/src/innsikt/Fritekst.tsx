@@ -7,9 +7,17 @@ import type { SpørsmålProps } from './Spørsmål'
 export function Fritekst(props: SpørsmålProps<IFritekst>) {
   const {
     spørsmål: { tekst, beskrivelse, påkrevd },
+    navn,
     size,
   } = props
-  const navn = join(props.navn, tekst, 'svar')
+  const name = join(navn, tekst, 'svar')
   const { register } = useFormContext()
-  return <Textarea size={size} label={tekst} description={beskrivelse} {...register(navn, { required: påkrevd })} />
+  return (
+    <Textarea
+      size={size}
+      label={tekst}
+      description={beskrivelse}
+      {...register(name, { required: påkrevd, maxLength: 1000, shouldUnregister: true })}
+    />
+  )
 }

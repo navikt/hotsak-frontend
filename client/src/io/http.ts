@@ -13,6 +13,7 @@ import type {
   VurderVilkårRequest,
 } from '../types/types.internal'
 import type { IBesvarelse } from '../innsikt/Besvarelse'
+import { ISpørreundersøkelse } from '../innsikt/spørreundersøkelser'
 
 export const IKKE_FUNNET = 404
 export interface SaksbehandlingApiResponse<T = any> {
@@ -233,9 +234,16 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
 
 export const putSendTilGosys = async (
   sakId: number | string,
-  tilbakemelding: OverforGosysTilbakemelding | IBesvarelse
+  tilbakemelding: OverforGosysTilbakemelding | IBesvarelse,
+  spørreundersøkelse?: ISpørreundersøkelse
 ) => {
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding })
+  let data: Record<string, any>
+  if ((tilbakemelding as OverforGosysTilbakemelding).valgteArsaker) {
+    data = { tilbakemelding }
+  } else {
+    data = { besvarelse: tilbakemelding, spørreundersøkelse }
+  }
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, data)
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

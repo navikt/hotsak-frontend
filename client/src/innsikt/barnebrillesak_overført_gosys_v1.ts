@@ -18,11 +18,13 @@ export const barnebrillesak_overført_gosys_v1: ISpørreundersøkelse = {
         {
           tekst: 'Annet',
           type: 'oppfølgingsspørsmål',
-          spørsmål: {
-            tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
-            type: 'fritekst',
-            påkrevd: true,
-          },
+          spørsmål: [
+            {
+              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
+              type: 'fritekst',
+              påkrevd: true,
+            },
+          ],
         },
       ],
       påkrevd: true,

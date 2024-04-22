@@ -6,31 +6,37 @@ import { join } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
 import type { SpørsmålProps } from './Spørsmål'
 
+const defaultValue: string[] = []
+
 export function Flervalg(props: SpørsmålProps<IFlervalg>) {
   const {
     spørsmål: { tekst, svar, påkrevd },
+    navn,
     nivå = 0,
     size,
   } = props
-  const navn = join(props.navn, tekst, 'svar')
+  const name = join(navn, tekst, 'svar')
   const { control } = useFormContext()
   return (
     <Controller
-      name={navn}
+      name={name}
       rules={{ required: påkrevd }}
+      shouldUnregister={true}
+      defaultValue={defaultValue}
       control={control}
       render={({ field }) => (
         <CheckboxGroup
+          name={field.name}
+          value={field.value}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
           size={size}
           legend={tekst}
-          onChange={(value) => {
-            field.onChange(value)
-          }}
         >
           {svar.map((svar) => {
             if (typeof svar === 'string') {
               return (
-                <Checkbox key={svar} name={navn} value={svar}>
+                <Checkbox key={svar} name={name} value={svar}>
                   {svar}
                 </Checkbox>
               )
@@ -38,11 +44,15 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
               const spørsmål = svar
               return (
                 <Fragment key={spørsmål.tekst}>
-                  <Checkbox name={navn} value={spørsmål.tekst}>
+                  <Checkbox name={name} value={spørsmål.tekst}>
                     {spørsmål.tekst}
                   </Checkbox>
                   {Array.isArray(field.value) && field.value.some((value) => spørsmål.tekst === value) && (
-                    <Oppfølgingsspørsmål spørsmål={spørsmål} navn={join(props.navn, tekst)} nivå={nivå + 1} />
+                    <Oppfølgingsspørsmål
+                      spørsmål={spørsmål}
+                      navn={join(navn, tekst, 'oppfølgingsspørsmål')}
+                      nivå={nivå + 1}
+                    />
                   )}
                 </Fragment>
               )

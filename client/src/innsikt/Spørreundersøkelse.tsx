@@ -1,4 +1,4 @@
-import { SpørreundersøkelseId } from './spørreundersøkelser'
+import type { SpørreundersøkelseId } from './spørreundersøkelser'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
@@ -23,24 +23,27 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
   const form = useForm<IBesvarelse>({ defaultValues })
   const { formState, reset, handleSubmit } = form
   const ref = useRef<HTMLDialogElement>(null)
+  const loadingOrSubmitting = loading || formState.isSubmitting
+
+  const resetForm = () => {
+    reset(defaultValues)
+    return true
+  }
+
   return (
     <Modal
       ref={ref}
       header={{ heading: spørreundersøkelse.tittel, size }}
       open={open}
-      onCancel={() => {
-        reset(defaultValues)
-      }}
-      onBeforeClose={() => {
-        reset(defaultValues)
-        return true
-      }}
+      onCancel={resetForm}
+      onBeforeClose={resetForm}
       onClose={onClose}
       width={800}
     >
       <FormProvider {...form}>
         <form
           onSubmit={handleSubmit(async (data) => {
+            console.log(JSON.stringify(data, null, '  '))
             return onBesvar(data)
           })}
         >
@@ -58,15 +61,24 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
           </Modal.Body>
           <Modal.Footer>
             <Button
+              type="submit"
               size="small"
               variant="primary"
-              type="submit"
-              disabled={loading || formState.isSubmitting}
-              loading={loading || formState.isSubmitting}
+              disabled={loadingOrSubmitting}
+              loading={loadingOrSubmitting}
             >
               {knappetekst}
             </Button>
-            <Button variant="secondary" size="small" onClick={onClose} disabled={loading || formState.isSubmitting}>
+            <Button
+              type="button"
+              size="small"
+              variant="secondary"
+              onClick={() => {
+                resetForm()
+                if (onClose) onClose()
+              }}
+              disabled={loadingOrSubmitting}
+            >
               Avbryt
             </Button>
           </Modal.Footer>

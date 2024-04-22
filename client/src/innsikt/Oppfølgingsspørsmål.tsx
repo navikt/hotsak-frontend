@@ -1,15 +1,9 @@
 import type { IOppfølgingsspørsmål } from './spørreundersøkelser'
-import { Spørsmål } from './Spørsmål'
-import { Box } from '@navikt/ds-react'
+import { Spørsmål, SpørsmålProps } from './Spørsmål'
+import { Box, VStack } from '@navikt/ds-react'
 
-export interface OppfølgingsspørsmålProp {
-  spørsmål: IOppfølgingsspørsmål
-  navn?: string
-  nivå?: number
-}
-
-export function Oppfølgingsspørsmål(props: OppfølgingsspørsmålProp) {
-  const { spørsmål, navn, nivå = 0 } = props
+export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspørsmål>) {
+  const { spørsmål, navn, nivå = 0, size } = props
   return (
     <Box
       background="surface-action-subtle"
@@ -18,7 +12,11 @@ export function Oppfølgingsspørsmål(props: OppfølgingsspørsmålProp) {
         marginTop: nivå > 1 ? 'var(--a-spacing-3)' : 0,
       }}
     >
-      <Spørsmål spørsmål={spørsmål.spørsmål} navn={navn} nivå={nivå} />
+      <VStack gap="5">
+        {spørsmål.spørsmål.map((spørsmål) => (
+          <Spørsmål key={spørsmål.tekst} spørsmål={spørsmål} navn={navn} nivå={nivå} size={size} />
+        ))}
+      </VStack>
     </Box>
   )
 }

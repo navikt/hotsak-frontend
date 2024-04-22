@@ -9,28 +9,32 @@ import type { SpørsmålProps } from './Spørsmål'
 export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
   const {
     spørsmål: { tekst, svar, påkrevd },
+    navn,
     nivå = 0,
     size,
   } = props
-  const navn = join(props.navn, tekst, 'svar')
+  const name = join(navn, tekst, 'svar')
   const { control } = useFormContext()
   return (
     <Controller
-      name={navn}
+      name={name}
       rules={{ required: påkrevd }}
+      shouldUnregister={true}
+      defaultValue={''}
       control={control}
       render={({ field }) => (
         <RadioGroup
+          name={field.name}
+          value={field.value}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
           size={size}
           legend={tekst}
-          onChange={(value) => {
-            field.onChange(value)
-          }}
         >
           {svar.map((svar) => {
             if (typeof svar === 'string') {
               return (
-                <Radio key={svar} name={navn} value={svar}>
+                <Radio key={svar} name={name} value={svar}>
                   {svar}
                 </Radio>
               )
@@ -38,11 +42,15 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
               const spørsmål = svar
               return (
                 <Fragment key={spørsmål.tekst}>
-                  <Radio name={navn} value={spørsmål.tekst}>
+                  <Radio name={name} value={spørsmål.tekst}>
                     {spørsmål.tekst}
                   </Radio>
                   {field.value === spørsmål.tekst && (
-                    <Oppfølgingsspørsmål spørsmål={spørsmål} navn={join(props.navn, tekst)} nivå={nivå + 1} />
+                    <Oppfølgingsspørsmål
+                      spørsmål={spørsmål}
+                      navn={join(navn, tekst, 'oppfølgingsspørsmål')}
+                      nivå={nivå + 1}
+                    />
                   )}
                 </Fragment>
               )

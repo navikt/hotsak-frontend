@@ -2,9 +2,9 @@ import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 
 export interface ISpørsmål {
+  type: 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
   tekst: string
   beskrivelse?: string
-  type: 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
   påkrevd?: boolean
 }
 

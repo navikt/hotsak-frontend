@@ -9,17 +9,17 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
   },
   spørsmål: [
     {
+      type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du saken til Gosys?',
       beskrivelse: 'Brukes kun internt av teamet som utvikler Hotsak og vises ikke i Gosys.',
-      type: 'enkeltvalg',
       svar: [
         {
-          tekst: 'Må kontakte formidler/bruker',
           type: 'oppfølgingsspørsmål',
+          tekst: 'Må kontakte formidler/bruker',
           spørsmål: [
             {
-              tekst: 'Hvilke opplysninger / hva må du vite?',
               type: 'flervalg',
+              tekst: 'Hvilke opplysninger / hva må du vite?',
               svar: [
                 'Avklaring: er det en byttesak?',
                 'Begrunnelse: bruker har tilsvarende hjelpemiddel fra før, hvorfor trenger de en til?',
@@ -27,12 +27,12 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
                 'Mer om brukers behov og situasjon',
                 'Trenger pristilbud',
                 {
-                  tekst: 'Annet',
                   type: 'oppfølgingsspørsmål',
+                  tekst: 'Annet',
                   spørsmål: [
                     {
-                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker',
                       type: 'fritekst',
+                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker',
                       påkrevd: true,
                     },
                   ],
@@ -43,12 +43,12 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
           ],
         },
         {
-          tekst: 'Må ha skriftlig vedtak',
           type: 'oppfølgingsspørsmål',
+          tekst: 'Må ha skriftlig vedtak',
           spørsmål: [
             {
-              tekst: 'Hva slags type vedtak?',
               type: 'enkeltvalg',
+              tekst: 'Hva slags type vedtak?',
               svar: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
               påkrevd: true,
             },
@@ -56,23 +56,22 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
         },
         'Må vurderes av noen som ikke jobber i Hotsak',
         {
-          tekst: 'Skal henlegges',
           type: 'oppfølgingsspørsmål',
+          tekst: 'Skal henlegges',
           spørsmål: [
             {
-              tekst: 'Hvorfor skal saken henlegges?',
               type: 'enkeltvalg',
+              tekst: 'Hvorfor skal saken henlegges?',
               svar: [
                 'Duplikat-sak',
                 'MORS',
                 {
-                  tekst: 'Annet',
                   type: 'oppfølgingsspørsmål',
+                  tekst: 'Annet',
                   spørsmål: [
                     {
-                      tekst: 'Utdyp hvorfor saken skal henlegges',
-                      beskrivelse: '',
                       type: 'fritekst',
+                      tekst: 'Utdyp hvorfor saken skal henlegges',
                       påkrevd: true,
                     },
                   ],
@@ -83,12 +82,12 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
           ],
         },
         {
-          tekst: 'Annet',
           type: 'oppfølgingsspørsmål',
+          tekst: 'Annet',
           spørsmål: [
             {
-              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
               type: 'fritekst',
+              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
               påkrevd: true,
             },
           ],

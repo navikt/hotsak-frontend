@@ -23,7 +23,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
               svar: [
                 'Avklaring: er det en byttesak?',
                 'Begrunnelse: bruker har tilsvarende hjelpemiddel fra før, hvorfor trenger de en til?',
-                'Begrunnelse for tilbehør',
+                'Begrunnelse: tilbehør',
                 'Mer om brukers behov og situasjon',
                 'Trenger pristilbud',
                 {

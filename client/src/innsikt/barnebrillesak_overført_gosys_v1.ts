@@ -9,19 +9,19 @@ export const barnebrillesak_overført_gosys_v1: ISpørreundersøkelse = {
   },
   spørsmål: [
     {
+      type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du saken til Gosys?',
       beskrivelse: 'Brukes kun internt av teamet som utvikler Hotsak og vises ikke i Gosys.',
-      type: 'enkeltvalg',
       svar: [
         'Behandlingsbriller/linser ordinære vilkår',
         'Behandlingsbriller/linser særskilte vilkår',
         {
-          tekst: 'Annet',
           type: 'oppfølgingsspørsmål',
+          tekst: 'Annet',
           spørsmål: [
             {
-              tekst: 'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger.',
               type: 'fritekst',
+              tekst: 'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger.',
               påkrevd: true,
             },
           ],

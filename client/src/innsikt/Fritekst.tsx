@@ -1,6 +1,6 @@
 import type { IFritekst } from './spørreundersøkelser'
 import { Textarea } from '@navikt/ds-react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, get } from 'react-hook-form'
 import { join, sanitize } from './Besvarelse'
 import type { SpørsmålProps } from './Spørsmål'
 
@@ -11,13 +11,15 @@ export function Fritekst(props: SpørsmålProps<IFritekst>) {
     size,
   } = props
   const name = join(navn, sanitize(tekst), 'svar')
-  const { register } = useFormContext()
+  const { register, formState } = useFormContext()
+  const error = get(formState.errors, name)
   return (
     <Textarea
       size={size}
       label={tekst}
       description={beskrivelse}
-      {...register(name, { required: påkrevd, maxLength: 1000, shouldUnregister: true })}
+      error={error?.message}
+      {...register(name, { required: påkrevd && 'Må fylles ut', maxLength: 1000, shouldUnregister: true })}
     />
   )
 }

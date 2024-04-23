@@ -1,6 +1,6 @@
 import type { IEnkeltvalg } from './spørreundersøkelser'
 import { Radio, RadioGroup } from '@navikt/ds-react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller, get, useFormContext } from 'react-hook-form'
 import { Fragment } from 'react'
 import { join, sanitize } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
@@ -14,11 +14,12 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
     size,
   } = props
   const name = join(navn, sanitize(tekst), 'svar')
-  const { control } = useFormContext()
+  const { control, formState } = useFormContext()
+  const error = get(formState.errors, name)
   return (
     <Controller
       name={name}
-      rules={{ required: påkrevd }}
+      rules={{ required: påkrevd && 'Må fylles ut' }}
       shouldUnregister={true}
       defaultValue={''}
       control={control}
@@ -31,6 +32,7 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
           size={size}
           legend={tekst}
           description={beskrivelse}
+          error={error?.message}
         >
           {svar.map((svar) => {
             if (typeof svar === 'string') {

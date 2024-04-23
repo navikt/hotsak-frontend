@@ -13,3 +13,7 @@ export interface IBesvarelse extends Record<string, Svar> {}
 export function join(...segments: Array<string | undefined>): string {
   return segments.filter((segment) => !!segment).join('.')
 }
+
+export function sanitize(segment: string): string {
+  return segment.replace('.', '_')
+}

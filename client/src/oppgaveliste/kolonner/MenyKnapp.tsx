@@ -10,8 +10,8 @@ import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
-import { useOverførGosys } from '../../saksbilde/OverførGosysModal'
-import { OverførGosysModal2 } from '../../saksbilde/OverførGosysModal2'
+import { useOverførGosys } from '../../saksbilde/useOverførGosys'
+import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
 
 interface MenyKnappProps {
   sakId: string
@@ -40,7 +40,7 @@ export const MenyKnapp = ({
   const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: gåTilSak, sakstype: sakstype })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
 
   const menyClick = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -137,18 +137,7 @@ export const MenyKnapp = ({
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <OverførGosysModal2
-        spørreundersøkelseId="barnebrillesak_overført_gosys_v1"
-        legend="Hvorfor vil du overføre saken?"
-        {...overførGosys}
-      />
+      <OverførGosysModal {...overførGosys} />
     </>
   )
 }
-
-// fixme -> hardkodet til verdier for barnebrillesaker
-const overførGosysÅrsaker: ReadonlyArray<string> = [
-  'Behandlingsbriller/linser ordinære vilkår',
-  'Behandlingsbriller/linser særskilte vilkår',
-  'Annet',
-]

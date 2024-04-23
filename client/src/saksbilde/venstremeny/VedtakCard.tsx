@@ -16,12 +16,12 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import useLogNesteNavigasjon from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
-import { useOverførGosys } from '../OverførGosysModal'
+import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { OverførGosysModal2 } from '../OverførGosysModal2'
+import { useOverførGosys } from '../useOverførGosys'
 
 interface VedtakCardProps {
   sak: Sak
@@ -52,13 +52,12 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, overførGosysÅrsaker)
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
     `${capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
   )
-  //const { hentSpørreskjema, spørreskjema, spørreskjemaOpen, setSpørreskjemaOpen, nullstillSkjema } = useHeitKrukka()
 
   const opprettVedtak = () => {
     setLoading(true)
@@ -103,16 +102,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
             <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
           </StatusTekst>
         </Card>
-        {/*<Eksperiment>
-          <HeitKrukka
-            open={spørreskjemaOpen}
-            onClose={() => {
-              setSpørreskjemaOpen(false)
-              nullstillSkjema()
-            }}
-            skjemaUrl={spørreskjema}
-          />
-        </Eksperiment>*/}
       </>
     )
   }
@@ -226,11 +215,10 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
               />
             </Avstand>
           </BekreftelsesModal>
-          <OverførGosysModal2
-            spørreundersøkelseId="sak_overført_gosys_v1"
+          <OverførGosysModal
             {...overførGosys}
-            onBekreft={async (tilbakemelding) => {
-              await overførGosys.onBekreft(tilbakemelding)
+            onBekreft={async (besvarelse, spørreundersøkelse) => {
+              await overførGosys.onBekreft(besvarelse, spørreundersøkelse)
               logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
               logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
             }}
@@ -240,10 +228,3 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
     )
   }
 }
-
-const overførGosysÅrsaker: ReadonlyArray<string> = [
-  'Mulighet for å legge inn mer informasjon i saken',
-  'Mulighet for å gjøre skriftlige vedtak i Hotsak',
-  'Personen som skal jobbe videre med saken jobber ikke i Hotsak i dag',
-  'Annet',
-]

@@ -8,7 +8,6 @@ import type {
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
-  OverforGosysTilbakemelding,
   VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
@@ -234,16 +233,10 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
 
 export const putSendTilGosys = async (
   sakId: number | string,
-  tilbakemelding: OverforGosysTilbakemelding | IBesvarelse,
-  spørreundersøkelse?: ISpørreundersøkelse
+  besvarelse: IBesvarelse,
+  spørreundersøkelse: ISpørreundersøkelse
 ) => {
-  let data: Record<string, any>
-  if ((tilbakemelding as OverforGosysTilbakemelding).valgteArsaker) {
-    data = { tilbakemelding }
-  } else {
-    data = { besvarelse: tilbakemelding, spørreundersøkelse }
-  }
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, data)
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { besvarelse, spørreundersøkelse })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

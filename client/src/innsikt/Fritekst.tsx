@@ -1,7 +1,7 @@
 import type { IFritekst } from './spørreundersøkelser'
 import { Textarea } from '@navikt/ds-react'
 import { useFormContext } from 'react-hook-form'
-import { join } from './Besvarelse'
+import { join, sanitize } from './Besvarelse'
 import type { SpørsmålProps } from './Spørsmål'
 
 export function Fritekst(props: SpørsmålProps<IFritekst>) {
@@ -10,7 +10,7 @@ export function Fritekst(props: SpørsmålProps<IFritekst>) {
     navn,
     size,
   } = props
-  const name = join(navn, tekst, 'svar')
+  const name = join(navn, sanitize(tekst), 'svar')
   const { register } = useFormContext()
   return (
     <Textarea

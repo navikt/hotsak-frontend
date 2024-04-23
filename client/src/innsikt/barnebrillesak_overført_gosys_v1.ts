@@ -20,7 +20,7 @@ export const barnebrillesak_overført_gosys_v1: ISpørreundersøkelse = {
           type: 'oppfølgingsspørsmål',
           spørsmål: [
             {
-              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
+              tekst: 'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger.',
               type: 'fritekst',
               påkrevd: true,
             },

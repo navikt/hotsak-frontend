@@ -32,7 +32,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
                   spørsmål: [
                     {
                       type: 'fritekst',
-                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker',
+                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker. Ikke skriv personopplysninger.',
                       påkrevd: true,
                     },
                   ],
@@ -71,7 +71,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
                   spørsmål: [
                     {
                       type: 'fritekst',
-                      tekst: 'Utdyp hvorfor saken skal henlegges',
+                      tekst: 'Utdyp hvorfor saken skal henlegges. Ikke skriv personopplysninger.',
                       påkrevd: true,
                     },
                   ],
@@ -87,7 +87,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
           spørsmål: [
             {
               type: 'fritekst',
-              tekst: 'Gi en kort forklaring for hvorfor du ikke kan behandle saken. Unngå personopplysninger.',
+              tekst: 'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger.',
               påkrevd: true,
             },
           ],

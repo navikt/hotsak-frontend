@@ -1,4 +1,4 @@
-import type { SpørreundersøkelseId } from './spørreundersøkelser'
+import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
@@ -12,7 +12,7 @@ export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
   size?: 'medium' | 'small'
   knappetekst?: string
 
-  onBesvar(besvarelse: IBesvarelse): void | Promise<void>
+  onBesvar(besvarelse: IBesvarelse, spørreundersøkelse: ISpørreundersøkelse): void | Promise<void>
   onClose?(): void
 }
 
@@ -44,7 +44,7 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
         <form
           onSubmit={handleSubmit(async (data) => {
             console.log(JSON.stringify(data, null, '  '))
-            return onBesvar(data)
+            return onBesvar(data, spørreundersøkelse)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>

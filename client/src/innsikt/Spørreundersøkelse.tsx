@@ -43,7 +43,6 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
       <FormProvider {...form}>
         <form
           onSubmit={handleSubmit(async (data) => {
-            console.log(JSON.stringify(data, null, '  '))
             return onBesvar(data, spørreundersøkelse)
           })}
         >

@@ -11,7 +11,7 @@ export const barnebrillesak_overført_gosys_v1: ISpørreundersøkelse = {
     {
       type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du saken til Gosys?',
-      beskrivelse: 'Brukes kun internt av teamet som utvikler Hotsak og vises ikke i Gosys.',
+      beskrivelse: 'Årsaken du velger vil vises i Gosys. Eventuell fritekst vises ikke i Gosys, og brukes kun internt.',
       svar: [
         'Behandlingsbriller/linser ordinære vilkår',
         'Behandlingsbriller/linser særskilte vilkår',

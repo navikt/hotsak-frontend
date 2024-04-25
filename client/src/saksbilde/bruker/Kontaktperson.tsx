@@ -2,13 +2,15 @@ import React from 'react'
 
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Formidler, KontaktPerson, KontaktPersonType } from '../../types/types.internal'
+import { formatName } from '../../utils/stringFormating'
+import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
 interface KontaktpersonProps {
   kontaktperson?: KontaktPerson
   formidler: Formidler
 }
 
-export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, formidler }) => {
+export function Kontaktperson({ kontaktperson, formidler }: KontaktpersonProps) {
   if (!kontaktperson) return null
   const { navn, telefon, kontaktpersonType } = kontaktperson
 
@@ -18,7 +20,7 @@ export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, for
       kontaktpersonTekst = 'Hjelpemiddelbruker'
       break
     case KontaktPersonType.HJELPEMIDDELFORMIDLER:
-      kontaktpersonTekst = `Formidler (${formidler.navn})`
+      kontaktpersonTekst = `Formidler (${formatName(formidler.navn)})`
       break
     case KontaktPersonType.ANNEN_KONTAKTPERSON:
       kontaktpersonTekst = `${navn}. Telefon: ${telefon}`
@@ -28,7 +30,12 @@ export const Kontaktperson: React.FC<KontaktpersonProps> = ({ kontaktperson, for
   return (
     <>
       <Etikett>Kontaktperson</Etikett>
-      <Tekst>{kontaktpersonTekst}</Tekst>
+      <HStack align="center">
+        <Tekst>{kontaktpersonTekst}</Tekst>
+        <Tooltip content="Kopier kontaktperson" placement="right">
+          <CopyButton size="small" copyText={kontaktpersonTekst} />
+        </Tooltip>
+      </HStack>
     </>
   )
 }

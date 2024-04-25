@@ -9,7 +9,7 @@ export interface SøknadslinjeProps {
   type: Sakstype
 }
 
-export const Søknadslinje: React.FC<SøknadslinjeProps> = ({ id, type }) => {
+export function Søknadslinje({ id, type }: SøknadslinjeProps) {
   return (
     <>
       <SøknadslinjeContainer>

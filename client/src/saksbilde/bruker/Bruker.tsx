@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { CopyButton, Heading, HStack, Tooltip } from '@navikt/ds-react'
+import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, Tooltip } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
@@ -13,38 +13,133 @@ import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Bosituasjon, Bruksarena, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
-import { LeveringsMåte } from './Leveringsmåte'
+import { Leveringsmåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
 import { useOebsAdresser } from '../../personoversikt/useOebsAdresser'
 
-interface BrukerProps {
+export interface BrukerProps {
   person: Personinfo
   levering: Levering
   formidler: Formidler
   visOebsAdresser: boolean
 }
 
+export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerProps) {
+  const { adresser } = useOebsAdresser(visOebsAdresser, person.fnr)
+  const formatertNavn = formaterNavn(person)
+  const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
+  const bosituasjon = getTextForBosituasjon(person.bosituasjon)
+
+  return (
+    <>
+      <Heading level="1" size="medium" spacing={false}>
+        <TittelIkon width={22} height={22} />
+        Hjelpemiddelbruker
+      </Heading>
+      <Box paddingBlock="4 8">
+        <HGrid {...hGridProps}>
+          <Etikett>Navn</Etikett>
+          <Tekst>{formatertNavn}</Tekst>
+          <Etikett>Fødselsnummer</Etikett>
+          <Tekst>{person.fnr}</Tekst>
+          <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
+          <Tekst>{adresse}</Tekst>
+          <Etikett>Telefon</Etikett>
+          <Tekst>{person.telefon}</Tekst>
+          {bosituasjon && (
+            <>
+              <Etikett>Boform</Etikett>
+              <Tekst>{bosituasjon}</Tekst>
+            </>
+          )}
+          {person.bruksarena && person.bruksarena !== Bruksarena.UKJENT && (
+            <>
+              <Etikett>Bruksarena</Etikett>
+              <Tekst>{capitalize(person.bruksarena)}</Tekst>
+            </>
+          )}
+          <Etikett>Funksjonsnedsettelse</Etikett>
+          <Tekst>{capitalize(person.funksjonsnedsettelse.join(', '))}</Tekst>
+        </HGrid>
+      </Box>
+      <Strek />
+
+      {adresser.length > 0 && (
+        <>
+          <Heading level="1" size="medium" spacing={true}>
+            Adresser fra OEBS
+          </Heading>
+          <Box paddingBlock="4 8">
+            {adresser.map((adresse) => (
+              <HGrid key={adresse.leveringAddresse} {...hGridProps}>
+                <Etikett>Leveringsadresse</Etikett>
+                {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
+              </HGrid>
+            ))}
+          </Box>
+          <Strek />
+        </>
+      )}
+
+      <Heading level="1" size="medium" spacing={true}>
+        Utlevering
+      </Heading>
+      <Box paddingBlock="4 8">
+        <HGrid {...hGridProps} align="center">
+          <Etikett>Leveringsadresse</Etikett>
+          <Leveringsmåte levering={levering} brukerAdresse={adresse} />
+          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
+          {levering.merknad && (
+            <>
+              <Merknad>
+                <Avstand paddingTop={1} />
+                <Etikett>Merknad til utlevering</Etikett>
+              </Merknad>
+              <HStack align="center">
+                <Brødtekst>{levering.merknad}</Brødtekst>
+                <Tooltip content="Kopier merknad til utlevering" placement="right">
+                  <CopyButton size="small" copyText={levering.merknad} />
+                </Tooltip>
+              </HStack>
+            </>
+          )}
+        </HGrid>
+      </Box>
+
+      <Strek />
+      <Signatur signaturType={person.signaturtype} navn={formatertNavn} />
+      <Strek />
+
+      <Heading level="1" size="medium" spacing={true}>
+        Vilkår for å motta hjelpemidler
+      </Heading>
+      <Box paddingBlock="4 8">
+        <Liste>
+          {person.oppfylteVilkår.map((vilkår, i) => (
+            <li key={i}>
+              <Brødtekst>{vilkårTekst(vilkår, formatertNavn)}</Brødtekst>
+            </li>
+          ))}
+        </Liste>
+      </Box>
+    </>
+  )
+}
+
+const hGridProps: Partial<HGridProps> = {
+  columns: 'minmax(min-content, 12rem) auto',
+  gap: '05',
+}
+
 const TittelIkon = styled(Personikon)`
   padding-right: 0.5rem;
 `
 
-const Container = styled.div`
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: minmax(min-content, 12rem) auto;
-  grid-column-gap: 0.7rem;
-  grid-row-gap: 0.125rem;
-`
-
-const formaterNavn = (person: Personinfo) => {
+function formaterNavn(person: Personinfo) {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn}` : ''} ${person.etternavn}`)
 }
 
-const vilkårsTekst = (vilkår: string, navn: string) => {
+function vilkårTekst(vilkår: string, navn: string) {
   if (vilkår === 'nedsattFunksjon') {
     return `${navn} har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut.`
   }
@@ -74,12 +169,12 @@ const vilkårsTekst = (vilkår: string, navn: string) => {
   }
 }
 
-const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
+function getTextForBosituasjon(bosituasjon: Bosituasjon | null) {
   switch (bosituasjon) {
     case null:
       return null
     case Bosituasjon.HJEMME:
-      return 'Hjemme (egen bolig, omsorgsbolig eller bofelleskap)'
+      return 'Hjemme (egen bolig, omsorgsbolig eller bofellesskap)'
     case Bosituasjon.HJEMME_EGEN_BOLIG:
       return 'Hjemme i egen bolig'
     case Bosituasjon.HJEMME_OMSORG_FELLES:
@@ -89,106 +184,4 @@ const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
     default:
       return 'Ukjent bosituasjon'
   }
-}
-
-export const Bruker: React.FC<BrukerProps> = ({ person, levering, formidler, visOebsAdresser }) => {
-  const { adresser } = useOebsAdresser(visOebsAdresser, person.fnr)
-  const formatertNavn = formaterNavn(person)
-  const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
-  const bosituasjon = getTextForBosituasjon(person.bosituasjon)
-
-  return (
-    <>
-      <Heading level="1" size="medium" spacing={false}>
-        <TittelIkon width={22} height={22} />
-        Hjelpemiddelbruker
-      </Heading>
-      <Container>
-        <Grid>
-          <Etikett>Navn</Etikett>
-          <Tekst>{formatertNavn}</Tekst>
-          <Etikett>Fødselsnummer</Etikett>
-          <Tekst>{person.fnr}</Tekst>
-          <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
-          <Tekst>{adresse}</Tekst>
-          <Etikett>Telefon</Etikett>
-          <Tekst>{person.telefon}</Tekst>
-          {bosituasjon && (
-            <>
-              <Etikett>Boform</Etikett>
-              <Tekst>{bosituasjon}</Tekst>
-            </>
-          )}
-          {person.bruksarena && person.bruksarena !== Bruksarena.UKJENT && (
-            <>
-              <Etikett>Bruksarena</Etikett>
-              <Tekst>{capitalize(person.bruksarena)}</Tekst>
-            </>
-          )}
-          <Etikett>Funksjonsnedsettelse</Etikett>
-          <Tekst>{capitalize(person.funksjonsnedsettelse.join(', '))}</Tekst>
-        </Grid>
-      </Container>
-      <Strek />
-
-      {adresser.length > 0 && (
-        <>
-          <Heading level="1" size="medium" spacing={true}>
-            Adresser fra OEBS
-          </Heading>
-          <Container>
-            {adresser.map((adresse) => (
-              <Grid key={adresse.leveringAddresse}>
-                <Etikett>Leveringsadresse</Etikett>
-                {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
-              </Grid>
-            ))}
-          </Container>
-          <Strek />
-        </>
-      )}
-
-      <Heading level="1" size="medium" spacing={true}>
-        Utlevering
-      </Heading>
-      <Container>
-        <Grid>
-          <Etikett>Leveringsadresse</Etikett>
-          <LeveringsMåte levering={levering} brukerAdresse={adresse} />
-          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
-          {levering.merknad && (
-            <>
-              <Merknad>
-                <Avstand paddingTop={1} />
-                <Etikett>Merknad til utlevering</Etikett>
-              </Merknad>
-              <HStack align="center">
-                <Brødtekst>{levering.merknad}</Brødtekst>
-                <Tooltip content="Kopier merknad til utlevering" placement="right">
-                  <CopyButton size="small" copyText={levering.merknad} />
-                </Tooltip>
-              </HStack>
-            </>
-          )}
-        </Grid>
-      </Container>
-
-      <Strek />
-      <Signatur signaturType={person.signaturtype} navn={formatertNavn} />
-      <Strek />
-
-      <Heading level="1" size="medium" spacing={true}>
-        Vilkår for å motta hjelpemidler
-      </Heading>
-      <Container>
-        <Liste>
-          {person.oppfylteVilkår.map((vilkår, i) => (
-            <li key={i}>
-              <Brødtekst>{vilkårsTekst(vilkår, formatertNavn)}</Brødtekst>
-            </li>
-          ))}
-        </Liste>
-      </Container>
-    </>
-  )
 }

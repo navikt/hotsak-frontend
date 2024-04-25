@@ -1,42 +1,26 @@
 import styled from 'styled-components'
 
-import { Heading } from '@navikt/ds-react'
+import { Box, Heading, HGrid, HGridProps } from '@navikt/ds-react'
 
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
 
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
-import { Formidler, Oppfølgingsansvarlig } from '../../types/types.internal'
+import type { Formidler as FormidlerType, Oppfølgingsansvarlig } from '../../types/types.internal'
 
-interface FormidlerProps {
-  formidler: Formidler
-  oppfølgingsansvarling: Oppfølgingsansvarlig
+export interface FormidlerProps {
+  formidler: FormidlerType
+  oppfølgingsansvarlig: Oppfølgingsansvarlig
 }
 
-const TittelIkon = styled(Personikon)`
-  padding-right: 0.5rem;
-`
-
-const Container = styled.div`
-  padding-top: 1rem;
-  font-size: 1rem;
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: minmax(min-content, 12rem) auto;
-  grid-column-gap: 0.75rem;
-  grid-row-gap: 0.125rem;
-`
-
-export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølgingsansvarling }) => {
-  const Formidlerinfo = () => {
+export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) {
+  const InfoFormidler = () => {
     return (
-      <Grid>
+      <HGrid {...hGridProps}>
         <Etikett>Navn</Etikett>
-        <Brødtekst>{capitalizeName(formidler.navn)}</Brødtekst>
+        <Brødtekst>{formatName(formidler.navn)}</Brødtekst>
         <Etikett>Arbeidssted</Etikett>
         <Brødtekst>{`${capitalize(formidler.arbeidssted)}`}</Brødtekst>
         <Etikett>Stilling</Etikett>
@@ -49,28 +33,28 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <Brødtekst>{capitalize(formidler.treffestEnklest)}</Brødtekst>
         <Etikett>E-postadresse</Etikett>
         <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
-      </Grid>
+      </HGrid>
     )
   }
 
-  const OppfølgingsasvarligInfo = () => {
+  const InfoOppfølgingsansvarlig = () => {
     return (
-      <Container>
+      <Box paddingBlock="4 0">
         <Merknad>
-          <Grid>
+          <HGrid {...hGridProps}>
             <Etikett>Navn</Etikett>
-            <Brødtekst>{capitalizeName(oppfølgingsansvarling.navn)}</Brødtekst>
+            <Brødtekst>{capitalizeName(oppfølgingsansvarlig.navn)}</Brødtekst>
             <Etikett>Arbeidssted</Etikett>
-            <Brødtekst>{`${capitalize(oppfølgingsansvarling.arbeidssted)}`}</Brødtekst>
+            <Brødtekst>{`${capitalize(oppfølgingsansvarlig.arbeidssted)}`}</Brødtekst>
             <Etikett>Stilling</Etikett>
-            <Brødtekst>{`${capitalize(oppfølgingsansvarling.stilling)}`}</Brødtekst>
+            <Brødtekst>{`${capitalize(oppfølgingsansvarlig.stilling)}`}</Brødtekst>
             <Etikett>Telefon</Etikett>
-            <Brødtekst>{oppfølgingsansvarling.telefon}</Brødtekst>
+            <Brødtekst>{oppfølgingsansvarlig.telefon}</Brødtekst>
             <Etikett>Ansvar</Etikett>
-            <Brødtekst>{capitalize(oppfølgingsansvarling.ansvarFor)}</Brødtekst>
-          </Grid>
+            <Brødtekst>{capitalize(oppfølgingsansvarlig.ansvarFor)}</Brødtekst>
+          </HGrid>
         </Merknad>
-      </Container>
+      </Box>
     )
   }
 
@@ -80,25 +64,34 @@ export const Formidlerside: React.FC<FormidlerProps> = ({ formidler, oppfølging
         <TittelIkon width={22} height={22} />
         Formidler og opplæringsansvarlig
       </Heading>
-      <Container>
+      <Box paddingBlock="4 0">
         <Heading level="1" size="small" spacing={false}>
           Hjelpemiddelformidler
         </Heading>
-        <Container>
-          <Formidlerinfo />
-        </Container>
-        {oppfølgingsansvarling && (
+        <Box paddingBlock="4 0">
+          <InfoFormidler />
+        </Box>
+        {oppfølgingsansvarlig && (
           <>
             <Strek />
-            <Container>
+            <Box paddingBlock="4 0">
               <Heading level="1" size="small" spacing={false}>
                 Oppfølgings- og opplæringsansvarlig
               </Heading>
-              <OppfølgingsasvarligInfo />
-            </Container>
+              <InfoOppfølgingsansvarlig />
+            </Box>
           </>
         )}
-      </Container>
+      </Box>
     </>
   )
+}
+
+const TittelIkon = styled(Personikon)`
+  padding-right: 0.5rem;
+`
+
+const hGridProps: Partial<HGridProps> = {
+  columns: 'minmax(min-content, 12rem) auto',
+  gap: '05',
 }

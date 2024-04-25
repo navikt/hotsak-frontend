@@ -8,7 +8,7 @@ import { AlertError } from '../feilsider/AlertError'
 import { Sakstype } from '../types/types.internal'
 import { Søknadslinje } from './Søknadslinje'
 import { Bruker } from './bruker/Bruker'
-import { Formidlerside } from './formidler/Formidlerside'
+import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
@@ -100,10 +100,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                 <Route
                   path="/formidler"
                   element={
-                    <Formidlerside
-                      formidler={sak.data.formidler}
-                      oppfølgingsansvarling={sak.data.oppfølgingsansvarlig}
-                    />
+                    <Formidler formidler={sak.data.formidler} oppfølgingsansvarlig={sak.data.oppfølgingsansvarlig} />
                   }
                 />
               </Routes>

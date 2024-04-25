@@ -1,31 +1,31 @@
 import React from 'react'
 
 import { Tekst } from '../../felleskomponenter/typografi'
-import { Levering, Leveringsmåte } from '../../types/types.internal'
+import { Levering, Leveringsmåte as LeveringsmåteType } from '../../types/types.internal'
 
-interface LeveringProps {
+export interface LeveringsmåteProps {
   levering: Levering
   brukerAdresse: string
 }
 
-export const LeveringsMåte: React.FC<LeveringProps> = ({ levering, brukerAdresse }) => {
+export function Leveringsmåte({ levering, brukerAdresse }: LeveringsmåteProps) {
   const { adresse, leveringsmåte } = levering
 
-  let leveringsTekst = ''
+  let leveringsmåteTekst = ''
   switch (leveringsmåte) {
-    case Leveringsmåte.ALLEREDE_LEVERT:
-      leveringsTekst = 'Allerede levert'
+    case LeveringsmåteType.ALLEREDE_LEVERT:
+      leveringsmåteTekst = 'Allerede levert'
       break
-    case Leveringsmåte.ANNEN_ADRESSE:
-      leveringsTekst = `${adresse} (Annen adresse)`
+    case LeveringsmåteType.ANNEN_ADRESSE:
+      leveringsmåteTekst = `${adresse} (Annen adresse)`
       break
-    case Leveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      leveringsTekst = `${brukerAdresse} (Folkeregistert adresse)`
+    case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
+      leveringsmåteTekst = `${brukerAdresse} (Folkeregistert adresse)`
       break
-    case Leveringsmåte.HJELPEMIDDELSENTRAL:
-      leveringsTekst = 'Hentes på hjelpemiddelsentralen'
+    case LeveringsmåteType.HJELPEMIDDELSENTRAL:
+      leveringsmåteTekst = 'Hentes på hjelpemiddelsentralen'
       break
   }
 
-  return <Tekst>{leveringsTekst}</Tekst>
+  return <Tekst>{leveringsmåteTekst}</Tekst>
 }

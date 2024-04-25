@@ -5,7 +5,7 @@ import { Formidler, KontaktPerson, KontaktPersonType } from '../../types/types.i
 import { formatName } from '../../utils/stringFormating'
 import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
-interface KontaktpersonProps {
+export interface KontaktpersonProps {
   kontaktperson?: KontaktPerson
   formidler: Formidler
 }

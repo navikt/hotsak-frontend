@@ -3,21 +3,26 @@ import React, { useState } from 'react'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 import styled from 'styled-components'
-import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../../io/http'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { Oppgavestatus, Saksbehandler } from '../../types/types.internal'
+import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
+import { useInnloggetSaksbehandler } from '../state/authentication'
+import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
 
-interface OppgaveMenyKnappProps {
+export interface ManuellJournalføringKnappProps {
   oppgaveId: string
   status: Oppgavestatus
   tildeltSaksbehandler?: Saksbehandler
   onMutate: (...args: any[]) => any
 }
 
-export const OppgaveMenyKnapp = ({ oppgaveId, status, tildeltSaksbehandler, onMutate }: OppgaveMenyKnappProps) => {
+export function ManuellJournalføringKnapp({
+  oppgaveId,
+  status,
+  tildeltSaksbehandler,
+  onMutate,
+}: ManuellJournalføringKnappProps) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
 

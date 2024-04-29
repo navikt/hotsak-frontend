@@ -3,29 +3,22 @@ import styled from 'styled-components'
 
 import { Heading } from '@navikt/ds-react'
 
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { SkjemaAlert } from '../../felleskomponenter/SkjemaAlert'
-import { Toast } from '../../felleskomponenter/Toast'
-import { Brødtekst } from '../../felleskomponenter/typografi'
-import { usePersonContext } from '../../personoversikt/PersonContext'
-import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { formaterNavn } from '../../saksbilde/Personlinje'
-import { useJournalpost } from '../../saksbilde/journalpostHook'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { DokumentOppgaveStatusType } from '../../types/types.internal'
-import { DokumentIkkeTildelt } from '../dokumenter/DokumentIkkeTildelt'
-import { Dokumenter } from './Dokumenter'
-import { OppgaveMenyKnapp } from './OppgaveMenyKnapp'
+import { Avstand } from '../felleskomponenter/Avstand'
+import { Knappepanel } from '../felleskomponenter/Knappepanel'
+import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
+import { Toast } from '../felleskomponenter/Toast'
+import { Brødtekst } from '../felleskomponenter/typografi'
+import { usePersonContext } from '../personoversikt/PersonContext'
+import { usePersonInfo } from '../personoversikt/personInfoHook'
+import { formaterNavn } from '../saksbilde/Personlinje'
+import { useJournalpost } from '../saksbilde/journalpostHook'
+import { useInnloggetSaksbehandler } from '../state/authentication'
+import { DokumentOppgaveStatusType } from '../types/types.internal'
+import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
+import { Dokumenter } from '../oppgaveliste/manuellJournalføring/Dokumenter'
+import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 
-const Container = styled.div`
-  overflow: auto;
-  border-right: 1px solid var(--a-border-default);
-  padding-top: var(--a-spacing-4);
-  padding-right: var(--a-spacing-4);
-`
-
-export const JournalpostVisning: React.FC = () => {
+export function JournalpostVisning() {
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
   const { fodselsnummer } = usePersonContext()
@@ -68,7 +61,7 @@ export const JournalpostVisning: React.FC = () => {
 
   return (
     <Container>
-      <OppgaveMenyKnapp
+      <ManuellJournalføringKnapp
         oppgaveId={oppgave.id}
         status={oppgave.oppgavestatus}
         tildeltSaksbehandler={journalpost?.saksbehandler}
@@ -98,3 +91,10 @@ export const JournalpostVisning: React.FC = () => {
     </Container>
   )
 }
+
+const Container = styled.div`
+  overflow: auto;
+  border-right: 1px solid var(--a-border-default);
+  padding-top: var(--a-spacing-4);
+  padding-right: var(--a-spacing-4);
+`

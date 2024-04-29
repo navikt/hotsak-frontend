@@ -3,33 +3,22 @@ import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { HStack, Loader } from '@navikt/ds-react'
-import { headerHøydeRem } from '../../GlobalStyles'
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { Feilmelding } from '../../felleskomponenter/Feilmelding'
-import { Etikett } from '../../felleskomponenter/typografi'
-import { usePersonContext } from '../../personoversikt/PersonContext'
-import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { Personlinje } from '../../saksbilde/Personlinje'
-import { useJournalpost } from '../../saksbilde/journalpostHook'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { DokumentOppgaveStatusType } from '../../types/types.internal'
-import { useDokumentContext } from '../dokumenter/DokumentContext'
-import { DokumentPanel } from './DokumentPanel'
+import { headerHøydeRem } from '../GlobalStyles'
+import { Avstand } from '../felleskomponenter/Avstand'
+import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Etikett } from '../felleskomponenter/typografi'
+import { usePersonContext } from '../personoversikt/PersonContext'
+import { usePersonInfo } from '../personoversikt/personInfoHook'
+import { Personlinje } from '../saksbilde/Personlinje'
+import { useJournalpost } from '../saksbilde/journalpostHook'
+import { useInnloggetSaksbehandler } from '../state/authentication'
+import { DokumentOppgaveStatusType } from '../types/types.internal'
+import { useDokumentContext } from '../oppgaveliste/dokumenter/DokumentContext'
+import { DokumentPanel } from '../oppgaveliste/manuellJournalføring/DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
 
-const ToKolonner = styled.div`
-  display: grid;
-  grid-template-columns: 35rem 1fr;
-  grid-template-rows: 1fr;
-  height: calc(100vh - ${headerHøydeRem}rem);
-`
-
-const Container = styled.div`
-  padding-left: var(--a-spacing-6);
-`
-
-export const ManuellJournalfør: React.FC = () => {
+export function ManuellJournalføring() {
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { journalpost, isError, isLoading } = useJournalpost(journalpostID)
   const { setValgtDokument } = useDokumentContext()
@@ -112,3 +101,14 @@ export const ManuellJournalfør: React.FC = () => {
     </>
   )
 }
+
+const ToKolonner = styled.div`
+  display: grid;
+  grid-template-columns: 35rem 1fr;
+  grid-template-rows: 1fr;
+  height: calc(100vh - ${headerHøydeRem}rem);
+`
+
+const Container = styled.div`
+  padding-left: var(--a-spacing-6);
+`

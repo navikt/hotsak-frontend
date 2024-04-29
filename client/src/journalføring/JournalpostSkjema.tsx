@@ -5,30 +5,24 @@ import styled from 'styled-components'
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
 
-import { postJournalføring } from '../../io/http'
+import { postJournalføring } from '../io/http'
 
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Kolonner } from '../../felleskomponenter/Kolonner'
-import { Toast } from '../../felleskomponenter/Toast'
-import { IconContainer } from '../../felleskomponenter/ikoner/Ikon'
-import { usePersonContext } from '../../personoversikt/PersonContext'
-import { usePersonInfo } from '../../personoversikt/personInfoHook'
-import { useSaksoversikt } from '../../personoversikt/saksoversiktHook'
-import { formaterNavn } from '../../saksbilde/Personlinje'
-import { useJournalpost } from '../../saksbilde/journalpostHook'
-import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../../types/types.internal'
-import { Dokumenter } from './Dokumenter'
+import { Avstand } from '../felleskomponenter/Avstand'
+import { Knappepanel } from '../felleskomponenter/Knappepanel'
+import { Kolonner } from '../felleskomponenter/Kolonner'
+import { Toast } from '../felleskomponenter/Toast'
+import { IconContainer } from '../felleskomponenter/ikoner/Ikon'
+import { usePersonContext } from '../personoversikt/PersonContext'
+import { usePersonInfo } from '../personoversikt/personInfoHook'
+import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
+import { formaterNavn } from '../saksbilde/Personlinje'
+import { useJournalpost } from '../saksbilde/journalpostHook'
+import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
+import { Dokumenter } from '../oppgaveliste/manuellJournalføring/Dokumenter'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
-import { OppgaveMenyKnapp } from './OppgaveMenyKnapp'
+import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 
-const Container = styled.div`
-  overflow: auto;
-  border-right: 1px solid var(--a-border-default);
-  padding-top: var(--a-spacing-4);
-  padding-right: var(--a-spacing-4);
-`
-export const JournalpostSkjema: React.FC = () => {
+export function JournalpostSkjema() {
   const navigate = useNavigate()
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
@@ -77,7 +71,7 @@ export const JournalpostSkjema: React.FC = () => {
 
   return (
     <Container>
-      <OppgaveMenyKnapp
+      <ManuellJournalføringKnapp
         oppgaveId={oppgave.id}
         status={oppgave.oppgavestatus}
         tildeltSaksbehandler={journalpost?.saksbehandler}
@@ -165,3 +159,10 @@ export const JournalpostSkjema: React.FC = () => {
     </Container>
   )
 }
+
+const Container = styled.div`
+  overflow: auto;
+  border-right: 1px solid var(--a-border-default);
+  padding-top: var(--a-spacing-4);
+  padding-right: var(--a-spacing-4);
+`

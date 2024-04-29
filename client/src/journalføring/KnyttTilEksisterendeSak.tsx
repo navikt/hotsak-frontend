@@ -1,20 +1,20 @@
 import { Alert, Button, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
-import { formaterDato } from '../../utils/date'
+import { formaterDato } from '../utils/date'
 
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { HeadingMedHjelpetekst } from '../../felleskomponenter/HeadingMedHjelpetekst'
-import { Brødtekst } from '../../felleskomponenter/typografi'
-import { OppgaveStatusLabel, Saksoversikt_Sak } from '../../types/types.internal'
-import { SakstypeEtikett } from '../kolonner/SaksType'
+import { Avstand } from '../felleskomponenter/Avstand'
+import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
+import { Brødtekst } from '../felleskomponenter/typografi'
+import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
+import { SakstypeEtikett } from '../oppgaveliste/kolonner/SaksType'
 
-interface Props {
+export interface KnyttTilEksisterendeSakProps {
   åpneSaker: Saksoversikt_Sak[]
   valgtEksisterendeSakId: string
   onChange: (...args: any[]) => any
 }
 
-export const KnyttTilEksisterendeSak: React.FC<Props> = (props) => {
+export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
   const { åpneSaker, valgtEksisterendeSakId, onChange } = props
   const harÅpneSaker = åpneSaker.length > 0
 

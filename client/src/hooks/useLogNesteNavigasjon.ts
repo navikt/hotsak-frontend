@@ -1,13 +1,14 @@
-import { useLocation } from 'react-router-dom'
+// import { useLocation } from 'react-router-dom'
 
-const useLogNesteNavigasjon = () => {
-  const location = useLocation()
+export function useLogNesteNavigasjon() {
+  // const location = useLocation()
   /**
-   * Brukes for å logge til Amplitude den neste navigasjonen som gjøres etter
+   * Brukes for å logge den neste navigasjonen til Amplitude som gjøres etter
    * at en spesifikk hendelse har skjedd. For eksempel hvor brukeren navigerer etter
    * at en søknad har blitt innvilget. Gjøres kun én gang, deretter blir
    * listeneren fjernet.
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const logNesteNavigasjon = (fraHendelse: string, data?: any) => {
     /*
     const unlisten = history.listen((location: any) => {
@@ -24,5 +25,3 @@ const useLogNesteNavigasjon = () => {
 
   return [logNesteNavigasjon]
 }
-
-export default useLogNesteNavigasjon

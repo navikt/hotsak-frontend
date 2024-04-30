@@ -11,13 +11,13 @@ interface OppgaverData {
   mutate: (...args: any[]) => any
 }
 
-export function useOppgaveliste(): OppgaverData {
-  const relvanteStatuser = ['OPPRETTET', 'ÅPNET', 'UNDER_BEHANDLING']
+export function useDokumentliste(): OppgaverData {
+  const relevanteStatuser = ['OPPRETTET', 'ÅPNET', 'UNDER_BEHANDLING']
     .map((status) => `oppgavestatus=${encodeURIComponent(status)}`)
     .join('&')
 
   const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(
-    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&${relvanteStatuser}`,
+    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&${relevanteStatuser}`,
     httpGet,
     {
       refreshInterval: 10_000,

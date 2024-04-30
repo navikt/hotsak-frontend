@@ -10,7 +10,7 @@ import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
@@ -21,9 +21,9 @@ import { BrevPanel } from './brev/BrevPanel'
 
 export const VENSTREKOLONNE_BREDDE = '180px'
 
-export const Vedtak: React.FC = () => {
+export function Vedtak() {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { sak /*, isLoading,*/, mutate } = useBrillesak()
+  const { sak /*, isLoading,*/, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const samletVurdering = useSamletVurdering(sak?.data)
   const { setStep } = useManuellSaksbehandlingContext()

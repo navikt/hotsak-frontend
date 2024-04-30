@@ -22,8 +22,8 @@ import {
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
-import { useFinnHjelpemiddel } from './finnHjelpemiddelHook'
-import { useHjelpemiddel } from './hjelpemiddelHook'
+import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
+import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 const HjelpemiddelContainer = styled.div`

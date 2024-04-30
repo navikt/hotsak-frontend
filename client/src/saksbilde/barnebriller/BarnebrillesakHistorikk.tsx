@@ -2,11 +2,11 @@ import React from 'react'
 
 import { sorterKronologisk } from '../../utils/date'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
-import { useHistorikk } from '../høyrekolonne/historikk/historikkHook'
+import { useHistorikk } from '../høyrekolonne/historikk/useHistorikk'
 import { Mellomtittel } from '../../felleskomponenter/typografi'
 import { BodyShort, Panel } from '@navikt/ds-react'
 
-export const BrilleHistorikk: React.FC = () => {
+export function BarnebrillesakHistorikk() {
   const { hendelser, isError, isLoading } = useHistorikk()
 
   if (isError) {

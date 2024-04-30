@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 
-function useLocalStorageState<S = undefined>(
+export function useLocalStorageState<S = undefined>(
   key: string,
   defaultValue: S,
   { serialize = JSON.stringify, deserialize = JSON.parse } = {}
@@ -25,5 +25,3 @@ function useLocalStorageState<S = undefined>(
 
   return [state, setState]
 }
-
-export { useLocalStorageState }

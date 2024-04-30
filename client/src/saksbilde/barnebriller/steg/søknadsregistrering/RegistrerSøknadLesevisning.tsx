@@ -1,21 +1,20 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Alert, Button, HStack, HelpText, Loader } from '@navikt/ds-react'
+import { Alert, Button, HelpText, HStack, Loader } from '@navikt/ds-react'
 
-import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
+import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { formaterDato } from '../../../../utils/date'
-import { capitalize } from '../../../../utils/stringFormating'
+import { capitalize, formaterBeløp } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { beløp } from '../../../../formaters/beløp'
 import { SatsType, StepType, VilkårsResultat } from '../../../../types/types.internal'
-import { useJournalposter } from '../../../journalpostHook'
-import { useBrillesak } from '../../../sakHook'
+import { useJournalposter } from '../../../useJournalposter'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
 
@@ -25,7 +24,7 @@ const Container = styled.div`
 
 export const RegistrerSøknadLesevisning: React.FC = () => {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { sak, isLoading } = useBrillesak()
+  const { sak, isLoading } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const { dokumenter } = useJournalposter()
 
@@ -112,12 +111,12 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                       : `Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
                           'SATS_',
                           ''
-                        )} - inntil ${beløp.formater(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
+                        )} - inntil ${formaterBeløp(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
                   </Brødtekst>
                   {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
                     <Brødtekst>
                       {`Basert på brilleprisen, kan barnet få `}
-                      <strong>{`${beløp.formater(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
+                      <strong>{`${formaterBeløp(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
                     </Brødtekst>
                   )}
                 </Alert>

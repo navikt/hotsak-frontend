@@ -1,7 +1,7 @@
 import { Heading, Table } from '@navikt/ds-react'
 
-import { Dokument } from '../../types/types.internal'
-import { useDokumentContext } from '../dokumenter/DokumentContext'
+import { Dokument } from '../types/types.internal'
+import { useDokumentContext } from './DokumentContext'
 import { DokumentVelger } from './DokumentVelger'
 
 interface DokumenterProps {

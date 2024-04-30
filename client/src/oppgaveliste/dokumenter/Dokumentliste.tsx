@@ -16,23 +16,13 @@ import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { OppgaveV2, OppgavestatusLabel } from '../../types/types.internal'
+import { OppgavestatusLabel, OppgaveV2 } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
-import { useOppgaveliste } from '../oppgaver/oppgaverHook'
-import { OppgaveTildeling } from './DokumentTildeling'
+import { useDokumentliste } from './useDokumentliste'
+import { DokumentTildeling } from './DokumentTildeling'
 
-const Container = styled.div`
-  min-height: 300px;
-  height: calc(100% - 50px);
-  width: 100%;
-`
-
-const ScrollWrapper = styled.div`
-  overflow: auto;
-`
-
-export const Dokumentliste: React.FC = () => {
-  const { data, isLoading, error } = useOppgaveliste()
+export function Dokumentliste() {
+  const { data, isLoading, error } = useDokumentliste()
   const oppgaver = data?.oppgaver || []
 
   const kolonner: Column<OppgaveV2>[] = [
@@ -40,7 +30,7 @@ export const Dokumentliste: React.FC = () => {
       key: 'saksbehandler',
       name: 'Eier',
       width: 160,
-      render: (oppgave: OppgaveV2) => <OppgaveTildeling dokumentOppgave={oppgave} />,
+      render: (oppgave: OppgaveV2) => <DokumentTildeling dokumentOppgave={oppgave} />,
       accessor(verdi: OppgaveV2): string {
         return verdi.saksbehandler?.navn || ''
       },
@@ -172,4 +162,12 @@ export const Dokumentliste: React.FC = () => {
   )
 }
 
-export default Dokumentliste
+const Container = styled.div`
+  min-height: 300px;
+  height: calc(100% - 50px);
+  width: 100%;
+`
+
+const ScrollWrapper = styled.div`
+  overflow: auto;
+`

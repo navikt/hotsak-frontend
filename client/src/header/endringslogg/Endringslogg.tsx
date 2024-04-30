@@ -5,8 +5,9 @@ import styled from 'styled-components'
 import { BodyLong, Label } from '@navikt/ds-react'
 
 import { Strek } from '../../felleskomponenter/Strek'
-import useOnScreen, { EndringsloggInnslag, MerkSomLestCallback } from './endringsloggHooks'
+import { EndringsloggInnslag, MerkSomLestCallback } from './useEndringslogg'
 import { format } from 'date-fns'
+import { useOnScreen } from './useOnScreen'
 
 export const Endringslogg: React.FC<{
   endringslogginnslag: ReadonlyArray<EndringsloggInnslag>

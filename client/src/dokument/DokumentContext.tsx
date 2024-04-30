@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react'
 
-import { Brevtype, Ressurs } from '../../types/types.internal'
-import { byggTomRessurs } from './ressursFunksjoner'
+import { Brevtype, Ressurs } from '../types/types.internal'
+import { byggTomRessurs } from '../io/ressursFunksjoner'
 
 interface ValgtDokumentType {
   journalpostID: string
@@ -29,9 +29,9 @@ const initialState: DokumentContextType = {
   settHentetBrev() {},
 }
 
-const DokumentContext = React.createContext<DokumentContextType>(initialState)
+export const DokumentContext = React.createContext<DokumentContextType>(initialState)
 
-const DokumentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function DokumentProvider({ children }: { children: React.ReactNode }) {
   const [valgtDokument, setValgtDokument] = useState<DokumentContextType['valgtDokument']>(initialState.valgtDokument)
   const [hentetDokument, settHentetDokument] = useState(initialState.hentetDokument)
   const [hentedeBrev, setHentedeBrev] = useState(initialState.hentedeBrev)
@@ -57,7 +57,7 @@ const DokumentProvider: React.FC<{ children: React.ReactNode }> = ({ children })
   )
 }
 
-function useDokumentContext(): DokumentContextType {
+export function useDokumentContext(): DokumentContextType {
   const context = useContext(DokumentContext)
 
   if (!context) {
@@ -66,5 +66,3 @@ function useDokumentContext(): DokumentContextType {
 
   return context
 }
-
-export { DokumentContext, DokumentProvider, useDokumentContext }

@@ -10,7 +10,7 @@ const TabContainer = styled.div`
   padding-top: var(--a-spacing-4);
 `
 
-export const OppgavelisteTabs: React.FC = () => {
+export function OppgavelisteTabs() {
   const location = useLocation()
   const navigate = useNavigate()
   const visOppgavelisteTabs = useVisOppgavelisteTabs()

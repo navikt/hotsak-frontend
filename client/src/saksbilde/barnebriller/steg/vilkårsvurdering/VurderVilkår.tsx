@@ -11,7 +11,7 @@ import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
@@ -19,9 +19,9 @@ import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
 
-export const VurderVilkår: React.FC = () => {
+export function VurderVilkår() {
   const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { sak, mutate } = useBrillesak()
+  const { sak, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)

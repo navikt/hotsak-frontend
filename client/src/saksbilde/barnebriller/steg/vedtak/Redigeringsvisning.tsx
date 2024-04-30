@@ -24,7 +24,7 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { useBrevtekst } from '../../brevutkast/useBrevtekst'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
-import { useBrev } from './brev/brevHook'
+import { useBrev } from './brev/useBrev'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak

@@ -23,16 +23,3 @@ export function useHistorikk(): DataResponse {
     isError: error,
   }
 }
-
-export function useBestillingsHistorikk(): DataResponse {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error } = useSwr<{ data: Hendelse[] }>(`api/bestilling/${saksnummer}/historikk`, httpGet, {
-    refreshInterval: 10_000,
-  })
-
-  return {
-    hendelser: data?.data,
-    isLoading: !error && !data,
-    isError: error,
-  }
-}

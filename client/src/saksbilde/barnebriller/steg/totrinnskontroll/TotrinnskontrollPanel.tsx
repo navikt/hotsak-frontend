@@ -7,14 +7,14 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Mellomtittel } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
 
-export const TotrinnskontrollPanel: React.FC = () => {
+export function TotrinnskontrollPanel() {
   const saksbehandler = useInnloggetSaksbehandler()
 
-  const { sak, isError } = useBrillesak()
+  const { sak, isError } = useBarnebrillesak()
 
   if (isError || !sak) {
     return <Container>Feil ved henting av sak.</Container>

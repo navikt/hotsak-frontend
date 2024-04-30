@@ -2,15 +2,15 @@ import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
-import { DokumentProvider } from '../oppgaveliste/dokumenter/DokumentContext'
+import { DokumentProvider } from '../dokument/DokumentContext'
 
 import { AlertError } from '../feilsider/AlertError'
 import { Sakstype } from '../types/types.internal'
 import { Personlinje } from './Personlinje'
-import Søknadsbilde from './Søknadsbilde'
-import BarnebrilleBilde from './barnebriller/Barnebrillebilde'
+import { Søknadsbilde } from './Søknadsbilde'
+import { Barnebrillesaksbilde } from './barnebriller/Barnebrillesaksbilde'
 import { SakLoader } from './SakLoader'
-import { useSak } from './sakHook'
+import { useSak } from './useSak'
 
 export const SaksbildeContainer = styled.div`
   display: flex;
@@ -40,7 +40,7 @@ const SaksbildeContent = React.memo(() => {
             case Sakstype.BARNEBRILLER:
               return (
                 <DokumentProvider>
-                  <BarnebrilleBilde />
+                  <Barnebrillesaksbilde />
                 </DokumentProvider>
               )
             case Sakstype.BESTILLING:

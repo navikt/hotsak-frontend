@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { capitalize, capitalizeName, formatName, formaterFødselsnummer } from '../utils/stringFormating'
+import { capitalize, capitalizeName, formaterFødselsnummer, formatName } from '../utils/stringFormating'
 import { isError } from '../utils/type'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
@@ -28,22 +28,12 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { FilterDropdown, Filters } from './filter'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SaksType'
-import { useLocalStorageState } from './localStorage/localStorageHook'
-import { useOppgaveliste } from './oppgavelisteHook'
+import { useLocalStorageState } from './useLocalStorageState'
+import { useOppgaveliste } from './useOppgaveliste'
 import { Paging } from './paging/Paging'
 import { Tildeling } from './kolonner/Tildeling'
 
-const Container = styled.div`
-  min-height: 300px;
-  height: calc(100% - 50px);
-  width: 100%;
-`
-
-const ScrollWrapper = styled.div`
-  overflow: auto;
-`
-
-export const Oppgaveliste: React.FC = () => {
+export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
@@ -274,5 +264,15 @@ export const Oppgaveliste: React.FC = () => {
     </>
   )
 }
+
+const Container = styled.div`
+  min-height: 300px;
+  height: calc(100% - 50px);
+  width: 100%;
+`
+
+const ScrollWrapper = styled.div`
+  overflow: auto;
+`
 
 export default Oppgaveliste

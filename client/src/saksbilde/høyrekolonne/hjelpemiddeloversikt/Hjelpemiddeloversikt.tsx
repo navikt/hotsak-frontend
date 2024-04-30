@@ -11,9 +11,9 @@ import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
-import { useSak } from '../../sakHook'
+import { useSak } from '../../useSak'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
-import { useHjelpemiddeloversikt } from './hjelpemiddeloversiktHook'
+import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
 
 const HjelpemiddeloversiktContainer = styled.div`
   padding-top: 1rem;

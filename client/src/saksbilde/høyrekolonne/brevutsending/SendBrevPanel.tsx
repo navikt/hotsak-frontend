@@ -12,10 +12,10 @@ import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
-import { useBrev } from '../../barnebriller/steg/vedtak/brev/brevHook'
+import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelsesModal } from '../../komponenter/BekreftelsesModal'
-import { useBrillesak } from '../../sakHook'
+import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
@@ -39,8 +39,8 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
-  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { mutate: hentBrillesak } = useBrillesak()
+  const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
+  const { mutate: hentBrillesak } = useBarnebrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
@@ -159,7 +159,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
               label="Fritekst"
               beskrivelse="Beskriv hva som mangler av dokumentasjon"
               fritekst={fritekst}
-              valideringsfeil={valideringsFeil}
+              valideringsfeil={valideringsfeil}
               onLagre={lagreUtkast}
               lagrer={lagrer}
               onTextChange={setFritekst}

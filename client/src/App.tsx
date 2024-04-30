@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { SWRConfig } from 'swr'
 
-import { DokumentProvider } from './oppgaveliste/dokumenter/DokumentContext'
+import { DokumentProvider } from './dokument/DokumentContext'
 import { Dokumentliste } from './oppgaveliste/dokumenter/Dokumentliste'
 import { ManuellJournalføring } from './journalføring/ManuellJournalføring'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'

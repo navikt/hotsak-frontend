@@ -6,10 +6,10 @@ import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
 import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { HøyrekolonneTabs } from '../../types/types.internal'
-import { useSak } from '../sakHook'
+import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
-import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/hjelpemiddeloversiktHook'
+import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 
 export const KolonneOppsett = styled.ul`
   margin: 0;

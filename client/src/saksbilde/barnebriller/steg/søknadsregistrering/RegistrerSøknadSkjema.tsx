@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Button, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering } from '../../../../io/http'
-import { Dokumenter } from '../../../../oppgaveliste/manuellJournalføring/Dokumenter'
+import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { tilDato } from '../../../../utils/date'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
@@ -15,13 +15,13 @@ import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import {
   Brilleseddel,
   MålformType,
-  Sakstype,
   RegistrerSøknadData,
+  Sakstype,
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
-import { useJournalposter } from '../../../journalpostHook'
-import { useBrillesak } from '../../../sakHook'
+import { useJournalposter } from '../../../useJournalposter'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
@@ -32,7 +32,7 @@ const Container = styled.div`
 
 export const RegistrerSøknadSkjema: React.FC = () => {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
-  const { sak, isLoading, mutate } = useBrillesak()
+  const { sak, isLoading, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)
   const { dokumenter } = useJournalposter()

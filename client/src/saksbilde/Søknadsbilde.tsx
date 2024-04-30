@@ -11,10 +11,10 @@ import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
-import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/hjelpemiddeloversiktHook'
+import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Content, Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { SakLoader } from './SakLoader'
-import { useSak } from './sakHook'
+import { useSak } from './useSak'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
@@ -113,12 +113,10 @@ const SaksbildeContent: React.FC = React.memo(() => {
   )
 })
 
-export default function Søknadsbilde() {
-  return (
-    <ErrorBoundary FallbackComponent={AlertError}>
-      <React.Suspense fallback={<SakLoader />}>
-        <SaksbildeContent />
-      </React.Suspense>
-    </ErrorBoundary>
-  )
-}
+export const Søknadsbilde = () => (
+  <ErrorBoundary FallbackComponent={AlertError}>
+    <React.Suspense fallback={<SakLoader />}>
+      <SaksbildeContent />
+    </React.Suspense>
+  </ErrorBoundary>
+)

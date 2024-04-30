@@ -4,7 +4,7 @@ import { sorterKronologisk } from '../../../utils/date'
 
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { HistorikkHendelse } from './HistorikkHendelse'
-import { useHistorikk } from './historikkHook'
+import { useHistorikk } from './useHistorikk'
 
 export const Historikk: React.FC = () => {
   const { hendelser, isError, isLoading } = useHistorikk()

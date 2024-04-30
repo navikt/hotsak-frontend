@@ -2,7 +2,7 @@ import 'date-fns'
 import React from 'react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { Utbetalingsmottaker } from './Utbetalingsmottaker'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
 import { BestiltHosOptiker } from './skjemaelementer/BestiltHosOptiker'
@@ -10,8 +10,8 @@ import { BrillestyrkeForm } from './skjemaelementer/BrillestyrkeForm'
 import { KjøptBrille } from './skjemaelementer/KjøptBrille'
 import { KomplettBrille } from './skjemaelementer/KomplettBrille'
 
-export const RegistrerBrillegrunnlag: React.FC = () => {
-  const { sak } = useBrillesak()
+export function RegistrerBrillegrunnlag() {
+  const { sak } = useBarnebrillesak()
 
   return (
     <>

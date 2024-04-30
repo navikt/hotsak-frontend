@@ -40,7 +40,7 @@ interface OppgavelisteResponse {
   currentPage: number
 }
 
-const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
+function pathConfig(currentPage: number, sort: SortState, filters: Filters): PathConfigType {
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
@@ -67,7 +67,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
   }
 }
 
-const buildQueryParamString = (queryParams: Record<string, string>) => {
+function buildQueryParamString(queryParams: Record<string, string>) {
   return Object.entries(queryParams)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&')

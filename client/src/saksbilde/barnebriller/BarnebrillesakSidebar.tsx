@@ -8,8 +8,8 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaks
 import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
 import { Saksnotater } from '../høyrekolonne/notat/Saksnotater'
-import { useBrillesak } from '../sakHook'
-import { BrilleHistorikk } from './BrilleHistorikk'
+import { useBarnebrillesak } from '../useBarnebrillesak'
+import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
 
@@ -20,8 +20,8 @@ const Sidebar = styled(Tabs)`
   padding: 0;
 `
 
-export const BarnebrilleSidebar: React.FC = () => {
-  const { sak } = useBrillesak()
+export function BarnebrillesakSidebar() {
+  const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
@@ -61,7 +61,7 @@ export const BarnebrilleSidebar: React.FC = () => {
         </Tooltip>
       </Tabs.List>
       <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>
-        <BrilleHistorikk />
+        <BarnebrillesakHistorikk />
       </Tabs.Panel>
       <Tabs.Panel value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />

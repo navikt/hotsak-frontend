@@ -14,30 +14,30 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaks
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
 import { StatusTag } from '../komponenter/StatusTag'
-import { useBrillesak } from '../sakHook'
-import { BarnebrilleSidebar } from './BarnebrilleSidebar'
+import { useBarnebrillesak } from '../useBarnebrillesak'
+import { BarnebrillesakSidebar } from './BarnebrillesakSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
 
-const BarnebrilleBildeContainer = styled.div`
+const BarnebrillesakContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
   height: 96vh;
 `
 
-const Topplinje = styled(HStack)`
+const Header = styled(HStack)`
   box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
   padding-right: 2rem;
   padding-bottom: 0.5em;
   padding-top: 0.5rem;
 `
 
-const BarnebrilleContent: React.FC = React.memo(() => {
-  const { sak, isError, mutate } = useBrillesak()
+const BarnebrillesakContent: React.FC = React.memo(() => {
+  const { sak, isError, mutate } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { showBoundary } = useErrorBoundary()
@@ -56,7 +56,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
 
   return (
     <div>
-      <Topplinje wrap={false} align={'end'}>
+      <Header wrap={false} align={'end'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack align={'center'}>
@@ -71,7 +71,7 @@ const BarnebrilleContent: React.FC = React.memo(() => {
             knappeIkon={<ChevronDownIcon />}
           />
         </HStack>
-      </Topplinje>
+      </Header>
       {sak.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <Alert variant="info" size="small">
@@ -80,13 +80,13 @@ const BarnebrilleContent: React.FC = React.memo(() => {
         </AlertContainerMedium>
       )}
 
-      <Steg aktivtStep={step} />
+      <Steg aktivtSteg={step} />
     </div>
   )
 })
 
-const Steg: React.FC<{ aktivtStep: StepType }> = ({ aktivtStep }) => {
-  switch (aktivtStep) {
+function Steg({ aktivtSteg }: { aktivtSteg: StepType }) {
+  switch (aktivtSteg) {
     case StepType.REGISTRER:
       return <RegistrerSøknad />
     case StepType.VILKÅR:
@@ -96,23 +96,21 @@ const Steg: React.FC<{ aktivtStep: StepType }> = ({ aktivtStep }) => {
   }
 }
 
-const LasterBarnebrilleBilde = () => (
-  <BarnebrilleBildeContainer>
+const LasterBarnebrillesaksbilde = () => (
+  <BarnebrillesakContainer>
     <LasterPersonlinje />
-  </BarnebrilleBildeContainer>
+  </BarnebrillesakContainer>
 )
 
-export const BarnebrilleBilde = () => (
+export const Barnebrillesaksbilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterBarnebrilleBilde />}>
+    <React.Suspense fallback={<LasterBarnebrillesaksbilde />}>
       <ManuellSaksbehandlingProvider>
         <HGrid columns={`auto ${brilleSidebarBredde} `}>
-          <BarnebrilleContent />
-          <BarnebrilleSidebar />
+          <BarnebrillesakContent />
+          <BarnebrillesakSidebar />
         </HGrid>
       </ManuellSaksbehandlingProvider>
     </React.Suspense>
   </ErrorBoundary>
 )
-
-export default BarnebrilleBilde

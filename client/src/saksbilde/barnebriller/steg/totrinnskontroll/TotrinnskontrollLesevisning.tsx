@@ -8,10 +8,10 @@ import { capitalize } from '../../../../utils/stringFormating'
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 
-export const TotrinnskontrollLesevisning: React.FC = () => {
-  const { sak } = useBrillesak()
+export function TotrinnskontrollLesevisning() {
+  const { sak } = useBarnebrillesak()
 
   return (
     <>

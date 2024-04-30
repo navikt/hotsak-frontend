@@ -1,5 +1,17 @@
 import type { Navn } from '../types/types.internal'
-import { isNavn, isString } from './type'
+import { isNavn, isNumber, isString } from './type'
+
+const beløpFormatter = new Intl.NumberFormat('nb', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+})
+
+function capitalizeMedSkilletegn(value: string, skilletegn: string): string {
+  return value
+    .split(skilletegn)
+    .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
+    .join(skilletegn)
+}
 
 export function capitalize(value?: string): string {
   if (!value) return ''
@@ -10,13 +22,6 @@ export function capitalizeName(value: string | Navn): string {
   const lowercaseValue = formatName(value).toLowerCase()
   const storBokstavEtterBindestrek = capitalizeMedSkilletegn(lowercaseValue, '-')
   return capitalizeMedSkilletegn(storBokstavEtterBindestrek, ' ')
-}
-
-function capitalizeMedSkilletegn(value: string, skilletegn: string): string {
-  return value
-    .split(skilletegn)
-    .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
-    .join(skilletegn)
 }
 
 export function formaterKontonummer(kontonummer?: string): string {
@@ -40,4 +45,19 @@ export function formaterTelefonnummer(telefon: string): string {
   return `${siffer.slice(0, 2).join('')} ${siffer.slice(2, 4).join('')} ${siffer.slice(4, 6).join('')} ${siffer
     .slice(6, siffer.length)
     .join('')}`
+}
+
+export function formaterBeløp(verdi?: number | string): string {
+  if (!verdi) {
+    return ''
+  } else {
+    let value = ''
+    if (isNumber(verdi)) {
+      value = beløpFormatter.format(verdi)
+    } else {
+      value = beløpFormatter.format(Number(verdi.replace(',', '.')))
+    }
+    if (value.endsWith(',00')) value = value.substring(0, value.length - 3)
+    return value
+  }
 }

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { httpGetPdf, PDFResponse } from '../../../../../io/http'
-import { useDokumentContext } from '../../../../../oppgaveliste/dokumenter/DokumentContext'
+import { useDokumentContext } from '../../../../../dokument/DokumentContext'
 import {
   byggDataRessurs,
   byggFeiletRessurs,
   byggHenterRessurs,
   byggTomRessurs,
-} from '../../../../../oppgaveliste/dokumenter/ressursFunksjoner'
+} from '../../../../../io/ressursFunksjoner'
 
 import { Brevtype, Ressurs } from '../../../../../types/types.internal'
 

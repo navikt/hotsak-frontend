@@ -8,13 +8,13 @@ import { postJournalføringStartet } from '../../io/http'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
-interface IkkeTildeltProps {
+export interface DokumentIkkeTildeltProps {
   oppgaveId: string
   journalpostID: string
   gåTilSak: boolean
 }
 
-export const DokumentIkkeTildelt = ({ oppgaveId, journalpostID, gåTilSak = false }: IkkeTildeltProps) => {
+export function DokumentIkkeTildelt({ oppgaveId, journalpostID, gåTilSak = false }: DokumentIkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()

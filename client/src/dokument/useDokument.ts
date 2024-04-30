@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
-import { httpGetPdf, PDFResponse } from '../../io/http'
+import { httpGetPdf, PDFResponse } from '../io/http'
 
-import { Ressurs } from '../../types/types.internal'
-import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from './ressursFunksjoner'
+import { Ressurs } from '../types/types.internal'
+import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from '../io/ressursFunksjoner'
 
-interface DokumentResponse {
+export interface DokumentResponse {
   isPdfError: any
   hentForhåndsvisning: (journalpostID: string, dokumentID: string) => any
   nullstillDokument: () => any

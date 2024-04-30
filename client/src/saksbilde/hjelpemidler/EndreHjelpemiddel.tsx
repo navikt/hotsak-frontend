@@ -12,7 +12,7 @@ import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
 } from '../../types/types.internal'
-import { useHjelpemiddel } from './hjelpemiddelHook'
+import { useHjelpemiddel } from './useHjelpemiddel'
 
 interface EndreHjelpemiddelProps {
   hjelpemiddelId: number

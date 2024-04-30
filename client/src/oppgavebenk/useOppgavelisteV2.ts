@@ -1,12 +1,8 @@
-import { useEffect } from 'react'
 import useSwr from 'swr'
 
-import { SortState } from '@navikt/ds-react'
-
 import { httpGet } from '../io/http'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
-import { OmrådeFilter, Oppgave, OppgaveStatusType, OppgaveV2, SakerFilter, SakstypeFilter } from '../types/types.internal'
+import { OppgaveV2 } from '../types/types.internal'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
 
 interface DataResponse {
@@ -21,17 +17,21 @@ interface DataResponse {
 
 const basePath = 'api/oppgaver-v2'
 
+/*
 interface PathConfigType {
   path: string
   queryParams: Record<string, string>
 }
+*/
 
-/*interface Filters {
+/*
+interface Filters {
   sakerFilter: string
   statusFilter: string
   sakstypeFilter: string
   områdeFilter: string
-}*/
+}
+*/
 
 interface OppgavelisteResponse {
   oppgaver: OppgaveV2[]
@@ -40,7 +40,8 @@ interface OppgavelisteResponse {
   currentPage: number
 }
 
-/*const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
+/*
+const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
@@ -65,26 +66,31 @@ interface OppgavelisteResponse {
     path: `${basePath}`,
     queryParams: { ...pagingParams, ...sortParams, ...filterParams },
   }
-}*/
+}
+*/
 
-/*const buildQueryParamString = (queryParams: Record<string, string>) => {
+/*
+const buildQueryParamString = (queryParams: Record<string, string>) => {
   return Object.entries(queryParams)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&')
-}*/
+}
+*/
 
-export function     useOppgavelisteV2(currentPage: number/*, sort: SortState, filters: Filters*/): DataResponse {
+export function useOppgavelisteV2(currentPage: number /*, sort: SortState, filters: Filters*/): DataResponse {
   //const { path, queryParams } = pathConfig(currentPage, sort, filters)
   //const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(basePath, httpGet, { refreshInterval: 10000 })
 
-  /*useEffect(() => {
+  /*
+  useEffect(() => {
     logAmplitudeEvent(amplitude_taxonomy.OPPGAVELISTE_OPPDATERT, {
       currentPage,
       ...sort,
       ...filters,
     })
-  }, [currentPage, sort, filters])*/
+  }, [currentPage, sort, filters])
+  */
 
   return {
     oppgaver: data?.data.oppgaver || [],

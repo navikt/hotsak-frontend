@@ -2,10 +2,10 @@ import React from 'react'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, Link, Table, Tooltip } from '@navikt/ds-react'
 
-import { Etikett } from '../../felleskomponenter/typografi'
-import type { Dokument } from '../../types/types.internal'
+import { Etikett } from '../felleskomponenter/typografi'
+import type { Dokument } from '../types/types.internal'
 
-interface DokumentVelgerProps {
+export interface DokumentVelgerProps {
   dokument: Dokument
   valgtDokumentID: string
   onClick(): void

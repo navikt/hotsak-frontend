@@ -13,14 +13,14 @@ import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { BekreftelsesModal } from '../../../komponenter/BekreftelsesModal'
-import { useBrillesak } from '../../../sakHook'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 
-export const TotrinnskontrollForm: React.FC = () => {
+export function TotrinnskontrollForm() {
   const [loading, setLoading] = useState(false)
   const { mutate } = useSWRConfig()
-  const [visGodkjenningsModal, setVisGodkjenningsModal] = useState(false)
+  const [visGodkjenningModal, setVisGodkjenningModal] = useState(false)
   const saksbehandler = useInnloggetSaksbehandler()
-  const { sak } = useBrillesak()
+  const { sak } = useBarnebrillesak()
   const methods = useForm<TotrinnskontrollData>({
     defaultValues: {
       resultat: '',
@@ -61,7 +61,7 @@ export const TotrinnskontrollForm: React.FC = () => {
           <form
             onSubmit={methods.handleSubmit(() => {
               if (resultat === TotrinnskontrollVurdering.GODKJENT) {
-                setVisGodkjenningsModal(true)
+                setVisGodkjenningModal(true)
               } else {
                 lagreTotrinnskontroll()
               }
@@ -105,7 +105,7 @@ export const TotrinnskontrollForm: React.FC = () => {
       <BekreftelsesModal
         heading="Vil du godkjenne vedtaket?"
         buttonLabel="Godkjenn vedtak"
-        open={visGodkjenningsModal}
+        open={visGodkjenningModal}
         onBekreft={() => {
           lagreTotrinnskontroll()
           logAmplitudeEvent(amplitude_taxonomy.TOTRINNSKONTROLL_GODKJENT)
@@ -113,7 +113,7 @@ export const TotrinnskontrollForm: React.FC = () => {
         loading={loading}
         onClose={() => {
           errors
-          setVisGodkjenningsModal(false)
+          setVisGodkjenningModal(false)
         }}
       >
         <Brødtekst>Vedtaket blir fattet og brevet sendes til adressen til barnet.</Brødtekst>

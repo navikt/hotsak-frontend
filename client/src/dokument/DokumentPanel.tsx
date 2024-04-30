@@ -1,22 +1,13 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Feilmelding } from '../../felleskomponenter/Feilmelding'
-import { Toast } from '../../felleskomponenter/Toast'
-import { RessursStatus } from '../../types/types.internal'
-import { useDokumentContext } from '../dokumenter/DokumentContext'
-import { useDokument } from '../dokumenter/dokumentHook'
+import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Toast } from '../felleskomponenter/Toast'
+import { RessursStatus } from '../types/types.internal'
+import { useDokumentContext } from './DokumentContext'
+import { useDokument } from './useDokument'
 
-const DokumentDiv = styled.div`
-  width: 100%;
-  height: 100%;
-`
-
-const FeilmeldingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-`
-export const DokumentPanel: React.FC = () => {
+export function DokumentPanel() {
   const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
   const { valgtDokument } = useDokumentContext()
 
@@ -30,26 +21,36 @@ export const DokumentPanel: React.FC = () => {
 
   if (isPdfError) {
     return (
-      <FeilmeldingDiv>
+      <FeilmeldingContainer>
         <div>
           <Feilmelding>Det oppstod en feil ved henting av dokument.</Feilmelding>
         </div>
-      </FeilmeldingDiv>
+      </FeilmeldingContainer>
     )
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
-      <FeilmeldingDiv>
+      <FeilmeldingContainer>
         <div>
           <Toast>Henter dokument...</Toast>
         </div>
-      </FeilmeldingDiv>
+      </FeilmeldingContainer>
     )
   } else
     return (
-      <DokumentDiv>
+      <DokumentContainer>
         {hentetDokument.status === RessursStatus.SUKSESS && (
           <iframe title={'dokument'} src={hentetDokument.data} width={'100%'} height={'100%'}></iframe>
         )}
-      </DokumentDiv>
+      </DokumentContainer>
     )
 }
+
+const DokumentContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`
+
+const FeilmeldingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`

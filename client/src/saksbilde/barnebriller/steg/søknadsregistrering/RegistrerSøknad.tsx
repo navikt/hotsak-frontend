@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
-import { useDokumentContext } from '../../../../oppgaveliste/dokumenter/DokumentContext'
-import { DokumentPanel } from '../../../../oppgaveliste/manuellJournalføring/DokumentPanel'
+import { useDokumentContext } from '../../../../dokument/DokumentContext'
+import { DokumentPanel } from '../../../../dokument/DokumentPanel'
 
 import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
@@ -12,14 +12,14 @@ import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
-import { useJournalposter } from '../../../journalpostHook'
-import { useBrillesak } from '../../../sakHook'
+import { useJournalposter } from '../../../useJournalposter'
+import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { VenstreMeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
 const RegistrerSøknadContent: React.FC = React.memo(() => {
-  const { sak, isLoading, isError } = useBrillesak()
+  const { sak, isLoading, isError } = useBarnebrillesak()
   const { dokumenter } = useJournalposter()
   const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()

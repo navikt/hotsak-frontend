@@ -7,7 +7,7 @@ import { Dropdown, InternalHeader } from '@navikt/ds-react'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { Endringslogg } from './Endringslogg'
-import { useEndringslogg } from './endringsloggHooks'
+import { useEndringslogg } from './useEndringslogg'
 
 export const EndringsloggDropdown: React.FC = () => {
   const endringslogg = useEndringslogg()

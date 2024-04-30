@@ -7,7 +7,7 @@ import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../../felleskomponenter/Feilmelding'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
-import { useBrev } from './brevHook'
+import { useBrev } from './useBrev'
 
 const DokumentDiv = styled.div`
   width: 100%;

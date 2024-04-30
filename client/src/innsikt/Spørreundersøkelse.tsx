@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
 import { Spørsmål } from './Spørsmål'
 import React, { useRef } from 'react'
-import type { IBesvarelse } from './Besvarelse'
+import { besvarelseToArray, IBesvarelse, ISvar } from './Besvarelse'
 
 export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
   loading?: boolean
@@ -12,7 +12,7 @@ export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
   size?: 'medium' | 'small'
   knappetekst?: string
 
-  onBesvar(besvarelse: IBesvarelse, spørreundersøkelse: ISpørreundersøkelse): void | Promise<void>
+  onBesvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
   onClose?(): void
 }
 
@@ -42,8 +42,9 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
     >
       <FormProvider {...form}>
         <form
-          onSubmit={handleSubmit(async (data) => {
-            return onBesvar(data, spørreundersøkelse)
+          onSubmit={handleSubmit(async (besvarelse) => {
+            const svar = besvarelseToArray(spørreundersøkelse, besvarelse)
+            return onBesvar(spørreundersøkelse, besvarelse, svar)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>

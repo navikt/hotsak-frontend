@@ -12,7 +12,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
       type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du saken til Gosys?',
       beskrivelse: 'Årsaken du velger vil vises i Gosys. Eventuell fritekst vises ikke i Gosys, og brukes kun internt.',
-      svar: [
+      alternativer: [
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Må kontakte formidler/bruker',
@@ -20,7 +20,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
             {
               type: 'flervalg',
               tekst: 'Hvilke opplysninger / hva må du vite?',
-              svar: [
+              alternativer: [
                 'Avklaring: er det en byttesak?',
                 'Begrunnelse: bruker har tilsvarende hjelpemiddel fra før, hvorfor trenger de en til?',
                 'Begrunnelse: tilbehør',
@@ -49,7 +49,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
             {
               type: 'enkeltvalg',
               tekst: 'Hva slags type vedtak?',
-              svar: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
+              alternativer: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
               påkrevd: true,
             },
           ],
@@ -62,7 +62,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
             {
               type: 'enkeltvalg',
               tekst: 'Hvorfor skal saken henlegges?',
-              svar: [
+              alternativer: [
                 'Duplikat-sak',
                 'MORS',
                 {

@@ -8,7 +8,7 @@ import type { SpørsmålProps } from './Spørsmål'
 
 export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
   const {
-    spørsmål: { tekst, beskrivelse, svar, påkrevd },
+    spørsmål: { tekst, beskrivelse, alternativer, påkrevd },
     navn,
     nivå = 0,
     size,
@@ -34,15 +34,15 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
           description={beskrivelse}
           error={error?.message}
         >
-          {svar.map((svar) => {
-            if (typeof svar === 'string') {
+          {alternativer.map((alternativ) => {
+            if (typeof alternativ === 'string') {
               return (
-                <Radio key={svar} name={name} value={svar}>
-                  {svar}
+                <Radio key={alternativ} name={name} value={alternativ}>
+                  {alternativ}
                 </Radio>
               )
             } else {
-              const spørsmål = svar
+              const spørsmål = alternativ
               return (
                 <Fragment key={spørsmål.tekst}>
                   <Radio name={name} value={spørsmål.tekst}>

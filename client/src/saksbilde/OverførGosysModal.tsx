@@ -1,6 +1,6 @@
 import React from 'react'
 import { Spørreundersøkelse } from '../innsikt/Spørreundersøkelse'
-import type { IBesvarelse } from '../innsikt/Besvarelse'
+import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
 export interface OverførGosysModalProps {
@@ -8,7 +8,7 @@ export interface OverførGosysModalProps {
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
 
-  onBekreft(besvarelse: IBesvarelse, spørreundersøkelse: ISpørreundersøkelse): void | Promise<void>
+  onBekreft(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
   onClose(): void
 }
 

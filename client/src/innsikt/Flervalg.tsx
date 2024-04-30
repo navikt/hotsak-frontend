@@ -10,7 +10,7 @@ const defaultValue: string[] = []
 
 export function Flervalg(props: SpørsmålProps<IFlervalg>) {
   const {
-    spørsmål: { tekst, beskrivelse, svar, påkrevd },
+    spørsmål: { tekst, beskrivelse, alternativer, påkrevd },
     navn,
     nivå = 0,
     size,
@@ -36,15 +36,15 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
           description={beskrivelse}
           error={error?.message}
         >
-          {svar.map((svar) => {
-            if (typeof svar === 'string') {
+          {alternativer.map((alternativ) => {
+            if (typeof alternativ === 'string') {
               return (
-                <Checkbox key={svar} name={name} value={svar}>
-                  {svar}
+                <Checkbox key={alternativ} name={name} value={alternativ}>
+                  {alternativ}
                 </Checkbox>
               )
             } else {
-              const spørsmål = svar
+              const spørsmål = alternativ
               return (
                 <Fragment key={spørsmål.tekst}>
                   <Checkbox name={name} value={spørsmål.tekst}>

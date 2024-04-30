@@ -11,7 +11,7 @@ import type {
   VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
-import type { IBesvarelse } from '../innsikt/Besvarelse'
+import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
 import { ISpørreundersøkelse } from '../innsikt/spørreundersøkelser'
 
 export const IKKE_FUNNET = 404
@@ -233,10 +233,11 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
 
 export const putSendTilGosys = async (
   sakId: number | string,
+  spørreundersøkelse: ISpørreundersøkelse,
   besvarelse: IBesvarelse,
-  spørreundersøkelse: ISpørreundersøkelse
+  svar: ISvar[]
 ) => {
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { besvarelse, spørreundersøkelse })
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, svar })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

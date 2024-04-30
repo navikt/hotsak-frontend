@@ -217,8 +217,8 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
           </BekreftelsesModal>
           <OverførGosysModal
             {...overførGosys}
-            onBekreft={async (besvarelse, spørreundersøkelse) => {
-              await overførGosys.onBekreft(besvarelse, spørreundersøkelse)
+            onBekreft={async (spørreundersøkelse, besvarelse, svar) => {
+              await overførGosys.onBekreft(spørreundersøkelse, besvarelse, svar)
               logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
               logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
             }}

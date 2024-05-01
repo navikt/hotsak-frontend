@@ -1,4 +1,4 @@
-import { finnSpørsmål, ISpørreundersøkelse, Spørsmålstype } from './spørreundersøkelser'
+import { finnSpørsmål, IHierarkiskSpørsmål, ISpørreundersøkelse, Spørsmålstype } from './spørreundersøkelser'
 
 export interface ISvarUtenOppfølgingsspørsmål {
   svar: string | string[]
@@ -12,54 +12,46 @@ export type Svar = ISvarUtenOppfølgingsspørsmål | ISvarMedOppfølgingsspørsm
 
 export interface IBesvarelse extends Record<string, Svar> {}
 
-export function join(...segments: Array<string | undefined>): string {
+export interface ISvar {
+  type: Spørsmålstype | ''
+  spørsmål: string
+  sti: string[]
+  svar: string
+}
+
+export function joinToName(...segments: Array<string | undefined>): string {
   return segments.filter((segment) => !!segment).join('.')
 }
 
-export function sanitize(segment: string): string {
+export function sanitizeName(segment: string): string {
   return segment.replaceAll('.', '_')
 }
 
-export function desanitize(segment: string): string {
+export function desanitizeName(segment: string): string {
   return segment.replaceAll('_', '.')
 }
 
-export interface ISvar {
-  type: Spørsmålstype | ''
-  nivå: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-  spørsmål: string
-  svar?: string
-}
-
-function svarToArray(type: ISvar['type'], nivå: ISvar['nivå'], spørsmål: string, svar: Svar): ISvar[] {
-  return (Array.isArray(svar.svar) ? svar.svar : [svar.svar]).map((svar) => ({
-    type,
-    nivå,
-    spørsmål,
-    svar,
-  }))
-}
-
-export function besvarelseToArray(
-  spørreundersøkelse: ISpørreundersøkelse,
-  besvarelse: IBesvarelse,
-  nivå: ISvar['nivå'] = 0
-): ISvar[] {
-  const svar = Object.entries(besvarelse)
-  return svar.flatMap(([name, svar]) => {
-    const spørsmål = desanitize(name)
-    const type = finnSpørsmål(spørreundersøkelse, spørsmål)?.type || ''
-    if ((svar as ISvarMedOppfølgingsspørsmål).oppfølgingsspørsmål) {
+export function besvarelseToSvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse): ISvar[] {
+  return Object.entries(besvarelse).flatMap<ISvar>(([spørsmål, svar]) => {
+    const hierarkiskSpørsmål = finnSpørsmål(spørreundersøkelse, spørsmål)
+    if (!hierarkiskSpørsmål) {
+      return []
+    } else if ((svar as ISvarMedOppfølgingsspørsmål).oppfølgingsspørsmål) {
       return [
-        ...svarToArray(type, nivå, spørsmål, svar),
-        ...besvarelseToArray(
-          spørreundersøkelse,
-          (svar as ISvarMedOppfølgingsspørsmål).oppfølgingsspørsmål,
-          (nivå + 1) as ISvar['nivå']
-        ),
+        ...lagSvar(hierarkiskSpørsmål, svar),
+        ...besvarelseToSvar(spørreundersøkelse, (svar as ISvarMedOppfølgingsspørsmål).oppfølgingsspørsmål),
       ]
     } else {
-      return svarToArray(type, nivå, spørsmål, svar)
+      return lagSvar(hierarkiskSpørsmål, svar)
     }
   })
+}
+
+function lagSvar(spørsmål: IHierarkiskSpørsmål, svar: Svar): ISvar[] {
+  return (Array.isArray(svar.svar) ? svar.svar : [svar.svar]).map((svar) => ({
+    type: spørsmål.type,
+    spørsmål: spørsmål.tekst,
+    sti: spørsmål.sti,
+    svar,
+  }))
 }

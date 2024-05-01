@@ -1,8 +1,8 @@
-import type { IEnkeltvalg } from './spørreundersøkelser'
+import { IEnkeltvalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { Controller, get, useFormContext } from 'react-hook-form'
 import { Fragment } from 'react'
-import { join, sanitize } from './Besvarelse'
+import { joinToName, sanitizeName } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
 import type { SpørsmålProps } from './Spørsmål'
 
@@ -13,7 +13,7 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
     nivå = 0,
     size,
   } = props
-  const name = join(navn, sanitize(tekst), 'svar')
+  const name = joinToName(navn, sanitizeName(tekst), 'svar')
   const { control, formState } = useFormContext()
   const error = get(formState.errors, name)
   return (
@@ -35,13 +35,7 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
           error={error?.message}
         >
           {alternativer.map((alternativ) => {
-            if (typeof alternativ === 'string') {
-              return (
-                <Radio key={alternativ} name={name} value={alternativ}>
-                  {alternativ}
-                </Radio>
-              )
-            } else {
+            if (isOppfølgingsspørsmål(alternativ)) {
               const spørsmål = alternativ
               return (
                 <Fragment key={spørsmål.tekst}>
@@ -51,11 +45,17 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
                   {field.value === spørsmål.tekst && (
                     <Oppfølgingsspørsmål
                       spørsmål={spørsmål}
-                      navn={join(navn, sanitize(tekst), 'oppfølgingsspørsmål')}
+                      navn={joinToName(navn, sanitizeName(tekst), 'oppfølgingsspørsmål')}
                       nivå={nivå + 1}
                     />
                   )}
                 </Fragment>
+              )
+            } else {
+              return (
+                <Radio key={alternativ} name={name} value={alternativ}>
+                  {alternativ}
+                </Radio>
               )
             }
           })}

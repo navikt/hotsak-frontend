@@ -1,5 +1,6 @@
 import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
+import { desanitizeName } from './Besvarelse'
 
 export type Spørsmålstype = 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
 
@@ -26,15 +27,15 @@ export interface IFritekst extends ISpørsmål {
   type: 'fritekst'
 }
 
-export interface IHarSpørsmål {
+export interface ISpørsmålsliste {
   spørsmål: ReadonlyArray<IEnkeltvalg | IFlervalg | IFritekst>
 }
 
-export interface IOppfølgingsspørsmål extends ISpørsmål, IHarSpørsmål {
+export interface IOppfølgingsspørsmål extends ISpørsmål, ISpørsmålsliste {
   type: 'oppfølgingsspørsmål'
 }
 
-export interface ISpørreundersøkelse extends IHarSpørsmål {
+export interface ISpørreundersøkelse extends ISpørsmålsliste {
   skjema: string
   tittel: string
   beskrivelse?: { header: string; body: string }
@@ -47,20 +48,28 @@ export const spørreundersøkelser = {
 
 export type SpørreundersøkelseId = keyof typeof spørreundersøkelser
 
-function spørreundersøkelseToArray(harSpørsmål: IHarSpørsmål): ISpørsmål[] {
-  return harSpørsmål.spørsmål.flatMap((spørsmål) => {
-    if ((spørsmål as IAlternativer).alternativer) {
-      const oppfølgingsspørsmål = (spørsmål as IAlternativer).alternativer
-        .filter((alternativ): alternativ is IOppfølgingsspørsmål => typeof alternativ !== 'string')
-        .flatMap((alternativ) => spørreundersøkelseToArray(alternativ))
-      return [spørsmål, ...oppfølgingsspørsmål]
+export function isOppfølgingsspørsmål(value: string | IOppfølgingsspørsmål): value is IOppfølgingsspørsmål {
+  return value != null && (value as IOppfølgingsspørsmål).type === 'oppfølgingsspørsmål'
+}
+
+export interface IHierarkiskSpørsmål extends ISpørsmål {
+  sti: string[]
+}
+
+function flat(spørsmålsliste: ISpørsmålsliste, sti: string[] = []): IHierarkiskSpørsmål[] {
+  return spørsmålsliste.spørsmål.flatMap((spørsmål) => {
+    const hierarkiskSpørsmål = { ...spørsmål, sti }
+    if ((hierarkiskSpørsmål as IAlternativer).alternativer) {
+      const oppfølgingsspørsmål = (hierarkiskSpørsmål as IAlternativer).alternativer
+        .filter(isOppfølgingsspørsmål)
+        .flatMap((alternativ) => flat(alternativ, [...sti, hierarkiskSpørsmål.tekst]))
+      return [hierarkiskSpørsmål, ...oppfølgingsspørsmål]
     } else {
-      return [spørsmål]
+      return [hierarkiskSpørsmål]
     }
   })
 }
 
-export function finnSpørsmål(harSpørsmål: IHarSpørsmål, tekst: string): ISpørsmål | undefined {
-  const spørsmål = spørreundersøkelseToArray(harSpørsmål)
-  return spørsmål.find((spørsmål) => spørsmål.tekst === tekst)
+export function finnSpørsmål(spørsmålsliste: ISpørsmålsliste, tekst: string): IHierarkiskSpørsmål | undefined {
+  return flat(spørsmålsliste).find((spørsmål) => spørsmål.tekst === desanitizeName(tekst))
 }

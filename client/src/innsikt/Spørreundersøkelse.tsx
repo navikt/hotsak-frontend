@@ -4,7 +4,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
 import { Spørsmål } from './Spørsmål'
 import React, { useRef } from 'react'
-import { besvarelseToArray, IBesvarelse, ISvar } from './Besvarelse'
+import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
+import { logDebug } from '../utvikling/logDebug'
 
 export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
   loading?: boolean
@@ -43,7 +44,8 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
       <FormProvider {...form}>
         <form
           onSubmit={handleSubmit(async (besvarelse) => {
-            const svar = besvarelseToArray(spørreundersøkelse, besvarelse)
+            const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
+            logDebug(svar)
             return onBesvar(spørreundersøkelse, besvarelse, svar)
           })}
         >

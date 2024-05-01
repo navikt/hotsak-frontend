@@ -237,7 +237,7 @@ export const putSendTilGosys = async (
   besvarelse: IBesvarelse,
   svar: ISvar[]
 ) => {
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, svar })
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, tilbakemelding: svar })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

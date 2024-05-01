@@ -1,8 +1,8 @@
-import type { IFlervalg } from './spørreundersøkelser'
+import { IFlervalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react'
 import { Controller, get, useFormContext } from 'react-hook-form'
 import { Fragment } from 'react'
-import { join, sanitize } from './Besvarelse'
+import { joinToName, sanitizeName } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
 import type { SpørsmålProps } from './Spørsmål'
 
@@ -15,7 +15,7 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
     nivå = 0,
     size,
   } = props
-  const name = join(navn, sanitize(tekst), 'svar')
+  const name = joinToName(navn, sanitizeName(tekst), 'svar')
   const { control, formState } = useFormContext()
   const error = get(formState.errors, name)
   return (
@@ -37,13 +37,7 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
           error={error?.message}
         >
           {alternativer.map((alternativ) => {
-            if (typeof alternativ === 'string') {
-              return (
-                <Checkbox key={alternativ} name={name} value={alternativ}>
-                  {alternativ}
-                </Checkbox>
-              )
-            } else {
+            if (isOppfølgingsspørsmål(alternativ)) {
               const spørsmål = alternativ
               return (
                 <Fragment key={spørsmål.tekst}>
@@ -53,11 +47,17 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
                   {Array.isArray(field.value) && field.value.some((value) => spørsmål.tekst === value) && (
                     <Oppfølgingsspørsmål
                       spørsmål={spørsmål}
-                      navn={join(navn, sanitize(tekst), 'oppfølgingsspørsmål')}
+                      navn={joinToName(navn, sanitizeName(tekst), 'oppfølgingsspørsmål')}
                       nivå={nivå + 1}
                     />
                   )}
                 </Fragment>
+              )
+            } else {
+              return (
+                <Checkbox key={alternativ} name={name} value={alternativ}>
+                  {alternativ}
+                </Checkbox>
               )
             }
           })}

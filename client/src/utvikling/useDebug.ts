@@ -1,8 +1,9 @@
 import { useDebugValue, useEffect } from 'react'
+import { logDebug } from './logDebug'
 
 export function useDebug(value: any): void {
   useDebugValue(value)
   useEffect(() => {
-    console.log(JSON.stringify(value, null, 2))
+    logDebug(value)
   }, [value])
 }

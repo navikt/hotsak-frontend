@@ -9,35 +9,37 @@ import { middlewarePlugin } from './vite-middleware-plugin.mjs'
 const finnHjelpemiddelProxy = false
 
 // https://vitejs.dev/config/
-export default defineConfig((env) => ({
-  base: '/',
-  plugins: [
-    middlewarePlugin({ development: env.mode === 'test' || env.mode === 'development' }),
-    htmlPlugin({ development: env.mode === 'test' || env.mode === 'development' }),
-    react(),
-  ],
-  build: {
-    manifest: true,
-    sourcemap: true,
-  },
-  server: {
-    port: 3001,
-    proxy: finnHjelpemiddelProxy
-      ? {
-          '/finnhjelpemiddel-api': {
-            target: 'https://hm-grunndata-search.intern.dev.nav.no',
-            changeOrigin: true,
-            rewrite(path) {
-              return path.replace(/^\/finnhjelpemiddel-api/, '')
+export default defineConfig((env) => {
+  return {
+    base: '/',
+    plugins: [
+      middlewarePlugin({ development: env.mode === 'test' || env.mode === 'development' }),
+      htmlPlugin({ development: env.mode === 'test' || env.mode === 'development' }),
+      react(),
+    ],
+    build: {
+      manifest: true,
+      sourcemap: true,
+    },
+    server: {
+      port: 3001,
+      proxy: finnHjelpemiddelProxy
+        ? {
+            '/finnhjelpemiddel-api': {
+              target: 'https://hm-grunndata-search.intern.dev.nav.no',
+              changeOrigin: true,
+              rewrite(path) {
+                return path.replace(/^\/finnhjelpemiddel-api/, '')
+              },
             },
-          },
-        }
-      : undefined,
-    strictPort: true,
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: 'src/setupTests.ts',
-  },
-}))
+          }
+        : undefined,
+      strictPort: true,
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: 'src/setupTests.ts',
+    },
+  }
+})

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { baseUrl } from '../io/http'
 import { http, Resultat } from '../io/usePost'
 import { Enhet } from '../types/types.internal'
+import { logDebug } from '../utvikling/logDebug'
 
 interface HeitKrukkaSkjemaRequest {
   enhet: string
@@ -24,7 +25,7 @@ export function useHeitKrukka(): HeitKrukkaResponse {
   const [spørreskjema, setSpørreskjema] = useState<Resultat<HeitKrukkaSkjemaResponse> | null>(null)
 
   const hentSpørreskjema = async (skjema: string, enhet: Enhet) => {
-    console.log(`HTTP POST til heit-krukka, url: '${baseUrl}/heit-krukka/api/skjema/${skjema}'`)
+    logDebug(`HTTP POST til heit-krukka, url: '${baseUrl}/heit-krukka/api/skjema/${skjema}'`)
 
     const resultat = await http.post<HeitKrukkaSkjemaRequest, HeitKrukkaSkjemaResponse>(
       `${baseUrl}/heit-krukka/api/skjema/${skjema}`,

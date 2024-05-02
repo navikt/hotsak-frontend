@@ -12,10 +12,6 @@ async function main(): Promise<void> {
   await initAmplitude()
   await initFaro()
 
-  if (import.meta.env.DEV) {
-    localStorage.debug = 'hotsak-frontend'
-  }
-
   const container = document.getElementById('root')!
   createRoot(container).render(
     <>

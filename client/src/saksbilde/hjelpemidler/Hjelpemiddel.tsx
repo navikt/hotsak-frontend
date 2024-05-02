@@ -96,7 +96,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
 
   const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
-      .catch(() => console.log('error endre hjelpemiddel'))
+      .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)

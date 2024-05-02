@@ -1,3 +1,5 @@
+import { logDebug } from '../utvikling/logDebug'
+
 export enum amplitude_taxonomy {
   OPPGAVELISTE_BYTT_TAB = 'byttet tab i oppgaveliste',
   OPPGAVELISTE_OPPDATERT = 'oppdaterte oppgaveliste',
@@ -31,7 +33,7 @@ export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<stri
   eventName,
   data
 ): void => {
-  console.debug('Event: ', { eventName, data })
+  logDebug('eventName: %o, data: %o', eventName, data)
 }
 
 export async function initAmplitude(): Promise<void> {

@@ -1,7 +1,11 @@
+import { logDebug } from '../utvikling/logDebug'
+
 export async function initMsw(): Promise<unknown> {
   if (!window.appSettings.USE_MSW) {
     return
   }
+
+  localStorage.debug = 'hotsak-frontend'
 
   const { setupWorker } = await import('msw/browser')
   const { setupStore } = await import('./data')
@@ -52,7 +56,7 @@ export async function initMsw(): Promise<unknown> {
 
   const worker = setupWorker(...setupHandlers(store))
   worker.listHandlers().forEach((handler) => {
-    console.debug(handler.info.header)
+    logDebug(handler.info.header)
   })
   return worker.start({
     onUnhandledRequest: 'bypass',

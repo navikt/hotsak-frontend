@@ -23,30 +23,11 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { useOverførGosys } from '../useOverførGosys'
 
-interface VedtakCardProps {
+export interface VedtakCardProps {
   sak: Sak
 }
 
-export const TagGrid = styled.div`
-  display: grid;
-  grid-template-columns: 4.3rem auto;
-  grid-column-gap: 0.75rem;
-  grid-row-gap: 0.125rem;
-`
-
-const StatusTekst = styled.div`
-  padding-top: 0.5rem;
-`
-
-const Knapp = styled(Button)`
-  min-height: 0;
-  margin: 2px;
-  height: 1.8rem;
-  padding: 0 0.75rem;
-  box-sizing: border-box;
-`
-
-export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
+export function VedtakCard({ sak }: VedtakCardProps) {
   const { sakId } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -66,9 +47,6 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
       .then(() => {
         setLoading(false)
         setVisVedtakModal(false)
-        /*if (window.appSettings.MILJO !== 'prod-gcp') {
-          hentSpørreskjema('sporreskjemaSaksbehandlerA_v1', sak.enhet)
-        }*/
         mutate(`api/sak/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
       })
@@ -228,3 +206,15 @@ export const VedtakCard: React.FC<VedtakCardProps> = ({ sak }) => {
     )
   }
 }
+
+const StatusTekst = styled.div`
+  padding-top: 0.5rem;
+`
+
+const Knapp = styled(Button)`
+  min-height: 0;
+  margin: 2px;
+  height: 1.8rem;
+  padding: 0 0.75rem;
+  box-sizing: border-box;
+`

@@ -19,7 +19,7 @@ import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
-import { VenstreMeny } from './venstremeny/Venstremeny'
+import { Venstremeny } from './venstremeny/Venstremeny'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
 
 const SaksbildeContent: React.FC = React.memo(() => {
@@ -45,7 +45,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
             <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
           </HGrid>
           <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
-            <VenstreMeny>
+            <Venstremeny>
               <SøknadCard
                 sakstype={sak.data.sakstype}
                 søknadGjelder={sak.data.søknadGjelder}
@@ -68,7 +68,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
               />
               {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} />}
               {erBestilling && <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />}
-            </VenstreMeny>
+            </Venstremeny>
             <Content>
               <Routes>
                 <Route

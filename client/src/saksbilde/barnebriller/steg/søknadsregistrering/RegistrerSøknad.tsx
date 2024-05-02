@@ -14,7 +14,7 @@ import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
 import { useJournalposter } from '../../../useJournalposter'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
-import { VenstreMeny } from '../../../venstremeny/Venstremeny'
+import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
@@ -52,9 +52,9 @@ const RegistrerSøknadContent: React.FC = React.memo(() => {
     <Container>
       <AutoFlexContainer>
         <TreKolonner>
-          <VenstreMeny width={`${hotsakRegistrerSøknadKolonne}`}>
+          <Venstremeny width={`${hotsakRegistrerSøknadKolonne}`}>
             {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
-          </VenstreMeny>
+          </Venstremeny>
           <DokumentPanel />
         </TreKolonner>
       </AutoFlexContainer>

@@ -12,7 +12,7 @@ import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import type { Navn } from '../../types/types.internal'
 
-interface FormidlerCardProps {
+export interface FormidlerCardProps {
   tittel: string
   formidlerNavn: string | Navn
   stilling: string
@@ -20,13 +20,7 @@ interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
-export const FormidlerCard: React.FC<FormidlerCardProps> = ({
-  tittel,
-  formidlerNavn,
-  kommune,
-  formidlerTelefon,
-  stilling,
-}) => {
+export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
   return (
     <Card>
       <CardTitle level="1" size="medium">

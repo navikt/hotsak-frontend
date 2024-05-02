@@ -17,7 +17,7 @@ import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 
-interface SøknadCardProps {
+export interface SøknadCardProps {
   sakstype: Sakstype
   søknadGjelder: string
   saksnr: number | string
@@ -27,32 +27,15 @@ interface SøknadCardProps {
   bosituasjon: Bosituasjon | null
 }
 
-const getTextForBosituasjon = (bosituasjon: Bosituasjon | null) => {
-  switch (bosituasjon) {
-    case null:
-      return null
-    case Bosituasjon.HJEMME:
-      return 'Hjemmeboende'
-    case Bosituasjon.HJEMME_EGEN_BOLIG:
-      return 'Hjemmeboende i egen bolig'
-    case Bosituasjon.HJEMME_OMSORG_FELLES:
-      return 'Hjemmeboende i omsorgsbolig e.l.'
-    case Bosituasjon.INSTITUSJON:
-      return 'Institusjon'
-    default:
-      return 'Ukjent bosituasjon'
-  }
-}
-
-export const SøknadCard: React.FC<SøknadCardProps> = ({
+export function SøknadCard({
   sakstype,
   saksnr,
   mottattDato,
   bruksarena,
   funksjonsnedsettelse,
   bosituasjon,
-}) => {
-  const bosituasjonTekst = getTextForBosituasjon(bosituasjon)
+}: SøknadCardProps) {
+  const bosituasjonTekst = getTekstForBosituasjon(bosituasjon)
 
   return (
     <Card>
@@ -99,4 +82,21 @@ export const SøknadCard: React.FC<SøknadCardProps> = ({
       </HStack>
     </Card>
   )
+}
+
+function getTekstForBosituasjon(bosituasjon: Bosituasjon | null) {
+  switch (bosituasjon) {
+    case null:
+      return null
+    case Bosituasjon.HJEMME:
+      return 'Hjemmeboende'
+    case Bosituasjon.HJEMME_EGEN_BOLIG:
+      return 'Hjemmeboende i egen bolig'
+    case Bosituasjon.HJEMME_OMSORG_FELLES:
+      return 'Hjemmeboende i omsorgsbolig e.l.'
+    case Bosituasjon.INSTITUSJON:
+      return 'Institusjon'
+    default:
+      return 'Ukjent bosituasjon'
+  }
 }

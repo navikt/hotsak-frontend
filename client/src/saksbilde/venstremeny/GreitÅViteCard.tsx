@@ -8,34 +8,14 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { GreitÅViteFaktum, GreitÅViteType } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { Grid } from './Grid'
+import { HGrid } from '@navikt/ds-react'
 
-interface GreitÅViteCardProps {
+export interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]
   harIngenHjelpemidlerFraFør: boolean
 }
 
-const ikon = (faktumType: GreitÅViteType) => {
-  switch (faktumType) {
-    case GreitÅViteType.ADVARSEL:
-      return <Advarselikon />
-    case GreitÅViteType.INFO:
-      return <Sjekkikon />
-    case GreitÅViteType.MERKNAD:
-      return <Informasjonikon />
-  }
-}
-
-const FaktaRad = ({ type, beskrivelse }: GreitÅViteFaktum) => {
-  return (
-    <>
-      <IconContainer>{ikon(type)}</IconContainer>
-      <Tekst>{beskrivelse}</Tekst>
-    </>
-  )
-}
-
-export const GreitÅViteCard: React.FC<GreitÅViteCardProps> = ({ greitÅViteFakta, harIngenHjelpemidlerFraFør }) => {
+export function GreitÅViteCard({ greitÅViteFakta, harIngenHjelpemidlerFraFør }: GreitÅViteCardProps) {
   const fakta = harIngenHjelpemidlerFraFør
     ? [...greitÅViteFakta, { beskrivelse: 'Bruker har ingen hjelpemidler fra før', type: GreitÅViteType.MERKNAD }]
     : [...greitÅViteFakta]
@@ -46,7 +26,7 @@ export const GreitÅViteCard: React.FC<GreitÅViteCardProps> = ({ greitÅViteFak
         <CardTitle level="1" size="medium">
           GREIT Å VITE
         </CardTitle>
-        <Grid>
+        <HGrid gap="05" columns="1.25rem auto" style={{ columnGap: 'var(--a-spacing-3)' }}>
           {fakta
             .sort((a, b) => {
               if (a.type === b.type) {
@@ -61,12 +41,32 @@ export const GreitÅViteCard: React.FC<GreitÅViteCardProps> = ({ greitÅViteFak
               return 0
             })
             .map((faktum) => {
-              return <FaktaRad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
+              return <Rad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
             })}
-        </Grid>
+        </HGrid>
       </Card>
     )
   } else {
     return null
   }
+}
+
+function ikon(faktumType: GreitÅViteType) {
+  switch (faktumType) {
+    case GreitÅViteType.ADVARSEL:
+      return <Advarselikon />
+    case GreitÅViteType.INFO:
+      return <Sjekkikon />
+    case GreitÅViteType.MERKNAD:
+      return <Informasjonikon />
+  }
+}
+
+function Rad({ type, beskrivelse }: GreitÅViteFaktum) {
+  return (
+    <>
+      <IconContainer>{ikon(type)}</IconContainer>
+      <Tekst>{beskrivelse}</Tekst>
+    </>
+  )
 }

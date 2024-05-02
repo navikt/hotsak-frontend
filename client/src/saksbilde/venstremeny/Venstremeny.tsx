@@ -3,22 +3,18 @@ import styled from 'styled-components'
 
 import { headerHøydeRem } from '../../GlobalStyles'
 
-type VenstremenyProps = {
+export interface VenstremenyProps {
   width?: string
 }
 
-const Container = styled.aside<VenstremenyProps>`
-  display: flex;
-  flex-direction: column;
-  padding-top: var(--a-spacing-4);
-
-  padding-bottom: var(--a-spacing-6);
-  padding-left: var(--a-spacing-6);
-  padding-right: var(--a-spacing-6);
-  border-right: 1px solid var(--a-border-subtle);
-  height: calc(100% - ${headerHøydeRem});
-`
-
-export const VenstreMeny: React.FC<{ width?: string; children: React.ReactNode }> = ({ width, children }) => {
+export function Venstremeny({ width, children }: { width?: string; children: React.ReactNode }) {
   return <Container width={width}>{children}</Container>
 }
+
+const Container = styled.aside<VenstremenyProps>`
+  border-right: 1px solid var(--a-border-subtle);
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - ${headerHøydeRem});
+  padding: var(--a-spacing-4) var(--a-spacing-6) var(--a-spacing-6);
+`

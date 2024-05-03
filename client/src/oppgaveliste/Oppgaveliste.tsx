@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { capitalize, capitalizeName, formaterFødselsnummer, formatName } from '../utils/stringFormating'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
@@ -82,7 +82,7 @@ export function Oppgaveliste() {
       name: 'Område',
       width: 152,
       render: (oppgave: Oppgave) => (
-        <EllipsisCell minLength={18} value={capitalize(oppgave.bruker.funksjonsnedsettelser.join(', '))} />
+        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.bruker.funksjonsnedsettelser.join(', '))} />
       ),
     },
     {
@@ -92,7 +92,9 @@ export function Oppgaveliste() {
       render: (oppgave: Oppgave) => (
         <EllipsisCell
           minLength={20}
-          value={capitalize(oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
+          value={storForbokstavIAlleOrd(
+            oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+          )}
         />
       ),
     },
@@ -100,7 +102,7 @@ export function Oppgaveliste() {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
       width: 188,
-      render: (oppgave: Oppgave) => <EllipsisCell minLength={20} value={formatName(oppgave.bruker)} />,
+      render: (oppgave: Oppgave) => <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker)} />,
     },
     {
       key: 'FØDSELSNUMMER',
@@ -118,7 +120,7 @@ export function Oppgaveliste() {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: Oppgave) => <EllipsisCell minLength={19} value={capitalizeName(oppgave.innsender)} />,
+      render: (oppgave: Oppgave) => <EllipsisCell minLength={19} value={formaterNavn(oppgave.innsender)} />,
     },
     {
       key: 'MOTTATT',

@@ -22,7 +22,7 @@ import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { UtleveringCard } from './venstremeny/UtleveringCard'
-import { formaterAdresse } from '../utils/stringFormating'
+import { formaterAdresse } from '../utils/formater'
 
 const SaksbildeContent = React.memo(() => {
   const { sak, isError } = useSak()

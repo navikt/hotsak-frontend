@@ -13,13 +13,13 @@ import HjelpemiddeloversiktTabell from './HjelpemiddeloversiktTabell'
 import { usePersonContext } from './PersonContext'
 import Saksoversikt from './Saksoversikt'
 import { SaksoversiktLinje } from './SaksoversiktLinje'
-import { usePersonInfo } from './usePersonInfo'
+import { usePerson } from './usePerson'
 import { useSaksoversikt } from './saksoversiktHook'
 import { Avstand } from '../felleskomponenter/Avstand'
 
 const PersonoversiktContent: React.FC = () => {
   const { fodselsnummer } = usePersonContext()
-  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
+  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const {
     hjelpemiddelArtikler,

@@ -248,6 +248,10 @@ export interface Navn {
   etternavn: string
 }
 
+export interface HarNavn {
+  navn: Navn
+}
+
 export interface AdressebeskyttelseOgSkjerming {
   gradering?: Adressebeskyttelse[]
   skjermet: boolean
@@ -267,9 +271,8 @@ export interface Innsender {
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }
 
-export interface Bruker {
+export interface Bruker extends HarNavn {
   fnr: string
-  navn: Navn
   fulltNavn?: string
   fødselsdato: string
   kommune: Kommune
@@ -545,12 +548,14 @@ export interface Bydel {
   bydelsnavn: string
 }
 
-/*export interface Kommune {
+/*
+export interface Kommune {
   kommunenummer: string
   kommunenavn: string
-}*/
+}
+*/
 
-/* Bør fjernes når vi er over på ny Oppgavemodell*/
+/* Bør fjernes når vi er over på ny oppgavemodell */
 export interface Oppgave {
   sakId: string
   sakstype: Sakstype
@@ -742,12 +747,9 @@ export enum Kjønn {
   UKJENT = 'UKJENT',
 }
 
-export interface Personinformasjon extends Adresse {
+export interface Personinformasjon extends Adresse, Navn {
   fnr: string
   brukernummer?: string
-  fornavn: string
-  mellomnavn?: string | null
-  etternavn: string
   fødselsdato: string | undefined
   kjønn: Kjønn
   kilde: PersonInfoKilde
@@ -868,19 +870,13 @@ export enum Brevtype {
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
 }
 
-export interface OverforGosysTilbakemelding {
-  valgteArsaker: string[]
-  begrunnelse: string
-}
-
 export interface AvvisBestilling {
   valgtArsak: string
   begrunnelse: string
 }
 
-export interface Person extends Navn {
+export interface Person extends Navn, HarNavn {
   fnr: string
-  navn: Navn
   fødselsdato?: string
   telefon?: string
   brukernummer?: string

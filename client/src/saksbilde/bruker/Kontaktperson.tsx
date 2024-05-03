@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Formidler, Kontaktperson as IKontaktperson, KontaktpersonType } from '../../types/types.internal'
-import { formatName } from '../../utils/stringFormating'
+import { formaterNavn } from '../../utils/formater'
 import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
 export interface KontaktpersonProps {
@@ -31,7 +31,7 @@ export function lagKontaktpersonTekst(formidler: Formidler, kontaktperson?: IKon
     case KontaktpersonType.HJELPEMIDDELBRUKER:
       return 'Hjelpemiddelbruker'
     case KontaktpersonType.HJELPEMIDDELFORMIDLER:
-      return `Formidler (${formatName(formidler.navn)})`
+      return `Formidler (${formaterNavn(formidler.navn)})`
     case KontaktpersonType.ANNEN_KONTAKTPERSON:
       return `${kontaktperson.navn}. Telefon: ${kontaktperson.telefon}`
   }

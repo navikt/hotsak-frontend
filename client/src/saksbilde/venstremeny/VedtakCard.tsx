@@ -8,7 +8,7 @@ import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
@@ -37,7 +37,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
-    `${capitalize(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
+    `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
   )
 
   const opprettVedtak = () => {
@@ -122,7 +122,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         <CardTitle level="1" size="medium">
           SAKSBEHANDLER
         </CardTitle>
-        <Tekst>Saken er tildelt saksbehandler {capitalizeName(sak.saksbehandler?.navn || '')}</Tekst>
+        <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}</Tekst>
         <Knappepanel>
           <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
             Overta saken

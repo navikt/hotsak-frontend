@@ -26,7 +26,7 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
-import { formatName } from '../../utils/stringFormating'
+import { formaterNavn } from '../../utils/formater'
 import { formatISO } from 'date-fns'
 
 type LagretSak = Sak
@@ -262,7 +262,7 @@ export class SakStore extends Dexie {
       statusEndret: sak.statusEndret,
       beskrivelse: sak.søknadGjelder,
       mottatt: sak.saksinformasjon.opprettet,
-      innsender: formatName(sak.innsender.navn),
+      innsender: formaterNavn(sak.innsender.navn),
       bruker: {
         fnr: bruker.fnr,
         funksjonsnedsettelser: personinformasjon.funksjonsnedsettelser,

@@ -1,6 +1,6 @@
 import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 
-import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
+import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
@@ -18,17 +18,17 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
     return (
       <HGrid {...hGridProps}>
         <Etikett>Navn</Etikett>
-        <Brødtekst>{formatName(formidler.navn)}</Brødtekst>
+        <Brødtekst>{formaterNavn(formidler.navn)}</Brødtekst>
         <Etikett>Arbeidssted</Etikett>
-        <Brødtekst>{`${capitalize(formidler.arbeidssted)}`}</Brødtekst>
+        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.arbeidssted)}`}</Brødtekst>
         <Etikett>Stilling</Etikett>
-        <Brødtekst>{`${capitalize(formidler.stilling)}`}</Brødtekst>
+        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</Brødtekst>
         <Etikett>Postadresse</Etikett>
-        <Brødtekst>{`${capitalize(formidler.postadresse)}`}</Brødtekst>
+        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.postadresse)}`}</Brødtekst>
         <Etikett>Telefon</Etikett>
         <Brødtekst>{formidler.telefon}</Brødtekst>
         <Etikett>Treffest enklest</Etikett>
-        <Brødtekst>{capitalize(formidler.treffestEnklest)}</Brødtekst>
+        <Brødtekst>{storForbokstavIAlleOrd(formidler.treffestEnklest)}</Brødtekst>
         <Etikett>E-postadresse</Etikett>
         <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
       </HGrid>
@@ -41,15 +41,15 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
         <Merknad>
           <HGrid {...hGridProps}>
             <Etikett>Navn</Etikett>
-            <Brødtekst>{capitalizeName(oppfølgingsansvarlig.navn)}</Brødtekst>
+            <Brødtekst>{formaterNavn(oppfølgingsansvarlig.navn)}</Brødtekst>
             <Etikett>Arbeidssted</Etikett>
-            <Brødtekst>{`${capitalize(oppfølgingsansvarlig.arbeidssted)}`}</Brødtekst>
+            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølgingsansvarlig.arbeidssted)}`}</Brødtekst>
             <Etikett>Stilling</Etikett>
-            <Brødtekst>{`${capitalize(oppfølgingsansvarlig.stilling)}`}</Brødtekst>
+            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølgingsansvarlig.stilling)}`}</Brødtekst>
             <Etikett>Telefon</Etikett>
             <Brødtekst>{oppfølgingsansvarlig.telefon}</Brødtekst>
             <Etikett>Ansvar</Etikett>
-            <Brødtekst>{capitalize(oppfølgingsansvarlig.ansvarFor)}</Brødtekst>
+            <Brødtekst>{storForbokstavIAlleOrd(oppfølgingsansvarlig.ansvarFor)}</Brødtekst>
           </HGrid>
         </Merknad>
       </Box>

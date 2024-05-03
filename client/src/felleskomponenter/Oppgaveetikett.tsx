@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { capitalize } from '../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../utils/formater'
 
 import { Sakstype } from '../types/types.internal'
 import { BodyShort } from '@navikt/ds-react'
@@ -93,7 +93,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       return showLabel ? (
         <>
           <SøknadEtikett $størrelse={størrelse} aria-hidden />
-          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{storForbokstavIAlleOrd(type)}</Label>
         </>
       ) : (
         <SøknadEtikett $størrelse={størrelse} />
@@ -102,7 +102,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       return showLabel ? (
         <>
           <BestillingEtikett $størrelse={størrelse} aria-hidden />
-          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{storForbokstavIAlleOrd(type)}</Label>
         </>
       ) : (
         <BestillingEtikett $størrelse={størrelse} aria-hidden />
@@ -111,7 +111,7 @@ export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
       return showLabel ? (
         <>
           <TilskuddEtikett $størrelse={størrelse} aria-hidden />
-          <Label labelLinkTo={labelLinkTo}>{capitalize(type)}</Label>
+          <Label labelLinkTo={labelLinkTo}>{storForbokstavIAlleOrd(type)}</Label>
         </>
       ) : (
         <TilskuddEtikett $størrelse={størrelse} aria-hidden />

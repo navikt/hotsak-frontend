@@ -39,7 +39,7 @@ import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { vurderteVilkår } from './vurderteVilkår'
-import { formatName } from '../../utils/stringFormating'
+import { formaterNavn } from '../../utils/formater'
 import { formatISO } from 'date-fns'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
@@ -225,7 +225,7 @@ export class BarnebrillesakStore extends Dexie {
       statusEndret: sak.statusEndret,
       beskrivelse: sak.søknadGjelder,
       mottatt: sak.saksinformasjon.opprettet,
-      innsender: formatName(sak.innsender.navn),
+      innsender: formaterNavn(sak.innsender.navn),
       bruker: {
         fnr: bruker.fnr,
         funksjonsnedsettelser: ['syn'],

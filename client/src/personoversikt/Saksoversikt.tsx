@@ -8,7 +8,7 @@ import { Alert, Table } from '@navikt/ds-react'
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { formaterDato, sorterKronologisk } from '../utils/dato'
-import { capitalize } from '../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../utils/formater'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
@@ -51,7 +51,9 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       key: 'OMRÅDE',
       name: 'Område',
       width: 152,
-      render: (sak: Saksoversikt_Sak) => <EllipsisCell value={capitalize(sak.område.join(', '))} minLength={18} />,
+      render: (sak: Saksoversikt_Sak) => (
+        <EllipsisCell value={storForbokstavIAlleOrd(sak.område.join(', '))} minLength={18} />
+      ),
     },
     {
       key: 'SØKNAD_OM',
@@ -59,7 +61,9 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
       width: 192,
       render: (sak: Saksoversikt_Sak) => (
         <EllipsisCell
-          value={capitalize(sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
+          value={storForbokstavIAlleOrd(
+            sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+          )}
           minLength={20}
         />
       ),

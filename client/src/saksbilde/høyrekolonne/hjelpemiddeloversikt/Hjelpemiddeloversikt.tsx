@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { BodyLong, BodyShort, Label } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../utils/dato'
-import { capitalize } from '../../../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../../../utils/formater'
 
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
@@ -114,7 +114,7 @@ const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
     <>
       {artikler.map((artikkel) => {
         const id = `${artikkel.hmsnr}${artikkel.datoUtsendelse}`
-        const artikkelBeskrivelse = capitalize(artikkel.grunndataProduktNavn || artikkel.beskrivelse)
+        const artikkelBeskrivelse = storForbokstavIAlleOrd(artikkel.grunndataProduktNavn || artikkel.beskrivelse)
         return (
           <div key={id}>
             <Rad>

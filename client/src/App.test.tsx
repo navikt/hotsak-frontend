@@ -1,16 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { RecoilRoot } from 'recoil'
-import { expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
 import App from './App'
 
-test.skip('renders app', () => {
-  render(
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
-  )
-  const element = screen.getByText(/Endringslogg/)
-  expect(element).toBeInTheDocument()
+describe('app', () => {
+  test('render', () => {
+    render(
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
+    )
+    const element = screen.getByText(/Endringslogg/)
+    expect(element).toBeDefined()
+    // expect(element).toBeInTheDocument()
+  })
 })

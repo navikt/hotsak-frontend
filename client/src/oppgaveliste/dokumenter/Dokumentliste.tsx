@@ -9,7 +9,7 @@ import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHe
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
 import { formaterTidsstempel } from '../../utils/dato'
-import { formaterFødselsnummer } from '../../utils/stringFormating'
+import { formaterFødselsnummer } from '../../utils/formater'
 import { isError } from '../../utils/type'
 
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
@@ -82,12 +82,6 @@ export function Dokumentliste() {
       width: 152,
       render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />,
     },
-    /* {
-      key: 'frist',
-      name: 'Frist',
-      width: 100,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.frist)} />,
-    },*/
   ]
 
   const {
@@ -107,8 +101,8 @@ export function Dokumentliste() {
     }
   }
 
-  //useLoadingToast({ isLoading: oppgaver.state === 'loading', message: 'Henter oppgaver' });
   const hasData = sorterteDokumenter && sorterteDokumenter.length > 0
+
   return (
     <>
       <Skjermlesertittel>Mottatte dokumenter</Skjermlesertittel>

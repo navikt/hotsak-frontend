@@ -4,13 +4,13 @@ import { hentBrukerdataMedPost } from '../io/http'
 
 import { Person } from '../types/types.internal'
 
-export interface PersonInfoResponse {
+export interface PersonResponse {
   personInfo: Person | undefined
   isLoading: boolean
   isError: any
 }
 
-export function usePersonInfo(fnr?: string): PersonInfoResponse {
+export function usePerson(fnr?: string): PersonResponse {
   const { data, error } = useSwr<{ data: Person | undefined }>(fnr ? ['api/person', fnr] : null, hentBrukerdataMedPost)
 
   return {

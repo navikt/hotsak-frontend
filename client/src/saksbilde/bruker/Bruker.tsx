@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, Tooltip } from '@navikt/ds-react'
 
-import { capitalize, capitalizeName, formaterAdresse } from '../../utils/stringFormating'
+import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Liste } from '../../felleskomponenter/Liste'
@@ -63,11 +63,11 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
           {person.bruksarena && person.bruksarena !== Bruksarena.UKJENT && (
             <>
               <Etikett>Bruksarena</Etikett>
-              <Tekst>{capitalize(person.bruksarena)}</Tekst>
+              <Tekst>{storForbokstavIAlleOrd(person.bruksarena)}</Tekst>
             </>
           )}
           <Etikett>Funksjonsnedsettelse</Etikett>
-          <Tekst>{capitalize(person.funksjonsnedsettelser.join(', '))}</Tekst>
+          <Tekst>{storForbokstavIAlleOrd(person.funksjonsnedsettelser.join(', '))}</Tekst>
         </HGrid>
       </Box>
       <Strek />
@@ -137,10 +137,6 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
 const hGridProps: Partial<HGridProps> = {
   columns: 'minmax(min-content, 12rem) auto',
   gap: '05',
-}
-
-function formaterNavn(person: Personinformasjon) {
-  return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn}` : ''} ${person.etternavn}`)
 }
 
 function vilkårTekst(vilkår: string, navn: string) {

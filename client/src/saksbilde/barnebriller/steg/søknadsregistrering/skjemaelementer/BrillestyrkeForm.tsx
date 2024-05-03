@@ -5,7 +5,7 @@ import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
 import { SatsType } from '../../../../../types/types.internal'
 import { useBeregning } from '../useBeregning'
 import { Øye } from './Øye'
-import { formaterBeløp } from '../../../../../utils/stringFormating'
+import { formaterBeløp } from '../../../../../utils/formater'
 
 export function BrillestyrkeForm() {
   const beregning = useBeregning()

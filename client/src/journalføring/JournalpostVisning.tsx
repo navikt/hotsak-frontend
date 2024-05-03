@@ -9,20 +9,20 @@ import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/Toast'
 import { Brødtekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { usePersonInfo } from '../personoversikt/usePersonInfo'
-import { formaterNavn } from '../saksbilde/Personlinje'
+import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { DokumentOppgaveStatusType } from '../types/types.internal'
 import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
+import { formaterNavn } from '../utils/formater'
 
 export function JournalpostVisning() {
   const { journalpostID } = useParams<{ journalpostID: string }>()
   const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
   const { fodselsnummer } = usePersonContext()
-  const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
+  const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()
 
   if (henterPerson || !personInfo || isLoading || !journalpost) {

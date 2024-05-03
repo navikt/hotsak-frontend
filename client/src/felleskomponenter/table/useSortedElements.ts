@@ -14,6 +14,7 @@ export function useSortedElements<T>(elements: T[], columns: Column<T>[], initia
   const [sortedElements, setSortedElements] = useState(elements)
 
   useEffect(() => {
+    if (!elements.length) return
     const { orderBy, direction } = sort
     const accessor = columns.find(({ key }) => key === orderBy)?.accessor
     const e = elements.slice().sort((a, b) => {

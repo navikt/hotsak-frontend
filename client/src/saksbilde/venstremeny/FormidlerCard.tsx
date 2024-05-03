@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
+import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import type { Navn } from '../../types/types.internal'
@@ -20,6 +20,7 @@ export interface FormidlerCardProps {
 // tooltip / title -> Kopier telefonnummer
 
 export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
+  const formidlerNavnFormatert = formaterNavn(formidlerNavn)
   return (
     <Card>
       <CardTitle level="1" size="medium">
@@ -27,9 +28,9 @@ export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon
       </CardTitle>
       <CardRow
         icon={<PersonIcon />}
-        copyText={formatName(formidlerNavn)}
-      >{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</CardRow>
-      <CardRow icon={<BriefcaseIcon />} copyText={stilling}>{`${capitalize(stilling)}`}</CardRow>
+        copyText={formidlerNavnFormatert}
+      >{`${formidlerNavnFormatert} - ${storForbokstavIAlleOrd(kommune)}`}</CardRow>
+      <CardRow icon={<BriefcaseIcon />} copyText={stilling}>{`${storForbokstavIAlleOrd(stilling)}`}</CardRow>
       <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon}>
         {formidlerTelefon}
       </CardRow>

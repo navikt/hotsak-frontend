@@ -8,7 +8,7 @@ import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
-import { capitalizeName } from '../../utils/stringFormating'
+import { formaterNavn } from '../../utils/formater'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
@@ -147,7 +147,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
         <CardTitle level="1" size="medium">
           Saksbehandler
         </CardTitle>
-        <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler?.navn || '')}</Tekst>
+        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>
           <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
             Overta bestillingen

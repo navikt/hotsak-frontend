@@ -3,7 +3,7 @@ import React from 'react'
 import { BodyShort } from '@navikt/ds-react'
 
 import { formaterTidsstempel } from '../../utils/dato'
-import { capitalize } from '../../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../../utils/formater'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
 import { Card } from './Card'
@@ -29,7 +29,7 @@ export function SøknadCard({
   funksjonsnedsettelser,
   bosituasjon,
 }: SøknadCardProps) {
-  const bruksarenaTekst = bruksarena && bruksarena !== Bruksarena.UKJENT ? capitalize(bruksarena) : ''
+  const bruksarenaTekst = bruksarena && bruksarena !== Bruksarena.UKJENT ? storForbokstavIAlleOrd(bruksarena) : ''
   const bosituasjonTekst = lagBosituasjonTekst(bosituasjon)
 
   return (
@@ -50,7 +50,7 @@ export function SøknadCard({
       {bruksarenaTekst && <CardRow icon={<FolderIcon />}>{bruksarenaTekst}</CardRow>}
       {bosituasjonTekst && <CardRow icon={<HouseIcon />}>{bosituasjonTekst}</CardRow>}
       <CardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
-        {capitalize(funksjonsnedsettelser.join(', '))}
+        {storForbokstavIAlleOrd(funksjonsnedsettelser.join(', '))}
       </CardRow>
     </Card>
   )

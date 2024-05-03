@@ -3,7 +3,7 @@ import React from 'react'
 import { Alert } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../../utils/dato'
-import { capitalize } from '../../../../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../../../../utils/formater'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
@@ -16,7 +16,7 @@ export function TotrinnskontrollLesevisning() {
   return (
     <>
       <Etikett>Vurdering</Etikett>
-      <Brødtekst>{capitalize(sak?.data.totrinnskontroll?.resultat)}</Brødtekst>
+      <Brødtekst>{storForbokstavIAlleOrd(sak?.data.totrinnskontroll?.resultat)}</Brødtekst>
 
       {sak?.data.totrinnskontroll?.begrunnelse && (
         <>

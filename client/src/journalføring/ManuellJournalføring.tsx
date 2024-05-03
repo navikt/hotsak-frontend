@@ -8,7 +8,7 @@ import { Avstand } from '../felleskomponenter/Avstand'
 import { Feilmelding } from '../felleskomponenter/Feilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { usePersonInfo } from '../personoversikt/usePersonInfo'
+import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { useInnloggetSaksbehandler } from '../state/authentication'
@@ -24,7 +24,7 @@ export function ManuellJournalføring() {
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
-  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePersonInfo(fodselsnummer)
+  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
 
   const journalpostTildeltSaksbehandler =
     journalpost?.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER &&

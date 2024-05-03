@@ -5,7 +5,7 @@ import { Alert, Button, HelpText, HStack, Loader } from '@navikt/ds-react'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { formaterDato } from '../../../../utils/dato'
-import { capitalize, formaterBeløp } from '../../../../utils/stringFormating'
+import { storForbokstavIAlleOrd, formaterBeløp } from '../../../../utils/formater'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
@@ -55,7 +55,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
       <Dokumenter dokumenter={dokumenter} />
       <Avstand paddingTop={10} paddingLeft={2}>
         <Etikett>Målform</Etikett>
-        <Brødtekst>{capitalize(vilkårsgrunnlag?.målform)}</Brødtekst>
+        <Brødtekst>{storForbokstavIAlleOrd(vilkårsgrunnlag?.målform)}</Brødtekst>
 
         <>
           <Avstand paddingTop={10}>
@@ -135,7 +135,9 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
                 Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
               </HelpText>
             </HStack>
-            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.kjøptBrille?.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
+            <Brødtekst>
+              {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.kjøptBrille?.vilkårOppfylt).replace('_', ' ')}
+            </Brødtekst>
           </Avstand>
 
           <Avstand paddingTop={10}>
@@ -154,7 +156,9 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
               <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
             </HStack>
-            <Brødtekst>{capitalize(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
+            <Brødtekst>
+              {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}
+            </Brødtekst>
             {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
               <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
             )}
@@ -168,7 +172,7 @@ export const RegistrerSøknadLesevisning: React.FC = () => {
               </HelpText>
             </HStack>
             <Brødtekst>
-              {capitalize(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt).replace('_', ' ')}
+              {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt).replace('_', ' ')}
             </Brødtekst>
             {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
               <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>

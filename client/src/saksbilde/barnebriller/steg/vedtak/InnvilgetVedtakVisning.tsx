@@ -1,7 +1,3 @@
-
-
-import { capitalizeName } from '../../../../utils/stringFormating'
-
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { Etikett } from '../../../../felleskomponenter/typografi'
@@ -9,14 +5,13 @@ import { Barnebrillesak } from '../../../../types/types.internal'
 import { UtbetalingsmottakerVisning } from './Utbetalingsmottaker'
 import { VENSTREKOLONNE_BREDDE } from './Vedtak'
 
-interface InnvilgetVedtakVisningProps {
+export interface InnvilgetVedtakVisningProps {
   sak: Barnebrillesak
   mutate: (...args: any[]) => any
 }
 
-export const InnvilgetVedtakVisning: React.FC<InnvilgetVedtakVisningProps> = (props) => {
+export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
   const { sak, mutate } = props
-
   const { vilkårsvurdering } = sak
   return (
     <>

@@ -1,4 +1,4 @@
-import { capitalize } from '../../../../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../../../../utils/formater'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
@@ -8,7 +8,7 @@ export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakId: number 
   return (
     <Avstand paddingTop={6}>
       <Etikett>Er vilkåret oppfylt?</Etikett>
-      <Brødtekst>{capitalize(vilkår.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
+      <Brødtekst>{storForbokstavIAlleOrd(vilkår.vilkårOppfylt).replace('_', ' ')}</Brødtekst>
       {vilkår.manuellVurdering?.begrunnelse && (
         <Avstand paddingTop={6}>
           <Etikett>Begrunnelse</Etikett>

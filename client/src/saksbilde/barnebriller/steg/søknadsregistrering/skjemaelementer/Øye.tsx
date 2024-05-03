@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Select } from '@navikt/ds-react'
 
-import { capitalize } from '../../../../../utils/stringFormating'
+import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../../utils/formater'
 
 import { Brilleseddel } from '../../../../../types/types.internal'
 import { MAX_SFÆRE, MAX_SYLINDER } from '../../../config'
@@ -37,7 +37,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
           }}
           render={({ field }) => (
             <Select
-              label={`${capitalize(type)} sfære (SPH)`}
+              label={`${storForbokstavIOrd(type)} sfære (SPH)`}
               size="small"
               error={errors.brilleseddel?.[`${type}Sfære`]?.message}
               {...field}
@@ -67,7 +67,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
           }}
           render={({ field }) => (
             <Select
-              label={`${capitalize(type)} cylinder (CYL)`}
+              label={`${storForbokstavIAlleOrd(type)} cylinder (CYL)`}
               size="small"
               error={errors.brilleseddel?.[`${type}Sylinder`]?.message}
               {...field}

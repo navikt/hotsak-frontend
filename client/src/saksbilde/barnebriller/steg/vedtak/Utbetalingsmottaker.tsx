@@ -7,17 +7,16 @@ import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { post } from '../../../../io/http'
 import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
 import { VENSTREKOLONNE_BREDDE } from './Vedtak'
-import { capitalizeName, formaterKontonummer } from '../../../../utils/stringFormating'
+import { formaterKontonummer, formaterNavn } from '../../../../utils/formater'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { log } from 'console'
 
-interface UtbetalingsmottakerProps {
+export interface UtbetalingsmottakerVisningProps {
   sakId: string
   utbetalingsmottaker?: Utbetalingsmottaker
   mutate: (...args: any[]) => any
 }
 
-export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (props) => {
+export function UtbetalingsmottakerVisning(props: UtbetalingsmottakerVisningProps) {
   const { setStep } = useManuellSaksbehandlingContext()
   const [lagrerUtbetalingsmottaker, setLagrerUtbetalingsmottaker] = useState(false)
 
@@ -49,7 +48,7 @@ export const UtbetalingsmottakerVisning: React.FC<UtbetalingsmottakerProps> = (p
       <Rad>
         <Kolonne $width={VENSTREKOLONNE_BREDDE}>Utbetales til:</Kolonne>
         <Kolonne>
-          <Etikett>{capitalizeName(`${utbetalingsmottaker?.navn}`) || '-'}</Etikett>
+          <Etikett>{formaterNavn(`${utbetalingsmottaker?.navn}`) || '-'}</Etikett>
         </Kolonne>
       </Rad>
       <Rad>

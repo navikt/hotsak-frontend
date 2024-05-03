@@ -10,7 +10,7 @@ import {
   OppgaveV2,
   SakerFilter,
 } from '../../types/types.internal'
-import { formatName } from '../../utils/stringFormating'
+import { formaterNavn } from '../../utils/formater'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
 import { addWeeks } from 'date-fns'
@@ -48,11 +48,11 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
           opprettet: now.toISOString(),
           bruker: {
             fnr: journalpost.innsender.fnr,
-            fulltNavn: formatName(journalpost.innsender.navn),
+            fulltNavn: formaterNavn(journalpost.innsender.navn),
           },
           innsender: {
             fnr: journalpost.innsender.fnr,
-            fulltNavn: formatName(journalpost.innsender.navn),
+            fulltNavn: formaterNavn(journalpost.innsender.navn),
           },
         }
       })

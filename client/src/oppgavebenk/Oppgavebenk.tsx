@@ -4,14 +4,14 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { capitalize, capitalizeName, formaterFødselsnummer } from '../utils/stringFormating'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgaveV2, OppgavestatusLabel, Oppgavetype } from '../types/types.internal'
+import { OppgavestatusLabel, Oppgavetype, OppgaveV2 } from '../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
@@ -69,13 +69,15 @@ export function Oppgavebenk() {
       key: 'TYPE',
       name: 'Type',
       width: 134,
-      render: (oppgave: OppgaveV2) => <TekstCell value={capitalize(oppgave.oppgavetype)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={storForbokstavIAlleOrd(oppgave.oppgavetype)} />,
     },
     {
       key: 'FUNKSJONSNEDSETTELSE',
       name: 'Område',
       width: 152,
-      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={18} value={capitalize(oppgave.område.join(', '))} />,
+      render: (oppgave: OppgaveV2) => (
+        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.område.join(', '))} />
+      ),
     },
     {
       key: 'SØKNAD_OM',
@@ -84,7 +86,9 @@ export function Oppgavebenk() {
       render: (oppgave: OppgaveV2) => (
         <EllipsisCell
           minLength={20}
-          value={capitalize(oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim())}
+          value={storForbokstavIAlleOrd(
+            oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+          )}
         />
       ),
     },
@@ -93,7 +97,7 @@ export function Oppgavebenk() {
       name: 'Bruker',
       width: 188,
       render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={20} value={capitalizeName(oppgave.bruker.fulltNavn || '-')} />
+        <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker.fulltNavn || '-')} />
       ),
     },
     {

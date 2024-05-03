@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { Button, TextField } from '@navikt/ds-react'
 
 import { IKKE_FUNNET } from '../../../../io/http'
-import { formaterKontonummer } from '../../../../utils/stringFormating'
+import { formaterKontonummer } from '../../../../utils/formater'
 
 import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'

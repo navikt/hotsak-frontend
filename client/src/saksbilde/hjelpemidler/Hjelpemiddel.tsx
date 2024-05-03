@@ -6,7 +6,7 @@ import { ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-ic
 import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
-import { capitalize } from '../../utils/stringFormating'
+import { storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
@@ -193,7 +193,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                   return (
                     <React.Fragment key={tilleggsinfo.tittel}>
                       <Rad>
-                        <Etikett>{`${capitalize(tilleggsinfo.tittel)}:`}</Etikett>
+                        <Etikett>{`${storForbokstavIAlleOrd(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
                       <Rad>
                         <Kolonne $width="700px">

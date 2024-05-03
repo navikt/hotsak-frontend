@@ -1,4 +1,4 @@
-import { compareAsc, format, parseISO, setDefaultOptions, toDate } from 'date-fns'
+import { compareAsc, differenceInYears, format, parseISO, setDefaultOptions, toDate } from 'date-fns'
 import { nb } from 'date-fns/locale'
 
 setDefaultOptions({ locale: nb })
@@ -19,4 +19,8 @@ export function tilDato(verdi?: Date | number | string): Date | undefined {
 
 export function sorterKronologisk(a: string, b: string): number {
   return compareAsc(parseISO(a), parseISO(b))
+}
+
+export function beregnAlder(fødselsdato: Date | number | string) {
+  return differenceInYears(new Date(), fødselsdato)
 }

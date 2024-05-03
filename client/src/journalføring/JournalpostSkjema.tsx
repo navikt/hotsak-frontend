@@ -12,14 +12,14 @@ import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { Kolonner } from '../felleskomponenter/Kolonner'
 import { Toast } from '../felleskomponenter/Toast'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { usePersonInfo } from '../personoversikt/usePersonInfo'
+import { usePerson } from '../personoversikt/usePerson'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
-import { formaterNavn } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
 import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
+import { formaterNavn } from '../utils/formater'
 
 export function JournalpostSkjema() {
   const navigate = useNavigate()
@@ -28,7 +28,7 @@ export function JournalpostSkjema() {
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
-  const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
+  const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const { saksoversikt } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   const [journalfører, setJournalfører] = useState(false)
@@ -83,7 +83,7 @@ export function JournalpostSkjema() {
               <ExpansionCard.Title as="h3" size="small">
                 <HStack align="center" gap="1">
                   <PersonEnvelopeIcon />
-                  {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
+                  {`${formaterNavn(personInfo?.navn)} | ${personInfo?.fnr}`}
                 </HStack>
               </ExpansionCard.Title>
             </ExpansionCard.Header>

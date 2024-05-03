@@ -3,28 +3,14 @@ import styled from 'styled-components'
 
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
-import { HistorikkIkon } from '../../felleskomponenter/ikoner/HistorikkIkon'
-import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { ClockDashedIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
-export const KolonneOppsett = styled.ul`
-  margin: 0;
-  flex: 1;
-  flex-shrink: 0;
-  padding: 0 24px;
-  box-sizing: border-box;
-`
-
-export const KolonneTittel = styled.li`
-  margin-top: 16px;
-  font-size: 14px;
-`
-
-export const Høyrekolonne: React.FC = () => {
+export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK.toString())
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading } = useHjelpemiddeloversikt(
@@ -47,14 +33,14 @@ export const Høyrekolonne: React.FC = () => {
       >
         <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
           <Tooltip content="Historikk">
-            <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<HistorikkIkon width={20} height={20} />} />
+            <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockDashedIcon title="Sakshistorikk" />} />
           </Tooltip>
           <Tooltip content="Utlånsoversikt">
             <Tabs.Tab
               value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
               icon={
                 <>
-                  <RullestolIkon width={20} height={20} title="Utlånsoversikt" />
+                  <WheelchairIcon title="Utlånsoversikt" />
                   {!isLoading && !isError && (
                     <Tag variant="alt3-moderate" size="small">
                       {antallUtlånteHjelpemidler}
@@ -75,3 +61,16 @@ export const Høyrekolonne: React.FC = () => {
     </aside>
   )
 }
+
+export const KolonneOppsett = styled.ul`
+  margin: 0;
+  flex: 1;
+  flex-shrink: 0;
+  padding: 0 24px;
+  box-sizing: border-box;
+`
+
+export const KolonneTittel = styled.li`
+  margin-top: 16px;
+  font-size: 14px;
+`

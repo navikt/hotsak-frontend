@@ -1,24 +1,30 @@
 import React from 'react'
-import styled from 'styled-components'
 
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, Tooltip } from '@navikt/ds-react'
 
-import { capitalize, capitalizeName } from '../../utils/stringFormating'
+import { capitalize, capitalizeName, formaterAdresse } from '../../utils/stringFormating'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Liste } from '../../felleskomponenter/Liste'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Bosituasjon, Bruksarena, Formidler, Levering, Personinfo, PersonInfoKilde } from '../../types/types.internal'
+import {
+  Bosituasjon,
+  Bruksarena,
+  Formidler,
+  Levering,
+  PersonInfoKilde,
+  Personinformasjon,
+} from '../../types/types.internal'
 import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
 import { useOebsAdresser } from '../../personoversikt/useOebsAdresser'
+import { PersonIcon } from '@navikt/aksel-icons'
 
 export interface BrukerProps {
-  person: Personinfo
+  person: Personinformasjon
   levering: Levering
   formidler: Formidler
   visOebsAdresser: boolean
@@ -27,14 +33,16 @@ export interface BrukerProps {
 export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerProps) {
   const { adresser } = useOebsAdresser(visOebsAdresser, person.fnr)
   const formatertNavn = formaterNavn(person)
-  const adresse = `${capitalize(person.adresse)}, ${person.postnummer} ${capitalize(person.poststed)}`
+  const adresseBruker = formaterAdresse(person)
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
 
   return (
     <>
-      <Heading level="1" size="medium" spacing={false}>
-        <TittelIkon width={22} height={22} />
-        Hjelpemiddelbruker
+      <Heading level="1" size="medium">
+        <HStack align="center" gap="1">
+          <PersonIcon />
+          Hjelpemiddelbruker
+        </HStack>
       </Heading>
       <Box paddingBlock="4 8">
         <HGrid {...hGridProps}>
@@ -43,7 +51,7 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
           <Etikett>Fødselsnummer</Etikett>
           <Tekst>{person.fnr}</Tekst>
           <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
-          <Tekst>{adresse}</Tekst>
+          <Tekst>{adresseBruker}</Tekst>
           <Etikett>Telefon</Etikett>
           <Tekst>{person.telefon}</Tekst>
           {bosituasjon && (
@@ -59,7 +67,7 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
             </>
           )}
           <Etikett>Funksjonsnedsettelse</Etikett>
-          <Tekst>{capitalize(person.funksjonsnedsettelse.join(', '))}</Tekst>
+          <Tekst>{capitalize(person.funksjonsnedsettelser.join(', '))}</Tekst>
         </HGrid>
       </Box>
       <Strek />
@@ -70,10 +78,10 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
             Adresser fra OEBS
           </Heading>
           <Box paddingBlock="4 8">
-            {adresser.map((adresse) => (
-              <HGrid key={adresse.leveringAddresse} {...hGridProps}>
+            {adresser.map(({ leveringsadresse }) => (
+              <HGrid key={leveringsadresse.adresse} {...hGridProps}>
                 <Etikett>Leveringsadresse</Etikett>
-                {`${adresse.leveringAddresse}, ${adresse.leveringPostnr} ${adresse.leveringBy}`}
+                {formaterAdresse(leveringsadresse)}
               </HGrid>
             ))}
           </Box>
@@ -85,9 +93,9 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
         Utlevering
       </Heading>
       <Box paddingBlock="4 8">
-        <HGrid {...hGridProps} align="center">
+        <HGrid {...hGridProps}>
           <Etikett>Leveringsadresse</Etikett>
-          <Leveringsmåte levering={levering} brukerAdresse={adresse} />
+          <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
           <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
           {levering.merknad && (
             <>
@@ -131,11 +139,7 @@ const hGridProps: Partial<HGridProps> = {
   gap: '05',
 }
 
-const TittelIkon = styled(Personikon)`
-  padding-right: 0.5rem;
-`
-
-function formaterNavn(person: Personinfo) {
+function formaterNavn(person: Personinformasjon) {
   return capitalizeName(`${person.fornavn} ${person.mellomnavn ? `${person.mellomnavn}` : ''} ${person.etternavn}`)
 }
 

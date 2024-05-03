@@ -1,14 +1,9 @@
 import React from 'react'
-
-import { IconContainer } from '../../felleskomponenter/IconContainer'
-import { Advarselikon } from '../../felleskomponenter/ikoner/Advarselikon'
-import { Informasjonikon } from '../../felleskomponenter/ikoner/Informasjonikon'
-import { Sjekkikon } from '../../felleskomponenter/ikoner/Sjekkikon'
-import { Tekst } from '../../felleskomponenter/typografi'
 import { GreitÅViteFaktum, GreitÅViteType } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
-import { HGrid } from '@navikt/ds-react'
+import { CardRow } from './CardRow'
+import { CheckmarkIcon, ExclamationmarkTriangleFillIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 
 export interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]
@@ -24,26 +19,28 @@ export function GreitÅViteCard({ greitÅViteFakta, harIngenHjelpemidlerFraFør 
     return (
       <Card>
         <CardTitle level="1" size="medium">
-          GREIT Å VITE
+          Greit å vite
         </CardTitle>
-        <HGrid gap="05" columns="1.25rem auto" style={{ columnGap: 'var(--a-spacing-3)' }}>
-          {fakta
-            .sort((a, b) => {
-              if (a.type === b.type) {
-                if (a.beskrivelse < b.beskrivelse) return -1
-                if (a.beskrivelse > b.beskrivelse) return 1
-                return 0
-              }
-              if (a.type === GreitÅViteType.ADVARSEL) return -1
-              if (b.type === GreitÅViteType.ADVARSEL) return 1
-              if (a.type === GreitÅViteType.MERKNAD) return -1
-              if (b.type === GreitÅViteType.MERKNAD) return 1
+        {fakta
+          .sort((a, b) => {
+            if (a.type === b.type) {
+              if (a.beskrivelse < b.beskrivelse) return -1
+              if (a.beskrivelse > b.beskrivelse) return 1
               return 0
-            })
-            .map((faktum) => {
-              return <Rad key={faktum.beskrivelse} type={faktum.type} beskrivelse={faktum.beskrivelse} />
-            })}
-        </HGrid>
+            }
+            if (a.type === GreitÅViteType.ADVARSEL) return -1
+            if (b.type === GreitÅViteType.ADVARSEL) return 1
+            if (a.type === GreitÅViteType.MERKNAD) return -1
+            if (b.type === GreitÅViteType.MERKNAD) return 1
+            return 0
+          })
+          .map((faktum) => {
+            return (
+              <CardRow key={faktum.beskrivelse} icon={ikon(faktum.type)} columns="1.25rem auto">
+                {faktum.beskrivelse}
+              </CardRow>
+            )
+          })}
       </Card>
     )
   } else {
@@ -54,19 +51,10 @@ export function GreitÅViteCard({ greitÅViteFakta, harIngenHjelpemidlerFraFør 
 function ikon(faktumType: GreitÅViteType) {
   switch (faktumType) {
     case GreitÅViteType.ADVARSEL:
-      return <Advarselikon />
+      return <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" />
     case GreitÅViteType.INFO:
-      return <Sjekkikon />
+      return <CheckmarkIcon />
     case GreitÅViteType.MERKNAD:
-      return <Informasjonikon />
+      return <InformationSquareIcon />
   }
-}
-
-function Rad({ type, beskrivelse }: GreitÅViteFaktum) {
-  return (
-    <>
-      <IconContainer>{ikon(type)}</IconContainer>
-      <Tekst>{beskrivelse}</Tekst>
-    </>
-  )
 }

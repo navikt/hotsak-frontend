@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
+import { ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
 import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -10,7 +10,6 @@ import { capitalize } from '../../utils/stringFormating'
 
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
-import { PersonikonFilled } from '../../felleskomponenter/ikoner/PersonikonFilled'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
   EndreHjelpemiddelRequest,
@@ -173,7 +172,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           {hjelpemiddel.endretHjelpemiddel && (
             <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>
               <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
-                <PersonikonFilled width={22} height={22} />
+                <PersonFillIcon />
               </div>
               <div>
                 <Rad>

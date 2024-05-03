@@ -1,4 +1,4 @@
-import type { Navn } from '../types/types.internal'
+import type { Adresse, Navn } from '../types/types.internal'
 import { isNavn, isNumber, isString } from './type'
 
 const beløpFormatter = new Intl.NumberFormat('nb', {
@@ -6,11 +6,11 @@ const beløpFormatter = new Intl.NumberFormat('nb', {
   maximumFractionDigits: 2,
 })
 
-function capitalizeMedSkilletegn(value: string, skilletegn: string): string {
+function capitalizeMedSkilletegn(value: string, separator: string): string {
   return value
-    .split(skilletegn)
-    .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
-    .join(skilletegn)
+    .split(separator)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(separator)
 }
 
 export function capitalize(value?: string): string {
@@ -41,7 +41,6 @@ export function formatName(navn: string | Navn): string {
 
 export function formaterTelefonnummer(telefon: string): string {
   const siffer = telefon.split('')
-
   return `${siffer.slice(0, 2).join('')} ${siffer.slice(2, 4).join('')} ${siffer.slice(4, 6).join('')} ${siffer
     .slice(6, siffer.length)
     .join('')}`
@@ -60,4 +59,10 @@ export function formaterBeløp(verdi?: number | string): string {
     if (value.endsWith(',00')) value = value.substring(0, value.length - 3)
     return value
   }
+}
+
+export function formaterAdresse(verdi?: Adresse): string {
+  if (!verdi) return ''
+  const { adresse, postnummer, poststed } = verdi
+  return `${capitalize(adresse)}, ${postnummer} ${capitalize(poststed)}`
 }

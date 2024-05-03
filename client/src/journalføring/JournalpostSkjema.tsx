@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
-import { Button, ExpansionCard, Heading, TextField } from '@navikt/ds-react'
+import { Button, ExpansionCard, Heading, HStack, TextField } from '@navikt/ds-react'
 
 import { postJournalføring } from '../io/http'
 
@@ -11,7 +11,6 @@ import { Avstand } from '../felleskomponenter/Avstand'
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { Kolonner } from '../felleskomponenter/Kolonner'
 import { Toast } from '../felleskomponenter/Toast'
-import { IconContainer } from '../felleskomponenter/ikoner/Ikon'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePersonInfo } from '../personoversikt/usePersonInfo'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
@@ -30,11 +29,7 @@ export function JournalpostSkjema() {
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePersonInfo(fodselsnummer)
-  const {
-    saksoversikt,
-    // isLoading: henterSaker,
-    //isError,
-  } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
+  const { saksoversikt } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
   const [journalfører, setJournalfører] = useState(false)
 
@@ -49,11 +44,9 @@ export function JournalpostSkjema() {
     postJournalføring(journalføringRequest)
       .then((opprettetSakResponse: any) => {
         const opprettetSakID = opprettetSakResponse.data.sakId
-
         if (!opprettetSakID) {
           throw new Error('Klarte ikke å opprette sak')
         }
-
         navigate(`/sak/${opprettetSakID}`)
       })
       .catch(() => setJournalfører(false))
@@ -88,10 +81,10 @@ export function JournalpostSkjema() {
           <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
             <ExpansionCard.Header>
               <ExpansionCard.Title as="h3" size="small">
-                <IconContainer>
+                <HStack align="center" gap="1">
                   <PersonEnvelopeIcon />
-                </IconContainer>
-                {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
+                  {`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}
+                </HStack>
               </ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>

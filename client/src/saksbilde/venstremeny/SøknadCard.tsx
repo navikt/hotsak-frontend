@@ -1,90 +1,62 @@
 import React from 'react'
 
-import { HStack } from '@navikt/ds-react'
+import { BodyShort } from '@navikt/ds-react'
 
-import { formaterDato } from '../../utils/date'
+import { norskTimestamp } from '../../utils/date'
 import { capitalize } from '../../utils/stringFormating'
-
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
-import { HjemIkon } from '../../felleskomponenter/ikoner/HjemIkon'
-import { KalenderIkon } from '../../felleskomponenter/ikoner/KalenderIkon'
-import { MappeIkon } from '../../felleskomponenter/ikoner/MappeIkon'
-import { RullestolIkon } from '../../felleskomponenter/ikoner/RullestolIkon'
-import { Tekst } from '../../felleskomponenter/typografi'
 import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
+import { CardRow } from './CardRow'
+import { CalendarIcon, FolderIcon, HouseIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 export interface SøknadCardProps {
+  sakId: number | string
   sakstype: Sakstype
   søknadGjelder: string
-  saksnr: number | string
   mottattDato: string
   bruksarena: Bruksarena | null
-  funksjonsnedsettelse: string[]
+  funksjonsnedsettelser: string[]
   bosituasjon: Bosituasjon | null
 }
 
 export function SøknadCard({
   sakstype,
-  saksnr,
+  sakId,
   mottattDato,
   bruksarena,
-  funksjonsnedsettelse,
+  funksjonsnedsettelser,
   bosituasjon,
 }: SøknadCardProps) {
-  const bosituasjonTekst = getTekstForBosituasjon(bosituasjon)
+  const bruksarenaTekst = bruksarena && bruksarena !== Bruksarena.UKJENT ? capitalize(bruksarena) : ''
+  const bosituasjonTekst = lagBosituasjonTekst(bosituasjon)
 
   return (
     <Card>
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <Oppgaveetikett type={sakstype} />
-        </IconContainer>
+      <CardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
         <CardTitle level="1" size="medium">
-          {sakstype === Sakstype.BESTILLING ? 'BESTILLINGSORDNINGEN' : 'SØKNAD OM HJELPEMIDLER'}
+          {sakstype === Sakstype.BESTILLING ? 'Bestillingsordningen' : 'Søknad om hjelpemidler'}
         </CardTitle>
-      </HStack>
-      <Avstand paddingBottom={2} />
-      <HStack align="center" gap="2" wrap={false}>
-        <Ikonplaceholder />
-        <Tekst data-tip="Saksnummer" data-for="sak">{`Sak: ${saksnr}`}</Tekst>
-      </HStack>
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <KalenderIkon />
-        </IconContainer>
-        <Tekst>Mottatt: {formaterDato(mottattDato)}</Tekst>
-      </HStack>
-      {bruksarena && bruksarena !== Bruksarena.UKJENT && (
-        <HStack align="center" gap="2" wrap={false}>
-          <IconContainer>
-            <MappeIkon />
-          </IconContainer>
-          <Tekst>{capitalize(bruksarena)}</Tekst>
-        </HStack>
-      )}
-      {bosituasjonTekst && (
-        <HStack align="center" gap="2" wrap={false}>
-          <IconContainer>
-            <HjemIkon />
-          </IconContainer>
-          <Tekst>{bosituasjonTekst}</Tekst>
-        </HStack>
-      )}
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <RullestolIkon title="Funksjonsnedsettelse" />
-        </IconContainer>
-        <Tekst>{capitalize(funksjonsnedsettelse.join(', '))}</Tekst>
-      </HStack>
+      </CardRow>
+      <BodyShort
+        data-tip="Saksnummer"
+        data-for="sak"
+        size="small"
+        textColor="subtle"
+        spacing
+      >{`Sak: ${sakId}`}</BodyShort>
+      <CardRow icon={<CalendarIcon />}>Mottatt: {norskTimestamp(mottattDato)}</CardRow>
+      {bruksarenaTekst && <CardRow icon={<FolderIcon />}>{bruksarenaTekst}</CardRow>}
+      {bosituasjonTekst && <CardRow icon={<HouseIcon />}>{bosituasjonTekst}</CardRow>}
+      <CardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
+        {capitalize(funksjonsnedsettelser.join(', '))}
+      </CardRow>
     </Card>
   )
 }
 
-function getTekstForBosituasjon(bosituasjon: Bosituasjon | null) {
+function lagBosituasjonTekst(bosituasjon: Bosituasjon | null) {
   switch (bosituasjon) {
     case null:
       return null

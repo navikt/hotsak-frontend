@@ -1,16 +1,11 @@
 import React from 'react'
 
-import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
-
 import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
-
-import { IconContainer, Ikonplaceholder } from '../../felleskomponenter/IconContainer'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
-import { TelefonIkon } from '../../felleskomponenter/ikoner/TelefonIkon'
-import { Tekst } from '../../felleskomponenter/typografi'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import type { Navn } from '../../types/types.internal'
+import { CardRow } from './CardRow'
+import { BriefcaseIcon, PersonIcon, PhoneIcon } from '@navikt/aksel-icons'
 
 export interface FormidlerCardProps {
   tittel: string
@@ -20,45 +15,24 @@ export interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
+// tooltip / title -> Kopier formidler navn
+// tooltip / title -> Kopier formidler stilling
+// tooltip / title -> Kopier telefonnummer
+
 export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
   return (
     <Card>
       <CardTitle level="1" size="medium">
         {tittel}
       </CardTitle>
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <Personikon />
-        </IconContainer>
-        <HStack align="center">
-          <Tekst>{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</Tekst>
-          <Tooltip content="Kopier formidler navn" placement="right">
-            <CopyButton title="Kopier formidler navn" size="small" copyText={formatName(formidlerNavn)} />
-          </Tooltip>
-        </HStack>
-      </HStack>
-
-      <HStack align="center" gap="2">
-        <Ikonplaceholder />
-        <HStack align="center">
-          <Tekst>{`${capitalize(stilling)}`}</Tekst>
-          <Tooltip content="Kopier formidler stilling" placement="right">
-            <CopyButton title="Kopier formidler stilling" size="small" copyText={stilling} />
-          </Tooltip>
-        </HStack>
-      </HStack>
-
-      <HStack align="center" gap="2" wrap={false}>
-        <IconContainer>
-          <TelefonIkon />
-        </IconContainer>
-        <HStack align="center">
-          <Tekst>{formidlerTelefon}</Tekst>
-          <Tooltip content="Kopier telefonnummer" placement="right">
-            <CopyButton title="Kopier telefonnummer" size="small" copyText={formidlerTelefon} />
-          </Tooltip>
-        </HStack>
-      </HStack>
+      <CardRow
+        icon={<PersonIcon />}
+        copyText={formatName(formidlerNavn)}
+      >{`${capitalizeName(formidlerNavn)} - ${capitalize(kommune)}`}</CardRow>
+      <CardRow icon={<BriefcaseIcon />} copyText={stilling}>{`${capitalize(stilling)}`}</CardRow>
+      <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon}>
+        {formidlerTelefon}
+      </CardRow>
     </Card>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 
@@ -21,11 +21,18 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
+import { UtleveringCard } from './venstremeny/UtleveringCard'
+import { formaterAdresse } from '../utils/stringFormating'
 
-const SaksbildeContent: React.FC = React.memo(() => {
+const SaksbildeContent = React.memo(() => {
   const { sak, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
+
+  const visOebsAdresser = useMemo(
+    () => !!sak && sak.data.greitÅViteFaktum.some((fakta) => fakta.beskrivelse === 'Ulike adresser i søknaden og OEBS'),
+    [sak]
+  )
 
   if (isError) {
     showBoundary(isError)
@@ -47,20 +54,25 @@ const SaksbildeContent: React.FC = React.memo(() => {
           <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
             <Venstremeny>
               <SøknadCard
+                sakId={sak.data.sakId}
                 sakstype={sak.data.sakstype}
                 søknadGjelder={sak.data.søknadGjelder}
-                saksnr={sak.data.sakId}
                 mottattDato={sak.data.mottattDato}
                 bosituasjon={sak.data.personinformasjon.bosituasjon}
                 bruksarena={sak.data.personinformasjon.bruksarena}
-                funksjonsnedsettelse={sak.data.personinformasjon.funksjonsnedsettelse}
+                funksjonsnedsettelser={sak.data.personinformasjon.funksjonsnedsettelser}
               />
               <FormidlerCard
-                tittel={erBestilling ? 'BESTILLER' : 'FORMIDLER'}
+                tittel={erBestilling ? 'Bestiller' : 'Formidler'}
                 stilling={sak.data.formidler.stilling}
                 formidlerNavn={sak.data.formidler.navn}
                 formidlerTelefon={sak.data.formidler.telefon}
                 kommune={sak.data.formidler.poststed}
+              />
+              <UtleveringCard
+                formidler={sak.data.formidler}
+                levering={sak.data.levering}
+                adresseBruker={formaterAdresse(sak.data.personinformasjon)}
               />
               <GreitÅViteCard
                 greitÅViteFakta={sak.data.greitÅViteFaktum}
@@ -90,10 +102,7 @@ const SaksbildeContent: React.FC = React.memo(() => {
                       person={sak.data.personinformasjon}
                       levering={sak.data.levering}
                       formidler={sak.data.formidler}
-                      visOebsAdresser={sak.data.greitÅViteFaktum.some(
-                        (fakta) =>
-                          fakta.beskrivelse === 'Det er ikke samsvar mellom adresse i Persondataløsningen i NAV og OeBS'
-                      )}
+                      visOebsAdresser={visOebsAdresser}
                     />
                   }
                 />

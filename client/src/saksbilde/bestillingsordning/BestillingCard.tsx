@@ -145,7 +145,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
     return (
       <Card>
         <CardTitle level="1" size="medium">
-          SAKSBEHANDLER
+          Saksbehandler
         </CardTitle>
         <Tekst>Bestillingen er tildelt saksbehandler {capitalizeName(bestilling.saksbehandler?.navn || '')}</Tekst>
         <Knappepanel>

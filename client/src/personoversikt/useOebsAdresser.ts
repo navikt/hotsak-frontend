@@ -1,13 +1,11 @@
 import useSwr from 'swr'
 import { hentBrukerdataMedPost } from '../io/http'
+import type { Adresse } from '../types/types.internal'
 
 export interface OebsAdresse {
-  brukerNr: string
-  leveringAddresse: string
-  leveringKommune: string
-  leveringPostnr: string
-  leveringBy: string
-  primærAdr: boolean
+  brukernummer: string
+  leveringsadresse: Adresse
+  primæradresse: string
   bydel?: string
 }
 

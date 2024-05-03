@@ -25,7 +25,7 @@ export interface Sak extends HarSakskjerne {
   formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
-  personinformasjon: Personinfo
+  personinformasjon: Personinformasjon
   innsender: Innsender
   bruker: Bruker
   levering: Levering
@@ -253,6 +253,13 @@ export interface AdressebeskyttelseOgSkjerming {
   skjermet: boolean
 }
 
+export interface Adresse {
+  adresse: string
+  postnummer: string
+  poststed: string
+  kommunenummer: string
+}
+
 export interface Innsender {
   fnr: string
   navn: string | Navn
@@ -385,7 +392,7 @@ export interface Oppfølgingsansvarlig {
 }
 
 export interface Levering {
-  kontaktperson?: KontaktPerson
+  kontaktperson?: Kontaktperson
   leveringsmåte: Leveringsmåte
   adresse?: string
   merknad?: string
@@ -398,13 +405,13 @@ export enum Leveringsmåte {
   ALLEREDE_LEVERT = 'ALLEREDE_LEVERT',
 }
 
-export interface KontaktPerson {
+export interface Kontaktperson {
   navn: string
   telefon: string
-  kontaktpersonType: KontaktPersonType
+  kontaktpersonType: KontaktpersonType
 }
 
-export enum KontaktPersonType {
+export enum KontaktpersonType {
   HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
   HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
   ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
@@ -735,7 +742,7 @@ export enum Kjønn {
   UKJENT = 'UKJENT',
 }
 
-export interface Personinfo {
+export interface Personinformasjon extends Adresse {
   fnr: string
   brukernummer?: string
   fornavn: string
@@ -743,16 +750,12 @@ export interface Personinfo {
   etternavn: string
   fødselsdato: string | undefined
   kjønn: Kjønn
-  adresse: string
   kilde: PersonInfoKilde
   signaturtype: SignaturType
   telefon: string
   funksjonsnedsettelser: string[]
-  funksjonsnedsettelse: string[]
   bruksarena: Bruksarena | null
   bosituasjon: Bosituasjon | null
-  postnummer: string
-  poststed: string
   gtNummer: string
   gtType: string
   egenAnsatt: boolean

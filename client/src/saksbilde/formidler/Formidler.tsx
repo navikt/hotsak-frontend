@@ -1,14 +1,12 @@
-import styled from 'styled-components'
-
-import { Box, Heading, HGrid, HGridProps } from '@navikt/ds-react'
+import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 
 import { capitalize, capitalizeName, formatName } from '../../utils/stringFormating'
 
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
-import { Personikon } from '../../felleskomponenter/ikoner/Personikon'
 import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import type { Formidler as FormidlerType, Oppfølgingsansvarlig } from '../../types/types.internal'
+import { PersonIcon } from '@navikt/aksel-icons'
 
 export interface FormidlerProps {
   formidler: FormidlerType
@@ -61,8 +59,10 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
   return (
     <>
       <Heading level="1" size="medium" spacing={false}>
-        <TittelIkon width={22} height={22} />
-        Formidler og opplæringsansvarlig
+        <HStack align="center" gap="1">
+          <PersonIcon />
+          Formidler og opplæringsansvarlig
+        </HStack>
       </Heading>
       <Box paddingBlock="4 0">
         <Heading level="1" size="small" spacing={false}>
@@ -86,10 +86,6 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
     </>
   )
 }
-
-const TittelIkon = styled(Personikon)`
-  padding-right: 0.5rem;
-`
 
 const hGridProps: Partial<HGridProps> = {
   columns: 'minmax(min-content, 12rem) auto',

@@ -8,13 +8,24 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { formaterFødselsnummer, formaterTelefonnummer, formatName } from '../utils/stringFormating'
 
 import { hotsakTotalMinWidth } from '../GlobalStyles'
-import { KjønnsnøytraltIkon } from '../felleskomponenter/ikoner/KjønnsnøytraltIkon'
-import { Kvinneikon } from '../felleskomponenter/ikoner/Kvinneikon'
-import { Manneikon } from '../felleskomponenter/ikoner/Manneikon'
 import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
 import { differenceInYears } from 'date-fns'
+import { FigureCombinationIcon, FigureInwardIcon, FigureOutwardIcon } from '@navikt/aksel-icons'
+
+export interface PersonlinjeProps {
+  person?: Person | Bruker
+  loading: boolean
+}
+
+export function Personlinje({ person, loading }: PersonlinjeProps) {
+  if (loading) {
+    return <LasterPersonlinje />
+  } else {
+    return <PersonlinjeContent person={person} loading={loading} />
+  }
+}
 
 const Container = styled.div`
   display: flex;
@@ -30,26 +41,23 @@ const Container = styled.div`
 
   > svg {
     margin-right: 0.5rem;
+    font-size: var(--a-font-size-heading-large);
   }
 `
 
 const Separator = styled.div`
   margin: 0 1rem 0 1rem;
 `
-const Kjønnsikon = ({ kjønn }: { kjønn: Kjønn }) => {
+
+function Kjønnsikon({ kjønn }: { kjønn: Kjønn }) {
   switch (kjønn) {
     case Kjønn.KVINNE:
-      return <Kvinneikon />
+      return <FigureOutwardIcon />
     case Kjønn.MANN:
-      return <Manneikon />
+      return <FigureInwardIcon />
     default:
-      return <KjønnsnøytraltIkon />
+      return <FigureCombinationIcon />
   }
-}
-
-interface PersonlinjeProps {
-  person?: Person | Bruker
-  loading: boolean
 }
 
 const LoadingText = styled.div`
@@ -76,26 +84,28 @@ const LoadingText = styled.div`
   margin: 4px 0;
 `
 
-export const LasterPersonlinje = () => (
-  <Container>
-    <KjønnsnøytraltIkon />
-    <LoadingText />
-    <Separator>|</Separator>
-    <LoadingText />
-    <Separator>|</Separator>
-    <LoadingText />
-    <Separator>|</Separator>
-    <LoadingText />
-    <Separator>|</Separator>
-    <LoadingText />
-  </Container>
-)
+export function LasterPersonlinje() {
+  return (
+    <Container>
+      <FigureCombinationIcon />
+      <LoadingText />
+      <Separator>|</Separator>
+      <LoadingText />
+      <Separator>|</Separator>
+      <LoadingText />
+      <Separator>|</Separator>
+      <LoadingText />
+      <Separator>|</Separator>
+      <LoadingText />
+    </Container>
+  )
+}
 
 function beregnAlder(fødselsdato: string): number {
   return differenceInYears(new Date(), fødselsdato)
 }
 
-export const formaterNavn = (person: Person | Bruker) => {
+export function formaterNavn(person: Person | Bruker) {
   if ((person as Bruker).navn) {
     const { fornavn, mellomnavn, etternavn } = (person as Bruker).navn
     return formatName({ fornavn, mellomnavn, etternavn })
@@ -105,7 +115,7 @@ export const formaterNavn = (person: Person | Bruker) => {
   }
 }
 
-const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }) => {
+function PersonlinjeContent({ person }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -178,12 +188,4 @@ const PersonlinjeContent: React.FC<PersonlinjeProps> = ({ person /*, loading*/ }
       )}
     </Container>
   )
-}
-
-export const Personlinje: React.FC<PersonlinjeProps> = ({ person, loading }) => {
-  if (loading) {
-    return <LasterPersonlinje />
-  } else {
-    return <PersonlinjeContent person={person} loading={loading} />
-  }
 }

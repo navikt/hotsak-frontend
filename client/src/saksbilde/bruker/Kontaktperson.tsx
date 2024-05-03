@@ -1,32 +1,18 @@
 import React from 'react'
 
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Formidler, KontaktPerson, KontaktPersonType } from '../../types/types.internal'
+import { Formidler, Kontaktperson as IKontaktperson, KontaktpersonType } from '../../types/types.internal'
 import { formatName } from '../../utils/stringFormating'
 import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 
 export interface KontaktpersonProps {
-  kontaktperson?: KontaktPerson
   formidler: Formidler
+  kontaktperson?: IKontaktperson
 }
 
-export function Kontaktperson({ kontaktperson, formidler }: KontaktpersonProps) {
+export function Kontaktperson({ formidler, kontaktperson }: KontaktpersonProps) {
   if (!kontaktperson) return null
-  const { navn, telefon, kontaktpersonType } = kontaktperson
-
-  let kontaktpersonTekst = ''
-  switch (kontaktpersonType) {
-    case KontaktPersonType.HJELPEMIDDELBRUKER:
-      kontaktpersonTekst = 'Hjelpemiddelbruker'
-      break
-    case KontaktPersonType.HJELPEMIDDELFORMIDLER:
-      kontaktpersonTekst = `Formidler (${formatName(formidler.navn)})`
-      break
-    case KontaktPersonType.ANNEN_KONTAKTPERSON:
-      kontaktpersonTekst = `${navn}. Telefon: ${telefon}`
-      break
-  }
-
+  const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
   return (
     <>
       <Etikett>Kontaktperson</Etikett>
@@ -38,4 +24,16 @@ export function Kontaktperson({ kontaktperson, formidler }: KontaktpersonProps) 
       </HStack>
     </>
   )
+}
+
+export function lagKontaktpersonTekst(formidler: Formidler, kontaktperson?: IKontaktperson): string {
+  switch (kontaktperson?.kontaktpersonType) {
+    case KontaktpersonType.HJELPEMIDDELBRUKER:
+      return 'Hjelpemiddelbruker'
+    case KontaktpersonType.HJELPEMIDDELFORMIDLER:
+      return `Formidler (${formatName(formidler.navn)})`
+    case KontaktpersonType.ANNEN_KONTAKTPERSON:
+      return `${kontaktperson.navn}. Telefon: ${kontaktperson.telefon}`
+  }
+  return ''
 }

@@ -19,20 +19,24 @@ export const personHandlers: StoreHandlersFactory = ({ personStore }) => [
     await delay(100)
     const adresser: OebsAdresse[] = [
       {
-        brukerNr: '1',
-        leveringAddresse: 'Gateadresse 1',
-        leveringKommune: 'Kristiansand',
-        leveringPostnr: '4600',
-        leveringBy: 'Kristiansand S',
-        primærAdr: true,
+        brukernummer: '1',
+        leveringsadresse: {
+          adresse: 'Gateadresse 1',
+          postnummer: '4600',
+          poststed: 'Kristiansand S',
+          kommunenummer: 'Kristiansand',
+        },
+        primæradresse: '',
       },
       {
-        brukerNr: '1',
-        leveringAddresse: 'Gateadresse 2',
-        leveringKommune: 'Kristiansand',
-        leveringPostnr: '4601',
-        leveringBy: 'Kristiansand S',
-        primærAdr: false,
+        brukernummer: '1',
+        leveringsadresse: {
+          adresse: 'Gateadresse 2',
+          postnummer: '4601',
+          poststed: 'Kristiansand S',
+          kommunenummer: 'Kristiansand',
+        },
+        primæradresse: '',
       },
     ]
     return HttpResponse.json(adresser)

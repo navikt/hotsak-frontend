@@ -1,8 +1,8 @@
 import { Tabs } from '@navikt/ds-react'
-import { HjemIkon } from '../felleskomponenter/ikoner/HjemIkon'
 import { Sakstype } from '../types/types.internal'
 import { TabLink } from './TabLink'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
+import { HouseIcon } from '@navikt/aksel-icons'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -15,7 +15,7 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
       <SøknadslinjeContainer>
         <Tabs>
           <Tabs.List>
-            <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HjemIkon />}>
+            <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HouseIcon />}>
               Hjelpemidler
             </TabLink>
             <TabLink to={`/sak/${id}/bruker`} title="Bruker">

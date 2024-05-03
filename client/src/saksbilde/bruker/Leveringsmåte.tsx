@@ -5,27 +5,23 @@ import { Levering, Leveringsmåte as LeveringsmåteType } from '../../types/type
 
 export interface LeveringsmåteProps {
   levering: Levering
-  brukerAdresse: string
+  adresseBruker: string
 }
 
-export function Leveringsmåte({ levering, brukerAdresse }: LeveringsmåteProps) {
-  const { adresse, leveringsmåte } = levering
+export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
+  const [leveringsmåteTekst] = lagLeveringsmåteTekst(levering, adresseBruker)
+  return <Tekst>{leveringsmåteTekst}</Tekst>
+}
 
-  let leveringsmåteTekst = ''
+export function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string) {
   switch (leveringsmåte) {
     case LeveringsmåteType.ALLEREDE_LEVERT:
-      leveringsmåteTekst = 'Allerede levert'
-      break
+      return ['Allerede levert', '']
     case LeveringsmåteType.ANNEN_ADRESSE:
-      leveringsmåteTekst = `${adresse} (Annen adresse)`
-      break
+      return [`${adresse} (Annen adresse)`, adresse]
     case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
-      leveringsmåteTekst = `${brukerAdresse} (Folkeregistert adresse)`
-      break
+      return [`${adresseBruker} (Folkeregistert adresse)`, adresseBruker]
     case LeveringsmåteType.HJELPEMIDDELSENTRAL:
-      leveringsmåteTekst = 'Hentes på hjelpemiddelsentralen'
-      break
+      return ['Hentes på hjelpemiddelsentralen', '']
   }
-
-  return <Tekst>{leveringsmåteTekst}</Tekst>
 }

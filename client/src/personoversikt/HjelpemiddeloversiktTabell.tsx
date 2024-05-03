@@ -5,7 +5,7 @@ import { Table } from '@navikt/ds-react'
 
 import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { formaterDato } from '../utils/date'
+import { formaterDato } from '../utils/dato'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
@@ -43,10 +43,7 @@ export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = (
       name: 'Kategori',
       width: 152,
       render: (artikkel: HjelpemiddelArtikkel) => (
-        <EllipsisCell
-          value={artikkel.grunndataKategoriKortnavn || ''}
-          minLength={18}
-        />
+        <EllipsisCell value={artikkel.grunndataKategoriKortnavn || ''} minLength={18} />
       ),
     },
     {
@@ -54,10 +51,7 @@ export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = (
       name: 'Produkt',
       width: 400,
       render: (artikkel: HjelpemiddelArtikkel) => (
-        <EllipsisCell
-          value={artikkel.grunndataProduktNavn || artikkel.beskrivelse}
-          minLength={25}
-        />
+        <EllipsisCell value={artikkel.grunndataProduktNavn || artikkel.beskrivelse} minLength={25} />
       ),
     },
     {

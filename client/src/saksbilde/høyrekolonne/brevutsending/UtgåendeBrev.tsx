@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { sorterKronologisk } from '../../../utils/date'
+import { sorterKronologisk } from '../../../utils/dato'
 
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { KolonneTittel } from '../Høyrekolonne'

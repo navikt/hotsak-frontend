@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { sorterKronologisk } from '../../utils/date'
+import { sorterKronologisk } from '../../utils/dato'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
 import { useHistorikk } from '../høyrekolonne/historikk/useHistorikk'
 import { Mellomtittel } from '../../felleskomponenter/typografi'

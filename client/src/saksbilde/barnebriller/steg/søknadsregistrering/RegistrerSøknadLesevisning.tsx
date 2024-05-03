@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Alert, Button, HelpText, HStack, Loader } from '@navikt/ds-react'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
-import { formaterDato } from '../../../../utils/date'
+import { formaterDato } from '../../../../utils/dato'
 import { capitalize, formaterBeløp } from '../../../../utils/stringFormating'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'

@@ -7,7 +7,7 @@ import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-reac
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato, norskTimestamp } from '../../utils/date'
+import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { capitalize, capitalizeName } from '../../utils/stringFormating'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
@@ -94,7 +94,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           Overført til Gosys
         </Tag>
         <StatusTekst>
-          <Tekst>{`${norskTimestamp(sak.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
           <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
         </StatusTekst>

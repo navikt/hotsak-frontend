@@ -7,7 +7,7 @@ import { Alert, Table } from '@navikt/ds-react'
 
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { formaterDato, sorterKronologisk } from '../utils/date'
+import { formaterDato, sorterKronologisk } from '../utils/dato'
 import { capitalize } from '../utils/stringFormating'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'

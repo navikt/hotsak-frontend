@@ -1,6 +1,6 @@
 import { Alert, Button, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
-import { formaterDato } from '../utils/date'
+import { formaterDato } from '../utils/dato'
 
 import { Avstand } from '../felleskomponenter/Avstand'
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'

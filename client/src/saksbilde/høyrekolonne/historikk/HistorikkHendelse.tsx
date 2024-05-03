@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { norskTimestamp } from '../../../utils/date'
+import { formaterTidsstempel } from '../../../utils/dato'
 
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import { Hendelse } from '../../../types/types.internal'
@@ -31,7 +31,7 @@ export const HistorikkHendelse: React.FC<Hendelse> = ({ hendelse, detaljer, oppr
     <Container>
       <ContentContainer>
         <Etikett>{hendelse}</Etikett>
-        {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
+        {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
         {detaljer?.split(';').map((detalj) => <Tekst key={detalj}>{detalj}</Tekst>)}
         <Tekst>{bruker}</Tekst>
       </ContentContainer>

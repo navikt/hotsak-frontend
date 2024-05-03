@@ -12,7 +12,7 @@ import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgaveV2, OppgavestatusLabel, Oppgavetype } from '../types/types.internal'
-import { formaterDato, norskTimestamp } from '../utils/date'
+import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
@@ -120,7 +120,7 @@ export function Oppgavebenk() {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.opprettet)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />,
     },
     /*{
       key: 'ENHET',

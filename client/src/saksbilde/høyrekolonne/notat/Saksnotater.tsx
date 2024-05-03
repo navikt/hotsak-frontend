@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { TrashIcon } from '@navikt/aksel-icons'
 import { BodyLong, BodyShort, Button, Detail, Label, Panel } from '@navikt/ds-react'
-import { norskTimestamp } from '../../../utils/date'
+import { formaterTidsstempel } from '../../../utils/dato'
 import { useInnloggetSaksbehandler } from '../../../state/authentication'
 import { Avstand } from '../../../felleskomponenter/Avstand'
 import { SlettSaksnotatModal } from './SlettSaksnotatModal'
@@ -44,7 +44,7 @@ export function Saksnotater(props: SaksnotaterProps) {
                       <Label as="h2" size="small">
                         {notat.saksbehandler.navn}
                       </Label>
-                      <Detail>{norskTimestamp(notat.opprettet)}</Detail>
+                      <Detail>{formaterTidsstempel(notat.opprettet)}</Detail>
                     </div>
                     {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
                       <Button

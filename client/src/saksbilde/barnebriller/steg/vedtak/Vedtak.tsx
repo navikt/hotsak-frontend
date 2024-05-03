@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Alert, Button, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
 
-import { formaterDato } from '../../../../utils/date'
+import { formaterDato } from '../../../../utils/dato'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'

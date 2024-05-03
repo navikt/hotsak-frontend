@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { BodyLong, BodyShort, Label } from '@navikt/ds-react'
 
-import { formaterDato } from '../../../utils/date'
+import { formaterDato } from '../../../utils/dato'
 import { capitalize } from '../../../utils/stringFormating'
 
 import { Boble } from '../../../felleskomponenter/Boble'

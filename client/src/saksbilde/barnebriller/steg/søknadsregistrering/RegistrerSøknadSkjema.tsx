@@ -8,7 +8,7 @@ import { Button, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering } from '../../../../io/http'
 import { Dokumenter } from '../../../../dokument/Dokumenter'
-import { tilDato } from '../../../../utils/date'
+import { tilDato } from '../../../../utils/dato'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'

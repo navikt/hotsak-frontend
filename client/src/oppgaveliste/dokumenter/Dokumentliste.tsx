@@ -8,7 +8,7 @@ import { Column } from '../../felleskomponenter/table/Column'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
-import { norskTimestamp } from '../../utils/date'
+import { formaterTidsstempel } from '../../utils/dato'
 import { formaterFødselsnummer } from '../../utils/stringFormating'
 import { isError } from '../../utils/type'
 
@@ -80,7 +80,7 @@ export function Dokumentliste() {
       key: 'opprettet',
       name: 'Mottatt dato',
       width: 152,
-      render: (oppgave: OppgaveV2) => <TekstCell value={norskTimestamp(oppgave.opprettet)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />,
     },
     /* {
       key: 'frist',

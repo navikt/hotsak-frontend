@@ -23,7 +23,7 @@ import {
   SakstypeFilter,
   SakstypeFilterLabel,
 } from '../types/types.internal'
-import { norskTimestamp } from '../utils/date'
+import { formaterTidsstempel } from '../utils/dato'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { FilterDropdown, Filters } from './filter'
 import { MenyKnapp } from './kolonner/MenyKnapp'
@@ -124,7 +124,7 @@ export function Oppgaveliste() {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: Oppgave) => <TekstCell value={norskTimestamp(oppgave.mottatt)} />,
+      render: (oppgave: Oppgave) => <TekstCell value={formaterTidsstempel(oppgave.mottatt)} />,
     },
     {
       key: 'MENU',

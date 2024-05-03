@@ -7,7 +7,7 @@ import { Button, Tag } from '@navikt/ds-react'
 import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { norskTimestamp } from '../../utils/date'
+import { formaterTidsstempel } from '../../utils/dato'
 import { capitalizeName } from '../../utils/stringFormating'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
@@ -101,7 +101,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
             Ferdigstilt
           </Tag>
           <StatusTekst>
-            <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
+            <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
             <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
             <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
           </StatusTekst>
@@ -117,7 +117,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           Avvist
         </Tag>
         <StatusTekst>
-          <Tekst>{`${norskTimestamp(bestilling.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
           <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
         </StatusTekst>
       </Card>

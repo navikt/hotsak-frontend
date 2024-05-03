@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Link } from '@navikt/ds-react'
 
-import { norskTimestamp } from '../../../utils/date'
+import { formaterTidsstempel } from '../../../utils/dato'
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import type { Saksdokument } from '../../../types/types.internal'
 
@@ -16,7 +16,7 @@ export function BrevKort({ tittel, opprettet, saksbehandler, journalpostID, doku
             {tittel}
           </Link>
         </Etikett>
-        {opprettet && <Undertittel>{norskTimestamp(opprettet)}</Undertittel>}
+        {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
         <Tekst>{saksbehandler.navn}</Tekst>
       </ContentContainer>
     </Container>

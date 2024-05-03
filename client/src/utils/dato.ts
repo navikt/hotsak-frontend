@@ -8,13 +8,13 @@ export function formaterDato(dato?: string): string {
   return format(dato, 'P')
 }
 
-export function norskTimestamp(dato: string): string {
+export function formaterTidsstempel(dato: string): string {
   return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
 }
 
-export function tilDato(value?: Date | number | string): Date | undefined {
-  if (!value) return
-  return toDate(value)
+export function tilDato(verdi?: Date | number | string): Date | undefined {
+  if (!verdi) return
+  return toDate(verdi)
 }
 
 export function sorterKronologisk(a: string, b: string): number {

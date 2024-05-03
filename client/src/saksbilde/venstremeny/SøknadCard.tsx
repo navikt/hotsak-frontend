@@ -2,7 +2,7 @@ import React from 'react'
 
 import { BodyShort } from '@navikt/ds-react'
 
-import { norskTimestamp } from '../../utils/date'
+import { formaterTidsstempel } from '../../utils/dato'
 import { capitalize } from '../../utils/stringFormating'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
@@ -46,7 +46,7 @@ export function SøknadCard({
         textColor="subtle"
         spacing
       >{`Sak: ${sakId}`}</BodyShort>
-      <CardRow icon={<CalendarIcon />}>Mottatt: {norskTimestamp(mottattDato)}</CardRow>
+      <CardRow icon={<CalendarIcon />}>Mottatt: {formaterTidsstempel(mottattDato)}</CardRow>
       {bruksarenaTekst && <CardRow icon={<FolderIcon />}>{bruksarenaTekst}</CardRow>}
       {bosituasjonTekst && <CardRow icon={<HouseIcon />}>{bosituasjonTekst}</CardRow>}
       <CardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>

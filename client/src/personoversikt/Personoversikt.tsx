@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
 
-import { sorterKronologisk } from '../utils/date'
+import { sorterKronologisk } from '../utils/dato'
 import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/Feilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'

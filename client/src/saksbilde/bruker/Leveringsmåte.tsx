@@ -9,19 +9,19 @@ export interface LeveringsmåteProps {
 }
 
 export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
-  const [leveringsmåteTekst] = lagLeveringsmåteTekst(levering, adresseBruker)
+  const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
   return <Tekst>{leveringsmåteTekst}</Tekst>
 }
 
-export function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string) {
+function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): string {
   switch (leveringsmåte) {
     case LeveringsmåteType.ALLEREDE_LEVERT:
-      return ['Allerede levert', '']
+      return 'Allerede levert'
     case LeveringsmåteType.ANNEN_ADRESSE:
-      return [`${adresse} (Annen adresse)`, adresse]
+      return `${adresse} (Annen adresse)`
     case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
-      return [`${adresseBruker} (Folkeregistert adresse)`, adresseBruker]
+      return `${adresseBruker} (Folkeregistert adresse)`
     case LeveringsmåteType.HJELPEMIDDELSENTRAL:
-      return ['Hentes på hjelpemiddelsentralen', '']
+      return 'Hentes på hjelpemiddelsentralen'
   }
 }

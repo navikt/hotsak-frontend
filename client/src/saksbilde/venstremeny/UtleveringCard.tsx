@@ -1,11 +1,15 @@
 import { CardTitle } from './CardTitle'
 import React from 'react'
 import { Card } from './Card'
-import { Formidler, Kontaktperson as IKontaktperson, Levering } from '../../types/types.internal'
+import {
+  Formidler,
+  Kontaktperson as IKontaktperson,
+  Levering,
+  Leveringsmåte as LeveringsmåteType,
+} from '../../types/types.internal'
 import { CardRow } from './CardRow'
 import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson'
-import { lagLeveringsmåteTekst } from '../bruker/Leveringsmåte'
 
 export interface UtleveringCardProps {
   formidler: Formidler
@@ -39,4 +43,17 @@ export function UtleveringCard(props: UtleveringCardProps) {
       )}
     </Card>
   )
+}
+
+function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): [string, string] {
+  switch (leveringsmåte) {
+    case LeveringsmåteType.ALLEREDE_LEVERT:
+      return ['Allerede levert', 'Allerede levert']
+    case LeveringsmåteType.ANNEN_ADRESSE:
+      return [`Til annen adresse: ${adresse}`, adresse || '']
+    case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
+      return [`Til folkeregistert adresse: ${adresseBruker}`, adresseBruker]
+    case LeveringsmåteType.HJELPEMIDDELSENTRAL:
+      return ['Hentes på hjelpemiddelsentralen', 'Hentes på hjelpemiddelsentralen']
+  }
 }

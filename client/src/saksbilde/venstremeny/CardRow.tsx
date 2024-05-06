@@ -18,10 +18,10 @@ export function CardRow(props: CardRowProps) {
 
   if (hStack) {
     return (
-      <HStack gap="2" align={align || (copyText ? 'center' : align)} wrap={false}>
+      <HStack gap="2" align={align} wrap={false}>
         <Ikon>{icon}</Ikon>
         {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-        {copyText && <CopyButton copyText={copyText} size="small" />}
+        {copyText && <RowCopyButton copyText={copyText} size="xsmall" />}
       </HStack>
     )
   }
@@ -30,11 +30,15 @@ export function CardRow(props: CardRowProps) {
     <HGrid gap="2" align={align} columns={columns || '1.25rem auto 1.25rem'}>
       <Ikon>{icon}</Ikon>
       {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-      {copyText && <CopyButton copyText={copyText} size="small" />}
+      {copyText && <RowCopyButton copyText={copyText} size="xsmall" />}
     </HGrid>
   )
 }
 
 const Ikon = styled.div`
   font-size: var(--a-font-size-xlarge);
+`
+
+const RowCopyButton = styled(CopyButton)`
+  height: 20px;
 `

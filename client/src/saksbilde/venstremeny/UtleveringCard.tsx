@@ -33,7 +33,7 @@ export function UtleveringCard(props: UtleveringCardProps) {
       </CardRow>
       {kontaktpersonTekst && (
         <CardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst}>
-          {kontaktpersonTekst}
+          Kontaktperson: {kontaktpersonTekst}
         </CardRow>
       )}
       {merknad && (

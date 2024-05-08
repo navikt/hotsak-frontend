@@ -241,7 +241,7 @@ export const putSendTilGosys = async (
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, tilbakemelding: svar })
 }
 
-export const postSavnerInformasjon = async (
+export const postSavnerInformasjonOmHjelpemiddel = async (
   sakId: number | string,
   spørreundersøkelse: ISpørreundersøkelse,
   besvarelse: IBesvarelse,

@@ -10,7 +10,6 @@ export interface ISpørsmål {
   tekst: string
   beskrivelse?: string
   påkrevd?: boolean
-  maksLengde?: number
 }
 
 export interface IAlternativer {
@@ -27,6 +26,7 @@ export interface IFlervalg extends ISpørsmål, IAlternativer {
 
 export interface IFritekst extends ISpørsmål {
   type: 'fritekst'
+  maksLengde?: number
 }
 
 export interface ISpørsmålsliste {

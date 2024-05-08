@@ -5,6 +5,7 @@ import type {
   BrevTekst,
   Brevtype,
   EndreHjelpemiddelRequest,
+  HjelpemiddelType,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
@@ -238,6 +239,21 @@ export const putSendTilGosys = async (
   svar: ISvar[]
 ) => {
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, tilbakemelding: svar })
+}
+
+export const postSavnerInformasjon = async (
+  sakId: number | string,
+  spørreundersøkelse: ISpørreundersøkelse,
+  besvarelse: IBesvarelse,
+  svar: ISvar[],
+  hjelpemiddel: HjelpemiddelType
+) => {
+  return post(`${baseUrl}/api/sak/${sakId}/savner-informasjon`, {
+    spørreundersøkelse,
+    besvarelse,
+    tilbakemelding: svar,
+    hjelpemiddel,
+  })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

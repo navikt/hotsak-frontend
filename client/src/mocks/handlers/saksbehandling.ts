@@ -115,6 +115,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return respondNoContent()
   }),
 
+  http.post<SakParams>('/api/sak/:sakId/savner-informasjon', async () => {
+    return respondNoContent()
+  }),
+
   http.put<SakParams, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
     const sakId = params.sakId
     const { status } = await request.json()

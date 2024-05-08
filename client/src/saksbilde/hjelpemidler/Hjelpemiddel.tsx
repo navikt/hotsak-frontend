@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import { ChatExclamationmarkIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
 import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -18,12 +18,15 @@ import {
   HjelpemiddelType,
   OppgaveStatusType,
   Sak,
+  Sakstype,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { SavnerInformasjonModal } from '../SavnerInformasjonModal'
+import { useSavnerInformasjon } from './useSavnerInformasjon'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -83,10 +86,11 @@ interface HjelpemiddelProps {
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
-  const { personinformasjon, status, sakId } = sak
+  const { personinformasjon, status, sakId, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
+  const savnerInformasjon = useSavnerInformasjon(sakId, 'savner_informasjon_v1', hjelpemiddel)
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
@@ -272,6 +276,21 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           </Rad>
         )}
       </Rad>
+
+      {sakstype === Sakstype.SØKNAD && (
+        <HStack justify="end" align="end">
+          <Button
+            variant="secondary"
+            size="small"
+            icon={<ChatExclamationmarkIcon />}
+            iconPosition="left"
+            onClick={() => savnerInformasjon.onOpen()}
+          >
+            Jeg savner informasjon
+          </Button>
+        </HStack>
+      )}
+
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
           hjelpemiddelId={hjelpemiddel.id}
@@ -284,6 +303,13 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
       ) : (
         <Strek />
       )}
+
+      <SavnerInformasjonModal
+        {...savnerInformasjon}
+        onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
+          await savnerInformasjon.onBesvar(spørreundersøkelse, besvarelse, svar)
+        }}
+      />
     </HjelpemiddelContainer>
   )
 }

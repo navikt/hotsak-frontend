@@ -25,8 +25,8 @@ import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { SavnerInformasjonModal } from '../SavnerInformasjonModal'
-import { useSavnerInformasjon } from './useSavnerInformasjon'
+import { SavnerInformasjonOmHjelpemiddelModal } from '../SavnerInformasjonOmHjelpemiddelModal'
+import { useSavnerInformasjonOmHjelpemiddel } from './useSavnerInformasjonOmHjelpemiddel'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -90,7 +90,11 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
-  const savnerInformasjon = useSavnerInformasjon(sakId, 'savner_informasjon_v1', hjelpemiddel)
+  const savnerInformasjonOmHjelpemiddel = useSavnerInformasjonOmHjelpemiddel(
+    sakId,
+    'savner_informasjon_om_hjelpemiddel_v1',
+    hjelpemiddel
+  )
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
@@ -284,7 +288,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
             size="small"
             icon={<ChatExclamationmarkIcon />}
             iconPosition="left"
-            onClick={() => savnerInformasjon.onOpen()}
+            onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
           >
             Jeg savner informasjon
           </Button>
@@ -304,10 +308,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Strek />
       )}
 
-      <SavnerInformasjonModal
-        {...savnerInformasjon}
+      <SavnerInformasjonOmHjelpemiddelModal
+        {...savnerInformasjonOmHjelpemiddel}
         onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
-          await savnerInformasjon.onBesvar(spørreundersøkelse, besvarelse, svar)
+          await savnerInformasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
         }}
       />
     </HjelpemiddelContainer>

@@ -2,7 +2,7 @@ import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
 import { Spørreundersøkelse } from '../innsikt/Spørreundersøkelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
-export interface SavnerInformasjonModalProps {
+export interface SavnerInformasjonOmHjelpemiddelModalProps {
   open: boolean
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
@@ -10,13 +10,13 @@ export interface SavnerInformasjonModalProps {
   onClose(): void
 }
 
-export function SavnerInformasjonModal({
+export function SavnerInformasjonOmHjelpemiddelModal({
   open,
   loading,
   spørreundersøkelseId,
   onBesvar,
   onClose,
-}: SavnerInformasjonModalProps) {
+}: SavnerInformasjonOmHjelpemiddelModalProps) {
   return (
     <Spørreundersøkelse
       open={open}

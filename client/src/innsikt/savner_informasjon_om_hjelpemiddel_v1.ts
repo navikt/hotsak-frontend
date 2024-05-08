@@ -1,7 +1,7 @@
 import type { ISpørreundersøkelse } from './spørreundersøkelser'
 
-export const savner_informasjon_v1: ISpørreundersøkelse = {
-  skjema: 'savner_informasjon_v1',
+export const savner_informasjon_om_hjelpemiddel_v1: ISpørreundersøkelse = {
+  skjema: 'savner_informasjon_om_hjelpemiddel_v1',
   tittel: 'Hvilken informasjon trenger du?',
   beskrivelse: {
     header: 'Grunnen til at vi spør om dette',

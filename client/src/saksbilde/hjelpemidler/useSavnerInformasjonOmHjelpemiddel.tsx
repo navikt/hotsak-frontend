@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { SpørreundersøkelseId } from '../../innsikt/spørreundersøkelser'
 import { postSavnerInformasjon } from '../../io/http'
 import { HjelpemiddelType } from '../../types/types.internal'
-import { SavnerInformasjonModalProps } from '../SavnerInformasjonModal'
+import { SavnerInformasjonOmHjelpemiddelModalProps } from '../SavnerInformasjonOmHjelpemiddelModal'
 
-export function useSavnerInformasjon(
+export function useSavnerInformasjonOmHjelpemiddel(
   sakId: string,
   spørreundersøkelseId: SpørreundersøkelseId,
   hjelpemiddel: HjelpemiddelType
-): SavnerInformasjonModalProps & {
+): SavnerInformasjonOmHjelpemiddelModalProps & {
   onOpen(): void
 } {
   const [open, setOpen] = useState(false)

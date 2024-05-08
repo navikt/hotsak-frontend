@@ -10,6 +10,7 @@ export interface ISpørsmål {
   tekst: string
   beskrivelse?: string
   påkrevd?: boolean
+  maksLengde?: number
 }
 
 export interface IAlternativer {

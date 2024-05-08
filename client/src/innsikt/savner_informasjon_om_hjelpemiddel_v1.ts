@@ -14,6 +14,7 @@ export const savner_informasjon_om_hjelpemiddel_v1: ISpørreundersøkelse = {
       beskrivelse:
         'Det du skriver vil kun brukes av teamet som jobber med Hotsak og den digitale behovsmeldingen. Ikke skriv personopplysninger.',
       påkrevd: true,
+      maksLengde: 250,
     },
   ],
 }

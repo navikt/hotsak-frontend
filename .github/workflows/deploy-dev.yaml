@@ -9,6 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
+      - savner-informasjon-modal
 
 jobs:
   test:

@@ -290,7 +290,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
             iconPosition="left"
             onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
           >
-            Jeg savner informasjon
+            Her ønsker jeg mer informasjon
           </Button>
         </HStack>
       )}

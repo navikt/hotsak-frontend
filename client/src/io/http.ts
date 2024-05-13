@@ -248,7 +248,7 @@ export const postInformasjonOmHjelpemiddel = async (
   svar: ISvar[],
   hjelpemiddel: HjelpemiddelType
 ) => {
-  return post(`${baseUrl}/api/sak/${sakId}/tilbakemelding/informasjon-om-hjelpemiddel`, {
+  return post(`${baseUrl}/api/sak/${sakId}/informasjon-om-hjelpemiddel`, {
     spørreundersøkelse,
     besvarelse,
     tilbakemelding: svar,

@@ -115,7 +115,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     return respondNoContent()
   }),
 
-  http.post<SakParams>('/api/sak/:sakId/tilbakemelding/informasjon-om-hjelpemiddel', async () => {
+  http.post<SakParams>('/api/sak/:sakId/informasjon-om-hjelpemiddel', async () => {
     return respondNoContent()
   }),
 

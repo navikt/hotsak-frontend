@@ -27,6 +27,7 @@ import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { SavnerInformasjonOmHjelpemiddelModal } from '../SavnerInformasjonOmHjelpemiddelModal'
 import { useSavnerInformasjonOmHjelpemiddel } from './useSavnerInformasjonOmHjelpemiddel'
+import { Avstand } from '../../felleskomponenter/Avstand'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -282,17 +283,24 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
       </Rad>
 
       {sakstype === Sakstype.SØKNAD && (
-        <HStack justify="end" align="end">
-          <Button
-            variant="secondary"
-            size="small"
-            icon={<ChatExclamationmarkIcon />}
-            iconPosition="left"
-            onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
-          >
-            Her ønsker jeg mer informasjon
-          </Button>
-        </HStack>
+        <Avstand marginTop={2}>
+          <Rad>
+            <EtikettKolonne />
+            <Kolonne>
+              <div>
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  icon={<ChatExclamationmarkIcon />}
+                  iconPosition="left"
+                  onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
+                >
+                  Jeg ønsker mer informasjon
+                </Button>
+              </div>
+            </Kolonne>
+          </Rad>
+        </Avstand>
       )}
 
       {forenkletVisning && visEndreProdukt ? (

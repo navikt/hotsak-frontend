@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { ChatExclamationmarkIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
 import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -291,7 +291,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                 <Button
                   variant="tertiary"
                   size="small"
-                  icon={<ChatExclamationmarkIcon />}
+                  icon={<ChatIcon />}
                   iconPosition="left"
                   onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
                 >

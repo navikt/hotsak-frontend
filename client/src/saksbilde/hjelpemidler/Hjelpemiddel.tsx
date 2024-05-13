@@ -25,8 +25,8 @@ import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { SavnerInformasjonOmHjelpemiddelModal } from '../SavnerInformasjonOmHjelpemiddelModal'
-import { useSavnerInformasjonOmHjelpemiddel } from './useSavnerInformasjonOmHjelpemiddel'
+import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
+import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Avstand } from '../../felleskomponenter/Avstand'
 
 const HjelpemiddelContainer = styled.div`
@@ -91,11 +91,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
-  const savnerInformasjonOmHjelpemiddel = useSavnerInformasjonOmHjelpemiddel(
-    sakId,
-    'savner_informasjon_om_hjelpemiddel_v1',
-    hjelpemiddel
-  )
+  const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
@@ -293,7 +289,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                   size="small"
                   icon={<ChatIcon />}
                   iconPosition="left"
-                  onClick={() => savnerInformasjonOmHjelpemiddel.onOpen()}
+                  onClick={() => informasjonOmHjelpemiddel.onOpen()}
                 >
                   Jeg ønsker mer informasjon
                 </Button>
@@ -316,10 +312,10 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         <Strek />
       )}
 
-      <SavnerInformasjonOmHjelpemiddelModal
-        {...savnerInformasjonOmHjelpemiddel}
+      <InformasjonOmHjelpemiddelModal
+        {...informasjonOmHjelpemiddel}
         onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
-          await savnerInformasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
+          await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
         }}
       />
     </HjelpemiddelContainer>

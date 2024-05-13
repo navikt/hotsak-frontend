@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
 import { SpørreundersøkelseId } from '../../innsikt/spørreundersøkelser'
-import { postSavnerInformasjonOmHjelpemiddel } from '../../io/http'
+import { postInformasjonOmHjelpemiddel } from '../../io/http'
 import { HjelpemiddelType } from '../../types/types.internal'
-import { SavnerInformasjonOmHjelpemiddelModalProps } from '../SavnerInformasjonOmHjelpemiddelModal'
+import { InformasjonOmHjelpemiddelModalProps } from '../InformasjonOmHjelpemiddelModal'
 
-export function useSavnerInformasjonOmHjelpemiddel(
+export function useInformasjonOmHjelpemiddel(
   sakId: string,
   spørreundersøkelseId: SpørreundersøkelseId,
   hjelpemiddel: HjelpemiddelType
-): SavnerInformasjonOmHjelpemiddelModalProps & {
+): InformasjonOmHjelpemiddelModalProps & {
   onOpen(): void
 } {
   const [open, setOpen] = useState(false)
@@ -27,7 +27,7 @@ export function useSavnerInformasjonOmHjelpemiddel(
     async onBesvar(spørreundersøkelse, besvarelse, svar) {
       setLoading(true)
       try {
-        await postSavnerInformasjonOmHjelpemiddel(sakId, spørreundersøkelse, besvarelse, svar, hjelpemiddel)
+        await postInformasjonOmHjelpemiddel(sakId, spørreundersøkelse, besvarelse, svar, hjelpemiddel)
       } finally {
         setLoading(false)
         setOpen(false)

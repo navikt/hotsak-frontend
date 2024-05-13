@@ -241,14 +241,14 @@ export const putSendTilGosys = async (
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, tilbakemelding: svar })
 }
 
-export const postSavnerInformasjonOmHjelpemiddel = async (
+export const postInformasjonOmHjelpemiddel = async (
   sakId: number | string,
   spørreundersøkelse: ISpørreundersøkelse,
   besvarelse: IBesvarelse,
   svar: ISvar[],
   hjelpemiddel: HjelpemiddelType
 ) => {
-  return post(`${baseUrl}/api/sak/${sakId}/savner-informasjon-om-hjelpemiddel`, {
+  return post(`${baseUrl}/api/sak/${sakId}/informasjon-om-hjelpemiddel`, {
     spørreundersøkelse,
     besvarelse,
     tilbakemelding: svar,

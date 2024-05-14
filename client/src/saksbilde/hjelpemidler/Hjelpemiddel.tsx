@@ -278,7 +278,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         )}
       </Rad>
 
-      {sakstype === Sakstype.SØKNAD && (
+      {sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && (
         <Avstand marginTop={2}>
           <Rad>
             <EtikettKolonne />

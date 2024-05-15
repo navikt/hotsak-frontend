@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
 import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -18,12 +18,16 @@ import {
   HjelpemiddelType,
   OppgaveStatusType,
   Sak,
+  Sakstype,
 } from '../../types/types.internal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
+import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
+import { Avstand } from '../../felleskomponenter/Avstand'
 
 const HjelpemiddelContainer = styled.div`
   font-size: 1rem;
@@ -83,10 +87,11 @@ interface HjelpemiddelProps {
 }
 
 export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
-  const { personinformasjon, status, sakId } = sak
+  const { personinformasjon, status, sakId, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
+  const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
@@ -272,6 +277,30 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
           </Rad>
         )}
       </Rad>
+
+      {(window.appSettings.MILJO === 'local' || window.appSettings.MILJO === 'dev-gcp') &&
+        sakstype === Sakstype.SØKNAD &&
+        status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && (
+          <Avstand marginTop={2}>
+            <Rad>
+              <EtikettKolonne />
+              <Kolonne>
+                <div>
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    icon={<ChatIcon />}
+                    iconPosition="left"
+                    onClick={() => informasjonOmHjelpemiddel.onOpen()}
+                  >
+                    Jeg ønsker mer informasjon
+                  </Button>
+                </div>
+              </Kolonne>
+            </Rad>
+          </Avstand>
+        )}
+
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
           hjelpemiddelId={hjelpemiddel.id}
@@ -284,6 +313,13 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
       ) : (
         <Strek />
       )}
+
+      <InformasjonOmHjelpemiddelModal
+        {...informasjonOmHjelpemiddel}
+        onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
+          await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
+        }}
+      />
     </HjelpemiddelContainer>
   )
 }

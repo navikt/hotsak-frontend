@@ -278,26 +278,28 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
         )}
       </Rad>
 
-      {sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && (
-        <Avstand marginTop={2}>
-          <Rad>
-            <EtikettKolonne />
-            <Kolonne>
-              <div>
-                <Button
-                  variant="tertiary"
-                  size="small"
-                  icon={<ChatIcon />}
-                  iconPosition="left"
-                  onClick={() => informasjonOmHjelpemiddel.onOpen()}
-                >
-                  Jeg ønsker mer informasjon
-                </Button>
-              </div>
-            </Kolonne>
-          </Rad>
-        </Avstand>
-      )}
+      {(window.appSettings.MILJO === 'local' || window.appSettings.MILJO === 'dev-gcp') &&
+        sakstype === Sakstype.SØKNAD &&
+        status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && (
+          <Avstand marginTop={2}>
+            <Rad>
+              <EtikettKolonne />
+              <Kolonne>
+                <div>
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    icon={<ChatIcon />}
+                    iconPosition="left"
+                    onClick={() => informasjonOmHjelpemiddel.onOpen()}
+                  >
+                    Jeg ønsker mer informasjon
+                  </Button>
+                </div>
+              </Kolonne>
+            </Rad>
+          </Avstand>
+        )}
 
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel

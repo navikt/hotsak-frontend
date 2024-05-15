@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 
@@ -28,11 +28,6 @@ const SaksbildeContent = React.memo(() => {
   const { sak, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
-
-  const visOebsAdresser = useMemo(
-    () => !!sak && sak.data.greitÅViteFaktum.some((fakta) => fakta.beskrivelse === 'Ulike adresser i søknaden og OEBS'),
-    [sak]
-  )
 
   if (isError) {
     showBoundary(isError)
@@ -102,7 +97,6 @@ const SaksbildeContent = React.memo(() => {
                       person={sak.data.personinformasjon}
                       levering={sak.data.levering}
                       formidler={sak.data.formidler}
-                      visOebsAdresser={visOebsAdresser}
                     />
                   }
                 />

@@ -20,18 +20,15 @@ import {
 import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
-import { useOebsAdresser } from '../../personoversikt/useOebsAdresser'
 import { PersonIcon } from '@navikt/aksel-icons'
 
 export interface BrukerProps {
   person: Personinformasjon
   levering: Levering
   formidler: Formidler
-  visOebsAdresser: boolean
 }
 
-export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerProps) {
-  const { adresser } = useOebsAdresser(visOebsAdresser, person.fnr)
+export function Bruker({ person, levering, formidler }: BrukerProps) {
   const formatertNavn = formaterNavn(person)
   const adresseBruker = formaterAdresse(person)
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
@@ -70,24 +67,8 @@ export function Bruker({ person, levering, formidler, visOebsAdresser }: BrukerP
           <Tekst>{storForbokstavIAlleOrd(person.funksjonsnedsettelser.join(', '))}</Tekst>
         </HGrid>
       </Box>
-      <Strek />
 
-      {adresser.length > 0 && (
-        <>
-          <Heading level="1" size="medium" spacing={true}>
-            Adresser fra OEBS
-          </Heading>
-          <Box paddingBlock="4 8">
-            {adresser.map(({ leveringsadresse }) => (
-              <HGrid key={leveringsadresse.adresse} {...hGridProps}>
-                <Etikett>Leveringsadresse</Etikett>
-                {formaterAdresse(leveringsadresse)}
-              </HGrid>
-            ))}
-          </Box>
-          <Strek />
-        </>
-      )}
+      <Strek />
 
       <Heading level="1" size="medium" spacing={true}>
         Utlevering

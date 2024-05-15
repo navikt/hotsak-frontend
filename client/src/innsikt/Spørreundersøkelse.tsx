@@ -1,7 +1,7 @@
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
+import { Alert, Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
 import { Spørsmål } from './Spørsmål'
 import React, { useRef } from 'react'
 import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
@@ -14,11 +14,12 @@ export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
   knappetekst?: string
 
   onBesvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
+  error?: string | undefined
   onClose?(): void
 }
 
 export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
-  const { open, loading, spørreundersøkelseId, size, knappetekst = 'Besvar', onBesvar, onClose } = props
+  const { open, loading, spørreundersøkelseId, size, knappetekst = 'Besvar', onBesvar, onClose, error } = props
   const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse(spørreundersøkelseId)
   const { spørsmål } = spørreundersøkelse
   const form = useForm<IBesvarelse>({ defaultValues })
@@ -83,6 +84,11 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
             >
               Avbryt
             </Button>
+            {error && (
+              <Alert variant="error" inline>
+                Klarte ikke å sende inn svaret ditt. Prøv igjen senere.
+              </Alert>
+            )}
           </Modal.Footer>
         </form>
       </FormProvider>

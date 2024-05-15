@@ -7,6 +7,7 @@ export interface InformasjonOmHjelpemiddelModalProps {
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
   onBesvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
+  error: string | undefined
   onClose(): void
 }
 
@@ -16,6 +17,7 @@ export function InformasjonOmHjelpemiddelModal({
   spørreundersøkelseId,
   onBesvar,
   onClose,
+  error,
 }: InformasjonOmHjelpemiddelModalProps) {
   return (
     <Spørreundersøkelse
@@ -26,6 +28,7 @@ export function InformasjonOmHjelpemiddelModal({
       knappetekst="Send"
       onBesvar={onBesvar}
       onClose={onClose}
+      error={error}
     />
   )
 }

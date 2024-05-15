@@ -14,23 +14,30 @@ export function useInformasjonOmHjelpemiddel(
 } {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>(undefined)
   return {
     open,
     loading,
     spørreundersøkelseId,
+    error,
     onOpen() {
       setOpen(true)
     },
     onClose() {
       setOpen(false)
+      setError(undefined)
     },
     async onBesvar(spørreundersøkelse, besvarelse, svar) {
+      setError(undefined)
       setLoading(true)
       try {
         await postInformasjonOmHjelpemiddel(sakId, spørreundersøkelse, besvarelse, svar, hjelpemiddel)
+        setOpen(false)
+      } catch (err: any) {
+        console.log(err)
+        setError(err)
       } finally {
         setLoading(false)
-        setOpen(false)
       }
     },
   }

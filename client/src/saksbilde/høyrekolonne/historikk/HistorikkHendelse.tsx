@@ -1,10 +1,21 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { formaterTidsstempel } from '../../../utils/dato'
-
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import { Hendelse } from '../../../types/types.internal'
+
+export function HistorikkHendelse({ hendelse, detaljer, opprettet, bruker }: Hendelse) {
+  return (
+    <Container>
+      <ContentContainer>
+        <Etikett>{hendelse}</Etikett>
+        {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
+        {detaljer?.split(';').map((detalj) => <Tekst key={detalj}>{detalj}</Tekst>)}
+        <Tekst>{bruker}</Tekst>
+      </ContentContainer>
+    </Container>
+  )
+}
 
 const Container = styled.li`
   margin: 0;
@@ -25,16 +36,3 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-export const HistorikkHendelse: React.FC<Hendelse> = ({ hendelse, detaljer, opprettet, bruker }) => {
-  return (
-    <Container>
-      <ContentContainer>
-        <Etikett>{hendelse}</Etikett>
-        {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
-        {detaljer?.split(';').map((detalj) => <Tekst key={detalj}>{detalj}</Tekst>)}
-        <Tekst>{bruker}</Tekst>
-      </ContentContainer>
-    </Container>
-  )
-}

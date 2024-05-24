@@ -1,5 +1,4 @@
 import { CardTitle } from './CardTitle'
-import React from 'react'
 import { Card } from './Card'
 import {
   Formidler,

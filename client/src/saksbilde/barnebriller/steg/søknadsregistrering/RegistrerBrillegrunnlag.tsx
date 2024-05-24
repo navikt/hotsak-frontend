@@ -1,5 +1,4 @@
 import 'date-fns'
-import React from 'react'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'

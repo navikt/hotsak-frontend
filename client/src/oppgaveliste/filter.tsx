@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Button, Select } from '@navikt/ds-react'
@@ -24,7 +23,7 @@ interface FilterProps {
   handleChange: (...args: any[]) => any
 }
 
-export const FilterDropdown: React.FC<FilterProps> = ({ label, value, options, handleChange }) => {
+export function FilterDropdown({ label, value, options, handleChange }: FilterProps) {
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>
       {[...options.entries()].sort(sorterAlfabetiskPåVerdi).map(([key, value]) => {
@@ -53,7 +52,7 @@ function sorterAlfabetiskPåVerdi(a: [string, string], b: [string, string]) {
   return 0
 }
 
-export const Filters: React.FC<FiltersProps> = ({ children, onClear }) => {
+export function Filters({ children, onClear }: FiltersProps) {
   return (
     <FilterList>
       {children}

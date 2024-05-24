@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { SignaturType } from '../../types/types.internal'
 import { BrukerBekreftet } from './BrukerBekreftet'
 import { Fullmakt } from './Fullmakt'
@@ -10,7 +8,7 @@ interface SignaturProps {
   navn: string
 }
 
-export const Signatur: React.FC<SignaturProps> = ({ signaturType, navn }) => {
+export function Signatur({ signaturType, navn }: SignaturProps) {
   switch (signaturType) {
     case SignaturType.BRUKER_BEKREFTER:
       return <BrukerBekreftet navn={navn} />

@@ -1,6 +1,6 @@
-import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
+import { memo, Suspense } from 'react'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
 
@@ -19,7 +19,7 @@ export const SaksbildeContainer = styled.div`
   height: 96vh;
 `
 
-const SaksbildeContent = React.memo(() => {
+const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { showBoundary } = useErrorBoundary()
 
@@ -56,9 +56,9 @@ const SaksbildeContent = React.memo(() => {
 export default function Saksbilde() {
   return (
     <ErrorBoundary FallbackComponent={AlertError}>
-      <React.Suspense fallback={<SakLoader />}>
+      <Suspense fallback={<SakLoader />}>
         <SaksbildeContent />
-      </React.Suspense>
+      </Suspense>
     </ErrorBoundary>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import { lazy, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
@@ -8,20 +8,19 @@ import { DokumentProvider } from './dokument/DokumentContext'
 import { Dokumentliste } from './oppgaveliste/dokumenter/Dokumentliste'
 import { ManuellJournalføring } from './journalføring/ManuellJournalføring'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
-
 import { RequireAuth } from './RequireAuth'
 import { Feilside } from './feilsider/Feilside'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
-import { Toppmeny } from './header/Header'
+import { Toppmeny } from './header/Toppmeny'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Oppgavebenk } from './oppgavebenk/Oppgavebenk'
 
-const Oppgaveliste = React.lazy(() => import('./oppgaveliste/Oppgaveliste'))
-const Saksbilde = React.lazy(() => import('./saksbilde/Saksbilde'))
-const Personoversikt = React.lazy(() => import('./personoversikt/Personoversikt'))
+const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
+const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
+const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
 
 function App() {
   useAuthentication()
@@ -32,7 +31,7 @@ function App() {
         <Toppmeny />
         <Utviklingsverktøy />
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
-          <React.Suspense fallback={<div />}>
+          <Suspense fallback={<div />}>
             {/*<Varsler />*/}
             <main>
               <Routes>
@@ -93,7 +92,7 @@ function App() {
                 <Route path="*" element={<Feilside statusCode={404} />} />
               </Routes>
             </main>
-          </React.Suspense>
+          </Suspense>
         </ErrorBoundary>
       </PersonProvider>
       {/*<Toasts />*/}

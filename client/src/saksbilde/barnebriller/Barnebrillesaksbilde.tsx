@@ -1,4 +1,3 @@
-import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
@@ -6,7 +5,6 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 
 import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
-
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
@@ -21,6 +19,7 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
+import { memo, Suspense } from 'react'
 
 const BarnebrillesakContainer = styled.div`
   display: flex;
@@ -36,7 +35,7 @@ const Header = styled(HStack)`
   padding-top: 0.5rem;
 `
 
-const BarnebrillesakContent: React.FC = React.memo(() => {
+const BarnebrillesakContent = memo(() => {
   const { sak, isError, mutate } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
@@ -79,7 +78,6 @@ const BarnebrillesakContent: React.FC = React.memo(() => {
           </Alert>
         </AlertContainerMedium>
       )}
-
       <Steg aktivtSteg={step} />
     </div>
   )
@@ -96,21 +94,25 @@ function Steg({ aktivtSteg }: { aktivtSteg: StepType }) {
   }
 }
 
-const LasterBarnebrillesaksbilde = () => (
-  <BarnebrillesakContainer>
-    <LasterPersonlinje />
-  </BarnebrillesakContainer>
-)
+function LasterBarnebrillesaksbilde() {
+  return (
+    <BarnebrillesakContainer>
+      <LasterPersonlinje />
+    </BarnebrillesakContainer>
+  )
+}
 
-export const Barnebrillesaksbilde = () => (
-  <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterBarnebrillesaksbilde />}>
-      <ManuellSaksbehandlingProvider>
-        <HGrid columns={`auto ${brilleSidebarBredde} `}>
-          <BarnebrillesakContent />
-          <BarnebrillesakSidebar />
-        </HGrid>
-      </ManuellSaksbehandlingProvider>
-    </React.Suspense>
-  </ErrorBoundary>
-)
+export function Barnebrillesaksbilde() {
+  return (
+    <ErrorBoundary FallbackComponent={AlertError}>
+      <Suspense fallback={<LasterBarnebrillesaksbilde />}>
+        <ManuellSaksbehandlingProvider>
+          <HGrid columns={`auto ${brilleSidebarBredde} `}>
+            <BarnebrillesakContent />
+            <BarnebrillesakSidebar />
+          </HGrid>
+        </ManuellSaksbehandlingProvider>
+      </Suspense>
+    </ErrorBoundary>
+  )
+}

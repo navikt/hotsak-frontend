@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Heading } from '@navikt/ds-react'
@@ -10,12 +9,7 @@ interface FullmaktFritakProps {
   navn: string
 }
 
-const Container = styled.div`
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-`
-
-export const FullmaktFritak: React.FC<FullmaktFritakProps> = ({ navn }) => {
+export function FullmaktFritak({ navn }: FullmaktFritakProps) {
   return (
     <>
       <Heading level="1" size="medium" spacing={true}>
@@ -36,3 +30,8 @@ export const FullmaktFritak: React.FC<FullmaktFritakProps> = ({ navn }) => {
     </>
   )
 }
+
+const Container = styled.div`
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+`

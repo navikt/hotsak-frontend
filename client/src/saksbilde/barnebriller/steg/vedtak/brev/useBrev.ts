@@ -20,9 +20,9 @@ interface BrevResponse {
   hentedeBrev: Record<Brevtype, Ressurs<string>>
 }
 
-export function useBrev(brevressurs?: Ressurs<string>, brevRessursError?: boolean): BrevResponse {
+export function useBrev(/*brevressurs?: Ressurs<string>, brevRessursError?: boolean*/): BrevResponse {
   const { hentedeBrev, settHentetBrev } = useDokumentContext()
-  const [isDokumentError, setIsDokumentError] = useState<any>(brevRessursError || null)
+  const [isDokumentError, setIsDokumentError] = useState<any>(null)
 
   const nullstillDokument = (brevtype: Brevtype) => {
     settHentetBrev(brevtype, byggTomRessurs())

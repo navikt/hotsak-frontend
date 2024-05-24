@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Tekst } from '../../felleskomponenter/typografi'
 import { Levering, Leveringsmåte as LeveringsmåteType } from '../../types/types.internal'
 

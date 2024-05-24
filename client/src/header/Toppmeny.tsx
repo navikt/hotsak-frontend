@@ -1,4 +1,3 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -20,7 +19,7 @@ const Lenke = styled.a`
   text-decoration: none;
 `
 
-export const Toppmeny: React.FC = () => {
+export function Toppmeny() {
   const { erInnlogget, enhetsnumre, ...rest } = useInnloggetSaksbehandler()
   const saksbehandler = erInnlogget ? rest : { navn: '', navIdent: '' }
   const { setFodselsnummer } = usePersonContext()

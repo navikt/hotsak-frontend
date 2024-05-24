@@ -396,7 +396,6 @@ export class BarnebrillesakStore extends Dexie {
 
   // TODO se på payload for overstyring av vilkår
   async oppdaterVilkår(
-    sakId: string,
     vilkårId: number | string,
     { resultatSaksbehandler, begrunnelseSaksbehandler }: OppdaterVilkårRequest
   ) {

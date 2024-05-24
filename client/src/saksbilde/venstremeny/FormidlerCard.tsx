@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'

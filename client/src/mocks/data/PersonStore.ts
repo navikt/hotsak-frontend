@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { HjelpemiddelArtikkel, Person } from '../../types/types.internal'
+import type { Person } from '../../types/types.internal'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
@@ -10,13 +10,15 @@ import { formatISO } from 'date-fns'
 
 type LagretPerson = Person
 
+/*
 interface LagretHjelpemiddelArtikkel extends HjelpemiddelArtikkel {
   fnr: string
 }
+*/
 
 export class PersonStore extends Dexie {
   private readonly personer!: Table<LagretPerson, string>
-  private readonly hjelpemidler!: Table<LagretHjelpemiddelArtikkel, string>
+  // private readonly hjelpemidler!: Table<LagretHjelpemiddelArtikkel, string>
 
   constructor() {
     super('PersonStore')

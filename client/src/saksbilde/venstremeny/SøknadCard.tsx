@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { BodyShort } from '@navikt/ds-react'
 
 import { formaterTidsstempel } from '../../utils/dato'

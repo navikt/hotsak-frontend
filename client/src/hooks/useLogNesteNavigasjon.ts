@@ -1,5 +1,7 @@
 // import { useLocation } from 'react-router-dom'
 
+import { logDebug } from '../utvikling/logDebug.ts'
+
 export function useLogNesteNavigasjon() {
   // const location = useLocation()
   /**
@@ -10,6 +12,7 @@ export function useLogNesteNavigasjon() {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const logNesteNavigasjon = (fraHendelse: string, data?: any) => {
+    logDebug(fraHendelse, data)
     /*
     const unlisten = history.listen((location: any) => {
       logAmplitudeEvent(amplitude_taxonomy.NAVIGASJON_ETTER_HENDELSE, {

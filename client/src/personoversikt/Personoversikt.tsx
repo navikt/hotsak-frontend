@@ -1,7 +1,7 @@
-import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
+import { Suspense } from 'react'
 
 import { sorterKronologisk } from '../utils/dato'
 import { AlertError } from '../feilsider/AlertError'
@@ -9,15 +9,15 @@ import { Feilmelding } from '../felleskomponenter/Feilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import HjelpemiddeloversiktTabell from './HjelpemiddeloversiktTabell'
+import { HjelpemiddeloversiktTabell } from './HjelpemiddeloversiktTabell'
 import { usePersonContext } from './PersonContext'
-import Saksoversikt from './Saksoversikt'
+import { Saksoversikt } from './Saksoversikt'
 import { SaksoversiktLinje } from './SaksoversiktLinje'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './saksoversiktHook'
 import { Avstand } from '../felleskomponenter/Avstand'
 
-const PersonoversiktContent: React.FC = () => {
+function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
@@ -103,12 +103,14 @@ const LasterPersonoversikt: React.FC = () => {
   )
 }
 
-const Personoversikt: React.FC = () => (
-  <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterPersonlinje />}>
-      <PersonoversiktContent />
-    </React.Suspense>
-  </ErrorBoundary>
-)
+function Personoversikt() {
+  return (
+    <ErrorBoundary FallbackComponent={AlertError}>
+      <Suspense fallback={<LasterPersonlinje />}>
+        <PersonoversiktContent />
+      </Suspense>
+    </ErrorBoundary>
+  )
+}
 
 export default Personoversikt

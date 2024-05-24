@@ -1,21 +1,21 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { Sakstype } from '../../types/types.internal'
+import { memo } from 'react'
 
-interface SakstypeProps {
+interface SakstypeEtikettProps {
   sakstype: Sakstype
 }
 
-const Container = styled.div`
-  display: flex;
-`
-
-export const SakstypeEtikett = React.memo(({ sakstype }: SakstypeProps) => {
+export const SakstypeEtikett = memo(({ sakstype }: SakstypeEtikettProps) => {
   return (
     <Container>
       <Oppgaveetikett type={sakstype} showLabel={true} />
     </Container>
   )
 })
+
+const Container = styled.div`
+  display: flex;
+`

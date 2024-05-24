@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -39,7 +38,7 @@ interface SaksoversiktProps {
   henterSaker: boolean
 }
 
-export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebrilleSaker, henterSaker }) => {
+export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: SaksoversiktProps) {
   const kolonner = [
     {
       key: 'MOTTATT',
@@ -195,5 +194,3 @@ export const Saksoversikt: React.FC<SaksoversiktProps> = ({ hotsakSaker, barnebr
     </>
   )
 }
-
-export default Saksoversikt

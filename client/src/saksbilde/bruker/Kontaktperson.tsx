@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Formidler, Kontaktperson as IKontaktperson, KontaktpersonType } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'

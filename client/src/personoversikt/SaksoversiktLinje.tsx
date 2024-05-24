@@ -1,6 +1,6 @@
-import React from 'react'
-import { TabLink } from '../saksbilde/TabLink'
 import { Tabs } from '@navikt/ds-react'
+
+import { TabLink } from '../saksbilde/TabLink'
 import { spacingVar } from '../felleskomponenter/Avstand'
 
 interface SaksoversiktLinjeProps {
@@ -8,7 +8,7 @@ interface SaksoversiktLinjeProps {
   hjelpemidlerCount: number
 }
 
-export const SaksoversiktLinje: React.FC<SaksoversiktLinjeProps> = ({ sakerCount, hjelpemidlerCount }) => {
+export function SaksoversiktLinje({ sakerCount, hjelpemidlerCount }: SaksoversiktLinjeProps) {
   return (
     <Tabs>
       <Tabs.List style={{ padding: `0 ${spacingVar(8)}` }}>

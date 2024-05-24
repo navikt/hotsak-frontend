@@ -1,12 +1,9 @@
-import React from 'react'
-
 import { sorterKronologisk } from '../../../utils/dato'
-
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { HistorikkHendelse } from './HistorikkHendelse'
 import { useHistorikk } from './useHistorikk'
 
-export const Historikk: React.FC = () => {
+export function Historikk() {
   const { hendelser, isError, isLoading } = useHistorikk()
 
   if (isError) {

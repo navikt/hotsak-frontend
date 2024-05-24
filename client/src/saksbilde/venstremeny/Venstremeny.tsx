@@ -1,4 +1,4 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { headerHøydeRem } from '../../GlobalStyles'
@@ -7,7 +7,7 @@ export interface VenstremenyProps {
   width?: string
 }
 
-export function Venstremeny({ width, children }: { width?: string; children: React.ReactNode }) {
+export function Venstremeny({ width, children }: { width?: string; children: ReactNode }) {
   return <Container width={width}>{children}</Container>
 }
 

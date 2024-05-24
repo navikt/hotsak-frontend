@@ -1,12 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Tekst } from '../../felleskomponenter/typografi'
-
-const Container = styled.div`
-  margin-left: 0.9rem;
-  margin-top: 0.5rem;
-`
 
 interface PageCounterProps {
   totalCount: number
@@ -14,7 +8,7 @@ interface PageCounterProps {
   currentPage: number
 }
 
-export const PageCounter: React.FC<PageCounterProps> = ({ pageSize, totalCount, currentPage }) => {
+export function PageCounter({ pageSize, totalCount, currentPage }: PageCounterProps) {
   const førsteSynligeOppgave = pageSize * (currentPage - 1) + 1
   const sisteOppgave = førsteSynligeOppgave + pageSize - 1
 
@@ -30,3 +24,8 @@ export const PageCounter: React.FC<PageCounterProps> = ({ pageSize, totalCount, 
     </>
   )
 }
+
+const Container = styled.div`
+  margin-left: 0.9rem;
+  margin-top: 0.5rem;
+`

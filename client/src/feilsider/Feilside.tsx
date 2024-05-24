@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Accordion, BodyShort, CopyButton, Heading, Link, Panel } from '@navikt/ds-react'

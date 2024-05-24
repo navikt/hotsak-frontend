@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Link as ExternalLink } from '@navikt/ds-react'
@@ -20,7 +20,7 @@ interface TekstCellProps {
   value?: string
 }
 
-export const TekstCell = React.memo(({ value }: TekstCellProps) => {
+export const TekstCell = memo(({ value }: TekstCellProps) => {
   return <Tekst>{value}</Tekst>
 })
 
@@ -30,7 +30,7 @@ interface ExternalLinkCellProps {
   target?: string
 }
 
-export const ExternalLinkCell = React.memo(({ to, value, target }: ExternalLinkCellProps) => {
+export const ExternalLinkCell = memo(({ to, value, target }: ExternalLinkCellProps) => {
   return (
     <div>
       {to ? (
@@ -51,7 +51,7 @@ interface LinkCellProps {
   minLength: number
 }
 
-export const LinkCell = React.memo(({ to, id, minLength, ...rest }: LinkCellProps) => {
+export const LinkCell = memo(({ to, id, minLength, ...rest }: LinkCellProps) => {
   const value = rest.value ?? ''
   return (
     <div data-for={id} data-tip={value}>
@@ -77,7 +77,7 @@ interface EllipsisCellProps {
   minLength: number
 }
 
-export const EllipsisCell = React.memo(({ minLength, ...rest }: EllipsisCellProps) => {
+export const EllipsisCell = memo(({ minLength, ...rest }: EllipsisCellProps) => {
   const value = rest.value ?? ''
   return (
     <TooltipWrapper visTooltip={value.length > minLength} content={value}>

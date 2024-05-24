@@ -1,4 +1,4 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { Alert, Loader } from '@navikt/ds-react'
@@ -42,12 +42,7 @@ const InfoToastWrapper = styled.div<{
   width: ${hotsakRegistrerSøknadHøyreKolonne};
 `
 
-interface ToastProps {
-  bottomPosition: string
-  children: React.ReactNode
-}
-
-export const Toast: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function Toast({ children }: { children: ReactNode }) {
   return (
     <ToastView aria-live="polite">
       <Tekst>{children}</Tekst> <Loader variant="inverted" title="Systemet laster" size="xsmall" />
@@ -55,7 +50,12 @@ export const Toast: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   )
 }
 
-export const InfoToast: React.FC<ToastProps> = ({ children, bottomPosition }) => {
+interface InfoToastProps {
+  bottomPosition: string
+  children: ReactNode
+}
+
+export function InfoToast({ children, bottomPosition }: InfoToastProps) {
   return (
     <InfoToastWrapper $bottomPosition={bottomPosition} aria-live="polite">
       <Alert variant="success">

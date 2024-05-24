@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Pagination } from '@navikt/ds-react'
@@ -13,13 +12,13 @@ const Container = styled.div`
 
 export const PAGE_SIZE = 25
 
-interface PaginationProps {
+interface PagingProps {
   totalCount: number
   currentPage: number
   onPageChange: (...args: any[]) => any
 }
 
-export const Paging: React.FC<PaginationProps> = ({ totalCount, currentPage, onPageChange }) => {
+export function Paging({ totalCount, currentPage, onPageChange }: PagingProps) {
   const totalNumberOfPages = Math.ceil(totalCount / PAGE_SIZE)
   const hasMultiplePages = totalNumberOfPages > 1
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import { GreitÅViteFaktum, GreitÅViteType } from '../../types/types.internal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'

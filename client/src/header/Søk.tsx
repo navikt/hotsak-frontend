@@ -1,11 +1,10 @@
-import React from 'react'
-
+import { useState } from 'react'
 import { Search } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
-export const Søk: React.FC<{ onSearch: (...args: any[]) => any }> = ({ onSearch }) => {
-  const [søketekst, setSøketekst] = React.useState<string>('')
+export function Søk({ onSearch }: { onSearch: (...args: any[]) => any }) {
+  const [søketekst, setSøketekst] = useState<string>('')
 
   return (
     <form

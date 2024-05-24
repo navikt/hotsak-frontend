@@ -1,4 +1,4 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -14,10 +14,10 @@ const ClickableRow = styled(Table.Row)`
 
 interface LinkRowProps {
   path: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
-export const LinkRow: React.FC<LinkRowProps> = ({ path, children }) => {
+export function LinkRow({ path, children }: LinkRowProps) {
   const navigate = useNavigate()
   return (
     <ClickableRow

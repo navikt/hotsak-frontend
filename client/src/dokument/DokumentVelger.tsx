@@ -1,4 +1,3 @@
-import React from 'react'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { BodyShort, Link, Table, Tooltip } from '@navikt/ds-react'
 

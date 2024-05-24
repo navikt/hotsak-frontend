@@ -1,8 +1,7 @@
-import React from 'react'
+import { memo } from 'react'
 import styled from 'styled-components'
 
 import { sorterKronologisk } from '../../../utils/dato'
-
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { KolonneTittel } from '../Høyrekolonne'
 import { BrevKort } from './BrevKort'
@@ -13,7 +12,7 @@ export interface UtgåendeBrevProps {
   sakId: string
 }
 
-export const UtgåendeBrev = React.memo((props: UtgåendeBrevProps) => {
+export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
   const { sakId } = props
 
   const { data: saksdokumenter, isLoading } = useSaksdokumenter(sakId)

@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import { Button, Heading, Select } from '@navikt/ds-react'

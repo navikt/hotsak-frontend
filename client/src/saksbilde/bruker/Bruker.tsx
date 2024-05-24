@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, Tooltip } from '@navikt/ds-react'
 
 import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'

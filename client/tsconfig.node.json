@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "esnext",
-    "moduleResolution": "node"
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
   "include": ["vite.config.mts", "vite-html-plugin.mts", "vite-middleware-plugin.mts"]
 }

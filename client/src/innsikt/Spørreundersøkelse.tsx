@@ -1,9 +1,11 @@
+import { useRef } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+
+import { Alert, Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
+
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
-import { FormProvider, useForm } from 'react-hook-form'
-import { Alert, Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
 import { Spørsmål } from './Spørsmål'
-import React, { useRef } from 'react'
 import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
 import { logDebug } from '../utvikling/logDebug'
 

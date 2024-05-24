@@ -1,4 +1,3 @@
-import React from 'react'
 import { Spørreundersøkelse } from '../innsikt/Spørreundersøkelse'
 import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'

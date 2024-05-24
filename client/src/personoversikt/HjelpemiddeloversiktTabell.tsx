@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Table } from '@navikt/ds-react'
@@ -22,15 +21,12 @@ const ScrollWrapper = styled.div`
   overflow: auto;
 `
 
-interface HjelpemiddeloversiktProps {
+interface HjelpemiddeloversiktTabellProps {
   artikler: HjelpemiddelArtikkel[]
   henterHjelpemiddeloversikt: boolean
 }
 
-export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = ({
-  artikler,
-  henterHjelpemiddeloversikt,
-}) => {
+export function HjelpemiddeloversiktTabell({ artikler, henterHjelpemiddeloversikt }: HjelpemiddeloversiktTabellProps) {
   const kolonner = [
     {
       key: 'UTLÅNSDATO',
@@ -114,5 +110,3 @@ export const HjelpemiddeloversiktTabell: React.FC<HjelpemiddeloversiktProps> = (
     </>
   )
 }
-
-export default HjelpemiddeloversiktTabell

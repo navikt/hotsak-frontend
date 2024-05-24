@@ -1,16 +1,15 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { Heading, HeadingProps, HelpText, HelpTextProps } from '@navikt/ds-react'
 
-interface Props {
+interface HeadingMedHjelpetekstProps {
   children: string
   hjelpetekst: string
   level?: HeadingProps['level']
   placement?: HelpTextProps['placement']
 }
 
-export const HeadingMedHjelpetekst: React.FC<Props> = (props) => {
+export function HeadingMedHjelpetekst(props: HeadingMedHjelpetekstProps) {
   const { children, hjelpetekst, placement, level } = props
   return (
     <Container>

@@ -1,8 +1,9 @@
-import React from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
+import { memo, Suspense } from 'react'
 
 import { HGrid } from '@navikt/ds-react'
+
 import { hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Sakstype } from '../types/types.internal'
@@ -24,7 +25,7 @@ import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { UtleveringCard } from './venstremeny/UtleveringCard'
 import { formaterAdresse } from '../utils/formater'
 
-const SaksbildeContent = React.memo(() => {
+const SaksbildeContent = memo(() => {
   const { sak, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
@@ -118,8 +119,8 @@ const SaksbildeContent = React.memo(() => {
 
 export const Søknadsbilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<SakLoader />}>
+    <Suspense fallback={<SakLoader />}>
       <SaksbildeContent />
-    </React.Suspense>
+    </Suspense>
   </ErrorBoundary>
 )

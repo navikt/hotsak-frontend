@@ -19,9 +19,9 @@ export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ barnebrillesak
   }),
 
   http.put<VilkårParams, OppdaterVilkårRequest>('/api/sak/:sakId/vilkar/:vilkarId', async ({ request, params }) => {
-    const { sakId, vilkarId } = params
+    const { vilkarId } = params
     const oppdaterVilkårRequest = await request.json()
-    await barnebrillesakStore.oppdaterVilkår(sakId, vilkarId, oppdaterVilkårRequest)
+    await barnebrillesakStore.oppdaterVilkår(vilkarId, oppdaterVilkårRequest)
     return respondNoContent()
   }),
 ]

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Tekst } from '../felleskomponenter/typografi'
 import { BekreftelsesModal } from './komponenter/BekreftelsesModal'
 
@@ -12,14 +10,14 @@ interface OvertaSakModalProps {
   type?: string
 }
 
-export const OvertaSakModal: React.FC<OvertaSakModalProps> = ({
+export function OvertaSakModal({
   open,
   saksbehandler,
   onBekreft,
   loading,
   onClose,
   type = 'sak',
-}) => {
+}: OvertaSakModalProps) {
   return (
     <BekreftelsesModal
       onBekreft={onBekreft}

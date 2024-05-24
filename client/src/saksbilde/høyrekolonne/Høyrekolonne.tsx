@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'

@@ -6,7 +6,7 @@ import { Avstand } from '../felleskomponenter/Avstand'
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
 import { Brødtekst } from '../felleskomponenter/typografi'
 import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
-import { SakstypeEtikett } from '../oppgaveliste/kolonner/SaksType'
+import { SakstypeEtikett } from '../oppgaveliste/kolonner/SakstypeEtikett.tsx'
 
 export interface KnyttTilEksisterendeSakProps {
   åpneSaker: Saksoversikt_Sak[]

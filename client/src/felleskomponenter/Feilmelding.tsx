@@ -1,4 +1,4 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
@@ -11,7 +11,7 @@ const FeilmeldingAlert = styled(Alert)`
   padding: 0.5rem;
 `
 
-export const Feilmelding: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function Feilmelding({ children }: { children: ReactNode }) {
   return (
     <FeilmeldingAlert size="small" variant="error">
       <Tekst>{children}</Tekst>

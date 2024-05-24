@@ -1,11 +1,9 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { BodyLong, BodyShort, Label } from '@navikt/ds-react'
 
 import { formaterDato } from '../../../utils/dato'
 import { storForbokstavIAlleOrd } from '../../../utils/formater'
-
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
@@ -14,30 +12,9 @@ import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 import { useSak } from '../../useSak'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
+import { Fragment } from 'react'
 
-const HjelpemiddeloversiktContainer = styled.div`
-  padding-top: 1rem;
-`
-
-const Artikkeloverskrift = styled(Label)`
-  padding-top: 0.2rem;
-`
-
-const grupperPåKategori = (artikler: HjelpemiddelArtikkel[]) => {
-  return artikler.reduce<Record<string, HjelpemiddelArtikkel[]>>((gruppe, artikkel) => {
-    const { isoKategori, grunndataKategoriKortnavn } = artikkel
-
-    const grupperingsNøkkel = grunndataKategoriKortnavn ? grunndataKategoriKortnavn : isoKategori
-
-    if (!gruppe[grupperingsNøkkel]) {
-      gruppe[grupperingsNøkkel] = []
-    }
-    gruppe[grupperingsNøkkel].push(artikkel)
-    return gruppe
-  }, {})
-}
-
-export const Hjelpemiddeloversikt: React.FC = () => {
+export function Hjelpemiddeloversikt() {
   const { sak } = useSak()
   const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak } = useHjelpemiddeloversikt(
     sak?.data.personinformasjon.fnr,
@@ -93,11 +70,11 @@ export const Hjelpemiddeloversikt: React.FC = () => {
           .sort()
           .map((kategori) => {
             return (
-              <React.Fragment key={kategori}>
+              <Fragment key={kategori}>
                 <Artikkeloverskrift size="small">{kategori}</Artikkeloverskrift>
                 <Artikler artikler={artiklerPrKategori[kategori]} />
                 <Strek />
-              </React.Fragment>
+              </Fragment>
             )
           })}
       </HjelpemiddeloversiktContainer>
@@ -109,7 +86,7 @@ interface ArtiklerProps {
   artikler: HjelpemiddelArtikkel[]
 }
 
-const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
+function Artikler({ artikler }: ArtiklerProps) {
   return (
     <>
       {artikler.map((artikkel) => {
@@ -142,4 +119,26 @@ const Artikler: React.FC<ArtiklerProps> = ({ artikler }) => {
       })}
     </>
   )
+}
+
+const HjelpemiddeloversiktContainer = styled.div`
+  padding-top: 1rem;
+`
+
+const Artikkeloverskrift = styled(Label)`
+  padding-top: 0.2rem;
+`
+
+function grupperPåKategori(artikler: HjelpemiddelArtikkel[]) {
+  return artikler.reduce<Record<string, HjelpemiddelArtikkel[]>>((gruppe, artikkel) => {
+    const { isoKategori, grunndataKategoriKortnavn } = artikkel
+
+    const grupperingsNøkkel = grunndataKategoriKortnavn ? grunndataKategoriKortnavn : isoKategori
+
+    if (!gruppe[grupperingsNøkkel]) {
+      gruppe[grupperingsNøkkel] = []
+    }
+    gruppe[grupperingsNøkkel].push(artikkel)
+    return gruppe
+  }, {})
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
 import { Oppgave } from '../../types/types.internal'
@@ -8,7 +8,7 @@ interface TildelingProps {
   oppgave: Oppgave
 }
 
-export const Tildeling = React.memo(({ oppgave }: TildelingProps) => {
+export const Tildeling = memo(({ oppgave }: TildelingProps) => {
   if (oppgave.saksbehandler) {
     return <EllipsisCell minLength={15} value={oppgave.saksbehandler.navn} />
   }

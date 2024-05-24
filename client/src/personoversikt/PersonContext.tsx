@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 
-type PersonContextType = {
+interface PersonContextType {
   fodselsnummer: string
   setFodselsnummer: (fødselsnummer: string) => void
 }
@@ -11,9 +11,9 @@ const initialState = {
   setFodselsnummer: () => {},
 }
 
-const PersonContext = React.createContext<PersonContextType>(initialState)
+const PersonContext = createContext<PersonContextType>(initialState)
 
-const PersonProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+function PersonProvider({ children }: { children: ReactNode }) {
   const [fodselsnummer, setFodselsnummer] = useState(initialState.fodselsnummer)
 
   return <PersonContext.Provider value={{ fodselsnummer, setFodselsnummer }}>{children}</PersonContext.Provider>

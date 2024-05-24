@@ -9,7 +9,6 @@ import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
-
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
@@ -18,7 +17,7 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
+import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { Card } from './Card'
 import { CardTitle } from './CardTitle'
 import { useOverførGosys } from '../useOverførGosys'
@@ -152,7 +151,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
               Overfør til Gosys
             </Knapp>
           </Knappepanel>
-          <BekreftelsesModal
+          <BekreftelseModal
             heading="Vil du innvilge søknaden?"
             open={visVedtakModal}
             width="600px"
@@ -192,7 +191,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
                 value={oebsProblemsammendrag}
               />
             </Avstand>
-          </BekreftelsesModal>
+          </BekreftelseModal>
           <OverførGosysModal
             {...overførGosys}
             onBekreft={async (spørreundersøkelse, besvarelse, svar) => {

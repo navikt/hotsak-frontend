@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
@@ -9,10 +9,13 @@ import { EndringsloggInnslag, MerkSomLestCallback } from './useEndringslogg'
 import { format } from 'date-fns'
 import { useOnScreen } from './useOnScreen'
 
-export const Endringslogg: React.FC<{
+export function Endringslogg({
+  endringslogginnslag,
+  merkSomLest,
+}: {
   endringslogginnslag: ReadonlyArray<EndringsloggInnslag>
   merkSomLest: MerkSomLestCallback
-}> = ({ endringslogginnslag, merkSomLest }) => {
+}) {
   return (
     <>
       <Overskrift as="h2">Nytt i HOTSAK</Overskrift>
@@ -25,10 +28,7 @@ export const Endringslogg: React.FC<{
   )
 }
 
-const Innslag: React.FC<{ innslag: EndringsloggInnslag; merkSomLest: MerkSomLestCallback }> = ({
-  innslag,
-  merkSomLest,
-}) => {
+function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkSomLest: MerkSomLestCallback }) {
   const dato = format(innslag.dato, 'PPP')
   const ulest = !innslag.lest
   const timeoutRef = useRef<number | null>(null)

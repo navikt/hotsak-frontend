@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
@@ -17,7 +17,7 @@ import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { BekreftelsesModal } from '../komponenter/BekreftelsesModal'
+import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { Card } from '../venstremeny/Card'
 import { CardTitle } from '../venstremeny/CardTitle'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
@@ -26,13 +26,6 @@ interface BestillingCardProps {
   bestilling: Sak
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
 }
-
-export const TagGrid = styled.div`
-  display: grid;
-  grid-template-columns: 4.3rem auto;
-  grid-column-gap: 0.75rem;
-  grid-row-gap: 0.125rem;
-`
 
 const Knapp = styled(Button)`
   min-height: 0;
@@ -46,7 +39,7 @@ const StatusTekst = styled.div`
   padding-top: 0.5rem;
 `
 
-export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) => {
+export function BestillingCard({ bestilling }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -177,7 +170,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
             Avvis
           </Knapp>
         </Knappepanel>
-        <BekreftelsesModal
+        <BekreftelseModal
           width={'600px'}
           open={visOpprettOrdeModal}
           heading="Vil du godkjenne bestillingen?"
@@ -198,7 +191,7 @@ export const BestillingCard: React.FC<BestillingCardProps> = ({ bestilling }) =>
           <Brødtekst>
             Merk at det kan gå noen minutter før ordren er klargjort. Du trenger ikke gjøre noe mer med saken.
           </Brødtekst>
-        </BekreftelsesModal>
+        </BekreftelseModal>
         <AvvisBestillingModal
           open={visAvvisModal}
           onBekreft={(tilbakemelding) => {

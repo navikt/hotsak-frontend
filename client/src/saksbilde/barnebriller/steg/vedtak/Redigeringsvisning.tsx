@@ -31,7 +31,7 @@ interface RedigeringsvisningProps {
   mutate: (...args: any[]) => any
 }
 
-export const Redigeringsvisning: React.FC<RedigeringsvisningProps> = (props) => {
+export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const { sak, mutate } = props
   const { setStep } = useManuellSaksbehandlingContext()
   const [loading, setLoading] = useState(false)

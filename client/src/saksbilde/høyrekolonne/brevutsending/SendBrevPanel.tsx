@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 import { Button, Heading, Panel, Radio, RadioGroup, Select, Skeleton } from '@navikt/ds-react'
 
@@ -14,7 +14,7 @@ import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { BekreftelsesModal } from '../../komponenter/BekreftelsesModal'
+import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
@@ -24,7 +24,7 @@ export interface SendBrevProps {
   lesevisning: boolean
 }
 
-export const SendBrevPanel = React.memo((props: SendBrevProps) => {
+export const SendBrevPanel = memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
   const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
   const brevtekst = data?.data.brevtekst
@@ -210,7 +210,7 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
           setVisForhåndsvisningsModal(false)
         }}
       />
-      <BekreftelsesModal
+      <BekreftelseModal
         heading="Vil du sende brevet?"
         buttonLabel="Send brev"
         open={visSendBrevModal}
@@ -221,8 +221,8 @@ export const SendBrevPanel = React.memo((props: SendBrevProps) => {
         }}
       >
         <Brødtekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Brødtekst>
-      </BekreftelsesModal>
-      <BekreftelsesModal
+      </BekreftelseModal>
+      <BekreftelseModal
         heading="Vil du slette utkastet?"
         buttonLabel="Slett utkast"
         buttonVariant="danger"

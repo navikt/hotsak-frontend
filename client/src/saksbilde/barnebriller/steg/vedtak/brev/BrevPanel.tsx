@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Loader } from '@navikt/ds-react'
@@ -25,7 +25,7 @@ interface BrevPanelProps {
   fullSize: boolean
 }
 
-export const BrevPanel: React.FC<BrevPanelProps> = (props) => {
+export function BrevPanel(props: BrevPanelProps) {
   const { sakId, brevtype, fullSize } = props
   const { hentedeBrev, hentForhåndsvisning, isDokumentError } = useBrev()
   const hentetDokument = hentedeBrev[brevtype]

@@ -30,7 +30,7 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
     .reduce(summarize, 0)
 }
 
-export const HjelpemiddelListe: React.FC<HjelpemiddelListeProps> = ({ tittel, forenkletVisning = false, sak }) => {
+export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: HjelpemiddelListeProps) {
   const { hjelpemidler } = sak
   const { artikler } = useArtiklerForSak(sak.sakId)
 

@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import { Button, Modal } from '@navikt/ds-react'
 
-interface BekreftelsesModalProps {
+interface BekreftelseModalProps {
   heading: string
   open: boolean
   buttonVariant?:
@@ -21,7 +21,7 @@ interface BekreftelsesModalProps {
   children?: React.ReactNode
 }
 
-export const BekreftelsesModal: React.FC<BekreftelsesModalProps> = ({
+export function BekreftelseModal({
   open,
   onBekreft,
   loading,
@@ -31,7 +31,7 @@ export const BekreftelsesModal: React.FC<BekreftelsesModalProps> = ({
   buttonVariant = 'primary',
   buttonLabel,
   children,
-}) => {
+}: BekreftelseModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <Modal

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
@@ -11,7 +11,7 @@ export interface TabLinkProps {
   icon?: ReactNode
 }
 
-export const TabLink: React.FC<TabLinkProps> = ({ children, to, title, icon }) => {
+export function TabLink({ children, to, title, icon }: TabLinkProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const active = location.pathname === to

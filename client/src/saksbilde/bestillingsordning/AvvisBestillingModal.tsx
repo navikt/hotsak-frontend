@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 import { Button, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
@@ -14,7 +14,7 @@ interface AvvisBestillingModalProps {
   onClose(): void
 }
 
-export const AvvisBestillingModal: React.FC<AvvisBestillingModalProps> = ({ open, onBekreft, loading, onClose }) => {
+export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: AvvisBestillingModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   const [valgtArsak, setValgtArsak] = useState<string>('')
   const [begrunnelse, setBegrunnelse] = useState<string>('')

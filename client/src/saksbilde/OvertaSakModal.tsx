@@ -1,5 +1,5 @@
 import { Tekst } from '../felleskomponenter/typografi'
-import { BekreftelsesModal } from './komponenter/BekreftelsesModal'
+import { BekreftelseModal } from './komponenter/BekreftelseModal'
 
 interface OvertaSakModalProps {
   open: boolean
@@ -19,7 +19,7 @@ export function OvertaSakModal({
   type = 'sak',
 }: OvertaSakModalProps) {
   return (
-    <BekreftelsesModal
+    <BekreftelseModal
       onBekreft={onBekreft}
       width="600px"
       open={open}
@@ -31,6 +31,6 @@ export function OvertaSakModal({
       heading={`Vil du overta ${type}en?`}
     >
       <Tekst>{`Denne ${type}en er allerede tildelt ${saksbehandler}, er du sikker på at du vil overta ${type}en?`}</Tekst>
-    </BekreftelsesModal>
+    </BekreftelseModal>
   )
 }

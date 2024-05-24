@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import styled from 'styled-components'
 
 import { FloppydiskIcon } from '@navikt/aksel-icons'
@@ -23,7 +23,7 @@ interface EndreHjelpemiddelProps {
   onAvbryt: () => void
 }
 
-const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+function EtikettKolonne({ children }: { children?: ReactNode }) {
   return <Kolonne $width="150px">{children}</Kolonne>
 }
 
@@ -33,14 +33,14 @@ const EndreHjelpemiddelPanel = styled(Panel)`
 
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
-export const EndreHjelpemiddel: React.FC<EndreHjelpemiddelProps> = ({
+export function EndreHjelpemiddel({
   hjelpemiddelId: hjelpemiddelId,
   hmsNr: hmsNr,
   hmsBeskrivelse: hmsBeskrivelse,
   nåværendeHmsNr: nåværendeHmsNr,
   onLagre,
   onAvbryt,
-}) => {
+}: EndreHjelpemiddelProps) {
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')

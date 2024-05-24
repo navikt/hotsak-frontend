@@ -95,7 +95,7 @@ function PersonoversiktContent() {
   )
 }
 
-const LasterPersonoversikt: React.FC = () => {
+function LasterPersonoversikt() {
   return (
     <>
       <LasterPersonlinje />

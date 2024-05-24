@@ -8,7 +8,7 @@ interface DokumenterProps {
   dokumenter: Dokument[]
 }
 
-export const Dokumenter: React.FC<DokumenterProps> = (props) => {
+export function Dokumenter(props: DokumenterProps) {
   const { dokumenter } = props
   const { valgtDokument, setValgtDokument } = useDokumentContext()
 

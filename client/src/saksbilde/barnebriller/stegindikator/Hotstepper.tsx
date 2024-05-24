@@ -1,11 +1,13 @@
-import { Box } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
+
+import { Box } from '@navikt/ds-react'
+
 import { StegType, StepType } from '../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../ManuellSaksbehandlingTabContext'
 import { Stepper } from '../stepper'
 
-export const Hotstepper: React.FC<{ steg: StegType; lesemodus: boolean }> = ({ steg, lesemodus }) => {
+export function Hotstepper({ steg, lesemodus }: { steg: StegType; lesemodus: boolean }) {
   const { step, setStep } = useManuellSaksbehandlingContext()
 
   useEffect(() => {

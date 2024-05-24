@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import { memo, Suspense, useEffect } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
-
 import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
 import { Flex } from '../../../../felleskomponenter/Flex'
@@ -18,7 +17,7 @@ import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
-const RegistrerSøknadContent: React.FC = React.memo(() => {
+const RegistrerSøknadContent = memo(() => {
   const { sak, isLoading, isError } = useBarnebrillesak()
   const { dokumenter } = useJournalposter()
   const { setValgtDokument } = useDokumentContext()
@@ -75,8 +74,8 @@ const AutoFlexContainer = styled.div`
 
 export const RegistrerSøknad = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <React.Suspense fallback={<LasterRegistrerSøknadBilde />}>
+    <Suspense fallback={<LasterRegistrerSøknadBilde />}>
       <RegistrerSøknadContent />
-    </React.Suspense>
+    </Suspense>
   </ErrorBoundary>
 )

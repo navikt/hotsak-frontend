@@ -37,7 +37,7 @@ export function JournalpostVisning() {
 
   const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.id !== saksbehandler.id
 
-  const StatusVisning: React.FC = () => {
+  function StatusVisning() {
     if (!journalpost) return <></>
     else if (journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler) {
       return <Brødtekst>{`Oppgaven er tildelt saksbehandler ${journalpost.saksbehandler?.navn}`}</Brødtekst>

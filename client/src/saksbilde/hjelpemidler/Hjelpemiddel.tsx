@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { Fragment, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
@@ -7,7 +7,6 @@ import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 
 import { putEndreHjelpemiddel } from '../../io/http'
 import { storForbokstavIAlleOrd } from '../../utils/formater'
-
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
@@ -72,7 +71,7 @@ const TilleggsInfo = styled(Rad)`
   }
 `
 
-const EtikettKolonne: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+function EtikettKolonne({ children }: { children?: ReactNode }) {
   return <Kolonne $width="150px">{children}</Kolonne>
 }
 
@@ -86,7 +85,7 @@ interface HjelpemiddelProps {
   sak: Sak
 }
 
-export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenkletVisning, sak }) => {
+export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: HjelpemiddelProps) {
   const { personinformasjon, status, sakId, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
@@ -196,7 +195,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
               <TilleggsInfo>
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
-                    <React.Fragment key={tilleggsinfo.tittel}>
+                    <Fragment key={tilleggsinfo.tittel}>
                       <Rad>
                         <Etikett>{`${storForbokstavIAlleOrd(tilleggsinfo.tittel)}:`}</Etikett>
                       </Rad>
@@ -207,7 +206,7 @@ export const Hjelpemiddel: React.FC<HjelpemiddelProps> = ({ hjelpemiddel, forenk
                           ))}
                         </Kolonne>
                       </Rad>
-                    </React.Fragment>
+                    </Fragment>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (

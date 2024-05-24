@@ -22,7 +22,7 @@ const Container = styled.div`
   overflow: auto;
 `
 
-export const RegistrerSøknadLesevisning: React.FC = () => {
+export function RegistrerSøknadLesevisning() {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak, isLoading } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()

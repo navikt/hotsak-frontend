@@ -12,7 +12,7 @@ import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
-import { BekreftelsesModal } from '../../../komponenter/BekreftelsesModal'
+import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 
 export function TotrinnskontrollForm() {
@@ -102,7 +102,7 @@ export function TotrinnskontrollForm() {
         </FormProvider>
       )}
 
-      <BekreftelsesModal
+      <BekreftelseModal
         heading="Vil du godkjenne vedtaket?"
         buttonLabel="Godkjenn vedtak"
         open={visGodkjenningModal}
@@ -117,7 +117,7 @@ export function TotrinnskontrollForm() {
         }}
       >
         <Brødtekst>Vedtaket blir fattet og brevet sendes til adressen til barnet.</Brødtekst>
-      </BekreftelsesModal>
+      </BekreftelseModal>
     </>
   )
 }

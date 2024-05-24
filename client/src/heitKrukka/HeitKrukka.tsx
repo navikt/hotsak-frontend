@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import { Modal } from '@navikt/ds-react'
 import { Avstand } from '../felleskomponenter/Avstand'
@@ -9,10 +9,8 @@ export interface HeitKrukkaProps {
   onClose(): void
 }
 
-export const HeitKrukka: React.FC<HeitKrukkaProps> = ({ open, onClose, skjemaUrl }) => {
+export function HeitKrukka({ open, onClose, skjemaUrl }: HeitKrukkaProps) {
   const ref = useRef<HTMLDialogElement>(null)
-
-
   return (
     <Modal
       ref={ref}

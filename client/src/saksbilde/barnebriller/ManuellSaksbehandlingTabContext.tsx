@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 
 import { HøyrekolonneTabs, StepType } from '../../types/types.internal'
 
@@ -18,9 +18,9 @@ const initialState = {
   setValgtSidebarTab: () => {},
 }
 
-const ManuellSaksbehandlingContext = React.createContext<ManuellSaksbehandlingContextType>(initialState)
+const ManuellSaksbehandlingContext = createContext<ManuellSaksbehandlingContextType>(initialState)
 
-const ManuellSaksbehandlingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+function ManuellSaksbehandlingProvider({ children }: { children: ReactNode }) {
   const [valgtSidebarTab, setValgtSidebarTab] = useState(initialState.valgtSidebarTab)
   const [step, setStep] = useState(initialState.step)
 

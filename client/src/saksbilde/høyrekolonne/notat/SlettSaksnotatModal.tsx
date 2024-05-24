@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import type { KeyedMutator } from 'swr'
+
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { slettSaksnotat } from '../../../io/http'
 import type { Notat } from '../../../types/types.internal'
-import { BekreftelsesModal } from '../../komponenter/BekreftelsesModal'
+import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 
 export interface SlettSaksnotatModalProps {
   sakId: string
@@ -27,7 +28,7 @@ export function SlettSaksnotatModal(props: SlettSaksnotatModalProps) {
   }
 
   return (
-    <BekreftelsesModal
+    <BekreftelseModal
       open={!!notatId}
       onBekreft={onDelete}
       onClose={onClose}
@@ -37,6 +38,6 @@ export function SlettSaksnotatModal(props: SlettSaksnotatModalProps) {
       buttonVariant="danger"
     >
       <Brødtekst>Er du sikker på at du vil slette notatet?</Brødtekst>
-    </BekreftelsesModal>
+    </BekreftelseModal>
   )
 }

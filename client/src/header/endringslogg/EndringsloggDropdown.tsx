@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
 
 import { InformationSquareIcon } from '@navikt/aksel-icons'
@@ -9,7 +9,7 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './useEndringslogg'
 
-export const EndringsloggDropdown: React.FC = () => {
+export function EndringsloggDropdown() {
   const endringslogg = useEndringslogg()
   const dropdownMenuRef = useRef<HTMLDivElement>(null)
   return (

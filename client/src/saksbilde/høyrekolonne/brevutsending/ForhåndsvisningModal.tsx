@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 
 import { Modal } from '@navikt/ds-react'
 
@@ -12,7 +12,7 @@ interface ForhåndsvisningModalProps {
   onClose(): void
 }
 
-export const ForhåndsvisningsModal: React.FC<ForhåndsvisningModalProps> = ({ open, sakId, brevtype, onClose }) => {
+export function ForhåndsvisningsModal({ open, sakId, brevtype, onClose }: ForhåndsvisningModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <Modal

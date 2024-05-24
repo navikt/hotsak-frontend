@@ -8,11 +8,7 @@ interface UtlevertProps {
   utlevertInfo: UtlevertInfo
 }
 
-const UtlevertTekst = styled('div')`
-  padding-left: 0.2rem;
-`
-
-export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertInfo }) => {
+export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
   if (alleredeUtlevert) {
     let utlevertTekst
 
@@ -39,3 +35,7 @@ export const Utlevert: React.FC<UtlevertProps> = ({ alleredeUtlevert, utlevertIn
   }
   return null
 }
+
+const UtlevertTekst = styled('div')`
+  padding-left: 0.2rem;
+`

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { storForbokstavIAlleOrd } from '../utils/formater'
-
-import { Sakstype } from '../types/types.internal'
 import { BodyShort } from '@navikt/ds-react'
+
+import { storForbokstavIAlleOrd } from '../utils/formater'
+import { Sakstype } from '../types/types.internal'
 
 interface EtikettProps {
   størrelse?: 's' | 'l'
@@ -58,18 +58,12 @@ const TilskuddEtikett = styled(Etikett)`
   }
 `
 
-interface OppgaveetikettProps extends EtikettProps {
-  type: Sakstype
-  showLabel?: boolean
-  labelLinkTo?: string
-}
-
 interface LabelProps {
   labelLinkTo?: string
   children: React.ReactNode
 }
 
-const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
+function Label({ labelLinkTo, children }: LabelProps) {
   if (labelLinkTo) {
     return (
       <Link to={labelLinkTo}>
@@ -81,12 +75,13 @@ const Label: React.FC<LabelProps> = ({ labelLinkTo, children }) => {
   }
 }
 
-export const Oppgaveetikett: React.FC<OppgaveetikettProps> = ({
-  type,
-  størrelse = 'l',
-  showLabel = false,
-  labelLinkTo,
-}) => {
+interface OppgaveetikettProps extends EtikettProps {
+  type: Sakstype
+  showLabel?: boolean
+  labelLinkTo?: string
+}
+
+export function Oppgaveetikett({ type, størrelse = 'l', showLabel = false, labelLinkTo }: OppgaveetikettProps) {
   switch (type) {
     case Sakstype.SØKNAD:
       return showLabel ? (

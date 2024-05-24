@@ -1,5 +1,5 @@
 import { formatISO } from 'date-fns'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
@@ -9,7 +9,6 @@ import { Button, Loader } from '@navikt/ds-react'
 import { postVilkårsvurdering } from '../../../../io/http'
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { tilDato } from '../../../../utils/dato'
-
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import {
@@ -30,7 +29,7 @@ const Container = styled.div`
   overflow: auto;
 `
 
-export const RegistrerSøknadSkjema: React.FC = () => {
+export function RegistrerSøknadSkjema() {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
   const { sak, isLoading, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()

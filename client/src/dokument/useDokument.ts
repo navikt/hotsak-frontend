@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { httpGetPdf, PDFResponse } from '../io/http'
-
-import { Ressurs } from '../types/types.internal'
+import type { Ressurs } from '../types/types.internal'
 import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from '../io/ressursFunksjoner'
 
 export interface DokumentResponse {
@@ -16,7 +15,7 @@ export interface DokumentResponse {
 const journalpostBasePath = 'api/journalpost'
 
 export function useDokument(): DokumentResponse {
-  const [hentetDokument, settHentetDokument] = React.useState<Ressurs<string>>(byggTomRessurs())
+  const [hentetDokument, settHentetDokument] = useState<Ressurs<string>>(byggTomRessurs())
   const [isPdfError, setIsPdfError] = useState<any>(null)
 
   const nullstillDokument = () => {

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { forwardRef, ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { BodyLong, BodyShort, Detail, Heading, Label } from '@navikt/ds-react'
@@ -7,7 +7,7 @@ export function Tekst({ children }: { children: ReactNode }) {
   return <BodyShort size="small">{children}</BodyShort>
 }
 
-export const TekstMedEllipsis = React.forwardRef<HTMLParagraphElement, { children: ReactNode }>(
+export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: ReactNode }>(
   ({ children, ...rest }, ref) => (
     <BodyShort ref={ref} size="small" {...rest} truncate>
       {children}

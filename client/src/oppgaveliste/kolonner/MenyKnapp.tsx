@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
@@ -42,7 +42,7 @@ export const MenyKnapp = ({
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
 
-  const menyClick = (event: React.MouseEvent) => {
+  const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
   }
 
@@ -66,7 +66,7 @@ export const MenyKnapp = ({
     tildeltSaksbehandler.id === saksbehandler.id &&
     status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
-  const overtaSak = (event: React.MouseEvent) => {
+  const overtaSak = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return
@@ -80,7 +80,7 @@ export const MenyKnapp = ({
       })
   }
 
-  const fjernTildeling = (event: React.MouseEvent) => {
+  const fjernTildeling = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return

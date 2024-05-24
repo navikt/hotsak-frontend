@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
@@ -19,7 +19,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
-  const tildel = (event: React.MouseEvent) => {
+  const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (gåTilSak) {

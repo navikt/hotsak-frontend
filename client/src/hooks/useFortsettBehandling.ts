@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { putOppdaterStatus } from '../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { OppgaveStatusType } from '../types/types.internal'
 
@@ -14,7 +13,7 @@ export function useFortsettBehandling({ sakId, gåTilSak = false }: { sakId: str
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
 
-  const onFortsettBehandling = (event: React.MouseEvent) => {
+  const onFortsettBehandling = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (gåTilSak) {

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -60,7 +61,7 @@ const TilskuddEtikett = styled(Etikett)`
 
 interface LabelProps {
   labelLinkTo?: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
 function Label({ labelLinkTo, children }: LabelProps) {

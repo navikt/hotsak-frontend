@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { Button, Select } from '@navikt/ds-react'
@@ -38,7 +39,7 @@ export function FilterDropdown({ label, value, options, handleChange }: FilterPr
 }
 
 interface FiltersProps {
-  children: React.ReactNode
+  children: ReactNode
   onClear: (...args: any[]) => any
 }
 

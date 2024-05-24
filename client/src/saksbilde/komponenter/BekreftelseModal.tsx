@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { ReactNode, useRef } from 'react'
 
 import { Button, Modal } from '@navikt/ds-react'
 
@@ -15,10 +15,10 @@ interface BekreftelseModalProps {
     | 'danger'
   buttonLabel: string
   width?: 'medium' | 'small' | number | `${number}${string}`
-  onBekreft: () => void
   loading: boolean
-  onClose: () => void
-  children?: React.ReactNode
+  children?: ReactNode
+  onBekreft(): void
+  onClose(): void
 }
 
 export function BekreftelseModal({

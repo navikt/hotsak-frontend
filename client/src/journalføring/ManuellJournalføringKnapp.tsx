@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
+import styled from 'styled-components'
 
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-
-import styled from 'styled-components'
 import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
@@ -14,7 +13,8 @@ export interface ManuellJournalføringKnappProps {
   oppgaveId: string
   status: Oppgavestatus
   tildeltSaksbehandler?: Saksbehandler
-  onMutate: (...args: any[]) => any
+
+  onMutate(...args: any[]): any
 }
 
 export function ManuellJournalføringKnapp({
@@ -26,7 +26,7 @@ export function ManuellJournalføringKnapp({
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
 
-  const menyClick = (event: React.MouseEvent) => {
+  const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
   }
 
@@ -38,7 +38,7 @@ export function ManuellJournalføringKnapp({
   const kanOvertaOppgave =
     tildeltSaksbehandler && tildeltSaksbehandler.id !== saksbehandler.id && kanOvertaOppgaveStatuser.includes(status)
 
-  const overtaSak = (event: React.MouseEvent) => {
+  const overtaSak = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return
@@ -52,7 +52,7 @@ export function ManuellJournalføringKnapp({
       })
   }
 
-  const fjernTildeling = (event: React.MouseEvent) => {
+  const fjernTildeling = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
@@ -22,7 +22,7 @@ export function useTildeling({
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
 
-  const onTildel = (event: React.MouseEvent) => {
+  const onTildel = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (gåTilSak) {

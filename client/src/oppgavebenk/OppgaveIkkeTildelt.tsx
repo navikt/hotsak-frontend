@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
@@ -7,7 +7,7 @@ import { Button } from '@navikt/ds-react'
 import { postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { OppgaveV2, Oppgavetype } from '../types/types.internal'
+import { Oppgavetype, OppgaveV2 } from '../types/types.internal'
 
 interface OppgaveIkkeTildeltProps {
   oppgave: OppgaveV2
@@ -22,7 +22,7 @@ export const OppgaveIkkeTildelt = ({ oppgave, gåTilSak = false }: OppgaveIkkeTi
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
-  const tildel = (event: React.MouseEvent) => {
+  const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (gåTilSak) {

@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Link as ExternalLink } from '@navikt/ds-react'
@@ -8,7 +8,7 @@ import { Tekst, TekstMedEllipsis } from '../typografi'
 import { DataCell } from './KolonneHeader'
 
 interface DataCelleProps {
-  children: React.ReactNode
+  children: ReactNode
   width: number
 }
 

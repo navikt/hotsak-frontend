@@ -1,9 +1,10 @@
 import cl from 'clsx'
-import React, { forwardRef, useContext } from 'react'
-import { StepperContext } from './context'
+import { AnchorHTMLAttributes, forwardRef, useContext } from 'react'
 import { Label, OverridableComponent } from '@navikt/ds-react'
 
-export interface StepperStepProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+import { StepperContext } from './context'
+
+export interface StepperStepProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /**
    * Text content by indicator
    */
@@ -25,7 +26,8 @@ export interface StepperStepProps extends React.AnchorHTMLAttributes<HTMLAnchorE
   interactive?: boolean
 }
 
-/* const CompletedIcon = () => (
+/*
+const CompletedIcon = () => (
   <svg
     width="14"
     height="10"
@@ -43,7 +45,8 @@ export interface StepperStepProps extends React.AnchorHTMLAttributes<HTMLAnchorE
     />
   </svg>
 );
- */
+*/
+
 export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = forwardRef(
   (
     {
@@ -51,7 +54,7 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
       children,
       as: Component = 'a',
       unsafe_index = 0,
-      //completed = false,
+      // completed = false,
       interactive,
       ...rest
     },
@@ -77,7 +80,7 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
           'hot-stepper__step--active': activeStep === unsafe_index,
           'hot-stepper__step--behind': activeStep > unsafe_index,
           'hot-stepper__step--non-interactive': !isInteractive,
-          /*"hot-stepper__step--completed": completed,*/
+          // "hot-stepper__step--completed": completed,
         })}
         onClick={(e: any) => {
           isInteractive && context.onStepChange(unsafe_index + 1)
@@ -85,20 +88,23 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
         }}
       >
         {
-          /*completed ? (
+          /*
+          completed ? (
             <span className="hot-stepper__circle hot-stepper__circle--success">
               <CompletedIcon />
             </span>
-          ) :*/ <Label className="hot-stepper__text__only" as="span" aria-hidden="true">
+          ) :
+          */
+          <Label className="hot-stepper__text__only" as="span" aria-hidden="true">
             {`${unsafe_index + 1}. ${children}`}
           </Label>
         }
-        {/*<Label as="span" className="hot-stepper__content">
-            {children}
-          </Label>*/}
+        {/*
+        <Label as="span" className="hot-stepper__content">
+          {children}
+        </Label>
+        */}
       </Comp>
     )
   }
 )
-
-export default Step

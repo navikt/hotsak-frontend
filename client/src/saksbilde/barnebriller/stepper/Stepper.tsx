@@ -1,15 +1,24 @@
 import cl from 'clsx'
-import React, { forwardRef } from 'react'
-import Step, { StepperStepProps } from './Step'
-import { StepperContext } from './context'
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  ForwardRefExoticComponent,
+  HTMLAttributes,
+  isValidElement,
+  ReactNode,
+  RefAttributes,
+} from 'react'
 
+import { Step, StepperStepProps } from './Step'
+import { StepperContext } from './context'
 import './hotstepper.css'
 
-export interface StepperProps extends React.HTMLAttributes<HTMLOListElement> {
+export interface StepperProps extends HTMLAttributes<HTMLOListElement> {
   /**
    * <Stepper.Step /> elements
    */
-  children: React.ReactNode
+  children: ReactNode
   /**
    * The direction the component grows.
    * @default "vertical"
@@ -32,8 +41,7 @@ export interface StepperProps extends React.HTMLAttributes<HTMLOListElement> {
   interactive?: boolean
 }
 
-interface StepperComponent
-  extends React.ForwardRefExoticComponent<StepperProps & React.RefAttributes<HTMLOListElement>> {
+interface StepperComponent extends ForwardRefExoticComponent<StepperProps & RefAttributes<HTMLOListElement>> {
   /**
    * @see 🏷️ {@link StepperStepProps}
    * @see [🤖 OverridableComponent](https://aksel.nav.no/grunnleggende/kode/overridablecomponent) support
@@ -81,27 +89,25 @@ export const Stepper: StepperComponent = forwardRef<HTMLOListElement, StepperPro
           value={{
             activeStep,
             onStepChange,
-            lastIndex: React.Children.count(children),
+            lastIndex: Children.count(children),
             orientation,
             interactive,
           }}
         >
-          {React.Children.map(children, (step, index) => {
+          {Children.map(children, (step, index) => {
             return (
               <li
                 className={cl('hot-stepper__item', {
                   'hot-stepper__item--behind': activeStep > index,
-                  /*"hot-stepper__item--completed":
-                    React.isValidElement<StepperStepProps>(step) &&
-                    step?.props?.completed,*/
+                  // 'hot-stepper__item--completed': isValidElement<StepperStepProps>(step) && step?.props?.completed,
                   'hot-stepper__item--non-interactive':
-                    React.isValidElement<StepperStepProps>(step) && !(step?.props?.interactive ?? interactive),
+                    isValidElement<StepperStepProps>(step) && !(step?.props?.interactive ?? interactive),
                 })}
                 key={index + (children?.toString?.() ?? '')}
               >
                 <span className="hot-stepper__line hot-stepper__line--1" />
-                {React.isValidElement<StepperStepProps>(step)
-                  ? React.cloneElement(step, {
+                {isValidElement<StepperStepProps>(step)
+                  ? cloneElement(step, {
                       ...step.props,
                       unsafe_index: index,
                     })
@@ -117,5 +123,3 @@ export const Stepper: StepperComponent = forwardRef<HTMLOListElement, StepperPro
 ) as StepperComponent
 
 Stepper.Step = Step
-
-export default Stepper

@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { Button } from '@navikt/ds-react'
 
 import { postJournalføringStartet } from '../../io/http'
-
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 export interface DokumentIkkeTildeltProps {
@@ -19,7 +18,7 @@ export function DokumentIkkeTildelt({ oppgaveId, journalpostID, gåTilSak = fals
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
-  const tildel = (event: React.MouseEvent) => {
+  const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
     if (!saksbehandler || isFetching) return

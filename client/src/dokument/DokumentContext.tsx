@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
 
 import { Brevtype, Ressurs } from '../types/types.internal'
 import { byggTomRessurs } from '../io/ressursFunksjoner'
@@ -29,9 +29,9 @@ const initialState: DokumentContextType = {
   settHentetBrev() {},
 }
 
-export const DokumentContext = React.createContext<DokumentContextType>(initialState)
+export const DokumentContext = createContext<DokumentContextType>(initialState)
 
-export function DokumentProvider({ children }: { children: React.ReactNode }) {
+export function DokumentProvider({ children }: { children: ReactNode }) {
   const [valgtDokument, setValgtDokument] = useState<DokumentContextType['valgtDokument']>(initialState.valgtDokument)
   const [hentetDokument, settHentetDokument] = useState(initialState.hentetDokument)
   const [hentedeBrev, setHentedeBrev] = useState(initialState.hentedeBrev)

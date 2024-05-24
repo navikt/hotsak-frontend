@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { ComponentType, lazy, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
@@ -105,7 +105,7 @@ function logUserStats(): void {
   logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, { res: { width, height } })
 }
 
-function withRoutingAndState(Component: React.ComponentType) {
+function withRoutingAndState(Component: ComponentType) {
   return (): JSX.Element => (
     <BrowserRouter>
       <SWRConfig

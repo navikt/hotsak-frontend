@@ -34,6 +34,7 @@ export interface Sak extends HarSakskjerne {
   statusEndret: string
   vedtak?: VedtakType
   enhet: Enhet
+  hast?: Hast
 }
 
 export interface Barnebrillesak extends HarSakskjerne {
@@ -52,6 +53,25 @@ export interface Barnebrillesak extends HarSakskjerne {
   enhet: Enhet
   utbetalingsmottaker?: Utbetalingsmottaker
   totrinnskontroll?: Totrinnskontroll
+}
+
+export interface Hast {
+  årsaker: Hasteårsak[]
+  begrunnelse?: string
+}
+
+export enum Hasteårsak {
+  UTVIKLING_AV_TRYKKSÅR = 'UTVIKLING_AV_TRYKKSÅR',
+  TERMINALPLEIE = 'TERMINALPLEIE',
+  UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES = 'UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES',
+  ANNET = 'ANNET',
+}
+
+export const HasteårsakLabel: Record<keyof typeof Hasteårsak, string> = {
+  [Hasteårsak.UTVIKLING_AV_TRYKKSÅR]: 'Utvikling av trykksår',
+  [Hasteårsak.TERMINALPLEIE]: 'Terminalpleie',
+  [Hasteårsak.UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES]: 'Utskriving fra sykehus som ikke kan planlegges',
+  [Hasteårsak.ANNET]: 'Annet',
 }
 
 export interface Totrinnskontroll {
@@ -568,6 +588,7 @@ export interface Oppgave {
   enhet: Enhet
   saksbehandler?: Saksbehandler
   kanTildeles: boolean
+  hast?: Hast
 }
 
 export interface OppgaveBruker {

@@ -5,6 +5,7 @@ import {
   Bruksarena,
   Formidler,
   GreitÅViteType,
+  Hasteårsak,
   Hendelse,
   Kjønn,
   KontaktpersonType,
@@ -23,7 +24,7 @@ import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
-import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
+import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer, tilfeldigInnslag } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { formaterNavn } from '../../utils/formater'
@@ -66,7 +67,12 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
       bosituasjon: Bosituasjon.HJEMME,
       funksjonsnedsettelser: ['bevegelse'],
       bruksarena: Bruksarena.DAGLIGLIV,
-      oppfylteVilkår: ['storreBehov', 'nedsattFunksjon', 'praktiskeProblem'],
+      oppfylteVilkår: [
+        'PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1',
+        'VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1',
+        'KAN_IKKE_LOESES_MED_ENKLERE_HJELPEMIDLER_V1',
+        'I_STAND_TIL_AA_BRUKE_HJELEPMIDLENE_V1',
+      ],
       kjønn: Kjønn.MANN,
       brukernummer: '1',
       adresse: 'Blåbærstien 82',
@@ -202,6 +208,9 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
+    hast: {
+      årsaker: [tilfeldigInnslag(Object.values(Hasteårsak))],
+    },
   }
 }
 
@@ -272,6 +281,7 @@ export class SakStore extends Dexie {
       enhet: sak.enhet,
       saksbehandler: sak.saksbehandler,
       kanTildeles: true,
+      hast: sak.hast,
     }))
   }
 

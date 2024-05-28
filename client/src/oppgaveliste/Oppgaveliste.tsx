@@ -1,4 +1,4 @@
-import { Panel, SortState, Table } from '@navikt/ds-react'
+import { Box, SortState, Table, Tag } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -83,6 +83,18 @@ export function Oppgaveliste() {
       render: (oppgave: Oppgave) => (
         <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.bruker.funksjonsnedsettelser.join(', '))} />
       ),
+    },
+    {
+      key: 'HAST',
+      name: 'Hast',
+      width: 154,
+      render: ({ hast }: Oppgave) =>
+        hast &&
+        hast.årsaker.length > 0 && (
+          <Tag variant="warning" size="xsmall">
+            Haster
+          </Tag>
+        ),
     },
     {
       key: 'SØKNAD_OM',
@@ -199,7 +211,7 @@ export function Oppgaveliste() {
         <Toast>Henter oppgaver </Toast>
       ) : (
         <Container>
-          <Panel>
+          <Box padding="4">
             {hasData ? (
               <ScrollWrapper>
                 <Table
@@ -249,7 +261,6 @@ export function Oppgaveliste() {
                     ))}
                   </Table.Body>
                 </Table>
-
                 <Paging
                   totalCount={totalCount}
                   currentPage={currentPage}
@@ -259,7 +270,7 @@ export function Oppgaveliste() {
             ) : (
               <IngentingFunnet>Ingen saker funnet</IngentingFunnet>
             )}
-          </Panel>
+          </Box>
         </Container>
       )}
     </>

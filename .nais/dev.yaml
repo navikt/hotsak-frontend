@@ -7,12 +7,13 @@ metadata:
   name: hotsak-frontend
   namespace: teamdigihot
   annotations:
-    snorlax.nais.io/enabled: "true"
+    snorlax.nais.io/enabled: 'true'
 spec:
   image: {{image}}
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no
+    - https://hotsak.ansatt.dev.nav.no
   liveness:
     path: /isalive
   readiness:
@@ -44,9 +45,9 @@ spec:
       allowAllUsers: false
       claims:
         extra:
-          - "NAVident"
+          - 'NAVident'
         groups:
-          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
+          - id: 'b9340050-ccb5-4de7-9d96-0fb2d9fb38eb'
     sidecar:
       enabled: true
       autoLogin: false
@@ -69,7 +70,7 @@ spec:
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT
-      value: "3000"
+      value: '3000'
     - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: CLIENT_ID_HEIT_KRUKKA_API
@@ -77,7 +78,7 @@ spec:
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: "false"
+      value: 'false'
     - name: GIT_COMMIT
       value: {{commit}}
     - name: FARO_URL

@@ -28,57 +28,6 @@ import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModa
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Avstand } from '../../felleskomponenter/Avstand'
 
-const HjelpemiddelContainer = styled.div`
-  font-size: 1rem;
-`
-
-const HMSLenke = styled(Link)`
-  padding-left: 0.5rem;
-`
-const HMSTekst = styled.span`
-  padding-left: 0.5rem;
-`
-
-const Rangering = styled('div')<RangeringProps>`
-  display: flex;
-
-  > p.navds-body-short:last-child {
-    min-width: 24px;
-    min-height: 24px;
-    text-align: center;
-    margin-left: 0.5rem;
-    padding: 1px;
-    border-radius: 50%;
-    background-color: ${(props) => (Number(props.$rank) === 1 ? 'var(--a-gray-200)' : 'var(--a-orange-400)')};
-    color: inherit;
-    font-weight: inherit;
-  }
-`
-
-const TilleggsInfo = styled(Rad)`
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    background-color: var(--a-border-info);
-    width: 3px;
-    height: 95%;
-    bottom: 0;
-    left: -1rem;
-  }
-`
-
-function EtikettKolonne({ children }: { children?: ReactNode }) {
-  return <Kolonne $width="150px">{children}</Kolonne>
-}
-
-interface RangeringProps {
-  $rank?: number
-}
-
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
   forenkletVisning: boolean
@@ -110,7 +59,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const nåværendeHmsnr = endretProdukt ? endretProdukt.hmsNr : hjelpemiddel.hmsnr
 
   return (
-    <HjelpemiddelContainer key={hjelpemiddel.hmsnr}>
+    <Fragment key={hjelpemiddel.hmsnr}>
       <Rad>
         <EtikettKolonne>
           <Rad>
@@ -131,48 +80,41 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           </Rad>
           {produkt?.posttitler?.map((posttittel) => <Rad key={posttittel}>{posttittel}</Rad>)}
           {endretProdukt && (
-            <Rad>
-              <HStack align="center" gap="2">
-                <Tooltip content="Kopierer hmsnr">
-                  <HStack align="center">
-                    <strong>{endretProdukt.hmsNr}</strong>
-                    <CopyButton size="small" copyText={endretProdukt.hmsNr} />
-                  </HStack>
-                </Tooltip>
-                <HMSTekst>{endretHjelpemiddelNavn?.navn}</HMSTekst>
-              </HStack>
-            </Rad>
-          )}
-          <Rad>
             <HStack align="center" gap="2">
               <Tooltip content="Kopierer hmsnr">
                 <HStack align="center">
-                  <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
-                  {!endretProdukt && <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />}
+                  <strong>{endretProdukt.hmsNr}</strong>
+                  <CopyButton size="small" copyText={endretProdukt.hmsNr} />
                 </HStack>
               </Tooltip>
-              {produkt ? (
-                <>
-                  <HMSLenke
-                    href={produkt.produkturl}
-                    onClick={() => {
-                      logAmplitudeEvent(amplitude_taxonomy.FINN_HJELPEMIDDEL_LINK_BESØKT, {
-                        hmsnummer: produkt.hmsnr,
-                        artikkelnavn: produkt.artikkelnavn,
-                      })
-                    }}
-                    target="_blank"
-                  >
-                    <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>
-                      {hjelpemiddel.beskrivelse}
-                    </div>
-                  </HMSLenke>
-                </>
-              ) : (
-                <HMSTekst>{hjelpemiddel.beskrivelse}</HMSTekst>
-              )}
+              &npsb;
+              {endretHjelpemiddelNavn?.navn}
             </HStack>
-          </Rad>
+          )}
+          <HStack align="center" gap="2">
+            <Tooltip content="Kopierer hmsnr">
+              <HStack align="center">
+                <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
+                {!endretProdukt && <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />}
+              </HStack>
+            </Tooltip>
+            {produkt ? (
+              <Link
+                href={produkt.produkturl}
+                onClick={() => {
+                  logAmplitudeEvent(amplitude_taxonomy.FINN_HJELPEMIDDEL_LINK_BESØKT, {
+                    hmsnummer: produkt.hmsnr,
+                    artikkelnavn: produkt.artikkelnavn,
+                  })
+                }}
+                target="_blank"
+              >
+                <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
+              </Link>
+            ) : (
+              hjelpemiddel.beskrivelse
+            )}
+          </HStack>
           {hjelpemiddel.endretHjelpemiddel && (
             <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>
               <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
@@ -317,6 +259,44 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
         }}
       />
-    </HjelpemiddelContainer>
+    </Fragment>
   )
+}
+
+const Rangering = styled('div')<{
+  $rank?: number
+}>`
+  display: flex;
+
+  > p.navds-body-short:last-child {
+    min-width: 24px;
+    min-height: 24px;
+    text-align: center;
+    margin-left: 0.5rem;
+    padding: 1px;
+    border-radius: 50%;
+    background-color: ${(props) => (Number(props.$rank) === 1 ? 'var(--a-gray-200)' : 'var(--a-orange-400)')};
+    color: inherit;
+    font-weight: inherit;
+  }
+`
+
+const TilleggsInfo = styled(Rad)`
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    background-color: var(--a-border-info);
+    width: 0.1875rem;
+    height: 95%;
+    bottom: 0;
+    left: -1rem;
+  }
+`
+
+function EtikettKolonne({ children }: { children?: ReactNode }) {
+  return <Kolonne $width="150px">{children}</Kolonne>
 }

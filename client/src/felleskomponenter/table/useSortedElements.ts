@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Column } from './Column'
+import type { Tabellkolonne } from './Tabellkolonne'
 
 type SortDirection = 'ascending' | 'descending'
 
@@ -9,7 +9,7 @@ export interface Sort<T> {
   direction: SortDirection
 }
 
-export function useSortedElements<T>(elements: T[], columns: Column<T>[], initialSort: Sort<T>) {
+export function useSortedElements<T>(elements: T[], columns: Tabellkolonne<T>[], initialSort: Sort<T>) {
   const [sort, setSort] = useState<Sort<T>>(initialSort)
   const [sortedElements, setSortedElements] = useState(elements)
 

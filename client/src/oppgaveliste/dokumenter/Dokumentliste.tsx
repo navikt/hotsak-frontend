@@ -1,16 +1,15 @@
 import styled from 'styled-components'
 
-import { Panel, Table } from '@navikt/ds-react'
+import { Box, Table } from '@navikt/ds-react'
 
 import { TekstCell } from '../../felleskomponenter/table/Celle'
-import { Column } from '../../felleskomponenter/table/Column'
+import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterFødselsnummer } from '../../utils/formater'
 import { isError } from '../../utils/type'
-
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
@@ -24,12 +23,14 @@ export function Dokumentliste() {
   const { data, isLoading, error } = useDokumentliste()
   const oppgaver = data?.oppgaver || []
 
-  const kolonner: Column<OppgaveV2>[] = [
+  const kolonner: Tabellkolonne<OppgaveV2>[] = [
     {
       key: 'saksbehandler',
       name: 'Eier',
       width: 160,
-      render: (oppgave: OppgaveV2) => <DokumentTildeling dokumentOppgave={oppgave} />,
+      render(oppgave: OppgaveV2) {
+        return <DokumentTildeling dokumentOppgave={oppgave} />
+      },
       accessor(verdi: OppgaveV2): string {
         return verdi.saksbehandler?.navn || ''
       },
@@ -38,7 +39,7 @@ export function Dokumentliste() {
       key: 'beskrivelse',
       name: 'Beskrivelse',
       width: 400,
-      render: (oppgave: OppgaveV2) => {
+      render(oppgave: OppgaveV2) {
         const oppgaveBeskrivelse = oppgave.beskrivelse || 'Uten tittel'
         return (
           <TooltipWrapper visTooltip={oppgaveBeskrivelse.length > 40} content={oppgaveBeskrivelse}>
@@ -51,13 +52,15 @@ export function Dokumentliste() {
       key: 'oppgavestatus',
       name: 'Status',
       width: 150,
-      render: (oppgave: OppgaveV2) => <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />,
+      render(oppgave: OppgaveV2) {
+        return <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />
+      },
     },
     {
       key: 'bruker',
       name: 'Bruker',
       width: 135,
-      render: (oppgave: OppgaveV2) => {
+      render(oppgave: OppgaveV2) {
         const fulltNavn = oppgave.bruker?.fulltNavn || '-'
         return (
           <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
@@ -73,13 +76,17 @@ export function Dokumentliste() {
       key: 'fnr',
       name: 'Fødselsnr.',
       width: 135,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
+      render(oppgave: OppgaveV2) {
+        return <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />
+      },
     },
     {
       key: 'opprettet',
       name: 'Mottatt dato',
       width: 152,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />,
+      render(oppgave: OppgaveV2) {
+        return <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />
+      },
     },
   ]
 
@@ -110,7 +117,7 @@ export function Dokumentliste() {
         <Toast>Henter dokumenter </Toast>
       ) : (
         <Container>
-          <Panel>
+          <Box padding="4">
             {hasData ? (
               <ScrollWrapper>
                 <Table style={{ width: 'initial' }} zebraStripes size="small" sort={sort} onSortChange={onSortChange}>
@@ -148,7 +155,7 @@ export function Dokumentliste() {
             ) : (
               <IngentingFunnet>Ingen dokumenter funnet</IngentingFunnet>
             )}
-          </Panel>
+          </Box>
         </Container>
       )}
     </>

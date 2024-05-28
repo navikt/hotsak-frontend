@@ -31,6 +31,7 @@ import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
 import { Paging } from './paging/Paging'
 import { Tildeling } from './kolonner/Tildeling'
+import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -60,99 +61,139 @@ export function Oppgaveliste() {
     setCurrentPage(1)
   }
 
-  const kolonner = [
-    { key: 'EIER', name: 'Eier', width: 152, render: (oppgave: Oppgave) => <Tildeling oppgave={oppgave} /> },
+  const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
+    {
+      key: 'EIER',
+      name: 'Eier',
+      width: 152,
+      render(oppgave) {
+        return <Tildeling oppgave={oppgave} />
+      },
+    },
     {
       key: 'STATUS',
       name: 'Status',
       width: 154,
-      render: (oppgave: Oppgave) => (
-        <EllipsisCell minLength={18} value={OppgaveStatusLabel.get(oppgave.status) ?? ''} />
-      ),
+      render(oppgave) {
+        return <EllipsisCell minLength={18} value={OppgaveStatusLabel.get(oppgave.status) ?? ''} />
+      },
     },
     {
       key: 'TYPE',
       name: 'Type',
       width: 154,
-      render: (oppgave: Oppgave) => <SakstypeEtikett sakstype={oppgave.sakstype} />,
+      render(oppgave) {
+        return <SakstypeEtikett sakstype={oppgave.sakstype} />
+      },
     },
     {
       key: 'FUNKSJONSNEDSETTELSE',
       name: 'Område',
       width: 152,
-      render: (oppgave: Oppgave) => (
-        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.bruker.funksjonsnedsettelser.join(', '))} />
-      ),
+      render(oppgave) {
+        return (
+          <EllipsisCell
+            minLength={18}
+            value={storForbokstavIAlleOrd(oppgave.bruker.funksjonsnedsettelser.join(', '))}
+          />
+        )
+      },
     },
     {
       key: 'HAST',
-      name: 'Hast',
       width: 154,
-      render: ({ hast }: Oppgave) =>
-        hast &&
-        hast.årsaker.length > 0 && (
-          <Tag variant="warning" size="xsmall">
-            Haster
-          </Tag>
-        ),
+      header() {
+        return (
+          <>
+            <Tag variant="warning-moderate" size="xsmall">
+              5
+            </Tag>
+            Hast
+          </>
+        )
+      },
+      render({ hast }) {
+        return (
+          hast &&
+          hast.årsaker.length > 0 && (
+            <Tag variant="warning-moderate" size="xsmall">
+              Haster
+            </Tag>
+          )
+        )
+      },
     },
     {
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
       width: 192,
-      render: (oppgave: Oppgave) => (
-        <EllipsisCell
-          minLength={20}
-          value={storForbokstavIAlleOrd(
-            oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
-          )}
-        />
-      ),
+      render(oppgave) {
+        return (
+          <EllipsisCell
+            minLength={20}
+            value={storForbokstavIAlleOrd(
+              oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+            )}
+          />
+        )
+      },
     },
     {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
       width: 188,
-      render: (oppgave: Oppgave) => <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker)} />,
+      render(oppgave) {
+        return <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker)} />
+      },
     },
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: Oppgave) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
+      render(oppgave) {
+        return <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />
+      },
     },
     {
       key: 'BOSTED',
       name: 'Kommune / bydel',
       width: 165,
-      render: (oppgave: Oppgave) => <EllipsisCell minLength={18} value={oppgave.bruker.bosted} />,
+      render(oppgave) {
+        return <EllipsisCell minLength={18} value={oppgave.bruker.bosted} />
+      },
     },
     {
       key: 'FORMIDLER',
       name: 'Innsender',
       width: 164,
-      render: (oppgave: Oppgave) => <EllipsisCell minLength={19} value={formaterNavn(oppgave.innsender)} />,
+      render(oppgave) {
+        return <EllipsisCell minLength={19} value={formaterNavn(oppgave.innsender)} />
+      },
     },
     {
       key: 'MOTTATT',
       name: 'Mottatt dato',
       width: 140,
-      render: (oppgave: Oppgave) => <TekstCell value={formaterTidsstempel(oppgave.mottatt)} />,
+      render(oppgave) {
+        return <TekstCell value={formaterTidsstempel(oppgave.mottatt)} />
+      },
     },
     {
       key: 'MENU',
       sortable: false,
-      render: (oppgave: Oppgave) => (
-        <MenyKnapp
-          sakId={oppgave.sakId}
-          status={oppgave.status}
-          tildeltSaksbehandler={oppgave.saksbehandler}
-          gåTilSak={true}
-          sakstype={oppgave.sakstype}
-          kanTildeles={oppgave.kanTildeles}
-          onMutate={mutate}
-        />
-      ),
+      render(oppgave) {
+        return (
+          <MenyKnapp
+            sakId={oppgave.sakId}
+            status={oppgave.status}
+            tildeltSaksbehandler={oppgave.saksbehandler}
+            gåTilSak={true}
+            sakstype={oppgave.sakstype}
+            kanTildeles={oppgave.kanTildeles}
+            onMutate={mutate}
+          />
+        )
+      },
     },
   ]
 
@@ -229,9 +270,9 @@ export function Oppgaveliste() {
                   <caption className="sr-only">Oppgaveliste</caption>
                   <Table.Header>
                     <Table.Row>
-                      {kolonner.map(({ key, name, sortable = true, width }) => (
+                      {kolonner.map(({ key, name, width, sortable = true, header }) => (
                         <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
-                          {name}
+                          {header ? header() : name}
                         </KolonneHeader>
                       ))}
                     </Table.Row>
@@ -246,7 +287,7 @@ export function Oppgaveliste() {
                             : `/sak/${oppgave.sakId}`
                         }
                       >
-                        {kolonner.map(({ render, width, key }) => (
+                        {kolonner.map(({ key, width, render }) => (
                           <DataCell
                             key={key}
                             width={width}
@@ -268,7 +309,7 @@ export function Oppgaveliste() {
                 />
               </ScrollWrapper>
             ) : (
-              <IngentingFunnet>Ingen saker funnet</IngentingFunnet>
+              <IngentingFunnet>Ingen saker funnet.</IngentingFunnet>
             )}
           </Box>
         </Container>

@@ -8,6 +8,7 @@ import { Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { Hjelpemiddel } from './Hjelpemiddel'
 import { useArtiklerForSak } from './useArtiklerForSak'
+import { Hastesak } from './Hastesak.tsx'
 
 const Container = styled.div`
   padding-top: 1rem;
@@ -31,7 +32,7 @@ const summerAntall = (hjelpemidler: HjelpemiddelType[]) => {
 }
 
 export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: HjelpemiddelListeProps) {
-  const { hjelpemidler } = sak
+  const { hjelpemidler, hast } = sak
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
@@ -42,9 +43,14 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: Hje
         {tittel}
       </Heading>
       <Container>
+        {hast && (
+          <Avstand paddingBottom={6}>
+            <Hastesak hast={hast} />
+          </Avstand>
+        )}
         <Avstand paddingBottom={6}>
           {!forenkletVisning && artiklerSomIkkeFinnesIOebs.length > 0 && (
-            <Alert variant="warning" fullWidth size="small">
+            <Alert variant="warning" size="small" fullWidth>
               <>
                 <Brødtekst>
                   {`${artiklerSomIkkeFinnesIOebs.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OEBS og blir derfor ikke 

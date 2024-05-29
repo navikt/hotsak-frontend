@@ -14,6 +14,7 @@ interface DataResponse {
   totalCount: number
   currentPage: number
   pageSize: number
+  antallHaster: number
   isLoading: boolean
   error: unknown
   mutate: (...args: any[]) => any
@@ -36,8 +37,9 @@ interface Filters {
 interface OppgavelisteResponse {
   oppgaver: Oppgave[]
   totalCount: number
-  pageSize: number
   currentPage: number
+  pageSize: number
+  antallHaster: number
 }
 
 function pathConfig(currentPage: number, sort: SortState, filters: Filters): PathConfigType {
@@ -89,8 +91,9 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: F
   return {
     oppgaver: data?.data.oppgaver || [],
     totalCount: data?.data.totalCount || 0,
-    pageSize: data?.data.pageSize || PAGE_SIZE,
     currentPage: data?.data.currentPage || currentPage,
+    pageSize: data?.data.pageSize || PAGE_SIZE,
+    antallHaster: data?.data.antallHaster || 0,
     isLoading: !error && !data,
     error,
     mutate,

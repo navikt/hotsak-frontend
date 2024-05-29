@@ -3,6 +3,7 @@ import { delay, http, HttpResponse } from 'msw'
 import {
   DokumentOppgaveStatusType,
   OmrådeFilter,
+  Oppgave,
   OppgaverResponse,
   Oppgavestatus,
   OppgaveStatusType,
@@ -102,11 +103,14 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
 
     const filterApplied = oppgaver.length !== filtrerteOppgaver.length
 
+    const haster = (oppgave: Oppgave) => oppgave.hast?.årsaker?.length || 0
+
     const response = {
       oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
       totalCount: !filterApplied ? oppgaver.length : filtrerteOppgaver.length,
       pageSize: pageSize,
       currentPage: currentPage,
+      antallHaster: !filterApplied ? oppgaver.filter(haster).length : filtrerteOppgaver.filter(haster).length,
     }
 
     return HttpResponse.json(response)

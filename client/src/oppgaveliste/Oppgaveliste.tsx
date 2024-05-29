@@ -41,7 +41,7 @@ export function Oppgaveliste() {
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
-  const { oppgaver, isLoading, totalCount, error, mutate } = useOppgaveliste(currentPage, sort, {
+  const { oppgaver, totalCount, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
     statusFilter,
     sakstypeFilter,
@@ -105,9 +105,11 @@ export function Oppgaveliste() {
       header() {
         return (
           <>
-            <Tag variant="warning-moderate" size="xsmall">
-              5
-            </Tag>
+            {antallHaster > 0 && (
+              <Tag variant="warning-moderate" size="xsmall">
+                {antallHaster}
+              </Tag>
+            )}
             Hast
           </>
         )

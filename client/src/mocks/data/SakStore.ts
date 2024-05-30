@@ -24,7 +24,7 @@ import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
-import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer, tilfeldigInnslag } from './felles'
+import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { formaterNavn } from '../../utils/formater'
@@ -208,9 +208,12 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
-    hast: {
-      årsaker: [tilfeldigInnslag(Object.values(Hasteårsak))],
-    },
+    hast: (() => {
+      return {
+        årsaker: [Hasteårsak.ANNET],
+        begrunnelse: 'Det haster veldig!',
+      }
+    })(),
   }
 }
 

@@ -87,7 +87,6 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                   <CopyButton size="small" copyText={endretProdukt.hmsNr} />
                 </HStack>
               </Tooltip>
-              &npsb;
               {endretHjelpemiddelNavn?.navn}
             </HStack>
           )}

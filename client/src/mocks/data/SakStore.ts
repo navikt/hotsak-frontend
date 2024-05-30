@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie'
 import {
   Bosituasjon,
   Bruksarena,
+  EndreHjelpemiddelRequest,
   Formidler,
   GreitÅViteType,
   Hasteårsak,
@@ -379,6 +380,31 @@ export class SakStore extends Dexie {
         })
       })
       return true
+    }
+  }
+
+  async endreHjelpemiddel(sakId: string, request: EndreHjelpemiddelRequest) {
+    const sak = await this.hent(sakId)
+    if (!sak) {
+      return false
+    } else {
+      this.transaction('rw', this.saker, () => {
+        this.saker.update(sakId, {
+          hjelpemidler: sak.hjelpemidler.map((hjelpemiddel) => {
+            if (hjelpemiddel.hmsnr === request.hmsNr) {
+              return {
+                ...hjelpemiddel,
+                endretHjelpemiddel: {
+                  hmsNr: request.endretHmsNr,
+                  begrunnelse: request.begrunnelse,
+                  begrunnelseFritekst: request.begrunnelseFritekst,
+                },
+              }
+            }
+            return hjelpemiddel
+          }),
+        })
+      })
     }
   }
 }

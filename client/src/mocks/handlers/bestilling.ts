@@ -16,8 +16,8 @@ export const bestillingHandlers: StoreHandlersFactory = ({ sakStore }) => [
     return respondNoContent()
   }),
 
-  http.put<SakParams, EndreHjelpemiddelRequest>('/api/bestilling/:sakId', async ({ request }) => {
-    await request.json()
+  http.put<SakParams, EndreHjelpemiddelRequest>('/api/bestilling/:sakId', async ({ request, params }) => {
+    await sakStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),
 ]

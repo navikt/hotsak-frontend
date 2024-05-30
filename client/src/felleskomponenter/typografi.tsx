@@ -3,8 +3,12 @@ import styled from 'styled-components'
 
 import { BodyLong, BodyShort, Detail, Heading, Label } from '@navikt/ds-react'
 
-export function Tekst({ children }: { children: ReactNode }) {
-  return <BodyShort size="small">{children}</BodyShort>
+export function Tekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+  return (
+    <BodyShort size="small" spacing={spacing}>
+      {children}
+    </BodyShort>
+  )
 }
 
 export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: ReactNode }>(
@@ -23,8 +27,12 @@ export function BrytbarBrødtekst({ children }: { children: ReactNode }) {
   return <FlytendeBrytbarTekst size="small">{children}</FlytendeBrytbarTekst>
 }
 
-export function Etikett({ children }: { children: ReactNode }) {
-  return <Label size="small">{children}</Label>
+export function Etikett({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+  return (
+    <Label size="small" spacing={spacing}>
+      {children}
+    </Label>
+  )
 }
 
 export function Undertittel({ children }: { children: ReactNode }) {

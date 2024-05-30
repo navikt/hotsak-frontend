@@ -18,7 +18,7 @@ const query = gql`
   }
 `
 
-export function useFinnHjelpemiddel(hmsnummer?: string) {
+export function useFinnHjelpemiddel(hmsnr?: string) {
   const [produkt, setProdukt] = useState<Produkt | null>(null)
 
   const finnhjelpemiddelApiUrl = '/finnhjelpemiddel-api/graphql'
@@ -26,14 +26,15 @@ export function useFinnHjelpemiddel(hmsnummer?: string) {
   useEffect(() => {
     ;(async () => {
       try {
-        if (!hmsnummer || hmsnummer.length !== 6) {
+        if (!hmsnr || hmsnr.length !== 6) {
+          console.warn(`Kan ikke hente hjelpemiddel fra FinnHjelpemiddel, hmsnr: ${hmsnr}`)
           setProdukt(null)
         } else {
           const data = await request<HMDBHentProdukterQuery, HMDBHentProdukterQueryVariables>(
             finnhjelpemiddelApiUrl,
             query,
             {
-              hmsnrs: [hmsnummer],
+              hmsnrs: [hmsnr],
             }
           )
           const [produkt] = data.products
@@ -44,14 +45,15 @@ export function useFinnHjelpemiddel(hmsnummer?: string) {
             posttitler: agreements?.map((agreement) => agreement?.postTitle || '') || [''],
             produkturl: productVariantURL || '',
             artikkelnavn: articleName,
-            hmsnr: hmsnummer,
+            hmsnr,
           })
         }
       } catch (e) {
+        console.warn(`Kunne ikke hente hjelpemiddel fra FinnHjelpemiddel, hmsnr: ${hmsnr}`, e)
         setProdukt(null)
       }
     })()
-  }, [hmsnummer])
+  }, [hmsnr])
 
   return produkt
 }

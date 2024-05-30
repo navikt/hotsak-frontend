@@ -1,4 +1,4 @@
-import { Hast, Hasteårsak, HasteårsakLabel } from '../../types/types.internal.ts'
+import { Hast, Hasteårsak } from '../../types/types.internal.ts'
 import { Alert, Box, List } from '@navikt/ds-react'
 import { Fremhev, HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 
@@ -14,11 +14,13 @@ export function Hastesak(props: { hast?: Hast }) {
       <Box paddingBlock="3">
         <HjelpemiddelGrid>
           <Fremhev />
-          <List title="Årsak til at det haster" size="small">
+          <List title="Årsak til at det haster" size="small" headingTag="h2">
             {årsaker
               .map((årsak) => {
-                const label = HasteårsakLabel[årsak]
-                return årsak === Hasteårsak.ANNET && begrunnelse ? `${label}: ${begrunnelse}` : label
+                const tekst = tekstByHasteårsak[årsak]
+                return årsak === Hasteårsak.ANNET && begrunnelse
+                  ? `${tekst} Formidlers begrunnelse: ${begrunnelse}`
+                  : tekst
               })
               .map((tekst) => (
                 <List.Item key={tekst}>{tekst}</List.Item>
@@ -28,4 +30,12 @@ export function Hastesak(props: { hast?: Hast }) {
       </Box>
     </>
   )
+}
+
+const tekstByHasteårsak: Record<keyof typeof Hasteårsak, string> = {
+  [Hasteårsak.UTVIKLING_AV_TRYKKSÅR]:
+    'Det er stor fare for utvikling av trykksår, eller for å hindre videre utvikling av trykksår.',
+  [Hasteårsak.TERMINALPLEIE]: 'Innbygger har behov for terminalpleie.',
+  [Hasteårsak.UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES]: 'Utskriving fra sykehus som ikke kan planlegges.',
+  [Hasteårsak.ANNET]: 'Annet, plutselig oppstått behov på grunn av brukers helsesituasjon.',
 }

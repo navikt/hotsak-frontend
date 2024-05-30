@@ -67,13 +67,6 @@ export enum Hasteårsak {
   ANNET = 'ANNET',
 }
 
-export const HasteårsakLabel: Record<keyof typeof Hasteårsak, string> = {
-  [Hasteårsak.UTVIKLING_AV_TRYKKSÅR]: 'Utvikling av trykksår',
-  [Hasteårsak.TERMINALPLEIE]: 'Terminalpleie',
-  [Hasteårsak.UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES]: 'Utskriving fra sykehus som ikke kan planlegges',
-  [Hasteårsak.ANNET]: 'Annet',
-}
-
 export interface Totrinnskontroll {
   saksbehandler: Saksbehandler
   godkjenner?: Saksbehandler

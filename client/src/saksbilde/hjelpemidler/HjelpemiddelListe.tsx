@@ -9,6 +9,7 @@ import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { Hjelpemiddel } from './Hjelpemiddel'
 import { useArtiklerForSak } from './useArtiklerForSak'
 import { Hastesak } from './Hastesak.tsx'
+import { Strek } from '../../felleskomponenter/Strek.tsx'
 
 const Container = styled.div`
   padding-top: 1rem;
@@ -46,6 +47,7 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: Hje
         {hast && (
           <Avstand paddingBottom={6}>
             <Hastesak hast={hast} />
+            <Strek />
           </Avstand>
         )}
         <Avstand paddingBottom={6}>

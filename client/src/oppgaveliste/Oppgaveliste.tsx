@@ -65,7 +65,7 @@ export function Oppgaveliste() {
     {
       key: 'EIER',
       name: 'Eier',
-      width: 152,
+      width: 155,
       render(oppgave) {
         return <Tildeling oppgave={oppgave} />
       },
@@ -73,7 +73,7 @@ export function Oppgaveliste() {
     {
       key: 'STATUS',
       name: 'Status',
-      width: 154,
+      width: 155,
       render(oppgave) {
         return <EllipsisCell minLength={18} value={OppgaveStatusLabel.get(oppgave.status) ?? ''} />
       },
@@ -81,7 +81,7 @@ export function Oppgaveliste() {
     {
       key: 'TYPE',
       name: 'Type',
-      width: 154,
+      width: 115,
       render(oppgave) {
         return <SakstypeEtikett sakstype={oppgave.sakstype} />
       },
@@ -89,7 +89,7 @@ export function Oppgaveliste() {
     {
       key: 'FUNKSJONSNEDSETTELSE',
       name: 'Område',
-      width: 152,
+      width: 155,
       render(oppgave) {
         return (
           <EllipsisCell
@@ -101,7 +101,7 @@ export function Oppgaveliste() {
     },
     {
       key: 'HAST',
-      width: 154,
+      width: 105,
       header() {
         return (
           <>
@@ -128,7 +128,7 @@ export function Oppgaveliste() {
     {
       key: 'SØKNAD_OM',
       name: 'Beskrivelse',
-      width: 192,
+      width: 205,
       render(oppgave) {
         return (
           <EllipsisCell
@@ -143,7 +143,7 @@ export function Oppgaveliste() {
     {
       key: 'HJELPEMIDDELBRUKER',
       name: 'Hjelpemiddelbruker',
-      width: 188,
+      width: 200,
       render(oppgave) {
         return <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker)} />
       },
@@ -151,7 +151,7 @@ export function Oppgaveliste() {
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
-      width: 124,
+      width: 125,
       render(oppgave) {
         return <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />
       },
@@ -159,7 +159,7 @@ export function Oppgaveliste() {
     {
       key: 'BOSTED',
       name: 'Kommune / bydel',
-      width: 165,
+      width: 180,
       render(oppgave) {
         return <EllipsisCell minLength={18} value={oppgave.bruker.bosted} />
       },
@@ -167,7 +167,7 @@ export function Oppgaveliste() {
     {
       key: 'FORMIDLER',
       name: 'Innsender',
-      width: 164,
+      width: 165,
       render(oppgave) {
         return <EllipsisCell minLength={19} value={formaterNavn(oppgave.innsender)} />
       },

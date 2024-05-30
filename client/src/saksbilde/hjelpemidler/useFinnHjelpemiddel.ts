@@ -21,8 +21,6 @@ const query = gql`
 export function useFinnHjelpemiddel(hmsnr?: string) {
   const [produkt, setProdukt] = useState<Produkt | null>(null)
 
-  const finnhjelpemiddelApiUrl = '/finnhjelpemiddel-api/graphql'
-
   useEffect(() => {
     ;(async () => {
       try {
@@ -31,7 +29,7 @@ export function useFinnHjelpemiddel(hmsnr?: string) {
           setProdukt(null)
         } else {
           const data = await request<HMDBHentProdukterQuery, HMDBHentProdukterQueryVariables>(
-            finnhjelpemiddelApiUrl,
+            new URL('/finnhjelpemiddel-api/graphql', window.location.href).toString(),
             query,
             {
               hmsnrs: [hmsnr],

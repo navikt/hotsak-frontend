@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { Tekst } from '../../felleskomponenter/typografi'
 
 interface PageCounterProps {
-  totalCount: number
+  totalElements: number
   pageSize: number
   currentPage: number
 }
 
-export function PageCounter({ pageSize, totalCount, currentPage }: PageCounterProps) {
+export function PageCounter({ pageSize, totalElements, currentPage }: PageCounterProps) {
   const førsteSynligeOppgave = pageSize * (currentPage - 1) + 1
   const sisteOppgave = førsteSynligeOppgave + pageSize - 1
 
@@ -17,8 +17,8 @@ export function PageCounter({ pageSize, totalCount, currentPage }: PageCounterPr
       <Container>
         <Tekst>
           {`Viser ${førsteSynligeOppgave} - ${
-            sisteOppgave > totalCount ? totalCount : sisteOppgave
-          } av ${totalCount} saker`}
+            sisteOppgave > totalElements ? totalElements : sisteOppgave
+          } av ${totalElements} saker`}
         </Tekst>
       </Container>
     </>

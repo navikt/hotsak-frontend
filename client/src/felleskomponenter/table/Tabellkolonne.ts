@@ -5,6 +5,7 @@ export interface Tabellkolonne<T> {
   name?: string
   width?: number
   sortable?: boolean
+  hide?: boolean
 
   header?(): ReactNode
   render(verdi: T): ReactNode

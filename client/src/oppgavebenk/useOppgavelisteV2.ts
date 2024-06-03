@@ -1,15 +1,15 @@
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
-
-import { OppgaveV2 } from '../types/types.internal'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
+import { OppgaveV2 } from '../types/types.internal'
 
 interface DataResponse {
   oppgaver: OppgaveV2[]
-  totalCount: number
-  currentPage: number
+  pageNumber: number
   pageSize: number
+  totalPages: number
+  totalElements: number
   isLoading: boolean
   error: unknown
   mutate: (...args: any[]) => any
@@ -35,9 +35,10 @@ interface Filters {
 
 interface OppgavelisteResponse {
   oppgaver: OppgaveV2[]
-  totalCount: number
+  pageNumber: number
   pageSize: number
-  currentPage: number
+  totalPages: number
+  totalElements: number
 }
 
 /*
@@ -94,9 +95,10 @@ export function useOppgavelisteV2(currentPage: number /*, sort: SortState, filte
 
   return {
     oppgaver: data?.data.oppgaver || [],
-    totalCount: data?.data.totalCount || 0,
+    pageNumber: data?.data.pageNumber || currentPage,
     pageSize: data?.data.pageSize || PAGE_SIZE,
-    currentPage: data?.data.currentPage || currentPage,
+    totalPages: data?.data.totalPages || 0,
+    totalElements: data?.data.totalElements || 0,
     isLoading: !error && !data,
     error,
     mutate,

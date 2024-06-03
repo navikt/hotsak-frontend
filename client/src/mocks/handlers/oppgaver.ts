@@ -108,11 +108,10 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
 
     const response: OppgavelisteResponse = {
       oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
+      pageNumber,
+      pageSize,
+      totalPages: 1,
       totalElements: !filterApplied ? oppgaver.length : filtrerteOppgaver.length,
-      pageRequest: {
-        pageNumber,
-        pageSize,
-      },
       antallHaster: !filterApplied ? oppgaver.filter(haster).length : filtrerteOppgaver.filter(haster).length,
     }
 

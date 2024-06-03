@@ -1,5 +1,6 @@
-import { Hast, Hasteårsak } from '../../types/types.internal.ts'
 import { Alert, Box, List } from '@navikt/ds-react'
+import { Etikett } from '../../felleskomponenter/typografi.tsx'
+import { Hast, Hasteårsak } from '../../types/types.internal.ts'
 import { Fremhev, HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 
 export function Hastesak(props: { hast?: Hast }) {
@@ -14,18 +15,17 @@ export function Hastesak(props: { hast?: Hast }) {
       <Box paddingBlock="3">
         <HjelpemiddelGrid>
           <Fremhev />
-          <List title="Årsak til at det haster" size="small" headingTag="h2">
-            {årsaker
-              .map((årsak) => {
-                const tekst = tekstByHasteårsak[årsak]
-                return årsak === Hasteårsak.ANNET && begrunnelse
-                  ? `${tekst} Formidlers begrunnelse: ${begrunnelse}`
-                  : tekst
-              })
-              .map((tekst) => (
-                <List.Item key={tekst}>{tekst}</List.Item>
-              ))}
-          </List>
+          <div>
+            <Etikett>Årsak til at det haster:</Etikett>
+            <List size="small" headingTag="h2">
+              {årsaker
+                .map((årsak) => tekstByHasteårsak[årsak])
+                .map((tekst) => (
+                  <List.Item key={tekst}>{tekst}</List.Item>
+                ))}
+              {begrunnelse && <List.Item>{begrunnelse}</List.Item>}
+            </List>
+          </div>
         </HjelpemiddelGrid>
       </Box>
     </>

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
+import { useSaksbehandlerTilhørerEnhet } from '../state/authentication.ts'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
@@ -47,6 +48,9 @@ export function Oppgaveliste() {
     sakstypeFilter,
     områdeFilter,
   })
+
+  // NAV IT, Vestland-Bergen, Trøndelag
+  const pilotHast = useSaksbehandlerTilhørerEnhet('2970', '4712', '4716')
 
   const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
     handler(value)
@@ -102,6 +106,7 @@ export function Oppgaveliste() {
     {
       key: 'HAST',
       width: 105,
+      hide: !pilotHast,
       header() {
         return (
           <>
@@ -209,6 +214,8 @@ export function Oppgaveliste() {
 
   const hasData = oppgaver && oppgaver.length > 0
 
+  const filterHide = ({ hide }: Tabellkolonne<Oppgave>): boolean => hide !== true
+
   return (
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
@@ -272,7 +279,7 @@ export function Oppgaveliste() {
                   <caption className="sr-only">Oppgaveliste</caption>
                   <Table.Header>
                     <Table.Row>
-                      {kolonner.map(({ key, name, width, sortable = true, header }) => (
+                      {kolonner.filter(filterHide).map(({ key, name, width, sortable = true, header }) => (
                         <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
                           {header ? header() : name}
                         </KolonneHeader>
@@ -289,7 +296,7 @@ export function Oppgaveliste() {
                             : `/sak/${oppgave.sakId}`
                         }
                       >
-                        {kolonner.map(({ key, width, render }) => (
+                        {kolonner.filter(filterHide).map(({ key, width, render }) => (
                           <DataCell
                             key={key}
                             width={width}
@@ -305,7 +312,7 @@ export function Oppgaveliste() {
                   </Table.Body>
                 </Table>
                 <Paging
-                  totalCount={totalElements}
+                  totalElements={totalElements}
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
                 />

@@ -13,13 +13,13 @@ const Container = styled.div`
 export const PAGE_SIZE = 25
 
 interface PagingProps {
-  totalCount: number
+  totalElements: number
   currentPage: number
-  onPageChange: (...args: any[]) => any
+  onPageChange(...args: any[]): any
 }
 
-export function Paging({ totalCount, currentPage, onPageChange }: PagingProps) {
-  const totalNumberOfPages = Math.ceil(totalCount / PAGE_SIZE)
+export function Paging({ totalElements, currentPage, onPageChange }: PagingProps) {
+  const totalNumberOfPages = Math.ceil(totalElements / PAGE_SIZE)
   const hasMultiplePages = totalNumberOfPages > 1
 
   return (
@@ -35,7 +35,7 @@ export function Paging({ totalCount, currentPage, onPageChange }: PagingProps) {
           />
         )}
       </Container>
-      <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalCount={totalCount} />
+      <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalElements={totalElements} />
     </>
   )
 }

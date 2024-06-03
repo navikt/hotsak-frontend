@@ -56,6 +56,11 @@ export function useInnloggetSaksbehandler(): InnloggetSaksbehandler {
   return useRecoilValue<InnloggetSaksbehandler>(innloggetSaksbehandlerState)
 }
 
+export function useSaksbehandlerTilhørerEnhet(...enhet: string[]): boolean {
+  const { enhetsnumre } = useInnloggetSaksbehandler()
+  return enhet.some((it) => enhetsnumre.includes(it))
+}
+
 export function useVisOppgavelisteTabs() {
   return useRecoilValue<boolean>(visOppgavelisteTabsState)
 }

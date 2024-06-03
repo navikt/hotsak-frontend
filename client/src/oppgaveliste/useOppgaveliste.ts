@@ -1,19 +1,18 @@
+import { SortState } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import useSwr from 'swr'
 
-import { SortState } from '@navikt/ds-react'
-
 import { httpGet } from '../io/http'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-
 import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
   oppgaver: Oppgave[]
-  totalElements: number
-  currentPage: number
+  pageNumber: number
   pageSize: number
+  totalPages: number
+  totalElements: number
   antallHaster: number
   isLoading: boolean
   error: unknown
@@ -36,11 +35,10 @@ interface OppgavelisteFilters {
 
 export interface OppgavelisteResponse {
   oppgaver: Oppgave[]
+  pageNumber: number
+  pageSize: number
+  totalPages: number
   totalElements: number
-  pageRequest: {
-    pageNumber: number
-    pageSize: number
-  }
   antallHaster: number
 }
 
@@ -92,9 +90,10 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: O
 
   return {
     oppgaver: data?.data.oppgaver || [],
+    pageNumber: data?.data.pageNumber || currentPage,
+    pageSize: data?.data.pageSize || PAGE_SIZE,
+    totalPages: data?.data.totalPages || 0,
     totalElements: data?.data.totalElements || 0,
-    currentPage: data?.data.pageRequest.pageNumber || currentPage,
-    pageSize: data?.data.pageRequest.pageSize || PAGE_SIZE,
     antallHaster: data?.data.antallHaster || 0,
     isLoading: !error && !data,
     error,

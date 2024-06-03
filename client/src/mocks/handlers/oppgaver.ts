@@ -1,5 +1,7 @@
+import { addWeeks } from 'date-fns'
 import { delay, http, HttpResponse } from 'msw'
 
+import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
 import {
   DokumentOppgaveStatusType,
   OmrådeFilter,
@@ -14,7 +16,6 @@ import {
 import { formaterNavn } from '../../utils/formater'
 import type { StoreHandlersFactory } from '../data'
 import { enheter } from '../data/enheter'
-import { addWeeks } from 'date-fns'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({
   journalpostStore,
@@ -60,7 +61,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
 
       const pagedOppgaver: OppgaverResponse = {
         oppgaver: oppgaver,
-        totalCount: oppgaver.length,
+        totalElements: oppgaver.length,
       }
 
       return HttpResponse.json(pagedOppgaver)
@@ -68,7 +69,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
       const oppgaver = await oppgaveStore.alle()
       const pagedOppgaver: OppgaverResponse = {
         oppgaver: oppgaver,
-        totalCount: oppgaver.length,
+        totalElements: oppgaver.length,
       }
       return HttpResponse.json(pagedOppgaver)
     }
@@ -80,10 +81,10 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
     const sakerFilter = url.searchParams.get('saksbehandler')
     const områdeFilter = url.searchParams.get('område')
     const sakstypeFilter = url.searchParams.get('type')
-    const currentPage = Number(url.searchParams.get('page'))
+    const pageNumber = Number(url.searchParams.get('page'))
     const pageSize = Number(url.searchParams.get('limit'))
 
-    const startIndex = currentPage - 1
+    const startIndex = pageNumber - 1
     const endIndex = startIndex + pageSize
     const oppgaver = [...(await sakStore.oppgaver()), ...(await barnebrillesakStore.oppgaver())]
     const filtrerteOppgaver = oppgaver
@@ -105,11 +106,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
 
     const haster = (oppgave: Oppgave) => oppgave.hast?.årsaker?.length || 0
 
-    const response = {
+    const response: OppgavelisteResponse = {
       oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),
-      totalCount: !filterApplied ? oppgaver.length : filtrerteOppgaver.length,
-      pageSize: pageSize,
-      currentPage: currentPage,
+      totalElements: !filterApplied ? oppgaver.length : filtrerteOppgaver.length,
+      pageRequest: {
+        pageNumber,
+        pageSize,
+      },
       antallHaster: !filterApplied ? oppgaver.filter(haster).length : filtrerteOppgaver.filter(haster).length,
     }
 

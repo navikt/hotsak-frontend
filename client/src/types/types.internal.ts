@@ -553,7 +553,7 @@ export interface OppgaveV2 {
 
 export interface OppgaverResponse {
   oppgaver: OppgaveV2[]
-  totalCount: number
+  totalElements: number
 }
 
 export interface Bydel {

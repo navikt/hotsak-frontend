@@ -11,7 +11,7 @@ import { PAGE_SIZE } from './paging/Paging'
 
 interface DataResponse {
   oppgaver: Oppgave[]
-  totalCount: number
+  totalElements: number
   currentPage: number
   pageSize: number
   antallHaster: number
@@ -27,22 +27,24 @@ interface PathConfigType {
   queryParams: Record<string, string>
 }
 
-interface Filters {
+interface OppgavelisteFilters {
   sakerFilter: string
   statusFilter: string
   sakstypeFilter: string
   områdeFilter: string
 }
 
-interface OppgavelisteResponse {
+export interface OppgavelisteResponse {
   oppgaver: Oppgave[]
-  totalCount: number
-  currentPage: number
-  pageSize: number
+  totalElements: number
+  pageRequest: {
+    pageNumber: number
+    pageSize: number
+  }
   antallHaster: number
 }
 
-function pathConfig(currentPage: number, sort: SortState, filters: Filters): PathConfigType {
+function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteFilters): PathConfigType {
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
@@ -75,7 +77,7 @@ function buildQueryParamString(queryParams: Record<string, string>) {
     .join('&')
 }
 
-export function useOppgaveliste(currentPage: number, sort: SortState, filters: Filters): DataResponse {
+export function useOppgaveliste(currentPage: number, sort: SortState, filters: OppgavelisteFilters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
@@ -90,9 +92,9 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: F
 
   return {
     oppgaver: data?.data.oppgaver || [],
-    totalCount: data?.data.totalCount || 0,
-    currentPage: data?.data.currentPage || currentPage,
-    pageSize: data?.data.pageSize || PAGE_SIZE,
+    totalElements: data?.data.totalElements || 0,
+    currentPage: data?.data.pageRequest.pageNumber || currentPage,
+    pageSize: data?.data.pageRequest.pageSize || PAGE_SIZE,
     antallHaster: data?.data.antallHaster || 0,
     isLoading: !error && !data,
     error,

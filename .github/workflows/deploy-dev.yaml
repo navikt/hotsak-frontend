@@ -69,6 +69,7 @@ jobs:
           build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
 
       - name: Definer release tag
+        id: version-tag
         run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
 
   deploy-labs:

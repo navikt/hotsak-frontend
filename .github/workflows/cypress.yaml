@@ -1,21 +1,21 @@
-name: Cypress tests
+name: Kjør Cypress-tester
 
 on: workflow_dispatch
-#  push:
-#    branches-ignore:
-#      - main # deploy-dev.yml har egen cypress test
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Sjekk ut koden
         uses: actions/checkout@v4
-      - name: Authenticate with GitHub NPM registry
+
+      - name: Autentiser med GitHub NPM registry
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
-      - name: Cypress run
+
+      - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev

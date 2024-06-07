@@ -9,20 +9,21 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - savner-informasjon-modal
 
 jobs:
   test:
     name: Kjør Cypress-tester
     runs-on: ubuntu-latest
     continue-on-error: true
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Authenticate with GitHub NPM registry
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+      - name: Autentiser med GitHub NPM registry
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
-      - name: Cypress run
+      - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev
@@ -30,11 +31,11 @@ jobs:
           working-directory: client
           config-file: cypress.config.ts
           record: false
-      - name: upload artifact
+      - name: Last opp artefakt
         uses: actions/upload-artifact@v4
         with:
           name: cypress-test
-          path: cypress/screenshots/ # or path/to/artifact
+          path: cypress/screenshots/
 
   build:
     name: Bygg
@@ -47,12 +48,17 @@ jobs:
     outputs:
       docker_image: ${{ steps.docker-build-push.outputs.image }}
       version_tag: ${{ steps.version-tag.outputs.VERSION_TAG}}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: navikt/digihot-deploy/actions/pre-deploy@v3
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Før deploy
+        uses: navikt/digihot-deploy/actions/pre-deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push docker image
+
+      - name: Bygg og push Docker image
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -61,7 +67,8 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
           build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
-      - id: version-tag
+
+      - name: Definer release tag
         run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
 
   deploy-labs:
@@ -72,9 +79,13 @@ jobs:
       contents: write
       id-token: write
     timeout-minutes: 15
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/labs.yaml
@@ -90,19 +101,25 @@ jobs:
     timeout-minutes: 15
     env:
       VERSION_TAG: ${{ needs.build.outputs.version_tag }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yaml
           IMAGE: ${{ needs.build.outputs.docker_image }}
-      - name: post-deploy
+
+      - name: Etter deploy
         if: github.ref == 'refs/heads/main'
         uses: navikt/digihot-deploy/actions/post-deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create release
+
+      - name: Lag release
         if: github.ref == 'refs/heads/main'
         uses: actions/create-release@latest
         env:

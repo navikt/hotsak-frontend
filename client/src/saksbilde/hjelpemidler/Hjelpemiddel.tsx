@@ -1,15 +1,14 @@
+import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
 import { Fragment, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 
-import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
-import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
-
-import { putEndreHjelpemiddel } from '../../io/http'
-import { storForbokstavIAlleOrd } from '../../utils/formater'
+import { Avstand } from '../../felleskomponenter/Avstand'
 import { Kolonne, Rad } from '../../felleskomponenter/Flex'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { putEndreHjelpemiddel } from '../../io/http'
 import {
   EndreHjelpemiddelRequest,
   EndretHjelpemiddelBegrunnelse,
@@ -17,16 +16,15 @@ import {
   HjelpemiddelType,
   OppgaveStatusType,
   Sak,
-  Sakstype,
 } from '../../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { storForbokstavIAlleOrd } from '../../utils/formater'
+import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
-import { Utlevert } from './Utlevert'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
-import { Avstand } from '../../felleskomponenter/Avstand'
+import { Utlevert } from './Utlevert'
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
@@ -35,11 +33,12 @@ interface HjelpemiddelProps {
 }
 
 export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: HjelpemiddelProps) {
-  const { personinformasjon, status, sakId, sakstype } = sak
+  const { personinformasjon, status, sakId } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
+  const informasjonOmHjelpemiddelEnabled = false // sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
   const endretProdukt = hjelpemiddel.endretHjelpemiddel
@@ -218,7 +217,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         )}
       </Rad>
 
-      {sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && (
+      {informasjonOmHjelpemiddelEnabled && (
         <Avstand marginTop={2}>
           <Rad>
             <EtikettKolonne />
@@ -252,12 +251,14 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         <Strek />
       )}
 
-      <InformasjonOmHjelpemiddelModal
-        {...informasjonOmHjelpemiddel}
-        onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
-          await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
-        }}
-      />
+      {informasjonOmHjelpemiddelEnabled && (
+        <InformasjonOmHjelpemiddelModal
+          {...informasjonOmHjelpemiddel}
+          onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
+            await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
+          }}
+        />
+      )}
     </Fragment>
   )
 }

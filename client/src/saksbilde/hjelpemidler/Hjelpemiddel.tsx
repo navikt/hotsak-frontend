@@ -1,11 +1,9 @@
 import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
-import { Button, CopyButton, HStack, Link, Tooltip } from '@navikt/ds-react'
-import { Fragment, ReactNode, useState } from 'react'
+import { Button, HStack, Link, VStack } from '@navikt/ds-react'
+import { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
-
-import { Avstand } from '../../felleskomponenter/Avstand'
-import { Kolonne, Rad } from '../../felleskomponenter/Flex'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putEndreHjelpemiddel } from '../../io/http'
@@ -21,6 +19,8 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIAlleOrd } from '../../utils/formater'
 import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
+import { Fremhevet } from './Fremhevet.tsx'
+import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
@@ -58,44 +58,30 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const nåværendeHmsnr = endretProdukt ? endretProdukt.hmsNr : hjelpemiddel.hmsnr
 
   return (
-    <Fragment key={hjelpemiddel.hmsnr}>
-      <Rad>
-        <EtikettKolonne>
-          <Rad>
-            {!forenkletVisning && (
-              <Rangering $rank={hjelpemiddel.rangering}>
-                <Tekst>Rangering:</Tekst>
-                <Tekst>{hjelpemiddel.rangering}</Tekst>
-              </Rangering>
-            )}
-          </Rad>
-          <Rad>{hjelpemiddel.antall} stk</Rad>
-        </EtikettKolonne>
-        <Kolonne>
-          <Rad>
-            <Kolonne>
-              <Etikett>{produkt?.isotittel}</Etikett>
-            </Kolonne>
-          </Rad>
-          {produkt?.posttitler?.map((posttittel) => <Rad key={posttittel}>{posttittel}</Rad>)}
+    <VStack key={hjelpemiddel.hmsnr} gap="2">
+      <HjelpemiddelGrid>
+        <VStack gap="2">
+          {!forenkletVisning && (
+            <Rangering $rank={hjelpemiddel.rangering}>
+              <Tekst>Rangering:</Tekst>
+              <Tekst>{hjelpemiddel.rangering}</Tekst>
+            </Rangering>
+          )}
+          <div>{hjelpemiddel.antall} stk</div>
+        </VStack>
+        <VStack gap="2">
+          <Etikett>{produkt?.isotittel}</Etikett>
+          {produkt?.posttitler?.map((posttittel) => <div key={posttittel}>{posttittel}</div>)}
           {endretProdukt && (
-            <HStack align="center" gap="2">
-              <Tooltip content="Kopierer hmsnr">
-                <HStack align="center">
-                  <strong>{endretProdukt.hmsNr}</strong>
-                  <CopyButton size="small" copyText={endretProdukt.hmsNr} />
-                </HStack>
-              </Tooltip>
+            <HStack gap="1" align="center">
+              <strong>{endretProdukt.hmsNr}</strong>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretProdukt.hmsNr} />
               {endretHjelpemiddelNavn?.navn}
             </HStack>
           )}
-          <HStack align="center" gap="2">
-            <Tooltip content="Kopierer hmsnr">
-              <HStack align="center">
-                <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
-                {!endretProdukt && <CopyButton size="small" copyText={hjelpemiddel.hmsnr} />}
-              </HStack>
-            </Tooltip>
+          <HStack gap={endretProdukt ? '3' : '1'} align="center">
+            <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
+            {!endretProdukt && <Kopiknapp tooltip="Kopier hmsnr" copyText={hjelpemiddel.hmsnr} />}
             {produkt ? (
               <Link
                 href={produkt.produkturl}
@@ -114,128 +100,126 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
             )}
           </HStack>
           {hjelpemiddel.endretHjelpemiddel && (
-            <Rad style={{ marginTop: '.5rem', flexWrap: 'nowrap' }}>
-              <div style={{ marginRight: '.5rem', marginTop: '.25rem' }}>
-                <PersonFillIcon />
-              </div>
+            <HStack gap="2">
+              <PersonFillIcon />
               <div>
-                <Rad>
-                  <strong>Byttet ut av saksbehandler, begrunnelse:</strong>
-                </Rad>
-                <Rad>
+                <Etikett>Byttet ut av saksbehandler, begrunnelse:</Etikett>
+                <div>
                   {hjelpemiddel.endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
                     ? hjelpemiddel.endretHjelpemiddel.begrunnelseFritekst
                     : EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}
-                </Rad>
+                </div>
               </div>
-            </Rad>
+            </HStack>
           )}
-          <Rad>
+          <div>
             {hjelpemiddel.tilleggsinfo.length > 0 && (
-              <TilleggsInfo>
+              <Fremhevet>
                 {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
                   return (
                     <Fragment key={tilleggsinfo.tittel}>
-                      <Rad>
+                      <div>
                         <Etikett>{`${storForbokstavIAlleOrd(tilleggsinfo.tittel)}:`}</Etikett>
-                      </Rad>
-                      <Rad>
-                        <Kolonne $width="700px">
+                      </div>
+                      <div>
+                        <div>
                           {tilleggsinfo.innholdsliste.map((element) => (
-                            <Rad key={element}>{element}</Rad>
+                            <div key={element}>{element}</div>
                           ))}
-                        </Kolonne>
-                      </Rad>
+                        </div>
+                      </div>
                     </Fragment>
                   )
                 })}
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
                   <>
-                    <Rad>
+                    <div>
                       <Etikett>Kroppsmål:</Etikett>
-                    </Rad>
-                    <Rad>
-                      <Kolonne $width="700px">{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</Kolonne>
-                    </Rad>
+                    </div>
+                    <div>
+                      <div>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</div>
+                    </div>
                   </>
                 )}
-              </TilleggsInfo>
+              </Fremhevet>
             )}
-          </Rad>
-          <Rad>
+          </div>
+          <div>
             {hjelpemiddel.alleredeUtlevert && (
-              <Rad>
+              <HStack gap="2">
                 <Etikett>Utlevert:</Etikett>
                 <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
-              </Rad>
+              </HStack>
             )}
-          </Rad>
-        </Kolonne>
-        <Rad>
-          <Rad>
-            {hjelpemiddel.tilbehør.length > 0 && (
-              <>
-                <EtikettKolonne />
-                <Kolonne>
-                  <Etikett>Tilbehør:</Etikett>
-                </Kolonne>
-                <Rad>
-                  {hjelpemiddel.tilbehør.map((tilbehør) => (
-                    <Rad key={tilbehør.hmsNr}>
-                      <EtikettKolonne>{tilbehør.antall} stk</EtikettKolonne>
-                      <Kolonne>
-                        <HStack align="center">
-                          {tilbehør.hmsNr}{' '}
-                          <Tooltip content="Kopierer hmsnr">
-                            <CopyButton size="small" copyText={tilbehør.hmsNr} />
-                          </Tooltip>
-                          {tilbehør.navn}
-                        </HStack>
-                      </Kolonne>
-                    </Rad>
-                  ))}
-                </Rad>
-              </>
-            )}
-          </Rad>
-        </Rad>
-        {forenkletVisning && visEndreProdukt && (
-          <Rad style={{ justifyContent: 'flex-end' }}>
-            <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(false)}>
+          </div>
+        </VStack>
+      </HjelpemiddelGrid>
+      {hjelpemiddel.tilbehør.length > 0 && (
+        <>
+          <HjelpemiddelGrid>
+            <div />
+            <div>
+              <Etikett>Tilbehør:</Etikett>
+            </div>
+          </HjelpemiddelGrid>
+          {hjelpemiddel.tilbehør.map((tilbehør) => (
+            <HjelpemiddelGrid key={tilbehør.hmsNr}>
+              <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
+              <HStack gap="1" align="center">
+                {tilbehør.hmsNr} <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
+                {tilbehør.navn}
+              </HStack>
+            </HjelpemiddelGrid>
+          ))}
+        </>
+      )}
+
+      {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && forenkletVisning && (
+        <div style={{ textAlign: 'right' }}>
+          {visEndreProdukt ? (
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => setVisEndreProdukt(false)}
+              icon={<ChevronUpIcon />}
+              iconPosition="left"
+            >
               Avbryt
-              <ChevronUpIcon />
             </Button>
-          </Rad>
-        )}
-        {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && forenkletVisning && !visEndreProdukt && (
-          <Rad style={{ justifyContent: 'flex-end' }}>
-            <Button variant="tertiary" size="small" onClick={() => setVisEndreProdukt(true)}>
+          ) : (
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => setVisEndreProdukt(true)}
+              icon={<ChevronDownIcon />}
+              iconPosition="left"
+            >
               Endre
-              <ChevronDownIcon />
             </Button>
-          </Rad>
-        )}
-      </Rad>
+          )}
+        </div>
+      )}
 
       {informasjonOmHjelpemiddelEnabled && (
-        <Avstand marginTop={2}>
-          <Rad>
-            <EtikettKolonne />
-            <Kolonne>
-              <div>
-                <Button
-                  variant="tertiary"
-                  size="small"
-                  icon={<ChatIcon />}
-                  iconPosition="left"
-                  onClick={() => informasjonOmHjelpemiddel.onOpen()}
-                >
-                  Jeg ønsker mer informasjon
-                </Button>
-              </div>
-            </Kolonne>
-          </Rad>
-        </Avstand>
+        <>
+          <div style={{ textAlign: 'right' }}>
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => informasjonOmHjelpemiddel.onOpen()}
+              icon={<ChatIcon />}
+              iconPosition="left"
+            >
+              Jeg ønsker mer informasjon
+            </Button>
+          </div>
+          <InformasjonOmHjelpemiddelModal
+            {...informasjonOmHjelpemiddel}
+            onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
+              await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
+            }}
+          />
+        </>
       )}
 
       {forenkletVisning && visEndreProdukt ? (
@@ -248,18 +232,11 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           onAvbryt={() => setVisEndreProdukt(false)}
         />
       ) : (
-        <Strek />
+        <div>
+          <Strek />
+        </div>
       )}
-
-      {informasjonOmHjelpemiddelEnabled && (
-        <InformasjonOmHjelpemiddelModal
-          {...informasjonOmHjelpemiddel}
-          onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
-            await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
-          }}
-        />
-      )}
-    </Fragment>
+    </VStack>
   )
 }
 
@@ -280,23 +257,3 @@ const Rangering = styled('div')<{
     font-weight: inherit;
   }
 `
-
-const TilleggsInfo = styled(Rad)`
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    background-color: var(--a-border-info);
-    width: 0.1875rem;
-    height: 95%;
-    bottom: 0;
-    left: -1rem;
-  }
-`
-
-function EtikettKolonne({ children }: { children?: ReactNode }) {
-  return <Kolonne $width="150px">{children}</Kolonne>
-}

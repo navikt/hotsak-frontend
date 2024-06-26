@@ -30,6 +30,7 @@ export function formaterFødselsnummer(fødselsnummer: string): string {
 }
 
 export function formaterNavn(navn?: string | Navn | HarNavn): string {
+  if (!navn) return ''
   if (isString(navn)) return storForbokstavIAlleOrd(navn)
   if ((navn as HarNavn).navn) {
     navn = (navn as HarNavn).navn

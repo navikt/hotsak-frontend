@@ -1,7 +1,8 @@
 import { Alert, Box, List } from '@navikt/ds-react'
 import { Etikett } from '../../felleskomponenter/typografi.tsx'
 import { Hast, Hasteårsak } from '../../types/types.internal.ts'
-import { Fremhev, HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
+import { Fremhevet } from './Fremhevet.tsx'
+import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 
 export function Hastesak(props: { hast?: Hast }) {
   const { hast } = props
@@ -14,8 +15,8 @@ export function Hastesak(props: { hast?: Hast }) {
       </Alert>
       <Box paddingBlock="3">
         <HjelpemiddelGrid>
-          <Fremhev />
-          <div>
+          <div />
+          <Fremhevet>
             <Etikett>Årsak til at det haster:</Etikett>
             <List size="small" headingTag="h2">
               {årsaker
@@ -25,7 +26,7 @@ export function Hastesak(props: { hast?: Hast }) {
                 ))}
               {begrunnelse && <List.Item>{begrunnelse}</List.Item>}
             </List>
-          </div>
+          </Fremhevet>
         </HjelpemiddelGrid>
       </Box>
     </>

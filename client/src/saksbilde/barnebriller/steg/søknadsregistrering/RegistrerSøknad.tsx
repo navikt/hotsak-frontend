@@ -1,18 +1,16 @@
 import { memo, Suspense, useEffect } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
-import styled from 'styled-components'
 
 import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
-import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { AlertError } from '../../../../feilsider/AlertError'
-import { Flex } from '../../../../felleskomponenter/Flex'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
+import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
-import { useJournalposter } from '../../../useJournalposter'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
+import { useJournalposter } from '../../../useJournalposter'
 import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
@@ -48,29 +46,16 @@ const RegistrerSøknadContent = memo(() => {
   if (!sak) return <div>Fant ikke saken</div>
 
   return (
-    <Container>
-      <AutoFlexContainer>
-        <TreKolonner>
-          <Venstremeny width={`${hotsakRegistrerSøknadKolonne}`}>
-            {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
-          </Venstremeny>
-          <DokumentPanel />
-        </TreKolonner>
-      </AutoFlexContainer>
-    </Container>
+    <TreKolonner>
+      <Venstremeny width={`${hotsakRegistrerSøknadKolonne}`}>
+        {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
+      </Venstremeny>
+      <DokumentPanel />
+    </TreKolonner>
   )
 })
 
 const LasterRegistrerSøknadBilde = () => <LasterPersonlinje />
-
-const Container = styled(Flex)`
-  overflow: auto;
-  overflow-x: hidden;
-`
-
-const AutoFlexContainer = styled.div`
-  flex: auto;
-`
 
 export const RegistrerSøknad = () => (
   <ErrorBoundary FallbackComponent={AlertError}>

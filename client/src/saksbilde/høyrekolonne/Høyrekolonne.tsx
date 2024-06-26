@@ -73,4 +73,5 @@ export const KolonneOppsett = styled.ul`
 export const KolonneTittel = styled.li`
   margin-top: 16px;
   font-size: 14px;
+  text-transform: uppercase;
 `

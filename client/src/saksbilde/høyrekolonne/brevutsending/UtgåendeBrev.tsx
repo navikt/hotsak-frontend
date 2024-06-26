@@ -20,7 +20,7 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
   if (isLoading || !saksdokumenter) {
     return (
       <Container>
-        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
+        <KolonneTittel>Utgående brev</KolonneTittel>
         <Loader size="small">Henter brev...</Loader>
       </Container>
     )
@@ -29,14 +29,14 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
   if (saksdokumenter?.length === 0) {
     return (
       <Container>
-        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
+        <KolonneTittel>Utgående brev</KolonneTittel>
         <div>Ingen brev sendt</div>
       </Container>
     )
   } else
     return (
       <Container>
-        <KolonneTittel>UTGÅENDE BREV</KolonneTittel>
+        <KolonneTittel>Utgående brev</KolonneTittel>
         {saksdokumenter
           .filter((dokument) => dokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER)
           .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))

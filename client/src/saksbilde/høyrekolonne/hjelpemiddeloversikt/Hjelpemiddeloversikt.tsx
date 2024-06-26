@@ -1,18 +1,14 @@
-import styled from 'styled-components'
+import { BodyShort, HGrid, Label, VStack } from '@navikt/ds-react'
 
-import { BodyLong, BodyShort, Label } from '@navikt/ds-react'
-
-import { formaterDato } from '../../../utils/dato'
-import { storForbokstavIAlleOrd } from '../../../utils/formater'
 import { Boble } from '../../../felleskomponenter/Boble'
-import { Kolonne, Rad } from '../../../felleskomponenter/Flex'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
+import { formaterDato } from '../../../utils/dato'
+import { storForbokstavIAlleOrd } from '../../../utils/formater'
 import { useSak } from '../../useSak'
 import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
-import { Fragment } from 'react'
 
 export function Hjelpemiddeloversikt() {
   const { sak } = useSak()
@@ -24,9 +20,9 @@ export function Hjelpemiddeloversikt() {
   if (isError) {
     return (
       <KolonneOppsett>
-        <HjelpemiddeloversiktContainer>
-          <BodyLong>Feil ved henting av brukers hjelpemiddeloversikt</BodyLong>
-        </HjelpemiddeloversiktContainer>
+        <div>
+          <BodyShort>Feil ved henting av brukers hjelpemiddeloversikt.</BodyShort>
+        </div>
       </KolonneOppsett>
     )
   }
@@ -34,9 +30,9 @@ export function Hjelpemiddeloversikt() {
   if (isLoading) {
     return (
       <KolonneOppsett>
-        <HjelpemiddeloversiktContainer>
-          <BodyLong>Henter brukers hjelpemiddeloversikt</BodyLong>
-        </HjelpemiddeloversiktContainer>
+        <div>
+          <BodyShort>Henter brukers hjelpemiddeloversikt.</BodyShort>
+        </div>
       </KolonneOppsett>
     )
   }
@@ -44,101 +40,73 @@ export function Hjelpemiddeloversikt() {
   if (!hjelpemiddelArtikler || hjelpemiddelArtikler.length === 0) {
     return (
       <KolonneOppsett>
-        <HjelpemiddeloversiktContainer>
-          <BodyLong>Bruker har ingen hjelpemidler fra før</BodyLong>
-        </HjelpemiddeloversiktContainer>
+        <div>
+          <BodyShort>Bruker har ingen hjelpemidler fra før.</BodyShort>
+        </div>
       </KolonneOppsett>
     )
   }
 
-  const artiklerPrKategori = grupperPåKategori(hjelpemiddelArtikler)
+  const artiklerByKategori = grupperPåKategori(hjelpemiddelArtikler)
 
   return (
     <KolonneOppsett>
-      {isFromVedtak ? (
-        <>
-          <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-          <Rad>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort </Rad>
-        </>
-      ) : (
-        <>
-          <KolonneTittel>UTLÅNSOVERSIKT</KolonneTittel>
-        </>
-      )}
-      <HjelpemiddeloversiktContainer>
-        {Object.keys(artiklerPrKategori)
+      <>
+        <KolonneTittel>Utlånsoversikt</KolonneTittel>
+        {isFromVedtak && <>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</>}
+      </>
+      <VStack gap="1">
+        {Object.keys(artiklerByKategori)
           .sort()
-          .map((kategori) => {
-            return (
-              <Fragment key={kategori}>
-                <Artikkeloverskrift size="small">{kategori}</Artikkeloverskrift>
-                <Artikler artikler={artiklerPrKategori[kategori]} />
-                <Strek />
-              </Fragment>
-            )
-          })}
-      </HjelpemiddeloversiktContainer>
+          .map((kategori) => (
+            <div key={kategori}>
+              <Label size="small">{kategori}</Label>
+              <Artikler artikler={artiklerByKategori[kategori]} />
+              <Strek />
+            </div>
+          ))}
+      </VStack>
     </KolonneOppsett>
   )
 }
 
-interface ArtiklerProps {
-  artikler: HjelpemiddelArtikkel[]
-}
-
-function Artikler({ artikler }: ArtiklerProps) {
+function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
   return (
-    <>
+    <VStack gap="2">
       {artikler.map((artikkel) => {
-        const id = `${artikkel.hmsnr}${artikkel.datoUtsendelse}`
         const artikkelBeskrivelse = storForbokstavIAlleOrd(artikkel.grunndataProduktNavn || artikkel.beskrivelse)
         return (
-          <div key={id}>
-            <Rad>
-              <Kolonne $width="85px">
-                <BodyShort size="small">{formaterDato(artikkel.datoUtsendelse)}</BodyShort>
-              </Kolonne>
-              <Kolonne $width="52px">
-                <BodyShort size="small">{artikkel.hmsnr}</BodyShort>
-              </Kolonne>
-              <Kolonne $width="230px" data-for={id} data-tip={artikkelBeskrivelse}>
-                <TooltipWrapper visTooltip={artikkelBeskrivelse.length > 28} content={artikkelBeskrivelse}>
-                  <BodyShort size="small" truncate>
-                    {artikkelBeskrivelse}
-                  </BodyShort>
-                </TooltipWrapper>
-              </Kolonne>
-              <Kolonne $width="50px" $marginLeft="auto">
-                <Boble>
-                  <BodyShort size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyShort>
-                </Boble>
-              </Kolonne>
-            </Rad>
-          </div>
+          <HGrid
+            key={`${artikkel.hmsnr}_${artikkel.datoUtsendelse}`}
+            gap="3"
+            columns="min-content min-content auto 50px"
+            align="center"
+          >
+            <BodyShort size="small">{formaterDato(artikkel.datoUtsendelse)}</BodyShort>
+            <BodyShort size="small">{artikkel.hmsnr}</BodyShort>
+            <TooltipWrapper visTooltip={artikkelBeskrivelse.length > 28} content={artikkelBeskrivelse}>
+              <BodyShort size="small" truncate>
+                {artikkelBeskrivelse}
+              </BodyShort>
+            </TooltipWrapper>
+            <Boble>
+              <BodyShort size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyShort>
+            </Boble>
+          </HGrid>
         )
       })}
-    </>
+    </VStack>
   )
 }
-
-const HjelpemiddeloversiktContainer = styled.div`
-  padding-top: 1rem;
-`
-
-const Artikkeloverskrift = styled(Label)`
-  padding-top: 0.2rem;
-`
 
 function grupperPåKategori(artikler: HjelpemiddelArtikkel[]) {
   return artikler.reduce<Record<string, HjelpemiddelArtikkel[]>>((gruppe, artikkel) => {
     const { isoKategori, grunndataKategoriKortnavn } = artikkel
-
-    const grupperingsNøkkel = grunndataKategoriKortnavn ? grunndataKategoriKortnavn : isoKategori
-
-    if (!gruppe[grupperingsNøkkel]) {
-      gruppe[grupperingsNøkkel] = []
+    const nøkkel = grunndataKategoriKortnavn ? grunndataKategoriKortnavn : isoKategori
+    if (!gruppe[nøkkel]) {
+      gruppe[nøkkel] = []
     }
-    gruppe[grupperingsNøkkel].push(artikkel)
+    gruppe[nøkkel].push(artikkel)
     return gruppe
   }, {})
 }

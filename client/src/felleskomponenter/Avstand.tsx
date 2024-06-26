@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
-export interface AvstandProps {
+interface AvstandProps {
   children?: ReactNode | undefined
   margin?: string
   marginTop?: number
@@ -16,6 +16,9 @@ export interface AvstandProps {
   centered?: boolean
 }
 
+/**
+ * @deprecated Bruk Box / HStack / VStack / HGrid fra Aksel
+ */
 export function Avstand(props: AvstandProps) {
   const {
     children,
@@ -70,7 +73,7 @@ const Box = styled.div<MarginPadding>`
   ${(props) => ({ textAlign: props.$centered ? 'center' : 'unset' })}
 `
 
-export function spacer(props: MarginPadding) {
+function spacer(props: MarginPadding) {
   return {
     margin: props.$margin,
     'margin-top': spacingVar(props.$marginTop),

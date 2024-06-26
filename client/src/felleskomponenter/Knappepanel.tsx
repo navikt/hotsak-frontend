@@ -15,6 +15,6 @@ const Container = styled.div<{
 }>`
   display: flex;
   justify-content: flex-start;
-  gap: ${(props) => (props.$gap ? props.$gap : '1rem')};
+  gap: ${(props) => (props.$gap ? props.$gap : 'var(--a-spacing-2)')};
   margin-top: var(--a-spacing-${(props) => props.$spacing});
 `

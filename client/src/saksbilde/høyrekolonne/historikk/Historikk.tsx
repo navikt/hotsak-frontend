@@ -17,7 +17,7 @@ export function Historikk() {
   if (!hendelser) {
     return (
       <KolonneOppsett>
-        <KolonneTittel>HISTORIKK</KolonneTittel>
+        <KolonneTittel>Historikk</KolonneTittel>
         <div>Ingen hendelser</div>
       </KolonneOppsett>
     )
@@ -25,7 +25,7 @@ export function Historikk() {
 
   return (
     <KolonneOppsett>
-      <KolonneTittel>HISTORIKK</KolonneTittel>
+      <KolonneTittel>Historikk</KolonneTittel>
       {hendelser
         .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))
         .map((it) => (

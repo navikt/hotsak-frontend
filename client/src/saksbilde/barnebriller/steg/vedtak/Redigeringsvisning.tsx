@@ -1,34 +1,29 @@
+import { Button, Detail, HStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
 
-import { Button, Detail } from '@navikt/ds-react'
-
-import { post, postBrevutkast } from '../../../../io/http'
-
-import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
+import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
+import { post, postBrevutkast } from '../../../../io/http'
 import {
   Barnebrillesak,
-  BrevTekst,
   Brevkode,
+  BrevTekst,
   Brevtype,
   MålformType,
   OppgaveStatusType,
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
-import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useBrevtekst } from '../../brevutkast/useBrevtekst'
+import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak
-  mutate: (...args: any[]) => any
+  mutate(...args: any[]): any
 }
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
@@ -36,7 +31,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const { setStep } = useManuellSaksbehandlingContext()
   const [loading, setLoading] = useState(false)
   const samletVurdering = useSamletVurdering(sak)
-  const [valideringsFeil, setValideringsfeil] = useState<string | undefined>(undefined)
+  const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
   const { data: utkastTilInnhenteOpplysningerBrev } = useBrevtekst(
     sak.sakId,
@@ -116,8 +111,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     post(`/api/sak/${sak.sakId}/kontroll`, {})
       .catch(() => {
         setLoading(false)
-
-        // TODO Håndtere feil her
+        // todo -> håndtere feil her
       })
       .then(() => {
         setLoading(false)
@@ -129,17 +123,16 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     <>
       {visFritekstFelt && (
         <>
-          <Avstand paddingTop={6} />
           <Fritekst
             label="Beskriv hvilke opplysninger som mangler"
             beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
-            valideringsfeil={valideringsFeil}
+            valideringsfeil={valideringsfeil}
             fritekst={fritekst}
             onLagre={lagreUtkast}
             lagrer={lagrer}
             onTextChange={setFritekst}
           />
-          <Container>
+          <div>
             <Button
               loading={false}
               size="small"
@@ -150,7 +143,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             >
               Forhåndsvis
             </Button>
-          </Container>
+          </div>
         </>
       )}
       {manglerPåkrevdEtterspørreOpplysningerBrev && (
@@ -172,8 +165,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         </SkjemaAlert>
       )}
 
-      <Avstand paddingBottom={6} />
-      <Knappepanel>
+      <HStack gap="2">
         <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
           Forrige
         </Button>
@@ -193,12 +185,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             Send til godkjenning
           </Button>
         )}
-      </Knappepanel>
+      </HStack>
     </>
   )
 }
-
-const Container = styled.div`
-  display: flex;
-  padding-top: 0.5rem;
-`

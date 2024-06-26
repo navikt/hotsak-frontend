@@ -1,25 +1,19 @@
+import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@navikt/ds-react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Alert, Button, Detail, Heading, Panel, Skeleton, Tag } from '@navikt/ds-react'
-
-import { formaterDato } from '../../../../utils/dato'
-
-import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
+import { formaterDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
+import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
-import { BrevPanel } from './brev/BrevPanel'
-
-export const VENSTREKOLONNE_BREDDE = '180px'
 
 export function Vedtak() {
   const { saksnummer } = useParams<{ saksnummer: string }>()
@@ -49,45 +43,45 @@ export function Vedtak() {
   return (
     <TreKolonner>
       {visSkeleton ? (
-        <Avstand paddingTop={6}>
+        <Box padding="4">
           <Heading level="1" size="small" spacing>
             Forslag til vedtak
           </Heading>
-          <Skeleton variant="rectangle" width="40%" height={60} />
-          <Avstand paddingTop={2} />
-          <Skeleton variant="rectangle" width="80%" height={20} />
-          <Avstand paddingTop={2} />
-          <Skeleton variant="rectangle" width="80%" height={20} />
-          <Avstand paddingTop={6} />
-          <Skeleton variant="rectangle" width="80%" height={90} />
-        </Avstand>
+          <VStack gap="2">
+            <Skeleton variant="rectangle" width="40%" height={60} />
+            <Skeleton variant="rectangle" width="80%" height={20} />
+            <Skeleton variant="rectangle" width="80%" height={20} />
+            <Skeleton variant="rectangle" width="80%" height={90} />
+          </VStack>
+        </Box>
       ) : (
-        <Panel>
+        <Box padding="4">
           <Heading level="1" size="small" spacing>
             {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
           </Heading>
-          <Detail>RESULTAT</Detail>
-          <Tag variant={alertType} size="small">
-            {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
-          </Tag>
-          {status === VilkårsResultat.JA && <InnvilgetVedtakVisning sak={sak.data} mutate={mutate} />}
-
-          {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}
-          {visAlertGodkjenning && (
-            <Avstand paddingTop={6}>
+          <VStack gap="5">
+            <div>
+              <Detail uppercase>Resultat</Detail>
+              <Tag variant={alertType} size="small">
+                {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
+              </Tag>
+            </div>
+            {status === VilkårsResultat.JA && <InnvilgetVedtakVisning sak={sak.data} mutate={mutate} />}
+            {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}
+            {visAlertGodkjenning && (
               <Alert variant="info" size="small">
                 {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
               </Alert>
-            </Avstand>
-          )}
-          {!saksbehandlerKanRedigereBarnebrillesak && (
-            <Knappepanel>
-              <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
-                Forrige
-              </Button>
-            </Knappepanel>
-          )}
-        </Panel>
+            )}
+            {!saksbehandlerKanRedigereBarnebrillesak && (
+              <div>
+                <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+                  Forrige
+                </Button>
+              </div>
+            )}
+          </VStack>
+        </Box>
       )}
       <VenstreKolonne>
         <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />
@@ -96,7 +90,7 @@ export function Vedtak() {
   )
 }
 
-const VenstreKolonne = styled(Panel)`
+const VenstreKolonne = styled('div')`
   border-left: 1px solid var(--a-border-default);
   padding: 0;
   margin: 0;

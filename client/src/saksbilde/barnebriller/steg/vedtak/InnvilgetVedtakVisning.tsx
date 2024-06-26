@@ -1,34 +1,34 @@
-import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Kolonne, Rad } from '../../../../felleskomponenter/Flex'
+import { HGrid } from '@navikt/ds-react'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { Barnebrillesak } from '../../../../types/types.internal'
-import { UtbetalingsmottakerVisning } from './Utbetalingsmottaker'
-import { VENSTREKOLONNE_BREDDE } from './Vedtak'
+import { formaterKontonummer, formaterNavn } from '../../../../utils/formater.ts'
+import { UtbetalingsmottakerAlert } from './Utbetalingsmottaker'
 
 export interface InnvilgetVedtakVisningProps {
   sak: Barnebrillesak
-  mutate: (...args: any[]) => any
+  mutate(...args: any[]): any
 }
 
 export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
   const { sak, mutate } = props
-  const { vilkårsvurdering } = sak
+  const { vilkårsvurdering, utbetalingsmottaker } = sak
   return (
     <>
-      <Avstand paddingBottom={6} />
-      <Rad>
-        <Kolonne $width={VENSTREKOLONNE_BREDDE}>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</Kolonne>
-        <Kolonne>
-          <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
-        </Kolonne>
-      </Rad>
-      <Rad>
-        <Kolonne $width={VENSTREKOLONNE_BREDDE}>Beløp som utbetales:</Kolonne>
-        <Kolonne>
-          <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
-        </Kolonne>
-      </Rad>
-      <UtbetalingsmottakerVisning sakId={sak.sakId} utbetalingsmottaker={sak.utbetalingsmottaker} mutate={mutate} />
+      <HGrid gap="2" columns="180px auto">
+        <div>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</div>
+        <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
+        <div>Beløp som utbetales:</div>
+        <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
+        {utbetalingsmottaker?.fnr && (
+          <>
+            <div>Utbetales til:</div>
+            <Etikett>{formaterNavn(utbetalingsmottaker?.navn) || '-'}</Etikett>
+            <div>Kontonummer:</div>
+            <Etikett>{formaterKontonummer(utbetalingsmottaker?.kontonummer) || 'Kontonummer mangler'}</Etikett>
+          </>
+        )}
+      </HGrid>
+      <UtbetalingsmottakerAlert sakId={sak.sakId} utbetalingsmottaker={sak.utbetalingsmottaker} mutate={mutate} />
     </>
   )
 }

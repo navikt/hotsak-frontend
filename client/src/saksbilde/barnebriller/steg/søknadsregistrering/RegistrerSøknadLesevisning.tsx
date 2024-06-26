@@ -150,5 +150,5 @@ export function RegistrerSøknadLesevisning() {
   )
 }
 
-const hGridProps: Partial<HGridProps> = { columns: '150px 150px' }
-const hStackProps: Partial<HStackProps> = { wrap: false, gap: '2', align: 'center' }
+const hGridProps: Pick<HGridProps, 'columns'> = { columns: '150px 150px' }
+const hStackProps: Pick<HStackProps, 'wrap' | 'gap' | 'align'> = { wrap: false, gap: '2', align: 'center' }

@@ -87,7 +87,7 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
   )
 }
 
-const hGridProps: Partial<HGridProps> = {
+const hGridProps: Pick<HGridProps, 'columns' | 'gap'> = {
   columns: 'minmax(min-content, 12rem) auto',
   gap: '05',
 }

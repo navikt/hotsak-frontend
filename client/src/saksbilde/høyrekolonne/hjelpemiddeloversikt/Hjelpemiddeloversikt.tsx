@@ -1,4 +1,4 @@
-import { BodyShort, HGrid, Label, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, HGrid, Label, VStack } from '@navikt/ds-react'
 
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Strek } from '../../../felleskomponenter/Strek'
@@ -20,9 +20,9 @@ export function Hjelpemiddeloversikt() {
   if (isError) {
     return (
       <KolonneOppsett>
-        <div>
+        <Box paddingBlock="4">
           <BodyShort>Feil ved henting av brukers hjelpemiddeloversikt.</BodyShort>
-        </div>
+        </Box>
       </KolonneOppsett>
     )
   }
@@ -30,9 +30,9 @@ export function Hjelpemiddeloversikt() {
   if (isLoading) {
     return (
       <KolonneOppsett>
-        <div>
+        <Box paddingBlock="4">
           <BodyShort>Henter brukers hjelpemiddeloversikt.</BodyShort>
-        </div>
+        </Box>
       </KolonneOppsett>
     )
   }
@@ -40,9 +40,9 @@ export function Hjelpemiddeloversikt() {
   if (!hjelpemiddelArtikler || hjelpemiddelArtikler.length === 0) {
     return (
       <KolonneOppsett>
-        <div>
+        <Box paddingBlock="4">
           <BodyShort>Bruker har ingen hjelpemidler fra før.</BodyShort>
-        </div>
+        </Box>
       </KolonneOppsett>
     )
   }
@@ -51,11 +51,9 @@ export function Hjelpemiddeloversikt() {
 
   return (
     <KolonneOppsett>
-      <>
+      <VStack as="li" gap="2">
         <KolonneTittel>Utlånsoversikt</KolonneTittel>
-        {isFromVedtak && <>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</>}
-      </>
-      <VStack gap="1">
+        {isFromVedtak && <li>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</li>}
         {Object.keys(artiklerByKategori)
           .sort()
           .map((kategori) => (

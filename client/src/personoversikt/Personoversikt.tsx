@@ -23,7 +23,7 @@ function PersonoversiktContent() {
   const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
   const {
     hjelpemiddelArtikler,
-    isError: hjelpemiddeloversiktError,
+    error: hjelpemiddeloversiktError,
     isLoading: hjelpemiddeloversiktLoading,
   } = useHjelpemiddeloversikt(fodselsnummer)
 

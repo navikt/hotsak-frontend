@@ -1,6 +1,5 @@
-import { ReactNode, useRef } from 'react'
-
 import { Button, Modal } from '@navikt/ds-react'
+import { ReactNode, useRef } from 'react'
 
 interface BekreftelseModalProps {
   heading: string

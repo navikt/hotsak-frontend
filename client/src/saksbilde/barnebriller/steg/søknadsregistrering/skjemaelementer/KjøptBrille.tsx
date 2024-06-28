@@ -1,6 +1,5 @@
+import { HelpText, HStack, Radio, RadioGroup } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-
-import { HStack, HelpText, Radio, RadioGroup } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Tekstfelt } from '../../../../../felleskomponenter/skjema/Tekstfelt'
@@ -27,7 +26,7 @@ export function KjøptBrille() {
         render={({ field }) => (
           <RadioGroup
             legend={
-              <HStack wrap={false} gap="2" align={'center'}>
+              <HStack wrap={false} gap="2" align="center">
                 <Etikett>Er det snakk om kjøp av briller? (§2)</Etikett>
                 <HelpText>
                   Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
@@ -45,7 +44,7 @@ export function KjøptBrille() {
                   id="brillepris"
                   htmlSize={8}
                   label={
-                    <HStack wrap={false} gap="2" align={'center'}>
+                    <HStack wrap={false} gap="2" align="center">
                       <Etikett>Pris på brillen</Etikett>
                       <HelpText>
                         Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning.

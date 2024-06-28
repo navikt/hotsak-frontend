@@ -1,70 +1,47 @@
-import { BodyShort, Box, HGrid, Label, VStack } from '@navikt/ds-react'
+import { BodyShort, HGrid, Label, VStack } from '@navikt/ds-react'
+import { useMemo } from 'react'
 
 import { Boble } from '../../../felleskomponenter/Boble'
 import { Strek } from '../../../felleskomponenter/Strek'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
+import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 import { formaterDato } from '../../../utils/dato'
 import { storForbokstavIAlleOrd } from '../../../utils/formater'
 import { useSak } from '../../useSak'
-import { KolonneOppsett, KolonneTittel } from '../Høyrekolonne'
+import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
 
 export function Hjelpemiddeloversikt() {
   const { sak } = useSak()
-  const { hjelpemiddelArtikler, isError, isLoading, isFromVedtak } = useHjelpemiddeloversikt(
-    sak?.data.personinformasjon.fnr,
-    sak?.data.vedtak?.vedtaksgrunnlag
-  )
-
-  if (isError) {
-    return (
-      <KolonneOppsett>
-        <Box paddingBlock="4">
-          <BodyShort>Feil ved henting av brukers hjelpemiddeloversikt.</BodyShort>
-        </Box>
-      </KolonneOppsett>
-    )
-  }
-
-  if (isLoading) {
-    return (
-      <KolonneOppsett>
-        <Box paddingBlock="4">
-          <BodyShort>Henter brukers hjelpemiddeloversikt.</BodyShort>
-        </Box>
-      </KolonneOppsett>
-    )
-  }
-
-  if (!hjelpemiddelArtikler || hjelpemiddelArtikler.length === 0) {
-    return (
-      <KolonneOppsett>
-        <Box paddingBlock="4">
-          <BodyShort>Bruker har ingen hjelpemidler fra før.</BodyShort>
-        </Box>
-      </KolonneOppsett>
-    )
-  }
-
-  const artiklerByKategori = grupperPåKategori(hjelpemiddelArtikler)
-
+  const {
+    hjelpemiddelArtikler: artikler,
+    error,
+    isLoading,
+    isFromVedtak,
+  } = useHjelpemiddeloversikt(sak?.data.personinformasjon.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
+  const artiklerByKategori = useArtiklerByKategori(artikler)
   return (
-    <KolonneOppsett>
-      <VStack as="li" gap="2">
-        <KolonneTittel>Utlånsoversikt</KolonneTittel>
-        {isFromVedtak && <li>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</li>}
-        {Object.keys(artiklerByKategori)
-          .sort()
-          .map((kategori) => (
-            <div key={kategori}>
+    <HøyrekolonnePanel
+      tittel="Utlånsoversikt"
+      error={error && 'Feil ved henting av brukers hjelpemiddeloversikt.'}
+      loading={isLoading && 'Henter brukers hjelpemiddeloversikt...'}
+    >
+      {isFromVedtak && <Tekst spacing>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</Tekst>}
+      {artikler.length > 0 ? (
+        <VStack as="ul" gap="1">
+          {artiklerByKategori.map(([kategori, artikler]) => (
+            <li key={kategori}>
               <Label size="small">{kategori}</Label>
-              <Artikler artikler={artiklerByKategori[kategori]} />
+              <Artikler artikler={artikler} />
               <Strek />
-            </div>
+            </li>
           ))}
-      </VStack>
-    </KolonneOppsett>
+        </VStack>
+      ) : (
+        <Tekst>Bruker har ingen hjelpemidler fra før.</Tekst>
+      )}
+    </HøyrekolonnePanel>
   )
 }
 
@@ -97,14 +74,17 @@ function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
   )
 }
 
-function grupperPåKategori(artikler: HjelpemiddelArtikkel[]) {
-  return artikler.reduce<Record<string, HjelpemiddelArtikkel[]>>((gruppe, artikkel) => {
-    const { isoKategori, grunndataKategoriKortnavn } = artikkel
-    const nøkkel = grunndataKategoriKortnavn ? grunndataKategoriKortnavn : isoKategori
-    if (!gruppe[nøkkel]) {
-      gruppe[nøkkel] = []
-    }
-    gruppe[nøkkel].push(artikkel)
-    return gruppe
-  }, {})
+function useArtiklerByKategori(artikler: HjelpemiddelArtikkel[]): [string, HjelpemiddelArtikkel[]][] {
+  return useMemo(() => {
+    const resultat = artikler.reduce<Record<string, HjelpemiddelArtikkel[]>>((grupper, artikkel) => {
+      const { isoKategori, grunndataKategoriKortnavn } = artikkel
+      const kategori = grunndataKategoriKortnavn || isoKategori
+      if (!grupper[kategori]) {
+        grupper[kategori] = []
+      }
+      grupper[kategori].push(artikkel)
+      return grupper
+    }, {})
+    return Object.entries(resultat).sort(([a], [b]) => a.localeCompare(b))
+  }, [artikler])
 }

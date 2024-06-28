@@ -1,13 +1,10 @@
+import { Box, Button, HStack, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useParams } from 'react-router'
 
-import { Button, TextField } from '@navikt/ds-react'
-
+import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { IKKE_FUNNET } from '../../../../io/http'
 import { formaterKontonummer } from '../../../../utils/formater'
-
-import { Kolonner } from '../../../../felleskomponenter/Kolonner'
-import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { useKontonummer } from './useKontonummer'
 
 export interface UtbetalingsmottakerProps {
@@ -25,7 +22,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
 
   return (
     <>
-      <Kolonner>
+      <HStack gap="2" align="end">
         <TextField
           label="Fødselsnummer innsender"
           size="small"
@@ -44,25 +41,26 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
         >
           Hent kontonummer
         </Button>
-      </Kolonner>
-      {kontoinformasjon && !kontonummerFunnet && (
-        <SkjemaAlert variant="error">
-          {`Fant ikke kontonummer for ${
-            kontoinformasjon?.navn && kontoinformasjon.navn !== '' ? kontoinformasjon.navn : innsenderFnr
-          }. Kontakt personen og be dem legge inn kontonummer hos NAV.`}
-        </SkjemaAlert>
-      )}
-
-      {error?.status && error.status !== IKKE_FUNNET && (
-        <SkjemaAlert variant="error">
-          {`Klarte ikke å hente kontonummer for ${innsenderFnr}. Prøv igjen om noen minutter. Hvis problemet ikke løser seg, kontakt DigiHoT.`}
-        </SkjemaAlert>
-      )}
-      {kontonummerFunnet && (
-        <SkjemaAlert variant="info">{`Kontonummer for ${kontoinformasjon.navn}: ${formaterKontonummer(
-          kontoinformasjon?.kontonummer
-        )}`}</SkjemaAlert>
-      )}
+      </HStack>
+      <Box marginBlock="3">
+        {kontoinformasjon && !kontonummerFunnet && (
+          <SkjemaAlert variant="error">
+            {`Fant ikke kontonummer for ${
+              kontoinformasjon?.navn && kontoinformasjon.navn !== '' ? kontoinformasjon.navn : innsenderFnr
+            }. Kontakt personen og be dem legge inn kontonummer hos NAV.`}
+          </SkjemaAlert>
+        )}
+        {error?.status && error.status !== IKKE_FUNNET && (
+          <SkjemaAlert variant="error">
+            {`Klarte ikke å hente kontonummer for ${innsenderFnr}. Prøv igjen om noen minutter. Hvis problemet ikke løser seg, kontakt DigiHoT.`}
+          </SkjemaAlert>
+        )}
+        {kontonummerFunnet && (
+          <SkjemaAlert variant="info">{`Kontonummer for ${kontoinformasjon.navn}: ${formaterKontonummer(
+            kontoinformasjon?.kontonummer
+          )}`}</SkjemaAlert>
+        )}
+      </Box>
     </>
   )
 }

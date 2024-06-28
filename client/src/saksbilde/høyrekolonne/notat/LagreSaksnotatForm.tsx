@@ -1,11 +1,11 @@
-import { Button, Textarea } from '@navikt/ds-react'
-import { Avstand } from '../../../felleskomponenter/Avstand'
+import { Button, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import type { Notat } from '../../../types/types.internal'
+import type { KeyedMutator } from 'swr'
+
 import { postSaksnotat } from '../../../io/http'
 import { useInnloggetSaksbehandler } from '../../../state/authentication'
-import type { KeyedMutator } from 'swr'
+import type { Notat } from '../../../types/types.internal'
 
 export interface LagreSaksnotatFormProps {
   sakId: string
@@ -36,12 +36,14 @@ export function LagreSaksnotatForm(props: LagreSaksnotatFormProps) {
 
   return (
     <form onSubmit={lagreNotat}>
-      <Textarea label="Nytt notat" size="small" defaultValue="" {...register('innhold', { required: true })} />
-      <Avstand marginTop={4}>
-        <Button type="submit" size="small" variant="secondary" loading={loading}>
-          Lagre notat
-        </Button>
-      </Avstand>
+      <VStack gap="3">
+        <Textarea label="Nytt notat" size="small" defaultValue="" {...register('innhold', { required: true })} />
+        <div>
+          <Button type="submit" size="small" variant="secondary" loading={loading}>
+            Lagre notat
+          </Button>
+        </div>
+      </VStack>
     </form>
   )
 }

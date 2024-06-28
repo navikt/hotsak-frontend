@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import styled from 'styled-components'
-
 import { TrashIcon } from '@navikt/aksel-icons'
-import { BodyLong, BodyShort, Button, Detail, Label, Panel } from '@navikt/ds-react'
-import { formaterTidsstempel } from '../../../utils/dato'
+import { Bleed, BodyLong, BodyShort, Box, Button, Detail, HStack, Label, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
+
 import { useInnloggetSaksbehandler } from '../../../state/authentication'
-import { Avstand } from '../../../felleskomponenter/Avstand'
-import { SlettSaksnotatModal } from './SlettSaksnotatModal'
+import { formaterTidsstempel } from '../../../utils/dato'
+import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { LagreSaksnotatForm } from './LagreSaksnotatForm'
+import { SlettSaksnotatModal } from './SlettSaksnotatModal'
 import { useSaksnotater } from './useSaksnotater'
-import { Mellomtittel } from '../../../felleskomponenter/typografi'
 
 export interface SaksnotaterProps {
   sakId?: string
@@ -27,26 +25,28 @@ export function Saksnotater(props: SaksnotaterProps) {
   }
 
   return (
-    <Panel as="aside">
-      <Mellomtittel>Notater</Mellomtittel>
-      {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
-      {!lesevisning && (
-        <SlettSaksnotatModal sakId={sakId} notatId={notatId} mutate={mutate} onClose={() => setNotatId(NaN)} />
-      )}
-      <Avstand marginTop={lesevisning ? 0 : 8}>
+    <HøyrekolonnePanel tittel="Notater">
+      <VStack gap="5">
+        {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
         {notater.length ? (
-          <ul title="Notater">
+          <VStack as="ul" gap="5" title="Notater">
             {notater.map((notat) => (
-              <li key={notat.id || notat.opprettet}>
-                <NotatPanel border>
-                  <NotatHeader>
-                    <div>
-                      <Label as="h2" size="small">
-                        {notat.saksbehandler.navn}
-                      </Label>
-                      <Detail>{formaterTidsstempel(notat.opprettet)}</Detail>
-                    </div>
-                    {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
+              <Box
+                key={notat.id || notat.opprettet}
+                as="li"
+                padding="4"
+                background="surface-warning-subtle"
+                borderRadius="medium"
+              >
+                <HStack justify="space-between">
+                  <div>
+                    <Label as="h2" size="small">
+                      {notat.saksbehandler.navn}
+                    </Label>
+                    <Detail>{formaterTidsstempel(notat.opprettet)}</Detail>
+                  </div>
+                  {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
+                    <Bleed marginInline="3" marginBlock="3">
                       <Button
                         type="button"
                         size="small"
@@ -54,30 +54,20 @@ export function Saksnotater(props: SaksnotaterProps) {
                         variant="tertiary-neutral"
                         onClick={() => setNotatId(notat.id)}
                       />
-                    )}
-                  </NotatHeader>
-                  <BodyLong size="small">{notat.innhold}</BodyLong>
-                </NotatPanel>
-              </li>
+                    </Bleed>
+                  )}
+                </HStack>
+                <BodyLong size="small">{notat.innhold}</BodyLong>
+              </Box>
             ))}
-          </ul>
+          </VStack>
         ) : (
           <BodyShort size="small">Ingen saksnotater.</BodyShort>
         )}
-      </Avstand>
-    </Panel>
+      </VStack>
+      {!lesevisning && (
+        <SlettSaksnotatModal sakId={sakId} notatId={notatId} mutate={mutate} onClose={() => setNotatId(NaN)} />
+      )}
+    </HøyrekolonnePanel>
   )
 }
-
-const NotatPanel = styled(Panel)`
-  margin: var(--a-spacing-3) 0;
-  background-color: var(--a-orange-50);
-  border-color: var(--a-orange-100);
-`
-
-const NotatHeader = styled.header`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: var(--a-spacing-2);
-`

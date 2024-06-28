@@ -58,7 +58,7 @@ const BarnebrillesakContent = memo(() => {
       <Header wrap={false} align={'end'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
-        <HStack align={'center'}>
+        <HStack align="center">
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
             sakId={sak.data.sakId}

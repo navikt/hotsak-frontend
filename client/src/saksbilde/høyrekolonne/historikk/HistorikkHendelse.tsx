@@ -6,33 +6,18 @@ import { Hendelse } from '../../../types/types.internal'
 
 export function HistorikkHendelse({ hendelse, detaljer, opprettet, bruker }: Hendelse) {
   return (
-    <Container>
-      <ContentContainer>
-        <Etikett>{hendelse}</Etikett>
-        {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
-        {detaljer?.split(';').map((detalj) => <Tekst key={detalj}>{detalj}</Tekst>)}
-        <Tekst>{bruker}</Tekst>
-      </ContentContainer>
-    </Container>
+    <Li>
+      <Etikett>{hendelse}</Etikett>
+      {opprettet && <Undertittel>{formaterTidsstempel(opprettet)}</Undertittel>}
+      {detaljer?.split(';').map((detalj) => <Tekst key={detalj}>{detalj}</Tekst>)}
+      <Tekst>{bruker}</Tekst>
+    </Li>
   )
 }
 
-const Container = styled.li`
-  margin: 0;
-  padding: 0;
-  display: flex;
-
-  &:not(:first-of-type) {
-    padding-top: var(--a-spacing-4);
-  }
-
+const Li = styled.li`
   &:not(:last-of-type) {
-    padding-bottom: var(--a-spacing-4);
+    padding-bottom: var(--a-spacing-3);
     border-bottom: 1px solid var(--a-border-subtle);
   }
-`
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `

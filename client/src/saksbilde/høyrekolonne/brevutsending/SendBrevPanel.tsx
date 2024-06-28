@@ -1,21 +1,18 @@
+import { TrashIcon } from '@navikt/aksel-icons'
+import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } from '@navikt/ds-react'
 import { memo, useEffect, useState } from 'react'
 
-import { Button, Heading, Panel, Radio, RadioGroup, Select, Skeleton } from '@navikt/ds-react'
-
-import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
-
-import { TrashIcon } from '@navikt/aksel-icons'
-import { Avstand } from '../../../felleskomponenter/Avstand'
-import { Knappepanel } from '../../../felleskomponenter/Knappepanel'
-import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
-import { Brødtekst, Mellomtittel } from '../../../felleskomponenter/typografi'
+import { InfoToast } from '../../../felleskomponenter/Toast'
+import { Brødtekst } from '../../../felleskomponenter/typografi'
+import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
+import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 
@@ -32,7 +29,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const [sletter, setSletter] = useState(false)
   const [senderBrev, setSenderBrev] = useState(false)
   const [visSendBrevModal, setVisSendBrevModal] = useState(false)
-  const [visForhåndsvisningsModal, setVisForhåndsvisningsModal] = useState(false)
+  const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
@@ -40,7 +37,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
-  const { mutate: hentBrillesak } = useBarnebrillesak()
+  const { mutate: hentBarnebrillesak } = useBarnebrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
@@ -69,14 +66,15 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
 
   if (!data) {
     return (
-      <Avstand paddingTop={6} paddingLeft={4}>
+      <HøyrekolonnePanel tittel="Send brev">
         <Heading level="2" as={Skeleton} size="small" spacing>
           Placeholder
         </Heading>
-        <Skeleton variant="rectangle" width="80%" height={30} />
-        <Avstand paddingTop={6} />
-        <Skeleton variant="rectangle" width="80%" height={90} />
-      </Avstand>
+        <VStack gap="4">
+          <Skeleton variant="rectangle" width="80%" height={30} />
+          <Skeleton variant="rectangle" width="80%" height={90} />
+        </VStack>
+      </HøyrekolonnePanel>
     )
   }
 
@@ -100,12 +98,12 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setSubmitAttempt(false)
     setFritekst('')
     setVisSendtBrevToast(true)
-    hentBrillesak()
-    hentSaksdokumenter()
+    hentBarnebrillesak()
+    await hentSaksdokumenter()
 
     setTimeout(() => {
       setVisSendtBrevToast(false)
-      hentBrillesak()
+      hentBarnebrillesak()
       hentSaksdokumenter()
     }, 3000)
   }
@@ -119,8 +117,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setTimeout(() => {
       setVisSlettetUtkastToast(false)
     }, 3000)
-    hentBrevtekst()
-
+    await hentBrevtekst()
     setSletter(false)
   }
 
@@ -132,82 +129,83 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
 
   return (
     <>
-      <Panel as="aside">
-        <Mellomtittel>Send brev</Mellomtittel>
-        {lesevisning ? (
-          <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
-        ) : (
-          <form onSubmit={(e) => e.preventDefault()}>
-            <Select size="small" label="Velg brevmal">
-              <option value={brevtype}>Innhente opplysninger</option>
-            </Select>
-            <Avstand paddingTop={6} />
-            <RadioGroup
-              legend="Målform"
-              size="small"
-              value={målform}
-              onChange={(value: MålformType) => {
-                setMålform(value)
-                lagreUtkast(fritekst, value)
-              }}
-            >
-              <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
-              <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
-            </RadioGroup>
-            <Avstand paddingTop={6} />
-            <Fritekst
-              label="Fritekst"
-              beskrivelse="Beskriv hva som mangler av dokumentasjon"
-              fritekst={fritekst}
-              valideringsfeil={valideringsfeil}
-              onLagre={lagreUtkast}
-              lagrer={lagrer}
-              onTextChange={setFritekst}
-            />
-            <Knappepanel>
-              <Button
-                type="submit"
-                size="small"
-                variant="tertiary"
-                onClick={() => {
-                  hentForhåndsvisning(sakId, brevtype)
-                  setVisForhåndsvisningsModal(true)
-                }}
-              >
-                Forhåndsvis
-              </Button>
-              <Button
-                type="submit"
-                size="small"
-                variant="primary"
-                onClick={() => {
-                  setSubmitAttempt(true)
-                  if (valider()) {
-                    setVisSendBrevModal(true)
-                  }
-                }}
-              >
-                Send brev
-              </Button>
-              <Button
-                icon={<TrashIcon />}
-                variant="danger"
-                size="small"
-                onClick={() => {
-                  setVisSlettUtkastModal(true)
-                }}
-              />
-            </Knappepanel>
-          </form>
-        )}
+      <>
+        <HøyrekolonnePanel tittel="Send brev">
+          {lesevisning ? (
+            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
+          ) : (
+            <form onSubmit={(e) => e.preventDefault()}>
+              <VStack gap="4">
+                <Select size="small" label="Velg brevmal">
+                  <option value={brevtype}>Innhente opplysninger</option>
+                </Select>
+                <RadioGroup
+                  legend="Målform"
+                  size="small"
+                  value={målform}
+                  onChange={(value: MålformType) => {
+                    setMålform(value)
+                    return lagreUtkast(fritekst, value)
+                  }}
+                >
+                  <Radio value={MålformType.BOKMÅL}>Bokmål</Radio>
+                  <Radio value={MålformType.NYNORSK}>Nynorsk</Radio>
+                </RadioGroup>
+                <Fritekst
+                  label="Fritekst"
+                  beskrivelse="Beskriv hva som mangler av dokumentasjon"
+                  fritekst={fritekst}
+                  valideringsfeil={valideringsfeil}
+                  onLagre={lagreUtkast}
+                  lagrer={lagrer}
+                  onTextChange={setFritekst}
+                />
+              </VStack>
+              <HStack gap="2">
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="tertiary"
+                  onClick={() => {
+                    hentForhåndsvisning(sakId, brevtype)
+                    setVisForhåndsvisningsmodal(true)
+                  }}
+                >
+                  Forhåndsvis
+                </Button>
+                <Button
+                  type="submit"
+                  size="small"
+                  variant="primary"
+                  onClick={() => {
+                    setSubmitAttempt(true)
+                    if (valider()) {
+                      setVisSendBrevModal(true)
+                    }
+                  }}
+                >
+                  Send brev
+                </Button>
+                <Button
+                  icon={<TrashIcon />}
+                  variant="danger"
+                  size="small"
+                  onClick={() => {
+                    setVisSlettUtkastModal(true)
+                  }}
+                />
+              </HStack>
+            </form>
+          )}
+        </HøyrekolonnePanel>
         <UtgåendeBrev sakId={sakId} />
-      </Panel>
+      </>
       <ForhåndsvisningsModal
-        open={visForhåndsvisningsModal}
+        open={visForhåndsvisningsmodal}
         sakId={sakId}
         brevtype={brevtype}
         onClose={() => {
-          setVisForhåndsvisningsModal(false)
+          setVisForhåndsvisningsmodal(false)
         }}
       />
       <BekreftelseModal
@@ -217,7 +215,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
         loading={senderBrev}
         onClose={() => setVisSendBrevModal(false)}
         onBekreft={() => {
-          sendBrev()
+          return sendBrev()
         }}
       >
         <Brødtekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Brødtekst>
@@ -230,7 +228,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
         loading={sletter}
         onClose={() => setVisSlettUtkastModal(false)}
         onBekreft={() => {
-          slettUtkast()
+          return slettUtkast()
         }}
       />
       {visSendtBrevToast && (

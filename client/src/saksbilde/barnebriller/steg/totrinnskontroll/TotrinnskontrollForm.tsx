@@ -1,17 +1,14 @@
+import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useSWRConfig } from 'swr'
 
-import { Button, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
-
-import { baseUrl, put } from '../../../../io/http'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
-
-import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
+import { baseUrl, put } from '../../../../io/http'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
 import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 
@@ -50,11 +47,11 @@ export function TotrinnskontrollForm() {
       })
   }
 
-  const totrinnkontrollMulig =
+  const totrinnskontrollMulig =
     sak?.data.steg === StegType.GODKJENNE && sak?.data.totrinnskontroll?.saksbehandler.id !== saksbehandler.id
   return (
     <>
-      {!totrinnkontrollMulig ? (
+      {!totrinnskontrollMulig ? (
         <SkjemaAlert variant="info">Det er ikke mulig å godkjenne totrinnskontroll for egen sak</SkjemaAlert>
       ) : (
         <FormProvider {...methods}>
@@ -67,41 +64,41 @@ export function TotrinnskontrollForm() {
               }
             })}
           >
-            <Controller
-              name="resultat"
-              control={control}
-              rules={{ required: 'Velg en verdi' }}
-              render={({ field }) => (
-                <RadioGroup legend="Du må gjøre en vurdering" size="small" {...field} error={errors.resultat?.message}>
-                  <Radio value={TotrinnskontrollVurdering.GODKJENT}>Godkjenn</Radio>
-                  <Radio value={TotrinnskontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
-                </RadioGroup>
-              )}
-            />
-
-            {resultat === TotrinnskontrollVurdering.RETURNERT && (
-              <Avstand paddingTop={4}>
+            <VStack gap="3">
+              <Controller
+                name="resultat"
+                control={control}
+                rules={{ required: 'Velg en verdi' }}
+                render={({ field }) => (
+                  <RadioGroup
+                    legend="Du må gjøre en vurdering"
+                    size="small"
+                    {...field}
+                    error={errors.resultat?.message}
+                  >
+                    <Radio value={TotrinnskontrollVurdering.GODKJENT}>Godkjenn</Radio>
+                    <Radio value={TotrinnskontrollVurdering.RETURNERT}>Returner til saksbehandler</Radio>
+                  </RadioGroup>
+                )}
+              />
+              {resultat === TotrinnskontrollVurdering.RETURNERT && (
                 <Textarea
                   size="small"
                   label="Begrunn vurderingen din"
                   description="Skriv hvorfor saken returneres, så det er enkelt å forstå hva som vurderes og gjøres om."
                   error={errors.begrunnelse?.message}
                   {...methods.register('begrunnelse', { required: 'Du må begrunne vurderingen din ' })}
-                ></Textarea>
-              </Avstand>
-            )}
-
-            <Avstand paddingTop={4}>
-              {
+                />
+              )}
+              <div>
                 <Button variant="primary" type="submit" size="small" loading={loading}>
                   {resultat === TotrinnskontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
                 </Button>
-              }
-            </Avstand>
+              </div>
+            </VStack>
           </form>
         </FormProvider>
       )}
-
       <BekreftelseModal
         heading="Vil du godkjenne vedtaket?"
         buttonLabel="Godkjenn vedtak"
@@ -112,7 +109,6 @@ export function TotrinnskontrollForm() {
         }}
         loading={loading}
         onClose={() => {
-          errors
           setVisGodkjenningModal(false)
         }}
       >

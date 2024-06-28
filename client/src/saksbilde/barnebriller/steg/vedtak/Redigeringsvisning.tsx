@@ -51,7 +51,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const usendtUtkastTilInnhenteOpplysningerBrev =
     utkastTilInnhenteOpplysningerBrev?.data.brevtekst && utkastTilInnhenteOpplysningerBrev?.data.brevtekst !== ''
   const etterspørreOpplysningerBrev = saksdokumenter?.find(
-    (saksokument) => saksokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
+    (saksdokument) => saksdokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER
   )
 
   const etterspørreOpplysningerBrevFinnes = etterspørreOpplysningerBrev !== undefined

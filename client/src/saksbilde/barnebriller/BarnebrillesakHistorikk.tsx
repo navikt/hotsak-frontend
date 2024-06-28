@@ -1,39 +1,27 @@
-import { sorterKronologisk } from '../../utils/dato'
+import { VStack } from '@navikt/ds-react'
+
+import { Tekst } from '../../felleskomponenter/typografi'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
-import { useHistorikk } from '../høyrekolonne/historikk/useHistorikk'
-import { Mellomtittel } from '../../felleskomponenter/typografi'
-import { BodyShort, Panel } from '@navikt/ds-react'
+import { useSakshistorikk } from '../høyrekolonne/historikk/useSakshistorikk'
+import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
 
 export function BarnebrillesakHistorikk() {
-  const { hendelser, isError, isLoading } = useHistorikk()
-
-  if (isError) {
-    return <div>Feil ved henting av historikk.</div>
-  }
-
-  if (isLoading) {
-    return <div>Henter historikk...</div>
-  }
-
-  if (!hendelser) {
-    return (
-      <Panel as="aside">
-        <Mellomtittel>Historikk</Mellomtittel>
-        <BodyShort size="small">Ingen hendelser.</BodyShort>
-      </Panel>
-    )
-  }
-
+  const { hendelser, error, isLoading } = useSakshistorikk()
   return (
-    <Panel as="aside">
-      <Mellomtittel>Historikk</Mellomtittel>
-      <ul>
-        {hendelser
-          .sort((a, b) => sorterKronologisk(a.opprettet, b.opprettet))
-          .map((it) => (
+    <HøyrekolonnePanel
+      tittel="Historikk"
+      error={error && 'Feil ved henting av historikk.'}
+      loading={isLoading && 'Henter historikk...'}
+    >
+      {hendelser.length > 0 ? (
+        <VStack as="ul" gap="3">
+          {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}
-      </ul>
-    </Panel>
+        </VStack>
+      ) : (
+        <Tekst>Ingen hendelser.</Tekst>
+      )}
+    </HøyrekolonnePanel>
   )
 }

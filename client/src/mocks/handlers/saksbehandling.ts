@@ -68,6 +68,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
   http.get<SakParams>(`/api/sak/:sakId/historikk`, async ({ params }) => {
     const { sakId } = params
     const hendelser = await Promise.all([sakStore.hentHendelser(sakId), barnebrillesakStore.hentHendelser(sakId)])
+    await delay(500)
     return HttpResponse.json(hendelser.flat())
   }),
 

@@ -1,11 +1,9 @@
-import styled from 'styled-components'
+import { VStack } from '@navikt/ds-react'
 
-import { Panel } from '@navikt/ds-react'
-
-import { Avstand } from '../../../../felleskomponenter/Avstand'
-import { Brødtekst, Mellomtittel } from '../../../../felleskomponenter/typografi'
+import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { HøyrekolonnePanel } from '../../../høyrekolonne/HøyrekolonnePanel'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
@@ -16,11 +14,19 @@ export function TotrinnskontrollPanel() {
   const { sak, isError } = useBarnebrillesak()
 
   if (isError || !sak) {
-    return <Container>Feil ved henting av sak.</Container>
+    return (
+      <HøyrekolonnePanel tittel="Totrinnskontroll">
+        <Tekst>Feil ved henting av sak..</Tekst>
+      </HøyrekolonnePanel>
+    )
   }
 
   if (!sak.data.saksbehandler || sak.data.saksbehandler.id === '') {
-    return <Container>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Container>
+    return (
+      <HøyrekolonnePanel tittel="Totrinnskontroll">
+        <Brødtekst>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Brødtekst>
+      </HøyrekolonnePanel>
+    )
   }
 
   const totrinnskontrollFullført =
@@ -34,28 +40,26 @@ export function TotrinnskontrollPanel() {
     sak.data.saksbehandler.id !== saksbehandler.id
   ) {
     return (
-      <Container>
-        <Brødtekst>En annen saksbehandler har allerede tatt denne saken.</Brødtekst>
-      </Container>
+      <HøyrekolonnePanel tittel="Totrinnskontroll">
+        <Tekst>En annen saksbehandler har allerede tatt denne saken.</Tekst>
+      </HøyrekolonnePanel>
     )
   }
 
   if (!totrinnskontrollFullført && sak.data.steg !== StegType.GODKJENNE) {
-    return <Container>Lesevisning eller tomt resultat hvis ingen totrinnskontroll ennå.</Container>
+    return (
+      <HøyrekolonnePanel tittel="Totrinnskontroll">
+        <Tekst>Saken er ikke klar til godkjenning.</Tekst>
+      </HøyrekolonnePanel>
+    )
   }
 
   return (
-    <Container>
-      <Mellomtittel>Totrinnskontroll</Mellomtittel>
-      <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Brødtekst>
-      <Avstand paddingTop={6}>
+    <HøyrekolonnePanel tittel="Totrinnskontroll">
+      <VStack gap="5">
+        <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Brødtekst>
         {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
-      </Avstand>
-    </Container>
+      </VStack>
+    </HøyrekolonnePanel>
   )
 }
-
-const Container = styled(Panel)`
-  border-left: 1px solid var(--a-border-default);
-  min-height: 100vh;
-`

@@ -1,13 +1,12 @@
 import useSwr from 'swr'
 
 import { hentBrukerdataMedPost } from '../../../io/http'
-
 import { HjelpemiddelArtikkel, Vedtaksgrunnlag, VedtaksgrunnlagType } from '../../../types/types.internal'
 
 interface HjelpemiddeloversiktResponse {
-  hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
+  hjelpemiddelArtikler: HjelpemiddelArtikkel[]
   isLoading: boolean
-  isError: any
+  error: any
   isFromVedtak: boolean
 }
 
@@ -15,28 +14,26 @@ export function useHjelpemiddeloversikt(
   brukersFodselsnummer?: string,
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
 ): HjelpemiddeloversiktResponse {
-  const utlaanshistorikkFraVedtak = vedtaksgrunnlag?.find(
-    (it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK
-  )?.data
-  const harUtlaanshistorikkFraVedtak = utlaanshistorikkFraVedtak !== null && utlaanshistorikkFraVedtak !== undefined
+  const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
+  const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
 
-  const { data, error } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
-    brukersFodselsnummer && !harUtlaanshistorikkFraVedtak ? ['api/hjelpemiddeloversikt', brukersFodselsnummer] : null,
+  const { data, error, isLoading } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
+    brukersFodselsnummer && !harUtlånshistorikkFraVedtak ? ['api/hjelpemiddeloversikt', brukersFodselsnummer] : null,
     hentBrukerdataMedPost
   )
 
-  if (harUtlaanshistorikkFraVedtak) {
+  if (harUtlånshistorikkFraVedtak) {
     return {
-      hjelpemiddelArtikler: utlaanshistorikkFraVedtak,
+      hjelpemiddelArtikler: utlånshistorikkFraVedtak,
+      error: false,
       isLoading: false,
-      isError: false,
       isFromVedtak: true,
     }
   } else {
     return {
-      hjelpemiddelArtikler: data?.data,
-      isLoading: !error && !data,
-      isError: error,
+      hjelpemiddelArtikler: data?.data || [],
+      error,
+      isLoading,
       isFromVedtak: false,
     }
   }

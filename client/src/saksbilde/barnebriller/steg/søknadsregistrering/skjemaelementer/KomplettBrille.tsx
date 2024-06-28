@@ -26,7 +26,7 @@ export function KomplettBrille() {
           render={({ field }) => (
             <RadioGroup
               legend={
-                <HStack wrap={false} gap="2" align={'center'}>
+                <HStack wrap={false} gap="2" align="center">
                   <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
                   <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
                 </HStack>

@@ -1,0 +1,26 @@
+import { useParams } from 'react-router'
+import useSwr from 'swr'
+
+import { httpGet } from '../../../io/http'
+import { Hendelse } from '../../../types/types.internal'
+import { sorterKronologisk } from '../../../utils/dato'
+import { useSortering } from '../../../utils/useSortering'
+
+interface DataResponse {
+  hendelser: ReadonlyArray<Hendelse>
+  error: any
+  isLoading: boolean
+}
+
+export function useSakshistorikk(): DataResponse {
+  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const { data, error, isLoading } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet, {
+    refreshInterval: 10_000,
+  })
+  const hendelser = useSortering(data?.data || [], 'opprettet', sorterKronologisk)
+  return {
+    hendelser,
+    error,
+    isLoading,
+  }
+}

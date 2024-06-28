@@ -1,6 +1,5 @@
+import { HelpText, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-
-import { HStack, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
@@ -25,7 +24,7 @@ export function BestiltHosOptiker() {
         render={({ field }) => (
           <RadioGroup
             legend={
-              <HStack wrap={false} gap="2" align={'center'}>
+              <HStack wrap={false} gap="2" align="center">
                 <Etikett>Er brillen bestilt hos optiker? (§2)</Etikett>
                 <HelpText>
                   For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).

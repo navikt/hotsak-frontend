@@ -25,12 +25,12 @@ export function OppgavelisteTabs() {
   return (
     <TabContainer>
       <Tabs
-        defaultValue="oppgaveliste"
         value={valgtTab}
-        loop
+        defaultValue="oppgaveliste"
         onChange={() => {
           navigate(navigateTo)
         }}
+        loop
       >
         <Tabs.List>
           <Tabs.Tab

@@ -2,13 +2,13 @@ import { BodyShort, HGrid, Label, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
 import { Boble } from '../../../felleskomponenter/Boble'
-import { Strek } from '../../../felleskomponenter/Strek'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 import { formaterDato } from '../../../utils/dato'
 import { storForbokstavIAlleOrd } from '../../../utils/formater'
 import { useSak } from '../../useSak'
+import { HøyrekolonneInnslag } from '../HøyrekolonneInnslag.tsx'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
 
@@ -29,13 +29,12 @@ export function Hjelpemiddeloversikt() {
     >
       {isFromVedtak && <Tekst spacing>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</Tekst>}
       {artikler.length > 0 ? (
-        <VStack as="ul" gap="1">
+        <VStack as="ul" gap="3">
           {artiklerByKategori.map(([kategori, artikler]) => (
-            <li key={kategori}>
+            <HøyrekolonneInnslag key={kategori}>
               <Label size="small">{kategori}</Label>
               <Artikler artikler={artikler} />
-              <Strek />
-            </li>
+            </HøyrekolonneInnslag>
           ))}
         </VStack>
       ) : (

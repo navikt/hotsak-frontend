@@ -1,38 +1,33 @@
-import { HGrid, Skeleton } from '@navikt/ds-react'
-import { hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../GlobalStyles'
+import { Box, Skeleton } from '@navikt/ds-react'
+
+import { spacingVar } from '../felleskomponenter/Avstand.tsx'
+import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
+import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { LasterPersonlinje } from './Personlinje'
 import { SaksbildeContainer } from './Saksbilde'
-import { Content, Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
-import { Avstand } from '../felleskomponenter/Avstand'
 
 export function SakLoader() {
+  const spacing = '4'
   return (
     <SaksbildeContainer>
       <LasterPersonlinje />
       <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
         <section>
-          <HGrid columns={'auto'}>
-            <Avstand paddingTop={4} paddingLeft={2} paddingRight={4}>
-              <Skeleton variant="rectangle" width="100%" height={30} />
-            </Avstand>
-          </HGrid>
-          <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
-            <Avstand paddingTop={4} paddingLeft={4} paddingRight={4}>
+          <Box margin={spacing}>
+            <Skeleton variant="rectangle" width="100%" height={30} />
+          </Box>
+          <Saksinnhold columns={`${hotsakVenstremenyWidth} auto`} gap={spacing}>
+            <div style={{ marginLeft: spacingVar(spacing) }}>
               <Skeleton variant="rectangle" width="100%" height={800} />
-            </Avstand>
-            <Content>
-              <Avstand paddingLeft={4} paddingRight={4}>
-                <Skeleton variant="rectangle" width="100%" height={800} />
-              </Avstand>
-            </Content>
+            </div>
+            <div style={{ marginRight: spacingVar(spacing) }}>
+              <Skeleton variant="rectangle" width="100%" height={800} />
+            </div>
           </Saksinnhold>
         </section>
-
-        <div style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
-          <Avstand paddingTop={4} paddingLeft={4} paddingRight={4}>
-            <Skeleton variant="rectangle" width="100%" height={840} />
-          </Avstand>
-        </div>
+        <Box padding={spacing} style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+          <Skeleton variant="rectangle" width="100%" height={845} />
+        </Box>
       </Hovedinnhold>
     </SaksbildeContainer>
   )

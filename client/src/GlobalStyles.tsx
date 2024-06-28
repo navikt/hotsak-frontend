@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const hotsakTotalMinWidth = '1200px'
-export const hotsaktVenstremenyWidth = '340px'
+export const hotsakVenstremenyWidth = '340px'
 export const hotsakRegistrerSøknadKolonne = '520px'
 export const hotsakRegistrerSøknadHøyreKolonne = '300px'
 export const hotsakHistorikkWidth = '492px'

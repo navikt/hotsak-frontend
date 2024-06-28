@@ -4,7 +4,7 @@ import { memo, Suspense } from 'react'
 
 import { HGrid } from '@navikt/ds-react'
 
-import { hotsakHistorikkWidth, hotsaktVenstremenyWidth } from '../GlobalStyles'
+import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
 import { AlertError } from '../feilsider/AlertError'
 import { Sakstype } from '../types/types.internal'
 import { Søknadslinje } from './Søknadslinje'
@@ -47,7 +47,7 @@ const SaksbildeContent = memo(() => {
           <HGrid columns={'auto'}>
             <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
           </HGrid>
-          <Saksinnhold columns={`${hotsaktVenstremenyWidth} auto`}>
+          <Saksinnhold columns={`${hotsakVenstremenyWidth} auto`}>
             <Venstremeny>
               <SøknadCard
                 sakId={sak.data.sakId}

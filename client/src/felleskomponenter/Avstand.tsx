@@ -88,6 +88,37 @@ function spacer(props: MarginPadding) {
   }
 }
 
-export function spacingVar(space?: number): string | undefined {
-  return typeof space === 'number' ? `var(--a-spacing-${space})` : undefined
+const spacingVars = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '14',
+  '16',
+  '18',
+  '20',
+  '24',
+  '32',
+  '05',
+  '1-alt',
+] as const
+
+/**
+ * @see SpacingScale i @navikt/ds-react
+ */
+type SpacingScale = (typeof spacingVars)[number]
+
+export function spacingVar(space?: number | SpacingScale): string | undefined {
+  return typeof space === 'number' || (typeof space === 'string' && spacingVars.includes(space))
+    ? `var(--a-spacing-${space})`
+    : undefined
 }

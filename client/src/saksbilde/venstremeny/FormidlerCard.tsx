@@ -13,8 +13,8 @@ export interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
-// tooltip / title -> Kopier formidler navn
-// tooltip / title -> Kopier formidler stilling
+// tooltip / title -> Kopier formidlers navn
+// tooltip / title -> Kopier formidlers stilling
 // tooltip / title -> Kopier telefonnummer
 
 export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
@@ -27,9 +27,14 @@ export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon
       <CardRow
         icon={<PersonIcon />}
         copyText={formidlerNavnFormatert}
+        copyKind="formidlers navn"
       >{`${formidlerNavnFormatert} - ${storForbokstavIAlleOrd(kommune)}`}</CardRow>
-      <CardRow icon={<BriefcaseIcon />} copyText={stilling}>{`${storForbokstavIAlleOrd(stilling)}`}</CardRow>
-      <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon}>
+      <CardRow
+        icon={<BriefcaseIcon />}
+        copyText={stilling}
+        copyKind="formidlers stilling"
+      >{`${storForbokstavIAlleOrd(stilling)}`}</CardRow>
+      <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
         {formidlerTelefon}
       </CardRow>
     </Card>

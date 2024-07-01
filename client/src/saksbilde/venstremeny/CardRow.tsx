@@ -1,12 +1,14 @@
-import { isValidElement, ReactNode } from 'react'
 import { CopyButton, HGrid, HGridProps, HStack } from '@navikt/ds-react'
+import { isValidElement, ReactNode } from 'react'
 import styled from 'styled-components'
 import { Tekst } from '../../felleskomponenter/typografi'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude.ts'
 
 export interface CardRowProps {
   children: ReactNode
   icon?: ReactNode
   copyText?: string
+  copyKind?: string
   align?: HGridProps['align']
   columns?: HGridProps['columns']
 }
@@ -14,14 +16,18 @@ export interface CardRowProps {
 const hStack = true
 
 export function CardRow(props: CardRowProps) {
-  const { children, icon, copyText, align, columns } = props
+  const { children, icon, copyText, copyKind, align, columns } = props
+
+  const onCopy = (): void => {
+    logAmplitudeEvent(amplitude_taxonomy.KOPIKNAPP_BRUKT, { hva: copyKind })
+  }
 
   if (hStack) {
     return (
       <HStack gap="2" align={align} wrap={false}>
         <Ikon>{icon}</Ikon>
         {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-        {copyText && <RowCopyButton copyText={copyText} size="xsmall" />}
+        {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
       </HStack>
     )
   }
@@ -30,7 +36,7 @@ export function CardRow(props: CardRowProps) {
     <HGrid gap="2" align={align} columns={columns || '1.25rem auto 1.25rem'}>
       <Ikon>{icon}</Ikon>
       {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-      {copyText && <RowCopyButton copyText={copyText} size="xsmall" />}
+      {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
     </HGrid>
   )
 }

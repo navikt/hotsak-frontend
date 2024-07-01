@@ -27,6 +27,7 @@ export enum amplitude_taxonomy {
   FORTSETT_BEHANDLING_FRA_OPPGAVELISTE = 'fortsetter behandling fra oppgaveliste',
   FORTSETT_BEHANDLING_FRA_SAK = 'fortsetter behandling fra sak',
   FINN_HJELPEMIDDEL_LINK_BESØKT = 'viser produkt i FinnHjelpemiddel',
+  KOPIKNAPP_BRUKT = 'kopiknapp brukt',
 }
 
 export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<string, any>) => void = (

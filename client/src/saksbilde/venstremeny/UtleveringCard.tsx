@@ -27,16 +27,16 @@ export function UtleveringCard(props: UtleveringCardProps) {
       <CardTitle level="1" size="medium">
         Utlevering
       </CardTitle>
-      <CardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText}>
+      <CardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
         {leveringsmåteTekst}
       </CardRow>
       {kontaktpersonTekst && (
-        <CardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst}>
+        <CardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
           Kontaktperson: {kontaktpersonTekst}
         </CardRow>
       )}
       {merknad && (
-        <CardRow icon={<InformationSquareIcon />} copyText={merknad}>
+        <CardRow icon={<InformationSquareIcon />} copyText={merknad} copyKind="merknad">
           Merknad: {merknad}
         </CardRow>
       )}

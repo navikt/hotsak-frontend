@@ -17,7 +17,7 @@ export function Hastesak(props: { hast?: Hast }) {
         <HjelpemiddelGrid>
           <div />
           <Fremhevet>
-            <Etikett>Årsak til at det haster:</Etikett>
+            <Etikett>Årsak til at det haster</Etikett>
             <List size="small" headingTag="h2">
               {årsaker
                 .map((årsak) => tekstByHasteårsak[årsak])

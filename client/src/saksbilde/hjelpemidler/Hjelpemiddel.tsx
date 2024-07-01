@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putEndreHjelpemiddel } from '../../io/http'
 import {
   EndreHjelpemiddelRequest,
@@ -134,7 +134,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                 {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
                   <>
                     <div>
-                      <Etikett>Kroppsmål:</Etikett>
+                      <Etikett>Kroppsmål</Etikett>
                     </div>
                     <div>
                       <div>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</div>
@@ -147,7 +147,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <div>
             {hjelpemiddel.alleredeUtlevert && (
               <HStack gap="2">
-                <Etikett>Utlevert:</Etikett>
+                <Etikett>Utlevert</Etikett>
                 <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
               </HStack>
             )}
@@ -159,21 +159,32 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <HjelpemiddelGrid>
             <div />
             <div>
-              <Etikett>Tilbehør:</Etikett>
+              <Etikett>Tilbehør</Etikett>
             </div>
           </HjelpemiddelGrid>
           {hjelpemiddel.tilbehør.map((tilbehør) => (
-            <HjelpemiddelGrid key={tilbehør.hmsNr}>
-              <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
-              <HStack gap="1" align="center">
-                {tilbehør.hmsNr} <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
-                {tilbehør.navn}
-              </HStack>
-            </HjelpemiddelGrid>
+            <>
+              <HjelpemiddelGrid key={tilbehør.hmsNr}>
+                <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
+                <HStack gap="1" align="center">
+                  <strong>{tilbehør.hmsNr}</strong>
+                  <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
+                  {tilbehør.navn}
+                </HStack>
+                {tilbehør.begrunnelse && (
+                  <>
+                    <div />
+                    <div>
+                      <Etikett>Begrunnelse</Etikett>
+                      <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
+                    </div>
+                  </>
+                )}
+              </HjelpemiddelGrid>
+            </>
           ))}
         </>
       )}
-
       {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && forenkletVisning && (
         <div style={{ textAlign: 'right' }}>
           {visEndreProdukt ? (

@@ -477,6 +477,7 @@ export interface Tilbehør {
   hmsNr: string
   antall: number
   navn: string
+  begrunnelse?: string
 }
 
 export interface Formidler {

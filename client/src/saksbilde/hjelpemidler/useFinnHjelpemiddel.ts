@@ -9,7 +9,7 @@ const query = gql`
     products(hmsnrs: $hmsnrs) {
       hmsArtNr # hmsnr
       productVariantURL
-      isoCategoryTitle
+      isoCategoryTitleShort
       articleName
       agreements {
         postTitle
@@ -36,10 +36,10 @@ export function useFinnHjelpemiddel(hmsnr?: string) {
             }
           )
           const [produkt] = data.products
-          const { isoCategoryTitle, productVariantURL, articleName, agreements } = produkt
+          const { isoCategoryTitleShort, productVariantURL, articleName, agreements } = produkt
 
           setProdukt({
-            isotittel: isoCategoryTitle || '',
+            isotittel: isoCategoryTitleShort || '',
             posttitler: agreements?.map((agreement) => agreement?.postTitle || '') || [''],
             produkturl: productVariantURL || '',
             artikkelnavn: articleName,

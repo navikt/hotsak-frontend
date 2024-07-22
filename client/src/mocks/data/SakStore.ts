@@ -132,7 +132,7 @@ function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
             navn: 'Tilbehørnavn 1',
             begrunnelse: 'Trenger denne fordi bruker har spesielle behov.',
           },
-          { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', begrunnelse: 'Ingen.' },
+          { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', fritakFraBegrunnelseÅrsak: 'ER_PÅ_BESTILLINGSORDNING' },
         ],
       },
       {

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
-import { Brødtekst, Etikett, Tekst, Undertittel } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putEndreHjelpemiddel } from '../../io/http'
 import {
   EndreHjelpemiddelRequest,
@@ -175,18 +175,18 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                 {tilbehør.begrunnelse && (
                   <>
                     <div />
-                    <div>
+                    <Fremhevet>
                       <Etikett>Begrunnelse</Etikett>
                       <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
-                    </div>
+                    </Fremhevet>
                   </>
                 )}
                 {tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING && (
                   <>
                     <div />
-                    <div>
-                      <Undertittel>Begrunnelse ikke påkrevd fordi tilbehøret er på bestillingsordningen.</Undertittel>
-                    </div>
+                    <Fremhevet>
+                      <Brødtekst>Begrunnelse ikke påkrevd fordi tilbehøret er på bestillingsordningen.</Brødtekst>
+                    </Fremhevet>
                   </>
                 )}
               </HjelpemiddelGrid>

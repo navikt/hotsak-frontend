@@ -167,28 +167,24 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
             <>
               <HjelpemiddelGrid key={tilbehør.hmsNr}>
                 <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
-                <HStack gap="1" align="center">
-                  <strong>{tilbehør.hmsNr}</strong>
-                  <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
-                  {tilbehør.navn}
-                </HStack>
-                {tilbehør.begrunnelse && (
-                  <>
-                    <div />
+                <VStack>
+                  <HStack gap="1" align="center">
+                    <strong>{tilbehør.hmsNr}</strong>
+                    <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
+                    {tilbehør.navn}
+                  </HStack>
+                  {tilbehør.begrunnelse && (
                     <Fremhevet>
                       <Etikett>Begrunnelse</Etikett>
                       <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
                     </Fremhevet>
-                  </>
-                )}
-                {tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING && (
-                  <>
-                    <div />
+                  )}
+                  {tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING && (
                     <Fremhevet>
                       <Brødtekst>Begrunnelse ikke påkrevd fordi tilbehøret er på bestillingsordningen.</Brødtekst>
                     </Fremhevet>
-                  </>
-                )}
+                  )}
+                </VStack>
               </HjelpemiddelGrid>
             </>
           ))}

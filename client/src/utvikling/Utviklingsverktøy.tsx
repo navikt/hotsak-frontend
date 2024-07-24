@@ -62,6 +62,7 @@ export function Utviklingsverktøy() {
   return (
     <Wrapper>
       <Button
+        data-testid={'utviklerverktoy-lukk'}
         style={{ position: 'absolute', top: '7px', right: '7px' }}
         size="small"
         variant="secondary"

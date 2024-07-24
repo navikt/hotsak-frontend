@@ -19,7 +19,11 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByRole('combobox', { name: /høyre cylinder/i }).select(4)
     cy.findByRole('combobox', { name: /venstre sfære/i }).select(6)
     cy.findByRole('combobox', { name: /venstre cylinder/i }).select(6)
-    cy.findByRole('textbox', { name: /brillens bestillingsdato/i }).type('02.01.2024')
+
+    const date30DaysAgo = new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 30)
+    const formattedDate = `01.${`0${date30DaysAgo.getMonth() + 1}`.slice(-2)}.${date30DaysAgo.getFullYear()}`
+    cy.findByRole('textbox', { name: /brillens bestillingsdato/i }).type(formattedDate)
+
     cy.findByRole('textbox', { name: /pris på brillen/i }).type('2000')
     cy.findByRole('group', { name: /inneholder bestillingen glass/i }).within(() => {
       cy.findByRole('radio', { name: /ja/i }).check()
@@ -110,7 +114,11 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByRole('combobox', { name: /høyre cylinder/i }).select(4)
     cy.findByRole('combobox', { name: /venstre sfære/i }).select(6)
     cy.findByRole('combobox', { name: /venstre cylinder/i }).select(6)
-    cy.findByRole('textbox', { name: /brillens bestillingsdato/i }).type('02.01.2024')
+
+    const date30DaysAgo = new Date(new Date().getTime() - 60 * 60 * 24 * 1000 * 30)
+    const formattedDate = `01.${`0${date30DaysAgo.getMonth() + 1}`.slice(-2)}.${date30DaysAgo.getFullYear()}`
+    cy.findByRole('textbox', { name: /brillens bestillingsdato/i }).type(formattedDate)
+
     cy.findByRole('textbox', { name: /pris på brillen/i }).type('2000')
     cy.findByRole('group', { name: /inneholder bestillingen glass/i }).within(() => {
       cy.findByRole('radio', { name: /ja/i }).check()
@@ -189,6 +197,8 @@ describe('Saksbehandling brillesøknad', () => {
 
     /* Send innhente opplysnigner brev */
     cy.findByRole('tab', { name: /send brev/i }).click()
+
+    cy.findByTestId('utviklerverktoy-lukk').click()
 
     cy.findByRole('textbox', { name: /fritekst/i }).type('Fritekst til brevet')
     cy.findByRole('button', { name: /send brev/i }).click()

@@ -17,7 +17,7 @@ import {
   Sak,
 } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { storForbokstavIAlleOrd } from '../../utils/formater'
+import { storForbokstavIOrd } from '../../utils/formater'
 import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Fremhevet } from './Fremhevet.tsx'
@@ -120,7 +120,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                   return (
                     <Fragment key={tilleggsinfo.tittel}>
                       <div>
-                        <Etikett>{`${storForbokstavIAlleOrd(tilleggsinfo.tittel)}:`}</Etikett>
+                        <Etikett>{`${storForbokstavIOrd(tilleggsinfo.tittel)}:`}</Etikett>
                       </div>
                       <div>
                         <div>

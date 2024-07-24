@@ -98,6 +98,6 @@ describe('Saksbehandling søknad', () => {
         cy.findByRole('tab', { name: /utlånsoversikt/i }).click()
       })
 
-    cy.findAllByRole('listitem').filter(':contains("Utlånsoversikt")').should('exist')
+    cy.findAllByRole('tabpanel').filter(':contains("Utlånsoversikt")').should('exist')
   })
 })

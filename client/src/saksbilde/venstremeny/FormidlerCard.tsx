@@ -28,12 +28,12 @@ export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon
         icon={<PersonIcon />}
         copyText={formidlerNavnFormatert}
         copyKind="formidlers navn"
-      >{`${formidlerNavnFormatert} - ${storForbokstavIAlleOrd(kommune)}`}</CardRow>
+      >{`${formidlerNavnFormatert}`}</CardRow>
       <CardRow
         icon={<BriefcaseIcon />}
         copyText={stilling}
         copyKind="formidlers stilling"
-      >{`${storForbokstavIAlleOrd(stilling)}`}</CardRow>
+      >{`${storForbokstavIAlleOrd(stilling)} - ${storForbokstavIAlleOrd(kommune)}`}</CardRow>
       <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
         {formidlerTelefon}
       </CardRow>

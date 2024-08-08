@@ -7,9 +7,9 @@ metadata:
   name: hotsak-frontend
   namespace: teamdigihot
   annotations:
-    snorlax.nais.io/enabled: 'true'
+    snorlax.nais.io/enabled: "true"
 spec:
-  image: {{image}}
+  image: { { image } }
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no
@@ -21,6 +21,10 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
   replicas:
     max: 1
     min: 1
@@ -45,9 +49,9 @@ spec:
       allowAllUsers: false
       claims:
         extra:
-          - 'NAVident'
+          - "NAVident"
         groups:
-          - id: 'b9340050-ccb5-4de7-9d96-0fb2d9fb38eb'
+          - id: "b9340050-ccb5-4de7-9d96-0fb2d9fb38eb"
     sidecar:
       enabled: true
       autoLogin: false
@@ -70,7 +74,7 @@ spec:
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT
-      value: '3000'
+      value: "3000"
     - name: CLIENT_ID_HOTSAK_API
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: CLIENT_ID_HEIT_KRUKKA_API
@@ -78,9 +82,9 @@ spec:
     - name: REDIS_HOST
       value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: 'false'
+      value: "false"
     - name: GIT_COMMIT
-      value: {{commit}}
+      value: { { commit } }
     - name: FARO_URL
       value: https://telemetry.ekstern.dev.nav.no/collect
     - name: HEIT_KRUKKA_URL

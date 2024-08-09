@@ -1,9 +1,10 @@
-import { Alert, Box, Heading, VStack } from '@navikt/ds-react'
-import { Strek } from '../../felleskomponenter/Strek.tsx'
-import { Brødtekst, Etikett } from '../../felleskomponenter/typografi'
+import { Heading, VStack } from '@navikt/ds-react'
+import { Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Sak } from '../../types/types.internal'
+import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hastesak } from './Hastesak.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel'
+import { OebsAlert } from './OebsAlert.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak'
 
 interface HjelpemiddelListeProps {
@@ -19,35 +20,20 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: Hje
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
 
   const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.alleredeUtlevert)
+  const brukerFunksjon = sak.personinformasjon?.funksjon
 
   return (
     <>
-      <Heading level="1" size="medium" spacing>
+      {hast && <Hastesak hast={hast} />}
+      {brukerFunksjon && <BrukersFunksjon brukerFunksjon={brukerFunksjon} />}
+
+      <Heading level="1" size="medium">
         {tittel}
       </Heading>
-      {hast && (
-        <div>
-          <Hastesak hast={hast} />
-          <Strek />
-        </div>
-      )}
       {!forenkletVisning && artiklerSomIkkeFinnesIOebs.length > 0 && (
-        <Box paddingBlock="4">
-          <Alert variant="warning" size="small" fullWidth>
-            <VStack gap="1">
-              <Brødtekst>
-                {`${artiklerSomIkkeFinnesIOebs.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OEBS og blir derfor ikke 
-            automatisk overført til SF:`}
-              </Brødtekst>
-              <ul>
-                {artiklerSomIkkeFinnesIOebs.map((artikkel) => {
-                  return <li key={artikkel.hmsnr}>{`${artikkel.hmsnr}: ${artikkel.navn}`}</li>
-                })}
-              </ul>
-            </VStack>
-          </Alert>
-        </Box>
+        <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}
+      <div style={{ paddingTop: '2rem' }} />
       {hjelpemidler.map((hjelpemiddel) => (
         <Hjelpemiddel
           key={hjelpemiddel.hmsnr}

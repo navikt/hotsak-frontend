@@ -18,6 +18,7 @@ import {
   Sakstype,
   SignaturType,
   UtlevertType,
+  VarigFunksjonsnedsettelse,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { IdGenerator } from './IdGenerator'
@@ -66,11 +67,17 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
       signaturtype: SignaturType.BRUKER_BEKREFTER,
       telefon: '90807060',
       bosituasjon: Bosituasjon.HJEMME,
+      funksjon: {
+        varigFunksjonsnedsettelse: VarigFunksjonsnedsettelse.ALDERDOMSSVEKKELSE,
+        funksjonsvurdering:
+          'Her viser vi formidler sin tekst som beskriver hvordan innbygger fungerer med sin funksjonsnedsettelse i daglige gjøremål. Den kan være lang eller kort, avhengig av hvor mye formidler skriver.',
+      },
       funksjonsnedsettelser: ['bevegelse'],
       bruksarena: Bruksarena.DAGLIGLIV,
       oppfylteVilkår: [
         'PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1',
-        'VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1',
+        /* Fjernet et vilkår i forbindelse med utprøving av mer utfyllende "Brukers funksjon". I andre miljøer ann labs kommer denne lista fra søknaden så det bør ikke være noe vi trenger å ha et aktivt forhold til  */
+        //'VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1',
         'KAN_IKKE_LOESES_MED_ENKLERE_HJELPEMIDLER_V1',
         'I_STAND_TIL_AA_BRUKE_HJELEPMIDLENE_V1',
       ],

@@ -83,9 +83,7 @@ const SaksbildeContent = memo(() => {
                   path="/hjelpemidler"
                   element={
                     <HjelpemiddelListe
-                      tittel={
-                        erBestilling ? 'Bestilling av hjelpemidler på bestillingsordningen' : 'Søknad om hjelpemidler'
-                      }
+                      tittel={erBestilling ? 'Bestilling av hjelpemidler på bestillingsordningen' : 'Hjelpemidler'}
                       sak={sak.data}
                       forenkletVisning={erBestilling}
                     />

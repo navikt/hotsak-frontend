@@ -778,15 +778,28 @@ export interface Personinformasjon extends Adresse, Navn {
   kilde: PersonInfoKilde
   signaturtype: SignaturType
   telefon: string
-  funksjonsnedsettelser: string[]
   bruksarena: Bruksarena | null
   bosituasjon: Bosituasjon | null
   gtNummer: string
   gtType: string
   egenAnsatt: boolean
   brukerErDigital: boolean
+  funksjonsnedsettelser: string[]
   oppfylteVilkår: string[]
+  funksjon?: BrukerFunksjon
   kroppsmål?: Kroppsmål
+}
+
+export interface BrukerFunksjon {
+  varigFunksjonsnedsettelse: VarigFunksjonsnedsettelse
+  diagnose?: string
+  funksjonsvurdering?: string
+}
+
+export enum VarigFunksjonsnedsettelse {
+  ALDERDOMSSVEKKELSE = 'ALDERDOMSSVEKKELSE',
+  ANNEN_VARIG_DIAGNOSE = 'ANNEN_VARIG_DIAGNOSE',
+  UAVKLART = 'UAVKLART',
 }
 
 export interface Kroppsmål {

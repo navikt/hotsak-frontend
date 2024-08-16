@@ -19,12 +19,17 @@ export function Hastesak(props: { hast?: Hast }) {
           <Fremhevet>
             <Etikett>Årsak til at det haster</Etikett>
             <List size="small" headingTag="h2">
-              {årsaker
-                .map((årsak) => tekstByHasteårsak[årsak])
-                .map((tekst) => (
-                  <List.Item key={tekst}>{tekst}</List.Item>
-                ))}
-              {begrunnelse && <List.Item>{begrunnelse}</List.Item>}
+              {årsaker.map((årsak) => (
+                <List.Item key={årsak}>
+                  {tekstByHasteårsak[årsak]}
+                  {årsak === Hasteårsak.ANNET && begrunnelse && (
+                    <>
+                      <br />
+                      <>{begrunnelse}</>
+                    </>
+                  )}
+                </List.Item>
+              ))}
             </List>
           </Fremhevet>
         </HjelpemiddelGrid>
@@ -43,5 +48,5 @@ const tekstByHasteårsak: Record<keyof typeof Hasteårsak, string> = {
   [Hasteårsak.UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES_V3]:
     'Innbygger skal skrives ut fra sykehus eller rehabilitering uten at det var mulig å planlegge. Det er derfor behov for hjelpemidler til stell og pleie slik at utskrivingen kan gjennomføres.',
   [Hasteårsak.RASK_FORVERRING_AV_ALVORLIG_DIAGNOSE]: 'Det har skjedd en rask forverring av en alvorlig diagnose.',
-  [Hasteårsak.ANNET]: 'Annen årsak til plutselig oppstått behov på grunn av brukers helsesituasjon.',
+  [Hasteårsak.ANNET]: 'Annen årsak til plutselig oppstått behov på grunn av brukers helsesituasjon:',
 }

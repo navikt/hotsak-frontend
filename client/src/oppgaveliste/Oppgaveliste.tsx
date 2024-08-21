@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { useSaksbehandlerTilhørerEnhet } from '../state/authentication.ts'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
@@ -48,9 +47,6 @@ export function Oppgaveliste() {
     sakstypeFilter,
     områdeFilter,
   })
-
-  // NAV IT, Vestland-Bergen, Trøndelag
-  const pilotHast = useSaksbehandlerTilhørerEnhet('2970', '4712', '4716')
 
   const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
     handler(value)
@@ -106,7 +102,6 @@ export function Oppgaveliste() {
     {
       key: 'HAST',
       width: 105,
-      hide: !pilotHast,
       header() {
         return (
           <>

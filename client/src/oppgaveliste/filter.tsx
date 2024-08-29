@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { Button, Select } from '@navikt/ds-react'
+import { Button, Select, Switch } from '@navikt/ds-react'
 
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 
@@ -37,6 +37,30 @@ export function FilterDropdown({ label, value, options, handleChange }: FilterPr
     </Dropdown>
   )
 }
+
+export function FilterToggle({
+  label,
+  value,
+  handleChange,
+}: {
+  label: string
+  value: boolean
+  handleChange: (...args: any[]) => any
+}) {
+  return (
+    <ToggleContainer>
+      <Switch checked={value} onChange={(e) => handleChange(e.target.checked)} size="small">
+        {label}
+      </Switch>
+    </ToggleContainer>
+  )
+}
+
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding-right: var(--a-spacing-4);
+`
 
 interface FiltersProps {
   children: ReactNode

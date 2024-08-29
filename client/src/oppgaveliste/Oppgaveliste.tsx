@@ -9,6 +9,7 @@ import { isError } from '../utils/type'
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
+import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
   OmrådeFilter,
@@ -24,20 +25,20 @@ import {
 } from '../types/types.internal'
 import { formaterTidsstempel } from '../utils/dato'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
-import { FilterDropdown, Filters } from './filter'
+import { FilterDropdown, Filters, FilterToggle } from './filter'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
+import { Tildeling } from './kolonner/Tildeling'
+import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
-import { Paging } from './paging/Paging'
-import { Tildeling } from './kolonner/Tildeling'
-import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
+  const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
@@ -46,9 +47,13 @@ export function Oppgaveliste() {
     statusFilter,
     sakstypeFilter,
     områdeFilter,
+    hasteToggle,
   })
 
-  const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
+  const handleFilter = (
+    handler: (...args: any[]) => any,
+    value: SakerFilter | OppgaveStatusType | OmrådeFilter | boolean
+  ) => {
     handler(value)
     setCurrentPage(1)
   }
@@ -58,6 +63,7 @@ export function Oppgaveliste() {
     setStatusFilter(OppgaveStatusType.ALLE)
     setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
+    setHasteToggle(false)
     setCurrentPage(1)
   }
 
@@ -249,6 +255,14 @@ export function Oppgaveliste() {
           label="Område"
           value={områdeFilter}
           options={OmrådeFilterLabel}
+        />
+
+        <FilterToggle
+          handleChange={(filterValue: boolean) => {
+            handleFilter(setHasteToggle, filterValue)
+          }}
+          label="Kun hastesaker"
+          value={hasteToggle}
         />
       </Filters>
 

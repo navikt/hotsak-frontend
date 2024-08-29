@@ -81,13 +81,18 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
     const sakerFilter = url.searchParams.get('saksbehandler')
     const områdeFilter = url.searchParams.get('område')
     const sakstypeFilter = url.searchParams.get('type')
+    const hasteFilter = url.searchParams.get('hast')
     const pageNumber = Number(url.searchParams.get('page'))
     const pageSize = Number(url.searchParams.get('limit'))
 
     const startIndex = pageNumber - 1
     const endIndex = startIndex + pageSize
     const oppgaver = [...(await sakStore.oppgaver()), ...(await barnebrillesakStore.oppgaver())]
+
+    console.log('Hastefilter', hasteFilter)
+
     const filtrerteOppgaver = oppgaver
+      .filter((oppgave) => (hasteFilter !== null ? oppgave.hast : true))
       .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))
       .filter((oppgave) =>
         sakerFilter && sakerFilter === SakerFilter.MINE ? oppgave.saksbehandler?.navn === 'Silje Saksbehandler' : true

@@ -1,16 +1,16 @@
+import { FigureCombinationIcon, FigureInwardIcon, FigureOutwardIcon } from '@navikt/aksel-icons'
+import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
+import { Children, ReactNode, SVGProps } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
 
-import { CopyButton, Link, Tag, Tooltip } from '@navikt/ds-react'
-
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
+import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
+import { Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
-import { Etikett, Tekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
-import { FigureCombinationIcon, FigureInwardIcon, FigureOutwardIcon } from '@navikt/aksel-icons'
-import { beregnAlder } from '../utils/dato'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
+import { beregnAlder, formaterDato } from '../utils/dato'
+import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 
 export interface PersonlinjeProps {
   person?: Person | Bruker
@@ -18,158 +18,130 @@ export interface PersonlinjeProps {
 }
 
 export function Personlinje({ person, loading }: PersonlinjeProps) {
-  if (loading) {
-    return <LasterPersonlinje />
-  } else {
-    return <PersonlinjeContent person={person} loading={loading} />
-  }
+  const { setFodselsnummer } = usePersonContext()
+  const navigate = useNavigate()
+
+  if (loading) return <LasterPersonlinje />
+  if (!person) return <Container />
+
+  const { kjønn, fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
+  const [adressebeskyttelse] = adressebeskyttelseOgSkjerming?.gradering || []
+
+  return (
+    <Container>
+      <Element>
+        <Kjønnsikon kjønn={kjønn} />
+        <Label
+          as={Link}
+          size="small"
+          href="#"
+          onClick={(event) => {
+            event.preventDefault()
+            logAmplitudeEvent(amplitude_taxonomy.PERSONOVERSIKT)
+            setFodselsnummer(fnr)
+            navigate('/personoversikt/saker')
+          }}
+          aria-live="polite"
+        >
+          {`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}
+        </Label>
+      </Element>
+      {fnr ? (
+        <Element>
+          <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
+          <Kopiknapp tooltip="Kopier fødselsnumer" copyText={fnr} placement="bottom" />
+        </Element>
+      ) : (
+        <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
+      )}
+      {brukernummer && (
+        <Element>
+          <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
+          <Kopiknapp tooltip="Kopier brukernummer" copyText={brukernummer} placement="bottom" />
+        </Element>
+      )}
+      {telefon && (
+        <Element>
+          <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
+          <Kopiknapp tooltip="Kopier telefonnummer" copyText={telefon} placement="bottom" />
+        </Element>
+      )}
+      {dødsdato && (
+        <Tag size="small" variant="warning">
+          MORS {formaterDato(dødsdato)}
+        </Tag>
+      )}
+      {adressebeskyttelse && (
+        <Tag size="small" variant="error">
+          {AdressebeskyttelseAlert[adressebeskyttelse]}
+        </Tag>
+      )}
+      {adressebeskyttelseOgSkjerming?.skjermet && (
+        <Tag size="small" variant="error">
+          Skjermet
+        </Tag>
+      )}
+    </Container>
+  )
 }
 
 export function LasterPersonlinje() {
   return (
     <Container>
-      <FigureCombinationIcon />
-      <LoadingText />
-      <Separator>|</Separator>
-      <LoadingText />
-      <Separator>|</Separator>
-      <LoadingText />
-      <Separator>|</Separator>
-      <LoadingText />
-      <Separator>|</Separator>
-      <LoadingText />
+      <Element>
+        <Kjønnsikon />
+        <Skeleton width={175} height={32} />
+      </Element>
+      {Array.from({ length: 4 }, (_, key) => (
+        <Skeleton key={key} width={135} height={32} />
+      ))}
     </Container>
   )
 }
 
-function Kjønnsikon({ kjønn }: { kjønn: Kjønn }) {
+function Element({ children }: { children: ReactNode }) {
+  return (
+    <HStack align="center" gap="1">
+      {children}
+    </HStack>
+  )
+}
+
+function Kjønnsikon({ kjønn }: { kjønn?: Kjønn }) {
+  const iconProps: SVGProps<SVGSVGElement> = {
+    fontSize: 'var(--a-font-size-heading-large)',
+  }
   switch (kjønn) {
     case Kjønn.KVINNE:
-      return <FigureOutwardIcon />
+      return <FigureOutwardIcon {...iconProps} />
     case Kjønn.MANN:
-      return <FigureInwardIcon />
+      return <FigureInwardIcon {...iconProps} />
     default:
-      return <FigureCombinationIcon />
+      return <FigureCombinationIcon {...iconProps} />
   }
 }
 
-function PersonlinjeContent({ person }: PersonlinjeProps) {
-  const { setFodselsnummer } = usePersonContext()
-  const navigate = useNavigate()
-
-  if (!person) return <Container />
-
-  const [adressebeskyttelse] = person.adressebeskyttelseOgSkjerming?.gradering || []
-
-  const { fnr, brukernummer, kjønn, fødselsdato, telefon } = person
+function Container({ children }: { children?: ReactNode }) {
   return (
-    <Container>
-      {kjønn && <Kjønnsikon kjønn={kjønn} />}
-      <Link
-        href="#"
-        onClick={() => {
-          logAmplitudeEvent(amplitude_taxonomy.PERSONOVERSIKT)
-          setFodselsnummer(fnr)
-          navigate('/personoversikt/saker')
-        }}
-      >
-        <div aria-live="polite">
-          <Etikett>{`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}</Etikett>
-        </div>
-      </Link>
-      <Separator>|</Separator>
-      {fnr ? (
+    <HStack
+      align="center"
+      flexShrink="0"
+      height="48px"
+      gap="4"
+      minWidth={hotsakTotalMinWidth}
+      paddingInline="8"
+      style={{
+        background: 'var(--a-bg-subtle)',
+        borderBottom: '1px solid var(--a-border-default)',
+        color: 'var(--a-text-default)',
+      }}
+    >
+      {Children.map(children, (child, index) => (
         <>
-          <Tekst>{`Fnr: ${formaterFødselsnummer(fnr)}`}</Tekst>
-          <Tooltip content="Kopier fødselsnumer" placement="bottom">
-            <CopyButton title="Kopier fødselsnummer" size="small" copyText={fnr} />
-          </Tooltip>
+          {child && index > 0 && <div>|</div>}
+          {child}
         </>
-      ) : (
-        <Tekst>Fødselsnummer ikke tilgjengelig</Tekst>
-      )}
-
-      {brukernummer && (
-        <>
-          <Separator>|</Separator>
-          <Tekst>{`Brukernr: ${brukernummer}`}</Tekst>
-          <Tooltip content="Kopier brukernummer" placement="bottom">
-            <CopyButton title="Kopier brukernummer" size="small" copyText={brukernummer}></CopyButton>
-          </Tooltip>
-        </>
-      )}
-
-      {telefon && (
-        <>
-          <Separator>|</Separator>
-          <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
-          <Tooltip content="Kopier telefonnummer" placement="bottom">
-            <CopyButton title="Kopier telefonnummer" size="small" copyText={telefon}></CopyButton>
-          </Tooltip>
-        </>
-      )}
-      {adressebeskyttelse && (
-        <>
-          <Separator>|</Separator>
-          <Tag size="small" variant="error">
-            {AdressebeskyttelseAlert[adressebeskyttelse]}
-          </Tag>
-        </>
-      )}
-      {person.adressebeskyttelseOgSkjerming?.skjermet && (
-        <>
-          <Separator>|</Separator>
-          <Tag size="small" variant="error">
-            Skjermet
-          </Tag>
-        </>
-      )}
-    </Container>
+      ))}
+    </HStack>
   )
 }
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  height: 48px;
-  min-width: ${hotsakTotalMinWidth};
-  box-sizing: border-box;
-  padding: 0 2rem;
-  background: var(--a-bg-subtle);
-  border-bottom: 1px solid var(--a-border-default);
-  color: var(--a-text-default);
-
-  > svg {
-    margin-right: 0.5rem;
-    font-size: var(--a-font-size-heading-large);
-  }
-`
-
-const Separator = styled.div`
-  margin: 0 1rem 0 1rem;
-`
-
-const LoadingText = styled.div`
-  @keyframes placeHolderShimmer {
-    0% {
-      background-position: -468px 0;
-    }
-    100% {
-      background-position: 468px 0;
-    }
-  }
-
-  animation-duration: 1.25s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
-  animation-name: placeHolderShimmer;
-  animation-timing-function: linear;
-  background: transparent;
-  background: linear-gradient(to right, transparent 0%, #eaeaea 16%, transparent 33%);
-  background-size: 800px 104px;
-  border-radius: 4px;
-  height: 22px;
-  width: 150px;
-  margin: 4px 0;
-`

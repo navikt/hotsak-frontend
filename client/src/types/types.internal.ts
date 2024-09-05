@@ -298,6 +298,7 @@ export interface Bruker extends HarNavn {
   brukernummer?: string
   kontonummer?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
+  dødsdato?: string
 }
 
 export enum Adressebeskyttelse {
@@ -922,6 +923,7 @@ export interface Person extends Navn, HarNavn {
   kommune: Kommune
   bydel?: Bydel
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
+  dødsdato?: string
 }
 
 export interface Saksoversikt {

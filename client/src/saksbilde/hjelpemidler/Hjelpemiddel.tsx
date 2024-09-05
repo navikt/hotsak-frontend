@@ -164,8 +164,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
             </div>
           </HjelpemiddelGrid>
           {hjelpemiddel.tilbehør.map((tilbehør) => (
-            <>
-              <HjelpemiddelGrid key={tilbehør.hmsNr}>
+            <Fragment key={tilbehør.hmsNr}>
+              <HjelpemiddelGrid>
                 <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
                 <VStack>
                   <HStack gap="1" align="center">
@@ -186,7 +186,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                   )}
                 </VStack>
               </HjelpemiddelGrid>
-            </>
+            </Fragment>
           ))}
         </>
       )}

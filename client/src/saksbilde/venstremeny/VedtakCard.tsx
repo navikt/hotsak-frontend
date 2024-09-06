@@ -109,7 +109,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         </CardTitle>
         <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false} onMutate={null}></IkkeTildelt>
         </Knappepanel>
       </Card>
     )

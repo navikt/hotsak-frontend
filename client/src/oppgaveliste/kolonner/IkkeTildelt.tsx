@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button } from '@navikt/ds-react'
 
-import { postTildeling } from '../../io/http'
+import { postTildeling, ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -12,9 +12,10 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
+  onMutate: ((...args: any[]) => any) | null
 }
 
-export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildeltProps) => {
+export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -31,7 +32,12 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
     postTildeling(oppgavereferanse)
-      .catch(() => setIsFetching(false))
+      .catch((e: ResponseError) => {
+        if (onMutate && e.message.indexOf('Saken var allerede tildelt') !== -1) {
+          onMutate()
+        }
+        setIsFetching(false)
+      })
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {

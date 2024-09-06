@@ -73,7 +73,7 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <Tildeling oppgave={oppgave} />
+        return <Tildeling oppgave={oppgave} onMutate={mutate} />
       },
     },
     {

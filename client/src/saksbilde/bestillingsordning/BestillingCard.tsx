@@ -125,7 +125,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
         </CardTitle>
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false} onMutate={null}></IkkeTildelt>
         </Knappepanel>
       </Card>
     )

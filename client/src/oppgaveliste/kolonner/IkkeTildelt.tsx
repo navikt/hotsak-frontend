@@ -31,10 +31,12 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgavereferanse)
+    postTildeling(oppgavereferanse, false)
       .catch((e: ResponseError) => {
-        if (onMutate && e.message.indexOf('Saken var allerede tildelt') !== -1) {
+        if (onMutate && e.statusCode == 409) {
           onMutate()
+          setIsFetching(false)
+          throw Error('skip then statement below')
         }
         setIsFetching(false)
       })
@@ -47,6 +49,9 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
           mutate(`api/sak/${oppgavereferanse}`)
           mutate(`api/sak/${oppgavereferanse}/historikk`)
         }
+      })
+      .catch(() => {
+        // Nothing. Just skipping .then()
       })
   }
 

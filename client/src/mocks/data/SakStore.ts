@@ -328,12 +328,15 @@ export class SakStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
-  async tildel(sakId: string) {
+  async tildel(sakId: string, noenAndre: boolean = false) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
     }
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    let saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    if (noenAndre) {
+      saksbehandler = await this.saksbehandlerStore.ikkeInnloggetSaksbehandler()
+    }
     await this.saker.update(sakId, {
       saksbehandler: saksbehandler,
       status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,

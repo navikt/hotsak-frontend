@@ -58,6 +58,7 @@ export function isResponseError(value: unknown): value is ResponseError {
 const getData = async (response: Response) => {
   try {
     return await response.json()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -67,6 +68,7 @@ const getBlob = async (response: Response) => {
   try {
     const data = await response.blob()
     return data
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -75,6 +77,7 @@ const getBlob = async (response: Response) => {
 const getErrorMessage = async (response: Response) => {
   try {
     return await response.text()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -175,8 +178,12 @@ export const hentBrukerdataMedPost: any = async ([
   }
 }
 
-export const postTildeling = async (sakId: number | string) => {
-  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
+export const postTildeling = async (sakId: number | string, overtaHvisTildelt: boolean | undefined = undefined) => {
+  let data = {}
+  if (!overtaHvisTildelt) {
+    data = { overtaHvisTildelt: false }
+  }
+  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, data)
 }
 
 // Nytt oppgave API

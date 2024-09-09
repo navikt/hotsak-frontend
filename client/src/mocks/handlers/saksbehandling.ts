@@ -3,6 +3,7 @@ import { delay, http, HttpResponse } from 'msw'
 import { Artikkel, OppgaveStatusType, StegType, VedtakPayload } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import {
+  respondConflict,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
@@ -12,17 +13,25 @@ import {
 import type { SakParams } from './params'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
-  http.post<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
-    const { sakId } = params
-    await delay(500)
-    if (await sakStore.tildel(sakId)) {
-      return respondNoContent()
+  http.post<SakParams, { overtaHvisTildelt: boolean | undefined }>(
+    `/api/sak/:sakId/tildeling`,
+    async ({ params, request }) => {
+      const { sakId } = params
+      const overtaHvisTildelt = (await request.json()).overtaHvisTildelt
+      await delay(500)
+      if (sakId == '1008' && overtaHvisTildelt === false) {
+        await sakStore.tildel(sakId, true)
+        return respondConflict()
+      }
+      if (await sakStore.tildel(sakId)) {
+        return respondNoContent()
+      }
+      if (await barnebrillesakStore.tildel(sakId)) {
+        return respondNoContent()
+      }
+      return respondNotFound()
     }
-    if (await barnebrillesakStore.tildel(sakId)) {
-      return respondNoContent()
-    }
-    return respondNotFound()
-  }),
+  ),
 
   http.delete<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
     const { sakId } = params

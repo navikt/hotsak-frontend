@@ -60,6 +60,12 @@ export class SaksbehandlerStore extends Dexie {
     return this.saksbehandlere.get(id) as any // fixme
   }
 
+  async ikkeInnloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
+    const id = this.getInnloggetSaksbehandlerId() || ''
+    const arr = await this.saksbehandlere.toArray()
+    return arr.find((a) => a.id != id) as any // fixme
+  }
+
   byttInnloggetSaksbehandler(id: string) {
     this.setInnloggetSaksbehandlerId(id)
   }

@@ -1,26 +1,23 @@
+import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useSWRConfig } from 'swr'
 
-import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
-
-import { postTildeling, putVedtak } from '../../io/http'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { formaterDato, formaterTidsstempel } from '../../utils/dato'
-import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
-import { Avstand } from '../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
+import { postTildeling, putVedtak } from '../../io/http'
+import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+import { formaterDato, formaterTidsstempel } from '../../utils/dato'
+import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { BekreftelseModal } from '../komponenter/BekreftelseModal'
+import { mutateSak } from '../mutateSak.ts'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
 import { useOverførGosys } from '../useOverførGosys'
+import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -33,95 +30,88 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
-  const { mutate } = useSWRConfig()
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
     `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
   )
 
-  const opprettVedtak = () => {
+  const opprettVedtak = async () => {
     setLoading(true)
-    putVedtak(sakId, VedtakStatusType.INNVILGET, oebsProblemsammendrag)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        setVisVedtakModal(false)
-        mutate(`api/sak/${sakId}`)
-        mutate(`api/sak/${sakId}/historikk`)
-      })
+    await putVedtak(sakId, VedtakStatusType.INNVILGET, oebsProblemsammendrag).catch(() => setLoading(false))
+    setLoading(false)
+    setVisVedtakModal(false)
+    logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
+    logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
+    return mutateSak(sakId)
   }
 
-  const overtaSak = () => {
+  const overtaSak = async () => {
     setLoading(true)
-    postTildeling(sakId)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        setVisOvertaSakModal(false)
-        mutate(`api/sak/${sakId}`)
-        mutate(`api/sak/${sakId}/historikk`)
-        logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
-      })
+    await postTildeling(sakId).catch(() => setLoading(false))
+    setLoading(false)
+    setVisOvertaSakModal(false)
+    logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
+    return mutateSak(sakId)
+  }
+
+  if (sak.status === OppgaveStatusType.HENLAGT) {
+    return (
+      <VenstremenyCard heading="Henlagt">
+        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+          Henlagt
+        </Tag>
+        <StatusTekst>
+          <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
+          <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
+        </StatusTekst>
+      </VenstremenyCard>
+    )
   }
 
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
-      <>
-        <Card>
-          <CardTitle level="1" size="medium">
-            VEDTAK
-          </CardTitle>
-          <Tag data-cy="tag-soknad-status" variant="success" size="small">
-            Innvilget
-          </Tag>
-          <StatusTekst>
-            <Tekst>{`${formaterDato(sak.vedtak.vedtaksdato)}`}</Tekst>
-            <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
-          </StatusTekst>
-        </Card>
-      </>
+      <VenstremenyCard heading="Vedtak">
+        <Tag data-cy="tag-soknad-status" variant="success" size="small">
+          Innvilget
+        </Tag>
+        <StatusTekst>
+          <Tekst>{`${formaterDato(sak.vedtak.vedtaksdato)}`}</Tekst>
+          <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
+        </StatusTekst>
+      </VenstremenyCard>
     )
   }
 
   if (sak.status === OppgaveStatusType.SENDT_GOSYS) {
     return (
-      <Card>
-        <CardTitle level="1" size="medium">
-          OVERFØRT
-        </CardTitle>
+      <VenstremenyCard heading="Overført">
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Overført til Gosys
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
           <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
-          <Tekst>Saken er overført Gosys og behandles videre der. </Tekst>
+          <Tekst>Saken er overført Gosys og behandles videre der.</Tekst>
         </StatusTekst>
-      </Card>
+      </VenstremenyCard>
     )
   }
 
   if (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
-      <Card>
-        <CardTitle level="1" size="medium">
-          SAK IKKE STARTET
-        </CardTitle>
-        <Tekst>Saken er ikke tildelt en saksbehandler enda</Tekst>
+      <VenstremenyCard heading="Sak ikke startet">
+        <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         <Knappepanel>
           <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
         </Knappepanel>
-      </Card>
+      </VenstremenyCard>
     )
   }
 
   if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== saksbehandler.id) {
     return (
-      <Card>
-        <CardTitle level="1" size="medium">
-          SAKSBEHANDLER
-        </CardTitle>
-        <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}</Tekst>
+      <VenstremenyCard heading="Saksbehandler">
+        <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>
         <Knappepanel>
           <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
             Overta saken
@@ -130,80 +120,67 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         <OvertaSakModal
           open={visOvertaSakModal}
           saksbehandler={saksbehandler.navn}
-          onBekreft={() => {
-            overtaSak()
-            logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
-          }}
+          onBekreft={() => overtaSak()}
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}
         />
-      </Card>
-    )
-  } else {
-    return (
-      <>
-        <Card>
-          <Knappepanel gap="0rem">
-            <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
-              <span>Innvilg søknaden</span>
-            </Knapp>
-            <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
-              Overfør til Gosys
-            </Knapp>
-          </Knappepanel>
-          <BekreftelseModal
-            heading="Vil du innvilge søknaden?"
-            open={visVedtakModal}
-            width="600px"
-            buttonLabel="Innvilg søknaden"
-            onBekreft={() => {
-              opprettVedtak()
-              logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
-              logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
-            }}
-            loading={loading}
-            onClose={() => setVisVedtakModal(false)}
-          >
-            <Avstand marginTop={6}>
-              <Brødtekst>
-                Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket
-                på innlogget side på nav.no
-              </Brødtekst>
-              <Avstand paddingTop={12} />
-              <TextField
-                label={
-                  <HStack wrap={false} gap="2" align={'center'}>
-                    <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-
-                    <HelpText>
-                      <Bleed marginInline="full" asChild>
-                        <Brødtekst>
-                          Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
-                          problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
-                          innvilges eller inne på SF i OeBS som tidligere.
-                        </Brødtekst>
-                      </Bleed>
-                    </HelpText>
-                  </HStack>
-                }
-                onChange={(event) => setOebsProblemsammendrag(event.target.value)}
-                size="small"
-                value={oebsProblemsammendrag}
-              />
-            </Avstand>
-          </BekreftelseModal>
-          <OverførGosysModal
-            {...overførGosys}
-            onBekreft={async (spørreundersøkelse, besvarelse, svar) => {
-              await overførGosys.onBekreft(spørreundersøkelse, besvarelse, svar)
-              logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
-              logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
-            }}
-          />
-        </Card>
-      </>
+      </VenstremenyCard>
     )
   }
+
+  return (
+    <VenstremenyCard>
+      <Knappepanel gap="0rem">
+        <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
+          Innvilg søknaden
+        </Knapp>
+        <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
+          Overfør til Gosys
+        </Knapp>
+      </Knappepanel>
+      <BekreftelseModal
+        heading="Vil du innvilge søknaden?"
+        loading={loading}
+        open={visVedtakModal}
+        width="600px"
+        buttonLabel="Innvilg søknaden"
+        onBekreft={() => opprettVedtak()}
+        onClose={() => setVisVedtakModal(false)}
+      >
+        <Brødtekst spacing>
+          Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
+          innlogget side på nav.no
+        </Brødtekst>
+        <TextField
+          label={
+            <HStack wrap={false} gap="2" align={'center'}>
+              <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+              <HelpText>
+                <Bleed marginInline="full" asChild>
+                  <Brødtekst>
+                    Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                    dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
+                    OeBS som tidligere.
+                  </Brødtekst>
+                </Bleed>
+              </HelpText>
+            </HStack>
+          }
+          onChange={(event) => setOebsProblemsammendrag(event.target.value)}
+          size="small"
+          value={oebsProblemsammendrag}
+        />
+      </BekreftelseModal>
+      <OverførGosysModal
+        {...overførGosys}
+        onBekreft={async (spørreundersøkelse, besvarelse, svar) => {
+          await overførGosys.onBekreft(spørreundersøkelse, besvarelse, svar)
+          logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+          logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
+        }}
+      />
+    </VenstremenyCard>
+  )
 }
 
 const StatusTekst = styled.div`

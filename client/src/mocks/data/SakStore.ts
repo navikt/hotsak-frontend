@@ -1,7 +1,9 @@
+import { formatISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
 import {
   Bosituasjon,
+  Bruker,
   Bruksarena,
   EndreHjelpemiddelRequest,
   Formidler,
@@ -21,16 +23,15 @@ import {
   VarigFunksjonsnedsettelse,
   VedtakStatusType,
 } from '../../types/types.internal'
-import { IdGenerator } from './IdGenerator'
-import { PersonStore } from './PersonStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { formaterNavn } from '../../utils/formater'
 import { lagTilfeldigBosted } from './bosted'
 import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
+import { IdGenerator } from './IdGenerator'
 import { lagTilfeldigNavn } from './navn'
-import { formaterNavn } from '../../utils/formater'
-import { formatISO } from 'date-fns'
+import { PersonStore } from './PersonStore'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
 
 type LagretSak = Sak
 
@@ -38,7 +39,7 @@ interface LagretHendelse extends Hendelse {
   sakId: string
 }
 
-function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
+function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinformasjon' | 'bruker'> {
   const fødselsdato = lagTilfeldigFødselsdato(lagTilfeldigInteger(65, 95))
   const fnr = lagTilfeldigFødselsnummer(fødselsdato)
   const navn = lagTilfeldigNavn()
@@ -58,6 +59,7 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
         gradering: [],
         skjermet: false,
       },
+      ...overstyringer,
     },
     personinformasjon: {
       ...navn,
@@ -95,8 +97,14 @@ function lagBruker(): Pick<Sak, 'personinformasjon' | 'bruker'> {
   }
 }
 
-function lagSak(sakId: number, sakstype = Sakstype.SØKNAD): LagretSak {
-  const bruker = lagBruker()
+function lagSak(
+  sakId: number,
+  sakstype = Sakstype.SØKNAD,
+  overstyringer: {
+    bruker?: Partial<Bruker>
+  } = {}
+): LagretSak {
+  const bruker = lagBruker(overstyringer.bruker)
   const opprettet = new Date()
   const formidler: Formidler = {
     fnr: lagTilfeldigFødselsnummer(32),
@@ -254,12 +262,21 @@ export class SakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagSakMedId = (sakstype = Sakstype.SØKNAD) => lagSak(this.idGenerator.nesteId(), sakstype)
+    const lagSakMedId = (
+      sakstype = Sakstype.SØKNAD,
+      overstyringer: {
+        bruker?: Partial<Bruker>
+      } = {}
+    ) => lagSak(this.idGenerator.nesteId(), sakstype, overstyringer)
     return this.lagreAlle([
       lagSakMedId(),
       lagSakMedId(),
       lagSakMedId(),
-      lagSakMedId(),
+      lagSakMedId(Sakstype.SØKNAD, {
+        bruker: {
+          dødsdato: '2024-09-02',
+        },
+      }),
       lagSakMedId(Sakstype.BESTILLING),
     ])
   }

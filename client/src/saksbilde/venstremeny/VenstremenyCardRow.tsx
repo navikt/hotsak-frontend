@@ -1,10 +1,11 @@
 import { CopyButton, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 import { isValidElement, ReactNode } from 'react'
 import styled from 'styled-components'
+
 import { Tekst } from '../../felleskomponenter/typografi'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude.ts'
 
-export interface CardRowProps {
+export interface VenstremenyCardRowProps {
   children: ReactNode
   icon?: ReactNode
   copyText?: string
@@ -15,7 +16,7 @@ export interface CardRowProps {
 
 const hStack = true
 
-export function CardRow(props: CardRowProps) {
+export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
   const { children, icon, copyText, copyKind, align, columns } = props
 
   const onCopy = (): void => {

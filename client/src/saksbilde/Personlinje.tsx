@@ -68,7 +68,7 @@ export function Personlinje({ person, loading }: PersonlinjeProps) {
       )}
       {dødsdato && (
         <Tag size="small" variant="warning">
-          MORS {formaterDato(dødsdato)}
+          Død {formaterDato(dødsdato)}
         </Tag>
       )}
       {adressebeskyttelse && (

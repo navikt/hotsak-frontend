@@ -5,7 +5,6 @@ import { useDokumentContext } from '../../../../dokument/DokumentContext'
 import { DokumentPanel } from '../../../../dokument/DokumentPanel'
 import { AlertError } from '../../../../feilsider/AlertError'
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
-import { hotsakRegistrerSøknadKolonne } from '../../../../GlobalStyles'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { Sakstype } from '../../../../types/types.internal'
 import { LasterPersonlinje } from '../../../Personlinje'
@@ -47,7 +46,7 @@ const RegistrerSøknadContent = memo(() => {
 
   return (
     <TreKolonner>
-      <Venstremeny width={`${hotsakRegistrerSøknadKolonne}`}>
+      <Venstremeny>
         {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
       </Venstremeny>
       <DokumentPanel />

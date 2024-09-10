@@ -1,8 +1,11 @@
-import { Tabs } from '@navikt/ds-react'
-import { Sakstype } from '../types/types.internal'
-import { TabLink } from './TabLink'
-import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { HouseIcon } from '@navikt/aksel-icons'
+import { Tabs } from '@navikt/ds-react'
+
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
+import { Sakstype } from '../types/types.internal'
+import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
+import { Saksmeny } from './Saksmeny.tsx'
+import { TabLink } from './TabLink'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -24,6 +27,11 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
             <TabLink to={`/sak/${id}/formidler`} title={type === Sakstype.BESTILLING ? 'Bestiller' : 'Formidler'}>
               Formidler
             </TabLink>
+            <Eksperiment>
+              <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
+                <Saksmeny />
+              </div>
+            </Eksperiment>
           </Tabs.List>
         </Tabs>
       </SøknadslinjeContainer>

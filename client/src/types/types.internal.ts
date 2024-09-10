@@ -728,6 +728,7 @@ export enum OppgaveStatusType {
   AVSLÅTT = 'AVSLÅTT',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
+  HENLAGT = 'HENLAGT',
 }
 
 export enum BehandlingstatusType {
@@ -749,6 +750,7 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
   [OppgaveStatusType.RETURNERT, 'Returnert'],
+  [OppgaveStatusType.HENLAGT, 'Henlagt'],
 ])
 
 export enum VedtakStatusType {

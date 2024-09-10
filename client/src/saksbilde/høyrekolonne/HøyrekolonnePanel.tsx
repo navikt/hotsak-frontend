@@ -9,6 +9,9 @@ export interface HøyrekolonnePanelProps {
   children: ReactNode
 }
 
+/**
+ * @see {@link VenstremenyCard}
+ */
 export function HøyrekolonnePanel(props: HøyrekolonnePanelProps) {
   const { tittel, loading, error, children } = props
   return (

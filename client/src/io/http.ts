@@ -58,6 +58,7 @@ export function isResponseError(value: unknown): value is ResponseError {
 const getData = async (response: Response) => {
   try {
     return await response.json()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -67,6 +68,7 @@ const getBlob = async (response: Response) => {
   try {
     const data = await response.blob()
     return data
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -75,6 +77,7 @@ const getBlob = async (response: Response) => {
 const getErrorMessage = async (response: Response) => {
   try {
     return await response.text()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return undefined
   }
@@ -278,4 +281,16 @@ export const deleteBrevutkast = async (sakId: string, brevtype: Brevtype) => {
 
 export const postBrevutsending = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevsending`, brevTekst)
+}
+
+/**
+ * NB! Fungerer kun for MORS pt.
+ *
+ * @param sakId
+ */
+export async function postHenleggelse(sakId: string) {
+  return post(`${baseUrl}/api/sak/${sakId}/henleggelse`, {
+    valgteÅrsaker: ['Bruker er død'],
+    begrunnelse: undefined,
+  })
 }

@@ -1,22 +1,20 @@
+import { Button, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
-import { Button, Modal, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { Tekst } from '../../felleskomponenter/typografi'
 import type { AvvisBestilling } from '../../types/types.internal'
 
 interface AvvisBestillingModalProps {
   open: boolean
   loading: boolean
-
   onBekreft(tilbakemelding: AvvisBestilling): void
-
   onClose(): void
 }
 
 export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: AvvisBestillingModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
-  const [valgtArsak, setValgtArsak] = useState<string>('')
+  const [valgtÅrsak, setValgtÅrsak] = useState<string>('')
   const [begrunnelse, setBegrunnelse] = useState<string>('')
   const [error, setError] = useState('')
 
@@ -35,14 +33,14 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
         </Tekst>
         <AvvisBestillingRadioGroup
           legend="Velg årsak til at bestillingen avvises"
-          error={valgtArsak === '' && error}
-          value={valgtArsak}
-          onChange={setValgtArsak}
+          error={valgtÅrsak === '' && error}
+          value={valgtÅrsak}
+          onChange={setValgtÅrsak}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke til bruker.</Tekst>
-          {avvisÅrsaker.map((arsak, index) => (
-            <Radio key={arsak} value={arsak} data-cy={`avvis-bestilling-arsak-${index}`}>
-              {arsak}
+          {avvisÅrsaker.map((årsak, index) => (
+            <Radio key={årsak} value={årsak} data-cy={`avvis-bestilling-arsak-${index}`}>
+              {årsak}
             </Radio>
           ))}
         </AvvisBestillingRadioGroup>
@@ -58,9 +56,9 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
           variant="primary"
           size="small"
           onClick={() => {
-            if (valgtArsak !== '') {
+            if (valgtÅrsak !== '') {
               onBekreft({
-                valgtArsak,
+                valgtArsak: valgtÅrsak,
                 begrunnelse,
               })
             } else {

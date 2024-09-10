@@ -159,4 +159,9 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
     return HttpResponse.json(artikler)
   }),
+
+  http.post<SakParams, { foo: string }>('/api/sak/:sakId/henleggelse', async ({ params }) => {
+    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
+    return respondNoContent()
+  }),
 ]

@@ -486,6 +486,7 @@ export interface Tilbehør {
 export enum FritakFraBegrunnelseÅrsak {
   ER_PÅ_BESTILLINGSORDNING = 'ER_PÅ_BESTILLINGSORDNING',
   IKKE_I_PILOT = 'IKKE_I_PILOT',
+  ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
 }
 
 export interface Formidler {

@@ -9,6 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
+      - depfix
 
 jobs:
   test:

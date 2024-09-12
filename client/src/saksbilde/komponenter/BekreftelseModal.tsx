@@ -33,14 +33,7 @@ export function BekreftelseModal(props: BekreftelseModalProps) {
         <Button variant={buttonVariant} size="small" onClick={onBekreft} disabled={loading} loading={loading}>
           {buttonLabel}
         </Button>
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => {
-            onClose()
-          }}
-          disabled={loading}
-        >
+        <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
           Avbryt
         </Button>
       </Modal.Footer>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Loader } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
-import { Feilmelding } from '../../../../../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../../../../../felleskomponenter/feil/Feilmelding'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
 import { useBrev } from './useBrev'

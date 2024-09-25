@@ -7,13 +7,13 @@ import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
+import { AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 
 export interface PersonlinjeProps {
-  person?: Person | Bruker
+  person?: Person
   loading: boolean
 }
 

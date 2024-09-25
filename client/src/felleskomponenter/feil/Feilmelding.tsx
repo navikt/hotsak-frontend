@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
 
-import { Tekst } from './typografi'
+import { Tekst } from '../typografi'
 
 const FeilmeldingAlert = styled(Alert)`
   width: max-content;

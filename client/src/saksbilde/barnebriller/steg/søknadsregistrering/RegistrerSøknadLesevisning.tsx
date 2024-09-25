@@ -2,7 +2,7 @@ import { Alert, Button, HelpText, HGrid, HGridProps, HStack, HStackProps, Loader
 import { useParams } from 'react-router'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
-import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { SatsType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'

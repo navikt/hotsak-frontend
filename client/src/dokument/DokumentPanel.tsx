@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { Toast } from '../felleskomponenter/Toast'
 import { RessursStatus } from '../types/types.internal'
 import { useDokumentContext } from './DokumentContext'

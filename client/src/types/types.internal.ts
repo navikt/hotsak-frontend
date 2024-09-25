@@ -298,7 +298,6 @@ export interface Bruker extends HarNavn {
   brukernummer?: string
   kontonummer?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
-  dødsdato?: string
 }
 
 export enum Adressebeskyttelse {

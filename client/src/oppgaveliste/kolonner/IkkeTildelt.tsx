@@ -31,12 +31,12 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
+    let someSome = false
     postTildeling(oppgavereferanse, false)
       .catch((e: ResponseError) => {
         if (onMutate && e.statusCode == 409) {
           onMutate()
-          setIsFetching(false)
-          throw Error('skip then statement below')
+          someSome = true
         }
         setIsFetching(false)
       })
@@ -44,14 +44,11 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
         setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
-          navigate(destinationUrl)
+          navigate(destinationUrl, someSome ? { state: { konfliktFeil: true } } : {})
         } else {
           mutate(`api/sak/${oppgavereferanse}`)
           mutate(`api/sak/${oppgavereferanse}/historikk`)
         }
-      })
-      .catch(() => {
-        // Nothing. Just skipping .then()
       })
   }
 

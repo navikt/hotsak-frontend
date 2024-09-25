@@ -23,6 +23,9 @@ const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { showBoundary } = useErrorBoundary()
 
+  // const location = useLocation()
+  // const konfliktFeil = location.state && location.state.konfliktFeil
+
   if (isLoading) return <SakLoader />
 
   if (isError) {
@@ -35,6 +38,17 @@ const SaksbildeContent = memo(() => {
     <>
       <SaksbildeContainer>
         <Personlinje person={sak.data.bruker} loading={false} />
+        {/* konfliktFeil && (
+          <Box paddingBlock="1" margin="1" marginBlock="0">
+            <Alert variant="warning" size="small" fullWidth>
+              <VStack gap="1">
+                <Brødtekst>
+                  Du ser nå på en sak som behandles av Journalfører Journalposten.
+                </Brødtekst>
+              </VStack>
+            </Alert>
+          </Box>
+        ) */}
         {(() => {
           switch (sak.data.sakstype) {
             case Sakstype.BARNEBRILLER:

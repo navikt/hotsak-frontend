@@ -1,7 +1,7 @@
 import { BriefcaseIcon, PersonIcon, PhoneIcon } from '@navikt/aksel-icons'
 
 import type { Navn } from '../../types/types.internal'
-import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
@@ -32,7 +32,7 @@ export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon
         copyKind="formidlers stilling"
       >{`${storForbokstavIAlleOrd(stilling)} - ${storForbokstavIAlleOrd(kommune)}`}</VenstremenyCardRow>
       <VenstremenyCardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
-        {formidlerTelefon}
+        {formaterTelefonnummer(formidlerTelefon)}
       </VenstremenyCardRow>
     </VenstremenyCard>
   )

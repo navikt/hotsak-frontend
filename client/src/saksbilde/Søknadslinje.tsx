@@ -6,6 +6,7 @@ import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { Saksmeny } from './Saksmeny.tsx'
 import { TabLink } from './TabLink'
+import { useLocation } from 'react-router'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -13,10 +14,11 @@ export interface SøknadslinjeProps {
 }
 
 export function Søknadslinje({ id, type }: SøknadslinjeProps) {
+  const location = useLocation()
   return (
     <>
       <SøknadslinjeContainer>
-        <Tabs>
+        <Tabs value={location.pathname}>
           <Tabs.List>
             <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HouseIcon />}>
               Hjelpemidler

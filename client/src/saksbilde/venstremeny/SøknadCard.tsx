@@ -1,11 +1,11 @@
-import { CalendarIcon, FolderIcon, HouseIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { CalendarIcon, FolderIcon, HouseIcon, PhoneIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { BodyShort } from '@navikt/ds-react'
 
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { Mellomtittel } from '../../felleskomponenter/typografi.tsx'
 import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
-import { storForbokstavIAlleOrd } from '../../utils/formater'
+import { formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
@@ -17,6 +17,7 @@ export interface SøknadCardProps {
   bruksarena: Bruksarena | null
   funksjonsnedsettelser: string[]
   bosituasjon: Bosituasjon | null
+  telefon?: string | null
 }
 
 export function SøknadCard({
@@ -26,6 +27,7 @@ export function SøknadCard({
   bruksarena,
   funksjonsnedsettelser,
   bosituasjon,
+  telefon,
 }: SøknadCardProps) {
   const bruksarenaTekst = bruksarena && bruksarena !== Bruksarena.UKJENT ? storForbokstavIAlleOrd(bruksarena) : ''
   const bosituasjonTekst = lagBosituasjonTekst(bosituasjon)
@@ -50,6 +52,11 @@ export function SøknadCard({
       <VenstremenyCardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
         {storForbokstavIAlleOrd(funksjonsnedsettelser.join(', '))}
       </VenstremenyCardRow>
+      {telefon && (
+        <VenstremenyCardRow icon={<PhoneIcon />} copyText={telefon} copyKind="formidlers telefon">
+          {formaterTelefonnummer(telefon)}
+        </VenstremenyCardRow>
+      )}
     </VenstremenyCard>
   )
 }

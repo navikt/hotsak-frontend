@@ -1,5 +1,5 @@
-import { Alert, Box, Heading, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett } from '../../felleskomponenter/typografi'
+import { Heading, VStack } from '@navikt/ds-react'
+import { Etikett } from '../../felleskomponenter/typografi'
 import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hastesak } from './Hastesak.tsx'
@@ -24,15 +24,6 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: Hje
 
   return (
     <>
-      {true && (
-        <Box paddingBlock="0 4">
-          <Alert variant="warning" size="small" fullWidth>
-            <VStack gap="1">
-              <Brødtekst>Du ser nå på en sak som behandles av Journalfører Journalposten.</Brødtekst>
-            </VStack>
-          </Alert>
-        </Box>
-      )}
       {hast && <Hastesak hast={hast} />}
       {brukerFunksjon && <BrukersFunksjon brukerFunksjon={brukerFunksjon} />}
 

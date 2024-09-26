@@ -31,12 +31,10 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    let someSome = false
     postTildeling(oppgavereferanse, false)
       .catch((e: ResponseError) => {
         if (onMutate && e.statusCode == 409) {
           onMutate()
-          someSome = true
         }
         setIsFetching(false)
       })
@@ -44,7 +42,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate }: I
         setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
-          navigate(destinationUrl, someSome ? { state: { konfliktFeil: true } } : {})
+          navigate(destinationUrl)
         } else {
           mutate(`api/sak/${oppgavereferanse}`)
           mutate(`api/sak/${oppgavereferanse}/historikk`)

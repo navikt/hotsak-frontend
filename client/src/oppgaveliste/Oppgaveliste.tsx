@@ -1,15 +1,12 @@
 import { Box, SortState, Table, Tag } from '@navikt/ds-react'
 import styled from 'styled-components'
 
+import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
+import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
-import { isError } from '../utils/type'
-
-import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
-import { Toast } from '../felleskomponenter/Toast'
-import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
+import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
   OmrådeFilter,
@@ -24,11 +21,13 @@ import {
   SakstypeFilterLabel,
 } from '../types/types.internal'
 import { formaterTidsstempel } from '../utils/dato'
-import { OppgavelisteTabs } from './OppgavelisteTabs'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
+import { isError } from '../utils/type'
 import { FilterDropdown, Filters, FilterToggle } from './filter'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { Tildeling } from './kolonner/Tildeling'
+import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'

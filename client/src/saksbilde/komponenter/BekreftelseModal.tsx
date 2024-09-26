@@ -1,61 +1,39 @@
-import { Button, Modal } from '@navikt/ds-react'
+import { Button, ButtonProps, Modal, ModalProps } from '@navikt/ds-react'
 import { ReactNode, useRef } from 'react'
 
-interface BekreftelseModalProps {
+export interface BekreftelseModalProps {
   heading: string
-  open: boolean
-  buttonVariant?:
-    | 'primary'
-    | 'primary-neutral'
-    | 'secondary'
-    | 'secondary-neutral'
-    | 'tertiary'
-    | 'tertiary-neutral'
-    | 'danger'
+  loading?: boolean
+  open?: boolean
   buttonLabel: string
-  width?: 'medium' | 'small' | number | `${number}${string}`
-  loading: boolean
+  buttonVariant?: ButtonProps['variant']
+  width?: ModalProps['width']
   children?: ReactNode
-  onBekreft(): void
-  onClose(): void
+  onBekreft(): any | Promise<any>
+  onClose(): void | Promise<void>
 }
 
-export function BekreftelseModal({
-  open,
-  onBekreft,
-  loading,
-  onClose,
-  width = '500px',
-  heading,
-  buttonVariant = 'primary',
-  buttonLabel,
-  children,
-}: BekreftelseModalProps) {
+export function BekreftelseModal(props: BekreftelseModalProps) {
+  const {
+    heading,
+    loading,
+    open,
+    buttonLabel,
+    buttonVariant = 'primary',
+    width = '500px',
+    children,
+    onBekreft,
+    onClose,
+  } = props
   const ref = useRef<HTMLDialogElement>(null)
   return (
-    <Modal
-      ref={ref}
-      closeOnBackdropClick={false}
-      width={width}
-      open={open}
-      onClose={() => {
-        onClose()
-      }}
-      header={{ heading }}
-    >
+    <Modal ref={ref} closeOnBackdropClick={false} width={width} open={open} onClose={onClose} header={{ heading }}>
       {children && <Modal.Body>{children}</Modal.Body>}
       <Modal.Footer>
-        <Button variant={buttonVariant} size="small" onClick={() => onBekreft()} disabled={loading} loading={loading}>
+        <Button variant={buttonVariant} size="small" onClick={onBekreft} disabled={loading} loading={loading}>
           {buttonLabel}
         </Button>
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => {
-            onClose()
-          }}
-          disabled={loading}
-        >
+        <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
           Avbryt
         </Button>
       </Modal.Footer>

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { HStack, Loader } from '@navikt/ds-react'
 import { headerHøydeRem } from '../GlobalStyles'
 import { Avstand } from '../felleskomponenter/Avstand'
-import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
@@ -17,6 +17,7 @@ import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
+import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 
 export function ManuellJournalføring() {
   const { journalpostID } = useParams<{ journalpostID: string }>()
@@ -36,14 +37,14 @@ export function ManuellJournalføring() {
     if (journalpost?.fnrInnsender) {
       setFodselsnummer(journalpost.fnrInnsender)
     }
-  }, [journalpost?.fnrInnsender])
+  }, [journalpost?.fnrInnsender, setFodselsnummer])
 
   useEffect(() => {
     if (journalpostID && dokumenter && dokumenter.length > 0) {
       const førsteDokment = dokumenter[0]
       setValgtDokument({ journalpostID, dokumentID: førsteDokment.dokumentID })
     }
-  }, [journalpostID, dokumenter])
+  }, [journalpostID, dokumenter, setValgtDokument])
 
   if (isError) {
     if (isError?.statusCode === 403) {
@@ -56,13 +57,7 @@ export function ManuellJournalføring() {
   }
 
   if (personInfoError) {
-    if (personInfoError.statusCode === 403) {
-      return <Feilmelding>Du har ikke tilgang til å se informasjon om denne brukeren</Feilmelding>
-    } else if (personInfoError.statusCode === 404) {
-      return <Feilmelding>Person ikke funnet i PDL</Feilmelding>
-    } else {
-      return <Feilmelding>Teknisk feil. Klarte ikke å hente person fra PDL.</Feilmelding>
-    }
+    return <PersonFeilmelding personError={personInfoError} />
   }
 
   if (isLoading) {

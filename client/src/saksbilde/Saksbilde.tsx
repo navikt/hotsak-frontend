@@ -1,15 +1,17 @@
+import { memo, Suspense } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
-import { memo, Suspense } from 'react'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
 
 import { AlertError } from '../feilsider/AlertError'
+import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { usePerson } from '../personoversikt/usePerson'
 import { Sakstype } from '../types/types.internal'
-import { Personlinje } from './Personlinje'
-import { Søknadsbilde } from './Søknadsbilde'
 import { Barnebrillesaksbilde } from './barnebriller/Barnebrillesaksbilde'
+import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
+import { Søknadsbilde } from './Søknadsbilde'
 import { useSak } from './useSak'
 
 export const SaksbildeContainer = styled.div`
@@ -22,11 +24,16 @@ export const SaksbildeContainer = styled.div`
 const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { showBoundary } = useErrorBoundary()
+  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(sak?.data.bruker.fnr)
 
   // const location = useLocation()
   // const konfliktFeil = location.state && location.state.konfliktFeil
 
-  if (isLoading) return <SakLoader />
+  if (isLoading && personInfoLoading) return <SakLoader />
+
+  if (personInfoError) {
+    return <PersonFeilmelding personError={personInfoError} />
+  }
 
   if (isError) {
     showBoundary(isError)
@@ -37,7 +44,7 @@ const SaksbildeContent = memo(() => {
   return (
     <>
       <SaksbildeContainer>
-        <Personlinje person={sak.data.bruker} loading={false} />
+        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         {/* konfliktFeil && (
           <Box paddingBlock="1" margin="1" marginBlock="0">
             <Alert variant="warning" size="small" fullWidth>

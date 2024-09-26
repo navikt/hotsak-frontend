@@ -179,9 +179,10 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                       <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
                     </Fremhevet>
                   )}
-                  {tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING && (
+                  {(tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING ||
+                    tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_SELVFORKLARENDE_TILBEHØR) && (
                     <Fremhevet>
-                      <Brødtekst>Begrunnelse ikke påkrevd fordi tilbehøret er på bestillingsordningen.</Brødtekst>
+                      <Brødtekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Brødtekst>
                     </Fremhevet>
                   )}
                 </VStack>

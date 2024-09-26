@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 
 import { sorterKronologisk } from '../utils/dato'
 import { AlertError } from '../feilsider/AlertError'
-import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
@@ -16,6 +16,7 @@ import { SaksoversiktLinje } from './SaksoversiktLinje'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './saksoversiktHook'
 import { Avstand } from '../felleskomponenter/Avstand'
+import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -28,13 +29,7 @@ function PersonoversiktContent() {
   } = useHjelpemiddeloversikt(fodselsnummer)
 
   if (personInfoError) {
-    if (personInfoError.statusCode === 403) {
-      return <Feilmelding>Du har ikke tilgang til å se informasjon om denne brukeren</Feilmelding>
-    } else if (personInfoError.statusCode === 404) {
-      return <Feilmelding>Person ikke funnet i PDL</Feilmelding>
-    } else {
-      return <Feilmelding>Teknisk feil. Klarte ikke å hente person fra PDL.</Feilmelding>
-    }
+    return <PersonFeilmelding personError={personInfoError} />
   }
 
   const hotsakSaker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []

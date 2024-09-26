@@ -7,7 +7,7 @@ import { baseUrl, post } from '../../../../io/http'
 
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { Feilmelding } from '../../../../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
@@ -44,7 +44,7 @@ export function VurderVilkår() {
   }
 
   useEffect(() => {
-    errorRef?.current && errorRef.current.focus()
+    if (errorRef?.current) errorRef.current.focus()
   }, [hasError])
 
   useEffect(() => {

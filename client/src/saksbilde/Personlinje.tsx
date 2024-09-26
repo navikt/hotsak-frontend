@@ -7,17 +7,18 @@ import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { AdressebeskyttelseAlert, Bruker, Kjønn, Person } from '../types/types.internal'
+import { AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 
 export interface PersonlinjeProps {
-  person?: Person | Bruker
+  person?: Person
+  skjulTelefonnummer?: boolean
   loading: boolean
 }
 
-export function Personlinje({ person, loading }: PersonlinjeProps) {
+export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -60,7 +61,7 @@ export function Personlinje({ person, loading }: PersonlinjeProps) {
           <Kopiknapp tooltip="Kopier brukernummer" copyText={brukernummer} placement="bottom" />
         </Element>
       )}
-      {telefon && (
+      {!skjulTelefonnummer && telefon && (
         <Element>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
           <Kopiknapp tooltip="Kopier telefonnummer" copyText={telefon} placement="bottom" />
@@ -68,7 +69,7 @@ export function Personlinje({ person, loading }: PersonlinjeProps) {
       )}
       {dødsdato && (
         <Tag size="small" variant="warning">
-          MORS {formaterDato(dødsdato)}
+          Død {formaterDato(dødsdato)}
         </Tag>
       )}
       {adressebeskyttelse && (
@@ -92,7 +93,7 @@ export function LasterPersonlinje() {
         <Kjønnsikon />
         <Skeleton width={175} height={32} />
       </Element>
-      {Array.from({ length: 4 }, (_, key) => (
+      {Array.from({ length: 3 }, (_, key) => (
         <Skeleton key={key} width={135} height={32} />
       ))}
     </Container>

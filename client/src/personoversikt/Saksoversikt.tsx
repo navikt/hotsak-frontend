@@ -1,16 +1,12 @@
+import { FileIcon } from '@navikt/aksel-icons'
+import { Alert, Table } from '@navikt/ds-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { FileIcon } from '@navikt/aksel-icons'
-import { Alert, Table } from '@navikt/ds-react'
-
-import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
-import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { formaterDato, sorterKronologisk } from '../utils/dato'
-import { storForbokstavIAlleOrd } from '../utils/formater'
-
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
+import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
+import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { Toast } from '../felleskomponenter/Toast'
 import { Brødtekst, Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
@@ -21,6 +17,8 @@ import {
   Saksoversikt_Sak_Felles_Type,
   Sakstype,
 } from '../types/types.internal'
+import { formaterDato, sorterKronologisk } from '../utils/dato'
+import { storForbokstavIAlleOrd } from '../utils/formater'
 
 const Container = styled.div`
   min-height: 300px;
@@ -112,7 +110,8 @@ export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: Sak
             sak.status === OppgaveStatusType.FERDIGSTILT ||
             sak.status === OppgaveStatusType.AVVIST ||
             sak.status === OppgaveStatusType.VEDTAK_FATTET ||
-            sak.status === OppgaveStatusType.INNVILGET
+            sak.status === OppgaveStatusType.INNVILGET ||
+            sak.status === OppgaveStatusType.HENLAGT
               ? formaterDato(sak.statusEndretDato)
               : ''
           }

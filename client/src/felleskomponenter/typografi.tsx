@@ -19,12 +19,20 @@ export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: Rea
   )
 )
 
-export function Brødtekst({ children }: { children: ReactNode }) {
-  return <FlytendeTekst size="small">{children}</FlytendeTekst>
+export function Brødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+  return (
+    <FlytendeTekst size="small" spacing={spacing}>
+      {children}
+    </FlytendeTekst>
+  )
 }
 
-export function BrytbarBrødtekst({ children }: { children: ReactNode }) {
-  return <FlytendeBrytbarTekst size="small">{children}</FlytendeBrytbarTekst>
+export function BrytbarBrødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+  return (
+    <FlytendeBrytbarTekst size="small" spacing={spacing}>
+      {children}
+    </FlytendeBrytbarTekst>
+  )
 }
 
 export function Etikett({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
@@ -39,9 +47,9 @@ export function Undertittel({ children }: { children: ReactNode }) {
   return <Detail>{children}</Detail>
 }
 
-export function Mellomtittel({ children }: { children: ReactNode }) {
+export function Mellomtittel({ children, spacing = true }: { children: ReactNode; spacing?: boolean }) {
   return (
-    <UppercaseHeading level="1" size="small" spacing>
+    <UppercaseHeading level="1" size="small" spacing={spacing}>
       {children}
     </UppercaseHeading>
   )

@@ -1,14 +1,14 @@
-import { CardTitle } from './CardTitle'
-import { Card } from './Card'
+import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
+
 import {
   Formidler,
   Kontaktperson as IKontaktperson,
   Levering,
   Leveringsmåte as LeveringsmåteType,
 } from '../../types/types.internal'
-import { CardRow } from './CardRow'
-import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson'
+import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface UtleveringCardProps {
   formidler: Formidler
@@ -23,24 +23,21 @@ export function UtleveringCard(props: UtleveringCardProps) {
   const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
   return (
-    <Card>
-      <CardTitle level="1" size="medium">
-        Utlevering
-      </CardTitle>
-      <CardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
+    <VenstremenyCard heading="Utlevering">
+      <VenstremenyCardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
         {leveringsmåteTekst}
-      </CardRow>
+      </VenstremenyCardRow>
       {kontaktpersonTekst && (
-        <CardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
+        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
           Kontaktperson: {kontaktpersonTekst}
-        </CardRow>
+        </VenstremenyCardRow>
       )}
       {merknad && (
-        <CardRow icon={<InformationSquareIcon />} copyText={merknad} copyKind="merknad">
+        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={merknad} copyKind="merknad">
           Merknad: {merknad}
-        </CardRow>
+        </VenstremenyCardRow>
       )}
-    </Card>
+    </VenstremenyCard>
   )
 }
 

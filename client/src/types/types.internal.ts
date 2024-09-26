@@ -298,7 +298,6 @@ export interface Bruker extends HarNavn {
   brukernummer?: string
   kontonummer?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
-  dødsdato?: string
 }
 
 export enum Adressebeskyttelse {
@@ -486,6 +485,7 @@ export interface Tilbehør {
 export enum FritakFraBegrunnelseÅrsak {
   ER_PÅ_BESTILLINGSORDNING = 'ER_PÅ_BESTILLINGSORDNING',
   IKKE_I_PILOT = 'IKKE_I_PILOT',
+  ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
 }
 
 export interface Formidler {
@@ -727,6 +727,7 @@ export enum OppgaveStatusType {
   AVSLÅTT = 'AVSLÅTT',
   FERDIGSTILT = 'FERDIGSTILT',
   ALLE = 'ALLE',
+  HENLAGT = 'HENLAGT',
 }
 
 export enum BehandlingstatusType {
@@ -748,6 +749,7 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVIST, 'Avvist'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
   [OppgaveStatusType.RETURNERT, 'Returnert'],
+  [OppgaveStatusType.HENLAGT, 'Henlagt'],
 ])
 
 export enum VedtakStatusType {

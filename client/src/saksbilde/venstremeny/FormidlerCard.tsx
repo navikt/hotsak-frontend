@@ -1,9 +1,9 @@
-import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
-import type { Navn } from '../../types/types.internal'
-import { CardRow } from './CardRow'
 import { BriefcaseIcon, PersonIcon, PhoneIcon } from '@navikt/aksel-icons'
+
+import type { Navn } from '../../types/types.internal'
+import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
+import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface FormidlerCardProps {
   tittel: string
@@ -20,23 +20,20 @@ export interface FormidlerCardProps {
 export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
   const formidlerNavnFormatert = formaterNavn(formidlerNavn)
   return (
-    <Card>
-      <CardTitle level="1" size="medium">
-        {tittel}
-      </CardTitle>
-      <CardRow
+    <VenstremenyCard heading={tittel}>
+      <VenstremenyCardRow
         icon={<PersonIcon />}
         copyText={formidlerNavnFormatert}
         copyKind="formidlers navn"
-      >{`${formidlerNavnFormatert}`}</CardRow>
-      <CardRow
+      >{`${formidlerNavnFormatert}`}</VenstremenyCardRow>
+      <VenstremenyCardRow
         icon={<BriefcaseIcon />}
         copyText={stilling}
         copyKind="formidlers stilling"
-      >{`${storForbokstavIAlleOrd(stilling)} - ${storForbokstavIAlleOrd(kommune)}`}</CardRow>
-      <CardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
-        {formidlerTelefon}
-      </CardRow>
-    </Card>
+      >{`${storForbokstavIAlleOrd(stilling)} - ${storForbokstavIAlleOrd(kommune)}`}</VenstremenyCardRow>
+      <VenstremenyCardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
+        {formaterTelefonnummer(formidlerTelefon)}
+      </VenstremenyCardRow>
+    </VenstremenyCard>
   )
 }

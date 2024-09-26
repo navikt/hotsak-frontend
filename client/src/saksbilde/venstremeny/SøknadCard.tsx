@@ -1,13 +1,13 @@
+import { CalendarIcon, FolderIcon, HouseIcon, PhoneIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { BodyShort } from '@navikt/ds-react'
 
-import { formaterTidsstempel } from '../../utils/dato'
-import { storForbokstavIAlleOrd } from '../../utils/formater'
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
+import { Mellomtittel } from '../../felleskomponenter/typografi.tsx'
 import { Bosituasjon, Bruksarena, Sakstype } from '../../types/types.internal'
-import { Card } from './Card'
-import { CardTitle } from './CardTitle'
-import { CardRow } from './CardRow'
-import { CalendarIcon, FolderIcon, HouseIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { formaterTidsstempel } from '../../utils/dato'
+import { formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
+import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface SøknadCardProps {
   sakId: number | string
@@ -17,6 +17,7 @@ export interface SøknadCardProps {
   bruksarena: Bruksarena | null
   funksjonsnedsettelser: string[]
   bosituasjon: Bosituasjon | null
+  telefon?: string | null
 }
 
 export function SøknadCard({
@@ -26,17 +27,18 @@ export function SøknadCard({
   bruksarena,
   funksjonsnedsettelser,
   bosituasjon,
+  telefon,
 }: SøknadCardProps) {
   const bruksarenaTekst = bruksarena && bruksarena !== Bruksarena.UKJENT ? storForbokstavIAlleOrd(bruksarena) : ''
   const bosituasjonTekst = lagBosituasjonTekst(bosituasjon)
 
   return (
-    <Card>
-      <CardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
-        <CardTitle level="1" size="medium">
+    <VenstremenyCard>
+      <VenstremenyCardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
+        <Mellomtittel spacing={false}>
           {sakstype === Sakstype.BESTILLING ? 'Bestillingsordningen' : 'Søknad om hjelpemidler'}
-        </CardTitle>
-      </CardRow>
+        </Mellomtittel>
+      </VenstremenyCardRow>
       <BodyShort
         data-tip="Saksnummer"
         data-for="sak"
@@ -44,13 +46,18 @@ export function SøknadCard({
         textColor="subtle"
         spacing
       >{`Sak: ${sakId}`}</BodyShort>
-      <CardRow icon={<CalendarIcon />}>Mottatt: {formaterTidsstempel(mottattDato)}</CardRow>
-      {bruksarenaTekst && <CardRow icon={<FolderIcon />}>{bruksarenaTekst}</CardRow>}
-      {bosituasjonTekst && <CardRow icon={<HouseIcon />}>{bosituasjonTekst}</CardRow>}
-      <CardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
+      <VenstremenyCardRow icon={<CalendarIcon />}>Mottatt: {formaterTidsstempel(mottattDato)}</VenstremenyCardRow>
+      {bruksarenaTekst && <VenstremenyCardRow icon={<FolderIcon />}>{bruksarenaTekst}</VenstremenyCardRow>}
+      {bosituasjonTekst && <VenstremenyCardRow icon={<HouseIcon />}>{bosituasjonTekst}</VenstremenyCardRow>}
+      <VenstremenyCardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
         {storForbokstavIAlleOrd(funksjonsnedsettelser.join(', '))}
-      </CardRow>
-    </Card>
+      </VenstremenyCardRow>
+      {telefon && (
+        <VenstremenyCardRow icon={<PhoneIcon />} copyText={telefon} copyKind="formidlers telefon">
+          {formaterTelefonnummer(telefon)}
+        </VenstremenyCardRow>
+      )}
+    </VenstremenyCard>
   )
 }
 

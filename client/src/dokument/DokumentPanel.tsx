@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Feilmelding } from '../felleskomponenter/Feilmelding'
+import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { Toast } from '../felleskomponenter/Toast'
 import { RessursStatus } from '../types/types.internal'
 import { useDokumentContext } from './DokumentContext'
@@ -17,7 +17,7 @@ export function DokumentPanel() {
     if (journalpostID && dokumentID) {
       hentForhåndsvisning(journalpostID, dokumentID)
     }
-  }, [journalpostID, dokumentID])
+  }, [journalpostID, dokumentID, hentForhåndsvisning])
 
   if (isPdfError) {
     return (

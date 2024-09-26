@@ -26,6 +26,7 @@ import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Utlevert } from './Utlevert'
+import Bytter from './Bytter.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
@@ -153,6 +154,11 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
               </HStack>
             )}
           </div>
+          {hjelpemiddel.bytter?.length && (
+            <HStack gap="2">
+              <Bytter bytter={hjelpemiddel.bytter} />
+            </HStack>
+          )}
         </VStack>
       </HjelpemiddelGrid>
       {hjelpemiddel.tilbehør.length > 0 && (

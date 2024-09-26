@@ -448,6 +448,24 @@ export interface HjelpemiddelType {
   tilleggsinfo: Tilleggsinfo[]
   tilbehør: Tilbehør[]
   endretHjelpemiddel?: EndretHjelpemiddel
+  bytter?: Bytte[]
+}
+
+export interface Bytte {
+  hmsnr: string
+  serienr?: string
+  hjmNavn: string
+  hjmKategori: string
+  årsak?: BytteÅrsak
+  erTilsvarende: boolean
+}
+
+export enum BytteÅrsak {
+  'UTSLITT' = 'UTSLITT',
+  'VOKST_FRA' = 'VOKST_FRA',
+  'ENDRINGER_I_INNBYGGERS_FUNKSJON' = 'ENDRINGER_I_INNBYGGERS_FUNKSJON',
+  'FEIL_STØRRELSE' = 'FEIL_STØRRELSE',
+  'VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER' = 'VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER',
 }
 
 export interface EndretHjelpemiddel {

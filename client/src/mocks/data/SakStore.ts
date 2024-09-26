@@ -272,11 +272,7 @@ export class SakStore extends Dexie {
       lagSakMedId(),
       lagSakMedId(),
       lagSakMedId(),
-      lagSakMedId(Sakstype.SØKNAD, {
-        bruker: {
-          dødsdato: '2024-09-02',
-        },
-      }),
+      lagSakMedId(Sakstype.SØKNAD),
       lagSakMedId(Sakstype.BESTILLING),
     ])
   }

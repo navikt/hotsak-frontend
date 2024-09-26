@@ -23,15 +23,11 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { UtleveringCard } from './venstremeny/UtleveringCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { usePerson } from '../personoversikt/usePerson'
-import { useEkstraTelefonnummer } from './venstremeny/useEkstraTelefonnummer'
 
 const SaksbildeContent = memo(() => {
   const { sak, isError } = useSak()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
   const { showBoundary } = useErrorBoundary()
-  const { personInfo } = usePerson(sak?.data.bruker.fnr)
-  const ekstraTelefon = useEkstraTelefonnummer(personInfo?.telefon, sak?.data.bruker.telefon)
 
   if (isError) {
     showBoundary(isError)
@@ -59,7 +55,7 @@ const SaksbildeContent = memo(() => {
               bosituasjon={sak.data.personinformasjon.bosituasjon}
               bruksarena={sak.data.personinformasjon.bruksarena}
               funksjonsnedsettelser={sak.data.personinformasjon.funksjonsnedsettelser}
-              telefon={ekstraTelefon}
+              telefon={sak?.data.bruker.telefon}
             />
             <FormidlerCard
               tittel={erBestilling ? 'Bestiller' : 'Formidler'}

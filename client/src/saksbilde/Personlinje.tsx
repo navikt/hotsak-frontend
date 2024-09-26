@@ -14,10 +14,11 @@ import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../
 
 export interface PersonlinjeProps {
   person?: Person
+  skjulTelefonnummer?: boolean
   loading: boolean
 }
 
-export function Personlinje({ person, loading }: PersonlinjeProps) {
+export function Personlinje({ person, loading, skjulTelefonnummer = false }: PersonlinjeProps) {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -60,7 +61,7 @@ export function Personlinje({ person, loading }: PersonlinjeProps) {
           <Kopiknapp tooltip="Kopier brukernummer" copyText={brukernummer} placement="bottom" />
         </Element>
       )}
-      {telefon && (
+      {!skjulTelefonnummer && telefon && (
         <Element>
           <Tekst>{`Tlf: ${formaterTelefonnummer(telefon)}`}</Tekst>
           <Kopiknapp tooltip="Kopier telefonnummer" copyText={telefon} placement="bottom" />
@@ -92,7 +93,7 @@ export function LasterPersonlinje() {
         <Kjønnsikon />
         <Skeleton width={175} height={32} />
       </Element>
-      {Array.from({ length: 4 }, (_, key) => (
+      {Array.from({ length: 3 }, (_, key) => (
         <Skeleton key={key} width={135} height={32} />
       ))}
     </Container>

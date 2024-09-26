@@ -26,7 +26,7 @@ const SaksbildeContent = memo(() => {
   const { showBoundary } = useErrorBoundary()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(sak?.data.bruker.fnr)
 
-  if (isLoading) return <SakLoader />
+  if (isLoading && personInfoLoading) return <SakLoader />
 
   if (personInfoError) {
     return <PersonFeilmelding personError={personInfoError} />
@@ -41,7 +41,7 @@ const SaksbildeContent = memo(() => {
   return (
     <>
       <SaksbildeContainer>
-        <Personlinje loading={personInfoLoading} person={personInfo} />
+        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         {(() => {
           switch (sak.data.sakstype) {
             case Sakstype.BARNEBRILLER:

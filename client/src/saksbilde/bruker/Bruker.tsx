@@ -1,6 +1,5 @@
+import { PersonIcon } from '@navikt/aksel-icons'
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, Tooltip } from '@navikt/ds-react'
-
-import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { Avstand } from '../../felleskomponenter/Avstand'
 import { Liste } from '../../felleskomponenter/Liste'
@@ -9,25 +8,27 @@ import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
   Bosituasjon,
+  Bruker as Hjelpemiddelbruker,
   Bruksarena,
   Formidler,
   Levering,
   PersonInfoKilde,
   Personinformasjon,
 } from '../../types/types.internal'
+import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
-import { PersonIcon } from '@navikt/aksel-icons'
 
 export interface BrukerProps {
+  bruker: Hjelpemiddelbruker
   person: Personinformasjon
   levering: Levering
   formidler: Formidler
 }
 
-export function Bruker({ person, levering, formidler }: BrukerProps) {
-  const formatertNavn = formaterNavn(person)
+export function Bruker({ bruker, person, levering, formidler }: BrukerProps) {
+  const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(person)
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
 
@@ -44,11 +45,11 @@ export function Bruker({ person, levering, formidler }: BrukerProps) {
           <Etikett>Navn</Etikett>
           <Tekst>{formatertNavn}</Tekst>
           <Etikett>Fødselsnummer</Etikett>
-          <Tekst>{person.fnr}</Tekst>
+          <Tekst>{bruker.fnr}</Tekst>
           <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
           <Tekst>{adresseBruker}</Tekst>
           <Etikett>Telefon</Etikett>
-          <Tekst>{person.telefon}</Tekst>
+          <Tekst>{bruker.telefon}</Tekst>
           {bosituasjon && (
             <>
               <Etikett>Boform</Etikett>

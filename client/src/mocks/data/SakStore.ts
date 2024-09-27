@@ -164,6 +164,16 @@ function lagSak(
         beskrivelse: 'Gemino 20',
         tilleggsinfo: [],
         tilbehør: [],
+        bytter: [
+          {
+            hmsnr: '267912',
+            hjmNavn: 'Classic Soft',
+            serienr: undefined,
+            erTilsvarende: false,
+            hjmKategori: 'Krykke',
+            årsak: undefined,
+          },
+        ],
       },
       {
         id: -1,

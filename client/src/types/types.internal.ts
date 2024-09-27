@@ -304,6 +304,7 @@ export enum Adressebeskyttelse {
   FORTROLIG = 'FORTROLIG',
   STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
   STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
+  UGRADERT = 'UGRADERT',
 }
 
 export const AdressebeskyttelseAlert = {

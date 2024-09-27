@@ -26,7 +26,7 @@ import { Venstremeny } from './venstremeny/Venstremeny'
 
 const SaksbildeContent = memo(() => {
   const { sak, isError } = useSak()
-  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.personinformasjon.fnr)
+  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { showBoundary } = useErrorBoundary()
 
   if (isError) {
@@ -92,6 +92,7 @@ const SaksbildeContent = memo(() => {
                 path="/bruker"
                 element={
                   <Bruker
+                    bruker={sak.data.bruker}
                     person={sak.data.personinformasjon}
                     levering={sak.data.levering}
                     formidler={sak.data.formidler}

@@ -10,10 +10,15 @@ interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
   onMutate: ((...args: any[]) => any) | null
-  onFailureToTake: () => void
+  onTildelingKonflikt: () => void
 }
 
-export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate, onFailureToTake }: IkkeTildeltProps) => {
+export const IkkeTildelt = ({
+  oppgavereferanse,
+  gåTilSak = false,
+  onMutate,
+  onTildelingKonflikt,
+}: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -34,7 +39,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onMutate, onF
         setIsFetching(false)
         if (onMutate && e.statusCode == 409) {
           onMutate()
-          onFailureToTake()
+          onTildelingKonflikt()
           throw Error('skip then')
         }
       })

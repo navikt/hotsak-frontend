@@ -98,7 +98,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
             oppgavereferanse={sakId}
             gåTilSak={false}
             onMutate={null}
-            onFailureToTake={() => {}}
+            onTildelingKonflikt={() => {}}
           ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>

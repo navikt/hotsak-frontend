@@ -106,7 +106,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
             oppgavereferanse={sakId}
             gåTilSak={false}
             onMutate={null}
-            onFailureToTake={() => {}}
+            onTildelingKonflikt={() => {}}
           ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>

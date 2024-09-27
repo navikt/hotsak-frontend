@@ -25,7 +25,7 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { UtleveringCard } from './venstremeny/UtleveringCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { Saksvarsler } from './bestillingsordning/SaksVarsler'
+import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 
 const SaksbildeContent = memo(() => {
   const { sak, isError } = useSak()

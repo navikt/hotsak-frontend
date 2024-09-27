@@ -102,7 +102,12 @@ export function VedtakCard({ sak }: VedtakCardProps) {
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false} onMutate={null}></IkkeTildelt>
+          <IkkeTildelt
+            oppgavereferanse={sakId}
+            gåTilSak={false}
+            onMutate={null}
+            onFailureToTake={() => {}}
+          ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
     )

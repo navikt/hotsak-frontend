@@ -94,7 +94,12 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false} onMutate={null}></IkkeTildelt>
+          <IkkeTildelt
+            oppgavereferanse={sakId}
+            gåTilSak={false}
+            onMutate={null}
+            onFailureToTake={() => {}}
+          ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
     )

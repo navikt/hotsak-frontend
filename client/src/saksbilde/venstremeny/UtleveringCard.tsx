@@ -23,7 +23,7 @@ export function UtleveringCard(props: UtleveringCardProps) {
   const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
   return (
-    <VenstremenyCard heading="Utlevering">
+    <VenstremenyCard heading="Levering">
       <VenstremenyCardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
         {leveringsmåteTekst}
       </VenstremenyCardRow>

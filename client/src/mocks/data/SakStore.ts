@@ -8,7 +8,6 @@ import {
   EndreHjelpemiddelRequest,
   Formidler,
   GreitÅViteType,
-  Hasteårsak,
   Hendelse,
   Kjønn,
   KontaktpersonType,
@@ -20,7 +19,6 @@ import {
   Sakstype,
   SignaturType,
   UtlevertType,
-  VarigFunksjonsnedsettelse,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
@@ -69,11 +67,12 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
       signaturtype: SignaturType.BRUKER_BEKREFTER,
       telefon: '90807060',
       bosituasjon: Bosituasjon.HJEMME,
-      funksjon: {
+      // TODO, tilby dette som en overstyring
+      /*funksjon: {
         varigFunksjonsnedsettelse: VarigFunksjonsnedsettelse.ALDERDOMSSVEKKELSE,
         funksjonsvurdering:
           'Her viser vi formidler sin tekst som beskriver hvordan innbygger fungerer med sin funksjonsnedsettelse i daglige gjøremål. Den kan være lang eller kort, avhengig av hvor mye formidler skriver.',
-      },
+      },*/
       funksjonsnedsettelser: ['bevegelse'],
       bruksarena: Bruksarena.DAGLIGLIV,
       oppfylteVilkår: [
@@ -232,12 +231,13 @@ function lagSak(
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
-    hast: (() => {
+    // TODO tilby hast som en overstyring
+    /*hast: (() => {
       return {
         årsaker: [Hasteårsak.ANNET],
         begrunnelse: 'Det haster veldig!',
       }
-    })(),
+    })(),*/
   }
 }
 

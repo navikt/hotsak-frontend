@@ -344,6 +344,11 @@ export interface Hendelse {
   detaljer?: string
 }
 
+export interface Varsel {
+  tittel: string
+  beskrivelse: string[]
+}
+
 export interface Notat {
   id: number
   sakId: string

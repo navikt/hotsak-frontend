@@ -5,12 +5,12 @@ import { Saksbehandler } from '../types/types.internal.ts'
 
 interface TaSakKonfliktModalProps {
   open: boolean
-  onAapneSak: () => void
+  onÅpneSak: () => void
   onClose: () => void
   saksbehandler?: Saksbehandler
 }
 
-export function TaSakKonfliktModal({ open, onAapneSak, onClose, saksbehandler }: TaSakKonfliktModalProps) {
+export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }: TaSakKonfliktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div
@@ -43,7 +43,7 @@ export function TaSakKonfliktModal({ open, onAapneSak, onClose, saksbehandler }:
           <Button variant="primary" size="small" onClick={onClose} disabled={false}>
             Lukk
           </Button>
-          <Button variant={'secondary'} size="small" onClick={onAapneSak} disabled={false} loading={false}>
+          <Button variant={'secondary'} size="small" onClick={onÅpneSak} disabled={false} loading={false}>
             Åpne sak
           </Button>
         </Modal.Footer>

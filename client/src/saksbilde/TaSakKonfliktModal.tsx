@@ -14,6 +14,8 @@ export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }:
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div
+      /* This is a hack to disable onClick propagation from the modal and its backsplash to the table row onClick-handler,
+      it also overrides some css-rules used in the table rows for text-wrapping and the cursor. */
       style={{
         cursor: open ? 'default' : undefined,
         position: 'absolute',

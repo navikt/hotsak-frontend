@@ -1,20 +1,16 @@
 import { Tekst } from '../felleskomponenter/typografi'
 import { Button, Modal } from '@navikt/ds-react'
 import { useRef } from 'react'
+import { Saksbehandler } from '../types/types.internal.ts'
 
 interface TaSakKonfliktModalProps {
   open: boolean
   onAapneSak: () => void
   onClose: () => void
-  // saksbehandler: string
+  saksbehandler?: Saksbehandler
 }
 
-export function TaSakKonfliktModal({
-  open,
-  onAapneSak,
-  onClose,
-  // saksbehandler,
-}: TaSakKonfliktModalProps) {
+export function TaSakKonfliktModal({ open, onAapneSak, onClose, saksbehandler }: TaSakKonfliktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div
@@ -40,7 +36,7 @@ export function TaSakKonfliktModal({
         <Modal.Body style={{ textWrap: 'wrap' }}>
           <Tekst
             spacing={true}
-          >{`Denne saken ble tatt av en annen saksbehandler før deg. Saken behandles nå av Saksbehander Sakersen.`}</Tekst>
+          >{`Denne saken ble tatt av en annen saksbehandler før deg. Saken behandles nå av ${saksbehandler?.navn || '<Ukjent>'}.`}</Tekst>
           <Tekst spacing={true}>{`Hvis dette er feil kan du åpne saken og overta den.`}</Tekst>
         </Modal.Body>
         <Modal.Footer>

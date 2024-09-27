@@ -32,7 +32,12 @@ export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
             }}
           />
         )}
-        <TaSakKonfliktModal open={modalOpen} onAapneSak={onAapneSak} onClose={() => setModalOpen(false)} />
+        <TaSakKonfliktModal
+          open={modalOpen}
+          onAapneSak={onAapneSak}
+          onClose={() => setModalOpen(false)}
+          saksbehandler={oppgave.saksbehandler}
+        />
       </>
     )
   }

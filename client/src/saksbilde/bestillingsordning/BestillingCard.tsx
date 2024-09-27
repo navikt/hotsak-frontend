@@ -1,7 +1,6 @@
 import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
 import styled from 'styled-components'
-
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
@@ -95,7 +94,12 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt
+            oppgavereferanse={sakId}
+            gåTilSak={false}
+            onMutate={null}
+            onTildelingKonflikt={() => {}}
+          ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
     )

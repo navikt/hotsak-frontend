@@ -1,20 +1,24 @@
 import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
-
 import { Button } from '@navikt/ds-react'
-
-import { postTildeling } from '../../io/http'
+import { postTildeling, ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
+  onMutate: ((...args: any[]) => any) | null
+  onTildelingKonflikt: () => void
 }
 
-export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildeltProps) => {
+export const IkkeTildelt = ({
+  oppgavereferanse,
+  gåTilSak = false,
+  onMutate,
+  onTildelingKonflikt,
+}: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -30,8 +34,15 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgavereferanse)
-      .catch(() => setIsFetching(false))
+    postTildeling(oppgavereferanse, false)
+      .catch((e: ResponseError) => {
+        setIsFetching(false)
+        if (onMutate && e.statusCode == 409) {
+          onMutate()
+          onTildelingKonflikt()
+          throw Error('skip then')
+        }
+      })
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
@@ -41,6 +52,9 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
           mutate(`api/sak/${oppgavereferanse}`)
           mutate(`api/sak/${oppgavereferanse}/historikk`)
         }
+      })
+      .catch(() => {
+        // Skip here!
       })
   }
 

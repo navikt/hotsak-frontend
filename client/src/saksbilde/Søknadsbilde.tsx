@@ -1,8 +1,7 @@
-import { HGrid } from '@navikt/ds-react'
 import { memo, Suspense } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
-
+import { HGrid } from '@navikt/ds-react'
 import { AlertError } from '../feilsider/AlertError'
 import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
 import { Sakstype } from '../types/types.internal'

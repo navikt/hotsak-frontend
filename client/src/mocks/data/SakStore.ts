@@ -148,6 +148,7 @@ function lagSak(
           },
           { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', fritakFraBegrunnelseÅrsak: 'ER_PÅ_BESTILLINGSORDNING' },
         ],
+        bytter: [],
       },
       {
         id: -1,
@@ -190,6 +191,7 @@ function lagSak(
         beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
         tilleggsinfo: [],
         tilbehør: [],
+        bytter: [],
       },
     ],
     formidler,

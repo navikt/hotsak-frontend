@@ -454,7 +454,7 @@ export interface HjelpemiddelType {
   tilleggsinfo: Tilleggsinfo[]
   tilbehør: Tilbehør[]
   endretHjelpemiddel?: EndretHjelpemiddel
-  bytter?: Bytte[]
+  bytter: Bytte[]
 }
 
 export interface Bytte {

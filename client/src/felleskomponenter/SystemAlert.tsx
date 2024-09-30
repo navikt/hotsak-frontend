@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 export function SystemAlert({ children }: { children?: ReactNode }) {
   return (
-    <Box>
+    <Box paddingBlock="0 6">
       <Alert variant="warning" size="small" fullWidth>
         {children}
       </Alert>

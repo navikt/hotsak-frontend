@@ -12,7 +12,7 @@ interface TildelingProps {
 }
 
 export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [konfliktModalOpen, setKonfliktModalOpen] = useState(false)
   const navigate = useNavigate()
   const onÅpneSak = () => {
     const path = oppgave.sakstype !== Sakstype.TILSKUDD ? `/sak/${oppgave.sakId}/hjelpemidler` : `/sak/${oppgave.sakId}`
@@ -28,14 +28,14 @@ export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
             gåTilSak={true}
             onMutate={onMutate}
             onTildelingKonflikt={() => {
-              setModalOpen(true)
+              setKonfliktModalOpen(true)
             }}
           />
         )}
         <TaSakKonfliktModal
-          open={modalOpen}
+          open={konfliktModalOpen}
           onÅpneSak={onÅpneSak}
-          onClose={() => setModalOpen(false)}
+          onClose={() => setKonfliktModalOpen(false)}
           saksbehandler={oppgave.saksbehandler}
         />
       </>

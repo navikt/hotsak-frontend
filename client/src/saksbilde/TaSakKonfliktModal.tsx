@@ -5,7 +5,7 @@ import { Saksbehandler } from '../types/types.internal.ts'
 
 interface TaSakKonfliktModalProps {
   open: boolean
-  onÅpneSak: () => void
+  onÅpneSak: (() => void) | undefined
   onClose: () => void
   saksbehandler?: Saksbehandler
 }
@@ -45,9 +45,11 @@ export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }:
           <Button variant="primary" size="small" onClick={onClose} disabled={false}>
             Lukk
           </Button>
-          <Button variant={'secondary'} size="small" onClick={onÅpneSak} disabled={false} loading={false}>
-            Åpne sak
-          </Button>
+          {onÅpneSak && (
+            <Button variant={'secondary'} size="small" onClick={onÅpneSak} disabled={false} loading={false}>
+              Åpne sak
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </div>

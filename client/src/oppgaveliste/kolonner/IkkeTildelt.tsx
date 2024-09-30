@@ -37,8 +37,13 @@ export const IkkeTildelt = ({
     postTildeling(oppgavereferanse, false)
       .catch((e: ResponseError) => {
         setIsFetching(false)
-        if (onMutate && e.statusCode == 409) {
-          onMutate()
+        if (e.statusCode == 409) {
+          if (onMutate) {
+            onMutate()
+          } else {
+            mutate(`api/sak/${oppgavereferanse}`)
+            mutate(`api/sak/${oppgavereferanse}/historikk`)
+          }
           onTildelingKonflikt()
           throw Error('skip then')
         }

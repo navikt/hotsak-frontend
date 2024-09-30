@@ -154,7 +154,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
               </HStack>
             )}
           </div>
-          {hjelpemiddel.bytter.length > 0 && (
+          {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}
+          {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
             <HStack gap="2">
               <Bytter bytter={hjelpemiddel.bytter} />
             </HStack>

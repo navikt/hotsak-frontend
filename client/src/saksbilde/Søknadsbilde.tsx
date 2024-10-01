@@ -22,7 +22,7 @@ import { useVarsler } from './useVarsler'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
-import { UtleveringCard } from './venstremeny/UtleveringCard'
+import { LeveringCard } from './venstremeny/LeveringCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
@@ -68,7 +68,7 @@ const SaksbildeContent = memo(() => {
               formidlerTelefon={sak.data.formidler.telefon}
               kommune={sak.data.formidler.poststed}
             />
-            <UtleveringCard
+            <LeveringCard
               formidler={sak.data.formidler}
               levering={sak.data.levering}
               adresseBruker={formaterAdresse(sak.data.personinformasjon)}

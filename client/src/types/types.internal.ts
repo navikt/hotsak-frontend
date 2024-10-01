@@ -347,7 +347,15 @@ export interface Hendelse {
 
 export interface Varsel {
   tittel: string
+  varslerFor: VarselFor[]
   beskrivelse: string[]
+}
+
+export enum VarselFor {
+  ANNEN_ADRESSE = 'ANNEN_ADRESSE',
+  BESKJED_TIL_KOMMUNE = 'BESKJED_TIL_KOMMUNE',
+  TILBAKELEVERING = 'TILBAKELEVERING',
+  ALLEREDE_UTLEVERT = 'ALLEREDE_UTLEVERT',
 }
 
 export interface Notat {

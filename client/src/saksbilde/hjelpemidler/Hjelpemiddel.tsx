@@ -1,4 +1,10 @@
-import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import {
+  ChatIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExclamationmarkTriangleFillIcon,
+  PersonFillIcon,
+} from '@navikt/aksel-icons'
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
@@ -15,6 +21,7 @@ import {
   HjelpemiddelType,
   OppgaveStatusType,
   Sak,
+  VarselFor,
 } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIOrd } from '../../utils/formater'
@@ -27,6 +34,7 @@ import { useHjelpemiddel } from './useHjelpemiddel'
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Utlevert } from './Utlevert'
 import Bytter from './Bytter.tsx'
+import { useVarsler } from '../useVarsler.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
@@ -40,6 +48,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
+  const { varsler } = useVarsler()
   const informasjonOmHjelpemiddelEnabled = false // sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
@@ -149,6 +158,9 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <div>
             {hjelpemiddel.alleredeUtlevert && (
               <HStack gap="2">
+                {varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.ALLEREDE_UTLEVERT)) && (
+                  <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+                )}
                 <Etikett>Utlevert</Etikett>
                 <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
               </HStack>
@@ -156,6 +168,9 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           </div>
           {hjelpemiddel.bytter?.length && (
             <HStack gap="2">
+              {varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.TILBAKELEVERING)) && (
+                <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+              )}
               <Bytter bytter={hjelpemiddel.bytter} />
             </HStack>
           )}

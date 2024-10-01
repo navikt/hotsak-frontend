@@ -202,11 +202,12 @@ function lagSak(
       },
     },
     greitÅViteFaktum: [
-      {
+      /*{
+      TODO, gjør dette også via utvidelser
         beskrivelse:
           'Bruker bor på institusjon (sykehjem), ifølge formidler. Du må sjekke om vilkårene for institusjon er oppfylt.',
         type: GreitÅViteType.ADVARSEL,
-      },
+      },*/
       {
         beskrivelse: 'Kun førsterangering',
         type: GreitÅViteType.INFO,
@@ -227,9 +228,10 @@ function lagSak(
         telefon: '99887766',
         kontaktpersonType: KontaktpersonType.HJELPEMIDDELBRUKER,
       },
-      leveringsmåte: Leveringsmåte.FOLKEREGISTRERT_ADRESSE,
+      leveringsmåte: Leveringsmåte.ANNEN_ADRESSE,
       adresse: lagTilfeldigBosted(),
-      merknad: 'Ta også kontakt med meg dvs. formidler ved utlevering',
+      merknad:
+        'Pasienten har sterk angst og slipper ikke alltid inn folk. Det kan også være problemet med kommunikasjon over telefon pga. bruker har afasi. Send sms.',
     },
     oppfølgingsansvarlig: {
       navn: lagTilfeldigNavn().fulltNavn,

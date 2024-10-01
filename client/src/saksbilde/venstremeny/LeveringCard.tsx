@@ -1,12 +1,15 @@
-import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
+import { ExclamationmarkTriangleFillIcon, HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 
 import {
   Formidler,
   Kontaktperson as IKontaktperson,
   Levering,
   Leveringsmåte as LeveringsmåteType,
-} from '../../types/types.internal'
-import { lagKontaktpersonTekst } from '../bruker/Kontaktperson'
+  Varsel,
+  VarselFor,
+} from '../../types/types.internal.ts'
+import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
+import { useVarsler } from '../useVarsler.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
@@ -17,28 +20,53 @@ export interface UtleveringCardProps {
   kontaktperson?: IKontaktperson
 }
 
-export function UtleveringCard(props: UtleveringCardProps) {
+export function LeveringCard(props: UtleveringCardProps) {
   const { formidler, levering, adresseBruker } = props
   const { kontaktperson, merknad } = levering
   const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
+  const { varsler } = useVarsler()
+
   return (
     <VenstremenyCard heading="Levering">
-      <VenstremenyCardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
+      <VenstremenyCardRow
+        icon={lagLeveringsIkon(levering, varsler)}
+        copyText={leveringsmåteCopyText}
+        copyKind="leveringsmåte"
+      >
         {leveringsmåteTekst}
       </VenstremenyCardRow>
+      {merknad && (
+        <VenstremenyCardRow icon={lagMerknadIkon(levering, varsler)} copyText={merknad} copyKind="merknad">
+          Merknad: {merknad}
+        </VenstremenyCardRow>
+      )}
       {kontaktpersonTekst && (
         <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
           Kontaktperson: {kontaktpersonTekst}
         </VenstremenyCardRow>
       )}
-      {merknad && (
-        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={merknad} copyKind="merknad">
-          Merknad: {merknad}
-        </VenstremenyCardRow>
-      )}
     </VenstremenyCard>
   )
+}
+
+function lagMerknadIkon(leveringsmåte: Levering, varsler: Varsel[]) {
+  if (leveringsmåte.merknad && varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.BESKJED_TIL_KOMMUNE))) {
+    return <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" />
+  } else {
+    return <InformationSquareIcon />
+  }
+}
+
+function lagLeveringsIkon(leveringsmåte: Levering, varsler: Varsel[]) {
+  if (
+    leveringsmåte.leveringsmåte === LeveringsmåteType.ANNEN_ADRESSE &&
+    varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.ANNEN_ADRESSE))
+  ) {
+    return <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" />
+  } else {
+    return <HouseIcon />
+  }
 }
 
 function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): [string, string] {

@@ -166,7 +166,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
               </HStack>
             )}
           </div>
-          {hjelpemiddel.bytter?.length && (
+          {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}
+          {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
             <HStack gap="2">
               {varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.TILBAKELEVERING)) && (
                 <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />

@@ -13,7 +13,7 @@ export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK.toString())
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
-    sak?.data.personinformasjon.fnr,
+    sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
 

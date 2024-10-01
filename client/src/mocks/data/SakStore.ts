@@ -60,12 +60,8 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
       ...overstyringer,
     },
     personinformasjon: {
-      ...navn,
-      fnr,
-      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
       kilde: PersonInfoKilde.PDL,
       signaturtype: SignaturType.BRUKER_BEKREFTER,
-      telefon: '90807060',
       bosituasjon: Bosituasjon.HJEMME,
       // TODO, tilby dette som en overstyring
       /*funksjon: {
@@ -82,16 +78,9 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
         'KAN_IKKE_LOESES_MED_ENKLERE_HJELPEMIDLER_V1',
         'I_STAND_TIL_AA_BRUKE_HJELEPMIDLENE_V1',
       ],
-      kjønn: Kjønn.MANN,
-      brukernummer: '1',
       adresse: 'Blåbærstien 82',
       postnummer: '9999',
       poststed: lagTilfeldigBosted(),
-      kommunenummer: '9999',
-      gtNummer: '9999',
-      gtType: 'KOMMUNE',
-      egenAnsatt: false,
-      brukerErDigital: true,
     },
   }
 }

@@ -277,7 +277,6 @@ export interface Adresse {
   adresse: string
   postnummer: string
   poststed: string
-  kommunenummer: string
 }
 
 export interface Innsender {
@@ -798,24 +797,15 @@ export enum Kjønn {
   UKJENT = 'UKJENT',
 }
 
-export interface Personinformasjon extends Adresse, Navn {
-  fnr: string
-  brukernummer?: string
-  fødselsdato: string | undefined
-  kjønn: Kjønn
+export interface Personinformasjon extends Adresse {
   kilde: PersonInfoKilde
   signaturtype: SignaturType
-  telefon: string
   bruksarena: Bruksarena | null
   bosituasjon: Bosituasjon | null
-  gtNummer: string
-  gtType: string
-  egenAnsatt: boolean
-  brukerErDigital: boolean
   funksjonsnedsettelser: string[]
   oppfylteVilkår: string[]
-  funksjon?: BrukerFunksjon
   kroppsmål?: Kroppsmål
+  funksjon?: BrukerFunksjon
 }
 
 export interface BrukerFunksjon {

@@ -43,7 +43,7 @@ export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: Ordre
     >
       <Brødtekst spacing>
         Når du oppretter ordre i OeBS må du etterpå gå til OeBS for å fullføre den. Husk å utføre de nødvendige
-        oppgavene i OeBS før du fullfører ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
+        oppgavene i OeBS før du klargjør ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
       </Brødtekst>
     </BekreftelseModal>
   )

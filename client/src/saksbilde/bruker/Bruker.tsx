@@ -70,7 +70,7 @@ export function Bruker({ bruker, person, levering, formidler }: BrukerProps) {
       <Strek />
 
       <Heading level="1" size="medium" spacing={true}>
-        Utlevering
+        Levering
       </Heading>
       <Box paddingBlock="4 8">
         <HGrid {...hGridProps}>

@@ -10,7 +10,7 @@ export function OebsAlert(props: { artikler: Artikkel[] }) {
       <List
         as="ul"
         size="small"
-        title={`${artikler.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OEBS og blir derfor ikke 
+        title={`${artikler.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OeBS og blir derfor ikke 
             automatisk overført til SF:`}
       >
         {artikler.map((artikkel) => {

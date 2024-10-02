@@ -94,7 +94,7 @@ export function EndreHjelpemiddel({
                 <Etikett>Beskrivelse</Etikett>
                 <Tekst>
                   {hmsNr !== '' && isError ? (
-                    <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OEBS</ErrorMessage>
+                    <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
                   ) : (
                     hjelpemiddel?.navn ?? ''
                   )}

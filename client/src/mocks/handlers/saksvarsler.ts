@@ -19,11 +19,11 @@ export const saksVarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
       // Ting er på et eksperimentelt stadium enda og vi vet ikke helt hvilken datastruktur vi skal gå for
       return HttpResponse.json([
         {
-          tittel: 'Du må fullføre bestillingen i Oebs. Følgende må gjøres:',
+          tittel: 'Du må fullføre bestillingen i OeBS. Følgende må gjøres:',
           varslerFor: ['ANNEN_ADRESSE', 'BESKJED_TIL_KOMMUNE', 'TILBAKELEVERING', 'ALLEREDE_UTLEVERT'],
           beskrivelse: [
             'Det er levering til en annen leveringsadresse. Denne må registreres.',
-            'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i Oebs.',
+            'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i OeBS.',
             'Et eller flere hjelpemidler er allerede utlevert. Må kanskje registreres på brukes i OeBS, men ikke skipes?',
             'Det er et hjelpemiddel som skal leveres tilbake.',
           ],

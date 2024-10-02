@@ -20,7 +20,7 @@ export function BekreftAutomatiskOrdre({ open, onBekreft, loading, onClose }: Or
       onClose={onClose}
     >
       <Brødtekst spacing>
-        Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OEBS. Alle hjelpemidler og
+        Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OeBS. Alle hjelpemidler og
         tilbehør i bestillingen vil legges inn som ordrelinjer.
       </Brødtekst>
       <Brødtekst>
@@ -42,8 +42,8 @@ export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: Ordre
       onClose={onClose}
     >
       <Brødtekst spacing>
-        Når du oppretter ordre i Oebs må du etterpå gå til Oebs for å fullføre den. Husk å utføre de nødvendige
-        oppgavene i Oebs før du fullfører ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
+        Når du oppretter ordre i OeBS må du etterpå gå til OeBS for å fullføre den. Husk å utføre de nødvendige
+        oppgavene i OeBS før du fullfører ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
       </Brødtekst>
     </BekreftelseModal>
   )

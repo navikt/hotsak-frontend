@@ -2,6 +2,7 @@ import { HStack } from '@navikt/ds-react'
 import { Fragment } from 'react'
 import { Etikett } from '../../felleskomponenter/typografi'
 import { Bytte, BytteÅrsak } from '../../types/types.internal'
+import { Fremhevet } from './Fremhevet'
 
 interface Props {
   bytter: Bytte[]
@@ -25,10 +26,12 @@ const Bytter = ({ bytter }: Props) => {
             </div>
           </HStack>
           {bytte.årsak && (
-            <HStack gap="2" key={i}>
-              <Etikett>Begrunnelse for bytte</Etikett>
-              <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
-            </HStack>
+            <Fremhevet>
+              <HStack gap="2" key={i}>
+                <Etikett>Begrunnelse for bytte</Etikett>
+                <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
+              </HStack>
+            </Fremhevet>
           )}
         </Fragment>
       ))}

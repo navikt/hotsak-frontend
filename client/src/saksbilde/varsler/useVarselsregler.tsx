@@ -24,5 +24,8 @@ export function useVarselsregler() {
     harTilbakeleveringsVarsel(): boolean {
       return !!varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.TILBAKELEVERING))
     },
+    harAlleredeLevertVarsel(): boolean {
+      return !!varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.ALLEREDE_UTLEVERT))
+    },
   }
 }

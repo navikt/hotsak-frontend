@@ -1,9 +1,9 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
-import { httpGet } from '../io/http'
+import { httpGet } from '../../io/http'
 
-import type { Varsel } from '../types/types.internal'
+import type { Varsel } from '../../types/types.internal'
 
 interface VarslerDataResponse {
   varsler: Varsel[]

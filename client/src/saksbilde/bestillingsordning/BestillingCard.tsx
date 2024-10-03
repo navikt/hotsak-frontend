@@ -14,10 +14,10 @@ import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { useVarsler } from '../useVarsler.tsx'
-import { VenstremenyCard } from '../venstremeny/VenstremenyCard.tsx'
+import { useVarselsregler } from '../varsler/useVarselsregler'
+import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
-import { BekreftAutomatiskOrdre, BekreftManuellOrdre } from './Modal.tsx'
+import { BekreftAutomatiskOrdre, BekreftManuellOrdre } from './Modal'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -27,7 +27,7 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
-  const { varsler } = useVarsler()
+  const { harVarsler } = useVarselsregler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
@@ -137,8 +137,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
           Avvis
         </Knapp>
       </Knappepanel>
-
-      {varsler && varsler.length > 0 ? (
+      {harVarsler ? (
         <BekreftManuellOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}

@@ -1,20 +1,25 @@
-import { HStack } from '@navikt/ds-react'
+import { HStack, VStack } from '@navikt/ds-react'
 import { Fragment } from 'react'
 import { Etikett } from '../../felleskomponenter/typografi'
 import { Bytte, BytteÅrsak } from '../../types/types.internal'
 import { Fremhevet } from './Fremhevet'
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 
 interface Props {
   bytter: Bytte[]
+  harVarsel: boolean
 }
 
-const Bytter = ({ bytter }: Props) => {
+const Bytter = ({ bytter, harVarsel }: Props) => {
   return (
     <>
       {bytter.map((bytte, i) => (
         <Fragment key={i}>
-          <HStack gap="2">
-            <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
+          <VStack gap="2">
+            <HStack gap="2">
+              {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
+              <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
+            </HStack>
             <div>
               {bytte.hmsnr} {bytte.hjmNavn}
               {bytte.serienr && (
@@ -24,15 +29,15 @@ const Bytter = ({ bytter }: Props) => {
                 </>
               )}
             </div>
-          </HStack>
-          {bytte.årsak && (
-            <Fremhevet>
-              <HStack gap="2" key={i}>
-                <Etikett>Begrunnelse for bytte</Etikett>
-                <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
-              </HStack>
-            </Fremhevet>
-          )}
+            {bytte.årsak && (
+              <Fremhevet>
+                <VStack gap="2" key={i}>
+                  <Etikett>Begrunnelse for bytte</Etikett>
+                  <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
+                </VStack>
+              </Fremhevet>
+            )}
+          </VStack>
         </Fragment>
       ))}
     </>

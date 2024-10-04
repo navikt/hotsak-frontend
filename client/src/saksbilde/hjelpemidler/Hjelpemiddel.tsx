@@ -21,11 +21,12 @@ import {
   HjelpemiddelType,
   OppgaveStatusType,
   Sak,
-  VarselFor,
 } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIOrd } from '../../utils/formater'
 import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
+import { useVarselsregler } from '../varsler/useVarselsregler'
+import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Fremhevet } from './Fremhevet.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -33,8 +34,6 @@ import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Utlevert } from './Utlevert'
-import Bytter from './Bytter.tsx'
-import { useVarsler } from '../useVarsler.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: HjelpemiddelType
@@ -48,7 +47,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
-  const { varsler } = useVarsler()
+  const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
   const informasjonOmHjelpemiddelEnabled = false // sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
@@ -158,7 +157,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <div>
             {hjelpemiddel.alleredeUtlevert && (
               <HStack gap="2">
-                {varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.ALLEREDE_UTLEVERT)) && (
+                {harAlleredeLevertVarsel() && (
                   <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
                 )}
                 <Etikett>Utlevert</Etikett>
@@ -169,10 +168,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}
           {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
             <HStack gap="2">
-              {varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.TILBAKELEVERING)) && (
-                <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
-              )}
-              <Bytter bytter={hjelpemiddel.bytter} />
+              <Bytter bytter={hjelpemiddel.bytter} harVarsel={harTilbakeleveringsVarsel()} />
             </HStack>
           )}
         </VStack>

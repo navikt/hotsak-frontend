@@ -56,6 +56,7 @@ export function LeveringCard(props: UtleveringCardProps) {
 function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): [string, string] {
   switch (leveringsmåte) {
     case LeveringsmåteType.ALLEREDE_LEVERT:
+    case LeveringsmåteType.ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT:
       return ['Allerede levert', 'Allerede levert']
     case LeveringsmåteType.ANNEN_ADRESSE:
       return [`Til annen adresse: ${adresse}`, adresse || '']

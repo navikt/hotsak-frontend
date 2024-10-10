@@ -72,7 +72,6 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
           <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
-          <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )

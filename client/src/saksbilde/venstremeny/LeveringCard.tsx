@@ -28,17 +28,34 @@ export function LeveringCard(props: UtleveringCardProps) {
 
   return (
     <VenstremenyCard heading="Levering">
-      <VenstremenyCardRow icon={lagLeveringsIkon()} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
+      <VenstremenyCardRow
+        paddingBlock={'0 2'}
+        icon={lagLeveringsIkon()}
+        copyText={leveringsmåteCopyText}
+        copyKind="leveringsmåte"
+        title="Til annen adresse"
+      >
         {leveringsmåteTekst}
       </VenstremenyCardRow>
       {merknad && (
-        <VenstremenyCardRow icon={lagMerknadIkon()} copyText={merknad} copyKind="merknad">
-          Merknad: {merknad}
+        <VenstremenyCardRow
+          icon={lagMerknadIkon()}
+          copyText={merknad}
+          copyKind="merknad"
+          paddingBlock={'0 2'}
+          title="Beskjed til kommunen"
+        >
+          {merknad}
         </VenstremenyCardRow>
       )}
       {kontaktpersonTekst && (
-        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
-          Kontaktperson: {kontaktpersonTekst}
+        <VenstremenyCardRow
+          icon={<InformationSquareIcon />}
+          copyText={kontaktpersonTekst}
+          copyKind="kontaktperson"
+          title="Kontaktperson"
+        >
+          {kontaktpersonTekst}
         </VenstremenyCardRow>
       )}
     </VenstremenyCard>

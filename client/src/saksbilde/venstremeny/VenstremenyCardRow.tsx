@@ -1,15 +1,17 @@
-import { CopyButton, HGrid, HGridProps, HStack } from '@navikt/ds-react'
+import { CopyButton, HGrid, HGridProps, HStack, VStack } from '@navikt/ds-react'
 import { isValidElement, ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude.ts'
 
 export interface VenstremenyCardRowProps {
   children: ReactNode
   icon?: ReactNode
+  title?: string
   copyText?: string
   copyKind?: string
+  paddingBlock?: HGridProps['paddingBlock']
   align?: HGridProps['align']
   columns?: HGridProps['columns']
 }
@@ -17,7 +19,7 @@ export interface VenstremenyCardRowProps {
 const hStack = true
 
 export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
-  const { children, icon, copyText, copyKind, align, columns } = props
+  const { children, icon, copyText, copyKind, paddingBlock, align, columns, title } = props
 
   const onCopy = (): void => {
     logAmplitudeEvent(amplitude_taxonomy.KOPIKNAPP_BRUKT, { hva: copyKind })
@@ -25,10 +27,22 @@ export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
 
   if (hStack) {
     return (
-      <HStack gap="2" align={align} wrap={false}>
+      <HStack gap="2" align={align} wrap={false} paddingBlock={paddingBlock || '0 0'}>
         <Ikon>{icon}</Ikon>
-        {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-        {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+        {title ? (
+          <VStack>
+            <HStack gap="2" align={align} wrap={false}>
+              <Etikett>{title}</Etikett>
+              {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+            </HStack>
+            {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
+          </VStack>
+        ) : (
+          <>
+            {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
+            {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+          </>
+        )}
       </HStack>
     )
   }

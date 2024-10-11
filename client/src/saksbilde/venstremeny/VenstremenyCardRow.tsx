@@ -1,4 +1,4 @@
-import { CopyButton, HGrid, HGridProps, HStack, VStack } from '@navikt/ds-react'
+import { CopyButton, HGrid, HGridProps, VStack } from '@navikt/ds-react'
 import { isValidElement, ReactNode } from 'react'
 import styled from 'styled-components'
 
@@ -27,23 +27,24 @@ export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
 
   if (hStack) {
     return (
-      <HStack gap="2" align={align} wrap={false} paddingBlock={paddingBlock || '0 0'}>
-        <Ikon>{icon}</Ikon>
+      <>
         {title ? (
-          <VStack>
-            <HStack gap="2" align={align} wrap={false}>
+          <HGrid width="100%" columns={'2rem auto 1.25rem'} paddingBlock={paddingBlock || '0 0'}>
+            <Ikon>{icon}</Ikon>
+            <VStack>
               <Etikett>{title}</Etikett>
-              {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
-            </HStack>
-            {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-          </VStack>
+              {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
+            </VStack>
+            {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+          </HGrid>
         ) : (
-          <>
+          <HGrid width="100%" columns={'1.8rem auto 1.25rem'}>
+            <Ikon>{icon}</Ikon>
             {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
             {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
-          </>
+          </HGrid>
         )}
-      </HStack>
+      </>
     )
   }
 

@@ -111,12 +111,6 @@ export function VedtakCard({ sak }: VedtakCardProps) {
             onTildelingKonflikt={() => setVisTildelSakKonfliktModal(true)}
           ></IkkeTildelt>
         </Knappepanel>
-        <TaSakKonfliktModal
-          open={visTildelSakKonfliktModal}
-          onÅpneSak={undefined}
-          onClose={() => setVisTildelSakKonfliktModal(false)}
-          saksbehandler={sak.saksbehandler}
-        />
       </VenstremenyCard>
     )
   }
@@ -136,6 +130,12 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           onBekreft={() => overtaSak()}
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}
+        />
+        <TaSakKonfliktModal
+          open={visTildelSakKonfliktModal}
+          onÅpneSak={undefined}
+          onClose={() => setVisTildelSakKonfliktModal(false)}
+          saksbehandler={sak.saksbehandler}
         />
       </VenstremenyCard>
     )

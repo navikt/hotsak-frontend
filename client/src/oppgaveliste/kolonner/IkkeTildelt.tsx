@@ -36,7 +36,6 @@ export const IkkeTildelt = ({
     setIsFetching(true)
     postTildeling(oppgavereferanse, false)
       .catch((e: ResponseError) => {
-        setIsFetching(false)
         if (e.statusCode == 409) {
           if (onMutate) {
             onMutate()
@@ -46,10 +45,12 @@ export const IkkeTildelt = ({
           }
           onTildelingKonflikt()
           throw Error('skip then')
+        } else {
+          setIsFetching(false)
         }
       })
       .then(() => {
-        setIsFetching(false)
+        // setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
           navigate(destinationUrl)

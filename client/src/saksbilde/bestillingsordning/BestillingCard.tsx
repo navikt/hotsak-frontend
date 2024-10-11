@@ -2,7 +2,7 @@ import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Brødtekst, Tekst } from '../../felleskomponenter/typografi'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
@@ -11,11 +11,12 @@ import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '.
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { mutateSak } from '../mutateSak.ts'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { VenstremenyCard } from '../venstremeny/VenstremenyCard.tsx'
+import { useVarselsregler } from '../varsler/useVarselsregler'
+import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
+import { BekreftAutomatiskOrdre, BekreftManuellOrdre } from './Modal'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -25,6 +26,7 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
+  const { harVarsler } = useVarselsregler()
   const [loading, setLoading] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
@@ -69,7 +71,6 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
           <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
-          <Tekst>Ordre er klargjort og sendt til lager.</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -139,23 +140,22 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
           Avvis
         </Knapp>
       </Knappepanel>
-      <BekreftelseModal
-        width="600px"
-        open={visOpprettOrdreModal}
-        heading="Vil du godkjenne bestillingen?"
-        buttonLabel="Godkjenn"
-        onBekreft={() => ferdigstillBestilling()}
-        loading={loading}
-        onClose={() => setVisOpprettOrdreModal(false)}
-      >
-        <Brødtekst spacing>
-          Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OEBS. Alle hjelpemidler
-          og tilbehør i bestillingen vil legges inn som ordrelinjer.
-        </Brødtekst>
-        <Brødtekst>
-          Merk at det kan gå noen minutter før ordren er klargjort. Du trenger ikke gjøre noe mer med saken.
-        </Brødtekst>
-      </BekreftelseModal>
+      {harVarsler ? (
+        <BekreftManuellOrdre
+          open={visOpprettOrdreModal}
+          onBekreft={() => ferdigstillBestilling()}
+          loading={loading}
+          onClose={() => setVisOpprettOrdreModal(false)}
+        />
+      ) : (
+        <BekreftAutomatiskOrdre
+          open={visOpprettOrdreModal}
+          onBekreft={() => ferdigstillBestilling()}
+          loading={loading}
+          onClose={() => setVisOpprettOrdreModal(false)}
+        />
+      )}
+
       <AvvisBestillingModal
         open={visAvvisModal}
         onBekreft={(tilbakemelding) => avvisBestilling(tilbakemelding)}

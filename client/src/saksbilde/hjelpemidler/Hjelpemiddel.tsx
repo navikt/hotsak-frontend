@@ -1,4 +1,10 @@
-import { ChatIcon, ChevronDownIcon, ChevronUpIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import {
+  ChatIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExclamationmarkTriangleFillIcon,
+  PersonFillIcon,
+} from '@navikt/aksel-icons'
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
@@ -19,6 +25,8 @@ import {
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIOrd } from '../../utils/formater'
 import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
+import { useVarselsregler } from '../varsler/useVarselsregler'
+import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Fremhevet } from './Fremhevet.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -39,6 +47,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
+  const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
   const informasjonOmHjelpemiddelEnabled = false // sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
@@ -148,11 +157,20 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <div>
             {hjelpemiddel.alleredeUtlevert && (
               <HStack gap="2">
+                {harAlleredeLevertVarsel() && (
+                  <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+                )}
                 <Etikett>Utlevert</Etikett>
                 <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
               </HStack>
             )}
           </div>
+          {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}
+          {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
+            <HStack gap="2">
+              <Bytter bytter={hjelpemiddel.bytter} harVarsel={harTilbakeleveringsVarsel()} />
+            </HStack>
+          )}
         </VStack>
       </HjelpemiddelGrid>
       {hjelpemiddel.tilbehør.length > 0 && (

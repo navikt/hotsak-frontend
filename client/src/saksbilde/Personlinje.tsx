@@ -7,7 +7,7 @@ import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
+import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
@@ -26,7 +26,9 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (!person) return <Container />
 
   const { kjønn, fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
-  const [adressebeskyttelse] = adressebeskyttelseOgSkjerming?.gradering || []
+  const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
+    (gradering) => gradering !== Adressebeskyttelse.UGRADERT
+  )
 
   return (
     <Container>

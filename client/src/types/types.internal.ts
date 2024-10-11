@@ -277,7 +277,6 @@ export interface Adresse {
   adresse: string
   postnummer: string
   poststed: string
-  kommunenummer: string
 }
 
 export interface Innsender {
@@ -304,6 +303,7 @@ export enum Adressebeskyttelse {
   FORTROLIG = 'FORTROLIG',
   STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
   STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
+  UGRADERT = 'UGRADERT',
 }
 
 export const AdressebeskyttelseAlert = {
@@ -342,6 +342,19 @@ export interface Hendelse {
   opprettet: string
   bruker?: string
   detaljer?: string
+}
+
+export interface Varsel {
+  tittel: string
+  varslerFor: VarselFor[]
+  beskrivelse: string[]
+}
+
+export enum VarselFor {
+  ANNEN_ADRESSE = 'ANNEN_ADRESSE',
+  BESKJED_TIL_KOMMUNE = 'BESKJED_TIL_KOMMUNE',
+  TILBAKELEVERING = 'TILBAKELEVERING',
+  ALLEREDE_UTLEVERT = 'ALLEREDE_UTLEVERT',
 }
 
 export interface Notat {
@@ -422,6 +435,7 @@ export enum Leveringsmåte {
   ANNEN_ADRESSE = 'ANNEN_ADRESSE',
   HJELPEMIDDELSENTRAL = 'HJELPEMIDDELSENTRAL',
   ALLEREDE_LEVERT = 'ALLEREDE_LEVERT',
+  ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT = 'ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT',
 }
 
 export interface Kontaktperson {
@@ -448,6 +462,24 @@ export interface HjelpemiddelType {
   tilleggsinfo: Tilleggsinfo[]
   tilbehør: Tilbehør[]
   endretHjelpemiddel?: EndretHjelpemiddel
+  bytter?: Bytte[]
+}
+
+export interface Bytte {
+  hmsnr: string
+  serienr?: string
+  hjmNavn: string
+  hjmKategori: string
+  årsak?: BytteÅrsak
+  erTilsvarende: boolean
+}
+
+export enum BytteÅrsak {
+  UTSLITT = 'UTSLITT',
+  VOKST_FRA = 'VOKST_FRA',
+  ENDRINGER_I_INNBYGGERS_FUNKSJON = 'ENDRINGER_I_INNBYGGERS_FUNKSJON',
+  FEIL_STØRRELSE = 'FEIL_STØRRELSE',
+  VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER = 'VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER',
 }
 
 export interface EndretHjelpemiddel {
@@ -774,24 +806,15 @@ export enum Kjønn {
   UKJENT = 'UKJENT',
 }
 
-export interface Personinformasjon extends Adresse, Navn {
-  fnr: string
-  brukernummer?: string
-  fødselsdato: string | undefined
-  kjønn: Kjønn
+export interface Personinformasjon extends Adresse {
   kilde: PersonInfoKilde
   signaturtype: SignaturType
-  telefon: string
   bruksarena: Bruksarena | null
   bosituasjon: Bosituasjon | null
-  gtNummer: string
-  gtType: string
-  egenAnsatt: boolean
-  brukerErDigital: boolean
   funksjonsnedsettelser: string[]
   oppfylteVilkår: string[]
-  funksjon?: BrukerFunksjon
   kroppsmål?: Kroppsmål
+  funksjon?: BrukerFunksjon
 }
 
 export interface BrukerFunksjon {

@@ -19,7 +19,7 @@ export function Hjelpemiddeloversikt() {
     error,
     isLoading,
     isFromVedtak,
-  } = useHjelpemiddeloversikt(sak?.data.personinformasjon.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
+  } = useHjelpemiddeloversikt(sak?.data.bruker.fnr, sak?.data.vedtak?.vedtaksgrunnlag)
   const artiklerByKategori = useArtiklerByKategori(artikler)
   return (
     <HøyrekolonnePanel

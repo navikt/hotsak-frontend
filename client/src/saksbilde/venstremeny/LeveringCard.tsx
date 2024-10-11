@@ -5,8 +5,10 @@ import {
   Kontaktperson as IKontaktperson,
   Levering,
   Leveringsmåte as LeveringsmåteType,
-} from '../../types/types.internal'
-import { lagKontaktpersonTekst } from '../bruker/Kontaktperson'
+} from '../../types/types.internal.ts'
+import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
+import { useVarselsregler } from '../varsler/useVarselsregler.tsx'
+import { VarselIkon } from '../varsler/varselIkon.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
@@ -17,33 +19,61 @@ export interface UtleveringCardProps {
   kontaktperson?: IKontaktperson
 }
 
-export function UtleveringCard(props: UtleveringCardProps) {
+export function LeveringCard(props: UtleveringCardProps) {
   const { formidler, levering, adresseBruker } = props
   const { kontaktperson, merknad } = levering
   const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
+  const { harLeveringsVarsel, harBeskjedTilKommuneVarsel } = useVarselsregler()
+
   return (
-    <VenstremenyCard heading="Utlevering">
-      <VenstremenyCardRow icon={<HouseIcon />} copyText={leveringsmåteCopyText} copyKind="leveringsmåte">
+    <VenstremenyCard heading="Levering">
+      <VenstremenyCardRow
+        paddingBlock={'0 2'}
+        icon={lagLeveringsIkon()}
+        copyText={leveringsmåteCopyText}
+        copyKind="leveringsmåte"
+        title="Til annen adresse"
+      >
         {leveringsmåteTekst}
       </VenstremenyCardRow>
-      {kontaktpersonTekst && (
-        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={kontaktpersonTekst} copyKind="kontaktperson">
-          Kontaktperson: {kontaktpersonTekst}
+      {merknad && (
+        <VenstremenyCardRow
+          icon={lagMerknadIkon()}
+          copyText={merknad}
+          copyKind="merknad"
+          paddingBlock={'0 2'}
+          title="Beskjed til kommunen"
+        >
+          {merknad}
         </VenstremenyCardRow>
       )}
-      {merknad && (
-        <VenstremenyCardRow icon={<InformationSquareIcon />} copyText={merknad} copyKind="merknad">
-          Merknad: {merknad}
+      {kontaktpersonTekst && (
+        <VenstremenyCardRow
+          icon={<InformationSquareIcon />}
+          copyText={kontaktpersonTekst}
+          copyKind="kontaktperson"
+          title="Kontaktperson"
+        >
+          {kontaktpersonTekst}
         </VenstremenyCardRow>
       )}
     </VenstremenyCard>
   )
+
+  function lagLeveringsIkon() {
+    return harLeveringsVarsel() ? <VarselIkon /> : <HouseIcon />
+  }
+
+  function lagMerknadIkon() {
+    return harBeskjedTilKommuneVarsel() ? <VarselIkon /> : <InformationSquareIcon />
+  }
 }
 
 function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): [string, string] {
   switch (leveringsmåte) {
     case LeveringsmåteType.ALLEREDE_LEVERT:
+    case LeveringsmåteType.ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT:
       return ['Allerede levert', 'Allerede levert']
     case LeveringsmåteType.ANNEN_ADRESSE:
       return [`Til annen adresse: ${adresse}`, adresse || '']

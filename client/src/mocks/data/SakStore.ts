@@ -8,7 +8,6 @@ import {
   EndreHjelpemiddelRequest,
   Formidler,
   GreitÅViteType,
-  Hasteårsak,
   Hendelse,
   Kjønn,
   KontaktpersonType,
@@ -20,7 +19,6 @@ import {
   Sakstype,
   SignaturType,
   UtlevertType,
-  VarigFunksjonsnedsettelse,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
@@ -62,18 +60,15 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
       ...overstyringer,
     },
     personinformasjon: {
-      ...navn,
-      fnr,
-      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
       kilde: PersonInfoKilde.PDL,
       signaturtype: SignaturType.BRUKER_BEKREFTER,
-      telefon: '90807060',
       bosituasjon: Bosituasjon.HJEMME,
-      funksjon: {
+      // TODO, tilby dette som en overstyring
+      /*funksjon: {
         varigFunksjonsnedsettelse: VarigFunksjonsnedsettelse.ALDERDOMSSVEKKELSE,
         funksjonsvurdering:
           'Her viser vi formidler sin tekst som beskriver hvordan innbygger fungerer med sin funksjonsnedsettelse i daglige gjøremål. Den kan være lang eller kort, avhengig av hvor mye formidler skriver.',
-      },
+      },*/
       funksjonsnedsettelser: ['bevegelse'],
       bruksarena: Bruksarena.DAGLIGLIV,
       oppfylteVilkår: [
@@ -83,16 +78,9 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
         'KAN_IKKE_LOESES_MED_ENKLERE_HJELPEMIDLER_V1',
         'I_STAND_TIL_AA_BRUKE_HJELEPMIDLENE_V1',
       ],
-      kjønn: Kjønn.MANN,
-      brukernummer: '1',
       adresse: 'Blåbærstien 82',
       postnummer: '9999',
       poststed: lagTilfeldigBosted(),
-      kommunenummer: '9999',
-      gtNummer: '9999',
-      gtType: 'KOMMUNE',
-      egenAnsatt: false,
-      brukerErDigital: true,
     },
   }
 }
@@ -149,6 +137,7 @@ function lagSak(
           },
           { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', fritakFraBegrunnelseÅrsak: 'ER_PÅ_BESTILLINGSORDNING' },
         ],
+        bytter: [],
       },
       {
         id: -1,
@@ -165,6 +154,16 @@ function lagSak(
         beskrivelse: 'Gemino 20',
         tilleggsinfo: [],
         tilbehør: [],
+        bytter: [
+          {
+            hmsnr: '267912',
+            hjmNavn: 'Classic Soft',
+            serienr: undefined,
+            erTilsvarende: false,
+            hjmKategori: 'Krykke',
+            årsak: undefined,
+          },
+        ],
       },
       {
         id: -1,
@@ -181,6 +180,7 @@ function lagSak(
         beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
         tilleggsinfo: [],
         tilbehør: [],
+        bytter: [],
       },
     ],
     formidler,
@@ -193,11 +193,12 @@ function lagSak(
       },
     },
     greitÅViteFaktum: [
-      {
+      /*{
+      TODO, gjør dette også via utvidelser
         beskrivelse:
           'Bruker bor på institusjon (sykehjem), ifølge formidler. Du må sjekke om vilkårene for institusjon er oppfylt.',
         type: GreitÅViteType.ADVARSEL,
-      },
+      },*/
       {
         beskrivelse: 'Kun førsterangering',
         type: GreitÅViteType.INFO,
@@ -218,9 +219,10 @@ function lagSak(
         telefon: '99887766',
         kontaktpersonType: KontaktpersonType.HJELPEMIDDELBRUKER,
       },
-      leveringsmåte: Leveringsmåte.FOLKEREGISTRERT_ADRESSE,
+      leveringsmåte: Leveringsmåte.ANNEN_ADRESSE,
       adresse: lagTilfeldigBosted(),
-      merknad: 'Ta også kontakt med meg dvs. formidler ved utlevering',
+      merknad:
+        'Pasienten har sterk angst og slipper ikke alltid inn folk. Det kan også være problemet med kommunikasjon over telefon pga. bruker har afasi. Send sms.',
     },
     oppfølgingsansvarlig: {
       navn: lagTilfeldigNavn().fulltNavn,
@@ -232,12 +234,13 @@ function lagSak(
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
-    hast: (() => {
+    // TODO tilby hast som en overstyring
+    /*hast: (() => {
       return {
         årsaker: [Hasteårsak.ANNET],
         begrunnelse: 'Det haster veldig!',
       }
-    })(),
+    })(),*/
   }
 }
 

@@ -71,7 +71,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId)
+    postTildeling(sakId, true)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)

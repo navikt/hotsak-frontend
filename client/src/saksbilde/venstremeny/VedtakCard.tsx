@@ -49,7 +49,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
 
   const overtaSak = async () => {
     setLoading(true)
-    await postTildeling(sakId).catch(() => setLoading(false))
+    await postTildeling(sakId, true).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)

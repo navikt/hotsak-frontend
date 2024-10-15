@@ -2,7 +2,7 @@ import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
-import { postTildeling } from '../../io/http'
+import { postTildeling, ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -12,10 +12,12 @@ export function useTildeling({
   sakId,
   gåTilSak = false,
   sakstype,
+  onTildelingKonflikt,
 }: {
   sakId: string
   gåTilSak: boolean
   sakstype?: Sakstype
+  onTildelingKonflikt: () => void
 }) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
@@ -34,7 +36,14 @@ export function useTildeling({
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
     postTildeling(sakId, false)
-      .catch(() => setIsFetching(false))
+      .catch((e: ResponseError) => {
+        if (e.statusCode == 409) {
+          onTildelingKonflikt()
+          throw Error('skip then')
+        } else {
+          setIsFetching(false)
+        }
+      })
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
@@ -47,6 +56,9 @@ export function useTildeling({
           mutate(`api/sak/${sakId}`)
           mutate(`api/sak/${sakId}/historikk`)
         }
+      })
+      .catch(() => {
+        // Skip here!
       })
   }
 

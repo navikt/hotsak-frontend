@@ -12,6 +12,8 @@ import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.in
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
+import { TaSakKonfliktModal } from '../../saksbilde/TaSakKonfliktModal.tsx'
+import { useNavigate } from 'react-router-dom'
 
 interface MenyKnappProps {
   sakId: string
@@ -36,14 +38,29 @@ export const MenyKnapp = ({
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) => {
+  const navigate = useNavigate()
   const saksbehandler = useInnloggetSaksbehandler()
-  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: gåTilSak, sakstype: sakstype })
+  const [konfliktModalOpen, setKonfliktModalOpen] = useState(false)
+  const { onTildel } = useTildeling({
+    sakId: sakId,
+    gåTilSak: gåTilSak,
+    sakstype: sakstype,
+    onTildelingKonflikt: () => {
+      setKonfliktModalOpen(true)
+      onMutate()
+    },
+  })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
+  }
+
+  const onÅpneSak = () => {
+    const path = sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`
+    navigate(path)
   }
 
   const kanOvertaSakStatuser = [OppgaveStatusType.TILDELT_SAKSBEHANDLER, OppgaveStatusType.AVVENTER_DOKUMENTASJON]
@@ -138,6 +155,12 @@ export const MenyKnapp = ({
         </Dropdown>
       </div>
       <OverførGosysModal {...overførGosys} />
+      <TaSakKonfliktModal
+        open={konfliktModalOpen}
+        onÅpneSak={onÅpneSak}
+        onClose={() => setKonfliktModalOpen(false)}
+        saksbehandler={tildeltSaksbehandler}
+      />
     </>
   )
 }

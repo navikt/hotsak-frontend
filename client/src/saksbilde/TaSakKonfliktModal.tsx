@@ -39,7 +39,8 @@ export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }:
           <Tekst
             spacing={true}
           >{`Denne saken ble tatt av en annen saksbehandler før deg. Saken behandles nå av ${saksbehandler?.navn || '<Ukjent>'}.`}</Tekst>
-          <Tekst spacing={true}>{`Hvis dette er feil kan du åpne saken og overta den.`}</Tekst>
+          {onÅpneSak && <Tekst spacing={true}>{`Hvis dette er feil kan du åpne saken og overta den.`}</Tekst>}
+          {!onÅpneSak && <Tekst spacing={true}>{`Hvis dette er feil kan du overta saken.`}</Tekst>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" size="small" onClick={onClose} disabled={false}>

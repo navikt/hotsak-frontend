@@ -9,7 +9,7 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
-  onTildelingKonflikt: () => void
+  onTildelingKonflikt?: () => void
 }
 
 export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) => {
@@ -42,7 +42,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKo
         }
       })
       .catch((e: ResponseError) => {
-        if (e.statusCode == 409) {
+        if (e.statusCode == 409 && onTildelingKonflikt) {
           onTildelingKonflikt()
         } else {
           setIsFetching(false)

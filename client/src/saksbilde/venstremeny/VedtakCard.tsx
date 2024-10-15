@@ -107,7 +107,6 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           <IkkeTildelt
             oppgavereferanse={sakId}
             gåTilSak={false}
-            onMutate={null}
             onTildelingKonflikt={() => setVisTildelSakKonfliktModal(true)}
           ></IkkeTildelt>
         </Knappepanel>

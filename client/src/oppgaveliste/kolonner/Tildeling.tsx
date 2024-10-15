@@ -26,9 +26,9 @@ export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
           <IkkeTildelt
             oppgavereferanse={oppgave.sakId}
             gåTilSak={true}
-            onMutate={onMutate}
             onTildelingKonflikt={() => {
               setKonfliktModalOpen(true)
+              if (onMutate) onMutate()
             }}
           />
         )}

@@ -9,20 +9,18 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
-  onMutate: ((...args: any[]) => any) | null
   onTildelingKonflikt: () => void
 }
 
-export const IkkeTildelt = ({
-  oppgavereferanse,
-  gåTilSak = false,
-  onMutate,
-  onTildelingKonflikt,
-}: IkkeTildeltProps) => {
+export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
+  const oppdaterSakOgHistorie = () => {
+    mutate(`api/sak/${oppgavereferanse}`)
+    mutate(`api/sak/${oppgavereferanse}/historikk`)
+  }
   const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
@@ -35,32 +33,21 @@ export const IkkeTildelt = ({
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
     postTildeling(oppgavereferanse, false)
-      .catch((e: ResponseError) => {
-        if (e.statusCode == 409) {
-          if (onMutate) {
-            onMutate()
-          } else {
-            mutate(`api/sak/${oppgavereferanse}`)
-            mutate(`api/sak/${oppgavereferanse}/historikk`)
-          }
-          onTildelingKonflikt()
-          throw Error('skip then')
-        } else {
-          setIsFetching(false)
-        }
-      })
       .then(() => {
-        // setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
           navigate(destinationUrl)
         } else {
-          mutate(`api/sak/${oppgavereferanse}`)
-          mutate(`api/sak/${oppgavereferanse}/historikk`)
+          oppdaterSakOgHistorie()
         }
       })
-      .catch(() => {
-        // Skip here!
+      .catch((e: ResponseError) => {
+        if (e.statusCode == 409) {
+          onTildelingKonflikt()
+        } else {
+          setIsFetching(false)
+          oppdaterSakOgHistorie()
+        }
       })
   }
 

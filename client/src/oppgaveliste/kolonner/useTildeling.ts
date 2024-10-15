@@ -36,14 +36,6 @@ export function useTildeling({
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
     postTildeling(sakId, false)
-      .catch((e: ResponseError) => {
-        if (e.statusCode == 409) {
-          onTildelingKonflikt()
-          throw Error('skip then')
-        } else {
-          setIsFetching(false)
-        }
-      })
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
@@ -57,8 +49,12 @@ export function useTildeling({
           mutate(`api/sak/${sakId}/historikk`)
         }
       })
-      .catch(() => {
-        // Skip here!
+      .catch((e: ResponseError) => {
+        if (e.statusCode == 409) {
+          onTildelingKonflikt()
+        } else {
+          setIsFetching(false)
+        }
       })
   }
 

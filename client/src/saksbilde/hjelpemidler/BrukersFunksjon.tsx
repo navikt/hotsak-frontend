@@ -1,33 +1,30 @@
-import { Box, Heading, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
+import { Box, Heading, List, VStack } from '@navikt/ds-react'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
   const { funksjonsbeskrivelse } = props
   const { beskrivelse } = funksjonsbeskrivelse
   return (
-    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }}>
-      <Heading level="1" size="medium">
+    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }} maxWidth={'1200px'}>
+      <Heading level="1" size="small" spacing>
         Funksjonsvurdering
       </Heading>
       <VStack gap="4">
-        <div>
-          <Etikett>
-            Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig nedsatt funksjonsevne:
-          </Etikett>
-          <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
-        </div>
-        <div>
-          {beskrivelse && (
-            <>
-              <Etikett>
-                Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
-                innbygger i dagliglivet:
-              </Etikett>
-              <Brødtekst>{beskrivelse}</Brødtekst>
-            </>
-          )}
-        </div>
+        <List
+          title="Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig nedsatt funksjonsevne:"
+          size="small"
+        >
+          <List.Item>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</List.Item>
+        </List>
+        {beskrivelse && (
+          <List
+            size="small"
+            title="Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
+                innbygger i dagliglivet:"
+          >
+            <List.Item>{beskrivelse}</List.Item>
+          </List>
+        )}
       </VStack>
     </Box>
   )

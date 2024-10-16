@@ -1,47 +1,44 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
-import { BrukerFunksjon, VarigFunksjonsnedsettelse } from '../../types/types.internal.ts'
-import { Fremhevet } from './Fremhevet.tsx'
-import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
+import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
-export function BrukersFunksjon(props: { brukerFunksjon: BrukerFunksjon }) {
-  const { brukerFunksjon } = props
-  const { funksjonsvurdering } = brukerFunksjon
+export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
+  const { funksjonsbeskrivelse } = props
+  const { beskrivelse } = funksjonsbeskrivelse
   return (
-    <Box paddingBlock="4">
+    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }}>
       <Heading level="1" size="medium">
-        Brukers funksjon
+        Funksjonsvurdering
       </Heading>
-      <Box paddingBlock="2">
-        <HjelpemiddelGrid>
-          <div />
-          <Fremhevet>
-            <VStack gap="4">
-              <div>
-                <Etikett>Sykdom, skade eller lyte:</Etikett>
-                <Brødtekst>{tekstByFunksjonsnedsettelse(brukerFunksjon)}</Brødtekst>
-              </div>
-              <div>
-                {funksjonsvurdering && (
-                  <>
-                    <Etikett>Funksjonsvurdering:</Etikett>
-                    <Brødtekst>{funksjonsvurdering}</Brødtekst>
-                  </>
-                )}
-              </div>
-            </VStack>
-          </Fremhevet>
-        </HjelpemiddelGrid>
-      </Box>
+      <VStack gap="4">
+        <div>
+          <Etikett>
+            Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig nedsatt funksjonsevne:
+          </Etikett>
+          <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
+        </div>
+        <div>
+          {beskrivelse && (
+            <>
+              <Etikett>
+                Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
+                innbygger i dagliglivet:
+              </Etikett>
+              <Brødtekst>{beskrivelse}</Brødtekst>
+            </>
+          )}
+        </div>
+      </VStack>
     </Box>
   )
 }
 
-const tekstByFunksjonsnedsettelse = (brukerFunksjon: BrukerFunksjon) => {
-  const tekst: Record<keyof typeof VarigFunksjonsnedsettelse, string> = {
-    [VarigFunksjonsnedsettelse.ALDERDOMSSVEKKELSE]: 'Innbygger har alderdomssvekkelse.',
-    [VarigFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Diagnose: ${brukerFunksjon.diagnose}`,
-    [VarigFunksjonsnedsettelse.UAVKLART]: 'Det er uavklart om innbygger har en varig sykdom, skade eller lyte.',
+const tekstByFunksjonsnedsettelse = (brukerFunksjon: Funksjonsbeskrivelse) => {
+  const tekst: Record<keyof typeof InnbyggersVarigeFunksjonsnedsettelse, string> = {
+    [InnbyggersVarigeFunksjonsnedsettelse.ALDERDOMSSVEKKELSE]: 'Innbygger har alderdomssvekkelse.',
+    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Innbygger har en varig diagnose. ${brukerFunksjon.diagnose}`,
+    [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART]:
+      'Det er uavklart om innbygger har en varig sykdom, skade eller lyte.',
   }
-  return tekst[brukerFunksjon.varigFunksjonsnedsettelse]
+  return tekst[brukerFunksjon.innbyggersVarigeFunksjonsnedsettelse]
 }

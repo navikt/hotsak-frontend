@@ -26,9 +26,11 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
+import { useBehovsmelding } from './useBehovsmelding'
 
 const SaksbildeContent = memo(() => {
   const { sak, isError } = useSak()
+  const { behovsmelding, isError: isBehovsmeldingError /*, isLoading: isBehovsmeldingLoading*/ } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler } = useVarsler()
   const { showBoundary } = useErrorBoundary()
@@ -37,9 +39,13 @@ const SaksbildeContent = memo(() => {
     showBoundary(isError)
   }
 
+  if (isBehovsmeldingError) {
+    showBoundary(isBehovsmeldingError)
+  }
+
   const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
 
-  if (!sak) return <div>Fant ikke sak</div>
+  if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
 
@@ -86,7 +92,14 @@ const SaksbildeContent = memo(() => {
               <Routes>
                 <Route
                   path="/hjelpemidler"
-                  element={<HjelpemiddelListe tittel="Hjelpemidler" sak={sak.data} forenkletVisning={erBestilling} />}
+                  element={
+                    <HjelpemiddelListe
+                      tittel="Hjelpemidler"
+                      sak={sak.data}
+                      forenkletVisning={erBestilling}
+                      behovsmelding={behovsmelding}
+                    />
+                  }
                 />
                 <Route
                   path="/bruker"
@@ -96,6 +109,7 @@ const SaksbildeContent = memo(() => {
                       person={sak.data.personinformasjon}
                       levering={sak.data.levering}
                       formidler={sak.data.formidler}
+                      vilkår={behovsmelding.brukersituasjon.vilkår}
                     />
                   }
                 />

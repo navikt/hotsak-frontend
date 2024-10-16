@@ -1,0 +1,180 @@
+{
+  "bruker": {
+    "fnr": "13820599335",
+    "navn": {
+      "fornavn": "Kvadratisk",
+      "mellomnavn": null,
+      "etternavn": "Faktura"
+    },
+    "signaturtype": "FULLMAKT",
+    "telefon": "13820599",
+    "veiadresse": {
+      "adresse": "Fjellvegen 69",
+      "postnummer": "6770",
+      "poststed": "Nordfjordeid"
+    },
+    "kommunenummer": "4649",
+    "brukernummer": null,
+    "kilde": "PDL",
+    "legacyopplysninger": []
+  },
+  "brukersituasjon": {
+    "bekreftedeVilkår": [
+      "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+      "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+      "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1",
+      "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
+    ],
+    "vilkår": [
+      {
+        "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av NAV.",
+          "nn": "Kvadratisk Faktura sitt behov kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av NAV."
+        }
+      },
+      {
+        "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+        "tekst": {
+          "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+          "nn": "Hjelpemiddelet er naudsynt for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+        }
+      },
+      {
+        "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+          "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjord."
+        }
+      }
+    ],
+    "funksjonsnedsettelser": ["BEVEGELSE"],
+    "funksjonsbeskrivelse": {
+      "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE",
+      "diagnose": "Kneartrose",
+      "beskrivelse": "Her er et eksempel på hvor mye ca. 700 tegn er. Da kan man skrive om at ting og tang er sånn og slik. Og så kan det være at man må skrive noe om ditt og datt, men det er avhengig av hvor mye man vil si. Noen ganger vil man ha behov for å si ganske mye. Andre ganger kan man ha behov for å si litt. Av og til er det sikkert slik at man trenger å skrive kjempemye. Da kan det hende at man ikke får plass, da må man begrense seg og korte ned. Vi ønsker at formidler skal være så presis som mulig. Samtidig så er det viktig at de kan si nok om situasjonen slik at sakebehandler kan vurdere saken ut fra funksjonsbeskrivelsen. Og hvis vi fortsetter med å skrive her nå, så kommer vi opp i 700 tegn.  "
+    }
+  },
+  "hjelpemidler": {
+    "hjelpemidler": [
+      {
+        "antall": 1,
+        "produkt": {
+          "hmsArtNr": "267912",
+          "artikkelnavn": "Classic Soft",
+          "iso8": "12030601",
+          "iso8Tittel": "Albuekrykker",
+          "delkontrakttittel": "17. Krykker til voksne enkel",
+          "sortimentkategori": "Ganghjelpemidler",
+          "rangering": 1
+        },
+        "tilbehør": [],
+        "bytter": [],
+        "bruksarenaer": ["EGET_HJEM"],
+        "utlevertinfo": {
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
+          "utleverttype": null,
+          "overførtFraBruker": null,
+          "annenKommentar": null
+        },
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Bruksarena",
+              "nn": "Bruksarena"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "I eget hjem.",
+                  "nn": "I eigen heim."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ],
+        "varsler": []
+      }
+    ],
+    "totaltAntall": 1
+  },
+  "levering": {
+    "hjelpemiddelformidler": {
+      "navn": {
+        "fornavn": "Kvadratisk",
+        "mellomnavn": null,
+        "etternavn": "Faktura"
+      },
+      "arbeidssted": "Østby Dans og Fysioterapi",
+      "stilling": "Fysioterapetut",
+      "telefon": "24252525",
+      "adresse": {
+        "adresse": "Veste Østby 27",
+        "postnummer": "2424",
+        "poststed": "ØSTBY"
+      },
+      "epost": "kf@ostby.kommune.no",
+      "treffesEnklest": "Dagtid i to/halv ett-tiden",
+      "kommunenavn": "TRYSIL"
+    },
+    "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+    "annenOppfølgingsansvarlig": null,
+    "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+    "annenUtleveringsadresse": null,
+    "utleveringKontaktperson": "ANNEN_KONTAKTPERSON",
+    "annenKontaktperson": {
+      "navn": {
+        "fornavn": "fornavn",
+        "mellomnavn": null,
+        "etternavn": "etternavn"
+      },
+      "telefon": "12312313"
+    },
+    "utleveringMerknad": "",
+    "hast": null,
+    "automatiskUtledetTilleggsinfo": []
+  },
+  "innsender": {
+    "rolle": "FORMIDLER",
+    "kurs": [],
+    "sjekketUtlånsoversiktForKategorier": []
+  },
+  "metadata": {
+    "bestillingsordningsjekk": {
+      "kanVæreBestilling": false,
+      "kriterier": {
+        "alleHovedProdukterPåBestillingsOrdning": true,
+        "alleTilbehørPåBestillingsOrdning": true,
+        "brukerHarHjelpemidlerFraFør": false,
+        "brukerHarInfotrygdVedtakFraFør": null,
+        "brukerHarHotsakVedtakFraFør": true,
+        "leveringTilFolkeregistrertAdresse": true,
+        "brukersAdresseErSatt": true,
+        "brukerBorIkkeIUtlandet": true,
+        "brukerErIkkeSkjermetPerson": true,
+        "inneholderIkkeFritekst": false,
+        "kildeErPdl": true,
+        "harIkkeForMangeOrdrelinjer": true,
+        "ingenProdukterErAlleredeUtlevert": true,
+        "brukerErTilknyttetBydelIOslo": null,
+        "harIngenBytter": true,
+        "brukerHarAdresseIOeBS": false
+      },
+      "metaInfo": {
+        "hovedProdukter": ["267912"],
+        "hovedProdukterIkkePåBestillingsordning": [],
+        "tilbehør": [],
+        "tilbehørIkkePåBestillingsordning": []
+      },
+      "version": "3dc8ca8fbc5df7ffea031bc4b348ea5cedfb2084"
+    }
+  },
+  "id": "1e3f5513-a394-4f59-9020-07a35cb4c7e8",
+  "type": "SØKNAD",
+  "innsendingsdato": "2024-10-15",
+  "skjemaversjon": 2,
+  "hjmBrukersFnr": "13820599335",
+  "prioritet": "NORMAL"
+}

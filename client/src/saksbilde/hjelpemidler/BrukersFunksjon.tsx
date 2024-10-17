@@ -1,5 +1,6 @@
 import { Box, Heading, List, VStack } from '@navikt/ds-react'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
+import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
   const { funksjonsbeskrivelse } = props
@@ -17,13 +18,13 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
           <List.Item>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</List.Item>
         </List>
         {beskrivelse && (
-          <List
-            size="small"
-            title="Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
-                innbygger i dagliglivet:"
-          >
-            <List.Item>{beskrivelse}</List.Item>
-          </List>
+          <>
+            <Etikett>
+              Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
+              innbygger i dagliglivet:
+            </Etikett>
+            <Brødtekst>{beskrivelse}</Brødtekst>
+          </>
         )}
       </VStack>
     </Box>

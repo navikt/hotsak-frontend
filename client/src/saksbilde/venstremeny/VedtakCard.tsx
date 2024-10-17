@@ -195,7 +195,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
               <Brødtekst spacing>
                 Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.
               </Brødtekst>
-              <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" />
+              <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" size="small" />
             </Box>
           </VStack>
         </FormProvider>

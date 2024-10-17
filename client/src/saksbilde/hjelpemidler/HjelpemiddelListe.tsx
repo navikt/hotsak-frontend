@@ -1,5 +1,6 @@
 import { Heading, VStack } from '@navikt/ds-react'
 import { Etikett } from '../../felleskomponenter/typografi'
+import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { HjelpemiddelType, Sak } from '../../types/types.internal'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hastesak } from './Hastesak.tsx'
@@ -11,21 +12,21 @@ interface HjelpemiddelListeProps {
   tittel: string
   forenkletVisning?: boolean
   sak: Sak
+  behovsmelding: Innsenderbehovsmelding
 }
 
-export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: HjelpemiddelListeProps) {
+export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak, behovsmelding }: HjelpemiddelListeProps) {
   const { hjelpemidler, hast } = sak
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
 
   const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.alleredeUtlevert)
-  const brukerFunksjon = sak.personinformasjon?.funksjon
+  const funksjonsbeskrivelse = behovsmelding.brukersituasjon.funksjonsbeskrivelse
 
   return (
     <>
       {hast && <Hastesak hast={hast} />}
-      {brukerFunksjon && <BrukersFunksjon brukerFunksjon={brukerFunksjon} />}
 
       <Heading level="1" size="medium">
         {tittel}
@@ -48,6 +49,8 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak }: Hje
           <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
         )}
       </VStack>
+
+      {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </>
   )
 }

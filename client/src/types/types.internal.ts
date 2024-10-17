@@ -812,21 +812,7 @@ export interface Personinformasjon extends Adresse {
   bruksarena: Bruksarena | null
   bosituasjon: Bosituasjon | null
   funksjonsnedsettelser: string[]
-  oppfylteVilkår: string[]
   kroppsmål?: Kroppsmål
-  funksjon?: BrukerFunksjon
-}
-
-export interface BrukerFunksjon {
-  varigFunksjonsnedsettelse: VarigFunksjonsnedsettelse
-  diagnose?: string
-  funksjonsvurdering?: string
-}
-
-export enum VarigFunksjonsnedsettelse {
-  ALDERDOMSSVEKKELSE = 'ALDERDOMSSVEKKELSE',
-  ANNEN_VARIG_DIAGNOSE = 'ANNEN_VARIG_DIAGNOSE',
-  UAVKLART = 'UAVKLART',
 }
 
 export interface Kroppsmål {

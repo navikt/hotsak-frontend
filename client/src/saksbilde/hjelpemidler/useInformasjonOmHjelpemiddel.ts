@@ -27,11 +27,11 @@ export function useInformasjonOmHjelpemiddel(
       setOpen(false)
       setError(undefined)
     },
-    async onBesvar(spørreundersøkelse, besvarelse, svar) {
+    async onBesvar(tilbakemelding) {
       setError(undefined)
       setLoading(true)
       try {
-        await postInformasjonOmHjelpemiddel(sakId, spørreundersøkelse, besvarelse, svar, hjelpemiddel)
+        await postInformasjonOmHjelpemiddel(sakId, tilbakemelding, hjelpemiddel)
         setOpen(false)
       } catch (err: any) {
         console.log(err)

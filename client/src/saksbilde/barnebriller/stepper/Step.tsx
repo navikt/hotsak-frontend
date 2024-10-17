@@ -1,6 +1,6 @@
+import { Label, OverridableComponent } from '@navikt/ds-react'
 import cl from 'clsx'
 import { AnchorHTMLAttributes, forwardRef, useContext } from 'react'
-import { Label, OverridableComponent } from '@navikt/ds-react'
 
 import { StepperContext } from './context'
 
@@ -83,7 +83,9 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
           // "hot-stepper__step--completed": completed,
         })}
         onClick={(e: any) => {
-          isInteractive && context.onStepChange(unsafe_index + 1)
+          if (isInteractive) {
+            context.onStepChange(unsafe_index + 1)
+          }
           rest?.onClick?.(e)
         }}
       >

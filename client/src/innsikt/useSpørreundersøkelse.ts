@@ -1,8 +1,11 @@
 import { useMemo } from 'react'
-import { ISpørreundersøkelse, SpørreundersøkelseId, spørreundersøkelser } from './spørreundersøkelser'
 import { IBesvarelse } from './Besvarelse'
+import { ISpørreundersøkelse, SpørreundersøkelseId, spørreundersøkelser } from './spørreundersøkelser'
 
-export function useSpørreundersøkelse(spørreundersøkelseId: SpørreundersøkelseId) {
+export function useSpørreundersøkelse(spørreundersøkelseId: SpørreundersøkelseId): {
+  spørreundersøkelse: ISpørreundersøkelse
+  defaultValues: IBesvarelse
+} {
   return useMemo(() => {
     const spørreundersøkelse: ISpørreundersøkelse = spørreundersøkelser[spørreundersøkelseId]
     return {

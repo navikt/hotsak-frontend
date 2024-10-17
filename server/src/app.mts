@@ -69,7 +69,7 @@ const htmlPath = path.join(distPath, 'index.html')
 app.use(express.static(distPath))
 app.use('/*', express.static(htmlPath))
 
-const errorRequestHandler: ErrorRequestHandler = (err, _, res, next) => {
+const errorRequestHandler: ErrorRequestHandler = (err, _, res) => {
   logger.stdout.error(err)
   let message = 'unknown'
   if (typeof err === 'string') {

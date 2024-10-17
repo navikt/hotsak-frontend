@@ -19,7 +19,7 @@ export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {
   return (
     <Controller
       name={name}
-      rules={{ required: påkrevd && 'Må fylles ut' }}
+      rules={{ required: påkrevd === true ? 'Må fylles ut' : påkrevd }}
       shouldUnregister={true}
       defaultValue={''}
       control={control}

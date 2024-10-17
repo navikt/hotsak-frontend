@@ -30,7 +30,7 @@ jobs:
           start: npm run dev
           wait-on: 'http://ip6-localhost:3001'
           working-directory: client
-          config-file: cypress.config.ts
+          config-file: cypress.config.js
           record: false
       - name: Last opp artefakt
         uses: actions/upload-artifact@v4

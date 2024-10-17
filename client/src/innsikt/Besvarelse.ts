@@ -10,7 +10,9 @@ export interface ISvarMedOppfølgingsspørsmål extends ISvarUtenOppfølgingssp�
 
 export type Svar = ISvarUtenOppfølgingsspørsmål | ISvarMedOppfølgingsspørsmål
 
-export interface IBesvarelse extends Record<string, Svar> {}
+export interface IBesvarelse {
+  [spørsmål: string]: Svar
+}
 
 export interface ISvar {
   type: Spørsmålstype | ''

@@ -15,6 +15,8 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
     control,
     watch,
     formState: { errors },
+    // eslint skjønner ikke Øye virker det som
+    // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useFormContext<{ brilleseddel: Brilleseddel }>()
 
   const høyreSfære = watch('brilleseddel.høyreSfære')

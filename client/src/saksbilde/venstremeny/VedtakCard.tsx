@@ -1,10 +1,14 @@
-import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Bleed, Box, Button, Heading, HelpText, HStack, Tag, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
+import { besvarelseToSvar, IBesvarelse } from '../../innsikt/Besvarelse.ts'
+import { SpørreundersøkelseStack } from '../../innsikt/SpørreundersøkelseStack.tsx'
+import { useSpørreundersøkelse } from '../../innsikt/useSpørreundersøkelse.ts'
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -23,6 +27,11 @@ export interface VedtakCardProps {
   sak: Sak
 }
 
+interface VedtakFormValues {
+  problemsammendrag: string
+  besvarelse: IBesvarelse
+}
+
 export function VedtakCard({ sak }: VedtakCardProps) {
   const { sakId } = sak
   const saksbehandler = useInnloggetSaksbehandler()
@@ -31,13 +40,20 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-  const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
-    `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
-  )
 
-  const opprettVedtak = async () => {
+  const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse('kontaktet_formidler_v1')
+  const form = useForm<VedtakFormValues>({
+    defaultValues: {
+      problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
+      besvarelse: defaultValues,
+    },
+  })
+
+  const opprettVedtak = async (data: VedtakFormValues) => {
+    const { problemsammendrag, besvarelse } = data
+    const tilbakemelding = besvarelseToSvar(spørreundersøkelse, besvarelse)
     setLoading(true)
-    await putVedtak(sakId, VedtakStatusType.INNVILGET, oebsProblemsammendrag).catch(() => setLoading(false))
+    await putVedtak(sakId, VedtakStatusType.INNVILGET, problemsammendrag, tilbakemelding).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
@@ -144,37 +160,50 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         open={visVedtakModal}
         width="600px"
         buttonLabel="Innvilg søknaden"
-        onBekreft={() => opprettVedtak()}
+        onBekreft={form.handleSubmit(opprettVedtak)}
         onClose={() => setVisVedtakModal(false)}
       >
         <Brødtekst spacing>
           Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
           innlogget side på nav.no
         </Brødtekst>
-        <TextField
-          label={
-            <HStack wrap={false} gap="2" align={'center'}>
-              <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-              <HelpText>
-                <Bleed marginInline="full" asChild>
-                  <Brødtekst>
-                    Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                    dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
-                    OeBS som tidligere.
-                  </Brødtekst>
-                </Bleed>
-              </HelpText>
-            </HStack>
-          }
-          onChange={(event) => setOebsProblemsammendrag(event.target.value)}
-          size="small"
-          value={oebsProblemsammendrag}
-        />
+        <FormProvider {...form}>
+          <VStack gap="5">
+            <TextField
+              label={
+                <HStack wrap={false} gap="2" align="center">
+                  <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                  <HelpText>
+                    <Bleed marginInline="full" asChild>
+                      <Brødtekst>
+                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
+                        i OeBS som tidligere.
+                      </Brødtekst>
+                    </Bleed>
+                  </HelpText>
+                </HStack>
+              }
+              size="small"
+              {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
+            />
+            <Box borderWidth="1" borderColor="border-default" padding="5">
+              <HStack as={Heading} level="2" size="small" wrap={false} gap="2" align="center" spacing>
+                Spørreundersøkelse
+                <HelpText>TODO</HelpText>
+              </HStack>
+              <Brødtekst spacing>
+                Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.
+              </Brødtekst>
+              <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" />
+            </Box>
+          </VStack>
+        </FormProvider>
       </BekreftelseModal>
       <OverførGosysModal
         {...overførGosys}
-        onBekreft={async (spørreundersøkelse, besvarelse, svar) => {
-          await overførGosys.onBekreft(spørreundersøkelse, besvarelse, svar)
+        onBekreft={async (tilbakemelding) => {
+          await overførGosys.onBekreft(tilbakemelding)
           logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
           logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
         }}

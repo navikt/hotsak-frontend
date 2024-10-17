@@ -44,7 +44,9 @@ export function VurderVilkår() {
   }
 
   useEffect(() => {
-    errorRef?.current && errorRef.current.focus()
+    if (errorRef?.current) {
+      errorRef.current.focus()
+    }
   }, [hasError])
 
   useEffect(() => {

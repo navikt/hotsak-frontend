@@ -1,7 +1,8 @@
-import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 import { desanitizeName } from './Besvarelse'
 import { informasjon_om_hjelpemiddel_v1 } from './informasjon_om_hjelpemiddel_v1'
+import { kontaktet_formidler_v1 } from './kontaktet_formidler_v1.ts'
+import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 
 export type Spørsmålstype = 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
 
@@ -9,7 +10,7 @@ export interface ISpørsmål {
   type: Spørsmålstype
   tekst: string
   beskrivelse?: string
-  påkrevd?: boolean
+  påkrevd?: boolean | string
 }
 
 export interface IAlternativer {
@@ -40,13 +41,14 @@ export interface IOppfølgingsspørsmål extends ISpørsmål, ISpørsmålsliste 
 export interface ISpørreundersøkelse extends ISpørsmålsliste {
   skjema: string
   tittel: string
-  beskrivelse?: { header: string; body: string }
+  beskrivelse?: { header: string; body: string; helpText?: string }
 }
 
 export const spørreundersøkelser = {
-  sak_overført_gosys_v1,
   barnebrillesak_overført_gosys_v1,
   informasjon_om_hjelpemiddel_v1,
+  kontaktet_formidler_v1,
+  sak_overført_gosys_v1,
 }
 
 export type SpørreundersøkelseId = keyof typeof spørreundersøkelser

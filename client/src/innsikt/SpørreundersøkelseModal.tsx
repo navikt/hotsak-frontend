@@ -1,29 +1,27 @@
+import { Alert, Button, Modal, ModalProps } from '@navikt/ds-react'
 import { useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Alert, Button, Modal, ModalProps, ReadMore, VStack } from '@navikt/ds-react'
-
-import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
-import { useSpørreundersøkelse } from './useSpørreundersøkelse'
-import { Spørsmål } from './Spørsmål'
-import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
 import { logDebug } from '../utvikling/logDebug'
+import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
+import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
+import { SpørreundersøkelseStack } from './SpørreundersøkelseStack.tsx'
+import { useSpørreundersøkelse } from './useSpørreundersøkelse'
 
-export interface SpørreundersøkelseProps extends Pick<ModalProps, 'open'> {
+export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'> {
   loading?: boolean
   spørreundersøkelseId: SpørreundersøkelseId
   size?: 'medium' | 'small'
   knappetekst?: string
 
-  onBesvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
+  onBesvar(svar: ISvar[], besvarelse: IBesvarelse, spørreundersøkelse: ISpørreundersøkelse): void | Promise<void>
   error?: string | undefined
   onClose?(): void
 }
 
-export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
+export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps) {
   const { open, loading, spørreundersøkelseId, size, knappetekst = 'Besvar', onBesvar, onClose, error } = props
   const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse(spørreundersøkelseId)
-  const { spørsmål } = spørreundersøkelse
   const form = useForm<IBesvarelse>({ defaultValues })
   const { formState, reset, handleSubmit } = form
   const ref = useRef<HTMLDialogElement>(null)
@@ -49,20 +47,11 @@ export function Spørreundersøkelse(props: SpørreundersøkelseProps) {
           onSubmit={handleSubmit(async (besvarelse) => {
             const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
             logDebug(svar)
-            return onBesvar(spørreundersøkelse, besvarelse, svar)
+            return onBesvar(svar, besvarelse, spørreundersøkelse)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>
-            <VStack gap="5">
-              {spørreundersøkelse.beskrivelse && (
-                <ReadMore header={spørreundersøkelse.beskrivelse.header} size={size}>
-                  {spørreundersøkelse.beskrivelse.body}
-                </ReadMore>
-              )}
-              {spørsmål.map((spørsmål) => (
-                <Spørsmål key={spørsmål.tekst} spørsmål={spørsmål} nivå={0} size={size} />
-              ))}
-            </VStack>
+            <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
           </Modal.Body>
           <Modal.Footer>
             <Button

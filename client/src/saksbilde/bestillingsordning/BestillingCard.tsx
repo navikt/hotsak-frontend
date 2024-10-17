@@ -45,7 +45,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
 
   const overtaBestilling = async () => {
     setLoading(true)
-    await postTildeling(sakId).catch(() => setLoading(false))
+    await postTildeling(sakId, true).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)

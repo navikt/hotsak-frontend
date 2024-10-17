@@ -1,6 +1,6 @@
 import { HGrid } from '@navikt/ds-react'
 import { memo, Suspense } from 'react'
-import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 
 import styled from 'styled-components'
@@ -9,6 +9,7 @@ import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
+import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
@@ -17,31 +18,21 @@ import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
+import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 import { useVarsler } from './varsler/useVarsler'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
-import { SøknadCard } from './venstremeny/SøknadCard'
 import { LeveringCard } from './venstremeny/LeveringCard'
+import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { Saksvarsler } from './bestillingsordning/Saksvarsler'
-import { useBehovsmelding } from './useBehovsmelding'
 
 const SaksbildeContent = memo(() => {
-  const { sak, isError } = useSak()
-  const { behovsmelding, isError: isBehovsmeldingError /*, isLoading: isBehovsmeldingLoading*/ } = useBehovsmelding()
+  const { sak } = useSak()
+  const { behovsmelding } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler } = useVarsler()
-  const { showBoundary } = useErrorBoundary()
-
-  if (isError) {
-    showBoundary(isError)
-  }
-
-  if (isBehovsmeldingError) {
-    showBoundary(isBehovsmeldingError)
-  }
 
   const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
 

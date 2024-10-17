@@ -18,6 +18,7 @@ import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { useOverførGosys } from '../useOverførGosys'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { TaSakKonfliktModal } from '../TaSakKonfliktModal.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -29,6 +30,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
+  const [visTildelSakKonfliktModal, setVisTildelSakKonfliktModal] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const [oebsProblemsammendrag, setOebsProblemsammendrag] = useState(
@@ -47,7 +49,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
 
   const overtaSak = async () => {
     setLoading(true)
-    await postTildeling(sakId).catch(() => setLoading(false))
+    await postTildeling(sakId, true).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -102,7 +104,11 @@ export function VedtakCard({ sak }: VedtakCardProps) {
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt
+            oppgavereferanse={sakId}
+            gåTilSak={false}
+            onTildelingKonflikt={() => setVisTildelSakKonfliktModal(true)}
+          ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
     )
@@ -123,6 +129,12 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           onBekreft={() => overtaSak()}
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}
+        />
+        <TaSakKonfliktModal
+          open={visTildelSakKonfliktModal}
+          onÅpneSak={undefined}
+          onClose={() => setVisTildelSakKonfliktModal(false)}
+          saksbehandler={sak.saksbehandler}
         />
       </VenstremenyCard>
     )

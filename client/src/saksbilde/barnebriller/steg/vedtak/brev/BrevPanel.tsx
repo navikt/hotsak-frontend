@@ -34,7 +34,7 @@ export function BrevPanel(props: BrevPanelProps) {
     if (sakId && brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
       hentForhåndsvisning(sakId, brevtype)
     }
-  }, [sakId, brevtype])
+  }, [sakId, brevtype, hentForhåndsvisning])
 
   if (!sakId) {
     return <div>Saksnummer mangler.</div>

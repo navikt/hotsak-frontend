@@ -1,11 +1,8 @@
 import { MouseEvent, useState } from 'react'
-
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
-
 import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
@@ -22,6 +19,7 @@ interface MenyKnappProps {
   gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
+  setKonfliktModalOpen: (val: string | undefined) => void
   onMutate: (...args: any[]) => any
 }
 
@@ -32,12 +30,21 @@ export const MenyKnapp = ({
   kanTildeles,
   sakstype,
   gåTilSak = false,
+  setKonfliktModalOpen,
   onMutate,
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: gåTilSak, sakstype: sakstype })
+  const { onTildel } = useTildeling({
+    sakId: sakId,
+    gåTilSak: gåTilSak,
+    sakstype: sakstype,
+    onTildelingKonflikt: () => {
+      setKonfliktModalOpen(sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`)
+      onMutate()
+    },
+  })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
@@ -71,7 +78,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId)
+    postTildeling(sakId, true)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)

@@ -96,7 +96,7 @@ export function EndreHjelpemiddel({
                   {hmsNr !== '' && isError ? (
                     <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
                   ) : (
-                    hjelpemiddel?.navn ?? ''
+                    (hjelpemiddel?.navn ?? '')
                   )}
                 </Tekst>
               </VStack>

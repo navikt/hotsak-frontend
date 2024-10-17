@@ -1,7 +1,6 @@
 import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
 import styled from 'styled-components'
-
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'

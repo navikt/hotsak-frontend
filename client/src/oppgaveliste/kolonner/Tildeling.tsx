@@ -1,23 +1,15 @@
-import { memo, useState } from 'react'
-
+import { memo } from 'react'
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
 import { Oppgave, Sakstype } from '../../types/types.internal'
 import { IkkeTildelt } from './IkkeTildelt'
-import { TaSakKonfliktModal } from '../../saksbilde/TaSakKonfliktModal.tsx'
-import { useNavigate } from 'react-router-dom'
 
 interface TildelingProps {
   oppgave: Oppgave
+  setKonfliktModalOpen: (val: string | undefined) => void
   onMutate: ((...args: any[]) => any) | null
 }
 
-export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
-  const [konfliktModalOpen, setKonfliktModalOpen] = useState(false)
-  const navigate = useNavigate()
-  const onÅpneSak = () => {
-    const path = oppgave.sakstype !== Sakstype.TILSKUDD ? `/sak/${oppgave.sakId}/hjelpemidler` : `/sak/${oppgave.sakId}`
-    navigate(path)
-  }
+export const Tildeling = memo(({ oppgave, setKonfliktModalOpen, onMutate }: TildelingProps) => {
   if (oppgave.saksbehandler || oppgave.kanTildeles) {
     return (
       <>
@@ -27,17 +19,13 @@ export const Tildeling = memo(({ oppgave, onMutate }: TildelingProps) => {
             oppgavereferanse={oppgave.sakId}
             gåTilSak={true}
             onTildelingKonflikt={() => {
-              setKonfliktModalOpen(true)
+              setKonfliktModalOpen(
+                oppgave.sakstype !== Sakstype.TILSKUDD ? `/sak/${oppgave.sakId}/hjelpemidler` : `/sak/${oppgave.sakId}`
+              )
               if (onMutate) onMutate()
             }}
           />
         )}
-        <TaSakKonfliktModal
-          open={konfliktModalOpen}
-          onÅpneSak={onÅpneSak}
-          onClose={() => setKonfliktModalOpen(false)}
-          saksbehandler={oppgave.saksbehandler}
-        />
       </>
     )
   }

@@ -31,6 +31,9 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
+import { TaSakKonfliktModal } from '../saksbilde/TaSakKonfliktModal.tsx'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -40,6 +43,12 @@ export function Oppgaveliste() {
   const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
+
+  const navigate = useNavigate()
+  const [konfliktModalOpen, setKonfliktModalOpen] = useState<string | undefined>(undefined)
+  const konfliktModalÅpneSak = () => {
+    if (konfliktModalOpen) navigate(konfliktModalOpen)
+  }
 
   const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -72,7 +81,7 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <Tildeling oppgave={oppgave} onMutate={mutate} />
+        return <Tildeling oppgave={oppgave} setKonfliktModalOpen={setKonfliktModalOpen} onMutate={mutate} />
       },
     },
     {
@@ -197,6 +206,7 @@ export function Oppgaveliste() {
             gåTilSak={true}
             sakstype={oppgave.sakstype}
             kanTildeles={oppgave.kanTildeles}
+            setKonfliktModalOpen={setKonfliktModalOpen}
             onMutate={mutate}
           />
         )
@@ -323,6 +333,12 @@ export function Oppgaveliste() {
                   totalElements={totalElements}
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
+                />
+                <TaSakKonfliktModal
+                  open={!!konfliktModalOpen}
+                  onÅpneSak={konfliktModalÅpneSak}
+                  onClose={() => setKonfliktModalOpen(undefined)}
+                  saksbehandler={undefined}
                 />
               </ScrollWrapper>
             ) : (

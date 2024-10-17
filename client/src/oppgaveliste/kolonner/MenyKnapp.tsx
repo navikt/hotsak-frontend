@@ -1,19 +1,14 @@
 import { MouseEvent, useState } from 'react'
-
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
-
 import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
-import { TaSakKonfliktModal } from '../../saksbilde/TaSakKonfliktModal.tsx'
-import { useNavigate } from 'react-router-dom'
 
 interface MenyKnappProps {
   sakId: string
@@ -24,6 +19,7 @@ interface MenyKnappProps {
   gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
+  setKonfliktModalOpen: (val: string | undefined) => void
   onMutate: (...args: any[]) => any
 }
 
@@ -34,19 +30,18 @@ export const MenyKnapp = ({
   kanTildeles,
   sakstype,
   gåTilSak = false,
+  setKonfliktModalOpen,
   onMutate,
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) => {
-  const navigate = useNavigate()
   const saksbehandler = useInnloggetSaksbehandler()
-  const [konfliktModalOpen, setKonfliktModalOpen] = useState(false)
   const { onTildel } = useTildeling({
     sakId: sakId,
     gåTilSak: gåTilSak,
     sakstype: sakstype,
     onTildelingKonflikt: () => {
-      setKonfliktModalOpen(true)
+      setKonfliktModalOpen(sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`)
       onMutate()
     },
   })
@@ -56,11 +51,6 @@ export const MenyKnapp = ({
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
-  }
-
-  const onÅpneSak = () => {
-    const path = sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`
-    navigate(path)
   }
 
   const kanOvertaSakStatuser = [OppgaveStatusType.TILDELT_SAKSBEHANDLER, OppgaveStatusType.AVVENTER_DOKUMENTASJON]
@@ -155,12 +145,6 @@ export const MenyKnapp = ({
         </Dropdown>
       </div>
       <OverførGosysModal {...overførGosys} />
-      <TaSakKonfliktModal
-        open={konfliktModalOpen}
-        onÅpneSak={onÅpneSak}
-        onClose={() => setKonfliktModalOpen(false)}
-        saksbehandler={tildeltSaksbehandler}
-      />
     </>
   )
 }

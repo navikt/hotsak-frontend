@@ -1,4 +1,5 @@
 import { memo } from 'react'
+
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
 import { Oppgave, Sakstype } from '../../types/types.internal'
 import { IkkeTildelt } from './IkkeTildelt'

@@ -2,6 +2,7 @@ import { memo, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import { HGrid } from '@navikt/ds-react'
+
 import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
 import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'

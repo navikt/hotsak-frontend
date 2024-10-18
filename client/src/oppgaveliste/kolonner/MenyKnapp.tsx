@@ -1,8 +1,11 @@
 import { MouseEvent, useState } from 'react'
+
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
+
 import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'

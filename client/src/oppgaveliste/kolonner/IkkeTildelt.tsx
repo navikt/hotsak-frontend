@@ -1,9 +1,12 @@
 import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
+
 import { Button } from '@navikt/ds-react'
+
 import { postTildeling, ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
+
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 interface IkkeTildeltProps {

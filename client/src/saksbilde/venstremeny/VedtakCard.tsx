@@ -151,7 +151,6 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         />
         <TaSakKonfliktModal
           open={visTildelSakKonfliktModal}
-          onÅpneSak={undefined}
           onClose={() => setVisTildelSakKonfliktModal(false)}
           saksbehandler={sak.saksbehandler}
         />

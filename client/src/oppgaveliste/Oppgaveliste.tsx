@@ -45,10 +45,7 @@ export function Oppgaveliste() {
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const navigate = useNavigate()
-  const [konfliktModalOpen, setKonfliktModalOpen] = useState<string | undefined>(undefined)
-  const konfliktModalÅpneSak = () => {
-    if (konfliktModalOpen) navigate(konfliktModalOpen)
-  }
+  const [taSakKonfliktModalOpen, setTaSakKonfliktModalOpen] = useState<string | undefined>(undefined)
 
   const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -81,7 +78,7 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <Tildeling oppgave={oppgave} setKonfliktModalOpen={setKonfliktModalOpen} onMutate={mutate} />
+        return <Tildeling oppgave={oppgave} setKonfliktModalOpen={setTaSakKonfliktModalOpen} onMutate={mutate} />
       },
     },
     {
@@ -206,7 +203,7 @@ export function Oppgaveliste() {
             gåTilSak={true}
             sakstype={oppgave.sakstype}
             kanTildeles={oppgave.kanTildeles}
-            setKonfliktModalOpen={setKonfliktModalOpen}
+            setKonfliktModalOpen={setTaSakKonfliktModalOpen}
             onMutate={mutate}
           />
         )
@@ -335,10 +332,11 @@ export function Oppgaveliste() {
                   onPageChange={(page: number) => setCurrentPage(page)}
                 />
                 <TaSakKonfliktModal
-                  open={!!konfliktModalOpen}
-                  onÅpneSak={konfliktModalÅpneSak}
-                  onClose={() => setKonfliktModalOpen(undefined)}
-                  saksbehandler={undefined}
+                  open={!!taSakKonfliktModalOpen}
+                  onClose={() => setTaSakKonfliktModalOpen(undefined)}
+                  onPrimaryAction={() => {
+                    if (taSakKonfliktModalOpen) navigate(taSakKonfliktModalOpen)
+                  }}
                 />
               </ScrollWrapper>
             ) : (

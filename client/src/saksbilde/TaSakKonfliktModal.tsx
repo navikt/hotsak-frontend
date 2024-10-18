@@ -5,12 +5,12 @@ import { Saksbehandler } from '../types/types.internal.ts'
 
 interface TaSakKonfliktModalProps {
   open: boolean
-  onÅpneSak: (() => void) | undefined
   onClose: () => void
+  onPrimaryAction?: () => void
   saksbehandler?: Saksbehandler
 }
 
-export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }: TaSakKonfliktModalProps) {
+export function TaSakKonfliktModal({ open, onClose, onPrimaryAction, saksbehandler }: TaSakKonfliktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div
@@ -29,7 +29,7 @@ export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }:
     >
       <Modal
         ref={ref}
-        closeOnBackdropClick={true}
+        closeOnBackdropClick={false}
         width={'500px'}
         open={open}
         onClose={onClose}
@@ -40,15 +40,15 @@ export function TaSakKonfliktModal({ open, onÅpneSak, onClose, saksbehandler }:
             {`Denne saken ble tatt av en annen saksbehandler før deg.`}
             {saksbehandler && ` Saken behandles nå av ${saksbehandler.navn}.`}
           </Tekst>
-          {onÅpneSak && <Tekst spacing={true}>{`Hvis dette er feil kan du åpne saken og overta den.`}</Tekst>}
-          {!onÅpneSak && <Tekst spacing={true}>{`Hvis dette er feil kan du overta saken.`}</Tekst>}
+          {onPrimaryAction && <Tekst spacing={true}>{`Hvis dette er feil kan du åpne saken og overta den.`}</Tekst>}
+          {!onPrimaryAction && <Tekst spacing={true}>{`Hvis dette er feil kan du overta saken.`}</Tekst>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" size="small" onClick={onClose} disabled={false}>
             Lukk
           </Button>
-          {onÅpneSak && (
-            <Button variant={'secondary'} size="small" onClick={onÅpneSak} disabled={false} loading={false}>
+          {onPrimaryAction && (
+            <Button variant={'secondary'} size="small" onClick={onPrimaryAction} disabled={false} loading={false}>
               Åpne sak
             </Button>
           )}

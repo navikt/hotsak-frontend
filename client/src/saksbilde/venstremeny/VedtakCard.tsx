@@ -144,7 +144,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         </Knappepanel>
         <OvertaSakModal
           open={visOvertaSakModal}
-          saksbehandler={saksbehandler.navn}
+          saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
           onBekreft={() => overtaSak()}
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}

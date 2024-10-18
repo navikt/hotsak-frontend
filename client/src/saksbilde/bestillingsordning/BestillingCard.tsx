@@ -116,7 +116,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
         </Knappepanel>
         <OvertaSakModal
           open={visOvertaSakModal}
-          saksbehandler={saksbehandler.navn}
+          saksbehandler={bestilling?.saksbehandler?.navn || '<Ukjent>'}
           type="bestilling"
           onBekreft={() => overtaBestilling()}
           loading={loading}

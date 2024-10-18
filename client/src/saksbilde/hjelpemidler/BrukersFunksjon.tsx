@@ -6,7 +6,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
   const { funksjonsbeskrivelse } = props
   const { beskrivelse } = funksjonsbeskrivelse
   return (
-    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }} maxWidth={'800px'}>
+    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4' }} maxWidth={'800px'}>
       <Heading level="1" size="small" spacing>
         Funksjonsvurdering
       </Heading>

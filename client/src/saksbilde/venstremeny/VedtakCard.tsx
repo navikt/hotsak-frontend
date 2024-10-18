@@ -39,7 +39,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
-  const [visTildelSakKonfliktModal, setVisTildelSakKonfliktModal] = useState(false)
+  const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
@@ -126,7 +126,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           <IkkeTildelt
             oppgavereferanse={sakId}
             gåTilSak={false}
-            onTildelingKonflikt={() => setVisTildelSakKonfliktModal(true)}
+            onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
           ></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
@@ -150,8 +150,8 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           onClose={() => setVisOvertaSakModal(false)}
         />
         <TaSakKonfliktModal
-          open={visTildelSakKonfliktModal}
-          onClose={() => setVisTildelSakKonfliktModal(false)}
+          open={visTildelSakKonfliktModalForSak}
+          onClose={() => setVisTildelSakKonfliktModalForSak(false)}
           saksbehandler={sak.saksbehandler}
         />
       </VenstremenyCard>

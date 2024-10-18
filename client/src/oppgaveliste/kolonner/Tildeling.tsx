@@ -6,11 +6,11 @@ import { IkkeTildelt } from './IkkeTildelt'
 
 interface TildelingProps {
   oppgave: Oppgave
-  setKonfliktModalOpen: (val: string | undefined) => void
+  visTildelingKonfliktModalForSak: (val: string | undefined) => void
   onMutate: ((...args: any[]) => any) | null
 }
 
-export const Tildeling = memo(({ oppgave, setKonfliktModalOpen, onMutate }: TildelingProps) => {
+export const Tildeling = memo(({ oppgave, visTildelingKonfliktModalForSak, onMutate }: TildelingProps) => {
   if (oppgave.saksbehandler || oppgave.kanTildeles) {
     return (
       <>
@@ -20,7 +20,7 @@ export const Tildeling = memo(({ oppgave, setKonfliktModalOpen, onMutate }: Tild
             oppgavereferanse={oppgave.sakId}
             gåTilSak={true}
             onTildelingKonflikt={() => {
-              setKonfliktModalOpen(
+              visTildelingKonfliktModalForSak(
                 oppgave.sakstype !== Sakstype.TILSKUDD ? `/sak/${oppgave.sakId}/hjelpemidler` : `/sak/${oppgave.sakId}`
               )
               if (onMutate) onMutate()

@@ -45,7 +45,7 @@ export function Oppgaveliste() {
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const navigate = useNavigate()
-  const [taSakKonfliktModalOpen, setTaSakKonfliktModalOpen] = useState<string | undefined>(undefined)
+  const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -78,7 +78,13 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <Tildeling oppgave={oppgave} setKonfliktModalOpen={setTaSakKonfliktModalOpen} onMutate={mutate} />
+        return (
+          <Tildeling
+            oppgave={oppgave}
+            visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
+            onMutate={mutate}
+          />
+        )
       },
     },
     {
@@ -203,7 +209,7 @@ export function Oppgaveliste() {
             gåTilSak={true}
             sakstype={oppgave.sakstype}
             kanTildeles={oppgave.kanTildeles}
-            setKonfliktModalOpen={setTaSakKonfliktModalOpen}
+            setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}
           />
         )
@@ -332,10 +338,10 @@ export function Oppgaveliste() {
                   onPageChange={(page: number) => setCurrentPage(page)}
                 />
                 <TaSakKonfliktModal
-                  open={!!taSakKonfliktModalOpen}
-                  onClose={() => setTaSakKonfliktModalOpen(undefined)}
+                  open={!!visTildelingKonfliktModalForSak}
+                  onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
                   onPrimaryAction={() => {
-                    if (taSakKonfliktModalOpen) navigate(taSakKonfliktModalOpen)
+                    if (visTildelingKonfliktModalForSak) navigate(visTildelingKonfliktModalForSak)
                   }}
                 />
               </ScrollWrapper>

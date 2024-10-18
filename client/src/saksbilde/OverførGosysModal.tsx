@@ -1,4 +1,4 @@
-import type { ISvar } from '../innsikt/Besvarelse'
+import type { Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal.tsx'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
@@ -7,7 +7,7 @@ export interface OverførGosysModalProps {
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
 
-  onBekreft(tilbakemelding: ISvar[]): void | Promise<void>
+  onBekreft(tilbakemelding: Tilbakemelding): void | Promise<void>
   onClose(): void
 }
 

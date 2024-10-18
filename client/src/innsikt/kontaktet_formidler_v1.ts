@@ -3,7 +3,7 @@ import type { ISpørreundersøkelse } from './spørreundersøkelser'
 const påkrevd = 'Du må svare på spørsmålet før du innvilger søknaden.'
 
 export const kontaktet_formidler_v1: ISpørreundersøkelse = {
-  skjema: 'barnebrillesak_overført_gosys_v1',
+  skjema: 'kontaktet_formidler_v1',
   tittel: 'Spørreundersøkelse',
   spørsmål: [
     {

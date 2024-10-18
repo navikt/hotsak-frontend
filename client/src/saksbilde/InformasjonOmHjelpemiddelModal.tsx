@@ -1,4 +1,4 @@
-import type { ISvar } from '../innsikt/Besvarelse'
+import type { Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal.tsx'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
@@ -6,7 +6,7 @@ export interface InformasjonOmHjelpemiddelModalProps {
   open: boolean
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
-  onBesvar(tilbakemelding: ISvar[]): void | Promise<void>
+  onBesvar(tilbakemelding: Tilbakemelding): void | Promise<void>
   error: string | undefined
   onClose(): void
 }

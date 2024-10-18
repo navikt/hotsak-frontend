@@ -26,7 +26,7 @@ export function useOverførGosys(
     async onBekreft(tilbakemelding) {
       setLoading(true)
       try {
-        await putSendTilGosys(sakId, tilbakemelding)
+        await putSendTilGosys(sakId, tilbakemelding.svar)
         await mutate(`api/sak/${sakId}`, `api/sak/${sakId}/historikk`)
       } finally {
         setLoading(false)

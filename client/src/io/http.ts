@@ -1,11 +1,10 @@
-import type { ISvar } from '../innsikt/Besvarelse'
+import type { ISvar, Tilbakemelding } from '../innsikt/Besvarelse'
 
 import type {
   AvvisBestilling,
   BrevTekst,
   Brevtype,
   EndreHjelpemiddelRequest,
-  HjelpemiddelType,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
@@ -222,7 +221,7 @@ export const putVedtak = async (
   sakId: number | string,
   status: VedtakStatusType,
   problemsammendrag: string,
-  tilbakemelding: ISvar[]
+  tilbakemelding: Tilbakemelding
 ) => {
   return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag, tilbakemelding })
 }
@@ -243,14 +242,9 @@ export const putSendTilGosys = async (sakId: number | string, tilbakemelding: IS
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding })
 }
 
-export const postInformasjonOmHjelpemiddel = async (
-  sakId: number | string,
-  tilbakemelding: ISvar[],
-  hjelpemiddel: HjelpemiddelType
-) => {
-  return post(`${baseUrl}/api/sak/${sakId}/informasjon-om-hjelpemiddel`, {
+export const postTilbakemelding = async (sakId: number | string, tilbakemelding: Tilbakemelding) => {
+  return post(`${baseUrl}/api/sak/${sakId}/tilbakemelding`, {
     tilbakemelding,
-    hjelpemiddel,
   })
 }
 

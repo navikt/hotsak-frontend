@@ -21,6 +21,12 @@ export interface ISvar {
   svar: string
 }
 
+export interface Tilbakemelding<T = any> {
+  skjema: string
+  svar: ISvar[]
+  data?: T
+}
+
 export function joinToName(...segments: Array<string | undefined>): string {
   return segments.filter((segment) => !!segment).join('.')
 }

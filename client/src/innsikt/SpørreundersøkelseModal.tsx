@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { logDebug } from '../utvikling/logDebug'
-import { besvarelseToSvar, IBesvarelse, ISvar } from './Besvarelse'
+import { besvarelseToSvar, IBesvarelse, Tilbakemelding } from './Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { SpørreundersøkelseStack } from './SpørreundersøkelseStack.tsx'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
@@ -14,7 +14,11 @@ export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'>
   size?: 'medium' | 'small'
   knappetekst?: string
 
-  onBesvar(svar: ISvar[], besvarelse: IBesvarelse, spørreundersøkelse: ISpørreundersøkelse): void | Promise<void>
+  onBesvar(
+    tilbakemelding: Tilbakemelding,
+    besvarelse: IBesvarelse,
+    spørreundersøkelse: ISpørreundersøkelse
+  ): void | Promise<void>
   error?: string | undefined
   onClose?(): void
 }
@@ -47,7 +51,14 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
           onSubmit={handleSubmit(async (besvarelse) => {
             const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
             logDebug(svar)
-            return onBesvar(svar, besvarelse, spørreundersøkelse)
+            return onBesvar(
+              {
+                skjema: spørreundersøkelse.skjema,
+                svar,
+              },
+              besvarelse,
+              spørreundersøkelse
+            )
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>

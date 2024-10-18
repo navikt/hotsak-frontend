@@ -23,6 +23,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
         await sakStore.tildel(sakId, true)
         return respondConflict()
       }
+      if (sakId == '1111' && overtaHvisTildelt === false) {
+        await barnebrillesakStore.tildel(sakId, true)
+        return respondConflict()
+      }
       if (await sakStore.tildel(sakId)) {
         return respondNoContent()
       }

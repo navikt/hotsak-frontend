@@ -265,8 +265,12 @@ export class BarnebrillesakStore extends Dexie {
     return sak
   }
 
-  async lagreHendelse(sakId: string, hendelse: string, detaljer?: string) {
-    const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
+  async lagreHendelse(sakId: string, hendelse: string, detaljer?: string, noenAndre: boolean = false) {
+    let { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
+    if (noenAndre) {
+      const { navn: annenBruker } = await this.saksbehandlerStore.ikkeInnloggetSaksbehandler()
+      bruker = annenBruker
+    }
     return this.hendelser.put({
       id: this.idGenerator.nesteId().toString(),
       opprettet: new Date().toISOString(),
@@ -281,18 +285,21 @@ export class BarnebrillesakStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
-  async tildel(sakId: string) {
+  async tildel(sakId: string, noenAndre: boolean = false) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
     }
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    let saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    if (noenAndre) {
+      saksbehandler = await this.saksbehandlerStore.ikkeInnloggetSaksbehandler()
+    }
     this.transaction('rw', this.saker, this.hendelser, () => {
       this.saker.update(sakId, {
         saksbehandler: saksbehandler,
         status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
       })
-      this.lagreHendelse(sakId, 'Saksbehandler har tatt saken')
+      this.lagreHendelse(sakId, 'Saksbehandler har tatt saken', undefined, noenAndre)
     })
     return true
   }

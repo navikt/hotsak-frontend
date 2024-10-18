@@ -19,7 +19,8 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
-import { memo, Suspense } from 'react'
+import { memo, Suspense, useState } from 'react'
+import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 
 const BarnebrillesakContainer = styled.div`
   display: flex;
@@ -40,6 +41,7 @@ const BarnebrillesakContent = memo(() => {
   const { step } = useManuellSaksbehandlingContext()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { showBoundary } = useErrorBoundary()
+  const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   if (isError) {
     showBoundary(isError)
@@ -65,9 +67,15 @@ const BarnebrillesakContent = memo(() => {
             tildeltSaksbehandler={sak.data.saksbehandler}
             status={sak.data.status}
             kanTildeles={sak.kanTildeles}
+            setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}
             knappeTekst="Meny"
             knappeIkon={<ChevronDownIcon />}
+          />
+          <TildelingKonfliktModal
+            open={!!visTildelingKonfliktModalForSak}
+            onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
+            saksbehandler={sak.data.saksbehandler}
           />
         </HStack>
       </Header>

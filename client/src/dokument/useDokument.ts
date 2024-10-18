@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { httpGetPdf, PDFResponse } from '../io/http'
 import type { Ressurs } from '../types/types.internal'
@@ -22,7 +22,7 @@ export function useDokument(): DokumentResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = (valgtJournalpostID: string, dokumentID: string) => {
+  const hentForhåndsvisning = useCallback((valgtJournalpostID: string, dokumentID: string) => {
     settHentetDokument(byggHenterRessurs())
     setIsPdfError(null)
 
@@ -37,8 +37,7 @@ export function useDokument(): DokumentResponse {
         settHentetDokument(byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
         setIsPdfError(error)
       })
-  }
-
+  }, [])
   return {
     isPdfError,
     hentForhåndsvisning,

@@ -14,8 +14,10 @@ export function useJournalposter(): JournalposterResponse {
   const { data, error } = useSwr<{ data: Dokument[] }>(`api/sak/${saksnummer}/dokumenter`, httpGet)
 
   return {
-    dokumenter: data?.data || [],
+    dokumenter: data?.data || ingenDokumenter,
     isLoading: !error && !data,
     isError: error,
   }
 }
+
+const ingenDokumenter: Dokument[] = []

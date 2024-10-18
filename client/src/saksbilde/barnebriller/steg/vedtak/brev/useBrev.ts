@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { httpGetPdf, PDFResponse } from '../../../../../io/http'
 import { useDokumentContext } from '../../../../../dokument/DokumentContext'
@@ -28,23 +28,25 @@ export function useBrev(/*brevressurs?: Ressurs<string>, brevRessursError?: bool
     settHentetBrev(brevtype, byggTomRessurs())
   }
 
-  const hentForhåndsvisning = (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {
-    settHentetBrev(brevtype, byggHenterRessurs())
-    setIsDokumentError(null)
+  const hentForhåndsvisning = useCallback(
+    (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {
+      settHentetBrev(brevtype, byggHenterRessurs())
+      setIsDokumentError(null)
 
-    const response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
+      const response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
 
-    response
-      .then((response: PDFResponse) => {
-        settHentetBrev(brevtype, byggDataRessurs(window.URL.createObjectURL(response.data)))
-        setIsDokumentError(null)
-      })
-      .catch((error: any) => {
-        settHentetBrev(brevtype, byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
-        setIsDokumentError(error)
-      })
-  }
-
+      response
+        .then((response: PDFResponse) => {
+          settHentetBrev(brevtype, byggDataRessurs(window.URL.createObjectURL(response.data)))
+          setIsDokumentError(null)
+        })
+        .catch((error: any) => {
+          settHentetBrev(brevtype, byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
+          setIsDokumentError(error)
+        })
+    },
+    [settHentetBrev]
+  )
   return {
     //journalpost: data?.data,
     //isLoading: !error && !data,

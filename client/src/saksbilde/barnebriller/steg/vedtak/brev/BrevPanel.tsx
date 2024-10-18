@@ -34,7 +34,7 @@ export function BrevPanel(props: BrevPanelProps) {
     if (sakId && brevtype === Brevtype.BARNEBRILLER_VEDTAK) {
       hentForhåndsvisning(sakId, brevtype)
     }
-  }, [sakId, brevtype, hentForhåndsvisning])
+  }, [sakId, brevtype]) // todo -> få lagt til hentForhåndsvisning i avhengighetslisten, det gir render loop pt.
 
   if (!sakId) {
     return <div>Saksnummer mangler.</div>

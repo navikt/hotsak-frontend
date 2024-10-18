@@ -176,8 +176,12 @@ export const hentBrukerdataMedPost: any = async ([
   }
 }
 
-export const postTildeling = async (sakId: number | string) => {
-  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
+export const postTildeling = async (sakId: number | string, overtaHvisTildelt: boolean | undefined = undefined) => {
+  let data = {}
+  if (!overtaHvisTildelt) {
+    data = { overtaHvisTildelt: false }
+  }
+  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, data)
 }
 
 // Nytt oppgave API

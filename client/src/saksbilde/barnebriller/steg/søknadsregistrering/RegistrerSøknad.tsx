@@ -28,7 +28,7 @@ const RegistrerSøknadContent = memo(() => {
     if (dokumenter && dokumenter.length > 0) {
       setValgtDokument({ journalpostID, dokumentID })
     }
-  }, [journalpostID, dokumentID])
+  }, [journalpostID, dokumentID, dokumenter, setValgtDokument])
 
   if (isLoading) return <LasterRegistrerSøknadBilde />
 

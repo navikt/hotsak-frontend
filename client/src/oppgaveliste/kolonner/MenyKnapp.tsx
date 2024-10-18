@@ -22,6 +22,7 @@ interface MenyKnappProps {
   gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
+  setKonfliktModalOpen: (val: string | undefined) => void
   onMutate: (...args: any[]) => any
 }
 
@@ -32,12 +33,21 @@ export const MenyKnapp = ({
   kanTildeles,
   sakstype,
   gåTilSak = false,
+  setKonfliktModalOpen,
   onMutate,
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { onTildel } = useTildeling({ sakId: sakId, gåTilSak: gåTilSak, sakstype: sakstype })
+  const { onTildel } = useTildeling({
+    sakId: sakId,
+    gåTilSak: gåTilSak,
+    sakstype: sakstype,
+    onTildelingKonflikt: () => {
+      setKonfliktModalOpen(sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`)
+      onMutate()
+    },
+  })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
@@ -71,7 +81,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId)
+    postTildeling(sakId, true)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)

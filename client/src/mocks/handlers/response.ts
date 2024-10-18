@@ -25,6 +25,10 @@ export function respondNotFound(): Response {
   return new Response(null, { status: 404 })
 }
 
+export function respondConflict(): Response {
+  return new Response(null, { status: 409 })
+}
+
 export function respondInternalServerError(): Response {
   return new Response(null, { status: 500 })
 }

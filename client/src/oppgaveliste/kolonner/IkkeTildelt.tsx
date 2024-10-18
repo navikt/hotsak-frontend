@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 
 import { Button } from '@navikt/ds-react'
 
-import { postTildeling } from '../../io/http'
+import { postTildeling, ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
@@ -12,13 +12,18 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 interface IkkeTildeltProps {
   oppgavereferanse: number | string
   gåTilSak: boolean
+  onTildelingKonflikt?: () => void
 }
 
-export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildeltProps) => {
+export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
+  const oppdaterSakOgHistorie = () => {
+    mutate(`api/sak/${oppgavereferanse}`)
+    mutate(`api/sak/${oppgavereferanse}/historikk`)
+  }
   const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
@@ -30,16 +35,21 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false }: IkkeTildelt
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgavereferanse)
-      .catch(() => setIsFetching(false))
+    postTildeling(oppgavereferanse, false)
       .then(() => {
-        setIsFetching(false)
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
           navigate(destinationUrl)
         } else {
-          mutate(`api/sak/${oppgavereferanse}`)
-          mutate(`api/sak/${oppgavereferanse}/historikk`)
+          oppdaterSakOgHistorie()
+        }
+      })
+      .catch((e: ResponseError) => {
+        if (e.statusCode == 409 && onTildelingKonflikt) {
+          onTildelingKonflikt()
+        } else {
+          setIsFetching(false)
+          oppdaterSakOgHistorie()
         }
       })
   }

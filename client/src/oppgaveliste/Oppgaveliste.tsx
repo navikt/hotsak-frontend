@@ -31,6 +31,9 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
+import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -40,6 +43,9 @@ export function Oppgaveliste() {
   const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
+
+  const navigate = useNavigate()
+  const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
     sakerFilter,
@@ -72,7 +78,13 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <Tildeling oppgave={oppgave} />
+        return (
+          <Tildeling
+            oppgave={oppgave}
+            visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
+            onMutate={mutate}
+          />
+        )
       },
     },
     {
@@ -197,6 +209,7 @@ export function Oppgaveliste() {
             gåTilSak={true}
             sakstype={oppgave.sakstype}
             kanTildeles={oppgave.kanTildeles}
+            setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}
           />
         )
@@ -323,6 +336,13 @@ export function Oppgaveliste() {
                   totalElements={totalElements}
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
+                />
+                <TildelingKonfliktModal
+                  open={!!visTildelingKonfliktModalForSak}
+                  onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
+                  onPrimaryAction={() => {
+                    if (visTildelingKonfliktModalForSak) navigate(visTildelingKonfliktModalForSak)
+                  }}
                 />
               </ScrollWrapper>
             ) : (

@@ -17,7 +17,7 @@ export function DokumentPanel() {
     if (journalpostID && dokumentID) {
       hentForhåndsvisning(journalpostID, dokumentID)
     }
-  }, [journalpostID, dokumentID])
+  }, [journalpostID, dokumentID, hentForhåndsvisning])
 
   if (isPdfError) {
     return (

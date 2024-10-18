@@ -37,14 +37,14 @@ export function ManuellJournalføring() {
     if (journalpost?.fnrInnsender) {
       setFodselsnummer(journalpost.fnrInnsender)
     }
-  }, [journalpost?.fnrInnsender])
+  }, [journalpost?.fnrInnsender, setFodselsnummer])
 
   useEffect(() => {
     if (journalpostID && dokumenter && dokumenter.length > 0) {
       const førsteDokment = dokumenter[0]
       setValgtDokument({ journalpostID, dokumentID: førsteDokment.dokumentID })
     }
-  }, [journalpostID, dokumenter])
+  }, [journalpostID, dokumenter, setValgtDokument])
 
   if (isError) {
     if (isError?.statusCode === 403) {

@@ -1,30 +1,30 @@
-import { Box, Heading, List, VStack } from '@navikt/ds-react'
-import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
+import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
   const { funksjonsbeskrivelse } = props
   const { beskrivelse } = funksjonsbeskrivelse
   return (
-    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }} maxWidth={'1000px'}>
+    <Box paddingBlock="10" paddingInline={{ xs: '0 4', sm: '0 4', md: '0 32' }} maxWidth={'800px'}>
       <Heading level="1" size="small" spacing>
         Funksjonsvurdering
       </Heading>
-      <VStack gap="4">
-        <List
-          title="Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig nedsatt funksjonsevne:"
-          size="small"
-        >
-          <List.Item>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</List.Item>
-        </List>
+      <VStack gap="6">
+        <Box>
+          <Etikett>
+            Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig nedsatt funksjonsevne:
+          </Etikett>
+          <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
+        </Box>
         {beskrivelse && (
-          <>
+          <Box>
             <Etikett>
               Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
               innbygger i dagliglivet:
             </Etikett>
             <Brødtekst>{beskrivelse}</Brødtekst>
-          </>
+          </Box>
         )}
       </VStack>
     </Box>

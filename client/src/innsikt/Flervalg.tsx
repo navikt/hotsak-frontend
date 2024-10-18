@@ -21,7 +21,7 @@ export function Flervalg(props: SpørsmålProps<IFlervalg>) {
   return (
     <Controller
       name={name}
-      rules={{ required: påkrevd && 'Må fylles ut' }}
+      rules={{ required: påkrevd === true ? 'Må fylles ut' : påkrevd }}
       shouldUnregister={true}
       defaultValue={defaultValue}
       control={control}

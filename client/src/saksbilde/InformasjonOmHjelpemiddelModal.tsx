@@ -1,12 +1,12 @@
-import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
-import { Spørreundersøkelse } from '../innsikt/Spørreundersøkelse'
-import type { ISpørreundersøkelse, SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import type { Tilbakemelding } from '../innsikt/Besvarelse'
+import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal.tsx'
+import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
 export interface InformasjonOmHjelpemiddelModalProps {
   open: boolean
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
-  onBesvar(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
+  onBesvar(tilbakemelding: Tilbakemelding): void | Promise<void>
   error: string | undefined
   onClose(): void
 }
@@ -20,7 +20,7 @@ export function InformasjonOmHjelpemiddelModal({
   error,
 }: InformasjonOmHjelpemiddelModalProps) {
   return (
-    <Spørreundersøkelse
+    <SpørreundersøkelseModal
       open={open}
       loading={loading}
       spørreundersøkelseId={spørreundersøkelseId}

@@ -30,3 +30,5 @@ client/cypress/fixtures/example.json
 *.iml
 
 server/secure.log
+
+*.tsbuildinfo

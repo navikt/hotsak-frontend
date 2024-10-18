@@ -250,8 +250,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           </div>
           <InformasjonOmHjelpemiddelModal
             {...informasjonOmHjelpemiddel}
-            onBesvar={async (spørreundersøkelse, besvarelse, svar) => {
-              await informasjonOmHjelpemiddel.onBesvar(spørreundersøkelse, besvarelse, svar)
+            onBesvar={async (tilbakemelding) => {
+              await informasjonOmHjelpemiddel.onBesvar(tilbakemelding)
             }}
           />
         </>

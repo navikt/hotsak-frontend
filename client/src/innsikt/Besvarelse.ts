@@ -10,13 +10,21 @@ export interface ISvarMedOppfølgingsspørsmål extends ISvarUtenOppfølgingssp�
 
 export type Svar = ISvarUtenOppfølgingsspørsmål | ISvarMedOppfølgingsspørsmål
 
-export interface IBesvarelse extends Record<string, Svar> {}
+export interface IBesvarelse {
+  [spørsmål: string]: Svar
+}
 
 export interface ISvar {
   type: Spørsmålstype | ''
   spørsmål: string
   sti: string[]
   svar: string
+}
+
+export interface Tilbakemelding<T = any> {
+  skjema: string
+  svar: ISvar[]
+  data?: T
 }
 
 export function joinToName(...segments: Array<string | undefined>): string {

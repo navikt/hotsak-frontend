@@ -23,10 +23,10 @@ export function useOverførGosys(
     onClose() {
       setOpen(false)
     },
-    async onBekreft(spørreundersøkelse, besvarelse, svar) {
+    async onBekreft(tilbakemelding) {
       setLoading(true)
       try {
-        await putSendTilGosys(sakId, spørreundersøkelse, besvarelse, svar)
+        await putSendTilGosys(sakId, tilbakemelding.svar)
         await mutate(`api/sak/${sakId}`, `api/sak/${sakId}/historikk`)
       } finally {
         setLoading(false)

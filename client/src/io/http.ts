@@ -1,19 +1,17 @@
-import { isNumber } from '../utils/type'
+import type { ISvar, Tilbakemelding } from '../innsikt/Besvarelse'
 
 import type {
   AvvisBestilling,
   BrevTekst,
   Brevtype,
   EndreHjelpemiddelRequest,
-  HjelpemiddelType,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
   VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
-import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
-import { ISpørreundersøkelse } from '../innsikt/spørreundersøkelser'
+import { isNumber } from '../utils/type'
 
 export const IKKE_FUNNET = 404
 export interface SaksbehandlingApiResponse<T = any> {
@@ -223,8 +221,13 @@ export const deleteFjernTildeling = async (sakId: number | string) => {
   return del(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
 }
 
-export const putVedtak = async (sakId: number | string, status: VedtakStatusType, problemsammendrag: string) => {
-  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag })
+export const putVedtak = async (
+  sakId: number | string,
+  status: VedtakStatusType,
+  problemsammendrag: string,
+  tilbakemelding: Tilbakemelding
+) => {
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag, tilbakemelding })
 }
 
 export const putFerdigstillBestilling = async (sakId: number | string, status: OppgaveStatusType) => {
@@ -239,27 +242,13 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
   return put(`${baseUrl}/api/bestilling/${sakId}`, endreHjelpemiddel)
 }
 
-export const putSendTilGosys = async (
-  sakId: number | string,
-  spørreundersøkelse: ISpørreundersøkelse,
-  besvarelse: IBesvarelse,
-  svar: ISvar[]
-) => {
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { spørreundersøkelse, besvarelse, tilbakemelding: svar })
+export const putSendTilGosys = async (sakId: number | string, tilbakemelding: ISvar[]) => {
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding })
 }
 
-export const postInformasjonOmHjelpemiddel = async (
-  sakId: number | string,
-  spørreundersøkelse: ISpørreundersøkelse,
-  besvarelse: IBesvarelse,
-  svar: ISvar[],
-  hjelpemiddel: HjelpemiddelType
-) => {
-  return post(`${baseUrl}/api/sak/${sakId}/informasjon-om-hjelpemiddel`, {
-    spørreundersøkelse,
-    besvarelse,
-    tilbakemelding: svar,
-    hjelpemiddel,
+export const postTilbakemelding = async (sakId: number | string, tilbakemelding: Tilbakemelding) => {
+  return post(`${baseUrl}/api/sak/${sakId}/tilbakemelding`, {
+    tilbakemelding,
   })
 }
 

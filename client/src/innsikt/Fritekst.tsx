@@ -21,7 +21,7 @@ export function Fritekst(props: SpørsmålProps<IFritekst>) {
       error={error?.message}
       maxLength={maksLengde}
       {...register(name, {
-        required: påkrevd && 'Må fylles ut',
+        required: påkrevd === true ? 'Må fylles ut' : påkrevd,
         maxLength: maksLengde ?? 1000,
         shouldUnregister: true,
       })}

@@ -1,19 +1,19 @@
-import { Spørreundersøkelse } from '../innsikt/Spørreundersøkelse'
-import type { IBesvarelse, ISvar } from '../innsikt/Besvarelse'
-import type { ISpørreundersøkelse, SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import type { Tilbakemelding } from '../innsikt/Besvarelse'
+import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal.tsx'
+import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
 export interface OverførGosysModalProps {
   open: boolean
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
 
-  onBekreft(spørreundersøkelse: ISpørreundersøkelse, besvarelse: IBesvarelse, svar: ISvar[]): void | Promise<void>
+  onBekreft(tilbakemelding: Tilbakemelding): void | Promise<void>
   onClose(): void
 }
 
 export function OverførGosysModal({ open, loading, spørreundersøkelseId, onBekreft, onClose }: OverførGosysModalProps) {
   return (
-    <Spørreundersøkelse
+    <SpørreundersøkelseModal
       open={open}
       loading={loading}
       spørreundersøkelseId={spørreundersøkelseId}

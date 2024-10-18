@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { logDebug } from '../utvikling/logDebug.ts'
 
 export function useLocalStorageState<S = undefined>(
   key: string,
@@ -12,6 +13,7 @@ export function useLocalStorageState<S = undefined>(
       try {
         return deserialize(localStorageValue)
       } catch (error) {
+        logDebug(error)
         window.localStorage.removeItem(key)
       }
     }

@@ -22,7 +22,7 @@ interface MenyKnappProps {
   gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
-  setKonfliktModalOpen: (val: string | undefined) => void
+  setKonfliktModalOpen?: (val: string | undefined) => void
   onMutate: (...args: any[]) => any
 }
 
@@ -44,7 +44,8 @@ export const MenyKnapp = ({
     gåTilSak: gåTilSak,
     sakstype: sakstype,
     onTildelingKonflikt: () => {
-      setKonfliktModalOpen(sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`)
+      if (setKonfliktModalOpen)
+        setKonfliktModalOpen(sakstype !== Sakstype.TILSKUDD ? `/sak/${sakId}/hjelpemidler` : `/sak/${sakId}`)
       onMutate()
     },
   })

@@ -29,13 +29,13 @@ describe('Saksbehandling bestilling', () => {
 
     const innvilModal = cy
       .findByRole('dialog', {
-        name: /vil du godkjenne bestillingen/i,
+        name: /Opprett ordre i OeBS/i,
       })
       .should('be.visible')
 
     innvilModal.within(() => {
       cy.findByRole('button', {
-        name: /godkjenn/i,
+        name: /Opprett ordre i OeBS/i,
       }).click()
     })
 

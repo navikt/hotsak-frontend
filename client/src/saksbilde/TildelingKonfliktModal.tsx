@@ -3,14 +3,14 @@ import { Button, Modal } from '@navikt/ds-react'
 import { useRef } from 'react'
 import { Saksbehandler } from '../types/types.internal.ts'
 
-interface TaSakKonfliktModalProps {
+interface TildelingKonfliktModalProps {
   open: boolean
   onClose: () => void
   onPrimaryAction?: () => void
   saksbehandler?: Saksbehandler
 }
 
-export function TaSakKonfliktModal({ open, onClose, onPrimaryAction, saksbehandler }: TaSakKonfliktModalProps) {
+export function TildelingKonfliktModal({ open, onClose, onPrimaryAction, saksbehandler }: TildelingKonfliktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div

@@ -22,7 +22,7 @@ import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { useOverførGosys } from '../useOverførGosys'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { TaSakKonfliktModal } from '../TaSakKonfliktModal.tsx'
+import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -149,7 +149,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
           loading={loading}
           onClose={() => setVisOvertaSakModal(false)}
         />
-        <TaSakKonfliktModal
+        <TildelingKonfliktModal
           open={visTildelSakKonfliktModalForSak}
           onClose={() => setVisTildelSakKonfliktModalForSak(false)}
           saksbehandler={sak.saksbehandler}

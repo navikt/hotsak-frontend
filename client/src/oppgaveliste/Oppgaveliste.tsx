@@ -31,7 +31,7 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
-import { TaSakKonfliktModal } from '../saksbilde/TaSakKonfliktModal.tsx'
+import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -337,7 +337,7 @@ export function Oppgaveliste() {
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
                 />
-                <TaSakKonfliktModal
+                <TildelingKonfliktModal
                   open={!!visTildelingKonfliktModalForSak}
                   onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
                   onPrimaryAction={() => {

@@ -172,7 +172,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         heading="Vil du innvilge søknaden?"
         loading={loading}
         open={visVedtakModal}
-        width="600px"
+        width="700px"
         buttonLabel="Innvilg søknaden"
         onBekreft={form.handleSubmit(opprettVedtak)}
         onClose={() => setVisVedtakModal(false)}
@@ -204,7 +204,18 @@ export function VedtakCard({ sak }: VedtakCardProps) {
             <Box borderWidth="1" borderColor="border-default" padding="5">
               <HStack as={Heading} level="2" size="small" wrap={false} gap="2" align="center" spacing>
                 Spørreundersøkelse
-                <HelpText>TODO</HelpText>
+                <HelpText placement="right">
+                  <Bleed marginInline="full" asChild>
+                    <Brødtekst>
+                      Denne undersøkelsen varer fra 21. til 23.oktober. Hensikten er å lære mer om hvilken informasjon
+                      dere trenger i sakene, og hvilken informasjon dere får fra formidler. Resultatet fra undersøkelsen
+                      vil gjøre oss i stand til å lære mer om behovet for informasjon i sakene. Når vi etter hvert vil
+                      be om flere opplysninger i behovsmeldingen, så kan vi gjøre en ny undersøkelse. Da kan vi se om
+                      behovet for å innhente informasjon fra formidler har gått ned. Takk for at dere hjelper oss ved å
+                      svare!
+                    </Brødtekst>
+                  </Bleed>
+                </HelpText>
               </HStack>
               <Brødtekst spacing>
                 Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.

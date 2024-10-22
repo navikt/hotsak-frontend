@@ -1,4 +1,4 @@
-import { Bleed, Box, Button, Heading, HelpText, HStack, Tag, TextField, VStack } from '@navikt/ds-react'
+import { Bleed, Box, Button, Heading, HelpText, HStack, ReadMore, Tag, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -20,9 +20,9 @@ import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { mutateSak } from '../mutateSak.ts'
 import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
+import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { useOverførGosys } from '../useOverførGosys'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -202,11 +202,16 @@ export function VedtakCard({ sak }: VedtakCardProps) {
               {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
             />
             <Box borderWidth="1" borderColor="border-default" padding="5">
-              <HStack as={Heading} level="2" size="small" wrap={false} gap="2" align="center" spacing>
+              <Heading level="2" size="small" spacing>
                 Spørreundersøkelse
-                <HelpText placement="right">
-                  <Bleed marginInline="full" asChild>
-                    <Brødtekst>
+              </Heading>
+              <VStack gap="6">
+                <div>
+                  <Brødtekst>
+                    Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.
+                  </Brødtekst>
+                  <ReadMore header="Grunnen til at vi samler inn denne informasjonen" size="small">
+                    <Brødtekst spacing>
                       Denne undersøkelsen varer fra 21. til 23.oktober. Hensikten er å lære mer om hvilken informasjon
                       dere trenger i sakene, og hvilken informasjon dere får fra formidler. Resultatet fra undersøkelsen
                       vil gjøre oss i stand til å lære mer om behovet for informasjon i sakene. Når vi etter hvert vil
@@ -214,13 +219,11 @@ export function VedtakCard({ sak }: VedtakCardProps) {
                       behovet for å innhente informasjon fra formidler har gått ned. Takk for at dere hjelper oss ved å
                       svare!
                     </Brødtekst>
-                  </Bleed>
-                </HelpText>
-              </HStack>
-              <Brødtekst spacing>
-                Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.
-              </Brødtekst>
-              <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" size="small" />
+                  </ReadMore>
+                </div>
+
+                <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" size="small" />
+              </VStack>
             </Box>
           </VStack>
         </FormProvider>

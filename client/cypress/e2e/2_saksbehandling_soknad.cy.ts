@@ -22,12 +22,6 @@ describe('Saksbehandling søknad', () => {
       .should('be.visible')
 
     innvilModal.within(() => {
-      cy.findByRole('radio', {
-        name: /Nei/i,
-      }).click()
-      cy.findByRole('checkbox', {
-        name: /Jeg hadde nok opplysninger./i,
-      }).click()
       cy.findByRole('button', {
         name: /innvilg søknaden/i,
       }).click()

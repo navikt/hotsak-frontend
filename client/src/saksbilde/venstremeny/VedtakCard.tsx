@@ -108,6 +108,14 @@ export function VedtakCard({ sak }: VedtakCardProps) {
     )
   }
 
+  if (sak.status === OppgaveStatusType.AVVENTER_JOURNALFØRING) {
+    return (
+      <VenstremenyCard heading="Avventer journalføring">
+        <Tekst>Prøv igjen senere.</Tekst>
+      </VenstremenyCard>
+    )
+  }
+
   if (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <VenstremenyCard heading="Sak ikke startet">

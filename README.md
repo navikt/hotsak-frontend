@@ -49,4 +49,4 @@ Tester kjøres også automatisk i Github Actions ved push.
 ## Deploy
 
 Ved push til main kjøres det deploy til dev-gcp. Appen er tilgjenglig
-på [https://hotsak.dev.intern.nav.no](https://hotsak.dev.intern.nav.no).
+på [https://hotsak.intern.dev.nav.no/](https://hotsak.intern.dev.nav.no/).

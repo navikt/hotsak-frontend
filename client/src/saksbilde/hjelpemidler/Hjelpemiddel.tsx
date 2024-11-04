@@ -2,14 +2,13 @@ import { ChevronDownIcon, ChevronUpIcon, ExclamationmarkTriangleFillIcon, Person
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
-//import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-//import { putEndreHjelpemiddel } from '../../io/http'
+import { putEndreHjelpemiddel } from '../../io/http'
 import { FritakFraBegrunnelseÅrsak, Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
-  //EndreHjelpemiddelRequest,
+  EndreHjelpemiddelRequest,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
   OppgaveStatusType,
@@ -24,6 +23,8 @@ import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { Utlevert } from './Utlevert'
+import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
+import { useSWRConfig } from 'swr'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
@@ -32,26 +33,23 @@ interface HjelpemiddelProps {
 }
 
 export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: HjelpemiddelProps) {
-  const { status /*, sakId*/ } = sak
+  const { status, sakId } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
-  //const { mutate } = useSWRConfig()
+  const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
   // Må midlertidig hente endretHjelpemiddel fra sak siden dette ikke er en del av behovsmeldingen
-  const endretHjelpemiddel = sak.hjelpemidler.find(
-    (hjlp) => hjelpemiddel.produkt.hmsArtNr === hjlp.hmsnr
-  )?.endretHjelpemiddel
-
-  //const endretProdukt = hjelpemiddel.endretHjelpemiddel
+  const hjelpemiddelFraSak = sak.hjelpemidler.find((hjlp) => hjelpemiddel.produkt.hmsArtNr === hjlp.hmsnr)!
+  const endretHjelpemiddel = hjelpemiddelFraSak.endretHjelpemiddel
 
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsNr : undefined
   )
 
-  /* const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
@@ -61,7 +59,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
     setVisEndreProdukt(false)
   }
 
-  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsNr : hjelpemiddel.produkt.hmsArtNr*/
+  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsNr : hjelpemiddel.produkt.hmsArtNr
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="2">
@@ -240,15 +238,11 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           )}
         </div>
       )}
-      <div>
-        <Strek />
-      </div>
-      {/*TODO: Fikse endret hjelpemiddel med ny mapping*/}
-      {/*forenkletVisning && visEndreProdukt ? (
+      {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
-          hjelpemiddelId={hjelpemiddel.id}
-          hmsNr={hjelpemiddel.hmsnr}
-          hmsBeskrivelse={hjelpemiddel.beskrivelse}
+          hjelpemiddelId={hjelpemiddelFraSak.id}
+          hmsNr={hjelpemiddel.produkt.hmsArtNr}
+          hmsBeskrivelse={hjelpemiddel.produkt.artikkelnavn}
           nåværendeHmsNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}
@@ -257,7 +251,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         <div>
           <Strek />
         </div>
-      )*/}
+      )}
     </VStack>
   )
 }

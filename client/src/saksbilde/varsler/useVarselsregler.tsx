@@ -1,9 +1,10 @@
-import { Leveringsmåte as LeveringsmåteType, VarselFor } from '../../types/types.internal'
-import { useSak } from '../useSak'
+import { Utleveringsmåte } from '../../types/BehovsmeldingTypes'
+import { VarselFor } from '../../types/types.internal'
+import { useBehovsmelding } from '../useBehovsmelding'
 import { useVarsler } from './useVarsler'
 
 export function useVarselsregler() {
-  const { data: sak } = useSak()?.sak ?? { data: undefined }
+  const { behovsmelding } = useBehovsmelding()
   const { varsler } = useVarsler()
 
   const harVarsler = varsler && varsler.length > 0
@@ -12,13 +13,14 @@ export function useVarselsregler() {
     harVarsler,
     harLeveringsVarsel(): boolean {
       return !!(
-        sak?.levering.leveringsmåte === LeveringsmåteType.ANNEN_ADRESSE &&
+        behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE &&
         varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.ANNEN_ADRESSE))
       )
     },
     harBeskjedTilKommuneVarsel(): boolean {
       return !!(
-        sak?.levering.merknad && varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.BESKJED_TIL_KOMMUNE))
+        behovsmelding?.levering.utleveringMerknad &&
+        varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.BESKJED_TIL_KOMMUNE))
       )
     },
     harTilbakeleveringsVarsel(): boolean {

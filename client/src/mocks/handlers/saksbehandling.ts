@@ -157,16 +157,17 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
     const artikler: Artikkel[] = sak?.hjelpemidler
       .map((hjelpemiddel) => {
+        // TODO: Fix dette når behovsmeldingstore er på plass
         const artikkel: Artikkel = {
           hmsnr: hjelpemiddel.hmsnr,
-          navn: hjelpemiddel.beskrivelse,
-          antall: hjelpemiddel.antall,
+          navn: 'navn' /*hjelpemiddel.beskrivelse*/,
+          antall: 69 /*hjelpemiddel.antall*/,
           finnesIOebs: hjelpemiddel.hmsnr === '289689' ? false : true,
         }
-        const tilbehørArtikler: Artikkel[] = hjelpemiddel.tilbehør.map((tilbehør) => {
+        /* const tilbehørArtikler: Artikkel[] = hjelpemiddel.tilbehør.map((tilbehør) => {
           return { hmsnr: tilbehør.hmsNr, navn: tilbehør.navn, antall: tilbehør.antall, finnesIOebs: true }
-        })
-        return [artikkel, ...tilbehørArtikler]
+        })*/
+        return [artikkel /*, ...tilbehørArtikler*/]
       })
       .flat()
 

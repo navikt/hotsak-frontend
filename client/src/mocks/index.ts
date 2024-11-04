@@ -1,3 +1,4 @@
+import { RequestHandler } from 'msw'
 import { logDebug } from '../utvikling/logDebug'
 
 export async function initMsw(): Promise<unknown> {
@@ -56,7 +57,9 @@ export async function initMsw(): Promise<unknown> {
 
   const worker = setupWorker(...setupHandlers(store))
   worker.listHandlers().forEach((handler) => {
-    logDebug(handler.info.header)
+    if ((handler as RequestHandler).info) {
+      logDebug((handler as RequestHandler).info.header)
+    }
   })
   return worker.start({
     onUnhandledRequest: 'bypass',

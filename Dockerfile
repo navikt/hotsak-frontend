@@ -1,4 +1,4 @@
-FROM node:20.14.0-alpine as node
+FROM node:lts-alpine as node
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
 RUN npm config set @navikt:registry=https://npm.pkg.github.com
@@ -29,7 +29,7 @@ COPY server/package.json server/package-lock.json ./
 RUN npm ci --omit dev
 
 # runtime
-FROM gcr.io/distroless/nodejs20-debian12 as runtime
+FROM gcr.io/distroless/nodejs22-debian12 as runtime
 WORKDIR /app
 
 ARG NODE_ENV=production

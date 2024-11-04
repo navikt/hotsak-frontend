@@ -1,7 +1,5 @@
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 import { desanitizeName } from './Besvarelse'
-import { informasjon_om_hjelpemiddel_v1 } from './informasjon_om_hjelpemiddel_v1'
-import { kontaktet_formidler_v1 } from './kontaktet_formidler_v1.ts'
 import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 
 export type Spørsmålstype = 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
@@ -46,8 +44,6 @@ export interface ISpørreundersøkelse extends ISpørsmålsliste {
 
 export const spørreundersøkelser = {
   barnebrillesak_overført_gosys_v1,
-  informasjon_om_hjelpemiddel_v1,
-  kontaktet_formidler_v1,
   sak_overført_gosys_v1,
 }
 

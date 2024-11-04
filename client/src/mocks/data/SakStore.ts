@@ -10,15 +10,12 @@ import {
   GreitÅViteType,
   Hendelse,
   Kjønn,
-  KontaktpersonType,
-  Leveringsmåte,
   Oppgave,
   OppgaveStatusType,
   PersonInfoKilde,
   Sak,
   Sakstype,
   SignaturType,
-  UtlevertType,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
@@ -104,18 +101,18 @@ function lagSak(
       {
         id: -1,
         hmsnr: '014112',
-        rangering: 1,
-        alleredeUtlevert: false,
-        utlevertInfo: {
+        //rangering: 1,
+        //alleredeUtlevert: false,
+        /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: 'kommentar',
           overførtFraBruker: '',
-        },
-        antall: 1,
-        kategori: 'Terskeleliminatorer og Kjøreramper',
-        beskrivelse: 'Topro Terskeleliminator',
-        tilleggsinfo: [{ tittel: 'Bruksarena', innholdsliste: ['I eget hjem.'] }],
-        tilbehør: [
+        },*/
+        //antall: 1,
+        //kategori: 'Terskeleliminatorer og Kjøreramper',
+        //beskrivelse: 'Topro Terskeleliminator',
+        //tilleggsinfo: [{ tittel: 'Bruksarena', innholdsliste: ['I eget hjem.'] }],
+        /*tilbehør: [
           {
             hmsNr: '1234',
             antall: 1,
@@ -123,25 +120,25 @@ function lagSak(
             begrunnelse: 'Trenger denne fordi bruker har spesielle behov.',
           },
           { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', fritakFraBegrunnelseÅrsak: 'ER_PÅ_BESTILLINGSORDNING' },
-        ],
-        bytter: [],
+        ],*/
+        //bytter: [],
       },
       {
         id: -1,
         hmsnr: '177946',
-        rangering: 1,
-        alleredeUtlevert: true,
-        utlevertInfo: {
+        //rangering: 1,
+        //alleredeUtlevert: true,
+        /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: 'kommentar',
           overførtFraBruker: '',
-        },
-        antall: 1,
-        kategori: 'Rullator',
-        beskrivelse: 'Gemino 20',
-        tilleggsinfo: [],
-        tilbehør: [],
-        bytter: [
+        },*/
+        //antall: 1,
+        //kategori: 'Rullator',
+        //beskrivelse: 'Gemino 20',
+        //tilleggsinfo: [],
+        //tilbehør: [],
+        /*bytter: [
           {
             hmsnr: '267912',
             hjmNavn: 'Classic Soft',
@@ -150,27 +147,27 @@ function lagSak(
             hjmKategori: 'Krykke',
             årsak: undefined,
           },
-        ],
+        ],*/
       },
       {
         id: -1,
         hmsnr: '289689',
-        rangering: 1,
-        alleredeUtlevert: false,
-        utlevertInfo: {
+        //rangering: 1,
+        //alleredeUtlevert: false,
+        /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: '',
           overførtFraBruker: '',
-        },
-        antall: 1,
-        kategori: 'Alarm- og varslingshjelpemidler',
-        beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
-        tilleggsinfo: [],
-        tilbehør: [],
-        bytter: [],
+        },*/
+        //antall: 1,
+        //kategori: 'Alarm- og varslingshjelpemidler',
+        //beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
+        //tilleggsinfo: [],
+        //tilbehør: [],
+        //bytter: [],
       },
     ],
-    formidler,
+    //formidler,
     innsender: {
       fnr: formidler.fnr,
       navn: formidler.navn,
@@ -200,7 +197,7 @@ function lagSak(
       },
     ],
     mottattDato: opprettet.toISOString(),
-    levering: {
+    /*levering: {
       kontaktperson: {
         navn: lagTilfeldigNavn().fulltNavn,
         telefon: '99887766',
@@ -210,14 +207,14 @@ function lagSak(
       adresse: lagTilfeldigBosted(),
       merknad:
         'Pasienten har sterk angst og slipper ikke alltid inn folk. Det kan også være problemet med kommunikasjon over telefon pga. bruker har afasi. Send sms.',
-    },
-    oppfølgingsansvarlig: {
+    },*/
+    /*oppfølgingsansvarlig: {
       navn: lagTilfeldigNavn().fulltNavn,
       arbeidssted: 'Kommunen',
       stilling: 'Ergoterapeut',
       telefon: lagTilfeldigTelefonnummer(),
       ansvarFor: '',
-    },
+    },*/
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,

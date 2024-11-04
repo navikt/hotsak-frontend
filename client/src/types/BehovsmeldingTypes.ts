@@ -236,6 +236,7 @@ export interface Tilbehør {
 
 export enum FritakFraBegrunnelseÅrsak {
   ER_PÅ_BESTILLINGSORDNING = 'ER_PÅ_BESTILLINGSORDNING',
+  ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
   IKKE_I_PILOT = 'IKKE_I_PILOT',
 }
 

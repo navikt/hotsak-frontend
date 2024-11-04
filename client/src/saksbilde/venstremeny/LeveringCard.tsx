@@ -1,11 +1,7 @@
 import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 
-import {
-  Formidler,
-  Kontaktperson as IKontaktperson,
-  Levering,
-  Leveringsmåte as LeveringsmåteType,
-} from '../../types/types.internal.ts'
+import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
+import { formaterAdresse } from '../../utils/formater.ts'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler.tsx'
 import { VarselIkon } from '../varsler/varselIkon.tsx'
@@ -13,17 +9,15 @@ import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface UtleveringCardProps {
-  formidler: Formidler
   levering: Levering
   adresseBruker: string
-  kontaktperson?: IKontaktperson
 }
 
 export function LeveringCard(props: UtleveringCardProps) {
-  const { formidler, levering, adresseBruker } = props
-  const { kontaktperson, merknad } = levering
+  const { levering, adresseBruker } = props
+  const { utleveringMerknad } = levering
   const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
-  const kontaktpersonTekst = lagKontaktpersonTekst(formidler, kontaktperson)
+  const kontaktpersonTekst = lagKontaktpersonTekst(levering)
   const { harLeveringsVarsel, harBeskjedTilKommuneVarsel } = useVarselsregler()
 
   return (
@@ -37,15 +31,15 @@ export function LeveringCard(props: UtleveringCardProps) {
       >
         {leveringsmåteTekst}
       </VenstremenyCardRow>
-      {merknad && (
+      {utleveringMerknad && (
         <VenstremenyCardRow
           icon={lagMerknadIkon()}
-          copyText={merknad}
+          copyText={utleveringMerknad}
           copyKind="merknad"
           paddingBlock={'0 2'}
           title="Beskjed til kommunen"
         >
-          {merknad}
+          {utleveringMerknad}
         </VenstremenyCardRow>
       )}
       {kontaktpersonTekst && (
@@ -70,16 +64,22 @@ export function LeveringCard(props: UtleveringCardProps) {
   }
 }
 
-function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): [string, string] {
-  switch (leveringsmåte) {
-    case LeveringsmåteType.ALLEREDE_LEVERT:
-    case LeveringsmåteType.ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT:
+function lagLeveringsmåteTekst(
+  { utleveringsmåte, annenUtleveringsadresse }: Levering,
+  adresseBruker: string
+): [string, string] {
+  const annenAdresse = formaterAdresse(annenUtleveringsadresse)
+
+  switch (utleveringsmåte) {
+    case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
       return ['Allerede levert', 'Allerede levert']
-    case LeveringsmåteType.ANNEN_ADRESSE:
-      return [`Til annen adresse: ${adresse}`, adresse || '']
-    case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
+    case Utleveringsmåte.ANNEN_BRUKSADRESSE:
+      return [`Til annen adresse: ${annenAdresse}`, annenAdresse || '']
+    case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
       return [`Til folkeregistert adresse: ${adresseBruker}`, adresseBruker]
-    case LeveringsmåteType.HJELPEMIDDELSENTRAL:
+    case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
       return ['Hentes på hjelpemiddelsentralen', 'Hentes på hjelpemiddelsentralen']
+    default:
+      return ['Ukjent leveringsmåte', 'Ukjent leveringsmåte']
   }
 }

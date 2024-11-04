@@ -1,4 +1,5 @@
 import type { Adresse, HarNavn, Navn } from '../types/types.internal'
+import type { Veiadresse } from '../types/BehovsmeldingTypes'
 import { isNavn, isNumber, isString } from './type'
 
 const beløpFormatter = new Intl.NumberFormat('nb', {
@@ -62,7 +63,7 @@ export function formaterBeløp(verdi?: number | string): string {
   }
 }
 
-export function formaterAdresse(verdi?: Adresse): string {
+export function formaterAdresse(verdi?: Adresse | Veiadresse): string {
   if (!verdi) return ''
   const { adresse, postnummer, poststed } = verdi
   return `${storForbokstavIAlleOrd(adresse)}, ${postnummer} ${storForbokstavIAlleOrd(poststed)}`

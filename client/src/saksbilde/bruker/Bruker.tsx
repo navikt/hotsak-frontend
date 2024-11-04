@@ -5,13 +5,11 @@ import { Avstand } from '../../felleskomponenter/Avstand'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Vilkår } from '../../types/BehovsmeldingTypes'
+import { Levering, Vilkår } from '../../types/BehovsmeldingTypes'
 import {
   Bosituasjon,
   Bruksarena,
-  Formidler,
   Bruker as Hjelpemiddelbruker,
-  Levering,
   PersonInfoKilde,
   Personinformasjon,
 } from '../../types/types.internal'
@@ -24,11 +22,11 @@ export interface BrukerProps {
   bruker: Hjelpemiddelbruker
   person: Personinformasjon
   levering: Levering
-  formidler: Formidler
   vilkår: Vilkår[]
 }
 
-export function Bruker({ bruker, person, levering, formidler, vilkår }: BrukerProps) {
+export function Bruker({ bruker, person, levering, vilkår }: BrukerProps) {
+  const { utleveringMerknad } = levering
   const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(person)
   const bosituasjon = getTextForBosituasjon(person.bosituasjon)
@@ -77,17 +75,17 @@ export function Bruker({ bruker, person, levering, formidler, vilkår }: BrukerP
         <HGrid {...hGridProps}>
           <Etikett>Leveringsadresse</Etikett>
           <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
-          <Kontaktperson formidler={formidler} kontaktperson={levering.kontaktperson} />
-          {levering.merknad && (
+          <Kontaktperson levering={levering} />
+          {utleveringMerknad && (
             <>
               <Merknad>
                 <Avstand paddingTop={1} />
                 <Etikett>Merknad til utlevering</Etikett>
               </Merknad>
               <HStack align="center">
-                <Brødtekst>{levering.merknad}</Brødtekst>
+                <Brødtekst>{utleveringMerknad}</Brødtekst>
                 <Tooltip content="Kopier merknad til utlevering" placement="right">
-                  <CopyButton size="small" copyText={levering.merknad} />
+                  <CopyButton size="small" copyText={utleveringMerknad} />
                 </Tooltip>
               </HStack>
             </>

@@ -1,19 +1,20 @@
 import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 
-import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 
+import { PersonIcon } from '@navikt/aksel-icons'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
-import type { Formidler as FormidlerType, Oppfølgingsansvarlig } from '../../types/types.internal'
-import { PersonIcon } from '@navikt/aksel-icons'
+import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
 
 export interface FormidlerProps {
-  formidler: FormidlerType
-  oppfølgingsansvarlig: Oppfølgingsansvarlig
+  levering: Levering
 }
 
-export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) {
+export function Formidler({ levering }: FormidlerProps) {
+  const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering
+
   const InfoFormidler = () => {
     return (
       <HGrid {...hGridProps}>
@@ -24,11 +25,11 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
         <Etikett>Stilling</Etikett>
         <Brødtekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</Brødtekst>
         <Etikett>Postadresse</Etikett>
-        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.postadresse)}`}</Brødtekst>
+        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</Brødtekst>
         <Etikett>Telefon</Etikett>
         <Brødtekst>{formidler.telefon}</Brødtekst>
         <Etikett>Treffest enklest</Etikett>
-        <Brødtekst>{storForbokstavIAlleOrd(formidler.treffestEnklest)}</Brødtekst>
+        <Brødtekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</Brødtekst>
         <Etikett>E-postadresse</Etikett>
         <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
       </HGrid>
@@ -36,20 +37,37 @@ export function Formidler({ formidler, oppfølgingsansvarlig }: FormidlerProps) 
   }
 
   const InfoOppfølgingsansvarlig = () => {
+    const oppfølging =
+      oppfølgingsansvarlig === Oppfølgingsansvarlig.HJELPEMIDDELFORMIDLER
+        ? {
+            navn: formidler.navn,
+            arbeidssted: formidler.arbeidssted,
+            stilling: formidler.stilling,
+            telefon: formidler.telefon,
+            ansvarFor: '',
+          }
+        : {
+            navn: annenOppfølgingsansvarlig!.navn,
+            arbeidssted: annenOppfølgingsansvarlig!.arbeidssted,
+            stilling: annenOppfølgingsansvarlig!.stilling,
+            telefon: annenOppfølgingsansvarlig!.telefon,
+            ansvarFor: annenOppfølgingsansvarlig!.ansvarFor,
+          }
+
     return (
       <Box paddingBlock="4 0">
         <Merknad>
           <HGrid {...hGridProps}>
             <Etikett>Navn</Etikett>
-            <Brødtekst>{formaterNavn(oppfølgingsansvarlig.navn)}</Brødtekst>
+            <Brødtekst>{formaterNavn(oppfølging.navn)}</Brødtekst>
             <Etikett>Arbeidssted</Etikett>
-            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølgingsansvarlig.arbeidssted)}`}</Brødtekst>
+            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</Brødtekst>
             <Etikett>Stilling</Etikett>
-            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølgingsansvarlig.stilling)}`}</Brødtekst>
+            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Brødtekst>
             <Etikett>Telefon</Etikett>
-            <Brødtekst>{oppfølgingsansvarlig.telefon}</Brødtekst>
+            <Brødtekst>{oppfølging.telefon}</Brødtekst>
             <Etikett>Ansvar</Etikett>
-            <Brødtekst>{storForbokstavIAlleOrd(oppfølgingsansvarlig.ansvarFor)}</Brødtekst>
+            <Brødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Brødtekst>
           </HGrid>
         </Merknad>
       </Box>

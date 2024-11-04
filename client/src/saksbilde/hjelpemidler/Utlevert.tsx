@@ -1,26 +1,26 @@
 import { Tekst } from '../../felleskomponenter/typografi'
-import { UtlevertInfo, UtlevertType } from '../../types/types.internal'
+import { Utlevertinfo, UtlevertType } from '../../types/BehovsmeldingTypes'
 
 interface UtlevertProps {
   alleredeUtlevert: boolean
-  utlevertInfo: UtlevertInfo
+  utlevertInfo: Utlevertinfo
 }
 
 export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
   if (!alleredeUtlevert) return null
 
   let utlevertTekst
-  switch (utlevertInfo.utlevertType) {
-    case UtlevertType.FremskuttLager:
+  switch (utlevertInfo.utleverttype) {
+    case UtlevertType.FREMSKUTT_LAGER:
       utlevertTekst = 'Fra fremskutt lager'
       break
-    case UtlevertType.Overført:
+    case UtlevertType.OVERFØRT:
       utlevertTekst = `Overført fra annen bruker. Brukernummer ${utlevertInfo.annenKommentar}`
       break
-    case UtlevertType.Korttidslån:
+    case UtlevertType.KORTTIDSLÅN:
       utlevertTekst = 'Korttidsutlån/utprøvingslån'
       break
-    case UtlevertType.Annet:
+    case UtlevertType.ANNET:
       utlevertTekst = ` ${utlevertInfo.annenKommentar}`
       break
   }

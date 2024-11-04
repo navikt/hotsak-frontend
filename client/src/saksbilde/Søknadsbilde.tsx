@@ -39,6 +39,8 @@ const SaksbildeContent = memo(() => {
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
+  const levering = behovsmelding.levering
+  const formidler = levering.hjelpemiddelformidler
 
   return (
     <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
@@ -60,14 +62,13 @@ const SaksbildeContent = memo(() => {
             />
             <FormidlerCard
               tittel={erBestilling ? 'Bestiller' : 'Formidler'}
-              stilling={sak.data.formidler.stilling}
-              formidlerNavn={sak.data.formidler.navn}
-              formidlerTelefon={sak.data.formidler.telefon}
-              kommune={sak.data.formidler.poststed}
+              stilling={formidler.stilling}
+              formidlerNavn={formidler.navn}
+              formidlerTelefon={formidler.telefon}
+              kommune={formidler.adresse.poststed}
             />
             <LeveringCard
-              formidler={sak.data.formidler}
-              levering={sak.data.levering}
+              levering={behovsmelding.levering}
               adresseBruker={formaterAdresse(sak.data.personinformasjon)}
             />
             <GreitÅViteCard
@@ -98,18 +99,12 @@ const SaksbildeContent = memo(() => {
                     <Bruker
                       bruker={sak.data.bruker}
                       person={sak.data.personinformasjon}
-                      levering={sak.data.levering}
-                      formidler={sak.data.formidler}
+                      levering={behovsmelding.levering}
                       vilkår={behovsmelding.brukersituasjon.vilkår}
                     />
                   }
                 />
-                <Route
-                  path="/formidler"
-                  element={
-                    <Formidler formidler={sak.data.formidler} oppfølgingsansvarlig={sak.data.oppfølgingsansvarlig} />
-                  }
-                />
+                <Route path="/formidler" element={<Formidler levering={levering} />} />
               </Routes>
             </Container>
           </section>

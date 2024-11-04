@@ -1,61 +1,57 @@
-import {
-  ChatIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ExclamationmarkTriangleFillIcon,
-  PersonFillIcon,
-} from '@navikt/aksel-icons'
+import { ChevronDownIcon, ChevronUpIcon, ExclamationmarkTriangleFillIcon, PersonFillIcon } from '@navikt/aksel-icons'
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
-import { useSWRConfig } from 'swr'
+//import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { putEndreHjelpemiddel } from '../../io/http'
+//import { putEndreHjelpemiddel } from '../../io/http'
+import { FritakFraBegrunnelseÅrsak, Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
-  EndreHjelpemiddelRequest,
+  //EndreHjelpemiddelRequest,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
-  FritakFraBegrunnelseÅrsak,
-  HjelpemiddelType,
   OppgaveStatusType,
   Sak,
 } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIOrd } from '../../utils/formater'
-import { InformasjonOmHjelpemiddelModal } from '../InformasjonOmHjelpemiddelModal'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
-import { EndreHjelpemiddel } from './EndreHjelpemiddel'
 import { Fremhevet } from './Fremhevet.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
-import { useInformasjonOmHjelpemiddel } from './useInformasjonOmHjelpemiddel'
 import { Utlevert } from './Utlevert'
 
 interface HjelpemiddelProps {
-  hjelpemiddel: HjelpemiddelType
+  hjelpemiddel: Hjelpemiddeltype
   forenkletVisning: boolean
   sak: Sak
 }
 
 export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: HjelpemiddelProps) {
-  const { personinformasjon, status, sakId } = sak
+  const { status /*, sakId*/ } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
-  const { mutate } = useSWRConfig()
-  const informasjonOmHjelpemiddel = useInformasjonOmHjelpemiddel(sakId, 'informasjon_om_hjelpemiddel_v1', hjelpemiddel)
+  //const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
-  const informasjonOmHjelpemiddelEnabled = false // sakstype === Sakstype.SØKNAD && status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
-  const produkt = useFinnHjelpemiddel(hjelpemiddel.hmsnr)
-  const endretProdukt = hjelpemiddel.endretHjelpemiddel
+  const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
-  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(endretProdukt ? endretProdukt.hmsNr : undefined)
+  // Må midlertidig hente endretHjelpemiddel fra sak siden dette ikke er en del av behovsmeldingen
+  const endretHjelpemiddel = sak.hjelpemidler.find(
+    (hjlp) => hjelpemiddel.produkt.hmsArtNr === hjlp.hmsnr
+  )?.endretHjelpemiddel
 
-  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+  //const endretProdukt = hjelpemiddel.endretHjelpemiddel
+
+  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
+    endretHjelpemiddel ? endretHjelpemiddel.hmsNr : undefined
+  )
+
+  /* const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
@@ -65,16 +61,16 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
     setVisEndreProdukt(false)
   }
 
-  const nåværendeHmsnr = endretProdukt ? endretProdukt.hmsNr : hjelpemiddel.hmsnr
+  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsNr : hjelpemiddel.produkt.hmsArtNr*/
 
   return (
-    <VStack key={hjelpemiddel.hmsnr} gap="2">
+    <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="2">
       <HjelpemiddelGrid>
         <VStack gap="2">
           {!forenkletVisning && (
-            <Rangering $rank={hjelpemiddel.rangering}>
+            <Rangering $rank={hjelpemiddel.produkt.rangering}>
               <Tekst>Rangering:</Tekst>
-              <Tekst>{hjelpemiddel.rangering}</Tekst>
+              <Tekst>{hjelpemiddel.produkt.rangering}</Tekst>
             </Rangering>
           )}
           <div>{hjelpemiddel.antall} stk</div>
@@ -82,16 +78,19 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         <VStack gap="2">
           <Etikett>{produkt?.isotittel}</Etikett>
           {produkt?.posttitler?.map((posttittel) => <div key={posttittel}>{posttittel}</div>)}
-          {endretProdukt && (
+          {endretHjelpemiddel && (
             <HStack gap="1" align="center">
-              <strong>{endretProdukt.hmsNr}</strong>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretProdukt.hmsNr} />
+              <strong>{endretHjelpemiddel.hmsNr}</strong>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretHjelpemiddel.hmsNr} />
               {endretHjelpemiddelNavn?.navn}
             </HStack>
           )}
-          <HStack gap={endretProdukt ? '3' : '1'} align="center">
-            <strong style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.hmsnr}</strong>
-            {!endretProdukt && <Kopiknapp tooltip="Kopier hmsnr" copyText={hjelpemiddel.hmsnr} />}
+          {/*TODO:  Se videre her på hva vi får fra behovsmelding og hva vi henter fra finn hjelpemiddel*/}
+          <HStack gap={endretHjelpemiddel ? '3' : '1'} align="center">
+            <strong style={{ textDecoration: endretHjelpemiddel ? 'line-through' : '' }}>
+              {hjelpemiddel.produkt.hmsArtNr}
+            </strong>
+            {!endretHjelpemiddel && <Kopiknapp tooltip="Kopier hmsnr" copyText={hjelpemiddel.produkt.hmsArtNr} />}
             {produkt ? (
               <Link
                 href={produkt.produkturl}
@@ -103,45 +102,49 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                 }}
                 target="_blank"
               >
-                <div style={{ textDecoration: endretProdukt ? 'line-through' : '' }}>{hjelpemiddel.beskrivelse}</div>
+                <div style={{ textDecoration: endretHjelpemiddel ? 'line-through' : '' }}>
+                  {hjelpemiddel.produkt.artikkelnavn}
+                </div>
               </Link>
             ) : (
-              hjelpemiddel.beskrivelse
+              hjelpemiddel.produkt.artikkelnavn
             )}
           </HStack>
-          {hjelpemiddel.endretHjelpemiddel && (
+          {endretHjelpemiddel && (
             <HStack gap="2">
               <PersonFillIcon />
               <div>
                 <Etikett>Byttet ut av saksbehandler, begrunnelse:</Etikett>
                 <div>
-                  {hjelpemiddel.endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                    ? hjelpemiddel.endretHjelpemiddel.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(hjelpemiddel.endretHjelpemiddel.begrunnelse)}
+                  {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                    ? endretHjelpemiddel.begrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
                 </div>
               </div>
             </HStack>
           )}
           <div>
-            {hjelpemiddel.tilleggsinfo.length > 0 && (
+            {hjelpemiddel.opplysninger.length > 0 && (
               <Fremhevet>
-                {hjelpemiddel.tilleggsinfo.map((tilleggsinfo) => {
+                {hjelpemiddel.opplysninger.map((opplysning) => {
                   return (
-                    <Fragment key={tilleggsinfo.tittel}>
+                    <Fragment key={opplysning.ledetekst.nb}>
                       <div>
-                        <Etikett>{`${storForbokstavIOrd(tilleggsinfo.tittel)}:`}</Etikett>
+                        <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}:`}</Etikett>
                       </div>
                       <div>
                         <div>
-                          {tilleggsinfo.innholdsliste.map((element) => (
-                            <div key={element}>{element}</div>
+                          {opplysning.innhold.map((element, idx) => (
+                            <div key={idx}>
+                              {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
+                            </div>
                           ))}
                         </div>
                       </div>
                     </Fragment>
                   )
                 })}
-                {hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
+                {/*hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
                   <>
                     <div>
                       <Etikett>Kroppsmål</Etikett>
@@ -150,18 +153,21 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
                       <div>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</div>
                     </div>
                   </>
-                )}
+                )*/}
               </Fremhevet>
             )}
           </div>
           <div>
-            {hjelpemiddel.alleredeUtlevert && (
+            {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
               <HStack gap="2">
                 {harAlleredeLevertVarsel() && (
                   <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
                 )}
                 <Etikett>Utlevert</Etikett>
-                <Utlevert alleredeUtlevert={hjelpemiddel.alleredeUtlevert} utlevertInfo={hjelpemiddel.utlevertInfo} />
+                <Utlevert
+                  alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
+                  utlevertInfo={hjelpemiddel.utlevertinfo}
+                />
               </HStack>
             )}
           </div>
@@ -182,13 +188,13 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
             </div>
           </HjelpemiddelGrid>
           {hjelpemiddel.tilbehør.map((tilbehør) => (
-            <Fragment key={tilbehør.hmsNr}>
+            <Fragment key={tilbehør.hmsArtNr}>
               <HjelpemiddelGrid>
                 <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
                 <VStack>
                   <HStack gap="1" align="center">
-                    <strong>{tilbehør.hmsNr}</strong>
-                    <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsNr} />
+                    <strong>{tilbehør.hmsArtNr}</strong>
+                    <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsArtNr} />
                     {tilbehør.navn}
                   </HStack>
                   {tilbehør.begrunnelse && (
@@ -234,30 +240,11 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           )}
         </div>
       )}
-
-      {informasjonOmHjelpemiddelEnabled && (
-        <>
-          <div style={{ textAlign: 'right' }}>
-            <Button
-              variant="tertiary"
-              size="small"
-              onClick={() => informasjonOmHjelpemiddel.onOpen()}
-              icon={<ChatIcon />}
-              iconPosition="left"
-            >
-              Jeg ønsker mer informasjon
-            </Button>
-          </div>
-          <InformasjonOmHjelpemiddelModal
-            {...informasjonOmHjelpemiddel}
-            onBesvar={async (tilbakemelding) => {
-              await informasjonOmHjelpemiddel.onBesvar(tilbakemelding)
-            }}
-          />
-        </>
-      )}
-
-      {forenkletVisning && visEndreProdukt ? (
+      <div>
+        <Strek />
+      </div>
+      {/*TODO: Fikse endret hjelpemiddel med ny mapping*/}
+      {/*forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
           hjelpemiddelId={hjelpemiddel.id}
           hmsNr={hjelpemiddel.hmsnr}
@@ -270,7 +257,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         <div>
           <Strek />
         </div>
-      )}
+      )*/}
     </VStack>
   )
 }

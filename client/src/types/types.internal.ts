@@ -22,14 +22,14 @@ export interface Sak extends HarSakskjerne {
   sakstype: Sakstype
   søknadGjelder: string
   hjelpemidler: HjelpemiddelType[]
-  formidler: Formidler
+  //formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
   personinformasjon: Personinformasjon
   innsender: Innsender
   bruker: Bruker
-  levering: Levering
-  oppfølgingsansvarlig: Oppfølgingsansvarlig
+  //levering: Levering
+  //oppfølgingsansvarlig: Oppfølgingsansvarlig
   status: OppgaveStatusType
   statusEndret: string
   vedtak?: VedtakType
@@ -453,16 +453,16 @@ export enum KontaktpersonType {
 export interface HjelpemiddelType {
   id: number
   hmsnr: string
-  rangering: number
-  alleredeUtlevert: boolean
-  utlevertInfo: UtlevertInfo
-  antall: number
-  kategori: string
-  beskrivelse: string
-  tilleggsinfo: Tilleggsinfo[]
-  tilbehør: Tilbehør[]
+  //rangering: number
+  //alleredeUtlevert: boolean
+  //utlevertInfo: UtlevertInfo
+  //antall: number
+  //kategori: string
+  //beskrivelse: string
+  //tilleggsinfo: Tilleggsinfo[]
+  //tilbehør: Tilbehør[]
   endretHjelpemiddel?: EndretHjelpemiddel
-  bytter?: Bytte[]
+  //bytter?: Bytte[]
 }
 
 export interface Bytte {

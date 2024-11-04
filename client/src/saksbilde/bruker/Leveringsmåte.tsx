@@ -1,5 +1,6 @@
 import { Tekst } from '../../felleskomponenter/typografi'
-import { Levering, Leveringsmåte as LeveringsmåteType } from '../../types/types.internal'
+import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
+import { formaterAdresse } from '../../utils/formater'
 
 export interface LeveringsmåteProps {
   levering: Levering
@@ -11,16 +12,17 @@ export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps)
   return <Tekst>{leveringsmåteTekst}</Tekst>
 }
 
-function lagLeveringsmåteTekst({ leveringsmåte, adresse }: Levering, adresseBruker: string): string {
-  switch (leveringsmåte) {
-    case LeveringsmåteType.ALLEREDE_LEVERT:
-    case LeveringsmåteType.ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT:
+function lagLeveringsmåteTekst({ utleveringsmåte, annenUtleveringsadresse }: Levering, adresseBruker: string): string {
+  switch (utleveringsmåte) {
+    case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
       return 'Allerede levert'
-    case LeveringsmåteType.ANNEN_ADRESSE:
-      return `${adresse} (Annen adresse)`
-    case LeveringsmåteType.FOLKEREGISTRERT_ADRESSE:
+    case Utleveringsmåte.ANNEN_BRUKSADRESSE:
+      return `${formaterAdresse(annenUtleveringsadresse)} (Annen adresse)`
+    case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
       return `${adresseBruker} (Folkeregistert adresse)`
-    case LeveringsmåteType.HJELPEMIDDELSENTRAL:
+    case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
       return 'Hentes på hjelpemiddelsentralen'
+    case undefined:
+      return 'Ukjent leveringsmåte'
   }
 }

@@ -1,9 +1,9 @@
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 import { HStack, VStack } from '@navikt/ds-react'
 import { Fragment } from 'react'
 import { Etikett } from '../../felleskomponenter/typografi'
-import { Bytte, BytteÅrsak } from '../../types/types.internal'
+import { Bytte, BytteÅrsak } from '../../types/BehovsmeldingTypes'
 import { Fremhevet } from './Fremhevet'
-import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 
 interface Props {
   bytter: Bytte[]

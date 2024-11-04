@@ -1,12 +1,12 @@
 import { Heading, VStack } from '@navikt/ds-react'
 import { Etikett } from '../../felleskomponenter/typografi'
-import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
-import { HjelpemiddelType, Sak } from '../../types/types.internal'
+import { Hjelpemiddel as HjelpemiddelType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { Sak } from '../../types/types.internal'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hastesak } from './Hastesak.tsx'
-import { Hjelpemiddel } from './Hjelpemiddel'
 import { OebsAlert } from './OebsAlert.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak'
+import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 
 interface HjelpemiddelListeProps {
   tittel: string
@@ -16,13 +16,17 @@ interface HjelpemiddelListeProps {
 }
 
 export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak, behovsmelding }: HjelpemiddelListeProps) {
-  const { hjelpemidler, hast } = sak
+  const { hast } = sak
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
+  const { brukersituasjon } = behovsmelding
+  const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
 
-  const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter((hjelpemiddel) => hjelpemiddel.alleredeUtlevert)
-  const funksjonsbeskrivelse = behovsmelding.brukersituasjon.funksjonsbeskrivelse
+  const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter(
+    (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
+  )
+  const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
     <>
@@ -37,14 +41,17 @@ export function HjelpemiddelListe({ tittel, forenkletVisning = false, sak, behov
       <div style={{ paddingTop: '2rem' }} />
       {hjelpemidler.map((hjelpemiddel) => (
         <Hjelpemiddel
-          key={hjelpemiddel.hmsnr}
+          key={hjelpemiddel.produkt.hmsArtNr}
           hjelpemiddel={hjelpemiddel}
           forenkletVisning={forenkletVisning}
           sak={sak}
         />
       ))}
       <VStack gap="2">
-        <Etikett>Totalt {summerAntall(hjelpemidler.filter((it) => !it.alleredeUtlevert))} stk. inkl. tilbehør</Etikett>
+        <Etikett>
+          Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen))}{' '}
+          stk. inkl. tilbehør
+        </Etikett>
         {hjelpemidlerAlleredeUtlevert.length > 0 && (
           <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
         )}

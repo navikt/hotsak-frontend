@@ -124,34 +124,20 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           <div>
             {hjelpemiddel.opplysninger.length > 0 && (
               <Fremhevet>
-                {hjelpemiddel.opplysninger.map((opplysning) => {
-                  return (
-                    <Fragment key={opplysning.ledetekst.nb}>
-                      <div>
-                        <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}:`}</Etikett>
+                <VStack gap="4">
+                  {hjelpemiddel.opplysninger.map((opplysning) => {
+                    return (
+                      <div key={opplysning.ledetekst.nb}>
+                        <Etikett spacing={false}>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}:`}</Etikett>
+                        {opplysning.innhold.map((element, idx) => (
+                          <div key={idx}>
+                            {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
+                          </div>
+                        ))}
                       </div>
-                      <div>
-                        <div>
-                          {opplysning.innhold.map((element, idx) => (
-                            <div key={idx}>
-                              {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </Fragment>
-                  )
-                })}
-                {/*hjelpemiddel.kategori.includes('rullestol') && personinformasjon.kroppsmål && (
-                  <>
-                    <div>
-                      <Etikett>Kroppsmål</Etikett>
-                    </div>
-                    <div>
-                      <div>{`Setebredde ${personinformasjon.kroppsmål.setebredde} cm, legglengde ${personinformasjon.kroppsmål.legglengde} cm, lårlengde ${personinformasjon.kroppsmål.lårlengde} cm, høyde ${personinformasjon.kroppsmål.høyde} cm, kroppsvekt ${personinformasjon.kroppsmål.kroppsvekt} kg.`}</div>
-                    </div>
-                  </>
-                )*/}
+                    )
+                  })}
+                </VStack>
               </Fremhevet>
             )}
           </div>

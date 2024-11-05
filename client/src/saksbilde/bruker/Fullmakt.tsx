@@ -27,7 +27,7 @@ export function Fullmakt({ navn }: FullmaktProps) {
           </li>
           <li>
             <Brødtekst>
-              Fullmakten er arkivert i kommunens arkiv og kan vises frem på forespørsel fra NAV hjelpemiddelsentral.
+              Fullmakten er arkivert i kommunens arkiv og kan vises frem på forespørsel fra Nav Hjelpemiddelsentral.
             </Brødtekst>
           </li>
         </Liste>

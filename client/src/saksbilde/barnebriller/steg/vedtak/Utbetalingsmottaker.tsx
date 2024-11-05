@@ -39,7 +39,7 @@ export function UtbetalingsmottakerAlert(props: UtbetalingsmottakerAlertProps) {
         <SkjemaAlert variant="warning">
           <Etikett>Mangler kontonummer på bruker</Etikett>
           <Detail>
-            Personen som har søkt om tilskudd har ikke registrert et kontonummer i NAV sine systemer. Kontakt
+            Personen som har søkt om tilskudd har ikke registrert et kontonummer i Nav sine systemer. Kontakt
             vedkommende for å be dem registrere et kontonummer.
           </Detail>
           <Detail>Saken kan ikke sendes til godkjenning før det finnes et kontonummer registrert på mottaker</Detail>

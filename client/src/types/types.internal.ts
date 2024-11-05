@@ -21,7 +21,7 @@ export interface Sak extends HarSakskjerne {
   sakId: string
   sakstype: Sakstype
   søknadGjelder: string
-  hjelpemidler: HjelpemiddelType[]
+  //hjelpemidler: HjelpemiddelType[]
   //formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
@@ -461,7 +461,7 @@ export interface HjelpemiddelType {
   //beskrivelse: string
   //tilleggsinfo: Tilleggsinfo[]
   //tilbehør: Tilbehør[]
-  endretHjelpemiddel?: EndretHjelpemiddel
+  //endretHjelpemiddel?: EndretHjelpemiddel
   //bytter?: Bytte[]
 }
 
@@ -482,11 +482,11 @@ export enum BytteÅrsak {
   VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER = 'VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER',
 }
 
-export interface EndretHjelpemiddel {
+/*export interface EndretHjelpemiddel {
   hmsNr: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
-}
+}*/
 
 export interface UtlevertInfo {
   annenKommentar: string
@@ -966,12 +966,16 @@ export interface Saksoversikt_Sak_Felles_Type {
   barnebrilleSak?: Saksoversikt_Barnebrille_Sak
 }
 
-export interface EndreHjelpemiddelRequest {
-  hjelpemiddelId: number
-  hmsNr: string
-  hmsBeskrivelse: string
-  endretHmsNr: string
-  endretHmsBeskrivelse: string
+export interface Bestilling {
+  endredeHjelpemidler: EndretHjelpemiddel[]
+}
+
+export interface EndretHjelpemiddel {
+  hjelpemiddelId: string
+  hmsArtNr: string
+  //hmsBeskrivelse: string
+  endretHmsArtNr: string
+  //endretHmsBeskrivelse: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
 }

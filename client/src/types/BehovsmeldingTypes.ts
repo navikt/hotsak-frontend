@@ -206,6 +206,7 @@ export interface Hjelpemidler {
 }
 
 export interface Hjelpemiddel {
+  hjelpemiddelId: string
   antall: number
   produkt: HjelpemiddelProdukt
   tilbehør: Tilbehør[]

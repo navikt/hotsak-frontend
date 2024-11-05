@@ -6,26 +6,26 @@ import { Box, Button, ErrorMessage, HStack, Radio, RadioGroup, TextField, VStack
 import { Strek } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
-  EndreHjelpemiddelRequest,
+  EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
 } from '../../types/types.internal'
-import { useHjelpemiddel } from './useHjelpemiddel'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
+import { useHjelpemiddel } from './useHjelpemiddel'
 
 interface EndreHjelpemiddelProps {
-  hjelpemiddelId: number
+  hjelpemiddelId: string
   hmsNr: string
-  hmsBeskrivelse: string
+  //hmsBeskrivelse: string
   nåværendeHmsNr?: string
-  onLagre(endreHjelpemiddel: EndreHjelpemiddelRequest): void | Promise<void>
+  onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
   onAvbryt(): void
 }
 
 export function EndreHjelpemiddel({
   hjelpemiddelId: hjelpemiddelId,
   hmsNr: hmsNr,
-  hmsBeskrivelse: hmsBeskrivelse,
+  //hmsBeskrivelse: hmsBeskrivelse,
   nåværendeHmsNr: nåværendeHmsNr,
   onLagre,
   onAvbryt,
@@ -96,7 +96,7 @@ export function EndreHjelpemiddel({
                   {hmsNr !== '' && isError ? (
                     <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
                   ) : (
-                    (hjelpemiddel?.navn ?? '')
+                    hjelpemiddel?.navn ?? ''
                   )}
                 </Tekst>
               </VStack>
@@ -144,10 +144,10 @@ export function EndreHjelpemiddel({
 
                     await onLagre({
                       hjelpemiddelId: hjelpemiddelId,
-                      hmsNr: hmsNr,
-                      hmsBeskrivelse: hmsBeskrivelse,
-                      endretHmsNr: endreProduktHmsnr,
-                      endretHmsBeskrivelse: hjelpemiddel?.navn || '',
+                      hmsArtNr: hmsNr,
+                      //hmsBeskrivelse: hmsBeskrivelse,
+                      endretHmsArtNr: endreProduktHmsnr,
+                      //endretHmsBeskrivelse: hjelpemiddel?.navn || '',
                       begrunnelse: endreBegrunnelse!,
                       begrunnelseFritekst: begrunnelseFritekst,
                     })

@@ -2,13 +2,14 @@ import { ChevronDownIcon, ChevronUpIcon, ExclamationmarkTriangleFillIcon, Person
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
+import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putEndreHjelpemiddel } from '../../io/http'
 import { FritakFraBegrunnelseÅrsak, Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
-  EndreHjelpemiddelRequest,
+  EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
   OppgaveStatusType,
@@ -18,13 +19,13 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { storForbokstavIOrd } from '../../utils/formater'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
+import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
+import { useBestilling } from './endreHjelpemiddel/useBestilling.tsx'
 import { Fremhevet } from './Fremhevet.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { Utlevert } from './Utlevert'
-import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
-import { useSWRConfig } from 'swr'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
@@ -38,28 +39,34 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
+  const { bestilling } = useBestilling()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
-  // Må midlertidig hente endretHjelpemiddel fra sak siden dette ikke er en del av behovsmeldingen
-  const hjelpemiddelFraSak = sak.hjelpemidler.find((hjlp) => hjelpemiddel.produkt.hmsArtNr === hjlp.hmsnr)!
-  const endretHjelpemiddel = hjelpemiddelFraSak.endretHjelpemiddel
+  console.log('Bestilling: ', bestilling)
 
-  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
-    endretHjelpemiddel ? endretHjelpemiddel.hmsNr : undefined
+  const endretHjelpemiddel = bestilling?.endredeHjelpemidler.find(
+    (hjlpm) => hjlpm.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
-  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+  console.log('Endret hjelpemiddel', endretHjelpemiddel)
+
+  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
+    endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
+  )
+
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddel) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         mutate(`api/sak/${sakId}`)
+        mutate(`api/sak/${sakId}/bestilling`)
         mutate(`api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)
   }
 
-  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsNr : hjelpemiddel.produkt.hmsArtNr
+  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hjelpemiddel.produkt.hmsArtNr
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="2">
@@ -78,8 +85,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           {produkt?.posttitler?.map((posttittel) => <div key={posttittel}>{posttittel}</div>)}
           {endretHjelpemiddel && (
             <HStack gap="1" align="center">
-              <strong>{endretHjelpemiddel.hmsNr}</strong>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretHjelpemiddel.hmsNr} />
+              <strong>{endretHjelpemiddel.endretHmsArtNr}</strong>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretHjelpemiddel.endretHmsArtNr} />
               {endretHjelpemiddelNavn?.navn}
             </HStack>
           )}
@@ -226,9 +233,9 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
       )}
       {forenkletVisning && visEndreProdukt ? (
         <EndreHjelpemiddel
-          hjelpemiddelId={hjelpemiddelFraSak.id}
+          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
           hmsNr={hjelpemiddel.produkt.hmsArtNr}
-          hmsBeskrivelse={hjelpemiddel.produkt.artikkelnavn}
+          //hmsBeskrivelse={hjelpemiddel.produkt.artikkelnavn}
           nåværendeHmsNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}

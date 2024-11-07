@@ -2,17 +2,17 @@ import type { Enhet } from '../../types/types.internal'
 
 const vikafossen: Enhet = {
   enhetsnummer: '2103',
-  enhetsnavn: 'NAV Vikafossen',
+  enhetsnavn: 'Nav Vikafossen',
 }
 
 const oslo: Enhet = {
   enhetsnummer: '4703',
-  enhetsnavn: 'NAV Hjelpemiddelsentral Oslo',
+  enhetsnavn: 'Nav Hjelpemiddelsentral Oslo',
 }
 
 const agder: Enhet = {
   enhetsnummer: '4710',
-  enhetsnavn: 'NAV Hjelpemiddelsentral Agder',
+  enhetsnavn: 'Nav Hjelpemiddelsentral Agder',
 }
 
 export const enheter = {

@@ -47,7 +47,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
           <SkjemaAlert variant="error">
             {`Fant ikke kontonummer for ${
               kontoinformasjon?.navn && kontoinformasjon.navn !== '' ? kontoinformasjon.navn : innsenderFnr
-            }. Kontakt personen og be dem legge inn kontonummer hos NAV.`}
+            }. Kontakt personen og be dem legge inn kontonummer hos Nav.`}
           </SkjemaAlert>
         )}
         {error?.status && error.status !== IKKE_FUNNET && (

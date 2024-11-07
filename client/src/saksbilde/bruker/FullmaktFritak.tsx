@@ -22,7 +22,7 @@ export function FullmaktFritak({ navn }: FullmaktFritakProps) {
           </li>
           <li>
             <Brødtekst>
-              {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at NAV kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
+              {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at Nav kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
             </Brødtekst>{' '}
           </li>
         </Liste>

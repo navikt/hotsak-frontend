@@ -1,4 +1,10 @@
-import { ChevronDownIcon, ChevronUpIcon, ExclamationmarkTriangleFillIcon, PersonFillIcon } from '@navikt/aksel-icons'
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExclamationmarkTriangleFillIcon,
+  InformationSquareFillIcon,
+  PersonFillIcon,
+} from '@navikt/aksel-icons'
 import { Button, HStack, Link, VStack } from '@navikt/ds-react'
 import { Fragment, useState } from 'react'
 import styled from 'styled-components'
@@ -7,7 +13,11 @@ import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putEndreHjelpemiddel } from '../../io/http'
-import { FritakFraBegrunnelseÅrsak, Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
+import {
+  FritakFraBegrunnelseÅrsak,
+  Hjelpemiddel as Hjelpemiddeltype,
+  Varseltype,
+} from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
@@ -128,6 +138,26 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
               </div>
             </HStack>
           )}
+          <div>
+            {hjelpemiddel.varsler.length > 0 && (
+              <VStack gap="4">
+                {hjelpemiddel.varsler.map((varsel) => {
+                  return (
+                    <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
+                      <div>
+                        {varsel.type === Varseltype.WARNING ? (
+                          <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+                        ) : (
+                          <InformationSquareFillIcon color="var(--a-icon-info)" fontSize="1.25rem" />
+                        )}
+                      </div>
+                      <Brødtekst>{varsel.tekst.nb}</Brødtekst>
+                    </HStack>
+                  )
+                })}
+              </VStack>
+            )}
+          </div>
           <div>
             {hjelpemiddel.opplysninger.length > 0 && (
               <Fremhevet>

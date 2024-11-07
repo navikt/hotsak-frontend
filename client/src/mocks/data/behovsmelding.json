@@ -96,7 +96,22 @@
             ]
           }
         ],
-        "varsler": []
+        "varsler": [
+          {
+            "tekst": {
+              "nb": "Kommunal formidler har svart at godkjenningskurs personløfter og seil er gjennomført. Dokumentasjon av kurs sjekkes i behandling av saken.",
+              "nn": "Kommunal formidlar har svart at godkjenningskurs personløfter og seil er gjennomført. Dokumentasjon av kurs blir sjekka i behandling av saka."
+            },
+            "type": "WARNING"
+          },
+          {
+            "tekst": {
+              "nb": "Standard glidelaken og trekklaken byttes av Nav til å passe 120 cm bredde.",
+              "nn": "Standard glidelaken og trekklaken blir bytt av Nav til å passa 120 cm breidd."
+            },
+            "type": "INFO"
+          }
+        ]
       }
     ],
     "totaltAntall": 1

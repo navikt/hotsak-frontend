@@ -146,7 +146,7 @@ export function EndreHjelpemiddel({
                       hjelpemiddelId: hjelpemiddelId,
                       hmsArtNr: hmsNr,
                       //hmsBeskrivelse: hmsBeskrivelse,
-                      endretHmsArtNr: endreProduktHmsnr,
+                      //endretHmsArtNr: endreProduktHmsnr,
                       //endretHmsBeskrivelse: hjelpemiddel?.navn || '',
                       begrunnelse: endreBegrunnelse!,
                       begrunnelseFritekst: begrunnelseFritekst,

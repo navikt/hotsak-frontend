@@ -16,7 +16,6 @@ import { useHjelpemiddel } from './useHjelpemiddel'
 interface EndreHjelpemiddelProps {
   hjelpemiddelId: string
   hmsNr: string
-  //hmsBeskrivelse: string
   nåværendeHmsNr?: string
   onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
   onAvbryt(): void
@@ -25,7 +24,6 @@ interface EndreHjelpemiddelProps {
 export function EndreHjelpemiddel({
   hjelpemiddelId: hjelpemiddelId,
   hmsNr: hmsNr,
-  //hmsBeskrivelse: hmsBeskrivelse,
   nåværendeHmsNr: nåværendeHmsNr,
   onLagre,
   onAvbryt,
@@ -144,10 +142,7 @@ export function EndreHjelpemiddel({
 
                     await onLagre({
                       hjelpemiddelId: hjelpemiddelId,
-                      hmsArtNr: hmsNr,
-                      //hmsBeskrivelse: hmsBeskrivelse,
-                      //endretHmsArtNr: endreProduktHmsnr,
-                      //endretHmsBeskrivelse: hjelpemiddel?.navn || '',
+                      hmsArtNr: endreProduktHmsnr,
                       begrunnelse: endreBegrunnelse!,
                       begrunnelseFritekst: begrunnelseFritekst,
                     })

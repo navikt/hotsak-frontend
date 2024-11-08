@@ -4,7 +4,7 @@ import type {
   AvvisBestilling,
   BrevTekst,
   Brevtype,
-  EndreHjelpemiddelRequest,
+  EndretHjelpemiddel,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
@@ -233,7 +233,7 @@ export const putAvvisBestilling = async (sakId: number | string, tilbakemelding:
   return put(`${baseUrl}/api/bestilling/${sakId}/avvisning`, { tilbakemelding })
 }
 
-export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemiddel: EndreHjelpemiddelRequest) => {
+export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemiddel: EndretHjelpemiddel) => {
   return put(`${baseUrl}/api/bestilling/${sakId}`, endreHjelpemiddel)
 }
 

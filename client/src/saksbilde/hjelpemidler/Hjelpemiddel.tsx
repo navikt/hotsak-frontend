@@ -70,7 +70,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         mutate(`api/sak/${sakId}`)
-        mutate(`api/sak/${sakId}/bestilling`)
+        mutate(`api/bestilling/${sakId}`)
         mutate(`api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)

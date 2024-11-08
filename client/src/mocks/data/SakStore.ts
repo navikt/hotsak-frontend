@@ -5,7 +5,6 @@ import {
   Bosituasjon,
   Bruker,
   Bruksarena,
-  EndreHjelpemiddelRequest,
   Formidler,
   GreitÅViteType,
   Hendelse,
@@ -97,22 +96,22 @@ function lagSak(
     },
     sakstype,
     søknadGjelder: 'Søknad om: terskeleliminator, rullator',
-    hjelpemidler: [
-      {
-        id: -1,
-        hmsnr: '014112',
-        //rangering: 1,
-        //alleredeUtlevert: false,
-        /*utlevertInfo: {
+    //hjelpemidler: [
+    //{
+    //id: -1,
+    //hmsnr: '014112',
+    //rangering: 1,
+    //alleredeUtlevert: false,
+    /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: 'kommentar',
           overførtFraBruker: '',
         },*/
-        //antall: 1,
-        //kategori: 'Terskeleliminatorer og Kjøreramper',
-        //beskrivelse: 'Topro Terskeleliminator',
-        //tilleggsinfo: [{ tittel: 'Bruksarena', innholdsliste: ['I eget hjem.'] }],
-        /*tilbehør: [
+    //antall: 1,
+    //kategori: 'Terskeleliminatorer og Kjøreramper',
+    //beskrivelse: 'Topro Terskeleliminator',
+    //tilleggsinfo: [{ tittel: 'Bruksarena', innholdsliste: ['I eget hjem.'] }],
+    /*tilbehør: [
           {
             hmsNr: '1234',
             antall: 1,
@@ -121,24 +120,24 @@ function lagSak(
           },
           { hmsNr: '4321', antall: 3, navn: 'Tilbehørnavn 2', fritakFraBegrunnelseÅrsak: 'ER_PÅ_BESTILLINGSORDNING' },
         ],*/
-        //bytter: [],
-      },
-      {
-        id: -1,
-        hmsnr: '177946',
-        //rangering: 1,
-        //alleredeUtlevert: true,
-        /*utlevertInfo: {
+    //bytter: [],
+    // },
+    //{
+    //id: -1,
+    //hmsnr: '177946',
+    //rangering: 1,
+    //alleredeUtlevert: true,
+    /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: 'kommentar',
           overførtFraBruker: '',
         },*/
-        //antall: 1,
-        //kategori: 'Rullator',
-        //beskrivelse: 'Gemino 20',
-        //tilleggsinfo: [],
-        //tilbehør: [],
-        /*bytter: [
+    //antall: 1,
+    //kategori: 'Rullator',
+    //beskrivelse: 'Gemino 20',
+    //tilleggsinfo: [],
+    //tilbehør: [],
+    /*bytter: [
           {
             hmsnr: '267912',
             hjmNavn: 'Classic Soft',
@@ -148,25 +147,25 @@ function lagSak(
             årsak: undefined,
           },
         ],*/
-      },
-      {
-        id: -1,
-        hmsnr: '289689',
-        //rangering: 1,
-        //alleredeUtlevert: false,
-        /*utlevertInfo: {
+    // },
+    // {
+    //    id: -1,
+    //  hmsnr: '289689',
+    //rangering: 1,
+    //alleredeUtlevert: false,
+    /*utlevertInfo: {
           utlevertType: UtlevertType.FremskuttLager,
           annenKommentar: '',
           overførtFraBruker: '',
         },*/
-        //antall: 1,
-        //kategori: 'Alarm- og varslingshjelpemidler',
-        //beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
-        //tilleggsinfo: [],
-        //tilbehør: [],
-        //bytter: [],
-      },
-    ],
+    //antall: 1,
+    //kategori: 'Alarm- og varslingshjelpemidler',
+    //beskrivelse: 'Varslingsmottaker Nora Flexiwatch, LIFE',
+    //tilleggsinfo: [],
+    //tilbehør: [],
+    //bytter: [],
+    //  },
+    // ],
     //formidler,
     innsender: {
       fnr: formidler.fnr,
@@ -405,7 +404,7 @@ export class SakStore extends Dexie {
     }
   }
 
-  async endreHjelpemiddel(sakId: string, request: EndreHjelpemiddelRequest) {
+  /*async endreHjelpemiddel(sakId: string, request: EndreHjelpemiddelRequest) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -428,5 +427,5 @@ export class SakStore extends Dexie {
         })
       })
     }
-  }
+  }*/
 }

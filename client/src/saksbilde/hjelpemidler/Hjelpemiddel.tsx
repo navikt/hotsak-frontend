@@ -49,7 +49,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
-  const { bestilling } = useBestilling()
+  const { bestilling, mutate: mutateBestilling } = useBestilling()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
@@ -70,7 +70,7 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         mutate(`api/sak/${sakId}`)
-        mutate(`api/bestilling/${sakId}`)
+        mutateBestilling()
         mutate(`api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)

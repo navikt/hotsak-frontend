@@ -967,14 +967,15 @@ export interface Saksoversikt_Sak_Felles_Type {
 }
 
 export interface Bestilling {
+  sakId: string
   endredeHjelpemidler: EndretHjelpemiddel[]
 }
 
 export interface EndretHjelpemiddel {
   hjelpemiddelId: string
-  hmsArtNr: string
+  //hmsArtNr: string
   //hmsBeskrivelse: string
-  endretHmsArtNr: string
+  hmsArtNr: string
   //endretHmsBeskrivelse: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string

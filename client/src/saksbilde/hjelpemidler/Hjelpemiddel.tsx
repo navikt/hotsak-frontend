@@ -95,8 +95,8 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           {produkt?.posttitler?.map((posttittel) => <div key={posttittel}>{posttittel}</div>)}
           {endretHjelpemiddel && (
             <HStack gap="1" align="center">
-              <strong>{endretHjelpemiddel.endretHmsArtNr}</strong>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretHjelpemiddel.endretHmsArtNr} />
+              <strong>{endretHjelpemiddel.hmsArtNr}</strong>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={endretHjelpemiddel.hmsArtNr} />
               {endretHjelpemiddelNavn?.navn}
             </HStack>
           )}

@@ -53,8 +53,6 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
-  console.log('Bestilling: ', bestilling)
-
   const endretHjelpemiddel = bestilling?.endredeHjelpemidler.find(
     (hjlpm) => hjlpm.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )

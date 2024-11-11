@@ -27,7 +27,7 @@ export function LeveringCard(props: UtleveringCardProps) {
         icon={lagLeveringsIkon()}
         copyText={leveringsmåteCopyText}
         copyKind="leveringsmåte"
-        title="Til annen adresse"
+        title="Levering"
       >
         {leveringsmåteTekst}
       </VenstremenyCardRow>

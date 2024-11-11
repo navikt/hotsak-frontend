@@ -69,6 +69,9 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
+        // TODO Finn ut hvorfor mutate ikke funker
+        console.log('Endre hjelpemiddel, mutating', endreHjelpemiddel)
+
         mutate(`api/sak/${sakId}`)
         mutateBestilling()
         mutate(`api/sak/${sakId}/historikk`)

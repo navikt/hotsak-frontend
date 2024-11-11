@@ -16,7 +16,7 @@ export interface UtleveringCardProps {
 export function LeveringCard(props: UtleveringCardProps) {
   const { levering, adresseBruker } = props
   const { utleveringMerknad } = levering
-  const [leveringsmåteTekst, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
+  const [leveringsmåteLabel, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
   const { harLeveringsVarsel, harBeskjedTilKommuneVarsel } = useVarselsregler()
 
@@ -27,9 +27,9 @@ export function LeveringCard(props: UtleveringCardProps) {
         icon={lagLeveringsIkon()}
         copyText={leveringsmåteCopyText}
         copyKind="leveringsmåte"
-        title="Levering"
+        title={leveringsmåteLabel}
       >
-        {leveringsmåteTekst}
+        {leveringsmåteCopyText !== '' && leveringsmåteCopyText}
       </VenstremenyCardRow>
       {utleveringMerknad && (
         <VenstremenyCardRow
@@ -72,14 +72,14 @@ function lagLeveringsmåteTekst(
 
   switch (utleveringsmåte) {
     case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
-      return ['Allerede levert', 'Allerede levert']
+      return ['Allerede levert', '']
     case Utleveringsmåte.ANNEN_BRUKSADRESSE:
-      return [`Til annen adresse: ${annenAdresse}`, annenAdresse || '']
+      return [`Til annen adresse`, annenAdresse || '']
     case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      return [`Til folkeregistert adresse: ${adresseBruker}`, adresseBruker]
+      return [`Til folkeregistert adresse`, adresseBruker]
     case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
-      return ['Hentes på hjelpemiddelsentralen', 'Hentes på hjelpemiddelsentralen']
+      return ['Hentes på hjelpemiddelsentralen', '']
     default:
-      return ['Ukjent leveringsmåte', 'Ukjent leveringsmåte']
+      return ['Ukjent leveringsmåte', '']
   }
 }

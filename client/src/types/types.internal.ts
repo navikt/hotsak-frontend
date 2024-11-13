@@ -21,15 +21,10 @@ export interface Sak extends HarSakskjerne {
   sakId: string
   sakstype: Sakstype
   søknadGjelder: string
-  //hjelpemidler: HjelpemiddelType[]
-  //formidler: Formidler
   greitÅViteFaktum: GreitÅViteFaktum[]
   mottattDato: string
-  personinformasjon: Personinformasjon
   innsender: Innsender
   bruker: Bruker
-  //levering: Levering
-  //oppfølgingsansvarlig: Oppfølgingsansvarlig
   status: OppgaveStatusType
   statusEndret: string
   vedtak?: VedtakType
@@ -273,12 +268,6 @@ export interface AdressebeskyttelseOgSkjerming {
   skjermet: boolean
 }
 
-export interface Adresse {
-  adresse: string
-  postnummer: string
-  poststed: string
-}
-
 export interface Innsender {
   fnr: string
   navn: string | Navn
@@ -415,122 +404,10 @@ export interface Enhet {
   enhetsnavn: string
 }
 
-export interface Oppfølgingsansvarlig {
-  navn: string
-  arbeidssted: string
-  stilling: string
-  telefon: string
-  ansvarFor: string
-}
-
-export interface Levering {
-  kontaktperson?: Kontaktperson
-  leveringsmåte: Leveringsmåte
-  adresse?: string
-  merknad?: string
-}
-
-export enum Leveringsmåte {
-  FOLKEREGISTRERT_ADRESSE = 'FOLKEREGISTRERT_ADRESSE',
-  ANNEN_ADRESSE = 'ANNEN_ADRESSE',
-  HJELPEMIDDELSENTRAL = 'HJELPEMIDDELSENTRAL',
-  ALLEREDE_LEVERT = 'ALLEREDE_LEVERT',
-  ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT = 'ALLE_HJELPEMIDLENE_ER_MARKERT_SOM_UTLEVERT',
-}
-
-export interface Kontaktperson {
-  navn: string
-  telefon: string
-  kontaktpersonType: KontaktpersonType
-}
-
-export enum KontaktpersonType {
-  HJELPEMIDDELBRUKER = 'HJELPEMIDDELBRUKER',
-  HJELPEMIDDELFORMIDLER = 'HJELPEMIDDELFORMIDLER',
-  ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
-}
-
-export interface HjelpemiddelType {
-  id: number
-  hmsnr: string
-  //rangering: number
-  //alleredeUtlevert: boolean
-  //utlevertInfo: UtlevertInfo
-  //antall: number
-  //kategori: string
-  //beskrivelse: string
-  //tilleggsinfo: Tilleggsinfo[]
-  //tilbehør: Tilbehør[]
-  //endretHjelpemiddel?: EndretHjelpemiddel
-  //bytter?: Bytte[]
-}
-
-export interface Bytte {
-  hmsnr: string
-  serienr?: string
-  hjmNavn: string
-  hjmKategori: string
-  årsak?: BytteÅrsak
-  erTilsvarende: boolean
-}
-
-export enum BytteÅrsak {
-  UTSLITT = 'UTSLITT',
-  VOKST_FRA = 'VOKST_FRA',
-  ENDRINGER_I_INNBYGGERS_FUNKSJON = 'ENDRINGER_I_INNBYGGERS_FUNKSJON',
-  FEIL_STØRRELSE = 'FEIL_STØRRELSE',
-  VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER = 'VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER',
-}
-
-/*export interface EndretHjelpemiddel {
-  hmsNr: string
-  begrunnelse: EndretHjelpemiddelBegrunnelse
-  begrunnelseFritekst?: string
-}*/
-
-export interface UtlevertInfo {
-  annenKommentar: string
-  overførtFraBruker: string
-  utlevertType: UtlevertType
-}
-
-export enum UtlevertType {
-  FremskuttLager = 'FremskuttLager',
-  Korttidslån = 'Korttidslån',
-  Overført = 'Overført',
-  Annet = 'Annet',
-}
-
-export interface Tilleggsinfo {
-  tittel: string
-  innholdsliste: string[]
-}
-
-export interface Tilbehør {
-  hmsNr: string
-  antall: number
-  navn: string
-  begrunnelse?: string
-  fritakFraBegrunnelseÅrsak?: string
-}
-
 export enum FritakFraBegrunnelseÅrsak {
   ER_PÅ_BESTILLINGSORDNING = 'ER_PÅ_BESTILLINGSORDNING',
   IKKE_I_PILOT = 'IKKE_I_PILOT',
   ER_SELVFORKLARENDE_TILBEHØR = 'ER_SELVFORKLARENDE_TILBEHØR',
-}
-
-export interface Formidler {
-  fnr: string
-  navn: string | Navn
-  fulltNavn?: string
-  poststed: string
-  arbeidssted: string
-  stilling: string
-  postadresse: string
-  telefon: string
-  treffestEnklest: string
-  epost: string
 }
 
 export interface GreitÅViteFaktum {
@@ -603,13 +480,6 @@ export interface Bydel {
   bydelsnummer: string
   bydelsnavn: string
 }
-
-/*
-export interface Kommune {
-  kommunenummer: string
-  kommunenavn: string
-}
-*/
 
 /* Bør fjernes når vi er over på ny oppgavemodell */
 export interface Oppgave {
@@ -735,12 +605,6 @@ export enum DokumentOppgaveStatusType {
   JOURNALFØRT = 'JOURNALFØRT',
 }
 
-/*export const DokumentStatusLabel = new Map<string, string>([
-  [DokumentOppgaveStatusType.MOTTATT, 'Mottatt'],
-  [DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under journalføring'],
-  [DokumentOppgaveStatusType.JOURNALFØRT, 'Journalført'],
-])*/
-
 export enum JournalpostStatusType {
   MOTTATT = 'MOTATT',
 }
@@ -805,46 +669,6 @@ export enum Kjønn {
   MANN = 'MANN',
   KVINNE = 'KVINNE',
   UKJENT = 'UKJENT',
-}
-
-export interface Personinformasjon extends Adresse {
-  kilde: PersonInfoKilde
-  signaturtype: SignaturType
-  bruksarena: Bruksarena | null
-  bosituasjon: Bosituasjon | null
-  funksjonsnedsettelser: string[]
-  kroppsmål?: Kroppsmål
-}
-
-export interface Kroppsmål {
-  høyde: number
-  kroppsvekt: number
-  lårlengde: number
-  legglengde: number
-  setebredde: number
-}
-
-export enum Bruksarena {
-  DAGLIGLIV = 'dagligliv',
-  UKJENT = 'UKJENT',
-}
-
-export enum Bosituasjon {
-  HJEMME = 'HJEMME',
-  HJEMME_EGEN_BOLIG = 'HJEMME_EGEN_BOLIG',
-  HJEMME_OMSORG_FELLES = 'HJEMME_OMSORG_FELLES',
-  INSTITUSJON = 'INSTITUSJON',
-}
-
-export enum SignaturType {
-  FULLMAKT = 'FULLMAKT',
-  BRUKER_BEKREFTER = 'BRUKER_BEKREFTER',
-  FRITAK_FRA_FULLMAKT = 'FRITAK_FRA_FULLMAKT',
-}
-
-export enum PersonInfoKilde {
-  PDL = 'pdl',
-  FORMIDLER = 'manuell',
 }
 
 export interface Produkt {
@@ -973,10 +797,7 @@ export interface Bestilling {
 
 export interface EndretHjelpemiddel {
   hjelpemiddelId: string
-  //hmsArtNr: string
-  //hmsBeskrivelse: string
   hmsArtNr: string
-  //endretHmsBeskrivelse: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
 }

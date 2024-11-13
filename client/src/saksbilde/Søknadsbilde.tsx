@@ -55,9 +55,7 @@ const SaksbildeContent = memo(() => {
               sakstype={sak.data.sakstype}
               søknadGjelder={sak.data.søknadGjelder}
               mottattDato={sak.data.mottattDato}
-              bosituasjon={sak.data.personinformasjon.bosituasjon}
-              bruksarena={sak.data.personinformasjon.bruksarena}
-              funksjonsnedsettelser={sak.data.personinformasjon.funksjonsnedsettelser}
+              funksjonsnedsettelser={behovsmelding.brukersituasjon.funksjonsnedsettelser}
               telefon={sak?.data.bruker.telefon}
             />
             <FormidlerCard
@@ -69,7 +67,7 @@ const SaksbildeContent = memo(() => {
             />
             <LeveringCard
               levering={behovsmelding.levering}
-              adresseBruker={formaterAdresse(sak.data.personinformasjon)}
+              adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
             />
             <GreitÅViteCard
               greitÅViteFakta={sak.data.greitÅViteFaktum}
@@ -98,7 +96,8 @@ const SaksbildeContent = memo(() => {
                   element={
                     <Bruker
                       bruker={sak.data.bruker}
-                      person={sak.data.personinformasjon}
+                      behovsmeldingsbruker={behovsmelding.bruker}
+                      brukerSituasjon={behovsmelding.brukersituasjon}
                       levering={behovsmelding.levering}
                       vilkår={behovsmelding.brukersituasjon.vilkår}
                     />

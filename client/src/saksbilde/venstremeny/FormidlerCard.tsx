@@ -13,10 +13,6 @@ export interface FormidlerCardProps {
   formidlerTelefon: string
 }
 
-// tooltip / title -> Kopier formidlers navn
-// tooltip / title -> Kopier formidlers stilling
-// tooltip / title -> Kopier telefonnummer
-
 export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon, stilling }: FormidlerCardProps) {
   const formidlerNavnFormatert = formaterNavn(formidlerNavn)
   return (

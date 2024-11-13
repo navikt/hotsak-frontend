@@ -5,14 +5,14 @@ import { Avstand } from '../../felleskomponenter/Avstand'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { Levering, Vilkår } from '../../types/BehovsmeldingTypes'
 import {
-  Bosituasjon,
-  Bruksarena,
-  Bruker as Hjelpemiddelbruker,
-  PersonInfoKilde,
-  Personinformasjon,
-} from '../../types/types.internal'
+  Bruker as Behovsmeldingsbruker,
+  Brukerkilde,
+  Brukersituasjon,
+  Levering,
+  Vilkår,
+} from '../../types/BehovsmeldingTypes'
+import { Bruker as Hjelpemiddelbruker } from '../../types/types.internal'
 import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
@@ -20,16 +20,16 @@ import { Signatur } from './Signatur'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
-  person: Personinformasjon
+  behovsmeldingsbruker: Behovsmeldingsbruker
+  brukerSituasjon: Brukersituasjon
   levering: Levering
   vilkår: Vilkår[]
 }
 
-export function Bruker({ bruker, person, levering, vilkår }: BrukerProps) {
+export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering, vilkår }: BrukerProps) {
   const { utleveringMerknad } = levering
   const formatertNavn = formaterNavn(bruker)
-  const adresseBruker = formaterAdresse(person)
-  const bosituasjon = getTextForBosituasjon(person.bosituasjon)
+  const adresseBruker = formaterAdresse(behovsmeldingsbruker.veiadresse)
 
   return (
     <>
@@ -45,24 +45,13 @@ export function Bruker({ bruker, person, levering, vilkår }: BrukerProps) {
           <Tekst>{formatertNavn}</Tekst>
           <Etikett>Fødselsnummer</Etikett>
           <Tekst>{bruker.fnr}</Tekst>
-          <Etikett>{person.kilde === PersonInfoKilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
+          <Etikett>{behovsmeldingsbruker.kilde === Brukerkilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
           <Tekst>{adresseBruker}</Tekst>
           <Etikett>Telefon</Etikett>
           <Tekst>{bruker.telefon}</Tekst>
-          {bosituasjon && (
-            <>
-              <Etikett>Boform</Etikett>
-              <Tekst>{bosituasjon}</Tekst>
-            </>
-          )}
-          {person.bruksarena && person.bruksarena !== Bruksarena.UKJENT && (
-            <>
-              <Etikett>Bruksarena</Etikett>
-              <Tekst>{storForbokstavIAlleOrd(person.bruksarena)}</Tekst>
-            </>
-          )}
+
           <Etikett>Funksjonsnedsettelse</Etikett>
-          <Tekst>{storForbokstavIAlleOrd(person.funksjonsnedsettelser.join(', '))}</Tekst>
+          <Tekst>{storForbokstavIAlleOrd(brukerSituasjon.funksjonsnedsettelser.join(', '))}</Tekst>
         </HGrid>
       </Box>
 
@@ -94,7 +83,7 @@ export function Bruker({ bruker, person, levering, vilkår }: BrukerProps) {
       </Box>
 
       <Strek />
-      <Signatur signaturType={person.signaturtype} navn={formatertNavn} />
+      <Signatur signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
       <Strek />
 
       <Box paddingBlock="4" paddingInline={{ xs: '0 4', md: '0 16' }}>
@@ -111,21 +100,4 @@ export function Bruker({ bruker, person, levering, vilkår }: BrukerProps) {
 const hGridProps: Pick<HGridProps, 'columns' | 'gap'> = {
   columns: 'minmax(min-content, 12rem) auto',
   gap: '05',
-}
-
-function getTextForBosituasjon(bosituasjon: Bosituasjon | null) {
-  switch (bosituasjon) {
-    case null:
-      return null
-    case Bosituasjon.HJEMME:
-      return 'Hjemme (egen bolig, omsorgsbolig eller bofellesskap)'
-    case Bosituasjon.HJEMME_EGEN_BOLIG:
-      return 'Hjemme i egen bolig'
-    case Bosituasjon.HJEMME_OMSORG_FELLES:
-      return 'Hjemme i omsorgsbolig, bofellesskap eller servicebolig'
-    case Bosituasjon.INSTITUSJON:
-      return 'Institusjon'
-    default:
-      return 'Ukjent bosituasjon'
-  }
 }

@@ -89,8 +89,6 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
     const endIndex = startIndex + pageSize
     const oppgaver = [...(await sakStore.oppgaver()), ...(await barnebrillesakStore.oppgaver())]
 
-    console.log('Hastefilter', hasteFilter)
-
     const filtrerteOppgaver = oppgaver
       .filter((oppgave) => (hasteFilter !== null ? oppgave.hast : true))
       .filter((oppgave) => (statusFilter ? oppgave.status === statusFilter : true))

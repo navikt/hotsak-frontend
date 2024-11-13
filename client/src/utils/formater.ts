@@ -63,7 +63,7 @@ export function formaterBeløp(verdi?: number | string): string {
   }
 }
 
-export function formaterAdresse(verdi?: Adresse | Veiadresse): string {
+export function formaterAdresse(verdi?: Veiadresse): string {
   if (!verdi) return ''
   const { adresse, postnummer, poststed } = verdi
   return `${storForbokstavIAlleOrd(adresse)}, ${postnummer} ${storForbokstavIAlleOrd(poststed)}`

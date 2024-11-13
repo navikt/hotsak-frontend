@@ -2,19 +2,14 @@ import { formatISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
 import {
-  Bosituasjon,
   Bruker,
-  Bruksarena,
-  Formidler,
   GreitÅViteType,
   Hendelse,
   Kjønn,
   Oppgave,
   OppgaveStatusType,
-  PersonInfoKilde,
   Sak,
   Sakstype,
-  SignaturType,
   VedtakStatusType,
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
@@ -33,7 +28,7 @@ interface LagretHendelse extends Hendelse {
   sakId: string
 }
 
-function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinformasjon' | 'bruker'> {
+function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'bruker'> {
   const fødselsdato = lagTilfeldigFødselsdato(lagTilfeldigInteger(65, 95))
   const fnr = lagTilfeldigFødselsnummer(fødselsdato)
   const navn = lagTilfeldigNavn()
@@ -55,7 +50,7 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
       },
       ...overstyringer,
     },
-    personinformasjon: {
+    /*personinformasjon: {
       kilde: PersonInfoKilde.PDL,
       signaturtype: SignaturType.BRUKER_BEKREFTER,
       bosituasjon: Bosituasjon.HJEMME,
@@ -64,7 +59,7 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'personinform
       adresse: 'Blåbærstien 82',
       postnummer: '9999',
       poststed: lagTilfeldigBosted(),
-    },
+    },*/
   }
 }
 
@@ -77,7 +72,7 @@ function lagSak(
 ): LagretSak {
   const bruker = lagBruker(overstyringer.bruker)
   const opprettet = new Date()
-  const formidler: Formidler = {
+  /*const formidler: Formidler = {
     fnr: lagTilfeldigFødselsnummer(32),
     navn: lagTilfeldigNavn().fulltNavn,
     poststed: lagTilfeldigBosted(),
@@ -87,7 +82,7 @@ function lagSak(
     telefon: lagTilfeldigTelefonnummer(),
     treffestEnklest: 'Ukedager',
     epost: 'ergoterapeut@kommune.no',
-  }
+  }*/
   return {
     ...bruker,
     sakId: sakId.toString(),
@@ -168,8 +163,8 @@ function lagSak(
     // ],
     //formidler,
     innsender: {
-      fnr: formidler.fnr,
-      navn: formidler.navn,
+      fnr: lagTilfeldigFødselsnummer(32),
+      navn: lagTilfeldigNavn().fulltNavn,
       adressebeskyttelseOgSkjerming: {
         gradering: [],
         skjermet: false,
@@ -282,7 +277,7 @@ export class SakStore extends Dexie {
 
   async oppgaver() {
     const saker = await this.alle()
-    return saker.map<Oppgave>(({ bruker, personinformasjon, ...sak }) => ({
+    return saker.map<Oppgave>(({ bruker, /*personinformasjon,*/ ...sak }) => ({
       sakId: sak.sakId,
       sakstype: sak.sakstype,
       status: sak.status,
@@ -292,7 +287,8 @@ export class SakStore extends Dexie {
       innsender: formaterNavn(sak.innsender.navn),
       bruker: {
         fnr: bruker.fnr,
-        funksjonsnedsettelser: personinformasjon.funksjonsnedsettelser,
+        // TODDO utled dette fra funksjonsnedsettelser
+        funksjonsnedsettelser: ['bevegelse'],
         bosted: bruker.kommune.navn,
         ...bruker.navn,
       },

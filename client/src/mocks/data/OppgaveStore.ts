@@ -40,7 +40,9 @@ export class OppgaveStore extends Dexie {
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         beskrivelse: sak.søknadGjelder,
-        område: sak.personinformasjon.funksjonsnedsettelser,
+        område: ['bevegelse'],
+        // TODO utled dette fra behovsmelding
+        //område: sak.personinformasjon.funksjonsnedsettelser,
         enhet: sak.enhet,
         kommune: sak.bruker.kommune,
         bydel: sak.bruker.bydel,

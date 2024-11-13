@@ -1,20 +1,20 @@
-import { SignaturType } from '../../types/types.internal'
+import { Signaturtype } from '../../types/BehovsmeldingTypes'
 import { BrukerBekreftet } from './BrukerBekreftet'
 import { Fullmakt } from './Fullmakt'
 import { FullmaktFritak } from './FullmaktFritak'
 
 interface SignaturProps {
-  signaturType: SignaturType
+  signaturType: Signaturtype
   navn: string
 }
 
 export function Signatur({ signaturType, navn }: SignaturProps) {
   switch (signaturType) {
-    case SignaturType.BRUKER_BEKREFTER:
+    case Signaturtype.BRUKER_BEKREFTER:
       return <BrukerBekreftet navn={navn} />
-    case SignaturType.FULLMAKT:
+    case Signaturtype.FULLMAKT:
       return <Fullmakt navn={navn} />
-    case SignaturType.FRITAK_FRA_FULLMAKT:
+    case Signaturtype.FRITAK_FRA_FULLMAKT:
       return <FullmaktFritak navn={navn} />
     default:
       return null

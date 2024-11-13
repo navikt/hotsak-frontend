@@ -1,5 +1,5 @@
-import type { Adresse, HarNavn, Navn } from '../types/types.internal'
 import type { Veiadresse } from '../types/BehovsmeldingTypes'
+import type { HarNavn, Navn } from '../types/types.internal'
 import { isNavn, isNumber, isString } from './type'
 
 const beløpFormatter = new Intl.NumberFormat('nb', {

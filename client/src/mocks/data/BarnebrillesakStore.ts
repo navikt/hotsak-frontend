@@ -106,10 +106,10 @@ function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
   const now = new Date().toISOString()
   return {
     sakId: sakId.toString(),
-    saksinformasjon: {
-      opprettet: now,
-    },
     sakstype: Sakstype.BARNEBRILLER,
+    status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+    statusEndret: now,
+    opprettet: now,
     søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),
@@ -134,11 +134,8 @@ function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
         skjermet: false,
       },
     },
-    status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: now,
-
-    steg: StegType.INNHENTE_FAKTA,
     enhet: enheter.oslo,
+    steg: StegType.INNHENTE_FAKTA,
     journalposter: [],
   }
 }
@@ -224,7 +221,7 @@ export class BarnebrillesakStore extends Dexie {
       status: sak.status,
       statusEndret: sak.statusEndret,
       beskrivelse: sak.søknadGjelder,
-      mottatt: sak.saksinformasjon.opprettet,
+      mottatt: sak.opprettet,
       innsender: formaterNavn(sak.innsender.navn),
       bruker: {
         fnr: bruker.fnr,

@@ -14,7 +14,10 @@ export interface SakBase {
   status: OppgaveStatusType
   statusEndret: string
   opprettet: string
+  // endret: string
+  // søknadId: string
   søknadGjelder: string
+  // søknadMottatt: string
   bruker: Bruker
   innsender: Innsender
   enhet: Enhet
@@ -24,7 +27,6 @@ export interface SakBase {
 
 export interface Sak extends SakBase {
   greitÅViteFaktum: GreitÅViteFaktum[]
-  mottattDato: string
   hast?: Hast
 }
 

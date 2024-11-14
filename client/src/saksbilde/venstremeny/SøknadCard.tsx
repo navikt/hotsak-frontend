@@ -13,12 +13,12 @@ export interface SøknadCardProps {
   sakId: number | string
   sakstype: Sakstype
   søknadGjelder: string
-  mottattDato: string
+  søknadMottatt: string
   funksjonsnedsettelser: string[]
   telefon?: string | null
 }
 
-export function SøknadCard({ sakstype, sakId, mottattDato, funksjonsnedsettelser, telefon }: SøknadCardProps) {
+export function SøknadCard({ sakstype, sakId, søknadMottatt, funksjonsnedsettelser, telefon }: SøknadCardProps) {
   return (
     <VenstremenyCard>
       <VenstremenyCardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
@@ -33,7 +33,7 @@ export function SøknadCard({ sakstype, sakId, mottattDato, funksjonsnedsettelse
         textColor="subtle"
         spacing
       >{`Sak: ${sakId}`}</BodyShort>
-      <VenstremenyCardRow icon={<CalendarIcon />}>Mottatt: {formaterTidsstempel(mottattDato)}</VenstremenyCardRow>
+      <VenstremenyCardRow icon={<CalendarIcon />}>Mottatt: {formaterTidsstempel(søknadMottatt)}</VenstremenyCardRow>
       <VenstremenyCardRow icon={<WheelchairIcon title="Funksjonsnedsettelser" />}>
         {storForbokstavIAlleOrd(funksjonsnedsettelser.join(', '))}
       </VenstremenyCardRow>

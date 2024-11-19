@@ -15,7 +15,7 @@ export function OebsAlert(props: { artikler: Artikkel[] }) {
             automatisk overført til SF:`}
         >
           {artikler.map((artikkel) => {
-            return <List.Item key={artikkel.hmsnr}>{`${artikkel.hmsnr}: ${artikkel.navn}`}</List.Item>
+            return <List.Item key={artikkel.hmsArtNr}>{`${artikkel.hmsArtNr}: ${artikkel.artikkelnavn}`}</List.Item>
           })}
         </List>
       </SystemAlert>

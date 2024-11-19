@@ -353,8 +353,8 @@ export interface BrevTekst {
 }
 
 export interface Artikkel {
-  hmsnr: string
-  navn: string
+  hmsArtNr: string
+  artikkelnavn: string
   antall: number
   finnesIOebs: boolean
 }

@@ -48,9 +48,9 @@ export class OppgaveStore extends Dexie {
         bydel: sak.bruker.bydel,
         saksbehandler: sak.saksbehandler,
         sakId: sak.sakId,
-        frist: addBusinessDays(parseISO(sak.mottattDato), 14).toISOString(),
-        opprettet: sak.mottattDato,
-        endret: sak.mottattDato,
+        frist: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
+        opprettet: sak.opprettet,
+        endret: sak.opprettet,
         bruker: sak.bruker,
         innsender: sak.innsender,
       }

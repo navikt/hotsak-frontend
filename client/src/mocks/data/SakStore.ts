@@ -83,6 +83,7 @@ function lagSak(
     treffestEnklest: 'Ukedager',
     epost: 'ergoterapeut@kommune.no',
   }*/
+
   return {
     ...bruker,
     sakId: sakId.toString(),
@@ -249,6 +250,7 @@ export class SakStore extends Dexie {
         bruker?: Partial<Bruker>
       } = {}
     ) => lagSak(this.idGenerator.nesteId(), sakstype, overstyringer)
+
     return this.lagreAlle([
       lagSakMedId(),
       lagSakMedId(),

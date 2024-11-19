@@ -23,9 +23,9 @@ export const saksVarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
           varslerFor: ['ANNEN_ADRESSE', 'BESKJED_TIL_KOMMUNE', 'TILBAKELEVERING', 'ALLEREDE_UTLEVERT'],
           beskrivelse: [
             'Det er levering til en annen leveringsadresse. Denne må registreres.',
-            'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i OeBS.',
+            /*'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i OeBS.',
             'Et eller flere hjelpemidler er allerede utlevert. Må kanskje registreres på brukes i OeBS, men ikke skipes?',
-            'Det er et hjelpemiddel som skal leveres tilbake.',
+            'Det er et hjelpemiddel som skal leveres tilbake.',*/
           ],
         },
       ])

@@ -77,7 +77,7 @@ export function VurderVilkår() {
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (!sak.data?.vilkårsvurdering) {
-    return <Feilmelding>{`Vilkårsvurderingen manlgler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
+    return <Feilmelding>{`Vilkårsvurderingen mangler resultat. Dette kan skyldes en teknisk feil.`}</Feilmelding>
   }
   const vilkår =
     sak.data.vilkårsvurdering?.vilkår.sort((a, b) => sorterPåLovreferanse(a.lovReferanse, b.lovReferanse)) || []

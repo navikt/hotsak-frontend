@@ -1,6 +1,8 @@
 import { ComponentType, lazy, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import { useParams } from 'react-router'
 import { RecoilRoot } from 'recoil'
 import { SWRConfig } from 'swr'
 
@@ -25,6 +27,9 @@ const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
 function App() {
   useAuthentication()
   logUserStats()
+  const SaksTittelMedSaksnummerHjelper = () => (
+    <Helmet title={`HOTSAK - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`} />
+  )
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
@@ -40,6 +45,7 @@ function App() {
                   path="/"
                   element={
                     <RequireAuth>
+                      <Helmet title="HOTSAK - Oppgaveliste" />
                       <Oppgaveliste />
                     </RequireAuth>
                   }
@@ -48,6 +54,7 @@ function App() {
                   path="/oppgaveliste/dokumenter"
                   element={
                     <RequireAuth>
+                      <Helmet title="HOTSAK - Dokumentliste" />
                       <Dokumentliste />
                     </RequireAuth>
                   }
@@ -56,6 +63,7 @@ function App() {
                   path="/oppgaveliste/dokumenter/:journalpostID"
                   element={
                     <RequireAuth>
+                      <Helmet title="HOTSAK - Journalføring" />
                       <DokumentProvider>
                         <ManuellJournalføring />
                       </DokumentProvider>
@@ -66,6 +74,7 @@ function App() {
                   path="/sak/:saksnummer/*"
                   element={
                     <RequireAuth>
+                      <SaksTittelMedSaksnummerHjelper />
                       <Saksbilde />
                     </RequireAuth>
                   }
@@ -74,6 +83,7 @@ function App() {
                   path="/personoversikt/*"
                   element={
                     <RequireAuth>
+                      <Helmet title="HOTSAK - Personoversikt" />
                       <Personoversikt />
                     </RequireAuth>
                   }
@@ -83,6 +93,7 @@ function App() {
                   path="/oppgavebenk"
                   element={
                     <RequireAuth>
+                      <Helmet title="HOTSAK - Oppgavebenk" />
                       <Eksperiment>
                         <Oppgavebenk />
                       </Eksperiment>

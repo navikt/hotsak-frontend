@@ -87,9 +87,7 @@ function lagSak(
   return {
     ...bruker,
     sakId: sakId.toString(),
-    saksinformasjon: {
-      opprettet: opprettet.toISOString(),
-    },
+    opprettet: opprettet.toISOString(),
     sakstype,
     søknadGjelder: 'Søknad om: terskeleliminator, rullator',
     //hjelpemidler: [
@@ -285,7 +283,7 @@ export class SakStore extends Dexie {
       status: sak.status,
       statusEndret: sak.statusEndret,
       beskrivelse: sak.søknadGjelder,
-      mottatt: sak.saksinformasjon.opprettet,
+      mottatt: sak.opprettet,
       innsender: formaterNavn(sak.innsender.navn),
       bruker: {
         fnr: bruker.fnr,

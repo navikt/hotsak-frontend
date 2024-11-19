@@ -1,12 +1,3 @@
-export interface Saksinformasjon {
-  opprettet: string
-}
-
-export interface HarSakskjerne {
-  saksinformasjon: Saksinformasjon
-  saksbehandler?: Saksbehandler
-}
-
 export interface SakResponse {
   kanTildeles: boolean
   data: Sak
@@ -17,35 +8,31 @@ export interface BarnebrillesakResponse {
   data: Barnebrillesak
 }
 
-export interface Sak extends HarSakskjerne {
+export interface SakBase {
   sakId: string
   sakstype: Sakstype
-  søknadGjelder: string
-  greitÅViteFaktum: GreitÅViteFaktum[]
-  mottattDato: string
-  innsender: Innsender
-  bruker: Bruker
   status: OppgaveStatusType
   statusEndret: string
-  vedtak?: VedtakType
+  opprettet: string
+  søknadGjelder: string
+  bruker: Bruker
+  innsender: Innsender
   enhet: Enhet
+  saksbehandler?: Saksbehandler
+  vedtak?: VedtakType
+}
+
+export interface Sak extends SakBase {
+  greitÅViteFaktum: GreitÅViteFaktum[]
+  mottattDato: string
   hast?: Hast
 }
 
-export interface Barnebrillesak extends HarSakskjerne {
-  sakId: string
-  sakstype: Sakstype
-  søknadGjelder: string
-  innsender: Innsender
-  bruker: Bruker
-  status: OppgaveStatusType
-  statusEndret: string
+export interface Barnebrillesak extends SakBase {
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
   journalposter: string[]
-  vedtak?: VedtakType
-  enhet: Enhet
   utbetalingsmottaker?: Utbetalingsmottaker
   totrinnskontroll?: Totrinnskontroll
 }

@@ -26,7 +26,7 @@ export function EndringsloggDropdown() {
         {!endringslogg.loading && <Uleste $fading={endringslogg.fading} />}
         <InformationSquareIcon title="Endringslogg" width={20} height={20} />
       </InternalHeader.Button>
-      <EndringsloggDropdownMenu ref={dropdownMenuRef}>
+      <EndringsloggDropdownMenu ref={dropdownMenuRef} tabIndex={0}>
         <Endringslogg endringslogginnslag={endringslogg.innslag} merkSomLest={endringslogg.merkSomLest} />
       </EndringsloggDropdownMenu>
     </Dropdown>

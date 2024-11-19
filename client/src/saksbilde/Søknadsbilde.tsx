@@ -54,7 +54,7 @@ const SaksbildeContent = memo(() => {
               sakId={sak.data.sakId}
               sakstype={sak.data.sakstype}
               søknadGjelder={sak.data.søknadGjelder}
-              mottattDato={sak.data.mottattDato}
+              søknadMottatt={sak.data.opprettet}
               funksjonsnedsettelser={behovsmelding.brukersituasjon.funksjonsnedsettelser}
               telefon={sak?.data.bruker.telefon}
             />

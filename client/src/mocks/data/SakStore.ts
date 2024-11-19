@@ -189,7 +189,6 @@ function lagSak(
         type: GreitÅViteType.INFO,
       },
     ],
-    mottattDato: opprettet.toISOString(),
     /*levering: {
       kontaktperson: {
         navn: lagTilfeldigNavn().fulltNavn,

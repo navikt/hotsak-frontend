@@ -40,7 +40,6 @@ export function Toppmeny() {
         <InternalHeader.Button as={Dropdown.Toggle} className="ml-auto">
           <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
         </InternalHeader.Button>
-        <EndringsloggDropdown />
         <Dropdown.Menu>
           <Dropdown.Menu.GroupedList>
             <Dropdown.Menu.GroupedList.Heading>Systemer og oppslagsverk</Dropdown.Menu.GroupedList.Heading>
@@ -56,6 +55,7 @@ export function Toppmeny() {
             </Dropdown.Menu.GroupedList.Item>
           </Dropdown.Menu.GroupedList>
         </Dropdown.Menu>
+        <EndringsloggDropdown />
       </Dropdown>
       <Dropdown>
         <InternalHeader.UserButton

@@ -34,6 +34,7 @@ import { useOppgaveliste } from './useOppgaveliste'
 import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { Helmet } from 'react-helmet'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -231,6 +232,7 @@ export function Oppgaveliste() {
 
   return (
     <>
+      <Helmet title="Hotsak - Oppgaveliste" />
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <OppgavelisteTabs />
       <Filters onClear={clearFilters}>

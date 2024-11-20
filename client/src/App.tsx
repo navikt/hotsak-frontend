@@ -45,7 +45,6 @@ function App() {
                   path="/"
                   element={
                     <RequireAuth>
-                      <Helmet title="Hotsak - Oppgaveliste" />
                       <Oppgaveliste />
                     </RequireAuth>
                   }

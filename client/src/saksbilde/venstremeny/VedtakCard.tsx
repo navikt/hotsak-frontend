@@ -87,7 +87,6 @@ export function VedtakCard({ sak }: VedtakCardProps) {
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterDato(sak.vedtak.vedtaksdato)}`}</Tekst>
-          <Tekst>{`av ${sak.vedtak.saksbehandlerNavn}.`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )

@@ -28,7 +28,7 @@ function App() {
   useAuthentication()
   logUserStats()
   const SaksTittelMedSaksnummerHjelper = () => (
-    <Helmet title={`HOTSAK - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`} />
+    <Helmet title={`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`} />
   )
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
@@ -45,7 +45,7 @@ function App() {
                   path="/"
                   element={
                     <RequireAuth>
-                      <Helmet title="HOTSAK - Oppgaveliste" />
+                      <Helmet title="Hotsak - Oppgaveliste" />
                       <Oppgaveliste />
                     </RequireAuth>
                   }
@@ -54,7 +54,7 @@ function App() {
                   path="/oppgaveliste/dokumenter"
                   element={
                     <RequireAuth>
-                      <Helmet title="HOTSAK - Dokumentliste" />
+                      <Helmet title="Hotsak - Journalføringsliste" />
                       <Dokumentliste />
                     </RequireAuth>
                   }
@@ -63,7 +63,7 @@ function App() {
                   path="/oppgaveliste/dokumenter/:journalpostID"
                   element={
                     <RequireAuth>
-                      <Helmet title="HOTSAK - Journalføring" />
+                      <Helmet title="Hotsak - Journalføring" />
                       <DokumentProvider>
                         <ManuellJournalføring />
                       </DokumentProvider>
@@ -83,7 +83,7 @@ function App() {
                   path="/personoversikt/*"
                   element={
                     <RequireAuth>
-                      <Helmet title="HOTSAK - Personoversikt" />
+                      <Helmet title="Hotsak - Personoversikt" />
                       <Personoversikt />
                     </RequireAuth>
                   }
@@ -93,7 +93,7 @@ function App() {
                   path="/oppgavebenk"
                   element={
                     <RequireAuth>
-                      <Helmet title="HOTSAK - Oppgavebenk" />
+                      <Helmet title="Hotsak - Oppgavebenk" />
                       <Eksperiment>
                         <Oppgavebenk />
                       </Eksperiment>

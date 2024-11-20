@@ -45,7 +45,7 @@ function PersonoversiktContent() {
 
   return (
     <>
-      <Helmet title={`HOTSAK - Personoversikt ${formaterNavn(personInfo)}`} />
+      <Helmet title={`Hotsak - Personoversikt ${formaterNavn(personInfo)}`} />
       <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
         <LasterPersonoversikt />

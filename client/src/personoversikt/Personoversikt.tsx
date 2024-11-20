@@ -17,6 +17,8 @@ import { usePerson } from './usePerson'
 import { useSaksoversikt } from './saksoversiktHook'
 import { Avstand } from '../felleskomponenter/Avstand'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
+import { Helmet } from 'react-helmet'
+import { formaterNavn } from '../utils/formater.ts'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -43,6 +45,7 @@ function PersonoversiktContent() {
 
   return (
     <>
+      <Helmet title={`Hotsak - Personoversikt ${formaterNavn(personInfo)}`} />
       <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
         <LasterPersonoversikt />

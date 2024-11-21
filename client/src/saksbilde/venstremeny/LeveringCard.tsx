@@ -7,6 +7,7 @@ import { useVarselsregler } from '../varsler/useVarselsregler.tsx'
 import { VarselIkon } from '../varsler/varselIkon.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
+import { useSkjulUIElementer } from '../useSkjulUiElementer.ts'
 
 export interface UtleveringCardProps {
   levering: Levering
@@ -19,6 +20,7 @@ export function LeveringCard(props: UtleveringCardProps) {
   const [leveringsmåteLabel, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
   const { harLeveringsVarsel, harBeskjedTilKommuneVarsel } = useVarselsregler()
+  const { skjulKopiknapp } = useSkjulUIElementer()
 
   return (
     <VenstremenyCard heading="Levering">
@@ -34,10 +36,11 @@ export function LeveringCard(props: UtleveringCardProps) {
       {utleveringMerknad && (
         <VenstremenyCardRow
           icon={lagMerknadIkon()}
-          copyText={utleveringMerknad}
-          copyKind="merknad"
           paddingBlock={'0 2'}
           title="Beskjed til kommunen"
+          copyText={utleveringMerknad}
+          copyKind="merknad"
+          skjulKopiknapp={skjulKopiknapp}
         >
           {utleveringMerknad}
         </VenstremenyCardRow>
@@ -48,6 +51,7 @@ export function LeveringCard(props: UtleveringCardProps) {
           copyText={kontaktpersonTekst}
           copyKind="kontaktperson"
           title="Kontaktperson"
+          skjulKopiknapp={skjulKopiknapp}
         >
           {kontaktpersonTekst}
         </VenstremenyCardRow>

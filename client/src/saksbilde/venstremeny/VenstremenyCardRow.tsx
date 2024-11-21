@@ -14,12 +14,13 @@ export interface VenstremenyCardRowProps {
   paddingBlock?: HGridProps['paddingBlock']
   align?: HGridProps['align']
   columns?: HGridProps['columns']
+  skjulKopiknapp?: boolean
 }
 
 const hStack = true
 
 export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
-  const { children, icon, copyText, copyKind, paddingBlock, align, columns, title } = props
+  const { children, icon, copyText, copyKind, paddingBlock, align, columns, title, skjulKopiknapp = false } = props
 
   const onCopy = (): void => {
     logAmplitudeEvent(amplitude_taxonomy.KOPIKNAPP_BRUKT, { hva: copyKind })
@@ -35,13 +36,13 @@ export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
               <Etikett>{title}</Etikett>
               {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
             </VStack>
-            {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+            {!skjulKopiknapp && copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
           </HGrid>
         ) : (
           <HGrid width="100%" columns={'1.8rem auto 1.25rem'}>
             <Ikon>{icon}</Ikon>
             {isValidElement(children) ? children : <Tekst>{children}</Tekst>}
-            {copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
+            {!skjulKopiknapp && copyText && <RowCopyButton copyText={copyText} size="xsmall" onClick={onCopy} />}
           </HGrid>
         )}
       </>

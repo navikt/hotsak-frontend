@@ -18,6 +18,7 @@ import { useVarselsregler } from '../varsler/useVarselsregler'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre, BekreftManuellOrdre } from './Modal'
+import { useBehovsmelding } from '../useBehovsmelding.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -27,16 +28,34 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
+  const { behovsmelding } = useBehovsmelding()
   const { harVarsler } = useVarselsregler()
   const [loading, setLoading] = useState(false)
+  const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
+  const [harBekreftetTekst, setHarBekreftetTekst] = useState(false)
+  const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
+  const lagreUtleveringMerknad = (merknad: string) => {
+    console.log('Lager merknad:', merknad)
+    setUtleveringMerknad(merknad)
+    setHarBekreftetTekst(true)
+  }
+
   const ferdigstillBestilling = async () => {
+    setSubmitAttempt(true)
+
+    if (utleveringMerknad && !harBekreftetTekst) {
+      return
+    }
+
     setLoading(true)
-    await putFerdigstillBestilling(sakId, OppgaveStatusType.FERDIGSTILT).catch(() => setLoading(false))
+    await putFerdigstillBestilling(sakId, OppgaveStatusType.FERDIGSTILT, utleveringMerknad).catch(() =>
+      setLoading(false)
+    )
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -149,6 +168,9 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
           onBekreft={() => ferdigstillBestilling()}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
+          error={submitAttempt && !harBekreftetTekst}
+          leveringsmerknad={utleveringMerknad}
+          onLagre={lagreUtleveringMerknad}
         />
       )}
 

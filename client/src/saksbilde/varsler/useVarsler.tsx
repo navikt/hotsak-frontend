@@ -14,10 +14,7 @@ interface VarslerDataResponse {
 
 export function useVarsler(): VarslerDataResponse {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
-  const { data, error, isLoading, mutate } = useSwr<{ data: Varsel[] }>(
-    window.appSettings.MILJO !== 'prod-gcp' ? [`api/sak/${sakId}/varsler`] : null,
-    httpGet
-  )
+  const { data, error, isLoading, mutate } = useSwr<{ data: Varsel[] }>([`api/sak/${sakId}/varsler`], httpGet)
 
   return {
     varsler: data?.data || [],

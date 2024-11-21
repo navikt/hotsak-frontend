@@ -18,10 +18,7 @@ export function useVarselsregler() {
       )
     },
     harBeskjedTilKommuneVarsel(): boolean {
-      return !!(
-        behovsmelding?.levering.utleveringMerknad &&
-        varsler.find((varsel) => varsel?.varslerFor.includes(VarselFor.BESKJED_TIL_KOMMUNE))
-      )
+      return !!behovsmelding?.levering.utleveringMerknad
     },
     harTilbakeleveringsVarsel(): boolean {
       return !!varsler.find((varsel) => varsel?.varslerFor?.includes(VarselFor.TILBAKELEVERING))

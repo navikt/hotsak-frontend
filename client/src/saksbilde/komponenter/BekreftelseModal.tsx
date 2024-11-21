@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Modal, ModalProps } from '@navikt/ds-react'
+import { Button, ButtonProps, Heading, Modal, ModalProps } from '@navikt/ds-react'
 import { ReactNode, useRef } from 'react'
 
 export interface BekreftelseModalProps {
@@ -27,7 +27,20 @@ export function BekreftelseModal(props: BekreftelseModalProps) {
   } = props
   const ref = useRef<HTMLDialogElement>(null)
   return (
-    <Modal ref={ref} closeOnBackdropClick={false} width={width} open={open} onClose={onClose} header={{ heading }}>
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
+      width={width}
+      open={open}
+      onClose={onClose}
+      size="small"
+      aria-label={heading}
+    >
+      <Modal.Header>
+        <Heading level="1" size="small">
+          {heading}
+        </Heading>
+      </Modal.Header>
       {children && <Modal.Body>{children}</Modal.Body>}
       <Modal.Footer>
         <Button variant={buttonVariant} size="small" onClick={onBekreft} disabled={loading} loading={loading}>

@@ -52,7 +52,7 @@ export function FritekstPanel({
   onLagre,
 }: {
   leveringsmerknad: string
-  error: boolean
+  error?: boolean
   onLagre: any | Promise<any>
 }) {
   const [redigertTekst, setRedigertTekst] = useState(leveringsmerknad)

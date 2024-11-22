@@ -53,9 +53,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
     }
 
     setLoading(true)
-    await putFerdigstillBestilling(sakId, OppgaveStatusType.FERDIGSTILT, utleveringMerknad).catch(() =>
-      setLoading(false)
-    )
+    await putFerdigstillBestilling(sakId, utleveringMerknad).catch(() => setLoading(false))
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)

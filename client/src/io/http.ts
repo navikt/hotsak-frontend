@@ -225,8 +225,8 @@ export const putVedtak = async (sakId: number | string, status: VedtakStatusType
   return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag })
 }
 
-export const putFerdigstillBestilling = async (sakId: number | string, status: OppgaveStatusType, beskjed?: string) => {
-  return put(`${baseUrl}/api/bestilling/${sakId}/ferdigstilling`, { status, beskjed })
+export const putFerdigstillBestilling = async (sakId: number | string, beskjed?: string) => {
+  return put(`${baseUrl}/api/bestilling/${sakId}/ferdigstilling`, { beskjed })
 }
 
 export const putAvvisBestilling = async (sakId: number | string, tilbakemelding: AvvisBestilling) => {

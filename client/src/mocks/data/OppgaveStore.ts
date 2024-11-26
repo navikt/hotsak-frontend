@@ -116,8 +116,8 @@ export class OppgaveStore extends Dexie {
         fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
         opprettetTidspunkt: journalføring.journalpostOpprettetTid,
         endretTidspunkt: journalføring.journalpostOpprettetTid,
-        fnr: journalføring.oppgave.bruker!.fnr,
-        bruker: { fnr: journalføring.oppgave.bruker!.fnr, navn: journalføring.oppgave.bruker!.navn },
+        fnr: journalføring.bruker!.fnr,
+        bruker: { fnr: journalføring.bruker!.fnr, navn: journalføring.bruker!.navn! },
         versjon: 1,
       }
     })

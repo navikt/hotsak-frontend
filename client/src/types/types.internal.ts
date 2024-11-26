@@ -512,7 +512,7 @@ export interface Journalpost {
 
 export interface FødselsnummerOgNavn {
   fnr: string
-  navn: string | Navn
+  navn: Navn
   fulltNavn?: string
 }
 

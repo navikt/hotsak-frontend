@@ -7,7 +7,6 @@ import {
   Hendelse,
   Journalpost,
   JournalpostStatusType,
-  OmrådeFilter,
   Oppgavestatus,
   Oppgavetype,
 } from '../../types/types.internal'
@@ -40,27 +39,31 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
     enhet: enheter.agder,
+    bruker: {
+      fnr: fnrInnsender,
+      navn: lagTilfeldigNavn(),
+    },
     innsender: {
       fnr: fnrInnsender,
-      navn: lagTilfeldigNavn().fulltNavn,
+      navn: lagTilfeldigNavn(),
     },
     oppgave: {
       id: journalpostId.toString(),
       oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
-      beskrivelse: '',
-      område: [OmrådeFilter.SYN],
-      enhet: enheter.agder,
-      frist: now.toISOString(),
-      opprettet: now.toISOString(),
-      bruker: {
-        fnr: fnrInnsender,
-        fulltNavn: lagTilfeldigNavn().fulltNavn,
-      },
-      innsender: {
-        fnr: fnrInnsender,
-        fulltNavn: lagTilfeldigNavn().fulltNavn,
-      },
+      //  beskrivelse: '',
+      //område: [OmrådeFilter.SYN],
+      //enhet: enheter.agder,
+      //frist: now.toISOString(),
+      //opprettet: now.toISOString(),
+      //bruker: {
+      //  fnr: fnrInnsender,
+      // fulltNavn: lagTilfeldigNavn().fulltNavn,
+      //},
+      //innsender: {
+      //  fnr: fnrInnsender,
+      //  fulltNavn: lagTilfeldigNavn().fulltNavn,
+      //},
     },
   }
 }

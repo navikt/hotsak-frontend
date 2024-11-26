@@ -1,21 +1,21 @@
 import { delay, http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
+import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 import { Oppgave, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({
-  journalpostStore,
+  //journalpostStore,
   oppgaveStore,
   sakStore,
   barnebrillesakStore,
 }) => [
   http.get(
     `/api/oppgaver-v2`,
-    async ({ request }) => {
-      const url = new URL(request.url)
-      const oppgavetype = url.searchParams.get('oppgavetype')
+    async (/*{ request }*/) => {
+      //const url = new URL(request.url)
+      //const oppgavetype = url.searchParams.get('oppgavetype')
 
       await delay(200)
 

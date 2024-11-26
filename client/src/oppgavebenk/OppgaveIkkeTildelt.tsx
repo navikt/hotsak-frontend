@@ -7,10 +7,11 @@ import { Button } from '@navikt/ds-react'
 import { postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { Oppgavetype, OppgaveV2 } from '../types/types.internal'
+import { Oppgavetype } from '../types/types.internal'
+import { OppgaveApiOppgave } from '../types/experimentalTypes'
 
 interface OppgaveIkkeTildeltProps {
-  oppgave: OppgaveV2
+  oppgave: OppgaveApiOppgave
   gåTilSak: boolean
 }
 

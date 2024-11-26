@@ -1,16 +1,16 @@
 import { memo } from 'react'
 
 import { EllipsisCell } from '../felleskomponenter/table/Celle'
-import { OppgaveV2 } from '../types/types.internal'
+import { OppgaveApiOppgave } from '../types/experimentalTypes'
 import { OppgaveIkkeTildelt } from './OppgaveIkkeTildelt'
 
 interface OppgavetildelingProps {
-  oppgave: OppgaveV2
+  oppgave: OppgaveApiOppgave
 }
 
 export const Oppgavetildeling = memo(({ oppgave }: OppgavetildelingProps) => {
-  if (oppgave.saksbehandler) {
-    return <EllipsisCell minLength={15} value={oppgave.saksbehandler.navn} />
+  if (oppgave.tildeltSaksbehandler) {
+    return <EllipsisCell minLength={15} value={oppgave.tildeltSaksbehandler.navn} />
   } else {
     return <OppgaveIkkeTildelt oppgave={oppgave} gåTilSak={true} />
   }

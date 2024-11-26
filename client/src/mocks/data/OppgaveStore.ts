@@ -43,7 +43,8 @@ export class OppgaveStore extends Dexie {
         tema: 'HJE',
         behandlingstema: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : null,
         behandlingstype: sak.sakstype === Sakstype.BESTILLING ? 'Bestilling' : null,
-        beskrivelse: sak.søknadGjelder,
+        beskrivelse:
+          '--- 25.11.2024 13:13 (azure-token-generator) ---\nNok en test!\n\n--- 22.11.2024 13:27  (Z994377, 2970) ---\nTest.\nOppgaven er flyttet fra saksbehandler Z994377 til <ingen>\n\nSøknad om: terskeleliminator',
         prioritet: sak.hast ? OppgavePrioritet.HØY : OppgavePrioritet.NORMAL,
         tildeltEnhet: sak.enhet,
         tildeltSaksbehandler: sak.saksbehandler,

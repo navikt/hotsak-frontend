@@ -1,8 +1,7 @@
-import { Panel, Table } from '@navikt/ds-react'
+import { Box, Link, Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
@@ -11,7 +10,6 @@ import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgaveApiOppgave } from '../types/experimentalTypes'
-import { Oppgavetype } from '../types/types.internal'
 import { formaterDato } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
@@ -52,10 +50,6 @@ export function Oppgavebenk() {
   }
   */
 
-  /*
-  frist 
-  */
-
   const kolonner = [
     {
       key: 'REGISTRERT',
@@ -80,13 +74,24 @@ export function Oppgavebenk() {
       ),
     },
     {
+      /* Workaround for at beskrivelsen fra gosys enn så lenge 
+        er en lang streng med alle hendelser og kommentarer skilt med \n
+        dette filtreres vekk under for å gjøre beskrivelsen mer leslig i oppgavelista 
+        forhåpentligvis blir dette bedre i neste versjon av Gosys apiet */
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
       width: 175,
       render: (oppgave: OppgaveApiOppgave) => (
         <EllipsisCell
           minLength={18}
-          value={storForbokstavIOrd(oppgave.beskrivelse?.toLocaleLowerCase().replace('søknad om: ', ''))}
+          value={storForbokstavIOrd(
+            oppgave.beskrivelse
+              ?.toLocaleLowerCase()
+              .split('\n')
+              .reverse()[0]
+              .replace('søknad om: ', '')
+              .replace('bestilling av: ', '')
+          )}
         />
       ),
     },
@@ -126,6 +131,20 @@ export function Oppgavebenk() {
       name: 'Frist',
       width: 114,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
+    },
+    {
+      key: 'GOSYS',
+      name: 'Gosys',
+      width: 96,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <Link
+          variant="neutral"
+          target="_blank"
+          href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgave.oppgaveId}`}
+        >
+          {oppgave.oppgaveId}
+        </Link>
+      ),
     },
 
     /*{
@@ -197,12 +216,11 @@ export function Oppgavebenk() {
         <Toast>Henter oppgaver </Toast>
       ) : (
         <Container>
-          <Panel>
+          <Box padding={{ sm: '2', md: '10' }}>
             {hasData ? (
               <ScrollWrapper>
                 <Table
-                  style={{ width: 'initial' }}
-                  zebraStripes
+                  //style={{ width: 'initial' }}
                   size="small"
                   //sort={sort}
                   /*onSortChange={(sortKey) => {
@@ -224,13 +242,13 @@ export function Oppgavebenk() {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave: OppgaveApiOppgave) => (
-                      <LinkRow
+                      <Table.Row
                         key={oppgave.oppgaveId}
-                        path={
+                        /*path={
                           oppgave.oppgavetype !== Oppgavetype.JOURNALFØRING
                             ? `/dokument/${oppgave.journalpostId}`
                             : `/sak/${oppgave.sakId}`
-                        }
+                        }*/
                       >
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell
@@ -243,7 +261,7 @@ export function Oppgavebenk() {
                             {render(oppgave)}
                           </DataCell>
                         ))}
-                      </LinkRow>
+                      </Table.Row>
                     ))}
                   </Table.Body>
                 </Table>
@@ -257,7 +275,7 @@ export function Oppgavebenk() {
             ) : (
               <IngentingFunnet>Ingen oppgaver funnet</IngentingFunnet>
             )}
-          </Panel>
+          </Box>
         </Container>
       )}
     </>

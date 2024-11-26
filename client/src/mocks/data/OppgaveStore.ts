@@ -1,13 +1,14 @@
 import Dexie, { Table } from 'dexie'
 
-import { Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../types/types.internal'
+import { addBusinessDays, parseISO } from 'date-fns'
+import { OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTypes'
+import { Oppgavestatus, Oppgavetype, Sakstype } from '../../types/types.internal'
 import { BarnebrillesakStore } from './BarnebrillesakStore'
 import { IdGenerator } from './IdGenerator'
-import { JournalpostStore } from './JournalpostStore'
+//import { JournalpostStore } from './JournalpostStore'
 import { SakStore } from './SakStore'
-import { addBusinessDays, parseISO } from 'date-fns'
 
-type LagretOppgave = OppgaveV2
+type LagretOppgave = OppgaveApiOppgave
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, string>
@@ -15,12 +16,12 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly idGenerator: IdGenerator,
     private readonly sakStore: SakStore,
-    private readonly barnebrillesakStore: BarnebrillesakStore,
-    private readonly journalpostStore: JournalpostStore
+    private readonly barnebrillesakStore: BarnebrillesakStore
+    //private readonly journalpostStore: JournalpostStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
-      oppgaver: 'id',
+      oppgaver: 'oppgaveId',
     })
   }
 
@@ -32,52 +33,71 @@ export class OppgaveStore extends Dexie {
 
     const saker = await this.sakStore.alle()
     const barnebrillesaker = await this.barnebrillesakStore.alle()
-    const journalføringer = await this.journalpostStore.alle()
+    //const journalføringer = await this.journalpostStore.alle()
 
-    const oppgaverFraSak: OppgaveV2[] = saker.map((sak) => {
+    const oppgaverFraSak: OppgaveApiOppgave[] = saker.map((sak) => {
       return {
-        id: this.idGenerator.nesteId().toString(),
+        oppgaveId: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
+        tema: 'HJE',
+        behandlingstema: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : null,
+        behandlingstype: sak.sakstype === Sakstype.BESTILLING ? 'Bestilling' : null,
         beskrivelse: sak.søknadGjelder,
-        område: ['bevegelse'],
-        // TODO utled dette fra behovsmelding
-        //område: sak.personinformasjon.funksjonsnedsettelser,
-        enhet: sak.enhet,
-        kommune: sak.bruker.kommune,
-        bydel: sak.bruker.bydel,
-        saksbehandler: sak.saksbehandler,
-        sakId: sak.sakId,
-        frist: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
-        opprettet: sak.opprettet,
-        endret: sak.opprettet,
-        bruker: sak.bruker,
-        innsender: sak.innsender,
+        prioritet: sak.hast ? OppgavePrioritet.HØY : OppgavePrioritet.NORMAL,
+        tildeltEnhet: sak.enhet,
+        tildeltSaksbehandler: sak.saksbehandler,
+        opprettetAv: 'hm-saksbehandling',
+        opprettetAvEnhet: sak.enhet,
+        //endretAv: null,
+        //endretAvEnhet: null,
+        aktivDato: sak.opprettet,
+        //journalpostId: null,
+        behandlesAvApplikasjon: 'Hotsak',
+        //mappeId: null,
+        fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
+        opprettetTidspunkt: sak.opprettet,
+        endretTidspunkt: sak.opprettet,
+        //ferdigstiltTidspunkt: null,
+        fnr: sak.bruker.fnr,
+        bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
+        versjon: 1,
       }
     })
 
-    const oppgaverFraBarnebrillesak: OppgaveV2[] = barnebrillesaker.map((sak) => {
+    const oppgaverFraBarnebrillesak: OppgaveApiOppgave[] = barnebrillesaker.map((sak) => {
       const now = new Date()
+
       return {
-        id: this.idGenerator.nesteId().toString(),
+        oppgaveId: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
+        tema: 'HJE',
+        behandlingstema: 'Briller/linser',
+        //behandlingstype: null,
         beskrivelse: sak.søknadGjelder,
-        område: ['syn'],
-        enhet: sak.enhet,
-        kommune: sak.bruker.kommune,
-        bydel: sak.bruker.bydel,
-        saksbehandler: sak.saksbehandler,
-        sakId: sak.sakId,
-        frist: addBusinessDays(now, 14).toISOString(),
-        opprettet: now.toISOString(),
-        endret: now.toISOString(),
-        bruker: sak.bruker,
-        innsender: sak.innsender,
+        prioritet: OppgavePrioritet.NORMAL,
+        tildeltEnhet: sak.enhet,
+        tildeltSaksbehandler: sak.saksbehandler,
+        opprettetAv: 'hm-saksbehandling',
+        opprettetAvEnhet: sak.enhet,
+        //endretAv: null,
+        //endretAvEnhet: null,
+        aktivDato: sak.opprettet,
+        //journalpostId: null,
+        behandlesAvApplikasjon: 'Hotsak',
+        //mappeId: null,
+        fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
+        opprettetTidspunkt: now.toISOString(),
+        endretTidspunkt: now.toISOString(),
+        //ferdigstiltTidspunkt: null,
+        fnr: sak.bruker.fnr,
+        bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
+        versjon: 1,
       }
     })
 
-    const oppgaverFraJournalføringer: OppgaveV2[] = journalføringer.map((journalføring) => {
+    /*const oppgaverFraJournalføringer: OppgaveV2[] = journalføringer.map((journalføring) => {
       return {
         id: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.JOURNALFØRING,
@@ -93,9 +113,10 @@ export class OppgaveStore extends Dexie {
         bruker: { fnr: journalføring.oppgave.bruker!.fnr, fulltNavn: journalføring.oppgave.bruker!.fulltNavn },
         innsender: journalføring.innsender,
       }
-    })
+    })*/
 
-    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalføringer])
+    // TODO, ta med journalføringsoppgaver også på nytt format sånn at OppgaveV2 kan fases helt ut
+    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak /*, ...oppgaverFraJournalføringer*/])
   }
 
   async lagreAlle(oppgaver: LagretOppgave[]) {

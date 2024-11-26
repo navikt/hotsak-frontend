@@ -3,16 +3,16 @@ import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
-import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgavestatusLabel, Oppgavetype, OppgaveV2 } from '../types/types.internal'
-import { formaterDato, formaterTidsstempel } from '../utils/dato'
-import { Oppgavetildeling } from './Oppgavetildeling'
+import { OppgaveApiOppgave } from '../types/experimentalTypes'
+import { Oppgavetype } from '../types/types.internal'
+import { formaterDato } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
 export function Oppgavebenk() {
@@ -57,86 +57,84 @@ export function Oppgavebenk() {
   */
 
   const kolonner = [
-    { key: 'EIER', name: 'Eier', width: 152, render: (oppgave: OppgaveV2) => <Oppgavetildeling oppgave={oppgave} /> },
     {
-      key: 'STATUS',
-      name: 'Status',
-      width: 124,
-      render: (oppgave: OppgaveV2) => <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus) ?? ''} />,
+      key: 'REGISTRERT',
+      name: 'Registrert',
+      width: 114,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.opprettetTidspunkt)} />,
     },
     {
-      key: 'TYPE',
-      name: 'Type',
-      width: 134,
-      render: (oppgave: OppgaveV2) => <TekstCell value={storForbokstavIAlleOrd(oppgave.oppgavetype)} />,
+      key: 'ENDRET',
+      name: 'Endret',
+      width: 114,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.endretTidspunkt)} />,
     },
     {
-      key: 'FUNKSJONSNEDSETTELSE',
-      name: 'Område',
-      width: 152,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.område.join(', '))} />
+      key: 'BEHANDLINGSTEMA',
+      name: 'Behandlingstema',
+      width: 140,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <TekstCell value={storForbokstavIAlleOrd(oppgave.behandlingstema || '-')} />
+      ),
+    },
+
+    {
+      key: 'BEHANDLINGSTYPE',
+      name: 'Behandlingstype',
+      width: 140,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <TekstCell value={storForbokstavIAlleOrd(oppgave.behandlingstype || '-')} />
       ),
     },
     {
-      key: 'SØKNAD_OM',
-      name: 'Beskrivelse',
-      width: 192,
-      render: (oppgave: OppgaveV2) => (
+      key: 'GJELDER',
+      name: 'Gjelder',
+      width: 175,
+      render: (oppgave: OppgaveApiOppgave) => (
         <EllipsisCell
-          minLength={20}
-          value={storForbokstavIAlleOrd(
-            oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
-          )}
+          minLength={18}
+          value={storForbokstavIOrd(oppgave.beskrivelse?.toLocaleLowerCase().replace('søknad om: ', ''))}
         />
+      ),
+    },
+
+    {
+      key: 'OPPGAVETYPE',
+      name: 'Oppgavetype',
+      width: 152,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.oppgavetype.replaceAll('_', ' '))} />
+      ),
+    },
+    {
+      key: 'PRIORITET',
+      name: 'Prioritet',
+      width: 120,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <EllipsisCell minLength={20} value={storForbokstavIAlleOrd(oppgave.prioritet)} />
       ),
     },
     {
       key: 'BRUKER',
       name: 'Bruker',
       width: 188,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={20} value={formaterNavn(oppgave.bruker.fulltNavn || '-')} />
+      render: (oppgave: OppgaveApiOppgave) => (
+        <EllipsisCell minLength={20} value={formaterNavn(oppgave?.bruker?.navn) || '-'} />
       ),
     },
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterFødselsnummer(oppgave.fnr || '-')} />,
     },
-    {
-      key: 'BOSTED',
-      name: 'Kommune / bydel',
-      width: 165,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={18} value={oppgave.bydel ? oppgave.bydel.navn : oppgave?.kommune?.navn || '-'} />
-      ),
-    },
-    {
-      key: 'FORMIDLER',
-      name: 'Innsender',
-      width: 164,
-      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={19} value={oppgave?.innsender?.fulltNavn || '-'} />,
-    },
-    {
-      key: 'MOTTATT',
-      name: 'Mottatt dato',
-      width: 140,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />,
-    },
-    /*{
-      key: 'ENHET',
-      name: 'Enhet',
-      width: 140,
-      render: (oppgave: OppgaveV2) => <TekstCell value={oppgave.enhet.enhetsnavn} />,
-    },*/
     {
       key: 'FRIST',
       name: 'Frist',
-      width: 140,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.frist)} />,
+      width: 114,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
     },
+
     /*{
       key: 'MENU',
       sortable: false,
@@ -232,9 +230,9 @@ export function Oppgavebenk() {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {oppgaver.map((oppgave: OppgaveV2) => (
+                    {oppgaver.map((oppgave: OppgaveApiOppgave) => (
                       <LinkRow
-                        key={oppgave.id}
+                        key={oppgave.oppgaveId}
                         path={
                           oppgave.oppgavetype !== Oppgavetype.JOURNALFØRING
                             ? `/dokument/${oppgave.journalpostId}`

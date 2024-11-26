@@ -1,21 +1,9 @@
-import { addWeeks } from 'date-fns'
 import { delay, http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
-import {
-  DokumentOppgaveStatusType,
-  OmrådeFilter,
-  Oppgave,
-  OppgaverResponse,
-  Oppgavestatus,
-  OppgaveStatusType,
-  Oppgavetype,
-  OppgaveV2,
-  SakerFilter,
-} from '../../types/types.internal'
-import { formaterNavn } from '../../utils/formater'
+import { Oppgave, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { enheter } from '../data/enheter'
+import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({
   journalpostStore,
@@ -23,17 +11,19 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
   sakStore,
   barnebrillesakStore,
 }) => [
-  http.get(`/api/oppgaver-v2`, async ({ request }) => {
-    const url = new URL(request.url)
-    const oppgavetype = url.searchParams.get('oppgavetype')
+  http.get(
+    `/api/oppgaver-v2`,
+    async ({ request }) => {
+      const url = new URL(request.url)
+      const oppgavetype = url.searchParams.get('oppgavetype')
 
-    await delay(200)
+      await delay(200)
 
-    // Midlertidig workaround frem til vi har en mer fungerende oppgavemodell i mocken.
-    // Hvis oppgavetype er journalføring, kommer kallet fra dokumentlista og da viser vi førelpig journalføringer fra Journalføringstore
-    // hvis ikke henter vi alle oppgaver fra oppgavestore, men den brukes kun fra eksperimentell oppgavebenk og vi vet enda ikke helt hvordan
-    // Enn så lenge er det ikke noe logikk i mocken for å holde oppgavestore oppdatert
-    if (oppgavetype === 'JOURNALFØRING') {
+      // Midlertidig workaround frem til vi har en mer fungerende oppgavemodell i mocken.
+      // Hvis oppgavetype er journalføring, kommer kallet fra dokumentlista og da viser vi førelpig journalføringer fra Journalføringstore
+      // hvis ikke henter vi alle oppgaver fra oppgavestore, men den brukes kun fra eksperimentell oppgavebenk og vi vet enda ikke helt hvordan
+      // Enn så lenge er det ikke noe logikk i mocken for å holde oppgavestore oppdatert
+      /*if (oppgavetype === 'JOURNALFØRING') {
       const journalposter = await journalpostStore.alle()
       const now = new Date()
       const oppgaver: OppgaveV2[] = journalposter.map((journalpost) => {
@@ -65,15 +55,19 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
       }
 
       return HttpResponse.json(pagedOppgaver)
-    } else {
+    } else {*/
       const oppgaver = await oppgaveStore.alle()
-      const pagedOppgaver: OppgaverResponse = {
+      const pagedOppgaver: OppgaveApiResponse = {
         oppgaver: oppgaver,
+        pageNumber: 1,
+        pageSize: 10,
+        totalPages: 1,
         totalElements: oppgaver.length,
       }
       return HttpResponse.json(pagedOppgaver)
     }
-  }),
+    /*}*/
+  ),
 
   http.get(`/api/oppgaver`, async ({ request }) => {
     const url = new URL(request.url)
@@ -122,7 +116,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
   }),
 ]
 
-function journalstatusTilOppgavestatus(journalstatus: DokumentOppgaveStatusType): Oppgavestatus {
+/*function journalstatusTilOppgavestatus(journalstatus: DokumentOppgaveStatusType): Oppgavestatus {
   switch (journalstatus) {
     case DokumentOppgaveStatusType.MOTTATT:
       return Oppgavestatus.OPPRETTET
@@ -132,4 +126,4 @@ function journalstatusTilOppgavestatus(journalstatus: DokumentOppgaveStatusType)
     case DokumentOppgaveStatusType.JOURNALFØRT:
       return Oppgavestatus.FERDIGSTILT
   }
-}
+}*/

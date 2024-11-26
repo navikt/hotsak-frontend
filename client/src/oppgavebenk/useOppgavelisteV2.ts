@@ -2,10 +2,10 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
-import { OppgaveV2 } from '../types/types.internal'
+import { OppgaveApiOppgave, OppgaveApiResponse } from '../types/experimentalTypes'
 
 interface DataResponse {
-  oppgaver: OppgaveV2[]
+  oppgaver: OppgaveApiOppgave[]
   pageNumber: number
   pageSize: number
   totalPages: number
@@ -33,13 +33,13 @@ interface Filters {
 }
 */
 
-interface OppgavelisteResponse {
-  oppgaver: OppgaveV2[]
+/*interface OppgavelisteResponse {
+  oppgaver: OppgaveApiOppgave[]
   pageNumber: number
   pageSize: number
   totalPages: number
   totalElements: number
-}
+}*/
 
 /*
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
@@ -81,7 +81,7 @@ const buildQueryParamString = (queryParams: Record<string, string>) => {
 export function useOppgavelisteV2(currentPage: number /*, sort: SortState, filters: Filters*/): DataResponse {
   //const { path, queryParams } = pathConfig(currentPage, sort, filters)
   //const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(basePath, httpGet, { refreshInterval: 10000 })
+  const { data, error, mutate } = useSwr<{ data: OppgaveApiResponse }>(basePath, httpGet, { refreshInterval: 10000 })
 
   /*
   useEffect(() => {

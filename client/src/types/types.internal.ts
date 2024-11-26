@@ -438,31 +438,31 @@ export interface OppgaveV2 {
   oppgavestatus: Oppgavestatus
   beskrivelse: string
   //TODO Fiks type på tvers her for å unngå string
-  område: string[]
+  // område: string[]
   //område: OmrådeFilter[]
-  enhet: Enhet
-  kommune?: Kommune
-  bydel?: Bydel
+  //enhet: Enhet
+  //kommune?: Kommune
+  //bydel?: Bydel
   saksbehandler?: Saksbehandler
   journalpostId?: string
-  sakId?: string
-  frist: string
+  //sakId?: string
+  //frist: string
   opprettet: string
-  endret?: string
+  //endret?: string
   bruker: {
     fnr: string
     fulltNavn?: string
   }
-  innsender?: {
+  /* innsender?: {
     fnr: string
     fulltNavn?: string
-  }
+  }*/
 }
 
-export interface OppgaverResponse {
+/*export interface OppgaverResponse {
   oppgaver: OppgaveV2[]
   totalElements: number
-}
+}*/
 
 export interface Bydel {
   bydelsnummer: string

@@ -2,60 +2,27 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
 import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
-import { Oppgave, OppgaveStatusType, SakerFilter } from '../../types/types.internal'
+import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 
-export const oppgaveHandlers: StoreHandlersFactory = ({
-  //journalpostStore,
-  oppgaveStore,
-  sakStore,
-  barnebrillesakStore,
-}) => [
-  http.get(
-    `/api/oppgaver-v2`,
-    async (/*{ request }*/) => {
-      //const url = new URL(request.url)
-      //const oppgavetype = url.searchParams.get('oppgavetype')
+export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, barnebrillesakStore }) => [
+  http.get(`/api/oppgaver-v2`, async ({ request }) => {
+    const url = new URL(request.url)
+    const oppgavetype = url.searchParams.get('oppgavetype')
 
-      await delay(200)
+    await delay(200)
+    if (oppgavetype === 'JOURNALFØRING') {
+      const oppgaver = await oppgaveStore.alle()
 
-      // Midlertidig workaround frem til vi har en mer fungerende oppgavemodell i mocken.
-      // Hvis oppgavetype er journalføring, kommer kallet fra dokumentlista og da viser vi førelpig journalføringer fra Journalføringstore
-      // hvis ikke henter vi alle oppgaver fra oppgavestore, men den brukes kun fra eksperimentell oppgavebenk og vi vet enda ikke helt hvordan
-      // Enn så lenge er det ikke noe logikk i mocken for å holde oppgavestore oppdatert
-      /*if (oppgavetype === 'JOURNALFØRING') {
-      const journalposter = await journalpostStore.alle()
-      const now = new Date()
-      const oppgaver: OppgaveV2[] = journalposter.map((journalpost) => {
-        return {
-          id: journalpost.journalpostID,
-          oppgavetype: Oppgavetype.JOURNALFØRING,
-          oppgavestatus: journalstatusTilOppgavestatus(journalpost.status),
-          beskrivelse: journalpost.tittel,
-          område: [OmrådeFilter.SYN],
-          enhet: enheter.agder,
-          saksbehandler: journalpost.saksbehandler,
-          journalpostId: journalpost.journalpostID,
-          frist: addWeeks(now, 3).toISOString(),
-          opprettet: now.toISOString(),
-          bruker: {
-            fnr: journalpost.innsender.fnr,
-            fulltNavn: formaterNavn(journalpost.innsender.navn),
-          },
-          innsender: {
-            fnr: journalpost.innsender.fnr,
-            fulltNavn: formaterNavn(journalpost.innsender.navn),
-          },
-        }
-      })
-
-      const pagedOppgaver: OppgaverResponse = {
-        oppgaver: oppgaver,
+      const pagedOppgaver: OppgaveApiResponse = {
+        oppgaver: oppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING),
+        pageNumber: 1,
+        pageSize: 10,
+        totalPages: 1,
         totalElements: oppgaver.length,
       }
-
       return HttpResponse.json(pagedOppgaver)
-    } else {*/
+    } else {
       const oppgaver = await oppgaveStore.alle()
       const pagedOppgaver: OppgaveApiResponse = {
         oppgaver: oppgaver,
@@ -66,8 +33,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
       }
       return HttpResponse.json(pagedOppgaver)
     }
-    /*}*/
-  ),
+  }),
 
   http.get(`/api/oppgaver`, async ({ request }) => {
     const url = new URL(request.url)
@@ -115,15 +81,3 @@ export const oppgaveHandlers: StoreHandlersFactory = ({
     return HttpResponse.json(response)
   }),
 ]
-
-/*function journalstatusTilOppgavestatus(journalstatus: DokumentOppgaveStatusType): Oppgavestatus {
-  switch (journalstatus) {
-    case DokumentOppgaveStatusType.MOTTATT:
-      return Oppgavestatus.OPPRETTET
-    case DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER:
-    case DokumentOppgaveStatusType.AVVENTER_JOURNALFØRING:
-      return Oppgavestatus.UNDER_BEHANDLING
-    case DokumentOppgaveStatusType.JOURNALFØRT:
-      return Oppgavestatus.FERDIGSTILT
-  }
-}*/

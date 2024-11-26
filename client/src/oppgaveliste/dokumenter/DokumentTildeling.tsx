@@ -1,19 +1,19 @@
 import { EllipsisCell } from '../../felleskomponenter/table/Celle'
+import { OppgaveApiOppgave } from '../../types/experimentalTypes'
 
-import { OppgaveV2 } from '../../types/types.internal'
+import { formaterNavn } from '../../utils/formater'
 import { DokumentIkkeTildelt } from './DokumentIkkeTildelt'
 
 export interface DokumentTildelingProps {
-  dokumentOppgave: OppgaveV2
+  dokumentOppgave: OppgaveApiOppgave
 }
 
 export function DokumentTildeling({ dokumentOppgave }: DokumentTildelingProps) {
-  return dokumentOppgave.saksbehandler ? (
-    <EllipsisCell value={dokumentOppgave.saksbehandler.navn} minLength={15} />
+  return dokumentOppgave.tildeltSaksbehandler ? (
+    <EllipsisCell value={formaterNavn(dokumentOppgave.tildeltSaksbehandler.navn)} minLength={15} />
   ) : (
-    // TODO: Fix typer e.l. slik at journalpost ikke er null hvis det er en journalføringsoppgaver
     <DokumentIkkeTildelt
-      oppgaveId={dokumentOppgave.id}
+      oppgaveId={dokumentOppgave.oppgaveId}
       journalpostID={dokumentOppgave.journalpostId!}
       gåTilSak={true}
     />

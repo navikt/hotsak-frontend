@@ -5,8 +5,8 @@ import { OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTyp
 import { Oppgavestatus, Oppgavetype, Sakstype } from '../../types/types.internal'
 import { BarnebrillesakStore } from './BarnebrillesakStore'
 import { IdGenerator } from './IdGenerator'
-//import { JournalpostStore } from './JournalpostStore'
 import { SakStore } from './SakStore'
+import { JournalpostStore } from './JournalpostStore'
 
 type LagretOppgave = OppgaveApiOppgave
 
@@ -16,8 +16,8 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly idGenerator: IdGenerator,
     private readonly sakStore: SakStore,
-    private readonly barnebrillesakStore: BarnebrillesakStore
-    //private readonly journalpostStore: JournalpostStore
+    private readonly barnebrillesakStore: BarnebrillesakStore,
+    private readonly journalpostStore: JournalpostStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
@@ -33,7 +33,7 @@ export class OppgaveStore extends Dexie {
 
     const saker = await this.sakStore.alle()
     const barnebrillesaker = await this.barnebrillesakStore.alle()
-    //const journalføringer = await this.journalpostStore.alle()
+    const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: OppgaveApiOppgave[] = saker.map((sak) => {
       return {
@@ -97,26 +97,32 @@ export class OppgaveStore extends Dexie {
       }
     })
 
-    /*const oppgaverFraJournalføringer: OppgaveV2[] = journalføringer.map((journalføring) => {
+    const oppgaverFraJournalføringer: OppgaveApiOppgave[] = journalføringer.map((journalføring) => {
       return {
-        id: this.idGenerator.nesteId().toString(),
+        oppgaveId: this.idGenerator.nesteId().toString(),
         oppgavetype: Oppgavetype.JOURNALFØRING,
         oppgavestatus: Oppgavestatus.OPPRETTET,
+        tema: 'HJE',
+        behandlingstema: 'Briller/linser',
         beskrivelse: journalføring.tittel,
-        område: ['syn'],
-        enhet: journalføring.enhet!,
-        saksbehandler: journalføring.saksbehandler,
+        prioritet: OppgavePrioritet.NORMAL,
+        //  område: ['syn'],
+        tildeltEnhet: journalføring.enhet!,
+        tildeltSaksbehandler: journalføring.saksbehandler,
+        aktivDato: journalføring.journalpostOpprettetTid,
+        opprettetAv: 'hm-saksbehandling',
+        opprettetAvEnhet: journalføring.enhet,
         journalpostId: journalføring.journalpostID,
-        frist: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
-        opprettet: journalføring.journalpostOpprettetTid,
-        endret: journalføring.journalpostOpprettetTid,
-        bruker: { fnr: journalføring.oppgave.bruker!.fnr, fulltNavn: journalføring.oppgave.bruker!.fulltNavn },
-        innsender: journalføring.innsender,
+        fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
+        opprettetTidspunkt: journalføring.journalpostOpprettetTid,
+        endretTidspunkt: journalføring.journalpostOpprettetTid,
+        fnr: journalføring.oppgave.bruker!.fnr,
+        bruker: { fnr: journalføring.oppgave.bruker!.fnr, navn: journalføring.oppgave.bruker!.navn },
+        versjon: 1,
       }
-    })*/
+    })
 
-    // TODO, ta med journalføringsoppgaver også på nytt format sånn at OppgaveV2 kan fases helt ut
-    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak /*, ...oppgaverFraJournalføringer*/])
+    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalføringer])
   }
 
   async lagreAlle(oppgaver: LagretOppgave[]) {

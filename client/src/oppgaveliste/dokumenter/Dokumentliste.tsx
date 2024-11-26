@@ -8,38 +8,39 @@ import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHe
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
 import { formaterTidsstempel } from '../../utils/dato'
-import { formaterFødselsnummer } from '../../utils/formater'
+import { formaterFødselsnummer, formaterNavn } from '../../utils/formater'
 import { isError } from '../../utils/type'
 import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { OppgavestatusLabel, OppgaveV2 } from '../../types/types.internal'
+import { OppgavestatusLabel } from '../../types/types.internal'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
 import { DokumentTildeling } from './DokumentTildeling'
+import { OppgaveApiOppgave } from '../../types/experimentalTypes'
 
 export function Dokumentliste() {
   const { data, isLoading, error } = useDokumentliste()
   const oppgaver = data?.oppgaver || []
 
-  const kolonner: Tabellkolonne<OppgaveV2>[] = [
+  const kolonner: Tabellkolonne<OppgaveApiOppgave>[] = [
     {
       key: 'saksbehandler',
       name: 'Eier',
       width: 160,
-      render(oppgave: OppgaveV2) {
+      render(oppgave: OppgaveApiOppgave) {
         return <DokumentTildeling dokumentOppgave={oppgave} />
       },
-      accessor(verdi: OppgaveV2): string {
-        return verdi.saksbehandler?.navn || ''
+      accessor(verdi: OppgaveApiOppgave): string {
+        return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')
       },
     },
     {
       key: 'beskrivelse',
       name: 'Beskrivelse',
       width: 400,
-      render(oppgave: OppgaveV2) {
+      render(oppgave: OppgaveApiOppgave) {
         const oppgaveBeskrivelse = oppgave.beskrivelse || 'Uten tittel'
         return (
           <TooltipWrapper visTooltip={oppgaveBeskrivelse.length > 40} content={oppgaveBeskrivelse}>
@@ -52,7 +53,7 @@ export function Dokumentliste() {
       key: 'oppgavestatus',
       name: 'Status',
       width: 150,
-      render(oppgave: OppgaveV2) {
+      render(oppgave: OppgaveApiOppgave) {
         return <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />
       },
     },
@@ -60,32 +61,32 @@ export function Dokumentliste() {
       key: 'bruker',
       name: 'Bruker',
       width: 135,
-      render(oppgave: OppgaveV2) {
-        const fulltNavn = oppgave.bruker?.fulltNavn || '-'
+      render(oppgave: OppgaveApiOppgave) {
+        const fulltNavn = formaterNavn(oppgave.bruker?.navn || '-')
         return (
           <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
             <TekstMedEllipsis>{fulltNavn}</TekstMedEllipsis>
           </TooltipWrapper>
         )
       },
-      accessor(verdi: OppgaveV2): string {
-        return verdi.bruker?.fulltNavn || ''
+      accessor(verdi: OppgaveApiOppgave): string {
+        return formaterNavn(verdi.bruker?.navn || '')
       },
     },
     {
       key: 'fnr',
       name: 'Fødselsnr.',
       width: 135,
-      render(oppgave: OppgaveV2) {
-        return <TekstCell value={formaterFødselsnummer(oppgave.bruker.fnr)} />
+      render(oppgave: OppgaveApiOppgave) {
+        return <TekstCell value={formaterFødselsnummer(oppgave?.fnr || '-')} />
       },
     },
     {
       key: 'opprettet',
       name: 'Mottatt dato',
       width: 152,
-      render(oppgave: OppgaveV2) {
-        return <TekstCell value={formaterTidsstempel(oppgave.opprettet)} />
+      render(oppgave: OppgaveApiOppgave) {
+        return <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />
       },
     },
   ]
@@ -94,7 +95,7 @@ export function Dokumentliste() {
     sort,
     sortedElements: sorterteDokumenter,
     onSortChange,
-  } = useSortedElements<OppgaveV2>(oppgaver, kolonner, {
+  } = useSortedElements<OppgaveApiOppgave>(oppgaver, kolonner, {
     orderBy: 'opprettet',
     direction: 'descending',
   })

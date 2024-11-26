@@ -70,25 +70,18 @@ export function Oppgavebenk() {
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.endretTidspunkt)} />,
     },
     {
-      key: 'BEHANDLINGSTEMA',
-      name: 'Behandlingstema',
-      width: 140,
-      render: (oppgave: OppgaveApiOppgave) => (
-        <TekstCell value={storForbokstavIAlleOrd(oppgave.behandlingstema || '-')} />
-      ),
-    },
-
-    {
-      key: 'BEHANDLINGSTYPE',
-      name: 'Behandlingstype',
-      width: 140,
-      render: (oppgave: OppgaveApiOppgave) => (
-        <TekstCell value={storForbokstavIAlleOrd(oppgave.behandlingstype || '-')} />
-      ),
-    },
-    {
       key: 'GJELDER',
       name: 'Gjelder',
+      width: 140,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <TekstCell
+          value={`${storForbokstavIAlleOrd([oppgave.behandlingstema, oppgave.behandlingstype].filter(Boolean).join(', '))}`}
+        />
+      ),
+    },
+    {
+      key: 'BESKRIVELSE',
+      name: 'Beskrivelse',
       width: 175,
       render: (oppgave: OppgaveApiOppgave) => (
         <EllipsisCell

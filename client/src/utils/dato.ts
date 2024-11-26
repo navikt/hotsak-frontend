@@ -8,7 +8,8 @@ export function formaterDato(dato?: string): string {
   return format(dato, 'P')
 }
 
-export function formaterTidsstempel(dato: string): string {
+export function formaterTidsstempel(dato?: string): string {
+  if (!dato) return ''
   return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
 }
 

@@ -1,3 +1,5 @@
+import { OppgaveApiOppgave } from './experimentalTypes'
+
 export interface SakResponse {
   kanTildeles: boolean
   data: Sak
@@ -431,36 +433,34 @@ export const OppgavestatusLabel = new Map<string, string>([
   [Oppgavestatus.FEILREGISTRERT, 'Feilregistrert'],
 ])
 
-/* Midlertidig uheldig navn. Rename til Oppgave når Oppgavetypen er fjernet når vi er ver på å bruke ny oppgavemodell */
 export interface OppgaveV2 {
   id: string
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
-  beskrivelse: string
+  //beskrivelse: string
   //TODO Fiks type på tvers her for å unngå string
   // område: string[]
-  område: OmrådeFilter[]
-  enhet: Enhet
+  //område: OmrådeFilter[]
+  //enhet: Enhet
   //kommune?: Kommune
   //bydel?: Bydel
-  saksbehandler?: Saksbehandler
-  journalpostId?: string
+  //saksbehandler?: Saksbehandler
+  //journalpostId?: string
   //sakId?: string
-  frist: string
-  opprettet: string
+  //frist: string
+  //opprettet: string
   //endret?: string
-  bruker: {
-    fnr: string
-    fulltNavn?: string
-  }
-  innsender?: {
-    fnr: string
-    fulltNavn?: string
-  }
+  //bruker: {
+  //fnr: string
+  //fulltNavn?: string
+  //}
+  //innsender?: {
+  //fnr: string
+  //fulltNavn?: string
+  //}
 }
-
 export interface OppgaverResponse {
-  oppgaver: OppgaveV2[]
+  oppgaver: OppgaveApiOppgave[]
   totalElements: number
 }
 

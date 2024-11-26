@@ -439,24 +439,24 @@ export interface OppgaveV2 {
   beskrivelse: string
   //TODO Fiks type på tvers her for å unngå string
   // område: string[]
-  //område: OmrådeFilter[]
-  //enhet: Enhet
+  område: OmrådeFilter[]
+  enhet: Enhet
   //kommune?: Kommune
   //bydel?: Bydel
   saksbehandler?: Saksbehandler
   journalpostId?: string
   //sakId?: string
-  //frist: string
+  frist: string
   opprettet: string
   //endret?: string
   bruker: {
     fnr: string
     fulltNavn?: string
   }
-  /* innsender?: {
+  innsender?: {
     fnr: string
     fulltNavn?: string
-  }*/
+  }
 }
 
 export interface OppgaverResponse {

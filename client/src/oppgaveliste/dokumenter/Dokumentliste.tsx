@@ -96,7 +96,7 @@ export function Dokumentliste() {
     sortedElements: sorterteDokumenter,
     onSortChange,
   } = useSortedElements<OppgaveApiOppgave>(oppgaver, kolonner, {
-    orderBy: 'opprettet',
+    orderBy: 'opprettetTidspunkt',
     direction: 'descending',
   })
 

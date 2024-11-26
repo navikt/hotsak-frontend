@@ -459,10 +459,10 @@ export interface OppgaveV2 {
   }*/
 }
 
-/*export interface OppgaverResponse {
+export interface OppgaverResponse {
   oppgaver: OppgaveV2[]
   totalElements: number
-}*/
+}
 
 export interface Bydel {
   bydelsnummer: string

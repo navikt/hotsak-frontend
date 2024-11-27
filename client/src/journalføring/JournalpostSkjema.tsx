@@ -39,6 +39,7 @@ export function JournalpostSkjema() {
       tittel: journalpostTittel,
       journalføresPåFnr: fodselsnummer,
       sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
+      oppgaveId: journalpost!.oppgave.oppgaveId,
     }
     setJournalfører(true)
     postJournalføring(journalføringRequest)

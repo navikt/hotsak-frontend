@@ -59,7 +59,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/oppgaveliste/dokumenter/:journalpostID"
+                  path="/oppgaveliste/dokumenter/:journalpostId"
                   element={
                     <RequireAuth>
                       <Helmet title="Hotsak - Journalføring" />

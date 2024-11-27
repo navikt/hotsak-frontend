@@ -12,15 +12,15 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { useInnloggetSaksbehandler } from '../state/authentication'
-import { DokumentOppgaveStatusType } from '../types/types.internal'
 import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 import { formaterNavn } from '../utils/formater'
+import { Oppgavestatus } from '../types/types.internal'
 
 export function JournalpostVisning() {
-  const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
+  const { journalpostId } = useParams<{ journalpostId: string }>()
+  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const saksbehandler = useInnloggetSaksbehandler()
@@ -35,23 +35,22 @@ export function JournalpostVisning() {
 
   const oppgave = journalpost!.oppgave
 
-  const tildeltAnnenSaksbehandler = journalpost?.saksbehandler?.id !== saksbehandler.id
+  const tildeltAnnenSaksbehandler = oppgave?.tildeltSaksbehandler?.id !== saksbehandler.id
 
   function StatusVisning() {
     if (!journalpost) return <></>
-    else if (journalpost.status === DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER && tildeltAnnenSaksbehandler) {
-      return <Brødtekst>{`Oppgaven er tildelt saksbehandler ${journalpost.saksbehandler?.navn}`}</Brødtekst>
-    } else if (
-      journalpost.status === DokumentOppgaveStatusType.AVVENTER_JOURNALFØRING ||
-      journalpost.status === DokumentOppgaveStatusType.JOURNALFØRT
-    ) {
+    else if (oppgave.oppgavestatus === Oppgavestatus.UNDER_BEHANDLING && tildeltAnnenSaksbehandler) {
+      return (
+        <Brødtekst>{`Oppgaven er tildelt saksbehandler ${formaterNavn(oppgave.tildeltSaksbehandler?.navn)}`}</Brødtekst>
+      )
+    } else if (oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT) {
       return <SkjemaAlert variant="info">Journalposten er sendt til journalføring</SkjemaAlert>
     } else {
       return (
         <Knappepanel>
           <DokumentIkkeTildelt
-            oppgaveId={journalpost.oppgave.id}
-            journalpostID={journalpost.journalpostID}
+            oppgaveId={journalpost.oppgave.oppgaveId}
+            journalpostId={journalpost.journalpostId}
             gåTilSak={false}
           />
         </Knappepanel>
@@ -62,9 +61,9 @@ export function JournalpostVisning() {
   return (
     <Container>
       <ManuellJournalføringKnapp
-        oppgaveId={oppgave.id}
+        oppgaveId={oppgave.oppgaveId}
         status={oppgave.oppgavestatus}
-        tildeltSaksbehandler={journalpost?.saksbehandler}
+        tildeltSaksbehandler={oppgave?.tildeltSaksbehandler}
         onMutate={mutate}
       />
       <Heading level="1" size="small" spacing>

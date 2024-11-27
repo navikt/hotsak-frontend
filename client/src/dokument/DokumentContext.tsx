@@ -4,8 +4,8 @@ import { Brevtype, Ressurs } from '../types/types.internal'
 import { byggTomRessurs } from '../io/ressursFunksjoner'
 
 interface ValgtDokumentType {
-  journalpostID: string
-  dokumentID: string
+  journalpostId: string
+  dokumentId: string
 }
 
 interface DokumentContextType {
@@ -18,7 +18,7 @@ interface DokumentContextType {
 }
 
 const initialState: DokumentContextType = {
-  valgtDokument: { journalpostID: '', dokumentID: '' },
+  valgtDokument: { journalpostId: '', dokumentId: '' },
   setValgtDokument() {},
   hentetDokument: byggTomRessurs<string>(),
   settHentetDokument() {},

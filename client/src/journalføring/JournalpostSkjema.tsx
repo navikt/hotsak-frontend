@@ -23,8 +23,8 @@ import { formaterNavn } from '../utils/formater'
 
 export function JournalpostSkjema() {
   const navigate = useNavigate()
-  const { journalpostID } = useParams<{ journalpostID: string }>()
-  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostID)
+  const { journalpostId } = useParams<{ journalpostId: string }>()
+  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -35,7 +35,7 @@ export function JournalpostSkjema() {
 
   const journalfør = () => {
     const journalføringRequest: JournalføringRequest = {
-      journalpostID: journalpost!.journalpostID,
+      journalpostId: journalpost!.journalpostId,
       tittel: journalpostTittel,
       journalføresPåFnr: fodselsnummer,
       sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
@@ -65,9 +65,9 @@ export function JournalpostSkjema() {
   return (
     <Container>
       <ManuellJournalføringKnapp
-        oppgaveId={oppgave.id}
+        oppgaveId={oppgave.oppgaveId}
         status={oppgave.oppgavestatus}
-        tildeltSaksbehandler={journalpost?.saksbehandler}
+        tildeltSaksbehandler={journalpost?.oppgave.tildeltSaksbehandler}
         onMutate={mutate}
       />
       <Heading level="1" size="small" spacing>

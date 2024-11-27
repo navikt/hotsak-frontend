@@ -12,6 +12,6 @@ export const Oppgavetildeling = memo(({ oppgave }: OppgavetildelingProps) => {
   if (oppgave.tildeltSaksbehandler) {
     return <EllipsisCell minLength={15} value={oppgave.tildeltSaksbehandler.navn} />
   } else {
-    return <OppgaveIkkeTildelt oppgave={oppgave} gåTilSak={true} />
+    return <OppgaveIkkeTildelt oppgave={oppgave} />
   }
 })

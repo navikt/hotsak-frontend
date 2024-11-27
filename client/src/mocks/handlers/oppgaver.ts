@@ -4,6 +4,7 @@ import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts
 import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
+import { respondNoContent } from './response.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, barnebrillesakStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
@@ -33,6 +34,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
       }
       return HttpResponse.json(pagedOppgaver)
     }
+  }),
+  http.post<{ oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+    await oppgaveStore.tildel(params.oppgaveId)
+    console.log(`Tildeler oppgave ${params.oppgaveId}`)
+
+    await delay(200)
+    return respondNoContent()
   }),
 
   http.get(`/api/oppgaver`, async ({ request }) => {

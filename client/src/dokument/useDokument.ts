@@ -6,7 +6,7 @@ import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs }
 
 export interface DokumentResponse {
   isPdfError: any
-  hentForhåndsvisning: (journalpostID: string, dokumentID: string) => any
+  hentForhåndsvisning: (journalpostId: string, dokumentId: string) => any
   nullstillDokument: () => any
   hentetDokument: any
   settHentetDokument: any
@@ -22,11 +22,11 @@ export function useDokument(): DokumentResponse {
     settHentetDokument(byggTomRessurs)
   }
 
-  const hentForhåndsvisning = useCallback((valgtJournalpostID: string, dokumentID: string) => {
+  const hentForhåndsvisning = useCallback((valgtJournalpostId: string, dokumentId: string) => {
     settHentetDokument(byggHenterRessurs())
     setIsPdfError(null)
 
-    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostID}/${dokumentID}`)
+    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostId}/${dokumentId}`)
 
     pdfResponse
       .then((response: PDFResponse) => {

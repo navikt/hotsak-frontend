@@ -27,7 +27,7 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
       loading={isLoading && 'Henter brev...'}
     >
       {saksdokumenter.length > 0 ? (
-        saksdokumenter.map((saksdokument) => <BrevKort key={saksdokument.dokumentID} {...saksdokument} />)
+        saksdokumenter.map((saksdokument) => <BrevKort key={saksdokument.dokumentId} {...saksdokument} />)
       ) : (
         <Tekst>Ingen brev sendt.</Tekst>
       )}

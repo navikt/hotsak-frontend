@@ -1,53 +1,38 @@
 import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSWRConfig } from 'swr'
 
 import { Button } from '@navikt/ds-react'
 
 import { postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { Oppgavetype } from '../types/types.internal'
 import { OppgaveApiOppgave } from '../types/experimentalTypes'
+import { Oppgavetype } from '../types/types.internal'
 
 interface OppgaveIkkeTildeltProps {
   oppgave: OppgaveApiOppgave
-  gåTilSak: boolean
 }
 
-export const OppgaveIkkeTildelt = ({ oppgave, gåTilSak = false }: OppgaveIkkeTildeltProps) => {
+export const OppgaveIkkeTildelt = ({ oppgave }: OppgaveIkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { oppgavetype, sakId, journalpostId } = oppgave
-  const oppgavereferanse = (oppgavetype === Oppgavetype.JOURNALFØRING ? journalpostId : sakId) || ''
+  const { oppgaveId, oppgavetype, sakId, journalpostId } = oppgave
 
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
-  const { mutate } = useSWRConfig()
   const tildel = (event: MouseEvent) => {
     event.stopPropagation()
 
-    if (gåTilSak) {
-      logAmplitudeEvent(amplitude_taxonomy.OPPGAVE_STARTET_FRA_OPPGAVELISTE)
-    } else {
-      logAmplitudeEvent(amplitude_taxonomy.OPPGAVE_STARTET_FRA_SAK)
-    }
-
     if (!saksbehandler || isFetching) return
+
     setIsFetching(true)
-    postOppgaveTildeling(oppgavereferanse.toString())
+    postOppgaveTildeling(oppgaveId)
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)
-        if (gåTilSak) {
-          const destinationUrl =
-            oppgavetype === Oppgavetype.JOURNALFØRING ? `/oppgaveliste/dokumenter/${journalpostId}` : `/sak/${sakId}/`
-          navigate(destinationUrl)
-        } else {
-          // TODO vet ikke helt hva vi skal gjøre her enda. Når man er inne på en sak/oppgave, skal vi gå til et felles
-          // oppgavebilde eller skal det rutes til forskjellige steder basert på oppgavetype
-          mutate(`api/sak/${oppgavereferanse}`)
-          mutate(`api/sak/${oppgavereferanse}/historikk`)
-        }
+        const destinationUrl =
+          oppgavetype === Oppgavetype.JOURNALFØRING
+            ? `/oppgaveliste/dokumenter/${journalpostId}`
+            : `/sak/${sakId}/hjelpemidler`
+        navigate(destinationUrl)
       })
   }
 
@@ -55,10 +40,10 @@ export const OppgaveIkkeTildelt = ({ oppgave, gåTilSak = false }: OppgaveIkkeTi
     <>
       {
         <Button
-          size={gåTilSak ? 'xsmall' : 'small'}
-          variant={gåTilSak ? 'tertiary' : 'secondary'}
+          size="xsmall"
+          variant="tertiary"
           onClick={tildel}
-          name="Ta saken"
+          name="Ta oppgave"
           disabled={isFetching}
           loading={isFetching}
         >

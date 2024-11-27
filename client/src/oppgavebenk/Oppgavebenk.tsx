@@ -12,6 +12,7 @@ import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgaveApiOppgave } from '../types/experimentalTypes'
 import { formaterDato } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
+import { Oppgavetildeling } from './Oppgavetildeling'
 
 export function Oppgavebenk() {
   //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -51,6 +52,14 @@ export function Oppgavebenk() {
   */
 
   const kolonner = [
+    {
+      key: 'EIER',
+      name: 'Eier',
+      width: 155,
+      render(oppgave: OppgaveApiOppgave) {
+        return <Oppgavetildeling oppgave={oppgave} />
+      },
+    },
     {
       key: 'REGISTRERT',
       name: 'Registrert',

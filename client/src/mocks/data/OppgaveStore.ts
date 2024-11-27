@@ -4,9 +4,11 @@ import { addBusinessDays, parseISO } from 'date-fns'
 import { OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTypes'
 import { Oppgavestatus, Oppgavetype, Sakstype } from '../../types/types.internal'
 import { BarnebrillesakStore } from './BarnebrillesakStore'
+import { enheter } from './enheter'
 import { IdGenerator } from './IdGenerator'
-import { SakStore } from './SakStore'
 import { JournalpostStore } from './JournalpostStore'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { SakStore } from './SakStore'
 
 type LagretOppgave = OppgaveApiOppgave
 
@@ -17,7 +19,8 @@ export class OppgaveStore extends Dexie {
     private readonly idGenerator: IdGenerator,
     private readonly sakStore: SakStore,
     private readonly barnebrillesakStore: BarnebrillesakStore,
-    private readonly journalpostStore: JournalpostStore
+    private readonly journalpostStore: JournalpostStore,
+    private readonly saksbehandlerStore: SaksbehandlerStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
@@ -50,6 +53,7 @@ export class OppgaveStore extends Dexie {
         tildeltSaksbehandler: sak.saksbehandler,
         opprettetAv: 'hm-saksbehandling',
         opprettetAvEnhet: sak.enhet,
+        sakId: sak.sakId,
         //endretAv: null,
         //endretAvEnhet: null,
         aktivDato: sak.opprettet,
@@ -108,12 +112,12 @@ export class OppgaveStore extends Dexie {
         beskrivelse: journalføring.tittel,
         prioritet: OppgavePrioritet.NORMAL,
         //  område: ['syn'],
-        tildeltEnhet: journalføring.enhet!,
-        tildeltSaksbehandler: journalføring.saksbehandler,
+        tildeltEnhet: enheter.agder,
+        //tildeltSaksbehandler: journalføring.saksbehandler,
         aktivDato: journalføring.journalpostOpprettetTid,
         opprettetAv: 'hm-saksbehandling',
-        opprettetAvEnhet: journalføring.enhet,
-        journalpostId: journalføring.journalpostID,
+        opprettetAvEnhet: enheter.agder,
+        journalpostId: journalføring.journalpostId,
         fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
         opprettetTidspunkt: journalføring.journalpostOpprettetTid,
         endretTidspunkt: journalføring.journalpostOpprettetTid,
@@ -128,6 +132,25 @@ export class OppgaveStore extends Dexie {
 
   async lagreAlle(oppgaver: LagretOppgave[]) {
     return this.oppgaver.bulkAdd(oppgaver, { allKeys: true })
+  }
+
+  async hent(oppgaveId: string): Promise<OppgaveApiOppgave | undefined> {
+    const oppgave = await this.oppgaver.get(oppgaveId)
+    if (!oppgave) {
+      return
+    }
+    return oppgave
+  }
+
+  async tildel(oppgaveId: string) {
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+
+    console.log(`Tildeler oppgave ${oppgaveId} til ${saksbehandler.navn}`)
+
+    return this.oppgaver.update(oppgaveId, {
+      tildeltSaksbehandler: saksbehandler,
+      oppgavestatus: Oppgavestatus.UNDER_BEHANDLING,
+    })
   }
 
   async alle() {

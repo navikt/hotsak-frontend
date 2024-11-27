@@ -103,8 +103,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
       const journalposter = sak.journalposter
       const dokumenter = await Promise.all(
-        journalposter.map(async (journalpostID) => {
-          const journalpostDokument = await journalpostStore.hent(journalpostID)
+        journalposter.map(async (journalpostId) => {
+          const journalpostDokument = await journalpostStore.hent(journalpostId)
           if (journalpostDokument) {
             return journalpostDokument.dokumenter
           }

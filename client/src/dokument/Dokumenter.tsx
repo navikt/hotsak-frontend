@@ -21,11 +21,11 @@ export function Dokumenter(props: DokumenterProps) {
         <Table.Body>
           {dokumenter.map((dokument) => (
             <DokumentVelger
-              key={dokument.dokumentID}
-              valgtDokumentID={valgtDokument.dokumentID}
+              key={dokument.dokumentId}
+              valgtDokumentId={valgtDokument.dokumentId}
               dokument={dokument}
               onClick={() => {
-                setValgtDokument({ journalpostID: dokument.journalpostID, dokumentID: dokument.dokumentID })
+                setValgtDokument({ journalpostId: dokument.journalpostId, dokumentId: dokument.dokumentId })
               }}
             />
           ))}

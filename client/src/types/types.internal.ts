@@ -433,32 +433,6 @@ export const OppgavestatusLabel = new Map<string, string>([
   [Oppgavestatus.FEILREGISTRERT, 'Feilregistrert'],
 ])
 
-export interface OppgaveV2 {
-  id: string
-  oppgavetype: Oppgavetype
-  oppgavestatus: Oppgavestatus
-  //beskrivelse: string
-  //TODO Fiks type på tvers her for å unngå string
-  // område: string[]
-  //område: OmrådeFilter[]
-  //enhet: Enhet
-  //kommune?: Kommune
-  //bydel?: Bydel
-  //saksbehandler?: Saksbehandler
-  //journalpostId?: string
-  //sakId?: string
-  //frist: string
-  //opprettet: string
-  //endret?: string
-  //bruker: {
-  //fnr: string
-  //fulltNavn?: string
-  //}
-  //innsender?: {
-  //fnr: string
-  //fulltNavn?: string
-  //}
-}
 export interface OppgaverResponse {
   oppgaver: OppgaveApiOppgave[]
   totalElements: number
@@ -495,17 +469,13 @@ export interface OppgaveBruker {
 }
 
 export interface Journalpost {
-  journalpostID: string
+  journalpostId: string
   journalpostOpprettetTid: string
   tittel: string
   fnrInnsender: string
   journalstatus: JournalpostStatusType
-  status: DokumentOppgaveStatusType
-  skjerming?: string
-  enhet?: Enhet
-  saksbehandler?: Saksbehandler
   dokumenter: Dokument[]
-  oppgave: OppgaveV2
+  oppgave: OppgaveApiOppgave
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
 }
@@ -517,16 +487,10 @@ export interface FødselsnummerOgNavn {
 }
 
 export interface Dokument {
-  journalpostID: string
-  dokumentID: string
+  journalpostId: string
+  dokumentId: string
   tittel: string
   brevkode: string
-  skjerming?: string
-  vedlegg: any[]
-  varianter: Array<{
-    format: DokumentFormat
-    skjerming?: string
-  }>
 }
 
 export enum SaksdokumentType {
@@ -541,26 +505,21 @@ export enum Brevkode {
 
 export interface Saksdokument {
   sakId: string
-  journalpostID: string
+  journalpostId: string
   type: SaksdokumentType
   opprettet: string
-  dokumentID: string
+  dokumentId: string
   saksbehandler: Saksbehandler
   tittel: string
   brevkode?: string
-  skjerming?: string
-  vedlegg?: any[]
-  varianter?: Array<{
-    format: DokumentFormat
-    skjerming?: string
-  }>
 }
 
 export interface JournalføringRequest {
-  journalpostID: string
+  journalpostId: string
   tittel: string
   journalføresPåFnr: string
   sakId?: string
+  oppgaveId?: string
 }
 
 export interface OpprettetSakResponse {
@@ -586,15 +545,8 @@ export interface Saksbehandler {
   epost: string
 }
 
-export enum DokumentOppgaveStatusType {
-  MOTTATT = 'MOTTATT',
-  TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
-  AVVENTER_JOURNALFØRING = 'AVVENTER_JOURNALFØRING',
-  JOURNALFØRT = 'JOURNALFØRT',
-}
-
 export enum JournalpostStatusType {
-  MOTTATT = 'MOTATT',
+  MOTTATT = 'MOTTATT',
 }
 
 export enum OppgaveStatusType {

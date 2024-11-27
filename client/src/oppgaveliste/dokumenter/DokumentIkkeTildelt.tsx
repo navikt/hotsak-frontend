@@ -9,11 +9,11 @@ import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 export interface DokumentIkkeTildeltProps {
   oppgaveId: string
-  journalpostID: string
+  journalpostId: string
   gåTilSak: boolean
 }
 
-export function DokumentIkkeTildelt({ oppgaveId, journalpostID, gåTilSak = false }: DokumentIkkeTildeltProps) {
+export function DokumentIkkeTildelt({ oppgaveId, journalpostId, gåTilSak = false }: DokumentIkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -28,10 +28,10 @@ export function DokumentIkkeTildelt({ oppgaveId, journalpostID, gåTilSak = fals
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {
-          const destinationUrl = `/oppgaveliste/dokumenter/${journalpostID}`
+          const destinationUrl = `/oppgaveliste/dokumenter/${journalpostId}`
           navigate(destinationUrl)
         } else {
-          mutate(`api/journalpost/${journalpostID}`)
+          mutate(`api/journalpost/${journalpostId}`)
         }
       })
   }

@@ -1,9 +1,8 @@
 import Dexie, { Table } from 'dexie'
 
+import { OppgavePrioritet } from '../../types/experimentalTypes'
 import {
   Dokument,
-  DokumentFormat,
-  DokumentOppgaveStatusType,
   Hendelse,
   Journalpost,
   JournalpostStatusType,
@@ -21,7 +20,7 @@ import { lagTilfeldigNavn } from './navn'
 type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 
 interface LagretDokument extends Dokument {
-  journalpostID: string
+  journalpostId: string
 }
 
 interface LagretHendelse extends Hendelse {
@@ -32,13 +31,13 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const now = new Date()
   return {
-    journalpostID: journalpostId.toString(),
+    journalpostId: journalpostId.toString(),
     journalstatus: JournalpostStatusType.MOTTATT,
-    status: DokumentOppgaveStatusType.MOTTATT,
+    //status: Oppga.MOTTATT,
     journalpostOpprettetTid: now.toISOString(),
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
-    enhet: enheter.agder,
+    //enhet: enheter.agder,
     bruker: {
       fnr: fnrInnsender,
       navn: lagTilfeldigNavn(),
@@ -48,52 +47,37 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
       navn: lagTilfeldigNavn(),
     },
     oppgave: {
-      id: journalpostId.toString(),
+      tema: 'HJE',
+      oppgaveId: journalpostId.toString(),
       oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
-      //  beskrivelse: '',
-      //område: [OmrådeFilter.SYN],
-      //enhet: enheter.agder,
-      //frist: now.toISOString(),
-      //opprettet: now.toISOString(),
-      //bruker: {
-      //  fnr: fnrInnsender,
-      // fulltNavn: lagTilfeldigNavn().fulltNavn,
-      //},
-      //innsender: {
-      //  fnr: fnrInnsender,
-      //  fulltNavn: lagTilfeldigNavn().fulltNavn,
-      //},
+      prioritet: OppgavePrioritet.NORMAL,
+      tildeltEnhet: enheter.agder,
+      aktivDato: now.toISOString(),
+      versjon: 1,
     },
   }
 }
 
-function lagDokumenter(journalpostID: string): Array<Omit<LagretDokument, 'dokumentID'>> {
+function lagDokumenter(journalpostId: string): Array<Omit<LagretDokument, 'dokumentId'>> {
   return [
     {
-      journalpostID,
-
+      journalpostId,
       tittel: 'NAV 10-07.34: Tilskudd ved kjøp av briller til barn',
       brevkode: 'NAV 10-07.34',
-      vedlegg: [],
-      varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
     /*
     {
-      journalpostID,
+      journalpostId,
 
       tittel: 'Ettersendelse: Skikkelig lang tittel som er ganske lang og ikke så veldig kort kan du på en måte si',
       brevkode: 'NAV 10-07.34',
-      vedlegg: [],
-      varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
     {
-      journalpostID,
+      journalpostId,
 
       tittel: 'Ettersendelse: Brilleseddel',
       brevkode: 'NAV 10-07.34',
-      vedlegg: [],
-      varianter: [{ format: DokumentFormat.ORIGINAL }, { format: DokumentFormat.ARKIV }],
     },
     */
   ]
@@ -111,9 +95,9 @@ export class JournalpostStore extends Dexie {
   ) {
     super('JournalpostStore')
     this.version(1).stores({
-      journalposter: 'journalpostID',
-      dokumenter: '++dokumentID,journalpostID',
-      hendelser: '++id,journalpostID',
+      journalposter: 'journalpostId',
+      dokumenter: '++dokumentId,journalpostId',
+      hendelser: '++id,journalpostId',
     })
   }
 
@@ -153,7 +137,7 @@ export class JournalpostStore extends Dexie {
     if (!journalpost) {
       return
     }
-    const dokumenter = await this.dokumenter.where('journalpostID').equals(journalpostId).toArray()
+    const dokumenter = await this.dokumenter.where('journalpostId').equals(journalpostId).toArray()
     return {
       ...journalpost,
       dokumenter,
@@ -181,28 +165,29 @@ export class JournalpostStore extends Dexie {
   }
 
   async tildel(journalpostId: string) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    // TODO fix tildeling for oppgaver tilknyttet journalposter
+    //const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.journalposter.update(journalpostId, {
-      saksbehandler,
-      status: DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER,
+      //saksbehandler,
+      //status: DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER,
     })
   }
 
+  // TODO fix tildeling for oppgaver tilknyttet journalposter
   async frigi(journalpostId: string) {
     return this.journalposter.update(journalpostId, {
-      saksbehandler: undefined,
-      status: DokumentOppgaveStatusType.MOTTATT,
+      //saksbehandler: undefined,
+      //status: DokumentOppgaveStatusType.MOTTATT,
     })
   }
 
   async journalfør(journalpostId: string, tittel: string) {
-    const dokument = await this.dokumenter.where('journalpostID').equals(journalpostId).first()
-    const dokumentId = Number(dokument?.dokumentID)
+    const dokument = await this.dokumenter.where('journalpostId').equals(journalpostId).first()
+    const dokumentId = Number(dokument?.dokumentId)
 
     await this.dokumenter.update(dokumentId, { ...dokument, tittel })
 
     return this.journalposter.update(journalpostId, {
-      status: DokumentOppgaveStatusType.JOURNALFØRT,
       tittel,
       dokumenter: [{ ...dokument, tittel }],
       oppgave: {},

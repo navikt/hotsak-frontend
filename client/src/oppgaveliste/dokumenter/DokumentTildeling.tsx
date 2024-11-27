@@ -14,7 +14,7 @@ export function DokumentTildeling({ dokumentOppgave }: DokumentTildelingProps) {
   ) : (
     <DokumentIkkeTildelt
       oppgaveId={dokumentOppgave.oppgaveId}
-      journalpostID={dokumentOppgave.journalpostId!}
+      journalpostId={dokumentOppgave.journalpostId!}
       gåTilSak={true}
     />
   )

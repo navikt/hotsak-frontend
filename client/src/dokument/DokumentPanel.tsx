@@ -11,13 +11,13 @@ export function DokumentPanel() {
   const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
   const { valgtDokument } = useDokumentContext()
 
-  const { journalpostID, dokumentID } = valgtDokument
+  const { journalpostId, dokumentId } = valgtDokument
 
   useEffect(() => {
-    if (journalpostID && dokumentID) {
-      hentForhåndsvisning(journalpostID, dokumentID)
+    if (journalpostId && dokumentId) {
+      hentForhåndsvisning(journalpostId, dokumentId)
     }
-  }, [journalpostID, dokumentID, hentForhåndsvisning])
+  }, [journalpostId, dokumentId, hentForhåndsvisning])
 
   if (isPdfError) {
     return (

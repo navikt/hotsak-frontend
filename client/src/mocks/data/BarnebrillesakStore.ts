@@ -203,7 +203,7 @@ export class BarnebrillesakStore extends Dexie {
     return this.saker.bulkAdd(
       saker.map((sak) => ({
         ...sak,
-        journalposter: [journalposter[0].journalpostID],
+        journalposter: [journalposter[0].journalpostId],
       })),
       { allKeys: true }
     )
@@ -487,7 +487,7 @@ export class BarnebrillesakStore extends Dexie {
   async opprettSak(journalføring: JournalføringRequest) {
     const sak = lagBarnebrillesak(this.idGenerator.nesteId())
     sak.bruker.fnr = journalføring.journalføresPåFnr
-    sak.journalposter = [journalføring.journalpostID]
+    sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)
   }
 
@@ -505,7 +505,7 @@ export class BarnebrillesakStore extends Dexie {
     }
 
     const eksisterendeJournalposter = eksisterendeSak.journalposter
-    this.saker.update(sakId, { journalposter: [...eksisterendeJournalposter, journalføring.journalpostID] })
+    this.saker.update(sakId, { journalposter: [...eksisterendeJournalposter, journalføring.journalpostId] })
   }
 
   async lagreNotat(sakId: string, type: 'INTERNT', innhold: string) {
@@ -549,12 +549,12 @@ export class BarnebrillesakStore extends Dexie {
     const dokumentId = (await this.saksdokumenter.count()) + 1
     this.saksdokumenter.add({
       sakId: sakId,
-      journalpostID: '12345678',
+      journalpostId: '12345678',
       type: SaksdokumentType.UTGÅENDE,
       brevkode: Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER,
       opprettet: new Date().toISOString(),
       saksbehandler: saksbehandler,
-      dokumentID: dokumentId.toString(),
+      dokumentId: dokumentId.toString(),
       tittel: tittel,
     })
   }

@@ -11,8 +11,8 @@ interface JournalpostResponse {
   mutate: (...args: any[]) => any
 }
 
-export function useJournalpost(journalpostID?: string): JournalpostResponse {
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/journalpost/${journalpostID}`, httpGet)
+export function useJournalpost(journalpostId?: string): JournalpostResponse {
+  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/journalpost/${journalpostId}`, httpGet)
 
   return {
     journalpost: data?.data,

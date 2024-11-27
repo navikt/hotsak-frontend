@@ -21,14 +21,14 @@ const RegistrerSøknadContent = memo(() => {
   const { showBoundary } = useErrorBoundary()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
-  const journalpostID = dokumenter[0]?.journalpostID
-  const dokumentID = dokumenter[0]?.dokumentID
+  const journalpostId = dokumenter[0]?.journalpostId
+  const dokumentId = dokumenter[0]?.dokumentId
 
   useEffect(() => {
     if (dokumenter && dokumenter.length > 0) {
-      setValgtDokument({ journalpostID, dokumentID })
+      setValgtDokument({ journalpostId, dokumentId })
     }
-  }, [journalpostID, dokumentID, dokumenter, setValgtDokument])
+  }, [journalpostId, dokumentId, dokumenter, setValgtDokument])
 
   if (isLoading) return <LasterRegistrerSøknadBilde />
 

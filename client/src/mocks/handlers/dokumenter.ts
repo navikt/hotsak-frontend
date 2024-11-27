@@ -2,8 +2,8 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondForbidden, respondInternalServerError, respondNoContent, respondNotFound, respondPdf } from './response'
 import { lastDokumentBarnebriller } from '../data/felles'
+import { respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
 
 interface JournalpostParams {
   journalpostId: string
@@ -62,7 +62,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       const eksisternedeSakId = journalføring.sakId
       const tittel = journalføring.tittel
 
-      await journalpostStore.journalfør(journalføring.journalpostID, tittel)
+      await journalpostStore.journalfør(journalføring.journalpostId, tittel)
       await delay(500)
 
       if (eksisternedeSakId) {
@@ -77,10 +77,4 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       }
     }
   ),
-
-  http.post<{ oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
-    await journalpostStore.tildel(params.oppgaveId)
-    await delay(500)
-    return respondNoContent()
-  }),
 ]

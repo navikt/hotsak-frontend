@@ -6,12 +6,12 @@ import { formaterTidsstempel } from '../../../utils/dato'
 import { Etikett, Tekst, Undertittel } from '../../../felleskomponenter/typografi'
 import type { Saksdokument } from '../../../types/types.internal'
 
-export function BrevKort({ tittel, opprettet, saksbehandler, journalpostID, dokumentID }: Saksdokument) {
+export function BrevKort({ tittel, opprettet, saksbehandler, journalpostId, dokumentId }: Saksdokument) {
   return (
     <Container>
       <ContentContainer>
         <Etikett>
-          <Link href={`/api/journalpost/${journalpostID}/${dokumentID}`} target="_blank">
+          <Link href={`/api/journalpost/${journalpostId}/${dokumentId}`} target="_blank">
             {tittel}
           </Link>
         </Etikett>

@@ -90,7 +90,7 @@ const save = async (url: string, method: string, data: any, headers?: Headers): 
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: JSON.stringify(data),
+    body: data == null ? null : JSON.stringify(data),
   })
   if (!response.ok) {
     const message = await getErrorMessage(response)
@@ -186,7 +186,7 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -194,7 +194,7 @@ export const putOppdaterStatus = async (sakId: number | string, nyStatus: Oppgav
 }
 
 export const postJournalføringStartet = async (oppgaveId: string, versjon: number = -1) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
@@ -214,7 +214,7 @@ export const putOppdaterVilkår = async (
 }
 
 export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {

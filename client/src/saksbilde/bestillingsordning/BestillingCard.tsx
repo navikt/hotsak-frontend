@@ -40,7 +40,6 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const lagreUtleveringMerknad = (merknad: string) => {
-    console.log('Lager merknad:', merknad)
     setSubmitAttempt(false)
     setUtleveringMerknad(merknad)
     setHarLagretBeskjed(true)

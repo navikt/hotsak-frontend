@@ -40,13 +40,6 @@ export function BekreftAutomatiskOrdre({
       onClose={onClose}
     >
       <VStack gap="4">
-        <Brødtekst>
-          Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OEBS. Alle hjelpemidler
-          og tilbehør i bestillingen vil legges inn som ordrelinjer.
-        </Brødtekst>
-        <Brødtekst>
-          Merk at det kan gå noen mminutter for ordren er klargjort. Du trenger ikke gjøre noe mer med saken.
-        </Brødtekst>
         {leveringsmerknad && (
           <FritekstPanel
             leveringsmerknad={leveringsmerknad}
@@ -78,7 +71,9 @@ export function FritekstPanel({
   onLagre: any | Promise<any>
   onEndre: () => void
 }) {
+  const MAX_LENGDE_BESKJED = 150
   const [redigertTekst, setRedigertTekst] = useState(leveringsmerknad)
+  const [beskjedlengdeError, setBeskjedlengdeError] = useState(false)
 
   return (
     <Box padding="4" background="surface-subtle">
@@ -97,13 +92,19 @@ export function FritekstPanel({
               description="Sjekk teksten og fjern sensitive opplysninger"
               size="small"
               value={redigertTekst}
-              maxLength={200}
+              maxLength={150}
               readOnly={harLagretBeskjed}
               error={
-                error &&
-                'Du må sjekke at beskjeden ikke inneholder personopplysninger eller sensitiv informasjon og lagre den før du kan godkjennne bestillingen.'
+                (error &&
+                  'Du må sjekke at beskjeden ikke inneholder personopplysninger eller sensitiv informasjon og lagre den før du kan godkjennne bestillingen.') ||
+                (beskjedlengdeError && `Kort ned beskjeden slik at den er under ${MAX_LENGDE_BESKJED} tegn.`)
               }
-              onChange={(e) => setRedigertTekst(e.target.value)}
+              onChange={(e) => {
+                if (beskjedlengdeError && e.target.value.length <= MAX_LENGDE_BESKJED) {
+                  setBeskjedlengdeError(false)
+                }
+                setRedigertTekst(e.target.value)
+              }}
             />
             <HStack justify="end">
               {harLagretBeskjed ? (
@@ -123,6 +124,10 @@ export function FritekstPanel({
                   size="small"
                   onClick={(e) => {
                     e.preventDefault()
+                    if (redigertTekst.length > MAX_LENGDE_BESKJED) {
+                      setBeskjedlengdeError(true)
+                      return
+                    }
                     onLagre(redigertTekst)
                   }}
                 >

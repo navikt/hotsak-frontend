@@ -185,16 +185,16 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 }
 
 // Nytt oppgave API
-export const postOppgaveTildeling = async (oppgaveId: string) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
+export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }
 
-export const postJournalføringStartet = async (oppgaveId: string) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
+export const postJournalføringStartet = async (oppgaveId: string, versjon: number = -1) => {
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
@@ -213,8 +213,8 @@ export const putOppdaterVilkår = async (
   return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const deleteFjernOppgaveTildeling = async (oppgaveId: string) => {
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {})
+export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, { versjon })
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {

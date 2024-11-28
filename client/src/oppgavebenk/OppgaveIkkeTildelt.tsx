@@ -14,7 +14,7 @@ interface OppgaveIkkeTildeltProps {
 
 export const OppgaveIkkeTildelt = ({ oppgave }: OppgaveIkkeTildeltProps) => {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { oppgaveId, oppgavetype, sakId, journalpostId } = oppgave
+  const { oppgaveId, oppgavetype, sakId, journalpostId, versjon } = oppgave
 
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
@@ -24,7 +24,7 @@ export const OppgaveIkkeTildelt = ({ oppgave }: OppgaveIkkeTildeltProps) => {
     if (!saksbehandler || isFetching) return
 
     setIsFetching(true)
-    postOppgaveTildeling(oppgaveId)
+    postOppgaveTildeling(oppgaveId, versjon)
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)

@@ -32,7 +32,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
   const { harVarsler } = useVarselsregler()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
-  const [harBekreftetTekst, setHarBekreftetTekst] = useState(false)
+  const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
@@ -41,14 +41,15 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
 
   const lagreUtleveringMerknad = (merknad: string) => {
     console.log('Lager merknad:', merknad)
+    setSubmitAttempt(false)
     setUtleveringMerknad(merknad)
-    setHarBekreftetTekst(true)
+    setHarLagretBeskjed(true)
   }
 
   const ferdigstillBestilling = async () => {
     setSubmitAttempt(true)
 
-    if (utleveringMerknad && !harBekreftetTekst) {
+    if (utleveringMerknad && !harLagretBeskjed) {
       return
     }
 
@@ -166,9 +167,11 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
           onBekreft={() => ferdigstillBestilling()}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-          error={submitAttempt && !harBekreftetTekst}
+          error={submitAttempt && !harLagretBeskjed}
+          harLagretBeskjed={harLagretBeskjed}
           leveringsmerknad={utleveringMerknad}
           onLagre={lagreUtleveringMerknad}
+          onEndre={() => setHarLagretBeskjed(false)}
         />
       )}
 

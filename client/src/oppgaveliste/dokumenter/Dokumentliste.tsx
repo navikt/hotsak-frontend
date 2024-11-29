@@ -163,6 +163,8 @@ export function Dokumentliste() {
   )
 }
 
+export default Dokumentliste
+
 const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);

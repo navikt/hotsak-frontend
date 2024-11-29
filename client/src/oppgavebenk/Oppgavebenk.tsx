@@ -13,6 +13,7 @@ import { OppgaveApiOppgave } from '../types/experimentalTypes'
 import { formaterDato } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 import { Oppgavetildeling } from './Oppgavetildeling'
+import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 
 export function Oppgavebenk() {
   //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -184,6 +185,7 @@ export function Oppgavebenk() {
   return (
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
+      <OppgavelisteTabs />
       {/*<Filters onClear={clearFilters}>
         <FilterDropdown
           handleChange={(filterValue: SakerFilter) => {
@@ -290,6 +292,8 @@ export function Oppgavebenk() {
     </>
   )
 }
+
+export default Oppgavebenk
 
 const Container = styled.div`
   min-height: 300px;

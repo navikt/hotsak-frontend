@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { FileTextIcon, TasklistIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { useVisOppgavelisteTabs } from '../state/authentication'
 
 const TabContainer = styled.div`
@@ -16,7 +17,17 @@ export function OppgavelisteTabs() {
   const visOppgavelisteTabs = useVisOppgavelisteTabs()
 
   const valgtTab = location.pathname.split('/').pop() || 'oppgaveliste'
-  const navigateTo = valgtTab === 'oppgaveliste' ? '/oppgaveliste/dokumenter' : '/'
+
+  function navigateToPath(nyTab?: string) {
+    switch (nyTab) {
+      case 'dokumenter':
+        return '/oppgaveliste/dokumenter'
+      case 'oppgavebenk':
+        return '/oppgavebenk'
+      default:
+        return '/'
+    }
+  }
 
   if (!visOppgavelisteTabs) {
     return null
@@ -27,8 +38,8 @@ export function OppgavelisteTabs() {
       <Tabs
         value={valgtTab}
         defaultValue="oppgaveliste"
-        onChange={() => {
-          navigate(navigateTo)
+        onChange={(value) => {
+          navigate(navigateToPath(value))
         }}
         loop
       >
@@ -43,6 +54,9 @@ export function OppgavelisteTabs() {
             label="Journalføring"
             icon={<FileTextIcon focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
           />
+          <Eksperiment>
+            <Tabs.Tab value="oppgavebenk" label="Oppgavebenk" />
+          </Eksperiment>
         </Tabs.List>
       </Tabs>
     </TabContainer>

@@ -97,6 +97,8 @@ export function ManuellJournalføring() {
   )
 }
 
+export default ManuellJournalføring
+
 const ToKolonner = styled.div`
   display: grid;
   grid-template-columns: 35rem 1fr;

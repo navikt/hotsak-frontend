@@ -2,6 +2,7 @@ import { OppgaveApiOppgave } from './experimentalTypes'
 
 export interface SakResponse {
   kanTildeles: boolean
+  oppgave?: OppgaveApiOppgave
   data: Sak
 }
 
@@ -16,6 +17,7 @@ export interface SakBase {
   status: OppgaveStatusType
   statusEndret: string
   opprettet: string
+
   // endret: string
   // søknadId: string
   søknadGjelder: string

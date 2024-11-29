@@ -1,4 +1,5 @@
 import type { ISvar, Tilbakemelding } from '../innsikt/Besvarelse'
+import { OppgaveApiOppgave } from '../types/experimentalTypes'
 
 import type {
   AvvisBestilling,
@@ -222,7 +223,20 @@ export const deleteFjernTildeling = async (sakId: number | string) => {
   return del(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
 }
 
-export const putVedtak = async (sakId: number | string, status: VedtakStatusType, problemsammendrag: string) => {
+export const putVedtak = async (
+  sakId: number | string,
+  status: VedtakStatusType,
+  problemsammendrag: string,
+  oppgave?: OppgaveApiOppgave
+) => {
+  if (oppgave) {
+    console.log('oppgave er no', oppgave)
+    put(
+      `${baseUrl}/api/sak/${sakId}/vedtak`,
+      { status, problemsammendrag, oppgaveId: oppgave.oppgaveId },
+      { 'If-Match': lagETag(oppgave.oppgaveId, oppgave.versjon) }
+    )
+  }
   return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag })
 }
 

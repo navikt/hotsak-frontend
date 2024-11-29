@@ -9,6 +9,7 @@ import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
@@ -23,13 +24,14 @@ import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
+  oppgave?: OppgaveApiOppgave
 }
 
 interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak }: VedtakCardProps) {
+export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const { sakId } = sak
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -48,7 +50,7 @@ export function VedtakCard({ sak }: VedtakCardProps) {
   const opprettVedtak = async (data: VedtakFormValues) => {
     const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, VedtakStatusType.INNVILGET, problemsammendrag).catch(() => setLoading(false))
+    await putVedtak(sakId, VedtakStatusType.INNVILGET, problemsammendrag, oppgave).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)

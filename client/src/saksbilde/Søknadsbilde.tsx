@@ -73,7 +73,7 @@ const SaksbildeContent = memo(() => {
               greitÅViteFakta={sak.data.greitÅViteFaktum}
               harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
             />
-            {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} />}
+            {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} oppgave={sak.oppgave} />}
             {erBestilling && <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />}
           </Venstremeny>
           <section>

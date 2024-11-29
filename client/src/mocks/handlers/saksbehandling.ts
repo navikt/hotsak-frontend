@@ -64,7 +64,10 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
 
     const sak = await sakStore.hent(sakId)
     if (sak) {
-      return HttpResponse.json({ kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER, data: sak })
+      return HttpResponse.json({
+        kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+        data: sak,
+      })
     }
 
     const barnebrillesak = await barnebrillesakStore.hent(sakId)

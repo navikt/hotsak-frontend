@@ -12,9 +12,6 @@ import { Feilside } from './feilsider/Feilside'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Toppmeny } from './header/Toppmeny'
-import { ManuellJournalføring } from './journalføring/ManuellJournalføring'
-import { Oppgavebenk } from './oppgavebenk/Oppgavebenk'
-import { Dokumentliste } from './oppgaveliste/dokumenter/Dokumentliste'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
@@ -23,6 +20,9 @@ import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
+const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
+const Oppgavebenk = lazy(() => import('./oppgavebenk/Oppgavebenk'))
+const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 
 function App() {
   useAuthentication()

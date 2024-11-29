@@ -231,7 +231,7 @@ export const putVedtak = async (
 ) => {
   if (oppgave) {
     console.log('oppgave er no', oppgave)
-    put(
+    return put(
       `${baseUrl}/api/sak/${sakId}/vedtak`,
       { status, problemsammendrag, oppgaveId: oppgave.oppgaveId },
       { 'If-Match': lagETag(oppgave.oppgaveId, oppgave.versjon) }

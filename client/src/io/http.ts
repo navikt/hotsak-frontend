@@ -14,6 +14,7 @@ import type {
 import { isNumber } from '../utils/type'
 
 export const IKKE_FUNNET = 404
+
 export interface SaksbehandlingApiResponse<T = any> {
   status: number
   data: T
@@ -185,7 +186,7 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 }
 
 // Nytt oppgave API
-export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
+export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
   return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 
@@ -193,7 +194,7 @@ export const putOppdaterStatus = async (sakId: number | string, nyStatus: Oppgav
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }
 
-export const postJournalføringStartet = async (oppgaveId: string, versjon: number = -1) => {
+export const postJournalføringStartet = async (oppgaveId: string, versjon: number = 0) => {
   return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 
@@ -213,7 +214,7 @@ export const putOppdaterVilkår = async (
   return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
+export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
   return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 

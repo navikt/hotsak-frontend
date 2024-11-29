@@ -4,6 +4,7 @@ import { Fragment } from 'react'
 import { Etikett } from '../../felleskomponenter/typografi'
 import { Bytte, BytteÅrsak } from '../../types/BehovsmeldingTypes'
 import { Fremhevet } from './Fremhevet'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 
 interface Props {
   bytter: Bytte[]
@@ -20,15 +21,16 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
               {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
               <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
             </HStack>
-            <div>
-              {bytte.hmsnr} {bytte.hjmNavn}
+            <HStack align={'center'}>
+              <strong>{bytte.hmsnr}</strong>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} /> {bytte.hjmNavn}
               {bytte.serienr && (
                 <>
                   <br />
                   Serienr: {bytte.serienr}
                 </>
               )}
-            </div>
+            </HStack>
             {bytte.årsak && (
               <Fremhevet>
                 <VStack gap="2" key={i}>

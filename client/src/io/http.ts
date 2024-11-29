@@ -186,7 +186,7 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -194,7 +194,7 @@ export const putOppdaterStatus = async (sakId: number | string, nyStatus: Oppgav
 }
 
 export const postJournalføringStartet = async (oppgaveId: string, versjon: number = -1) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
@@ -214,7 +214,7 @@ export const putOppdaterVilkår = async (
 }
 
 export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = -1) => {
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': `"${versjon}"` })
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {
@@ -281,4 +281,8 @@ export async function postHenleggelse(sakId: string) {
     valgteÅrsaker: ['Bruker er død'],
     begrunnelse: undefined,
   })
+}
+
+function lagETag(...args: Array<string | number>): string {
+  return `"${args.join('-')}"`
 }

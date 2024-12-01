@@ -188,7 +188,7 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(versjon) })
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -196,7 +196,7 @@ export const putOppdaterStatus = async (sakId: number | string, nyStatus: Oppgav
 }
 
 export const postJournalføringStartet = async (oppgaveId: string, versjon: number = 0) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(versjon) })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
@@ -216,7 +216,7 @@ export const putOppdaterVilkår = async (
 }
 
 export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(oppgaveId, versjon) })
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': lagETag(versjon) })
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {
@@ -234,7 +234,7 @@ export const putVedtak = async (
     return put(
       `${baseUrl}/api/sak/${sakId}/vedtak`,
       { status, problemsammendrag, oppgaveId: oppgave.oppgaveId },
-      { 'If-Match': lagETag(oppgave.oppgaveId, oppgave.versjon) }
+      { 'If-Match': lagETag(oppgave.versjon) }
     )
   }
   return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { status, problemsammendrag })
@@ -298,6 +298,6 @@ export async function postHenleggelse(sakId: string) {
   })
 }
 
-function lagETag(...args: Array<string | number>): string {
-  return `"${args.join('-')}"`
+function lagETag(value: string | number): string {
+  return `W/"${value}"`
 }

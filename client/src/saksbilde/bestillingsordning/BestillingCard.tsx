@@ -8,6 +8,7 @@ import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
@@ -23,9 +24,10 @@ import { useBehovsmelding } from '../useBehovsmelding.ts'
 export interface BestillingCardProps {
   bestilling: Sak
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
+  oppgave?: OppgaveApiOppgave
 }
 
-export function BestillingCard({ bestilling }: BestillingCardProps) {
+export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const { behovsmelding } = useBehovsmelding()
@@ -53,7 +55,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
     }
 
     setLoading(true)
-    await putFerdigstillBestilling(sakId, utleveringMerknad).catch(() => setLoading(false))
+    await putFerdigstillBestilling(sakId, utleveringMerknad, oppgave?.versjon).catch(() => setLoading(false))
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -72,7 +74,7 @@ export function BestillingCard({ bestilling }: BestillingCardProps) {
 
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    await putAvvisBestilling(sakId, tilbakemelding).catch(() => setLoading(false))
+    await putAvvisBestilling(sakId, tilbakemelding, oppgave?.versjon).catch(() => setLoading(false))
     setLoading(false)
     setVisAvvisModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)

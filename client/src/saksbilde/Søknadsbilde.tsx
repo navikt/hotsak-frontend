@@ -74,7 +74,9 @@ const SaksbildeContent = memo(() => {
               harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
             />
             {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} oppgave={sak.oppgave} />}
-            {erBestilling && <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} />}
+            {erBestilling && (
+              <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} oppgave={sak.oppgave} />
+            )}
           </Venstremeny>
           <section>
             {varsler && <Saksvarsler varsler={varsler} />}

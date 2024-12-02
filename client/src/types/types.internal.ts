@@ -432,6 +432,11 @@ export enum Oppgavestatus {
   FEILREGISTRERT = 'FEILREGISTRERT',
 }
 
+export enum Statuskategori {
+  ÅPEN = 'ÅPEN',
+  AVSLUTTET = 'AVSLUTTET',
+}
+
 export const OppgavestatusLabel = new Map<string, string>([
   [Oppgavestatus.OPPRETTET, 'Mottatt'],
   [Oppgavestatus.ÅPNET, 'Mottatt'],

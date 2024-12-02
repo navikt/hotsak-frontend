@@ -1,6 +1,6 @@
 import useSwr from 'swr'
 import { httpGet } from '../../io/http'
-import { OppgaverResponse, Oppgavetype } from '../../types/types.internal'
+import { OppgaverResponse, Oppgavetype, Statuskategori } from '../../types/types.internal'
 
 const oppgaverBasePath = 'api/oppgaver-v2'
 
@@ -12,12 +12,8 @@ interface OppgaverData {
 }
 
 export function useDokumentliste(): OppgaverData {
-  const relevanteStatuser = ['OPPRETTET', 'ÅPNET', 'UNDER_BEHANDLING']
-    .map((status) => `oppgavestatus=${encodeURIComponent(status)}`)
-    .join('&')
-
   const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(
-    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&${relevanteStatuser}`,
+    `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&statuskategori=${encodeURIComponent(Statuskategori.ÅPEN)}`,
     httpGet,
     {
       refreshInterval: 10_000,

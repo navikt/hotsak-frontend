@@ -8,7 +8,6 @@ import type {
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
-  VedtakStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
 import { isNumber } from '../utils/type'
@@ -225,14 +224,13 @@ export const deleteFjernTildeling = async (sakId: number | string) => {
 
 export const putVedtak = async (
   sakId: number | string,
-  status: VedtakStatusType,
   problemsammendrag: string,
   oppgaveId?: string,
   oppgaveVersjon?: number
 ) => {
   return put(
     `${baseUrl}/api/sak/${sakId}/vedtak`,
-    { status, problemsammendrag, oppgaveId },
+    { problemsammendrag, oppgaveId },
     oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
   )
 }

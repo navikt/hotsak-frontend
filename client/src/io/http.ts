@@ -227,19 +227,25 @@ export const putVedtak = async (
   sakId: number | string,
   status: VedtakStatusType,
   problemsammendrag: string,
+  oppgaveId?: string,
   oppgaveVersjon?: number
 ) => {
   return put(
     `${baseUrl}/api/sak/${sakId}/vedtak`,
-    { status, problemsammendrag },
+    { status, problemsammendrag, oppgaveId },
     oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
   )
 }
 
-export const putFerdigstillBestilling = async (sakId: number | string, beskjed?: string, oppgaveVersjon?: number) => {
+export const putFerdigstillBestilling = async (
+  sakId: number | string,
+  beskjed?: string,
+  oppgaveId?: string,
+  oppgaveVersjon?: number
+) => {
   return put(
     `${baseUrl}/api/bestilling/${sakId}/ferdigstilling`,
-    { beskjed },
+    { beskjed, oppgaveId },
     oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
   )
 }
@@ -247,11 +253,12 @@ export const putFerdigstillBestilling = async (sakId: number | string, beskjed?:
 export const putAvvisBestilling = async (
   sakId: number | string,
   tilbakemelding: AvvisBestilling,
+  oppgaveId?: string,
   oppgaveVersjon?: number
 ) => {
   return put(
     `${baseUrl}/api/bestilling/${sakId}/avvisning`,
-    { tilbakemelding },
+    { tilbakemelding, oppgaveId },
     oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
   )
 }

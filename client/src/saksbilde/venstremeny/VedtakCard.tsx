@@ -50,8 +50,8 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const opprettVedtak = async (data: VedtakFormValues) => {
     const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, VedtakStatusType.INNVILGET, problemsammendrag, oppgave?.versjon).catch(() =>
-      setLoading(false)
+    await putVedtak(sakId, VedtakStatusType.INNVILGET, problemsammendrag, oppgave?.oppgaveId, oppgave?.versjon).catch(
+      () => setLoading(false)
     )
     setLoading(false)
     setVisVedtakModal(false)

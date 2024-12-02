@@ -55,7 +55,9 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     }
 
     setLoading(true)
-    await putFerdigstillBestilling(sakId, utleveringMerknad, oppgave?.versjon).catch(() => setLoading(false))
+    await putFerdigstillBestilling(sakId, utleveringMerknad, oppgave?.oppgaveId, oppgave?.versjon).catch(() =>
+      setLoading(false)
+    )
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -74,7 +76,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
 
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    await putAvvisBestilling(sakId, tilbakemelding, oppgave?.versjon).catch(() => setLoading(false))
+    await putAvvisBestilling(sakId, tilbakemelding, oppgave?.oppgaveId, oppgave?.versjon).catch(() => setLoading(false))
     setLoading(false)
     setVisAvvisModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)

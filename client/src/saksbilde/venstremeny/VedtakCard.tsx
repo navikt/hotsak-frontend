@@ -50,7 +50,9 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const opprettVedtak = async (data: VedtakFormValues) => {
     const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, problemsammendrag, oppgave?.oppgaveId, oppgave?.versjon).catch(() => setLoading(false))
+    await putVedtak(sakId, problemsammendrag, { oppgaveId: oppgave?.oppgaveId, versjon: oppgave?.versjon }).catch(() =>
+      setLoading(false)
+    )
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)

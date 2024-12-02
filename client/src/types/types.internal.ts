@@ -29,6 +29,11 @@ export interface SakBase {
   vedtak?: VedtakType
 }
 
+export interface OppgaveVersjon {
+  oppgaveId?: string
+  versjon?: number
+}
+
 export interface Sak extends SakBase {
   greitÅViteFaktum: GreitÅViteFaktum[]
   hast?: Hast

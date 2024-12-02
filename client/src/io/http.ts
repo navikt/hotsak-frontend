@@ -8,6 +8,7 @@ import type {
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
+  OppgaveVersjon,
   VurderVilkårRequest,
 } from '../types/types.internal'
 import { isNumber } from '../utils/type'
@@ -186,16 +187,17 @@ export const postTildeling = async (sakId: number | string, overtaHvisTildelt: b
 }
 
 // Nytt oppgave API
-export const postOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': toWeakETag(versjon) })
+export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return post(
+    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
+    null,
+    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
+  )
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
-}
-
-export const postJournalføringStartet = async (oppgaveId: string, versjon: number = 0) => {
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': toWeakETag(versjon) })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
@@ -214,24 +216,25 @@ export const putOppdaterVilkår = async (
   return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const deleteFjernOppgaveTildeling = async (oppgaveId: string, versjon: number = 0) => {
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, { 'If-Match': toWeakETag(versjon) })
+export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return del(
+    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
+    null,
+    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
+  )
 }
 
 export const deleteFjernTildeling = async (sakId: number | string) => {
   return del(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
 }
 
-export const putVedtak = async (
-  sakId: number | string,
-  problemsammendrag: string,
-  oppgaveId?: string,
-  oppgaveVersjon?: number
-) => {
+export const putVedtak = async (sakId: number | string, problemsammendrag: string, oppgaveVersjon: OppgaveVersjon) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
   return put(
     `${baseUrl}/api/sak/${sakId}/vedtak`,
     { problemsammendrag, oppgaveId },
-    oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
+    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
   )
 }
 

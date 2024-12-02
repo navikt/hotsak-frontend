@@ -4,8 +4,8 @@ import { useSWRConfig } from 'swr'
 
 import { Button } from '@navikt/ds-react'
 
-import { postJournalføringStartet } from '../../io/http'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { postOppgaveTildeling } from '../../io/http'
 
 export interface DokumentIkkeTildeltProps {
   oppgaveId: string
@@ -23,7 +23,7 @@ export function DokumentIkkeTildelt({ oppgaveId, journalpostId, gåTilSak = fals
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postJournalføringStartet(oppgaveId)
+    postOppgaveTildeling({ oppgaveId, versjon: 0 })
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)

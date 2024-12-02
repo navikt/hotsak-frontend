@@ -24,7 +24,7 @@ export const OppgaveIkkeTildelt = ({ oppgave }: OppgaveIkkeTildeltProps) => {
     if (!saksbehandler || isFetching) return
 
     setIsFetching(true)
-    postOppgaveTildeling(oppgaveId, versjon)
+    postOppgaveTildeling({ oppgaveId, versjon })
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)

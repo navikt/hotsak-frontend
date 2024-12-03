@@ -223,7 +223,7 @@ export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon
 }
 
 export const deleteFjernTildeling = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon = {}) => {
-  return del(`${baseUrl}/api/sak/${sakId}/tildeling`, {}, ifMatchVersjon(oppgaveVersjon.versjon))
+  return del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, ifMatchVersjon(oppgaveVersjon.versjon))
 }
 
 export const putVedtak = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon, problemsammendrag: string) => {
@@ -258,7 +258,7 @@ export const putSendTilGosys = async (
   oppgaveVersjon: OppgaveVersjon,
   tilbakemelding: ISvar[]
 ) => {
-  const { oppgaveId, versjon } = oppgaveVersjon ?? {}
+  const { oppgaveId, versjon } = oppgaveVersjon
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
 }
 

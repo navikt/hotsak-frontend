@@ -10,7 +10,7 @@ import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
-import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusType, OppgaveVersjon, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
@@ -33,12 +33,20 @@ interface VedtakFormValues {
 
 export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const { sakId } = sak
+
+  const oppgaveVersjon: OppgaveVersjon = oppgave
+    ? {
+        oppgaveId: oppgave.oppgaveId,
+        versjon: oppgave.versjon,
+      }
+    : {}
+
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, oppgaveVersjon, 'sak_overført_gosys_v1')
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const form = useForm<VedtakFormValues>({
@@ -50,9 +58,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const opprettVedtak = async (data: VedtakFormValues) => {
     const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, problemsammendrag, { oppgaveId: oppgave?.oppgaveId, versjon: oppgave?.versjon }).catch(() =>
-      setLoading(false)
-    )
+    await putVedtak(sakId, oppgaveVersjon, problemsammendrag).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
@@ -62,7 +68,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
 
   const overtaSak = async () => {
     setLoading(true)
-    await postTildeling(sakId, true).catch(() => setLoading(false))
+    await postTildeling(sakId, oppgaveVersjon, true).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -123,7 +129,8 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         <Knappepanel>
           <IkkeTildelt
-            oppgavereferanse={sakId}
+            sakId={sakId}
+            oppgaveVersjon={oppgaveVersjon}
             gåTilSak={false}
             onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
           ></IkkeTildelt>

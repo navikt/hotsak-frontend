@@ -9,7 +9,13 @@ import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
-import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
+import {
+  AvvisBestilling,
+  HjelpemiddelArtikkel,
+  OppgaveStatusType,
+  OppgaveVersjon,
+  Sak,
+} from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
@@ -41,6 +47,13 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
+  const oppgaveVersjon: OppgaveVersjon = oppgave
+    ? {
+        oppgaveId: oppgave.oppgaveId,
+        versjon: oppgave.versjon,
+      }
+    : {}
+
   const lagreUtleveringMerknad = (merknad: string) => {
     setSubmitAttempt(false)
     setUtleveringMerknad(merknad)
@@ -55,9 +68,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     }
 
     setLoading(true)
-    await putFerdigstillBestilling(sakId, utleveringMerknad, oppgave?.oppgaveId, oppgave?.versjon).catch(() =>
-      setLoading(false)
-    )
+    await putFerdigstillBestilling(sakId, oppgaveVersjon, utleveringMerknad).catch(() => setLoading(false))
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -67,7 +78,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
 
   const overtaBestilling = async () => {
     setLoading(true)
-    await postTildeling(sakId, true).catch(() => setLoading(false))
+    await postTildeling(sakId, oppgaveVersjon, true).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)
@@ -76,7 +87,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
 
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    await putAvvisBestilling(sakId, tilbakemelding, oppgave?.oppgaveId, oppgave?.versjon).catch(() => setLoading(false))
+    await putAvvisBestilling(sakId, oppgaveVersjon, tilbakemelding).catch(() => setLoading(false))
     setLoading(false)
     setVisAvvisModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)
@@ -115,7 +126,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         <Knappepanel>
-          <IkkeTildelt oppgavereferanse={sakId} gåTilSak={false}></IkkeTildelt>
+          <IkkeTildelt sakId={sakId} oppgaveVersjon={oppgaveVersjon} gåTilSak={false}></IkkeTildelt>
         </Knappepanel>
       </VenstremenyCard>
     )

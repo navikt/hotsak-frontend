@@ -166,11 +166,11 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
 
 export const hentBrukerdataMedPost: any = async ([
   url,
-  brukersFodselsnummer,
-  saksType,
-  behandlingsStatus,
+  fnr,
+  sakstype,
+  behandlingsstatus,
 ]: string[]): Promise<SaksbehandlingApiResponse> => {
-  const response = await post(`${baseUrl}/${url}`, { brukersFodselsnummer, saksType, behandlingsStatus }, {})
+  const response = await post(`${baseUrl}/${url}`, { fnr, sakstype, behandlingsstatus }, {})
 
   return {
     status: response.status,
@@ -178,22 +178,23 @@ export const hentBrukerdataMedPost: any = async ([
   }
 }
 
-export const postTildeling = async (sakId: number | string, overtaHvisTildelt: boolean | undefined = undefined) => {
-  let data = {}
-  if (!overtaHvisTildelt) {
-    data = { overtaHvisTildelt: false }
+export const postTildeling = async (
+  sakId: number | string,
+  oppgaveVersjon: OppgaveVersjon = {},
+  overtaHvisTildelt?: boolean
+) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
+  const data = {
+    oppgaveId,
+    overtaHvisTildelt,
   }
-  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, data)
+  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, data, ifMatchVersjon(versjon))
 }
 
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
-  return post(
-    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
-    null,
-    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
-  )
+  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -218,58 +219,47 @@ export const putOppdaterVilkår = async (
 
 export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
-  return del(
-    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
-    null,
-    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
-  )
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
 }
 
-export const deleteFjernTildeling = async (sakId: number | string) => {
-  return del(`${baseUrl}/api/sak/${sakId}/tildeling`, {})
+export const deleteFjernTildeling = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon = {}) => {
+  return del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, ifMatchVersjon(oppgaveVersjon.versjon))
 }
 
-export const putVedtak = async (sakId: number | string, problemsammendrag: string, oppgaveVersjon: OppgaveVersjon) => {
+export const putVedtak = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon, problemsammendrag: string) => {
   const { oppgaveId, versjon } = oppgaveVersjon
-  return put(
-    `${baseUrl}/api/sak/${sakId}/vedtak`,
-    { problemsammendrag, oppgaveId },
-    versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
-  )
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const putFerdigstillBestilling = async (
   sakId: number | string,
-  beskjed?: string,
-  oppgaveId?: string,
-  oppgaveVersjon?: number
+  oppgaveVersjon: OppgaveVersjon,
+  beskjed?: string
 ) => {
-  return put(
-    `${baseUrl}/api/bestilling/${sakId}/ferdigstilling`,
-    { beskjed, oppgaveId },
-    oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
-  )
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return put(`${baseUrl}/api/bestilling/${sakId}/ferdigstilling`, { beskjed, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const putAvvisBestilling = async (
   sakId: number | string,
-  tilbakemelding: AvvisBestilling,
-  oppgaveId?: string,
-  oppgaveVersjon?: number
+  oppgaveVersjon: OppgaveVersjon,
+  tilbakemelding: AvvisBestilling
 ) => {
-  return put(
-    `${baseUrl}/api/bestilling/${sakId}/avvisning`,
-    { tilbakemelding, oppgaveId },
-    oppgaveVersjon ? { 'If-Match': toWeakETag(oppgaveVersjon) } : undefined
-  )
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return put(`${baseUrl}/api/bestilling/${sakId}/avvisning`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemiddel: EndretHjelpemiddel) => {
   return put(`${baseUrl}/api/bestilling/${sakId}`, endreHjelpemiddel)
 }
 
-export const putSendTilGosys = async (sakId: number | string, tilbakemelding: ISvar[]) => {
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding })
+export const putSendTilGosys = async (
+  sakId: number | string,
+  oppgaveVersjon: OppgaveVersjon,
+  tilbakemelding: ISvar[]
+) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const postTilbakemelding = async (sakId: number | string, tilbakemelding: Tilbakemelding) => {
@@ -312,4 +302,10 @@ export async function postHenleggelse(sakId: string) {
     valgteÅrsaker: ['Bruker er død'],
     begrunnelse: undefined,
   })
+}
+
+function ifMatchVersjon(versjon?: number) {
+  if (versjon) {
+    return { 'If-Match': toWeakETag(versjon) }
+  }
 }

@@ -17,7 +17,7 @@ export const Tildeling = memo(({ oppgave, visTildelingKonfliktModalForSak, onMut
         {oppgave.saksbehandler && <EllipsisCell minLength={15} value={oppgave.saksbehandler.navn} />}
         {!oppgave.saksbehandler && oppgave.kanTildeles && (
           <IkkeTildelt
-            oppgavereferanse={oppgave.sakId}
+            sakId={oppgave.sakId}
             gåTilSak={true}
             onTildelingKonflikt={() => {
               visTildelingKonfliktModalForSak(

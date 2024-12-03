@@ -5,24 +5,26 @@ import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
 
 import { postTildeling, ResponseError } from '../../io/http'
+import { OppgaveVersjon } from '../../types/types.internal.ts'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 
 interface IkkeTildeltProps {
-  oppgavereferanse: number | string
+  sakId: number | string
+  oppgaveVersjon?: OppgaveVersjon
   gåTilSak: boolean
-  onTildelingKonflikt?: () => void
+  onTildelingKonflikt?(): void
 }
 
-export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) => {
+export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
   const oppdaterSakOgHistorie = () => {
-    mutate(`api/sak/${oppgavereferanse}`)
-    mutate(`api/sak/${oppgavereferanse}/historikk`)
+    mutate(`api/sak/${sakId}`)
+    mutate(`api/sak/${sakId}/historikk`)
   }
   const tildel = (event: MouseEvent) => {
     event.stopPropagation()
@@ -35,10 +37,10 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKo
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgavereferanse, false)
+    postTildeling(sakId, oppgaveVersjon, false)
       .then(() => {
         if (gåTilSak) {
-          const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`
+          const destinationUrl = `/sak/${sakId}/hjelpemidler`
           navigate(destinationUrl)
         } else {
           oppdaterSakOgHistorie()

@@ -4,9 +4,9 @@ import type { StoreHandlersFactory } from '../data'
 import { respondNotFound } from './response'
 
 export const personHandlers: StoreHandlersFactory = ({ personStore }) => [
-  http.post<never, { brukersFodselsnummer: string }>(`/api/person`, async ({ request }) => {
-    const { brukersFodselsnummer } = await request.json()
-    const person = await personStore.hent(brukersFodselsnummer)
+  http.post<never, { fnr: string }>(`/api/person`, async ({ request }) => {
+    const { fnr } = await request.json()
+    const person = await personStore.hent(fnr)
     await delay(500)
 
     if (!person) {

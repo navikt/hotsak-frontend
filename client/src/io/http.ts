@@ -305,5 +305,7 @@ export async function postHenleggelse(sakId: string) {
 }
 
 function ifMatchVersjon(versjon?: number) {
-  return versjon ? { 'If-Match': toWeakETag(versjon) } : undefined
+  if (versjon) {
+    return { 'If-Match': toWeakETag(versjon) }
+  }
 }

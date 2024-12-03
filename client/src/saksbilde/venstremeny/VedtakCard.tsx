@@ -131,7 +131,8 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         <Knappepanel>
           <IkkeTildelt
-            oppgavereferanse={sakId}
+            sakId={sakId}
+            oppgaveVersjon={oppgaveVersjon}
             gåTilSak={false}
             onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
           ></IkkeTildelt>

@@ -92,7 +92,6 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -106,7 +105,6 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${bestilling.saksbehandler?.navn}.`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )

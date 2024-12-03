@@ -77,7 +77,6 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -104,7 +103,6 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
         </Tag>
         <StatusTekst>
           <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
-          <Tekst>{`av ${sak.saksbehandler?.navn}.`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der.</Tekst>
         </StatusTekst>
       </VenstremenyCard>

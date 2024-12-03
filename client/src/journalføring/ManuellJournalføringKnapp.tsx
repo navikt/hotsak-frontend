@@ -43,7 +43,7 @@ export function ManuellJournalføringKnapp({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postOppgaveTildeling({ oppgaveId, versjon: 0 })
+    postOppgaveTildeling({ oppgaveId, versjon: -1 })
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -57,7 +57,7 @@ export function ManuellJournalføringKnapp({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernOppgaveTildeling({ oppgaveId, versjon: 0 })
+    deleteFjernOppgaveTildeling({ oppgaveId, versjon: -1 })
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)

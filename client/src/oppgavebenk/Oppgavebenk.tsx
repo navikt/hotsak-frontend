@@ -10,10 +10,11 @@ import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgaveApiOppgave } from '../types/experimentalTypes'
-import { formaterDato } from '../utils/dato'
+import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
+import { Oppgavetype } from '../types/types.internal'
 
 export function Oppgavebenk() {
   //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -65,13 +66,13 @@ export function Oppgavebenk() {
       key: 'REGISTRERT',
       name: 'Registrert',
       width: 114,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.opprettetTidspunkt)} />,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
     },
     {
       key: 'ENDRET',
       name: 'Endret',
       width: 114,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.endretTidspunkt)} />,
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
     },
     {
       key: 'GJELDER',
@@ -79,7 +80,7 @@ export function Oppgavebenk() {
       width: 140,
       render: (oppgave: OppgaveApiOppgave) => (
         <TekstCell
-          value={`${storForbokstavIAlleOrd([oppgave.behandlingstema, oppgave.behandlingstype].filter(Boolean).join(', '))}`}
+          value={`${storForbokstavIAlleOrd([oppgave.behandlingstema, oppgave.behandlingstype].filter(Boolean).join('| '))}`}
         />
       ),
     },
@@ -153,6 +154,23 @@ export function Oppgavebenk() {
           href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgave.oppgaveId}`}
         >
           {oppgave.oppgaveId}
+        </Link>
+      ),
+    },
+    {
+      key: 'HANDLING',
+      name: 'Handling',
+      width: 96,
+      render: (oppgave: OppgaveApiOppgave) => (
+        <Link
+          variant="neutral"
+          href={
+            oppgave.oppgavetype === Oppgavetype.JOURNALFØRING
+              ? `/oppgaveliste/dokumenter/${oppgave.journalpostId}`
+              : `/sak/${oppgave.sakId}/hjelpemidler`
+          }
+        >
+          Gå til
         </Link>
       ),
     },

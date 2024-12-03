@@ -23,7 +23,7 @@ export function DokumentIkkeTildelt({ oppgaveId, journalpostId, gåTilSak = fals
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postOppgaveTildeling({ oppgaveId, versjon: 0 })
+    postOppgaveTildeling({ oppgaveId, versjon: -1 })
       .catch(() => setIsFetching(false))
       .then(() => {
         setIsFetching(false)

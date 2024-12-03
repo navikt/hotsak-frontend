@@ -11,12 +11,12 @@ interface SaksoversiktResponse {
 }
 
 export function useSaksoversikt(
-  brukersFodselsnummer?: string,
-  saksType?: Sakstype,
-  behandlingsStatus?: BehandlingstatusType
+  fnr?: string,
+  sakstype?: Sakstype,
+  behandlingsstatus?: BehandlingstatusType
 ): SaksoversiktResponse {
   const { data, error } = useSwr<{ data: Saksoversikt }>(
-    brukersFodselsnummer ? ['api/saksoversikt', brukersFodselsnummer, saksType, behandlingsStatus] : null,
+    fnr ? ['api/saksoversikt', fnr, sakstype, behandlingsstatus] : null,
     hentBrukerdataMedPost
   )
 

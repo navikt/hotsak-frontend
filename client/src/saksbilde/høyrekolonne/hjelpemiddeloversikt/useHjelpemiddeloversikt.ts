@@ -11,14 +11,14 @@ interface HjelpemiddeloversiktResponse {
 }
 
 export function useHjelpemiddeloversikt(
-  brukersFodselsnummer?: string,
+  fnr?: string,
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
 ): HjelpemiddeloversiktResponse {
   const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
   const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
 
   const { data, error, isLoading } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
-    brukersFodselsnummer && !harUtlånshistorikkFraVedtak ? ['api/hjelpemiddeloversikt', brukersFodselsnummer] : null,
+    fnr && !harUtlånshistorikkFraVedtak ? ['api/hjelpemiddeloversikt', fnr] : null,
     hentBrukerdataMedPost
   )
 

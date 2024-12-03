@@ -35,7 +35,7 @@ export function useTildeling({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, false)
+    postTildeling(sakId, {}, false)
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {

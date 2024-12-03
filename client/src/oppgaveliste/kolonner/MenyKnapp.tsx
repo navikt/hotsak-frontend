@@ -51,7 +51,7 @@ export const MenyKnapp = ({
   })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, {}, 'barnebrillesak_overført_gosys_v1')
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
@@ -82,7 +82,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, true)
+    postTildeling(sakId, {}, true)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)

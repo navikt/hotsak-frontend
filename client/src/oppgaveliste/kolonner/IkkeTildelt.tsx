@@ -35,7 +35,7 @@ export const IkkeTildelt = ({ oppgavereferanse, gåTilSak = false, onTildelingKo
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(oppgavereferanse, false)
+    postTildeling(oppgavereferanse, {}, false)
       .then(() => {
         if (gåTilSak) {
           const destinationUrl = `/sak/${oppgavereferanse}/hjelpemidler`

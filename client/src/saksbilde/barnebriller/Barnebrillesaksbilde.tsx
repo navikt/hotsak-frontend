@@ -64,6 +64,7 @@ const BarnebrillesakContent = memo(() => {
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           <MenyKnapp
             sakId={sak.data.sakId}
+            oppgaveVersjon={{ oppgaveId: sak.oppgave?.oppgaveId, versjon: sak.oppgave?.versjon }}
             tildeltSaksbehandler={sak.data.saksbehandler}
             status={sak.data.status}
             kanTildeles={sak.kanTildeles}

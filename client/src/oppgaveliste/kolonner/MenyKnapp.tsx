@@ -8,13 +8,14 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
+import { OppgaveStatusType, OppgaveVersjon, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
 
 interface MenyKnappProps {
   sakId: string
+  oppgaveVersjon?: OppgaveVersjon
   status: OppgaveStatusType
   tildeltSaksbehandler?: Saksbehandler
   sakstype?: Sakstype
@@ -22,12 +23,13 @@ interface MenyKnappProps {
   gåTilSak?: boolean
   knappeTekst?: string
   knappeIkon?: any
-  setKonfliktModalOpen?: (val: string | undefined) => void
-  onMutate: (...args: any[]) => any
+  setKonfliktModalOpen?(val: string | undefined): void
+  onMutate(...args: any[]): any
 }
 
-export const MenyKnapp = ({
+export function MenyKnapp({
   sakId,
+  oppgaveVersjon = {},
   status,
   tildeltSaksbehandler,
   kanTildeles,
@@ -37,7 +39,7 @@ export const MenyKnapp = ({
   onMutate,
   knappeTekst,
   knappeIkon,
-}: MenyKnappProps) => {
+}: MenyKnappProps) {
   const saksbehandler = useInnloggetSaksbehandler()
   const { onTildel } = useTildeling({
     sakId: sakId,
@@ -51,7 +53,11 @@ export const MenyKnapp = ({
   })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, {}, 'barnebrillesak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(
+    sakId,
+    oppgaveVersjon,
+    'barnebrillesak_overført_gosys_v1'
+  )
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
@@ -82,7 +88,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, {}, true)
+    postTildeling(sakId, oppgaveVersjon, true)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -96,7 +102,7 @@ export const MenyKnapp = ({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernTildeling(sakId)
+    deleteFjernTildeling(sakId, oppgaveVersjon)
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)

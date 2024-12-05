@@ -82,6 +82,7 @@ export function Oppgaveliste() {
         return (
           <Tildeling
             oppgave={oppgave}
+            oppgaveVersjon={{ oppgaveId: oppgave.oppgaveId, versjon: oppgave.versjon }}
             visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}
           />
@@ -205,6 +206,7 @@ export function Oppgaveliste() {
         return (
           <MenyKnapp
             sakId={oppgave.sakId}
+            oppgaveVersjon={{ oppgaveId: oppgave.oppgaveId, versjon: oppgave.versjon }}
             status={oppgave.status}
             tildeltSaksbehandler={oppgave.saksbehandler}
             gåTilSak={true}

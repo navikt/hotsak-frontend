@@ -92,7 +92,7 @@ export function FritekstPanel({
               description="Sjekk teksten og fjern sensitive opplysninger"
               size="small"
               value={redigertTekst}
-              maxLength={150}
+              maxLength={MAX_LENGDE_BESKJED}
               readOnly={harLagretBeskjed}
               error={
                 (error &&

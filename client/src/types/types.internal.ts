@@ -8,6 +8,7 @@ export interface SakResponse {
 
 export interface BarnebrillesakResponse {
   kanTildeles: boolean
+  oppgave?: OppgaveApiOppgave
   data: Barnebrillesak
 }
 
@@ -469,6 +470,8 @@ export interface Oppgave {
   saksbehandler?: Saksbehandler
   kanTildeles: boolean
   hast?: Hast
+  oppgaveId?: string
+  versjon?: number
 }
 
 export interface OppgaveBruker {

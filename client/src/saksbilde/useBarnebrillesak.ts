@@ -1,14 +1,14 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
-import type { BarnebrillesakResponse } from '../types/types.internal'
 import { httpGet } from '../io/http'
+import type { BarnebrillesakResponse } from '../types/types.internal'
 
 interface DataResponse {
-  sak: BarnebrillesakResponse | undefined
+  sak?: BarnebrillesakResponse
   isLoading: boolean
   isError: any
-  mutate: (...args: any[]) => any
+  mutate(...args: any[]): any
 }
 
 // Duplisert frem til vi vet om de ulike sakstypene vil ha samme payload eller om det blir to ulike varianter/endepunkt

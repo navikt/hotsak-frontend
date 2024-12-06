@@ -48,6 +48,19 @@ export interface OppgaveApiResponse {
   totalElements: number
 }
 
+export enum OppgaveGjelderFilter {
+  ALLE = 'ALLE',
+  BESTILLING = 'BESTILLING',
+  DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
+  HASTESØKNAD = 'HASTESØKNAD',
+}
+
+export const OppgavetemaLabel = new Map<string, string>([
+  [OppgaveGjelderFilter.ALLE, 'Alle'],
+  [OppgaveGjelderFilter.BESTILLING, 'Bestilling'],
+  [OppgaveGjelderFilter.DIGITAL_SØKNAD, 'Søknad'],
+  [OppgaveGjelderFilter.HASTESØKNAD, 'Hastesøknad'],
+])
 /*
 
 [

@@ -9,23 +9,26 @@ import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgaveApiOppgave } from '../types/experimentalTypes'
+import { OppgaveApiOppgave, OppgaveGjelderFilter, OppgavetemaLabel } from '../types/experimentalTypes'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { Oppgavetype } from '../types/types.internal'
+import { useLocalStorageState } from '../oppgaveliste/useLocalStorageState'
+import { FilterCombobox, FilterDropdown, Filters } from '../oppgaveliste/filter'
 
 export function Oppgavebenk() {
   //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
-  //const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
+  const [gjelderFilter, setGjelderFilter] = useLocalStorageState('oppgavebenkGjelderFilter', OppgaveGjelderFilter.ALLE)
   //const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   //const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   //const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
-  //const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
+  //const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const { oppgaver, isLoading, error } = useOppgavelisteV2(
-    1
+    1,
+    { gjelderFilter }
     /*
       currentPage, sort, {
       sakerFilter,
@@ -36,22 +39,15 @@ export function Oppgavebenk() {
     */
   )
 
-  /*
-  const handleFilter = (handler: (...args: any[]) => any, value: SakerFilter | OppgaveStatusType | OmrådeFilter) => {
+  const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter) => {
     handler(value)
-    setCurrentPage(1)
+    //setCurrentPage(1)
   }
-  */
 
-  /*
   const clearFilters = () => {
-    setSakerFilter(SakerFilter.UFORDELTE)
-    setStatusFilter(OppgaveStatusType.ALLE)
-    setSakstypeFilter(SakstypeFilter.ALLE)
-    setOmrådeFilter(OmrådeFilter.ALLE)
-    setCurrentPage(1)
+    setGjelderFilter(OppgaveGjelderFilter.ALLE)
+    //setCurrentPage(1)
   }
-  */
 
   const kolonner = [
     {
@@ -65,18 +61,19 @@ export function Oppgavebenk() {
     {
       key: 'REGISTRERT',
       name: 'Registrert',
-      width: 114,
+      width: 122,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
     },
     {
       key: 'ENDRET',
       name: 'Endret',
-      width: 114,
+      width: 122,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
     },
     {
       key: 'GJELDER',
       name: 'Gjelder',
+      sortable: true,
       width: 140,
       render: (oppgave: OppgaveApiOppgave) => (
         <TekstCell
@@ -204,42 +201,16 @@ export function Oppgavebenk() {
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <OppgavelisteTabs />
-      {/*<Filters onClear={clearFilters}>
+      <Filters onClear={clearFilters}>
         <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setSakerFilter, filterValue)
+          handleChange={(filterValue: OppgavetemaFilter) => {
+            handleFilter(setGjelderFilter, filterValue)
           }}
-          label="Saker"
-          value={sakerFilter}
-          options={SakerFilterLabel}
+          label="Gjelder"
+          value={gjelderFilter}
+          options={OppgavetemaLabel}
         />
-        <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setStatusFilter, filterValue)
-          }}
-          label="Status"
-          value={statusFilter}
-          options={OppgaveStatusLabel}
-        />
-        {
-          <FilterDropdown
-            handleChange={(filterValue: SakerFilter) => {
-              handleFilter(setSakstypeFilter, filterValue)
-            }}
-            label="Sakstype"
-            value={sakstypeFilter}
-            options={SakstypeFilterLabel}
-          />
-        }
-        <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setOmrådeFilter, filterValue)
-          }}
-          label="Område"
-          value={områdeFilter}
-          options={OmrådeFilterLabel}
-        />
-        </Filters>*/}
+      </Filters>
 
       {isLoading ? (
         <Toast>Henter oppgaver </Toast>

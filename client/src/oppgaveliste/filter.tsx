@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { Button, Select, Switch } from '@navikt/ds-react'
+import { Button, Select, Switch, UNSAFE_Combobox } from '@navikt/ds-react'
 
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 
@@ -24,6 +24,12 @@ interface FilterProps {
   handleChange: (...args: any[]) => any
 }
 
+interface ComboboxProps {
+  label: string
+  value: string
+  options: string[]
+}
+
 export function FilterDropdown({ label, value, options, handleChange }: FilterProps) {
   return (
     <Dropdown label={label} size="small" value={value} onChange={(e) => handleChange(e.target.value)}>
@@ -35,6 +41,12 @@ export function FilterDropdown({ label, value, options, handleChange }: FilterPr
         )
       })}
     </Dropdown>
+  )
+}
+
+export function FilterCombobox({ label, value, options }: ComboboxProps) {
+  return (
+    <UNSAFE_Combobox size="small" allowNewValues={false} value={value} label={label} isMultiSelect options={options} />
   )
 }
 

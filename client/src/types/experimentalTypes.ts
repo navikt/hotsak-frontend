@@ -7,6 +7,7 @@ export interface OppgaveApiOppgave {
   tema: string
   behandlingstema?: string | null
   behandlingstype?: string | null
+  gjelder?: string | null
   beskrivelse?: string
   prioritet: OppgavePrioritet
   tildeltEnhet: Enhet

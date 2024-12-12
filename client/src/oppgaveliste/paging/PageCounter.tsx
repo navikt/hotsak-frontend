@@ -18,7 +18,7 @@ export function PageCounter({ pageSize, totalElements, currentPage }: PageCounte
         <Tekst>
           {`Viser ${førsteSynligeOppgave} - ${
             sisteOppgave > totalElements ? totalElements : sisteOppgave
-          } av ${totalElements} saker`}
+          } av ${totalElements} oppgaver`}
         </Tekst>
       </Container>
     </>

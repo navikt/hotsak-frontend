@@ -1,14 +1,6 @@
-import styled from 'styled-components'
-
-import { Pagination } from '@navikt/ds-react'
+import { Pagination, VStack } from '@navikt/ds-react'
 
 import { PageCounter } from './PageCounter'
-
-const Container = styled.div`
-  display: flex;
-  margin-top: 2rem;
-  justify-content: space-between;
-`
 
 export const PAGE_SIZE = 25
 
@@ -23,19 +15,17 @@ export function Paging({ totalElements, currentPage, onPageChange }: PagingProps
   const hasMultiplePages = totalNumberOfPages > 1
 
   return (
-    <>
-      <Container>
-        {hasMultiplePages && (
-          <Pagination
-            count={totalNumberOfPages}
-            page={currentPage}
-            prevNextTexts={true}
-            size="small"
-            onPageChange={(page: number) => onPageChange(page)}
-          />
-        )}
-      </Container>
+    <VStack gap="2" marginBlock="6 0">
+      {hasMultiplePages && (
+        <Pagination
+          count={totalNumberOfPages}
+          page={currentPage}
+          prevNextTexts={true}
+          size="small"
+          onPageChange={(page: number) => onPageChange(page)}
+        />
+      )}
       <PageCounter pageSize={PAGE_SIZE} currentPage={currentPage} totalElements={totalElements} />
-    </>
+    </VStack>
   )
 }

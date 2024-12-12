@@ -10,20 +10,21 @@ import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { FilterDropdown } from '../oppgaveliste/filter'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { useLocalStorageState } from '../oppgaveliste/useLocalStorageState'
-import { OppgaveApiOppgave, OppgaveGjelderFilter, OppgaverFilter, OppgavetemaLabel } from '../types/experimentalTypes'
+import { OppgaveApiOppgave, OppgaveGjelderFilter, TildeltFilter, OppgavetemaLabel } from '../types/experimentalTypes'
 import { Oppgavetype } from '../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 import { Oppgavetildeling } from './Oppgavetildeling'
+import { Paging } from '../oppgaveliste/paging/Paging'
 
 export function Oppgavebenk() {
-  const [oppgaverFilter, setOppgaverFilter] = useLocalStorageState('oppgaverFilter', OppgaverFilter.UFORDELTE)
+  const [tildeltFilter, setTildeltFilter] = useLocalStorageState('oppgaverFilter', TildeltFilter.INGEN)
   const [gjelderFilter, setGjelderFilter] = useLocalStorageState('oppgavebenkGjelderFilter', OppgaveGjelderFilter.ALLE)
   //const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   //const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
-  //const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
+  const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
 
   const initialSortState: SortState = {
     orderBy: 'OPPRETTET_TIDSPUNKT',
@@ -32,18 +33,18 @@ export function Oppgavebenk() {
 
   const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', initialSortState)
 
-  const { oppgaver, isLoading, error } = useOppgavelisteV2(1, sort, { oppgaverFilter, gjelderFilter })
+  const { oppgaver, isLoading, error, totalElements } = useOppgavelisteV2(1, sort, { tildeltFilter, gjelderFilter })
 
   const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter | string) => {
     handler(value)
-    //setCurrentPage(1)
+    setCurrentPage(1)
   }
 
   const clearFilters = () => {
     setGjelderFilter(OppgaveGjelderFilter.ALLE)
-    setOppgaverFilter(OppgaverFilter.UFORDELTE)
+    setTildeltFilter(TildeltFilter.INGEN)
     setSort(initialSortState)
-    //setCurrentPage(1)
+    setCurrentPage(1)
   }
 
   const kolonner = [
@@ -207,16 +208,16 @@ export function Oppgavebenk() {
         <HStack gap="4" align="end">
           <ToggleGroup
             label="Oppgaver"
-            value={oppgaverFilter}
+            value={tildeltFilter}
             size="small"
             onChange={(filterValue) => {
-              handleFilter(setOppgaverFilter, filterValue)
+              handleFilter(setTildeltFilter, filterValue)
             }}
             style={{ background: 'var(--a-bg-default)' }}
           >
-            <ToggleGroup.Item value="UFORDELTE" label="Ufordelte" />
-            <ToggleGroup.Item value="MINE" label="Mine oppgaver" />
-            <ToggleGroup.Item value="ALLE" label="Enhetens oppgaver" />
+            <ToggleGroup.Item value={TildeltFilter.INGEN} label="Ufordelte" />
+            <ToggleGroup.Item value={TildeltFilter.MEG} label="Mine oppgaver" />
+            <ToggleGroup.Item value={TildeltFilter.ALLE} label="Enhetens oppgaver" />
           </ToggleGroup>
           <FilterDropdown
             handleChange={(filterValue: OppgaveGjelderFilter) => {
@@ -262,14 +263,7 @@ export function Oppgavebenk() {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave: OppgaveApiOppgave) => (
-                      <Table.Row
-                        key={oppgave.oppgaveId}
-                        /*path={
-                          oppgave.oppgavetype !== Oppgavetype.JOURNALFØRING
-                            ? `/dokument/${oppgave.journalpostId}`
-                            : `/sak/${oppgave.sakId}`
-                        }*/
-                      >
+                      <Table.Row key={oppgave.oppgaveId}>
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell
                             key={key}
@@ -286,11 +280,11 @@ export function Oppgavebenk() {
                   </Table.Body>
                 </Table>
 
-                {/*<Paging
-                  totalCount={totalCount}
+                <Paging
+                  totalElements={totalElements}
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
-                        />*/}
+                />
               </ScrollWrapper>
             ) : (
               <IngentingFunnet>Ingen oppgaver funnet</IngentingFunnet>

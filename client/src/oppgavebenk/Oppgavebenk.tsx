@@ -1,22 +1,22 @@
 import { Box, Button, HStack, Link, Table, ToggleGroup } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
-import { isError } from '../utils/type'
-
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
-import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
+
+import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
+import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { FilterDropdown } from '../oppgaveliste/filter'
+import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { useLocalStorageState } from '../oppgaveliste/useLocalStorageState'
 import { OppgaveApiOppgave, OppgaveGjelderFilter, OppgaverFilter, OppgavetemaLabel } from '../types/experimentalTypes'
 import { Oppgavetype } from '../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
-import { Oppgavetildeling } from './Oppgavetildeling'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
+import { isError } from '../utils/type'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
+import { Oppgavetildeling } from './Oppgavetildeling'
 
 export function Oppgavebenk() {
   const [oppgaverFilter, setOppgaverFilter] = useLocalStorageState('oppgaverFilter', OppgaverFilter.UFORDELTE)
@@ -76,11 +76,7 @@ export function Oppgavebenk() {
       name: 'Gjelder',
       sortable: true,
       width: 140,
-      render: (oppgave: OppgaveApiOppgave) => (
-        <TekstCell
-          value={`${storForbokstavIAlleOrd([oppgave.behandlingstema, oppgave.behandlingstype].filter(Boolean).join('| '))}`}
-        />
-      ),
+      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={oppgave.gjelder ?? ''} />,
     },
     {
       /* Workaround for at beskrivelsen fra gosys enn så lenge 

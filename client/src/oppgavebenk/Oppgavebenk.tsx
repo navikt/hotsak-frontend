@@ -239,7 +239,7 @@ export function Oppgavebenk() {
         <Container>
           <Box padding={{ sm: '2', md: '10' }}>
             {hasData ? (
-              <ScrollWrapper>
+              <>
                 <Table
                   //style={{ width: 'initial' }}
                   size="small"
@@ -285,7 +285,7 @@ export function Oppgavebenk() {
                   currentPage={currentPage}
                   onPageChange={(page: number) => setCurrentPage(page)}
                 />
-              </ScrollWrapper>
+              </>
             ) : (
               <IngentingFunnet>Ingen oppgaver funnet</IngentingFunnet>
             )}
@@ -300,10 +300,4 @@ export default Oppgavebenk
 
 const Container = styled.div`
   min-height: 300px;
-  height: calc(100% - 50px);
-  width: 100%;
-`
-
-const ScrollWrapper = styled.div`
-  overflow: auto;
 `

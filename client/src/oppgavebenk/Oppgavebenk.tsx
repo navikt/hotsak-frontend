@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Link, Table, ToggleGroup } from '@navikt/ds-react'
+import { Box, Button, HStack, Link, SortState, Table, ToggleGroup } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
@@ -24,20 +24,15 @@ export function Oppgavebenk() {
   //const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   //const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   //const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
-  //const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
-  const { oppgaver, isLoading, error } = useOppgavelisteV2(
-    1,
-    { oppgaverFilter, gjelderFilter }
-    /*
-      currentPage, sort, {
-      sakerFilter,
-      statusFilter,
-      sakstypeFilter,
-      områdeFilter,
-    }
-    */
-  )
+  const initialSortState: SortState = {
+    orderBy: 'OPPRETTET_TIDSPUNKT',
+    direction: 'descending',
+  }
+
+  const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', initialSortState)
+
+  const { oppgaver, isLoading, error } = useOppgavelisteV2(1, sort, { oppgaverFilter, gjelderFilter })
 
   const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter | string) => {
     handler(value)
@@ -47,6 +42,7 @@ export function Oppgavebenk() {
   const clearFilters = () => {
     setGjelderFilter(OppgaveGjelderFilter.ALLE)
     setOppgaverFilter(OppgaverFilter.UFORDELTE)
+    setSort(initialSortState)
     //setCurrentPage(1)
   }
 
@@ -60,21 +56,22 @@ export function Oppgavebenk() {
       },
     },
     {
-      key: 'REGISTRERT',
-      name: 'Registrert',
+      key: 'OPPRETTET_TIDSPUNKT',
+      name: 'Opprettet',
+      sortable: true,
       width: 122,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
     },
     {
-      key: 'ENDRET',
+      key: 'ENDRET_TIDSPUNKT',
       name: 'Endret',
+      sortable: true,
       width: 122,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
     },
     {
       key: 'GJELDER',
       name: 'Gjelder',
-      sortable: true,
       width: 140,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={oppgave.gjelder ?? ''} />,
     },
@@ -134,6 +131,7 @@ export function Oppgavebenk() {
     {
       key: 'FRIST',
       name: 'Frist',
+      sortable: true,
       width: 114,
       render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
     },
@@ -244,19 +242,19 @@ export function Oppgavebenk() {
                 <Table
                   //style={{ width: 'initial' }}
                   size="small"
-                  //sort={sort}
-                  /*onSortChange={(sortKey) => {
+                  sort={sort}
+                  onSortChange={(sortKey) => {
                     setSort({
                       orderBy: sortKey || 'MOTTATT',
                       direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
                     })
-                  }}*/
+                  }}
                 >
                   <caption className="sr-only">Oppgaveliste</caption>
                   <Table.Header>
                     <Table.Row>
-                      {kolonner.map(({ key, name, /*sortable = true,*/ width }) => (
-                        <KolonneHeader key={key} /*sortable={sortable} */ sortKey={key} width={width}>
+                      {kolonner.map(({ key, name, sortable = false, width }) => (
+                        <KolonneHeader key={key} sortable={sortable} sortKey={key} width={width}>
                           {name}
                         </KolonneHeader>
                       ))}

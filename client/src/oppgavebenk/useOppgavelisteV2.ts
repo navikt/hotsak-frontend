@@ -3,6 +3,7 @@ import useSwr from 'swr'
 import { httpGet } from '../io/http'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
 import { OppgaveApiOppgave, OppgaveApiResponse, OppgaveGjelderFilter, OppgaverFilter } from '../types/experimentalTypes'
+import { SortState } from '@navikt/ds-react'
 
 interface DataResponse {
   oppgaver: OppgaveApiOppgave[]
@@ -35,10 +36,10 @@ interface Filters {
   totalElements: number
 }*/
 
-const pathConfig = (/*currentPage: number, sort: SortState, */ filters: Filters): PathConfigType => {
-  //const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
+const pathConfig = (/*currentPage: number,*/ sort: SortState, filters: Filters): PathConfigType => {
+  const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   //const pagingParams = { limit: PAGE_SIZE, page: currentPage }
-  //const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
+  const sortParams = { sorteringsfelt: sort.orderBy, sorteringsrekkefølge: sortDirection }
   const { oppgaverFilter, gjelderFilter } = filters
 
   const filterParams: any = {}
@@ -53,7 +54,7 @@ const pathConfig = (/*currentPage: number, sort: SortState, */ filters: Filters)
 
   return {
     path: `${basePath}`,
-    queryParams: { /*...pagingParams, ...sortParams, */ ...filterParams },
+    queryParams: { /*...pagingParams,*/ ...sortParams, ...filterParams },
   }
 }
 
@@ -63,8 +64,8 @@ const buildQueryParamString = (queryParams: Record<string, string>) => {
     .join('&')
 }
 
-export function useOppgavelisteV2(currentPage: number, /*, sort: SortState,*/ filters: Filters): DataResponse {
-  const { path, queryParams } = pathConfig(/*currentPage, sort,*/ filters)
+export function useOppgavelisteV2(currentPage: number, sort: SortState, filters: Filters): DataResponse {
+  const { path, queryParams } = pathConfig(/*currentPage,*/ sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgaveApiResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
 

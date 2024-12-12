@@ -61,6 +61,18 @@ export const OppgavetemaLabel = new Map<string, string>([
   [OppgaveGjelderFilter.DIGITAL_SØKNAD, 'Søknad'],
   [OppgaveGjelderFilter.HASTESØKNAD, 'Hastesøknad'],
 ])
+
+export enum OppgaverFilter {
+  ALLE = 'ALLE',
+  UFORDELTE = 'UFORDELTE',
+  MINE = 'MINE',
+}
+
+export const SakerFilterLabel = new Map<string, string>([
+  [OppgaverFilter.ALLE, 'Alle'],
+  [OppgaverFilter.MINE, 'Mine saker'],
+  [OppgaverFilter.UFORDELTE, 'Ufordelte'],
+])
 /*
 
 [

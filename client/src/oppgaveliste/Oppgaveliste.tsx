@@ -1,6 +1,9 @@
-import { Box, SortState, Table, Tag } from '@navikt/ds-react'
+import { Box, Button, HStack, SortState, Table, Tag } from '@navikt/ds-react'
 import styled from 'styled-components'
 
+import { useState } from 'react'
+import { Helmet } from 'react-helmet'
+import { useNavigate } from 'react-router'
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -8,6 +11,7 @@ import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
@@ -23,7 +27,7 @@ import {
 import { formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
-import { FilterDropdown, Filters, FilterToggle } from './filter'
+import { FilterDropdown, FilterToggle } from './filter'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { Tildeling } from './kolonner/Tildeling'
@@ -31,10 +35,6 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
-import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
-import { useState } from 'react'
-import { useNavigate } from 'react-router'
-import { Helmet } from 'react-helmet'
 
 export function Oppgaveliste() {
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
@@ -237,51 +237,56 @@ export function Oppgaveliste() {
       <Helmet title="Hotsak - Oppgaveliste" />
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <OppgavelisteTabs />
-      <Filters onClear={clearFilters}>
-        <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setSakerFilter, filterValue)
-          }}
-          label="Saker"
-          value={sakerFilter}
-          options={SakerFilterLabel}
-        />
-        <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setStatusFilter, filterValue)
-          }}
-          label="Status"
-          value={statusFilter}
-          options={OppgaveStatusLabel}
-        />
-        {
+
+      <Box padding="4">
+        <HStack gap="4" align="end">
           <FilterDropdown
             handleChange={(filterValue: SakerFilter) => {
-              handleFilter(setSakstypeFilter, filterValue)
+              handleFilter(setSakerFilter, filterValue)
             }}
-            label="Sakstype"
-            value={sakstypeFilter}
-            options={SakstypeFilterLabel}
+            label="Saker"
+            value={sakerFilter}
+            options={SakerFilterLabel}
           />
-        }
-        <FilterDropdown
-          handleChange={(filterValue: SakerFilter) => {
-            handleFilter(setOmrådeFilter, filterValue)
-          }}
-          label="Område"
-          value={områdeFilter}
-          options={OmrådeFilterLabel}
-        />
+          <FilterDropdown
+            handleChange={(filterValue: SakerFilter) => {
+              handleFilter(setStatusFilter, filterValue)
+            }}
+            label="Status"
+            value={statusFilter}
+            options={OppgaveStatusLabel}
+          />
+          {
+            <FilterDropdown
+              handleChange={(filterValue: SakerFilter) => {
+                handleFilter(setSakstypeFilter, filterValue)
+              }}
+              label="Sakstype"
+              value={sakstypeFilter}
+              options={SakstypeFilterLabel}
+            />
+          }
+          <FilterDropdown
+            handleChange={(filterValue: SakerFilter) => {
+              handleFilter(setOmrådeFilter, filterValue)
+            }}
+            label="Område"
+            value={områdeFilter}
+            options={OmrådeFilterLabel}
+          />
 
-        <FilterToggle
-          handleChange={(filterValue: boolean) => {
-            handleFilter(setHasteToggle, filterValue)
-          }}
-          label="Kun hastesaker"
-          value={hasteToggle}
-        />
-      </Filters>
-
+          <FilterToggle
+            handleChange={(filterValue: boolean) => {
+              handleFilter(setHasteToggle, filterValue)
+            }}
+            label="Kun hastesaker"
+            value={hasteToggle}
+          />
+          <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
+            Tilbakestill filtre
+          </Button>
+        </HStack>
+      </Box>
       {isLoading ? (
         <Toast>Henter oppgaver </Toast>
       ) : (

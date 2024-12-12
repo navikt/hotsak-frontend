@@ -2,7 +2,7 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
-import { OppgaveApiOppgave, OppgaveApiResponse, OppgaveGjelderFilter } from '../types/experimentalTypes'
+import { OppgaveApiOppgave, OppgaveApiResponse, OppgaveGjelderFilter, OppgaverFilter } from '../types/experimentalTypes'
 
 interface DataResponse {
   oppgaver: OppgaveApiOppgave[]
@@ -23,6 +23,7 @@ interface PathConfigType {
 }
 
 interface Filters {
+  oppgaverFilter: string
   gjelderFilter: string
 }
 
@@ -38,12 +39,16 @@ const pathConfig = (/*currentPage: number, sort: SortState, */ filters: Filters)
   //const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   //const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   //const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
-  const { gjelderFilter } = filters
+  const { oppgaverFilter, gjelderFilter } = filters
 
   const filterParams: any = {}
 
   if (gjelderFilter && gjelderFilter !== OppgaveGjelderFilter.ALLE) {
     filterParams.gjelder = gjelderFilter
+  }
+
+  if (oppgaverFilter && oppgaverFilter !== OppgaverFilter.ALLE) {
+    filterParams.oppgaver = oppgaverFilter
   }
 
   return {

@@ -1,4 +1,4 @@
-import { Box, Link, Table } from '@navikt/ds-react'
+import { Box, Button, HStack, Link, Table, ToggleGroup } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -9,17 +9,17 @@ import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgaveApiOppgave, OppgaveGjelderFilter, OppgavetemaLabel } from '../types/experimentalTypes'
-import { formaterDato, formaterTidsstempel } from '../utils/dato'
-import { useOppgavelisteV2 } from './useOppgavelisteV2'
-import { Oppgavetildeling } from './Oppgavetildeling'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
-import { Oppgavetype } from '../types/types.internal'
+import { FilterDropdown } from '../oppgaveliste/filter'
 import { useLocalStorageState } from '../oppgaveliste/useLocalStorageState'
-import { FilterCombobox, FilterDropdown, Filters } from '../oppgaveliste/filter'
+import { OppgaveApiOppgave, OppgaveGjelderFilter, OppgaverFilter, OppgavetemaLabel } from '../types/experimentalTypes'
+import { Oppgavetype } from '../types/types.internal'
+import { formaterDato, formaterTidsstempel } from '../utils/dato'
+import { Oppgavetildeling } from './Oppgavetildeling'
+import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
 export function Oppgavebenk() {
-  //const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
+  const [oppgaverFilter, setOppgaverFilter] = useLocalStorageState('oppgaverFilter', OppgaverFilter.UFORDELTE)
   const [gjelderFilter, setGjelderFilter] = useLocalStorageState('oppgavebenkGjelderFilter', OppgaveGjelderFilter.ALLE)
   //const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   //const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
@@ -28,7 +28,7 @@ export function Oppgavebenk() {
 
   const { oppgaver, isLoading, error } = useOppgavelisteV2(
     1,
-    { gjelderFilter }
+    { oppgaverFilter, gjelderFilter }
     /*
       currentPage, sort, {
       sakerFilter,
@@ -39,13 +39,14 @@ export function Oppgavebenk() {
     */
   )
 
-  const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter) => {
+  const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter | string) => {
     handler(value)
     //setCurrentPage(1)
   }
 
   const clearFilters = () => {
     setGjelderFilter(OppgaveGjelderFilter.ALLE)
+    setOppgaverFilter(OppgaverFilter.UFORDELTE)
     //setCurrentPage(1)
   }
 
@@ -201,19 +202,44 @@ export function Oppgavebenk() {
     <>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <OppgavelisteTabs />
-      <Filters onClear={clearFilters}>
-        <FilterDropdown
-          handleChange={(filterValue: OppgavetemaFilter) => {
-            handleFilter(setGjelderFilter, filterValue)
-          }}
-          label="Gjelder"
-          value={gjelderFilter}
-          options={OppgavetemaLabel}
-        />
-      </Filters>
+      <Box
+        marginInline="4"
+        marginBlock="4"
+        padding="4"
+        background="surface-subtle"
+        borderWidth="1"
+        borderColor="border-subtle"
+      >
+        <HStack gap="4" align="end">
+          <ToggleGroup
+            label="Oppgaver"
+            value={oppgaverFilter}
+            size="small"
+            onChange={(filterValue) => {
+              handleFilter(setOppgaverFilter, filterValue)
+            }}
+            style={{ background: 'var(--a-bg-default)' }}
+          >
+            <ToggleGroup.Item value="UFORDELTE" label="Ufordelte" />
+            <ToggleGroup.Item value="MINE" label="Mine oppgaver" />
+            <ToggleGroup.Item value="ALLE" label="Enhetens oppgaver" />
+          </ToggleGroup>
+          <FilterDropdown
+            handleChange={(filterValue: OppgaveGjelderFilter) => {
+              handleFilter(setGjelderFilter, filterValue)
+            }}
+            label="Gjelder"
+            value={gjelderFilter}
+            options={OppgavetemaLabel}
+          />
+          <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
+            Tilbakestill filtre
+          </Button>
+        </HStack>
+      </Box>
 
       {isLoading ? (
-        <Toast>Henter oppgaver </Toast>
+        <Toast>Henter oppgaver</Toast>
       ) : (
         <Container>
           <Box padding={{ sm: '2', md: '10' }}>

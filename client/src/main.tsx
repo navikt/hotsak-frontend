@@ -4,7 +4,6 @@ import { AppRoot } from './GlobalStyles'
 import { initMsw } from './mocks'
 import { initAmplitude } from './utils/amplitude'
 import { initFaro } from './utils/faro'
-import 'reset-css'
 import '@navikt/ds-css'
 
 async function main(): Promise<void> {

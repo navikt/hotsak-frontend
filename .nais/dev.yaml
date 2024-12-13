@@ -26,8 +26,8 @@ spec:
       enabled: true
       runtime: nodejs
   replicas:
-    max: 1
-    min: 1
+    max: 2
+    min: 2
   accessPolicy:
     inbound:
       rules:

@@ -33,7 +33,10 @@ export function Oppgavebenk() {
 
   const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', initialSortState)
 
-  const { oppgaver, isLoading, error, totalElements } = useOppgavelisteV2(1, sort, { tildeltFilter, gjelderFilter })
+  const { oppgaver, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
+    tildeltFilter,
+    gjelderFilter,
+  })
 
   const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter | string) => {
     handler(value)

@@ -38,7 +38,7 @@ interface Filters {
 
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
-  const pagingParams = { limit: PAGE_SIZE, offset: currentPage - 1 }
+  const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sorteringsfelt: sort.orderBy, sorteringsrekkefølge: sortDirection }
   const { tildeltFilter, gjelderFilter } = filters
 

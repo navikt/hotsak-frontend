@@ -4,6 +4,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { HistorikkHendelse } from '../høyrekolonne/historikk/HistorikkHendelse'
 import { useSakshistorikk } from '../høyrekolonne/historikk/useSakshistorikk'
 import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
+import { ListeUtenPunkt } from '../../felleskomponenter/Liste'
 
 export function BarnebrillesakHistorikk() {
   const { hendelser, error, isLoading } = useSakshistorikk()
@@ -14,7 +15,7 @@ export function BarnebrillesakHistorikk() {
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (
-        <VStack as="ul" gap="3">
+        <VStack as={ListeUtenPunkt} gap="3">
           {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}

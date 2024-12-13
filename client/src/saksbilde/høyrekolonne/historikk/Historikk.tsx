@@ -1,4 +1,5 @@
 import { VStack } from '@navikt/ds-react'
+import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { HistorikkHendelse } from './HistorikkHendelse'
@@ -13,7 +14,7 @@ export function Historikk() {
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (
-        <VStack as="ul" gap="3">
+        <VStack as={ListeUtenPunkt}>
           {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}

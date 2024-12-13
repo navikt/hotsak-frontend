@@ -1,5 +1,3 @@
-import { useDebugValue } from 'react'
-
 import { Barnebrillesak, OppgaveStatusType, StegType } from '../types/types.internal'
 import { useSaksbehandlerErTildeltSak } from './useSaksbehandlerErTildeltSak'
 
@@ -10,6 +8,5 @@ export function useSaksbehandlerKanRedigereBarnebrillesak(sak?: Barnebrillesak):
     sak?.steg !== StegType.GODKJENNE &&
     sak?.steg !== StegType.FERDIG_BEHANDLET &&
     sak?.status !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
-  useDebugValue(saksbehandlerKanRedigereBarnebrillesak)
   return saksbehandlerKanRedigereBarnebrillesak
 }

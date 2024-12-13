@@ -8,6 +8,7 @@ import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { LagreSaksnotatForm } from './LagreSaksnotatForm'
 import { SlettSaksnotatModal } from './SlettSaksnotatModal'
 import { useSaksnotater } from './useSaksnotater'
+import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 
 export interface SaksnotaterProps {
   sakId?: string
@@ -29,7 +30,7 @@ export function Saksnotater(props: SaksnotaterProps) {
       <VStack gap="5">
         {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
         {notater.length ? (
-          <VStack as="ul" gap="5" title="Notater">
+          <VStack as={ListeUtenPunkt} gap="5" title="Notater">
             {notater.map((notat) => (
               <Box
                 key={notat.id || notat.opprettet}

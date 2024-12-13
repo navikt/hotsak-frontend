@@ -11,6 +11,7 @@ import { useSak } from '../../useSak'
 import { HøyrekolonneInnslag } from '../HøyrekolonneInnslag.tsx'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
+import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 
 export function Hjelpemiddeloversikt() {
   const { sak } = useSak()
@@ -29,7 +30,7 @@ export function Hjelpemiddeloversikt() {
     >
       {isFromVedtak && <Tekst spacing>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</Tekst>}
       {artikler.length > 0 ? (
-        <VStack as="ul" gap="3">
+        <VStack as={ListeUtenPunkt} gap="3">
           {artiklerByKategori.map(([kategori, artikler]) => (
             <HøyrekolonneInnslag key={kategori}>
               <Label size="small">{kategori}</Label>

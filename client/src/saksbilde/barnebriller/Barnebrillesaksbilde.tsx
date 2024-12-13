@@ -32,8 +32,6 @@ const BarnebrillesakContainer = styled.div`
 const Header = styled(HStack)`
   box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--a-border-divider));
   padding-right: 2rem;
-  padding-bottom: 0.5em;
-  padding-top: 0.5rem;
 `
 
 const BarnebrillesakContent = memo(() => {
@@ -57,7 +55,7 @@ const BarnebrillesakContent = memo(() => {
 
   return (
     <div>
-      <Header wrap={false} align={'end'}>
+      <Header wrap={false} align={'baseline'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack align="center">

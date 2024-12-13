@@ -63,7 +63,6 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
       </dt>
       <dd>
         <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
-        <div />
       </dd>
       <Strek />
     </>
@@ -81,9 +80,8 @@ const Overskrift = styled(BodyLong)`
 const Liste = styled.dl`
   margin: var(--a-spacing-3) var(--a-spacing-6) !important;
 
-  dd ul {
+  dd {
     margin: var(--a-spacing-3) 0 !important;
-    padding: 0 var(--a-spacing-5) !important;
     list-style: initial;
   }
 `

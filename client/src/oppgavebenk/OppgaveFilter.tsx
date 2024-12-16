@@ -1,6 +1,6 @@
 import { Box, Button, HStack, ToggleGroup } from '@navikt/ds-react'
 import { FilterDropdown } from '../oppgaveliste/filter/filter'
-import { OppgaveGjelderFilter, OppgavetemaLabel, TildeltFilter } from '../types/experimentalTypes'
+import { OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
 import { useFilterContext } from './FilterContext'
 
 export function Oppgavefilter() {
@@ -31,9 +31,9 @@ export function Oppgavefilter() {
           }}
           style={{ background: 'var(--a-bg-default)' }}
         >
-          <ToggleGroup.Item value={TildeltFilter.INGEN} label="Ufordelte" />
-          <ToggleGroup.Item value={TildeltFilter.MEG} label="Mine oppgaver" />
-          <ToggleGroup.Item value={TildeltFilter.ALLE} label="Enhetens oppgaver" />
+          {Object.entries(TildeltFilter).map(([key, value]) => {
+            return <ToggleGroup.Item key={key} value={value} label={SakerFilterLabel.get(value)} />
+          })}
         </ToggleGroup>
         <FilterDropdown
           handleChange={(filterValue: OppgaveGjelderFilter) => {
@@ -51,3 +51,16 @@ export function Oppgavefilter() {
     </Box>
   )
 }
+
+const SakerFilterLabel = new Map<string, string>([
+  [TildeltFilter.ALLE, 'Enhetens oppgaver'],
+  [TildeltFilter.MEG, 'Mine oppgaver'],
+  [TildeltFilter.INGEN, 'Ufordelte'],
+])
+
+const OppgavetemaLabel = new Map<string, string>([
+  [OppgaveGjelderFilter.ALLE, 'Alle'],
+  [OppgaveGjelderFilter.BESTILLING, 'Bestilling'],
+  [OppgaveGjelderFilter.DIGITAL_SØKNAD, 'Søknad'],
+  [OppgaveGjelderFilter.HASTESØKNAD, 'Hastesøknad'],
+])

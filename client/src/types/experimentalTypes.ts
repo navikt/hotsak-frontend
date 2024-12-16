@@ -56,24 +56,12 @@ export enum OppgaveGjelderFilter {
   HASTESØKNAD = 'HASTESØKNAD',
 }
 
-export const OppgavetemaLabel = new Map<string, string>([
-  [OppgaveGjelderFilter.ALLE, 'Alle'],
-  [OppgaveGjelderFilter.BESTILLING, 'Bestilling'],
-  [OppgaveGjelderFilter.DIGITAL_SØKNAD, 'Søknad'],
-  [OppgaveGjelderFilter.HASTESØKNAD, 'Hastesøknad'],
-])
-
 export enum TildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',
   MEG = 'MEG',
 }
 
-export const SakerFilterLabel = new Map<string, string>([
-  [TildeltFilter.ALLE, 'Alle'],
-  [TildeltFilter.MEG, 'Mine oppgaver'],
-  [TildeltFilter.INGEN, 'Ufordelte'],
-])
 /*
 
 [

@@ -27,7 +27,7 @@ import {
 import { formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
 import { isError } from '../utils/type'
-import { FilterDropdown, FilterToggle } from './filter'
+import { FilterDropdown, FilterToggle } from './filter/filter.tsx'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { Tildeling } from './kolonner/Tildeling'

@@ -1,8 +1,8 @@
 import { ComponentType, lazy, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { useParams } from 'react-router'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { SWRConfig } from 'swr'
 
@@ -12,6 +12,7 @@ import { Feilside } from './feilsider/Feilside'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Toppmeny } from './header/Toppmeny'
+import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
@@ -94,7 +95,9 @@ function App() {
                     <RequireAuth>
                       <Helmet title="Hotsak - Oppgavebenk" />
                       <Eksperiment>
-                        <Oppgavebenk />
+                        <FilterProvider>
+                          <Oppgavebenk />
+                        </FilterProvider>
                       </Eksperiment>
                     </RequireAuth>
                   }

@@ -53,9 +53,9 @@ export const CheckboxFilter = ({ options, selected }: CheckboxFilterInputProps) 
                     //    event.currentTarget?.form?.requestSubmit()
                   }
                 }}
-                onChange={(e) => {
-                  //  e.currentTarget?.form?.requestSubmit()
-                }}
+                //onChange={() => {
+                //  e.currentTarget?.form?.requestSubmit()
+                //}}
               >
                 {f}
               </Checkbox>

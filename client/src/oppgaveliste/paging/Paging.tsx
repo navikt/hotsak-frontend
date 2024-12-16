@@ -2,7 +2,7 @@ import { Pagination, VStack } from '@navikt/ds-react'
 
 import { PageCounter } from './PageCounter'
 
-export const PAGE_SIZE = 5
+export const PAGE_SIZE = 25
 
 interface PagingProps {
   totalElements: number

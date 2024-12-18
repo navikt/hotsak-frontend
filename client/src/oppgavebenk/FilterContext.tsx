@@ -6,8 +6,8 @@ import { SortState } from '@navikt/ds-react'
 interface FilterContextType {
   tildeltFilter: TildeltFilter
   setTildeltFilter: (tildelt: TildeltFilter) => void
-  gjelderFilter: OppgaveGjelderFilter
-  setGjelderFilter: (gjelder: OppgaveGjelderFilter) => void
+  gjelderFilter: OppgaveGjelderFilter[]
+  setGjelderFilter: (gjelder: OppgaveGjelderFilter[]) => void
   currentPage: number
   setCurrentPage: (currentPage: number) => void
   sort: SortState
@@ -23,7 +23,7 @@ const initialSortState: SortState = {
 const initialState: FilterContextType = {
   tildeltFilter: TildeltFilter.INGEN,
   setTildeltFilter: () => {},
-  gjelderFilter: OppgaveGjelderFilter.ALLE,
+  gjelderFilter: [],
   setGjelderFilter: () => {},
   currentPage: 1,
   setCurrentPage: () => {},
@@ -41,7 +41,7 @@ function FilterProvider({ children }: { children: ReactNode }) {
   const [sort, setSort] = useLocalStorageState<SortState>('oppgavebenkSortState', initialSortState)
 
   function clearFilters() {
-    setGjelderFilter(OppgaveGjelderFilter.ALLE)
+    setGjelderFilter([])
     setTildeltFilter(TildeltFilter.INGEN)
     setSort(initialSortState)
     setCurrentPage(1)

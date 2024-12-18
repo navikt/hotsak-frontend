@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
-import { Select, Switch, UNSAFE_Combobox } from '@navikt/ds-react'
+import { Chips, Label, Select, Switch, ToggleGroup, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
+import { OppgaveFilterType } from '../../types/experimentalTypes'
 
 const Dropdown = styled(Select)`
   width: 210px;
@@ -10,6 +11,20 @@ interface FilterProps {
   label: string
   value: string
   options: Map<string, string>
+  handleChange: (...args: any[]) => any
+}
+
+interface ToggleGroupProps {
+  label: string
+  value: string
+  options: OppgaveFilterType[]
+  handleChange: (...args: any[]) => any
+}
+
+interface ChipsProps {
+  label: string
+  selected: string[]
+  options: OppgaveFilterType[]
   handleChange: (...args: any[]) => any
 }
 
@@ -30,6 +45,49 @@ export function FilterDropdown({ label, value, options, handleChange }: FilterPr
         )
       })}
     </Dropdown>
+  )
+}
+
+export function FilterToggleGroup({ label, value, options, handleChange }: ToggleGroupProps) {
+  return (
+    <ToggleGroup
+      label={label}
+      value={value}
+      size="small"
+      onChange={(filterValue) => {
+        handleChange(filterValue)
+      }}
+      style={{ background: 'var(--a-bg-default)' }}
+    >
+      {options.map((option) => {
+        return <ToggleGroup.Item key={option.key} value={option.key} label={option.label} />
+      })}
+    </ToggleGroup>
+  )
+}
+
+export function FilterChips({ label, selected, options, handleChange }: ChipsProps) {
+  return (
+    <VStack gap="3">
+      <Label size="small">{label}</Label>
+      <Chips size="medium">
+        {options.map((filter) => {
+          return (
+            <Chips.Toggle
+              key={filter.key}
+              selected={selected.includes(filter.key)}
+              onClick={() => {
+                handleChange(
+                  selected.includes(filter.key) ? selected.filter((x) => x !== filter.key) : [...selected, filter.key]
+                )
+              }}
+            >
+              {filter.label}
+            </Chips.Toggle>
+          )
+        })}
+      </Chips>
+    </VStack>
   )
 }
 

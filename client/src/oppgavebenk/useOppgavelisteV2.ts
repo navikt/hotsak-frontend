@@ -1,9 +1,9 @@
 import useSwr from 'swr'
 
+import { SortState } from '@navikt/ds-react'
 import { httpGet } from '../io/http'
 import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
-import { OppgaveApiOppgave, OppgaveApiResponse, OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
-import { SortState } from '@navikt/ds-react'
+import { OppgaveApiOppgave, OppgaveApiResponse, TildeltFilter } from '../types/experimentalTypes'
 
 interface DataResponse {
   oppgaver: OppgaveApiOppgave[]
@@ -20,47 +20,49 @@ const basePath = 'api/oppgaver-v2'
 
 interface PathConfigType {
   path: string
-  queryParams: Record<string, string>
+  queryParams: QueryParam[]
 }
 
 interface Filters {
   tildeltFilter: string
-  gjelderFilter: string
+  gjelderFilter: string[]
 }
 
-/*interface OppgavelisteResponse {
-  oppgaver: OppgaveApiOppgave[]
-  pageNumber: number
-  pageSize: number
-  totalPages: number
-  totalElements: number
-}*/
+interface QueryParam {
+  key: string
+  value: string
+}
 
 const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
-  const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
-  const pagingParams = { limit: PAGE_SIZE, page: currentPage }
-  const sortParams = { sorteringsfelt: sort.orderBy, sorteringsrekkefølge: sortDirection }
   const { tildeltFilter, gjelderFilter } = filters
+  const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
 
-  const filterParams: any = {}
+  const queryParams: QueryParam[] = [
+    { key: 'sorteringsfelt', value: sort.orderBy },
+    { key: 'sorteringsrekkefølge', value: sortDirection },
+    { key: 'limit', value: PAGE_SIZE.toString() },
+    { key: 'page', value: currentPage.toString() },
+  ]
 
-  if (gjelderFilter && gjelderFilter !== OppgaveGjelderFilter.ALLE) {
-    filterParams.gjelder = gjelderFilter
+  if (gjelderFilter.length > 0) {
+    gjelderFilter.forEach((filter) => {
+      queryParams.push({ key: 'gjelder', value: filter })
+    })
   }
 
   if (tildeltFilter && tildeltFilter !== TildeltFilter.ALLE) {
-    filterParams.tildelt = tildeltFilter
+    queryParams.push({ key: 'tildelt', value: tildeltFilter })
   }
 
   return {
     path: `${basePath}`,
-    queryParams: { ...pagingParams, ...sortParams, ...filterParams },
+    queryParams: queryParams,
   }
 }
 
-const buildQueryParamString = (queryParams: Record<string, string>) => {
-  return Object.entries(queryParams)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+const buildQueryParamString = (queryParams: QueryParam[]) => {
+  return queryParams
+    .map((queryParam) => `${encodeURIComponent(queryParam.key)}=${encodeURIComponent(queryParam.value)}`)
     .join('&')
 }
 

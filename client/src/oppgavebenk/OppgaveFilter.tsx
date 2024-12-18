@@ -1,6 +1,6 @@
-import { Box, Button, HStack, ToggleGroup } from '@navikt/ds-react'
-import { FilterDropdown } from '../oppgaveliste/filter/filter'
-import { OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
+import { Box, Button, HStack } from '@navikt/ds-react'
+import { FilterChips, FilterToggleGroup } from '../oppgaveliste/filter/filter'
+import { OppgaveFilterType, OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
 import { useFilterContext } from './FilterContext'
 
 export function Oppgavefilter() {
@@ -22,28 +22,23 @@ export function Oppgavefilter() {
       borderColor="border-subtle"
     >
       <HStack gap="4" align="end">
-        <ToggleGroup
+        <FilterToggleGroup
           label="Oppgaver"
           value={tildeltFilter}
-          size="small"
-          onChange={(filterValue) => {
+          handleChange={(filterValue) => {
             handleFilter(setTildeltFilter, filterValue)
           }}
-          style={{ background: 'var(--a-bg-default)' }}
-        >
-          {Object.entries(TildeltFilter).map(([key, value]) => {
-            return <ToggleGroup.Item key={key} value={value} label={SakerFilterLabel.get(value)} />
-          })}
-        </ToggleGroup>
-        <FilterDropdown
-          handleChange={(filterValue: OppgaveGjelderFilter) => {
+          options={tildeltFilterOptions}
+        />
+
+        <FilterChips
+          label="Gjelder"
+          selected={gjelderFilter}
+          options={oppgavetema}
+          handleChange={(filterValue) => {
             handleFilter(setGjelderFilter, filterValue)
           }}
-          label="Gjelder"
-          value={gjelderFilter}
-          options={OppgavetemaLabel}
         />
-        {/*<CheckboxFilter selected={['Digital søknad']} options={[...OppgavetemaLabel.keys()]} />*/}
         <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
           Tilbakestill filtre
         </Button>
@@ -52,15 +47,14 @@ export function Oppgavefilter() {
   )
 }
 
-const SakerFilterLabel = new Map<string, string>([
-  [TildeltFilter.ALLE, 'Enhetens oppgaver'],
-  [TildeltFilter.MEG, 'Mine oppgaver'],
-  [TildeltFilter.INGEN, 'Ufordelte'],
-])
+const tildeltFilterOptions = [
+  { key: TildeltFilter.ALLE, label: 'Enhetens oppgaver' },
+  { key: TildeltFilter.MEG, label: 'Mine oppgaver' },
+  { key: TildeltFilter.INGEN, label: 'Ufordelte' },
+]
 
-const OppgavetemaLabel = new Map<string, string>([
-  [OppgaveGjelderFilter.ALLE, 'Alle'],
-  [OppgaveGjelderFilter.BESTILLING, 'Bestilling'],
-  [OppgaveGjelderFilter.DIGITAL_SØKNAD, 'Søknad'],
-  [OppgaveGjelderFilter.HASTESØKNAD, 'Hastesøknad'],
-])
+const oppgavetema: OppgaveFilterType[] = [
+  { key: OppgaveGjelderFilter.BESTILLING, label: 'Bestilling' },
+  { key: OppgaveGjelderFilter.DIGITAL_SØKNAD, label: 'Søknad' },
+  { key: OppgaveGjelderFilter.HASTESØKNAD, label: 'Hastesøknad' },
+]

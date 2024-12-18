@@ -50,7 +50,6 @@ export interface OppgaveApiResponse {
 }
 
 export enum OppgaveGjelderFilter {
-  ALLE = 'ALLE',
   BESTILLING = 'BESTILLING',
   DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
   HASTESØKNAD = 'HASTESØKNAD',
@@ -60,6 +59,11 @@ export enum TildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',
   MEG = 'MEG',
+}
+
+export interface OppgaveFilterType {
+  key: string
+  label: string
 }
 
 /*

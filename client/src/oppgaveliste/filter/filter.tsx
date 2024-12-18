@@ -78,7 +78,9 @@ export function FilterChips({ label, selected, options, handleChange }: ChipsPro
               selected={selected.includes(filter.key)}
               onClick={() => {
                 handleChange(
-                  selected.includes(filter.key) ? selected.filter((x) => x !== filter.key) : [...selected, filter.key]
+                  selected.includes(filter.key)
+                    ? selected.filter((x) => x !== filter.key)
+                    : [/*...selected, */ filter.key]
                 )
               }}
             >

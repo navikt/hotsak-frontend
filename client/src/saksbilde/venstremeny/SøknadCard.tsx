@@ -22,9 +22,7 @@ export function SøknadCard({ sakstype, sakId, søknadMottatt, funksjonsnedsette
   return (
     <VenstremenyCard>
       <VenstremenyCardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
-        <Mellomtittel spacing={false}>
-          {sakstype === Sakstype.BESTILLING ? 'Bestillingsordningen' : 'Søknad om hjelpemidler'}
-        </Mellomtittel>
+        <Mellomtittel spacing={false}>{sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Søknad'}</Mellomtittel>
       </VenstremenyCardRow>
       <BodyShort
         data-tip="Saksnummer"

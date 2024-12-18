@@ -34,8 +34,6 @@ const SaksbildeContent = memo(() => {
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler } = useVarsler()
 
-  const harIngenHjelpemidlerFraFør = hjelpemiddelArtikler !== undefined && hjelpemiddelArtikler.length === 0
-
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
@@ -69,10 +67,7 @@ const SaksbildeContent = memo(() => {
               levering={behovsmelding.levering}
               adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
             />
-            <GreitÅViteCard
-              greitÅViteFakta={sak.data.greitÅViteFaktum}
-              harIngenHjelpemidlerFraFør={harIngenHjelpemidlerFraFør}
-            />
+            <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
             {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} oppgave={sak.oppgave} />}
             {erBestilling && (
               <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} oppgave={sak.oppgave} />

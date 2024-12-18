@@ -6,19 +6,14 @@ import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface GreitÅViteCardProps {
   greitÅViteFakta: GreitÅViteFaktum[]
-  harIngenHjelpemidlerFraFør: boolean
 }
 
-export function GreitÅViteCard({ greitÅViteFakta, harIngenHjelpemidlerFraFør }: GreitÅViteCardProps) {
-  const fakta = harIngenHjelpemidlerFraFør
-    ? [...greitÅViteFakta, { beskrivelse: 'Bruker har ingen hjelpemidler fra før', type: GreitÅViteType.MERKNAD }]
-    : [...greitÅViteFakta]
-
-  if (fakta.length <= 0) return null
+export function GreitÅViteCard({ greitÅViteFakta }: GreitÅViteCardProps) {
+  if (greitÅViteFakta.length <= 0) return null
 
   return (
     <VenstremenyCard heading="Greit å vite">
-      {fakta
+      {greitÅViteFakta
         .sort((a, b) => {
           if (a.type === b.type) {
             if (a.beskrivelse < b.beskrivelse) return -1

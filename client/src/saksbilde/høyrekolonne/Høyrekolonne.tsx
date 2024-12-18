@@ -10,7 +10,7 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 
 export function Høyrekolonne() {
-  const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.SAKSHISTORIKK.toString())
+  const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
@@ -24,7 +24,7 @@ export function Høyrekolonne() {
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}
-        defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
+        defaultValue={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}
         onChange={setValgtHøyrekolonneTab}
         loop
       >

@@ -8,17 +8,14 @@ import {
 import { Button, Heading, HStack, List, Tag, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
-import { useSWRConfig } from 'swr'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { putEndreHjelpemiddel } from '../../io/http'
 import {
   FritakFraBegrunnelseÅrsak,
   Hjelpemiddel as Hjelpemiddeltype,
   Varseltype,
 } from '../../types/BehovsmeldingTypes.ts'
 import {
-  EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
   OppgaveStatusType,
@@ -42,12 +39,12 @@ interface HjelpemiddelProps {
 }
 
 export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
-  const { status, sakId, sakstype } = sak
+  const { status /*, sakId*/, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
-  const { mutate } = useSWRConfig()
+  //const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
-  const { bestilling, mutate: mutateBestilling } = useBestilling()
+  const { bestilling /*, mutate: mutateBestilling*/ } = useBestilling()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
 
@@ -61,7 +58,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
   )
 
-  const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddel) => {
+  /*const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddel) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
@@ -72,7 +69,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
     setVisEndreProdukt(false)
   }
 
-  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hjelpemiddel.produkt.hmsArtNr
+  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hjelpemiddel.produkt.hmsArtNr*/
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">

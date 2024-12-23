@@ -1,7 +1,7 @@
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 import { HStack, VStack } from '@navikt/ds-react'
 import { Fragment } from 'react'
-import { Etikett } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Bytte, BytteÅrsak } from '../../types/BehovsmeldingTypes'
 import { Fremhevet } from './Fremhevet'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
@@ -13,7 +13,7 @@ interface Props {
 
 const Bytter = ({ bytter, harVarsel }: Props) => {
   return (
-    <>
+    <HStack gap="2">
       {bytter.map((bytte, i) => (
         <Fragment key={i}>
           <VStack gap="2">
@@ -24,12 +24,7 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
             <HStack align={'center'}>
               <strong>{bytte.hmsnr}</strong>
               <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} /> {bytte.hjmNavn}
-              {bytte.serienr && (
-                <>
-                  <br />
-                  Serienr: {bytte.serienr}
-                </>
-              )}
+              {bytte.serienr && <Tekst>Serienr: {bytte.serienr}</Tekst>}
             </HStack>
             {bytte.årsak && (
               <Fremhevet>
@@ -42,7 +37,7 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
           </VStack>
         </Fragment>
       ))}
-    </>
+    </HStack>
   )
 }
 

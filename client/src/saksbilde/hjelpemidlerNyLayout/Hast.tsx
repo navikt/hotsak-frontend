@@ -1,40 +1,35 @@
-import { Alert, Box, List } from '@navikt/ds-react'
-import { Etikett } from '../../felleskomponenter/typografi.tsx'
-import { Fremhevet } from './Fremhevet.tsx'
-import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
-import { Hast, Hasteårsak } from '../../types/BehovsmeldingTypes.ts'
+import { Box, List, VStack } from '@navikt/ds-react'
+import { BrytbarBrødtekst } from '../../felleskomponenter/typografi.tsx'
+import { Hasteårsak, Hast as HastType } from '../../types/BehovsmeldingTypes.ts'
 
-export function Hastesak(props: { hast?: Hast }) {
+export function Hast(props: { hast?: HastType }) {
   const { hast } = props
   if (!hast) return null
   const { hasteårsaker, hastBegrunnelse } = hast
   return (
-    <>
-      <Alert variant="warning" size="small" inline>
-        Hast: formidler har markert saken som hast.
-      </Alert>
-      <Box paddingBlock="3">
-        <HjelpemiddelGrid>
-          <div />
-          <Fremhevet>
-            <Etikett>Årsak til at det haster</Etikett>
-            <List size="small" headingTag="h2">
-              {hasteårsaker.map((årsak) => (
-                <List.Item key={årsak}>
-                  {tekstByHasteårsak[årsak]}
-                  {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
-                    <>
-                      <br />
-                      <>{hastBegrunnelse}</>
-                    </>
-                  )}
-                </List.Item>
-              ))}
-            </List>
-          </Fremhevet>
-        </HjelpemiddelGrid>
-      </Box>
-    </>
+    <Box
+      background="surface-subtle"
+      paddingBlock="4 2"
+      paddingInline="4"
+      borderRadius="medium"
+      borderColor="border-subtle"
+      borderWidth="1"
+    >
+      <VStack gap="4">
+        <Box>
+          <List size="small" headingTag="h2" title=" Formidler har markert saken som hast, begrunnelse:">
+            {hasteårsaker.map((årsak) => (
+              <List.Item key={årsak}>
+                <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
+                {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
+                  <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
+                )}
+              </List.Item>
+            ))}
+          </List>
+        </Box>
+      </VStack>
+    </Box>
   )
 }
 

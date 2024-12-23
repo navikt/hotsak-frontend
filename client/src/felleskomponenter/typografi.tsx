@@ -1,11 +1,11 @@
 import { forwardRef, ReactNode } from 'react'
 import styled from 'styled-components'
 
-import { BodyLong, BodyShort, Detail, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
 
-export function Tekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+export const Tekst = ({ children, ...rest }: BodyShortProps) => {
   return (
-    <BodyShort size="small" spacing={spacing}>
+    <BodyShort size="small" {...rest}>
       {children}
     </BodyShort>
   )

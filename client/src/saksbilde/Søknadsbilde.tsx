@@ -1,11 +1,11 @@
+import { HGrid } from '@navikt/ds-react'
 import { memo, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
-import { HGrid } from '@navikt/ds-react'
 
 import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
-import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
+import { hotsakHistorikkWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth } from '../GlobalStyles'
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -13,6 +13,7 @@ import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
+import { HjelpemiddelListeNyLayout } from './hjelpemidlerNyLayout/HjelpemiddelListeNyLayout'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
@@ -41,7 +42,7 @@ const SaksbildeContent = memo(() => {
   const formidler = levering.hjelpemiddelformidler
 
   return (
-    <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
+    <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`} style={{ maxWidth: `${hovedInnholdMaxWidth}` }}>
       <section>
         <HGrid columns="auto">
           <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
@@ -80,10 +81,15 @@ const SaksbildeContent = memo(() => {
                 <Route
                   path="/hjelpemidler"
                   element={
-                    <HjelpemiddelListe
-                      tittel="Hjelpemidler"
+                    <HjelpemiddelListe sak={sak.data} forenkletVisning={erBestilling} behovsmelding={behovsmelding} />
+                  }
+                />
+                <Route
+                  path="/ny-layout"
+                  element={
+                    <HjelpemiddelListeNyLayout
                       sak={sak.data}
-                      forenkletVisning={erBestilling}
+                      //forenkletVisning={erBestilling}
                       behovsmelding={behovsmelding}
                     />
                   }

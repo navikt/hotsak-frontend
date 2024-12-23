@@ -20,7 +20,7 @@ export function Høyrekolonne() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <div style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+    <div style={{ borderLeft: '1px solid var(--a-border-subtle)', borderRight: '1px solid var(--a-border-subtle)' }}>
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}

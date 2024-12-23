@@ -18,11 +18,7 @@ export interface SakBase {
   status: OppgaveStatusType
   statusEndret: string
   opprettet: string
-
-  // endret: string
-  // søknadId: string
   søknadGjelder: string
-  // søknadMottatt: string
   bruker: Bruker
   innsender: Innsender
   enhet: Enhet

@@ -1,12 +1,15 @@
-import { Tekst } from '../../felleskomponenter/typografi'
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
+import { HStack, VStack } from '@navikt/ds-react'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Utlevertinfo, UtlevertType } from '../../types/BehovsmeldingTypes'
 
 interface UtlevertProps {
   alleredeUtlevert: boolean
   utlevertInfo: Utlevertinfo
+  harVarsel: boolean
 }
 
-export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
+export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel }: UtlevertProps) {
   if (!alleredeUtlevert) return null
 
   let utlevertTekst
@@ -25,10 +28,16 @@ export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
       break
   }
 
+  {
+    /* TODO: Fix sånn at utlevert for reiktig ut på gammel hjelpemiddelside */
+  }
   return (
-    <>
-      &nbsp;
-      <Tekst>{utlevertTekst}</Tekst>
-    </>
+    <HStack gap="2">
+      {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
+      <VStack>
+        <Etikett>Utlevert</Etikett>
+        <Tekst>{utlevertTekst}</Tekst>
+      </VStack>
+    </HStack>
   )
 }

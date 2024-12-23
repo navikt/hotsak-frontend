@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@navikt/ds-react'
 
 import { spacingVar } from '../felleskomponenter/Avstand.tsx'
-import { hotsakHistorikkWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
+import { hotsakHistorikkWidth, hotsakVenstremenyWidth, søknadsbildeHovedinnholdMaxWidth } from '../GlobalStyles'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { LasterPersonlinje } from './Personlinje'
 import { SaksbildeContainer } from './Saksbilde'
@@ -11,7 +11,7 @@ export function SakLoader() {
   return (
     <SaksbildeContainer>
       <LasterPersonlinje />
-      <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`}>
+      <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`} style={{ maxWidth: '1592px' }}>
         <section>
           <Box margin={spacing}>
             <Skeleton variant="rectangle" width="100%" height={30} />
@@ -20,12 +20,15 @@ export function SakLoader() {
             <div style={{ marginLeft: spacingVar(spacing) }}>
               <Skeleton variant="rectangle" width="100%" height={800} />
             </div>
-            <div style={{ marginRight: spacingVar(spacing) }}>
+            <div style={{ marginRight: spacingVar(spacing), maxWidth: `${søknadsbildeHovedinnholdMaxWidth}` }}>
               <Skeleton variant="rectangle" width="100%" height={800} />
             </div>
           </Saksinnhold>
         </section>
-        <Box padding={spacing} style={{ borderLeft: '1px solid var(--a-border-subtle)' }}>
+        <Box
+          padding={spacing}
+          style={{ borderLeft: '1px solid var(--a-border-subtle)', borderRight: '1px solid var(--a-border-subtle)' }}
+        >
           <Skeleton variant="rectangle" width="100%" height={845} />
         </Box>
       </Hovedinnhold>

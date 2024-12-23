@@ -294,7 +294,7 @@ export class SakStore extends Dexie {
       enhet: sak.enhet,
       saksbehandler: sak.saksbehandler,
       kanTildeles: true,
-      hast: sak.hast,
+      //hast: sak.hast,
     }))
   }
 

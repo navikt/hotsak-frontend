@@ -176,16 +176,11 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
           </div>
           <div>
             {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
-              <HStack gap="2">
-                {harAlleredeLevertVarsel() && (
-                  <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
-                )}
-                <Etikett>Utlevert</Etikett>
-                <Utlevert
-                  alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
-                  utlevertInfo={hjelpemiddel.utlevertinfo}
-                />
-              </HStack>
+              <Utlevert
+                alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
+                utlevertInfo={hjelpemiddel.utlevertinfo}
+                harVarsel={harAlleredeLevertVarsel()}
+              />
             )}
           </div>
           {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}

@@ -11,7 +11,15 @@ interface Props {
 
 const Bytter = ({ bytter, harVarsel }: Props) => {
   return (
-    <Box paddingBlock="4 2" paddingInline="4" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
+    <Box
+      /* TODO Lage felles komponent av denne boksen hvis vi går for noe sånn */
+      paddingBlock="4 2"
+      paddingInline="4"
+      borderRadius="medium"
+      borderColor="border-subtle"
+      borderWidth="1"
+      background="surface-subtle"
+    >
       <Heading level="3" size="xsmall" spacing>
         Bytte
       </Heading>

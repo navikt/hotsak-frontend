@@ -5,10 +5,11 @@ import {
   InformationSquareFillIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Button, Heading, HStack, List, Tag, VStack } from '@navikt/ds-react'
+import { Bleed, Button, Heading, HStack, List, Tag, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
+import { Strek } from '../../felleskomponenter/Strek.tsx'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
   FritakFraBegrunnelseÅrsak,
@@ -23,53 +24,33 @@ import {
   Sakstype,
 } from '../../types/types.internal'
 import { storForbokstavIOrd } from '../../utils/formater'
-import { useBestilling } from '../hjelpemidler/endreHjelpemiddel/useBestilling.tsx'
 import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
-import { useHjelpemiddel } from '../hjelpemidler/useHjelpemiddel.ts'
 import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
+import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Produkt } from './Produkt.tsx'
+import { useEndreHjelpemiddel } from './useEndreHjelpemiddel.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
-  //forenkletVisning: boolean
   sak: Sak
 }
 
 export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
-  const { status /*, sakId*/, sakstype } = sak
+  const { status, sakId, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
-  //const { mutate } = useSWRConfig()
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
-  const { bestilling /*, mutate: mutateBestilling*/ } = useBestilling()
 
   const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
+  const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
+    sakId,
+    hjelpemiddel
+  )
 
   const erBestilling = sakstype === Sakstype.BESTILLING
-
-  const endretHjelpemiddel = bestilling?.endredeHjelpemidler.find(
-    (hjlpm) => hjlpm.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
-  )
-
-  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
-    endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
-  )
-
-  /*const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddel) => {
-    await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
-      .catch(() => console.error('error endre hjelpemiddel'))
-      .then(() => {
-        mutate(`api/sak/${sakId}`)
-        mutateBestilling()
-        mutate(`api/sak/${sakId}/historikk`)
-      })
-    setVisEndreProdukt(false)
-  }
-
-  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hjelpemiddel.produkt.hmsArtNr*/
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -119,6 +100,42 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               {`Rangering: ${hjelpemiddel.produkt.rangering}`}
             </Tag>
           </div>
+
+          {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
+            <div style={{ textAlign: 'right' }}>
+              {visEndreProdukt ? (
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  onClick={() => setVisEndreProdukt(false)}
+                  icon={<ChevronUpIcon />}
+                  iconPosition="left"
+                >
+                  Avbryt
+                </Button>
+              ) : (
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  onClick={() => setVisEndreProdukt(true)}
+                  icon={<ChevronDownIcon />}
+                  iconPosition="left"
+                >
+                  Endre
+                </Button>
+              )}
+            </div>
+          )}
+          {erBestilling && visEndreProdukt && (
+            <EndreHjelpemiddel
+              hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+              hmsNr={hjelpemiddel.produkt.hmsArtNr}
+              nåværendeHmsNr={nåværendeHmsnr}
+              onLagre={endreHjelpemiddel}
+              onAvbryt={() => setVisEndreProdukt(false)}
+            />
+          )}
+
           {/* TODO trekk ut dette i egen info komponent eller noe? */}
           {hjelpemiddel.varsler.map((varsel) => {
             return (
@@ -196,47 +213,9 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
           </VStack>
         )}
       </>
-
-      {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
-        <div style={{ textAlign: 'right' }}>
-          {visEndreProdukt ? (
-            <Button
-              variant="tertiary"
-              size="small"
-              onClick={() => setVisEndreProdukt(false)}
-              icon={<ChevronUpIcon />}
-              iconPosition="left"
-            >
-              Avbryt
-            </Button>
-          ) : (
-            <Button
-              variant="tertiary"
-              size="small"
-              onClick={() => setVisEndreProdukt(true)}
-              icon={<ChevronDownIcon />}
-              iconPosition="left"
-            >
-              Endre
-            </Button>
-          )}
-        </div>
-      )}
-      {/*erBestilling && visEndreProdukt ? (
-        {/*<EndreHjelpemiddel
-          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-          hmsNr={hjelpemiddel.produkt.hmsArtNr}
-          //hmsBeskrivelse={hjelpemiddel.produkt.artikkelnavn}
-          nåværendeHmsNr={nåværendeHmsnr}
-          onLagre={endreHjelpemiddel}
-          onAvbryt={() => setVisEndreProdukt(false)}
-        />
-        
-      ) : (
-        <div>
-          <Strek />
-        </div>
-      )*/}
+      <Bleed marginInline="2">
+        <Strek />
+      </Bleed>
     </VStack>
   )
 }

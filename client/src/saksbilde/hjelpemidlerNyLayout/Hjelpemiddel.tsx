@@ -74,6 +74,9 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               skjulKopiknapp={endretHjelpemiddel !== undefined}
               linkTo={produkt?.produkturl}
             />
+            <div>
+              <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
+            </div>
             {endretHjelpemiddel && (
               <HStack gap="2">
                 <PersonFillIcon />
@@ -91,12 +94,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
         </HStack>
         {/* TODO: HjelpemiddelGrid her også!! */}
         <VStack gap="1" paddingInline="11 0">
-          <div style={{ paddingBottom: '1rem' }}>
-            {/*<Tag variant={hjelpemiddel.produkt.rangering === 1 ? 'neutral' : 'warning-moderate'} size="xsmall">*/}
-            <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
-            {/*</Tag>*/}
-          </div>
-
           {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
             <div style={{ textAlign: 'right' }}>
               {visEndreProdukt ? (

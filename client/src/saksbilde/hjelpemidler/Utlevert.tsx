@@ -28,11 +28,8 @@ export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel }: Utlevert
       break
   }
 
-  {
-    /* TODO: Fix sånn at utlevert for reiktig ut på gammel hjelpemiddelside */
-  }
   return (
-    <HStack gap="2">
+    <HStack gap="2" paddingBlock="0 4">
       {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
       <VStack>
         <Etikett>Utlevert</Etikett>

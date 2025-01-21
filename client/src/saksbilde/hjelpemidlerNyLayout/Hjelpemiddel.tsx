@@ -67,16 +67,18 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
                 gjennomstrek={false}
               />
             )}
-            <Produkt
-              hmsnr={hjelpemiddel.produkt.hmsArtNr}
-              navn={hjelpemiddel.produkt.artikkelnavn}
-              gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
-              skjulKopiknapp={endretHjelpemiddel !== undefined}
-              linkTo={produkt?.produkturl}
-            />
-            <div>
-              <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
-            </div>
+            <Box>
+              <Produkt
+                hmsnr={hjelpemiddel.produkt.hmsArtNr}
+                navn={hjelpemiddel.produkt.artikkelnavn}
+                gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
+                skjulKopiknapp={endretHjelpemiddel !== undefined}
+                linkTo={produkt?.produkturl}
+              />
+              <div>
+                <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
+              </div>
+            </Box>
             {endretHjelpemiddel && (
               <HStack gap="2">
                 <PersonFillIcon />

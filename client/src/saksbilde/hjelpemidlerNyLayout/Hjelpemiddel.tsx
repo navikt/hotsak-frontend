@@ -5,17 +5,12 @@ import {
   InformationSquareFillIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Bleed, Button, Heading, HStack, List, Tag, VStack } from '@navikt/ds-react'
+import { Bleed, Button, Detail, Heading, HStack, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
-import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import {
-  FritakFraBegrunnelseÅrsak,
-  Hjelpemiddel as Hjelpemiddeltype,
-  Varseltype,
-} from '../../types/BehovsmeldingTypes.ts'
+import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
@@ -29,8 +24,8 @@ import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
-import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Produkt } from './Produkt.tsx'
+import { TilbehørListe } from './TilbehørListe.tsx'
 import { useEndreHjelpemiddel } from './useEndreHjelpemiddel.tsx'
 
 interface HjelpemiddelProps {
@@ -94,11 +89,11 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
           </VStack>
         </HStack>
         {/* TODO: HjelpemiddelGrid her også!! */}
-        <VStack gap="4" paddingInline="11 0">
+        <VStack gap="1" paddingInline="11 0">
           <div style={{ paddingBottom: '1rem' }}>
-            <Tag variant={hjelpemiddel.produkt.rangering === 1 ? 'neutral' : 'warning-moderate'} size="xsmall">
-              {`Rangering: ${hjelpemiddel.produkt.rangering}`}
-            </Tag>
+            {/*<Tag variant={hjelpemiddel.produkt.rangering === 1 ? 'neutral' : 'warning-moderate'} size="xsmall">*/}
+            <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
+            {/*</Tag>*/}
           </div>
 
           {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
@@ -151,9 +146,10 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               </HStack>
             )
           })}
+          {/*  TODO Egen Opplysning komponent som også kan brukes for tilbehør.  Legge på keys der det mangler  */}
           {hjelpemiddel.opplysninger.map((opplysning) => {
             return (
-              <List size="small">
+              <List size="small" key={opplysning.ledetekst.nb}>
                 <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
                 {opplysning.innhold.map((element, idx) => (
                   <ListItem key={idx}>
@@ -184,31 +180,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               <Heading level="2" size="small">
                 Tilbehør
               </Heading>
-
-              {hjelpemiddel.tilbehør.map((tilbehør) => (
-                <HjelpemiddelGrid>
-                  <div style={{ paddingTop: 5 }}>{tilbehør.antall} stk</div>
-                  <VStack gap="1">
-                    <HStack gap="1" align="center">
-                      <Tekst weight="semibold">{tilbehør.hmsArtNr}</Tekst>
-                      <Kopiknapp tooltip="Kopier hmsnr" copyText={tilbehør.hmsArtNr} />
-                      <BrytbarBrødtekst>{tilbehør.navn}</BrytbarBrødtekst>
-                    </HStack>
-                    {tilbehør.begrunnelse && (
-                      <>
-                        <Etikett>Begrunnelse</Etikett>
-                        <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
-                      </>
-                    )}
-                    {(tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING ||
-                      tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_SELVFORKLARENDE_TILBEHØR) && (
-                      <>
-                        <Brødtekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Brødtekst>
-                      </>
-                    )}
-                  </VStack>
-                </HjelpemiddelGrid>
-              ))}
+              <TilbehørListe tilbehør={hjelpemiddel.tilbehør} />
             </>
           </VStack>
         )}

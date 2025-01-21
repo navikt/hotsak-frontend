@@ -202,6 +202,7 @@ export interface Vilkår {
 
 export interface Hjelpemidler {
   hjelpemidler: Hjelpemiddel[]
+  tilbehør: Tilbehør[]
   totaltAntall: number
 }
 
@@ -231,6 +232,7 @@ export interface Tilbehør {
   hmsArtNr: string
   navn: string
   antall: number
+  opplysninger?: Opplysning[]
   begrunnelse: string | undefined
   fritakFraBegrunnelseÅrsak: FritakFraBegrunnelseÅrsak | undefined
 }

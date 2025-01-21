@@ -24,8 +24,8 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
         Bytte
       </Heading>
       <VStack gap="4">
-        {bytter.map((bytte, i) => (
-          <VStack gap="1">
+        {bytter.map((bytte, idx) => (
+          <VStack gap="1" key={idx}>
             <HStack gap="2">
               {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
               <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
@@ -47,7 +47,7 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
               {bytte.årsak && (
                 <>
                   <Spacer />
-                  <VStack gap="2" key={i}>
+                  <VStack gap="2">
                     <Etikett>Begrunnelse for bytte</Etikett>
                     <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
                   </VStack>

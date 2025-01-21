@@ -6,6 +6,7 @@ import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 import { useArtiklerForSak } from '../hjelpemidler/useArtiklerForSak.ts'
 import { OebsAlert } from '../hjelpemidler/OebsAlert.tsx'
+import { TilbehørListe } from './TilbehørListe.tsx'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -18,6 +19,7 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const { brukersituasjon, levering } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
+  const tilbehør = behovsmelding.hjelpemidler.tilbehør
 
   /*const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter(
     (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
@@ -37,6 +39,10 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
       {hjelpemidler.map((hjelpemiddel) => (
         <Hjelpemiddel key={hjelpemiddel.produkt.hmsArtNr} hjelpemiddel={hjelpemiddel} sak={sak} />
       ))}
+      <Heading level="1" size="small">
+        Tilbehør
+      </Heading>
+      <TilbehørListe tilbehør={tilbehør} />
 
       {/* TODO, sjekk logikk for summering. Kan vi bruke tall fra behovsmeldingen i stedet? Hva brukes i PDF? */}
       {/*<VStack gap="2">

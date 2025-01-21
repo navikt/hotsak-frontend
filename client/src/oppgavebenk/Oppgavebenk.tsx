@@ -19,6 +19,8 @@ import { Oppgavefilter } from './OppgaveFilter'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 
+// TODO vise sakId i egen kolonne
+
 export function Oppgavebenk() {
   const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useFilterContext()
 

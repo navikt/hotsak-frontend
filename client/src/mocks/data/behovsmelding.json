@@ -146,8 +146,59 @@
         ]
       }
     ],
-    "totaltAntall": 1
+    "totaltAntall": 1,
+    "tilbehør": [
+      {
+        "hmsArtNr": "014112",
+        "navn": "Kjørebøyle mrs Crissy Swing Away/Cross 6 3A rygg rb40 hreg kompl",
+        "antall": 1,
+        "begrunnelse": "Her er en begrunnelse fra formidler"
+      },
+      {
+        "hmsArtNr": "014112",
+        "navn": "Kjørebøyle mrs Crissy Swing Away/Cross 6 3A rygg rb40 hreg kompl",
+        "antall": 1,
+        "begrunnelse": "Her er en begrunnelse fra formidler",
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Forhåndsdefinert opplysning",
+              "nn": "Forhåndsdefinert opplysning"
+            },
+            "innhold": [
+              {
+                "forhåndsdefinertTekst": {
+                  "nb": "Forhåndsdefinert tekst",
+                  "nn": "Forhåndsdefinert tekst"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "014113",
+        "navn": "Armlene mrs Cross 6/Cross 5XL Prio aktiv/Prio komfort teleskop l38 høyre",
+        "antall": 1,
+        "fritakFraBegrunnelseÅrsak": "ER_SELVFORKLARENDE_TILBEHØR",
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Fritekst opplysning",
+              "nn": "Fritekst opplysning"
+            },
+            "innhold": [
+              {
+                "fritekst": "Fritekstopplysning for tilbehør",
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
+
   "levering": {
     "hjelpemiddelformidler": {
       "navn": {

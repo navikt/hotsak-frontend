@@ -5,7 +5,7 @@ import {
   InformationSquareFillIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Bleed, Button, Detail, Heading, HStack, List, VStack } from '@navikt/ds-react'
+import { Bleed, Box, Button, Detail, Heading, HStack, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
@@ -49,12 +49,13 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
-      <Etikett>{produkt?.isotittel}</Etikett>
+      <Box>
+        <Etikett>{produkt?.isotittel}</Etikett>
 
-      <VStack gap="1">
-        {produkt?.posttitler?.map((posttittel) => <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>)}
-      </VStack>
-
+        <VStack gap="1">
+          {produkt?.posttitler?.map((posttittel) => <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>)}
+        </VStack>
+      </Box>
       <>
         <HStack gap={endretHjelpemiddel ? '3' : '3'} wrap={false} align={'baseline'}>
           <Tekst>{hjelpemiddel.antall} stk</Tekst>

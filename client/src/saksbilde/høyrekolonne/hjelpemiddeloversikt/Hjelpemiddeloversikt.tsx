@@ -1,7 +1,7 @@
 import { BodyShort, HGrid, Label, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
-import { Boble } from '../../../felleskomponenter/Boble'
+import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 import { TooltipWrapper } from '../../../felleskomponenter/TooltipWrapper'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { HjelpemiddelArtikkel } from '../../../types/types.internal'
@@ -11,7 +11,6 @@ import { useSak } from '../../useSak'
 import { HøyrekolonneInnslag } from '../HøyrekolonneInnslag.tsx'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { useHjelpemiddeloversikt } from './useHjelpemiddeloversikt'
-import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 
 export function Hjelpemiddeloversikt() {
   const { sak } = useSak()
@@ -64,9 +63,9 @@ function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
                 {artikkelBeskrivelse}
               </BodyShort>
             </TooltipWrapper>
-            <Boble>
+            <div>
               <BodyShort size="small">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()}`}</BodyShort>
-            </Boble>
+            </div>
           </HGrid>
         )
       })}

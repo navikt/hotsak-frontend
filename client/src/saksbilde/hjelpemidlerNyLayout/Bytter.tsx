@@ -11,53 +11,40 @@ interface Props {
 
 const Bytter = ({ bytter, harVarsel }: Props) => {
   return (
-    <Box
-      /* TODO Lage felles komponent av denne boksen hvis vi går for noe sånn */
-      paddingBlock="4 2"
-      paddingInline="4"
-      borderRadius="medium"
-      borderColor="border-subtle"
-      borderWidth="1"
-      background="surface-subtle"
-    >
-      <Heading level="3" size="xsmall" spacing>
-        Bytte
-      </Heading>
-      <VStack gap="4">
-        {bytter.map((bytte, idx) => (
-          <VStack gap="1" key={idx}>
-            <HStack gap="2">
-              {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
-              <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
+    <VStack gap="4">
+      {bytter.map((bytte, idx) => (
+        <VStack gap="1" key={idx}>
+          <HStack gap="2">
+            {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
+            <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
+          </HStack>
+          <HGrid columns="5.6em auto" align="center">
+            <HStack align={'center'}>
+              <Tekst weight="semibold">{bytte.hmsnr}</Tekst>
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
             </HStack>
-            <HGrid columns="5.6em auto" align="center">
-              <HStack align={'center'}>
-                <Tekst weight="semibold">{bytte.hmsnr}</Tekst>
-                <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
-              </HStack>
-              <Tekst>{bytte.hjmNavn}</Tekst>
+            <Tekst>{bytte.hjmNavn}</Tekst>
 
-              {bytte.serienr && (
-                <>
-                  <Spacer />
-                  <Tekst>Serienr: {bytte.serienr}</Tekst>
-                </>
-              )}
+            {bytte.serienr && (
+              <>
+                <Spacer />
+                <Tekst>Serienr: {bytte.serienr}</Tekst>
+              </>
+            )}
 
-              {bytte.årsak && (
-                <>
-                  <Spacer />
-                  <VStack gap="2">
-                    <Etikett>Begrunnelse for bytte</Etikett>
-                    <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
-                  </VStack>
-                </>
-              )}
-            </HGrid>
-          </VStack>
-        ))}
-      </VStack>
-    </Box>
+            {bytte.årsak && (
+              <>
+                <Spacer />
+                <VStack gap="2">
+                  <Etikett>Begrunnelse for bytte</Etikett>
+                  <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
+                </VStack>
+              </>
+            )}
+          </HGrid>
+        </VStack>
+      ))}
+    </VStack>
   )
 }
 

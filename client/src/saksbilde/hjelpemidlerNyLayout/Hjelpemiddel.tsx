@@ -1,11 +1,10 @@
 import {
-  ChevronDownIcon,
-  ChevronUpIcon,
   ExclamationmarkTriangleFillIcon,
   InformationSquareFillIcon,
+  PencilIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Bleed, Box, Button, Detail, Heading, HStack, List, VStack } from '@navikt/ds-react'
+import { Bleed, Box, Button, Detail, Heading, HGrid, HStack, List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
@@ -14,7 +13,6 @@ import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/Behovs
 import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
-  OppgaveStatusType,
   Sak,
   Sakstype,
 } from '../../types/types.internal'
@@ -24,6 +22,7 @@ import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
+import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { useEndreHjelpemiddel } from './useEndreHjelpemiddel.tsx'
@@ -34,7 +33,7 @@ interface HjelpemiddelProps {
 }
 
 export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
-  const { status, sakId, sakstype } = sak
+  const { sakId, sakstype } = sak
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
@@ -56,82 +55,55 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
           {produkt?.posttitler?.map((posttittel) => <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>)}
         </VStack>
       </Box>
-      <>
-        <HStack gap={endretHjelpemiddel ? '3' : '3'} wrap={false} align={'baseline'}>
-          <Tekst>{hjelpemiddel.antall} stk</Tekst>
-          <VStack justify="start" gap="2">
-            {endretHjelpemiddel && (
-              <Produkt
-                hmsnr={endretHjelpemiddel.hmsArtNr}
-                navn={endretHjelpemiddelNavn?.navn || '-'}
-                gjennomstrek={false}
-              />
-            )}
-            <Box>
-              <Produkt
-                hmsnr={hjelpemiddel.produkt.hmsArtNr}
-                navn={hjelpemiddel.produkt.artikkelnavn}
-                gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
-                skjulKopiknapp={endretHjelpemiddel !== undefined}
-                linkTo={produkt?.produkturl}
-              />
-              <div>
-                <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
-              </div>
-            </Box>
-            {endretHjelpemiddel && (
-              <HStack gap="2">
-                <PersonFillIcon />
-                <div>
-                  <Etikett>Byttet ut av saksbehandler, begrunnelse:</Etikett>
-                  <div>
-                    {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                      ? endretHjelpemiddel.begrunnelseFritekst
-                      : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
-                  </div>
-                </div>
-              </HStack>
-            )}
-          </VStack>
-        </HStack>
-        {/* TODO: HjelpemiddelGrid her også!! */}
-        <VStack gap="1" paddingInline="11 0">
-          {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
-            <div style={{ textAlign: 'right' }}>
-              {visEndreProdukt ? (
-                <Button
-                  variant="tertiary"
-                  size="small"
-                  onClick={() => setVisEndreProdukt(false)}
-                  icon={<ChevronUpIcon />}
-                  iconPosition="left"
-                >
-                  Avbryt
-                </Button>
-              ) : (
-                <Button
-                  variant="tertiary"
-                  size="small"
-                  onClick={() => setVisEndreProdukt(true)}
-                  icon={<ChevronDownIcon />}
-                  iconPosition="left"
-                >
-                  Endre
-                </Button>
-              )}
-            </div>
-          )}
-          {erBestilling && visEndreProdukt && (
-            <EndreHjelpemiddel
-              hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-              hmsNr={hjelpemiddel.produkt.hmsArtNr}
-              nåværendeHmsNr={nåværendeHmsnr}
-              onLagre={endreHjelpemiddel}
-              onAvbryt={() => setVisEndreProdukt(false)}
+
+      <HGrid columns="auto 6rem 3rem" align="start">
+        <VStack justify="start" gap="2">
+          {endretHjelpemiddel && (
+            <Produkt
+              hmsnr={endretHjelpemiddel.hmsArtNr}
+              navn={endretHjelpemiddelNavn?.navn || '-'}
+              gjennomstrek={false}
             />
           )}
+          <Box>
+            <Produkt
+              hmsnr={hjelpemiddel.produkt.hmsArtNr}
+              navn={hjelpemiddel.produkt.artikkelnavn}
+              gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
+              skjulKopiknapp={endretHjelpemiddel !== undefined}
+              linkTo={produkt?.produkturl}
+            />
+            <div>
+              <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
+            </div>
+          </Box>
+          {endretHjelpemiddel && (
+            <HStack gap="2">
+              <PersonFillIcon />
+              <div>
+                <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
+                <div>
+                  {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                    ? endretHjelpemiddel.begrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
+                </div>
+              </div>
+            </HStack>
+          )}
+        </VStack>
 
-          {/* TODO trekk ut dette i egen info komponent eller noe? */}
+        <div>
+          <Button variant="tertiary" size="small" icon={<PencilIcon />} onClick={() => setVisEndreProdukt(true)}>
+            Endre
+          </Button>
+        </div>
+        <div style={{ paddingTop: '0.3rem' }}>
+          <Tekst>{hjelpemiddel.antall} stk</Tekst>
+        </div>
+      </HGrid>
+
+      <HjelpemiddelGrid>
+        <VStack gap="4">
           {hjelpemiddel.varsler.map((varsel) => {
             return (
               <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
@@ -161,6 +133,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               </List>
             )
           })}
+
           {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
             <Utlevert
               alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
@@ -168,21 +141,58 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
               harVarsel={harAlleredeLevertVarsel()}
             />
           )}
-
           {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
             <Bytter bytter={hjelpemiddel.bytter} harVarsel={harTilbakeleveringsVarsel()} />
           )}
         </VStack>
-        {/* TODO: Tilbehør som egen komponent som kan brukes på både her og for standalone tilbehør */}
+        <div />
+      </HjelpemiddelGrid>
+
+      <>
+        {/*<VStack gap="1" paddingInline="11 0">
+          {status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && erBestilling && (
+            <div style={{ textAlign: 'right' }}>
+              {visEndreProdukt ? (
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  onClick={() => setVisEndreProdukt(false)}
+                  icon={<ChevronUpIcon />}
+                  iconPosition="left"
+                >
+                  Avbryt
+                </Button>
+              ) : (
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  onClick={() => setVisEndreProdukt(true)}
+                  icon={<ChevronDownIcon />}
+                  iconPosition="left"
+                >
+                  Endre
+                </Button>
+              )}
+            </div>
+          )*/}
+
+        {erBestilling && visEndreProdukt && (
+          <EndreHjelpemiddel
+            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+            hmsNr={hjelpemiddel.produkt.hmsArtNr}
+            nåværendeHmsNr={nåværendeHmsnr}
+            onLagre={endreHjelpemiddel}
+            onAvbryt={() => setVisEndreProdukt(false)}
+          />
+        )}
+
         {hjelpemiddel.tilbehør.length > 0 && (
-          <VStack gap="4" paddingBlock={'4 0'}>
-            <>
-              <Heading level="2" size="small">
-                Tilbehør
-              </Heading>
-              <TilbehørListe tilbehør={hjelpemiddel.tilbehør} />
-            </>
-          </VStack>
+          <>
+            <Heading level="2" size="small">
+              Tilbehør
+            </Heading>
+            <TilbehørListe tilbehør={hjelpemiddel.tilbehør} />
+          </>
         )}
       </>
       <Bleed marginInline="2">

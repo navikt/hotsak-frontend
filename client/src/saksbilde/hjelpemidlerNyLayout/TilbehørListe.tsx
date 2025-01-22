@@ -15,7 +15,6 @@ export function TilbehørListe({
 }) {
   return tilbehør.map((t, idx) => (
     <HjelpemiddelGrid key={idx}>
-      <div style={{ paddingTop: 5 }}>{t.antall} stk</div>
       <VStack gap="1">
         <HStack gap="1" align="start" wrap={false}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -42,6 +41,7 @@ export function TilbehørListe({
           )
         })}
       </VStack>
+      <div style={{ paddingTop: 5 }}>{t.antall} stk</div>
     </HjelpemiddelGrid>
   ))
 }

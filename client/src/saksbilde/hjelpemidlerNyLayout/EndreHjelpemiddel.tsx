@@ -173,7 +173,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
             }
           }}
         >
-          Lagre
+          Lagre endring
         </Button>
         <Button variant="tertiary" size="small" onClick={() => onLukk()}>
           Avbryt

@@ -1,5 +1,6 @@
 import { Alert, Box, List, VStack } from '@navikt/ds-react'
-import { BrytbarBrødtekst } from '../../felleskomponenter/typografi.tsx'
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
+import { BrytbarBrødtekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { Hasteårsak, Hast as HastType } from '../../types/BehovsmeldingTypes.ts'
 
 export function Hast(props: { hast?: HastType }) {
@@ -7,21 +8,28 @@ export function Hast(props: { hast?: HastType }) {
   if (!hast) return null
   const { hasteårsaker, hastBegrunnelse } = hast
   return (
-    <VStack gap="4">
-      <Alert variant="warning" size="small" inline>
-        Hast: Formidler har markert saken som hast.
-      </Alert>
-      <Box paddingInline="8 0">
-        <List size="small" title="Årsak til at det haster">
-          {hasteårsaker.map((årsak) => (
-            <List.Item key={årsak}>
-              <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
-              {årsak === Hasteårsak.ANNET && hastBegrunnelse && <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>}
-            </List.Item>
-          ))}
-        </List>
-      </Box>
-    </VStack>
+    <>
+      <TextContainer>
+        <VStack gap="4">
+          <Alert variant="warning" size="small" inline>
+            Hast: Formidler har markert saken som hast.
+          </Alert>
+          <Box paddingInline="8 0">
+            <List size="small" title="Årsak til at det haster">
+              {hasteårsaker.map((årsak) => (
+                <List.Item key={årsak}>
+                  <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
+                  {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
+                    <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
+                  )}
+                </List.Item>
+              ))}
+            </List>
+          </Box>
+        </VStack>
+      </TextContainer>
+      <Skillelinje />
+    </>
   )
 }
 

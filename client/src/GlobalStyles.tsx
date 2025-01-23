@@ -10,6 +10,7 @@ export const hotsakHistorikkWidth = '492px'
 export const brilleSidebarBredde = '320px'
 export const headerHøydeRem = '3'
 export const søknadslinjeHøyde = '48px'
+export const textcontainerBredde = '34em'
 
 export const AppRoot = createGlobalStyle`
  body {

@@ -1,8 +1,18 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
-import { FloppydiskIcon } from '@navikt/aksel-icons'
-import { Box, Button, ErrorMessage, HStack, Radio, RadioGroup, TextField, VStack } from '@navikt/ds-react'
-import { Strek } from '../../felleskomponenter/Strek'
+import {
+  Box,
+  Button,
+  ErrorMessage,
+  Heading,
+  HStack,
+  Modal,
+  Radio,
+  RadioGroup,
+  Textarea,
+  TextField,
+  VStack,
+} from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
   EndretHjelpemiddel,
@@ -11,27 +21,25 @@ import {
 } from '../../types/types.internal'
 import { useHjelpemiddel } from '../hjelpemidler/useHjelpemiddel.ts'
 
-interface EndreHjelpemiddelProps {
+interface EndreHjelpemiddelModalProps {
   hjelpemiddelId: string
   hmsNr: string
   nåværendeHmsNr?: string
+  åpen: boolean
   onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
-  onAvbryt(): void
+  onLukk(): void
 }
 
-export function EndreHjelpemiddel({
-  hjelpemiddelId: hjelpemiddelId,
-  hmsNr: hmsNr,
-  nåværendeHmsNr: nåværendeHmsNr,
-  onLagre,
-  onAvbryt,
-}: EndreHjelpemiddelProps) {
+export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
+  const { åpen, onLukk, onLagre, hjelpemiddelId, hmsNr, nåværendeHmsNr } = props
+  const [submitting, setSubmitting] = useState(false)
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
-  const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
+
   const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
+  const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
   const { hjelpemiddel, isError } = useHjelpemiddel(endreProduktHmsnr)
+  const ref = useRef<HTMLDialogElement>(null)
 
   const errorEndretProdukt = () => {
     if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsNr) {
@@ -64,99 +72,114 @@ export function EndreHjelpemiddel({
   }
 
   return (
-    <>
-      <Box padding="6" background="bg-subtle" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
-        <VStack gap="3">
-          <div>
-            <Etikett spacing>Endre artikkelnummer</Etikett>
-            <Tekst>Her kan du erstatte artikkelnummeret begrunner har lagt inn.</Tekst>
-          </div>
-          <HStack gap="3">
-            <TextField
-              label="Artikkelnummer"
+    <Modal
+      ref={ref}
+      closeOnBackdropClick={false}
+      width="600px"
+      open={åpen}
+      onClose={onLukk}
+      size="small"
+      aria-label={'Endre hjelpemiddel'}
+    >
+      <Modal.Header>
+        <Heading level="1" size="small">
+          Endre hjelpemiddel
+        </Heading>
+      </Modal.Header>
+      <Modal.Body>
+        <Box paddingBlock="0 4">
+          <Etikett spacing>Endre artikkelnummer</Etikett>
+          <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
+        </Box>
+        <Box padding="6" background="bg-subtle" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
+          <VStack gap="3">
+            <HStack gap="3">
+              <TextField
+                label="Artikkelnummer"
+                size="small"
+                maxLength={6}
+                onChange={(event) => {
+                  if (event.target.value.length === 6) {
+                    setEndreProduktHmsnr(event.target.value)
+                  }
+                }}
+                error={submitAttempt && errorEndretProdukt()}
+              />
+              <VStack gap="3">
+                <Etikett>Beskrivelse</Etikett>
+                <Tekst>
+                  {hmsNr !== '' && isError ? (
+                    <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
+                  ) : (
+                    (hjelpemiddel?.navn ?? '')
+                  )}
+                </Tekst>
+              </VStack>
+            </HStack>
+            <RadioGroup
               size="small"
-              maxLength={6}
-              onChange={(event) => {
-                if (event.target.value.length === 6) {
-                  setEndreProduktHmsnr(event.target.value)
-                }
-              }}
-              error={submitAttempt && errorEndretProdukt()}
-            />
-            <VStack gap="3">
-              <Etikett>Beskrivelse</Etikett>
-              <Tekst>
-                {hmsNr !== '' && isError ? (
-                  <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
-                ) : (
-                  (hjelpemiddel?.navn ?? '')
-                )}
-              </Tekst>
-            </VStack>
-          </HStack>
-          <RadioGroup
-            size="small"
-            legend="Begrunnelse for å endre artikkelnummer:"
-            onChange={(val) => setEndreBegrunnelse(val)}
-            value={endreBegrunnelse ?? ''}
-            error={submitAttempt && errorBegrunnelse()}
-          >
-            <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
-            </Radio>
-            <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
-            </Radio>
-            <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
-            </Radio>
-          </RadioGroup>
-          {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
-            <TextField
-              label="Begrunn endringen"
-              size="small"
-              description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
-              value={endreBegrunnelseFritekst}
-              onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
-              error={submitAttempt && errorBegrunnelseFritekst()}
-            />
-          )}
-          <HStack gap="3">
-            <Button
-              variant="secondary"
-              size="small"
-              loading={submitting}
-              icon={<FloppydiskIcon />}
-              onClick={async () => {
-                if (!validationError()) {
-                  setSubmitting(true)
-                  const begrunnelseFritekst =
-                    endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                      ? endreBegrunnelseFritekst
-                      : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
-
-                  await onLagre({
-                    hjelpemiddelId: hjelpemiddelId,
-                    hmsArtNr: endreProduktHmsnr,
-                    begrunnelse: endreBegrunnelse!,
-                    begrunnelseFritekst: begrunnelseFritekst,
-                  })
-                  setSubmitting(false)
-                } else {
-                  setSubmitAttempt(true)
-                }
-              }}
+              legend="Begrunnelse for å endre artikkelnummer:"
+              onChange={(val) => setEndreBegrunnelse(val)}
+              value={endreBegrunnelse ?? ''}
+              error={submitAttempt && errorBegrunnelse()}
             >
-              Lagre
-            </Button>
-            <Button variant="tertiary" size="small" onClick={() => onAvbryt()}>
-              Avbryt
-            </Button>
-          </HStack>
-        </VStack>
-      </Box>
-      <Strek />
-    </>
+              <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
+                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
+              </Radio>
+              <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
+                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
+              </Radio>
+              <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
+                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
+              </Radio>
+            </RadioGroup>
+            {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
+              <Textarea
+                label="Begrunn endringen"
+                rows={3}
+                size="small"
+                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
+                value={endreBegrunnelseFritekst}
+                onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
+                error={submitAttempt && errorBegrunnelseFritekst()}
+              />
+            )}
+          </VStack>
+        </Box>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="primary"
+          size="small"
+          loading={submitting}
+          onClick={async () => {
+            if (!validationError()) {
+              setSubmitting(true)
+              const begrunnelseFritekst =
+                endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                  ? endreBegrunnelseFritekst
+                  : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
+
+              await onLagre({
+                hjelpemiddelId: hjelpemiddelId,
+                hmsArtNr: endreProduktHmsnr,
+                begrunnelse: endreBegrunnelse!,
+                begrunnelseFritekst: begrunnelseFritekst,
+              })
+              setSubmitting(false)
+              onLukk()
+            } else {
+              setSubmitAttempt(true)
+            }
+          }}
+        >
+          Lagre
+        </Button>
+        <Button variant="tertiary" size="small" onClick={() => onLukk()}>
+          Avbryt
+        </Button>
+      </Modal.Footer>
+    </Modal>
   )
 }
 

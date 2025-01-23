@@ -1,5 +1,5 @@
-import { Bleed, Heading, VStack } from '@navikt/ds-react'
-import { Strek } from '../../felleskomponenter/Strek.tsx'
+import { Heading, VStack } from '@navikt/ds-react'
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { BrukersFunksjon } from '../hjelpemidler/BrukersFunksjon.tsx'
@@ -45,11 +45,7 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
       </Heading>
       <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} />
 
-      {tilbehør && tilbehør.length > 0 && (
-        <Bleed marginInline="2">
-          <Strek />
-        </Bleed>
-      )}
+      {tilbehør && tilbehør.length > 0 && <Skillelinje />}
 
       {/* TODO, sjekk logikk for summering. Kan vi bruke tall fra behovsmeldingen i stedet? Hva brukes i PDF? */}
       {/*<VStack gap="2">

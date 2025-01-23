@@ -2,6 +2,11 @@ import { forwardRef, ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
+import { textcontainerBredde } from '../GlobalStyles'
+
+export const TextContainer = styled.div`
+  max-width: ${textcontainerBredde};
+`
 
 export const Tekst = ({ children, ...rest }: BodyShortProps) => {
   return (

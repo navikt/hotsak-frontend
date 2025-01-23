@@ -1,32 +1,34 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
   const { funksjonsbeskrivelse } = props
   const { beskrivelse } = funksjonsbeskrivelse
   return (
-    <Box paddingBlock="0 20" paddingInline={{ xs: '0 4', sm: '0 4' }} maxWidth={'34em'}>
+    <Box paddingBlock="0 20" paddingInline={{ xs: '0 4', sm: '0 4' }}>
       <Heading level="1" size="small" spacing>
         Funksjonsvurdering
       </Heading>
-      <VStack gap="6">
-        <Box>
-          <Etikett>
-            Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig og varig nedsatt funksjonsevne:
-          </Etikett>
-          <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
-        </Box>
-        {beskrivelse && (
+      <TextContainer>
+        <VStack gap="6">
           <Box>
             <Etikett>
-              Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
-              innbygger i dagliglivet:
+              Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig og varig nedsatt funksjonsevne:
             </Etikett>
-            <Brødtekst>{beskrivelse}</Brødtekst>
+            <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
           </Box>
-        )}
-      </VStack>
+          {beskrivelse && (
+            <Box>
+              <Etikett>
+                Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
+                innbygger i dagliglivet:
+              </Etikett>
+              <Brødtekst>{beskrivelse}</Brødtekst>
+            </Box>
+          )}
+        </VStack>
+      </TextContainer>
     </Box>
   )
 }

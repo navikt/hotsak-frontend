@@ -1,5 +1,5 @@
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
-import { Box, Heading, HGrid, HStack, Spacer, VStack } from '@navikt/ds-react'
+import { HStack, Spacer, VStack } from '@navikt/ds-react'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Bytte, BytteÅrsak } from '../../types/BehovsmeldingTypes'
@@ -18,30 +18,29 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
             {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
             <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
           </HStack>
-          <HGrid columns="5.6em auto" align="center">
-            <HStack align={'center'}>
-              <Tekst weight="semibold">{bytte.hmsnr}</Tekst>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
-            </HStack>
-            <Tekst>{bytte.hjmNavn}</Tekst>
 
-            {bytte.serienr && (
-              <>
-                <Spacer />
-                <Tekst>Serienr: {bytte.serienr}</Tekst>
-              </>
-            )}
+          <HStack align={'center'}>
+            <Tekst weight="semibold">{bytte.hmsnr}</Tekst>
+            <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
+          </HStack>
+          <Tekst>{bytte.hjmNavn}</Tekst>
 
-            {bytte.årsak && (
-              <>
-                <Spacer />
-                <VStack gap="2">
-                  <Etikett>Begrunnelse for bytte</Etikett>
-                  <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
-                </VStack>
-              </>
-            )}
-          </HGrid>
+          {bytte.serienr && (
+            <>
+              <Spacer />
+              <Tekst>Serienr: {bytte.serienr}</Tekst>
+            </>
+          )}
+
+          {bytte.årsak && (
+            <>
+              <Spacer />
+              <VStack gap="2">
+                <Etikett>Begrunnelse for bytte</Etikett>
+                <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
+              </VStack>
+            </>
+          )}
         </VStack>
       ))}
     </VStack>

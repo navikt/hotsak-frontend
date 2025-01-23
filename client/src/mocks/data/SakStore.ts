@@ -177,15 +177,7 @@ function lagSak(
         type: GreitÅViteType.ADVARSEL,
       },*/
       {
-        beskrivelse: 'Kun førsterangering',
-        type: GreitÅViteType.INFO,
-      },
-      {
         beskrivelse: 'Personalia fra Folkeregisteret',
-        type: GreitÅViteType.INFO,
-      },
-      {
-        beskrivelse: 'Medlem av folketrygden',
         type: GreitÅViteType.INFO,
       },
     ],

@@ -141,14 +141,16 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
           </TextContainer>
 
           <div>
-            <Button
-              variant="tertiary"
-              size="small"
-              icon={<PencilIcon />}
-              onClick={() => setVisEndreHjelpemiddelModal(true)}
-            >
-              Endre
-            </Button>
+            {erBestilling && (
+              <Button
+                variant="tertiary"
+                size="small"
+                icon={<PencilIcon />}
+                onClick={() => setVisEndreHjelpemiddelModal(true)}
+              >
+                Endre
+              </Button>
+            )}
           </div>
         </HGrid>
 

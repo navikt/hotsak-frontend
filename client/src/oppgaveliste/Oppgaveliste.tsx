@@ -25,7 +25,7 @@ import {
   SakstypeFilterLabel,
 } from '../types/types.internal'
 import { formaterTidsstempel } from '../utils/dato'
-import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd } from '../utils/formater'
+import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 import { FilterDropdown, FilterToggle } from './filter/filter.tsx'
 import { MenyKnapp } from './kolonner/MenyKnapp'
@@ -152,7 +152,7 @@ export function Oppgaveliste() {
         return (
           <EllipsisCell
             minLength={20}
-            value={storForbokstavIAlleOrd(
+            value={storForbokstavIOrd(
               oppgave.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
             )}
           />

@@ -1,27 +1,29 @@
 import { HStack, Link } from '@navikt/ds-react'
-import { Tekst } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Tekst } from '../../felleskomponenter/typografi'
 import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 export function Produkt({
-  gjennomstrek,
+  gjennomstrek = false,
   skjulKopiknapp = false,
   hmsnr,
   navn,
   linkTo,
 }: {
-  gjennomstrek: boolean
+  gjennomstrek?: boolean
   skjulKopiknapp?: boolean
   hmsnr: string
   navn: string
   linkTo?: string
 }) {
   return (
-    <HStack gap="1" align={'center'}>
-      <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
-        {hmsnr}
-      </Tekst>
-      {!skjulKopiknapp && <Kopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
+    <HStack gap="2" align={'start'} wrap={false}>
+      <HStack wrap={false}>
+        <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
+          {hmsnr}
+        </Tekst>
+        {!skjulKopiknapp && <Kopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
+      </HStack>
       {linkTo ? (
         <Link
           href={linkTo}
@@ -36,7 +38,7 @@ export function Produkt({
           <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>{navn}</div>
         </Link>
       ) : (
-        <Tekst>{navn}</Tekst>
+        <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
       )}
     </HStack>
   )

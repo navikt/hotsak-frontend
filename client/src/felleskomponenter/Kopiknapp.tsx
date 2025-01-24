@@ -10,7 +10,7 @@ export function Kopiknapp(props: KopiknappProps) {
   const { tooltip, copyText, placement } = props
   return (
     <Tooltip content={tooltip} placement={placement}>
-      <CopyButton size="small" copyText={copyText} />
+      <CopyButton size="xsmall" copyText={copyText} />
     </Tooltip>
   )
 }

@@ -13,12 +13,12 @@ import {
   TextField,
   VStack,
 } from '@navikt/ds-react'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
 import {
   EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
-} from '../../types/types.internal'
+} from '../../types/types.internal.ts'
 import { useHjelpemiddel } from '../hjelpemidler/useHjelpemiddel.ts'
 
 interface EndreHjelpemiddelModalProps {
@@ -93,19 +93,21 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
         </Box>
         <Box padding="6" background="bg-subtle" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
           <VStack gap="3">
-            <HStack gap="3">
-              <TextField
-                label="Artikkelnummer"
-                size="small"
-                maxLength={6}
-                onChange={(event) => {
-                  if (event.target.value.length === 6) {
-                    setEndreProduktHmsnr(event.target.value)
-                  }
-                }}
-                error={submitAttempt && errorEndretProdukt()}
-              />
-              <VStack gap="3">
+            <HStack gap="3" wrap={false}>
+              <div>
+                <TextField
+                  label="Artikkelnummer"
+                  size="small"
+                  maxLength={6}
+                  onChange={(event) => {
+                    if (event.target.value.length === 6) {
+                      setEndreProduktHmsnr(event.target.value)
+                    }
+                  }}
+                  error={submitAttempt && errorEndretProdukt()}
+                />
+              </div>
+              <VStack gap="1">
                 <Etikett>Beskrivelse</Etikett>
                 <Tekst>
                   {hmsNr !== '' && isError ? (

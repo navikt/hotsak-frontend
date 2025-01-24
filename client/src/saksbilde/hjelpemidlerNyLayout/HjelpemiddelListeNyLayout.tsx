@@ -8,6 +8,7 @@ import { useArtiklerForSak } from '../hjelpemidler/useArtiklerForSak.ts'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
+import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -21,6 +22,18 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
   const { brukersituasjon, levering } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
+
+  const alleHmsNr = [
+    ...hjelpemidler.flatMap((hjelpemiddel) => [
+      hjelpemiddel.produkt.hmsArtNr,
+      ...hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+    ]),
+    ...tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+  ]
+
+  console.log('Alle hmsnr', alleHmsNr)
+
+  const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
 
   /*const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter(
     (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
@@ -38,12 +51,17 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
         <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Hjelpemiddel key={hjelpemiddel.produkt.hmsArtNr} hjelpemiddel={hjelpemiddel} sak={sak} />
+        <Hjelpemiddel
+          key={hjelpemiddel.produkt.hmsArtNr}
+          hjelpemiddel={hjelpemiddel}
+          sak={sak}
+          produkter={finnHjelpemiddelProdukter}
+        />
       ))}
       <Heading level="1" size="small">
         Tilbehør
       </Heading>
-      <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} />
+      <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
 
       {tilbehør && tilbehør.length > 0 && <Skillelinje />}
 

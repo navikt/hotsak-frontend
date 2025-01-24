@@ -51,7 +51,9 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
   const { bestilling, mutate: mutateBestilling } = useBestilling()
 
-  const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
+  const produkt = useFinnHjelpemiddel([hjelpemiddel.produkt.hmsArtNr])?.find(
+    (p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr
+  )
 
   const endretHjelpemiddel = bestilling?.endredeHjelpemidler.find(
     (hjlpm) => hjlpm.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
@@ -256,7 +258,6 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
         <EndreHjelpemiddel
           hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
           hmsNr={hjelpemiddel.produkt.hmsArtNr}
-          //hmsBeskrivelse={hjelpemiddel.produkt.artikkelnavn}
           nåværendeHmsNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onAvbryt={() => setVisEndreProdukt(false)}

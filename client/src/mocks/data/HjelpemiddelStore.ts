@@ -23,12 +23,23 @@ export class HjelpemiddelStore extends Dexie {
     return this.hjelpemidler.bulkAdd(products.data.products, { allKeys: true }).catch(console.warn)
   }
 
+  async finn(hmsnrs: string[]) {
+    const hjelpemidler = await this.alle()
+    const filtrerteHjelpemidler = hjelpemidler.filter(
+      (hjelpemiddel) => hjelpemiddel.hmsArtNr && hmsnrs.includes(hjelpemiddel?.hmsArtNr)
+    )
+
+    return filtrerteHjelpemidler.length > 0 ? filtrerteHjelpemidler : mockHjelpemiddel
+  }
+
+  async alle() {
+    return this.hjelpemidler.toArray()
+  }
+
   async hent(hmsnr: string) {
-    const hmsArtNr = hmsnr
-    return (await this.hjelpemidler.get(hmsArtNr)) || mockHjelpemiddel
+    return (await this.hjelpemidler.get(hmsnr)) || mockHjelpemiddel
   }
 }
-
 const mockHjelpemiddel = {
   hmsArtNr: '112233',
   articleName: 'Hjelpemiddelnavn',

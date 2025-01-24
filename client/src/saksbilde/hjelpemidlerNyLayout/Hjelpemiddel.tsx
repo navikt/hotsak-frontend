@@ -9,15 +9,16 @@ import { ListItem } from '@navikt/ds-react/List'
 import { useState } from 'react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
+import { textcontainerBredde } from '../../GlobalStyles.tsx'
 import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
+  Produkt as ProduktType,
   Sak,
   Sakstype,
 } from '../../types/types.internal'
 import { storForbokstavIOrd } from '../../utils/formater'
-import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
 import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
@@ -26,20 +27,20 @@ import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { useEndreHjelpemiddel } from './useEndreHjelpemiddel.tsx'
-import { textcontainerBredde } from '../../GlobalStyles.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
   sak: Sak
+  produkter: ProduktType[]
 }
 
-export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
+export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps) {
   const { sakId, sakstype } = sak
 
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
 
-  const produkt = useFinnHjelpemiddel(hjelpemiddel.produkt.hmsArtNr)
+  const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
     sakId,
     hjelpemiddel
@@ -68,6 +69,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
                   hmsnr={endretHjelpemiddel.hmsArtNr}
                   navn={endretHjelpemiddelNavn?.navn || '-'}
                   gjennomstrek={false}
+                  linkTo={produkt?.produkturl}
                 />
               )}
               <Box>
@@ -175,7 +177,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak }: HjelpemiddelProps) {
             <Heading level="2" size="small">
               Tilbehør
             </Heading>
-            <TilbehørListe tilbehør={hjelpemiddel.tilbehør} />
+            <TilbehørListe tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
           </>
         )}
       </>

@@ -7,6 +7,7 @@ import { Hastesak } from './Hastesak.tsx'
 import { OebsAlert } from './OebsAlert.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 
 interface HjelpemiddelListeProps {
   forenkletVisning?: boolean
@@ -54,7 +55,7 @@ export function HjelpemiddelListe({ forenkletVisning = false, sak, behovsmelding
           <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
         )}
       </VStack>
-
+      <Skillelinje />
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </>
   )

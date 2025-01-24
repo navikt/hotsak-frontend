@@ -18,40 +18,40 @@ const query = gql`
   }
 `
 
-export function useFinnHjelpemiddel(hmsnr?: string) {
-  const [produkt, setProdukt] = useState<Produkt | null>(null)
+export function useFinnHjelpemiddel(hmsnrs: string[]) {
+  const [produkter, setProdukter] = useState<Produkt[]>([])
 
+  const unikeHmsnrs = [...new Set(hmsnrs)]
+
+  // TODO Må dette være i use effect? Kan det være use memo i stedet?
   useEffect(() => {
     ;(async () => {
       try {
-        if (!hmsnr || hmsnr.length !== 6) {
-          console.warn(`Kan ikke hente hjelpemiddel fra FinnHjelpemiddel, hmsnr: ${hmsnr}`)
-          setProdukt(null)
-        } else {
-          const data = await request<HMDBHentProdukterQuery, HMDBHentProdukterQueryVariables>(
-            new URL('/finnhjelpemiddel-api/graphql', window.location.href).toString(),
-            query,
-            {
-              hmsnrs: [hmsnr],
-            }
-          )
-          const [produkt] = data.products
-          const { isoCategoryTitleShort, productVariantURL, articleName, agreements } = produkt
+        const data = await request<HMDBHentProdukterQuery, HMDBHentProdukterQueryVariables>(
+          new URL('/finnhjelpemiddel-api/graphql', window.location.href).toString(),
+          query,
+          {
+            hmsnrs: unikeHmsnrs,
+          }
+        )
 
-          setProdukt({
-            isotittel: isoCategoryTitleShort || '',
-            posttitler: agreements?.map((agreement) => agreement?.postTitle || '') || [''],
-            produkturl: productVariantURL || '',
-            artikkelnavn: articleName,
-            hmsnr,
-          })
-        }
+        const produkter: Produkt[] = data.products.map((produkt) => {
+          return {
+            isotittel: produkt.isoCategoryTitleShort || '',
+            posttitler: produkt.agreements?.map((agreement) => agreement?.postTitle || '') || [],
+            produkturl: produkt.productVariantURL || '',
+            artikkelnavn: produkt.articleName,
+            hmsnr: produkt.hmsArtNr || '',
+          }
+        })
+
+        setProdukter(produkter ? produkter : [])
       } catch (e) {
-        console.warn(`Kunne ikke hente hjelpemiddel fra FinnHjelpemiddel, hmsnr: ${hmsnr}`, e)
-        setProdukt(null)
+        console.warn(`Kunne ikke hente hjelpemidler fra FinnHjelpemiddel, hmsnrs: ${unikeHmsnrs}`, e)
+        setProdukter([])
       }
     })()
-  }, [hmsnr])
+  }, unikeHmsnrs)
 
-  return produkt
+  return produkter
 }

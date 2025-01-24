@@ -23,8 +23,8 @@ const Bytter = ({ bytter, harVarsel }: Props) => {
             </HStack>
             <HStack align={'center'}>
               <strong>{bytte.hmsnr}</strong>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} /> {bytte.hjmNavn}
-              {bytte.serienr && <Tekst>Serienr: {bytte.serienr}</Tekst>}
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />{' '}
+              <Tekst>{`${bytte.hjmNavn}${bytte.serienr ? ' Serienr: ' + bytte.serienr : ''}`}</Tekst>
             </HStack>
             {bytte.årsak && (
               <Fremhevet>

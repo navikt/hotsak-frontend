@@ -1,51 +1,50 @@
-import { HStack, List, VStack } from '@navikt/ds-react'
+import { List, VStack } from '@navikt/ds-react'
 import { ListItem } from '@navikt/ds-react/List'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
-import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
+import { Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { FritakFraBegrunnelseÅrsak, Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
+import { Produkt as Produkttype } from '../../types/types.internal'
 import { storForbokstavIOrd } from '../../utils/formater'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
+import { Produkt } from './Produkt'
 
 export function TilbehørListe({
   tilbehør,
   frittståendeTilbehør = false,
+  produkter,
 }: {
   tilbehør: Tilbehørtype[]
   frittståendeTilbehør?: boolean
+  produkter: Produkttype[]
 }) {
-  return tilbehør.map((t, idx) => (
-    <HjelpemiddelGrid key={idx}>
-      <TextContainer>
-        <VStack gap="1">
-          <HStack gap="1" align="start" wrap={false}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Tekst weight="semibold">{t.hmsArtNr}</Tekst>
-              <Kopiknapp tooltip="Kopier hmsnr" copyText={t.hmsArtNr} />
-            </div>
-            <div style={{ paddingTop: '0.25rem' }}>
-              <BrytbarBrødtekst>{t.navn}</BrytbarBrødtekst>
-            </div>
-          </HStack>
-          {!frittståendeTilbehør && <Begrunnelse tilbehør={t} />}
-          {t.opplysninger?.map((opplysning) => {
-            return (
-              <List size="small" key={opplysning.ledetekst.nb}>
-                <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
-                {opplysning.innhold.map((element, idx) => (
-                  <ListItem key={idx}>
-                    <Brødtekst>
-                      {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                    </Brødtekst>
-                  </ListItem>
-                ))}
-              </List>
-            )
-          })}
-        </VStack>
-      </TextContainer>
-      <div style={{ paddingTop: 5 }}>{t.antall} stk</div>
-    </HjelpemiddelGrid>
-  ))
+  return tilbehør.map((t, idx) => {
+    const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+
+    return (
+      <HjelpemiddelGrid key={idx}>
+        <TextContainer>
+          <VStack gap="1">
+            <Produkt hmsnr={t.hmsArtNr || '-'} navn={t.navn || '-'} linkTo={produkt?.produkturl} />
+            {!frittståendeTilbehør && <Begrunnelse tilbehør={t} />}
+            {t.opplysninger?.map((opplysning) => {
+              return (
+                <List size="small" key={opplysning.ledetekst.nb}>
+                  <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
+                  {opplysning.innhold.map((element, idx) => (
+                    <ListItem key={idx}>
+                      <Brødtekst>
+                        {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
+                      </Brødtekst>
+                    </ListItem>
+                  ))}
+                </List>
+              )
+            })}
+          </VStack>
+        </TextContainer>
+        <div style={{ paddingTop: 5 }}>{t.antall} stk</div>
+      </HjelpemiddelGrid>
+    )
+  })
 }
 
 function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {

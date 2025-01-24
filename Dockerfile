@@ -1,10 +1,10 @@
-FROM node:lts-alpine as node
+FROM node:lts-alpine AS node
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
 RUN npm config set @navikt:registry=https://npm.pkg.github.com
 
 # build client
-FROM node as client-builder
+FROM node AS client-builder
 ENV HUSKY=0
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
@@ -13,7 +13,7 @@ COPY client .
 RUN npm run test:ci && npm run build
 
 # build server
-FROM node as server-builder
+FROM node AS server-builder
 ENV HUSKY=0
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
@@ -22,14 +22,14 @@ COPY server .
 RUN npm run build
 
 # install server dependencies
-FROM node as server-dependencies
+FROM node AS server-dependencies
 ENV HUSKY=0
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci --omit dev
 
 # runtime
-FROM gcr.io/distroless/nodejs22-debian12 as runtime
+FROM gcr.io/distroless/nodejs22-debian12 AS runtime
 WORKDIR /app
 
 ARG NODE_ENV=production

@@ -58,12 +58,15 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
           produkter={finnHjelpemiddelProdukter}
         />
       ))}
-      <Heading level="1" size="small">
-        Tilbehør
-      </Heading>
-      <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
-
-      {tilbehør && tilbehør.length > 0 && <Skillelinje />}
+      {tilbehør && tilbehør.length > 0 && (
+        <>
+          <Heading level="1" size="small">
+            Tilbehør
+          </Heading>
+          <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
+          <Skillelinje />
+        </>
+      )}
 
       {/* TODO, sjekk logikk for summering. Kan vi bruke tall fra behovsmeldingen i stedet? Hva brukes i PDF? */}
       {/*<VStack gap="2">

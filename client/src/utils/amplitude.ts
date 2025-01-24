@@ -41,7 +41,16 @@ export async function initAmplitude(): Promise<void> {
   if (!import.meta.env.PROD || window.appSettings.USE_MSW) return
   const { AMPLITUDE_API_KEY: apiKey, AMPLITUDE_SERVER_URL: serverUrl } = window.appSettings
   if (!(apiKey && serverUrl)) return
-  const { init, track } = await import('@amplitude/analytics-browser')
+  const { init, track, identify, Identify } = await import('@amplitude/analytics-browser')
+
+  identify(
+    new Identify()
+      .set('skjermbredde', window.screen.width)
+      .set('skjermhoyde', window.screen.height)
+      .set('vindusbredde', window.innerWidth)
+      .set('vindushoyde', window.innerHeight)
+  )
+
   init(apiKey, undefined, {
     serverUrl,
     defaultTracking: false,

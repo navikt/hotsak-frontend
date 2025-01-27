@@ -44,9 +44,11 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
     <VStack gap="4">
       {levering.hast && <Hast hast={levering.hast} />}
 
-      <Heading level="1" size="small">
-        Hjelpemidler
-      </Heading>
+      {hjelpemidler.length > 0 && (
+        <Heading level="1" size="small">
+          Hjelpemidler
+        </Heading>
+      )}
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}

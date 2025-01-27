@@ -4,8 +4,7 @@ import {
   PencilIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Box, Button, Detail, Heading, HGrid, HStack, List, VStack } from '@navikt/ds-react'
-import { ListItem } from '@navikt/ds-react/List'
+import { Box, Button, Detail, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
@@ -18,12 +17,12 @@ import {
   Sak,
   Sakstype,
 } from '../../types/types.internal'
-import { storForbokstavIOrd } from '../../utils/formater'
 import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
 import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './EndreHjelpemiddelModal.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
+import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { useEndreHjelpemiddel } from './useEndreHjelpemiddel.tsx'
@@ -113,21 +112,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
                   </HStack>
                 )
               })}
-              {/*  TODO Egen Opplysning komponent som også kan brukes for tilbehør.  Legge på keys der det mangler  */}
-              {hjelpemiddel.opplysninger.map((opplysning) => {
-                return (
-                  <List size="small" key={opplysning.ledetekst.nb}>
-                    <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
-                    {opplysning.innhold.map((element, idx) => (
-                      <ListItem key={idx}>
-                        <Brødtekst>
-                          {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                        </Brødtekst>
-                      </ListItem>
-                    ))}
-                  </List>
-                )
-              })}
+              <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
               {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
                 <Utlevert

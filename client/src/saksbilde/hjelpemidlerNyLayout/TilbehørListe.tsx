@@ -1,10 +1,9 @@
-import { List, VStack } from '@navikt/ds-react'
-import { ListItem } from '@navikt/ds-react/List'
+import { VStack } from '@navikt/ds-react'
 import { Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { FritakFraBegrunnelseÅrsak, Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../types/types.internal'
-import { storForbokstavIOrd } from '../../utils/formater'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
+import { Opplysninger } from './Opplysninger'
 import { Produkt } from './Produkt'
 
 export function TilbehørListe({
@@ -25,20 +24,7 @@ export function TilbehørListe({
           <VStack gap="1">
             <Produkt hmsnr={t.hmsArtNr || '-'} navn={t.navn || '-'} linkTo={produkt?.produkturl} />
             {!frittståendeTilbehør && <Begrunnelse tilbehør={t} />}
-            {t.opplysninger?.map((opplysning) => {
-              return (
-                <List size="small" key={opplysning.ledetekst.nb}>
-                  <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
-                  {opplysning.innhold.map((element, idx) => (
-                    <ListItem key={idx}>
-                      <Brødtekst>
-                        {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                      </Brødtekst>
-                    </ListItem>
-                  ))}
-                </List>
-              )
-            })}
+            {t.opplysninger && <Opplysninger opplysninger={t.opplysninger} />}
           </VStack>
         </TextContainer>
         <div style={{ paddingTop: 5 }}>{t.antall} stk</div>

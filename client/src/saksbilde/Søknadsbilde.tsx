@@ -32,7 +32,7 @@ const SaksbildeContent = memo(() => {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
-  const { varsler } = useSøknadsVarsler()
+  const { varsler, harVarsler } = useSøknadsVarsler()
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -74,7 +74,7 @@ const SaksbildeContent = memo(() => {
             )}
           </Venstremeny>
           <section>
-            {varsler && <Saksvarsler varsler={varsler} />}
+            {harVarsler && <Saksvarsler varsler={varsler} />}
             <Container>
               <Routes>
                 <Route

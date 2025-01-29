@@ -1,4 +1,4 @@
-import { Utleveringsmåte } from '../../types/BehovsmeldingTypes'
+import { BehovsmeldingType, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { Varsel, VarselFor } from '../../types/types.internal'
 import { useBehovsmelding } from '../useBehovsmelding'
 
@@ -18,9 +18,11 @@ export function useSøknadsVarsler(): VarslerDataResponse {
   const varslerFor: VarselFor[] = []
   const beskrivelser: string[] = []
 
-  const harAnnenLeveringsadresse = behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
-  const harBeskjedTilKommune = !!behovsmelding?.levering.utleveringMerknad
-  const harAnnenKontaktperson = !!behovsmelding?.levering.annenKontaktperson
+  const erSøknad = behovsmelding?.type === BehovsmeldingType.SØKNAD
+  const harAnnenLeveringsadresse =
+    erSøknad && behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
+  const harBeskjedTilKommune = erSøknad && !!behovsmelding?.levering.utleveringMerknad
+  const harAnnenKontaktperson = erSøknad && !!behovsmelding?.levering.annenKontaktperson
 
   if (harAnnenLeveringsadresse) {
     varslerFor.push(VarselFor.ANNEN_ADRESSE)
@@ -46,7 +48,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     harBeskjedTilKommune,
     harAnnenKontaktperson,
     varsler,
-    harVarsler: varsler.length > 0,
+    harVarsler: erSøknad && varsler.length > 0,
     isLoading: false,
     isError: undefined,
   }

@@ -4,11 +4,11 @@ import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
 import { formaterAdresse } from '../../utils/formater.ts'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
 
-import { VarselIkon } from '../varsler/varselIkon.tsx'
-import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 import { useSkjulUIElementer } from '../useSkjulUiElementer.ts'
 import { useSøknadsVarsler } from '../varsler/useVarsler.tsx'
+import { VarselIkonNøytralt } from '../varsler/varselIkon.tsx'
+import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 
 export interface UtleveringCardProps {
   levering: Levering
@@ -61,15 +61,15 @@ export function LeveringCard(props: UtleveringCardProps) {
   )
 
   function lagLeveringsIkon() {
-    return harAnnenLeveringsadresse ? <VarselIkon /> : <HouseIcon />
+    return harAnnenLeveringsadresse ? <VarselIkonNøytralt /> : <HouseIcon />
   }
 
   function lagMerknadIkon() {
-    return harBeskjedTilKommune ? <VarselIkon /> : <InformationSquareIcon />
+    return harBeskjedTilKommune ? <VarselIkonNøytralt /> : <InformationSquareIcon />
   }
 
   function lagKontaktpersonIkon() {
-    return harAnnenKontaktperson ? <VarselIkon /> : <InformationSquareIcon />
+    return harAnnenKontaktperson ? <VarselIkonNøytralt /> : <InformationSquareIcon />
   }
 }
 

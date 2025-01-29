@@ -29,7 +29,7 @@ export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel = false }: 
   }
 
   return (
-    <HStack gap="2" paddingBlock="0 4">
+    <HStack>
       {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
       <VStack>
         <Etikett>Utlevert</Etikett>

@@ -15,32 +15,37 @@ export function TilbehørListe({
   frittståendeTilbehør?: boolean
   produkter: Produkttype[]
 }) {
-  return tilbehør.map((t, idx) => {
-    const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+  return (
+    <VStack gap="3">
+      {tilbehør.map((t, idx) => {
+        const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
-    return (
-      <HjelpemiddelGrid key={idx}>
-        <TextContainer>
-          <VStack gap="1">
-            <Produkt hmsnr={t.hmsArtNr || '-'} navn={t.navn || '-'} linkTo={produkt?.produkturl} />
-            {!frittståendeTilbehør && <Begrunnelse tilbehør={t} />}
-            {t.opplysninger && <Opplysninger opplysninger={t.opplysninger} />}
-          </VStack>
-        </TextContainer>
-        <div style={{ paddingTop: 5 }}>{t.antall} stk</div>
-      </HjelpemiddelGrid>
-    )
-  })
+        return (
+          <HjelpemiddelGrid key={idx}>
+            <TextContainer>
+              <VStack gap="2">
+                <Produkt hmsnr={t.hmsArtNr || '-'} navn={t.navn || '-'} linkTo={produkt?.produkturl} />
+                {!frittståendeTilbehør && <Begrunnelse tilbehør={t} />}
+                {t.opplysninger && <Opplysninger opplysninger={t.opplysninger} />}
+              </VStack>
+            </TextContainer>
+            <div style={{ paddingTop: 2 }}>{t.antall} stk</div>
+            <div />
+          </HjelpemiddelGrid>
+        )
+      })}
+    </VStack>
+  )
 }
 
 function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>
       {tilbehør.begrunnelse && (
-        <>
+        <div>
           <Etikett>Begrunnelse</Etikett>
           <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
-        </>
+        </div>
       )}
 
       {tilbehør.fritakFraBegrunnelseÅrsak === FritakFraBegrunnelseÅrsak.ER_PÅ_BESTILLINGSORDNING ||

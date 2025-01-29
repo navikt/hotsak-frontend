@@ -40,9 +40,17 @@ export function BrytbarBrødtekst({ spacing, children }: { spacing?: boolean; ch
   )
 }
 
-export function Etikett({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+export function Etikett({
+  spacing,
+  size = 'small',
+  children,
+}: {
+  spacing?: boolean
+  size?: 'small' | 'medium'
+  children: ReactNode
+}) {
   return (
-    <Label size="small" spacing={spacing}>
+    <Label spacing={spacing} size={size}>
       {children}
     </Label>
   )

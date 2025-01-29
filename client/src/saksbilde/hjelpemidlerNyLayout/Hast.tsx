@@ -10,7 +10,7 @@ export function Hast(props: { hast?: HastType }) {
   return (
     <>
       <TextContainer>
-        <VStack gap="4">
+        <VStack gap="2">
           <Alert variant="warning" size="small" inline>
             Hast: Formidler har markert saken som hast.
           </Alert>

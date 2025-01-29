@@ -9,7 +9,6 @@ import { hotsakHistorikkWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth } fr
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
-import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListeNyLayout } from './hjelpemidlerNyLayout/HjelpemiddelListeNyLayout'
@@ -20,7 +19,6 @@ import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { useSøknadsVarsler } from './varsler/useVarsler'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { LeveringCard } from './venstremeny/LeveringCard'
@@ -32,7 +30,7 @@ const SaksbildeContent = memo(() => {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
-  const { varsler, harVarsler } = useSøknadsVarsler()
+  //const { varsler, harVarsler } = useSøknadsVarsler()
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -74,7 +72,7 @@ const SaksbildeContent = memo(() => {
             )}
           </Venstremeny>
           <section>
-            {harVarsler && <Saksvarsler varsler={varsler} />}
+            {/*harVarsler && <Saksvarsler varsler={varsler} />*/}
             <Container>
               <Routes>
                 <Route
@@ -105,7 +103,7 @@ const SaksbildeContent = memo(() => {
 })
 
 const Container = styled.section`
-  padding: 0 1.4rem;
+  padding: 0 var(--a-spacing-4);
   padding-top: 1rem;
   height: 100%;
   box-sizing: border-box;

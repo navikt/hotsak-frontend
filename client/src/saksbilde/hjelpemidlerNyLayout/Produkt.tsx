@@ -1,6 +1,6 @@
 import { HStack, Link } from '@navikt/ds-react'
+import { InlineKopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { BrytbarBrødtekst, Tekst } from '../../felleskomponenter/typografi'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 export function Produkt({
@@ -18,11 +18,11 @@ export function Produkt({
 }) {
   return (
     <HStack gap="2" align={'start'} wrap={false}>
-      <HStack wrap={false}>
+      <HStack wrap={false} gap="2">
         <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
           {hmsnr}
         </Tekst>
-        {!skjulKopiknapp && <Kopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
+        {!skjulKopiknapp && <InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
       </HStack>
       {linkTo ? (
         <Link

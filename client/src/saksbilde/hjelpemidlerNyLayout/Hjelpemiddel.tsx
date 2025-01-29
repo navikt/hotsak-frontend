@@ -4,11 +4,11 @@ import {
   PencilIcon,
   PersonFillIcon,
 } from '@navikt/aksel-icons'
-import { Box, Button, Detail, Heading, HGrid, HStack, VStack } from '@navikt/ds-react'
+import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
-import { textcontainerBredde } from '../../GlobalStyles.tsx'
+import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -34,7 +34,7 @@ interface HjelpemiddelProps {
 
 export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps) {
   const { sakId, sakstype } = sak
-
+  const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
@@ -46,97 +46,92 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
-      <Box>
-        <Heading level="2" size="xsmall">
-          {produkt?.isotittel}
-        </Heading>
-
-        <VStack gap="1">
-          {produkt?.posttitler?.map((posttittel) => <Detail key={posttittel}>Delkontrakt {posttittel}</Detail>)}
-        </VStack>
-      </Box>
+      <Etikett size="medium">{produkt?.isotittel}</Etikett>
+      <VStack gap="1">
+        {produkt?.posttitler?.map((posttittel) => <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>)}
+      </VStack>
 
       <HjelpemiddelGrid>
-        <HGrid columns={`${textcontainerBredde} 6rem`} align="start" marginInline="auto">
-          <TextContainer>
-            <VStack justify="start" gap="2">
-              {endretHjelpemiddel && (
-                <Produkt
-                  hmsnr={endretHjelpemiddel.hmsArtNr}
-                  navn={endretHjelpemiddelNavn?.navn || '-'}
-                  gjennomstrek={false}
-                  linkTo={produkt?.produkturl}
-                />
-              )}
-              <Box>
-                <Produkt
-                  hmsnr={hjelpemiddel.produkt.hmsArtNr}
-                  navn={hjelpemiddel.produkt.artikkelnavn}
-                  gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
-                  skjulKopiknapp={endretHjelpemiddel !== undefined}
-                  linkTo={produkt?.produkturl}
-                />
+        <TextContainer>
+          <VStack justify="start" gap="2">
+            {endretHjelpemiddel && (
+              <Produkt
+                hmsnr={endretHjelpemiddel.hmsArtNr}
+                navn={endretHjelpemiddelNavn?.navn || '-'}
+                gjennomstrek={false}
+                linkTo={produkt?.produkturl}
+              />
+            )}
+
+            <Produkt
+              hmsnr={hjelpemiddel.produkt.hmsArtNr}
+              navn={hjelpemiddel.produkt.artikkelnavn}
+              gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
+              skjulKopiknapp={endretHjelpemiddel !== undefined}
+              linkTo={produkt?.produkturl}
+            />
+            <VStack>
+              <div>
+                <Tag size="xsmall" variant="neutral-moderate">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              </div>
+            </VStack>
+            {endretHjelpemiddel && (
+              <HStack gap="2">
+                <PersonFillIcon />
                 <div>
-                  <Detail>{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Detail>
-                </div>
-              </Box>
-              {endretHjelpemiddel && (
-                <HStack gap="2">
-                  <PersonFillIcon />
+                  <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                   <div>
-                    <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-                    <div>
-                      {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                        ? endretHjelpemiddel.begrunnelseFritekst
-                        : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
-                    </div>
+                    {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                      ? endretHjelpemiddel.begrunnelseFritekst
+                      : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
                   </div>
+                </div>
+              </HStack>
+            )}
+          </VStack>
+          <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
+            {hjelpemiddel.varsler.map((varsel) => {
+              return (
+                <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
+                  <div>
+                    {varsel.type === Varseltype.WARNING ? (
+                      <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+                    ) : (
+                      <InformationSquareFillIcon color="var(--a-icon-info)" fontSize="1.25rem" />
+                    )}
+                  </div>
+                  <Brødtekst>{varsel.tekst.nb}</Brødtekst>
                 </HStack>
-              )}
-            </VStack>
-            <VStack gap="4">
-              {hjelpemiddel.varsler.map((varsel) => {
-                return (
-                  <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
-                    <div>
-                      {varsel.type === Varseltype.WARNING ? (
-                        <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
-                      ) : (
-                        <InformationSquareFillIcon color="var(--a-icon-info)" fontSize="1.25rem" />
-                      )}
-                    </div>
-                    <Brødtekst>{varsel.tekst.nb}</Brødtekst>
-                  </HStack>
-                )
-              })}
-              <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
+              )
+            })}
+            <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
-              {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
-                <Utlevert
-                  alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
-                  utlevertInfo={hjelpemiddel.utlevertinfo}
-                />
-              )}
-              {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
-            </VStack>
-          </TextContainer>
+            {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
+              <Utlevert
+                alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
+                utlevertInfo={hjelpemiddel.utlevertinfo}
+              />
+            )}
+            {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
+          </VStack>
+        </TextContainer>
 
-          <div>
-            {erBestilling && (
+        <div>
+          <Tekst>{hjelpemiddel.antall} stk</Tekst>
+        </div>
+        <div>
+          {kanEndreHmsnr() && (
+            <Bleed marginBlock="1 0">
               <Button
                 variant="tertiary"
-                size="small"
+                size="xsmall"
                 icon={<PencilIcon />}
                 onClick={() => setVisEndreHjelpemiddelModal(true)}
               >
                 Endre
               </Button>
-            )}
-          </div>
-        </HGrid>
-
-        <div style={{ paddingTop: '0.3rem' }}>
-          <Tekst>{hjelpemiddel.antall} stk</Tekst>
+            </Bleed>
+          )}
         </div>
       </HjelpemiddelGrid>
       <>
@@ -152,12 +147,10 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
         )}
 
         {hjelpemiddel.tilbehør.length > 0 && (
-          <>
-            <Heading level="2" size="small">
-              Tilbehør
-            </Heading>
+          <VStack gap="3" paddingInline="4 0">
+            <Etikett size="medium">Tilbehør</Etikett>
             <TilbehørListe tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
-          </>
+          </VStack>
         )}
       </>
       <Skillelinje />

@@ -1,4 +1,4 @@
-import { Heading, VStack } from '@navikt/ds-react'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
@@ -9,6 +9,7 @@ import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -31,21 +32,19 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
     ...tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
   ]
 
-  console.log('Alle hmsnr', alleHmsNr)
-
   const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
 
-  /*const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter(
-    (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
-  )*/
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
     <VStack gap="4">
+      <Heading level="1" size="small" visuallyHidden={true}>
+        {storForbokstavIOrd(sak.sakstype)}
+      </Heading>
       {levering.hast && <Hast hast={levering.hast} />}
 
       {hjelpemidler.length > 0 && (
-        <Heading level="1" size="small">
+        <Heading level="2" size="medium">
           Hjelpemidler
         </Heading>
       )}
@@ -62,39 +61,16 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
       ))}
       {tilbehør && tilbehør.length > 0 && (
         <>
-          <Heading level="1" size="small">
+          <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
+          <Box paddingInline="4 0">
+            <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
+          </Box>
           <Skillelinje />
         </>
       )}
-
-      {/* TODO, sjekk logikk for summering. Kan vi bruke tall fra behovsmeldingen i stedet? Hva brukes i PDF? */}
-      {/*<VStack gap="2">
-        <Etikett>
-          Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen))}{' '}
-          stk. inkl. tilbehør
-        </Etikett>
-        {hjelpemidlerAlleredeUtlevert.length > 0 && (
-          <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
-        )}
-      </VStack>
-  )*/}
-
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )
-
-  {
-    /*function summerAntall(hjelpemidler: HjelpemiddelType[]) {
-  const summarize = (accumulator: number, currentValue: number) => Number(accumulator) + Number(currentValue)
-  return hjelpemidler
-    .map((hjelpemiddel) => {
-      const antallTilbehør = hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.antall).reduce(summarize, 0)
-      return Number(hjelpemiddel.antall) + antallTilbehør
-    })
-    .reduce(summarize, 0)
-}*/
-  }
 }

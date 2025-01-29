@@ -4,7 +4,7 @@ import { Varsel } from '../../types/types.internal'
 
 export function Saksvarsler({ varsler }: { varsler: Varsel[] }) {
   return varsler.map((varsel) => (
-    <SystemAlert key={varsel.tittel}>
+    <SystemAlert key={varsel.tittel} variant="info">
       <List size="small" as="ul" title={varsel.tittel}>
         {varsel.beskrivelse.map((beskrivelse) => (
           <List.Item key={beskrivelse}>{beskrivelse}</List.Item>

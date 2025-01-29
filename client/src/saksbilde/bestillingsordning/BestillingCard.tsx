@@ -21,11 +21,10 @@ import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
 import { OvertaSakModal } from '../OvertaSakModal'
-import { useVarselsregler } from '../varsler/useVarselsregler'
+import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
-import { BekreftAutomatiskOrdre, BekreftManuellOrdre } from './Modal'
-import { useBehovsmelding } from '../useBehovsmelding.ts'
+import { BekreftAutomatiskOrdre } from './Modal'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -37,7 +36,6 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const { behovsmelding } = useBehovsmelding()
-  const { harVarsler } = useVarselsregler()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
   const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
@@ -166,14 +164,16 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
           Avvis
         </Knapp>
       </Knappepanel>
-      {harVarsler ? (
+      {
+        /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke
+        
+        harVarsler ? (
         <BekreftManuellOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-        />
-      ) : (
+        />*/
         <BekreftAutomatiskOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}
@@ -185,7 +185,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
           onLagre={lagreUtleveringMerknad}
           onEndre={() => setHarLagretBeskjed(false)}
         />
-      )}
+      }
 
       <AvvisBestillingModal
         open={visAvvisModal}

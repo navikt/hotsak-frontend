@@ -12,7 +12,6 @@ import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
-import { HjelpemiddelListe } from './hjelpemidler/HjelpemiddelListe'
 import { HjelpemiddelListeNyLayout } from './hjelpemidlerNyLayout/HjelpemiddelListeNyLayout'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
@@ -21,7 +20,7 @@ import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { useVarsler } from './varsler/useVarsler'
+import { useSøknadsVarsler } from './varsler/useVarsler'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { LeveringCard } from './venstremeny/LeveringCard'
@@ -33,7 +32,7 @@ const SaksbildeContent = memo(() => {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
-  const { varsler } = useVarsler()
+  const { varsler } = useSøknadsVarsler()
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -80,19 +79,7 @@ const SaksbildeContent = memo(() => {
               <Routes>
                 <Route
                   path="/hjelpemidler"
-                  element={
-                    <HjelpemiddelListe sak={sak.data} forenkletVisning={erBestilling} behovsmelding={behovsmelding} />
-                  }
-                />
-                <Route
-                  path="/ny-layout"
-                  element={
-                    <HjelpemiddelListeNyLayout
-                      sak={sak.data}
-                      //forenkletVisning={erBestilling}
-                      behovsmelding={behovsmelding}
-                    />
-                  }
+                  element={<HjelpemiddelListeNyLayout sak={sak.data} behovsmelding={behovsmelding} />}
                 />
                 <Route
                   path="/bruker"

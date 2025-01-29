@@ -18,7 +18,6 @@ import {
   Sakstype,
 } from '../../types/types.internal'
 import { Utlevert } from '../hjelpemidler/Utlevert.tsx'
-import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './EndreHjelpemiddelModal.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -37,8 +36,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
   const { sakId, sakstype } = sak
 
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
-  const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
-
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
     sakId,
@@ -118,12 +115,9 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
                 <Utlevert
                   alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
                   utlevertInfo={hjelpemiddel.utlevertinfo}
-                  harVarsel={harAlleredeLevertVarsel()}
                 />
               )}
-              {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
-                <Bytter bytter={hjelpemiddel.bytter} harVarsel={harTilbakeleveringsVarsel()} />
-              )}
+              {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
             </VStack>
           </TextContainer>
 

@@ -217,8 +217,8 @@
     },
     "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
     "annenOppfølgingsansvarlig": null,
-    "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
-    "annenUtleveringsadresse": null,
+    "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+    "annenUtleveringsadresse": { "adresse": "Andre veien 1", "postnummer": "2222", "poststed": "Stedet" },
     "utleveringKontaktperson": "ANNEN_KONTAKTPERSON",
     "annenKontaktperson": {
       "navn": {

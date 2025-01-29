@@ -23,11 +23,6 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
             <TabLink to={`/sak/${id}/hjelpemidler`} title="Hjelpemidler" icon={<HouseIcon />}>
               Hjelpemidler
             </TabLink>
-            <Eksperiment>
-              <TabLink to={`/sak/${id}/ny-layout`} title="Hjelpemidler (ny layout)">
-                Hjelpemidler (ny layout)
-              </TabLink>
-            </Eksperiment>
             <TabLink to={`/sak/${id}/bruker`} title="Bruker">
               Bruker
             </TabLink>

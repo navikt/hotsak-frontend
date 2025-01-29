@@ -6,10 +6,10 @@ import { Utlevertinfo, UtlevertType } from '../../types/BehovsmeldingTypes'
 interface UtlevertProps {
   alleredeUtlevert: boolean
   utlevertInfo: Utlevertinfo
-  harVarsel: boolean
+  harVarsel?: boolean
 }
 
-export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel }: UtlevertProps) {
+export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel = false }: UtlevertProps) {
   if (!alleredeUtlevert) return null
 
   let utlevertTekst

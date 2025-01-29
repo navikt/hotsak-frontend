@@ -3,11 +3,12 @@ import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
 import { formaterAdresse } from '../../utils/formater.ts'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
-import { useVarselsregler } from '../varsler/useVarselsregler.tsx'
+
 import { VarselIkon } from '../varsler/varselIkon.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
 import { useSkjulUIElementer } from '../useSkjulUiElementer.ts'
+import { useSøknadsVarsler } from '../varsler/useVarsler.tsx'
 
 export interface UtleveringCardProps {
   levering: Levering
@@ -19,7 +20,7 @@ export function LeveringCard(props: UtleveringCardProps) {
   const { utleveringMerknad } = levering
   const [leveringsmåteLabel, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
-  const { harLeveringsVarsel, harBeskjedTilKommuneVarsel } = useVarselsregler()
+  const { harAnnenLeveringsadresse, harBeskjedTilKommune, harAnnenKontaktperson } = useSøknadsVarsler()
   const { skjulKopiknapp } = useSkjulUIElementer()
 
   return (
@@ -47,7 +48,7 @@ export function LeveringCard(props: UtleveringCardProps) {
       )}
       {kontaktpersonTekst && (
         <VenstremenyCardRow
-          icon={<InformationSquareIcon />}
+          icon={lagKontaktpersonIkon()}
           copyText={kontaktpersonTekst}
           copyKind="kontaktperson"
           title="Kontaktperson"
@@ -60,11 +61,15 @@ export function LeveringCard(props: UtleveringCardProps) {
   )
 
   function lagLeveringsIkon() {
-    return harLeveringsVarsel() ? <VarselIkon /> : <HouseIcon />
+    return harAnnenLeveringsadresse ? <VarselIkon /> : <HouseIcon />
   }
 
   function lagMerknadIkon() {
-    return harBeskjedTilKommuneVarsel() ? <VarselIkon /> : <InformationSquareIcon />
+    return harBeskjedTilKommune ? <VarselIkon /> : <InformationSquareIcon />
+  }
+
+  function lagKontaktpersonIkon() {
+    return harAnnenKontaktperson ? <VarselIkon /> : <InformationSquareIcon />
   }
 }
 

@@ -6,10 +6,10 @@ import { Bytte, BytteÅrsak } from '../../types/BehovsmeldingTypes'
 
 interface Props {
   bytter: Bytte[]
-  harVarsel: boolean
+  harVarsel?: boolean
 }
 
-const Bytter = ({ bytter, harVarsel }: Props) => {
+const Bytter = ({ bytter, harVarsel = false }: Props) => {
   return (
     <VStack gap="4">
       {bytter.map((bytte, idx) => (

@@ -26,8 +26,6 @@ import {
   Sak,
 } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { storForbokstavIOrd } from '../../utils/formater'
-import { useVarselsregler } from '../varsler/useVarselsregler'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddel } from './EndreHjelpemiddel.tsx'
 import { useBestilling } from './endreHjelpemiddel/useBestilling.tsx'
@@ -36,6 +34,7 @@ import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { useFinnHjelpemiddel } from './useFinnHjelpemiddel'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { Utlevert } from './Utlevert'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
@@ -48,7 +47,6 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
 
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
-  const { harTilbakeleveringsVarsel, harAlleredeLevertVarsel } = useVarselsregler()
   const { bestilling, mutate: mutateBestilling } = useBestilling()
 
   const produkt = useFinnHjelpemiddel([hjelpemiddel.produkt.hmsArtNr])?.find(
@@ -181,14 +179,14 @@ export function Hjelpemiddel({ hjelpemiddel, forenkletVisning, sak }: Hjelpemidd
               <Utlevert
                 alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
                 utlevertInfo={hjelpemiddel.utlevertinfo}
-                harVarsel={harAlleredeLevertVarsel()}
+                harVarsel={false}
               />
             )}
           </div>
           {/* TODO: kan fjerne undefined-sjekk når API er rullet ut */}
           {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
             <HStack gap="2">
-              <Bytter bytter={hjelpemiddel.bytter} harVarsel={harTilbakeleveringsVarsel()} />
+              <Bytter bytter={hjelpemiddel.bytter} harVarsel={false} />
             </HStack>
           )}
         </VStack>

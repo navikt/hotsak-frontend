@@ -67,7 +67,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
               hmsnr={hjelpemiddel.produkt.hmsArtNr}
               navn={hjelpemiddel.produkt.artikkelnavn}
               gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
-              skjulKopiknapp={endretHjelpemiddel !== undefined}
               linkTo={produkt?.produkturl}
             />
             <VStack>

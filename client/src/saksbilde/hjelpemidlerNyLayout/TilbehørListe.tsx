@@ -13,7 +13,13 @@ export function FrittStåendeTilbehør({ tilbehør, produkter }: { tilbehør: Ti
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
         return (
-          <Box background="surface-subtle" padding="4">
+          <Box
+            background="surface-subtle"
+            padding="4"
+            borderColor="border-subtle"
+            borderRadius="xlarge"
+            borderWidth="1"
+          >
             <HjelpemiddelGrid key={idx}>
               <TextContainer>
                 <VStack gap="1">

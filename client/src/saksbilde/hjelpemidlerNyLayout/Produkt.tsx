@@ -5,7 +5,6 @@ import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 
 export function Produkt({
   gjennomstrek = false,
-  skjulKopiknapp = false,
   hmsnr,
   navn,
   linkTo,
@@ -17,12 +16,12 @@ export function Produkt({
   linkTo?: string
 }) {
   return (
-    <HStack gap="1" align={'start'} wrap={false}>
-      <HStack wrap={false} gap="1">
+    <HStack align={'start'} wrap={false} gap="1">
+      <HStack wrap={false}>
         <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
           {hmsnr}
         </Tekst>
-        {!skjulKopiknapp && <InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
+        {<InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
       </HStack>
       {linkTo ? (
         <Link

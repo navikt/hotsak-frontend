@@ -1,5 +1,4 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
@@ -67,7 +66,6 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
             Tilbehør
           </Heading>
           <FrittStåendeTilbehør tilbehør={tilbehør} produkter={finnHjelpemiddelProdukter} />
-          <Skillelinje />
         </>
       )}
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}

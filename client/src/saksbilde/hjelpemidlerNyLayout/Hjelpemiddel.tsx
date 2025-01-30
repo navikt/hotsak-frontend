@@ -1,7 +1,7 @@
 import { ExclamationmarkTriangleFillIcon, InformationSquareFillIcon, PencilIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'
 import {
@@ -46,7 +46,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
       <VStack gap="1">
         {produkt?.posttitler?.map((posttittel) => (
           <TextContainer>
-            <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>
+            <BrytbarBrødtekst key={posttittel}>Delkontrakt {posttittel}</BrytbarBrødtekst>
           </TextContainer>
         ))}
       </VStack>

@@ -83,12 +83,12 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
     >
       <Modal.Header>
         <Heading level="1" size="small">
-          Endre hjelpemiddel
+          Endre HMS-nummer
         </Heading>
       </Modal.Header>
       <Modal.Body>
         <Box paddingBlock="0 4">
-          <Etikett spacing>Endre artikkelnummer</Etikett>
+          <Etikett spacing>Endre HMS-nummer</Etikett>
           <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
         </Box>
         <Box padding="6" background="bg-subtle" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
@@ -96,7 +96,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
             <HStack gap="3" wrap={false}>
               <div>
                 <TextField
-                  label="Artikkelnummer"
+                  label="HMS-nummer"
                   size="small"
                   maxLength={6}
                   onChange={(event) => {
@@ -120,7 +120,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
             </HStack>
             <RadioGroup
               size="small"
-              legend="Begrunnelse for å endre artikkelnummer:"
+              legend="Begrunnelse for å endre HMS-nummer:"
               onChange={(val) => setEndreBegrunnelse(val)}
               value={endreBegrunnelse ?? ''}
               error={submitAttempt && errorBegrunnelse()}

@@ -46,9 +46,15 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
-      <Etikett size="medium">{produkt?.isotittel}</Etikett>
+      <TextContainer>
+        <Etikett size="medium">{produkt?.isotittel}</Etikett>
+      </TextContainer>
       <VStack gap="1">
-        {produkt?.posttitler?.map((posttittel) => <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>)}
+        {produkt?.posttitler?.map((posttittel) => (
+          <TextContainer>
+            <Brødtekst key={posttittel}>Delkontrakt {posttittel}</Brødtekst>
+          </TextContainer>
+        ))}
       </VStack>
 
       <HjelpemiddelGrid>

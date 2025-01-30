@@ -190,6 +190,19 @@
                 "begrepsforklaring": null
               }
             ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Begrunnelse for tilbehøret",
+              "nn": "Grunngiving for tilbehøyret"
+            },
+            "innhold": [
+              {
+                "fritekst": "Fordi derfor",
+                "forhåndsdefinertTekst": null,
+                "begrepsforklaring": null
+              }
+            ]
           }
         ]
       }

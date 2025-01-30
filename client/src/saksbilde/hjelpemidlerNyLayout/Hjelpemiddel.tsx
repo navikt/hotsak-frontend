@@ -81,21 +81,18 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
                 <Tag size="xsmall" variant="neutral-moderate">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
               </div>
             </VStack>
-            {endretHjelpemiddel && (
-              <HStack gap="2">
-                <PersonFillIcon />
-                <div>
-                  <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-                  <div>
-                    {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                      ? endretHjelpemiddel.begrunnelseFritekst
-                      : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
-                  </div>
-                </div>
-              </HStack>
-            )}
           </VStack>
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
+            {endretHjelpemiddel && (
+              <div>
+                <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
+                <Brødtekst>
+                  {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                    ? endretHjelpemiddel.begrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
+                </Brødtekst>
+              </div>
+            )}
             {hjelpemiddel.varsler.map((varsel) => {
               return (
                 <HStack gap="2" key={varsel.tekst.nb} wrap={false}>

@@ -1,12 +1,6 @@
-import {
-  ExclamationmarkTriangleFillIcon,
-  InformationSquareFillIcon,
-  PencilIcon,
-  PersonFillIcon,
-} from '@navikt/aksel-icons'
+import { ExclamationmarkTriangleFillIcon, InformationSquareFillIcon, PencilIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'

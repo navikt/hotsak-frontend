@@ -2,14 +2,14 @@ import { Box, Heading, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 import { BrukersFunksjon } from '../hjelpemidler/BrukersFunksjon.tsx'
 import { OebsAlert } from '../hjelpemidler/OebsAlert.tsx'
 import { useArtiklerForSak } from '../hjelpemidler/useArtiklerForSak.ts'
+import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
-import { FrittStåendeTilbehør, TilbehørListe } from './TilbehørListe.tsx'
-import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
-import { storForbokstavIOrd } from '../../utils/formater.ts'
+import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 
 interface HjelpemiddelListeProps {
   sak: Sak

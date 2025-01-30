@@ -17,8 +17,8 @@ export function Produkt({
   linkTo?: string
 }) {
   return (
-    <HStack gap="2" align={'start'} wrap={false}>
-      <HStack wrap={false} gap="2">
+    <HStack gap="1" align={'start'} wrap={false}>
+      <HStack wrap={false} gap="1">
         <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
           {hmsnr}
         </Tekst>

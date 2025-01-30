@@ -1,5 +1,5 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
 export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
@@ -10,7 +10,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
       <Heading level="1" size="small" spacing>
         Funksjonsvurdering
       </Heading>
-      <TextContainer>
+      <div style={{ maxWidth: '34rem' }}>
         <VStack gap="6">
           <Box>
             <Etikett>
@@ -28,7 +28,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
             </Box>
           )}
         </VStack>
-      </TextContainer>
+      </div>
     </Box>
   )
 }

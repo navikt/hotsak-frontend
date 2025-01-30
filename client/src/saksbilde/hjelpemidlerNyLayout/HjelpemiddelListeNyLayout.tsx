@@ -7,7 +7,7 @@ import { OebsAlert } from '../hjelpemidler/OebsAlert.tsx'
 import { useArtiklerForSak } from '../hjelpemidler/useArtiklerForSak.ts'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
-import { TilbehørListe } from './TilbehørListe.tsx'
+import { FrittStåendeTilbehør, TilbehørListe } from './TilbehørListe.tsx'
 import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 
@@ -52,21 +52,21 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
         <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Hjelpemiddel
-          key={hjelpemiddel.produkt.hmsArtNr}
-          hjelpemiddel={hjelpemiddel}
-          sak={sak}
-          produkter={finnHjelpemiddelProdukter}
-        />
+        <Box background="surface-subtle" padding="4">
+          <Hjelpemiddel
+            key={hjelpemiddel.produkt.hmsArtNr}
+            hjelpemiddel={hjelpemiddel}
+            sak={sak}
+            produkter={finnHjelpemiddelProdukter}
+          />
+        </Box>
       ))}
       {tilbehør && tilbehør.length > 0 && (
         <>
           <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <Box paddingInline="4 0">
-            <TilbehørListe tilbehør={tilbehør} frittståendeTilbehør={true} produkter={finnHjelpemiddelProdukter} />
-          </Box>
+          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={finnHjelpemiddelProdukter} />
           <Skillelinje />
         </>
       )}

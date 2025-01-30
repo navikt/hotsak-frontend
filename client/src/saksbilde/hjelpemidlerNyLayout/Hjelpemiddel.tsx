@@ -156,7 +156,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
           </VStack>
         )}
       </>
-      <Skillelinje />
     </VStack>
   )
 }

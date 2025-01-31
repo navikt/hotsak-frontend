@@ -143,7 +143,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
         )}
 
         {hjelpemiddel.tilbehør.length > 0 && (
-          <VStack gap="3" paddingInline="4 0">
+          <VStack gap="3">
             <Etikett size="medium">Tilbehør</Etikett>
             <TilbehørListe tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
           </VStack>

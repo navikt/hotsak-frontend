@@ -25,12 +25,15 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
+import { useSøknadsVarsler } from './varsler/useVarsler'
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
+import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
-  //const { varsler, harVarsler } = useSøknadsVarsler()
+  const { varsler, harVarsler } = useSøknadsVarsler()
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -72,7 +75,7 @@ const SaksbildeContent = memo(() => {
             )}
           </Venstremeny>
           <section>
-            {/*harVarsler && <Saksvarsler varsler={varsler} />*/}
+            <Eksperiment>{harVarsler && <Saksvarsler varsler={varsler} />}</Eksperiment>
             <Container>
               <Routes>
                 <Route

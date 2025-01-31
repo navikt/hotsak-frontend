@@ -35,6 +35,8 @@ const SaksbildeContent = memo(() => {
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
 
+  console.log('varsler', varsler, harVarsler)
+
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING

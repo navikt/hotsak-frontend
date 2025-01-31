@@ -88,10 +88,9 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
       </Modal.Header>
       <Modal.Body>
         <Box paddingBlock="0 4">
-          <Etikett spacing>Endre HMS-nummer</Etikett>
           <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
         </Box>
-        <Box padding="6" background="bg-subtle" borderRadius="medium" borderColor="border-subtle" borderWidth="1">
+        <Box padding="6" background="bg-subtle" borderRadius="large">
           <VStack gap="3">
             <HStack gap="3" wrap={false}>
               <div>

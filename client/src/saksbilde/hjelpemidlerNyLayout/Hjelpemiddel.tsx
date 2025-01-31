@@ -59,7 +59,8 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
                 hmsnr={endretHjelpemiddel.hmsArtNr}
                 navn={endretHjelpemiddelNavn?.navn || '-'}
                 gjennomstrek={false}
-                linkTo={produkt?.produkturl}
+                // TODO Fiks at vi får tak i url til det nye hjelpemidlet
+                //linkTo={produkt?.produkturl}
               />
             )}
 

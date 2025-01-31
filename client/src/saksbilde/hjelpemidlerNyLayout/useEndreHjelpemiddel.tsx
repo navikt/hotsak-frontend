@@ -14,6 +14,7 @@ export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: any) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
+        // TODO Klarer vi å hente url til det nye hjelpemidlet?
         // TODO Trenger vi å mutere saken lenger??
         mutate(`api/sak/${sakId}`)
         mutateBestilling()

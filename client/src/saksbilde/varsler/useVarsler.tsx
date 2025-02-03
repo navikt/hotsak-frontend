@@ -48,7 +48,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     harBeskjedTilKommune,
     harAnnenKontaktperson,
     varsler,
-    harVarsler: erSøknad && varsler.length > 0,
+    harVarsler: erSøknad && varslerFor.length > 0,
     isLoading: false,
     isError: undefined,
   }

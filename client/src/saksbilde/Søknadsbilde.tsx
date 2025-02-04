@@ -9,6 +9,7 @@ import { hotsakHistorikkWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth } fr
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
+import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListeNyLayout } from './hjelpemidlerNyLayout/HjelpemiddelListeNyLayout'
@@ -19,15 +20,13 @@ import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
+import { useSøknadsVarsler } from './varsler/useVarsler'
 import { FormidlerCard } from './venstremeny/FormidlerCard'
 import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
 import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { useSøknadsVarsler } from './varsler/useVarsler'
-import { Eksperiment } from '../felleskomponenter/Eksperiment'
-import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -75,7 +74,7 @@ const SaksbildeContent = memo(() => {
             )}
           </Venstremeny>
           <section>
-            <Eksperiment>{harVarsler && <Saksvarsler varsler={varsler} />}</Eksperiment>
+            {harVarsler && <Saksvarsler varsler={varsler} />}
             <Container>
               <Routes>
                 <Route

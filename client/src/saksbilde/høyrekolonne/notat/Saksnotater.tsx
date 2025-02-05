@@ -30,8 +30,9 @@ export function Saksnotater(props: SaksnotaterProps) {
                 key={notat.id || notat.opprettet}
                 as="li"
                 padding="4"
-                background="surface-warning-subtle"
-                borderRadius="medium"
+                borderRadius="large"
+                borderWidth="1"
+                style={{ background: 'var(--a-orange-50)', borderColor: 'var(--a-orange-100)' }}
               >
                 <HStack justify="space-between">
                   <div>

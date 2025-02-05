@@ -683,6 +683,7 @@ export const OmrådeFilterLabel = new Map<string, string>([
 export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
+  NOTAT = 'NOTAT',
 }
 
 export enum BarnebrilleSidebarTabs {

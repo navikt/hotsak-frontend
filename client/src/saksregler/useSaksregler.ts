@@ -8,6 +8,9 @@ export function useSaksregler() {
   const { personInfo: person } = usePerson(sak?.bruker.fnr)
 
   const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
+
+  const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
+
   return {
     sakId: sak?.sakId,
     kanEndreHmsnr(): boolean {
@@ -20,5 +23,6 @@ export function useSaksregler() {
     kanHenleggeSak(): boolean {
       return !!(saksbehandlerErTildeltSak && person?.dødsdato)
     },
+    kanBehandleSak,
   }
 }

@@ -1,4 +1,4 @@
-import { ClockDashedIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, DocPencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
@@ -8,9 +8,13 @@ import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
+import { Saksnotater } from './notat/Saksnotater'
+import { useSaksregler } from '../../saksregler/useSaksregler'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
+  const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
@@ -47,6 +51,9 @@ export function Høyrekolonne() {
               }
             />
           </Tooltip>
+          <Tooltip content="Notat">
+            <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
+          </Tooltip>
         </Tabs.List>
         <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
           <Historikk />
@@ -54,6 +61,11 @@ export function Høyrekolonne() {
         <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
           <Hjelpemiddeloversikt />
         </Tabs.Panel>
+        <Eksperiment>
+          <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
+            <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
+          </Tabs.Panel>
+        </Eksperiment>
       </Tabs>
     </div>
   )

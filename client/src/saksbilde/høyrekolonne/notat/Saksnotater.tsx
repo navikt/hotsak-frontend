@@ -46,17 +46,6 @@ export function Saksnotater(props: SaksnotaterProps) {
                     </Label>
                     <Detail>{formaterTidsstempel(notat.opprettet)}</Detail>
                   </div>
-                  {!lesevisning && saksbehandler.id === notat.saksbehandler.id && (
-                    <Bleed marginInline="3" marginBlock="3">
-                      <Button
-                        type="button"
-                        size="small"
-                        icon={<TrashIcon title="Slett notat" />}
-                        variant="tertiary-neutral"
-                        onClick={() => setNotatId(notat.id)}
-                      />
-                    </Bleed>
-                  )}
                 </HStack>
                 <BodyLong size="small">{notat.innhold}</BodyLong>
               </Box>

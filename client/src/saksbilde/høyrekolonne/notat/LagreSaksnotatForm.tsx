@@ -1,4 +1,4 @@
-import { Button, Textarea, VStack } from '@navikt/ds-react'
+import { Button, ReadMore, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import type { KeyedMutator } from 'swr'
@@ -38,6 +38,9 @@ export function LagreSaksnotatForm(props: LagreSaksnotatFormProps) {
     <form onSubmit={lagreNotat}>
       <VStack gap="3">
         <Textarea label="Nytt notat" size="small" defaultValue="" {...register('innhold', { required: true })} />
+        <ReadMore size="small" header="Definisjon av notat">
+          Her kan vi forklare SB hva et internt notat er, eller hva vi velger å kalle det.
+        </ReadMore>
         <div>
           <Button type="submit" size="small" variant="secondary" loading={loading}>
             Lagre notat

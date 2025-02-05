@@ -1,14 +1,10 @@
-import { TrashIcon } from '@navikt/aksel-icons'
-import { Bleed, BodyLong, BodyShort, Box, Button, Detail, HStack, Label, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { BodyLong, BodyShort, Box, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 
-import { useInnloggetSaksbehandler } from '../../../state/authentication'
+import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 import { formaterTidsstempel } from '../../../utils/dato'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { LagreSaksnotatForm } from './LagreSaksnotatForm'
-import { SlettSaksnotatModal } from './SlettSaksnotatModal'
 import { useSaksnotater } from './useSaksnotater'
-import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 
 export interface SaksnotaterProps {
   sakId?: string
@@ -16,10 +12,8 @@ export interface SaksnotaterProps {
 }
 
 export function Saksnotater(props: SaksnotaterProps) {
-  const saksbehandler = useInnloggetSaksbehandler()
   const { sakId, lesevisning } = props
   const { notater, mutate, isLoading } = useSaksnotater(sakId)
-  const [notatId, setNotatId] = useState(NaN)
 
   if (!sakId || isLoading) {
     return null
@@ -55,9 +49,6 @@ export function Saksnotater(props: SaksnotaterProps) {
           <BodyShort size="small">Ingen saksnotater.</BodyShort>
         )}
       </VStack>
-      {!lesevisning && (
-        <SlettSaksnotatModal sakId={sakId} notatId={notatId} mutate={mutate} onClose={() => setNotatId(NaN)} />
-      )}
     </HøyrekolonnePanel>
   )
 }

@@ -2,6 +2,7 @@ import { Signaturtype } from '../../types/BehovsmeldingTypes'
 import { BrukerBekreftet } from './BrukerBekreftet'
 import { Fullmakt } from './Fullmakt'
 import { FullmaktFritak } from './FullmaktFritak'
+import { IkkkeInnhentetFordiKunTilbehør } from './IkkeInnhentetFordiKunTilbehør'
 
 interface SignaturProps {
   signaturType: Signaturtype
@@ -16,6 +17,8 @@ export function Signatur({ signaturType, navn }: SignaturProps) {
       return <Fullmakt navn={navn} />
     case Signaturtype.FRITAK_FRA_FULLMAKT:
       return <FullmaktFritak navn={navn} />
+    case Signaturtype.IKKE_INNHENTET_FORDI_KUN_TILBEHØR:
+      return <IkkkeInnhentetFordiKunTilbehør />
     default:
       return null
   }

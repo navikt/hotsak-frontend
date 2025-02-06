@@ -11,6 +11,7 @@ import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
@@ -52,11 +53,13 @@ export function Høyrekolonne() {
               }
             />
           </Tooltip>
-          {erNotatPilot && (
-            <Tooltip content="Notat">
-              <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
-            </Tooltip>
-          )}
+          <Eksperiment>
+            {erNotatPilot && (
+              <Tooltip content="Notat">
+                <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
+              </Tooltip>
+            )}
+          </Eksperiment>
         </Tabs.List>
         <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
           <Historikk />
@@ -64,11 +67,13 @@ export function Høyrekolonne() {
         <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
           <Hjelpemiddeloversikt />
         </Tabs.Panel>
-        {erNotatPilot && (
-          <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
-            <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
-          </Tabs.Panel>
-        )}
+        <Eksperiment>
+          {erNotatPilot && (
+            <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
+              <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
+            </Tabs.Panel>
+          )}
+        </Eksperiment>
       </Tabs>
     </div>
   )

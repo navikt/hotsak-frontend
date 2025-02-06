@@ -24,7 +24,7 @@ export function Saksnotater(props: SaksnotaterProps) {
       <VStack gap="5">
         {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
         {notater.length ? (
-          <VStack as={ListeUtenPunkt} gap="5" title="Notater">
+          <VStack as={ListeUtenPunkt} gap="2" title="Notater">
             {notater.map((notat) => (
               <Box
                 key={notat.id || notat.opprettet}

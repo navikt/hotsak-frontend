@@ -14,8 +14,11 @@ export enum Gruppe {
 const Enhet = {
   NAV_VIKAFOSSEN: '2103',
   NAV_HJELPEMIDDELSENTRAL_AGDER: '4710',
+  NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL: '4715',
   IT_AVDELINGEN: '2970',
 }
+
+const notatPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.IT_AVDELINGEN]
 
 export interface InnloggetSaksbehandler {
   id: string
@@ -64,6 +67,11 @@ export function useSaksbehandlerTilhørerEnhet(...enhet: string[]): boolean {
 
 export function useVisOppgavelisteTabs() {
   return useRecoilValue<boolean>(visOppgavelisteTabsState)
+}
+
+export function useErNotatPilot() {
+  const { enhetsnumre } = useInnloggetSaksbehandler()
+  return notatPilotEnheter.some((it) => enhetsnumre.includes(it))
 }
 
 export const useAuthentication = (): void => {

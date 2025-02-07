@@ -3,7 +3,6 @@ import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
 import { Suspense } from 'react'
 
-import { sorterKronologisk } from '../utils/dato'
 import { AlertError } from '../feilsider/AlertError'
 import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
@@ -19,6 +18,7 @@ import { Avstand } from '../felleskomponenter/Avstand'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Helmet } from 'react-helmet'
 import { formaterNavn } from '../utils/formater.ts'
+import { sorterKronologiskStigende } from '../utils/dato.ts'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -34,11 +34,13 @@ function PersonoversiktContent() {
     return <PersonFeilmelding personError={personInfoError} />
   }
 
-  const hotsakSaker = saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologisk(a.mottattDato, b.mottattDato)) || []
+  const hotsakSaker =
+    saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologiskStigende(a.mottattDato, b.mottattDato)) || []
   const barnebrilleSaker = saksoversikt?.barnebrilleSaker?.sort((a, b) =>
-    sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)
+    sorterKronologiskStigende(a.sak.mottattDato, b.sak.mottattDato)
   )
-  const hjelpemidler = hjelpemiddelArtikler?.sort((a, b) => sorterKronologisk(a.datoUtsendelse, b.datoUtsendelse)) || []
+  const hjelpemidler =
+    hjelpemiddelArtikler?.sort((a, b) => sorterKronologiskStigende(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
     return (antall += artikkel.antall)
   }, 0)

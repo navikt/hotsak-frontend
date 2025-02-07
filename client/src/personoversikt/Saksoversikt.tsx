@@ -17,7 +17,7 @@ import {
   Saksoversikt_Sak_Felles_Type,
   Sakstype,
 } from '../types/types.internal'
-import { formaterDato, sorterKronologisk } from '../utils/dato'
+import { formaterDato, sorterKronologiskStigende } from '../utils/dato'
 import { storForbokstavIAlleOrd } from '../utils/formater'
 
 const Container = styled.div`
@@ -137,7 +137,7 @@ export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: Sak
     hotsakSaker
       .map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a, barnebrilleSak: undefined }))
       .concat(barnebrilleSaker?.map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a.sak, barnebrilleSak: a })) || [])
-      .sort((a, b) => sorterKronologisk(a.sak.mottattDato, b.sak.mottattDato)) || []
+      .sort((a, b) => sorterKronologiskStigende(a.sak.mottattDato, b.sak.mottattDato)) || []
 
   const hasData = saker && saker.length > 0
 

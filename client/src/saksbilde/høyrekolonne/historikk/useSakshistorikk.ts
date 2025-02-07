@@ -3,8 +3,8 @@ import useSwr from 'swr'
 
 import { httpGet } from '../../../io/http'
 import { Hendelse } from '../../../types/types.internal'
-import { sorterKronologisk } from '../../../utils/dato'
 import { useSortering } from '../../../utils/useSortering'
+import { sorterKronologiskSynkende } from '../../../utils/dato'
 
 interface DataResponse {
   hendelser: ReadonlyArray<Hendelse>
@@ -17,7 +17,7 @@ export function useSakshistorikk(): DataResponse {
   const { data, error, isLoading } = useSwr<{ data: Hendelse[] }>(`api/sak/${saksnummer}/historikk`, httpGet, {
     refreshInterval: 10_000,
   })
-  const hendelser = useSortering(data?.data || [], 'opprettet', sorterKronologisk)
+  const hendelser = useSortering(data?.data || [], 'opprettet', sorterKronologiskSynkende)
   return {
     hendelser,
     error,

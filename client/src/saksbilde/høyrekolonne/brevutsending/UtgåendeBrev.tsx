@@ -2,11 +2,11 @@ import { memo } from 'react'
 
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { Brevkode } from '../../../types/types.internal'
-import { sorterKronologisk } from '../../../utils/dato'
 import { useSortering } from '../../../utils/useSortering.ts'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { BrevKort } from './BrevKort'
+import { sorterKronologiskStigende } from '../../../utils/dato.ts'
 
 export interface UtgåendeBrevProps {
   sakId: string
@@ -18,7 +18,7 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
   const saksdokumenter = useSortering(
     data.filter((dokument) => dokument.brevkode === Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER),
     'opprettet',
-    sorterKronologisk
+    sorterKronologiskStigende
   )
   return (
     <HøyrekolonnePanel

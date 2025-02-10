@@ -56,25 +56,23 @@ export function Høyrekolonne() {
               }
             />
           </Tooltip>
-          <Eksperiment>
-            {erNotatPilot && (
-              <Tooltip content="Notat">
-                <Tabs.Tab
-                  value={HøyrekolonneTabs.NOTAT}
-                  icon={
-                    <>
-                      <DocPencilIcon title="Notat" />
-                      {notater && !isLoading && !error && (
-                        <Tag variant="alt3-moderate" size="xsmall">
-                          {antallNotater}
-                        </Tag>
-                      )}
-                    </>
-                  }
-                />
-              </Tooltip>
-            )}
-          </Eksperiment>
+          {erNotatPilot && (
+            <Tooltip content="Notat">
+              <Tabs.Tab
+                value={HøyrekolonneTabs.NOTAT}
+                icon={
+                  <>
+                    <DocPencilIcon title="Notat" />
+                    {notater && !isLoading && !error && (
+                      <Tag variant="alt3-moderate" size="xsmall">
+                        {antallNotater}
+                      </Tag>
+                    )}
+                  </>
+                }
+              />
+            </Tooltip>
+          )}
         </Tabs.List>
         <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
           <Historikk />
@@ -82,13 +80,11 @@ export function Høyrekolonne() {
         <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
           <Hjelpemiddeloversikt />
         </Tabs.Panel>
-        <Eksperiment>
-          {erNotatPilot && (
-            <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
-              <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
-            </Tabs.Panel>
-          )}
-        </Eksperiment>
+        {erNotatPilot && (
+          <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
+            <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
+          </Tabs.Panel>
+        )}
       </Tabs>
     </div>
   )

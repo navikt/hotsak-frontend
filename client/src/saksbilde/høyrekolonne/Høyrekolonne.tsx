@@ -12,17 +12,20 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment'
+import { useSaksnotater } from './notat/useSaksnotater'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
+  const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
 
+  const antallNotater = notater?.length
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
@@ -45,7 +48,7 @@ export function Høyrekolonne() {
                 <>
                   <WheelchairIcon title="Utlånsoversikt" />
                   {!isLoading && !error && (
-                    <Tag variant="alt3-moderate" size="small">
+                    <Tag variant="alt3-moderate" size="xsmall">
                       {antallUtlånteHjelpemidler}
                     </Tag>
                   )}
@@ -56,7 +59,19 @@ export function Høyrekolonne() {
           <Eksperiment>
             {erNotatPilot && (
               <Tooltip content="Notat">
-                <Tabs.Tab value={HøyrekolonneTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
+                <Tabs.Tab
+                  value={HøyrekolonneTabs.NOTAT}
+                  icon={
+                    <>
+                      <DocPencilIcon title="Notat" />
+                      {notater && !isLoading && !error && (
+                        <Tag variant="alt3-moderate" size="xsmall">
+                          {antallNotater}
+                        </Tag>
+                      )}
+                    </>
+                  }
+                />
               </Tooltip>
             )}
           </Eksperiment>

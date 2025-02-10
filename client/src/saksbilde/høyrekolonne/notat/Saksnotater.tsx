@@ -23,7 +23,7 @@ export function Saksnotater(props: SaksnotaterProps) {
     <HøyrekolonnePanel tittel="Notater">
       <VStack gap="5">
         {!lesevisning && <LagreSaksnotatForm sakId={sakId} mutate={mutate} />}
-        {notater.length ? (
+        {notater?.length ? (
           <VStack as={ListeUtenPunkt} gap="2" title="Notater">
             {notater.map((notat) => (
               <Box

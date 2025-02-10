@@ -39,9 +39,10 @@ export function LagreSaksnotatForm(props: LagreSaksnotatFormProps) {
       <VStack gap="3">
         <Textarea label="Nytt notat" size="small" defaultValue="" {...register('innhold', { required: true })} />
         <ReadMore size="small" header="Hva er et notat?">
-          Bruk denne notatfunksjonen for prosessnotater i saken. Notater journalføres ikke, da de ikke er en del av
+          Bruk denne notatfunksjonen for arbeidsnotater i saken. Notater journalføres ikke, da de ikke er en del av
           saksbehandlingen. Notater kan feks. brukes for huskelapper, arbeidsprosesser eller informasjon ved overføring
-          av saken til en ny saksbehandler i hotsak. Merk at brukeren kan få innsyn i slike notater hvis de ber om det.
+          av saken til en ny saksbehandler i Hotsak. Merk at brukeren kan få innsyn i slike notater hvis de ber om det.
+          Hvis du trenger å journalføre saksopplysninger må saken overføres til Gosys.
         </ReadMore>
         <div>
           <Button type="submit" size="small" variant="secondary" loading={loading}>

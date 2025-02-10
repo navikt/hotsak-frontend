@@ -47,7 +47,7 @@ export function Saksnotater(props: SaksnotaterProps) {
             ))}
           </VStack>
         ) : (
-          <BodyShort size="small">Ingen saksnotater.</BodyShort>
+          <BodyShort size="small">Ingen notater.</BodyShort>
         )}
       </VStack>
     </HøyrekolonnePanel>

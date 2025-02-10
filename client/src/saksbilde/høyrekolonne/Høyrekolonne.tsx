@@ -11,7 +11,6 @@ import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { useSaksnotater } from './notat/useSaksnotater'
 
 export function Høyrekolonne() {

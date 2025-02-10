@@ -42,7 +42,6 @@ export function LagreSaksnotatForm(props: LagreSaksnotatFormProps) {
           Bruk denne notatfunksjonen for arbeidsnotater i saken. Notater journalføres ikke, da de ikke er en del av
           saksbehandlingen. Notater kan feks. brukes for huskelapper, arbeidsprosesser eller informasjon ved overføring
           av saken til en ny saksbehandler i Hotsak. Merk at brukeren kan få innsyn i slike notater hvis de ber om det.
-          Hvis du trenger å journalføre saksopplysninger må saken overføres til Gosys.
         </ReadMore>
         <div>
           <Button type="submit" size="small" variant="secondary" loading={loading}>

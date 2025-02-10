@@ -62,7 +62,7 @@ export function Høyrekolonne() {
                 icon={
                   <>
                     <DocPencilIcon title="Notat" />
-                    {notater && !isLoading && !error && (
+                    {notater && (
                       <Tag variant="alt3-moderate" size="xsmall">
                         {antallNotater}
                       </Tag>

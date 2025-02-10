@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { ClockIcon, DocPencilIcon, EnvelopeClosedIcon, PersonGavelIcon } from '@navikt/aksel-icons'
-import { Tabs, Tooltip } from '@navikt/ds-react'
+import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
@@ -12,6 +12,7 @@ import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
+import { useSaksnotater } from '../høyrekolonne/notat/useSaksnotater'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--a-border-default);
@@ -22,6 +23,7 @@ const Sidebar = styled(Tabs)`
 
 export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
+  const { notater } = useSaksnotater(sak?.data.sakId)
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
 
@@ -34,6 +36,8 @@ export function BarnebrillesakSidebar() {
   if (!sak) {
     return <></>
   }
+
+  const antallNotater = notater?.length
 
   return (
     <Sidebar
@@ -57,7 +61,19 @@ export function BarnebrillesakSidebar() {
           <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon title="Send brev" />} />
         </Tooltip>
         <Tooltip content="Notat">
-          <Tabs.Tab value={BarnebrilleSidebarTabs.NOTAT} icon={<DocPencilIcon title="Notat" />} />
+          <Tabs.Tab
+            value={BarnebrilleSidebarTabs.NOTAT}
+            icon={
+              <>
+                <DocPencilIcon title="Notat" />
+                {notater && (
+                  <Tag variant="alt3-moderate" size="xsmall">
+                    {antallNotater}
+                  </Tag>
+                )}
+              </>
+            }
+          />
         </Tooltip>
       </Tabs.List>
       <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>

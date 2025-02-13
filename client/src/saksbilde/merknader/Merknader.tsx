@@ -101,6 +101,41 @@ export function Merknader({}: MerknaderProps) {
             }),
           ]}
           onChange={markdownChanged}
+          translation={(key, defaultValue, interpolations) => {
+            switch (key) {
+              case 'toolbar.blockTypes.paragraph':
+                return 'Paragraf'
+              case 'toolbar.blockTypes.quote':
+                return 'Sitat'
+              case 'toolbar.undo':
+                return 'Angre'
+              case 'toolbar.redo':
+                return 'Gjør igjen'
+              case 'toolbar.bold':
+                return 'Uthevet'
+              case 'toolbar.removeBold':
+                return 'Fjern uthevet'
+              case 'toolbar.italic':
+                return 'Kursiv'
+              case 'toolbar.removeItalic':
+                return 'Fjern kursiv'
+              case 'toolbar.underline':
+                return 'Understrek'
+              case 'toolbar.removeUnderline':
+                return 'Fjern understrek'
+              case 'toolbar.bulletedList':
+                return 'Punktliste'
+              case 'toolbar.numberedList':
+                return 'Nummerert liste'
+              case 'toolbar.checkList':
+                return 'Sjekkliste'
+              case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
+                return 'Velg blokk type'
+              case 'toolbar.blockTypeSelect.placeholder':
+                return 'Blokk type'
+            }
+            return defaultValue
+          }}
         />
         <div style={{ position: 'relative' }}>
           <div

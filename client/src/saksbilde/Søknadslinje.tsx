@@ -1,5 +1,5 @@
 import { HouseIcon } from '@navikt/aksel-icons'
-import { Tabs } from '@navikt/ds-react'
+import { Tabs, Tag } from '@navikt/ds-react'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { Sakstype } from '../types/types.internal'
@@ -29,6 +29,14 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
             <TabLink to={`/sak/${id}/formidler`} title={type === Sakstype.BESTILLING ? 'Bestiller' : 'Formidler'}>
               Formidler
             </TabLink>
+            <Eksperiment>
+              <TabLink to={`/sak/${id}/merknader`} title="Merknader">
+                Merknader
+                <Tag variant="alt3-moderate" size="xsmall" style={{ marginLeft: '0.5em' }}>
+                  2
+                </Tag>
+              </TabLink>
+            </Eksperiment>
             <Eksperiment>
               <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
                 <Saksmeny />

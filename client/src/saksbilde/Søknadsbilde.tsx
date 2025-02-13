@@ -27,6 +27,7 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
+import { Merknader } from './merknader/Merknader.tsx'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -94,6 +95,7 @@ const SaksbildeContent = memo(() => {
                   }
                 />
                 <Route path="/formidler" element={<Formidler levering={levering} />} />
+                <Route path="/merknader" element={<Merknader />} />
               </Routes>
             </Container>
           </section>

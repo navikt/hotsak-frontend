@@ -55,6 +55,11 @@ export function Merknader({}: MerknaderProps) {
       dato: '10/2/2024 15:02',
       markdown: 'Utredelse fra lege: Lorem ipsum dolor sit amet.',
     },
+    {
+      saksbehandler: 'Vurderer Vilkårsen',
+      dato: '8/2/2024 10:42',
+      markdown: null,
+    },
   ]
 
   return (
@@ -101,7 +106,7 @@ export function Merknader({}: MerknaderProps) {
             }),
           ]}
           onChange={markdownChanged}
-          translation={(key, defaultValue, interpolations) => {
+          translation={(key, defaultValue) => {
             switch (key) {
               case 'toolbar.blockTypes.paragraph':
                 return 'Paragraf'
@@ -184,7 +189,12 @@ export function Merknader({}: MerknaderProps) {
                 Vis PDF
               </Button>
             </HStack>
-            <MDXEditor markdown={merknad.markdown} readOnly={true} />
+            {merknad.markdown && <MDXEditor markdown={merknad.markdown} readOnly={true} />}
+            {!merknad.markdown && (
+              <BodyShort color="#444">
+                <em>Denne merknaden ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
+              </BodyShort>
+            )}
           </Box>
         )
       })}

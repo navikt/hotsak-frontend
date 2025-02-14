@@ -19,6 +19,7 @@ import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types
 import { postBrevutkast } from '../../io/http.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
+import styled from 'styled-components'
 
 export interface MerknaderProps {
   sak: Sak
@@ -78,7 +79,7 @@ export function Merknader({ sak }: MerknaderProps) {
     {
       saksbehandler: 'Vurderer Vilkårsen',
       dato: '10.02.2024 15:02',
-      markdown: 'Utredelse fra lege: Lorem ipsum dolor sit amet.',
+      markdown: '**Utredelse fra lege:**\nLorem ipsum dolor sit amet.\n\n**Noe annet:**\nLorem ipsum dolor sit amet.',
       journalpostId: 'ec93204e-3fa4-409a-8414-ee53f485c320',
       dokumentId: '6',
     },
@@ -231,7 +232,15 @@ export function Merknader({ sak }: MerknaderProps) {
                 </Link>
               </Tooltip>
             </HStack>
-            {merknad.markdown && <MDXEditor markdown={merknad.markdown} readOnly={true} />}
+            <MdxEditorStyling>
+              {merknad.markdown && (
+                <MDXEditor
+                  markdown={merknad.markdown}
+                  readOnly={true}
+                  contentEditableClassName="mdxEditorRemoveMargin"
+                />
+              )}
+            </MdxEditorStyling>
             {!merknad.markdown && (
               <BodyShort color="#444">
                 <em>Denne merknaden ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
@@ -243,3 +252,9 @@ export function Merknader({ sak }: MerknaderProps) {
     </>
   )
 }
+
+const MdxEditorStyling = styled.div`
+  .mdxEditorRemoveMargin {
+    padding: 0;
+  }
+`

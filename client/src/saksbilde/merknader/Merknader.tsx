@@ -3,21 +3,22 @@ import { BodyLong, BodyShort, Box, Button, Checkbox, Heading, HStack, Link, Load
 import { ExternalLinkIcon, LightBulbIcon } from '@navikt/aksel-icons'
 
 import {
-  MDXEditor,
+  BlockTypeSelect,
+  BoldItalicUnderlineToggles,
   listsPlugin,
+  ListsToggle,
+  MDXEditor,
   quotePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
-  BlockTypeSelect,
   UndoRedo,
-  BoldItalicUnderlineToggles,
-  ListsToggle,
 } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
-import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
+import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
 import { postBrevutkast } from '../../io/http.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
+import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 
 export interface MerknaderProps {
   sak: Sak
@@ -61,6 +62,10 @@ export function Merknader({ sak }: MerknaderProps) {
       setLagrerUtkast(false)
     }, 500)
   }
+
+  const { data: merknader2 } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
+
+  console.log('here', merknader2)
 
   const merknader = [
     {
@@ -117,6 +122,7 @@ export function Merknader({ sak }: MerknaderProps) {
         )}
         {!utkastLasterInn && utkast && (
           <>
+            {/*<TextField placeholder="Tittel" style={{ margin: '0 0 1em' }} />*/}
             <MDXEditor
               markdown={utkast.data.brevtekst}
               plugins={[

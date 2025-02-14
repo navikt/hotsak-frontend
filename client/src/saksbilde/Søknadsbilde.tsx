@@ -95,7 +95,7 @@ const SaksbildeContent = memo(() => {
                   }
                 />
                 <Route path="/formidler" element={<Formidler levering={levering} />} />
-                <Route path="/merknader" element={<Merknader />} />
+                <Route path="/merknader" element={<Merknader sak={sak.data} />} />
               </Routes>
             </Container>
           </section>

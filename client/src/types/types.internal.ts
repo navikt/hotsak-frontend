@@ -696,6 +696,7 @@ export enum BarnebrilleSidebarTabs {
 export enum Brevtype {
   BARNEBRILLER_VEDTAK = 'BARNEBRILLER_VEDTAK',
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
+  JOURNALFØRT_NOTAT = 'JOURNALFØRT_NOTAT',
 }
 
 export interface AvvisBestilling {

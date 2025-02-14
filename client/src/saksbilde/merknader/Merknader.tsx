@@ -1,6 +1,6 @@
-import { BodyLong, BodyShort, Box, Button, Checkbox, Heading, HStack, Loader } from '@navikt/ds-react'
+import { BodyLong, BodyShort, Box, Button, Checkbox, Heading, HStack, Link, Loader, Tooltip } from '@navikt/ds-react'
 
-import { FilePdfIcon, LightBulbIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, LightBulbIcon } from '@navikt/aksel-icons'
 
 import {
   MDXEditor,
@@ -45,18 +45,24 @@ export function Merknader() {
   const merknader = [
     {
       saksbehandler: 'Vurderer Vilkårsen',
-      dato: '13/2/2024 14:21',
+      dato: '13.02.2024 14:21',
       markdown: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
+      journalpostId: 'b934c778-77e7-4eaf-810d-e871b76ca6a1',
+      dokumentId: '6',
     },
     {
       saksbehandler: 'Vurderer Vilkårsen',
-      dato: '10/2/2024 15:02',
+      dato: '10.02.2024 15:02',
       markdown: 'Utredelse fra lege: Lorem ipsum dolor sit amet.',
+      journalpostId: 'ec93204e-3fa4-409a-8414-ee53f485c320',
+      dokumentId: '6',
     },
     {
       saksbehandler: 'Vurderer Vilkårsen',
-      dato: '8/2/2024 10:42',
+      dato: '08.02.2024 10:42',
       markdown: null,
+      journalpostId: '75d8d6b7-1ff9-4b2c-bd6f-c33caac79d3f',
+      dokumentId: '6',
     },
   ]
 
@@ -183,9 +189,11 @@ export function Merknader() {
               <BodyShort size="small" color="#444">
                 {merknad.dato}
               </BodyShort>
-              <Button icon={<FilePdfIcon title="Last ned PDF" />} variant="tertiary" size="xsmall">
-                Vis PDF
-              </Button>
+              <Tooltip content="Åpne i ny fane">
+                <Link href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`} target="_blank">
+                  <ExternalLinkIcon />
+                </Link>
+              </Tooltip>
             </HStack>
             {merknad.markdown && <MDXEditor markdown={merknad.markdown} readOnly={true} />}
             {!merknad.markdown && (

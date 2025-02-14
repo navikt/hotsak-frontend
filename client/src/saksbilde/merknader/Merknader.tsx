@@ -14,11 +14,9 @@ import {
   ListsToggle,
 } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
-export interface MerknaderProps {}
-
-export function Merknader({}: MerknaderProps) {
+export function Merknader() {
   const utkast =
     'Har mottatt en e-post fra formidler om at rullator nr. 2 skal brukes i andre etasje, og behovet for denne er kritisk da bruker ikke kan forflytte rullatoren hen allerede har mellom etasjene. Det er heller ikke noe soverom i første etasje.\n' +
     '\n' +
@@ -28,11 +26,11 @@ export function Merknader({}: MerknaderProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   let dedupTimeout: NodeJS.Timeout
   const markdownChanged = (markdown: string) => {
-    setLagrerUtkast(false)
     if (dedupTimeout) clearTimeout(dedupTimeout)
+    setLagrerUtkast(false)
     dedupTimeout = setTimeout(() => {
-      setLagrerUtkast(true)
       console.log('Debug: Lagrer markdown', markdown)
+      setLagrerUtkast(true)
       dedupTimeout = setTimeout(() => {
         setLagrerUtkast(false)
       }, 1000)
@@ -180,7 +178,7 @@ export function Merknader({}: MerknaderProps) {
           >
             <HStack gap="2">
               <Heading level="3" size="xsmall">
-                Merknad journalført av {merknad.saksbehandler}
+                {merknad.saksbehandler}
               </Heading>
               <BodyShort size="small" color="#444">
                 {merknad.dato}

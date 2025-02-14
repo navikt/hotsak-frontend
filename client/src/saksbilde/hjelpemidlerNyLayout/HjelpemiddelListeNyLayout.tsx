@@ -8,6 +8,7 @@ import { useArtiklerForSak } from '../hjelpemidler/useArtiklerForSak.ts'
 import { useFinnHjelpemiddel } from '../hjelpemidler/useFinnHjelpemiddel.ts'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
+import { Summering } from './Summering.tsx'
 import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 
 interface HjelpemiddelListeProps {
@@ -68,6 +69,8 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
           <FrittStåendeTilbehør tilbehør={tilbehør} produkter={finnHjelpemiddelProdukter} />
         </>
       )}
+      <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />
+
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )

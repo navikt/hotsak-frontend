@@ -105,7 +105,7 @@
         ],
         "bruksarenaer": ["EGET_HJEM"],
         "utlevertinfo": {
-          "alleredeUtlevertFraHjelpemiddelsentralen": true,
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
           "utleverttype": "FREMSKUTT_LAGER",
           "overførtFraBruker": null,
           "annenKommentar": null

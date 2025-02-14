@@ -60,7 +60,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
       return respondInternalServerError()
     }
 
-    await delay(1_500)
+    await delay(500)
 
     const sak = await sakStore.hent(sakId)
     if (sak) {

@@ -43,7 +43,7 @@ export function formaterNavn(navn?: string | Navn | HarNavn): string {
     .join(' ')
 }
 
-export function formaterTelefonnummer(telefon: string): string {
+export function formaterTelefonnummer(telefon: string | undefined): string {
   if (!telefon) return ''
   return `${telefon.slice(0, 2)} ${telefon.slice(2, 4)} ${telefon.slice(4, 6)} ${telefon.slice(6)}`
 }

@@ -1,6 +1,13 @@
 import { delay, http, HttpResponse } from 'msw'
 
-import { Artikkel, OppgaveStatusType, StegType, VedtakPayload } from '../../types/types.internal'
+import {
+  Artikkel,
+  OppgaveStatusType,
+  StegType,
+  TilgangResultat,
+  TilgangType,
+  VedtakPayload,
+} from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import {
   respondConflict,
@@ -12,7 +19,12 @@ import {
 } from './response'
 import type { SakParams } from './params'
 
-export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebrillesakStore, journalpostStore }) => [
+export const saksbehandlingHandlers: StoreHandlersFactory = ({
+  sakStore,
+  barnebrillesakStore,
+  journalpostStore,
+  saksbehandlerStore,
+}) => [
   http.post<SakParams, { overtaHvisTildelt: boolean | undefined }>(
     `/api/sak/:sakId/tildeling`,
     async ({ params, request }) => {
@@ -63,16 +75,26 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, barnebr
     await delay(500)
 
     const sak = await sakStore.hent(sakId)
+    let { navn: bruker } = await saksbehandlerStore.innloggetSaksbehandler()
+    const harSkrivetilgang = bruker !== 'Les Visningsrud'
+
+    const tilganger = {
+      [TilgangType.KAN_BEHANDLE_SAK]: harSkrivetilgang ? TilgangResultat.TILLAT : TilgangResultat.NEKT,
+    }
+
     if (sak) {
       return HttpResponse.json({
         kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+
         data: sak,
+        tilganger,
       })
     }
 
     const barnebrillesak = await barnebrillesakStore.hent(sakId)
     if (barnebrillesak) {
       return HttpResponse.json({
+        tilganger,
         kanTildeles:
           barnebrillesak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
           barnebrillesak.status === OppgaveStatusType.AVVENTER_GODKJENNER,

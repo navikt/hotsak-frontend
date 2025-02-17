@@ -1,12 +1,10 @@
 import { HouseIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment'
+import { useLocation } from 'react-router'
 import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
-import { Saksmeny } from './Saksmeny.tsx'
 import { TabLink } from './TabLink'
-import { useLocation } from 'react-router'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -29,11 +27,11 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
             <TabLink to={`/sak/${id}/formidler`} title={type === Sakstype.BESTILLING ? 'Bestiller' : 'Formidler'}>
               Formidler
             </TabLink>
-            <Eksperiment>
+            {/* Foreløpig kommentert ut frem til vi vet om det er behov for en saksmeny. Foreløpig kan ikke saksbehandler henlegge saker manuelt. Det skjer bare automatisk med død<Eksperiment>
               <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
                 <Saksmeny />
               </div>
-            </Eksperiment>
+            </Eksperiment>*/}
           </Tabs.List>
         </Tabs>
       </SøknadslinjeContainer>

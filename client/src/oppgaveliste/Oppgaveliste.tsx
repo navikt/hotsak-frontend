@@ -35,12 +35,19 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 export function Oppgaveliste() {
+  const defaultVisFerdigstilteToggle = window.appSettings.MILJO === 'prod-gcp'
+
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
+  const [ferdigstilteToggle, setFerdigstilteToggle] = useLocalStorageState(
+    'ferdigstilteToggle',
+    defaultVisFerdigstilteToggle
+  )
   const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
@@ -53,6 +60,7 @@ export function Oppgaveliste() {
     statusFilter,
     sakstypeFilter,
     områdeFilter,
+    ferdigstilteToggle,
     hasteToggle,
   })
 
@@ -69,6 +77,7 @@ export function Oppgaveliste() {
     setStatusFilter(OppgaveStatusType.ALLE)
     setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
+    setFerdigstilteToggle(defaultVisFerdigstilteToggle)
     setHasteToggle(false)
     setCurrentPage(1)
   }
@@ -274,7 +283,15 @@ export function Oppgaveliste() {
             value={områdeFilter}
             options={OmrådeFilterLabel}
           />
-
+          <Eksperiment>
+            <FilterToggle
+              handleChange={(filterValue: boolean) => {
+                handleFilter(setFerdigstilteToggle, filterValue)
+              }}
+              label="Vis ferdigstilte"
+              value={ferdigstilteToggle}
+            />
+          </Eksperiment>
           <FilterToggle
             handleChange={(filterValue: boolean) => {
               handleFilter(setHasteToggle, filterValue)

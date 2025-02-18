@@ -31,6 +31,7 @@ interface OppgavelisteFilters {
   statusFilter: string
   sakstypeFilter: string
   områdeFilter: string
+  ferdigstilteToggle: boolean
   hasteToggle: boolean
 }
 
@@ -47,7 +48,7 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
-  const { sakerFilter, statusFilter, sakstypeFilter, områdeFilter, hasteToggle } = filters
+  const { sakerFilter, statusFilter, sakstypeFilter, områdeFilter, ferdigstilteToggle, hasteToggle } = filters
 
   const filterParams: any = {}
 
@@ -62,6 +63,9 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   }
   if (områdeFilter && områdeFilter !== OmrådeFilter.ALLE) {
     filterParams.område = områdeFilter
+  }
+  if (ferdigstilteToggle != null) {
+    filterParams.ferdigstilte = ferdigstilteToggle
   }
   if (hasteToggle) {
     filterParams.hast = hasteToggle

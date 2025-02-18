@@ -36,19 +36,20 @@ import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 
 export function Oppgaveliste() {
-  const defaultVisFerdigstilteToggle = window.appSettings.MILJO === 'prod-gcp'
+  const defaultFerdigstilteToggle = window.appSettings.MILJO === 'prod-gcp'
 
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
+  const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [ferdigstilteToggle, setFerdigstilteToggle] = useLocalStorageState(
     'ferdigstilteToggle',
-    defaultVisFerdigstilteToggle
+    defaultFerdigstilteToggle
   )
-  const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
@@ -60,8 +61,8 @@ export function Oppgaveliste() {
     statusFilter,
     sakstypeFilter,
     områdeFilter,
-    ferdigstilteToggle,
     hasteToggle,
+    ferdigstilteToggle,
   })
 
   const handleFilter = (
@@ -77,10 +78,12 @@ export function Oppgaveliste() {
     setStatusFilter(OppgaveStatusType.ALLE)
     setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
-    setFerdigstilteToggle(defaultVisFerdigstilteToggle)
     setHasteToggle(false)
+    setFerdigstilteToggle(defaultFerdigstilteToggle)
     setCurrentPage(1)
   }
+
+  const oppgaveStatusLabel = useOppgaveStatusLabel(ferdigstilteToggle)
 
   const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
     {
@@ -263,7 +266,7 @@ export function Oppgaveliste() {
             }}
             label="Status"
             value={statusFilter}
-            options={OppgaveStatusLabel}
+            options={oppgaveStatusLabel}
           />
           {
             <FilterDropdown
@@ -283,6 +286,13 @@ export function Oppgaveliste() {
             value={områdeFilter}
             options={OmrådeFilterLabel}
           />
+          <FilterToggle
+            handleChange={(filterValue: boolean) => {
+              handleFilter(setHasteToggle, filterValue)
+            }}
+            label="Kun hastesaker"
+            value={hasteToggle}
+          />
           <Eksperiment>
             <FilterToggle
               handleChange={(filterValue: boolean) => {
@@ -292,13 +302,6 @@ export function Oppgaveliste() {
               value={ferdigstilteToggle}
             />
           </Eksperiment>
-          <FilterToggle
-            handleChange={(filterValue: boolean) => {
-              handleFilter(setHasteToggle, filterValue)
-            }}
-            label="Kun hastesaker"
-            value={hasteToggle}
-          />
           <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
             Tilbakestill filtre
           </Button>

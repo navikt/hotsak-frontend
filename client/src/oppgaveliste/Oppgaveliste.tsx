@@ -218,6 +218,7 @@ export function Oppgaveliste() {
     {
       key: 'MENU',
       sortable: false,
+      hide: !harSkrivetilgang,
       render(oppgave) {
         return (
           <MenyKnapp

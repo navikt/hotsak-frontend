@@ -11,7 +11,14 @@ export function useSaksregler() {
 
   const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
 
-  const harSkrivetilgang = !!(tilganger?.[TilgangType.KAN_BEHANDLE_SAK] === TilgangResultat.TILLAT)
+  let harSkrivetilgang
+
+  // Hardkoder foreløpig til skrivetilgang i dev og prod frem til backend er klar for å vise dette på sak
+  if (window.appSettings.MILJO === 'prod-gcp' || window.appSettings.MILJO === 'dev-gcp') {
+    harSkrivetilgang = true
+  } else {
+    harSkrivetilgang = !!(tilganger?.[TilgangType.KAN_BEHANDLE_SAK] === TilgangResultat.TILLAT)
+  }
 
   return {
     sakId: sak?.sakId,

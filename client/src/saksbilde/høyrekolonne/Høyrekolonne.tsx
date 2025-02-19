@@ -47,7 +47,7 @@ export function Høyrekolonne() {
                 <>
                   <WheelchairIcon title="Utlånsoversikt" />
                   {!isLoading && !error && (
-                    <Tag variant="alt3-moderate" size="xsmall">
+                    <Tag variant="neutral-moderate" size="xsmall">
                       {antallUtlånteHjelpemidler}
                     </Tag>
                   )}
@@ -63,7 +63,7 @@ export function Høyrekolonne() {
                   <>
                     <DocPencilIcon title="Notat" />
                     {notater && (
-                      <Tag variant="alt3-moderate" size="xsmall">
+                      <Tag variant="neutral-moderate" size="xsmall">
                         {antallNotater}
                       </Tag>
                     )}

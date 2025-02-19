@@ -67,7 +67,7 @@ export function BarnebrillesakSidebar() {
               <>
                 <DocPencilIcon title="Notat" />
                 {notater && (
-                  <Tag variant="alt3-moderate" size="xsmall">
+                  <Tag variant="neutral-moderate" size="xsmall">
                     {antallNotater}
                   </Tag>
                 )}

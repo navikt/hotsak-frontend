@@ -24,9 +24,6 @@ const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);
   width: 100%;
-`
-
-const ScrollWrapper = styled.div`
   overflow: auto;
 `
 
@@ -159,7 +156,7 @@ export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: Sak
             </Alert>
           </div>
           {hasData ? (
-            <ScrollWrapper>
+            <>
               <Table style={{ width: 'initial' }} zebraStripes size="small">
                 <Table.Header>
                   <Table.Row>
@@ -184,7 +181,7 @@ export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: Sak
                   })}
                 </Table.Body>
               </Table>
-            </ScrollWrapper>
+            </>
           ) : (
             <IngentingFunnet>Fant ingen HOTSAK saker på bruker</IngentingFunnet>
           )}

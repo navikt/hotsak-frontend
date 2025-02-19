@@ -34,59 +34,50 @@ import { Tildeling } from './kolonner/Tildeling'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
-import { useOppgaveliste } from './useOppgaveliste'
+import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 
+const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
+  statuskategori: window.appSettings.MILJO === 'prod-gcp' ? undefined : Statuskategori.ÅPEN,
+  sakerFilter: SakerFilter.UFORDELTE,
+  statusFilter: OppgaveStatusType.ALLE,
+  sakstypeFilter: SakstypeFilter.ALLE,
+  områdeFilter: OmrådeFilter.ALLE,
+  hasteToggle: false,
+  currentPage: 1,
+}
+
 export function Oppgaveliste() {
-  const defaultStatuskategori = window.appSettings.MILJO === 'prod-gcp' ? undefined : Statuskategori.ÅPEN
-  const { harSkrivetilgang } = useOppgavetilgang()
-  const [statuskategori, setStatuskategori] = useLocalStorageState<Statuskategori | undefined>(
-    'statuskategori',
-    defaultStatuskategori
+  const [filterState, setFilterState] = useLocalStorageState<OppgavelisteFilters & { currentPage: number }>(
+    'filterState',
+    defaultFilterState
   )
-  const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
-  const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
-  const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
-  const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
-  const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
-  const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const navigate = useNavigate()
+  const { harSkrivetilgang } = useOppgavetilgang()
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
-  const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
-    statuskategori,
-    sakerFilter,
-    statusFilter,
-    sakstypeFilter,
-    områdeFilter,
-    hasteToggle,
-  })
+  const { currentPage, ...filters } = filterState
+  const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(
+    currentPage,
+    sort,
+    filters
+  )
 
-  const handleFilter = (
-    handler: (...args: any[]) => any,
-    value: Statuskategori | SakerFilter | OppgaveStatusType | OmrådeFilter | boolean
-  ) => {
-    handler(value)
-    setCurrentPage(1)
+  const handleFilter = (key: OppgavelisteFiltersKey, value: OppgavelisteFilters[OppgavelisteFiltersKey]) => {
+    setFilterState({ ...filterState, currentPage: 1, [key]: value })
   }
 
   const clearFilters = () => {
-    setStatuskategori(defaultStatuskategori)
-    setSakerFilter(SakerFilter.UFORDELTE)
-    setStatusFilter(OppgaveStatusType.ALLE)
-    setSakstypeFilter(SakstypeFilter.ALLE)
-    setOmrådeFilter(OmrådeFilter.ALLE)
-    setHasteToggle(false)
-    setCurrentPage(1)
+    setFilterState(defaultFilterState)
   }
 
-  const sakerFilterLabel = useSakerFilterLabel(statuskategori)
-  const oppgaveStatusLabel = useOppgaveStatusLabel(statuskategori)
+  const sakerFilterLabel = useSakerFilterLabel(filterState.statuskategori)
+  const oppgaveStatusLabel = useOppgaveStatusLabel(filterState.statuskategori)
 
   const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
     {
@@ -259,58 +250,62 @@ export function Oppgaveliste() {
         <HStack gap="4" align="end">
           <FilterDropdown
             handleChange={(filterValue: SakerFilter) => {
-              handleFilter(setSakerFilter, filterValue)
+              handleFilter('sakerFilter', filterValue)
             }}
             label="Saker"
-            value={sakerFilter}
+            value={filterState.sakerFilter}
             options={sakerFilterLabel}
           />
           <FilterDropdown
-            handleChange={(filterValue: SakerFilter) => {
-              handleFilter(setStatusFilter, filterValue)
+            handleChange={(filterValue: OppgaveStatusType) => {
+              handleFilter('statusFilter', filterValue)
             }}
             label="Status"
-            value={statusFilter}
+            value={filterState.statusFilter}
             options={oppgaveStatusLabel}
           />
           {
             <FilterDropdown
-              handleChange={(filterValue: SakerFilter) => {
-                handleFilter(setSakstypeFilter, filterValue)
+              handleChange={(filterValue: SakstypeFilter) => {
+                handleFilter('sakstypeFilter', filterValue)
               }}
               label="Sakstype"
-              value={sakstypeFilter}
+              value={filterState.sakstypeFilter}
               options={SakstypeFilterLabel}
             />
           }
           <FilterDropdown
-            handleChange={(filterValue: SakerFilter) => {
-              handleFilter(setOmrådeFilter, filterValue)
+            handleChange={(filterValue: OmrådeFilter) => {
+              handleFilter('områdeFilter', filterValue)
             }}
             label="Område"
-            value={områdeFilter}
+            value={filterState.områdeFilter}
             options={OmrådeFilterLabel}
           />
           <FilterToggle
             handleChange={(filterValue: boolean) => {
-              handleFilter(setHasteToggle, filterValue)
+              handleFilter('hasteToggle', filterValue)
             }}
             label="Kun hastesaker"
-            value={hasteToggle}
+            value={filterState.hasteToggle}
           />
           <Eksperiment>
             <FilterToggle
               handleChange={(filterValue: boolean) => {
-                const nyStatuskategori = filterValue ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN
-                // avsluttede saker kan ikke være ufordelte
-                if (nyStatuskategori === Statuskategori.AVSLUTTET && sakerFilter == SakerFilter.UFORDELTE) {
-                  setSakerFilter(SakerFilter.ALLE)
-                }
-                setStatusFilter(OppgaveStatusType.ALLE)
-                handleFilter(setStatuskategori, nyStatuskategori)
+                const statuskategori = filterValue ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN
+                setFilterState({
+                  ...filterState,
+                  statuskategori,
+                  sakerFilter:
+                    statuskategori === Statuskategori.AVSLUTTET && filterState.sakerFilter == SakerFilter.UFORDELTE
+                      ? SakerFilter.ALLE
+                      : filterState.sakerFilter,
+                  statusFilter: OppgaveStatusType.ALLE,
+                  currentPage: 1,
+                })
               }}
               label="Kun ferdigstilte"
-              value={statuskategori === Statuskategori.AVSLUTTET}
+              value={filterState.statuskategori === Statuskategori.AVSLUTTET}
             />
           </Eksperiment>
           <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
@@ -324,7 +319,7 @@ export function Oppgaveliste() {
         <Container>
           <Box padding="4">
             {hasData ? (
-              <ScrollWrapper>
+              <>
                 <Table
                   style={{ width: 'initial' }}
                   zebraStripes
@@ -375,7 +370,7 @@ export function Oppgaveliste() {
                 <Paging
                   totalElements={totalElements}
                   currentPage={currentPage}
-                  onPageChange={(page: number) => setCurrentPage(page)}
+                  onPageChange={(page: number) => setFilterState({ ...filterState, currentPage: page })}
                 />
                 <TildelingKonfliktModal
                   open={!!visTildelingKonfliktModalForSak}
@@ -384,7 +379,7 @@ export function Oppgaveliste() {
                     if (visTildelingKonfliktModalForSak) navigate(visTildelingKonfliktModalForSak)
                   }}
                 />
-              </ScrollWrapper>
+              </>
             ) : (
               <IngentingFunnet>Ingen saker funnet.</IngentingFunnet>
             )}
@@ -399,9 +394,6 @@ const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);
   width: 100%;
-`
-
-const ScrollWrapper = styled.div`
   overflow: auto;
 `
 

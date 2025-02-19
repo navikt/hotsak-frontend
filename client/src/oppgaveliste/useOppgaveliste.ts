@@ -33,14 +33,16 @@ interface PathConfigType {
   queryParams: Record<string, string>
 }
 
-interface OppgavelisteFilters {
+export interface OppgavelisteFilters {
   statuskategori?: Statuskategori
-  sakerFilter: string
-  statusFilter: string
-  sakstypeFilter: string
-  områdeFilter: string
+  sakerFilter: SakerFilter
+  statusFilter: OppgaveStatusType
+  sakstypeFilter: SakstypeFilter
+  områdeFilter: OmrådeFilter
   hasteToggle: boolean
 }
+
+export type OppgavelisteFiltersKey = keyof OppgavelisteFilters
 
 export interface OppgavelisteResponse {
   oppgaver: Oppgave[]

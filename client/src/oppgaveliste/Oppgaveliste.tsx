@@ -19,10 +19,10 @@ import {
   OppgaveStatusLabel,
   OppgaveStatusType,
   SakerFilter,
-  SakerFilterLabel,
   Sakstype,
   SakstypeFilter,
   SakstypeFilterLabel,
+  Statuskategori,
 } from '../types/types.internal'
 import { formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
@@ -37,19 +37,19 @@ import { useLocalStorageState } from './useLocalStorageState'
 import { useOppgaveliste } from './useOppgaveliste'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
+import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 
 export function Oppgaveliste() {
-  const defaultFerdigstilteToggle = window.appSettings.MILJO === 'prod-gcp'
-
+  const defaultStatuskategori = window.appSettings.MILJO === 'prod-gcp' ? undefined : Statuskategori.ÅPEN
+  const [statuskategori, setStatuskategori] = useLocalStorageState<Statuskategori | undefined>(
+    'statuskategori',
+    defaultStatuskategori
+  )
   const [sakerFilter, setSakerFilter] = useLocalStorageState('sakerFilter', SakerFilter.UFORDELTE)
   const [statusFilter, setStatusFilter] = useLocalStorageState('statusFilter', OppgaveStatusType.ALLE)
   const [områdeFilter, setOmrådeFilter] = useLocalStorageState('områdeFilter', OmrådeFilter.ALLE)
   const [sakstypeFilter, setSakstypeFilter] = useLocalStorageState('sakstypeFilter', SakstypeFilter.ALLE)
   const [hasteToggle, setHasteToggle] = useLocalStorageState('hasteToggle', false)
-  const [ferdigstilteToggle, setFerdigstilteToggle] = useLocalStorageState(
-    'ferdigstilteToggle',
-    defaultFerdigstilteToggle
-  )
   const [currentPage, setCurrentPage] = useLocalStorageState('currentPage', 1)
   const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
@@ -57,33 +57,34 @@ export function Oppgaveliste() {
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(currentPage, sort, {
+    statuskategori,
     sakerFilter,
     statusFilter,
     sakstypeFilter,
     områdeFilter,
     hasteToggle,
-    ferdigstilteToggle,
   })
 
   const handleFilter = (
     handler: (...args: any[]) => any,
-    value: SakerFilter | OppgaveStatusType | OmrådeFilter | boolean
+    value: Statuskategori | SakerFilter | OppgaveStatusType | OmrådeFilter | boolean
   ) => {
     handler(value)
     setCurrentPage(1)
   }
 
   const clearFilters = () => {
+    setStatuskategori(defaultStatuskategori)
     setSakerFilter(SakerFilter.UFORDELTE)
     setStatusFilter(OppgaveStatusType.ALLE)
     setSakstypeFilter(SakstypeFilter.ALLE)
     setOmrådeFilter(OmrådeFilter.ALLE)
     setHasteToggle(false)
-    setFerdigstilteToggle(defaultFerdigstilteToggle)
     setCurrentPage(1)
   }
 
-  const oppgaveStatusLabel = useOppgaveStatusLabel(ferdigstilteToggle)
+  const sakerFilterLabel = useSakerFilterLabel(statuskategori)
+  const oppgaveStatusLabel = useOppgaveStatusLabel(statuskategori)
 
   const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
     {
@@ -258,7 +259,7 @@ export function Oppgaveliste() {
             }}
             label="Saker"
             value={sakerFilter}
-            options={SakerFilterLabel}
+            options={sakerFilterLabel}
           />
           <FilterDropdown
             handleChange={(filterValue: SakerFilter) => {
@@ -296,10 +297,16 @@ export function Oppgaveliste() {
           <Eksperiment>
             <FilterToggle
               handleChange={(filterValue: boolean) => {
-                handleFilter(setFerdigstilteToggle, filterValue)
+                const nyStatuskategori = filterValue ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN
+                // avsluttede saker kan ikke være ufordelte
+                if (nyStatuskategori === Statuskategori.AVSLUTTET && sakerFilter == SakerFilter.UFORDELTE) {
+                  setSakerFilter(SakerFilter.ALLE)
+                }
+                setStatusFilter(OppgaveStatusType.ALLE)
+                handleFilter(setStatuskategori, nyStatuskategori)
               }}
-              label="Vis ferdigstilte"
-              value={ferdigstilteToggle}
+              label="Kun ferdigstilte"
+              value={statuskategori === Statuskategori.AVSLUTTET}
             />
           </Eksperiment>
           <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { OppgaveStatusLabel, OppgaveStatusType } from '../types/types.internal.ts'
+import { OppgaveStatusLabel, OppgaveStatusType, Statuskategori } from '../types/types.internal.ts'
 
-const ferdigstilte = [
+const avsluttede = [
   OppgaveStatusType.AVSLÅTT,
   OppgaveStatusType.AVVIST,
   OppgaveStatusType.FERDIGSTILT,
@@ -10,12 +10,16 @@ const ferdigstilte = [
   OppgaveStatusType.SENDT_GOSYS,
 ]
 
-export function useOppgaveStatusLabel(ferdigstilteToggle: boolean): Map<OppgaveStatusType, string> {
+export function useOppgaveStatusLabel(statuskategori?: Statuskategori): Map<OppgaveStatusType, string> {
   return useMemo(() => {
-    if (ferdigstilteToggle) {
+    if (!statuskategori) {
       return OppgaveStatusLabel
-    } else {
-      return new Map<OppgaveStatusType, string>([...OppgaveStatusLabel].filter(([key]) => !ferdigstilte.includes(key)))
     }
-  }, [ferdigstilteToggle])
+    if (statuskategori === Statuskategori.ÅPEN) {
+      return new Map<OppgaveStatusType, string>([...OppgaveStatusLabel].filter(([key]) => !avsluttede.includes(key)))
+    }
+    return new Map<OppgaveStatusType, string>(
+      [...OppgaveStatusLabel].filter(([key]) => key === OppgaveStatusType.ALLE || avsluttede.includes(key))
+    )
+  }, [statuskategori])
 }

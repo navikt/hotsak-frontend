@@ -3,7 +3,14 @@ import { useEffect } from 'react'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
-import { OmrådeFilter, Oppgave, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
+import {
+  OmrådeFilter,
+  Oppgave,
+  OppgaveStatusType,
+  SakerFilter,
+  SakstypeFilter,
+  Statuskategori,
+} from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { PAGE_SIZE } from './paging/Paging'
 
@@ -27,12 +34,12 @@ interface PathConfigType {
 }
 
 interface OppgavelisteFilters {
+  statuskategori?: Statuskategori
   sakerFilter: string
   statusFilter: string
   sakstypeFilter: string
   områdeFilter: string
   hasteToggle: boolean
-  ferdigstilteToggle: boolean
 }
 
 export interface OppgavelisteResponse {
@@ -48,10 +55,13 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
   const pagingParams = { limit: PAGE_SIZE, page: currentPage }
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
-  const { sakerFilter, statusFilter, sakstypeFilter, områdeFilter, hasteToggle, ferdigstilteToggle } = filters
+  const { statuskategori, sakerFilter, statusFilter, sakstypeFilter, områdeFilter, hasteToggle } = filters
 
   const filterParams: any = {}
 
+  if (statuskategori) {
+    filterParams.statuskategori = statuskategori
+  }
   if (sakerFilter && sakerFilter !== SakerFilter.ALLE) {
     filterParams.saksbehandler = sakerFilter
   }
@@ -66,9 +76,6 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   }
   if (hasteToggle) {
     filterParams.hast = hasteToggle
-  }
-  if (ferdigstilteToggle != null) {
-    filterParams.ferdigstilte = ferdigstilteToggle
   }
 
   return {

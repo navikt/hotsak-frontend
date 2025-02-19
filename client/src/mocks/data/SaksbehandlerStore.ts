@@ -35,8 +35,8 @@ export class SaksbehandlerStore extends Dexie {
           navIdent: 'J123456',
         }),
         lagSaksbehandler({
-          navn: 'Les Visningsrud',
-          epost: 'les.visningsrud@nav.no',
+          navn: 'Les Visningrud',
+          epost: 'les.visningrud@nav.no',
           navIdent: 'V123456',
         }),
       ])

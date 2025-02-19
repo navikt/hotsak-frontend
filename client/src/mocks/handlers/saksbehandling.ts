@@ -76,7 +76,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
     const sak = await sakStore.hent(sakId)
     let { navn: bruker } = await saksbehandlerStore.innloggetSaksbehandler()
-    const harSkrivetilgang = bruker !== 'Les Visningsrud'
+    const harSkrivetilgang = bruker !== 'Les Visningrud'
 
     const tilganger = {
       [TilgangType.KAN_BEHANDLE_SAK]: harSkrivetilgang ? TilgangResultat.TILLAT : TilgangResultat.NEKT,

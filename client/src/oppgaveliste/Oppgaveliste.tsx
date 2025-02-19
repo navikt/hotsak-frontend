@@ -315,7 +315,7 @@ export function Oppgaveliste() {
         <Container>
           <Box padding="4">
             {hasData ? (
-              <ScrollWrapper>
+              <>
                 <Table
                   style={{ width: 'initial' }}
                   zebraStripes
@@ -375,7 +375,7 @@ export function Oppgaveliste() {
                     if (visTildelingKonfliktModalForSak) navigate(visTildelingKonfliktModalForSak)
                   }}
                 />
-              </ScrollWrapper>
+              </>
             ) : (
               <IngentingFunnet>Ingen saker funnet.</IngentingFunnet>
             )}
@@ -390,9 +390,6 @@ const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);
   width: 100%;
-`
-
-const ScrollWrapper = styled.div`
   overflow: auto;
 `
 

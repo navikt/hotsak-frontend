@@ -38,9 +38,11 @@ import { useOppgaveliste } from './useOppgaveliste'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
+import { useOppgavetilgang } from './useOppgavetilgang.ts'
 
 export function Oppgaveliste() {
   const defaultStatuskategori = window.appSettings.MILJO === 'prod-gcp' ? undefined : Statuskategori.ÅPEN
+  const { harSkrivetilgang } = useOppgavetilgang()
   const [statuskategori, setStatuskategori] = useLocalStorageState<Statuskategori | undefined>(
     'statuskategori',
     defaultStatuskategori
@@ -95,6 +97,7 @@ export function Oppgaveliste() {
         return (
           <Tildeling
             oppgave={oppgave}
+            lesevisning={!harSkrivetilgang}
             oppgaveVersjon={{ oppgaveId: oppgave.oppgaveId, versjon: oppgave.versjon }}
             visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}

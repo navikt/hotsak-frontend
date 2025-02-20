@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
-import { SatsType, StepType, VilkårsResultat } from '../../../../types/types.internal'
+import { SatsType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { formaterBeløp, storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
@@ -135,17 +135,19 @@ export function RegistrerSøknadLesevisning() {
           <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
         )}
       </div>
-      <div>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => {
-            setStep(StepType.VILKÅR)
-          }}
-        >
-          Neste
-        </Button>
-      </div>
+      {sak.data.steg !== StegType.INNHENTE_FAKTA && (
+        <div>
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => {
+              setStep(StepType.VILKÅR)
+            }}
+          >
+            Neste
+          </Button>
+        </div>
+      )}
     </VStack>
   )
 }

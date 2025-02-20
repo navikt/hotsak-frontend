@@ -19,7 +19,7 @@ const RegistrerSøknadContent = memo(() => {
   const { dokumenter } = useJournalposter()
   const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   const journalpostId = dokumenter[0]?.journalpostId
   const dokumentId = dokumenter[0]?.dokumentId

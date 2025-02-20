@@ -26,7 +26,7 @@ export function VurderVilkår() {
   const [åpneRader, setÅpneRader] = useState<string[]>([])
   const [lagrer, setLagrer] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState<boolean>(false)
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const errorRef = useRef<HTMLDivElement>(null)
   const [hasError, setHasError] = useState(false)
   const [errors, setErrors] = useState<string[]>([])

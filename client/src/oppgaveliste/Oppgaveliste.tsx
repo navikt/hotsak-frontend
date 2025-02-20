@@ -35,13 +35,12 @@ import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
 import { useLocalStorageState } from './useLocalStorageState'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
-  statuskategori: window.appSettings.MILJO === 'prod-gcp' ? undefined : Statuskategori.ÅPEN,
+  statuskategori: Statuskategori.ÅPEN,
   sakerFilter: SakerFilter.UFORDELTE,
   statusFilter: OppgaveStatusType.ALLE,
   sakstypeFilter: SakstypeFilter.ALLE,
@@ -289,25 +288,23 @@ export function Oppgaveliste() {
             label="Kun hastesaker"
             value={filterState.hasteToggle}
           />
-          <Eksperiment>
-            <FilterToggle
-              handleChange={(filterValue: boolean) => {
-                const statuskategori = filterValue ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN
-                setFilterState({
-                  ...filterState,
-                  statuskategori,
-                  sakerFilter:
-                    statuskategori === Statuskategori.AVSLUTTET && filterState.sakerFilter == SakerFilter.UFORDELTE
-                      ? SakerFilter.ALLE
-                      : filterState.sakerFilter,
-                  statusFilter: OppgaveStatusType.ALLE,
-                  currentPage: 1,
-                })
-              }}
-              label="Kun ferdigstilte"
-              value={filterState.statuskategori === Statuskategori.AVSLUTTET}
-            />
-          </Eksperiment>
+          <FilterToggle
+            handleChange={(filterValue: boolean) => {
+              const statuskategori = filterValue ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN
+              setFilterState({
+                ...filterState,
+                statuskategori,
+                sakerFilter:
+                  statuskategori === Statuskategori.AVSLUTTET && filterState.sakerFilter == SakerFilter.UFORDELTE
+                    ? SakerFilter.ALLE
+                    : filterState.sakerFilter,
+                statusFilter: OppgaveStatusType.ALLE,
+                currentPage: 1,
+              })
+            }}
+            label="Kun ferdigstilte"
+            value={filterState.statuskategori === Statuskategori.AVSLUTTET}
+          />
           <Button variant="tertiary-neutral" size="small" onClick={() => clearFilters()}>
             Tilbakestill filtre
           </Button>

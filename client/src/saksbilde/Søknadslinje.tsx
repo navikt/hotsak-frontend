@@ -29,7 +29,6 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
               Formidler
             </TabLink>
             {/* Foreløpig kommentert ut frem til vi vet om det er behov for en saksmeny. Foreløpig kan ikke saksbehandler henlegge saker manuelt. Det skjer bare automatisk med død<Eksperiment>
-            <Eksperiment>
               <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
                 <Saksmeny />
               </div>

@@ -1,6 +1,6 @@
 import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 
-import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { PersonIcon } from '@navikt/aksel-icons'
 import { Merknad } from '../../felleskomponenter/Merknad'
@@ -27,7 +27,7 @@ export function Formidler({ levering }: FormidlerProps) {
         <Etikett>Postadresse</Etikett>
         <Brødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</Brødtekst>
         <Etikett>Telefon</Etikett>
-        <Brødtekst>{formidler.telefon}</Brødtekst>
+        <Brødtekst>{formaterTelefonnummer(formidler.telefon)}</Brødtekst>
         <Etikett>Treffest enklest</Etikett>
         <Brødtekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</Brødtekst>
         <Etikett>E-postadresse</Etikett>
@@ -65,7 +65,7 @@ export function Formidler({ levering }: FormidlerProps) {
             <Etikett>Stilling</Etikett>
             <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Brødtekst>
             <Etikett>Telefon</Etikett>
-            <Brødtekst>{oppfølging.telefon}</Brødtekst>
+            <Brødtekst>{formaterTelefonnummer(oppfølging.telefon)}</Brødtekst>
             <Etikett>Ansvar</Etikett>
             <Brødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Brødtekst>
           </HGrid>

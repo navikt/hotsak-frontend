@@ -18,7 +18,7 @@ import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 import { formaterNavn } from '../utils/formater'
 import { Oppgavestatus } from '../types/types.internal'
 
-export function JournalpostVisning() {
+export function JournalpostVisning({ lesevisning }: { lesevisning: boolean }) {
   const { journalpostId } = useParams<{ journalpostId: string }>()
   const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer } = usePersonContext()
@@ -47,25 +47,29 @@ export function JournalpostVisning() {
       return <SkjemaAlert variant="info">Journalposten er sendt til journalføring</SkjemaAlert>
     } else {
       return (
-        <Knappepanel>
-          <DokumentIkkeTildelt
-            oppgaveId={journalpost.oppgave.oppgaveId}
-            journalpostId={journalpost.journalpostId}
-            gåTilSak={false}
-          />
-        </Knappepanel>
+        !lesevisning && (
+          <Knappepanel>
+            <DokumentIkkeTildelt
+              oppgaveId={journalpost.oppgave.oppgaveId}
+              journalpostId={journalpost.journalpostId}
+              gåTilSak={false}
+            />
+          </Knappepanel>
+        )
       )
     }
   }
 
   return (
     <Container>
-      <ManuellJournalføringKnapp
-        oppgaveId={oppgave.oppgaveId}
-        status={oppgave.oppgavestatus}
-        tildeltSaksbehandler={oppgave?.tildeltSaksbehandler}
-        onMutate={mutate}
-      />
+      {!lesevisning && (
+        <ManuellJournalføringKnapp
+          oppgaveId={oppgave.oppgaveId}
+          status={oppgave.oppgavestatus}
+          tildeltSaksbehandler={oppgave?.tildeltSaksbehandler}
+          onMutate={mutate}
+        />
+      )}
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>

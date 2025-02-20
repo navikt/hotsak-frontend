@@ -1,15 +1,31 @@
 import { OppgaveApiOppgave } from './experimentalTypes'
 
-export interface SakResponse {
+export interface SakResponseBase {
   kanTildeles: boolean
+  tilganger: Tilgang
   oppgave?: OppgaveApiOppgave
+}
+export interface SakResponse extends SakResponseBase {
   data: Sak
 }
 
-export interface BarnebrillesakResponse {
-  kanTildeles: boolean
-  oppgave?: OppgaveApiOppgave
+export interface BarnebrillesakResponse extends SakResponseBase {
   data: Barnebrillesak
+}
+
+export type Tilgang = {
+  [key in TilgangType]: TilgangResultat
+}
+
+export enum TilgangType {
+  KAN_BEHANDLE_SAK = 'KAN_BEHANDLE_SAK',
+  KAN_GODKJENNE_VEDTAK = 'KAN_GODKJENNE_VEDTAK',
+  KAN_HENLEGGE_SAK = 'KAN_HENLEGGE_SAK',
+}
+
+export enum TilgangResultat {
+  TILLAT = 'TILLAT',
+  NEKT = 'NEKT',
 }
 
 export interface SakBase {

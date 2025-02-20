@@ -34,6 +34,12 @@ export class SaksbehandlerStore extends Dexie {
           epost: 'journalfører.journalposten@nav.no',
           navIdent: 'J123456',
         }),
+        lagSaksbehandler({
+          navn: 'Les Visningrud',
+          epost: 'les.visningrud@nav.no',
+          navIdent: 'V123456',
+          grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.HOTSAK_NASJONAL],
+        }),
       ])
     }
     if (!this.getInnloggetSaksbehandlerId()) {
@@ -86,7 +92,7 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): Innlo
     navn: '',
     epost: '',
     navIdent: '',
-    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE],
+    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE, Gruppe.HOTSAK_SAKSBEHANDLER],
     enhetsnumre: ['2970', '4710', '4711'],
     erInnlogget: true,
     ...saksbehandler,

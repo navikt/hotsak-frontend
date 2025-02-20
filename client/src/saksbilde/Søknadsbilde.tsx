@@ -28,10 +28,12 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { Merknader } from './merknader/Merknader.tsx'
+import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
+  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
 
@@ -69,9 +71,16 @@ const SaksbildeContent = memo(() => {
               adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
             />
             <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
-            {sak.data.sakstype === Sakstype.SØKNAD && <VedtakCard sak={sak.data} oppgave={sak.oppgave} />}
+            {sak.data.sakstype === Sakstype.SØKNAD && (
+              <VedtakCard sak={sak.data} oppgave={sak.oppgave} lesevisning={!harSkrivetilgang} />
+            )}
             {erBestilling && (
-              <BestillingCard bestilling={sak.data} hjelpemiddelArtikler={hjelpemiddelArtikler} oppgave={sak.oppgave} />
+              <BestillingCard
+                bestilling={sak.data}
+                hjelpemiddelArtikler={hjelpemiddelArtikler}
+                oppgave={sak.oppgave}
+                lesevisning={!harSkrivetilgang}
+              />
             )}
           </Venstremeny>
           <section>

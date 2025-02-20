@@ -28,11 +28,13 @@ import { BekreftAutomatiskOrdre } from './Modal'
 
 export interface BestillingCardProps {
   bestilling: Sak
+  lesevisning: boolean
+
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
   oppgave?: OppgaveApiOppgave
 }
 
-export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
+export function BestillingCard({ bestilling, oppgave, lesevisning }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const { behovsmelding } = useBehovsmelding()
@@ -123,9 +125,11 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     return (
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
-        <Knappepanel>
-          <IkkeTildelt sakId={sakId} oppgaveVersjon={oppgaveVersjon} gåTilSak={false}></IkkeTildelt>
-        </Knappepanel>
+        {!lesevisning && (
+          <Knappepanel>
+            <IkkeTildelt sakId={sakId} oppgaveVersjon={oppgaveVersjon} gåTilSak={false}></IkkeTildelt>
+          </Knappepanel>
+        )}
       </VenstremenyCard>
     )
   }
@@ -137,11 +141,13 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}</Tekst>
-        <Knappepanel>
-          <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
-            Overta bestillingen
-          </Knapp>
-        </Knappepanel>
+        {!lesevisning && (
+          <Knappepanel>
+            <Button variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
+              Overta bestillingen
+            </Button>
+          </Knappepanel>
+        )}
         <OvertaSakModal
           open={visOvertaSakModal}
           saksbehandler={bestilling?.saksbehandler?.navn || '<Ukjent>'}
@@ -154,15 +160,19 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     )
   }
 
+  if (lesevisning) {
+    return null
+  }
+
   return (
     <VenstremenyCard>
       <Knappepanel>
-        <Knapp variant="primary" size="small" onClick={() => setVisOpprettOrdreModal(true)}>
+        <Button variant="primary" size="small" onClick={() => setVisOpprettOrdreModal(true)}>
           Godkjenn
-        </Knapp>
-        <Knapp variant="secondary" size="small" onClick={() => setVisAvvisModal(true)}>
+        </Button>
+        <Button variant="secondary" size="small" onClick={() => setVisAvvisModal(true)}>
           Avvis
-        </Knapp>
+        </Button>
       </Knappepanel>
       {
         /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke
@@ -196,14 +206,6 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     </VenstremenyCard>
   )
 }
-
-const Knapp = styled(Button)`
-  min-height: 0;
-  margin: 2px;
-  height: 1.8rem;
-  padding: 0 0.75rem;
-  box-sizing: border-box;
-`
 
 const StatusTekst = styled.div`
   padding-top: 0.5rem;

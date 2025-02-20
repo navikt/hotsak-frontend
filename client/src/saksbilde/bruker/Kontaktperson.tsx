@@ -1,7 +1,7 @@
 import { CopyButton, HStack, Tooltip } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Kontaktperson as KontaktpersonType, Levering } from '../../types/BehovsmeldingTypes'
-import { formaterNavn } from '../../utils/formater'
+import { formaterNavn, formaterTelefonnummer } from '../../utils/formater'
 
 export interface KontaktpersonProps {
   levering: Levering
@@ -32,7 +32,7 @@ export function lagKontaktpersonTekst(levering: Levering): string {
       return `Formidler (${formaterNavn(hjelpemiddelformidler.navn)})`
     case KontaktpersonType.ANNEN_KONTAKTPERSON:
       return annenKontaktperson
-        ? `${formaterNavn(annenKontaktperson.navn)}. Telefon: ${annenKontaktperson.telefon}`
+        ? `${formaterNavn(annenKontaktperson.navn)}. Telefon: ${formaterTelefonnummer(annenKontaktperson.telefon)}`
         : ''
     case undefined:
       return 'Ukjen kontaktperson'

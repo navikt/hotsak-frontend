@@ -19,9 +19,11 @@ import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
 import { DokumentTildeling } from './DokumentTildeling'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes'
+import { useOppgavetilgang } from '../useOppgavetilgang'
 
 export function Dokumentliste() {
   const { data, isLoading, error } = useDokumentliste()
+  const { harSkrivetilgang } = useOppgavetilgang()
   const oppgaver = data?.oppgaver || []
 
   const kolonner: Tabellkolonne<OppgaveApiOppgave>[] = [
@@ -30,7 +32,7 @@ export function Dokumentliste() {
       name: 'Eier',
       width: 160,
       render(oppgave: OppgaveApiOppgave) {
-        return <DokumentTildeling dokumentOppgave={oppgave} />
+        return <DokumentTildeling dokumentOppgave={oppgave} lesevisning={!harSkrivetilgang} />
       },
       accessor(verdi: OppgaveApiOppgave): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')
@@ -120,7 +122,7 @@ export function Dokumentliste() {
         <Container>
           <Box padding="4">
             {hasData ? (
-              <ScrollWrapper>
+              <>
                 <Table style={{ width: 'initial' }} zebraStripes size="small" sort={sort} onSortChange={onSortChange}>
                   <caption className="sr-only">Mottatt dokumenter</caption>
                   <Table.Header>
@@ -152,7 +154,7 @@ export function Dokumentliste() {
                     ))}
                   </Table.Body>
                 </Table>
-              </ScrollWrapper>
+              </>
             ) : (
               <IngentingFunnet>Ingen dokumenter funnet</IngentingFunnet>
             )}
@@ -169,8 +171,5 @@ const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);
   width: 100%;
-`
-
-const ScrollWrapper = styled.div`
   overflow: auto;
 `

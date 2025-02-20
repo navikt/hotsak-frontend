@@ -18,6 +18,7 @@ import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgavestatus } from '../types/types.internal'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
+import { useOppgavetilgang } from '../oppgaveliste/useOppgavetilgang'
 
 export function ManuellJournalføring() {
   const { journalpostId } = useParams<{ journalpostId: string }>()
@@ -25,6 +26,7 @@ export function ManuellJournalføring() {
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetSaksbehandler()
+  const { harSkrivetilgang } = useOppgavetilgang()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
 
   const journalpostTildeltSaksbehandler =
@@ -89,7 +91,11 @@ export function ManuellJournalføring() {
       <Personlinje person={personInfo} loading={personInfoLoading} />
       <Container>
         <ToKolonner>
-          {journalpostTildeltSaksbehandler ? <JournalpostSkjema /> : <JournalpostVisning />}
+          {journalpostTildeltSaksbehandler && harSkrivetilgang ? (
+            <JournalpostSkjema />
+          ) : (
+            <JournalpostVisning lesevisning={!harSkrivetilgang} />
+          )}
           <DokumentPanel />
         </ToKolonner>
       </Container>

@@ -202,6 +202,7 @@ function lagSak(
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
+
     // TODO tilby hast som en overstyring
     /*hast: (() => {
       return {

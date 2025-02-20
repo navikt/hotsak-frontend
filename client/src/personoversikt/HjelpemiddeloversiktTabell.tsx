@@ -15,9 +15,6 @@ const Container = styled.div`
   min-height: 300px;
   height: calc(100% - 50px);
   width: 100%;
-`
-
-const ScrollWrapper = styled.div`
   overflow: auto;
 `
 
@@ -78,7 +75,7 @@ export function HjelpemiddeloversiktTabell({ artikler, henterHjelpemiddeloversik
       ) : (
         <Container>
           {hasData ? (
-            <ScrollWrapper>
+            <>
               <Table style={{ width: 'initial' }} zebraStripes size="small">
                 <Table.Header>
                   <Table.Row>
@@ -101,7 +98,7 @@ export function HjelpemiddeloversiktTabell({ artikler, henterHjelpemiddeloversik
                   ))}
                 </Table.Body>
               </Table>
-            </ScrollWrapper>
+            </>
           ) : (
             <IngentingFunnet>Fant ingen hjelpemidler utlånt til bruker</IngentingFunnet>
           )}

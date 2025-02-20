@@ -13,7 +13,13 @@ import {
   Vilkår,
 } from '../../types/BehovsmeldingTypes'
 import { Bruker as Hjelpemiddelbruker } from '../../types/types.internal'
-import { formaterAdresse, formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import {
+  formaterAdresse,
+  formaterFødselsnummer,
+  formaterNavn,
+  formaterTelefonnummer,
+  storForbokstavIAlleOrd,
+} from '../../utils/formater'
 import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
 import { Signatur } from './Signatur'
@@ -30,6 +36,8 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
   const { utleveringMerknad } = levering
   const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(behovsmeldingsbruker.veiadresse)
+  const formatertFnr = formaterFødselsnummer(bruker.fnr)
+  const formatertTlf = formaterTelefonnummer(bruker.telefon)
 
   return (
     <>
@@ -44,11 +52,11 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           <Etikett>Navn</Etikett>
           <Tekst>{formatertNavn}</Tekst>
           <Etikett>Fødselsnummer</Etikett>
-          <Tekst>{bruker.fnr}</Tekst>
+          <Tekst>{formatertFnr}</Tekst>
           <Etikett>{behovsmeldingsbruker.kilde === Brukerkilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
           <Tekst>{adresseBruker}</Tekst>
           <Etikett>Telefon</Etikett>
-          <Tekst>{bruker.telefon}</Tekst>
+          <Tekst>{formatertTlf}</Tekst>
 
           <Etikett>Funksjonsnedsettelse</Etikett>
           <Tekst>{storForbokstavIAlleOrd(brukerSituasjon.funksjonsnedsettelser.join(', '))}</Tekst>

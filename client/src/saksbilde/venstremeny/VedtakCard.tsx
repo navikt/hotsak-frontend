@@ -25,13 +25,14 @@ import { VenstremenyCard } from './VenstremenyCard.tsx'
 export interface VedtakCardProps {
   sak: Sak
   oppgave?: OppgaveApiOppgave
+  lesevisning: boolean
 }
 
 interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
+export function VedtakCard({ sak, oppgave, lesevisning }: VedtakCardProps) {
   const { sakId } = sak
 
   const oppgaveVersjon: OppgaveVersjon = oppgave
@@ -47,6 +48,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, oppgaveVersjon, 'sak_overført_gosys_v1')
+
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const form = useForm<VedtakFormValues>({
@@ -127,14 +129,16 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
     return (
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
-        <Knappepanel>
-          <IkkeTildelt
-            sakId={sakId}
-            oppgaveVersjon={oppgaveVersjon}
-            gåTilSak={false}
-            onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
-          ></IkkeTildelt>
-        </Knappepanel>
+        {!lesevisning && (
+          <Knappepanel>
+            <IkkeTildelt
+              sakId={sakId}
+              oppgaveVersjon={oppgaveVersjon}
+              gåTilSak={false}
+              onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
+            ></IkkeTildelt>
+          </Knappepanel>
+        )}
       </VenstremenyCard>
     )
   }
@@ -143,25 +147,33 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>
-        <Knappepanel>
-          <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
-            Overta saken
-          </Knapp>
-        </Knappepanel>
-        <OvertaSakModal
-          open={visOvertaSakModal}
-          saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
-          onBekreft={() => overtaSak()}
-          loading={loading}
-          onClose={() => setVisOvertaSakModal(false)}
-        />
-        <TildelingKonfliktModal
-          open={visTildelSakKonfliktModalForSak}
-          onClose={() => setVisTildelSakKonfliktModalForSak(false)}
-          saksbehandler={sak.saksbehandler}
-        />
+        {!lesevisning && (
+          <>
+            <Knappepanel>
+              <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
+                Overta saken
+              </Knapp>
+            </Knappepanel>
+            <OvertaSakModal
+              open={visOvertaSakModal}
+              saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
+              onBekreft={() => overtaSak()}
+              loading={loading}
+              onClose={() => setVisOvertaSakModal(false)}
+            />
+            <TildelingKonfliktModal
+              open={visTildelSakKonfliktModalForSak}
+              onClose={() => setVisTildelSakKonfliktModalForSak(false)}
+              saksbehandler={sak.saksbehandler}
+            />
+          </>
+        )}
       </VenstremenyCard>
     )
+  }
+
+  if (lesevisning) {
+    return null
   }
 
   return (

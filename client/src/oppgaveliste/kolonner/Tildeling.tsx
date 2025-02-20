@@ -14,7 +14,7 @@ interface TildelingProps {
 
 export const Tildeling = memo(
   ({ oppgave, lesevisning, oppgaveVersjon, visTildelingKonfliktModalForSak, onMutate }: TildelingProps) => {
-    if (lesevisning || oppgave.saksbehandler?.id === null || !oppgave.kanTildeles) {
+    if (lesevisning || oppgave.saksbehandler?.id === null) {
       return <TekstCell value="-" />
     }
 

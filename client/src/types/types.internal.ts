@@ -1,10 +1,16 @@
 import { OppgaveApiOppgave } from './experimentalTypes'
 
-export interface SakResponse {
+export interface SakResponseBase {
   kanTildeles: boolean
   tilganger: Tilgang
   oppgave?: OppgaveApiOppgave
+}
+export interface SakResponse extends SakResponseBase {
   data: Sak
+}
+
+export interface BarnebrillesakResponse extends SakResponseBase {
+  data: Barnebrillesak
 }
 
 export type Tilgang = {
@@ -20,12 +26,6 @@ export enum TilgangType {
 export enum TilgangResultat {
   TILLAT = 'TILLAT',
   NEKT = 'NEKT',
-}
-
-export interface BarnebrillesakResponse {
-  kanTildeles: boolean
-  oppgave?: OppgaveApiOppgave
-  data: Barnebrillesak
 }
 
 export interface SakBase {

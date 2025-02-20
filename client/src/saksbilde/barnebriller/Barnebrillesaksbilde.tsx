@@ -4,13 +4,16 @@ import styled from 'styled-components'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 
-import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
+import { memo, Suspense, useState } from 'react'
 import { brilleSidebarBredde } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
+import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
+import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
 import { LasterPersonlinje } from '../Personlinje'
+import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { StatusTag } from '../komponenter/StatusTag'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakSidebar } from './BarnebrillesakSidebar'
@@ -19,8 +22,6 @@ import { RegistrerSøknad } from './steg/søknadsregistrering/RegistrerSøknad'
 import { Vedtak } from './steg/vedtak/Vedtak'
 import { VurderVilkår } from './steg/vilkårsvurdering/VurderVilkår'
 import { Hotstepper } from './stegindikator/Hotstepper'
-import { memo, Suspense, useState } from 'react'
-import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 
 const BarnebrillesakContainer = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const Header = styled(HStack)`
 const BarnebrillesakContent = memo(() => {
   const { sak, isError, mutate } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
+  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
   const { showBoundary } = useErrorBoundary()
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
@@ -60,6 +62,7 @@ const BarnebrillesakContent = memo(() => {
         <Spacer />
         <HStack align="center">
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
+          {}
           <MenyKnapp
             sakId={sak.data.sakId}
             oppgaveVersjon={{ oppgaveId: sak.oppgave?.oppgaveId, versjon: sak.oppgave?.versjon }}

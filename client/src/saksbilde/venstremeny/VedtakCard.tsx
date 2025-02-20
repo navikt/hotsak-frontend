@@ -21,18 +21,18 @@ import { OvertaSakModal } from '../OvertaSakModal'
 import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { useOverførGosys } from '../useOverførGosys'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 
 export interface VedtakCardProps {
   sak: Sak
   oppgave?: OppgaveApiOppgave
+  lesevisning: boolean
 }
 
 interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
+export function VedtakCard({ sak, oppgave, lesevisning }: VedtakCardProps) {
   const { sakId } = sak
 
   const oppgaveVersjon: OppgaveVersjon = oppgave
@@ -48,7 +48,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, oppgaveVersjon, 'sak_overført_gosys_v1')
-  const { harSkrivetilgang } = useSaksregler()
+
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
   const form = useForm<VedtakFormValues>({
@@ -129,7 +129,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
     return (
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
-        {harSkrivetilgang && (
+        {!lesevisning && (
           <Knappepanel>
             <IkkeTildelt
               sakId={sakId}
@@ -147,7 +147,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>
-        {harSkrivetilgang && (
+        {!lesevisning && (
           <>
             <Knappepanel>
               <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
@@ -172,7 +172,7 @@ export function VedtakCard({ sak, oppgave }: VedtakCardProps) {
     )
   }
 
-  if (!harSkrivetilgang) {
+  if (lesevisning) {
     return null
   }
 

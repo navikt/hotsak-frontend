@@ -25,19 +25,19 @@ import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
-import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
+  lesevisning: boolean
+
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
   oppgave?: OppgaveApiOppgave
 }
 
-export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
+export function BestillingCard({ bestilling, oppgave, lesevisning }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const { behovsmelding } = useBehovsmelding()
-  const { harSkrivetilgang } = useSaksregler()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
   const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
@@ -125,7 +125,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     return (
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
-        {harSkrivetilgang && (
+        {!lesevisning && (
           <Knappepanel>
             <IkkeTildelt sakId={sakId} oppgaveVersjon={oppgaveVersjon} gåTilSak={false}></IkkeTildelt>
           </Knappepanel>
@@ -141,7 +141,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}</Tekst>
-        {harSkrivetilgang && (
+        {!lesevisning && (
           <Knappepanel>
             <Button variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
               Overta bestillingen
@@ -160,7 +160,7 @@ export function BestillingCard({ bestilling, oppgave }: BestillingCardProps) {
     )
   }
 
-  if (!harSkrivetilgang) {
+  if (lesevisning) {
     return null
   }
 

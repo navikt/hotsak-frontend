@@ -62,23 +62,26 @@ const BarnebrillesakContent = memo(() => {
         <Spacer />
         <HStack align="center">
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
-          {}
-          <MenyKnapp
-            sakId={sak.data.sakId}
-            oppgaveVersjon={{ oppgaveId: sak.oppgave?.oppgaveId, versjon: sak.oppgave?.versjon }}
-            tildeltSaksbehandler={sak.data.saksbehandler}
-            status={sak.data.status}
-            kanTildeles={sak.kanTildeles}
-            setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
-            onMutate={mutate}
-            knappeTekst="Meny"
-            knappeIkon={<ChevronDownIcon />}
-          />
-          <TildelingKonfliktModal
-            open={!!visTildelingKonfliktModalForSak}
-            onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
-            saksbehandler={sak.data.saksbehandler}
-          />
+          {harSkrivetilgang && (
+            <>
+              <MenyKnapp
+                sakId={sak.data.sakId}
+                oppgaveVersjon={{ oppgaveId: sak.oppgave?.oppgaveId, versjon: sak.oppgave?.versjon }}
+                tildeltSaksbehandler={sak.data.saksbehandler}
+                status={sak.data.status}
+                kanTildeles={sak.kanTildeles}
+                setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
+                onMutate={mutate}
+                knappeTekst="Meny"
+                knappeIkon={<ChevronDownIcon />}
+              />
+              <TildelingKonfliktModal
+                open={!!visTildelingKonfliktModalForSak}
+                onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
+                saksbehandler={sak.data.saksbehandler}
+              />
+            </>
+          )}
         </HStack>
       </Header>
       {sak.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (

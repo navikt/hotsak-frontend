@@ -19,9 +19,11 @@ import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
 import { DokumentTildeling } from './DokumentTildeling'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes'
+import { useOppgavetilgang } from '../useOppgavetilgang'
 
 export function Dokumentliste() {
   const { data, isLoading, error } = useDokumentliste()
+  const { harSkrivetilgang } = useOppgavetilgang()
   const oppgaver = data?.oppgaver || []
 
   const kolonner: Tabellkolonne<OppgaveApiOppgave>[] = [
@@ -30,7 +32,7 @@ export function Dokumentliste() {
       name: 'Eier',
       width: 160,
       render(oppgave: OppgaveApiOppgave) {
-        return <DokumentTildeling dokumentOppgave={oppgave} />
+        return <DokumentTildeling dokumentOppgave={oppgave} lesevisning={!harSkrivetilgang} />
       },
       accessor(verdi: OppgaveApiOppgave): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')

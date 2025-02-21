@@ -63,7 +63,6 @@ export function Høyrekolonne() {
                 value={HøyrekolonneTabs.NOTAT}
                 icon={
                   <>
-                    {/*<DocPencilIcon title="Notat" />*/}
                     <NotePencilDashIcon title="Notat" />
                     {notater && (
                       <Tag variant="neutral-moderate" size="xsmall">
@@ -76,15 +75,15 @@ export function Høyrekolonne() {
             </Tooltip>
           )}
           {sak != null && (
-            <Tooltip content="Journalføringsnotat">
+            <Tooltip content="Journalførte notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.JFRNOTAT}
                 icon={
                   <>
-                    <FolderFileIcon title="Journalføringsnotat" />
+                    <FolderFileIcon title="Journalføringsnotater" />
                     {notater && (
                       <Tag variant="neutral-moderate" size="xsmall">
-                        {antallNotater}
+                        3
                       </Tag>
                     )}
                   </>
@@ -106,7 +105,7 @@ export function Høyrekolonne() {
         )}
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JFRNOTAT.toString()}>
-            <HøyrekolonnePanel tittel="Journalføringsnotat">
+            <HøyrekolonnePanel tittel="Journalførte notater">
               <Merknader sak={sak.data} høyreVariant={true} />
             </HøyrekolonnePanel>
           </Tabs.Panel>

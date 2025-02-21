@@ -112,32 +112,32 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         <Heading level="1" size="medium" spacing={false}>
           <HStack align="center" gap="1">
             <FolderFileIcon />
-            Journalføringsnotat
+            Journalførte notater
           </HStack>
         </Heading>
       )}
       {!høyreVariant && (
         <>
           <Heading level="2" size="small" style={{ marginTop: '1em' }}>
-            Opprett en ny merknad på saken
+            Opprett et nytt journalføringsnotat på saken
           </Heading>
           <BodyLong size="small">
             Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
             saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
-            bli tilgjengelig for bruker når du er ferdig og klikker "Ferdigstill merknad" for å journalføre.
+            bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
           </BodyLong>
         </>
       )}
       {høyreVariant && (
         <>
-          <Label size="small">Opprett en ny merknad på saken</Label>
+          <Label size="small">Nytt journalføringsnotat</Label>
           <BodyLong size="small">
             Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres!
           </BodyLong>
           <ReadMore size="small" header="Mer om journalføringsnotat" style={{ marginTop: '0.5em' }}>
             Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
             saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
-            bli tilgjengelig for bruker når du er ferdig og klikker "Ferdigstill merknad" for å journalføre.
+            bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
           </ReadMore>
         </>
       )}
@@ -237,7 +237,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         size={høyreVariant ? 'small' : 'medium'}
         onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
       >
-        Jeg er klar over at ferdigstilte merknader er synlig for bruker på nav.no
+        Jeg er klar over at journalførte notater er synlig for bruker på nav.no
       </Checkbox>
       <Button
         variant="secondary"
@@ -253,8 +253,10 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         </Heading>
       )}
       {høyreVariant && (
-        <div style={{ marginTop: '2em' }}>
-          <Label size="small">Journalførte notater</Label>
+        <div style={{ marginTop: '3em' }}>
+          <Label size="small" style={{ display: 'none' }}>
+            Journalførte notater
+          </Label>
         </div>
       )}
       {merknader.map((merknad, idx) => {
@@ -300,7 +302,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
             </MdxEditorStyling>
             {!merknad.markdown && (
               <BodyShort color="#444">
-                <em>Denne merknaden ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
+                <em>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
               </BodyShort>
             )}
           </Box>

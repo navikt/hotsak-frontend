@@ -45,8 +45,8 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
       </TextContainer>
       <VStack gap="1">
         {produkt?.posttitler?.map((posttittel) => (
-          <TextContainer>
-            <BrytbarBrødtekst key={posttittel}>Delkontrakt {posttittel}</BrytbarBrødtekst>
+          <TextContainer key={posttittel}>
+            <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
           </TextContainer>
         ))}
       </VStack>

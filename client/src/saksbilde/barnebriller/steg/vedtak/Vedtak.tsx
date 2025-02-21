@@ -18,7 +18,7 @@ import { Redigeringsvisning } from './Redigeringsvisning'
 export function Vedtak() {
   const { saksnummer } = useParams<{ saksnummer: string }>()
   const { sak /*, isLoading,*/, mutate } = useBarnebrillesak()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const samletVurdering = useSamletVurdering(sak?.data)
   const { setStep } = useManuellSaksbehandlingContext()
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(

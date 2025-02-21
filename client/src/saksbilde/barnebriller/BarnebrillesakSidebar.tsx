@@ -25,7 +25,7 @@ export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
   const { notater } = useSaksnotater(sak?.data.sakId)
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   useEffect(() => {
     if (sak?.data.steg === StegType.GODKJENNE) {

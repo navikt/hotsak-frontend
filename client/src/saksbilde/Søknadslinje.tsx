@@ -35,7 +35,7 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
             </Eksperiment>*/}
             <Eksperiment>
               <TabLink to={`/sak/${id}/merknader`} title="Merknader">
-                Merknader
+                Journalføringsnotat
                 <Tag variant="alt3-moderate" size="xsmall" style={{ marginLeft: '0.5em' }}>
                   3
                 </Tag>

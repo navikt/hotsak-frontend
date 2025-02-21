@@ -700,6 +700,7 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   NOTAT = 'NOTAT',
+  JFRNOTAT = 'JFRNOTAT',
 }
 
 export enum BarnebrilleSidebarTabs {

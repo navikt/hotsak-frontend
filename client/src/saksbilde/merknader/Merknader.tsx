@@ -1,6 +1,19 @@
-import { BodyLong, BodyShort, Box, Button, Checkbox, Heading, HStack, Link, Loader, Tooltip } from '@navikt/ds-react'
+import {
+  BodyLong,
+  BodyShort,
+  Box,
+  Button,
+  Checkbox,
+  Heading,
+  HStack,
+  Label,
+  Link,
+  Loader,
+  ReadMore,
+  Tooltip,
+} from '@navikt/ds-react'
 
-import { ExternalLinkIcon, LightBulbIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, FolderFileIcon } from '@navikt/aksel-icons'
 
 import {
   BlockTypeSelect,
@@ -23,9 +36,10 @@ import styled from 'styled-components'
 
 export interface MerknaderProps {
   sak: Sak
+  høyreVariant?: boolean
 }
 
-export function Merknader({ sak }: MerknaderProps) {
+export function Merknader({ sak, høyreVariant }: MerknaderProps) {
   /*
     const utkast =
       'Har mottatt en e-post fra formidler om at rullator nr. 2 skal brukes i andre etasje, og behovet for denne er kritisk da bruker ikke kan forflytte rullatoren hen allerede har mellom etasjene. Det er heller ikke noe soverom i første etasje.\n' +
@@ -94,20 +108,39 @@ export function Merknader({ sak }: MerknaderProps) {
 
   return (
     <>
-      <Heading level="1" size="medium" spacing={false}>
-        <HStack align="center" gap="1">
-          <LightBulbIcon />
-          Merknader
-        </HStack>
-      </Heading>
-      <Heading level="2" size="small" style={{ marginTop: '1em' }}>
-        Opprett en ny merknad på saken
-      </Heading>
-      <BodyLong size="small">
-        Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på saken.
-        Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og bli
-        tilgjengelig for bruker når du er ferdig og klikker "Ferdigstill merknad" for å journalføre.
-      </BodyLong>
+      {!høyreVariant && (
+        <Heading level="1" size="medium" spacing={false}>
+          <HStack align="center" gap="1">
+            <FolderFileIcon />
+            Journalføringsnotat
+          </HStack>
+        </Heading>
+      )}
+      {!høyreVariant && (
+        <>
+          <Heading level="2" size="small" style={{ marginTop: '1em' }}>
+            Opprett en ny merknad på saken
+          </Heading>
+          <BodyLong size="small">
+            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
+            saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
+            bli tilgjengelig for bruker når du er ferdig og klikker "Ferdigstill merknad" for å journalføre.
+          </BodyLong>
+        </>
+      )}
+      {høyreVariant && (
+        <>
+          <Label size="small">Opprett en ny merknad på saken</Label>
+          <BodyLong size="small">
+            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres!
+          </BodyLong>
+          <ReadMore size="small" header="Mer om journalføringsnotat" style={{ marginTop: '0.5em' }}>
+            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
+            saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
+            bli tilgjengelig for bruker når du er ferdig og klikker "Ferdigstill merknad" for å journalføre.
+          </ReadMore>
+        </>
+      )}
       <Box
         background="surface-default"
         padding="2"
@@ -199,15 +232,31 @@ export function Merknader({ sak }: MerknaderProps) {
           </>
         )}
       </Box>
-      <Checkbox value="klar" onChange={(e) => setKlarForFerdigstilling(e.target.checked)}>
+      <Checkbox
+        value="klar"
+        size={høyreVariant ? 'small' : 'medium'}
+        onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
+      >
         Jeg er klar over at ferdigstilte merknader er synlig for bruker på nav.no
       </Checkbox>
-      <Button variant="secondary" size="medium" style={{ margin: '0.2em 0 0' }} disabled={!klarForFerdigstilling}>
-        Ferdigstill merknad
+      <Button
+        variant="secondary"
+        size={høyreVariant ? 'small' : 'medium'}
+        style={{ margin: '0.2em 0 0' }}
+        disabled={!klarForFerdigstilling}
+      >
+        Journalfør notat
       </Button>
-      <Heading level="2" size="small" style={{ marginTop: '2em' }}>
-        Merknader
-      </Heading>
+      {!høyreVariant && (
+        <Heading level="2" size="small" style={{ marginTop: '2em' }}>
+          Journalførte notater
+        </Heading>
+      )}
+      {høyreVariant && (
+        <div style={{ marginTop: '2em' }}>
+          <Label size="small">Journalførte notater</Label>
+        </div>
+      )}
       {merknader.map((merknad, idx) => {
         return (
           <Box
@@ -220,9 +269,17 @@ export function Merknader({ sak }: MerknaderProps) {
             borderWidth="1"
           >
             <HStack gap="2">
-              <Heading level="3" size="xsmall">
-                {merknad.saksbehandler}
-              </Heading>
+              {!høyreVariant && (
+                <Heading level="3" size="xsmall">
+                  {merknad.saksbehandler}
+                </Heading>
+              )}
+              {høyreVariant && (
+                <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                  {merknad.saksbehandler}
+                </Heading>
+              )}
+
               <BodyShort size="small" color="#444">
                 {merknad.dato}
               </BodyShort>

@@ -371,7 +371,7 @@ export interface Notat {
 export interface BrevTekst {
   sakId: string
   målform: MålformType
-  data: { brevtekst: string }
+  data: { dokumenttittel?: string; brevtekst: string }
   brevtype: string
 }
 

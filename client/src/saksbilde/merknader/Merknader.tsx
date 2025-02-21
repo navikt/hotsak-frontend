@@ -29,10 +29,9 @@ import {
 } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
-import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
+import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
 import { postBrevutkast } from '../../io/http.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
-import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import styled from 'styled-components'
 
 export interface MerknaderProps {
@@ -41,25 +40,31 @@ export interface MerknaderProps {
 }
 
 export function Merknader({ sak, høyreVariant }: MerknaderProps) {
-  /*
-    const utkast =
-      'Har mottatt en e-post fra formidler om at rullator nr. 2 skal brukes i andre etasje, og behovet for denne er kritisk da bruker ikke kan forflytte rullatoren hen allerede har mellom etasjene. Det er heller ikke noe soverom i første etasje.\n' +
-      '\n' +
-      'Rullator nr. 3 som ble søkt om var tiltenkt bruk på hytte. Formidler er informert om at man ikke får støtte for hjelpemidler tiltenkt hytte.'
-  */
-
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
+
   const {
     data: utkast,
     isLoading: utkastLasterInn,
     mutate: utkastMutert,
   } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
 
+  const dokumenttittelEndret = (dokumenttittel: string) => {
+    if (utkast) {
+      utkastEndret(dokumenttittel, utkast.data.brevtekst)
+    }
+  }
+
+  const markdownEndret = (markdown: string) => {
+    if (utkast) {
+      utkastEndret(utkast.data.dokumenttittel || '', markdown)
+    }
+  }
+
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   let debounceTimeout: NodeJS.Timeout
-  const markdownChanged = (markdown: string) => {
+  const utkastEndret = (tittel: string, markdown: string) => {
     if (debounceTimeout) clearTimeout(debounceTimeout)
     debounceTimeout = setTimeout(async () => {
       setLagrerUtkast(true)
@@ -68,6 +73,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         målform: MålformType.BOKMÅL,
         brevtype: Brevtype.JOURNALFØRT_NOTAT,
         data: {
+          dokumenttittel: tittel,
           brevtekst: markdown,
         },
       }
@@ -79,9 +85,8 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
     }, 500)
   }
 
-  const { data: merknader2 } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
-
-  console.log('here', merknader2)
+  // const { data: merknader2 } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
+  // console.log('here', merknader2)
 
   const merknader = [
     {
@@ -142,100 +147,108 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
           </ReadMore>
         </>
       )}
-      <TextField label="" placeholder="Dokumenttittel" style={{ margin: '1em 0 0.5em' }} />
-      <MdxEditorStyling>
-        <Box
-          background="surface-default"
-          padding="2"
-          marginBlock="0 0"
-          borderRadius="medium"
-          borderColor="border-default"
-          borderWidth="1"
-          className="mdxEditorBox"
-        >
-          {utkastLasterInn && (
-            <div>
-              <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
-            </div>
-          )}
-          {!utkastLasterInn && utkast && (
-            <>
-              <MDXEditor
-                markdown={utkast.data.brevtekst}
-                plugins={[
-                  listsPlugin(),
-                  quotePlugin(),
-                  thematicBreakPlugin(),
-                  toolbarPlugin({
-                    toolbarClassName: 'my-classname',
-                    toolbarContents: () => (
-                      <>
-                        {' '}
-                        <BlockTypeSelect />
-                        <UndoRedo />
-                        <BoldItalicUnderlineToggles />
-                        <ListsToggle />
-                      </>
-                    ),
-                  }),
-                ]}
-                onChange={markdownChanged}
-                translation={(key, defaultValue) => {
-                  switch (key) {
-                    case 'toolbar.blockTypes.paragraph':
-                      return 'Paragraf'
-                    case 'toolbar.blockTypes.quote':
-                      return 'Sitat'
-                    case 'toolbar.undo':
-                      return 'Angre'
-                    case 'toolbar.redo':
-                      return 'Gjør igjen'
-                    case 'toolbar.bold':
-                      return 'Uthevet'
-                    case 'toolbar.removeBold':
-                      return 'Fjern uthevet'
-                    case 'toolbar.italic':
-                      return 'Kursiv'
-                    case 'toolbar.removeItalic':
-                      return 'Fjern kursiv'
-                    case 'toolbar.underline':
-                      return 'Understrek'
-                    case 'toolbar.removeUnderline':
-                      return 'Fjern understrek'
-                    case 'toolbar.bulletedList':
-                      return 'Punktliste'
-                    case 'toolbar.numberedList':
-                      return 'Nummerert liste'
-                    case 'toolbar.checkList':
-                      return 'Sjekkliste'
-                    case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
-                      return 'Velg blokk type'
-                    case 'toolbar.blockTypeSelect.placeholder':
-                      return 'Blokk type'
-                  }
-                  return defaultValue
-                }}
-              />
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    color: 'gray',
-                    position: 'absolute',
-                    right: '0',
-                    top: '-1.5em',
-                    display: lagrerUtkast ? 'block' : 'none',
+      {utkastLasterInn && (
+        <div>
+          <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
+        </div>
+      )}
+      {!utkastLasterInn && utkast && (
+        <>
+          <TextField
+            label=""
+            placeholder="Dokumenttittel"
+            style={{ margin: '1em 0 0.5em' }}
+            defaultValue={utkast.data.dokumenttittel}
+            onChange={(e) => dokumenttittelEndret(e.target.value)}
+          />
+          <MdxEditorStyling>
+            <Box
+              background="surface-default"
+              padding="2"
+              marginBlock="0 0"
+              borderRadius="medium"
+              borderColor="border-default"
+              borderWidth="1"
+              className="mdxEditorBox"
+            >
+              <>
+                <MDXEditor
+                  markdown={utkast.data.brevtekst}
+                  plugins={[
+                    listsPlugin(),
+                    quotePlugin(),
+                    thematicBreakPlugin(),
+                    toolbarPlugin({
+                      toolbarClassName: 'my-classname',
+                      toolbarContents: () => (
+                        <>
+                          {' '}
+                          <BlockTypeSelect />
+                          <UndoRedo />
+                          <BoldItalicUnderlineToggles />
+                          <ListsToggle />
+                        </>
+                      ),
+                    }),
+                  ]}
+                  onChange={markdownEndret}
+                  translation={(key, defaultValue) => {
+                    switch (key) {
+                      case 'toolbar.blockTypes.paragraph':
+                        return 'Paragraf'
+                      case 'toolbar.blockTypes.quote':
+                        return 'Sitat'
+                      case 'toolbar.undo':
+                        return 'Angre'
+                      case 'toolbar.redo':
+                        return 'Gjør igjen'
+                      case 'toolbar.bold':
+                        return 'Uthevet'
+                      case 'toolbar.removeBold':
+                        return 'Fjern uthevet'
+                      case 'toolbar.italic':
+                        return 'Kursiv'
+                      case 'toolbar.removeItalic':
+                        return 'Fjern kursiv'
+                      case 'toolbar.underline':
+                        return 'Understrek'
+                      case 'toolbar.removeUnderline':
+                        return 'Fjern understrek'
+                      case 'toolbar.bulletedList':
+                        return 'Punktliste'
+                      case 'toolbar.numberedList':
+                        return 'Nummerert liste'
+                      case 'toolbar.checkList':
+                        return 'Sjekkliste'
+                      case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
+                        return 'Velg blokk type'
+                      case 'toolbar.blockTypeSelect.placeholder':
+                        return 'Blokk type'
+                    }
+                    return defaultValue
                   }}
-                >
-                  <HStack gap="2">
-                    <Loader size="small" title="Lagrer..." />
-                    <BodyShort size="small">Lagrer utkast</BodyShort>
-                  </HStack>
+                />
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      color: 'gray',
+                      position: 'absolute',
+                      right: '0',
+                      top: '-1.5em',
+                      display: lagrerUtkast ? 'block' : 'none',
+                    }}
+                  >
+                    <HStack gap="2">
+                      <Loader size="small" title="Lagrer..." />
+                      <BodyShort size="small">Lagrer utkast</BodyShort>
+                    </HStack>
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
-        </Box>
-      </MdxEditorStyling>
+              </>
+            </Box>
+          </MdxEditorStyling>
+        </>
+      )}
       <Checkbox
         value="klar"
         size={høyreVariant ? 'small' : 'medium'}

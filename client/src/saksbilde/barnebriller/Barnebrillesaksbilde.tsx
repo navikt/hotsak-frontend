@@ -39,7 +39,7 @@ const BarnebrillesakContent = memo(() => {
   const { sak, isError, mutate } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
-  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak?.data)
+  const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const { showBoundary } = useErrorBoundary()
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 

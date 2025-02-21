@@ -52,13 +52,8 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
         <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box background="surface-subtle" padding="4">
-          <Hjelpemiddel
-            key={hjelpemiddel.produkt.hmsArtNr}
-            hjelpemiddel={hjelpemiddel}
-            sak={sak}
-            produkter={finnHjelpemiddelProdukter}
-          />
+        <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">
+          <Hjelpemiddel hjelpemiddel={hjelpemiddel} sak={sak} produkter={finnHjelpemiddelProdukter} />
         </Box>
       ))}
       {tilbehør && tilbehør.length > 0 && (

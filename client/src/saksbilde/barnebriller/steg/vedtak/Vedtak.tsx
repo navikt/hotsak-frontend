@@ -66,7 +66,13 @@ export function Vedtak() {
                 {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
               </Tag>
             </div>
-            {status === VilkårsResultat.JA && <InnvilgetVedtakVisning sak={sak.data} mutate={mutate} />}
+            {status === VilkårsResultat.JA && (
+              <InnvilgetVedtakVisning
+                sak={sak.data}
+                mutate={mutate}
+                lesevisning={saksbehandlerKanRedigereBarnebrillesak}
+              />
+            )}
             {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}
             {visAlertGodkjenning && (
               <Alert variant="info" size="small">

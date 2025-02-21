@@ -13,8 +13,8 @@ export function FrittStåendeTilbehør({ tilbehør, produkter }: { tilbehør: Ti
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
         return (
-          <Box background="surface-subtle" padding="4">
-            <Tilbehør key={idx} tilbehør={t} produkt={produkt} frittståendeTilbehør={true} />
+          <Box key={idx} background="surface-subtle" padding="4">
+            <Tilbehør tilbehør={t} produkt={produkt} frittståendeTilbehør={true} />
           </Box>
         )
       })}

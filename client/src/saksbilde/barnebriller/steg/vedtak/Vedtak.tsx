@@ -70,7 +70,7 @@ export function Vedtak() {
               <InnvilgetVedtakVisning
                 sak={sak.data}
                 mutate={mutate}
-                lesevisning={saksbehandlerKanRedigereBarnebrillesak}
+                lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
               />
             )}
             {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}

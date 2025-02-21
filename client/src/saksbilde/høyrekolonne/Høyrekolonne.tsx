@@ -1,4 +1,4 @@
-import { ClockDashedIcon, DocPencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, FolderFileIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
@@ -12,6 +12,8 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
+import { Merknader } from '../merknader/Merknader.tsx'
+import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
@@ -61,10 +63,27 @@ export function Høyrekolonne() {
                 value={HøyrekolonneTabs.NOTAT}
                 icon={
                   <>
-                    <DocPencilIcon title="Notat" />
+                    <NotePencilDashIcon title="Notat" />
                     {notater && (
                       <Tag variant="neutral-moderate" size="xsmall">
                         {antallNotater}
+                      </Tag>
+                    )}
+                  </>
+                }
+              />
+            </Tooltip>
+          )}
+          {sak != null && (
+            <Tooltip content="Journalførte notater">
+              <Tabs.Tab
+                value={HøyrekolonneTabs.JFRNOTAT}
+                icon={
+                  <>
+                    <FolderFileIcon title="Journalføringsnotater" />
+                    {notater && (
+                      <Tag variant="neutral-moderate" size="xsmall">
+                        3
                       </Tag>
                     )}
                   </>
@@ -82,6 +101,13 @@ export function Høyrekolonne() {
         {erNotatPilot && (
           <Tabs.Panel value={HøyrekolonneTabs.NOTAT.toString()}>
             <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
+          </Tabs.Panel>
+        )}
+        {sak != null && (
+          <Tabs.Panel value={HøyrekolonneTabs.JFRNOTAT.toString()}>
+            <HøyrekolonnePanel tittel="Journalførte notater">
+              <Merknader sak={sak.data} høyreVariant={true} />
+            </HøyrekolonnePanel>
           </Tabs.Panel>
         )}
       </Tabs>

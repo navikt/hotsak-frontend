@@ -371,7 +371,7 @@ export interface Notat {
 export interface BrevTekst {
   sakId: string
   målform: MålformType
-  data: { brevtekst: string }
+  data: { dokumenttittel?: string; brevtekst: string }
   brevtype: string
 }
 
@@ -700,6 +700,7 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   NOTAT = 'NOTAT',
+  JFRNOTAT = 'JFRNOTAT',
 }
 
 export enum BarnebrilleSidebarTabs {
@@ -712,6 +713,7 @@ export enum BarnebrilleSidebarTabs {
 export enum Brevtype {
   BARNEBRILLER_VEDTAK = 'BARNEBRILLER_VEDTAK',
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
+  JOURNALFØRT_NOTAT = 'JOURNALFØRT_NOTAT',
 }
 
 export interface AvvisBestilling {

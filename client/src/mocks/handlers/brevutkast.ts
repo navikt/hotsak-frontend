@@ -14,7 +14,7 @@ interface BrevutkastParams extends SakParams {
 export const brevutkastHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   http.post<SakParams, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
     const { brevtype, data } = await request.json()
-    await barnebrillesakStore.lagreBrevtekst(params.sakId, brevtype, data.brevtekst)
+    await barnebrillesakStore.lagreBrevtekst(params.sakId, brevtype, data)
     return respondNoContent()
   }),
 

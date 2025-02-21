@@ -10,6 +10,7 @@ import {
   Link,
   Loader,
   ReadMore,
+  TextField,
   Tooltip,
 } from '@navikt/ds-react'
 
@@ -141,97 +142,100 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
           </ReadMore>
         </>
       )}
-      <Box
-        background="surface-default"
-        padding="2"
-        marginBlock="5 2"
-        borderRadius="xlarge"
-        borderColor="border-subtle"
-        borderWidth="1"
-      >
-        {utkastLasterInn && (
-          <div>
-            <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
-          </div>
-        )}
-        {!utkastLasterInn && utkast && (
-          <>
-            {/*<TextField placeholder="Tittel" style={{ margin: '0 0 1em' }} />*/}
-            <MDXEditor
-              markdown={utkast.data.brevtekst}
-              plugins={[
-                listsPlugin(),
-                quotePlugin(),
-                thematicBreakPlugin(),
-                toolbarPlugin({
-                  toolbarClassName: 'my-classname',
-                  toolbarContents: () => (
-                    <>
-                      {' '}
-                      <BlockTypeSelect />
-                      <UndoRedo />
-                      <BoldItalicUnderlineToggles />
-                      <ListsToggle />
-                    </>
-                  ),
-                }),
-              ]}
-              onChange={markdownChanged}
-              translation={(key, defaultValue) => {
-                switch (key) {
-                  case 'toolbar.blockTypes.paragraph':
-                    return 'Paragraf'
-                  case 'toolbar.blockTypes.quote':
-                    return 'Sitat'
-                  case 'toolbar.undo':
-                    return 'Angre'
-                  case 'toolbar.redo':
-                    return 'Gjør igjen'
-                  case 'toolbar.bold':
-                    return 'Uthevet'
-                  case 'toolbar.removeBold':
-                    return 'Fjern uthevet'
-                  case 'toolbar.italic':
-                    return 'Kursiv'
-                  case 'toolbar.removeItalic':
-                    return 'Fjern kursiv'
-                  case 'toolbar.underline':
-                    return 'Understrek'
-                  case 'toolbar.removeUnderline':
-                    return 'Fjern understrek'
-                  case 'toolbar.bulletedList':
-                    return 'Punktliste'
-                  case 'toolbar.numberedList':
-                    return 'Nummerert liste'
-                  case 'toolbar.checkList':
-                    return 'Sjekkliste'
-                  case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
-                    return 'Velg blokk type'
-                  case 'toolbar.blockTypeSelect.placeholder':
-                    return 'Blokk type'
-                }
-                return defaultValue
-              }}
-            />
-            <div style={{ position: 'relative' }}>
-              <div
-                style={{
-                  color: 'gray',
-                  position: 'absolute',
-                  right: '0',
-                  top: '-1.5em',
-                  display: lagrerUtkast ? 'block' : 'none',
-                }}
-              >
-                <HStack gap="2">
-                  <Loader size="small" title="Lagrer..." />
-                  <BodyShort size="small">Lagrer utkast</BodyShort>
-                </HStack>
-              </div>
+      <TextField label="" placeholder="Dokumenttittel" style={{ margin: '1em 0 0.5em' }} />
+      <MdxEditorStyling>
+        <Box
+          background="surface-default"
+          padding="2"
+          marginBlock="0 0"
+          borderRadius="medium"
+          borderColor="border-default"
+          borderWidth="1"
+          className="mdxEditorBox"
+        >
+          {utkastLasterInn && (
+            <div>
+              <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
             </div>
-          </>
-        )}
-      </Box>
+          )}
+          {!utkastLasterInn && utkast && (
+            <>
+              <MDXEditor
+                markdown={utkast.data.brevtekst}
+                plugins={[
+                  listsPlugin(),
+                  quotePlugin(),
+                  thematicBreakPlugin(),
+                  toolbarPlugin({
+                    toolbarClassName: 'my-classname',
+                    toolbarContents: () => (
+                      <>
+                        {' '}
+                        <BlockTypeSelect />
+                        <UndoRedo />
+                        <BoldItalicUnderlineToggles />
+                        <ListsToggle />
+                      </>
+                    ),
+                  }),
+                ]}
+                onChange={markdownChanged}
+                translation={(key, defaultValue) => {
+                  switch (key) {
+                    case 'toolbar.blockTypes.paragraph':
+                      return 'Paragraf'
+                    case 'toolbar.blockTypes.quote':
+                      return 'Sitat'
+                    case 'toolbar.undo':
+                      return 'Angre'
+                    case 'toolbar.redo':
+                      return 'Gjør igjen'
+                    case 'toolbar.bold':
+                      return 'Uthevet'
+                    case 'toolbar.removeBold':
+                      return 'Fjern uthevet'
+                    case 'toolbar.italic':
+                      return 'Kursiv'
+                    case 'toolbar.removeItalic':
+                      return 'Fjern kursiv'
+                    case 'toolbar.underline':
+                      return 'Understrek'
+                    case 'toolbar.removeUnderline':
+                      return 'Fjern understrek'
+                    case 'toolbar.bulletedList':
+                      return 'Punktliste'
+                    case 'toolbar.numberedList':
+                      return 'Nummerert liste'
+                    case 'toolbar.checkList':
+                      return 'Sjekkliste'
+                    case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
+                      return 'Velg blokk type'
+                    case 'toolbar.blockTypeSelect.placeholder':
+                      return 'Blokk type'
+                  }
+                  return defaultValue
+                }}
+              />
+              <div style={{ position: 'relative' }}>
+                <div
+                  style={{
+                    color: 'gray',
+                    position: 'absolute',
+                    right: '0',
+                    top: '-1.5em',
+                    display: lagrerUtkast ? 'block' : 'none',
+                  }}
+                >
+                  <HStack gap="2">
+                    <Loader size="small" title="Lagrer..." />
+                    <BodyShort size="small">Lagrer utkast</BodyShort>
+                  </HStack>
+                </div>
+              </div>
+            </>
+          )}
+        </Box>
+      </MdxEditorStyling>
       <Checkbox
         value="klar"
         size={høyreVariant ? 'small' : 'medium'}
@@ -291,7 +295,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
                 </Link>
               </Tooltip>
             </HStack>
-            <MdxEditorStyling>
+            <MdxPreviewStyling>
               {merknad.markdown && (
                 <MDXEditor
                   markdown={merknad.markdown}
@@ -299,7 +303,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
                   contentEditableClassName="mdxEditorRemoveMargin"
                 />
               )}
-            </MdxEditorStyling>
+            </MdxPreviewStyling>
             {!merknad.markdown && (
               <BodyShort color="#444">
                 <em>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
@@ -313,6 +317,14 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 }
 
 const MdxEditorStyling = styled.div`
+  margin-bottom: 0.5rem;
+  .mdxEditorBox:has([contenteditable='true']:focus) {
+    border: 4px solid rgba(0, 52, 125, 1);
+    margin: -3px;
+  }
+`
+
+const MdxPreviewStyling = styled.div`
   .mdxEditorRemoveMargin {
     padding: 0;
   }

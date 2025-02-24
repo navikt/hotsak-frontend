@@ -7,6 +7,7 @@ import {
   TilgangResultat,
   TilgangType,
   VedtakPayload,
+  VedtakStatusType,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import {
@@ -143,10 +144,9 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }
   }),
 
-  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ request, params }) => {
+  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ params }) => {
     const sakId = params.sakId
-    const { status } = await request.json()
-    await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, status)
+    await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, VedtakStatusType.INNVILGET)
     return respondNoContent()
   }),
 

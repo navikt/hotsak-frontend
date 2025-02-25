@@ -141,6 +141,10 @@ export class OppgaveStore extends Dexie {
     return oppgave
   }
 
+  async finnOppgaveForJournalpostId(journalpostId: string): Promise<OppgaveApiOppgave | undefined> {
+    return this.oppgaver.filter((oppgave) => oppgave.journalpostId === journalpostId).first()
+  }
+
   async tildel(oppgaveId: string) {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
 

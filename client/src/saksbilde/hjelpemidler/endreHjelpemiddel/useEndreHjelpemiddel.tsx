@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { useBestilling } from '../hjelpemidler/endreHjelpemiddel/useBestilling'
-import { putEndreHjelpemiddel } from '../../io/http'
-import { EndretHjelpemiddel } from '../../types/types.internal'
-import { useHjelpemiddel } from '../hjelpemidler/useHjelpemiddel'
+import { useBestilling } from './useBestilling'
+import { putEndreHjelpemiddel } from '../../../io/http'
+import { EndretHjelpemiddel } from '../../../types/types.internal'
+import { useHjelpemiddel } from './useHjelpemiddel'
 
 export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: any) => {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)

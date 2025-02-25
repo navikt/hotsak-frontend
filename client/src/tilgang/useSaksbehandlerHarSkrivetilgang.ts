@@ -10,7 +10,7 @@ export function useSaksbehandlerHarSkrivetilgang(tilganger?: Tilgang): boolean {
   }
   if (window.appSettings.MILJO === 'dev-gcp') {
     // Kun midlertidig logikk for å teste om resten av logikken rundt lesemodus fungerer frem til ny policy løsning er på plass i backend
-    const harSkrivetilgang = !grupper.includes(Gruppe.HOTSAK_NASJONAL)
+    const harSkrivetilgang = grupper.includes(Gruppe.HOTSAK_SAKSBEHANDLER)
     console.log('Saksbehandler har skrivetilgang til oppgave', { harSkrivetilgang })
     return harSkrivetilgang
   } else {

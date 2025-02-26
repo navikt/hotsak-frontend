@@ -117,6 +117,32 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const url = new URL(request.url)
     const dokumentType = url.searchParams.get('type')
 
+    if (dokumentType == 'JOURNALFØRT_NOTAT') {
+      return HttpResponse.json([
+        {
+          brevkode: 'Nav 10.01.01',
+          dokumentId: 'dokinfoid1001',
+          harOrignalTekst: true,
+          journalpostId: 'jpostid1001',
+          opprettet: '2025-02-24T12:34:27.308680Z',
+          originalTekst: {
+            dokumenttittel: 'Test dokument',
+            brevtekst: 'Lorem ipsum dolor sit amet.',
+          },
+          sakId: sakId,
+          saksbehandler: {
+            epost: '',
+            id: 'X999999',
+            navn: 'Sak Saksbehandler',
+          },
+          saksbehandlerId: 'X999999',
+          status: 'TODO',
+          tittel: 'Test dokument',
+          type: 'NOTAT',
+        },
+      ])
+    }
+
     // Hvis ingen type er angitt som query param, bruker gammel oppførsel som henter journalposter fra sak.
     // Ligger her for å bevare bakoverkompabilitet
     // På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra joark.

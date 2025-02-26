@@ -19,7 +19,7 @@ import { MDXEditor } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
 import styled from 'styled-components'
-import { BrytbarBrødtekst, Brødtekst } from '../../felleskomponenter/typografi.tsx'
+import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
 import { postBrevutkast } from '../../io/http.ts'
 import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
@@ -84,6 +84,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
   const merknader = [
     {
       saksbehandler: 'Vurderer Vilkårsen',
+      tittel: 'Bekreftelse av medlemskap',
       dato: '13.02.2024 14:21',
       markdown: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
       journalpostId: 'b934c778-77e7-4eaf-810d-e871b76ca6a1',
@@ -91,6 +92,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
     },
     {
       saksbehandler: 'Vurderer Vilkårsen',
+      tittel: 'Utredelse fra lege',
       dato: '10.02.2024 15:02',
       markdown: '**Utredelse fra lege:**\nLorem ipsum dolor sit amet.\n\n**Noe annet:**\nLorem ipsum dolor sit amet.',
       journalpostId: 'ec93204e-3fa4-409a-8414-ee53f485c320',
@@ -98,6 +100,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
     },
     {
       saksbehandler: 'Vurderer Vilkårsen',
+      tittel: 'Møte med bruker',
       dato: '08.02.2024 10:42',
       markdown: null,
       journalpostId: '75d8d6b7-1ff9-4b2c-bd6f-c33caac79d3f',
@@ -199,7 +202,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       </Checkbox>*/}
       <Button
         variant="secondary"
-        size={høyreVariant ? 'small' : 'medium'}
+        size={'small'}
         style={{ margin: '0.2em 0 0' }}
         // disabled={!klarForFerdigstilling}
       >
@@ -210,62 +213,59 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
           Journalførte notater
         </Heading>
       )*/}
-      {høyreVariant && (
-        <div style={{ marginTop: '3em' }}>
-          <Label size="small" style={{ display: 'none' }}>
-            Journalførte notater
-          </Label>
-        </div>
-      )}
-      {merknader.map((merknad, idx) => {
-        return (
-          <Box
-            key={idx}
-            background="surface-default"
-            padding="5"
-            marginBlock="5"
-            borderRadius="xlarge"
-            borderColor="border-subtle"
-            borderWidth="1"
-          >
-            <HStack gap="2">
-              {!høyreVariant && (
-                <Heading level="3" size="xsmall">
-                  {merknad.saksbehandler}
-                </Heading>
+      <VStack gap="4" paddingBlock="8 0">
+        {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
+        {merknader.map((merknad, idx) => {
+          return (
+            <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
+              <HStack gap="2">
+                {/*!høyreVariant && (
+                  <Heading level="3" size="xsmall">
+                    {merknad.saksbehandler}
+                  </Heading>
+                )*/}
+                {høyreVariant && (
+                  <>
+                    <VStack gap="2">
+                      <HStack gap="2">
+                        <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                          {merknad.tittel}
+                        </Heading>
+                        <Tooltip content="Åpne i ny fane">
+                          <Link
+                            href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`}
+                            target="_blank"
+                          >
+                            <ExternalLinkIcon />
+                          </Link>
+                        </Tooltip>
+                      </HStack>
+                      <VStack>
+                        <Brødtekst>{merknad.dato}</Brødtekst>
+                        <Undertittel>{merknad.saksbehandler}</Undertittel>
+                      </VStack>
+                    </VStack>
+                  </>
+                )}
+              </HStack>
+              <MdxPreviewStyling>
+                {merknad.markdown && (
+                  <MDXEditor
+                    markdown={merknad.markdown}
+                    readOnly={true}
+                    contentEditableClassName="mdxEditorRemoveMargin"
+                  />
+                )}
+              </MdxPreviewStyling>
+              {!merknad.markdown && (
+                <Box paddingBlock={'2 0'}>
+                  <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
+                </Box>
               )}
-              {høyreVariant && (
-                <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                  {merknad.saksbehandler}
-                </Heading>
-              )}
-
-              <BodyShort size="small" color="#444">
-                {merknad.dato}
-              </BodyShort>
-              <Tooltip content="Åpne i ny fane">
-                <Link href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`} target="_blank">
-                  <ExternalLinkIcon />
-                </Link>
-              </Tooltip>
-            </HStack>
-            <MdxPreviewStyling>
-              {merknad.markdown && (
-                <MDXEditor
-                  markdown={merknad.markdown}
-                  readOnly={true}
-                  contentEditableClassName="mdxEditorRemoveMargin"
-                />
-              )}
-            </MdxPreviewStyling>
-            {!merknad.markdown && (
-              <BodyShort color="#444">
-                <em>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</em>
-              </BodyShort>
-            )}
-          </Box>
-        )
-      })}
+            </Box>
+          )
+        })}
+      </VStack>
     </>
   )
 }
@@ -281,5 +281,8 @@ const MdxEditorStyling = styled.div`
 const MdxPreviewStyling = styled.div`
   .mdxEditorRemoveMargin {
     padding: 0;
+    font-size: var(--a-font-size-medium);
+    color: var(--a-text-default);
+    font-family: 'Source Sans Pro';
   }
 `

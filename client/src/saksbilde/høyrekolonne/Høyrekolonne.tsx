@@ -12,7 +12,7 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
-import { Merknader } from '../merknader/Merknader.tsx'
+import { Merknader } from '../journalførteNotater/JornalførteNotater.tsx'
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 
 export function Høyrekolonne() {
@@ -77,7 +77,7 @@ export function Høyrekolonne() {
           {sak != null && (
             <Tooltip content="Journalførte notater">
               <Tabs.Tab
-                value={HøyrekolonneTabs.JFRNOTAT}
+                value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT}
                 icon={
                   <>
                     <FolderFileIcon title="Journalføringsnotater" />
@@ -104,7 +104,7 @@ export function Høyrekolonne() {
           </Tabs.Panel>
         )}
         {sak != null && (
-          <Tabs.Panel value={HøyrekolonneTabs.JFRNOTAT.toString()}>
+          <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
               <Merknader sak={sak.data} høyreVariant={true} />
             </HøyrekolonnePanel>

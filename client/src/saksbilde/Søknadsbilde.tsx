@@ -27,7 +27,7 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { Merknader } from './merknader/Merknader.tsx'
+import { Merknader } from './journalførteNotater/JornalførteNotater.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 
 const SaksbildeContent = memo(() => {

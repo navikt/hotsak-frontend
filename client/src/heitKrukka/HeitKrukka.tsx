@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 
-import { Modal } from '@navikt/ds-react'
-import { Avstand } from '../felleskomponenter/Avstand'
+import { Box, Modal } from '@navikt/ds-react'
 
 export interface HeitKrukkaProps {
   open: boolean
@@ -21,9 +20,9 @@ export function HeitKrukka({ open, onClose, skjemaUrl }: HeitKrukkaProps) {
       header={{ heading: '', closeButton: true }}
     >
       <Modal.Body>
-        <Avstand paddingLeft={2} paddingRight={2}>
+        <Box padding="2">
           <iframe title={'dokument'} src={skjemaUrl} width={'600px'} height={'600px'} />
-        </Avstand>
+        </Box>
       </Modal.Body>
     </Modal>
   )

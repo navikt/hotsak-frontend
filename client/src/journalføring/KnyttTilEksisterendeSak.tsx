@@ -1,4 +1,4 @@
-import { Alert, Button, Radio, RadioGroup, Table } from '@navikt/ds-react'
+import { Alert, Box, Button, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
 import { formaterDato } from '../utils/dato'
 
@@ -23,7 +23,7 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
     : 'Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.'
 
   return (
-    <>
+    <Box paddingBlock="6 0">
       <HeadingMedHjelpetekst level="2" hjelpetekst={åpneSakerHjelpetekst} placement="right-end">
         Knytt til eksisterende sak
       </HeadingMedHjelpetekst>
@@ -78,6 +78,6 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
           </Alert>
         )}
       </Avstand>
-    </>
+    </Box>
   )
 }

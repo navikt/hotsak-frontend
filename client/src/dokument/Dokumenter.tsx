@@ -1,4 +1,4 @@
-import { Heading, Table } from '@navikt/ds-react'
+import { Box, Heading, Table } from '@navikt/ds-react'
 
 import { Dokument } from '../types/types.internal'
 import { useDokumentContext } from './DokumentContext'
@@ -13,7 +13,7 @@ export function Dokumenter(props: DokumenterProps) {
   const { valgtDokument, setValgtDokument } = useDokumentContext()
 
   return (
-    <>
+    <Box paddingBlock="6 0">
       <Heading size={'xsmall'} level={'2'}>
         Dokumenter
       </Heading>
@@ -31,6 +31,6 @@ export function Dokumenter(props: DokumenterProps) {
           ))}
         </Table.Body>
       </Table>
-    </>
+    </Box>
   )
 }

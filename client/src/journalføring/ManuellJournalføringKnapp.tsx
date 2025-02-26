@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
 import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
+import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 export interface ManuellJournalføringKnappProps {
   oppgaveId: string

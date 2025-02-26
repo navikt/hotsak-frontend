@@ -1,10 +1,11 @@
 import { HouseIcon } from '@navikt/aksel-icons'
-import { Tabs } from '@navikt/ds-react'
+import { Tabs, Tag } from '@navikt/ds-react'
 
 import { useLocation } from 'react-router'
 import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { TabLink } from './TabLink'
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -32,16 +33,16 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
                 <Saksmeny />
               </div>
             </Eksperiment>*/}
-            {/* Foreløpig kommentert ut, da vi enn så lenge tester ut å ha merknader (journalførte notater) i høyrekolonna
-            
-            <Eksperiment>
-              <TabLink to={`/sak/${id}/merknader`} title="Merknader">
-                Journalførte notater
-                <Tag variant="alt3-moderate" size="xsmall" style={{ marginLeft: '0.5em' }}>
-                  3
-                </Tag>
-              </TabLink>
-            </Eksperiment>*/}
+            {
+              <Eksperiment>
+                <TabLink to={`/sak/${id}/merknader`} title="Merknader">
+                  Journalførte notater
+                  <Tag variant="alt3-moderate" size="xsmall" style={{ marginLeft: '0.5em' }}>
+                    3
+                  </Tag>
+                </TabLink>
+              </Eksperiment>
+            }
           </Tabs.List>
         </Tabs>
       </SøknadslinjeContainer>

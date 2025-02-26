@@ -110,26 +110,25 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 
   return (
     <>
-      {/*!høyreVariant && (
+      {!høyreVariant && (
         <Heading level="1" size="medium" spacing={false}>
           <HStack align="center" gap="1">
-            <FolderFileIcon />
             Journalførte notater
           </HStack>
         </Heading>
-      )*/}
-      {/*!høyreVariant && (
+      )}
+      {!høyreVariant && (
         <>
           <Heading level="2" size="small" style={{ marginTop: '1em' }}>
             Opprett et nytt journalføringsnotat på saken
           </Heading>
-          <BodyLong size="small">
+          <Brødtekst>
             Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
             saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
             bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
-          </BodyLong>
+          </Brødtekst>
         </>
-      )*/}
+      )}
       {høyreVariant && (
         <VStack gap="2">
           <Brødtekst>
@@ -208,22 +207,22 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       >
         Journalfør notat
       </Button>
-      {/*!høyreVariant && (
+      {!høyreVariant && (
         <Heading level="2" size="small" style={{ marginTop: '2em' }}>
           Journalførte notater
         </Heading>
-      )*/}
+      )}
       <VStack gap="4" paddingBlock="8 0">
         {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
         {merknader.map((merknad, idx) => {
           return (
             <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
               <HStack gap="2">
-                {/*!høyreVariant && (
+                {!høyreVariant && (
                   <Heading level="3" size="xsmall">
                     {merknad.saksbehandler}
                   </Heading>
-                )*/}
+                )}
                 {høyreVariant && (
                   <>
                     <VStack gap="2">

@@ -1,9 +1,7 @@
 import {
-  BodyLong,
   BodyShort,
   Box,
   Button,
-  Checkbox,
   Heading,
   HStack,
   Label,
@@ -12,27 +10,20 @@ import {
   ReadMore,
   TextField,
   Tooltip,
+  VStack,
 } from '@navikt/ds-react'
 
-import { ExternalLinkIcon, FolderFileIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 
-import {
-  BlockTypeSelect,
-  BoldItalicUnderlineToggles,
-  listsPlugin,
-  ListsToggle,
-  MDXEditor,
-  quotePlugin,
-  thematicBreakPlugin,
-  toolbarPlugin,
-  UndoRedo,
-} from '@mdxeditor/editor'
+import { MDXEditor } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
-import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
-import { postBrevutkast } from '../../io/http.ts'
-import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import styled from 'styled-components'
+import { BrytbarBrødtekst, Brødtekst } from '../../felleskomponenter/typografi.tsx'
+import { postBrevutkast } from '../../io/http.ts'
+import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
+import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
+import { MarkdownEditor } from './MarkdownEditor.tsx'
 
 export interface MerknaderProps {
   sak: Sak
@@ -41,7 +32,7 @@ export interface MerknaderProps {
 
 export function Merknader({ sak, høyreVariant }: MerknaderProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
-  const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
+  //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const {
     data: utkast,
@@ -57,6 +48,8 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 
   const markdownEndret = (markdown: string) => {
     if (utkast) {
+      console.log('Markdown endreet og utkast')
+
       utkastEndret(utkast.data.dokumenttittel || '', markdown)
     }
   }
@@ -114,15 +107,15 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 
   return (
     <>
-      {!høyreVariant && (
+      {/*!høyreVariant && (
         <Heading level="1" size="medium" spacing={false}>
           <HStack align="center" gap="1">
             <FolderFileIcon />
             Journalførte notater
           </HStack>
         </Heading>
-      )}
-      {!høyreVariant && (
+      )*/}
+      {/*!høyreVariant && (
         <>
           <Heading level="2" size="small" style={{ marginTop: '1em' }}>
             Opprett et nytt journalføringsnotat på saken
@@ -133,19 +126,20 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
             bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
           </BodyLong>
         </>
-      )}
+      )*/}
       {høyreVariant && (
-        <>
-          <Label size="small">Nytt journalføringsnotat</Label>
-          <BodyLong size="small">
-            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres!
-          </BodyLong>
-          <ReadMore size="small" header="Mer om journalføringsnotat" style={{ marginTop: '0.5em' }}>
-            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
-            saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
-            bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
+        <VStack gap="2">
+          <Brødtekst>
+            Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
+          </Brødtekst>
+          <ReadMore size="small" header="Dette må du vite om journalførte notater">
+            <BrytbarBrødtekst>
+              Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
+              saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
+              bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
+            </BrytbarBrødtekst>
           </ReadMore>
-        </>
+        </VStack>
       )}
       {utkastLasterInn && (
         <div>
@@ -153,122 +147,69 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         </div>
       )}
       {!utkastLasterInn && utkast && (
-        <>
+        <VStack gap="4" paddingBlock="8 0">
           <TextField
-            label=""
-            placeholder="Dokumenttittel"
-            style={{ margin: '1em 0 0.5em' }}
+            size="small"
+            label="Tittel"
+            //style={{ margin: '1em 0 0.5em' }}
             defaultValue={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
           />
-          <MdxEditorStyling>
-            <Box
-              background="surface-default"
-              padding="2"
-              marginBlock="0 0"
-              borderRadius="medium"
-              borderColor="border-default"
-              borderWidth="1"
-              className="mdxEditorBox"
-            >
-              <>
-                <MDXEditor
-                  markdown={utkast.data.brevtekst}
-                  plugins={[
-                    listsPlugin(),
-                    quotePlugin(),
-                    thematicBreakPlugin(),
-                    toolbarPlugin({
-                      toolbarClassName: 'my-classname',
-                      toolbarContents: () => (
-                        <>
-                          {' '}
-                          <BlockTypeSelect />
-                          <UndoRedo />
-                          <BoldItalicUnderlineToggles />
-                          <ListsToggle />
-                        </>
-                      ),
-                    }),
-                  ]}
-                  onChange={markdownEndret}
-                  translation={(key, defaultValue) => {
-                    switch (key) {
-                      case 'toolbar.blockTypes.paragraph':
-                        return 'Paragraf'
-                      case 'toolbar.blockTypes.quote':
-                        return 'Sitat'
-                      case 'toolbar.undo':
-                        return 'Angre'
-                      case 'toolbar.redo':
-                        return 'Gjør igjen'
-                      case 'toolbar.bold':
-                        return 'Uthevet'
-                      case 'toolbar.removeBold':
-                        return 'Fjern uthevet'
-                      case 'toolbar.italic':
-                        return 'Kursiv'
-                      case 'toolbar.removeItalic':
-                        return 'Fjern kursiv'
-                      case 'toolbar.underline':
-                        return 'Understrek'
-                      case 'toolbar.removeUnderline':
-                        return 'Fjern understrek'
-                      case 'toolbar.bulletedList':
-                        return 'Punktliste'
-                      case 'toolbar.numberedList':
-                        return 'Nummerert liste'
-                      case 'toolbar.checkList':
-                        return 'Sjekkliste'
-                      case 'toolbar.blockTypeSelect.selectBlockTypeTooltip':
-                        return 'Velg blokk type'
-                      case 'toolbar.blockTypeSelect.placeholder':
-                        return 'Blokk type'
-                    }
-                    return defaultValue
-                  }}
-                />
-                <div style={{ position: 'relative' }}>
-                  <div
-                    style={{
-                      color: 'gray',
-                      position: 'absolute',
-                      right: '0',
-                      top: '-1.5em',
-                      display: lagrerUtkast ? 'block' : 'none',
-                    }}
-                  >
-                    <HStack gap="2">
-                      <Loader size="small" title="Lagrer..." />
-                      <BodyShort size="small">Lagrer utkast</BodyShort>
-                    </HStack>
+          <div>
+            <Label size="small">Tekst</Label>
+            <MdxEditorStyling>
+              <Box
+                background="surface-default"
+                marginBlock="0 0"
+                borderRadius="medium"
+                borderColor="border-default"
+                borderWidth="1"
+                className="mdxEditorBox"
+              >
+                <>
+                  <MarkdownEditor tekst={utkast.data.brevtekst} onChange={markdownEndret} />
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        color: 'gray',
+                        position: 'absolute',
+                        right: '0',
+                        top: '-1.5em',
+                        display: lagrerUtkast ? 'block' : 'none',
+                      }}
+                    >
+                      <HStack gap="2">
+                        <Loader size="small" title="Lagrer..." />
+                        <BodyShort size="small">Lagrer utkast</BodyShort>
+                      </HStack>
+                    </div>
                   </div>
-                </div>
-              </>
-            </Box>
-          </MdxEditorStyling>
-        </>
+                </>
+              </Box>
+            </MdxEditorStyling>
+          </div>
+        </VStack>
       )}
-      <Checkbox
+      {/*<Checkbox
         value="klar"
         size={høyreVariant ? 'small' : 'medium'}
         onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
       >
         Jeg er klar over at journalførte notater er synlig for bruker på nav.no
-      </Checkbox>
+      </Checkbox>*/}
       <Button
         variant="secondary"
         size={høyreVariant ? 'small' : 'medium'}
         style={{ margin: '0.2em 0 0' }}
-        disabled={!klarForFerdigstilling}
+        // disabled={!klarForFerdigstilling}
       >
         Journalfør notat
       </Button>
-      {!høyreVariant && (
+      {/*!høyreVariant && (
         <Heading level="2" size="small" style={{ marginTop: '2em' }}>
           Journalførte notater
         </Heading>
-      )}
+      )*/}
       {høyreVariant && (
         <div style={{ marginTop: '3em' }}>
           <Label size="small" style={{ display: 'none' }}>

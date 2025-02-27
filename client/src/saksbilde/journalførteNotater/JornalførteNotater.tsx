@@ -207,9 +207,14 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
             {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
             {[...journalførteNotater]
               .sort((a, b) => (a.opprettet < b.opprettet ? 1 : a.opprettet > b.opprettet ? -1 : 0))
-              .map((notat, idx) => {
+              .map((notat) => {
                 return (
-                  <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
+                  <Box
+                    key={`${notat.journalpostId}-${notat.dokumentId}`}
+                    background="surface-subtle"
+                    padding="2"
+                    borderRadius="xlarge"
+                  >
                     <HStack gap="2">
                       {!høyreVariant && (
                         <Heading level="3" size="xsmall">

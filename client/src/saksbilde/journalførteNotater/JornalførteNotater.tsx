@@ -150,7 +150,6 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
             size="small"
             label="Tittel"
             readOnly={readOnly}
-            //style={{ margin: '1em 0 0.5em' }}
             value={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
           />

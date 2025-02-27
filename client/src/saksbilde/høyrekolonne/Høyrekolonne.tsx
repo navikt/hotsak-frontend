@@ -5,20 +5,22 @@ import { useState } from 'react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { useErNotatPilot } from '../../state/authentication'
+import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { HøyrekolonneTabs } from '../../types/types.internal'
+import { JournalførteNotater } from '../journalførteNotater/JornalførteNotater.tsx'
 import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
-import { JournalførteNotater } from '../journalførteNotater/JornalførteNotater.tsx'
-import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
+  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
@@ -97,7 +99,7 @@ export function Høyrekolonne() {
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
-              <JournalførteNotater sak={sak.data} høyreVariant={true} lesevisning={!kanBehandleSak} />
+              <JournalførteNotater sak={sak.data} høyreVariant={true} lesevisning={!harSkrivetilgang} />
             </HøyrekolonnePanel>
           </Tabs.Panel>
         )}

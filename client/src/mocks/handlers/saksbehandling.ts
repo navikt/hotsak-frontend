@@ -148,7 +148,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           opprettet: '2025-02-23T15:13:42.308680Z',
           originalTekst: {
             dokumenttittel: 'Utredelse fra lege',
-            brevtekst: 'Lorem ipsum dolor sit amet.',
+            brevtekst:
+              '**Utredelse fra lege:**\nLorem ipsum dolor sit amet.\n\n**Noe annet:**\nLorem ipsum dolor sit amet.',
           },
           sakId: sakId,
           saksbehandler: {

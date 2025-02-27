@@ -32,7 +32,7 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { Merknader } from './journalførteNotater/JornalførteNotater.tsx'
+import { JournalførteNotater } from './journalførteNotater/JornalførteNotater.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 
@@ -114,7 +114,10 @@ const SaksbildeContent = memo(() => {
                   }
                 />
                 <Route path="/formidler" element={<Formidler levering={levering} />} />
-                <Route path="/merknader" element={<Merknader sak={sak.data} lesevisning={!kanBehandleSak} />} />
+                <Route
+                  path="/merknader"
+                  element={<JournalførteNotater sak={sak.data} lesevisning={!kanBehandleSak} />}
+                />
               </Routes>
             </Container>
           </section>

@@ -9,7 +9,6 @@ import {
   toolbarPlugin,
   UndoRedo,
 } from '@mdxeditor/editor'
-import { read } from 'node:fs'
 
 export function MarkdownEditor({
   tekst,

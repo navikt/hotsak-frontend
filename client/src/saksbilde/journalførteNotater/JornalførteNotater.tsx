@@ -18,7 +18,7 @@ import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
-import { postBrevutkast } from '../../io/http.ts'
+import { postBrevutkast, postBrevutsending } from '../../io/http.ts'
 import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
@@ -33,6 +33,7 @@ export interface JournalførteNotaterProps {
 
 export function JournalførteNotater({ sak, høyreVariant, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
+  const [journalførerNotat, setJournalførerNotat] = useState(false)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const {
@@ -41,7 +42,11 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
     mutate: utkastMutert,
   } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
 
-  const { data: journalførteNotater } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
+  const { data: journalførteNotater, mutate: journalførteNotaterMutert } = useSaksdokumenter(
+    sak.sakId,
+    true,
+    SaksdokumentType.NOTAT
+  )
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
@@ -55,29 +60,49 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
     }
   }
 
+  const lagPayload = (tittel: string, tekst: string) => {
+    return {
+      sakId: sak.sakId,
+      målform: MålformType.BOKMÅL,
+      brevtype: Brevtype.JOURNALFØRT_NOTAT,
+      data: {
+        dokumenttittel: tittel,
+        brevtekst: tekst,
+      },
+    }
+  }
+
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   let debounceTimeout: NodeJS.Timeout
-  const utkastEndret = (tittel: string, markdown: string) => {
+  const utkastEndret = async (tittel: string, markdown: string) => {
+    // Lokal oppdatering for liveness
+    await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
+
     if (debounceTimeout) clearTimeout(debounceTimeout)
     debounceTimeout = setTimeout(async () => {
       setLagrerUtkast(true)
-      const payload = {
-        sakId: sak.sakId,
-        målform: MålformType.BOKMÅL,
-        brevtype: Brevtype.JOURNALFØRT_NOTAT,
-        data: {
-          dokumenttittel: tittel,
-          brevtekst: markdown,
-        },
-      }
+      const payload = lagPayload(tittel, markdown)
       const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
       await postBrevutkast(payload)
-      await utkastMutert(payload)
+      await utkastMutert()
       await minimumPeriodeVisLagrerUtkast
       setLagrerUtkast(false)
     }, 500)
   }
+
+  const journalførNotat = async () => {
+    if (!utkast) return
+    if (!utkast.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) return
+    if (!utkast.data.brevtekst || utkast.data.brevtekst.length == 0) return
+    setJournalførerNotat(true)
+    await postBrevutsending(lagPayload(utkast.data.dokumenttittel, utkast.data.brevtekst))
+    await utkastMutert(lagPayload('', ''))
+    await journalførteNotaterMutert()
+    setJournalførerNotat(false)
+  }
+
+  const readOnly = lesevisning || journalførerNotat
 
   return (
     <>
@@ -124,9 +149,9 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
           <TextField
             size="small"
             label="Tittel"
-            readOnly={lesevisning}
+            readOnly={readOnly}
             //style={{ margin: '1em 0 0.5em' }}
-            defaultValue={utkast.data.dokumenttittel}
+            value={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
           />
           <div>
@@ -141,11 +166,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
                 className="mdxEditorBox"
               >
                 <>
-                  <MarkdownEditor
-                    tekst={utkast.data?.brevtekst || ''}
-                    onChange={markdownEndret}
-                    readOnly={lesevisning}
-                  />
+                  <MarkdownEditor tekst={utkast.data?.brevtekst || ''} onChange={markdownEndret} readOnly={readOnly} />
                   <div style={{ position: 'relative' }}>
                     <div
                       style={{
@@ -179,7 +200,9 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
         variant="secondary"
         size={'small'}
         style={{ margin: '0.2em 0 0' }}
-        disabled={lesevisning}
+        disabled={readOnly}
+        loading={journalførerNotat}
+        onClick={journalførNotat}
         // disabled={!klarForFerdigstilling}
       >
         Journalfør notat

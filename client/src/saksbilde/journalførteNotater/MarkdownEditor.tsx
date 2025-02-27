@@ -4,11 +4,13 @@ import {
   listsPlugin,
   ListsToggle,
   MDXEditor,
+  MDXEditorMethods,
   quotePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
   UndoRedo,
 } from '@mdxeditor/editor'
+import { useEffect, useRef } from 'react'
 
 export function MarkdownEditor({
   tekst,
@@ -19,10 +21,17 @@ export function MarkdownEditor({
   onChange: (tekst: string) => void
   readOnly: boolean
 }) {
+  // Oppdater innhold ved endring av utkast
+  const editorRef = useRef<MDXEditorMethods>(null)
+  useEffect(() => {
+    if (editorRef.current) editorRef.current.setMarkdown(tekst)
+  }, [tekst])
+
   return (
     <MDXEditor
       markdown={tekst}
       readOnly={readOnly}
+      ref={editorRef}
       plugins={[
         listsPlugin(),
         quotePlugin(),

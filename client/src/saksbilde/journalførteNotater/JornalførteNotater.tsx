@@ -40,7 +40,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
     mutate: utkastMutert,
   } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
 
-  const { data: merknader } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
+  const { data: journalførteNotater } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
@@ -186,14 +186,14 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       )}
       <VStack gap="4" paddingBlock="8 0">
         {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
-        {merknader &&
-          merknader.map((merknad, idx) => {
+        {journalførteNotater &&
+          journalførteNotater.map((notat, idx) => {
             return (
               <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
                 <HStack gap="2">
                   {!høyreVariant && (
                     <Heading level="3" size="xsmall">
-                      {merknad.saksbehandler.navn}
+                      {notat.saksbehandler.navn}
                     </Heading>
                   )}
                   {høyreVariant && (
@@ -201,35 +201,32 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
                       <VStack gap="2">
                         <HStack gap="2">
                           <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                            {merknad.originalTekst?.dokumenttittel || merknad.tittel}
+                            {notat.originalTekst?.dokumenttittel || notat.tittel}
                           </Heading>
                           <Tooltip content="Åpne i ny fane">
-                            <Link
-                              href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`}
-                              target="_blank"
-                            >
+                            <Link href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`} target="_blank">
                               <ExternalLinkIcon />
                             </Link>
                           </Tooltip>
                         </HStack>
                         <VStack>
-                          <Brødtekst>{formaterTidsstempel(merknad.opprettet)}</Brødtekst>
-                          <Undertittel>{merknad.saksbehandler.navn}</Undertittel>
+                          <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
+                          <Undertittel>{notat.saksbehandler.navn}</Undertittel>
                         </VStack>
                       </VStack>
                     </>
                   )}
                 </HStack>
                 <MdxPreviewStyling>
-                  {merknad.originalTekst && (
+                  {notat.originalTekst && (
                     <MDXEditor
-                      markdown={merknad.originalTekst.brevtekst}
+                      markdown={notat.originalTekst.brevtekst}
                       readOnly={true}
                       contentEditableClassName="mdxEditorRemoveMargin"
                     />
                   )}
                 </MdxPreviewStyling>
-                {!merknad.originalTekst && (
+                {!notat.originalTekst && (
                   <Box paddingBlock={'2 0'}>
                     <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
                   </Box>

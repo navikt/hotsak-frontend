@@ -12,18 +12,18 @@ import {
   Tooltip,
   VStack,
 } from '@navikt/ds-react'
-
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-
 import { MDXEditor } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
 import { postBrevutkast } from '../../io/http.ts'
-import { Brevtype, MålformType, Sak } from '../../types/types.internal.ts'
+import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
+import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
+import { formaterTidsstempel } from '../../utils/dato.ts'
 
 export interface MerknaderProps {
   sak: Sak
@@ -39,6 +39,8 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
     isLoading: utkastLasterInn,
     mutate: utkastMutert,
   } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
+
+  const { data: merknader } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
@@ -77,36 +79,6 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       setLagrerUtkast(false)
     }, 500)
   }
-
-  // const { data: merknader2 } = useSaksdokumenter(sak.sakId, true, SaksdokumentType.NOTAT)
-  // console.log('here', merknader2)
-
-  const merknader = [
-    {
-      saksbehandler: 'Vurderer Vilkårsen',
-      tittel: 'Bekreftelse av medlemskap',
-      dato: '13.02.2024 14:21',
-      markdown: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
-      journalpostId: 'b934c778-77e7-4eaf-810d-e871b76ca6a1',
-      dokumentId: '6',
-    },
-    {
-      saksbehandler: 'Vurderer Vilkårsen',
-      tittel: 'Utredelse fra lege',
-      dato: '10.02.2024 15:02',
-      markdown: '**Utredelse fra lege:**\nLorem ipsum dolor sit amet.\n\n**Noe annet:**\nLorem ipsum dolor sit amet.',
-      journalpostId: 'ec93204e-3fa4-409a-8414-ee53f485c320',
-      dokumentId: '6',
-    },
-    {
-      saksbehandler: 'Vurderer Vilkårsen',
-      tittel: 'Møte med bruker',
-      dato: '08.02.2024 10:42',
-      markdown: null,
-      journalpostId: '75d8d6b7-1ff9-4b2c-bd6f-c33caac79d3f',
-      dokumentId: '6',
-    },
-  ]
 
   return (
     <>
@@ -214,56 +186,57 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       )}
       <VStack gap="4" paddingBlock="8 0">
         {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
-        {merknader.map((merknad, idx) => {
-          return (
-            <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
-              <HStack gap="2">
-                {!høyreVariant && (
-                  <Heading level="3" size="xsmall">
-                    {merknad.saksbehandler}
-                  </Heading>
-                )}
-                {høyreVariant && (
-                  <>
-                    <VStack gap="2">
-                      <HStack gap="2">
-                        <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                          {merknad.tittel}
-                        </Heading>
-                        <Tooltip content="Åpne i ny fane">
-                          <Link
-                            href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`}
-                            target="_blank"
-                          >
-                            <ExternalLinkIcon />
-                          </Link>
-                        </Tooltip>
-                      </HStack>
-                      <VStack>
-                        <Brødtekst>{merknad.dato}</Brødtekst>
-                        <Undertittel>{merknad.saksbehandler}</Undertittel>
+        {merknader &&
+          merknader.map((merknad, idx) => {
+            return (
+              <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
+                <HStack gap="2">
+                  {!høyreVariant && (
+                    <Heading level="3" size="xsmall">
+                      {merknad.saksbehandler.navn}
+                    </Heading>
+                  )}
+                  {høyreVariant && (
+                    <>
+                      <VStack gap="2">
+                        <HStack gap="2">
+                          <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                            {merknad.originalTekst?.dokumenttittel || merknad.tittel}
+                          </Heading>
+                          <Tooltip content="Åpne i ny fane">
+                            <Link
+                              href={`/api/journalpost/${merknad.journalpostId}/${merknad.dokumentId}`}
+                              target="_blank"
+                            >
+                              <ExternalLinkIcon />
+                            </Link>
+                          </Tooltip>
+                        </HStack>
+                        <VStack>
+                          <Brødtekst>{formaterTidsstempel(merknad.opprettet)}</Brødtekst>
+                          <Undertittel>{merknad.saksbehandler.navn}</Undertittel>
+                        </VStack>
                       </VStack>
-                    </VStack>
-                  </>
+                    </>
+                  )}
+                </HStack>
+                <MdxPreviewStyling>
+                  {merknad.originalTekst && (
+                    <MDXEditor
+                      markdown={merknad.originalTekst.brevtekst}
+                      readOnly={true}
+                      contentEditableClassName="mdxEditorRemoveMargin"
+                    />
+                  )}
+                </MdxPreviewStyling>
+                {!merknad.originalTekst && (
+                  <Box paddingBlock={'2 0'}>
+                    <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
+                  </Box>
                 )}
-              </HStack>
-              <MdxPreviewStyling>
-                {merknad.markdown && (
-                  <MDXEditor
-                    markdown={merknad.markdown}
-                    readOnly={true}
-                    contentEditableClassName="mdxEditorRemoveMargin"
-                  />
-                )}
-              </MdxPreviewStyling>
-              {!merknad.markdown && (
-                <Box paddingBlock={'2 0'}>
-                  <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
-                </Box>
-              )}
-            </Box>
-          )
-        })}
+              </Box>
+            )
+          })}
       </VStack>
     </>
   )

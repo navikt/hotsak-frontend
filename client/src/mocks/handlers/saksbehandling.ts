@@ -117,7 +117,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const url = new URL(request.url)
     const dokumentType = url.searchParams.get('type')
 
-    if (dokumentType == 'JOURNALFØRT_NOTAT') {
+    if (dokumentType == 'NOTAT') {
       return HttpResponse.json([
         {
           brevkode: 'Nav 10.01.01',
@@ -126,7 +126,28 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           journalpostId: 'jpostid1001',
           opprettet: '2025-02-24T12:34:27.308680Z',
           originalTekst: {
-            dokumenttittel: 'Test dokument',
+            dokumenttittel: 'Bekreftelse av medlemskap',
+            brevtekst: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
+          },
+          sakId: sakId,
+          saksbehandler: {
+            epost: '',
+            id: 'X999999',
+            navn: 'Sak Saksbehandler',
+          },
+          saksbehandlerId: 'X999999',
+          status: 'TODO',
+          tittel: 'Bekreftelse av medlemskap',
+          type: 'NOTAT',
+        },
+        {
+          brevkode: 'Nav 10.01.01',
+          dokumentId: 'dokinfoid1001',
+          harOrignalTekst: true,
+          journalpostId: 'jpostid1001',
+          opprettet: '2025-02-23T15:13:42.308680Z',
+          originalTekst: {
+            dokumenttittel: 'Utredelse fra lege',
             brevtekst: 'Lorem ipsum dolor sit amet.',
           },
           sakId: sakId,
@@ -137,7 +158,24 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           },
           saksbehandlerId: 'X999999',
           status: 'TODO',
-          tittel: 'Test dokument',
+          tittel: 'Utredelse fra lege',
+          type: 'NOTAT',
+        },
+        {
+          brevkode: 'Nav 10.01.01',
+          dokumentId: 'dokinfoid1001',
+          harOrignalTekst: true,
+          journalpostId: 'jpostid1001',
+          opprettet: '2025-02-22T10:52:17.308680Z',
+          sakId: sakId,
+          saksbehandler: {
+            epost: '',
+            id: 'X999999',
+            navn: 'Sak Saksbehandler',
+          },
+          saksbehandlerId: 'X999999',
+          status: 'TODO',
+          tittel: 'Møte med bruker',
           type: 'NOTAT',
         },
       ])

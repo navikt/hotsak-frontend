@@ -11,18 +11,6 @@ export function useSaksregler() {
 
   const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
 
-  console.log(
-    'Kan endre hmsnr? ',
-    sak?.sakstype,
-    saksbehandlerErTildeltSak,
-    sak?.status,
-    !!(
-      sak?.sakstype === Sakstype.BESTILLING &&
-      saksbehandlerErTildeltSak &&
-      sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-    )
-  )
-
   const kanEndreHmsnr = !!(
     sak?.sakstype === Sakstype.BESTILLING &&
     saksbehandlerErTildeltSak &&

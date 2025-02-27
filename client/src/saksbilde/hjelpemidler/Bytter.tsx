@@ -53,7 +53,7 @@ const tekstByBytteårsak: Record<keyof typeof BytteÅrsak, string> = {
   [BytteÅrsak.ENDRINGER_I_INNBYGGERS_FUNKSJON]:
     'endringer i innbyggers funksjon slik at hjelpemidlet ikke lenger dekker behovet.',
   [BytteÅrsak.FEIL_STØRRELSE]: 'FEIL_STØRRELSE',
-  [BytteÅrsak.VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER]: 'vurdert som ødelagt av lokal tekniker.',
+  [BytteÅrsak.VURDERT_SOM_ØDELAGT_AV_LOKAL_TEKNIKER]: 'ødelagt, etter vurdering av lokal tekniker.',
 }
 
 export default Bytter

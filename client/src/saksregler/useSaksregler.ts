@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { useSaksbehandlerErTildeltSak } from '../tilgang/useSaksbehandlerErTildeltSak.ts'
@@ -23,15 +24,15 @@ export function useSaksregler() {
     )
   )
 
+  const kanEndreHmsnr = !!(
+    sak?.sakstype === Sakstype.BESTILLING &&
+    saksbehandlerErTildeltSak &&
+    sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+  )
+
   return {
     sakId: sak?.sakId,
-    kanEndreHmsnr(): boolean {
-      return !!(
-        sak?.sakstype === Sakstype.BESTILLING &&
-        saksbehandlerErTildeltSak &&
-        sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-      )
-    },
+    kanEndreHmsnr,
     kanHenleggeSak(): boolean {
       return !!(saksbehandlerErTildeltSak && person?.dødsdato)
     },

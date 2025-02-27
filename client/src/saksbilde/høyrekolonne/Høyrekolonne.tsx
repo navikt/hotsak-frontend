@@ -78,16 +78,7 @@ export function Høyrekolonne() {
             <Tooltip content="Journalførte notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT}
-                icon={
-                  <>
-                    <FolderFileIcon title="Journalføringsnotater" />
-                    {notater && (
-                      <Tag variant="neutral-moderate" size="xsmall">
-                        3
-                      </Tag>
-                    )}
-                  </>
-                }
+                icon={<FolderFileIcon title="Journalføringsnotater" />}
               />
             </Tooltip>
           )}

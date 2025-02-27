@@ -172,7 +172,6 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       <Button
         variant="secondary"
         size={'small'}
-        style={{ margin: '0.2em 0 0' }}
         // disabled={!klarForFerdigstilling}
       >
         Journalfør notat
@@ -183,55 +182,63 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
         </Heading>
       )}
       <VStack gap="4" paddingBlock="8 0">
-        {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
-        {journalførteNotater &&
-          journalførteNotater.map((notat, idx) => {
-            return (
-              <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
-                <HStack gap="2">
-                  {!høyreVariant && (
-                    <Heading level="3" size="xsmall">
-                      {notat.saksbehandler.navn}
-                    </Heading>
-                  )}
-                  {høyreVariant && (
-                    <>
-                      <VStack gap="2">
-                        <HStack gap="2">
-                          <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                            {notat.originalTekst?.dokumenttittel || notat.tittel}
-                          </Heading>
-                          <Tooltip content="Åpne i ny fane">
-                            <Link href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`} target="_blank">
-                              <ExternalLinkIcon />
-                            </Link>
-                          </Tooltip>
-                        </HStack>
-                        <VStack>
-                          <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
-                          <Undertittel>{notat.saksbehandler.navn}</Undertittel>
+        {journalførteNotater && (
+          <>
+            {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
+            {journalførteNotater.map((notat, idx) => {
+              return (
+                <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
+                  <HStack gap="2">
+                    {!høyreVariant && (
+                      <Heading level="3" size="xsmall">
+                        {notat.saksbehandler.navn}
+                      </Heading>
+                    )}
+                    {høyreVariant && (
+                      <>
+                        <VStack gap="2">
+                          <HStack gap="2">
+                            <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                              {notat.originalTekst?.dokumenttittel || notat.tittel}
+                            </Heading>
+                            <Tooltip content="Åpne i ny fane">
+                              <Link
+                                href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
+                                target="_blank"
+                              >
+                                <ExternalLinkIcon />
+                              </Link>
+                            </Tooltip>
+                          </HStack>
+                          <VStack>
+                            <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
+                            <Undertittel>{notat.saksbehandler.navn}</Undertittel>
+                          </VStack>
                         </VStack>
-                      </VStack>
-                    </>
+                      </>
+                    )}
+                  </HStack>
+                  <MdxPreviewStyling>
+                    {notat.originalTekst && (
+                      <MDXEditor
+                        markdown={notat.originalTekst.brevtekst}
+                        readOnly={true}
+                        contentEditableClassName="mdxEditorRemoveMargin"
+                      />
+                    )}
+                  </MdxPreviewStyling>
+                  {!notat.originalTekst && (
+                    <Box paddingBlock={'2 0'}>
+                      <Brødtekst>
+                        Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
+                      </Brødtekst>
+                    </Box>
                   )}
-                </HStack>
-                <MdxPreviewStyling>
-                  {notat.originalTekst && (
-                    <MDXEditor
-                      markdown={notat.originalTekst.brevtekst}
-                      readOnly={true}
-                      contentEditableClassName="mdxEditorRemoveMargin"
-                    />
-                  )}
-                </MdxPreviewStyling>
-                {!notat.originalTekst && (
-                  <Box paddingBlock={'2 0'}>
-                    <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
-                  </Box>
-                )}
-              </Box>
-            )
-          })}
+                </Box>
+              )
+            })}
+          </>
+        )}
       </VStack>
     </>
   )

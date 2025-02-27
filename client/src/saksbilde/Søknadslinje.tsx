@@ -1,11 +1,11 @@
 import { HouseIcon } from '@navikt/aksel-icons'
-import { Tabs, Tag } from '@navikt/ds-react'
+import { Tabs } from '@navikt/ds-react'
 
 import { useLocation } from 'react-router'
+import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { TabLink } from './TabLink'
-import { Eksperiment } from '../felleskomponenter/Eksperiment'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -37,9 +37,6 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
               <Eksperiment>
                 <TabLink to={`/sak/${id}/merknader`} title="Merknader">
                   Journalførte notater
-                  <Tag variant="alt3-moderate" size="xsmall" style={{ marginLeft: '0.5em' }}>
-                    3
-                  </Tag>
                 </TabLink>
               </Eksperiment>
             }

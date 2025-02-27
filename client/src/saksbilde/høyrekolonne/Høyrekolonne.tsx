@@ -14,11 +14,13 @@ import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
 import { Merknader } from '../journalførteNotater/JornalførteNotater.tsx'
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
+import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
+  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
@@ -97,7 +99,7 @@ export function Høyrekolonne() {
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
-              <Merknader sak={sak.data} høyreVariant={true} lesevisning={!kanBehandleSak} />
+              <Merknader sak={sak.data} høyreVariant={true} lesevisning={!harSkrivetilgang} />
             </HøyrekolonnePanel>
           </Tabs.Panel>
         )}

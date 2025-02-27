@@ -125,7 +125,6 @@ export function Merknader({ sak, høyreVariant, lesevisning }: MerknaderProps) {
             size="small"
             label="Tittel"
             readOnly={lesevisning}
-            //style={{ margin: '1em 0 0.5em' }}
             defaultValue={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
           />

@@ -25,13 +25,13 @@ import { MarkdownEditor } from './MarkdownEditor.tsx'
 import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 
-export interface MerknaderProps {
+export interface JournalførteNotaterProps {
   sak: Sak
   høyreVariant?: boolean
   lesevisning: boolean
 }
 
-export function Merknader({ sak, høyreVariant, lesevisning }: MerknaderProps) {
+export function JournalførteNotater({ sak, høyreVariant, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 

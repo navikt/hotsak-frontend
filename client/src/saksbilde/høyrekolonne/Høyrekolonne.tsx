@@ -12,7 +12,7 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
-import { Merknader } from '../journalførteNotater/JornalførteNotater.tsx'
+import { JournalførteNotater } from '../journalførteNotater/JornalførteNotater.tsx'
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 
@@ -99,7 +99,7 @@ export function Høyrekolonne() {
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
-              <Merknader sak={sak.data} høyreVariant={true} lesevisning={!harSkrivetilgang} />
+              <JournalførteNotater sak={sak.data} høyreVariant={true} lesevisning={!harSkrivetilgang} />
             </HøyrekolonnePanel>
           </Tabs.Panel>
         )}

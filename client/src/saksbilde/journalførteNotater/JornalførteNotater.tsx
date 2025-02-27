@@ -44,7 +44,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
-      utkastEndret(dokumenttittel, utkast.data.brevtekst)
+      utkastEndret(dokumenttittel, utkast.data.brevtekst || '')
     }
   }
 
@@ -141,7 +141,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
                 className="mdxEditorBox"
               >
                 <>
-                  <MarkdownEditor tekst={utkast.data.brevtekst} onChange={markdownEndret} />
+                  <MarkdownEditor tekst={utkast.data.brevtekst || ''} onChange={markdownEndret} />
                   <div style={{ position: 'relative' }}>
                     <div
                       style={{

@@ -9,11 +9,21 @@ import {
   toolbarPlugin,
   UndoRedo,
 } from '@mdxeditor/editor'
+import { read } from 'node:fs'
 
-export function MarkdownEditor({ tekst, onChange }: { tekst: string; onChange: (tekst: string) => void }) {
+export function MarkdownEditor({
+  tekst,
+  onChange,
+  readOnly,
+}: {
+  tekst: string
+  onChange: (tekst: string) => void
+  readOnly: boolean
+}) {
   return (
     <MDXEditor
       markdown={tekst}
+      readOnly={readOnly}
       plugins={[
         listsPlugin(),
         quotePlugin(),

@@ -88,101 +88,102 @@ export function Merknader({ sak, høyreVariant, lesevisning }: MerknaderProps) {
           </HStack>
         </Heading>
       )}
-      {!lesevisning && (
+      {!høyreVariant && (
         <>
-          {!høyreVariant && (
-            <>
-              <Heading level="2" size="small" style={{ marginTop: '1em' }}>
-                Opprett et nytt journalføringsnotat på saken
-              </Heading>
-              <Brødtekst>
-                Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
-                saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres
-                og bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
-              </Brødtekst>
-            </>
-          )}
-          {høyreVariant && (
-            <VStack gap="2">
-              <Brødtekst>
-                Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
-              </Brødtekst>
-              <ReadMore size="small" header="Dette må du vite om journalførte notater">
-                <BrytbarBrødtekst>
-                  Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres
-                  på saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil
-                  journalføres og bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å
-                  journalføre.
-                </BrytbarBrødtekst>
-              </ReadMore>
-            </VStack>
-          )}
-          {utkastLasterInn && (
-            <div>
-              <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
-            </div>
-          )}
-          {!utkastLasterInn && utkast && (
-            <VStack gap="4" paddingBlock="8 0">
-              <TextField
-                size="small"
-                label="Tittel"
-                //style={{ margin: '1em 0 0.5em' }}
-                defaultValue={utkast.data.dokumenttittel}
-                onChange={(e) => dokumenttittelEndret(e.target.value)}
-              />
-              <div>
-                <Label size="small">Tekst</Label>
-                <MdxEditorStyling>
-                  <Box
-                    background="surface-default"
-                    marginBlock="0 0"
-                    borderRadius="medium"
-                    borderColor="border-default"
-                    borderWidth="1"
-                    className="mdxEditorBox"
-                  >
-                    <>
-                      <MarkdownEditor tekst={utkast.data?.brevtekst || ''} onChange={markdownEndret} />
-                      <div style={{ position: 'relative' }}>
-                        <div
-                          style={{
-                            color: 'gray',
-                            position: 'absolute',
-                            right: '0',
-                            top: '-1.5em',
-                            display: lagrerUtkast ? 'block' : 'none',
-                          }}
-                        >
-                          <HStack gap="2">
-                            <Loader size="small" title="Lagrer..." />
-                            <BodyShort size="small">Lagrer utkast</BodyShort>
-                          </HStack>
-                        </div>
-                      </div>
-                    </>
-                  </Box>
-                </MdxEditorStyling>
-              </div>
-            </VStack>
-          )}
-          {/*<Checkbox
-            value="klar"
-            size={høyreVariant ? 'small' : 'medium'}
-            onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
-          >
-            Jeg er klar over at journalførte notater er synlig for bruker på nav.no
-          </Checkbox>*/}
-          <Button
-            variant="secondary"
-            size={'small'}
-            style={{ margin: '0.2em 0 0' }}
-            // disabled={!klarForFerdigstilling}
-          >
-            Journalfør notat
-          </Button>
+          <Heading level="2" size="small" style={{ marginTop: '1em' }}>
+            Opprett et nytt journalføringsnotat på saken
+          </Heading>
+          <Brødtekst>
+            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
+            saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
+            bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
+          </Brødtekst>
         </>
       )}
+      {høyreVariant && (
+        <VStack gap="2">
+          <Brødtekst>
+            Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
+          </Brødtekst>
+          <ReadMore size="small" header="Dette må du vite om journalførte notater">
+            <BrytbarBrødtekst>
+              Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
+              saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
+              bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
+            </BrytbarBrødtekst>
+          </ReadMore>
+        </VStack>
+      )}
+      {utkastLasterInn && (
+        <div>
+          <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
+        </div>
+      )}
+      {!utkastLasterInn && utkast && (
+        <VStack gap="4" paddingBlock="8 0">
+          <TextField
+            size="small"
+            label="Tittel"
+            readOnly={lesevisning}
+            //style={{ margin: '1em 0 0.5em' }}
+            defaultValue={utkast.data.dokumenttittel}
+            onChange={(e) => dokumenttittelEndret(e.target.value)}
+          />
+          <div>
+            <Label size="small">Tekst</Label>
+            <MdxEditorStyling>
+              <Box
+                background="surface-default"
+                marginBlock="0 0"
+                borderRadius="medium"
+                borderColor="border-default"
+                borderWidth="1"
+                className="mdxEditorBox"
+              >
+                <>
+                  <MarkdownEditor
+                    tekst={utkast.data?.brevtekst || ''}
+                    onChange={markdownEndret}
+                    readOnly={lesevisning}
+                  />
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        color: 'gray',
+                        position: 'absolute',
+                        right: '0',
+                        top: '-1.5em',
+                        display: lagrerUtkast ? 'block' : 'none',
+                      }}
+                    >
+                      <HStack gap="2">
+                        <Loader size="small" title="Lagrer..." />
+                        <BodyShort size="small">Lagrer utkast</BodyShort>
+                      </HStack>
+                    </div>
+                  </div>
+                </>
+              </Box>
+            </MdxEditorStyling>
+          </div>
+        </VStack>
+      )}
+      {/*<Checkbox
+        value="klar"
+        size={høyreVariant ? 'small' : 'medium'}
+        onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
+      >
+        Jeg er klar over at journalførte notater er synlig for bruker på nav.no
+      </Checkbox>*/}
+      <Button
+        variant="secondary"
+        size={'small'}
+        style={{ margin: '0.2em 0 0' }}
+        disabled={lesevisning}
+        // disabled={!klarForFerdigstilling}
+      >
+        Journalfør notat
+      </Button>
       {!høyreVariant && (
         <Heading level="2" size="small" style={{ marginTop: '2em' }}>
           Journalførte notater

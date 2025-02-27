@@ -34,6 +34,7 @@ export interface JournalførteNotaterProps {
 export function JournalførteNotater({ sak, høyreVariant, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const {
@@ -74,21 +75,22 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
 
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
-  let debounceTimeout: NodeJS.Timeout
   const utkastEndret = async (tittel: string, markdown: string) => {
     // Lokal oppdatering for liveness
     await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
 
-    if (debounceTimeout) clearTimeout(debounceTimeout)
-    debounceTimeout = setTimeout(async () => {
-      setLagrerUtkast(true)
-      const payload = lagPayload(tittel, markdown)
-      const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-      await postBrevutkast(payload)
-      await utkastMutert()
-      await minimumPeriodeVisLagrerUtkast
-      setLagrerUtkast(false)
-    }, 500)
+    if (debounceTimer) clearTimeout(debounceTimer)
+    setDebounceTimer(
+      setTimeout(async () => {
+        setLagrerUtkast(true)
+        const payload = lagPayload(tittel, markdown)
+        const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
+        await postBrevutkast(payload)
+        await utkastMutert()
+        await minimumPeriodeVisLagrerUtkast
+        setLagrerUtkast(false)
+      }, 500)
+    )
   }
 
   const journalførNotat = async () => {

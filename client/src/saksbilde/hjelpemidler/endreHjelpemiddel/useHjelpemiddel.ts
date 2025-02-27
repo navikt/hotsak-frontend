@@ -1,8 +1,8 @@
 import useSwr from 'swr'
 
-import { httpGet } from '../../io/http'
+import { httpGet } from '../../../io/http'
 
-import { Hjelpemiddel } from '../../types/types.internal'
+import { Hjelpemiddel } from '../../../types/types.internal'
 
 interface DataResponse {
   hjelpemiddel: Hjelpemiddel | undefined

@@ -6,11 +6,12 @@ import { UtbetalingsmottakerAlert } from './Utbetalingsmottaker'
 
 export interface InnvilgetVedtakVisningProps {
   sak: Barnebrillesak
+  lesevisning?: boolean
   mutate(...args: any[]): any
 }
 
 export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
-  const { sak, mutate } = props
+  const { sak, lesevisning, mutate } = props
   const { vilkårsvurdering, utbetalingsmottaker } = sak
   return (
     <>
@@ -28,7 +29,9 @@ export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
           </>
         )}
       </HGrid>
-      <UtbetalingsmottakerAlert sakId={sak.sakId} utbetalingsmottaker={sak.utbetalingsmottaker} mutate={mutate} />
+      {!lesevisning && (
+        <UtbetalingsmottakerAlert sakId={sak.sakId} utbetalingsmottaker={sak.utbetalingsmottaker} mutate={mutate} />
+      )}
     </>
   )
 }

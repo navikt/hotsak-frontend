@@ -13,13 +13,13 @@ import {
   TextField,
   VStack,
 } from '@navikt/ds-react'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { Etikett, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
-} from '../../types/types.internal.ts'
-import { useHjelpemiddel } from '../hjelpemidler/useHjelpemiddel.ts'
+} from '../../../types/types.internal.ts'
+import { useHjelpemiddel } from './useHjelpemiddel.ts'
 
 interface EndreHjelpemiddelModalProps {
   hjelpemiddelId: string

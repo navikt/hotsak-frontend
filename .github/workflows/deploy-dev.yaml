@@ -29,7 +29,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev
-          wait-on: 'http://ip6-localhost:3001'
+          wait-on: 'http://localhost:3001'
           working-directory: client
           config-file: cypress.config.js
           record: false

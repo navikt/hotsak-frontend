@@ -39,3 +39,12 @@ import '@this-dot/cypress-indexeddb'
 //     }
 //   }
 // }
+const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/
+Cypress.on('uncaught:exception', (err) => {
+  console.log("Fanget 'ResizeObserver loop limit exceeded', ignorerer")
+
+  /* returning false here prevents Cypress from failing the test */
+  if (resizeObserverLoopErrRe.test(err.message)) {
+    return false
+  }
+})

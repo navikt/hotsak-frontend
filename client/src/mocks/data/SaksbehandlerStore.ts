@@ -43,8 +43,13 @@ export class SaksbehandlerStore extends Dexie {
       ])
     }
     if (!this.getInnloggetSaksbehandlerId()) {
-      const [saksbehandler] = await this.saksbehandlere.toArray()
-      this.setInnloggetSaksbehandlerId(saksbehandler.id)
+      const saksbehandlere = await this.saksbehandlere.toArray()
+
+      const [initiellSaksbehandler] = await saksbehandlere.filter((s) => s.navn === 'Silje Saksbehandler')
+
+      console.log('populer', initiellSaksbehandler, this.saksbehandlere.toArray())
+
+      this.setInnloggetSaksbehandlerId(initiellSaksbehandler.id)
     }
     return
   }

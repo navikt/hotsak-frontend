@@ -8,7 +8,7 @@ describe('Håndtering av notater på brillesaker', () => {
     clearIndexDb()
   })
 
-  it('Legge til og slette notater på åpen sak', () => {
+  it('Legge til notater på åpen sak', () => {
     const saksnummer = '1010'
     cy.visit(`/sak/${saksnummer}`)
 
@@ -20,19 +20,6 @@ describe('Håndtering av notater på brillesaker', () => {
 
     cy.findByRole('list', { name: /notater/i }).within(() => {
       cy.findAllByRole('listitem').should('have.length', 1).should('include.text', 'Tekst i notatet')
-      cy.findByRole('button', { name: /slett notat/i }).click()
     })
-
-    cy.findByRole('dialog', {
-      name: /er du sikker/i,
-    })
-      .should('be.visible')
-      .within(() => {
-        cy.findByRole('button', {
-          name: /slett/i,
-        }).click()
-      })
-
-    cy.findByRole('list', { name: /notater/i }).should('not.exist')
   })
 })

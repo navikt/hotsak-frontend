@@ -3,6 +3,7 @@ export const clearIndexDb = () => {
   cy.clearIndexedDb('PersonStore')
   cy.clearIndexedDb('HjelpemiddelStore')
   cy.clearIndexedDb('JournalpostStore')
+  cy.clearIndexedDb('OppgaveStore')
   cy.clearIndexedDb('SakStore')
   cy.clearIndexedDb('BarnebrillesakStore')
 }

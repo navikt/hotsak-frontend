@@ -134,6 +134,7 @@ export class JournalpostStore extends Dexie {
 
   async hent(journalpostId: string): Promise<Journalpost | undefined> {
     const journalpost = await this.journalposter.get(journalpostId)
+
     if (!journalpost) {
       return
     }
@@ -162,23 +163,6 @@ export class JournalpostStore extends Dexie {
 
   async hentHendelser(sakId: string) {
     return this.hendelser.where('sakId').equals(sakId).toArray()
-  }
-
-  async tildel(journalpostId: string) {
-    // TODO fix tildeling for oppgaver tilknyttet journalposter
-    //const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    return this.journalposter.update(journalpostId, {
-      //saksbehandler,
-      //status: DokumentOppgaveStatusType.TILDELT_SAKSBEHANDLER,
-    })
-  }
-
-  // TODO fix tildeling for oppgaver tilknyttet journalposter
-  async frigi(journalpostId: string) {
-    return this.journalposter.update(journalpostId, {
-      //saksbehandler: undefined,
-      //status: DokumentOppgaveStatusType.MOTTATT,
-    })
   }
 
   async journalfør(journalpostId: string, tittel: string) {

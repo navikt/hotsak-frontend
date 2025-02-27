@@ -106,7 +106,7 @@ export function Høyrekolonne() {
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
-              <Merknader sak={sak.data} høyreVariant={true} />
+              <Merknader sak={sak.data} høyreVariant={true} lesevisning={!kanBehandleSak} />
             </HøyrekolonnePanel>
           </Tabs.Panel>
         )}

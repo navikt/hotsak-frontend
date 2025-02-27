@@ -24,6 +24,7 @@ import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
 import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
+import { InfoToast } from '../../felleskomponenter/Toast.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -35,6 +36,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const {
@@ -47,7 +49,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
     sak.sakId,
     true,
     SaksdokumentType.NOTAT,
-    { refreshInterval: 2000 }
+    { refreshInterval: 5000 }
   )
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
@@ -102,7 +104,9 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
     await postBrevutsending(lagPayload(utkast.data.dokumenttittel, utkast.data.brevtekst))
     await utkastMutert(lagPayload('', ''))
     await journalførteNotaterMutert()
+    setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
+    setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
 
   const readOnly = lesevisning || journalførerNotat
@@ -267,6 +271,11 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
           </>
         )}
       </VStack>
+      {visNotatJournalførtToast && (
+        <InfoToast bottomPosition="10px">
+          Notatet er journalført. Det kan ta litt tid før det dukker opp i listen over.
+        </InfoToast>
+      )}
     </>
   )
 }

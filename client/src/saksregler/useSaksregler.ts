@@ -1,4 +1,3 @@
-import { log } from 'console'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { useSaksbehandlerErTildeltSak } from '../tilgang/useSaksbehandlerErTildeltSak.ts'

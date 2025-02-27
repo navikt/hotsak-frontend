@@ -1,72 +1,72 @@
-import { Heading, VStack } from '@navikt/ds-react'
-import { Etikett } from '../../felleskomponenter/typografi'
-import { Hjelpemiddel as HjelpemiddelType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
-import { Sak } from '../../types/types.internal'
+import { Box, Heading, VStack } from '@navikt/ds-react'
+import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { Sak } from '../../types/types.internal.ts'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
-import { Hastesak } from './Hastesak.tsx'
 import { OebsAlert } from './OebsAlert.tsx'
-import { useArtiklerForSak } from './useArtiklerForSak'
+import { useArtiklerForSak } from './useArtiklerForSak.ts'
+import { useFinnHjelpemiddel } from './useFinnHjelpemiddel.ts'
+import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
-import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
+import { Summering } from './Summering.tsx'
+import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 
 interface HjelpemiddelListeProps {
-  forenkletVisning?: boolean
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-export function HjelpemiddelListe({ forenkletVisning = false, sak, behovsmelding }: HjelpemiddelListeProps) {
+export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const { brukersituasjon, levering } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
+  const tilbehør = behovsmelding.hjelpemidler.tilbehør
 
-  const hjelpemidlerAlleredeUtlevert = hjelpemidler.filter(
-    (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
-  )
+  const alleHmsNr = [
+    ...hjelpemidler.flatMap((hjelpemiddel) => [
+      hjelpemiddel.produkt.hmsArtNr,
+      ...hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+    ]),
+    ...tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+  ]
+
+  const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
+
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
-    <>
-      {levering.hast && <Hastesak hast={levering.hast} />}
-
-      <Heading level="1" size="medium">
-        Hjelpemidler
+    <VStack gap="4">
+      <Heading level="1" size="small" visuallyHidden={true}>
+        {storForbokstavIOrd(sak.sakstype)}
       </Heading>
-      {!forenkletVisning && artiklerSomIkkeFinnesIOebs.length > 0 && (
+      {levering.hast && <Hast hast={levering.hast} />}
+
+      {hjelpemidler.length > 0 && (
+        <Heading level="2" size="medium">
+          Hjelpemidler
+        </Heading>
+      )}
+      {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert artikler={artiklerSomIkkeFinnesIOebs} />
       )}
-      <div style={{ paddingTop: '2rem' }} />
       {hjelpemidler.map((hjelpemiddel) => (
-        <Hjelpemiddel
-          key={hjelpemiddel.produkt.hmsArtNr}
-          hjelpemiddel={hjelpemiddel}
-          forenkletVisning={forenkletVisning}
-          sak={sak}
-        />
+        <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">
+          <Hjelpemiddel hjelpemiddel={hjelpemiddel} sak={sak} produkter={finnHjelpemiddelProdukter} />
+        </Box>
       ))}
-      <VStack gap="2">
-        <Etikett>
-          Totalt {summerAntall(hjelpemidler.filter((it) => !it.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen))}{' '}
-          stk. inkl. tilbehør
-        </Etikett>
-        {hjelpemidlerAlleredeUtlevert.length > 0 && (
-          <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
-        )}
-      </VStack>
-      <Skillelinje />
-      {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
-    </>
-  )
-}
+      {tilbehør && tilbehør.length > 0 && (
+        <>
+          <Heading level="2" size="small">
+            Tilbehør
+          </Heading>
+          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={finnHjelpemiddelProdukter} />
+        </>
+      )}
+      <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />
 
-function summerAntall(hjelpemidler: HjelpemiddelType[]) {
-  const summarize = (accumulator: number, currentValue: number) => Number(accumulator) + Number(currentValue)
-  return hjelpemidler
-    .map((hjelpemiddel) => {
-      const antallTilbehør = hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.antall).reduce(summarize, 0)
-      return Number(hjelpemiddel.antall) + antallTilbehør
-    })
-    .reduce(summarize, 0)
+      {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
+    </VStack>
+  )
 }

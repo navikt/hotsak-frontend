@@ -13,13 +13,18 @@ interface DokumentParams extends JournalpostParams {
   dokumentId: string
 }
 
-export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore, oppgaveStore }) => [
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)
+    const oppgave = (await oppgaveStore.finnOppgaveForJournalpostId(journalpostId)) || null
 
     await delay(200)
     if (journalpost) {
+      if (oppgave) {
+        journalpost.oppgave = oppgave!!
+      }
+
       return HttpResponse.json(journalpost)
     } else if (journalpostId === '403') {
       return respondForbidden()

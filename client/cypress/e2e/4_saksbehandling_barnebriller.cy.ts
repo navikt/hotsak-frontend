@@ -90,6 +90,7 @@ describe('Saksbehandling brillesøknad', () => {
         cy.findByRole('button', { name: /vis mer/i }).click()
       })
     })
+
     cy.findByRole('radio', { name: /ja/i }).check()
     cy.findByRole('textbox', { name: /begrunnelse/i }).type('Begrunnelse for overstyring')
     cy.findByRole('button', { name: /lagre/i }).click()

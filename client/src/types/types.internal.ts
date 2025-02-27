@@ -537,10 +537,16 @@ export interface Saksdokument {
   journalpostId: string
   type: SaksdokumentType
   opprettet: string
+  originalTekst?: SaksdokumentOriginalTekst
   dokumentId: string
   saksbehandler: Saksbehandler
   tittel: string
   brevkode?: string
+}
+
+export interface SaksdokumentOriginalTekst {
+  dokumenttittel: string
+  brevtekst: string
 }
 
 export interface JournalføringRequest {

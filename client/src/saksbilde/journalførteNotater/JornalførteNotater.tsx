@@ -46,7 +46,8 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
   const { data: journalførteNotater, mutate: journalførteNotaterMutert } = useSaksdokumenter(
     sak.sakId,
     true,
-    SaksdokumentType.NOTAT
+    SaksdokumentType.NOTAT,
+    { refreshInterval: 2000 }
   )
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
@@ -204,7 +205,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
         {journalførteNotater && (
           <>
             {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
-            {journalførteNotater.map((notat, idx) => {
+            {journalførteNotater.reverse().map((notat, idx) => {
               return (
                 <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
                   <HStack gap="2">

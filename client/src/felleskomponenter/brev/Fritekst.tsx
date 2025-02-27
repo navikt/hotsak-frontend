@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import styled from 'styled-components'
 
-import { Box, Detail, Loader, Textarea, VStack } from '@navikt/ds-react'
+import { Detail, HStack, Loader, Textarea, VStack } from '@navikt/ds-react'
 
-export const Bakgrunnslagring = styled(Box)`
+export const Bakgrunnslagring = styled(HStack)`
   display: flex;
 
   justify-content: right;
@@ -20,7 +20,6 @@ export const Fritekst = ({
   fritekst,
   beskrivelse,
   valideringsfeil,
-  onLagre,
   lagrer,
   onTextChange,
 }: {
@@ -28,22 +27,11 @@ export const Fritekst = ({
   fritekst: string
   beskrivelse: string
   valideringsfeil?: string
-  onLagre: /*TODO*/ any
   lagrer: boolean
   onTextChange: any
 }) => {
-  const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined)
-  const debounceVentetid = 1000
-
   const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     onTextChange(event.target.value)
-    clearTimeout(timer)
-
-    const newTimer = setTimeout(() => {
-      onLagre(event.target.value)
-    }, debounceVentetid)
-
-    setTimer(newTimer)
   }
 
   return (
@@ -59,17 +47,16 @@ export const Fritekst = ({
         onChange={(event) => onChange(event)}
       />
       <Bakgrunnslagring>
-        {lagrer ||
-          (true && (
-            <>
-              <span>
-                <Loader size="xsmall" />
-              </span>
-              <span>
-                <Detail>Lagrer</Detail>
-              </span>
-            </>
-          ))}
+        {lagrer && (
+          <>
+            <span>
+              <Loader size="xsmall" />
+            </span>
+            <span>
+              <Detail>Lagrer</Detail>
+            </span>
+          </>
+        )}
       </Bakgrunnslagring>
     </VStack>
   )

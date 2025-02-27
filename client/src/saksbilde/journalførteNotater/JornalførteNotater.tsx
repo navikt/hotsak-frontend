@@ -205,7 +205,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
         {journalførteNotater && (
           <>
             {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
-            {[...journalførteNotater].reverse().map((notat, idx) => {
+            {journalførteNotater.map((notat, idx) => {
               return (
                 <Box key={idx} background="surface-subtle" padding="2" borderRadius="xlarge">
                   <HStack gap="2">

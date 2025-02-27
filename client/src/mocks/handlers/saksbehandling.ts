@@ -125,7 +125,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           dokumentId: 'dokinfoid1001',
           harOrignalTekst: true,
           journalpostId: 'jpostid1001',
-          opprettet: '2025-02-22T10:52:17.308680Z',
+          opprettet: '2025-02-24T12:34:27.308680Z',
+          originalTekst: {
+            dokumenttittel: 'Bekreftelse av medlemskap',
+            brevtekst: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
+          },
           sakId: sakId,
           saksbehandler: {
             epost: '',
@@ -134,7 +138,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           },
           saksbehandlerId: 'X999999',
           status: 'TODO',
-          tittel: 'Møte med bruker',
+          tittel: 'Bekreftelse av medlemskap',
           type: 'NOTAT',
         },
         {
@@ -164,11 +168,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           dokumentId: 'dokinfoid1001',
           harOrignalTekst: true,
           journalpostId: 'jpostid1001',
-          opprettet: '2025-02-24T12:34:27.308680Z',
-          originalTekst: {
-            dokumenttittel: 'Bekreftelse av medlemskap',
-            brevtekst: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
-          },
+          opprettet: '2025-02-22T10:52:17.308680Z',
           sakId: sakId,
           saksbehandler: {
             epost: '',
@@ -177,7 +177,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
           },
           saksbehandlerId: 'X999999',
           status: 'TODO',
-          tittel: 'Bekreftelse av medlemskap',
+          tittel: 'Møte med bruker',
           type: 'NOTAT',
         },
       ])

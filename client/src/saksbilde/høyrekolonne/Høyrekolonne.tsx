@@ -1,6 +1,6 @@
 import { ClockDashedIcon, FolderFileIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
-import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
+import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
@@ -30,7 +30,7 @@ export function Høyrekolonne() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <div style={{ borderLeft: '1px solid var(--a-border-subtle)', borderRight: '1px solid var(--a-border-subtle)' }}>
+    <Box borderWidth="0 1" borderColor="border-subtle">
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}
@@ -111,6 +111,6 @@ export function Høyrekolonne() {
           </Tabs.Panel>
         )}
       </Tabs>
-    </div>
+    </Box>
   )
 }

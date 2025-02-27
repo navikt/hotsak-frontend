@@ -28,9 +28,10 @@ import { formaterTidsstempel } from '../../utils/dato.ts'
 export interface MerknaderProps {
   sak: Sak
   høyreVariant?: boolean
+  lesevisning: boolean
 }
 
-export function Merknader({ sak, høyreVariant }: MerknaderProps) {
+export function Merknader({ sak, høyreVariant, lesevisning }: MerknaderProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
@@ -44,7 +45,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
-      utkastEndret(dokumenttittel, utkast.data.brevtekst)
+      utkastEndret(dokumenttittel, utkast.data.brevtekst || '')
     }
   }
 
@@ -123,6 +124,7 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
           <TextField
             size="small"
             label="Tittel"
+            readOnly={lesevisning}
             //style={{ margin: '1em 0 0.5em' }}
             defaultValue={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
@@ -139,7 +141,11 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
                 className="mdxEditorBox"
               >
                 <>
-                  <MarkdownEditor tekst={utkast.data?.brevtekst || ''} onChange={markdownEndret} />
+                  <MarkdownEditor
+                    tekst={utkast.data?.brevtekst || ''}
+                    onChange={markdownEndret}
+                    readOnly={lesevisning}
+                  />
                   <div style={{ position: 'relative' }}>
                     <div
                       style={{
@@ -172,6 +178,8 @@ export function Merknader({ sak, høyreVariant }: MerknaderProps) {
       <Button
         variant="secondary"
         size={'small'}
+        style={{ margin: '0.2em 0 0' }}
+        disabled={lesevisning}
         // disabled={!klarForFerdigstilling}
       >
         Journalfør notat

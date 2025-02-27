@@ -34,6 +34,7 @@ import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { Merknader } from './journalførteNotater/JornalførteNotater.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
+import { useSaksregler } from '../saksregler/useSaksregler.ts'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -41,6 +42,7 @@ const SaksbildeContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
+  const { kanBehandleSak } = useSaksregler()
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -112,7 +114,7 @@ const SaksbildeContent = memo(() => {
                   }
                 />
                 <Route path="/formidler" element={<Formidler levering={levering} />} />
-                <Route path="/merknader" element={<Merknader sak={sak.data} />} />
+                <Route path="/merknader" element={<Merknader sak={sak.data} lesevisning={!kanBehandleSak} />} />
               </Routes>
             </Container>
           </section>

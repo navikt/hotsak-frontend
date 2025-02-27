@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
 
-import { Detail, Loader, Textarea } from '@navikt/ds-react'
+import { Box, Detail, Loader, Textarea, VStack } from '@navikt/ds-react'
 
-export const Bakgrunnslagring = styled.div`
+export const Bakgrunnslagring = styled(Box)`
   display: flex;
 
   justify-content: right;
@@ -11,7 +11,7 @@ export const Bakgrunnslagring = styled.div`
   gap: 0.4rem;
   padding-top: 0.5rem;
   padding-right: 0.6rem;
-  height: var(--a-spacing-4);
+  height: var(--a-spacing-8);
   margin-left: auto;
 `
 
@@ -47,7 +47,7 @@ export const Fritekst = ({
   }
 
   return (
-    <>
+    <VStack>
       <Textarea
         minRows={5}
         maxRows={20}
@@ -59,17 +59,18 @@ export const Fritekst = ({
         onChange={(event) => onChange(event)}
       />
       <Bakgrunnslagring>
-        {lagrer && (
-          <>
-            <span>
-              <Loader size="xsmall" />
-            </span>
-            <span>
-              <Detail>Lagrer</Detail>
-            </span>
-          </>
-        )}
+        {lagrer ||
+          (true && (
+            <>
+              <span>
+                <Loader size="xsmall" />
+              </span>
+              <span>
+                <Detail>Lagrer</Detail>
+              </span>
+            </>
+          ))}
       </Bakgrunnslagring>
-    </>
+    </VStack>
   )
 }

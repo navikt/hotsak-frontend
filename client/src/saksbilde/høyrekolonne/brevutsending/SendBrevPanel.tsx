@@ -124,7 +124,9 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const lagreUtkast = async (tekst: string, valgtMålform?: MålformType) => {
     setLagrer(true)
     await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
-    setLagrer(false)
+    setTimeout(() => {
+      setLagrer(false)
+    }, 1000)
   }
 
   return (

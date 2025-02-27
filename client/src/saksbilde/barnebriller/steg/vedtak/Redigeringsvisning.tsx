@@ -20,6 +20,7 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
+import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak
@@ -85,6 +86,8 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     setLagrer(false)
   }
 
+  useDebounce(fritekst, lagreUtkast)
+
   function byggBrevPayload(tekst?: string): BrevTekst {
     return {
       sakId: sak.sakId,
@@ -128,7 +131,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
             valideringsfeil={valideringsfeil}
             fritekst={fritekst}
-            onLagre={lagreUtkast}
+            //onLagre={lagreUtkast}
             lagrer={lagrer}
             onTextChange={setFritekst}
           />

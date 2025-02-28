@@ -92,7 +92,6 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         const payload = lagPayload(tittel, markdown)
         const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
         await postBrevutkast(payload)
-        await utkastMutert()
         await minimumPeriodeVisLagrerUtkast
         setLagrerUtkast(false)
       }, 500)

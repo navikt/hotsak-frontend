@@ -26,6 +26,8 @@ import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { InfoToast } from '../../felleskomponenter/Toast.tsx'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
+import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
+import { useBrev } from '../barnebriller/steg/vedtak/brev/useBrev.ts'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -40,7 +42,11 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
+  const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
+  const { hentForhåndsvisning } = useBrev()
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
+
+  const brevtype = Brevtype.JOURNALFØRT_NOTAT
 
   const {
     data: utkast,
@@ -197,6 +203,17 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       </Checkbox>*/}
       {!lesevisning && (
         <HStack gap="2" paddingBlock={'2 0'} justify="end">
+          <Button
+            type="submit"
+            size="small"
+            variant="tertiary"
+            onClick={() => {
+              hentForhåndsvisning(sak.sakId, brevtype)
+              setVisForhåndsvisningsmodal(true)
+            }}
+          >
+            Forhåndsvis
+          </Button>
           <Button variant="secondary" size="small" loading={journalførerNotat} onClick={journalførNotat}>
             Journalfør notat
           </Button>
@@ -282,6 +299,15 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         onClose={() => setVisSlettUtkastModal(false)}
         onBekreft={() => {
           return slettUtkast()
+        }}
+      />
+
+      <ForhåndsvisningsModal
+        open={visForhåndsvisningsmodal}
+        sakId={sak.sakId}
+        brevtype={brevtype}
+        onClose={() => {
+          setVisForhåndsvisningsmodal(false)
         }}
       />
     </>

@@ -120,7 +120,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setTimeout(() => {
       setVisSlettetUtkastToast(false)
     }, 3000)
-    await utkastMutert()
+    await utkastMutert(lagPayload('', ''), { revalidate: false })
     setSletter(false)
   }
 

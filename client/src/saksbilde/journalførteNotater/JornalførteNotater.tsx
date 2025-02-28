@@ -28,11 +28,10 @@ import { InfoToast } from '../../felleskomponenter/Toast.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
-  høyreVariant?: boolean
   lesevisning: boolean
 }
 
-export function JournalførteNotater({ sak, høyreVariant, lesevisning }: JournalførteNotaterProps) {
+export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
@@ -113,14 +112,6 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
 
   return (
     <>
-      {!høyreVariant && (
-        <Heading level="1" size="medium" spacing={false}>
-          <HStack align="center" gap="1">
-            Journalførte notater
-          </HStack>
-        </Heading>
-      )}
-
       <VStack gap="2">
         <Brødtekst>
           Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
@@ -189,26 +180,24 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
       >
         Jeg er klar over at journalførte notater er synlig for bruker på nav.no
       </Checkbox>*/}
-      <Button
-        variant="secondary"
-        size={'small'}
-        style={{ margin: '0.2em 0 0' }}
-        disabled={readOnly}
-        loading={journalførerNotat}
-        onClick={journalførNotat}
-        // disabled={!klarForFerdigstilling}
-      >
-        Journalfør notat
-      </Button>
-      {!høyreVariant && (
-        <Heading level="2" size="small" style={{ marginTop: '2em' }}>
-          Journalførte notater
-        </Heading>
-      )}
+      <HStack gap="2">
+        <Button
+          variant="secondary"
+          size={'small'}
+          style={{ margin: '0.2em 0 0' }}
+          disabled={readOnly}
+          loading={journalførerNotat}
+          onClick={journalførNotat}
+          // disabled={!klarForFerdigstilling}
+        >
+          Journalfør notat
+        </Button>
+      </HStack>
+
       <VStack gap="4" paddingBlock="8 0">
         {journalførteNotater && (
           <>
-            {høyreVariant && <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
+            {<Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
             {[...journalførteNotater]
               .sort((a, b) => (a.opprettet < b.opprettet ? 1 : a.opprettet > b.opprettet ? -1 : 0))
               .map((notat) => {
@@ -220,34 +209,22 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
                     borderRadius="xlarge"
                   >
                     <HStack gap="2">
-                      {!høyreVariant && (
-                        <Heading level="3" size="xsmall">
-                          {notat.saksbehandler.navn}
-                        </Heading>
-                      )}
-                      {høyreVariant && (
-                        <>
-                          <VStack gap="2">
-                            <HStack gap="2">
-                              <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                                {notat.originalTekst?.dokumenttittel || notat.tittel}
-                              </Heading>
-                              <Tooltip content="Åpne i ny fane">
-                                <Link
-                                  href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
-                                  target="_blank"
-                                >
-                                  <ExternalLinkIcon />
-                                </Link>
-                              </Tooltip>
-                            </HStack>
-                            <VStack>
-                              <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
-                              <Undertittel>{notat.saksbehandler.navn}</Undertittel>
-                            </VStack>
-                          </VStack>
-                        </>
-                      )}
+                      <VStack gap="2">
+                        <HStack gap="2">
+                          <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                            {notat.originalTekst?.dokumenttittel || notat.tittel}
+                          </Heading>
+                          <Tooltip content="Åpne i ny fane">
+                            <Link href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`} target="_blank">
+                              <ExternalLinkIcon />
+                            </Link>
+                          </Tooltip>
+                        </HStack>
+                        <VStack>
+                          <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
+                          <Undertittel>{notat.saksbehandler.navn}</Undertittel>
+                        </VStack>
+                      </VStack>
                     </HStack>
                     <MdxPreviewStyling>
                       {notat.originalTekst && (

@@ -12,19 +12,20 @@ import {
   Tooltip,
   VStack,
 } from '@navikt/ds-react'
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, TrashIcon } from '@navikt/aksel-icons'
 import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
-import { postBrevutkast, postBrevutsending } from '../../io/http.ts'
+import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../io/http.ts'
 import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
 import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { InfoToast } from '../../felleskomponenter/Toast.tsx'
+import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -33,8 +34,11 @@ export interface JournalførteNotaterProps {
 
 export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
+  const [sletter, setSletter] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
+  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
@@ -106,6 +110,18 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
+  }
+
+  const slettUtkast = async () => {
+    setSletter(true)
+    await deleteBrevutkast(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
+    setVisSlettUtkastModal(false)
+    setVisSlettetUtkastToast(true)
+    setTimeout(() => {
+      setVisSlettetUtkastToast(false)
+    }, 3000)
+    await utkastMutert()
+    setSletter(false)
   }
 
   const readOnly = lesevisning || journalførerNotat
@@ -180,11 +196,10 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       >
         Jeg er klar over at journalførte notater er synlig for bruker på nav.no
       </Checkbox>*/}
-      <HStack gap="2">
+      <HStack gap="2" paddingBlock={'2 0'}>
         <Button
           variant="secondary"
-          size={'small'}
-          style={{ margin: '0.2em 0 0' }}
+          size="small"
           disabled={readOnly}
           loading={journalførerNotat}
           onClick={journalførNotat}
@@ -192,6 +207,14 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         >
           Journalfør notat
         </Button>
+        <Button
+          icon={<TrashIcon />}
+          variant="danger"
+          size="small"
+          onClick={() => {
+            setVisSlettUtkastModal(true)
+          }}
+        />
       </HStack>
 
       <VStack gap="4" paddingBlock="8 0">
@@ -254,6 +277,19 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
           Notatet er journalført. Det kan ta litt tid før det dukker opp i listen over.
         </InfoToast>
       )}
+      {visSlettetUtkastToast && <InfoToast bottomPosition="10px">Utkast slettet</InfoToast>}
+
+      <BekreftelseModal
+        heading="Vil du slette utkastet?"
+        buttonLabel="Slett utkast"
+        buttonVariant="danger"
+        open={visSlettUtkastModal}
+        loading={sletter}
+        onClose={() => setVisSlettUtkastModal(false)}
+        onBekreft={() => {
+          return slettUtkast()
+        }}
+      />
     </>
   )
 }

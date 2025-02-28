@@ -1,4 +1,4 @@
-import { ClockDashedIcon, FolderFileIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ArchiveIcon, ClockDashedIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
@@ -80,7 +80,7 @@ export function Høyrekolonne() {
             <Tooltip content="Journalførte notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT}
-                icon={<FolderFileIcon title="Journalføringsnotater" />}
+                icon={<ArchiveIcon title="Journalførte notater" />}
               />
             </Tooltip>
           )}
@@ -99,7 +99,7 @@ export function Høyrekolonne() {
         {sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
-              <JournalførteNotater sak={sak.data} høyreVariant={true} lesevisning={!harSkrivetilgang} />
+              <JournalførteNotater sak={sak.data} lesevisning={!harSkrivetilgang} />
             </HøyrekolonnePanel>
           </Tabs.Panel>
         )}

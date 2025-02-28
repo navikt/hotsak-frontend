@@ -1,5 +1,5 @@
 import { Button, Detail, HStack } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
@@ -80,11 +80,14 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     }
   }, [fritekst, submitAttempt])
 
-  const lagreUtkast = async (tekst: string) => {
-    setLagrer(true)
-    await postBrevutkast(byggBrevPayload(tekst))
-    setLagrer(false)
-  }
+  const lagreUtkast = useCallback(
+    async (tekst: string) => {
+      setLagrer(true)
+      await postBrevutkast(byggBrevPayload(tekst))
+      setLagrer(false)
+    },
+    [sak.sakId, fritekst]
+  )
 
   useDebounce(fritekst, lagreUtkast)
 

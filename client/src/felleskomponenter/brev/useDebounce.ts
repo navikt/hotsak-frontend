@@ -5,10 +5,7 @@ export function useDebounce(data: string, callback: (value: string) => void) {
   const debounceVentetid = 1000
 
   useEffect(() => {
-    console.log('useDebounce', timer)
-
     if (timer) {
-      console.log('useDebounce', 'clearTimeout')
       clearTimeout(timer)
     }
 

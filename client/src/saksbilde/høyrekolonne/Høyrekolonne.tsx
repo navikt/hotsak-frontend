@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { useErNotatPilot } from '../../state/authentication'
-import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { JournalførteNotater } from '../journalførteNotater/JornalførteNotater.tsx'
 import { useSak } from '../useSak'
@@ -20,7 +19,6 @@ export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
-  const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(

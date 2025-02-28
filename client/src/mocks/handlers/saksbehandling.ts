@@ -122,13 +122,16 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return HttpResponse.json([
         {
           brevkode: 'Nav 10.01.01',
-          dokumentId: 'dokinfoid1001',
+          dokumentId: '6',
           harOrignalTekst: true,
           journalpostId: 'jpostid1001',
           opprettet: '2025-02-24T12:34:27.308680Z',
           originalTekst: {
             dokumenttittel: 'Bekreftelse av medlemskap',
-            brevtekst: 'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.',
+            brevtekst:
+              'Bekreftelse av medlemskap gjennomført ved sjekk av andre goder i Gosys.\n\n' +
+              '**Jajamensann:**\n\nHallo <u>markdown</u>!\n\n*Lister:*\n\n* Punktliste 1\n* Punktliste 2\n\n' +
+              '1. Nummerliste 1\n2. Nummerliste 2\n\n* [x] Sjekkliste 1\n* [ ] Sjekkliste 2',
           },
           sakId: sakId,
           saksbehandler: {
@@ -143,8 +146,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         },
         {
           brevkode: 'Nav 10.01.01',
-          dokumentId: 'dokinfoid1001',
-          harOrignalTekst: true,
+          dokumentId: '6',
+          harOrignalTekst: false,
           journalpostId: 'jpostid1001',
           opprettet: '2025-02-22T10:52:17.308680Z',
           sakId: sakId,
@@ -160,7 +163,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         },
         {
           brevkode: 'Nav 10.01.01',
-          dokumentId: 'dokinfoid1001',
+          dokumentId: '6',
           harOrignalTekst: true,
           journalpostId: 'jpostid1001',
           opprettet: '2025-02-23T15:13:42.308680Z',

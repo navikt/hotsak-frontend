@@ -13,7 +13,7 @@ import {
   VStack,
 } from '@navikt/ds-react'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { MDXEditor } from '@mdxeditor/editor'
+import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -255,6 +255,7 @@ export function JournalførteNotater({ sak, høyreVariant, lesevisning }: Journa
                           markdown={notat.originalTekst.brevtekst}
                           readOnly={true}
                           contentEditableClassName="mdxEditorRemoveMargin"
+                          plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
                         />
                       )}
                     </MdxPreviewStyling>

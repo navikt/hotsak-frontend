@@ -119,7 +119,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setVisSlettetUtkastToast(true)
     setTimeout(() => {
       setVisSlettetUtkastToast(false)
-    }, 3000)
+    }, 5000)
     await utkastMutert(lagPayload('', ''), { revalidate: false })
     setSletter(false)
   }
@@ -196,26 +196,21 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       >
         Jeg er klar over at journalførte notater er synlig for bruker på nav.no
       </Checkbox>*/}
-      <HStack gap="2" paddingBlock={'2 0'}>
-        <Button
-          variant="secondary"
-          size="small"
-          disabled={readOnly}
-          loading={journalførerNotat}
-          onClick={journalførNotat}
-          // disabled={!klarForFerdigstilling}
-        >
-          Journalfør notat
-        </Button>
-        <Button
-          icon={<TrashIcon />}
-          variant="danger"
-          size="small"
-          onClick={() => {
-            setVisSlettUtkastModal(true)
-          }}
-        />
-      </HStack>
+      {!lesevisning && (
+        <HStack gap="2" paddingBlock={'2 0'} justify="end">
+          <Button variant="secondary" size="small" loading={journalførerNotat} onClick={journalførNotat}>
+            Journalfør notat
+          </Button>
+          <Button
+            icon={<TrashIcon />}
+            variant="danger"
+            size="small"
+            onClick={() => {
+              setVisSlettUtkastModal(true)
+            }}
+          />
+        </HStack>
+      )}
 
       <VStack gap="4" paddingBlock="8 0">
         {journalførteNotater && (

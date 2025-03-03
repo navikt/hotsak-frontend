@@ -1,8 +1,13 @@
+import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
+import { ExternalLinkIcon, TrashIcon } from '@navikt/aksel-icons'
 import {
   BodyShort,
   Box,
   Button,
   Checkbox,
+  CheckboxGroup,
+  ErrorMessage,
   Heading,
   HStack,
   Label,
@@ -14,22 +19,19 @@ import {
   Tooltip,
   VStack,
 } from '@navikt/ds-react'
-import { ExternalLinkIcon, TrashIcon } from '@navikt/aksel-icons'
-import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
-import '@mdxeditor/editor/style.css'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { InfoToast } from '../../felleskomponenter/Toast.tsx'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
 import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../io/http.ts'
 import { Brevtype, MålformType, Sak, Saksdokument, SaksdokumentType } from '../../types/types.internal.ts'
-import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
-import { MarkdownEditor } from './MarkdownEditor.tsx'
-import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
-import { InfoToast } from '../../felleskomponenter/Toast.tsx'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
-import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
+import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { useBrev } from '../barnebriller/steg/vedtak/brev/useBrev.ts'
+import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
+import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
+import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
+import { MarkdownEditor } from './MarkdownEditor.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -38,7 +40,6 @@ export interface JournalførteNotaterProps {
 
 export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
-
   const [sletter, setSletter] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
@@ -48,6 +49,8 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [visLasterNotat, setVisLasterNotat] = useState<Saksdokument[] | null>(null)
   const { hentForhåndsvisning } = useBrev()
+  const [submitAttempt, setSubmitAttempt] = useState(false)
+  const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
   const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const brevtype = Brevtype.JOURNALFØRT_NOTAT
@@ -66,6 +69,12 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   )
 
   useEffect(() => {
+    if (submitAttempt) {
+      valider()
+    }
+  }, [klarForFerdigstilling, submitAttempt])
+
+  useEffect(() => {
     if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
       setVisLasterNotat(null)
     }
@@ -75,6 +84,27 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     if (utkast) {
       utkastEndret(dokumenttittel, utkast.data.brevtekst || '')
     }
+  }
+
+  function valider() {
+    let valideringsfeil: NotatValideringError = {}
+
+    if (submitAttempt) {
+      if (!klarForFerdigstilling) {
+        valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'
+      }
+
+      if (!utkast?.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) {
+        valideringsfeil.tittel = 'Du må skrive en tittel'
+      }
+
+      if (!utkast?.data.brevtekst || utkast.data.brevtekst.length == 0) {
+        valideringsfeil.tekst = 'Du må skrive en tekst'
+      }
+    }
+
+    setValideringsfeil(valideringsfeil)
+    return Object.keys(valideringsfeil).length == 0
   }
 
   const markdownEndret = (markdown: string) => {
@@ -98,6 +128,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   const utkastEndret = async (tittel: string, markdown: string) => {
+    valider()
     // Lokal oppdatering for liveness
     await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
 
@@ -115,12 +146,9 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   }
 
   const journalførNotat = async () => {
-    if (!utkast) return
-    if (!utkast.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) return
-    if (!utkast.data.brevtekst || utkast.data.brevtekst.length == 0) return
     setJournalførerNotat(true)
     setVisLasterNotat([...journalførteNotater]) // Må settes før posting av brevsending pga. race
-    await postBrevutsending(lagPayload(utkast.data.dokumenttittel, utkast.data.brevtekst))
+    await postBrevutsending(lagPayload(utkast!.data!.dokumenttittel!, utkast!.data!.brevtekst!))
     await utkastMutert(lagPayload('', ''))
     await journalførteNotaterMutert()
     setVisNotatJournalførtToast(true)
@@ -166,6 +194,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
           <TextField
             size="small"
             label="Tittel"
+            error={valideringsfeil.tittel}
             readOnly={readOnly}
             value={utkast.data.dokumenttittel}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
@@ -202,6 +231,11 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
                 </>
               </Box>
             </MdxEditorStyling>
+            {valideringsfeil.tekst && (
+              <ErrorMessage showIcon size="small">
+                {valideringsfeil.tekst}
+              </ErrorMessage>
+            )}
           </div>
         </VStack>
       )}
@@ -234,15 +268,33 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
 
       {!lesevisning && (
         <VStack gap="4" paddingBlock={'3 0'}>
-          <Checkbox
-            value={klarForFerdigstilling}
+          <CheckboxGroup
             size="small"
-            onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
+            hideLegend={true}
+            legend="Bekreft synlighet"
+            error={valideringsfeil.bekreftSynlighet}
           >
-            Jeg er klar over at notatet blir synlig for bruker på nav.no neste dag
-          </Checkbox>
+            <Checkbox
+              value={klarForFerdigstilling}
+              size="small"
+              error={!!valideringsfeil.bekreftSynlighet}
+              onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
+            >
+              Jeg er klar over at notatet blir synlig for bruker på nav.no neste virkedag
+            </Checkbox>
+          </CheckboxGroup>
           <div>
-            <Button variant="secondary" size="small" loading={journalførerNotat} onClick={journalførNotat}>
+            <Button
+              variant="secondary"
+              size="small"
+              loading={journalførerNotat}
+              onClick={() => {
+                setSubmitAttempt(true)
+                if (valider()) {
+                  journalførNotat()
+                }
+              }}
+            >
               Journalfør notat
             </Button>
           </div>
@@ -361,3 +413,6 @@ const MdxPreviewStyling = styled.div`
     font-family: 'Source Sans Pro';
   }
 `
+type NotatValideringError = {
+  [key in 'tittel' | 'tekst' | 'bekreftSynlighet']?: string
+}

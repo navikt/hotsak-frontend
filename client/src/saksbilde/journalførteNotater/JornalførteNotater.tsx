@@ -2,6 +2,7 @@ import {
   BodyShort,
   Box,
   Button,
+  Checkbox,
   Heading,
   HStack,
   Label,
@@ -37,6 +38,7 @@ export interface JournalførteNotaterProps {
 
 export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
+
   const [sletter, setSletter] = useState(false)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
@@ -46,7 +48,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [visLasterNotat, setVisLasterNotat] = useState<Saksdokument[] | null>(null)
   const { hentForhåndsvisning } = useBrev()
-  //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
+  const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const brevtype = Brevtype.JOURNALFØRT_NOTAT
 
@@ -203,38 +205,48 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
           </div>
         </VStack>
       )}
-      {/*<Checkbox
-        value="klar"
-        size={høyreVariant ? 'small' : 'medium'}
-        onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
-      >
-        Jeg er klar over at journalførte notater er synlig for bruker på nav.no
-      </Checkbox>*/}
+
       {!lesevisning && (
-        <HStack gap="2" paddingBlock={'2 0'} justify="end">
+        <HStack justify="space-between">
           <Button
             type="submit"
-            size="small"
+            size="xsmall"
             variant="tertiary"
             onClick={() => {
               hentForhåndsvisning(sak.sakId, brevtype)
               setVisForhåndsvisningsmodal(true)
             }}
           >
-            Forhåndsvis
-          </Button>
-          <Button variant="secondary" size="small" loading={journalførerNotat} onClick={journalførNotat}>
-            Journalfør notat
+            Forhåndsvis dokument
           </Button>
           <Button
             icon={<TrashIcon />}
-            variant="danger"
-            size="small"
+            variant="tertiary"
+            size="xsmall"
             onClick={() => {
               setVisSlettUtkastModal(true)
             }}
-          />
+          >
+            Slett utkast
+          </Button>
         </HStack>
+      )}
+
+      {!lesevisning && (
+        <VStack gap="4">
+          <Checkbox
+            value={klarForFerdigstilling}
+            size="small"
+            onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
+          >
+            Jeg er klar over at notatet blir synlig for bruker på nav.no neste dag
+          </Checkbox>
+          <div>
+            <Button variant="secondary" size="small" loading={journalførerNotat} onClick={journalførNotat}>
+              Journalfør notat
+            </Button>
+          </div>
+        </VStack>
       )}
 
       <VStack gap="4" paddingBlock="8 0">

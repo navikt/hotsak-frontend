@@ -117,12 +117,12 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     if (!utkast.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) return
     if (!utkast.data.brevtekst || utkast.data.brevtekst.length == 0) return
     setJournalførerNotat(true)
+    setVisLasterNotat([...journalførteNotater]) // Må settes før posting av brevsending pga. race
     await postBrevutsending(lagPayload(utkast.data.dokumenttittel, utkast.data.brevtekst))
     await utkastMutert(lagPayload('', ''))
     await journalførteNotaterMutert()
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
-    setVisLasterNotat([...journalførteNotater])
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
 

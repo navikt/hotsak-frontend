@@ -72,7 +72,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     if (submitAttempt) {
       valider()
     }
-  }, [klarForFerdigstilling, submitAttempt])
+  }, [klarForFerdigstilling, utkast?.data.dokumenttittel, utkast?.data.brevtekst, submitAttempt])
 
   useEffect(() => {
     if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
@@ -89,18 +89,20 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   function valider() {
     let valideringsfeil: NotatValideringError = {}
 
-    if (submitAttempt) {
-      if (!klarForFerdigstilling) {
-        valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'
-      }
+    if (!submitAttempt) {
+      return false
+    }
 
-      if (!utkast?.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) {
-        valideringsfeil.tittel = 'Du må skrive en tittel'
-      }
+    if (!klarForFerdigstilling) {
+      valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'
+    }
 
-      if (!utkast?.data.brevtekst || utkast.data.brevtekst.length == 0) {
-        valideringsfeil.tekst = 'Du må skrive en tekst'
-      }
+    if (!utkast?.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) {
+      valideringsfeil.tittel = 'Du må skrive en tittel'
+    }
+
+    if (!utkast?.data.brevtekst || utkast.data.brevtekst.length == 0) {
+      valideringsfeil.tekst = 'Du må skrive en tekst'
     }
 
     setValideringsfeil(valideringsfeil)
@@ -128,7 +130,6 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   const utkastEndret = async (tittel: string, markdown: string) => {
-    valider()
     // Lokal oppdatering for liveness
     await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
 
@@ -151,6 +152,9 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     await postBrevutsending(lagPayload(utkast!.data!.dokumenttittel!, utkast!.data!.brevtekst!))
     await utkastMutert(lagPayload('', ''))
     await journalførteNotaterMutert()
+    setSubmitAttempt(false)
+    setValideringsfeil({})
+    setKlarForFerdigstilling(false)
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
@@ -161,14 +165,20 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     await deleteBrevutkast(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
     setVisSlettUtkastModal(false)
     setVisSlettetUtkastToast(true)
+
     setTimeout(() => {
       setVisSlettetUtkastToast(false)
     }, 5000)
     await utkastMutert(lagPayload('', ''), { revalidate: false })
+    setSubmitAttempt(false)
+    setValideringsfeil({})
+    setKlarForFerdigstilling(false)
     setSletter(false)
   }
 
   const readOnly = lesevisning || journalførerNotat
+
+  console.log('Klar for ferdigstilling', klarForFerdigstilling)
 
   return (
     <>
@@ -271,11 +281,12 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
           <CheckboxGroup
             size="small"
             hideLegend={true}
+            value={klarForFerdigstilling ? ['bekreft'] : []}
             legend="Bekreft synlighet"
             error={valideringsfeil.bekreftSynlighet}
           >
             <Checkbox
-              value={klarForFerdigstilling}
+              value="bekreft"
               size="small"
               error={!!valideringsfeil.bekreftSynlighet}
               onChange={(e) => setKlarForFerdigstilling(e.target.checked)}

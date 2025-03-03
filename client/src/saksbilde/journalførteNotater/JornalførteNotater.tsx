@@ -207,7 +207,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       )}
 
       {!lesevisning && (
-        <HStack justify="space-between">
+        <HStack justify="space-between" paddingBlock={'1-alt 0'}>
           <Button
             type="submit"
             size="xsmall"
@@ -233,7 +233,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       )}
 
       {!lesevisning && (
-        <VStack gap="4">
+        <VStack gap="4" paddingBlock={'3 0'}>
           <Checkbox
             value={klarForFerdigstilling}
             size="small"

@@ -8,6 +8,7 @@ import {
   Link,
   Loader,
   ReadMore,
+  Skeleton,
   TextField,
   Tooltip,
   VStack,
@@ -15,11 +16,11 @@ import {
 import { ExternalLinkIcon, TrashIcon } from '@navikt/aksel-icons'
 import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
 import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../io/http.ts'
-import { Brevtype, MålformType, Sak, SaksdokumentType } from '../../types/types.internal.ts'
+import { Brevtype, MålformType, Sak, Saksdokument, SaksdokumentType } from '../../types/types.internal.ts'
 import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
 import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
@@ -43,6 +44,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
+  const [visLasterNotat, setVisLasterNotat] = useState<Saksdokument[] | null>(null)
   const { hentForhåndsvisning } = useBrev()
   //const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
@@ -58,8 +60,14 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     sak.sakId,
     true,
     SaksdokumentType.NOTAT,
-    { refreshInterval: 5000 }
+    visLasterNotat != null ? { refreshInterval: 2000 } : null
   )
+
+  useEffect(() => {
+    if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
+      setVisLasterNotat(null)
+    }
+  }, [journalførteNotater])
 
   const dokumenttittelEndret = (dokumenttittel: string) => {
     if (utkast) {
@@ -114,6 +122,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     await journalførteNotaterMutert()
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
+    setVisLasterNotat([...journalførteNotater])
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
 
@@ -231,7 +240,17 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       <VStack gap="4" paddingBlock="8 0">
         {journalførteNotater && (
           <>
-            {<Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>}
+            <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
+            {visLasterNotat && (
+              <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
+                <Heading as={Skeleton} size="large">
+                  Card-title
+                </Heading>
+                <Skeleton variant="text" width="100%" />
+                <Skeleton variant="text" width="100%" />
+                <Skeleton variant="text" width="80%" />
+              </Box>
+            )}
             {[...journalførteNotater]
               .sort((a, b) => (a.opprettet < b.opprettet ? 1 : a.opprettet > b.opprettet ? -1 : 0))
               .map((notat) => {

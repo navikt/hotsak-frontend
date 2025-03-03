@@ -171,7 +171,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
                       style={{
                         color: 'gray',
                         position: 'absolute',
-                        right: '0',
+                        right: '0.5em',
                         top: '-1.5em',
                         display: lagrerUtkast ? 'block' : 'none',
                       }}

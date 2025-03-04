@@ -368,6 +368,11 @@ export interface Notat {
   slettet?: string
 }
 
+export interface JournalforingsnotatTeller {
+  antallNotater: number
+  harUtkast: boolean
+}
+
 export interface BrevTekst {
   sakId: string
   målform: MålformType

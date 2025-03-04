@@ -27,7 +27,7 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ barnebrillesakStore }
 
   http.get<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
     const brevTekst = await barnebrillesakStore.hentBrevtekst(params.sakId)
-    await delay(1500)
+    await delay(800)
     if (brevTekst) {
       return HttpResponse.json(brevTekst)
     } else {

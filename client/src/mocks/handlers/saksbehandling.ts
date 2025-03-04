@@ -120,6 +120,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const dokumentType = url.searchParams.get('type')
 
     if (dokumentType == 'NOTAT') {
+      await delay(500)
       return HttpResponse.json(hentJournalførteNotater(sakId))
     }
 

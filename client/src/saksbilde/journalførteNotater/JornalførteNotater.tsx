@@ -22,7 +22,7 @@ import {
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { InfoToast } from '../../felleskomponenter/Toast.tsx'
-import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Undertittel } from '../../felleskomponenter/typografi.tsx'
+import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../felleskomponenter/typografi.tsx'
 import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../io/http.ts'
 import { Brevtype, MålformType, Sak, Saksdokument, SaksdokumentType } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
@@ -63,7 +63,11 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     mutate: utkastMutert,
   } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
 
-  const { data: journalførteNotater, mutate: journalførteNotaterMutert } = useSaksdokumenter(
+  const {
+    data: journalførteNotater,
+    isLoading: journalførteNotaterLaster,
+    mutate: journalførteNotaterMutert,
+  } = useSaksdokumenter(
     sak.sakId,
     true,
     SaksdokumentType.NOTAT,
@@ -320,9 +324,15 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       )}
 
       <VStack gap="4" paddingBlock="8 0">
-        {journalførteNotater && (
+        <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
+        {journalførteNotaterLaster && (
+          <div>
+            <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
+          </div>
+        )}
+        {!journalførteNotaterLaster && journalførteNotater && (
           <>
-            <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
+            {!visLasterNotat && journalførteNotater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
             {visLasterNotat && (
               <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
                 <Heading as={Skeleton} size="large">

@@ -15,7 +15,7 @@ import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
 //import { useJournalførteNotater } from './notat/useJournalførteNotater.tsx'
-import styled from 'styled-components'
+//import styled from 'styled-components'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
@@ -119,7 +119,7 @@ export function Høyrekolonne() {
   )
 }
 
-const NotificationBadge = styled.span`
+/*const NotificationBadge = styled.span`
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
@@ -128,4 +128,4 @@ const NotificationBadge = styled.span`
   background: var(--a-surface-danger);
   width: 12px;
   height: 12px;
-`
+`*/

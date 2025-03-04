@@ -48,10 +48,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     harBeskjedTilKommune,
     harAnnenKontaktperson,
     varsler,
-    harVarsler:
-      erSøknad &&
-      varslerFor.length > 0 &&
-      false /* FIXME: fjern igjen før merge (bare tatt bort for å se hvordan ting normalt ser ut) */,
+    harVarsler: erSøknad && varslerFor.length > 0,
     isLoading: false,
     isError: undefined,
   }

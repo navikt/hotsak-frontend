@@ -91,10 +91,6 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   function valider() {
     let valideringsfeil: NotatValideringError = {}
 
-    /*if (!submitAttempt) {
-      return false
-    }*/
-
     if (!klarForFerdigstilling) {
       valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'
     }
@@ -158,9 +154,10 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setVisLasterNotat([...journalførteNotater]) // Må settes før posting av brevsending pga. race
     await postBrevutsending(lagPayload(utkast!.data!.dokumenttittel!, utkast!.data!.brevtekst!))
     await utkastMutert(lagPayload('', ''))
-    await journalførteNotaterMutert()
-    setSubmitAttempt(false)
     setValideringsfeil({})
+    setSubmitAttempt(false)
+    await journalførteNotaterMutert()
+
     setKlarForFerdigstilling(false)
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
@@ -213,7 +210,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
             label="Tittel"
             error={valideringsfeil.tittel}
             readOnly={readOnly}
-            value={utkast.data.dokumenttittel}
+            value={utkast.data.dokumenttittel || ''}
             onChange={(e) => dokumenttittelEndret(e.target.value)}
           />
           <div>

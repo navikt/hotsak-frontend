@@ -32,7 +32,7 @@ import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
-import { useJournalførteNotater } from '../høyrekolonne/notat/useJournalførteNotater.tsx'
+//import { useJournalførteNotater } from '../høyrekolonne/notat/useJournalførteNotater.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -91,9 +91,9 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   function valider() {
     let valideringsfeil: NotatValideringError = {}
 
-    if (!submitAttempt) {
+    /*if (!submitAttempt) {
       return false
-    }
+    }*/
 
     if (!klarForFerdigstilling) {
       valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'

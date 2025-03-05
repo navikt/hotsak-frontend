@@ -83,6 +83,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   useEffect(() => {
     if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
       setVisLasterNotat(null)
+      oppdaterNotatTeller()
     }
   }, [journalførteNotater])
 

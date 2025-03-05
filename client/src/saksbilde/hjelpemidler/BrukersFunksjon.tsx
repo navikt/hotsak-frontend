@@ -36,7 +36,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
 const tekstByFunksjonsnedsettelse = (brukerFunksjon: Funksjonsbeskrivelse) => {
   const tekst: Record<keyof typeof InnbyggersVarigeFunksjonsnedsettelse, string> = {
     [InnbyggersVarigeFunksjonsnedsettelse.ALDERDOMSSVEKKELSE]: 'Innbygger har alderdomssvekkelse.',
-    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Innbygger har en annen varig diagnose: ${brukerFunksjon.diagnose}`,
+    [InnbyggersVarigeFunksjonsnedsettelse.ANNEN_VARIG_DIAGNOSE]: `Innbygger har en varig diagnose: ${brukerFunksjon.diagnose}`,
     [InnbyggersVarigeFunksjonsnedsettelse.UAVKLART]:
       'Det er uavklart om innbygger har en varig sykdom, skade eller lyte.',
   }

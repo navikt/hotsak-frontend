@@ -14,14 +14,14 @@ import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddelo
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
-//import { useJournalførteNotater } from './notat/useJournalførteNotater.tsx'
-//import styled from 'styled-components'
+import { useJournalførteNotater } from './notat/useJournalførteNotater.tsx'
+import styled from 'styled-components'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const { sak } = useSak()
-  //const { journalførteNotater, isLoading: henterJournalførteNotater } = useJournalførteNotater(sak?.data.sakId)
+  const { journalførteNotater, isLoading: henterJournalførteNotater } = useJournalførteNotater(sak?.data.sakId)
   const { notater } = useSaksnotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
@@ -84,12 +84,12 @@ export function Høyrekolonne() {
                 icon={
                   <>
                     <ArchiveIcon title="Journalførte notater" />
-                    {/*!henterJournalførteNotater && (
+                    {!henterJournalførteNotater && (
                       <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
                         {journalførteNotater?.antallNotater}
                         {journalførteNotater?.harUtkast && <NotificationBadge />}
                       </Tag>
-                    )*/}
+                    )}
                   </>
                 }
               />
@@ -119,7 +119,7 @@ export function Høyrekolonne() {
   )
 }
 
-/*const NotificationBadge = styled.span`
+const NotificationBadge = styled.span`
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
@@ -128,4 +128,4 @@ export function Høyrekolonne() {
   background: var(--a-surface-danger);
   width: 12px;
   height: 12px;
-`*/
+`

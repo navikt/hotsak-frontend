@@ -32,7 +32,7 @@ import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
 import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
 import { MarkdownEditor } from './MarkdownEditor.tsx'
-//import { useJournalførteNotater } from '../høyrekolonne/notat/useJournalførteNotater.tsx'
+import { useJournalførteNotater } from '../høyrekolonne/notat/useJournalførteNotater.tsx'
 
 export interface JournalførteNotaterProps {
   sak: Sak
@@ -42,7 +42,7 @@ export interface JournalførteNotaterProps {
 export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [sletter, setSletter] = useState(false)
-  //const { journalførteNotater: notatTeller, mutate: oppdaterNotatTeller } = useJournalførteNotater(sak.sakId)
+  const { journalførteNotater: notatTeller, mutate: oppdaterNotatTeller } = useJournalførteNotater(sak.sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
@@ -146,9 +146,9 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         await minimumPeriodeVisLagrerUtkast
         setLagrerUtkast(false)
 
-        /*if (!notatTeller?.harUtkast) {
+        if (!notatTeller?.harUtkast) {
           oppdaterNotatTeller()
-        }*/
+        }
       }, 500)
     )
   }
@@ -165,7 +165,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setKlarForFerdigstilling(false)
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
-    //oppdaterNotatTeller()
+    oppdaterNotatTeller()
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
 
@@ -183,7 +183,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     setValideringsfeil({})
     setKlarForFerdigstilling(false)
     setSletter(false)
-    //oppdaterNotatTeller()
+    oppdaterNotatTeller()
   }
 
   const readOnly = lesevisning || journalførerNotat

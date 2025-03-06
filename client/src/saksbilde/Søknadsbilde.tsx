@@ -5,7 +5,12 @@ import { Route, Routes } from 'react-router-dom'
 
 import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
-import { hotsakHistorikkWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth } from '../GlobalStyles'
+import {
+  hotsakHistorikkMaxWidth,
+  hotsakHistorikkMinWidth,
+  hotsakVenstremenyWidth,
+  hovedInnholdMaxWidth,
+} from '../GlobalStyles'
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -28,6 +33,7 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
+import { useJournalførteNotater } from './høyrekolonne/notat/useJournalførteNotater'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -35,6 +41,7 @@ const SaksbildeContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
+  const { journalførteNotater } = useJournalførteNotater(sak?.data.sakId)
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -43,7 +50,10 @@ const SaksbildeContent = memo(() => {
   const formidler = levering.hjelpemiddelformidler
 
   return (
-    <Hovedinnhold columns={`auto ${hotsakHistorikkWidth}`} style={{ maxWidth: `${hovedInnholdMaxWidth}` }}>
+    <Hovedinnhold
+      columns={`max(${hovedInnholdMaxWidth} )  minmax(${hotsakHistorikkMinWidth}, ${hotsakHistorikkMaxWidth})`}
+      /*style={{ maxWidth: `${hovedInnholdMaxWidth}` }}*/
+    >
       <section>
         <HGrid columns="auto">
           <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
@@ -71,7 +81,12 @@ const SaksbildeContent = memo(() => {
             />
             <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
             {sak.data.sakstype === Sakstype.SØKNAD && (
-              <VedtakCard sak={sak.data} oppgave={sak.oppgave} lesevisning={!harSkrivetilgang} />
+              <VedtakCard
+                sak={sak.data}
+                oppgave={sak.oppgave}
+                lesevisning={!harSkrivetilgang}
+                harNotatUtkast={journalførteNotater?.harUtkast}
+              />
             )}
             {erBestilling && (
               <BestillingCard
@@ -79,6 +94,7 @@ const SaksbildeContent = memo(() => {
                 hjelpemiddelArtikler={hjelpemiddelArtikler}
                 oppgave={sak.oppgave}
                 lesevisning={!harSkrivetilgang}
+                harNotatUtkast={journalførteNotater?.harUtkast}
               />
             )}
           </Venstremeny>

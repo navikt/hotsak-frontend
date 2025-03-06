@@ -21,7 +21,7 @@ import { useSearchParams } from 'react-router'
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { sak } = useSak()
   const { journalførteNotater, isLoading: henterJournalførteNotater } = useJournalførteNotater(sak?.data.sakId)
   const { notater } = useSaksnotater(sak?.data.sakId)
@@ -41,6 +41,10 @@ export function Høyrekolonne() {
       setValgtHøyrekolonneTab(nyValgtTab)
     }
   }, [valgtSidebarParam])
+
+  useEffect(() => {
+    setSearchParams({ valgttab: valgtHøyrekolonneTab })
+  }, [valgtHøyrekolonneTab])
 
   return (
     <Box borderWidth="0 1" borderColor="border-subtle">

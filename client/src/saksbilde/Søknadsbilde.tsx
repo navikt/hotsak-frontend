@@ -94,6 +94,7 @@ const SaksbildeContent = memo(() => {
                 hjelpemiddelArtikler={hjelpemiddelArtikler}
                 oppgave={sak.oppgave}
                 lesevisning={!harSkrivetilgang}
+                harNotatUtkast={journalførteNotater?.harUtkast}
               />
             )}
           </Venstremeny>

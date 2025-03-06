@@ -1,4 +1,4 @@
-import { Bleed, Button, ErrorSummary, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -20,11 +20,12 @@ import { OverførGosysModal } from '../OverførGosysModal'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { useOverførGosys } from '../useOverførGosys'
+import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
-  harNotatUtkast: boolean
+  harNotatUtkast?: boolean
   oppgave?: OppgaveApiOppgave
   lesevisning: boolean
 }
@@ -33,7 +34,7 @@ interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast }: VedtakCardProps) {
+export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
   const { sakId } = sak
 
   const oppgaveVersjon: OppgaveVersjon = oppgave
@@ -181,13 +182,7 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast }: Vedtak
 
   return (
     <VenstremenyCard>
-      {erNotatPilot && submitAttempt && harNotatUtkast && (
-        <ErrorSummary size="small" heading="For å gå videre må du rette opp følgende:" headingTag="h3">
-          <ErrorSummary.Item>
-            Du har et utkast til journalføringsnotat som må ferdigstilles eller slettes
-          </ErrorSummary.Item>
-        </ErrorSummary>
-      )}
+      {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
       <Knappepanel gap="0rem">
         <Knapp
           variant="primary"

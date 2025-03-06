@@ -1,7 +1,7 @@
 import { ArchiveIcon, ClockDashedIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { useErNotatPilot } from '../../state/authentication'
@@ -16,10 +16,12 @@ import { Saksnotater } from './notat/Saksnotater'
 import { useSaksnotater } from './notat/useSaksnotater'
 import { useJournalførteNotater } from './notat/useJournalførteNotater.tsx'
 import styled from 'styled-components'
+import { useSearchParams } from 'react-router'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
+  const [searchParams] = useSearchParams()
   const { sak } = useSak()
   const { journalførteNotater, isLoading: henterJournalførteNotater } = useJournalførteNotater(sak?.data.sakId)
   const { notater } = useSaksnotater(sak?.data.sakId)
@@ -31,6 +33,14 @@ export function Høyrekolonne() {
 
   const antallNotater = notater?.length
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
+  const valgtSidebarParam = searchParams.get('valgttab')?.toUpperCase()
+
+  useEffect(() => {
+    const nyValgtTab = HøyrekolonneTabs[valgtSidebarParam as keyof typeof HøyrekolonneTabs]
+    if (nyValgtTab && nyValgtTab !== valgtHøyrekolonneTab) {
+      setValgtHøyrekolonneTab(nyValgtTab)
+    }
+  }, [valgtSidebarParam])
 
   return (
     <Box borderWidth="0 1" borderColor="border-subtle">

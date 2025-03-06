@@ -35,6 +35,7 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
           legend="Velg årsak til at bestillingen avvises"
           error={valgtÅrsak === '' && error}
           value={valgtÅrsak}
+          size="small"
           onChange={setValgtÅrsak}
         >
           <Tekst>Brukes kun internt av teamet som utvikler Hotsak, og vises ikke til bruker.</Tekst>
@@ -48,6 +49,7 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
           label="Begrunnelse for å avvise bestillingen"
           description="Unngå personopplysninger. Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
           value={begrunnelse}
+          size="small"
           onChange={(e) => setBegrunnelse(e.target.value)}
         />
       </Modal.Body>

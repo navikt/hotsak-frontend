@@ -97,7 +97,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     let valideringsfeil: NotatValideringError = {}
 
     if (!klarForFerdigstilling) {
-      valideringsfeil.bekreftSynlighet = 'Du må bekrefte at dokumentet kan bli synlig for bruker'
+      valideringsfeil.bekreftSynlighet = 'Du må bekrefte at du er   klar over at notatet blir synlig for bruker'
     }
 
     if (!utkast?.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) {

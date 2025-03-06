@@ -33,6 +33,7 @@ import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
+import { useJournalførteNotater } from './høyrekolonne/notat/useJournalførteNotater'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -40,6 +41,7 @@ const SaksbildeContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
+  const { journalførteNotater } = useJournalførteNotater(sak?.data.sakId)
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -79,7 +81,12 @@ const SaksbildeContent = memo(() => {
             />
             <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
             {sak.data.sakstype === Sakstype.SØKNAD && (
-              <VedtakCard sak={sak.data} oppgave={sak.oppgave} lesevisning={!harSkrivetilgang} />
+              <VedtakCard
+                sak={sak.data}
+                oppgave={sak.oppgave}
+                lesevisning={!harSkrivetilgang}
+                harNotatUtkast={journalførteNotater?.harUtkast}
+              />
             )}
             {erBestilling && (
               <BestillingCard

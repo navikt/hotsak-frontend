@@ -1,4 +1,4 @@
-import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Bleed, Button, ErrorSummary, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -8,7 +8,7 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
 import { OppgaveStatusType, OppgaveVersjon, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
@@ -24,6 +24,7 @@ import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
   sak: Sak
+  harNotatUtkast: boolean
   oppgave?: OppgaveApiOppgave
   lesevisning: boolean
 }
@@ -32,7 +33,7 @@ interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak, oppgave, lesevisning }: VedtakCardProps) {
+export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast }: VedtakCardProps) {
   const { sakId } = sak
 
   const oppgaveVersjon: OppgaveVersjon = oppgave
@@ -46,7 +47,9 @@ export function VedtakCard({ sak, oppgave, lesevisning }: VedtakCardProps) {
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
+  const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
+  const erNotatPilot = useErNotatPilot()
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, oppgaveVersjon, 'sak_overført_gosys_v1')
 
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
@@ -178,11 +181,38 @@ export function VedtakCard({ sak, oppgave, lesevisning }: VedtakCardProps) {
 
   return (
     <VenstremenyCard>
+      {erNotatPilot && submitAttempt && harNotatUtkast && (
+        <ErrorSummary size="small" heading="For å gå videre må du rette opp følgende:" headingTag="h3">
+          <ErrorSummary.Item>
+            Du har et utkast til journalføringsnotat som må ferdigstilles eller slettes
+          </ErrorSummary.Item>
+        </ErrorSummary>
+      )}
       <Knappepanel gap="0rem">
-        <Knapp variant="primary" size="small" onClick={() => setVisVedtakModal(true)}>
+        <Knapp
+          variant="primary"
+          size="small"
+          onClick={() => {
+            if (erNotatPilot && harNotatUtkast) {
+              setSubmitAttempt(true)
+            } else {
+              setVisVedtakModal(true)
+            }
+          }}
+        >
           Innvilg søknaden
         </Knapp>
-        <Knapp variant="secondary" size="small" onClick={visOverførGosys}>
+        <Knapp
+          variant="secondary"
+          size="small"
+          onClick={() => {
+            if (erNotatPilot && harNotatUtkast) {
+              setSubmitAttempt(true)
+            } else {
+              visOverførGosys()
+            }
+          }}
+        >
           Overfør til Gosys
         </Knapp>
       </Knappepanel>

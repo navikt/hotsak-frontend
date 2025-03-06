@@ -195,11 +195,11 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         <Brødtekst>
           Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
         </Brødtekst>
-        <ReadMore size="small" header="Dette må du vite om journalførte notater">
+        <ReadMore size="small" header="Når må du journalføre notat i saken">
           <BrytbarBrødtekst>
-            Hvis du har mottatt saksopplysninger som er relevant for saksbehandlingen så skal disse journalføres på
-            saken. Du kan her bearbeide ditt utkast, og vi lagrer det fortløpende. Men merk at det vil journalføres og
-            bli tilgjengelig for bruker når du er ferdig og klikker "Journalfør notat" for å journalføre.
+            Når du mottar saksopplysninger utenfra som er med på å avgjøre utfallet av en sak, skal opplysningene
+            journalføres.  Når du skriver notatet nedenfor vil vi lagre utkastet fortløpende. Når du journalfører
+            notatet, blir det synlig for innbygger neste virkedag på innlogget side på nav.no
           </BrytbarBrødtekst>
         </ReadMore>
       </VStack>

@@ -1,5 +1,4 @@
 import { logDebug } from '../utvikling/logDebug'
-import { isConsentingToAnalytics } from './nav-cookie-consent'
 
 export enum amplitude_taxonomy {
   OPPGAVELISTE_BYTT_TAB = 'byttet tab i oppgaveliste',
@@ -39,7 +38,7 @@ export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<stri
 }
 
 export async function initAmplitude(): Promise<void> {
-  if (!import.meta.env.PROD || window.appSettings.USE_MSW || !isConsentingToAnalytics()) return
+  if (!import.meta.env.PROD || window.appSettings.USE_MSW) return
   const { AMPLITUDE_API_KEY: apiKey, AMPLITUDE_SERVER_URL: serverUrl } = window.appSettings
   if (!(apiKey && serverUrl)) return
   const { init, track, identify, Identify } = await import('@amplitude/analytics-browser')
@@ -60,9 +59,6 @@ export async function initAmplitude(): Promise<void> {
     },
   })
   logAmplitudeEvent = (eventName, data): void => {
-    if (!isConsentingToAnalytics()) {
-      return
-    }
     try {
       track(eventName, {
         app: 'hotsak-frontend',

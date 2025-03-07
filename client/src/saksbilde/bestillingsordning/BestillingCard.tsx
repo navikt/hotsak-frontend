@@ -7,7 +7,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
 import {
   AvvisBestilling,
@@ -25,28 +25,30 @@ import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
+import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
 
 export interface BestillingCardProps {
   bestilling: Sak
   lesevisning: boolean
-
+  harNotatUtkast?: boolean
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
   oppgave?: OppgaveApiOppgave
 }
 
-export function BestillingCard({ bestilling, oppgave, lesevisning }: BestillingCardProps) {
+export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
   const { behovsmelding } = useBehovsmelding()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
   const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
+  const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-
+  const erNotatPilot = useErNotatPilot()
   const oppgaveVersjon: OppgaveVersjon = oppgave
     ? {
         oppgaveId: oppgave.oppgaveId,
@@ -166,11 +168,32 @@ export function BestillingCard({ bestilling, oppgave, lesevisning }: BestillingC
 
   return (
     <VenstremenyCard>
+      {ferdigstillBestillingAttempt && harNotatUtkast && <NotatUtkastVarsel />}
       <Knappepanel>
-        <Button variant="primary" size="small" onClick={() => setVisOpprettOrdreModal(true)}>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => {
+            if (erNotatPilot && harNotatUtkast) {
+              setFerdigstillBestillingAttempt(true)
+            } else {
+              setVisOpprettOrdreModal(true)
+            }
+          }}
+        >
           Godkjenn
         </Button>
-        <Button variant="secondary" size="small" onClick={() => setVisAvvisModal(true)}>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={() => {
+            if (erNotatPilot && harNotatUtkast) {
+              setFerdigstillBestillingAttempt(true)
+            } else {
+              setVisAvvisModal(true)
+            }
+          }}
+        >
           Avvis
         </Button>
       </Knappepanel>

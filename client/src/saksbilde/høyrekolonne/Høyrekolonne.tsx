@@ -121,7 +121,7 @@ export function Høyrekolonne() {
             <Saksnotater sakId={sak?.data.sakId} lesevisning={!kanBehandleSak} />
           </Tabs.Panel>
         )}
-        {sak != null && (
+        {erNotatPilot && sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString()}>
             <HøyrekolonnePanel tittel="Journalførte notater">
               <JournalførteNotater sak={sak.data} lesevisning={!kanBehandleSak} />

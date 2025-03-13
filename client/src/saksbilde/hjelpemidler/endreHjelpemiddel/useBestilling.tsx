@@ -1,7 +1,8 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 import { httpGet } from '../../../io/http'
-import { Bestilling } from '../../../types/types.internal'
+import { Bestilling, Sakstype } from '../../../types/types.internal'
+import { useSak } from '../../useSak'
 
 interface BestillingResponse {
   bestilling: Bestilling | undefined
@@ -10,7 +11,10 @@ interface BestillingResponse {
 
 export function useBestilling(): BestillingResponse {
   const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
-  const { data, mutate } = useSwr<{ data: Bestilling }>([`api/bestilling/${sakId}`], httpGet, {
+  const { sak } = useSak()
+
+  const url = sak?.data.sakstype === Sakstype.BESTILLING ? `api/bestilling/${sakId}` : null
+  const { data, mutate } = useSwr<{ data: Bestilling }>([url], httpGet, {
     shouldRetryOnError: false,
   })
 

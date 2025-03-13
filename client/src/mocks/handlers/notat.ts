@@ -1,40 +1,48 @@
 import { delay, http, HttpResponse } from 'msw'
 
-import type { Notat } from '../../types/types.internal'
+import type { FerdigstillNotatRequest, NotatUtkast } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondCreated, respondNoContent } from './response'
 import type { SakParams } from './params'
-import { hentJournalførteNotater } from '../data/journalførteNotater'
-
-type NyttNotat = Pick<Notat, 'type' | 'innhold'>
+import { respondNoContent } from './response'
 
 interface NotatParams extends SakParams {
   notatId: string
 }
 
-export const notatHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
-  http.post<SakParams, NyttNotat>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
-    const { type, innhold } = await request.json()
-    await barnebrillesakStore.lagreNotat(params.sakId, type, innhold)
+export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
+  http.post<SakParams, NotatUtkast>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
+    const { type, tittel, tekst } = await request.json()
+    const nyttUtkast = await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst })
     await delay(500)
-    return respondCreated()
+    return HttpResponse.json(nyttUtkast)
+  }),
+
+  http.post<NotatParams, FerdigstillNotatRequest>(
+    `/api/sak/:sakId/notater/:notatId/ferdigstilling`,
+    async ({ request, params }) => {
+      const payload = await request.json()
+
+      await notatStore.ferdigstillNotat(Number(params.notatId), payload)
+      await delay(500)
+      return respondNoContent()
+    }
+  ),
+
+  http.put<NotatParams, NotatUtkast>(`/api/sak/:sakId/notater/:notatId`, async ({ request, params }) => {
+    const { type, tittel, tekst } = await request.json()
+    await notatStore.oppdaterUtkast(params.sakId, Number(params.notatId), { type, tittel, tekst })
+    await delay(500)
+    return respondNoContent()
   }),
 
   http.get<SakParams>(`/api/sak/:sakId/notater`, async ({ params }) => {
-    const notater = await barnebrillesakStore.hentNotater(params.sakId)
+    const notater = await notatStore.hentNotater(params.sakId)
     await delay(500)
     return HttpResponse.json(notater)
   }),
 
-  http.get<SakParams>(`/api/sak/:sakId/forvaltningsnotater`, async ({ params }) => {
-    const harUtkast = !!(await barnebrillesakStore.hentBrevtekst(params.sakId))
-    const antallNotater = hentJournalførteNotater(params.sakId).length + (harUtkast ? 1 : 0)
-
-    return HttpResponse.json({ antallNotater, harUtkast })
-  }),
-
   http.delete<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async ({ params }) => {
-    await barnebrillesakStore.slettNotat(Number(params.notatId))
+    await notatStore.slettNotat(Number(params.notatId))
     await delay(100)
     return respondNoContent()
   }),

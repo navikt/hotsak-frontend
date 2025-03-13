@@ -11,6 +11,7 @@ import {
   hotsakVenstremenyWidth,
   hovedInnholdMaxWidth,
 } from '../GlobalStyles'
+import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 import { Sakstype } from '../types/types.internal'
 import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
@@ -20,6 +21,7 @@ import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListeNyLayout } from './hjelpemidler/HjelpemiddelListe'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
+import { useNotatTeller } from './høyrekolonne/notat/useNotatTeller'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
@@ -32,8 +34,6 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
-import { useJournalførteNotater } from './høyrekolonne/notat/useJournalførteNotater'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -41,7 +41,7 @@ const SaksbildeContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
-  const { journalførteNotater } = useJournalførteNotater(sak?.data.sakId)
+  const { harUtkast } = useNotatTeller(sak?.data.sakId)
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -52,7 +52,6 @@ const SaksbildeContent = memo(() => {
   return (
     <Hovedinnhold
       columns={`max(${hovedInnholdMaxWidth} )  minmax(${hotsakHistorikkMinWidth}, ${hotsakHistorikkMaxWidth})`}
-      /*style={{ maxWidth: `${hovedInnholdMaxWidth}` }}*/
     >
       <section>
         <HGrid columns="auto">
@@ -85,7 +84,7 @@ const SaksbildeContent = memo(() => {
                 sak={sak.data}
                 oppgave={sak.oppgave}
                 lesevisning={!harSkrivetilgang}
-                harNotatUtkast={journalførteNotater?.harUtkast}
+                harNotatUtkast={harUtkast}
               />
             )}
             {erBestilling && (
@@ -94,7 +93,7 @@ const SaksbildeContent = memo(() => {
                 hjelpemiddelArtikler={hjelpemiddelArtikler}
                 oppgave={sak.oppgave}
                 lesevisning={!harSkrivetilgang}
-                harNotatUtkast={journalførteNotater?.harUtkast}
+                harNotatUtkast={harUtkast}
               />
             )}
           </Venstremeny>

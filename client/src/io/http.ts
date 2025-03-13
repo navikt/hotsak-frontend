@@ -5,7 +5,9 @@ import type {
   BrevTekst,
   Brevtype,
   EndretHjelpemiddel,
+  FerdigstillNotatRequest,
   JournalføringRequest,
+  NotatUtkast,
   OppdaterVilkårData,
   OppgaveStatusType,
   OppgaveVersjon,
@@ -277,6 +279,22 @@ export const postSaksnotat = async (sakId: string, type: 'INTERNT', innhold: str
 }
 
 export const slettSaksnotat = async (sakId: string, notatId: number) => {
+  return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
+}
+
+export const lagreNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
+  if (utkast.id) {
+    return put(`${baseUrl}/api/sak/${sakId}/notater/${utkast.id}`, utkast)
+  } else {
+    return post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
+  }
+}
+
+export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
+  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
+}
+
+export const slettNotatUtkast = async (sakId: string, notatId: string) => {
   return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
 }
 

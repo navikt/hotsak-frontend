@@ -14,56 +14,65 @@ import {
   Link,
   Loader,
   ReadMore,
-  Skeleton,
   TextField,
   Tooltip,
   VStack,
 } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { InfoToast } from '../../felleskomponenter/Toast.tsx'
-import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../felleskomponenter/typografi.tsx'
-import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../io/http.ts'
-import { Brevtype, MålformType, Sak, Saksdokument, SaksdokumentType } from '../../types/types.internal.ts'
-import { formaterTidsstempel } from '../../utils/dato.ts'
-import { useBrevtekst } from '../barnebriller/brevutkast/useBrevtekst.ts'
-import { useBrev } from '../barnebriller/steg/vedtak/brev/useBrev.ts'
-import { useSaksdokumenter } from '../barnebriller/useSaksdokumenter.ts'
-import { ForhåndsvisningsModal } from '../høyrekolonne/brevutsending/ForhåndsvisningModal.tsx'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal.tsx'
-import { MarkdownEditor } from './MarkdownEditor.tsx'
-import { useJournalførteNotater } from '../høyrekolonne/notat/useJournalførteNotater.tsx'
+import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
+import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { ferdigstillNotat, lagreNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
+import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
+import { formaterTidsstempel } from '../../../utils/dato.ts'
+import { MarkdownEditor } from '../../journalførteNotater/MarkdownEditor.tsx'
+import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { useNotater } from './useNotater.tsx'
+import { useNotatTeller } from './useNotatTeller.ts'
 
-export interface JournalførteNotaterProps {
-  sak: Sak
+export interface NotaterProps {
+  sakId: string
   lesevisning: boolean
 }
 
-export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterProps) {
+export function Notater({ sakId, lesevisning }: NotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [sletter, setSletter] = useState(false)
-  const { journalførteNotater: notatTeller, mutate: oppdaterNotatTeller } = useJournalførteNotater(sak.sakId)
+  const { notater, utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
+  const { harUtkast, mutate: mutateNotatTeller } = useNotatTeller(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
-  const [visLasterNotat, setVisLasterNotat] = useState<Saksdokument[] | null>(null)
-  const { hentForhåndsvisning } = useBrev()
+  //const [visLasterNotat, setVisLasterNotat] = useState<Notat[] | null>(null)
+  const [visLasterNotat, setVisLasterNotat] = useState<boolean>(false)
+  //const { hentForhåndsvisning } = useBrev()
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
   const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
-  const brevtype = Brevtype.JOURNALFØRT_NOTAT
+  //const brevtype = Brevtype.JOURNALFØRT_NOTAT
 
-  const {
+  const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.JOURNALFØRT)
+
+  console.log('Notater.tsx: aktivtUtkast:', aktivtUtkast)
+  console.log('Notater.tsx: notater:', notater)
+
+  const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
+  const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
+
+  //TODO: Mutere for å oppdatere tellere
+  // Dynamisk autorefresh for å vente på journalføring
+
+  /*const {
     data: utkast,
     isLoading: utkastLasterInn,
     mutate: utkastMutert,
-  } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
+  } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)*/
 
-  const {
+  /*const {
     data: journalførteNotater,
     isLoading: journalførteNotaterLaster,
     mutate: journalførteNotaterMutert,
@@ -72,26 +81,39 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     true,
     SaksdokumentType.NOTAT,
     visLasterNotat != null ? { refreshInterval: 2000 } : null
-  )
+  )*/
+
+  useEffect(() => {
+    if (aktivtUtkast) {
+      setTittel(aktivtUtkast.tittel || '')
+      setTekst(aktivtUtkast.tekst || '')
+    }
+  }, [aktivtUtkast])
+  /*useEffect(() => {
+    if (aktivtUtkast) {
+      aktivtUtkast.tittel && aktivtUtkast.tittel !== '' && setTittel(aktivtUtkast.tittel)
+      aktivtUtkast.tekst && aktivtUtkast.tekst !== '' && setTekst(aktivtUtkast.tekst)
+    }
+  }, [aktivtUtkast?.tittel, aktivtUtkast?.tekst])*/
 
   useEffect(() => {
     if (submitAttempt) {
       valider()
     }
-  }, [klarForFerdigstilling, utkast?.data.dokumenttittel, utkast?.data.brevtekst, submitAttempt])
+  }, [klarForFerdigstilling, aktivtUtkast?.tittel, aktivtUtkast?.tekst, submitAttempt])
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
       setVisLasterNotat(null)
-      oppdaterNotatTeller()
+      //oppdaterNotatTeller()
     }
-  }, [journalførteNotater])
+  }, [journalførteNotater])*/
 
-  const dokumenttittelEndret = (dokumenttittel: string) => {
-    if (utkast) {
-      utkastEndret(dokumenttittel, utkast.data.brevtekst || '')
+  /*const dokumenttittelEndret = (nyTittel: string) => {
+    if (aktivtUtkast) {
+      utkastEndret(nyTittel, aktivtUtkast?.tekst || '')
     }
-  }
+  }*/
 
   function valider() {
     let valideringsfeil: NotatValideringError = {}
@@ -100,11 +122,11 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
       valideringsfeil.bekreftSynlighet = 'Du må bekrefte at du er   klar over at notatet blir synlig for bruker'
     }
 
-    if (!utkast?.data.dokumenttittel || utkast.data.dokumenttittel.length == 0) {
+    if (!aktivtUtkast?.tittel || aktivtUtkast.tittel.length == 0) {
       valideringsfeil.tittel = 'Du må skrive en tittel'
     }
 
-    if (!utkast?.data.brevtekst || utkast.data.brevtekst.length == 0) {
+    if (!aktivtUtkast?.tekst || aktivtUtkast.tekst.length == 0) {
       valideringsfeil.tekst = 'Du må skrive en tekst'
     }
 
@@ -112,21 +134,24 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
     return Object.keys(valideringsfeil).length == 0
   }
 
-  const markdownEndret = (markdown: string) => {
-    if (utkast) {
-      utkastEndret(utkast.data.dokumenttittel || '', markdown)
-    }
-  }
+  useEffect(() => {
+    utkastEndret(tittel, tekst)
+  }, [tittel, tekst])
 
-  const lagPayload = (tittel: string, tekst: string) => {
+  /*const markdownEndret = (markdown: string) => {
+    if (aktivtUtkast) {
+      utkastEndret(aktivtUtkast.tittel || '', markdown)
+    }
+  }*/
+
+  const lagPayload = (): FerdigstillNotatRequest => {
     return {
-      sakId: sak.sakId,
+      id: aktivtUtkast!.id,
+      sakId,
       målform: MålformType.BOKMÅL,
-      brevtype: Brevtype.JOURNALFØRT_NOTAT,
-      data: {
-        dokumenttittel: tittel,
-        brevtekst: tekst,
-      },
+      type: NotatType.JOURNALFØRT,
+      tittel: tittel,
+      tekst: tekst,
     }
   }
 
@@ -134,63 +159,85 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   const utkastEndret = async (tittel: string, markdown: string) => {
     // Lokal oppdatering for liveness
-    await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
+    //await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
 
     if (debounceTimer) clearTimeout(debounceTimer)
-    setDebounceTimer(
-      setTimeout(async () => {
-        setLagrerUtkast(true)
+    if (tittel !== '' || tekst !== '') {
+      setDebounceTimer(
+        setTimeout(async () => {
+          setLagrerUtkast(true)
 
-        const payload = lagPayload(tittel, markdown)
-        const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-        await postBrevutkast(payload)
-        await minimumPeriodeVisLagrerUtkast
-        setLagrerUtkast(false)
+          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
+          await lagreNotatUtkast(sakId, {
+            id: aktivtUtkast?.id,
+            tittel,
+            tekst: markdown,
+            type: NotatType.JOURNALFØRT,
+          })
+          await mutateNotatTeller()
 
-        if (!notatTeller?.harUtkast) {
-          oppdaterNotatTeller()
-        }
-      }, 500)
-    )
+          await minimumPeriodeVisLagrerUtkast
+          setLagrerUtkast(false)
+
+          if (!harUtkast) {
+            mutateNotater()
+          }
+        }, 500)
+      )
+    }
   }
 
   const journalførNotat = async () => {
     setJournalførerNotat(true)
-    setVisLasterNotat([...journalførteNotater]) // Må settes før posting av brevsending pga. race
-    await postBrevutsending(lagPayload(utkast!.data!.dokumenttittel!, utkast!.data!.brevtekst!))
-    await utkastMutert(lagPayload('', ''))
+    //setVisLasterNotat([...notater]) // Må settes før posting av brevsending pga. race
+    setVisLasterNotat(true) // Må settes før posting av brevsending pga. race
+    //await journalførNotat()
+    await ferdigstillNotat(lagPayload())
+    setTittel('')
+    setTekst('')
+    //await utkastMutert(lagPayload('', ''))
     setValideringsfeil({})
     setSubmitAttempt(false)
-    await journalførteNotaterMutert()
+    mutateNotater()
 
     setKlarForFerdigstilling(false)
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
-    oppdaterNotatTeller()
+    //oppdaterNotatTeller()
+    mutateNotatTeller()
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
 
   const slettUtkast = async () => {
-    setSletter(true)
-    await deleteBrevutkast(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)
-    setVisSlettUtkastModal(false)
-    setVisSlettetUtkastToast(true)
+    if (aktivtUtkast) {
+      setSletter(true)
+      await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
+      setVisSlettUtkastModal(false)
+      setVisSlettetUtkastToast(true)
 
-    setTimeout(() => {
-      setVisSlettetUtkastToast(false)
-    }, 5000)
-    await utkastMutert(lagPayload('', ''), { revalidate: false })
-    setSubmitAttempt(false)
-    setValideringsfeil({})
-    setKlarForFerdigstilling(false)
-    setSletter(false)
-    oppdaterNotatTeller()
+      setTimeout(() => {
+        setVisSlettetUtkastToast(false)
+      }, 5000)
+      mutateNotater()
+      mutateNotatTeller()
+      setTittel('')
+      setTekst('')
+      setSubmitAttempt(false)
+      setValideringsfeil({})
+      setKlarForFerdigstilling(false)
+      setSletter(false)
+    }
+
+    //oppdaterNotatTeller()
   }
 
   const readOnly = lesevisning || journalførerNotat
 
   return (
     <>
+      {aktiveUtkast.map((utkast) => (
+        <div>{'ID: ' + utkast.id + ' ' + utkast.tittel + ': ' + utkast.tekst}</div>
+      ))}
       <VStack gap="2">
         <Brødtekst>
           Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
@@ -203,20 +250,20 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
           </BrytbarBrødtekst>
         </ReadMore>
       </VStack>
-      {utkastLasterInn && (
+      {notaterLaster && (
         <div>
           <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
         </div>
       )}
-      {!utkastLasterInn && utkast && (
+      {!notaterLaster /*&& utkast*/ && (
         <VStack gap="4" paddingBlock="8 0">
           <TextField
             size="small"
             label="Tittel"
             error={valideringsfeil.tittel}
             readOnly={readOnly}
-            value={utkast.data.dokumenttittel || ''}
-            onChange={(e) => dokumenttittelEndret(e.target.value)}
+            value={tittel}
+            onChange={(e) => setTittel(e.target.value)}
           />
           <div>
             <Label size="small">Tekst</Label>
@@ -230,7 +277,7 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
                 className="mdxEditorBox"
               >
                 <>
-                  <MarkdownEditor tekst={utkast.data?.brevtekst || ''} onChange={markdownEndret} readOnly={readOnly} />
+                  <MarkdownEditor tekst={tekst} onChange={setTekst} readOnly={readOnly} />
                   <div style={{ position: 'relative' }}>
                     <div
                       style={{
@@ -265,10 +312,10 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
             type="submit"
             size="xsmall"
             variant="tertiary"
-            onClick={() => {
+            /*onClick={() => {
               hentForhåndsvisning(sak.sakId, brevtype)
               setVisForhåndsvisningsmodal(true)
-            }}
+            }}*/
           >
             Forhåndsvis dokument
           </Button>
@@ -323,72 +370,72 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
 
       <VStack gap="4" paddingBlock="8 0">
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
-        {journalførteNotaterLaster && (
+        {notaterLaster && (
           <div>
             <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
           </div>
         )}
-        {!journalførteNotaterLaster && journalførteNotater && (
+        {!notaterLaster && notater && (
           <>
-            {!visLasterNotat && journalførteNotater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
-            {visLasterNotat && (
-              <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
-                <Heading as={Skeleton} size="large">
-                  Card-title
-                </Heading>
-                <Skeleton variant="text" width="100%" />
-                <Skeleton variant="text" width="100%" />
-                <Skeleton variant="text" width="80%" />
-              </Box>
-            )}
-            {[...journalførteNotater]
-              .sort((a, b) => (a.opprettet < b.opprettet ? 1 : a.opprettet > b.opprettet ? -1 : 0))
-              .map((notat) => {
-                return (
-                  <Box
-                    key={`${notat.journalpostId}-${notat.dokumentId}`}
-                    background="surface-subtle"
-                    padding="2"
-                    borderRadius="xlarge"
-                  >
-                    <HStack gap="2">
-                      <VStack gap="2">
-                        <HStack gap="2">
-                          <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                            {notat.originalTekst?.dokumenttittel || notat.tittel}
-                          </Heading>
+            {!visLasterNotat && notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
+            {/*visLasterNotat && (
+                <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
+                  <Heading as={Skeleton} size="large">
+                    Card-title
+                  </Heading>
+                  <Skeleton variant="text" width="100%" />
+                  <Skeleton variant="text" width="100%" />
+                  <Skeleton variant="text" width="80%" />
+                </Box>
+              )*/}
+            {notater.map((notat) => {
+              return (
+                <Box
+                  key={`${notat.journalpostId}-${notat.dokumentId}`}
+                  background="surface-subtle"
+                  padding="2"
+                  borderRadius="xlarge"
+                >
+                  <HStack gap="2">
+                    <VStack gap="2">
+                      <HStack gap="2">
+                        <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                          {notat.tittel}
+                        </Heading>
+                        {notat.journalpostId && notat.dokumentId && (
                           <Tooltip content="Åpne i ny fane">
                             <Link href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`} target="_blank">
                               <ExternalLinkIcon />
                             </Link>
                           </Tooltip>
-                        </HStack>
-                        <VStack>
-                          <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
-                          <Undertittel>{notat.saksbehandler.navn}</Undertittel>
-                        </VStack>
+                        )}
+                      </HStack>
+                      <VStack>
+                        <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
+                        <Undertittel>{notat.saksbehandler.navn}</Undertittel>
                       </VStack>
-                    </HStack>
-                    <MdxPreviewStyling>
-                      {notat.originalTekst && (
-                        <MDXEditor
-                          markdown={notat.originalTekst.brevtekst}
-                          readOnly={true}
-                          contentEditableClassName="mdxEditorRemoveMargin"
-                          plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
-                        />
-                      )}
-                    </MdxPreviewStyling>
-                    {!notat.originalTekst && (
-                      <Box paddingBlock={'2 0'}>
-                        <Brødtekst>
-                          Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
-                        </Brødtekst>
-                      </Box>
+                    </VStack>
+                  </HStack>
+                  <MdxPreviewStyling>
+                    {notat.tekst && (
+                      <MDXEditor
+                        markdown={notat.tekst}
+                        readOnly={true}
+                        contentEditableClassName="mdxEditorRemoveMargin"
+                        plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
+                      />
                     )}
-                  </Box>
-                )
-              })}
+                  </MdxPreviewStyling>
+                  {!notat.tekst && (
+                    <Box paddingBlock={'2 0'}>
+                      <Brødtekst>
+                        Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
+                      </Brødtekst>
+                    </Box>
+                  )}
+                </Box>
+              )
+            })}
           </>
         )}
       </VStack>
@@ -411,14 +458,14 @@ export function JournalførteNotater({ sak, lesevisning }: JournalførteNotaterP
         }}
       />
 
-      <ForhåndsvisningsModal
+      {/*<ForhåndsvisningsModal
         open={visForhåndsvisningsmodal}
         sakId={sak.sakId}
         brevtype={brevtype}
         onClose={() => {
           setVisForhåndsvisningsmodal(false)
         }}
-      />
+      />*/}
     </>
   )
 }

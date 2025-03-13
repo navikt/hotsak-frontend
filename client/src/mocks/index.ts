@@ -21,6 +21,7 @@ export async function initMsw(): Promise<unknown> {
     sakStore,
     barnebrillesakStore,
     oppgaveStore,
+    notatStore,
     endreHjelpemiddelStore,
   } = store
 
@@ -32,6 +33,7 @@ export async function initMsw(): Promise<unknown> {
     await sakStore.populer()
     await barnebrillesakStore.populer()
     await oppgaveStore.populer()
+    await notatStore.populer()
     await endreHjelpemiddelStore.populer()
   } catch (err: unknown) {
     console.warn(err)
@@ -54,6 +56,7 @@ export async function initMsw(): Promise<unknown> {
         personStore.delete(),
         saksbehandlerStore.delete(),
         oppgaveStore.delete(),
+        notatStore.delete(),
       ]).catch(console.warn)
     },
   }

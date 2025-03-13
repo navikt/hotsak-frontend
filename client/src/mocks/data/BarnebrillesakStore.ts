@@ -508,25 +508,6 @@ export class BarnebrillesakStore extends Dexie {
     this.saker.update(sakId, { journalposter: [...eksisterendeJournalposter, journalføring.journalpostId] })
   }
 
-  async lagreNotat(sakId: string, type: 'INTERNT', innhold: string) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    return this.notater.add({
-      sakId,
-      saksbehandler,
-      type,
-      innhold,
-      opprettet: new Date().toISOString(),
-    })
-  }
-
-  async slettNotat(notatId: number) {
-    return this.notater.delete(notatId)
-  }
-
-  async hentNotater(sakId: string) {
-    return this.notater.where('sakId').equals(sakId).toArray()
-  }
-
   async lagreBrevtekst(sakId: string, brevtype: string, data: any) {
     this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
   }

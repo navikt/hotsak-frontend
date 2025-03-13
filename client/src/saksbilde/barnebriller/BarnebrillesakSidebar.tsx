@@ -7,12 +7,12 @@ import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
-import { Saksnotater } from '../høyrekolonne/notat/Saksnotater'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
 import { useSaksnotater } from '../høyrekolonne/notat/useSaksnotater'
+import { Notater } from '../høyrekolonne/notat/Notater'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--a-border-default);
@@ -86,7 +86,7 @@ export function BarnebrillesakSidebar() {
         <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
       <Tabs.Panel value={BarnebrilleSidebarTabs.NOTAT.toString()}>
-        <Saksnotater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+        <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
     </Sidebar>
   )

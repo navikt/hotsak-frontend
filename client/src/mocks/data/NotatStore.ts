@@ -11,6 +11,7 @@ import {
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { IdGenerator } from './IdGenerator'
 import { SakStore } from './SakStore'
+import { BarnebrillesakStore } from './BarnebrillesakStore'
 
 function lagNotat(
   id: number,
@@ -35,7 +36,8 @@ export class NotatStore extends Dexie {
   constructor(
     private readonly idGenerator: IdGenerator,
     private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore
+    private readonly sakStore: SakStore,
+    private readonly barnebrilleSakStore: BarnebrillesakStore
   ) {
     super('NotatStore')
     this.version(1).stores({
@@ -53,8 +55,11 @@ export class NotatStore extends Dexie {
       lagNotat(this.idGenerator.nesteId(), { sakId, saksbehandler, type })
 
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    const alleSaker = await this.sakStore.alle()
-    const notater = alleSaker.map((sak) => lagNotatMedId(sak.sakId, NotatType.JOURNALFØRT))
+    const alleHjelpemiddelSaker = (await this.sakStore.alle()).map((sak) => sak.sakId)
+    const alleBarnebrillesaker = (await this.barnebrilleSakStore.alle()).map((sak) => sak.sakId)
+    const alleSaker = [...alleHjelpemiddelSaker, ...alleBarnebrillesaker]
+
+    const notater = alleSaker.map((sakId) => lagNotatMedId(sakId, NotatType.JOURNALFØRT))
 
     this.notater.bulkAdd(notater, { allKeys: true })
   }

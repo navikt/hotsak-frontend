@@ -22,7 +22,7 @@ export async function setupStore() {
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
   const barnebrillesakStore = new BarnebrillesakStore(idGenerator, saksbehandlerStore, personStore, journalpostStore)
   const saksoversiktStore = new SaksoversiktStore()
-  const notatStore = new NotatStore(idGenerator, saksbehandlerStore, sakStore)
+  const notatStore = new NotatStore(idGenerator, saksbehandlerStore, sakStore, barnebrillesakStore)
   const oppgaveStore = new OppgaveStore(
     idGenerator,
     sakStore,

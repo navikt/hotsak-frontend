@@ -22,13 +22,15 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
-import { ferdigstillNotat, lagreNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
-import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
+import { ferdigstillNotat, opprettNotatUtkast, oppdaterNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
+import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../../utils/dato.ts'
 import { MarkdownEditor } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useNotatTeller } from './useNotatTeller.ts'
+import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
+import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -48,22 +50,16 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   //const [visLasterNotat, setVisLasterNotat] = useState<Notat[] | null>(null)
   const [visLasterNotat, setVisLasterNotat] = useState<boolean>(false)
-  //const { hentForhåndsvisning } = useBrev()
+  const { hentForhåndsvisning } = useBrev()
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
   const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
-  //const brevtype = Brevtype.JOURNALFØRT_NOTAT
-
   const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.JOURNALFØRT)
-
-  console.log('Notater.tsx: aktivtUtkast:', aktivtUtkast)
-  console.log('Notater.tsx: notater:', notater)
 
   const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
 
-  //TODO: Mutere for å oppdatere tellere
   // Dynamisk autorefresh for å vente på journalføring
 
   /*const {
@@ -89,18 +85,12 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       setTekst(aktivtUtkast.tekst || '')
     }
   }, [aktivtUtkast])
-  /*useEffect(() => {
-    if (aktivtUtkast) {
-      aktivtUtkast.tittel && aktivtUtkast.tittel !== '' && setTittel(aktivtUtkast.tittel)
-      aktivtUtkast.tekst && aktivtUtkast.tekst !== '' && setTekst(aktivtUtkast.tekst)
-    }
-  }, [aktivtUtkast?.tittel, aktivtUtkast?.tekst])*/
 
   useEffect(() => {
     if (submitAttempt) {
       valider()
     }
-  }, [klarForFerdigstilling, aktivtUtkast?.tittel, aktivtUtkast?.tekst, submitAttempt])
+  }, [klarForFerdigstilling, tittel, tekst, submitAttempt])
 
   /*useEffect(() => {
     if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
@@ -109,12 +99,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
     }
   }, [journalførteNotater])*/
 
-  /*const dokumenttittelEndret = (nyTittel: string) => {
-    if (aktivtUtkast) {
-      utkastEndret(nyTittel, aktivtUtkast?.tekst || '')
-    }
-  }*/
-
   function valider() {
     let valideringsfeil: NotatValideringError = {}
 
@@ -122,11 +106,11 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       valideringsfeil.bekreftSynlighet = 'Du må bekrefte at du er   klar over at notatet blir synlig for bruker'
     }
 
-    if (!aktivtUtkast?.tittel || aktivtUtkast.tittel.length == 0) {
+    if (!tittel || tittel.length == 0) {
       valideringsfeil.tittel = 'Du må skrive en tittel'
     }
 
-    if (!aktivtUtkast?.tekst || aktivtUtkast.tekst.length == 0) {
+    if (!tekst || tekst.length == 0) {
       valideringsfeil.tekst = 'Du må skrive en tekst'
     }
 
@@ -137,12 +121,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   useEffect(() => {
     utkastEndret(tittel, tekst)
   }, [tittel, tekst])
-
-  /*const markdownEndret = (markdown: string) => {
-    if (aktivtUtkast) {
-      utkastEndret(aktivtUtkast.tittel || '', markdown)
-    }
-  }*/
 
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
@@ -157,10 +135,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
-  const utkastEndret = async (tittel: string, markdown: string) => {
-    // Lokal oppdatering for liveness
-    //await utkastMutert(lagPayload(tittel, markdown), { revalidate: false })
-
+  const utkastEndret = async (tittel: string, tekst: string) => {
     if (debounceTimer) clearTimeout(debounceTimer)
     if (tittel !== '' || tekst !== '') {
       setDebounceTimer(
@@ -168,12 +143,17 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
           setLagrerUtkast(true)
 
           const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-          await lagreNotatUtkast(sakId, {
-            id: aktivtUtkast?.id,
-            tittel,
-            tekst: markdown,
-            type: NotatType.JOURNALFØRT,
-          })
+          if (!aktivtUtkast?.id && !lagrerUtkast) {
+            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.JOURNALFØRT })
+          } else {
+            await oppdaterNotatUtkast(sakId, {
+              id: aktivtUtkast?.id,
+              tittel,
+              tekst,
+              type: NotatType.JOURNALFØRT,
+            })
+          }
+
           await mutateNotatTeller()
 
           await minimumPeriodeVisLagrerUtkast
@@ -191,7 +171,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
     setJournalførerNotat(true)
     //setVisLasterNotat([...notater]) // Må settes før posting av brevsending pga. race
     setVisLasterNotat(true) // Må settes før posting av brevsending pga. race
-    //await journalførNotat()
     await ferdigstillNotat(lagPayload())
     setTittel('')
     setTekst('')
@@ -203,7 +182,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
     setKlarForFerdigstilling(false)
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
-    //oppdaterNotatTeller()
     mutateNotatTeller()
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
@@ -235,9 +213,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
   return (
     <>
-      {aktiveUtkast.map((utkast) => (
-        <div>{'ID: ' + utkast.id + ' ' + utkast.tittel + ': ' + utkast.tekst}</div>
-      ))}
       <VStack gap="2">
         <Brødtekst>
           Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
@@ -308,17 +283,21 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
       {!lesevisning && (
         <HStack justify="space-between" paddingBlock={'1-alt 0'}>
-          <Button
-            type="submit"
-            size="xsmall"
-            variant="tertiary"
-            /*onClick={() => {
-              hentForhåndsvisning(sak.sakId, brevtype)
-              setVisForhåndsvisningsmodal(true)
-            }}*/
-          >
-            Forhåndsvis dokument
-          </Button>
+          {aktivtUtkast?.id ? (
+            <Button
+              type="submit"
+              size="xsmall"
+              variant="tertiary"
+              onClick={() => {
+                hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+                setVisForhåndsvisningsmodal(true)
+              }}
+            >
+              Forhåndsvis dokument
+            </Button>
+          ) : (
+            <div />
+          )}
           <Button
             icon={<TrashIcon />}
             variant="tertiary"
@@ -458,14 +437,16 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
         }}
       />
 
-      {/*<ForhåndsvisningsModal
-        open={visForhåndsvisningsmodal}
-        sakId={sak.sakId}
-        brevtype={brevtype}
-        onClose={() => {
-          setVisForhåndsvisningsmodal(false)
-        }}
-      />*/}
+      {
+        <ForhåndsvisningsModal
+          open={visForhåndsvisningsmodal}
+          sakId={sakId}
+          brevtype={Brevtype.JOURNALFØRT_NOTAT}
+          onClose={() => {
+            setVisForhåndsvisningsmodal(false)
+          }}
+        />
+      }
     </>
   )
 }

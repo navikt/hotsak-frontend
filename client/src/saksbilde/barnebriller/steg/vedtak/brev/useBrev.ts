@@ -15,12 +15,12 @@ interface BrevResponse {
   //isLoading: boolean
   //isError: any
   isDokumentError: any
-  hentForhåndsvisning(sakId: number | string, brevtype?: Brevtype): any
+  hentForhåndsvisning(sakId: number | string, brevtype: Brevtype, notatId?: string): any
   nullstillDokument(brevtype: Brevtype): any
   hentedeBrev: Record<Brevtype, Ressurs<string>>
 }
 
-export function useBrev(/*brevressurs?: Ressurs<string>, brevRessursError?: boolean*/): BrevResponse {
+export function useBrev(): BrevResponse {
   const { hentedeBrev, settHentetBrev } = useDokumentContext()
   const [isDokumentError, setIsDokumentError] = useState<any>(null)
 
@@ -29,11 +29,16 @@ export function useBrev(/*brevressurs?: Ressurs<string>, brevRessursError?: bool
   }
 
   const hentForhåndsvisning = useCallback(
-    (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK) => {
+    (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK, notatId?: string) => {
       settHentetBrev(brevtype, byggHenterRessurs())
       setIsDokumentError(null)
 
-      const response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
+      let response
+      if (brevtype === Brevtype.JOURNALFØRT_NOTAT && notatId) {
+        response = httpGetPdf(`api/sak/${sakId}/notater/${notatId}`)
+      } else {
+        response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
+      }
 
       response
         .then((response: PDFResponse) => {
@@ -48,9 +53,6 @@ export function useBrev(/*brevressurs?: Ressurs<string>, brevRessursError?: bool
     [settHentetBrev]
   )
   return {
-    //journalpost: data?.data,
-    //isLoading: !error && !data,
-    //isError: error,
     isDokumentError,
     hentForhåndsvisning,
     nullstillDokument,

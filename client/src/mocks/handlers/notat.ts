@@ -2,8 +2,9 @@ import { delay, http, HttpResponse } from 'msw'
 
 import type { FerdigstillNotatRequest, NotatUtkast } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
+import { lastDokument } from '../data/felles'
 import type { SakParams } from './params'
-import { respondNoContent } from './response'
+import { respondNoContent, respondPdf } from './response'
 
 interface NotatParams extends SakParams {
   notatId: string
@@ -45,5 +46,13 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
     await notatStore.slettNotat(Number(params.notatId))
     await delay(100)
     return respondNoContent()
+  }),
+
+  http.get<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async () => {
+    let buffer: ArrayBuffer
+
+    buffer = await lastDokument('journalført_notat')
+    await delay(500)
+    return respondPdf(buffer)
   }),
 ]

@@ -282,11 +282,13 @@ export const slettSaksnotat = async (sakId: string, notatId: number) => {
   return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
 }
 
-export const lagreNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
+export const opprettNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
+  return post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
+}
+
+export const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
   if (utkast.id) {
     return put(`${baseUrl}/api/sak/${sakId}/notater/${utkast.id}`, utkast)
-  } else {
-    return post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
   }
 }
 

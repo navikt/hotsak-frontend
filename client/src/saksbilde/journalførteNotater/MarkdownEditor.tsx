@@ -11,6 +11,7 @@ import {
   UndoRedo,
 } from '@mdxeditor/editor'
 import { useEffect, useRef } from 'react'
+import styled from 'styled-components'
 
 export function MarkdownEditor({
   tekst,
@@ -87,3 +88,20 @@ export function MarkdownEditor({
     />
   )
 }
+
+export const MarkdownEditorStyling = styled.div`
+  margin-bottom: 0.5rem;
+  .mdxEditorBox:has([contenteditable='true']:focus) {
+    border: 4px solid rgba(0, 52, 125, 1);
+    margin: -3px;
+  }
+`
+
+export const MardownEditorPreviewStyling = styled.div`
+  .mdxEditorRemoveMargin {
+    padding: 0;
+    font-size: var(--a-font-size-medium);
+    color: var(--a-text-default);
+    font-family: 'Source Sans Pro';
+  }
+`

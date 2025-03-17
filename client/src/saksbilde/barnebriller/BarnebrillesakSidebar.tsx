@@ -9,6 +9,7 @@ import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
 import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
 import { Notater } from '../høyrekolonne/notat/Notater'
+import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
 import { useNotatTeller } from '../høyrekolonne/notat/useNotatTeller'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'

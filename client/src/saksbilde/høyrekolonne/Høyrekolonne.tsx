@@ -3,7 +3,6 @@ import { ClockDashedIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aks
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
-import styled from 'styled-components'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { useErNotatPilot } from '../../state/authentication'
@@ -15,6 +14,7 @@ import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddelo
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { useNotatTeller } from './notat/useNotatTeller.ts'
+import { NotificationBadge } from './notat/NotificationBadge.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
@@ -106,14 +106,3 @@ export function Høyrekolonne() {
     </Box>
   )
 }
-
-const NotificationBadge = styled.span`
-  position: absolute;
-  top: -0.5rem;
-  right: -0.5rem;
-  border-radius: 9999px;
-  border: 2px solid var(--a-surface-default);
-  background: var(--a-surface-danger);
-  width: 12px;
-  height: 12px;
-`

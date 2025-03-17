@@ -136,15 +136,15 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     if (tittel !== '' || tekst !== '') {
       setDebounceTimer(
         setTimeout(async () => {
-          setLagrerUtkast(true)
+          if (oppretterNyttUtkast) {
+            console.log('Holder på å opprette nytt utkast ikke noe mer å gjøre her nå')
+            return
+          }
 
+          setLagrerUtkast(true)
           const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-          if (!aktivtUtkast?.id) {
-            setOppretterNyttUtkast(true)
-            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.JOURNALFØRT })
-            setOppretterNyttUtkast(false)
-            mutateNotater()
-          } else if (!oppretterNyttUtkast) {
+
+          if (aktivtUtkast?.id) {
             await oppdaterNotatUtkast(sakId, {
               id: aktivtUtkast?.id,
               tittel,
@@ -152,9 +152,11 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
               type: NotatType.JOURNALFØRT,
             })
           } else {
-            console.log('Akkurat nå er vi opptatt med å opprette utkast, hopper over denne gangen')
+            setOppretterNyttUtkast(true)
+            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.JOURNALFØRT })
+            await mutateNotater()
+            setOppretterNyttUtkast(false)
           }
-
           await mutateNotatTeller()
           await minimumPeriodeVisLagrerUtkast
           setLagrerUtkast(false)

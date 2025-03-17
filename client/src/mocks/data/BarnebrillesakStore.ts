@@ -1,5 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
+import { formatISO } from 'date-fns'
 import {
   Barnebrillesak,
   Brevkode,
@@ -8,7 +9,6 @@ import {
   JournalføringRequest,
   Kjønn,
   MålformType,
-  Notat,
   OppdaterVilkårRequest,
   Oppgave,
   OppgaveStatusLabel,
@@ -28,6 +28,7 @@ import {
   Vilkårsvurdering,
   VurderVilkårRequest,
 } from '../../types/types.internal'
+import { formaterNavn } from '../../utils/formater'
 import { IdGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
 import { PersonStore } from './PersonStore'
@@ -39,8 +40,6 @@ import { lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
 import { vurderteVilkår } from './vurderteVilkår'
-import { formaterNavn } from '../../utils/formater'
-import { formatISO } from 'date-fns'
 
 type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
 type LagretVilkårsgrunnlag = Vilkårsgrunnlag
@@ -146,7 +145,6 @@ export class BarnebrillesakStore extends Dexie {
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
   private readonly vilkår!: Table<LagretVilkår, number>
   private readonly hendelser!: Table<LagretHendelse, string>
-  private readonly notater!: Table<Omit<Notat, 'id'>, number>
   private readonly brevtekst!: Table<BrevTekst, string>
   private readonly saksdokumenter!: Table<Saksdokument, string>
 

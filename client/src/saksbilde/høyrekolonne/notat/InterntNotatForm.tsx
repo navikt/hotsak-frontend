@@ -1,49 +1,30 @@
 import '@mdxeditor/editor/style.css'
-import { TrashIcon } from '@navikt/aksel-icons'
-import {
-  BodyShort,
-  Box,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  ErrorMessage,
-  HStack,
-  Label,
-  Loader,
-  TextField,
-  VStack,
-} from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
-import { ferdigstillNotat, oppdaterNotatUtkast, opprettNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
-import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
-import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
-import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
-import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
+import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { NotatType } from '../../../types/types.internal.ts'
 import { useNotater } from './useNotater.tsx'
-import { useNotatTeller } from './useNotatTeller.ts'
 
 export interface NotaterProps {
   sakId: string
   lesevisning: boolean
 }
 
-export function NotatForm({ sakId, lesevisning }: NotaterProps) {
-  const [lagrerUtkast, setLagrerUtkast] = useState(false)
-  const [sletter, setSletter] = useState(false)
-  const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const { mutate: mutateNotatTeller } = useNotatTeller(sakId)
-  const [journalførerNotat, setJournalførerNotat] = useState(false)
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
-  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
-  const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
-  const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
-  const { hentForhåndsvisning } = useBrev()
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
-  const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
+export function InterntNotatForm({ sakId /*, lesevisning*/ }: NotaterProps) {
+  //const [lagrerUtkast, setLagrerUtkast] = useState(false)
+  //const [sletter, setSletter] = useState(false)
+
+  const { utkast: aktiveUtkast /*isLoading : notaterLaster,*/ /*mutate: mutateNotater*/ } = useNotater(sakId)
+  //const { mutate: mutateNotatTeller } = useNotatTeller(sakId)
+  //const [journalførerNotat, setJournalførerNotat] = useState(false)
+  //const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  //const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
+  //const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
+  //const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
+  //const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
+  //const { hentForhåndsvisning } = useBrev()
+  const [submitAttempt /*, setSubmitAttempt*/] = useState(false)
+  //const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
+  const [klarForFerdigstilling /*, setKlarForFerdigstilling*/] = useState(false)
 
   const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.JOURNALFØRT)
 
@@ -51,6 +32,7 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
 
   // Dynamisk autorefresh for å vente på journalføring
+  // Håndtere race ved state for oppretter notat
 
   /*const {
     data: utkast,
@@ -108,13 +90,13 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
       valideringsfeil.tekst = 'Du må skrive en tekst'
     }
 
-    setValideringsfeil(valideringsfeil)
+    //setValideringsfeil(valideringsfeil)
     return Object.keys(valideringsfeil).length == 0
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     utkastEndret(tittel, tekst)
-  }, [tittel, tekst])
+  }, [tittel, tekst])*()
 
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
@@ -129,7 +111,7 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
 
   // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
   // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
-  const utkastEndret = async (tittel: string, tekst: string) => {
+  /*const utkastEndret = async (tittel: string, tekst: string) => {
     if (debounceTimer) clearTimeout(debounceTimer)
     if (tittel !== '' || tekst !== '') {
       setDebounceTimer(
@@ -155,9 +137,9 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
         }, 500)
       )
     }
-  }
+  }*/
 
-  const journalførNotat = async () => {
+  /*const journalførNotat = async () => {
     setJournalførerNotat(true)
     await ferdigstillNotat(lagPayload())
     setTittel('')
@@ -171,9 +153,9 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
     setJournalførerNotat(false)
     mutateNotatTeller()
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
-  }
+  }*/
 
-  const slettUtkast = async () => {
+  /*const slettUtkast = async () => {
     if (aktivtUtkast) {
       setSletter(true)
       await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
@@ -192,11 +174,14 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
       setKlarForFerdigstilling(false)
       setSletter(false)
     }
-  }
+  }*/
 
-  const readOnly = lesevisning || journalførerNotat
+  //const readOnly = lesevisning || journalførerNotat
 
-  return (
+  // Skal vi sette default til den som har utkast?
+
+  return <Brødtekst>TODO</Brødtekst>
+  /*return (
     <form onSubmit={(e) => e.preventDefault()}>
       {!notaterLaster && (
         <VStack gap="4" paddingBlock="8 0">
@@ -345,7 +330,7 @@ export function NotatForm({ sakId, lesevisning }: NotaterProps) {
         />
       }
     </form>
-  )
+  )*/
 }
 
 type NotatValideringError = {

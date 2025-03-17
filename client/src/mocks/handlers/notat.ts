@@ -13,12 +13,12 @@ interface NotatParams extends SakParams {
 export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   http.post<SakParams, NotatUtkast>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
     const { type, tittel, tekst } = await request.json()
-    const saknotater = await notatStore.hentNotater(params.sakId)
-    const åpneUtkast = saknotater.filter((notat) => notat.type === type).filter((notat) => !notat.ferdigstilt)
-    if (åpneUtkast.length > 0) {
+    //const saknotater = await notatStore.hentNotater(params.sakId)
+    //const åpneUtkast = saknotater.filter((notat) => notat.type === type).filter((notat) => !notat.ferdigstilt)
+    /*if (åpneUtkast.length > 0) {
       console.log(`Vi har allerede et åpent utkast av typen ${type} for sak. Hopper over denne.`)
       return respondNoContent()
-    }
+    }*/
     await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst })
     await delay(500)
     return respondNoContent()

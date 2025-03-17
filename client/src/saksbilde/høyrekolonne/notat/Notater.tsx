@@ -1,12 +1,15 @@
 import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, Heading, HStack, Link, Loader, ReadMore, Tooltip, VStack } from '@navikt/ds-react'
+import { Box, Heading, HStack, Link, Loader, ReadMore, ToggleGroup, Tooltip, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../../utils/dato.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
-import { NotatForm } from './NotatForm.tsx'
+import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
 import { useNotater } from './useNotater.tsx'
+import { InterntNotatForm } from './InterntNotatForm.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -15,6 +18,7 @@ export interface NotaterProps {
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
+  const [notatType, setNotatType] = useState<string>(NotatType.JOURNALFØRT.toString())
 
   return (
     <>
@@ -35,7 +39,18 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
           <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
         </div>
       )}
-      <NotatForm sakId={sakId} lesevisning={lesevisning} />
+      <ToggleGroup
+        size="small"
+        value={notatType}
+        label="Opprett nytt notat"
+        onChange={(notatType) => setNotatType(notatType)}
+      >
+        <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
+        <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
+      </ToggleGroup>
+
+      {notatType === NotatType.JOURNALFØRT && <JournalførtNotatForm sakId={sakId} lesevisning={lesevisning} />}
+      {notatType === NotatType.INTERNT && <InterntNotatForm sakId={sakId} lesevisning={lesevisning} />}
       <VStack gap="4" paddingBlock="8 0">
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
         {notaterLaster && (

@@ -1,6 +1,7 @@
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 import { desanitizeName } from './Besvarelse'
 import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
+import { kontaktet_formidler_v1 } from './kontaktet_formidler_v1.ts'
 
 export type Spørsmålstype = 'enkeltvalg' | 'flervalg' | 'fritekst' | 'oppfølgingsspørsmål'
 
@@ -45,6 +46,7 @@ export interface ISpørreundersøkelse extends ISpørsmålsliste {
 export const spørreundersøkelser = {
   barnebrillesak_overført_gosys_v1,
   sak_overført_gosys_v1,
+  kontaktet_formidler_v1,
 }
 
 export type SpørreundersøkelseId = keyof typeof spørreundersøkelser

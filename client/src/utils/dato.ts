@@ -10,7 +10,14 @@ export function formaterDato(dato?: string): string {
 
 export function formaterTidsstempel(dato?: string): string {
   if (!dato) return ''
+
   return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
+}
+
+export function formaterTidsstempelLesevennlig(dato?: string): string {
+  if (!dato) return ''
+
+  return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM.yyyy 'kl.' HH.mm")
 }
 
 export function tilDato(verdi?: Date | number | string): Date | undefined {

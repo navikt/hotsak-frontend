@@ -1,15 +1,16 @@
 import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, Heading, HStack, Link, Loader, ReadMore, ToggleGroup, Tooltip, VStack } from '@navikt/ds-react'
+import { Box, Heading, HStack, Link, Loader, ReadMore, Tag, ToggleGroup, Tooltip, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
-import { formaterTidsstempel } from '../../../utils/dato.ts'
+import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
+import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
+import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
 import { useNotater } from './useNotater.tsx'
-import { InterntNotatForm } from './InterntNotatForm.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -33,24 +34,27 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             notatet, blir det synlig for innbygger neste virkedag på innlogget side på nav.no
           </BrytbarBrødtekst>
         </ReadMore>
+        <ToggleGroup
+          size="small"
+          value={notatType}
+          label="Opprett nytt notat"
+          onChange={(notatType) => setNotatType(notatType)}
+        >
+          <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
+          <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
+        </ToggleGroup>
       </VStack>
       {notaterLaster && (
         <div>
           <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
         </div>
       )}
-      <ToggleGroup
-        size="small"
-        value={notatType}
-        label="Opprett nytt notat"
-        onChange={(notatType) => setNotatType(notatType)}
-      >
-        <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
-        <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
-      </ToggleGroup>
 
-      {notatType === NotatType.JOURNALFØRT && <JournalførtNotatForm sakId={sakId} lesevisning={lesevisning} />}
-      {notatType === NotatType.INTERNT && <InterntNotatForm sakId={sakId} lesevisning={lesevisning} />}
+      {notatType === NotatType.JOURNALFØRT ? (
+        <JournalførtNotatForm sakId={sakId} lesevisning={lesevisning} />
+      ) : (
+        <InterntNotatForm sakId={sakId} lesevisning={lesevisning} />
+      )}
       <VStack gap="4" paddingBlock="8 0">
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
         {notaterLaster && (
@@ -73,9 +77,17 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
               )*/}
             {notater.map((notat) => {
               return (
-                <Box key={notat.id} background="surface-subtle" padding="2" borderRadius="xlarge">
+                <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
                   <HStack gap="2">
                     <VStack gap="2">
+                      <div>
+                        <Tag
+                          variant={notat.type === NotatType.JOURNALFØRT ? 'info-moderate' : 'info-filled'}
+                          size="small"
+                        >
+                          {storForbokstavIOrd(notat.type)}
+                        </Tag>
+                      </div>
                       <HStack gap="2">
                         <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
                           {notat.tittel}
@@ -89,7 +101,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
                         )}
                       </HStack>
                       <VStack>
-                        <Brødtekst>{formaterTidsstempel(notat.opprettet)}</Brødtekst>
+                        <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
                         <Undertittel>{notat.saksbehandler.navn}</Undertittel>
                       </VStack>
                     </VStack>

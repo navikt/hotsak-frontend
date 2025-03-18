@@ -54,23 +54,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   // Dynamisk autorefresh for å vente på journalføring
   // Håndtere race ved state for oppretter notat
 
-  /*const {
-    data: utkast,
-    isLoading: utkastLasterInn,
-    mutate: utkastMutert,
-  } = useBrevtekst(sak.sakId, Brevtype.JOURNALFØRT_NOTAT)*/
-
-  /*const {
-    data: journalførteNotater,
-    isLoading: journalførteNotaterLaster,
-    mutate: journalførteNotaterMutert,
-  } = useSaksdokumenter(
-    sak.sakId,
-    true,
-    SaksdokumentType.NOTAT,
-    visLasterNotat != null ? { refreshInterval: 2000 } : null
-  )*/
-
   useEffect(() => {
     if (aktivtUtkast) {
       if (tittel === '') {
@@ -87,13 +70,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       valider()
     }
   }, [klarForFerdigstilling, tittel, tekst, submitAttempt])
-
-  /*useEffect(() => {
-    if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
-      setVisLasterNotat(null)
-      //oppdaterNotatTeller()
-    }
-  }, [journalførteNotater])*/
 
   function valider() {
     let valideringsfeil: NotatValideringError = {}
@@ -208,7 +184,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       {!notaterLaster && (
-        <VStack gap="4" paddingBlock="8 0">
+        <VStack gap="4" paddingBlock="6 0">
           <TextField
             size="small"
             label="Tittel"
@@ -218,7 +194,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             onChange={(e) => setTittel(e.target.value)}
           />
           <div>
-            <Label size="small">Tekst</Label>
+            <Label size="small">Notat</Label>
             <MarkdownEditorStyling>
               <Box
                 background="surface-default"
@@ -343,16 +319,14 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
         }}
       />
 
-      {
-        <ForhåndsvisningsModal
-          open={visForhåndsvisningsmodal}
-          sakId={sakId}
-          brevtype={Brevtype.JOURNALFØRT_NOTAT}
-          onClose={() => {
-            setVisForhåndsvisningsmodal(false)
-          }}
-        />
-      }
+      <ForhåndsvisningsModal
+        open={visForhåndsvisningsmodal}
+        sakId={sakId}
+        brevtype={Brevtype.JOURNALFØRT_NOTAT}
+        onClose={() => {
+          setVisForhåndsvisningsmodal(false)
+        }}
+      />
     </form>
   )
 }

@@ -19,7 +19,11 @@ export interface NotaterProps {
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
+  const { utkast: aktiveUtkast } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.JOURNALFØRT.toString())
+
+  const antallInterneNotatUtkast = aktiveUtkast.filter((u) => u.type === NotatType.INTERNT)
+  const antallJournalførteNotatUtkast = aktiveUtkast.filter((u) => u.type === NotatType.JOURNALFØRT)
 
   return (
     <>
@@ -41,8 +45,14 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             label="Opprett nytt notat"
             onChange={(notatType) => setNotatType(notatType)}
           >
-            <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
-            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
+            <ToggleGroup.Item
+              value={NotatType.INTERNT.toString()}
+              label={`Internt notat ${antallInterneNotatUtkast.length > 0 ? '(' + antallInterneNotatUtkast.length + ')' : ''}`}
+            />
+            <ToggleGroup.Item
+              value={NotatType.JOURNALFØRT.toString()}
+              label={`Skal journalføres ${antallJournalførteNotatUtkast.length > 0 ? '(' + antallJournalførteNotatUtkast.length + ')' : ''}`}
+            />
           </ToggleGroup>
         </Box>
       </VStack>

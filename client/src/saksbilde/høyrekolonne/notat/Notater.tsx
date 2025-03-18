@@ -76,7 +76,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
         )}
         {!notaterLaster && notater && (
           <>
-            {/*!visLasterNotat &&*/ notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
+            {notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
             {/*visLasterNotat && (
                 <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
                   <Heading as={Skeleton} size="large">

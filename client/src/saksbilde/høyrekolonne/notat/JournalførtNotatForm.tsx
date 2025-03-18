@@ -236,25 +236,24 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
 
       {!lesevisning && (
         <HStack justify="space-between" paddingBlock={'1-alt 0'}>
-          {aktivtUtkast?.id ? (
-            <Button
-              type="submit"
-              size="xsmall"
-              variant="tertiary"
-              onClick={() => {
-                hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
-                setVisForhåndsvisningsmodal(true)
-              }}
-            >
-              Forhåndsvis dokument
-            </Button>
-          ) : (
-            <div />
-          )}
+          <Button
+            type="submit"
+            size="xsmall"
+            hidden={!aktivtUtkast?.id}
+            variant="tertiary"
+            onClick={() => {
+              hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+              setVisForhåndsvisningsmodal(true)
+            }}
+          >
+            Forhåndsvis dokument
+          </Button>
+
           <Button
             icon={<TrashIcon />}
             variant="tertiary"
             size="xsmall"
+            hidden={!aktivtUtkast?.id}
             onClick={() => {
               setVisSlettUtkastModal(true)
             }}

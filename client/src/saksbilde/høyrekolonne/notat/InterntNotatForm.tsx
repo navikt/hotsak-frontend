@@ -227,6 +227,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
           <Button
             icon={<TrashIcon />}
             variant="tertiary"
+            hidden={!aktivtUtkast?.id}
             size="xsmall"
             onClick={() => {
               setVisSlettUtkastModal(true)

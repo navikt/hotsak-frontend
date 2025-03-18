@@ -22,6 +22,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const { mutate: mutateNotatTeller } = useNotatTeller(sakId)
   const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
+  const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
@@ -97,21 +98,27 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     if (tittel !== '' || tekst !== '') {
       setDebounceTimer(
         setTimeout(async () => {
-          setLagrerUtkast(true)
+          if (oppretterNyttUtkast) {
+            console.log('Holder på å opprette nytt utkast ikke noe mer å gjøre her nå')
+            return
+          }
 
+          setLagrerUtkast(true)
           const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-          if (!aktivtUtkast?.id) {
-            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.INTERNT })
-            mutateNotater()
-          } else {
+
+          if (aktivtUtkast?.id) {
             await oppdaterNotatUtkast(sakId, {
               id: aktivtUtkast?.id,
               tittel,
               tekst,
-              type: NotatType.INTERNT,
+              type: NotatType.JOURNALFØRT,
             })
+          } else {
+            setOppretterNyttUtkast(true)
+            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.INTERNT })
+            await mutateNotater()
+            setOppretterNyttUtkast(false)
           }
-
           await mutateNotatTeller()
           await minimumPeriodeVisLagrerUtkast
           setLagrerUtkast(false)
@@ -162,7 +169,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       {!notaterLaster && (
-        <VStack gap="4" paddingBlock="8 0">
+        <VStack gap="4" paddingBlock="6 0">
           <TextField
             size="small"
             label="Tittel"

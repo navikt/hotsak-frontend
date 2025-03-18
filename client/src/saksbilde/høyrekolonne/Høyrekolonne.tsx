@@ -13,8 +13,8 @@ import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversik
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Notater } from './notat/Notater.tsx'
-import { useNotatTeller } from './notat/useNotatTeller.ts'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
+import { useNotatTeller } from './notat/useNotatTeller.ts'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())

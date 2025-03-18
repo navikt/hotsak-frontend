@@ -34,15 +34,17 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             notatet, blir det synlig for innbygger neste virkedag på innlogget side på nav.no
           </BrytbarBrødtekst>
         </ReadMore>
-        <ToggleGroup
-          size="small"
-          value={notatType}
-          label="Opprett nytt notat"
-          onChange={(notatType) => setNotatType(notatType)}
-        >
-          <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
-          <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
-        </ToggleGroup>
+        <Box paddingBlock="6 0">
+          <ToggleGroup
+            size="small"
+            value={notatType}
+            label="Opprett nytt notat"
+            onChange={(notatType) => setNotatType(notatType)}
+          >
+            <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt notat" />
+            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Skal journalføres" />
+          </ToggleGroup>
+        </Box>
       </VStack>
       {notaterLaster && (
         <div>
@@ -82,7 +84,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
                     <VStack gap="2">
                       <div>
                         <Tag
-                          variant={notat.type === NotatType.JOURNALFØRT ? 'info-moderate' : 'info-filled'}
+                          variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'alt3-moderate'}
                           size="small"
                         >
                           {storForbokstavIOrd(notat.type)}

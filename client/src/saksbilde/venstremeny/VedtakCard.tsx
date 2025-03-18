@@ -265,7 +265,7 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
                   </Brødtekst>
                   <ReadMore header="Grunnen til at vi samler inn denne informasjonen" size="small">
                     <Brødtekst spacing>
-                      Denne undersøkelsen varer fra 21. til 23.oktober. Hensikten er å lære mer om hvilken informasjon
+                      Denne undersøkelsen varer fra 19. til 21. mars. Hensikten er å lære mer om hvilken informasjon
                       dere trenger i sakene, og hvilken informasjon dere får fra formidler. Resultatet fra undersøkelsen
                       vil gjøre oss i stand til å lære mer om behovet for informasjon i sakene. Når vi etter hvert vil
                       be om flere opplysninger i behovsmeldingen, så kan vi gjøre en ny undersøkelse. Da kan vi se om

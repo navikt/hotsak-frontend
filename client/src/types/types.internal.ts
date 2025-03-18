@@ -358,6 +358,10 @@ export enum VarselFor {
   ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
 
+export interface Saksnotater {
+  notater: Notat[]
+  totalElements: number
+}
 export interface Notat {
   id: string
   sakId: string

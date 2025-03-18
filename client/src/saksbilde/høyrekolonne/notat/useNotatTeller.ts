@@ -1,6 +1,6 @@
 import useSwr from 'swr'
 import { useErNotatPilot } from '../../../state/authentication'
-import type { Notat } from '../../../types/types.internal'
+import type { Saksnotater } from '../../../types/types.internal'
 
 interface NotatTellerResponse {
   antallNotater: number
@@ -13,15 +13,16 @@ export function useNotatTeller(sakId?: string): NotatTellerResponse {
   const erNotatPilot = useErNotatPilot()
 
   const {
-    data: notater,
+    data: saksnotater,
     mutate,
     isLoading,
-  } = useSwr<Notat[]>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater?tekst=false` : null)
+  } = useSwr<Saksnotater>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater?tekst=false` : null)
+  const { notater, totalElements } = saksnotater ?? { notater: [], totalElements: 0 }
 
   const utkast = notater?.filter((notat) => !notat.ferdigstilt) ?? []
 
   return {
-    antallNotater: notater?.length ?? 0,
+    antallNotater: totalElements,
     harUtkast: utkast.length > 0,
     isLoading,
     mutate,

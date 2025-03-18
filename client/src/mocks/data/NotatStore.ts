@@ -105,6 +105,6 @@ export class NotatStore extends Dexie {
   }
 
   async hentNotater(sakId: string) {
-    return this.notater.where('sakId').equals(sakId).toArray() || []
+    return (await this.notater.where('sakId').equals(sakId).sortBy('opprettet')).reverse() || []
   }
 }

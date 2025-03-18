@@ -1,24 +1,25 @@
 import useSwr from 'swr'
 import { useErNotatPilot } from '../../../state/authentication'
-import { Notat } from '../../../types/types.internal'
+import { Notat, Saksnotater } from '../../../types/types.internal'
 import { KeyedMutator } from 'swr'
 
 interface NotaterResponse {
   notater: Notat[]
   utkast: Notat[]
   isLoading: boolean
-  mutate: KeyedMutator<Notat[]>
+  mutate: KeyedMutator<Saksnotater>
 }
 
 export function useNotater(sakId?: string): NotaterResponse {
   const erNotatPilot = useErNotatPilot()
 
   const {
-    data: notater,
+    data: saksnotater,
     mutate,
     isLoading,
-  } = useSwr<Notat[]>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater?tekst=true` : null)
+  } = useSwr<Saksnotater>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater?tekst=true` : null)
 
+  const notater = saksnotater?.notater
   const utkast = notater?.filter((notat) => !notat.ferdigstilt) ?? []
 
   return {

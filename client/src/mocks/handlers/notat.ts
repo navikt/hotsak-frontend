@@ -13,12 +13,6 @@ interface NotatParams extends SakParams {
 export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   http.post<SakParams, NotatUtkast>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
     const { type, tittel, tekst } = await request.json()
-    //const saknotater = await notatStore.hentNotater(params.sakId)
-    //const åpneUtkast = saknotater.filter((notat) => notat.type === type).filter((notat) => !notat.ferdigstilt)
-    /*if (åpneUtkast.length > 0) {
-      console.log(`Vi har allerede et åpent utkast av typen ${type} for sak. Hopper over denne.`)
-      return respondNoContent()
-    }*/
     await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst })
     await delay(500)
     return respondNoContent()
@@ -45,7 +39,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   http.get<SakParams>(`/api/sak/:sakId/notater`, async ({ params }) => {
     const notater = await notatStore.hentNotater(params.sakId)
     await delay(500)
-    return HttpResponse.json(notater)
+    return HttpResponse.json({ notater: notater, totalElements: notater.length })
   }),
 
   http.delete<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async ({ params }) => {

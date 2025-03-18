@@ -230,18 +230,11 @@
     },
     "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
     "annenOppfølgingsansvarlig": null,
-    "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+    "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
     "annenUtleveringsadresse": { "adresse": "Andre veien 1", "postnummer": "2222", "poststed": "Stedet" },
-    "utleveringKontaktperson": "ANNEN_KONTAKTPERSON",
-    "annenKontaktperson": {
-      "navn": {
-        "fornavn": "fornavn",
-        "mellomnavn": null,
-        "etternavn": "etternavn"
-      },
-      "telefon": "12312313"
-    },
-    "utleveringMerknad": "Tralala",
+    "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
+    "annenKontaktperson": null,
+    "utleveringMerknad": "",
     "hast": {
       "hasteårsaker": ["UTVIKLING_AV_TRYKKSÅR", "RASK_FORVERRING_AV_ALVORLIG_DIAGNOSE", "ANNET"],
       "hastBegrunnelse": "En begrunnelse fra formidler om hvorfor det haster med denne saken."

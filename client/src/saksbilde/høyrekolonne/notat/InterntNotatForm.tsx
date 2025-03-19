@@ -8,7 +8,6 @@ import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types
 import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { useNotater } from './useNotater.tsx'
-import { useNotatTeller } from './useNotatTeller.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -20,7 +19,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [sletter, setSletter] = useState(false)
 
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const { mutate: mutateNotatTeller } = useNotatTeller(sakId)
+  const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)

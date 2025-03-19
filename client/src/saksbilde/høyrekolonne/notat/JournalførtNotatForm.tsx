@@ -22,7 +22,6 @@ import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotate
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { useNotater } from './useNotater.tsx'
-import { useNotatTeller } from './useNotatTeller.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -34,7 +33,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [sletter, setSletter] = useState(false)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const { mutate: mutateNotatTeller } = useNotatTeller(sakId)
+  const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)

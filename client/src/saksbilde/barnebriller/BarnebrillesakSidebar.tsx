@@ -10,11 +10,11 @@ import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
 import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
 import { Notater } from '../høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
-import { useNotatTeller } from '../høyrekolonne/notat/useNotatTeller'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
+import { useNotater } from '../høyrekolonne/notat/useNotater'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--a-border-default);
@@ -26,7 +26,7 @@ const Sidebar = styled(Tabs)`
 export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotatTeller(sak?.data.sakId)
+  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   useEffect(() => {

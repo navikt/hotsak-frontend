@@ -21,7 +21,6 @@ import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListeNyLayout } from './hjelpemidler/HjelpemiddelListe'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
-import { useNotatTeller } from './høyrekolonne/notat/useNotatTeller'
 import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
 import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
@@ -34,6 +33,7 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
+import { useNotater } from './høyrekolonne/notat/useNotater'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -41,7 +41,7 @@ const SaksbildeContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
-  const { harUtkast } = useNotatTeller(sak?.data.sakId)
+  const { harUtkast } = useNotater(sak?.data.sakId)
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 

@@ -14,14 +14,14 @@ import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddelo
 import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
-import { useNotatTeller } from './notat/useNotatTeller.ts'
+import { useNotater } from './notat/useNotater.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
   const [searchParams, setSearchParams] = useSearchParams()
   const { sak } = useSak()
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotatTeller(sak?.data.sakId)
+  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,

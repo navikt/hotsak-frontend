@@ -32,9 +32,10 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [sletter, setSletter] = useState(false)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
-  const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
+
   const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
+  const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
@@ -104,8 +105,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
-  // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
-  // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   const utkastEndret = async (tittel: string, tekst: string) => {
     if (debounceTimer) clearTimeout(debounceTimer)
     if (tittel !== '' || tekst !== '') {

@@ -22,6 +22,8 @@ function lagNotat(
     sakId,
     saksbehandler,
     type,
+    journalpostId: '123',
+    dokumentId: '456',
     tittel: 'Tittel på notat',
     målform: MålformType.BOKMÅL,
     tekst: 'Innhold i notat. Masse tekst og greier her.',
@@ -86,6 +88,7 @@ export class NotatStore extends Dexie {
     if (!notat) {
       throw new Error(`Notat med id ${notatId} finnes ikke`)
     }
+
     this.notater.update(notatId, {
       ...notat,
       type: payload.type,
@@ -93,6 +96,17 @@ export class NotatStore extends Dexie {
       tekst: payload.tekst,
       ferdigstilt: new Date().toISOString(),
     })
+
+    if (payload.type === NotatType.JOURNALFØRT) {
+      setTimeout(() => {
+        console.log('Later som vi har fått melding fra joark om at notatet er journalført')
+        this.notater.update(notatId, {
+          ...notat,
+          journalpostId: '123',
+          dokumentId: '456',
+        })
+      }, 5000)
+    }
   }
 
   async oppdaterUtkast(sakId: string, notatId: number, utkast: NotatUtkast) {

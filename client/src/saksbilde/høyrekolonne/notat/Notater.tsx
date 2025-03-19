@@ -18,8 +18,8 @@ export interface NotaterProps {
 }
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
-  const { notater, isLoading: notaterLaster } = useNotater(sakId)
-  const { utkast: aktiveUtkast } = useNotater(sakId)
+  const { notater, avventerJournalføring, isLoading: notaterLaster } = useNotater(sakId)
+  const { utkast: aktiveUtkast } = useNotater(sakId, avventerJournalføring ? { refreshInterval: 2000 } : null)
   const [notatType, setNotatType] = useState<string>(NotatType.JOURNALFØRT.toString())
 
   const antallInterneNotatUtkast = aktiveUtkast.filter((u) => u.type === NotatType.INTERNT)
@@ -77,16 +77,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
         {!notaterLaster && notater && (
           <>
             {notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
-            {/*visLasterNotat && (
-                <Box key="laster-notat" background="surface-subtle" padding="2" borderRadius="xlarge">
-                  <Heading as={Skeleton} size="large">
-                    Card-title
-                  </Heading>
-                  <Skeleton variant="text" width="100%" />
-                  <Skeleton variant="text" width="100%" />
-                  <Skeleton variant="text" width="80%" />
-                </Box>
-              )*/}
             {notater.map((notat) => {
               return (
                 <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">

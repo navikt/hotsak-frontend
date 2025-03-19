@@ -122,7 +122,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
               id: aktivtUtkast?.id,
               tittel,
               tekst,
-              type: NotatType.JOURNALFØRT,
+              type: NotatType.INTERNT,
             })
           } else {
             setOppretterNyttUtkast(true)

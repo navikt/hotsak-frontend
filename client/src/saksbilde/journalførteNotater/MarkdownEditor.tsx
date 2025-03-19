@@ -91,6 +91,7 @@ export function MarkdownEditor({
 
 export const MarkdownEditorStyling = styled.div`
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   .mdxEditorBox:has([contenteditable='true']:focus) {
     border: 4px solid rgba(0, 52, 125, 1);
     margin: -3px;

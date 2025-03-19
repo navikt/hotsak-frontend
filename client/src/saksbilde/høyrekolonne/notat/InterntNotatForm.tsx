@@ -1,6 +1,18 @@
 import '@mdxeditor/editor/style.css'
 import { TrashIcon } from '@navikt/aksel-icons'
-import { Alert, BodyShort, Box, Button, ErrorMessage, HStack, Label, Loader, TextField, VStack } from '@navikt/ds-react'
+import {
+  Alert,
+  BodyShort,
+  Box,
+  Button,
+  ErrorMessage,
+  HGrid,
+  HStack,
+  Label,
+  Loader,
+  TextField,
+  VStack,
+} from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { ferdigstillNotat, oppdaterNotatUtkast, opprettNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
@@ -219,22 +231,26 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       )}
 
       {!lesevisning && (
-        <HStack justify="space-between" paddingBlock={'1-alt 0'}>
-          <Alert variant="info" size="small" inline>
-            Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
-          </Alert>
-          <Button
-            icon={<TrashIcon />}
-            variant="tertiary"
-            hidden={!aktivtUtkast?.id}
-            size="xsmall"
-            onClick={() => {
-              setVisSlettUtkastModal(true)
-            }}
-          >
-            Slett utkast
-          </Button>
-        </HStack>
+        <HGrid columns="auto 9rem">
+          <div>
+            <Alert variant="info" size="small" inline>
+              Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
+            </Alert>
+          </div>
+          <div style={{ justifySelf: 'end' }}>
+            <Button
+              icon={<TrashIcon />}
+              variant="tertiary"
+              hidden={!aktivtUtkast?.id}
+              size="xsmall"
+              onClick={() => {
+                setVisSlettUtkastModal(true)
+              }}
+            >
+              Slett utkast
+            </Button>
+          </div>
+        </HGrid>
       )}
 
       {!lesevisning && (

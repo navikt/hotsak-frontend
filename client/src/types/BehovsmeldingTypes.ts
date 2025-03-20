@@ -236,6 +236,7 @@ export interface Tilbehør {
   opplysninger?: Opplysning[]
   begrunnelse: string | undefined
   fritakFraBegrunnelseÅrsak: FritakFraBegrunnelseÅrsak | undefined
+  saksbehandlingvarsel?: Varsel[]
 }
 
 export enum FritakFraBegrunnelseÅrsak {

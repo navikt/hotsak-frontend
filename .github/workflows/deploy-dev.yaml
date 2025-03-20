@@ -9,8 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - depfix
-      - merknader-eksperiment
+      - varsel-tilbehør-ikke-på-rammeavtale
 
 jobs:
   test:

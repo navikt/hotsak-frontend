@@ -1,9 +1,9 @@
-import { ExclamationmarkTriangleFillIcon, InformationSquareFillIcon, PencilIcon } from '@navikt/aksel-icons'
-import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Bleed, Button, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { Hjelpemiddel as Hjelpemiddeltype, Varseltype } from '../../types/BehovsmeldingTypes.ts'
+import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
@@ -19,6 +19,7 @@ import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
+import { Varsler } from './Varsel.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
@@ -87,20 +88,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
                 </Brødtekst>
               </div>
             )}
-            {hjelpemiddel.varsler.map((varsel) => {
-              return (
-                <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
-                  <div>
-                    {varsel.type === Varseltype.WARNING ? (
-                      <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
-                    ) : (
-                      <InformationSquareFillIcon color="var(--a-icon-info)" fontSize="1.25rem" />
-                    )}
-                  </div>
-                  <Brødtekst>{varsel.tekst.nb}</Brødtekst>
-                </HStack>
-              )
-            })}
+            <Varsler varsler={hjelpemiddel.varsler} />
             <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
             {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (

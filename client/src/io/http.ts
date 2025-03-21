@@ -226,18 +226,9 @@ export const deleteFjernTildeling = async (sakId: number | string, oppgaveVersjo
   return del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, ifMatchVersjon(oppgaveVersjon.versjon))
 }
 
-export const putVedtak = async (
-  sakId: number | string,
-  oppgaveVersjon: OppgaveVersjon,
-  problemsammendrag: string,
-  tilbakemelding: Tilbakemelding
-) => {
+export const putVedtak = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon, problemsammendrag: string) => {
   const { oppgaveId, versjon } = oppgaveVersjon
-  return put(
-    `${baseUrl}/api/sak/${sakId}/vedtak`,
-    { problemsammendrag, oppgaveId, tilbakemelding },
-    ifMatchVersjon(versjon)
-  )
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const putFerdigstillBestilling = async (

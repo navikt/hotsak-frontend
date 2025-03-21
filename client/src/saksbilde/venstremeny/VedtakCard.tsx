@@ -1,4 +1,4 @@
-import { Bleed, Box, Button, Heading, HelpText, HStack, ReadMore, Tag, TextField, VStack } from '@navikt/ds-react'
+import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -6,9 +6,6 @@ import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
-import { besvarelseToSvar, IBesvarelse } from '../../innsikt/Besvarelse.ts'
-import { SpørreundersøkelseStack } from '../../innsikt/SpørreundersøkelseStack.tsx'
-import { useSpørreundersøkelse } from '../../innsikt/useSpørreundersøkelse.ts'
 import { postTildeling, putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
@@ -35,7 +32,6 @@ export interface VedtakCardProps {
 
 interface VedtakFormValues {
   problemsammendrag: string
-  besvarelse: IBesvarelse
 }
 
 export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
@@ -59,22 +55,16 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
 
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
-  const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse('kontaktet_formidler_v1')
   const form = useForm<VedtakFormValues>({
     defaultValues: {
       problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
-      besvarelse: defaultValues,
     },
   })
 
   const opprettVedtak = async (data: VedtakFormValues) => {
-    const { problemsammendrag, besvarelse } = data
-    const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
+    const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, oppgaveVersjon, problemsammendrag, {
-      skjema: spørreundersøkelse.skjema,
-      svar,
-    }).catch(() => setLoading(false))
+    await putVedtak(sakId, oppgaveVersjon, problemsammendrag).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
@@ -235,50 +225,24 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
           innlogget side på nav.no
         </Brødtekst>
         <FormProvider {...form}>
-          <VStack gap="5">
-            <TextField
-              label={
-                <HStack wrap={false} gap="2" align="center">
-                  <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                  <HelpText>
-                    <Bleed marginInline="full" asChild>
-                      <Brødtekst>
-                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
-                        i OeBS som tidligere.
-                      </Brødtekst>
-                    </Bleed>
-                  </HelpText>
-                </HStack>
-              }
-              size="small"
-              {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
-            />
-            <Box borderWidth="1" borderColor="border-default" padding="5">
-              <Heading level="2" size="small" spacing>
-                Spørreundersøkelse
-              </Heading>
-              <VStack gap="6">
-                <div>
-                  <Brødtekst>
-                    Informasjonen du oppgir her vil ikke bli lagt ved saken. Svarene blir anonymisert.
-                  </Brødtekst>
-                  <ReadMore header="Grunnen til at vi samler inn denne informasjonen" size="small">
-                    <Brødtekst spacing>
-                      Denne undersøkelsen varer fra 19. til 21. mars. Hensikten er å lære mer om hvilken informasjon
-                      dere trenger i sakene, og hvilken informasjon dere får fra formidler. Resultatet fra undersøkelsen
-                      vil gjøre oss i stand til å lære mer om behovet for informasjon i sakene. Når vi etter hvert vil
-                      be om flere opplysninger i behovsmeldingen, så kan vi gjøre en ny undersøkelse. Da kan vi se om
-                      behovet for å innhente informasjon fra formidler har gått ned. Takk for at dere hjelper oss ved å
-                      svare!
+          <TextField
+            label={
+              <HStack wrap={false} gap="2" align="center">
+                <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                <HelpText>
+                  <Bleed marginInline="full" asChild>
+                    <Brødtekst>
+                      Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                      dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
+                      OeBS som tidligere.
                     </Brødtekst>
-                  </ReadMore>
-                </div>
-
-                <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} navn="besvarelse" size="small" />
-              </VStack>
-            </Box>
-          </VStack>
+                  </Bleed>
+                </HelpText>
+              </HStack>
+            }
+            size="small"
+            {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
+          />
         </FormProvider>
       </BekreftelseModal>
       <OverførGosysModal

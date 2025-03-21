@@ -22,6 +22,8 @@ import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotate
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { useNotater } from './useNotater.tsx'
+import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { InfoModal } from '../../komponenter/InfoModal.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -39,6 +41,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
+  const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const { hentForhåndsvisning } = useBrev()
@@ -50,9 +53,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
-
-  // Dynamisk autorefresh for å vente på journalføring
-  // Håndtere race ved state for oppretter notat
 
   useEffect(() => {
     if (aktivtUtkast) {
@@ -116,7 +116,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
           }
 
           setLagrerUtkast(true)
-          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
+          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 600))
 
           if (aktivtUtkast?.id) {
             await oppdaterNotatUtkast(sakId, {
@@ -173,12 +173,13 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       setValideringsfeil({})
       setKlarForFerdigstilling(false)
       setSletter(false)
+    } else {
+      setVisSlettUtkastModal(false)
     }
   }
 
   const readOnly = lesevisning || journalførerNotat
 
-  // Skal vi sette default til den som har utkast?
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       {!notaterLaster && (
@@ -237,11 +238,16 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
           <Button
             type="submit"
             size="xsmall"
-            hidden={!aktivtUtkast?.id}
             variant="tertiary"
             onClick={() => {
-              hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
-              setVisForhåndsvisningsmodal(true)
+              console.log('Aktivt utkast', aktivtUtkast)
+
+              if (aktivtUtkast?.id) {
+                hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
+                setVisForhåndsvisningsmodal(true)
+              } else {
+                setVisUtkastManglerModal(true)
+              }
             }}
           >
             Forhåndsvis dokument
@@ -251,7 +257,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             icon={<TrashIcon />}
             variant="tertiary"
             size="xsmall"
-            hidden={!aktivtUtkast?.id}
             onClick={() => {
               setVisSlettUtkastModal(true)
             }}
@@ -316,6 +321,9 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
         }}
       />
 
+      <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={() => setVisUtkastManglerModal(false)}>
+        <Brødtekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Brødtekst>
+      </InfoModal>
       <ForhåndsvisningsModal
         open={visForhåndsvisningsmodal}
         sakId={sakId}

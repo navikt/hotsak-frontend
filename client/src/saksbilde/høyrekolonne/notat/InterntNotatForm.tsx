@@ -46,8 +46,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
 
-  // Dynamisk autorefresh for å vente på journalføring
-  // Håndtere race ved state for oppretter notat
   useEffect(() => {
     if (aktivtUtkast) {
       if (tittel === '') {
@@ -64,13 +62,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       valider()
     }
   }, [tittel, tekst, submitAttempt])
-
-  /*useEffect(() => {
-    if (visLasterNotat != null && visLasterNotat.length != journalførteNotater.length) {
-      setVisLasterNotat(null)
-      //oppdaterNotatTeller()
-    }
-  }, [journalførteNotater])*/
 
   function valider() {
     let valideringsfeil: NotatValideringError = {}
@@ -102,8 +93,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
-  // Vent på at bruker endrer på utkastet, debounce repeterte endringer i 500ms, lagre utkastet og muter swr state, vis melding
-  // om at vi lagrer utkastet i minimum 1s slik at bruker rekker å lese det.
   const utkastEndret = async (tittel: string, tekst: string) => {
     if (debounceTimer) clearTimeout(debounceTimer)
     if (tittel !== '' || tekst !== '') {
@@ -170,12 +159,12 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       setSubmitAttempt(false)
       setValideringsfeil({})
       setSletter(false)
+    } else {
+      setVisSlettUtkastModal(false)
     }
   }
 
   const readOnly = lesevisning || ferdigstillerNotat
-
-  // Skal vi sette default til den som har utkast?
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -241,7 +230,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
             <Button
               icon={<TrashIcon />}
               variant="tertiary"
-              hidden={!aktivtUtkast?.id}
               size="xsmall"
               onClick={() => {
                 setVisSlettUtkastModal(true)

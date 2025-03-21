@@ -7,7 +7,6 @@ import {
   Button,
   Heading,
   HStack,
-  Link,
   Loader,
   ReadMore,
   Spacer,
@@ -22,10 +21,10 @@ import { NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
+import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
 import { useNotater } from './useNotater.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
 
 export interface NotaterProps {
   sakId: string

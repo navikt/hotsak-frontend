@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ClockIcon, EnvelopeClosedIcon, NotePencilDashIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -10,11 +10,11 @@ import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
 import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
 import { Notater } from '../høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
+import { useNotater } from '../høyrekolonne/notat/useNotater'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
-import { useNotater } from '../høyrekolonne/notat/useNotater'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--a-border-default);
@@ -65,7 +65,7 @@ export function BarnebrillesakSidebar() {
             value={BarnebrilleSidebarTabs.NOTAT}
             icon={
               <>
-                <NotePencilDashIcon title="Notat" />
+                <NotePencilIcon title="Notat" />
                 {!henterNotater && (
                   <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
                     {antallNotater}

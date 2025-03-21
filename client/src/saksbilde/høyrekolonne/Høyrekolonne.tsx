@@ -1,4 +1,4 @@
-import { ClockDashedIcon, NotePencilDashIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
 
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
@@ -76,7 +76,7 @@ export function Høyrekolonne() {
                 value={HøyrekolonneTabs.NOTATER}
                 icon={
                   <>
-                    <NotePencilDashIcon title="Notat" />
+                    <NotePencilIcon title="Notat" />
                     {!henterNotater && (
                       <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
                         {antallNotater}

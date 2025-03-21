@@ -30,8 +30,6 @@ export function useNotater(sakId?: string, opts?: any): NotaterResponse {
       .filter((notat) => notat.type === NotatType.JOURNALFØRT)
       .filter((notat) => !notat.journalpostId || !notat.dokumentId).length > 0
 
-  console.log('Har notater som avventer journalføring? ', avventerJournalføring, opts)
-
   return {
     antallNotater: totalElements,
     harUtkast: utkast.length > 0,

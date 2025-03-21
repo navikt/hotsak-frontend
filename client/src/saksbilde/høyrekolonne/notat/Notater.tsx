@@ -25,6 +25,7 @@ import { MardownEditorPreviewStyling } from '../../journalførteNotater/Markdown
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
 import { useNotater } from './useNotater.tsx'
+import { InfoModal } from '../../komponenter/InfoModal.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -34,6 +35,7 @@ export interface NotaterProps {
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.JOURNALFØRT.toString())
+  const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
 
   return (
     <>
@@ -93,38 +95,44 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
                         {storForbokstavIOrd(notat.type)}
                       </Tag>
 
-                      {notat.journalpostId && notat.dokumentId && (
-                        <>
-                          <Spacer />
-                          <ActionMenu>
-                            <ActionMenu.Trigger>
-                              <Button
-                                variant="tertiary-neutral"
-                                icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
-                                size="small"
-                              />
-                            </ActionMenu.Trigger>
-                            <ActionMenu.Content>
-                              <ActionMenu.Item as="a" href="">
-                                Åpne som dokument <ExternalLinkIcon />
-                              </ActionMenu.Item>
-                              <ActionMenu.Item>Feilregistrer</ActionMenu.Item>
-                            </ActionMenu.Content>
-                          </ActionMenu>
-                        </>
-                      )}
+                      <>
+                        <Spacer />
+                        <ActionMenu>
+                          <ActionMenu.Trigger>
+                            <Button
+                              variant="tertiary-neutral"
+                              icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
+                              size="small"
+                            />
+                          </ActionMenu.Trigger>
+
+                          <ActionMenu.Content>
+                            {notat.type === NotatType.JOURNALFØRT && (
+                              <Tooltip content="Åpne i ny fane">
+                                <ActionMenu.Item
+                                  disabled={!notat.journalpostId || !notat.dokumentId}
+                                  as="a"
+                                  href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
+                                  target="_blank"
+                                >
+                                  Åpne som dokument <ExternalLinkIcon />
+                                </ActionMenu.Item>
+                              </Tooltip>
+                            )}
+                            <ActionMenu.Item
+                              disabled={!notat.journalpostId || !notat.dokumentId}
+                              onClick={() => setVisFeilregistrerInfoModal(true)}
+                            >
+                              Feilregistrer
+                            </ActionMenu.Item>
+                          </ActionMenu.Content>
+                        </ActionMenu>
+                      </>
                     </HStack>
                     <HStack gap="2">
                       <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
                         {notat.tittel}
                       </Heading>
-                      {notat.journalpostId && notat.dokumentId && (
-                        <Tooltip content="Åpne i ny fane">
-                          <Link href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`} target="_blank">
-                            <ExternalLinkIcon />
-                          </Link>
-                        </Tooltip>
-                      )}
                     </HStack>
                     <VStack>
                       <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
@@ -156,6 +164,16 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
           </>
         )}
       </VStack>
+
+      <InfoModal
+        heading="Ingen utkast"
+        open={visFeilregistrerInfoModal}
+        onClose={() => setVisFeilregistrerInfoModal(false)}
+      >
+        <Brødtekst>
+          Journalførte notater kan ikke feilregistreres i Hotsak enda. Dette må foreløpig gjøres fra Gosys.
+        </Brødtekst>
+      </InfoModal>
     </>
   )
 }

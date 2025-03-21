@@ -677,6 +677,7 @@ export enum OmrådeFilter {
   HØRSEL = 'HØRSEL',
   KOGNISJON = 'KOGNISJON',
   SYN = 'SYN',
+  KOMMUNIKASJON = 'KOMMUNIKASJON',
 }
 
 export enum SakstypeFilter {
@@ -705,6 +706,7 @@ export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.HØRSEL, 'Hørsel'],
   [OmrådeFilter.KOGNISJON, 'Kognisjon'],
   [OmrådeFilter.SYN, 'Syn'],
+  [OmrådeFilter.KOMMUNIKASJON, 'Kommunikasjon'],
 ])
 
 export enum HøyrekolonneTabs {

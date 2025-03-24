@@ -28,9 +28,11 @@ interface DataResponse {
 
 const basePath = 'api/oppgaver'
 
+type QueryParams = Record<string, boolean | number | string>
+
 interface PathConfigType {
   path: string
-  queryParams: Record<string, string>
+  queryParams: QueryParams
 }
 
 export interface OppgavelisteFilters {
@@ -59,10 +61,8 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   const sortParams = { sort_by: `${sort.orderBy}.${sortDirection}` }
   const { statuskategori, sakerFilter, statusFilter, sakstypeFilter, områdeFilter, hasteToggle } = filters
 
-  const filterParams: any = {}
-
-  if (statuskategori) {
-    filterParams.statuskategori = statuskategori
+  const filterParams: QueryParams = {
+    statuskategori: statuskategori ?? Statuskategori.ÅPEN,
   }
   if (sakerFilter && sakerFilter !== SakerFilter.ALLE) {
     filterParams.saksbehandler = sakerFilter
@@ -86,7 +86,7 @@ function pathConfig(currentPage: number, sort: SortState, filters: OppgavelisteF
   }
 }
 
-function buildQueryParamString(queryParams: Record<string, string>) {
+function buildQueryParamString(queryParams: QueryParams) {
   return Object.entries(queryParams)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&')

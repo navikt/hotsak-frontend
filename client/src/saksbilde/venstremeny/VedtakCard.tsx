@@ -1,4 +1,4 @@
-import { Bleed, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -229,14 +229,12 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
             label={
               <HStack wrap={false} gap="2" align="center">
                 <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                <HelpText>
-                  <Bleed marginInline="full" asChild>
-                    <Brødtekst>
-                      Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                      dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
-                      OeBS som tidligere.
-                    </Brødtekst>
-                  </Bleed>
+                <HelpText strategy="fixed">
+                  <Brødtekst>
+                    Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                    dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
+                    OeBS som tidligere.
+                  </Brødtekst>
                 </HelpText>
               </HStack>
             }

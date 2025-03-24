@@ -5,6 +5,7 @@ import { Produkt as Produkttype } from '../../types/types.internal'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
 import { Opplysninger } from './Opplysninger'
 import { Produkt } from './Produkt'
+import { Varsler } from './Varsel'
 
 export function FrittStåendeTilbehør({ tilbehør, produkter }: { tilbehør: Tilbehørtype[]; produkter: Produkttype[] }) {
   return (
@@ -44,12 +45,18 @@ export function Tilbehør({
   frittståendeTilbehør?: boolean
 }) {
   const harOpplysninger = tilbehør.opplysninger && tilbehør.opplysninger.length > 0
+  const harSaksbehandlingvarsel = tilbehør.saksbehandlingvarsel && tilbehør.saksbehandlingvarsel.length > 0
 
   return (
     <HjelpemiddelGrid>
       <TextContainer>
         <VStack gap="1">
           <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} linkTo={produkt?.produkturl} />
+          {harSaksbehandlingvarsel && (
+            <Box paddingInline="4 0">
+              <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
+            </Box>
+          )}
           {harOpplysninger && (
             <Box paddingInline="4 0">
               <Opplysninger opplysninger={tilbehør.opplysninger!} />

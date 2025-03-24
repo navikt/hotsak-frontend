@@ -184,6 +184,8 @@ enum Funksjonsnedsettelse {
   BEVEGELSE = 'BEVEGELSE',
   HØRSEL = 'HØRSEL',
   KOGNISJON = 'KOGNISJON',
+  SYN = 'SYN',
+  KOMMUNIKASJON = 'KOMMUNIKASJON',
 }
 
 export enum BrukersituasjonVilkår {
@@ -236,6 +238,7 @@ export interface Tilbehør {
   opplysninger?: Opplysning[]
   begrunnelse: string | undefined
   fritakFraBegrunnelseÅrsak: FritakFraBegrunnelseÅrsak | undefined
+  saksbehandlingvarsel?: Varsel[]
 }
 
 export enum FritakFraBegrunnelseÅrsak {

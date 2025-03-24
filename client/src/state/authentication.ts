@@ -17,10 +17,12 @@ const Enhet = {
   NAV_VIKAFOSSEN: '2103',
   NAV_HJELPEMIDDELSENTRAL_AGDER: '4710',
   NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL: '4715',
+  NAV_HJELPEMIDDELSENTRAL_ROGALAND: '4711',
   IT_AVDELINGEN: '2970',
 }
 
 const notatPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL]
+const notatPilotEnheterKunTilbehør = [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND]
 
 export interface InnloggetSaksbehandler {
   id: string
@@ -74,6 +76,11 @@ export function useVisOppgavelisteTabs() {
 export function useErNotatPilot() {
   const { enhetsnumre } = useInnloggetSaksbehandler()
   return window.appSettings.MILJO !== 'prod-gcp' || notatPilotEnheter.some((it) => enhetsnumre.includes(it))
+}
+
+export function useErKunTilbehørPilot() {
+  const { enhetsnumre } = useInnloggetSaksbehandler()
+  return window.appSettings.MILJO !== 'prod-gcp' || notatPilotEnheterKunTilbehør.some((it) => enhetsnumre.includes(it))
 }
 
 export const useAuthentication = (): void => {

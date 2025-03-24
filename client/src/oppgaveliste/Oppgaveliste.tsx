@@ -38,6 +38,7 @@ import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
+import { useErKunTilbehørPilot } from '../state/authentication.ts'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
   statuskategori: Statuskategori.ÅPEN,
@@ -77,6 +78,7 @@ export function Oppgaveliste() {
 
   const sakerFilterLabel = useSakerFilterLabel(filterState.statuskategori)
   const oppgaveStatusLabel = useOppgaveStatusLabel(filterState.statuskategori)
+  const erPilotKunTilbehør = useErKunTilbehørPilot()
 
   const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
     {
@@ -227,6 +229,14 @@ export function Oppgaveliste() {
     },
   ]
 
+  const hentOmrådeFilterLabel = (erPilotKunTilbehør: boolean) => {
+    if (erPilotKunTilbehør) {
+      OmrådeFilterLabel.set(OmrådeFilter.KOMMUNIKASJON, 'Kommunikasjon')
+    }
+
+    return OmrådeFilterLabel
+  }
+
   if (error) {
     if (isError(error)) {
       throw Error('Feil med henting av oppgaver', { cause: error })
@@ -279,7 +289,7 @@ export function Oppgaveliste() {
             }}
             label="Område"
             value={filterState.områdeFilter}
-            options={OmrådeFilterLabel}
+            options={hentOmrådeFilterLabel(erPilotKunTilbehør)}
           />
           <FilterToggle
             handleChange={(filterValue: boolean) => {

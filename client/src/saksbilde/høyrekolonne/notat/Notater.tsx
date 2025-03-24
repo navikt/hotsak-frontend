@@ -88,7 +88,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
                   <VStack gap="2">
                     <HStack gap="2" wrap={false} align="center">
                       <Tag
-                        variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'alt3-moderate'}
+                        variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'}
                         size="small"
                       >
                         {storForbokstavIOrd(notat.type)}

@@ -21,6 +21,8 @@ import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
 import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
+import { useNotater } from '../../../høyrekolonne/notat/useNotater'
+import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak
@@ -33,6 +35,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const [loading, setLoading] = useState(false)
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
+  const { harUtkast: harNotatUtkast } = useNotater(sak?.sakId)
   const { data } = useBrevtekst(sak.sakId, Brevtype.BARNEBRILLER_VEDTAK)
   const { data: utkastTilInnhenteOpplysningerBrev } = useBrevtekst(
     sak.sakId,
@@ -171,6 +174,8 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         </SkjemaAlert>
       )}
 
+      {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
+
       <HStack gap="2">
         <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
           Forrige
@@ -183,7 +188,8 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             variant="primary"
             onClick={() => {
               setSubmitAttempt(true)
-              if (!visFritekstFelt || valider()) {
+
+              if ((!visFritekstFelt || valider()) && !harNotatUtkast) {
                 sendTilGodkjenning()
               }
             }}

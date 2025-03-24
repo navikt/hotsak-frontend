@@ -736,13 +736,8 @@ export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
   NOTATER = 'NOTATER',
-}
-
-export enum BarnebrilleSidebarTabs {
-  SAKSHISTORIKK = 'SAKSHISTORIKK',
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
   SEND_BREV = 'SEND_BREV',
-  NOTAT = 'NOTAT',
 }
 
 export enum Brevtype {

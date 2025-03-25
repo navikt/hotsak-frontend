@@ -72,8 +72,13 @@ export function useVisOppgavelisteTabs() {
 }
 
 export function useErNotatPilot() {
-  const { enhetsnumre } = useInnloggetSaksbehandler()
-  return window.appSettings.MILJO !== 'prod-gcp' || notatPilotEnheter.some((it) => enhetsnumre.includes(it))
+  const { enhetsnumre, grupper } = useInnloggetSaksbehandler()
+  const erBarnebrilleSaksbehandler = grupper.includes(Gruppe.BRILLEADMIN_BRUKERE)
+  return (
+    window.appSettings.MILJO !== 'prod-gcp' ||
+    notatPilotEnheter.some((it) => enhetsnumre.includes(it)) ||
+    erBarnebrilleSaksbehandler
+  )
 }
 
 export const useAuthentication = (): void => {

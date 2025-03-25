@@ -16,7 +16,7 @@ export function NotatUtkastVarsel() {
     <ErrorSummary size="small" heading="For å gå videre må du rette opp følgende:" headingTag="h3">
       <ErrorSummary.Item
         onClick={() => {
-          const sp = createSearchParams({ valgttab: HøyrekolonneTabs.JOURNALFØRINGSNOTAT.toString() })
+          const sp = createSearchParams({ valgttab: HøyrekolonneTabs.NOTATER.toString() })
           navigate({ search: sp.toString() })
         }}
       >

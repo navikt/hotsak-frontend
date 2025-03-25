@@ -1,18 +1,21 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ClockIcon, DocPencilIcon, EnvelopeClosedIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
 import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
+import { useSearchParams } from 'react-router'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
-import { BarnebrilleSidebarTabs, HøyrekolonneTabs, StegType } from '../../types/types.internal'
+import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
-import { Saksnotater } from '../høyrekolonne/notat/Saksnotater'
+import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
+import { Notater } from '../høyrekolonne/notat/Notater'
+import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
+import { useNotater } from '../høyrekolonne/notat/useNotater'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
-import { useSaksnotater } from '../høyrekolonne/notat/useSaksnotater'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--a-border-default);
@@ -23,21 +26,33 @@ const Sidebar = styled(Tabs)`
 
 export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
-  const { notater } = useSaksnotater(sak?.data.sakId)
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
   useEffect(() => {
     if (sak?.data.steg === StegType.GODKJENNE) {
-      setValgtSidebarTab(BarnebrilleSidebarTabs.TOTRINNSKONTROLL)
+      setValgtSidebarTab(HøyrekolonneTabs.TOTRINNSKONTROLL)
     }
   }, [])
+
+  const valgtSidebarParam = searchParams.get('valgttab')?.toUpperCase()
+
+  useEffect(() => {
+    const nyValgtTab = HøyrekolonneTabs[valgtSidebarParam as keyof typeof HøyrekolonneTabs]
+    if (nyValgtTab && nyValgtTab !== valgtSidebarTab) {
+      setValgtSidebarTab(nyValgtTab)
+    }
+  }, [valgtSidebarParam])
+
+  useEffect(() => {
+    setSearchParams({ valgttab: valgtSidebarTab })
+  }, [valgtSidebarTab])
 
   if (!sak) {
     return <></>
   }
-
-  const antallNotater = notater?.length
 
   return (
     <Sidebar
@@ -49,26 +64,24 @@ export function BarnebrillesakSidebar() {
     >
       <Tabs.List>
         <Tooltip content="Historikk">
-          <Tabs.Tab value={BarnebrilleSidebarTabs.SAKSHISTORIKK} icon={<ClockIcon title="Historikk" />} />
+          <Tabs.Tab value={HøyrekolonneTabs.SAKSHISTORIKK} icon={<ClockIcon title="Historikk" />} />
         </Tooltip>
         <Tooltip content="Totrinnskontroll">
-          <Tabs.Tab
-            value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL}
-            icon={<PersonGavelIcon title="Totrinnskontroll" />}
-          />
+          <Tabs.Tab value={HøyrekolonneTabs.TOTRINNSKONTROLL} icon={<PersonGavelIcon title="Totrinnskontroll" />} />
         </Tooltip>
         <Tooltip content="Send brev">
-          <Tabs.Tab value={BarnebrilleSidebarTabs.SEND_BREV} icon={<EnvelopeClosedIcon title="Send brev" />} />
+          <Tabs.Tab value={HøyrekolonneTabs.SEND_BREV} icon={<EnvelopeClosedIcon title="Send brev" />} />
         </Tooltip>
-        <Tooltip content="Notat">
+        <Tooltip content="Notater">
           <Tabs.Tab
-            value={BarnebrilleSidebarTabs.NOTAT}
+            value={HøyrekolonneTabs.NOTATER}
             icon={
               <>
-                <DocPencilIcon title="Notat" />
-                {notater && (
-                  <Tag variant="neutral-moderate" size="xsmall">
+                <NotePencilIcon title="Notat" />
+                {!henterNotater && (
+                  <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
                     {antallNotater}
+                    {harUtkast && <NotificationBadge />}
                   </Tag>
                 )}
               </>
@@ -76,17 +89,19 @@ export function BarnebrillesakSidebar() {
           />
         </Tooltip>
       </Tabs.List>
-      <Tabs.Panel value={BarnebrilleSidebarTabs.SAKSHISTORIKK.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
         <BarnebrillesakHistorikk />
       </Tabs.Panel>
-      <Tabs.Panel value={BarnebrilleSidebarTabs.TOTRINNSKONTROLL.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-      <Tabs.Panel value={BarnebrilleSidebarTabs.SEND_BREV.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV.toString()}>
         <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
-      <Tabs.Panel value={BarnebrilleSidebarTabs.NOTAT.toString()}>
-        <Saksnotater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+      <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
+        <HøyrekolonnePanel tittel="Notater">
+          <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+        </HøyrekolonnePanel>
       </Tabs.Panel>
     </Sidebar>
   )

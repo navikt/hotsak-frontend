@@ -358,21 +358,46 @@ export enum VarselFor {
   ANNEN_KONTAKTPERSON = 'ANNEN_KONTAKTPERSON',
 }
 
+export interface Saksnotater {
+  notater: Notat[]
+  totalElements: number
+}
 export interface Notat {
-  id: number
+  id: string
   sakId: string
   saksbehandler: Saksbehandler
-  type: 'INTERNT'
-  innhold: string
+  type: NotatType
+  tittel?: string
+  tekst?: string
   opprettet: string
-  slettet?: string
+  ferdigstilt?: string
+  feilregistrert?: string
+  journalpostId?: string
+  dokumentId?: string
+  målform: MålformType
 }
 
-export interface JournalforingsnotatTeller {
+export type FerdigstillNotatRequest = Omit<
+  Notat,
+  'opprettet' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
+>
+
+export interface NotatUtkast {
+  id?: string
+  tittel?: string
+  tekst?: string
+  type: NotatType
+}
+
+export enum NotatType {
+  INTERNT = 'INTERNT',
+  JOURNALFØRT = 'JOURNALFØRT',
+}
+
+export interface NotatTeller {
   antallNotater: number
   harUtkast: boolean
 }
-
 export interface BrevTekst {
   sakId: string
   målform: MålformType
@@ -711,15 +736,9 @@ export const OmrådeFilterLabel = new Map<string, string>([
 export enum HøyrekolonneTabs {
   SAKSHISTORIKK = 'SAKSHISTORIKK',
   HJELPEMIDDELOVERSIKT = 'HJELPEMIDDELOVERSIKT',
-  NOTAT = 'NOTAT',
-  JOURNALFØRINGSNOTAT = 'JOURNALFØRINGSNOTAT',
-}
-
-export enum BarnebrilleSidebarTabs {
-  SAKSHISTORIKK = 'SAKSHISTORIKK',
+  NOTATER = 'NOTATER',
   TOTRINNSKONTROLL = 'TOTRINNSKONTROLL',
   SEND_BREV = 'SEND_BREV',
-  NOTAT = 'NOTAT',
 }
 
 export enum Brevtype {

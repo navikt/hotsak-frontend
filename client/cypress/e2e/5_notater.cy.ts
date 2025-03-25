@@ -8,7 +8,9 @@ describe('Håndtering av notater på brillesaker', () => {
     clearIndexDb()
   })
 
-  it('Legge til notater på åpen sak', () => {
+  // TODO: Skipper denne testen fordi vi skal over til felles notatløsnning og da er ikke flyten under relevant.
+  // Blir sannsnyligvis nye tester for felles notatløsning
+  it.skip('Legge til notater på åpen sak', () => {
     const saksnummer = '1010'
     cy.visit(`/sak/${saksnummer}`)
 

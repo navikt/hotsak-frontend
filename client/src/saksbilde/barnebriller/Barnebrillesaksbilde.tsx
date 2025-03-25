@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 
 import { memo, Suspense, useState } from 'react'
-import { brilleSidebarBredde } from '../../GlobalStyles'
+import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
@@ -120,7 +120,7 @@ export function Barnebrillesaksbilde() {
     <ErrorBoundary FallbackComponent={AlertError}>
       <Suspense fallback={<LasterBarnebrillesaksbilde />}>
         <ManuellSaksbehandlingProvider>
-          <HGrid columns={`auto ${brilleSidebarBredde} `}>
+          <HGrid columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}>
             <BarnebrillesakContent />
             <BarnebrillesakSidebar />
           </HGrid>

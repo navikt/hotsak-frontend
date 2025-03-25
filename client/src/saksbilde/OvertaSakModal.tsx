@@ -24,7 +24,7 @@ export function OvertaSakModal({
       width="600px"
       open={open}
       loading={loading}
-      buttonLabel={`Overta ${type}en`}
+      bekreftButtonLabel={`Overta ${type}en`}
       onClose={() => {
         onClose()
       }}

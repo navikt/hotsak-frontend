@@ -34,7 +34,7 @@ export function BekreftAutomatiskOrdre({
       width="700px"
       open={open}
       heading="Godkjenn bestillingen"
-      buttonLabel="Godkjenn bestillingen"
+      bekreftButtonLabel="Godkjenn bestillingen"
       onBekreft={onBekreft}
       loading={loading}
       onClose={onClose}
@@ -148,7 +148,7 @@ export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: Ordre
       width="600px"
       open={open}
       heading="Opprett ordre i OeBS"
-      buttonLabel="Opprett ordre i OeBS"
+      bekreftButtonLabel="Opprett ordre i OeBS"
       onBekreft={onBekreft}
       loading={loading}
       onClose={onClose}

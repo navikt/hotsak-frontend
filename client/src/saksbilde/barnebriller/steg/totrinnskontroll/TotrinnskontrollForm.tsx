@@ -101,7 +101,7 @@ export function TotrinnskontrollForm() {
       )}
       <BekreftelseModal
         heading="Vil du godkjenne vedtaket?"
-        buttonLabel="Godkjenn vedtak"
+        bekreftButtonLabel="Godkjenn vedtak"
         open={visGodkjenningModal}
         onBekreft={() => {
           lagreTotrinnskontroll()

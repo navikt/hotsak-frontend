@@ -702,6 +702,7 @@ export enum OmrådeFilter {
   HØRSEL = 'HØRSEL',
   KOGNISJON = 'KOGNISJON',
   SYN = 'SYN',
+  KOMMUNIKASJON = 'KOMMUNIKASJON',
 }
 
 export enum SakstypeFilter {

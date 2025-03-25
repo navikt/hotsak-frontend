@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - notater_nytt_konsept
+      - varsel-tilbehør-ikke-på-rammeavtale
 
 jobs:
   test:

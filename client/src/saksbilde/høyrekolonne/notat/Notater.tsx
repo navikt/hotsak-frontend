@@ -35,6 +35,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
   const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
+  const [visFeilregistrerInterntInfoModal, setVisFeilregistrerInterntInfoModal] = useState(false)
 
   return (
     <>
@@ -118,12 +119,18 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
                                 </ActionMenu.Item>
                               </Tooltip>
                             )}
-                            <ActionMenu.Item
-                              disabled={!notat.journalpostId || !notat.dokumentId}
-                              onClick={() => setVisFeilregistrerInfoModal(true)}
-                            >
-                              Feilregistrer
-                            </ActionMenu.Item>
+                            {notat.type === NotatType.JOURNALFØRT ? (
+                              <ActionMenu.Item
+                                disabled={!notat.journalpostId || !notat.dokumentId}
+                                onClick={() => setVisFeilregistrerInfoModal(true)}
+                              >
+                                Feilregistrer
+                              </ActionMenu.Item>
+                            ) : (
+                              <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
+                                Feilregistrer
+                              </ActionMenu.Item>
+                            )}
                           </ActionMenu.Content>
                         </ActionMenu>
                       </>
@@ -165,12 +172,22 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       </VStack>
 
       <InfoModal
-        heading="Ingen utkast"
+        heading="Feilregistrering ikke mulig enda"
         open={visFeilregistrerInfoModal}
         onClose={() => setVisFeilregistrerInfoModal(false)}
       >
         <Brødtekst>
           Journalførte notater kan ikke feilregistreres i Hotsak enda. Dette må foreløpig gjøres fra Gosys.
+        </Brødtekst>
+      </InfoModal>
+
+      <InfoModal
+        heading="Feilregistrering ikke mulig enda"
+        open={visFeilregistrerInterntInfoModal}
+        onClose={() => setVisFeilregistrerInterntInfoModal(false)}
+      >
+        <Brødtekst>
+          Interne notater kan ikke feilregistreres enda. Støtte for dette kommer i en senere versjon av Hotsak.
         </Brødtekst>
       </InfoModal>
     </>

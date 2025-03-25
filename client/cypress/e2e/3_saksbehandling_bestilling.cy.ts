@@ -15,14 +15,16 @@ describe('Saksbehandling bestilling', () => {
       name: /godkjenn/i,
     }).click()
 
-    const innvilModal = cy
+    const innvilgModal = cy
       .findByRole('dialog', {
         name: /Godkjenn bestillingen/i,
       })
       .should('be.visible')
 
-    innvilModal.within(() => {
-      cy.findByRole('button', { name: 'Lagre beskjed' }).click()
+    innvilgModal.within(() => {
+      // Vi har skrudd av varsler i behovsmeldingen nå, dermed er det ikke behov for å manuelt bekrefte notat til 5.17.
+      // Derfor er denne kommentert ut.
+      // cy.findByRole('button', { name: 'Lagre beskjed' }).click()
 
       cy.findByRole('button', {
         name: /Godkjenn bestillingen/i,

@@ -33,7 +33,7 @@ export interface NotaterProps {
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
-  const [notatType, setNotatType] = useState<string>(NotatType.JOURNALFØRT.toString())
+  const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
   const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
 
   return (

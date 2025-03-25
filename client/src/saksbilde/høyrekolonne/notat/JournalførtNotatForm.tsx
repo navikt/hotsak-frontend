@@ -312,6 +312,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       <BekreftelseModal
         heading="Vil du slette utkastet?"
         buttonLabel="Slett utkast"
+        reverserKnapperekkefølge={true}
         buttonVariant="danger"
         open={visSlettUtkastModal}
         loading={sletter}

@@ -271,6 +271,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
         heading="Vil du slette utkastet?"
         buttonLabel="Slett utkast"
         buttonVariant="danger"
+        reverserKnapperekkefølge={true}
         open={visSlettUtkastModal}
         loading={sletter}
         onClose={() => setVisSlettUtkastModal(false)}

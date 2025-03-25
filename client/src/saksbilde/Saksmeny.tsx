@@ -65,7 +65,7 @@ function HenleggSakModal(props: { sakId: string; open: boolean; onClose(): void 
       open={open}
       loading={loading}
       heading="Vil du henlegge saken?"
-      buttonLabel="Henlegg sak"
+      bekreftButtonLabel="Henlegg sak"
       onBekreft={async () => {
         setLoading(true)
         await postHenleggelse(sakId)

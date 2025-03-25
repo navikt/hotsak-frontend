@@ -5,9 +5,11 @@ export interface BekreftelseModalProps {
   heading: string
   loading?: boolean
   open?: boolean
-  buttonLabel: string
+  bekreftButtonLabel: string
   reverserKnapperekkefølge?: boolean
-  buttonVariant?: ButtonProps['variant']
+  bekreftButtonVariant?: ButtonProps['variant']
+  avbrytButtonLabel?: string
+  avbrytButtonVariant?: ButtonProps['variant']
   width?: ModalProps['width']
   children?: ReactNode
   onBekreft(): any | Promise<any>
@@ -19,9 +21,11 @@ export function BekreftelseModal(props: BekreftelseModalProps) {
     heading,
     loading,
     open,
-    buttonLabel,
+    bekreftButtonLabel,
     reverserKnapperekkefølge = false,
-    buttonVariant = 'primary',
+    bekreftButtonVariant = 'primary',
+    avbrytButtonLabel = 'Avbryt',
+    avbrytButtonVariant = 'secondary',
     width = '500px',
     children,
     onBekreft,
@@ -30,14 +34,14 @@ export function BekreftelseModal(props: BekreftelseModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
 
   const BekreftKnapp = () => (
-    <Button variant={buttonVariant} size="small" onClick={onBekreft} disabled={loading} loading={loading}>
-      {buttonLabel}
+    <Button variant={bekreftButtonVariant} size="small" onClick={onBekreft} disabled={loading} loading={loading}>
+      {bekreftButtonLabel}
     </Button>
   )
 
   const AvbrytKnapp = () => (
-    <Button variant="secondary" size="small" onClick={onClose} disabled={loading}>
-      Avbryt
+    <Button variant={avbrytButtonVariant} size="small" onClick={onClose} disabled={loading}>
+      {avbrytButtonLabel}
     </Button>
   )
 

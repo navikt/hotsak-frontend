@@ -20,6 +20,7 @@ import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types
 import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { useNotater } from './useNotater.tsx'
+import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -268,9 +269,11 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       )}
 
       <BekreftelseModal
-        heading="Vil du slette utkastet?"
-        buttonLabel="Slett utkast"
-        buttonVariant="danger"
+        heading="Er du sikker på at du vil slette utkastet?"
+        bekreftButtonLabel="Ja, slett utkastet"
+        avbrytButtonLabel="Nei, behold utkastet"
+        bekreftButtonVariant="secondary"
+        avbrytButtonVariant="primary"
         reverserKnapperekkefølge={true}
         open={visSlettUtkastModal}
         loading={sletter}
@@ -278,7 +281,9 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
         onBekreft={() => {
           return slettUtkast()
         }}
-      />
+      >
+        <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
+      </BekreftelseModal>
 
       {visSlettetUtkastToast && <InfoToast bottomPosition="10px">Utkast slettet</InfoToast>}
     </form>

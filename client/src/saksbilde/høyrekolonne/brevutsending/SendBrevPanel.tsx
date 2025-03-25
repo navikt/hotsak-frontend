@@ -217,7 +217,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
       />
       <BekreftelseModal
         heading="Vil du sende brevet?"
-        buttonLabel="Send brev"
+        bekreftButtonLabel="Send brev"
         open={visSendBrevModal}
         loading={senderBrev}
         onClose={() => setVisSendBrevModal(false)}
@@ -229,8 +229,8 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
       </BekreftelseModal>
       <BekreftelseModal
         heading="Vil du slette utkastet?"
-        buttonLabel="Slett utkast"
-        buttonVariant="danger"
+        bekreftButtonLabel="Slett utkast"
+        bekreftButtonVariant="danger"
         open={visSlettUtkastModal}
         loading={sletter}
         onClose={() => setVisSlettUtkastModal(false)}

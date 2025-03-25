@@ -216,7 +216,7 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
         loading={loading}
         open={visVedtakModal}
         width="700px"
-        buttonLabel="Innvilg søknaden"
+        bekreftButtonLabel="Innvilg søknaden"
         onBekreft={form.handleSubmit(opprettVedtak)}
         onClose={() => setVisVedtakModal(false)}
       >

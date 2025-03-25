@@ -1,6 +1,7 @@
 import '@mdxeditor/editor/style.css'
 import { TrashIcon } from '@navikt/aksel-icons'
 import {
+  Alert,
   BodyShort,
   Box,
   Button,
@@ -15,15 +16,15 @@ import {
 } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
+import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { ferdigstillNotat, oppdaterNotatUtkast, opprettNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
 import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
 import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { useNotater } from './useNotater.tsx'
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -184,6 +185,9 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     <form onSubmit={(e) => e.preventDefault()}>
       {!notaterLaster && (
         <VStack gap="4" paddingBlock="6 0">
+          <Alert variant="info" size="small">
+            Notatet blir journalført og tilgjengelig for bruker på nav.no virkedagen etter at det er ferdigstilt.
+          </Alert>
           <TextField
             size="small"
             label="Tittel"

@@ -16,7 +16,7 @@ import {
   VStack,
 } from '@navikt/ds-react'
 import { useState } from 'react'
-import { BrytbarBrødtekst, Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
@@ -40,15 +40,16 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   return (
     <>
       <VStack gap="2">
-        <Brødtekst>
-          Opplysninger som er relevante for saksbehandlingen skal journalføres og knyttes til saken.
-        </Brødtekst>
-        <ReadMore size="small" header="Når må du journalføre notat i saken">
-          <BrytbarBrødtekst>
-            Når du mottar saksopplysninger utenfra som er med på å avgjøre utfallet av en sak, skal opplysningene
-            journalføres. Når du skriver notatet nedenfor vil vi lagre utkastet fortløpende. Når du journalfører
-            notatet, blir det synlig for innbygger neste virkedag på innlogget side på nav.no
-          </BrytbarBrødtekst>
+        <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
+          <Brødtekst spacing>
+            Journalføringsnotat skal brukes hvis du har mottatt saksopplysninger utenfra som er med på å avgjøre
+            utfallet av en sak. Når du ferdigstiller journalføringsnotatet, blir det tilgjengelig for innbygger neste
+            virkedag på innlogget side på nav.no.
+          </Brødtekst>
+          <Brødtekst>
+            Internt notat brukes for egne notater i arbeidsprosessen og drøftinger mellom kolleger. Disse journalføres
+            ikke. Merk at brukeren kan få innsyn i interne notater hvis de ber om det.
+          </Brødtekst>
         </ReadMore>
         <Box paddingBlock="6 0">
           <ToggleGroup
@@ -58,7 +59,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             onChange={(notatType) => setNotatType(notatType)}
           >
             <ToggleGroup.Item value={NotatType.INTERNT.toString()} label={`Internt notat`} />
-            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label={`Skal journalføres`} />
+            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label={`Journalføringsnotat`} />
           </ToggleGroup>
         </Box>
       </VStack>

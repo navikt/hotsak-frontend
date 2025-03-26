@@ -77,10 +77,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   function valider() {
     let valideringsfeil: NotatValideringError = {}
 
-    /*if (visJournalførNotatModal && submitAttempt && !klarForFerdigstilling) {
-      valideringsfeil.bekreftSynlighet = 'Du må bekrefte at du er klar over at notatet blir synlig for bruker'
-    }*/
-
     if (!tittel || tittel.length == 0) {
       valideringsfeil.tittel = 'Du må skrive en tittel'
     }
@@ -88,8 +84,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     if (!tekst || tekst.length == 0) {
       valideringsfeil.tekst = 'Du må skrive en tekst'
     }
-
-    console.log('Valideringsfeil', valideringsfeil)
 
     setValideringsfeil(valideringsfeil)
     return Object.keys(valideringsfeil).length == 0

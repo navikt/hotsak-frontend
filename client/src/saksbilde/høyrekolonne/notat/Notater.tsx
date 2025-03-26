@@ -19,7 +19,7 @@ import { useState } from 'react'
 import { Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
-import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
+import { formaterTidsstempelLesevennlig, sorterKronologiskSynkende } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
@@ -45,7 +45,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   ]
   const [filter, setFilter] = useState(['ALLE'])
 
-  console.log('Filter', filter)
   return (
     <>
       <VStack gap="2">
@@ -104,6 +103,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             )}
             {notater
               .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
+              .sort((a, b) => sorterKronologiskSynkende(a.opprettet, b.opprettet))
               .map((notat) => {
                 return (
                   <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">

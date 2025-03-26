@@ -17,6 +17,7 @@ import {
 } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
@@ -37,6 +38,14 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
   const [visFeilregistrerInterntInfoModal, setVisFeilregistrerInterntInfoModal] = useState(false)
 
+  const filterOptions = [
+    { key: 'ALLE', label: 'Alle' },
+    { key: NotatType.INTERNT.toString(), label: 'Interne' },
+    { key: NotatType.JOURNALFØRT.toString(), label: 'Journalførte' },
+  ]
+  const [filter, setFilter] = useState(['ALLE'])
+
+  console.log('Filter', filter)
   return (
     <>
       <VStack gap="2">
@@ -84,90 +93,101 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
         {!notaterLaster && notater && (
           <>
             {notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
-            {notater.map((notat) => {
-              return (
-                <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
-                  <VStack gap="2">
-                    <HStack gap="2" wrap={false} align="center">
-                      <Tag
-                        variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'}
-                        size="small"
-                      >
-                        {storForbokstavIOrd(notat.type)}
-                      </Tag>
+            {notater.length > 0 && (
+              <FilterChips
+                selected={filter}
+                options={filterOptions}
+                handleChange={(filterValue) => {
+                  setFilter(filterValue)
+                }}
+              />
+            )}
+            {notater
+              .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
+              .map((notat) => {
+                return (
+                  <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
+                    <VStack gap="2">
+                      <HStack gap="2" wrap={false} align="center">
+                        <Tag
+                          variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'}
+                          size="small"
+                        >
+                          {storForbokstavIOrd(notat.type)}
+                        </Tag>
 
-                      <>
-                        <Spacer />
-                        <ActionMenu>
-                          <ActionMenu.Trigger>
-                            <Button
-                              variant="tertiary-neutral"
-                              icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
-                              size="small"
-                            />
-                          </ActionMenu.Trigger>
+                        <>
+                          <Spacer />
+                          <ActionMenu>
+                            <ActionMenu.Trigger>
+                              <Button
+                                variant="tertiary-neutral"
+                                icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
+                                size="small"
+                              />
+                            </ActionMenu.Trigger>
 
-                          <ActionMenu.Content>
-                            {notat.type === NotatType.JOURNALFØRT && (
-                              <Tooltip content="Åpne i ny fane">
+                            <ActionMenu.Content>
+                              {notat.type === NotatType.JOURNALFØRT && (
+                                <Tooltip content="Åpne i ny fane">
+                                  <ActionMenu.Item
+                                    disabled={!notat.journalpostId || !notat.dokumentId}
+                                    as="a"
+                                    href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
+                                    target="_blank"
+                                  >
+                                    Åpne som dokument <ExternalLinkIcon />
+                                  </ActionMenu.Item>
+                                </Tooltip>
+                              )}
+                              {notat.type === NotatType.JOURNALFØRT ? (
                                 <ActionMenu.Item
                                   disabled={!notat.journalpostId || !notat.dokumentId}
-                                  as="a"
-                                  href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
-                                  target="_blank"
+                                  onClick={() => setVisFeilregistrerInfoModal(true)}
                                 >
-                                  Åpne som dokument <ExternalLinkIcon />
+                                  Feilregistrer
                                 </ActionMenu.Item>
-                              </Tooltip>
-                            )}
-                            {notat.type === NotatType.JOURNALFØRT ? (
-                              <ActionMenu.Item
-                                disabled={!notat.journalpostId || !notat.dokumentId}
-                                onClick={() => setVisFeilregistrerInfoModal(true)}
-                              >
-                                Feilregistrer
-                              </ActionMenu.Item>
-                            ) : (
-                              <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
-                                Feilregistrer
-                              </ActionMenu.Item>
-                            )}
-                          </ActionMenu.Content>
-                        </ActionMenu>
-                      </>
-                    </HStack>
-                    <HStack gap="2">
-                      <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                        {notat.tittel}
-                      </Heading>
-                    </HStack>
-                    <VStack>
-                      <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
-                      <Undertittel>{notat.saksbehandler.navn}</Undertittel>
+                              ) : (
+                                <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
+                                  Feilregistrer
+                                </ActionMenu.Item>
+                              )}
+                            </ActionMenu.Content>
+                          </ActionMenu>
+                        </>
+                      </HStack>
+                      <HStack gap="2">
+                        <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
+                          {notat.tittel}
+                        </Heading>
+                      </HStack>
+                      <VStack>
+                        <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
+                        <Undertittel>{notat.saksbehandler.navn}</Undertittel>
+                      </VStack>
                     </VStack>
-                  </VStack>
 
-                  {notat.tekst && (
-                    <MardownEditorPreviewStyling>
-                      <MDXEditor
-                        markdown={notat.tekst}
-                        readOnly={true}
-                        contentEditableClassName="mdxEditorRemoveMargin"
-                        plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
-                      />
-                    </MardownEditorPreviewStyling>
-                  )}
+                    {notat.tekst && (
+                      <MardownEditorPreviewStyling>
+                        <MDXEditor
+                          markdown={notat.tekst}
+                          readOnly={true}
+                          contentEditableClassName="mdxEditorRemoveMargin"
+                          plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
+                        />
+                      </MardownEditorPreviewStyling>
+                    )}
 
-                  {!notat.tekst && (
-                    <Box paddingBlock={'2 0'}>
-                      <Brødtekst>
-                        Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
-                      </Brødtekst>
-                    </Box>
-                  )}
-                </Box>
-              )
-            })}
+                    {!notat.tekst && (
+                      <Box paddingBlock={'2 0'}>
+                        <Brødtekst>
+                          Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
+                        </Brødtekst>
+                      </Box>
+                    )}
+                  </Box>
+                )
+              })}
           </>
         )}
       </VStack>

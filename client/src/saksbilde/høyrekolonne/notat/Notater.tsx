@@ -1,30 +1,13 @@
-import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
-import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
-import {
-  ActionMenu,
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Loader,
-  ReadMore,
-  Spacer,
-  Tag,
-  ToggleGroup,
-  Tooltip,
-  VStack,
-} from '@navikt/ds-react'
+import { Box, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Brødtekst, Mellomtittel, Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
-import { formaterTidsstempelLesevennlig, sorterKronologiskSynkende } from '../../../utils/dato.ts'
-import { storForbokstavIOrd } from '../../../utils/formater.ts'
-import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
+import { sorterKronologiskSynkende } from '../../../utils/dato.ts'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
+import { NotatCard } from './NotatCard.tsx'
 import { useNotater } from './useNotater.tsx'
 
 export interface NotaterProps {
@@ -35,8 +18,6 @@ export interface NotaterProps {
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
-  const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
-  const [visFeilregistrerInterntInfoModal, setVisFeilregistrerInterntInfoModal] = useState(false)
 
   const filterOptions = [
     { key: 'ALLE', label: 'Alle' },
@@ -105,112 +86,11 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
               .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
               .sort((a, b) => sorterKronologiskSynkende(a.opprettet, b.opprettet))
               .map((notat) => {
-                return (
-                  <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
-                    <VStack gap="2">
-                      <HStack gap="2" wrap={false} align="center">
-                        <Tag
-                          variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'}
-                          size="small"
-                        >
-                          {storForbokstavIOrd(notat.type)}
-                        </Tag>
-
-                        <>
-                          <Spacer />
-                          <ActionMenu>
-                            <ActionMenu.Trigger>
-                              <Button
-                                variant="tertiary-neutral"
-                                icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
-                                size="small"
-                              />
-                            </ActionMenu.Trigger>
-
-                            <ActionMenu.Content>
-                              {notat.type === NotatType.JOURNALFØRT && (
-                                <Tooltip content="Åpne i ny fane">
-                                  <ActionMenu.Item
-                                    disabled={!notat.journalpostId || !notat.dokumentId}
-                                    as="a"
-                                    href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
-                                    target="_blank"
-                                  >
-                                    Åpne som dokument <ExternalLinkIcon />
-                                  </ActionMenu.Item>
-                                </Tooltip>
-                              )}
-                              {notat.type === NotatType.JOURNALFØRT ? (
-                                <ActionMenu.Item
-                                  disabled={!notat.journalpostId || !notat.dokumentId}
-                                  onClick={() => setVisFeilregistrerInfoModal(true)}
-                                >
-                                  Feilregistrer
-                                </ActionMenu.Item>
-                              ) : (
-                                <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
-                                  Feilregistrer
-                                </ActionMenu.Item>
-                              )}
-                            </ActionMenu.Content>
-                          </ActionMenu>
-                        </>
-                      </HStack>
-                      <HStack gap="2">
-                        <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
-                          {notat.tittel}
-                        </Heading>
-                      </HStack>
-                      <VStack>
-                        <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
-                        <Undertittel>{notat.saksbehandler.navn}</Undertittel>
-                      </VStack>
-                    </VStack>
-
-                    {notat.tekst && (
-                      <MardownEditorPreviewStyling>
-                        <MDXEditor
-                          markdown={notat.tekst}
-                          readOnly={true}
-                          contentEditableClassName="mdxEditorRemoveMargin"
-                          plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
-                        />
-                      </MardownEditorPreviewStyling>
-                    )}
-
-                    {!notat.tekst && (
-                      <Box paddingBlock={'2 0'}>
-                        <Brødtekst>
-                          Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.
-                        </Brødtekst>
-                      </Box>
-                    )}
-                  </Box>
-                )
+                return <NotatCard key={notat.id} notat={notat} />
               })}
           </>
         )}
       </VStack>
-
-      <InfoModal
-        heading="Feilregistrering ikke mulig enda"
-        open={visFeilregistrerInfoModal}
-        onClose={() => setVisFeilregistrerInfoModal(false)}
-      >
-        <Brødtekst>
-          Journalførte notater kan ikke feilregistreres i Hotsak enda. Dette må foreløpig gjøres fra Gosys.
-        </Brødtekst>
-      </InfoModal>
-
-      <InfoModal
-        heading="Feilregistrering ikke mulig enda"
-        open={visFeilregistrerInterntInfoModal}
-        onClose={() => setVisFeilregistrerInterntInfoModal(false)}
-      >
-        <Brødtekst>
-          Interne notater kan ikke feilregistreres enda. Støtte for dette kommer i en senere versjon av Hotsak.
-        </Brødtekst>
-      </InfoModal>
     </>
   )
 }

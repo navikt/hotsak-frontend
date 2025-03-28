@@ -97,9 +97,12 @@ export function Høyrekolonne() {
         </Tabs.Panel>
         {erNotatPilot && sak != null && (
           <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
-            <HøyrekolonnePanel tittel="Notater">
-              <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
-            </HøyrekolonnePanel>
+            {/* TODO: gjøre denne felles for alt i høyrekolonne? og egen scroll for hovedinnhold */}
+            <div style={{ overflowY: 'auto', flexGrow: 1, height: '100vh' }}>
+              <HøyrekolonnePanel tittel="Notater">
+                <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
+              </HøyrekolonnePanel>
+            </div>
           </Tabs.Panel>
         )}
       </Tabs>

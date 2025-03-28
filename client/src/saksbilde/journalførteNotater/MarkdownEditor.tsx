@@ -98,12 +98,18 @@ export const MarkdownEditorStyling = styled.div`
   }
 `
 
-export const MardownEditorPreviewStyling = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+export const MardownEditorPreviewStyling = styled.div<{ truncate?: boolean }>`
+  ${({ truncate }) =>
+    truncate &&
+    `
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;    
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+  
+  `}
 
   .mdxEditorRemoveMargin {
     padding: 0;

@@ -367,8 +367,8 @@ export interface Notat {
   sakId: string
   saksbehandler: Saksbehandler
   type: NotatType
-  tittel?: string
-  tekst?: string
+  tittel: string
+  tekst: string
   opprettet: string
   ferdigstilt?: string
   feilregistrert?: string

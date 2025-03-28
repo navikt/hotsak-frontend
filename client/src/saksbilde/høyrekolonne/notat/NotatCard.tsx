@@ -1,14 +1,15 @@
 import { listsPlugin, MDXEditor, quotePlugin, thematicBreakPlugin } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
-import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
+import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Box, Button, Heading, HStack, Spacer, Tag, Tooltip, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { Notat, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
+import { useIsClamped } from '../../../utils/useIsClamped.ts'
 
 export interface NotaterProps {
   notat: Notat
@@ -17,10 +18,13 @@ export interface NotaterProps {
 export function NotatCard({ notat }: NotaterProps) {
   const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
   const [visFeilregistrerInterntInfoModal, setVisFeilregistrerInterntInfoModal] = useState(false)
+  const [visFulltNotat, setVisFulltNotat] = useState(false)
+  const textRef = useRef<HTMLDivElement>(null)
+  const isClamped = useIsClamped(notat.tekst, textRef)
 
   return (
     <>
-      <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
+      <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge" paddingInline="4 8">
         <VStack gap="2">
           <HStack gap="2" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
@@ -79,14 +83,42 @@ export function NotatCard({ notat }: NotaterProps) {
         </VStack>
 
         {notat.tekst && (
-          <MardownEditorPreviewStyling>
-            <MDXEditor
-              markdown={notat.tekst}
-              readOnly={true}
-              contentEditableClassName="mdxEditorRemoveMargin"
-              plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
-            />
-          </MardownEditorPreviewStyling>
+          <VStack gap="2">
+            <MardownEditorPreviewStyling ref={textRef} truncate={!visFulltNotat}>
+              <MDXEditor
+                markdown={notat.tekst}
+                readOnly={true}
+                contentEditableClassName="mdxEditorRemoveMargin"
+                plugins={[listsPlugin(), quotePlugin(), thematicBreakPlugin()]}
+              />
+            </MardownEditorPreviewStyling>
+            {isClamped && !visFulltNotat && (
+              <div>
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  icon={<ChevronDownIcon />}
+                  iconPosition="right"
+                  onClick={() => setVisFulltNotat(true)}
+                >
+                  Vis mer
+                </Button>
+              </div>
+            )}
+            {visFulltNotat && (
+              <div>
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  icon={<ChevronUpIcon />}
+                  iconPosition="right"
+                  onClick={() => setVisFulltNotat(false)}
+                >
+                  Vis mindre
+                </Button>
+              </div>
+            )}
+          </VStack>
         )}
 
         {!notat.tekst && (

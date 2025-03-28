@@ -25,7 +25,7 @@ export function NotatCard({ notat }: NotaterProps) {
   return (
     <>
       <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
-        <VStack gap="2">
+        <VStack gap="3">
           <HStack gap="2" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
               {storForbokstavIOrd(notat.type)}
@@ -83,7 +83,7 @@ export function NotatCard({ notat }: NotaterProps) {
         </VStack>
 
         {notat.tekst && (
-          <VStack gap="2">
+          <VStack gap="3">
             <MardownEditorPreviewStyling ref={textRef} truncate={!visFulltNotat}>
               <MDXEditor
                 markdown={notat.tekst}
@@ -122,7 +122,7 @@ export function NotatCard({ notat }: NotaterProps) {
         )}
 
         {!notat.tekst && (
-          <Box paddingBlock={'2 0'}>
+          <Box paddingBlock={'3 0'}>
             <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
           </Box>
         )}

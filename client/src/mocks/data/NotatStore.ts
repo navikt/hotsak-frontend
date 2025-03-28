@@ -76,9 +76,9 @@ export class NotatStore extends Dexie {
       sakId,
       saksbehandler,
       type: utkast.type,
-      tittel: utkast.tittel,
+      tittel: utkast.tittel || '',
       målform: MålformType.BOKMÅL,
-      tekst: utkast.tekst,
+      tekst: utkast.tekst || '',
       opprettet: new Date().toISOString(),
     })
   }

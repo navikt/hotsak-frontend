@@ -1,6 +1,5 @@
 import { memo, Suspense } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
-import styled from 'styled-components'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
 

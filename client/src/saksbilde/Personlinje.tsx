@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
-import { hotsakTotalMinWidth } from '../GlobalStyles'
+import { hotsakTotalMinWidth, søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
@@ -129,7 +129,7 @@ function Container({ children }: { children?: ReactNode }) {
     <HStack
       align="center"
       flexShrink="0"
-      height="48px"
+      height={søknadslinjeHøyde}
       gap="4"
       minWidth={hotsakTotalMinWidth}
       paddingInline="8"

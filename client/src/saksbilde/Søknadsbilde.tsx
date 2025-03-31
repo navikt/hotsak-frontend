@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import styled from 'styled-components'
 import { AlertError } from '../feilsider/AlertError'
+import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import {
   hotsakHistorikkMaxWidth,
   hotsakHistorikkMinWidth,
@@ -21,7 +22,7 @@ import { Formidler } from './formidler/Formidler'
 import { HjelpemiddelListeNyLayout } from './hjelpemidler/HjelpemiddelListe'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
-import { Hovedinnhold, Saksinnhold } from './komponenter/Sakskomponenter'
+import { useNotater } from './høyrekolonne/notat/useNotater'
 import { SakLoader } from './SakLoader'
 import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
@@ -33,7 +34,6 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import { useNotater } from './høyrekolonne/notat/useNotater'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -50,14 +50,12 @@ const SaksbildeContent = memo(() => {
   const formidler = levering.hjelpemiddelformidler
 
   return (
-    <Hovedinnhold
-      columns={`max(${hovedInnholdMaxWidth} )  minmax(${hotsakHistorikkMinWidth}, ${hotsakHistorikkMaxWidth})`}
-    >
+    <HGrid columns={`max(${hovedInnholdMaxWidth} )  minmax(${hotsakHistorikkMinWidth}, ${hotsakHistorikkMaxWidth})`}>
       <section>
         <HGrid columns="auto">
           <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
         </HGrid>
-        <Saksinnhold columns={`${hotsakVenstremenyWidth} auto`}>
+        <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
           <Venstremeny gap="5">
             <SøknadCard
               sakId={sak.data.sakId}
@@ -99,39 +97,40 @@ const SaksbildeContent = memo(() => {
           </Venstremeny>
           <section>
             {harVarsler && <Saksvarsler varsler={varsler} />}
-            <Container>
-              <Routes>
-                <Route
-                  path="/hjelpemidler"
-                  element={<HjelpemiddelListeNyLayout sak={sak.data} behovsmelding={behovsmelding} />}
-                />
-                <Route
-                  path="/bruker"
-                  element={
-                    <Bruker
-                      bruker={sak.data.bruker}
-                      behovsmeldingsbruker={behovsmelding.bruker}
-                      brukerSituasjon={behovsmelding.brukersituasjon}
-                      levering={behovsmelding.levering}
-                      vilkår={behovsmelding.brukersituasjon.vilkår}
-                    />
-                  }
-                />
-                <Route path="/formidler" element={<Formidler levering={levering} />} />
-              </Routes>
-            </Container>
+            <ScrollContainer height={`calc(100vh - 144px)`}>
+              <Container>
+                <Routes>
+                  <Route
+                    path="/hjelpemidler"
+                    element={<HjelpemiddelListeNyLayout sak={sak.data} behovsmelding={behovsmelding} />}
+                  />
+                  <Route
+                    path="/bruker"
+                    element={
+                      <Bruker
+                        bruker={sak.data.bruker}
+                        behovsmeldingsbruker={behovsmelding.bruker}
+                        brukerSituasjon={behovsmelding.brukersituasjon}
+                        levering={behovsmelding.levering}
+                        vilkår={behovsmelding.brukersituasjon.vilkår}
+                      />
+                    }
+                  />
+                  <Route path="/formidler" element={<Formidler levering={levering} />} />
+                </Routes>
+              </Container>
+            </ScrollContainer>
           </section>
-        </Saksinnhold>
+        </HGrid>
       </section>
       <Høyrekolonne />
-    </Hovedinnhold>
+    </HGrid>
   )
 })
 
 const Container = styled.section`
   padding: 0 var(--a-spacing-4);
   padding-top: 1rem;
-  height: 100%;
   box-sizing: border-box;
 `
 

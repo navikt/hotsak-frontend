@@ -10,7 +10,11 @@ export const hotsakHistorikkMinWidth = '492px'
 export const hotsakHistorikkMaxWidth = '700px'
 export const hotsakBarnebrilleHistorikkMaxWidth = '600px'
 export const headerHøydeRem = '3'
-export const søknadslinjeHøyde = '48px'
+
+export const headerHøyde = '48px'
+export const personlinjeHøyde = headerHøyde
+export const søknadslinjeHøyde = headerHøyde
+
 export const textcontainerBredde = '38em'
 
 export const AppRoot = createGlobalStyle`

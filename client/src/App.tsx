@@ -34,80 +34,83 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
-        <Toppmeny />
-        <Utviklingsverktøy />
-        <ErrorBoundary FallbackComponent={GlobalFeilside}>
-          <Suspense fallback={<div />}>
-            {/*<Varsler />*/}
-            <main>
-              <Routes>
-                <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-                <Route
-                  path="/"
-                  element={
-                    <RequireAuth>
-                      <Oppgaveliste />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/oppgaveliste/dokumenter"
-                  element={
-                    <RequireAuth>
-                      <Helmet title="Hotsak - Journalføringsliste" />
-                      <Dokumentliste />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/oppgaveliste/dokumenter/:journalpostId"
-                  element={
-                    <RequireAuth>
-                      <Helmet title="Hotsak - Journalføring" />
-                      <DokumentProvider>
-                        <ManuellJournalføring />
-                      </DokumentProvider>
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/sak/:saksnummer/*"
-                  element={
-                    <RequireAuth>
-                      <SaksTittelMedSaksnummerHjelper />
-                      <Saksbilde />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/personoversikt/*"
-                  element={
-                    <RequireAuth>
-                      <Helmet title="Hotsak - Personoversikt" />
-                      <Personoversikt />
-                    </RequireAuth>
-                  }
-                />
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+          <Toppmeny />
+          <Utviklingsverktøy />
+          <ErrorBoundary FallbackComponent={GlobalFeilside}>
+            <Suspense fallback={<div />}>
+              {/*<Varsler />*/}
+              <main>
+                <Routes>
+                  <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                  <Route
+                    path="/"
+                    element={
+                      <RequireAuth>
+                        <Oppgaveliste />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/oppgaveliste/dokumenter"
+                    element={
+                      <RequireAuth>
+                        <Helmet title="Hotsak - Journalføringsliste" />
+                        <Dokumentliste />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/oppgaveliste/dokumenter/:journalpostId"
+                    element={
+                      <RequireAuth>
+                        <Helmet title="Hotsak - Journalføring" />
+                        <DokumentProvider>
+                          <ManuellJournalføring />
+                        </DokumentProvider>
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/sak/:saksnummer/*"
+                    element={
+                      <RequireAuth>
+                        <SaksTittelMedSaksnummerHjelper />
+                        <Saksbilde />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/personoversikt/*"
+                    element={
+                      <RequireAuth>
+                        <Helmet title="Hotsak - Personoversikt" />
+                        <Personoversikt />
+                      </RequireAuth>
+                    }
+                  />
 
-                <Route
-                  path="/oppgavebenk"
-                  element={
-                    <RequireAuth>
-                      <Helmet title="Hotsak - Oppgavebenk" />
-                      <Eksperiment>
-                        <FilterProvider>
-                          <Oppgavebenk />
-                        </FilterProvider>
-                      </Eksperiment>
-                    </RequireAuth>
-                  }
-                />
-                <Route path="*" element={<Feilside statusCode={404} />} />
-              </Routes>
-            </main>
-          </Suspense>
-        </ErrorBoundary>
+                  <Route
+                    path="/oppgavebenk"
+                    element={
+                      <RequireAuth>
+                        <Helmet title="Hotsak - Oppgavebenk" />
+                        <Eksperiment>
+                          <FilterProvider>
+                            <Oppgavebenk />
+                          </FilterProvider>
+                        </Eksperiment>
+                      </RequireAuth>
+                    }
+                  />
+                  <Route path="*" element={<Feilside statusCode={404} />} />
+                </Routes>
+              </main>
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </PersonProvider>
+
       {/*<Toasts />*/}
     </ErrorBoundary>
   )

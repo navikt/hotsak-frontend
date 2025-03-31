@@ -15,6 +15,7 @@ import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
+import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
@@ -89,22 +90,21 @@ export function Høyrekolonne() {
             </Tooltip>
           )}
         </Tabs.List>
-        <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
-          <Historikk />
-        </Tabs.Panel>
-        <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
-          <Hjelpemiddeloversikt />
-        </Tabs.Panel>
-        {erNotatPilot && sak != null && (
-          <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
-            {/* TODO: gjøre denne felles for alt i høyrekolonne? og egen scroll for hovedinnhold */}
-            <div style={{ overflowY: 'auto', flexGrow: 1, height: '100vh' }}>
+        <ScrollContainer>
+          <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
+            <Historikk />
+          </Tabs.Panel>
+          <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
+            <Hjelpemiddeloversikt />
+          </Tabs.Panel>
+          {erNotatPilot && sak != null && (
+            <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
               <HøyrekolonnePanel tittel="Notater">
                 <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
               </HøyrekolonnePanel>
-            </div>
-          </Tabs.Panel>
-        )}
+            </Tabs.Panel>
+          )}
+        </ScrollContainer>
       </Tabs>
     </Box>
   )

@@ -15,13 +15,6 @@ import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 
-export const SaksbildeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  height: 96vh;
-`
-
 const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { isLoading: isBehovsmeldingLoading, isError: isBehovsmeldingError } = useBehovsmelding()
@@ -46,26 +39,24 @@ const SaksbildeContent = memo(() => {
 
   return (
     <>
-      <SaksbildeContainer>
-        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
-        {(() => {
-          switch (sak.data.sakstype) {
-            case Sakstype.BARNEBRILLER:
-              return (
-                <DokumentProvider>
-                  <Barnebrillesaksbilde />
-                </DokumentProvider>
-              )
-            case Sakstype.BESTILLING:
-            default:
-              return (
-                <DokumentProvider>
-                  <Søknadsbilde />
-                </DokumentProvider>
-              )
-          }
-        })()}
-      </SaksbildeContainer>
+      <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
+      {(() => {
+        switch (sak.data.sakstype) {
+          case Sakstype.BARNEBRILLER:
+            return (
+              <DokumentProvider>
+                <Barnebrillesaksbilde />
+              </DokumentProvider>
+            )
+          case Sakstype.BESTILLING:
+          default:
+            return (
+              <DokumentProvider>
+                <Søknadsbilde />
+              </DokumentProvider>
+            )
+        }
+      })()}
     </>
   )
 })

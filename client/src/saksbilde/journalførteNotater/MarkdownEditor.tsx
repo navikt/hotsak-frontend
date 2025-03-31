@@ -98,7 +98,9 @@ export const MarkdownEditorStyling = styled.div`
   }
 `
 
-export const MardownEditorPreviewStyling = styled.div<{ truncate?: boolean }>`
+export const MardownEditorPreviewStyling = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'truncate',
+})<{ truncate?: boolean }>`
   ${({ truncate }) =>
     truncate &&
     `

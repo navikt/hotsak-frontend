@@ -7,6 +7,7 @@ import type {
   EndretHjelpemiddel,
   FerdigstillNotatRequest,
   JournalføringRequest,
+  Notat,
   NotatUtkast,
   OppdaterVilkårData,
   OppgaveStatusType,
@@ -294,6 +295,10 @@ export const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) =>
 
 export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
   return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
+}
+
+export const feilregistrerNotat = async (notat: Notat) => {
+  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, null)
 }
 
 export const slettNotatUtkast = async (sakId: string, notatId: string) => {

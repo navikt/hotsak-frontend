@@ -29,6 +29,12 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
     }
   ),
 
+  http.post<NotatParams>(`/api/sak/:sakId/notater/:notatId/feilregistrering`, async ({ params }) => {
+    await notatStore.slettNotat(Number(params.notatId))
+    await delay(500)
+    return respondNoContent()
+  }),
+
   http.put<NotatParams, NotatUtkast>(`/api/sak/:sakId/notater/:notatId`, async ({ request, params }) => {
     const { type, tittel, tekst } = await request.json()
     await notatStore.oppdaterUtkast(params.sakId, Number(params.notatId), { type, tittel, tekst })

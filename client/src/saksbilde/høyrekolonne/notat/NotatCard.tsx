@@ -7,20 +7,39 @@ import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.ts
 import { Notat, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
-import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
+import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
+import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { InfoModal } from '../../komponenter/InfoModal.tsx'
+import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
+import { feilregistrerNotat } from '../../../io/http.ts'
 
 export interface NotaterProps {
   notat: Notat
+  mutate: () => void
 }
 
-export function NotatCard({ notat }: NotaterProps) {
+export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
   const [visFeilregistrerInfoModal, setVisFeilregistrerInfoModal] = useState(false)
   const [visFeilregistrerInterntInfoModal, setVisFeilregistrerInterntInfoModal] = useState(false)
   const [visFulltNotat, setVisFulltNotat] = useState(false)
+  const [visFeilregistrertToast, setVisFeilregistrertToast] = useState(false)
+  const [feilregistrerer, setFeilregistrerer] = useState(false)
   const textRef = useRef<HTMLDivElement>(null)
   const isClamped = useIsClamped(notat.tekst, textRef)
+
+  const feilregistrer = async (notat: Notat) => {
+    setFeilregistrerer(true)
+    await feilregistrerNotat(notat)
+    setVisFeilregistrerInterntInfoModal(false)
+    setVisFeilregistrertToast(true)
+
+    setTimeout(() => {
+      setVisFeilregistrertToast(false)
+    }, 5000)
+    mutateNotater()
+    setFeilregistrerer(false)
+  }
 
   return (
     <>
@@ -138,15 +157,24 @@ export function NotatCard({ notat }: NotaterProps) {
         </Brødtekst>
       </InfoModal>
 
-      <InfoModal
-        heading="Feilregistrering ikke mulig enda"
+      <BekreftelseModal
+        bekreftButtonLabel="Ja, feilregistrer"
+        bekreftButtonVariant="secondary"
+        avbrytButtonLabel="Nei, behold notatet"
+        avbrytButtonVariant="primary"
+        reverserKnapperekkefølge={true}
+        heading="Er du sikker på at du vil feilregistrere notatet nå?"
         open={visFeilregistrerInterntInfoModal}
+        width="600px"
+        loading={feilregistrerer}
+        onBekreft={() => {
+          feilregistrer(notat)
+        }}
         onClose={() => setVisFeilregistrerInterntInfoModal(false)}
       >
-        <Brødtekst>
-          Interne notater kan ikke feilregistreres enda. Støtte for dette kommer i en senere versjon av Hotsak.
-        </Brødtekst>
-      </InfoModal>
+        <Brødtekst>Notatet fjernes fra saken. Dette kan ikke angres.</Brødtekst>
+      </BekreftelseModal>
+      {visFeilregistrertToast && <InfoToast bottomPosition="10px">Notat feilregistrert</InfoToast>}
     </>
   )
 }

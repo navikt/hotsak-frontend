@@ -16,7 +16,7 @@ export interface NotaterProps {
 }
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
-  const { notater, isLoading: notaterLaster } = useNotater(sakId)
+  const { notater, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
 
   const filterOptions = [
@@ -86,7 +86,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
               .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
               .sort((a, b) => sorterKronologiskSynkende(a.opprettet, b.opprettet))
               .map((notat) => {
-                return <NotatCard key={notat.id} notat={notat} />
+                return <NotatCard key={notat.id} notat={notat} mutate={mutateNotater} />
               })}
           </>
         )}

@@ -22,9 +22,6 @@ export function useUtkastEndret(
   }, [tittel, tekst, oppretterNyttUtkast])
 
   const utkastEndret = async (tittel: string, tekst: string) => {
-    console.log('aktivtUtkast', aktivtUtkast?.id)
-    console.log('opprettet nytt utkast', oppretterNyttUtkast)
-
     if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '')) {
       setLagrerUtkast(true)
       setOppretterNyttUtkast(true)

@@ -15,12 +15,13 @@ import {
 } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
-import { ferdigstillNotat, oppdaterNotatUtkast, opprettNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
+import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { useNotater } from './useNotater.tsx'
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { useUtkastEndret } from './useUtkastEndret.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -28,14 +29,11 @@ export interface NotaterProps {
 }
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
-  const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [sletter, setSletter] = useState(false)
 
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
-  const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatFerdigstiltToast, setVisFerdigstillerNotatToast] = useState(false)
@@ -46,6 +44,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
+  const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
 
   useEffect(() => {
     if (aktivtUtkast) {
@@ -79,10 +78,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     return Object.keys(valideringsfeil).length == 0
   }
 
-  useEffect(() => {
-    utkastEndret(tittel, tekst)
-  }, [tittel, tekst])
-
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
       id: aktivtUtkast!.id,
@@ -91,40 +86,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       type: NotatType.INTERNT,
       tittel: tittel,
       tekst: tekst,
-    }
-  }
-
-  const utkastEndret = async (tittel: string, tekst: string) => {
-    if (debounceTimer) clearTimeout(debounceTimer)
-    if (tittel !== '' || tekst !== '') {
-      setDebounceTimer(
-        setTimeout(async () => {
-          if (oppretterNyttUtkast) {
-            console.log('Holder på å opprette nytt utkast ikke noe mer å gjøre her nå')
-            return
-          }
-
-          setLagrerUtkast(true)
-          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 1000))
-
-          if (aktivtUtkast?.id) {
-            await oppdaterNotatUtkast(sakId, {
-              id: aktivtUtkast?.id,
-              tittel,
-              tekst,
-              type: NotatType.INTERNT,
-            })
-          } else {
-            setOppretterNyttUtkast(true)
-            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.INTERNT })
-            await mutateNotater()
-            setOppretterNyttUtkast(false)
-          }
-          await mutateNotatTeller()
-          await minimumPeriodeVisLagrerUtkast
-          setLagrerUtkast(false)
-        }, 500)
-      )
     }
   }
 

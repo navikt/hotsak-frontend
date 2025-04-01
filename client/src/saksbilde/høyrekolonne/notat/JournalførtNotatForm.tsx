@@ -17,7 +17,7 @@ import {
 import { useEffect, useState } from 'react'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
-import { ferdigstillNotat, oppdaterNotatUtkast, opprettNotatUtkast, slettNotatUtkast } from '../../../io/http.ts'
+import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
 import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
 import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
@@ -25,6 +25,7 @@ import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { useNotater } from './useNotater.tsx'
+import { useUtkastEndret } from './useUtkastEndret.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -32,14 +33,11 @@ export interface NotaterProps {
 }
 
 export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
-  const [lagrerUtkast, setLagrerUtkast] = useState(false)
   const [sletter, setSletter] = useState(false)
-  const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
 
   const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
@@ -56,6 +54,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
   const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
+  const { lagrerUtkast } = useUtkastEndret(NotatType.JOURNALFØRT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
 
   useEffect(() => {
     if (aktivtUtkast) {
@@ -89,10 +88,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     return Object.keys(valideringsfeil).length == 0
   }
 
-  useEffect(() => {
-    utkastEndret(tittel, tekst)
-  }, [tittel, tekst])
-
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
       id: aktivtUtkast!.id,
@@ -101,39 +96,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       type: NotatType.JOURNALFØRT,
       tittel: tittel,
       tekst: tekst,
-    }
-  }
-
-  const utkastEndret = async (tittel: string, tekst: string) => {
-    if (debounceTimer) clearTimeout(debounceTimer)
-    if (tittel !== '' || tekst !== '') {
-      setDebounceTimer(
-        setTimeout(async () => {
-          if (oppretterNyttUtkast) {
-            return
-          }
-
-          setLagrerUtkast(true)
-          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 600))
-
-          if (aktivtUtkast?.id) {
-            await oppdaterNotatUtkast(sakId, {
-              id: aktivtUtkast?.id,
-              tittel,
-              tekst,
-              type: NotatType.JOURNALFØRT,
-            })
-          } else {
-            setOppretterNyttUtkast(true)
-            await opprettNotatUtkast(sakId, { tittel, tekst, type: NotatType.JOURNALFØRT })
-            await mutateNotater()
-            setOppretterNyttUtkast(false)
-          }
-          await mutateNotatTeller()
-          await minimumPeriodeVisLagrerUtkast
-          setLagrerUtkast(false)
-        }, 500)
-      )
     }
   }
 

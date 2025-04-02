@@ -104,7 +104,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             </Heading>
           </HStack>
           <VStack>
-            <Brødtekst>{formaterTidsstempelLesevennlig(notat.opprettet)}</Brødtekst>
+            <Brødtekst>{formaterTidsstempelLesevennlig(notat.ferdigstilt)}</Brødtekst>
             <Undertittel>{notat.saksbehandler.navn}</Undertittel>
           </VStack>
         </VStack>

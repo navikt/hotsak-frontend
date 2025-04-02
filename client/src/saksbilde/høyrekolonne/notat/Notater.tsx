@@ -84,7 +84,6 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             )}
             {notater
               .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
-              .sort((a, b) => sorterKronologiskSynkende(a.opprettet, b.opprettet))
               .map((notat) => {
                 return <NotatCard key={notat.id} notat={notat} mutate={mutateNotater} />
               })}

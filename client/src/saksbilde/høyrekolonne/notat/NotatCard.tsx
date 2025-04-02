@@ -3,16 +3,15 @@ import '@mdxeditor/editor/style.css'
 import { ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Box, Button, Heading, HStack, Spacer, Tag, Tooltip, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
+import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { feilregistrerNotat } from '../../../io/http.ts'
 import { Notat, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
-import { InfoModal } from '../../komponenter/InfoModal.tsx'
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
-import { feilregistrerNotat } from '../../../io/http.ts'
 
 export interface NotaterProps {
   notat: Notat

@@ -30,8 +30,14 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
   const feilregistrer = async (notat: Notat) => {
     setFeilregistrerer(true)
+
     await feilregistrerNotat(notat)
-    setVisFeilregistrerInterntInfoModal(false)
+    if (notat.type === NotatType.JOURNALFØRT) {
+      setVisFeilregistrerInfoModal(false)
+    } else {
+      setVisFeilregistrerInterntInfoModal(false)
+    }
+
     setVisFeilregistrertToast(true)
 
     setTimeout(() => {
@@ -147,15 +153,23 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         )}
       </Box>
 
-      <InfoModal
-        heading="Feilregistrering ikke mulig enda"
+      <BekreftelseModal
+        bekreftButtonLabel="Ja, feilregistrer"
+        bekreftButtonVariant="secondary"
+        avbrytButtonLabel="Nei, behold notatet"
+        avbrytButtonVariant="primary"
+        reverserKnapperekkefølge={true}
+        heading="Er du sikker på at du vil feilregistrere notatet nå?"
         open={visFeilregistrerInfoModal}
+        width="600px"
+        loading={feilregistrerer}
+        onBekreft={() => {
+          feilregistrer(notat)
+        }}
         onClose={() => setVisFeilregistrerInfoModal(false)}
       >
-        <Brødtekst>
-          Journalførte notater kan ikke feilregistreres i Hotsak enda. Dette må foreløpig gjøres fra Gosys.
-        </Brødtekst>
-      </InfoModal>
+        <Brødtekst>Notatet feilregistres, saken og blir ikke synlig for bruker på nav.no lenger.</Brødtekst>
+      </BekreftelseModal>
 
       <BekreftelseModal
         bekreftButtonLabel="Ja, feilregistrer"

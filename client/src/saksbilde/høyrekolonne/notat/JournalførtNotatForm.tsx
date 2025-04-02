@@ -271,7 +271,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       </BekreftelseModal>
 
       <BekreftelseModal
-        heading="Er du sikker på at du vil journalføre notatet nå?"
+        heading="Er du sikker på at du vil journalføre notatet?"
         bekreftButtonLabel="Ja, journalfør notatet"
         reverserKnapperekkefølge={true}
         bekreftButtonVariant="secondary"

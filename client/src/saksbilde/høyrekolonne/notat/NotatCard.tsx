@@ -158,7 +158,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         avbrytButtonLabel="Nei, behold notatet"
         avbrytButtonVariant="primary"
         reverserKnapperekkefølge={true}
-        heading="Er du sikker på at du vil feilregistrere notatet nå?"
+        heading="Er du sikker på at du vil feilregistrere notatet?"
         open={visFeilregistrerInfoModal}
         width="600px"
         loading={feilregistrerer}
@@ -176,7 +176,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         avbrytButtonLabel="Nei, behold notatet"
         avbrytButtonVariant="primary"
         reverserKnapperekkefølge={true}
-        heading="Er du sikker på at du vil feilregistrere notatet nå?"
+        heading="Er du sikker på at du vil feilregistrere notatet?"
         open={visFeilregistrerInterntInfoModal}
         width="600px"
         loading={feilregistrerer}

@@ -12,6 +12,7 @@ import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { Eksperiment } from '../../../felleskomponenter/Eksperiment.tsx'
 
 export interface NotaterProps {
   notat: Notat
@@ -79,18 +80,20 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
                       </ActionMenu.Item>
                     </Tooltip>
                   )}
-                  {notat.type === NotatType.JOURNALFØRT ? (
-                    <ActionMenu.Item
-                      disabled={!notat.journalpostId || !notat.dokumentId}
-                      onClick={() => setVisFeilregistrerInfoModal(true)}
-                    >
-                      Feilregistrer
-                    </ActionMenu.Item>
-                  ) : (
-                    <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
-                      Feilregistrer
-                    </ActionMenu.Item>
-                  )}
+                  <Eksperiment>
+                    {notat.type === NotatType.JOURNALFØRT ? (
+                      <ActionMenu.Item
+                        disabled={!notat.journalpostId || !notat.dokumentId}
+                        onClick={() => setVisFeilregistrerInfoModal(true)}
+                      >
+                        Feilregistrer
+                      </ActionMenu.Item>
+                    ) : (
+                      <ActionMenu.Item onClick={() => setVisFeilregistrerInterntInfoModal(true)}>
+                        Feilregistrer
+                      </ActionMenu.Item>
+                    )}
+                  </Eksperiment>
                 </ActionMenu.Content>
               </ActionMenu>
             </>

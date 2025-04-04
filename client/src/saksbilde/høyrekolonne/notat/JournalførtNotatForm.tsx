@@ -204,8 +204,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             size="xsmall"
             variant="tertiary"
             onClick={() => {
-              console.log('Aktivt utkast', aktivtUtkast)
-
               if (aktivtUtkast?.id) {
                 hentForhåndsvisning(sakId, Brevtype.JOURNALFØRT_NOTAT, aktivtUtkast?.id)
                 setVisForhåndsvisningsmodal(true)

@@ -110,7 +110,6 @@ export const MardownEditorPreviewStyling = styled.div.withConfig({
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 7;
-  
   `}
 
   .mdxEditorRemoveMargin {

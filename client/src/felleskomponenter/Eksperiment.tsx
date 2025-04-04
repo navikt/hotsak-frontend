@@ -1,9 +1,14 @@
-import type { ReactElement, ReactNode } from 'react'
+import { useMemo, type ReactElement, type ReactNode } from 'react'
 
 export interface EksperimentProps {
   children?: ReactNode
 }
 
 export function Eksperiment({ children }: EksperimentProps): ReactElement | null {
-  return window.appSettings.MILJO === 'prod-gcp' ? null : <>{children}</>
+  const isProd = useIsProd()
+  return isProd ? null : <>{children}</>
+}
+
+export function useIsProd(): boolean {
+  return useMemo(() => window.appSettings.MILJO === 'prod-gcp', [])
 }

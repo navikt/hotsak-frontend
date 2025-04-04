@@ -37,48 +37,48 @@ export function NotatActions({ notat, mutate: mutateNotater }: NotaterProps) {
   }
 
   // Skjuler interne notater for brukere uten tilgang eller i prod
-  if (notat.type === NotatType.INTERNT && (!kanBehandleSak || isProd)) {
-    return null
-  }
+  const skjulActionMenu = notat.type === NotatType.INTERNT && (!kanBehandleSak || isProd)
 
   return (
     <>
-      <ActionMenu>
-        <ActionMenu.Trigger>
-          <Button
-            variant="tertiary-neutral"
-            icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
-            size="small"
-          />
-        </ActionMenu.Trigger>
+      {!skjulActionMenu && (
+        <ActionMenu>
+          <ActionMenu.Trigger>
+            <Button
+              variant="tertiary-neutral"
+              icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
+              size="small"
+            />
+          </ActionMenu.Trigger>
 
-        <ActionMenu.Content>
-          {notat.type === NotatType.JOURNALFØRT && (
-            <Tooltip content="Åpne i ny fane">
-              <ActionMenu.Item
-                disabled={!notat.journalpostId || !notat.dokumentId}
-                as="a"
-                href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
-                target="_blank"
-              >
-                Åpne som dokument <ExternalLinkIcon />
-              </ActionMenu.Item>
-            </Tooltip>
-          )}
-          {!isProd &&
-            kanBehandleSak &&
-            (notat.type === NotatType.JOURNALFØRT ? (
-              <ActionMenu.Item
-                disabled={!notat.journalpostId || !notat.dokumentId}
-                onClick={() => setVisFeilregistrerInfoModal(true)}
-              >
-                Feilregistrer
-              </ActionMenu.Item>
-            ) : (
-              <ActionMenu.Item onClick={() => setVisFeilregistrerInfoModal(true)}>Feilregistrer</ActionMenu.Item>
-            ))}
-        </ActionMenu.Content>
-      </ActionMenu>
+          <ActionMenu.Content>
+            {notat.type === NotatType.JOURNALFØRT && (
+              <Tooltip content="Åpne i ny fane">
+                <ActionMenu.Item
+                  disabled={!notat.journalpostId || !notat.dokumentId}
+                  as="a"
+                  href={`/api/journalpost/${notat.journalpostId}/${notat.dokumentId}`}
+                  target="_blank"
+                >
+                  Åpne som dokument <ExternalLinkIcon />
+                </ActionMenu.Item>
+              </Tooltip>
+            )}
+            {!isProd &&
+              kanBehandleSak &&
+              (notat.type === NotatType.JOURNALFØRT ? (
+                <ActionMenu.Item
+                  disabled={!notat.journalpostId || !notat.dokumentId}
+                  onClick={() => setVisFeilregistrerInfoModal(true)}
+                >
+                  Feilregistrer
+                </ActionMenu.Item>
+              ) : (
+                <ActionMenu.Item onClick={() => setVisFeilregistrerInfoModal(true)}>Feilregistrer</ActionMenu.Item>
+              ))}
+          </ActionMenu.Content>
+        </ActionMenu>
+      )}
 
       <BekreftelseModal
         bekreftButtonLabel="Ja, feilregistrer"

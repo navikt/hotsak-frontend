@@ -17,12 +17,13 @@ const Enhet = {
   NAV_VIKAFOSSEN: '2103',
   NAV_HJELPEMIDDELSENTRAL_AGDER: '4710',
   NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL: '4715',
+  NAV_HJELPEMIDDELSENTRAL_TRØNDELAG: '4716',
   NAV_HJELPEMIDDELSENTRAL_ROGALAND: '4711',
   IT_AVDELINGEN: '2970',
 }
 
-const notatPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL]
-const notatPilotEnheterKunTilbehør = [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND]
+const notatPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG]
+const kunTilbehørPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND]
 
 export interface InnloggetSaksbehandler {
   id: string
@@ -85,7 +86,7 @@ export function useErNotatPilot() {
 
 export function useErKunTilbehørPilot() {
   const { enhetsnumre } = useInnloggetSaksbehandler()
-  return window.appSettings.MILJO !== 'prod-gcp' || notatPilotEnheterKunTilbehør.some((it) => enhetsnumre.includes(it))
+  return window.appSettings.MILJO !== 'prod-gcp' || kunTilbehørPilotEnheter.some((it) => enhetsnumre.includes(it))
 }
 
 export const useAuthentication = (): void => {

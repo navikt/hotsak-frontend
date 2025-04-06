@@ -20,7 +20,7 @@ export function NotatUtkastVarsel() {
           navigate({ search: sp.toString() })
         }}
       >
-        Du har et utkast til journalføringsnotat som må ferdigstilles eller slettes
+        Du har et utkast til notat som må ferdigstilles eller slettes
       </ErrorSummary.Item>
     </ErrorSummary>
   )

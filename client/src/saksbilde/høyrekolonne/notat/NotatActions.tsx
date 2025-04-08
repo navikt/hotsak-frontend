@@ -97,7 +97,7 @@ export function NotatActions({ notat, mutate: mutateNotater }: NotaterProps) {
       >
         <Brødtekst>
           {notat.type === NotatType.JOURNALFØRT
-            ? 'Notatet feilregistres, saken og blir ikke synlig for bruker på nav.no lenger.'
+            ? 'Notatet feilregistreres på saken og blir ikke synlig for bruker på nav.no lenger.'
             : 'Notatet fjernes fra saken. Dette kan ikke angres.'}
         </Brødtekst>
       </BekreftelseModal>

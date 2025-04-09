@@ -24,9 +24,17 @@ export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: Rea
   )
 )
 
-export function Brødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
+export function Brødtekst({
+  spacing,
+  weight = 'regular',
+  children,
+}: {
+  spacing?: boolean
+  weight?: 'regular' | 'semibold'
+  children: ReactNode
+}) {
   return (
-    <FlytendeTekst size="small" spacing={spacing}>
+    <FlytendeTekst size="small" weight={weight} spacing={spacing}>
       {children}
     </FlytendeTekst>
   )

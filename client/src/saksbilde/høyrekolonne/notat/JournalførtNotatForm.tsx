@@ -13,6 +13,7 @@ import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.t
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
+import { useSak } from '../../useSak.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -21,6 +22,7 @@ export interface NotaterProps {
 
 export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [sletter, setSletter] = useState(false)
+  const { sak } = useSak()
 
   const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
@@ -250,7 +252,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
           error={
             submitAttempt &&
             !klarForFerdigstilling &&
-            'Du må bekrefte at du er klar over at notatet blir synlig for bruker'
+            `Du må bekrefte at du er klar over at notatet blir synlig for bruker`
           }
         >
           <Checkbox
@@ -259,7 +261,11 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             error={!!valideringsfeil.bekreftSynlighet}
             onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
           >
-            Jeg er klar over at notatet blir synlig for bruker på nav.no neste virkedag
+            <Brødtekst>
+              Jeg er klar over at notatet blir synlig for
+              {sak?.data.bruker.fulltNavn ? <strong>{` ${sak?.data.bruker.fulltNavn} `}</strong> : 'bruker'}
+              på nav.no neste virkedag
+            </Brødtekst>
           </Checkbox>
         </CheckboxGroup>
       </BekreftelseModal>

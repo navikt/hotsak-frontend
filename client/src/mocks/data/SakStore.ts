@@ -36,6 +36,7 @@ function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'bruker'> {
     bruker: {
       fnr,
       navn,
+      fulltNavn: formaterNavn(navn),
       fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
       kommune: {
         nummer: '9999',

@@ -193,7 +193,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             <Button
               variant="secondary"
               size="small"
-              loading={journalførerNotat}
               onClick={() => {
                 setConfirmationAttempt(true)
                 if (valider()) {

@@ -8,7 +8,7 @@ import { Notat, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
-import { MardownEditorPreviewStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
+import { MardownEditorPreviewStyling } from './markdown/MarkdownEditor.tsx'
 import { NotatActions } from './NotatActions.tsx'
 
 export interface NotaterProps {

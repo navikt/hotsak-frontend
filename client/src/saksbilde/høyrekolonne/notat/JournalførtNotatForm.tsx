@@ -1,29 +1,16 @@
 import '@mdxeditor/editor/style.css'
 import { TrashIcon } from '@navikt/aksel-icons'
-import {
-  Alert,
-  BodyShort,
-  Box,
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  ErrorMessage,
-  HStack,
-  Label,
-  Loader,
-  TextField,
-  VStack,
-} from '@navikt/ds-react'
+import { Alert, Button, Checkbox, CheckboxGroup, HStack, TextField, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
 import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
-import { MarkdownEditor, MarkdownEditorStyling } from '../../journalførteNotater/MarkdownEditor.tsx'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
+import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
@@ -156,44 +143,14 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
             value={tittel}
             onChange={(e) => setTittel(e.target.value)}
           />
-          <div>
-            <Label size="small">Notat</Label>
-            <MarkdownEditorStyling>
-              <Box
-                background="surface-default"
-                marginBlock="0 0"
-                borderRadius="medium"
-                borderColor="border-default"
-                borderWidth="1"
-                className="mdxEditorBox"
-              >
-                <>
-                  <MarkdownEditor tekst={tekst} onChange={setTekst} readOnly={readOnly} />
-                  <div style={{ position: 'relative' }}>
-                    <div
-                      style={{
-                        color: 'gray',
-                        position: 'absolute',
-                        right: '0.5em',
-                        top: '-1.5em',
-                        display: lagrerUtkast ? 'block' : 'none',
-                      }}
-                    >
-                      <HStack gap="2">
-                        <Loader size="small" title="Lagrer..." />
-                        <BodyShort size="small">Lagrer utkast</BodyShort>
-                      </HStack>
-                    </div>
-                  </div>
-                </>
-              </Box>
-            </MarkdownEditorStyling>
-            {valideringsfeil.tekst && (
-              <ErrorMessage showIcon size="small">
-                {valideringsfeil.tekst}
-              </ErrorMessage>
-            )}
-          </div>
+          <MarkdownTextArea
+            label="Notat"
+            tekst={tekst}
+            onChange={setTekst}
+            readOnly={readOnly}
+            lagrer={lagrerUtkast}
+            valideringsfeil={valideringsfeil.tekst}
+          />
         </VStack>
       )}
 

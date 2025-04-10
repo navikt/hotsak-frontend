@@ -1,11 +1,10 @@
-import { Alert, Button, Modal, ModalProps } from '@navikt/ds-react'
+import { Alert, Button, ButtonProps, Modal, ModalProps, Stack, VStack } from '@navikt/ds-react'
 import { useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { logDebug } from '../utvikling/logDebug'
 import { besvarelseToSvar, IBesvarelse, Tilbakemelding } from './Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
-import { SpørreundersøkelseStack } from './SpørreundersøkelseStack.tsx'
+import { SpørreundersøkelseStack } from './SpørreundersøkelseStack'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
 
 export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'> {
@@ -13,6 +12,11 @@ export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'>
   spørreundersøkelseId: SpørreundersøkelseId
   size?: 'medium' | 'small'
   knappetekst?: string
+  avbrytKnappetekst?: string
+  bekreftKnappVariant?: ButtonProps['variant']
+  avbrytKnappVariant?: ButtonProps['variant']
+  reverserKnapperekkefølge?: boolean
+  children?: React.ReactNode
 
   onBesvar(
     tilbakemelding: Tilbakemelding,
@@ -24,7 +28,21 @@ export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'>
 }
 
 export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps) {
-  const { open, loading, spørreundersøkelseId, size, knappetekst = 'Besvar', onBesvar, onClose, error } = props
+  const {
+    open,
+    loading,
+    spørreundersøkelseId,
+    size,
+    knappetekst = 'Besvar',
+    avbrytKnappetekst = 'Avbryt',
+    bekreftKnappVariant = 'primary',
+    avbrytKnappVariant = 'secondary',
+    reverserKnapperekkefølge = false,
+    onBesvar,
+    onClose,
+    error,
+    children,
+  } = props
   const { spørreundersøkelse, defaultValues } = useSpørreundersøkelse(spørreundersøkelseId)
   const form = useForm<IBesvarelse>({ defaultValues })
   const { formState, reset, handleSubmit } = form
@@ -50,7 +68,6 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
         <form
           onSubmit={handleSubmit(async (besvarelse) => {
             const svar = besvarelseToSvar(spørreundersøkelse, besvarelse)
-            logDebug(svar)
             return onBesvar(
               {
                 skjema: spørreundersøkelse.skjema,
@@ -62,30 +79,35 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>
-            <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
+            <VStack gap="4">
+              {children}
+              <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
+            </VStack>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              type="submit"
-              size="small"
-              variant="primary"
-              disabled={loadingOrSubmitting}
-              loading={loadingOrSubmitting}
-            >
-              {knappetekst}
-            </Button>
-            <Button
-              type="button"
-              size="small"
-              variant="secondary"
-              onClick={() => {
-                resetForm()
-                if (onClose) onClose()
-              }}
-              disabled={loadingOrSubmitting}
-            >
-              Avbryt
-            </Button>
+            <Stack gap="4" justify="end" direction={reverserKnapperekkefølge ? 'row' : 'row-reverse'}>
+              <Button
+                type="submit"
+                size="small"
+                variant={bekreftKnappVariant}
+                disabled={loadingOrSubmitting}
+                loading={loadingOrSubmitting}
+              >
+                {knappetekst}
+              </Button>
+              <Button
+                type="button"
+                size="small"
+                variant={avbrytKnappVariant}
+                onClick={() => {
+                  resetForm()
+                  if (onClose) onClose()
+                }}
+                disabled={loadingOrSubmitting}
+              >
+                {avbrytKnappetekst}
+              </Button>
+            </Stack>
             {error && (
               <Alert variant="error" inline>
                 Klarte ikke å sende inn svaret ditt. Prøv igjen senere.

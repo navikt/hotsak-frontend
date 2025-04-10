@@ -297,8 +297,8 @@ export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
   return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
 }
 
-export const feilregistrerNotat = async (notat: Notat) => {
-  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, null)
+export const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
+  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding })
 }
 
 export const slettNotatUtkast = async (sakId: string, notatId: string) => {

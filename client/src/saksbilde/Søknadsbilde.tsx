@@ -92,7 +92,7 @@ const SaksbildeContent = memo(() => {
           </Venstremeny>
           <section>
             {harVarsler && <Saksvarsler varsler={varsler} />}
-            <ScrollContainer height={`calc(100vh - 144px)`}>
+            <ScrollContainer>
               <Container>
                 <Routes>
                   <Route

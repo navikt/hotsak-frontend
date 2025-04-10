@@ -1,5 +1,5 @@
 import type { Tilbakemelding } from '../innsikt/Besvarelse'
-import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal.tsx'
+import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 
 export interface OverførGosysModalProps {

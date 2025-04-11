@@ -2,6 +2,7 @@ import '@mdxeditor/editor/style.css'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, TextField, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
@@ -9,11 +10,11 @@ import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../.
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
+import { useSak } from '../../useSak.ts'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
-import { useSak } from '../../useSak.ts'
 
 export interface NotaterProps {
   sakId: string
@@ -33,49 +34,41 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
+  const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-  const [confirmationAttempt, setConfirmationAttempt] = useState(false)
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [valideringsfeil, setValideringsfeil] = useState<NotatValideringError>({})
-  const [klarForFerdigstilling, setKlarForFerdigstilling] = useState(false)
 
   const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.JOURNALFØRT)
 
-  const [tittel, setTittel] = useState(aktivtUtkast?.tittel || '')
-  const [tekst, setTekst] = useState(aktivtUtkast?.tekst || '')
+  const defaultValues = {
+    tittel: '',
+    tekst: '',
+    bekreftSynlighet: false,
+  }
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+  })
+
+  const tittel = watch('tittel')
+  const tekst = watch('tekst')
+
   const { lagrerUtkast } = useUtkastEndret(NotatType.JOURNALFØRT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
 
   useEffect(() => {
-    if (aktivtUtkast) {
-      if (tittel === '') {
-        setTittel(aktivtUtkast.tittel || '')
-      }
-      if (tekst === '') {
-        setTekst(aktivtUtkast.tekst || '')
-      }
+    if (aktivtUtkast && !aktivtUtkastHentet) {
+      setValue('tittel', aktivtUtkast.tittel || '')
+      setValue('tekst', aktivtUtkast.tekst || '')
+      setAktivtUtkastHentet(true)
     }
-  }, [aktivtUtkast])
-
-  useEffect(() => {
-    if (confirmationAttempt) {
-      valider()
-    }
-  }, [klarForFerdigstilling, tittel, tekst, confirmationAttempt])
-
-  function valider() {
-    let valideringsfeil: NotatValideringError = {}
-
-    if (!tittel || tittel.length == 0) {
-      valideringsfeil.tittel = 'Du må skrive en tittel'
-    }
-
-    if (!tekst || tekst.length == 0) {
-      valideringsfeil.tekst = 'Du må skrive en tekst'
-    }
-
-    setValideringsfeil(valideringsfeil)
-    return Object.keys(valideringsfeil).length == 0
-  }
+  }, [aktivtUtkast, aktivtUtkastHentet, setValue])
 
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
@@ -91,16 +84,10 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const journalførNotat = async () => {
     setJournalførerNotat(true)
     await ferdigstillNotat(lagPayload())
-    setTittel('')
-    setTekst('')
-    setValideringsfeil({})
-    setConfirmationAttempt(false)
-    setSubmitAttempt(false)
     mutateNotater()
-    setKlarForFerdigstilling(false)
+    mutateNotatTeller()
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
-    mutateNotatTeller()
     setVisJournalførNotatModal(false)
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
   }
@@ -108,50 +95,72 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const slettUtkast = async () => {
     if (aktivtUtkast) {
       setSletter(true)
-      await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
-      setVisSlettUtkastModal(false)
+      await slettNotatUtkast(sakId, aktivtUtkast.id)
+      await mutateNotater()
+      mutateNotatTeller()
       setVisSlettetUtkastToast(true)
+
+      reset(defaultValues)
 
       setTimeout(() => {
         setVisSlettetUtkastToast(false)
       }, 5000)
-      mutateNotater()
-      mutateNotatTeller()
-      setTittel('')
-      setTekst('')
-      setConfirmationAttempt(false)
-      setValideringsfeil({})
-      setKlarForFerdigstilling(false)
       setSletter(false)
-    } else {
-      setVisSlettUtkastModal(false)
     }
+    setVisSlettUtkastModal(false)
+  }
+
+  const onSubmit = (data: any) => {
+    console.log('submitting data', data)
+    journalførNotat()
+    reset(defaultValues)
   }
 
   const readOnly = lesevisning || journalførerNotat
 
+  // TODO Se hvordan vi kan dette felles for begge formsene
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       {!notaterLaster && (
         <VStack gap="4" paddingBlock="6 0">
           <Alert variant="info" size="small">
             Notatet blir journalført og tilgjengelig for bruker på nav.no virkedagen etter at det er ferdigstilt.
           </Alert>
-          <TextField
-            size="small"
-            label="Tittel"
-            error={valideringsfeil.tittel}
-            readOnly={readOnly}
-            value={tittel}
-            onChange={(e) => setTittel(e.target.value)}
+          <Controller
+            name="tittel"
+            control={control}
+            rules={{ required: 'Du må skrive en tittel' }}
+            render={({ field }) => (
+              <TextField
+                size="small"
+                label="Tittel"
+                error={errors.tittel?.message}
+                readOnly={readOnly}
+                value={field.value}
+                onChange={(e) => {
+                  field.onChange(e)
+                  trigger('tittel')
+                }}
+              />
+            )}
           />
-          <MarkdownTextArea
-            label="Notat"
-            tekst={tekst}
-            onChange={setTekst}
-            readOnly={readOnly}
-            lagrer={lagrerUtkast}
-            valideringsfeil={valideringsfeil.tekst}
+          <Controller
+            name="tekst"
+            control={control}
+            rules={{ required: 'Du må skrive en tekst' }}
+            render={({ field }) => (
+              <MarkdownTextArea
+                label="Notat"
+                tekst={field.value}
+                onChange={(e) => {
+                  field.onChange(e)
+                  trigger('tekst')
+                }}
+                readOnly={readOnly}
+                lagrer={lagrerUtkast}
+                valideringsfeil={errors.tekst?.message}
+              />
+            )}
           />
         </VStack>
       )}
@@ -159,7 +168,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       {!lesevisning && (
         <HStack justify="space-between" paddingBlock={'1-alt 0'}>
           <Button
-            type="submit"
+            type="button"
             size="xsmall"
             variant="tertiary"
             onClick={() => {
@@ -188,14 +197,15 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       )}
 
       {!lesevisning && (
-        <VStack gap="4" paddingBlock={'3 0'}>
+        <VStack paddingBlock={'3 0'}>
           <div>
             <Button
               variant="secondary"
+              type="button"
               size="small"
-              onClick={() => {
-                setConfirmationAttempt(true)
-                if (valider()) {
+              onClick={async () => {
+                const isValid = await trigger(['tittel', 'tekst'])
+                if (isValid) {
                   setVisJournalførNotatModal(true)
                 }
               }}
@@ -219,9 +229,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
         open={visSlettUtkastModal}
         loading={sletter}
         onClose={() => setVisSlettUtkastModal(false)}
-        onBekreft={() => {
-          return slettUtkast()
-        }}
+        onBekreft={slettUtkast}
       >
         <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
       </BekreftelseModal>
@@ -236,37 +244,32 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
         open={visJournalførNotatModal}
         loading={journalførerNotat}
         onClose={() => setVisJournalførNotatModal(false)}
-        onBekreft={() => {
-          setSubmitAttempt(true)
-          if (klarForFerdigstilling) {
-            return journalførNotat()
-          }
-        }}
+        onBekreft={handleSubmit(onSubmit)}
       >
-        <CheckboxGroup
-          size="small"
-          hideLegend={true}
-          value={klarForFerdigstilling ? ['bekreft'] : []}
-          legend="Bekreft synlighet"
-          error={
-            submitAttempt &&
-            !klarForFerdigstilling &&
-            `Du må bekrefte at du er klar over at notatet blir synlig for bruker`
-          }
-        >
-          <Checkbox
-            value="bekreft"
-            size="small"
-            error={!!valideringsfeil.bekreftSynlighet}
-            onChange={(e) => setKlarForFerdigstilling(e.target.checked)}
-          >
-            <Brødtekst>
-              Jeg er klar over at notatet blir synlig for
-              {sak?.data.bruker.fulltNavn ? <strong>{` ${sak?.data.bruker.fulltNavn} `}</strong> : 'bruker'}
-              på nav.no neste virkedag
-            </Brødtekst>
-          </Checkbox>
-        </CheckboxGroup>
+        <Controller
+          name="bekreftSynlighet"
+          control={control}
+          rules={{
+            validate: (value) => value || 'Du må bekrefte at du er klar over at notatet blir synlig for bruker',
+          }}
+          render={({ field }) => (
+            <CheckboxGroup
+              size="small"
+              hideLegend={true}
+              value={field.value ? ['bekreft'] : []}
+              legend="Bekreft synlighet"
+              error={errors.bekreftSynlighet?.message}
+            >
+              <Checkbox value="bekreft" size="small" onChange={(e) => field.onChange(e.target.checked)}>
+                <Brødtekst>
+                  Jeg er klar over at notatet blir synlig for
+                  {sak?.data.bruker.fulltNavn ? <strong>{` ${sak?.data.bruker.fulltNavn} `}</strong> : 'bruker'}
+                  på nav.no neste virkedag
+                </Brødtekst>
+              </Checkbox>
+            </CheckboxGroup>
+          )}
+        />
       </BekreftelseModal>
 
       <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={() => setVisUtkastManglerModal(false)}>
@@ -282,8 +285,4 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       />
     </form>
   )
-}
-
-type NotatValideringError = {
-  [key in 'tittel' | 'tekst' | 'bekreftSynlighet']?: string
 }

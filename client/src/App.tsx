@@ -1,9 +1,7 @@
-import { ComponentType, lazy, Suspense } from 'react'
+import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Helmet } from 'react-helmet'
 import { useParams } from 'react-router'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
 import { SWRConfig } from 'swr'
 
 import { RequireAuth } from './RequireAuth'
@@ -14,9 +12,9 @@ import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Toppmeny } from './header/Toppmeny'
 import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
-import { useAuthentication } from './state/authentication'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
+import { TilgangContextProvider } from './tilgang/TilgangContextProvider.tsx'
 
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
@@ -26,10 +24,9 @@ const Oppgavebenk = lazy(() => import('./oppgavebenk/Oppgavebenk'))
 const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 
 function App() {
-  useAuthentication()
   logUserStats()
   const SaksTittelMedSaksnummerHjelper = () => (
-    <Helmet title={`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`} />
+    <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
   )
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
@@ -55,7 +52,7 @@ function App() {
                     path="/oppgaveliste/dokumenter"
                     element={
                       <RequireAuth>
-                        <Helmet title="Hotsak - Journalføringsliste" />
+                        <title>Hotsak - Journalføringsliste</title>
                         <Dokumentliste />
                       </RequireAuth>
                     }
@@ -64,7 +61,7 @@ function App() {
                     path="/oppgaveliste/dokumenter/:journalpostId"
                     element={
                       <RequireAuth>
-                        <Helmet title="Hotsak - Journalføring" />
+                        <title>Hotsak - Journalføring</title>
                         <DokumentProvider>
                           <ManuellJournalføring />
                         </DokumentProvider>
@@ -84,7 +81,7 @@ function App() {
                     path="/personoversikt/*"
                     element={
                       <RequireAuth>
-                        <Helmet title="Hotsak - Personoversikt" />
+                        <title>Hotsak - Personoversikt</title>
                         <Personoversikt />
                       </RequireAuth>
                     }
@@ -94,7 +91,7 @@ function App() {
                     path="/oppgavebenk"
                     element={
                       <RequireAuth>
-                        <Helmet title="Hotsak - Oppgavebenk" />
+                        <title>Hotsak - Oppgavebenk</title>
                         <Eksperiment>
                           <FilterProvider>
                             <Oppgavebenk />
@@ -121,8 +118,8 @@ function logUserStats(): void {
   logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, { res: { width, height } })
 }
 
-function withRoutingAndState(Component: ComponentType) {
-  return (): JSX.Element => (
+function withRoutingAndState(Component: ComponentType): () => ReactNode {
+  return () => (
     <BrowserRouter>
       <SWRConfig
         value={{
@@ -141,9 +138,9 @@ function withRoutingAndState(Component: ComponentType) {
           },
         }}
       >
-        <RecoilRoot>
+        <TilgangContextProvider>
           <Component />
-        </RecoilRoot>
+        </TilgangContextProvider>
       </SWRConfig>
     </BrowserRouter>
   )

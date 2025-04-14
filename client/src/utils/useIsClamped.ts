@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
-export function useIsClamped(tekst: string, tekstRef: React.RefObject<HTMLDivElement>) {
+export function useIsClamped(tekst: string, tekstRef: RefObject<HTMLDivElement | null>) {
   const [isClamped, setIsClamped] = useState(false)
 
   useEffect(() => {

@@ -1,9 +1,5 @@
-import fetchIntercept from 'fetch-intercept'
-import { useEffect } from 'react'
-import { atom, selector, useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
-import useSwr from 'swr'
-
-import { httpGet } from '../io/http'
+import { useContext } from 'react'
+import { TilgangContext } from '../tilgang/TilgangContext.ts'
 
 export enum Gruppe {
   TEAMDIGIHOT = 'TEAMDIGIHOT',
@@ -35,34 +31,8 @@ export interface InnloggetSaksbehandler {
   erInnlogget?: boolean
 }
 
-const innloggetSaksbehandlerState = atom<InnloggetSaksbehandler>({
-  key: 'InnloggetSaksbehandler',
-  default: {
-    id: '',
-    navn: '',
-    epost: '',
-    navIdent: '',
-    grupper: [],
-    enhetsnumre: [],
-    erInnlogget: undefined,
-  },
-})
-
-const visOppgavelisteTabsState = selector<boolean>({
-  key: 'VisOppgavelisteTabs',
-  get: ({ get }) => {
-    const { grupper, enhetsnumre } = get(innloggetSaksbehandlerState)
-    return (
-      window.appSettings.MILJO !== 'prod-gcp' ||
-      grupper.includes(Gruppe.TEAMDIGIHOT) ||
-      grupper.includes(Gruppe.BRILLEADMIN_BRUKERE) ||
-      enhetsnumre.includes(Enhet.NAV_VIKAFOSSEN)
-    )
-  },
-})
-
 export function useInnloggetSaksbehandler(): InnloggetSaksbehandler {
-  return useRecoilValue<InnloggetSaksbehandler>(innloggetSaksbehandlerState)
+  return useContext(TilgangContext).innloggetSaksbehandler
 }
 
 export function useSaksbehandlerTilhørerEnhet(...enhet: string[]): boolean {
@@ -70,11 +40,17 @@ export function useSaksbehandlerTilhørerEnhet(...enhet: string[]): boolean {
   return enhet.some((it) => enhetsnumre.includes(it))
 }
 
-export function useVisOppgavelisteTabs() {
-  return useRecoilValue<boolean>(visOppgavelisteTabsState)
+export function useVisOppgavelisteTabs(): boolean {
+  const { grupper, enhetsnumre } = useInnloggetSaksbehandler()
+  return (
+    window.appSettings.MILJO !== 'prod-gcp' ||
+    grupper.includes(Gruppe.TEAMDIGIHOT) ||
+    grupper.includes(Gruppe.BRILLEADMIN_BRUKERE) ||
+    enhetsnumre.includes(Enhet.NAV_VIKAFOSSEN)
+  )
 }
 
-export function useErNotatPilot() {
+export function useErNotatPilot(): boolean {
   const { enhetsnumre, grupper } = useInnloggetSaksbehandler()
   const erBarnebrilleSaksbehandler = grupper.includes(Gruppe.BRILLEADMIN_BRUKERE)
   return (
@@ -84,39 +60,7 @@ export function useErNotatPilot() {
   )
 }
 
-export function useErKunTilbehørPilot() {
+export function useErKunTilbehørPilot(): boolean {
   const { enhetsnumre } = useInnloggetSaksbehandler()
   return window.appSettings.MILJO !== 'prod-gcp' || kunTilbehørPilotEnheter.some((it) => enhetsnumre.includes(it))
-}
-
-export const useAuthentication = (): void => {
-  const { data, error } = useSwr<{ data: InnloggetSaksbehandler }>('api/saksbehandler', httpGet)
-  const [innloggetSaksbehandler, setInnloggetSaksbehandler] = useRecoilState(innloggetSaksbehandlerState)
-  const resetInnloggetSaksbehandler = useResetRecoilState(innloggetSaksbehandlerState)
-
-  useEffect(() => {
-    if (data && data.data && data.data.id !== innloggetSaksbehandler.id) {
-      setInnloggetSaksbehandler({
-        ...data.data,
-        erInnlogget: true,
-      })
-    }
-  }, [data, innloggetSaksbehandler, setInnloggetSaksbehandler])
-
-  useEffect(() => {
-    if (error) {
-      resetInnloggetSaksbehandler()
-    }
-  }, [error, resetInnloggetSaksbehandler])
-
-  useEffect(() => {
-    fetchIntercept.register({
-      response: (res) => {
-        if (res.status === 401) {
-          resetInnloggetSaksbehandler()
-        }
-        return res
-      },
-    })
-  }, [resetInnloggetSaksbehandler])
 }

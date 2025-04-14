@@ -2,7 +2,6 @@ import { Box, Button, HStack, SortState, Table, Tag } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { useState } from 'react'
-import { Helmet } from 'react-helmet'
 import { useNavigate } from 'react-router'
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
@@ -251,7 +250,7 @@ export function Oppgaveliste() {
 
   return (
     <>
-      <Helmet title="Hotsak - Oppgaveliste" />
+      <title>Hotsak - Oppgaveliste</title>
       <Skjermlesertittel>Oppgaveliste</Skjermlesertittel>
       <OppgavelisteTabs />
 

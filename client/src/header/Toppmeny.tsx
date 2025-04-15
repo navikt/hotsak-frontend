@@ -21,7 +21,7 @@ const Lenke = styled.a`
 
 export function Toppmeny() {
   const { erInnlogget, enhetsnumre, ...rest } = useInnloggetSaksbehandler()
-  const saksbehandler = erInnlogget ? rest : { navn: '', navIdent: '' }
+  const saksbehandler = erInnlogget ? rest : { id: '', navn: '' }
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -60,7 +60,7 @@ export function Toppmeny() {
       <Dropdown>
         <InternalHeader.UserButton
           name={saksbehandler.navn}
-          description={saksbehandler.navIdent}
+          description={saksbehandler.id}
           as={Dropdown.Toggle}
           className="ml-auto"
         />

@@ -4,15 +4,11 @@ import fetchIntercept from 'fetch-intercept'
 
 import { httpGet } from '../io/http.ts'
 import type { InnloggetSaksbehandler } from '../state/authentication.ts'
-import { TilgangContext, TilgangContextType } from './TilgangContext.ts'
+import { TilgangContext, TilgangState, initialState } from './TilgangContext.ts'
 
-interface TilgangContextProviderProps {
-  children: ReactNode
-}
-
-export function TilgangContextProvider({ children }: TilgangContextProviderProps) {
+export function TilgangProvider({ children }: { children: ReactNode }) {
   const { data, error } = useSwr<{ data: InnloggetSaksbehandler }>('api/saksbehandler', httpGet)
-  const [state, setState] = useState<TilgangContextType>(initialState)
+  const [state, setState] = useState<TilgangState>(initialState)
   const resetInnloggetSaksbehandler = () => setState(initialState)
 
   useEffect(() => {
@@ -27,7 +23,7 @@ export function TilgangContextProvider({ children }: TilgangContextProviderProps
   }, [error])
   useEffect(() => {
     fetchIntercept.register({
-      response: (response) => {
+      response(response) {
         if (response.status === 401) {
           resetInnloggetSaksbehandler()
         }
@@ -37,15 +33,4 @@ export function TilgangContextProvider({ children }: TilgangContextProviderProps
   }, [])
 
   return <TilgangContext.Provider value={state}>{children}</TilgangContext.Provider>
-}
-
-const initialState: TilgangContextType = {
-  innloggetSaksbehandler: {
-    id: '',
-    navn: '',
-    epost: '',
-    navIdent: '',
-    grupper: [],
-    enhetsnumre: [],
-  },
 }

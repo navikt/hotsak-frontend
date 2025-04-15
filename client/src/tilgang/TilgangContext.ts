@@ -1,20 +1,19 @@
 import { createContext } from 'react'
 import type { InnloggetSaksbehandler } from '../state/authentication.ts'
 
-const innloggetSaksbehandler: Readonly<InnloggetSaksbehandler> = {
+const innloggetSaksbehandler: InnloggetSaksbehandler = {
   id: '',
   navn: '',
   epost: '',
-  navIdent: '',
   grupper: [],
   enhetsnumre: [],
 }
 
-const initialState = {
+export const initialState = {
   innloggetSaksbehandler,
 } as const
 
-export type TilgangContextType = typeof initialState
+export type TilgangState = typeof initialState
 
-export const TilgangContext = createContext<TilgangContextType>(initialState)
+export const TilgangContext = createContext<TilgangState>(initialState)
 TilgangContext.displayName = 'Tilgang'

@@ -2,7 +2,7 @@ import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useParams } from 'react-router'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { SWRConfig } from 'swr'
+import { SWRConfig, SWRConfiguration } from 'swr'
 
 import { RequireAuth } from './RequireAuth'
 import { DokumentProvider } from './dokument/DokumentContext'
@@ -14,14 +14,14 @@ import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
-import { TilgangContextProvider } from './tilgang/TilgangContextProvider.tsx'
+import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 
-const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
-const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
-const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
+const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
 const Oppgavebenk = lazy(() => import('./oppgavebenk/Oppgavebenk'))
-const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
+const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
+const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
+const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
   logUserStats()
@@ -119,28 +119,28 @@ function logUserStats(): void {
 }
 
 function withRoutingAndState(Component: ComponentType): () => ReactNode {
+  const swrConfig: SWRConfiguration = {
+    async fetcher(...args) {
+      const response = await fetch(args[0], {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+      if (response.ok) {
+        return response.json()
+      }
+      return Promise.reject('noe gikk galt')
+    },
+  }
+
   return () => (
     <BrowserRouter>
-      <SWRConfig
-        value={{
-          async fetcher(...args) {
-            const response = await fetch(args[0], {
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-              },
-            })
-            if (response.ok) {
-              return response.json()
-            }
-            return Promise.reject('noe gikk galt')
-          },
-        }}
-      >
-        <TilgangContextProvider>
+      <SWRConfig value={swrConfig}>
+        <TilgangProvider>
           <Component />
-        </TilgangContextProvider>
+        </TilgangProvider>
       </SWRConfig>
     </BrowserRouter>
   )

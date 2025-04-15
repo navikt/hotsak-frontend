@@ -21,14 +21,15 @@ const Enhet = {
 const notatPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG]
 const kunTilbehørPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND]
 
+export type NavIdent = string
+
 export interface InnloggetSaksbehandler {
-  id: string
-  navn: string
-  epost: string
-  navIdent: string
-  grupper: Gruppe[]
-  enhetsnumre: string[]
-  erInnlogget?: boolean
+  readonly id: NavIdent
+  readonly navn: string
+  readonly epost: string
+  readonly grupper: Gruppe[]
+  readonly enhetsnumre: string[]
+  readonly erInnlogget?: boolean
 }
 
 export function useInnloggetSaksbehandler(): InnloggetSaksbehandler {

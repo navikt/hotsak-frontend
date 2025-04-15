@@ -1,7 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { Gruppe, InnloggetSaksbehandler } from '../../state/authentication'
-import { lagUUID } from './felles'
+import { Gruppe, InnloggetSaksbehandler, NavIdent } from '../../state/authentication'
 
 export class SaksbehandlerStore extends Dexie {
   private readonly sessionKey = 'innloggetSaksbehandlerId'
@@ -20,24 +19,24 @@ export class SaksbehandlerStore extends Dexie {
       sessionStorage.removeItem(this.sessionKey)
       await this.lagreAlle([
         lagSaksbehandler({
+          id: 'S112233',
           navn: 'Silje Saksbehandler',
           epost: 'silje.saksbehandler@nav.no',
-          navIdent: 'S112233',
         }),
         lagSaksbehandler({
+          id: 'V998877',
           navn: 'Vurderer Vilkårsen',
           epost: 'vurderer.vilkårsen@nav.no',
-          navIdent: 'V998877',
         }),
         lagSaksbehandler({
+          id: 'J123456',
           navn: 'Journalfører Journalposten',
           epost: 'journalfører.journalposten@nav.no',
-          navIdent: 'J123456',
         }),
         lagSaksbehandler({
+          id: 'V123456',
           navn: 'Les Visningrud',
           epost: 'les.visningrud@nav.no',
-          navIdent: 'V123456',
           grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.HOTSAK_NASJONAL],
         }),
       ])
@@ -90,13 +89,10 @@ export class SaksbehandlerStore extends Dexie {
   }
 }
 
-function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler>): InnloggetSaksbehandler {
-  const id = lagUUID()
+function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler> & { id: NavIdent }): InnloggetSaksbehandler {
   return {
-    id,
     navn: '',
     epost: '',
-    navIdent: '',
     grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE, Gruppe.HOTSAK_SAKSBEHANDLER],
     enhetsnumre: ['2970', '4710', '4711'],
     erInnlogget: true,

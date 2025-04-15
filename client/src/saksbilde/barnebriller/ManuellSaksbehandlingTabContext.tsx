@@ -19,7 +19,7 @@ const initialState = {
 }
 
 const ManuellSaksbehandlingContext = createContext<ManuellSaksbehandlingContextType>(initialState)
-ManuellSaksbehandlingContext.displayName = 'ManuellSaksbehandlingContext'
+ManuellSaksbehandlingContext.displayName = 'ManuellSaksbehandling'
 
 function ManuellSaksbehandlingProvider({ children }: { children: ReactNode }) {
   const [valgtSidebarTab, setValgtSidebarTab] = useState(initialState.valgtSidebarTab)

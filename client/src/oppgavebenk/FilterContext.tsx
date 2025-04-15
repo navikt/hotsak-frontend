@@ -33,7 +33,7 @@ const initialState: FilterContextType = {
 }
 
 const FilterContext = createContext<FilterContextType>(initialState)
-FilterContext.displayName = 'FilterContext'
+FilterContext.displayName = 'Filter'
 
 function FilterProvider({ children }: { children: ReactNode }) {
   const [tildeltFilter, setTildeltFilter] = useLocalStorageState('oppgaverFilter', initialState.tildeltFilter)

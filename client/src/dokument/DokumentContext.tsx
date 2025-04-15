@@ -31,7 +31,7 @@ const initialState: DokumentContextType = {
 }
 
 export const DokumentContext = createContext<DokumentContextType>(initialState)
-DokumentContext.displayName = 'DokumentContext'
+DokumentContext.displayName = 'Dokument'
 
 export function DokumentProvider({ children }: { children: ReactNode }) {
   const [valgtDokument, setValgtDokument] = useState<DokumentContextType['valgtDokument']>(initialState.valgtDokument)

@@ -9,4 +9,4 @@ interface StepperContextProps {
 }
 
 export const StepperContext = createContext<StepperContextProps | null>(null)
-StepperContext.displayName = 'StepperContext'
+StepperContext.displayName = 'Stepper'

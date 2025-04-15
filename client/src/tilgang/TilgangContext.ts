@@ -17,4 +17,4 @@ const initialState = {
 export type TilgangContextType = typeof initialState
 
 export const TilgangContext = createContext<TilgangContextType>(initialState)
-TilgangContext.displayName = 'TilgangContext'
+TilgangContext.displayName = 'Tilgang'

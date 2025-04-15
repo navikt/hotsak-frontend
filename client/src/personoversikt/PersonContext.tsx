@@ -2,16 +2,17 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 
 interface PersonContextType {
   fodselsnummer: string
-  setFodselsnummer: (fødselsnummer: string) => void
+  setFodselsnummer(fødselsnummer: string): void
 }
 
 const initialState = {
   fodselsnummer: '',
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setFodselsnummer: () => {},
+  setFodselsnummer() {},
 }
 
 const PersonContext = createContext<PersonContextType>(initialState)
+PersonContext.displayName = 'PersonContext'
 
 function PersonProvider({ children }: { children: ReactNode }) {
   const [fodselsnummer, setFodselsnummer] = useState(initialState.fodselsnummer)

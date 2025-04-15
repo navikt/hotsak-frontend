@@ -5,14 +5,14 @@ import { SortState } from '@navikt/ds-react'
 
 interface FilterContextType {
   tildeltFilter: TildeltFilter
-  setTildeltFilter: (tildelt: TildeltFilter) => void
+  setTildeltFilter(tildelt: TildeltFilter): void
   gjelderFilter: OppgaveGjelderFilter[]
-  setGjelderFilter: (gjelder: OppgaveGjelderFilter[]) => void
+  setGjelderFilter(gjelder: OppgaveGjelderFilter[]): void
   currentPage: number
-  setCurrentPage: (currentPage: number) => void
+  setCurrentPage(currentPage: number): void
   sort: SortState
-  setSort: (sort: SortState) => void
-  clearFilters: () => void
+  setSort(sort: SortState): void
+  clearFilters(): void
 }
 
 const initialSortState: SortState = {
@@ -22,17 +22,18 @@ const initialSortState: SortState = {
 
 const initialState: FilterContextType = {
   tildeltFilter: TildeltFilter.INGEN,
-  setTildeltFilter: () => {},
+  setTildeltFilter() {},
   gjelderFilter: [],
-  setGjelderFilter: () => {},
+  setGjelderFilter() {},
   currentPage: 1,
-  setCurrentPage: () => {},
+  setCurrentPage() {},
   sort: initialSortState,
-  setSort: () => {},
-  clearFilters: () => {},
+  setSort() {},
+  clearFilters() {},
 }
 
 const FilterContext = createContext<FilterContextType>(initialState)
+FilterContext.displayName = 'FilterContext'
 
 function FilterProvider({ children }: { children: ReactNode }) {
   const [tildeltFilter, setTildeltFilter] = useLocalStorageState('oppgaverFilter', initialState.tildeltFilter)

@@ -35,7 +35,7 @@ export async function lastDokumentBarnebriller(navn: string): Promise<ArrayBuffe
 }
 
 export async function lastDokument(navn: string): Promise<ArrayBuffer> {
-  const dokument = await import(`./${navn}.pdf`)
+  const dokument = await import(`../../mocks/data/${navn}.pdf`)
   const response = await fetch(dokument.default)
   return response.arrayBuffer()
 }

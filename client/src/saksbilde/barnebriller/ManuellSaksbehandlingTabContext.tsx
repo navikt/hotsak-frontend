@@ -4,21 +4,22 @@ import { HøyrekolonneTabs, StepType } from '../../types/types.internal'
 
 type ManuellSaksbehandlingContextType = {
   step: number
-  setStep: (steg: number) => void
+  setStep(steg: number): void
   valgtSidebarTab: string
-  setValgtSidebarTab: (valgtSidebareTab: string) => void
+  setValgtSidebarTab(valgtSidebarTab: string): void
 }
 
 const initialState = {
   step: StepType.REGISTRER,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setStep: () => {},
+  setStep() {},
   valgtSidebarTab: HøyrekolonneTabs.SAKSHISTORIKK.toString(),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setValgtSidebarTab: () => {},
+  setValgtSidebarTab() {},
 }
 
 const ManuellSaksbehandlingContext = createContext<ManuellSaksbehandlingContextType>(initialState)
+ManuellSaksbehandlingContext.displayName = 'ManuellSaksbehandlingContext'
 
 function ManuellSaksbehandlingProvider({ children }: { children: ReactNode }) {
   const [valgtSidebarTab, setValgtSidebarTab] = useState(initialState.valgtSidebarTab)

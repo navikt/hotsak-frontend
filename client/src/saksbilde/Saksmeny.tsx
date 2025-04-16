@@ -6,6 +6,7 @@ import { postHenleggelse } from '../io/http.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
+import { useSaksbehandlere } from '../saksbehandler/useSaksbehandlere.ts'
 
 export function Saksmeny() {
   const { sakId, kanBehandleSak } = useSaksregler()
@@ -72,16 +73,10 @@ export function Saksmeny() {
 
 const henleggSakÅrsaker = ['Duplikat sak']
 
-const mockSaksbehandlere = [
-  { id: '1', navIdent: 's123456', navn: 'Silje Saksbehandler' },
-  { id: '2', navIdent: 'j123456', navn: 'Journalfør Journalposten' },
-  { id: '3', navIdent: 'v123456', navn: 'Vurder Vilkårsen' },
-  { id: '4', navIdent: 'a123456', navn: 'Noén Ándré' },
-]
-
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
   const [loading, setLoading] = useState(false)
+  const { saksbehandlere } = useSaksbehandlere()
   return (
     <BekreftelseModal
       open={open}
@@ -107,7 +102,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
         </Alert>
         <form role="search">
           <Select label="Navn" size="small">
-            {mockSaksbehandlere.map((saksbehandler) => (
+            {saksbehandlere.map((saksbehandler) => (
               <option key={saksbehandler.id} value={saksbehandler.id}>
                 {saksbehandler.navn}
               </option>

@@ -131,7 +131,16 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
       if (response.ok) {
         return response.json()
       }
-      return Promise.reject('noe gikk galt')
+      try {
+        const contentType = response.headers.get('Content-Type') ?? ''
+        if (contentType.startsWith('application/json')) {
+          return Promise.reject(await response.json())
+        } else {
+          return Promise.reject(await response.text())
+        }
+      } catch (e: unknown) {
+        return Promise.reject(e)
+      }
     },
   }
 

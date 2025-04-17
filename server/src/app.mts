@@ -35,7 +35,7 @@ app.get('/settings.js', (_, res) => {
 })
 
 // Protected routes
-app.use('/*splat', async (req, res, next) => {
+app.use('/{*splat}', async (req, res, next) => {
   if (process.env.USE_MSW === 'true') {
     logger.stdout.debug('USE_MSW = "true", ingen validering av token')
     return next()
@@ -67,7 +67,7 @@ const distPath = __dirname + '/../../client/dist'
 const htmlPath = path.join(distPath, 'index.html')
 
 app.use(express.static(distPath))
-app.use('/*splat', express.static(htmlPath))
+app.use('/{*splat}', express.static(htmlPath))
 
 const errorRequestHandler: ErrorRequestHandler = (err, _, res) => {
   logger.stdout.error(err)

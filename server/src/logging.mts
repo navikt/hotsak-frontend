@@ -25,7 +25,7 @@ const options: LoggerOptions = {
 
 export const logger = {
   stdout: pino(options),
-  sikker: pino(
+  secure: pino(
     options,
     transport({
       target: 'pino/file',

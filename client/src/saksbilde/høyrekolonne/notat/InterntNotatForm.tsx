@@ -215,7 +215,7 @@ const ResponsivHStack = styled(HStack)`
   // På sikt bør vi lage hele sideoppsett i Hotsak for de ulike brekkpunktene fra Aksel
   @media (max-width: 1730px) {
     order: reverse;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: var(--a-spacing-4);
   }
 `

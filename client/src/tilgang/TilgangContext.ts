@@ -6,6 +6,8 @@ const innloggetSaksbehandler: InnloggetSaksbehandler = {
   navn: '',
   epost: '',
   grupper: [],
+  enheter: [],
+  gradering: [],
   enhetsnumre: [],
 }
 

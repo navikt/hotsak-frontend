@@ -1,7 +1,8 @@
-import { Enhet, Navn, Oppgavestatus, Oppgavetype, Saksbehandler } from './types.internal'
+import type { Enhet, Navn, Oppgavestatus, Oppgavetype, Saksbehandler } from './types.internal'
+import type { OppgaveId } from '../oppgave/oppgaveId.ts'
 
 export interface OppgaveApiOppgave {
-  oppgaveId: string
+  oppgaveId: OppgaveId
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
   tema: string

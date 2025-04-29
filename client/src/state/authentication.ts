@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { TilgangContext } from '../tilgang/TilgangContext.ts'
+import type { Adressebeskyttelse } from '../types/types.internal.ts'
 
 export enum Gruppe {
   TEAMDIGIHOT = 'TEAMDIGIHOT',
@@ -28,6 +29,13 @@ export interface InnloggetSaksbehandler {
   readonly navn: string
   readonly epost: string
   readonly grupper: Gruppe[]
+  readonly enheter: Array<{
+    id: string
+    nummer: string
+    navn: string
+    gjeldende: boolean
+  }>
+  readonly gradering: Adressebeskyttelse[]
   readonly enhetsnumre: string[]
   readonly erInnlogget?: boolean
 }

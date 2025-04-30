@@ -11,14 +11,14 @@ import {
   Sak,
   Sakstype,
 } from '../../types/types.internal.ts'
-import { Utlevert } from './Utlevert.tsx'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
+import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
-import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
+import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
 
 interface HjelpemiddelProps {
@@ -31,6 +31,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
   const { sakId, sakstype } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
+  //const [visEndreGjenbruksproduktModal, setVisEndreGjenbruksproduktModal] = useState(false)
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
     sakId,
@@ -38,6 +39,8 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
   )
 
   const erBestilling = sakstype === Sakstype.BESTILLING
+
+  //const harAlternativ = window.appSettings.MILJO === 'local' && hjelpemiddel.produkt.hmsArtNr === '177946'
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -51,7 +54,19 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
           </TextContainer>
         ))}
       </VStack>
-
+      {/* Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
+      <Box>
+        <Alert variant="info" size="small">
+          <VStack gap="3">
+            <Brødtekst>2 alternative produkter tilgjengelig</Brødtekst>
+            <div>
+              <Button variant="secondary-neutral" size="xsmall" onClick={() => setVisEndreGjenbruksproduktModal(true)}>
+                Alternativer
+              </Button>
+            </div>
+          </VStack>
+        </Alert>
+      </Box>*/}
       <HjelpemiddelGrid>
         <TextContainer>
           <VStack justify="start" gap="2">
@@ -130,6 +145,14 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
             onLukk={() => setVisEndreHjelpemiddelModal(false)}
           />
         )}
+
+        {/* Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt 
+        harAlternativ && (
+          <EndreGjenbruksproduktModal
+            åpen={visEndreGjenbruksproduktModal}
+            onLukk={() => setVisEndreGjenbruksproduktModal(false)}
+          />
+        )*/}
 
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">

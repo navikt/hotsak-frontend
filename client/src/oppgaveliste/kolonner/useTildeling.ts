@@ -2,11 +2,11 @@ import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
-import { postTildeling, ResponseError } from '../../io/http'
+import { ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { Sakstype } from '../../types/types.internal'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 
 export function useTildeling({
   sakId,
@@ -20,6 +20,7 @@ export function useTildeling({
   onTildelingKonflikt: () => void
 }) {
   const saksbehandler = useInnloggetSaksbehandler()
+  const { endreOppgavetildeling } = useOppgaveService()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
@@ -35,7 +36,7 @@ export function useTildeling({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, {}, false)
+    endreOppgavetildeling({ overtaHvisTildelt: false })
       .then(() => {
         setIsFetching(false)
         if (gåTilSak) {

@@ -7,6 +7,8 @@ import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
 import { useSaksbehandlere } from '../saksbehandler/useSaksbehandlere.ts'
+import { useOppgaveService } from '../oppgave/OppgaveService.ts'
+import type { NavIdent } from '../state/authentication.ts'
 
 export function Saksmeny() {
   const { sakId, kanBehandleSak } = useSaksregler()
@@ -75,7 +77,9 @@ const henleggSakÅrsaker = ['Duplikat sak']
 
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
+  const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
+  const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
   const { saksbehandlere } = useSaksbehandlere()
   return (
     <BekreftelseModal
@@ -89,7 +93,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       avbrytButtonVariant="primary"
       onBekreft={async () => {
         setLoading(true)
-        await postHenleggelse(sakId)
+        await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, overtaHvisTildelt: true })
         await mutateSak(sakId)
         setLoading(false)
         return onClose()
@@ -101,7 +105,13 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
           Dette er bare en mockup og funker ikke på ekte i dev enda
         </Alert>
         <form role="search">
-          <Select label="Navn" size="small">
+          <Select
+            label="Navn"
+            size="small"
+            onChange={(event) => {
+              setValgtSaksbehandler(event.target.value)
+            }}
+          >
             {saksbehandlere.map((saksbehandler) => (
               <option key={saksbehandler.id} value={saksbehandler.id}>
                 {saksbehandler.navn}

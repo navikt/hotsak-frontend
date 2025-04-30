@@ -1,17 +1,17 @@
 /**
  * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
  */
-type InternOppgaveId = `I-${number}`
+type InternOppgaveId = `I-${string | number}`
 
 /**
  * Oppgaven er opprettet i felles oppgaveløsning.
  */
-type EksternOppgaveId = `E-${number}`
+type EksternOppgaveId = `E-${string | number}`
 
 /**
  * Vi har kun en sak. Siffer etter `S-` er `sakId`.
  */
-type SakOppgaveId = `S-${number}`
+type SakOppgaveId = `S-${string | number}`
 
 /**
  * Vi har tre ulike typer `OppgaveId`. Typen forteller oss hvor oppgaven er lagret.

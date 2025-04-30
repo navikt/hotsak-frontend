@@ -55,7 +55,7 @@ export class ResponseError extends Error {
 }
 
 export function isResponseError(value: unknown): value is ResponseError {
-  return value instanceof ResponseError || isNumber((value as any)?.statusCode)
+  return value instanceof ResponseError || isNumber((value as ResponseError)?.statusCode)
 }
 
 const getData = async (response: Response) => {
@@ -181,23 +181,15 @@ export const hentBrukerdataMedPost: any = async ([
   }
 }
 
-export const postTildeling = async (
-  sakId: number | string,
-  oppgaveVersjon: OppgaveVersjon = {},
-  overtaHvisTildelt?: boolean
-) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  const data = {
-    oppgaveId,
-    overtaHvisTildelt,
-  }
-  return post(`${baseUrl}/api/sak/${sakId}/tildeling`, data, ifMatchVersjon(versjon))
-}
-
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
   return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
+}
+
+export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
+  const { oppgaveId, versjon } = oppgaveVersjon
+  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -220,18 +212,8 @@ export const putOppdaterVilkår = async (
   return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
-}
-
-export const deleteFjernTildeling = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon = {}) => {
-  return del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, ifMatchVersjon(oppgaveVersjon.versjon))
-}
-
-export const putVedtak = async (sakId: number | string, oppgaveVersjon: OppgaveVersjon, problemsammendrag: string) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId }, ifMatchVersjon(versjon))
+export const putVedtak = async (sakId: number | string, problemsammendrag: string) => {
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId: '' }, ifMatchVersjon(-1)) // fixme
 }
 
 export const putFerdigstillBestilling = async (
@@ -329,7 +311,7 @@ export async function postHenleggelse(sakId: string) {
   })
 }
 
-function ifMatchVersjon(versjon?: number) {
+export function ifMatchVersjon(versjon?: number) {
   if (versjon) {
     return { 'If-Match': toWeakETag(versjon) }
   }

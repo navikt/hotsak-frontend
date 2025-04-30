@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
-import { postTildeling, putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
+import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
@@ -26,6 +26,7 @@ import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
 import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -38,6 +39,7 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
   const saksbehandler = useInnloggetSaksbehandler()
+  const { endreOppgavetildeling } = useOppgaveService()
   const { behovsmelding } = useBehovsmelding()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
@@ -80,7 +82,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
 
   const overtaBestilling = async () => {
     setLoading(true)
-    await postTildeling(sakId, oppgaveVersjon, true).catch(() => setLoading(false))
+    await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)
@@ -129,7 +131,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt sakId={sakId} oppgaveVersjon={oppgaveVersjon} gåTilSak={false}></IkkeTildelt>
+            <IkkeTildelt sakId={sakId} gåTilSak={false}></IkkeTildelt>
           </Knappepanel>
         )}
       </VenstremenyCard>

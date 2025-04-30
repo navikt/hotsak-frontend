@@ -1,28 +1,28 @@
 import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
-
 import { Button } from '@navikt/ds-react'
 
-import { postTildeling, ResponseError } from '../../io/http'
-import { OppgaveVersjon } from '../../types/types.internal.ts'
+import { ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
 
 interface IkkeTildeltProps {
   sakId: number | string
-  oppgaveVersjon?: OppgaveVersjon
+  gjeldendeOppgave?: GjeldendeOppgave
   gåTilSak: boolean
   onTildelingKonflikt?(): void
 }
 
-export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
+export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
+  const { endreOppgavetildeling } = useOppgaveService(gjeldendeOppgave)
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
-  const oppdaterSakOgHistorie = () => {
+  const oppdaterSakOgSakshistorikk = () => {
     mutate(`api/sak/${sakId}`)
     mutate(`api/sak/${sakId}/historikk`)
   }
@@ -37,13 +37,13 @@ export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onT
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, oppgaveVersjon, false)
+    endreOppgavetildeling({ overtaHvisTildelt: false })
       .then(() => {
         if (gåTilSak) {
           const destinationUrl = `/sak/${sakId}/hjelpemidler`
           navigate(destinationUrl)
         } else {
-          oppdaterSakOgHistorie()
+          oppdaterSakOgSakshistorikk()
         }
       })
       .catch((e: ResponseError) => {
@@ -51,7 +51,7 @@ export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onT
           onTildelingKonflikt()
         } else {
           setIsFetching(false)
-          oppdaterSakOgHistorie()
+          oppdaterSakOgSakshistorikk()
         }
       })
   }

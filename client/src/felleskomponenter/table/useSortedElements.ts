@@ -36,7 +36,7 @@ export function useSortedElements<T>(elements: T[], columns: Tabellkolonne<T>[],
     sortedElements,
     onSortChange(sortKey?: string) {
       setSort({
-        orderBy: (sortKey as any) || initialSort.orderBy,
+        orderBy: (sortKey as keyof T) || initialSort.orderBy,
         direction: sort.direction === 'ascending' ? 'descending' : 'ascending',
       })
     },

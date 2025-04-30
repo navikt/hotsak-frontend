@@ -48,7 +48,7 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
     },
     oppgave: {
       tema: 'HJE',
-      oppgaveId: journalpostId.toString(),
+      oppgaveId: `I-${journalpostId}`,
       oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
       prioritet: OppgavePrioritet.NORMAL,

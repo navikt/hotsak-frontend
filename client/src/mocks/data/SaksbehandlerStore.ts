@@ -90,11 +90,28 @@ export class SaksbehandlerStore extends Dexie {
 }
 
 function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler> & { id: NavIdent }): InnloggetSaksbehandler {
+  const enheter = [
+    { id: 'f62f3d31-84ca-4406-8a1e-e61a45141a4a', nummer: '2970', navn: 'IT-avdelingen', gjeldende: true },
+    {
+      id: '24cdeaa6-0929-4307-bde8-bc513d8d603a',
+      nummer: '4710',
+      navn: 'Nav hjelpemiddelsentral Agder',
+      gjeldende: false,
+    },
+    {
+      id: '82465442-7f35-41ed-beeb-c7742c8a0015',
+      nummer: '4711',
+      navn: 'Nav hjelpemiddelsentral Rogaland',
+      gjeldende: false,
+    },
+  ]
   return {
     navn: '',
     epost: '',
-    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.BRILLEADMIN_BRUKERE, Gruppe.HOTSAK_SAKSBEHANDLER],
-    enhetsnumre: ['2970', '4710', '4711'],
+    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.HOTSAK_SAKSBEHANDLER, Gruppe.BRILLEADMIN_BRUKERE],
+    enheter,
+    gradering: [],
+    enhetsnumre: enheter.map((enhet) => enhet.nummer),
     erInnlogget: true,
     ...saksbehandler,
   }

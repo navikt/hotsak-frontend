@@ -40,7 +40,7 @@ export class OppgaveStore extends Dexie {
 
     const oppgaverFraSak: OppgaveApiOppgave[] = saker.map((sak) => {
       return {
-        oppgaveId: this.idGenerator.nesteId().toString(),
+        oppgaveId: `E-${this.idGenerator.nesteId()}`,
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',
@@ -73,7 +73,7 @@ export class OppgaveStore extends Dexie {
       const now = new Date()
 
       return {
-        oppgaveId: this.idGenerator.nesteId().toString(),
+        oppgaveId: `E-${this.idGenerator.nesteId()}`,
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',
@@ -103,7 +103,7 @@ export class OppgaveStore extends Dexie {
 
     const oppgaverFraJournalføringer: OppgaveApiOppgave[] = journalføringer.map((journalføring) => {
       return {
-        oppgaveId: this.idGenerator.nesteId().toString(),
+        oppgaveId: `I-${this.idGenerator.nesteId()}`,
         oppgavetype: Oppgavetype.JOURNALFØRING,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',

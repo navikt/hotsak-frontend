@@ -18,6 +18,7 @@ import { useFilterContext } from './FilterContext'
 import { Oppgavefilter } from './OppgaveFilter'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
+import { oppgaveIdUtenPrefix } from '../oppgave/oppgaveId.ts'
 
 // TODO vise sakId i egen kolonne
 
@@ -122,15 +123,18 @@ export function Oppgavebenk() {
       key: 'GOSYS',
       name: 'Gosys',
       width: 96,
-      render: (oppgave: OppgaveApiOppgave) => (
-        <Link
-          variant="neutral"
-          target="_blank"
-          href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgave.oppgaveId}`}
-        >
-          {oppgave.oppgaveId}
-        </Link>
-      ),
+      render: (oppgave: OppgaveApiOppgave) => {
+        const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
+        return (
+          <Link
+            variant="neutral"
+            target="_blank"
+            href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgaveId}`}
+          >
+            {oppgaveId}
+          </Link>
+        )
+      },
     },
     {
       key: 'HANDLING',

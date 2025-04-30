@@ -6,7 +6,7 @@ import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../type
 import type { StoreHandlersFactory } from '../data'
 import { respondNoContent } from './response.ts'
 
-export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, barnebrillesakStore }) => [
+export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
     const url = new URL(request.url)
     const oppgavetype = url.searchParams.get('oppgavetype')
@@ -55,7 +55,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
     const startIndex = pageNumber - 1
     const endIndex = startIndex + pageSize
-    const oppgaver = [...(await sakStore.oppgaver()), ...(await barnebrillesakStore.oppgaver())]
+    const oppgaver = await sakStore.oppgaver()
 
     const filtrerteOppgaver = oppgaver
       .filter((oppgave) => (hasteFilter !== null ? oppgave.hast : true))

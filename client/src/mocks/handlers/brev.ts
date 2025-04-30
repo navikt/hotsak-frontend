@@ -10,7 +10,7 @@ interface BrevParams extends SakParams {
   brevtype: string
 }
 
-export const brevHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
+export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   http.get<BrevParams>(`/api/sak/:sakId/brev/:brevtype`, async ({ params }) => {
     let buffer: ArrayBuffer
@@ -24,9 +24,9 @@ export const brevHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
   }),
 
   http.post<SakParams>('/api/sak/:sakId/brevsending', async ({ params }) => {
-    await barnebrillesakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
-    await barnebrillesakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
-    await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    await sakStore.lagreSaksdokument(params.sakId, 'Innhent opplysninger')
+    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.AVVENTER_DOKUMENTASJON)
+    await sakStore.fjernBrevtekst(params.sakId)
     await delay(500)
     return respondNoContent()
   }),

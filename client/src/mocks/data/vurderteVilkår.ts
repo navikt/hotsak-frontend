@@ -1,5 +1,5 @@
 import { Brilleseddel, VilkårsResultat, VurderingData } from '../../types/types.internal'
-import { LagretVilkår } from './BarnebrillesakStore'
+import { LagretVilkår } from './lagSak'
 import { isBefore, subMonths } from 'date-fns'
 
 const vilkårSomTrengerBestillingsdato = [

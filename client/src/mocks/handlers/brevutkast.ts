@@ -11,22 +11,22 @@ interface BrevutkastParams extends SakParams {
   brevtype: Brevtype
 }
 
-export const brevutkastHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
+export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<SakParams, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
     const { brevtype, data } = await request.json()
-    await barnebrillesakStore.lagreBrevtekst(params.sakId, brevtype, data)
+    await sakStore.lagreBrevtekst(params.sakId, brevtype, data)
     await delay(1000)
     return respondNoContent()
   }),
 
   http.delete<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
-    await barnebrillesakStore.fjernBrevtekst(params.sakId)
+    await sakStore.fjernBrevtekst(params.sakId)
     await delay(500)
     return respondNoContent()
   }),
 
   http.get<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
-    const brevTekst = await barnebrillesakStore.hentBrevtekst(params.sakId)
+    const brevTekst = await sakStore.hentBrevtekst(params.sakId)
     await delay(800)
     if (brevTekst) {
       return HttpResponse.json(brevTekst)

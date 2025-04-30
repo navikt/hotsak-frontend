@@ -1,6 +1,5 @@
 import type { RequestHandler } from 'msw'
 
-import { BarnebrillesakStore } from './BarnebrillesakStore'
 import { HjelpemiddelStore } from './HjelpemiddelStore'
 import { IdGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
@@ -18,18 +17,11 @@ export async function setupStore() {
   const personStore = new PersonStore()
   const hjelpemiddelStore = new HjelpemiddelStore()
   const journalpostStore = new JournalpostStore(idGenerator, saksbehandlerStore, personStore)
-  const sakStore = new SakStore(idGenerator, saksbehandlerStore, personStore)
+  const sakStore = new SakStore(idGenerator, saksbehandlerStore, personStore, journalpostStore)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
-  const barnebrillesakStore = new BarnebrillesakStore(idGenerator, saksbehandlerStore, personStore, journalpostStore)
   const saksoversiktStore = new SaksoversiktStore()
-  const notatStore = new NotatStore(idGenerator, saksbehandlerStore, sakStore, barnebrillesakStore)
-  const oppgaveStore = new OppgaveStore(
-    idGenerator,
-    sakStore,
-    barnebrillesakStore,
-    journalpostStore,
-    saksbehandlerStore
-  )
+  const notatStore = new NotatStore(idGenerator, saksbehandlerStore, sakStore)
+  const oppgaveStore = new OppgaveStore(idGenerator, sakStore, journalpostStore, saksbehandlerStore)
 
   return {
     saksbehandlerStore,
@@ -37,7 +29,6 @@ export async function setupStore() {
     hjelpemiddelStore,
     journalpostStore,
     sakStore,
-    barnebrillesakStore,
     saksoversiktStore,
     oppgaveStore,
     endreHjelpemiddelStore,

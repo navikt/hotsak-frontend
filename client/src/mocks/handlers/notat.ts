@@ -55,9 +55,7 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   }),
 
   http.get<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async () => {
-    let buffer: ArrayBuffer
-
-    buffer = await lastDokument('journalført_notat')
+    const buffer = await lastDokument('journalført_notat')
     await delay(500)
     return respondPdf(buffer)
   }),

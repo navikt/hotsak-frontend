@@ -21,16 +21,18 @@ export const saksVarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
       // med varsler kan disse kommenteres inn igjen. Ikke fjern enda.
 
       return HttpResponse.json([
-        /*{
+        /*
+        {
           tittel: 'Du må fullføre bestillingen i OeBS. Følgende må gjøres:',
           varslerFor: ['ANNEN_ADRESSE', 'TILBAKELEVERING', 'ALLEREDE_UTLEVERT'],
           beskrivelse: [
-            //'Det er levering til en annen leveringsadresse. Denne må registreres.',
+            // 'Det er levering til en annen leveringsadresse. Denne må registreres.',
             'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i OeBS.',
             'Et eller flere hjelpemidler er allerede utlevert. Må kanskje registreres på brukes i OeBS, men ikke skipes?',
             'Det er et hjelpemiddel som skal leveres tilbake.',
           ],
-        },*/
+        },
+        */
       ])
     } else {
       return HttpResponse.json([])

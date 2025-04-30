@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { OppgavePrioritet } from '../../types/experimentalTypes'
+import { type OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTypes'
 import {
   Dokument,
   Hendelse,
@@ -33,11 +33,10 @@ function lagJournalpost(journalpostId: number): LagretJournalpost {
   return {
     journalpostId: journalpostId.toString(),
     journalstatus: JournalpostStatusType.MOTTATT,
-    //status: Oppga.MOTTATT,
     journalpostOpprettetTid: now.toISOString(),
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
-    //enhet: enheter.agder,
+    // enhet: enheter.agder,
     bruker: {
       fnr: fnrInnsender,
       navn: lagTilfeldigNavn(),
@@ -119,7 +118,7 @@ export class JournalpostStore extends Dexie {
   async lagreAlle(journalposter: LagretJournalpost[]) {
     const journalpostId = await this.journalposter.bulkAdd(journalposter, { allKeys: true })
     const dokumenter = journalpostId.flatMap(lagDokumenter)
-    await this.dokumenter.bulkAdd(dokumenter as any, { allKeys: true }) // fixme
+    await this.dokumenter.bulkAdd(dokumenter as LagretDokument[], { allKeys: true })
     await this.personStore.lagreAlle(
       journalposter.map(({ fnrInnsender: fnr }) => {
         const person = lagPerson()
@@ -173,8 +172,8 @@ export class JournalpostStore extends Dexie {
 
     return this.journalposter.update(journalpostId, {
       tittel,
-      dokumenter: [{ ...dokument, tittel }],
-      oppgave: {},
-    } as any) // fixme
+      // dokumenter: [{ ...dokument, tittel }], fixme
+      oppgave: {} as OppgaveApiOppgave,
+    })
   }
 }

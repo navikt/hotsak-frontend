@@ -19,7 +19,6 @@ export async function initMsw(): Promise<unknown> {
     hjelpemiddelStore,
     journalpostStore,
     sakStore,
-    barnebrillesakStore,
     oppgaveStore,
     notatStore,
     endreHjelpemiddelStore,
@@ -31,7 +30,6 @@ export async function initMsw(): Promise<unknown> {
     await hjelpemiddelStore.populer()
     await journalpostStore.populer()
     await sakStore.populer()
-    await barnebrillesakStore.populer()
     await oppgaveStore.populer()
     await notatStore.populer()
     await endreHjelpemiddelStore.populer()
@@ -49,7 +47,6 @@ export async function initMsw(): Promise<unknown> {
     async delete() {
       return Promise.all([
         endreHjelpemiddelStore.delete(),
-        barnebrillesakStore.delete(),
         sakStore.delete(),
         journalpostStore.delete(),
         hjelpemiddelStore.delete(),

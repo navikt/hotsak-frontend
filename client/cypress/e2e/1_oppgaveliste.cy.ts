@@ -19,7 +19,6 @@ describe('Oppgaveliste', () => {
     cy.clearIndexedDb('HjelpemiddelStore')
     cy.clearIndexedDb('JournalpostStore')
     cy.clearIndexedDb('SakStore')
-    cy.clearIndexedDb('BarnebrillesakStore')
   })
 
   it('burde kunne starte en ufordelt sak', () => {

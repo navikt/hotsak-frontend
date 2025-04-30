@@ -13,7 +13,7 @@ interface DokumentParams extends JournalpostParams {
   dokumentId: string
 }
 
-export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore, oppgaveStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpostStore, sakStore }) => [
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)
@@ -22,7 +22,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     await delay(200)
     if (journalpost) {
       if (oppgave) {
-        journalpost.oppgave = oppgave!!
+        journalpost.oppgave = oppgave
       }
 
       return HttpResponse.json(journalpost)
@@ -74,12 +74,12 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
       await delay(500)
 
       if (eksisternedeSakId) {
-        await barnebrillesakStore.knyttJournalpostTilSak(journalføring)
-        await barnebrillesakStore.tildel(eksisternedeSakId)
+        await sakStore.knyttJournalpostTilSak(journalføring)
+        await sakStore.tildel(eksisternedeSakId)
         return HttpResponse.json({ sakId: eksisternedeSakId })
       } else {
-        const sakId = await barnebrillesakStore.opprettSak(journalføring)
-        await barnebrillesakStore.tildel(sakId)
+        const sakId = await sakStore.opprettSak(journalføring)
+        await sakStore.tildel(sakId)
 
         return HttpResponse.json({ sakId: sakId.toString() })
       }

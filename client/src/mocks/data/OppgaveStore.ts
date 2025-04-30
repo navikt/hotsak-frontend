@@ -2,8 +2,7 @@ import Dexie, { Table } from 'dexie'
 
 import { addBusinessDays, parseISO } from 'date-fns'
 import { OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTypes'
-import { Oppgavestatus, Oppgavetype, Sakstype } from '../../types/types.internal'
-import { BarnebrillesakStore } from './BarnebrillesakStore'
+import { Oppgavestatus, Oppgavetype, Sak, Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { IdGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
@@ -18,7 +17,6 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly idGenerator: IdGenerator,
     private readonly sakStore: SakStore,
-    private readonly barnebrillesakStore: BarnebrillesakStore,
     private readonly journalpostStore: JournalpostStore,
     private readonly saksbehandlerStore: SaksbehandlerStore
   ) {
@@ -35,7 +33,6 @@ export class OppgaveStore extends Dexie {
     }
 
     const saker = await this.sakStore.alle()
-    const barnebrillesaker = await this.barnebrillesakStore.alle()
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: OppgaveApiOppgave[] = saker.map((sak) => {
@@ -47,54 +44,22 @@ export class OppgaveStore extends Dexie {
         gjelder: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : 'Bestilling',
         beskrivelse:
           '--- 25.11.2024 13:13 (azure-token-generator) ---\nNok en test!\n\n--- 22.11.2024 13:27  (Z994377, 2970) ---\nTest.\nOppgaven er flyttet fra saksbehandler Z994377 til <ingen>\n\nSøknad om: terskeleliminator',
-        prioritet: sak.hast ? OppgavePrioritet.HØY : OppgavePrioritet.NORMAL,
+        prioritet: (sak as Sak)?.hast ? OppgavePrioritet.HØY : OppgavePrioritet.NORMAL,
         tildeltEnhet: sak.enhet,
         tildeltSaksbehandler: sak.saksbehandler,
         opprettetAv: 'hm-saksbehandling',
         opprettetAvEnhet: sak.enhet,
         sakId: sak.sakId,
-        //endretAv: null,
-        //endretAvEnhet: null,
+        // endretAv: null,
+        // endretAvEnhet: null,
         aktivDato: sak.opprettet,
-        //journalpostId: null,
+        // journalpostId: null,
         behandlesAvApplikasjon: 'Hotsak',
-        //mappeId: null,
+        // mappeId: null,
         fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
         opprettetTidspunkt: sak.opprettet,
         endretTidspunkt: sak.opprettet,
-        //ferdigstiltTidspunkt: null,
-        fnr: sak.bruker.fnr,
-        bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
-        versjon: 1,
-      }
-    })
-
-    const oppgaverFraBarnebrillesak: OppgaveApiOppgave[] = barnebrillesaker.map((sak) => {
-      const now = new Date()
-
-      return {
-        oppgaveId: `E-${this.idGenerator.nesteId()}`,
-        oppgavetype: Oppgavetype.BEHANDLE_SAK,
-        oppgavestatus: Oppgavestatus.OPPRETTET,
-        tema: 'HJE',
-        gjelder: 'Briller/linser',
-        //behandlingstype: null,
-        beskrivelse: sak.søknadGjelder,
-        prioritet: OppgavePrioritet.NORMAL,
-        tildeltEnhet: sak.enhet,
-        tildeltSaksbehandler: sak.saksbehandler,
-        opprettetAv: 'hm-saksbehandling',
-        opprettetAvEnhet: sak.enhet,
-        //endretAv: null,
-        //endretAvEnhet: null,
-        aktivDato: sak.opprettet,
-        //journalpostId: null,
-        behandlesAvApplikasjon: 'Hotsak',
-        //mappeId: null,
-        fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
-        opprettetTidspunkt: now.toISOString(),
-        endretTidspunkt: now.toISOString(),
-        //ferdigstiltTidspunkt: null,
+        // ferdigstiltTidspunkt: null,
         fnr: sak.bruker.fnr,
         bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
         versjon: 1,
@@ -110,9 +75,9 @@ export class OppgaveStore extends Dexie {
         gjelder: 'Briller/linser',
         beskrivelse: journalføring.tittel,
         prioritet: OppgavePrioritet.NORMAL,
-        //  område: ['syn'],
+        // område: ['syn'],
         tildeltEnhet: enheter.agder,
-        //tildeltSaksbehandler: journalføring.saksbehandler,
+        // tildeltSaksbehandler: journalføring.saksbehandler,
         aktivDato: journalføring.journalpostOpprettetTid,
         opprettetAv: 'hm-saksbehandling',
         opprettetAvEnhet: enheter.agder,
@@ -126,7 +91,7 @@ export class OppgaveStore extends Dexie {
       }
     })
 
-    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraBarnebrillesak, ...oppgaverFraJournalføringer])
+    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraJournalføringer])
   }
 
   async lagreAlle(oppgaver: LagretOppgave[]) {

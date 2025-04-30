@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import { Gruppe, InnloggetSaksbehandler, NavIdent } from '../../state/authentication'
+import { Ansatt, Gruppe, InnloggetSaksbehandler, NavIdent } from '../../state/authentication'
 
 export class SaksbehandlerStore extends Dexie {
   private readonly sessionKey = 'innloggetSaksbehandlerId'
@@ -67,13 +67,30 @@ export class SaksbehandlerStore extends Dexie {
 
   async innloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
     const id = this.getInnloggetSaksbehandlerId() || ''
-    return this.saksbehandlere.get(id) as any // fixme
+    const saksbehandler = await this.saksbehandlere.get(id)
+    if (!saksbehandler) {
+      throw new Error('Ingen saksbehandler innlogget')
+    }
+    return saksbehandler
   }
 
-  async ikkeInnloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
+  async ikkeInnloggetSaksbehandler(): Promise<Ansatt> {
     const id = this.getInnloggetSaksbehandlerId() || ''
     const arr = await this.saksbehandlere.toArray()
-    return arr.find((a) => a.id != id) as any // fixme
+    const saksbehandler = arr.find((a) => a.id != id)
+    if (!saksbehandler) {
+      throw new Error('Ingen saksbehandler funnet')
+    }
+    return saksbehandler
+  }
+
+  async hentAnsatt(id: NavIdent): Promise<Ansatt> {
+    const arr = await this.saksbehandlere.toArray()
+    const saksbehandler = arr.find((a) => a.id != id)
+    if (!saksbehandler) {
+      throw new Error('Ingen saksbehandler funnet')
+    }
+    return saksbehandler
   }
 
   byttInnloggetSaksbehandler(id: string) {

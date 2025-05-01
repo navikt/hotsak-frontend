@@ -15,25 +15,39 @@ export class HttpError extends Error {
     return error
   }
 
-  constructor(message: string, readonly status: number, options?: ErrorOptions) {
+  static isHttpError(value: unknown): value is HttpError {
+    return value instanceof HttpError
+  }
+
+  constructor(
+    message: string,
+    readonly status: number,
+    options?: ErrorOptions
+  ) {
     super(message, options)
   }
-}
 
-export function isError(value: unknown): value is Error {
-  return value instanceof Error
-}
-
-export function isHttpError(value: unknown): value is HttpError {
-  return value instanceof HttpError
-}
-
-export function hentUtviklerinformasjon(error?: Error): string {
-  if (!isError(error)) {
-    return ''
+  isBadRequest() {
+    return this.status === 400
   }
-  if (isError(error.cause)) {
-    return `${error.stack}\nCaused by:\n${hentUtviklerinformasjon(error.cause)}`
+
+  isUnauthorized() {
+    return this.status === 401
   }
-  return error.stack || ''
+
+  isForbidden() {
+    return this.status === 403
+  }
+
+  isNotFound() {
+    return this.status === 404
+  }
+
+  isConflict() {
+    return this.status === 409
+  }
+
+  isInternalServerError() {
+    return this.status === 500
+  }
 }

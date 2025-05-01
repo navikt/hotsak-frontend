@@ -9,7 +9,9 @@ export function isString(value: unknown): value is string {
 }
 
 export function isError(value: unknown): value is Error {
-  return value instanceof Error || (!!value && isString((value as Error).message) && isString((value as Error).stack))
+  return (
+    value instanceof Error || (value != null && isString((value as Error).name) && isString((value as Error).message))
+  )
 }
 
 export function isNavn(value: unknown): value is Navn {

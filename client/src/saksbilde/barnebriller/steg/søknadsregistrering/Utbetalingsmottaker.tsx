@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useParams } from 'react-router'
 
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
-import { IKKE_FUNNET } from '../../../../io/http'
 import { formaterKontonummer } from '../../../../utils/formater'
 import { useKontonummer } from './useKontonummer'
 
@@ -50,7 +49,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
             }. Kontakt personen og be dem legge inn kontonummer hos Nav.`}
           </SkjemaAlert>
         )}
-        {error?.status && error.status !== IKKE_FUNNET && (
+        {error?.isNotFound() && (
           <SkjemaAlert variant="error">
             {`Klarte ikke å hente kontonummer for ${innsenderFnr}. Prøv igjen om noen minutter. Hvis problemet ikke løser seg, kontakt DigiHoT.`}
           </SkjemaAlert>

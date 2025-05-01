@@ -1,5 +1,4 @@
 import type { ISvar, Tilbakemelding } from '../innsikt/Besvarelse'
-
 import type {
   AvvisBestilling,
   BrevTekst,
@@ -14,10 +13,8 @@ import type {
   OppgaveVersjon,
   VurderVilkårRequest,
 } from '../types/types.internal'
-import { isNumber } from '../utils/type'
 import { toWeakETag } from './etag.ts'
-
-export const IKKE_FUNNET = 404
+import { HttpError } from './HttpError.ts'
 
 export interface SaksbehandlingApiResponse<T = any> {
   status: number
@@ -33,56 +30,30 @@ export const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NO
 
 type Headers = { [key: string]: any }
 
-export class ResponseError extends Error {
-  constructor(
-    readonly statusCode: number,
-    message?: string
-  ) {
-    super(message)
-  }
-
-  isUnauthorized() {
-    return this.statusCode === 401
-  }
-
-  isNotFound() {
-    return this.statusCode === 404
-  }
-
-  isInternalServerError() {
-    return this.statusCode === 500
-  }
-}
-
-export function isResponseError(value: unknown): value is ResponseError {
-  return value instanceof ResponseError || isNumber((value as ResponseError)?.statusCode)
-}
-
-const getData = async (response: Response) => {
+async function getData<T = any>(response: Response): Promise<T | undefined> {
   try {
-    return await response.json()
+    return (await response.json()) as T
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
+  } catch (e: unknown) {
     return undefined
   }
 }
 
-const getBlob = async (response: Response) => {
+async function getBlob(response: Response): Promise<undefined | Blob> {
   try {
-    const data = await response.blob()
-    return data
+    return await response.blob()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
+  } catch (e: unknown) {
     return undefined
   }
 }
 
-const getErrorMessage = async (response: Response) => {
+async function getErrorMessage(response: Response): Promise<string> {
   try {
     return await response.text()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    return undefined
+  } catch (e: unknown) {
+    return 'Ukjent feil'
   }
 }
 
@@ -98,8 +69,8 @@ const save = async (url: string, method: string, data: any, headers?: Headers): 
     body: data == null ? null : JSON.stringify(data),
   })
   if (!response.ok) {
-    const message = await getErrorMessage(response)
-    throw new ResponseError(response.status, message)
+    const errorMessage = await getErrorMessage(response)
+    throw new HttpError(errorMessage, response.status)
   }
 
   return {
@@ -127,17 +98,16 @@ export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
       'X-Requested-With': 'XMLHttpRequest',
     },
   }
-  const response = await fetch(`${baseUrl}/${url}`, headers)
 
+  const response = await fetch(`${baseUrl}/${url}`, headers)
   if (!response.ok) {
     const errorMessage = await getErrorMessage(response)
-    throw new ResponseError(response.status, errorMessage)
+    throw new HttpError(errorMessage, response.status)
   }
 
   const blob = await getBlob(response)
-
   if (!blob) {
-    throw new ResponseError(response.status, 'Feil ved uthenting av PDF blob')
+    throw new HttpError('Feil ved uthenting av PDF-blob', response.status)
   }
 
   return {
@@ -153,17 +123,16 @@ export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiRe
       'X-Requested-With': 'XMLHttpRequest',
     },
   }
-  const response = await fetch(`${baseUrl}/${url}`, headers)
 
+  const response = await fetch(`${baseUrl}/${url}`, headers)
   if (!response.ok) {
     const errorMessage = await getErrorMessage(response)
-
-    throw new ResponseError(response.status, errorMessage)
+    throw new HttpError(errorMessage, response.status)
   }
 
   return {
     status: response.status,
-    data: await getData(response),
+    data: (await getData<T>(response)) as T,
   }
 }
 

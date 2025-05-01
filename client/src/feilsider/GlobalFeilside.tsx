@@ -1,6 +1,5 @@
-import { isResponseError } from '../io/http'
-
 import { Feilside } from './Feilside'
+import { HttpError } from '../io/HttpError.ts'
 
 export interface GlobalFeilsideProps {
   error: Error
@@ -9,8 +8,8 @@ export interface GlobalFeilsideProps {
 export function GlobalFeilside({ error }: GlobalFeilsideProps) {
   return (
     <>
-      {isResponseError(error) ? (
-        <Feilside statusCode={error.statusCode} error={error} />
+      {HttpError.isHttpError(error) ? (
+        <Feilside statusCode={error.status} error={error} />
       ) : (
         <Feilside statusCode={500} error={error} />
       )}

@@ -2,11 +2,11 @@ import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
-import { ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { Sakstype } from '../../types/types.internal'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import type { HttpError } from '../../io/HttpError.ts'
 
 export function useTildeling({
   sakId,
@@ -50,8 +50,8 @@ export function useTildeling({
           mutate(`api/sak/${sakId}/historikk`)
         }
       })
-      .catch((e: ResponseError) => {
-        if (e.statusCode == 409) {
+      .catch((e: HttpError) => {
+        if (e.isConflict()) {
           onTildelingKonflikt()
         } else {
           setIsFetching(false)

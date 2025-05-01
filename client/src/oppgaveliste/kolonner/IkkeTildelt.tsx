@@ -2,12 +2,11 @@ import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
-
-import { ResponseError } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
+import { HttpError } from '../../io/HttpError.ts'
 
 interface IkkeTildeltProps {
   sakId: number | string
@@ -46,8 +45,8 @@ export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTild
           oppdaterSakOgSakshistorikk()
         }
       })
-      .catch((e: ResponseError) => {
-        if (e.statusCode == 409 && onTildelingKonflikt) {
+      .catch((e: HttpError) => {
+        if (e.isConflict() && onTildelingKonflikt) {
           onTildelingKonflikt()
         } else {
           setIsFetching(false)

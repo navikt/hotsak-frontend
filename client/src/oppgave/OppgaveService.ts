@@ -47,14 +47,7 @@ export function useOppgaveService(gjeldendeOppgave?: GjeldendeOppgave): OppgaveS
     async endreOppgavetildeling(request) {
       return execute(async () => {
         if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
-          await post(
-            `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
-            {
-              ...request,
-              oppgaveId,
-            },
-            headers
-          )
+          await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
         }
 
         if (erSakOppgaveId(oppgaveId)) {

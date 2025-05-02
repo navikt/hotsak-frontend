@@ -2,6 +2,7 @@ import { GjeldendeOppgave, useOppgaveContext } from './OppgaveContext.ts'
 import { erEksternOppgaveId, erInternOppgaveId, erSakOppgaveId, OppgaveId } from './oppgaveId.ts'
 import type { NavIdent } from '../state/authentication.ts'
 import { baseUrl, del, ifMatchVersjon, post } from '../io/http.ts'
+import { Service, useServiceState } from '../service/Service.ts'
 
 export interface EndreOppgavetildelingRequest {
   oppgaveId?: OppgaveId | null
@@ -15,8 +16,16 @@ export interface EndreOppgavetildelingRequest {
   overtaHvisTildelt?: boolean
 }
 
-export interface OppgaveService {
+export interface OppgaveService extends Service {
+  /**
+   * Endre tildeling av oppgave/sak. Støtter også overtagelse av oppgave/sak.
+   *
+   * @param request
+   */
   endreOppgavetildeling(request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>): Promise<void>
+  /**
+   * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
+   */
   fjernOppgavetildeling(): Promise<void>
 }
 
@@ -30,35 +39,42 @@ export function useOppgaveService(gjeldendeOppgave?: GjeldendeOppgave): OppgaveS
     sakId = gjeldendeOppgave?.sakId,
   } = useOppgaveContext()
 
+  const { execute, state } = useServiceState()
+
+  const headers = ifMatchVersjon(versjon)
+
   return {
     async endreOppgavetildeling(request) {
-      const headers = ifMatchVersjon(versjon)
+      return execute(async () => {
+        if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
+          await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
+        }
 
-      if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
-        await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
-      }
-
-      if (erSakOppgaveId(oppgaveId)) {
-        await post(
-          `${baseUrl}/api/sak/${sakId}/tildeling`,
-          {
-            ...request,
-            oppgaveId,
-          },
-          headers
-        )
-      }
+        if (erSakOppgaveId(oppgaveId)) {
+          await post(
+            `${baseUrl}/api/sak/${sakId}/tildeling`,
+            {
+              ...request,
+              oppgaveId,
+            },
+            headers
+          )
+        }
+      })
     },
+
     async fjernOppgavetildeling() {
-      const headers = ifMatchVersjon(versjon)
+      return execute(async () => {
+        if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
+          await del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, headers)
+        }
 
-      if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
-        await del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, headers)
-      }
-
-      if (erSakOppgaveId(oppgaveId)) {
-        await del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, headers)
-      }
+        if (erSakOppgaveId(oppgaveId)) {
+          await del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, headers)
+        }
+      })
     },
+
+    state,
   }
 }

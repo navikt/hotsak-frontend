@@ -324,7 +324,7 @@ export enum VedtaksgrunnlagType {
 }
 
 export interface VedtakPayload {
-  sakId: number | string
+  sakId: string
   status: VedtakStatusType
 }
 
@@ -783,7 +783,7 @@ export interface Saksoversikt_Sak {
 
 export interface Saksoversikt_Barnebrille_Sak {
   sak: Saksoversikt_Sak
-  journalpostId?: number
+  journalpostId?: string
   dokumentId?: string
 }
 

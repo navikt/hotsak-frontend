@@ -1,7 +1,8 @@
-import { MouseEvent, useState } from 'react'
+import { MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
+
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
@@ -17,8 +18,7 @@ interface IkkeTildeltProps {
 
 export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
-  const { endreOppgavetildeling } = useOppgaveService(gjeldendeOppgave)
-  const [isFetching, setIsFetching] = useState(false)
+  const { endreOppgavetildeling, state } = useOppgaveService(gjeldendeOppgave)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
   const oppdaterSakOgSakshistorikk = () => {
@@ -34,41 +34,36 @@ export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTild
       logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_SAK)
     }
 
-    if (!saksbehandler || isFetching) return
-    setIsFetching(true)
+    if (!saksbehandler || state.loading) return
     endreOppgavetildeling({ overtaHvisTildelt: false })
       .then(() => {
         if (gåTilSak) {
           const destinationUrl = `/sak/${sakId}/hjelpemidler`
-          navigate(destinationUrl)
+          return navigate(destinationUrl)
         } else {
-          oppdaterSakOgSakshistorikk()
+          return oppdaterSakOgSakshistorikk()
         }
       })
       .catch((e: HttpError) => {
         if (e.isConflict() && onTildelingKonflikt) {
           onTildelingKonflikt()
         } else {
-          setIsFetching(false)
           oppdaterSakOgSakshistorikk()
         }
       })
   }
 
   return (
-    <>
-      {
-        <Button
-          size={gåTilSak ? 'xsmall' : 'small'}
-          variant={gåTilSak ? 'tertiary' : 'secondary'}
-          onClick={tildel}
-          name="Ta saken"
-          disabled={isFetching}
-          loading={isFetching}
-        >
-          Ta saken
-        </Button>
-      }
-    </>
+    <Button
+      type="button"
+      size={gåTilSak ? 'xsmall' : 'small'}
+      variant={gåTilSak ? 'tertiary' : 'secondary'}
+      onClick={tildel}
+      name="Ta saken"
+      disabled={state.loading}
+      loading={state.loading}
+    >
+      Ta saken
+    </Button>
   )
 }

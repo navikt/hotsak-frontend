@@ -1,10 +1,11 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
-import { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
+import type { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondNoContent } from './response.ts'
+import { delay, respondNoContent } from './response.ts'
+import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
@@ -35,9 +36,9 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
       return HttpResponse.json(pagedOppgaver)
     }
   }),
-  http.post<{ oppgaveId: string }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     await oppgaveStore.tildel(params.oppgaveId)
-    console.log(`Tildeler oppgave ${params.oppgaveId}`)
+    console.log(`Tildeler oppgaveId: ${params.oppgaveId}`)
 
     await delay(200)
     return respondNoContent()

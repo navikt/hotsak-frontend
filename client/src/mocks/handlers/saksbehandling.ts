@@ -1,4 +1,4 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import {
   Artikkel,
@@ -7,11 +7,10 @@ import {
   TilgangResultat,
   TilgangType,
   VedtakPayload,
-  VedtakStatusType,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import {
-  respondConflict,
+  delay,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
@@ -21,25 +20,15 @@ import {
 import type { SakParams } from './params'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
 import type { EndreOppgavetildelingRequest } from '../../oppgave/OppgaveService.ts'
-import { erBarnebrillesak, erHjelpemiddelsak } from '../data/lagSak.ts'
+import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journalpostStore, saksbehandlerStore }) => [
   http.post<SakParams, EndreOppgavetildelingRequest>(`/api/sak/:sakId/tildeling`, async ({ params, request }) => {
-    const { sakId } = params
-    const body = await request.json()
     await delay(250)
-    if (sakId == '1008' && body.overtaHvisTildelt === false) {
-      await sakStore.tildel(sakId, body)
-      return respondConflict()
-    }
-    if (sakId == '3045' && body.overtaHvisTildelt === false) {
-      await sakStore.tildel(sakId, body)
-      return respondConflict()
-    }
-    if (await sakStore.tildel(sakId, body)) {
-      return respondNoContent()
-    }
-    return respondNotFound()
+    const { sakId } = params
+    const payload = await request.json()
+    const status = await sakStore.tildel(sakId, payload)
+    return new Response(null, { status })
   }),
 
   http.delete<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
@@ -71,7 +60,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
       [TilgangType.KAN_BEHANDLE_SAK]: harSkrivetilgang ? TilgangResultat.TILLAT : TilgangResultat.NEKT,
     }
 
-    if (erHjelpemiddelsak(sak)) {
+    if (erLagretHjelpemiddelsak(sak)) {
       return HttpResponse.json({
         kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
         data: sak,
@@ -79,7 +68,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
       })
     }
 
-    if (erBarnebrillesak(sak)) {
+    if (erLagretBarnebrillesak(sak)) {
       return HttpResponse.json({
         tilganger,
         kanTildeles:
@@ -94,9 +83,9 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
 
   http.get<SakParams>(`/api/sak/:sakId/historikk`, async ({ params }) => {
     const { sakId } = params
-    const hendelser = await Promise.all([sakStore.hentHendelser(sakId), sakStore.hentHendelser(sakId)])
+    const hendelser = await sakStore.hentHendelser(sakId)
     await delay(500)
-    return HttpResponse.json(hendelser.flat())
+    return HttpResponse.json(hendelser)
   }),
 
   http.get<SakParams>(`/api/sak/:sakId/dokumenter`, async ({ request, params }) => {
@@ -111,7 +100,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
 
     /*
       Hvis ingen type er angitt som query param, bruker vi gammel oppførsel som henter journalposter fra sak.
-      Ligger her for å bevare bakoverkompabilitet
+      Ligger her for å bevare bakoverkompatibilitet
       På sikt skal vi vekk fra dette og heller hente innkommende journalposter fra sak hentet fra Joark.
     */
     if (!dokumentType) {
@@ -121,7 +110,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
       }
 
       let journalposter: string[]
-      if (erBarnebrillesak(sak)) {
+      if (erLagretBarnebrillesak(sak)) {
         journalposter = sak.journalposter
       } else {
         journalposter = []
@@ -144,7 +133,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
 
   http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ params }) => {
     const sakId = params.sakId
-    await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, VedtakStatusType.INNVILGET)
+    await sakStore.fattVedtak(sakId)
     return respondNoContent()
   }),
 

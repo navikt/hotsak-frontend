@@ -16,7 +16,7 @@ import {
 } from '../../types/types.internal.ts'
 import { beregnSats } from './beregnSats.ts'
 import { vurderteVilkår } from './vurderteVilkår.ts'
-import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles.ts'
+import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer, nåIso } from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { formatISO } from 'date-fns'
@@ -24,59 +24,39 @@ import { lagTilfeldigBosted } from './bosted.ts'
 import { enheter } from './enheter.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 
-export interface LagretSakshendelse extends Hendelse {
-  sakId: string
-}
+export type LagretSak = LagretHjelpemiddelsak | LagretBarnebrillesak
+export type InsertSak = InsertHjelpemiddelsak | InsertBarnebrillesak
 
-export type LagretSak = Sak | LagretBarnebrillesak
-
-export function erHjelpemiddelsak(sak?: LagretSak | null): sak is Sak {
+export function erLagretHjelpemiddelsak(sak?: LagretSak | null): sak is LagretHjelpemiddelsak {
   return sak != null && sak.sakstype !== Sakstype.BARNEBRILLER
 }
 
-export function erBarnebrillesak(sak?: LagretSak | null): sak is Barnebrillesak {
+export function erInsertHjelpemiddelsak(sak?: InsertSak | null): sak is InsertHjelpemiddelsak {
+  return sak != null && sak.sakstype !== Sakstype.BARNEBRILLER
+}
+
+export function erLagretBarnebrillesak(sak?: LagretSak | null): sak is LagretBarnebrillesak {
   return sak != null && sak.sakstype === Sakstype.BARNEBRILLER
 }
 
-function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'bruker'> {
-  const fødselsdato = lagTilfeldigFødselsdato(lagTilfeldigInteger(65, 95))
-  const fnr = lagTilfeldigFødselsnummer(fødselsdato)
-  const navn = lagTilfeldigNavn()
-  return {
-    bruker: {
-      fnr,
-      navn,
-      fulltNavn: formaterNavn(navn),
-      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
-      kommune: {
-        nummer: '9999',
-        navn: lagTilfeldigBosted(),
-      },
-      kjønn: Kjønn.MANN,
-      telefon: lagTilfeldigTelefonnummer(),
-      brukernummer: '1',
-      adressebeskyttelseOgSkjerming: {
-        gradering: [],
-        skjermet: false,
-      },
-      ...overstyringer,
-    },
-  }
+export function erInsertBarnebrillesak(sak?: InsertSak | null): sak is InsertBarnebrillesak {
+  return sak != null && sak.sakstype === Sakstype.BARNEBRILLER
 }
 
-export function lagSak(
-  sakId: number,
+export type LagretHjelpemiddelsak = Sak
+export type InsertHjelpemiddelsak = Omit<LagretHjelpemiddelsak, 'sakId'>
+
+export function lagHjelpemiddelsak(
   sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD = Sakstype.SØKNAD,
   overstyringer: {
     bruker?: Partial<Bruker>
   } = {}
-): LagretSak {
+): InsertHjelpemiddelsak {
   const bruker = lagBruker(overstyringer.bruker)
   const opprettet = new Date()
 
   return {
     ...bruker,
-    sakId: sakId.toString(),
     opprettet: opprettet.toISOString(),
     sakstype,
     søknadGjelder: 'Søknad om: terskeleliminator, rullator',
@@ -89,9 +69,9 @@ export function lagSak(
       },
     },
     greitÅViteFaktum: [
+      // fixme -> tilby som overstyring
       /*
       {
-      TODO, gjør dette også via utvidelser
         beskrivelse:
           'Bruker bor på institusjon (sykehjem), ifølge formidler. Du må sjekke om vilkårene for institusjon er oppfylt.',
         type: GreitÅViteType.ADVARSEL,
@@ -106,17 +86,20 @@ export function lagSak(
     statusEndret: opprettet.toISOString(),
     enhet: enheter.oslo,
 
-    // TODO tilby hast som en overstyring
-    /*hast: (() => {
+    // fixme -> tilby som overstyring
+    /*
+    hast: (() => {
       return {
         årsaker: [Hasteårsak.ANNET],
         begrunnelse: 'Det haster veldig!',
       }
-    })(),*/
+    })(),
+    */
   }
 }
 
 export type LagretVilkårsgrunnlag = Vilkårsgrunnlag
+
 export function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
   return {
     data: { ...vurderVilkårRequest.data },
@@ -127,6 +110,7 @@ export function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderV
 }
 
 export type LagretVilkårsvurdering = Omit<Vilkårsvurdering, 'vilkår'>
+
 export function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
   if (vurderVilkårRequest.data) {
     const { brillepris, brilleseddel } = vurderVilkårRequest.data
@@ -142,7 +126,7 @@ export function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: Vurder
         satsBeskrivelse,
         beløp,
       },
-      opprettet: new Date().toISOString(),
+      opprettet: nåIso(),
     }
   } else {
     throw new Error('Noe er feil med VurderVilkårRequest-payload i lagVilkårsvurdering()')
@@ -152,11 +136,9 @@ export function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: Vurder
 export interface LagretVilkår extends Vilkår {
   vilkårsvurderingId: string
 }
+export type InsertVilkår = Omit<LagretVilkår, 'id'>
 
-export function lagVilkår(
-  vilkårsvurderingId: string,
-  vurderVilkårRequest: VurderVilkårRequest
-): Array<Omit<LagretVilkår, 'id'>> {
+export function lagVilkår(vilkårsvurderingId: string, vurderVilkårRequest: VurderVilkårRequest): InsertVilkår[] {
   const { bestillingsdato, brilleseddel, bestiltHosOptiker, komplettBrille, kjøptBrille } = vurderVilkårRequest.data!
 
   return vurderteVilkår(
@@ -169,12 +151,15 @@ export function lagVilkår(
   )
 }
 
+// START Barnebrillesak
+
 export type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
-export function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
+export type InsertBarnebrillesak = Omit<LagretBarnebrillesak, 'sakId'>
+
+export function lagBarnebrillesak(): InsertBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
-  const now = new Date().toISOString()
+  const now = nåIso()
   return {
-    sakId: sakId.toString(),
     sakstype: Sakstype.BARNEBRILLER,
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     statusEndret: now,
@@ -208,3 +193,36 @@ export function lagBarnebrillesak(sakId: number): LagretBarnebrillesak {
     journalposter: [],
   }
 }
+
+// END Barnebrillesak
+
+function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'bruker'> {
+  const fødselsdato = lagTilfeldigFødselsdato(lagTilfeldigInteger(65, 95))
+  const fnr = lagTilfeldigFødselsnummer(fødselsdato)
+  const navn = lagTilfeldigNavn()
+  return {
+    bruker: {
+      fnr,
+      navn,
+      fulltNavn: formaterNavn(navn),
+      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
+      kommune: {
+        nummer: '9999',
+        navn: lagTilfeldigBosted(),
+      },
+      kjønn: Kjønn.MANN,
+      telefon: lagTilfeldigTelefonnummer(),
+      brukernummer: '1',
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
+      },
+      ...overstyringer,
+    },
+  }
+}
+
+export interface LagretSakshendelse extends Hendelse {
+  sakId: string
+}
+export type InsertSakshendelse = Omit<LagretSakshendelse, 'id'>

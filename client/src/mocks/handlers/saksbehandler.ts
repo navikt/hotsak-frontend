@@ -1,8 +1,9 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
 import type { Saksbehandlere } from '../../saksbehandler/useSaksbehandlere.ts'
 import type { InnloggetSaksbehandler } from '../../state/authentication.ts'
+import { delay } from './response.ts'
 
 export const saksbehandlerHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) => [
   http.get<never, never, InnloggetSaksbehandler>('/api/saksbehandler', async () => {

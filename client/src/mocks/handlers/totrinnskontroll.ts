@@ -1,8 +1,8 @@
-import { delay, http } from 'msw'
+import { http } from 'msw'
 
 import type { TotrinnskontrollData } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondCreated, respondNoContent } from './response'
+import { delay, respondCreated, respondNoContent } from './response'
 import type { SakParams } from './params'
 
 export const totrinnskontrollHandlers: StoreHandlersFactory = ({ sakStore }) => [

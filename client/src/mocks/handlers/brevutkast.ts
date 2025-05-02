@@ -1,8 +1,8 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { respondNoContent } from './response'
+import { delay, respondNoContent } from './response'
 import type { SakParams } from './params'
 
 type NyBrevtekst = Pick<BrevTekst, 'brevtype' | 'data'>

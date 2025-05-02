@@ -1,6 +1,6 @@
 import type { HjelpemiddelArtikkel } from '../../types/types.internal'
 
-export const hjelpemiddeloversikt: Nullable<Partial<HjelpemiddelArtikkel>>[][] = [
+export const hjelpemiddeloversikt: DeepNullable<Partial<HjelpemiddelArtikkel>>[][] = [
   [
     {
       antall: 1.0,

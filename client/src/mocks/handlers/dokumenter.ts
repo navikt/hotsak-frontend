@@ -1,9 +1,9 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
-import { respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
+import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
 
 interface JournalpostParams {
   journalpostId: string
@@ -67,16 +67,16 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
     async ({ request }) => {
       const journalføring = await request.json()
 
-      const eksisternedeSakId = journalføring.sakId
+      const eksisterendeSakId = journalføring.sakId
       const tittel = journalføring.tittel
 
       await journalpostStore.journalfør(journalføring.journalpostId, tittel)
       await delay(500)
 
-      if (eksisternedeSakId) {
+      if (eksisterendeSakId) {
         await sakStore.knyttJournalpostTilSak(journalføring)
-        await sakStore.tildel(eksisternedeSakId)
-        return HttpResponse.json({ sakId: eksisternedeSakId })
+        await sakStore.tildel(eksisterendeSakId)
+        return HttpResponse.json({ sakId: eksisterendeSakId })
       } else {
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)

@@ -1,6 +1,6 @@
-declare type Maybe<T> = T extends object ? Partial<T> : T | undefined
+declare type Maybe<T> = T | undefined
 
-declare type Nullable<T> = T extends object ? { [P in keyof T]: T[P] | null } : T | null
+declare type Nullable<T> = T | null
 
 declare type DeepPartial<T> = T extends object
   ? {
@@ -13,3 +13,4 @@ declare type DeepNullable<T> = {
 }
 
 declare type Tuple<A, B = A> = [A, B]
+declare type Triple<A, B = A, C = A> = [A, B, C]

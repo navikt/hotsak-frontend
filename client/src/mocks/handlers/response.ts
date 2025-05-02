@@ -1,4 +1,4 @@
-import { HttpResponse } from 'msw'
+import { delay as mswDelay, DelayMode, HttpResponse } from 'msw'
 
 export function respondCreated(location?: string): Response {
   return new Response(null, {
@@ -42,3 +42,13 @@ export function respondPdf(buffer: ArrayBuffer): Response {
     status: 200,
   })
 }
+
+export function delay(durationOrMode?: DelayMode | number): Promise<void> {
+  if (DELAY_ENABLED) {
+    return mswDelay(durationOrMode)
+  } else {
+    return mswDelay(0)
+  }
+}
+
+const DELAY_ENABLED: boolean = false

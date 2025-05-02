@@ -16,8 +16,7 @@ export class PersonStore extends Dexie {
   constructor() {
     super('PersonStore')
     this.version(1).stores({
-      personer: '++fnr',
-      hjelpemidler: 'hmsnr,fnr',
+      personer: 'fnr',
     })
   }
 

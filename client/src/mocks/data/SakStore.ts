@@ -4,7 +4,6 @@ import {
   Barnebrillesak,
   Brevkode,
   BrevTekst,
-  Bruker,
   JournalføringRequest,
   Kjønn,
   MålformType,
@@ -12,7 +11,6 @@ import {
   Oppgave,
   OppgaveStatusType,
   Sak,
-  SakBase,
   Saksdokument,
   SaksdokumentType,
   Sakstype,
@@ -27,40 +25,49 @@ import {
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
 import { enheter } from './enheter'
-import { IdGenerator } from './IdGenerator'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { EndreOppgavetildelingRequest } from '../../oppgave/OppgaveService.ts'
 import {
-  erBarnebrillesak,
+  erInsertBarnebrillesak,
+  erLagretBarnebrillesak,
+  InsertBarnebrillesak,
+  InsertSak,
+  InsertSakshendelse,
+  InsertVilkår,
   lagBarnebrillesak,
+  lagHjelpemiddelsak,
   LagretBarnebrillesak,
+  LagretHjelpemiddelsak,
   LagretSak,
   LagretSakshendelse,
   LagretVilkår,
   LagretVilkårsgrunnlag,
   LagretVilkårsvurdering,
-  lagSak,
   lagVilkår,
   lagVilkårsgrunnlag,
   lagVilkårsvurdering,
 } from './lagSak.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import { lagTilfeldigNavn } from './navn.ts'
-import { Ansatt } from '../../state/authentication.ts'
 import { nåIso } from './felles.ts'
 
+type LagretBrevtekst = BrevTekst
+interface LagretSaksdokument extends Saksdokument {
+  id: string
+}
+type InsertSaksdokument = Omit<LagretSaksdokument, 'id'>
+
 export class SakStore extends Dexie {
-  private readonly brevtekst!: Table<BrevTekst, string>
-  private readonly hendelser!: Table<LagretSakshendelse, string>
-  private readonly saker!: Table<LagretSak, string>
-  private readonly saksdokumenter!: Table<Saksdokument, string>
-  private readonly vilkår!: Table<LagretVilkår, number>
+  private readonly brevtekst!: Table<LagretBrevtekst, string>
+  private readonly hendelser!: Table<LagretSakshendelse, number, InsertSakshendelse>
+  private readonly saker!: Table<LagretSak, string, InsertSak>
+  private readonly saksdokumenter!: Table<LagretSaksdokument, number, InsertSaksdokument>
+  private readonly vilkår!: Table<LagretVilkår, number, InsertVilkår>
   private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, string>
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
 
   constructor(
-    private readonly idGenerator: IdGenerator,
     private readonly saksbehandlerStore: SaksbehandlerStore,
     private readonly personStore: PersonStore,
     private readonly journalpostStore: JournalpostStore
@@ -69,7 +76,6 @@ export class SakStore extends Dexie {
     this.version(1).stores({
       brevtekst: 'sakId',
       hendelser: '++id,sakId',
-      notater: '++id,sakId',
       saker: 'sakId',
       saksdokumenter: '++id,sakId',
       vilkår: '++id,vilkårsvurderingId',
@@ -83,34 +89,21 @@ export class SakStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    const lagSakMedId = (
-      sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD = Sakstype.SØKNAD,
-      overstyringer: {
-        bruker?: Partial<Bruker>
-      } = {}
-    ) => lagSak(this.idGenerator.nesteId(), sakstype, overstyringer)
-
-    const lagBarnebrillesakMedId = () => lagBarnebrillesak(this.idGenerator.nesteId())
 
     return this.lagreAlle([
-      lagSakMedId(),
-      lagSakMedId(),
-      lagSakMedId(),
-      lagSakMedId(Sakstype.SØKNAD),
-      lagSakMedId(Sakstype.BESTILLING),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesakMedId(),
-      lagBarnebrillesak(3045),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
     ])
   }
 
-  async lagreAlle(saker: LagretSak[]) {
+  async lagreAlle(saker: InsertSak[]) {
     const journalposter = await this.journalpostStore.alle()
     await this.personStore.lagreAlle(
       saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
@@ -123,7 +116,7 @@ export class SakStore extends Dexie {
     )
     return this.saker.bulkAdd(
       saker.map((sak) => {
-        if (erBarnebrillesak(sak)) {
+        if (erInsertBarnebrillesak(sak)) {
           return {
             ...sak,
             journalposter: [journalposter[0].journalpostId],
@@ -135,15 +128,11 @@ export class SakStore extends Dexie {
     )
   }
 
-  oppdaterSak<T extends SakBase = SakBase>(sakId: string, oppdatering: UpdateSpec<T>) {
-    return this.saker.update(sakId, oppdatering)
-  }
-
-  async alle() {
+  async alle(): Promise<LagretSak[]> {
     return this.saker.toArray()
   }
 
-  async oppgaver() {
+  async oppgaver(): Promise<Oppgave[]> {
     const saker = await this.alle()
     return saker.map<Oppgave>(({ bruker, ...sak }) => {
       let sakstype = sak.sakstype
@@ -169,7 +158,7 @@ export class SakStore extends Dexie {
         enhet: sak.enhet,
         saksbehandler: sak.saksbehandler,
         kanTildeles: true,
-        hast: (sak as Sak)?.hast,
+        hast: (sak as LagretHjelpemiddelsak)?.hast,
       }
     })
   }
@@ -180,9 +169,9 @@ export class SakStore extends Dexie {
       return
     }
 
-    if (erBarnebrillesak(sak)) {
-      const vilkårsgrunnlag = await this.vilkårsgrunnlag.get(sakId)
-      const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sakId).first()
+    if (erLagretBarnebrillesak(sak)) {
+      const vilkårsgrunnlag = await this.vilkårsgrunnlag.get(sak.sakId)
+      const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sak.sakId).first()
       if (vilkårsvurdering) {
         const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
         const { resultat, ...rest } = vilkårsvurdering
@@ -206,7 +195,6 @@ export class SakStore extends Dexie {
   async lagreHendelse(sakId: string, hendelse: string, detaljer?: string) {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.put({
-      id: this.idGenerator.nesteId().toString(),
       opprettet: nåIso(),
       sakId,
       hendelse,
@@ -219,28 +207,29 @@ export class SakStore extends Dexie {
     return this.hendelser.where('sakId').equals(sakId).toArray()
   }
 
-  async tildel(sakId: string, request: EndreOppgavetildelingRequest = {}) {
+  async tildel(sakId: string, payload: EndreOppgavetildelingRequest = {}): Promise<204 | 404 | 409> {
     const sak = await this.hent(sakId)
     if (!sak) {
-      return false
+      return 404
+    }
+    if (sak.saksbehandler && !payload.overtaHvisTildelt) {
+      return 409
     }
 
-    let saksbehandler: Ansatt
-    if (request.saksbehandlerId) {
-      saksbehandler = await this.saksbehandlerStore.hentAnsatt(request.saksbehandlerId)
-    } else {
-      saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    let saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+    if (payload.saksbehandlerId) {
+      saksbehandler = await this.saksbehandlerStore.hent(payload.saksbehandlerId)
     }
 
     this.transaction('rw', this.saker, this.hendelser, () => {
-      this.oppdaterSak(sakId, {
-        saksbehandler: saksbehandler,
+      this.oppdaterSak(sak.sakId, {
+        saksbehandler,
         status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
       })
-      this.lagreHendelse(sakId, 'Saksbehandler har tatt saken')
+      this.lagreHendelse(sak.sakId, 'Saksbehandler har tatt saken', undefined)
     })
 
-    return true
+    return 204
   }
 
   async frigi(sakId: string) {
@@ -250,11 +239,11 @@ export class SakStore extends Dexie {
     }
 
     this.transaction('rw', this.saker, this.hendelser, () => {
-      this.oppdaterSak(sakId, {
+      this.oppdaterSak(sak.sakId, {
         saksbehandler: undefined,
         status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
       })
-      this.lagreHendelse(sakId, 'Saksbehandler er meldt av saken')
+      this.lagreHendelse(sak.sakId, 'Saksbehandler er meldt av saken')
     })
 
     return true
@@ -276,11 +265,11 @@ export class SakStore extends Dexie {
       return false
     } else {
       this.transaction('rw', this.saker, () => {
-        this.oppdaterSak(sakId, {
+        this.oppdaterSak(sak.sakId, {
           status: status,
         })
-        // this.lagreHendelse(sakId, `Saksstatus endret: ${OppgaveStatusLabel.get(status)}`)
-        // this.lagreHendelse(sakId, 'Brev sendt', 'Innhente opplysninger')
+        // this.lagreHendelse(sak.sakId, `Saksstatus endret: ${OppgaveStatusLabel.get(status)}`)
+        // this.lagreHendelse(sak.sakId, 'Brev sendt', 'Innhente opplysninger')
       })
       return true
     }
@@ -300,36 +289,30 @@ export class SakStore extends Dexie {
     return utbetalingsmottaker
   }
 
-  async vurderVilkår(sakId: string, vurderVilkårRequest: VurderVilkårRequest) {
+  async vurderVilkår(sakId: string, payload: VurderVilkårRequest) {
     return this.transaction('rw', this.saker, this.vilkårsgrunnlag, this.vilkårsvurderinger, this.vilkår, async () => {
-      const vilkårsgrunnlag = lagVilkårsgrunnlag(sakId, vurderVilkårRequest)
+      const vilkårsgrunnlag = lagVilkårsgrunnlag(sakId, payload)
 
       await this.vilkårsgrunnlag.put(vilkårsgrunnlag, sakId)
-      const vilkårsvurdering = lagVilkårsvurdering(sakId, vurderVilkårRequest)
+      const vilkårsvurdering = lagVilkårsvurdering(sakId, payload)
 
       const vilkårsvurderingId = await this.vilkårsvurderinger.put(vilkårsvurdering)
-      const vilkår = lagVilkår(vilkårsvurderingId, vurderVilkårRequest)
+      const vilkår = lagVilkår(vilkårsvurderingId, payload)
 
-      const samletVurdering = this.beregnSamletVurdering(vilkår)
-      vilkårsvurdering.resultat = samletVurdering
+      vilkårsvurdering.resultat = this.beregnSamletVurdering(vilkår)
 
       await this.vilkårsvurderinger.update(vilkårsvurderingId, vilkårsvurdering)
 
       await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).delete()
-      await this.vilkår.bulkAdd(vilkår as any, { allKeys: true }) // fixme
+      await this.vilkår.bulkAdd(vilkår, { allKeys: true })
       await this.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
       return this.oppdaterSteg(sakId, StegType.VURDERE_VILKÅR)
     })
   }
 
   // fixme -> se på payload for overstyring av vilkår
-  async oppdaterVilkår(
-    vilkårId: number | string,
-    { resultatSaksbehandler, begrunnelseSaksbehandler }: OppdaterVilkårRequest
-  ) {
-    vilkårId = Number(vilkårId)
-
-    return this.vilkår.update(vilkårId, {
+  async oppdaterVilkår(vilkårId: string, { resultatSaksbehandler, begrunnelseSaksbehandler }: OppdaterVilkårRequest) {
+    return this.vilkår.update(Number(vilkårId), {
       manuellVurdering: {
         vilkårOppfylt: resultatSaksbehandler,
         begrunnelse: begrunnelseSaksbehandler,
@@ -358,7 +341,7 @@ export class SakStore extends Dexie {
 
   async ferdigstillTotrinnskontroll(sakId: string, { resultat, begrunnelse }: TotrinnskontrollData) {
     const sak = await this.hent(sakId)
-    if (!erBarnebrillesak(sak)) {
+    if (!erLagretBarnebrillesak(sak)) {
       return Promise.reject('Bare støtte for totrinnskontroll av barnebrillesaker pt.')
     }
 
@@ -378,7 +361,7 @@ export class SakStore extends Dexie {
           begrunnelse,
           godkjent: nå,
         }
-        this.oppdaterSak<LagretBarnebrillesak>(sakId, {
+        this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
           saksbehandler: totrinnskontroll.saksbehandler,
           steg: StegType.FERDIG_BEHANDLET,
           status: OppgaveStatusType.VEDTAK_FATTET,
@@ -404,19 +387,19 @@ export class SakStore extends Dexie {
           resultat,
           begrunnelse,
         }
-        this.oppdaterSak<LagretBarnebrillesak>(sakId, {
+        this.oppdaterSak<LagretBarnebrillesak>(sak.sakId, {
           saksbehandler: totrinnskontroll.saksbehandler,
           steg: StegType.REVURDERE,
           status: OppgaveStatusType.TILDELT_SAKSBEHANDLER,
           totrinnskontroll,
         })
-        this.lagreHendelse(sakId, 'Sak returnert til saksbehandler')
+        this.lagreHendelse(sak.sakId, 'Sak returnert til saksbehandler')
       }
     })
   }
 
   async opprettSak(journalføring: JournalføringRequest) {
-    const sak = lagBarnebrillesak(this.idGenerator.nesteId())
+    const sak = lagBarnebrillesak()
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)
@@ -428,13 +411,13 @@ export class SakStore extends Dexie {
       return
     }
 
-    const eksisterendeSak = await this.saker.get(sakId)
-    if (!erBarnebrillesak(eksisterendeSak)) {
+    const eksisterendeSak = await this.hent(sakId)
+    if (!erLagretBarnebrillesak(eksisterendeSak)) {
       return
     }
 
     const eksisterendeJournalposter = eksisterendeSak.journalposter
-    this.oppdaterSak<LagretBarnebrillesak>(sakId, {
+    this.oppdaterSak<InsertBarnebrillesak>(eksisterendeSak.sakId, {
       journalposter: [...eksisterendeJournalposter, journalføring.journalpostId],
     })
   }
@@ -460,18 +443,43 @@ export class SakStore extends Dexie {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     const dokumentId = (await this.saksdokumenter.count()) + 1
     this.saksdokumenter.add({
-      sakId: sakId,
-      journalpostId: '12345678',
+      sakId,
+      journalpostId: '123456789',
       type: SaksdokumentType.UTGÅENDE,
       brevkode: Brevkode.INNHENTE_OPPLYSNINGER_BARNEBRILLER,
-      opprettet: new Date().toISOString(),
+      opprettet: nåIso(),
       saksbehandler: saksbehandler,
       dokumentId: dokumentId.toString(),
       tittel: tittel,
     })
   }
 
-  beregnSamletVurdering(vilkår: Array<Omit<LagretVilkår, 'id'>>) {
+  async fattVedtak(sakId: string, status: OppgaveStatusType = OppgaveStatusType.VEDTAK_FATTET) {
+    const sak = await this.hent(sakId)
+    if (!sak) {
+      return false
+    }
+
+    if (sak.status === status) {
+      return false
+    } else {
+      this.transaction('rw', this.saker, this.hendelser, () => {
+        this.oppdaterSak(sak.sakId, {
+          status: status,
+          vedtak: {
+            vedtaksdato: nåIso(),
+            status: VedtakStatusType.INNVILGET,
+            saksbehandlerNavn: sak.saksbehandler?.navn || '',
+            saksbehandlerRef: sak.saksbehandler?.id || '',
+            soknadUuid: '',
+          },
+        })
+      })
+      return true
+    }
+  }
+
+  private beregnSamletVurdering(vilkår: InsertVilkår[]) {
     const samletVurdering = vilkår
       .map((v) => v.vilkårOppfylt)
       .reduce((samletStatus, vilkårOppfylt) => {
@@ -493,28 +501,7 @@ export class SakStore extends Dexie {
     return samletVurdering
   }
 
-  async fattVedtak(sakId: string, status: OppgaveStatusType, vedtakStatus: VedtakStatusType) {
-    const sak = await this.hent(sakId)
-    if (!sak) {
-      return false
-    }
-
-    if (sak.status === status) {
-      return false
-    } else {
-      this.transaction('rw', this.saker, this.hendelser, () => {
-        this.oppdaterSak(sakId, {
-          status: status,
-          vedtak: {
-            vedtaksdato: new Date().toISOString(),
-            status: vedtakStatus,
-            saksbehandlerNavn: sak.saksbehandler?.navn || '',
-            saksbehandlerRef: sak.saksbehandler?.id || '',
-            soknadUuid: '',
-          },
-        })
-      })
-      return true
-    }
+  private oppdaterSak<T extends InsertSak = InsertSak>(sakId: string, oppdatering: UpdateSpec<T>) {
+    return this.saker.update(sakId, oppdatering)
   }
 }

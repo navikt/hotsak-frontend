@@ -1,9 +1,9 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { KontonummerRequest, KontonummerResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { lagTilfeldigNavn } from '../data/navn'
-import { respondInternalServerError } from './response'
+import { delay, respondInternalServerError } from './response'
 
 export const utbetalingsmottakerHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<never, KontonummerRequest, KontonummerResponse | any>(`/api/utbetalingsmottaker`, async ({ request }) => {

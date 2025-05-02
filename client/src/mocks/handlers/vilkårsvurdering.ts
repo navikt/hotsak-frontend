@@ -12,16 +12,16 @@ interface VilkårParams extends SakParams {
 export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<SakParams, VurderVilkårRequest>('/api/sak/:sakId/vilkarsgrunnlag', async ({ request, params }) => {
     const sakId = params.sakId
-    const vurderVilkårRequest = await request.json()
-    await sakStore.vurderVilkår(sakId, vurderVilkårRequest)
+    const payload = await request.json()
+    await sakStore.vurderVilkår(sakId, payload)
     await sakStore.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
     return respondCreated()
   }),
 
   http.put<VilkårParams, OppdaterVilkårRequest>('/api/sak/:sakId/vilkar/:vilkarId', async ({ request, params }) => {
     const { vilkarId } = params
-    const oppdaterVilkårRequest = await request.json()
-    await sakStore.oppdaterVilkår(vilkarId, oppdaterVilkårRequest)
+    const payload = await request.json()
+    await sakStore.oppdaterVilkår(vilkarId, payload)
     return respondNoContent()
   }),
 ]

@@ -1,5 +1,5 @@
 import { Brilleseddel, VilkårsResultat, VurderingData } from '../../types/types.internal'
-import { LagretVilkår } from './lagSak'
+import type { InsertVilkår } from './lagSak'
 import { isBefore, subMonths } from 'date-fns'
 
 const vilkårSomTrengerBestillingsdato = [
@@ -28,7 +28,7 @@ export function vurderteVilkår(
   bestiltHosOptiker: VurderingData,
   kjøptBrille?: VurderingData,
   bestillingsdato?: string
-) {
+): InsertVilkår[] {
   let vurderteVilkår = vurderteVilkår_JA(vilkårsvurderingId, brilleseddel, bestillingsdato)
 
   vurderteVilkår = oppdaterStatus(vurderteVilkår, !bestillingsdato, vilkårSomTrengerBestillingsdato)
@@ -72,12 +72,12 @@ export function vurderteVilkår(
 }
 
 function oppdaterStatus(
-  alleVilkår: Array<Omit<LagretVilkår, 'id'>>,
+  alleVilkår: InsertVilkår[],
   predikatResultat: boolean,
   aktuelleVilkår: string[],
   vurdertType: 'SAKSBEHANDLER' | 'MASKINELL' = 'MASKINELL',
   nyttResultat: VilkårsResultat = VilkårsResultat.OPPLYSNINGER_MANGLER
-): Array<Omit<LagretVilkår, 'id'>> {
+): InsertVilkår[] {
   if (predikatResultat) {
     return alleVilkår.map((vilkår) => {
       if (aktuelleVilkår.includes(vilkår.vilkårId)) {
@@ -98,7 +98,7 @@ function vurderteVilkår_JA(
   vilkårsvurderingId: string,
   brilleseddel: Brilleseddel,
   bestillingsdato: string = new Date().toISOString()
-): Array<Omit<LagretVilkår, 'id'>> {
+): InsertVilkår[] {
   return [
     {
       vilkårsvurderingId,

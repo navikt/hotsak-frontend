@@ -15,10 +15,10 @@ export const saksVarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
     }
 
     if (sak.sakstype === Sakstype.BESTILLING) {
-      // Foreløpig hardkodet varsler her og ikke lagt det i en egen store enda.
+      // Foreløpig hardkodet varsler her og ikke lagt det i en egen store ennå.
 
       // Midlertidig kommentert ut varsler da det ikke er aktuelt å skru på enda. Hvis det er behov for å teste noe
-      // med varsler kan disse kommenteres inn igjen. Ikke fjern enda.
+      // med varsler kan disse kommenteres inn igjen. Ikke fjern ennå.
 
       return HttpResponse.json([
         /*

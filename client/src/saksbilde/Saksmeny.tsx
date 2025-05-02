@@ -101,9 +101,6 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       onClose={onClose}
     >
       <VStack gap="4">
-        <Alert variant="info" size="small">
-          Dette er bare en mockup og funker ikke på ekte i dev enda
-        </Alert>
         <form role="search">
           <Select
             label="Navn"

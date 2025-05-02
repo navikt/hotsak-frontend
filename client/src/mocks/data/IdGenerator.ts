@@ -19,7 +19,16 @@ export const idGenerator: Middleware<DBCore> = {
             if (req.type === 'add') {
               req.values = req.values.map((obj) => {
                 if (!obj[keyPath]) {
-                  obj[keyPath] = lagTilfeldigId()
+                  if (keyPath === 'oppgaveId') {
+                    const oppgavetype = obj['oppgavetype']
+                    if (oppgavetype === 'JOURNALFØRING') {
+                      obj[keyPath] = `I-${lagTilfeldigId()}`
+                    } else {
+                      obj[keyPath] = `E-${lagTilfeldigId()}`
+                    }
+                  } else {
+                    obj[keyPath] = lagTilfeldigId()
+                  }
                 }
                 return obj
               })

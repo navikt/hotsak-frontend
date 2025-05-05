@@ -22,12 +22,12 @@ export const idGenerator: Middleware<DBCore> = {
                   if (keyPath === 'oppgaveId') {
                     const oppgavetype = obj['oppgavetype']
                     if (oppgavetype === 'JOURNALFØRING') {
-                      obj[keyPath] = `I-${lagTilfeldigId()}`
+                      obj[keyPath] = `I-${createId()}`
                     } else {
-                      obj[keyPath] = `E-${lagTilfeldigId()}`
+                      obj[keyPath] = `E-${createId()}`
                     }
                   } else {
-                    obj[keyPath] = lagTilfeldigId()
+                    obj[keyPath] = createId()
                   }
                 }
                 return obj
@@ -41,6 +41,14 @@ export const idGenerator: Middleware<DBCore> = {
   },
 }
 
-function lagTilfeldigId(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString()
+let i = 1
+
+function createId(): string {
+  const date = new Date()
+  return [
+    date.getFullYear(),
+    (date.getMonth() + 1).toString().padStart(2, '0'),
+    date.getDate().toString().padStart(2, '0'),
+    (++i).toString().padStart(3, '0'),
+  ].join('')
 }

@@ -380,7 +380,14 @@ export interface Notat {
 export type FerdigstillNotatRequest = Omit<
   Notat,
   'opprettet' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
->
+> & {
+  klassifisering?: NotatKlassifisering
+}
+
+export enum NotatKlassifisering {
+  INTERNT = 'INTERNT',
+  EKSTERNT = 'EKSTERNT',
+}
 
 export interface NotatUtkast {
   id?: string

@@ -1,12 +1,18 @@
 import '@mdxeditor/editor/style.css'
 import { TrashIcon } from '@navikt/aksel-icons'
-import { Alert, Button, Checkbox, CheckboxGroup, HStack, TextField, VStack } from '@navikt/ds-react'
+import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, TextField, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
-import { Brevtype, FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
+import {
+  Brevtype,
+  FerdigstillNotatRequest,
+  MålformType,
+  NotatKlassifisering,
+  NotatType,
+} from '../../../types/types.internal.ts'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
@@ -19,6 +25,13 @@ import { useUtkastEndret } from './useUtkastEndret.ts'
 export interface NotaterProps {
   sakId: string
   lesevisning: boolean
+}
+
+interface NotatFormValues {
+  tittel: string
+  tekst: string
+  klassifisering?: NotatKlassifisering
+  bekreftSynlighet: boolean
 }
 
 export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
@@ -53,12 +66,13 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     reset,
     trigger,
     formState: { errors },
-  } = useForm({
+  } = useForm<NotatFormValues>({
     defaultValues,
   })
 
   const tittel = watch('tittel')
   const tekst = watch('tekst')
+  const klassifisering = watch('klassifisering')
 
   const { lagrerUtkast } = useUtkastEndret(NotatType.JOURNALFØRT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
 
@@ -111,7 +125,6 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   }
 
   const onSubmit = (data: any) => {
-    console.log('submitting data', data)
     journalførNotat()
     reset(defaultValues)
   }
@@ -123,9 +136,38 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     <form onSubmit={handleSubmit(onSubmit)}>
       {!notaterLaster && (
         <VStack gap="4" paddingBlock="6 0">
-          <Alert variant="info" size="small">
-            Notatet blir journalført og tilgjengelig for bruker på nav.no virkedagen etter at det er ferdigstilt.
-          </Alert>
+          <Controller
+            name="klassifisering"
+            control={control}
+            rules={{ required: 'Du må velge en verdi' }}
+            render={({ field }) => (
+              <RadioGroup
+                legend="Hvordan oppstod informasjonen i notatet?"
+                size="small"
+                value={field.value}
+                onChange={(e) => {
+                  field.onChange(e)
+                  trigger('klassifisering')
+                }}
+                error={errors.klassifisering?.message}
+              >
+                <Radio value={NotatKlassifisering.INTERNT}>Interne avklaringer</Radio>
+                <Radio value={NotatKlassifisering.EKSTERNT}>Saksopplysninger utenfra</Radio>
+              </RadioGroup>
+            )}
+          />
+
+          {klassifisering === NotatKlassifisering.EKSTERNT && (
+            <Alert variant="info" size="small">
+              Notatet blir journalført og tilgjengelig for bruker på nav.no virkedagen etter at det er ferdigstilt.
+            </Alert>
+          )}
+          {klassifisering === NotatKlassifisering.INTERNT && (
+            <Alert variant="info" size="small">
+              Notatet blir journalført, men ikke automatisk synlig for bruker på nav.no. Bruker kan når som helst be om
+              innsyn i notatet.
+            </Alert>
+          )}
           <Controller
             name="tittel"
             control={control}
@@ -204,7 +246,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
               type="button"
               size="small"
               onClick={async () => {
-                const isValid = await trigger(['tittel', 'tekst'])
+                const isValid = await trigger(['tittel', 'tekst', 'klassifisering'])
                 if (isValid) {
                   setVisJournalførNotatModal(true)
                 }

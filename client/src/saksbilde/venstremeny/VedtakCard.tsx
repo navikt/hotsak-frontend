@@ -6,11 +6,10 @@ import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
-import { postTildeling, putVedtak } from '../../io/http'
+import { putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
-import { OppgaveStatusType, OppgaveVersjon, Sak, VedtakStatusType } from '../../types/types.internal'
+import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
@@ -22,11 +21,11 @@ import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { useOverførGosys } from '../useOverførGosys'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 
 export interface VedtakCardProps {
   sak: Sak
   harNotatUtkast?: boolean
-  oppgave?: OppgaveApiOppgave
   lesevisning: boolean
 }
 
@@ -34,15 +33,8 @@ interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
+export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
   const { sakId } = sak
-
-  const oppgaveVersjon: OppgaveVersjon = oppgave
-    ? {
-        oppgaveId: oppgave.oppgaveId,
-        versjon: oppgave.versjon,
-      }
-    : {}
 
   const saksbehandler = useInnloggetSaksbehandler()
   const [loading, setLoading] = useState(false)
@@ -51,7 +43,8 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const erNotatPilot = useErNotatPilot()
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, oppgaveVersjon, 'sak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
+  const { endreOppgavetildeling } = useOppgaveService()
 
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
 
@@ -64,7 +57,7 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
   const opprettVedtak = async (data: VedtakFormValues) => {
     const { problemsammendrag } = data
     setLoading(true)
-    await putVedtak(sakId, oppgaveVersjon, problemsammendrag).catch(() => setLoading(false))
+    await putVedtak(sakId, problemsammendrag).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
@@ -74,7 +67,7 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
 
   const overtaSak = async () => {
     setLoading(true)
-    await postTildeling(sakId, oppgaveVersjon, true).catch(() => setLoading(false))
+    await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
     logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -137,7 +130,6 @@ export function VedtakCard({ sak, oppgave, lesevisning, harNotatUtkast = false }
           <Knappepanel>
             <IkkeTildelt
               sakId={sakId}
-              oppgaveVersjon={oppgaveVersjon}
               gåTilSak={false}
               onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
             ></IkkeTildelt>

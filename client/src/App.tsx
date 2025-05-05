@@ -15,6 +15,7 @@ import { PersonProvider } from './personoversikt/PersonContext'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
+import { OppgaveProvider } from './oppgave/OppgaveProvider.tsx'
 
 const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
@@ -25,7 +26,7 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
   logUserStats()
-  const SaksTittelMedSaksnummerHjelper = () => (
+  const SakTitle = () => (
     <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
   )
   return (
@@ -62,9 +63,11 @@ function App() {
                     element={
                       <RequireAuth>
                         <title>Hotsak - Journalføring</title>
-                        <DokumentProvider>
-                          <ManuellJournalføring />
-                        </DokumentProvider>
+                        <OppgaveProvider>
+                          <DokumentProvider>
+                            <ManuellJournalføring />
+                          </DokumentProvider>
+                        </OppgaveProvider>
                       </RequireAuth>
                     }
                   />
@@ -72,8 +75,10 @@ function App() {
                     path="/sak/:saksnummer/*"
                     element={
                       <RequireAuth>
-                        <SaksTittelMedSaksnummerHjelper />
-                        <Saksbilde />
+                        <SakTitle />
+                        <OppgaveProvider>
+                          <Saksbilde />
+                        </OppgaveProvider>
                       </RequireAuth>
                     }
                   />

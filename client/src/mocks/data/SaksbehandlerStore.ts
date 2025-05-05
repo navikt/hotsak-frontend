@@ -5,6 +5,11 @@ import { Gruppe, InnloggetSaksbehandler, NavIdent } from '../../state/authentica
 export class SaksbehandlerStore extends Dexie {
   private readonly sessionKey = 'innloggetSaksbehandlerId'
   private readonly saksbehandlere!: Table<InnloggetSaksbehandler, string>
+  private readonly defaultSaksbehandler: InnloggetSaksbehandler = lagSaksbehandler({
+    id: 'S112233',
+    navn: 'Silje Saksbehandler',
+    epost: 'silje.saksbehandler@nav.no',
+  })
 
   constructor() {
     super('SaksbehandlerStore')
@@ -18,11 +23,7 @@ export class SaksbehandlerStore extends Dexie {
     if (count === 0) {
       sessionStorage.removeItem(this.sessionKey)
       await this.lagreAlle([
-        lagSaksbehandler({
-          id: 'S112233',
-          navn: 'Silje Saksbehandler',
-          epost: 'silje.saksbehandler@nav.no',
-        }),
+        lagSaksbehandler(this.defaultSaksbehandler),
         lagSaksbehandler({
           id: 'V998877',
           navn: 'Vurderer Vilkårsen',
@@ -42,13 +43,8 @@ export class SaksbehandlerStore extends Dexie {
       ])
     }
     if (!this.getInnloggetSaksbehandlerId()) {
-      const saksbehandlere = await this.saksbehandlere.toArray()
-
-      const [initiellSaksbehandler] = await saksbehandlere.filter((s) => s.navn === 'Silje Saksbehandler')
-
-      console.log('populer', initiellSaksbehandler, this.saksbehandlere.toArray())
-
-      this.setInnloggetSaksbehandlerId(initiellSaksbehandler.id)
+      // console.log('populer', this.defaultSaksbehandler, await this.alle())
+      this.setInnloggetSaksbehandlerId(this.defaultSaksbehandler.id)
     }
     return
   }
@@ -57,34 +53,36 @@ export class SaksbehandlerStore extends Dexie {
     return this.saksbehandlere.bulkAdd(saksbehandlere, { allKeys: true })
   }
 
-  async hent(id: string) {
-    return this.saksbehandlere.get(id)
+  async hent(id: NavIdent): Promise<InnloggetSaksbehandler> {
+    const ansatt = await this.saksbehandlere.get(id)
+    if (!ansatt) {
+      throw Error(`Fant ikke ansatt med id: ${id}`)
+    }
+    return ansatt
   }
 
-  async alle() {
+  async alle(): Promise<InnloggetSaksbehandler[]> {
     return this.saksbehandlere.toArray()
   }
 
   async innloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
     const id = this.getInnloggetSaksbehandlerId() || ''
-    return this.saksbehandlere.get(id) as any // fixme
+    const saksbehandler = await this.saksbehandlere.get(id)
+    if (!saksbehandler) {
+      throw new Error('Ingen saksbehandler innlogget')
+    }
+    return saksbehandler
   }
 
-  async ikkeInnloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
-    const id = this.getInnloggetSaksbehandlerId() || ''
-    const arr = await this.saksbehandlere.toArray()
-    return arr.find((a) => a.id != id) as any // fixme
-  }
-
-  byttInnloggetSaksbehandler(id: string) {
+  byttInnloggetSaksbehandler(id: NavIdent): void {
     this.setInnloggetSaksbehandlerId(id)
   }
 
-  private getInnloggetSaksbehandlerId(): string | null {
+  private getInnloggetSaksbehandlerId(): NavIdent | null {
     return sessionStorage.getItem(this.sessionKey)
   }
 
-  private setInnloggetSaksbehandlerId(id: string): void {
+  private setInnloggetSaksbehandlerId(id: NavIdent): void {
     sessionStorage.setItem(this.sessionKey, id)
   }
 }

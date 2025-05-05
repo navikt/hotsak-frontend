@@ -1,9 +1,9 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
-import { respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
+import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
 
 interface JournalpostParams {
   journalpostId: string
@@ -13,7 +13,7 @@ interface DokumentParams extends JournalpostParams {
   dokumentId: string
 }
 
-export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barnebrillesakStore, oppgaveStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpostStore, sakStore }) => [
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)
@@ -22,7 +22,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     await delay(200)
     if (journalpost) {
       if (oppgave) {
-        journalpost.oppgave = oppgave!!
+        journalpost.oppgave = oppgave
       }
 
       return HttpResponse.json(journalpost)
@@ -67,19 +67,19 @@ export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, barne
     async ({ request }) => {
       const journalføring = await request.json()
 
-      const eksisternedeSakId = journalføring.sakId
+      const eksisterendeSakId = journalføring.sakId
       const tittel = journalføring.tittel
 
       await journalpostStore.journalfør(journalføring.journalpostId, tittel)
       await delay(500)
 
-      if (eksisternedeSakId) {
-        await barnebrillesakStore.knyttJournalpostTilSak(journalføring)
-        await barnebrillesakStore.tildel(eksisternedeSakId)
-        return HttpResponse.json({ sakId: eksisternedeSakId })
+      if (eksisterendeSakId) {
+        await sakStore.knyttJournalpostTilSak(journalføring)
+        await sakStore.tildel(eksisterendeSakId)
+        return HttpResponse.json({ sakId: eksisterendeSakId })
       } else {
-        const sakId = await barnebrillesakStore.opprettSak(journalføring)
-        await barnebrillesakStore.tildel(sakId)
+        const sakId = await sakStore.opprettSak(journalføring)
+        await sakStore.tildel(sakId)
 
         return HttpResponse.json({ sakId: sakId.toString() })
       }

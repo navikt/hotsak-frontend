@@ -1,6 +1,6 @@
 import type { HjelpemiddelArtikkel } from '../../types/types.internal'
 
-export const hjelpemiddeloversikt: HjelpemiddelArtikkel[][] = [
+export const hjelpemiddeloversikt: DeepNullable<Partial<HjelpemiddelArtikkel>>[][] = [
   [
     {
       antall: 1.0,
@@ -437,4 +437,4 @@ export const hjelpemiddeloversikt: HjelpemiddelArtikkel[][] = [
       grunndataKategoriKortnavn: null,
     },
   ],
-] as any
+]

@@ -155,7 +155,7 @@ const saksoversikt: Saksoversikt[] = [
           fagsystem: 'BARNEBRILLER',
           sakId: '2222',
         },
-        journalpostId: 1000,
+        journalpostId: '123456789',
         dokumentId: '2000',
       },
     ],

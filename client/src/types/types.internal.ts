@@ -1,16 +1,11 @@
-import { OppgaveApiOppgave } from './experimentalTypes'
+import type { OppgaveApiOppgave } from './experimentalTypes'
+import type { OppgaveId } from '../oppgave/oppgaveId.ts'
 
-export interface SakResponseBase {
+export interface SakResponse<T extends SakBase> {
+  data: T
   kanTildeles: boolean
   tilganger: Tilgang
   oppgave?: OppgaveApiOppgave
-}
-export interface SakResponse extends SakResponseBase {
-  data: Sak
-}
-
-export interface BarnebrillesakResponse extends SakResponseBase {
-  data: Barnebrillesak
 }
 
 export type Tilgang = {
@@ -28,6 +23,11 @@ export enum TilgangResultat {
   NEKT = 'NEKT',
 }
 
+export interface OppgaveVersjon {
+  oppgaveId?: OppgaveId
+  versjon?: number
+}
+
 export interface SakBase {
   sakId: string
   sakstype: Sakstype
@@ -42,17 +42,14 @@ export interface SakBase {
   vedtak?: VedtakType
 }
 
-export interface OppgaveVersjon {
-  oppgaveId?: string
-  versjon?: number
-}
-
 export interface Sak extends SakBase {
+  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
   greitÅViteFaktum: GreitÅViteFaktum[]
   hast?: Hast
 }
 
 export interface Barnebrillesak extends SakBase {
+  sakstype: Sakstype.BARNEBRILLER | Sakstype.TILSKUDD
   steg: StegType
   vilkårsgrunnlag?: Vilkårsgrunnlag
   vilkårsvurdering?: Vilkårsvurdering
@@ -327,7 +324,7 @@ export enum VedtaksgrunnlagType {
 }
 
 export interface VedtakPayload {
-  sakId: number | string
+  sakId: string
   status: VedtakStatusType
 }
 
@@ -521,7 +518,7 @@ export interface Oppgave {
   saksbehandler?: Saksbehandler
   kanTildeles: boolean
   hast?: Hast
-  oppgaveId?: string
+  oppgaveId?: OppgaveId
   versjon?: number
 }
 
@@ -604,13 +601,15 @@ export enum DokumentFormat {
 }
 
 export enum Sakstype {
-  SØKNAD = 'SØKNAD',
-  BESTILLING = 'BESTILLING',
-  TILSKUDD = 'TILSKUDD',
-  DOKUMENT = 'DOKUMENT',
   BARNEBRILLER = 'BARNEBRILLER',
+  BESTILLING = 'BESTILLING',
+  SØKNAD = 'SØKNAD',
+  TILSKUDD = 'TILSKUDD',
 }
 
+/**
+ * fixme -> endre navn til `Ansatt`
+ */
 export interface Saksbehandler {
   id: string
   navn: string
@@ -791,7 +790,7 @@ export interface Saksoversikt_Sak {
 
 export interface Saksoversikt_Barnebrille_Sak {
   sak: Saksoversikt_Sak
-  journalpostId?: number
+  journalpostId?: string
   dokumentId?: string
 }
 

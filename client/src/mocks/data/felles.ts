@@ -39,3 +39,7 @@ export async function lastDokument(navn: string): Promise<ArrayBuffer> {
   const response = await fetch(dokument.default)
   return response.arrayBuffer()
 }
+
+export function nåIso(): string {
+  return new Date().toISOString()
+}

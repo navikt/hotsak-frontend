@@ -1,12 +1,14 @@
 import { useParams } from 'react-router'
 import useSwr from 'swr'
+
 import type { Dokument } from '../types/types.internal'
-import { httpGet, ResponseError } from '../io/http'
+import { httpGet } from '../io/http'
+import type { HttpError } from '../io/HttpError.ts'
 
 interface JournalposterResponse {
   dokumenter: Dokument[]
   isLoading: boolean
-  isError: ResponseError
+  error: HttpError
 }
 
 export function useJournalposter(): JournalposterResponse {
@@ -16,7 +18,7 @@ export function useJournalposter(): JournalposterResponse {
   return {
     dokumenter: data?.data || ingenDokumenter,
     isLoading: !error && !data,
-    isError: error,
+    error,
   }
 }
 

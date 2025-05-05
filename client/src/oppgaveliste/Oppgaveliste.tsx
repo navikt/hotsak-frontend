@@ -1,8 +1,8 @@
 import { Box, Button, HStack, SortState, Table, Tag } from '@navikt/ds-react'
 import styled from 'styled-components'
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
@@ -89,7 +89,6 @@ export function Oppgaveliste() {
           <Tildeling
             oppgave={oppgave}
             lesevisning={!harSkrivetilgang}
-            oppgaveVersjon={{ oppgaveId: oppgave.oppgaveId, versjon: oppgave.versjon }}
             visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
             onMutate={mutate}
           />
@@ -214,7 +213,6 @@ export function Oppgaveliste() {
         return (
           <MenyKnapp
             sakId={oppgave.sakId}
-            oppgaveVersjon={{ oppgaveId: oppgave.oppgaveId, versjon: oppgave.versjon }}
             status={oppgave.status}
             tildeltSaksbehandler={oppgave.saksbehandler}
             gåTilSak={true}

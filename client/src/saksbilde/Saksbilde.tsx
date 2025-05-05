@@ -2,7 +2,6 @@ import { memo, Suspense } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 
 import { DokumentProvider } from '../dokument/DokumentContext'
-
 import { AlertError } from '../feilsider/AlertError'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { usePerson } from '../personoversikt/usePerson'
@@ -40,7 +39,7 @@ const SaksbildeContent = memo(() => {
     <>
       <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
       {(() => {
-        switch (sak.data.sakstype) {
+        switch (sak.data.sakstype as Sakstype) {
           case Sakstype.BARNEBRILLER:
             return (
               <DokumentProvider>

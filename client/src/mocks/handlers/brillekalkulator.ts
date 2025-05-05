@@ -1,8 +1,9 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { BeregnSatsRequest, BeregnSatsResponse } from '../../types/types.internal'
 import { beregnSats } from '../data/beregnSats'
 import type { StoreHandlersFactory } from '../data'
+import { delay } from './response'
 
 export const brillekalkulatorHandlers: StoreHandlersFactory = () => [
   http.post<never, BeregnSatsRequest, BeregnSatsResponse>(

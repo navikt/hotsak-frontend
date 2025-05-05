@@ -1,8 +1,8 @@
-import { BarnebrillesakResponse, OppgaveStatusType, StegType } from '../types/types.internal'
+import { Barnebrillesak, OppgaveStatusType, SakResponse, StegType } from '../types/types.internal'
 import { useSaksbehandlerErTildeltSak } from './useSaksbehandlerErTildeltSak'
 import { useSaksbehandlerHarSkrivetilgang } from './useSaksbehandlerHarSkrivetilgang'
 
-export function useSaksbehandlerKanRedigereBarnebrillesak(sakResponse?: BarnebrillesakResponse): boolean {
+export function useSaksbehandlerKanRedigereBarnebrillesak(sakResponse?: SakResponse<Barnebrillesak>): boolean {
   const sak = sakResponse?.data
   const tilganger = sakResponse?.tilganger
   const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)

@@ -19,7 +19,6 @@ export async function initMsw(): Promise<unknown> {
     hjelpemiddelStore,
     journalpostStore,
     sakStore,
-    barnebrillesakStore,
     oppgaveStore,
     notatStore,
     endreHjelpemiddelStore,
@@ -31,7 +30,6 @@ export async function initMsw(): Promise<unknown> {
     await hjelpemiddelStore.populer()
     await journalpostStore.populer()
     await sakStore.populer()
-    await barnebrillesakStore.populer()
     await oppgaveStore.populer()
     await notatStore.populer()
     await endreHjelpemiddelStore.populer()
@@ -47,17 +45,22 @@ export async function initMsw(): Promise<unknown> {
       saksbehandlerStore.byttInnloggetSaksbehandler(id)
     },
     async delete() {
-      return Promise.all([
-        endreHjelpemiddelStore.delete(),
-        barnebrillesakStore.delete(),
-        sakStore.delete(),
-        journalpostStore.delete(),
-        hjelpemiddelStore.delete(),
-        personStore.delete(),
-        saksbehandlerStore.delete(),
-        oppgaveStore.delete(),
-        notatStore.delete(),
-      ]).catch(console.warn)
+      const databases = await indexedDB.databases()
+      return await Promise.all(
+        databases.map((database) => {
+          if (database.name) {
+            console.log(`Sletter database: ${database.name}`)
+            return new Promise((resolve, reject) => {
+              const request = indexedDB.deleteDatabase(database.name!)
+              request.onsuccess = () => resolve(undefined)
+              request.onerror = () => reject(request.error)
+              request.onblocked = () => {
+                console.warn(`Sletting blokkert for: ${database.name}`)
+              }
+            })
+          }
+        })
+      )
     },
   }
 

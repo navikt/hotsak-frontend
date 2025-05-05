@@ -10,21 +10,13 @@ import { formatISO } from 'date-fns'
 
 type LagretPerson = Person
 
-/*
-interface LagretHjelpemiddelArtikkel extends HjelpemiddelArtikkel {
-  fnr: string
-}
-*/
-
 export class PersonStore extends Dexie {
   private readonly personer!: Table<LagretPerson, string>
-  // private readonly hjelpemidler!: Table<LagretHjelpemiddelArtikkel, string>
 
   constructor() {
     super('PersonStore')
     this.version(1).stores({
-      personer: '++fnr',
-      hjelpemidler: 'hmsnr,fnr',
+      personer: 'fnr',
     })
   }
 

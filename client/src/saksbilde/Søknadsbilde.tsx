@@ -2,8 +2,8 @@ import { HGrid } from '@navikt/ds-react'
 import { memo, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
-
 import styled from 'styled-components'
+
 import { AlertError } from '../feilsider/AlertError'
 import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
@@ -73,12 +73,7 @@ const SaksbildeContent = memo(() => {
             />
             <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
             {sak.data.sakstype === Sakstype.SØKNAD && (
-              <VedtakCard
-                sak={sak.data}
-                oppgave={sak.oppgave}
-                lesevisning={!harSkrivetilgang}
-                harNotatUtkast={harUtkast}
-              />
+              <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
             )}
             {erBestilling && (
               <BestillingCard

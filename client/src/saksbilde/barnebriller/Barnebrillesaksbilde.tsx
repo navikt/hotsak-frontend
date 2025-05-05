@@ -1,10 +1,9 @@
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
-
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
-
 import { memo, Suspense, useState } from 'react'
+
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
@@ -66,7 +65,6 @@ const BarnebrillesakContent = memo(() => {
             <>
               <MenyKnapp
                 sakId={sak.data.sakId}
-                oppgaveVersjon={{ oppgaveId: sak.oppgave?.oppgaveId, versjon: sak.oppgave?.versjon }}
                 tildeltSaksbehandler={sak.data.saksbehandler}
                 status={sak.data.status}
                 kanTildeles={sak.kanTildeles}

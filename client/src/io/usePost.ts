@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { HttpError } from './error'
+import { HttpError } from './HttpError.ts'
 
 export interface Resultat<T> {
   data?: T

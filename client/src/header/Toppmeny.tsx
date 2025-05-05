@@ -65,7 +65,7 @@ export function Toppmeny() {
       </Dropdown>
       <Dropdown>
         <InternalHeader.UserButton
-          name={`${saksbehandler.id} - ${saksbehandler.navn}`}
+          name={saksbehandler.navn}
           description={gjeldendeEnhet?.navn}
           as={Dropdown.Toggle}
           className="ml-auto"

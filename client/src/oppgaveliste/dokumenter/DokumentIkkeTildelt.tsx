@@ -1,14 +1,14 @@
 import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
-
 import { Button } from '@navikt/ds-react'
 
 import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { postOppgaveTildeling } from '../../io/http'
+import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
 
 export interface DokumentIkkeTildeltProps {
-  oppgaveId: string
+  oppgaveId: OppgaveId
   journalpostId: string
   gåTilSak: boolean
 }

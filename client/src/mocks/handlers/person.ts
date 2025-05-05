@@ -1,7 +1,7 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
-import { respondNotFound } from './response'
+import { delay, respondNotFound } from './response'
 
 export const personHandlers: StoreHandlersFactory = ({ personStore }) => [
   http.post<never, { fnr: string }>(`/api/person`, async ({ request }) => {

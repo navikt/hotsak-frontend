@@ -1,28 +1,27 @@
-import { MouseEvent, useState } from 'react'
+import { MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
-
 import { Button } from '@navikt/ds-react'
 
-import { postTildeling, ResponseError } from '../../io/http'
-import { OppgaveVersjon } from '../../types/types.internal.ts'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useInnloggetSaksbehandler } from '../../state/authentication'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
+import { HttpError } from '../../io/HttpError.ts'
 
 interface IkkeTildeltProps {
   sakId: number | string
-  oppgaveVersjon?: OppgaveVersjon
+  gjeldendeOppgave?: GjeldendeOppgave
   gåTilSak: boolean
   onTildelingKonflikt?(): void
 }
 
-export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
+export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetSaksbehandler()
-  const [isFetching, setIsFetching] = useState(false)
+  const { endreOppgavetildeling, state } = useOppgaveService(gjeldendeOppgave)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()
-  const oppdaterSakOgHistorie = () => {
+  const oppdaterSakOgSakshistorikk = () => {
     mutate(`api/sak/${sakId}`)
     mutate(`api/sak/${sakId}/historikk`)
   }
@@ -35,41 +34,36 @@ export function IkkeTildelt({ sakId, oppgaveVersjon = {}, gåTilSak = false, onT
       logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_SAK)
     }
 
-    if (!saksbehandler || isFetching) return
-    setIsFetching(true)
-    postTildeling(sakId, oppgaveVersjon, false)
+    if (!saksbehandler || state.loading) return
+    endreOppgavetildeling({ overtaHvisTildelt: false })
       .then(() => {
         if (gåTilSak) {
           const destinationUrl = `/sak/${sakId}/hjelpemidler`
-          navigate(destinationUrl)
+          return navigate(destinationUrl)
         } else {
-          oppdaterSakOgHistorie()
+          return oppdaterSakOgSakshistorikk()
         }
       })
-      .catch((e: ResponseError) => {
-        if (e.statusCode == 409 && onTildelingKonflikt) {
+      .catch((e: HttpError) => {
+        if (e.isConflict() && onTildelingKonflikt) {
           onTildelingKonflikt()
         } else {
-          setIsFetching(false)
-          oppdaterSakOgHistorie()
+          oppdaterSakOgSakshistorikk()
         }
       })
   }
 
   return (
-    <>
-      {
-        <Button
-          size={gåTilSak ? 'xsmall' : 'small'}
-          variant={gåTilSak ? 'tertiary' : 'secondary'}
-          onClick={tildel}
-          name="Ta saken"
-          disabled={isFetching}
-          loading={isFetching}
-        >
-          Ta saken
-        </Button>
-      }
-    </>
+    <Button
+      type="button"
+      size={gåTilSak ? 'xsmall' : 'small'}
+      variant={gåTilSak ? 'tertiary' : 'secondary'}
+      onClick={tildel}
+      name="Ta saken"
+      disabled={state.loading}
+      loading={state.loading}
+    >
+      Ta saken
+    </Button>
   )
 }

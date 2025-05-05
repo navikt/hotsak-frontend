@@ -9,41 +9,22 @@ import {
   Saksbehandler,
 } from '../../types/types.internal'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { IdGenerator } from './IdGenerator'
 import { SakStore } from './SakStore'
-import { BarnebrillesakStore } from './BarnebrillesakStore'
+import { nåIso } from './felles.ts'
 
-function lagNotat(
-  id: number,
-  { sakId, type, saksbehandler }: { sakId: string; type: NotatType; saksbehandler: Saksbehandler }
-): Notat {
-  return {
-    id: id.toString(),
-    sakId,
-    saksbehandler,
-    type,
-    journalpostId: '123',
-    dokumentId: '456',
-    tittel: 'Tittel på notat',
-    målform: MålformType.BOKMÅL,
-    tekst: 'Innhold i notat. Masse tekst og greier her.',
-    opprettet: new Date().toISOString(),
-    ferdigstilt: new Date().toISOString(),
-  }
-}
+type LagretNotat = Notat
+type InsertNotat = Omit<LagretNotat, 'id'>
 
 export class NotatStore extends Dexie {
-  private readonly notater!: Table<Omit<Notat, 'id'>, number>
+  private readonly notater!: Table<LagretNotat, string, InsertNotat>
 
   constructor(
-    private readonly idGenerator: IdGenerator,
     private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore,
-    private readonly barnebrilleSakStore: BarnebrillesakStore
+    private readonly sakStore: SakStore
   ) {
     super('NotatStore')
     this.version(1).stores({
-      notater: '++id,sakId',
+      notater: 'id,sakId',
     })
   }
 
@@ -53,17 +34,11 @@ export class NotatStore extends Dexie {
       return []
     }
 
-    const lagNotatMedId = (sakId: string, type: NotatType) =>
-      lagNotat(this.idGenerator.nesteId(), { sakId, saksbehandler, type })
-
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    const alleHjelpemiddelSaker = (await this.sakStore.alle()).map((sak) => sak.sakId)
-    const alleBarnebrillesaker = (await this.barnebrilleSakStore.alle()).map((sak) => sak.sakId)
-    const alleSaker = [...alleHjelpemiddelSaker, ...alleBarnebrillesaker]
+    const alleSaker = await this.sakStore.alle()
+    const notater = alleSaker.map(({ sakId }) => this.lagNotat(sakId, saksbehandler, NotatType.JOURNALFØRT))
 
-    const notater = alleSaker.map((sakId) => lagNotatMedId(sakId, NotatType.JOURNALFØRT))
-
-    this.notater.bulkAdd(notater, { allKeys: true })
+    return this.notater.bulkAdd(notater, { allKeys: true })
   }
 
   async alle() {
@@ -79,14 +54,14 @@ export class NotatStore extends Dexie {
       tittel: utkast.tittel || '',
       målform: MålformType.BOKMÅL,
       tekst: utkast.tekst || '',
-      opprettet: new Date().toISOString(),
+      opprettet: nåIso(),
     })
   }
 
-  async ferdigstillNotat(notatId: number, payload: FerdigstillNotatRequest) {
+  async ferdigstillNotat(notatId: string, payload: FerdigstillNotatRequest) {
     const notat = await this.notater.get(notatId)
     if (!notat) {
-      throw new Error(`Notat med id ${notatId} finnes ikke`)
+      throw new Error(`Notat med id: ${notatId} finnes ikke`)
     }
 
     this.notater.update(notatId, {
@@ -94,31 +69,47 @@ export class NotatStore extends Dexie {
       type: payload.type,
       tittel: payload.tittel,
       tekst: payload.tekst,
-      ferdigstilt: new Date().toISOString(),
+      ferdigstilt: nåIso(),
     })
 
     if (payload.type === NotatType.JOURNALFØRT) {
       setTimeout(() => {
-        console.log('Later som vi har fått melding fra joark om at notatet er journalført')
+        console.log('Later som vi har fått melding fra Joark om at notatet er journalført')
         this.notater.update(notatId, {
           ...notat,
-          journalpostId: '123',
-          dokumentId: '456',
+          journalpostId: '123456789',
+          dokumentId: '987654321',
         })
       }, 5000)
     }
   }
 
-  async oppdaterUtkast(sakId: string, notatId: number, utkast: NotatUtkast) {
+  async oppdaterUtkast(sakId: string, notatId: string, utkast: NotatUtkast) {
     const notat = await this.notater.where({ sakId, id: notatId }).first()
     this.notater.update(notatId, { ...notat, tittel: utkast.tittel, tekst: utkast.tekst })
   }
 
-  async slettNotat(notatId: number) {
+  async slettNotat(notatId: string) {
     return this.notater.delete(notatId)
   }
 
   async hentNotater(sakId: string) {
-    return (await this.notater.where('sakId').equals(sakId).sortBy('opprettet')).reverse() || []
+    const notater = await this.notater.where('sakId').equals(sakId).sortBy('opprettet')
+    return notater.reverse()
+  }
+
+  private lagNotat(sakId: string, saksbehandler: Saksbehandler, type: NotatType = NotatType.JOURNALFØRT): InsertNotat {
+    return {
+      sakId,
+      saksbehandler,
+      type,
+      tittel: 'Tittel på notat',
+      tekst: 'Innhold i notat. Masse tekst og greier her.',
+      opprettet: nåIso(),
+      ferdigstilt: nåIso(),
+      journalpostId: '123',
+      dokumentId: '456',
+      målform: MålformType.BOKMÅL,
+    }
   }
 }

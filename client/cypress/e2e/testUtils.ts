@@ -5,7 +5,6 @@ export const clearIndexDb = () => {
   cy.clearIndexedDb('JournalpostStore')
   cy.clearIndexedDb('OppgaveStore')
   cy.clearIndexedDb('SakStore')
-  cy.clearIndexedDb('BarnebrillesakStore')
 }
 
 export const plukkSak = (saksnummer: string) => {

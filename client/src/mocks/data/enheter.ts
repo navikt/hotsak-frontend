@@ -7,12 +7,12 @@ const vikafossen: Enhet = {
 
 const oslo: Enhet = {
   enhetsnummer: '4703',
-  enhetsnavn: 'Nav Hjelpemiddelsentral Oslo',
+  enhetsnavn: 'Nav hjelpemiddelsentral Oslo',
 }
 
 const agder: Enhet = {
   enhetsnummer: '4710',
-  enhetsnavn: 'Nav Hjelpemiddelsentral Agder',
+  enhetsnavn: 'Nav hjelpemiddelsentral Agder',
 }
 
 export const enheter = {

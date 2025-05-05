@@ -9,19 +9,19 @@ interface VilkårParams extends SakParams {
   vilkarId: string
 }
 
-export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ barnebrillesakStore }) => [
+export const vilkårsvurderingHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<SakParams, VurderVilkårRequest>('/api/sak/:sakId/vilkarsgrunnlag', async ({ request, params }) => {
     const sakId = params.sakId
-    const vurderVilkårRequest = await request.json()
-    await barnebrillesakStore.vurderVilkår(sakId, vurderVilkårRequest)
-    await barnebrillesakStore.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
+    const payload = await request.json()
+    await sakStore.vurderVilkår(sakId, payload)
+    await sakStore.oppdaterStatus(sakId, OppgaveStatusType.TILDELT_SAKSBEHANDLER)
     return respondCreated()
   }),
 
   http.put<VilkårParams, OppdaterVilkårRequest>('/api/sak/:sakId/vilkar/:vilkarId', async ({ request, params }) => {
     const { vilkarId } = params
-    const oppdaterVilkårRequest = await request.json()
-    await barnebrillesakStore.oppdaterVilkår(vilkarId, oppdaterVilkårRequest)
+    const payload = await request.json()
+    await sakStore.oppdaterVilkår(vilkarId, payload)
     return respondNoContent()
   }),
 ]

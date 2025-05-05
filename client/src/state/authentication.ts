@@ -24,10 +24,13 @@ const kunTilbehørPilotEnheter = [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND]
 
 export type NavIdent = string
 
-export interface InnloggetSaksbehandler {
+export interface Ansatt {
   readonly id: NavIdent
   readonly navn: string
   readonly epost: string
+}
+
+export interface InnloggetSaksbehandler extends Ansatt {
   readonly grupper: Gruppe[]
   readonly enheter: Array<{
     id: string

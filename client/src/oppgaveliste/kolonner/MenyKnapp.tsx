@@ -1,21 +1,18 @@
 import { MouseEvent, useState } from 'react'
-
 import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
-import { deleteFjernTildeling, postTildeling } from '../../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
 import { useInnloggetSaksbehandler } from '../../state/authentication'
-import { OppgaveStatusType, OppgaveVersjon, Saksbehandler, Sakstype } from '../../types/types.internal'
+import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
+import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 
 interface MenyKnappProps {
   sakId: string
-  oppgaveVersjon?: OppgaveVersjon
   status: OppgaveStatusType
   tildeltSaksbehandler?: Saksbehandler
   sakstype?: Sakstype
@@ -29,7 +26,6 @@ interface MenyKnappProps {
 
 export function MenyKnapp({
   sakId,
-  oppgaveVersjon = {},
   status,
   tildeltSaksbehandler,
   kanTildeles,
@@ -53,11 +49,8 @@ export function MenyKnapp({
   })
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(
-    sakId,
-    oppgaveVersjon,
-    'barnebrillesak_overført_gosys_v1'
-  )
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
+  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveService()
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
@@ -88,7 +81,7 @@ export function MenyKnapp({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    postTildeling(sakId, oppgaveVersjon, true)
+    endreOppgavetildeling({ overtaHvisTildelt: true })
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
@@ -102,7 +95,7 @@ export function MenyKnapp({
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)
-    deleteFjernTildeling(sakId, oppgaveVersjon)
+    fjernOppgavetildeling()
       .catch(() => setIsFetching(false))
       .then(() => {
         logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)

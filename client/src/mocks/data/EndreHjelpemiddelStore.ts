@@ -28,15 +28,12 @@ export class EndreHjelpemiddelStore extends Dexie {
 
   async hent(sakId: string) {
     const endringer = await this.endredeHjelpemidler.get(sakId)
-
     if (!endringer) return
-
     return endringer
   }
 
   async endreHjelpemiddel(sakId: string, request: EndretHjelpemiddel) {
     const endringer = await this.hent(sakId)
-
     if (!endringer) return
 
     this.transaction('rw', this.endredeHjelpemidler, () => {
@@ -45,11 +42,14 @@ export class EndreHjelpemiddelStore extends Dexie {
           (endretHjelpemiddel) => endretHjelpemiddel.hjelpemiddelId === request.hjelpemiddelId
         )
       ) {
-        const end = endringer.endredeHjelpemidler
-          // TODO hent originalt hmsnummer fra behovsmelding og sjekk om det er likt som det endres til. I så fall kan listen tømmes.
-          // Må få på plass behovsmelding store først
-          /*.filter((endretHjelpemiddel) => {
-            return endretHjelpemiddel.hmsArtNr !== request.hmsArtNr})*/
+        const endredeHjelpemidler = endringer.endredeHjelpemidler
+          // fixme -> Hent originalt hmsnr fra behovsmelding og sjekk om det er likt som det det endres til. I så fall kan listen tømmes.
+          // Må få på plass behovsmelding store først.
+          /*
+          .filter((endretHjelpemiddel) => {
+            return endretHjelpemiddel.hmsArtNr !== request.hmsArtNr
+          })
+          */
           .map((endretHjelpemiddel) => {
             if (endretHjelpemiddel.hjelpemiddelId === request.hjelpemiddelId) {
               return {
@@ -62,10 +62,9 @@ export class EndreHjelpemiddelStore extends Dexie {
             return endretHjelpemiddel
           })
 
-        this.endredeHjelpemidler.update(sakId, { sakId, endredeHjelpemidler: end })
+        this.endredeHjelpemidler.update(endringer.sakId, { endredeHjelpemidler })
       } else {
-        return this.endredeHjelpemidler.update(sakId, {
-          sakId,
+        return this.endredeHjelpemidler.update(endringer.sakId, {
           endredeHjelpemidler: [
             ...endringer.endredeHjelpemidler,
             {

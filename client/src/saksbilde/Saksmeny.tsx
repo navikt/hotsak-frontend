@@ -6,7 +6,9 @@ import { postHenleggelse } from '../io/http.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
-import { useSaksbehandlere } from '../saksbehandler/useSaksbehandlere.ts'
+import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
+import { useOppgaveService } from '../oppgave/OppgaveService.ts'
+import type { NavIdent } from '../state/authentication.ts'
 
 export function Saksmeny() {
   const { sakId, kanBehandleSak } = useSaksregler()
@@ -75,8 +77,10 @@ const henleggSakÅrsaker = ['Duplikat sak']
 
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
+  const { behandlere } = useOppgavebehandlere()
+  const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
-  const { saksbehandlere } = useSaksbehandlere()
+  const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
   return (
     <BekreftelseModal
       open={open}
@@ -89,7 +93,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       avbrytButtonVariant="primary"
       onBekreft={async () => {
         setLoading(true)
-        await postHenleggelse(sakId)
+        await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, overtaHvisTildelt: true })
         await mutateSak(sakId)
         setLoading(false)
         return onClose()
@@ -97,14 +101,17 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       onClose={onClose}
     >
       <VStack gap="4">
-        <Alert variant="info" size="small">
-          Dette er bare en mockup og funker ikke på ekte i dev enda
-        </Alert>
         <form role="search">
-          <Select label="Navn" size="small">
-            {saksbehandlere.map((saksbehandler) => (
-              <option key={saksbehandler.id} value={saksbehandler.id}>
-                {saksbehandler.navn}
+          <Select
+            label="Navn"
+            size="small"
+            onChange={(event) => {
+              setValgtSaksbehandler(event.target.value)
+            }}
+          >
+            {behandlere.map((behandler) => (
+              <option key={behandler.id} value={behandler.id}>
+                {behandler.navn}
               </option>
             ))}
           </Select>

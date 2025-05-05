@@ -6,8 +6,9 @@ import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../type
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
 import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
+import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 
-export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }) => [
+export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
     const url = new URL(request.url)
     const oppgavetype = url.searchParams.get('oppgavetype')
@@ -36,6 +37,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore }
       return HttpResponse.json(pagedOppgaver)
     }
   }),
+
+  http.get<never, never, Oppgavebehandlere>('/api/oppgaver-v2/:oppgaveId/behandlere', async () => {
+    const behandlere = await saksbehandlerStore.alle()
+    await delay(75)
+    return HttpResponse.json({ behandlere })
+  }),
+
   http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     await oppgaveStore.tildel(params.oppgaveId)
     console.log(`Tildeler oppgaveId: ${params.oppgaveId}`)

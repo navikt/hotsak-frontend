@@ -6,7 +6,7 @@ import { postHenleggelse } from '../io/http.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
 import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
-import { useSaksbehandlere } from '../saksbehandler/useSaksbehandlere.ts'
+import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveService } from '../oppgave/OppgaveService.ts'
 import type { NavIdent } from '../state/authentication.ts'
 
@@ -77,10 +77,10 @@ const henleggSakÅrsaker = ['Duplikat sak']
 
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
+  const { behandlere } = useOppgavebehandlere()
   const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
   const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
-  const { saksbehandlere } = useSaksbehandlere()
   return (
     <BekreftelseModal
       open={open}
@@ -109,9 +109,9 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
               setValgtSaksbehandler(event.target.value)
             }}
           >
-            {saksbehandlere.map((saksbehandler) => (
-              <option key={saksbehandler.id} value={saksbehandler.id}>
-                {saksbehandler.navn}
+            {behandlere.map((behandler) => (
+              <option key={behandler.id} value={behandler.id}>
+                {behandler.navn}
               </option>
             ))}
           </Select>

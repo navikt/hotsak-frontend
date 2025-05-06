@@ -10,9 +10,4 @@ export const saksbehandlerHandlers: StoreHandlersFactory = ({ saksbehandlerStore
     await delay(75)
     return HttpResponse.json(innloggetSaksbehandler)
   }),
-  http.get<never, never, InnloggetSaksbehandler>('/api/saksbehandlere/meg', async () => {
-    const innloggetSaksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
-    await delay(75)
-    return HttpResponse.json(innloggetSaksbehandler)
-  }),
 ]

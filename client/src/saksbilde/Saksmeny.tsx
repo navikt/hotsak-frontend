@@ -109,6 +109,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
               setValgtSaksbehandler(event.target.value)
             }}
           >
+            <option>Velg saksbehandler</option>
             {behandlere.map((behandler) => (
               <option key={behandler.id} value={behandler.id}>
                 {behandler.navn}

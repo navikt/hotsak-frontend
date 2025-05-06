@@ -1,7 +1,7 @@
 import '@mdxeditor/editor/style.css'
-import { Box, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
+import { Box, List, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Brødtekst, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Etikett, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
@@ -20,8 +20,8 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
   const filterOptions = [
     { key: 'ALLE', label: 'Alle' },
-    { key: NotatType.INTERNT.toString(), label: 'Interne' },
-    { key: NotatType.JOURNALFØRT.toString(), label: 'Journalførte' },
+    { key: NotatType.INTERNT.toString(), label: 'Internt arbeidsnotat' },
+    { key: NotatType.JOURNALFØRT.toString(), label: 'Forvaltningsnotat' },
   ]
   const [filter, setFilter] = useState(['ALLE'])
 
@@ -29,15 +29,33 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
     <>
       <VStack gap="2">
         <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
+          <Etikett>Arbeidsnotat</Etikett>
           <Brødtekst spacing>
-            Journalføringsnotat skal brukes hvis du har mottatt saksopplysninger utenfra som er med på å avgjøre
-            utfallet av en sak. Når du ferdigstiller journalføringsnotatet, blir det tilgjengelig for innbygger neste
-            virkedag på innlogget side på nav.no.
+            Brukes for egne notater, for eksempel huskelapper til deg selv. Disse journalføres ikke. Merk at brukere kan
+            få innsyn i interne notater hvis de ber om det.
           </Brødtekst>
+          <Etikett>Forvaltningsnotat</Etikett>
           <Brødtekst>
-            Internt notat brukes for egne notater i arbeidsprosessen og drøftinger mellom kolleger. Disse journalføres
-            ikke. Merk at brukeren kan få innsyn i interne notater hvis de ber om det.
+            Brukes hvis du skal dokumentere opplysninger som kan ha betydning for utfallet av en sak. Disse notatene
+            blir journalført. Vi har to typer forvaltningsnotat:
           </Brødtekst>
+          <List size="small" as="ul">
+            <List.Item>
+              <Etikett>Interne saksopplysninger:</Etikett>
+              <Brødtekst>
+                Opplysninger som kan ha betydning for saken som for eksempel gjengir innholdet i en iakttakelse, et
+                møte, en befaring eller en uttalelse fra intern fagperson. Notatet vil ikke være synlig på brukers side
+                på nav.no, men bruker vil kunne be om innsyn i det.
+              </Brødtekst>
+            </List.Item>
+            <List.Item>
+              <Etikett>Eksterne saksopplysninger: </Etikett>
+              <Brødtekst>
+                Opplysninger som gjengir innholdet i en henvendelse eller dialog med tredjepart. Bruker vil få innsyn i
+                notatet på innlogget side på nav.no fra første virkedag etter at det er ferdigstilt.
+              </Brødtekst>
+            </List.Item>
+          </List>
         </ReadMore>
         <Box paddingBlock="6 0">
           <ToggleGroup
@@ -46,8 +64,8 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             label="Opprett nytt notat"
             onChange={(notatType) => setNotatType(notatType)}
           >
-            <ToggleGroup.Item value={NotatType.INTERNT.toString()} label={`Internt notat`} />
-            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label={`Journalføringsnotat`} />
+            <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt arbeidsnotat" />
+            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Forvaltningsnotat" />
           </ToggleGroup>
         </Box>
       </VStack>

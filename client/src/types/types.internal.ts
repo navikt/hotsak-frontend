@@ -363,6 +363,7 @@ export interface Notat {
   id: string
   sakId: string
   saksbehandler: Saksbehandler
+  klassifisering?: NotatKlassifisering | null
   type: NotatType
   tittel: string
   tekst: string
@@ -377,13 +378,10 @@ export interface Notat {
 export type FerdigstillNotatRequest = Omit<
   Notat,
   'opprettet' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
-> & {
-  klassifisering?: NotatKlassifisering
-}
-
+>
 export enum NotatKlassifisering {
-  INTERNT = 'INTERNT',
-  EKSTERNT = 'EKSTERNT',
+  INTERNE_SAKSOPPLYSNINGER = 'INTERNE_SAKSOPPLYSNINGER',
+  EKSTERNE_SAKSOPPLYSNINGER = 'EKSTERNE_SAKSOPPLYSNINGER',
 }
 
 export interface NotatUtkast {
@@ -391,6 +389,7 @@ export interface NotatUtkast {
   tittel?: string
   tekst?: string
   type: NotatType
+  klassifisering?: NotatKlassifisering | null
 }
 
 export enum NotatType {

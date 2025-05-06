@@ -6,7 +6,6 @@ import { useRef, useState } from 'react'
 import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { Notat, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
-import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from './markdown/MarkdownEditor.tsx'
 import { NotatActions } from './NotatActions.tsx'
@@ -27,7 +26,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         <VStack gap="3">
           <HStack gap="2" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
-              {storForbokstavIOrd(notat.type)}
+              {notat.type === NotatType.INTERNT ? 'Internt arbeidsnotat' : 'Forvaltningsnotat'}
             </Tag>
             <Spacer />
             <NotatActions notat={notat} mutate={mutateNotater} />

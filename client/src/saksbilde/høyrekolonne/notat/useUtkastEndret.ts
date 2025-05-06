@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
 import { oppdaterNotatUtkast, opprettNotatUtkast } from '../../../io/http'
-import { NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
+import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -9,7 +9,8 @@ export function useUtkastEndret(
   tittel: string,
   tekst: string,
   mutateNotater: KeyedMutator<Saksnotater>,
-  aktivtUtkast?: NotatUtkast
+  aktivtUtkast?: NotatUtkast,
+  klassifisering?: NotatKlassifisering | null
 ) {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
@@ -17,22 +18,22 @@ export function useUtkastEndret(
 
   useEffect(() => {
     if (!oppretterNyttUtkast) {
-      utkastEndret(tittel, tekst)
+      utkastEndret(tittel, tekst, klassifisering)
     }
-  }, [tittel, tekst, oppretterNyttUtkast])
+  }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
-  const utkastEndret = async (tittel: string, tekst: string) => {
-    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '')) {
+  const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
+    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '' || klassifisering)) {
       setLagrerUtkast(true)
       setOppretterNyttUtkast(true)
-      await opprettNotatUtkast(sakId, { tittel, tekst, type })
+      await opprettNotatUtkast(sakId, { tittel, tekst, klassifisering, type })
       await mutateNotater()
       setOppretterNyttUtkast(false)
-      setLagrerUtkast(true)
+      setLagrerUtkast(false)
     }
 
     if (debounceTimer) clearTimeout(debounceTimer)
-    if (tittel !== '' || tekst !== '') {
+    if (tittel !== '' || tekst !== '' || klassifisering) {
       setDebounceTimer(
         setTimeout(async () => {
           setLagrerUtkast(true)
@@ -42,6 +43,7 @@ export function useUtkastEndret(
             id: aktivtUtkast?.id,
             tittel,
             tekst,
+            klassifisering,
             type,
           })
           mutateNotater()

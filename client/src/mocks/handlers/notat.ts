@@ -12,8 +12,8 @@ interface NotatParams extends SakParams {
 
 export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   http.post<SakParams, NotatUtkast>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
-    const { type, tittel, tekst } = await request.json()
-    await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst })
+    const { type, tittel, tekst, klassifisering } = await request.json()
+    await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst, klassifisering })
     await delay(500)
     return respondNoContent()
   }),
@@ -36,8 +36,8 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
   }),
 
   http.put<NotatParams, NotatUtkast>(`/api/sak/:sakId/notater/:notatId`, async ({ request, params }) => {
-    const { type, tittel, tekst } = await request.json()
-    await notatStore.oppdaterUtkast(params.sakId, params.notatId, { type, tittel, tekst })
+    const { type, tittel, tekst, klassifisering } = await request.json()
+    await notatStore.oppdaterUtkast(params.sakId, params.notatId, { type, tittel, tekst, klassifisering })
     await delay(500)
     return respondNoContent()
   }),

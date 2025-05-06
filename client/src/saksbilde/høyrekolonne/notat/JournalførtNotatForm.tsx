@@ -30,7 +30,7 @@ export interface NotaterProps {
 interface NotatFormValues {
   tittel: string
   tekst: string
-  klassifisering?: NotatKlassifisering
+  klassifisering?: NotatKlassifisering | null
   bekreftSynlighet: boolean
 }
 
@@ -56,6 +56,7 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     tittel: '',
     tekst: '',
     bekreftSynlighet: false,
+    klassifisering: null,
   }
 
   const {
@@ -74,12 +75,22 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
   const tekst = watch('tekst')
   const klassifisering = watch('klassifisering')
 
-  const { lagrerUtkast } = useUtkastEndret(NotatType.JOURNALFØRT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
+  const { lagrerUtkast } = useUtkastEndret(
+    NotatType.JOURNALFØRT,
+    sakId,
+    tittel,
+    tekst,
+    mutateNotater,
+    aktivtUtkast,
+    klassifisering
+  )
 
   useEffect(() => {
     if (aktivtUtkast && !aktivtUtkastHentet) {
       setValue('tittel', aktivtUtkast.tittel || '')
       setValue('tekst', aktivtUtkast.tekst || '')
+
+      setValue('klassifisering', aktivtUtkast.klassifisering)
       setAktivtUtkastHentet(true)
     }
   }, [aktivtUtkast, aktivtUtkastHentet, setValue])
@@ -90,8 +101,9 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
       sakId,
       målform: MålformType.BOKMÅL,
       type: NotatType.JOURNALFØRT,
-      tittel: tittel,
-      tekst: tekst,
+      tittel,
+      tekst,
+      klassifisering,
     }
   }
 
@@ -124,14 +136,13 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
     setVisSlettUtkastModal(false)
   }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     journalførNotat()
     reset(defaultValues)
   }
 
   const readOnly = lesevisning || journalførerNotat
 
-  // TODO Se hvordan vi kan dette felles for begge formsene
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {!notaterLaster && (
@@ -151,21 +162,22 @@ export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
                 }}
                 error={errors.klassifisering?.message}
               >
-                <Radio value={NotatKlassifisering.INTERNT}>Interne avklaringer</Radio>
-                <Radio value={NotatKlassifisering.EKSTERNT}>Saksopplysninger utenfra</Radio>
+                <Radio value={NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER}>Interne saksopplysninger</Radio>
+                <Radio value={NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER}>Eksterne saksopplysninger</Radio>
               </RadioGroup>
             )}
           />
 
-          {klassifisering === NotatKlassifisering.EKSTERNT && (
+          {klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
             <Alert variant="info" size="small">
-              Notatet blir journalført og tilgjengelig for bruker på nav.no virkedagen etter at det er ferdigstilt.
+              Notatet blir journalført. Bruker vil få innsyn i notatet på innlogget side på nav.no fra første virkedag
+              etter at det er ferdigstilt.
             </Alert>
           )}
-          {klassifisering === NotatKlassifisering.INTERNT && (
+          {klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
             <Alert variant="info" size="small">
-              Notatet blir journalført, men ikke automatisk synlig for bruker på nav.no. Bruker kan når som helst be om
-              innsyn i notatet.
+              Notatet blir journalført. Notatet vil ikke være tilgjengelig på innlogget side på nav.no, men bruker kan
+              be om innsyn i det.
             </Alert>
           )}
           <Controller

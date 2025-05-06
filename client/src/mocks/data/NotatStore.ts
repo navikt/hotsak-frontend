@@ -4,6 +4,7 @@ import {
   FerdigstillNotatRequest,
   MålformType,
   Notat,
+  NotatKlassifisering,
   NotatType,
   NotatUtkast,
   Saksbehandler,
@@ -52,6 +53,7 @@ export class NotatStore extends Dexie {
       saksbehandler,
       type: utkast.type,
       tittel: utkast.tittel || '',
+      klassifisering: utkast.klassifisering,
       målform: MålformType.BOKMÅL,
       tekst: utkast.tekst || '',
       opprettet: nåIso(),
@@ -69,6 +71,8 @@ export class NotatStore extends Dexie {
       type: payload.type,
       tittel: payload.tittel,
       tekst: payload.tekst,
+      klassifisering: payload.klassifisering,
+
       ferdigstilt: nåIso(),
     })
 
@@ -86,7 +90,12 @@ export class NotatStore extends Dexie {
 
   async oppdaterUtkast(sakId: string, notatId: string, utkast: NotatUtkast) {
     const notat = await this.notater.where({ sakId, id: notatId }).first()
-    this.notater.update(notatId, { ...notat, tittel: utkast.tittel, tekst: utkast.tekst })
+    this.notater.update(notatId, {
+      ...notat,
+      tittel: utkast.tittel,
+      tekst: utkast.tekst,
+      klassifisering: utkast.klassifisering,
+    })
   }
 
   async slettNotat(notatId: string) {
@@ -105,6 +114,7 @@ export class NotatStore extends Dexie {
       type,
       tittel: 'Tittel på notat',
       tekst: 'Innhold i notat. Masse tekst og greier her.',
+      klassifisering: NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER,
       opprettet: nåIso(),
       ferdigstilt: nåIso(),
       journalpostId: '123',

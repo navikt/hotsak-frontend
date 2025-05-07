@@ -5,7 +5,7 @@ import { Brødtekst, Etikett, Mellomtittel, Tekst } from '../../../felleskompone
 import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
-import { JournalførtNotatForm } from './JournalførtNotatForm.tsx'
+import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
 import { NotatCard } from './NotatCard.tsx'
 import { useNotater } from './useNotater.tsx'
 
@@ -29,7 +29,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
     <>
       <VStack gap="2">
         <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
-          <Etikett>Arbeidsnotat</Etikett>
+          <Etikett>Internt arbeidsnotat</Etikett>
           <Brødtekst spacing>
             Brukes for egne notater, for eksempel huskelapper til deg selv. Disse journalføres ikke. Merk at brukere kan
             få innsyn i interne notater hvis de ber om det.
@@ -76,7 +76,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       )}
 
       {notatType === NotatType.JOURNALFØRT ? (
-        <JournalførtNotatForm sakId={sakId} lesevisning={lesevisning} />
+        <ForvaltningsnotatForm sakId={sakId} lesevisning={lesevisning} />
       ) : (
         <InterntNotatForm sakId={sakId} lesevisning={lesevisning} />
       )}

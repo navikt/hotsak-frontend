@@ -34,7 +34,7 @@ interface NotatFormValues {
   bekreftSynlighet: boolean
 }
 
-export function JournalførtNotatForm({ sakId, lesevisning }: NotaterProps) {
+export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const [sletter, setSletter] = useState(false)
   const { sak } = useSak()
 

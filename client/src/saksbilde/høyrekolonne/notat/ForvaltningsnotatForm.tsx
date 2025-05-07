@@ -232,7 +232,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
                 setVisUtkastManglerModal(true)
               }
             }}
-            loading={klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && journalførerNotat}
           >
             Forhåndsvis dokument
           </Button>
@@ -267,6 +266,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
                   }
                 }
               }}
+              loading={klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && journalførerNotat}
             >
               Journalfør notat
             </Button>

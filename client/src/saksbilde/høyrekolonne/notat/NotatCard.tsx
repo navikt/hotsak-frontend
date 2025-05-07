@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Spacer, Tag, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
-import { Notat, NotatType } from '../../../types/types.internal.ts'
+import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from './markdown/MarkdownEditor.tsx'
@@ -28,6 +28,12 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
               {notat.type === NotatType.INTERNT ? 'Internt arbeidsnotat' : 'Forvaltningsnotat'}
             </Tag>
+
+            {notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
+              <Tag variant="success-moderate" size="small">
+                Synlig for bruker
+              </Tag>
+            )}
             <Spacer />
             <NotatActions notat={notat} mutate={mutateNotater} />
           </HStack>

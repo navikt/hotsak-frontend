@@ -89,7 +89,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     if (aktivtUtkast && !aktivtUtkastHentet) {
       setValue('tittel', aktivtUtkast.tittel || '')
       setValue('tekst', aktivtUtkast.tekst || '')
-
       setValue('klassifisering', aktivtUtkast.klassifisering)
       setAktivtUtkastHentet(true)
     }
@@ -233,6 +232,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
                 setVisUtkastManglerModal(true)
               }
             }}
+            loading={klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && journalførerNotat}
           >
             Forhåndsvis dokument
           </Button>
@@ -260,7 +260,11 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
               onClick={async () => {
                 const isValid = await trigger(['tittel', 'tekst', 'klassifisering'])
                 if (isValid) {
-                  setVisJournalførNotatModal(true)
+                  if (klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER) {
+                    setVisJournalførNotatModal(true)
+                  } else {
+                    onSubmit()
+                  }
                 }
               }}
             >

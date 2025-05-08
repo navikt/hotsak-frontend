@@ -1,7 +1,7 @@
 import { ErrorSummary } from '@navikt/ds-react'
-import { useErNotatPilot } from '../../state/authentication'
-import { useNavigate, createSearchParams } from 'react-router-dom'
 
+import { useErNotatPilot } from '../../tilgang/useTilgang.ts'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 
 export function NotatUtkastVarsel() {

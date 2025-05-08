@@ -1,12 +1,12 @@
 import { ReactNode, useMemo, useState } from 'react'
-import { GjeldendeOppgave, OppgaveContext, OppgaveState } from './OppgaveContext.ts'
+import { GjeldendeOppgave, OppgaveContext, OppgaveContextType } from './OppgaveContext.ts'
 
 /**
  * Holder på hvilken oppgave vi er i kontekst av.
  */
 export function OppgaveProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<Partial<GjeldendeOppgave>>({})
-  const value = useMemo<OppgaveState>(() => {
+  const value = useMemo<OppgaveContextType>(() => {
     return {
       ...state,
       setGjeldendeOppgave(oppgave) {

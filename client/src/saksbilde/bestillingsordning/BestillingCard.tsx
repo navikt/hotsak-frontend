@@ -7,7 +7,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
+import { useErNotatPilot, useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
 import {
   AvvisBestilling,
@@ -38,7 +38,7 @@ export interface BestillingCardProps {
 
 export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
-  const saksbehandler = useInnloggetSaksbehandler()
+  const innloggetAnsatt = useInnloggetAnsatt()
   const { endreOppgavetildeling } = useOppgaveService()
   const { behovsmelding } = useBehovsmelding()
   const [loading, setLoading] = useState(false)
@@ -140,7 +140,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
 
   if (
     bestilling.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
-    bestilling.saksbehandler?.id !== saksbehandler.id
+    bestilling.saksbehandler?.id !== innloggetAnsatt.id
   ) {
     return (
       <VenstremenyCard heading="Saksbehandler">

@@ -1,21 +1,31 @@
 import { createContext } from 'react'
-import type { InnloggetSaksbehandler } from '../state/authentication.ts'
 
-const innloggetSaksbehandler: InnloggetSaksbehandler = {
-  id: '',
-  navn: '',
-  epost: '',
-  grupper: [],
-  enheter: [],
-  gradering: [],
-  enhetsnumre: [],
+import type { AnsattEnhet, InnloggetAnsatt } from './Ansatt.ts'
+
+export interface TilgangContextType {
+  innloggetAnsatt: InnloggetAnsatt
+  valgtEnhet: AnsattEnhet
+  setValgtEnhet(nummer: string): void
 }
 
-export const initialState = {
-  innloggetSaksbehandler,
-} as const
+export const initialState: TilgangContextType = {
+  innloggetAnsatt: {
+    id: '',
+    navn: '',
+    epost: '',
+    grupper: [],
+    enheter: [],
+    gradering: [],
+    enhetsnumre: [],
+  },
+  valgtEnhet: {
+    id: '',
+    nummer: '',
+    navn: '',
+    gjeldende: true,
+  },
+  setValgtEnhet() {},
+}
 
-export type TilgangState = typeof initialState
-
-export const TilgangContext = createContext<TilgangState>(initialState)
+export const TilgangContext = createContext<TilgangContextType>(initialState)
 TilgangContext.displayName = 'Tilgang'

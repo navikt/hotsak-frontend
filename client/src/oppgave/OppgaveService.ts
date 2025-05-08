@@ -1,6 +1,6 @@
 import { GjeldendeOppgave, useOppgaveContext } from './OppgaveContext.ts'
 import { erEksternOppgaveId, erInternOppgaveId, erSakOppgaveId, OppgaveId } from './oppgaveId.ts'
-import type { NavIdent } from '../state/authentication.ts'
+import type { NavIdent } from '../tilgang/Ansatt.ts'
 import { baseUrl, del, ifMatchVersjon, post } from '../io/http.ts'
 import { Service, useServiceState } from '../service/Service.ts'
 
@@ -10,6 +10,7 @@ export interface EndreOppgavetildelingRequest {
    * Angis hvis en spesifikk ansatt skal bli saksbehandler.
    */
   saksbehandlerId?: NavIdent | null
+  melding?: string | null
   /**
    * `true` hvis tildelingen skal skje selv om oppgaven allerede er tildelt en annen saksbehandler.
    */

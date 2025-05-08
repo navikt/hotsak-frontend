@@ -11,15 +11,15 @@ export interface GjeldendeOppgave {
   sakId?: string | number
 }
 
-export interface OppgaveState extends Partial<GjeldendeOppgave> {
+export interface OppgaveContextType extends Partial<GjeldendeOppgave> {
   setGjeldendeOppgave(oppgave?: GjeldendeOppgave): void
 }
 
-const initialState: OppgaveState = {
+const initialState: OppgaveContextType = {
   setGjeldendeOppgave() {},
 }
 
-export const OppgaveContext = createContext<OppgaveState>(initialState)
+export const OppgaveContext = createContext<OppgaveContextType>(initialState)
 OppgaveContext.displayName = 'Oppgave'
 
 export function useOppgaveContext() {

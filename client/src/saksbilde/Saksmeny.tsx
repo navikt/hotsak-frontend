@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { Alert, Button, Checkbox, CheckboxGroup, Dropdown, Select, VStack } from '@navikt/ds-react'
+import { Alert, Button, Checkbox, CheckboxGroup, Dropdown, Select, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { postHenleggelse } from '../io/http.ts'
@@ -8,7 +8,7 @@ import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveService } from '../oppgave/OppgaveService.ts'
-import type { NavIdent } from '../state/authentication.ts'
+import type { NavIdent } from '../tilgang/Ansatt.ts'
 
 export function Saksmeny() {
   const { sakId, kanBehandleSak } = useSaksregler()
@@ -81,6 +81,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
   const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
   const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
+  const [melding, setMelding] = useState<string | null>(null)
   return (
     <BekreftelseModal
       open={open}
@@ -93,7 +94,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       avbrytButtonVariant="primary"
       onBekreft={async () => {
         setLoading(true)
-        await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, overtaHvisTildelt: true })
+        await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, melding, overtaHvisTildelt: true })
         await mutateSak(sakId)
         setLoading(false)
         return onClose()
@@ -102,20 +103,31 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
     >
       <VStack gap="4">
         <form role="search">
-          <Select
-            label="Navn"
-            size="small"
-            onChange={(event) => {
-              setValgtSaksbehandler(event.target.value)
-            }}
-          >
-            <option>Velg saksbehandler</option>
-            {behandlere.map((behandler) => (
-              <option key={behandler.id} value={behandler.id}>
-                {behandler.navn}
-              </option>
-            ))}
-          </Select>
+          <VStack gap="4">
+            <Select
+              label="Navn"
+              size="small"
+              onChange={(event) => {
+                setValgtSaksbehandler(event.target.value)
+              }}
+            >
+              <option>Velg saksbehandler</option>
+              {behandlere.map((behandler) => (
+                <option key={behandler.id} value={behandler.id}>
+                  {behandler.navn}
+                </option>
+              ))}
+            </Select>
+            <Textarea
+              minRows={5}
+              maxRows={5}
+              label="Melding"
+              size="small"
+              onChange={(event) => {
+                setMelding(event.target.value)
+              }}
+            />
+          </VStack>
         </form>
       </VStack>
     </BekreftelseModal>

@@ -1,11 +1,11 @@
 import Dexie, { Table } from 'dexie'
 
-import { Gruppe, InnloggetSaksbehandler, NavIdent } from '../../state/authentication'
+import { AnsattGruppe, InnloggetAnsatt, NavIdent } from '../../tilgang/Ansatt.ts'
 
 export class SaksbehandlerStore extends Dexie {
   private readonly sessionKey = 'innloggetSaksbehandlerId'
-  private readonly saksbehandlere!: Table<InnloggetSaksbehandler, string>
-  private readonly defaultSaksbehandler: InnloggetSaksbehandler = lagSaksbehandler({
+  private readonly saksbehandlere!: Table<InnloggetAnsatt, string>
+  private readonly defaultSaksbehandler: InnloggetAnsatt = lagSaksbehandler({
     id: 'S112233',
     navn: 'Silje Saksbehandler',
     epost: 'silje.saksbehandler@nav.no',
@@ -38,7 +38,7 @@ export class SaksbehandlerStore extends Dexie {
           id: 'V123456',
           navn: 'Les Visningrud',
           epost: 'les.visningrud@nav.no',
-          grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.HOTSAK_NASJONAL],
+          grupper: [AnsattGruppe.HOTSAK_BRUKERE, AnsattGruppe.HOTSAK_NASJONAL],
         }),
       ])
     }
@@ -49,11 +49,11 @@ export class SaksbehandlerStore extends Dexie {
     return
   }
 
-  async lagreAlle(saksbehandlere: InnloggetSaksbehandler[]) {
+  async lagreAlle(saksbehandlere: InnloggetAnsatt[]) {
     return this.saksbehandlere.bulkAdd(saksbehandlere, { allKeys: true })
   }
 
-  async hent(id: NavIdent): Promise<InnloggetSaksbehandler> {
+  async hent(id: NavIdent): Promise<InnloggetAnsatt> {
     const ansatt = await this.saksbehandlere.get(id)
     if (!ansatt) {
       throw Error(`Fant ikke ansatt med id: ${id}`)
@@ -61,11 +61,11 @@ export class SaksbehandlerStore extends Dexie {
     return ansatt
   }
 
-  async alle(): Promise<InnloggetSaksbehandler[]> {
+  async alle(): Promise<InnloggetAnsatt[]> {
     return this.saksbehandlere.toArray()
   }
 
-  async innloggetSaksbehandler(): Promise<InnloggetSaksbehandler> {
+  async innloggetSaksbehandler(): Promise<InnloggetAnsatt> {
     const id = this.getInnloggetSaksbehandlerId() || ''
     const saksbehandler = await this.saksbehandlere.get(id)
     if (!saksbehandler) {
@@ -87,7 +87,7 @@ export class SaksbehandlerStore extends Dexie {
   }
 }
 
-function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler> & { id: NavIdent }): InnloggetSaksbehandler {
+function lagSaksbehandler(saksbehandler: Partial<InnloggetAnsatt> & { id: NavIdent }): InnloggetAnsatt {
   const enheter = [
     { id: 'f62f3d31-84ca-4406-8a1e-e61a45141a4a', nummer: '2970', navn: 'IT-avdelingen', gjeldende: true },
     {
@@ -106,7 +106,7 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetSaksbehandler> & { id:
   return {
     navn: '',
     epost: '',
-    grupper: [Gruppe.HOTSAK_BRUKERE, Gruppe.HOTSAK_SAKSBEHANDLER, Gruppe.BRILLEADMIN_BRUKERE],
+    grupper: [AnsattGruppe.HOTSAK_BRUKERE, AnsattGruppe.HOTSAK_SAKSBEHANDLER, AnsattGruppe.BRILLEADMIN_BRUKERE],
     enheter,
     gradering: [],
     enhetsnumre: enheter.map((enhet) => enhet.nummer),

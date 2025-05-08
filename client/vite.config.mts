@@ -6,7 +6,7 @@ import { middlewarePlugin } from './vite-middleware-plugin.mjs'
 /**
  * Sett til true for å gjøre kall til hm-grunndata-search uten mock.
  */
-const finnHjelpemiddelProxy = false
+const finnHjelpemiddelProxy = true
 
 // https://vitejs.dev/config/
 export default defineConfig((env) => {

@@ -10,6 +10,7 @@ export interface EndreOppgavetildelingRequest {
    * Angis hvis en spesifikk ansatt skal bli saksbehandler.
    */
   saksbehandlerId?: NavIdent | null
+  melding?: string | null
   /**
    * `true` hvis tildelingen skal skje selv om oppgaven allerede er tildelt en annen saksbehandler.
    */

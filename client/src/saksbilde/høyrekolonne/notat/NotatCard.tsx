@@ -29,6 +29,12 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
               {notat.type === NotatType.INTERNT ? 'Internt arbeidsnotat' : 'Forvaltningsnotat'}
             </Tag>
 
+            {/*notat.klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
+              <Tag variant="info-moderate" size="small">
+                Ikke synlig for bruker
+              </Tag>
+            )*/}
+
             {notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
               <Tag variant="success-moderate" size="small">
                 Synlig for bruker

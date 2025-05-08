@@ -239,6 +239,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
           <Button
             icon={<TrashIcon />}
             variant="tertiary"
+            type="button"
             size="xsmall"
             onClick={() => {
               setVisSlettUtkastModal(true)
@@ -266,7 +267,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
                   }
                 }
               }}
-              loading={klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && journalførerNotat}
+              loading={false}
             >
               Journalfør notat
             </Button>

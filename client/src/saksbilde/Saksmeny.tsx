@@ -30,6 +30,7 @@ export function Saksmeny() {
         setOverførTilSaksbehandler(true)
       },
     },
+    /*
     {
       tekst: 'Henlegg/bortfall sak',
       aktiv: kanBehandleSak,
@@ -37,6 +38,7 @@ export function Saksmeny() {
         setHenleggSakModalOpen(true)
       },
     },
+    */
   ]
 
   return (
@@ -88,10 +90,6 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
       loading={loading}
       heading="Overfør sak til annen saksbehandler"
       bekreftButtonLabel="Overfør sak"
-      bekreftButtonVariant="secondary"
-      reverserKnapperekkefølge={true}
-      avbrytButtonLabel="Avbryt"
-      avbrytButtonVariant="primary"
       onBekreft={async () => {
         setLoading(true)
         await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, melding, overtaHvisTildelt: true })

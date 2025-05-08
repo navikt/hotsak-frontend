@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router'
 
-import { useInnloggetSaksbehandler } from './state/authentication'
+import { useInnloggetAnsatt } from './tilgang/useTilgang.ts'
 
 export function RequireAuth({ children }: { children: ReactNode }) {
-  const { erInnlogget } = useInnloggetSaksbehandler()
+  const { erInnlogget } = useInnloggetAnsatt()
   return erInnlogget === false ? <Navigate to="/uautorisert" replace /> : <>{children}</>
 }

@@ -32,12 +32,12 @@ import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { Tildeling } from './kolonner/Tildeling'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { Paging } from './paging/Paging'
-import { useLocalStorageState } from './useLocalStorageState'
+import { useLocalState } from '../state/useLocalState'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
-import { useErKunTilbehørPilot } from '../state/authentication.ts'
+import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
   statuskategori: Statuskategori.ÅPEN,
@@ -50,11 +50,11 @@ const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
 }
 
 export function Oppgaveliste() {
-  const [filterState, setFilterState] = useLocalStorageState<OppgavelisteFilters & { currentPage: number }>(
+  const [filterState, setFilterState] = useLocalState<OppgavelisteFilters & { currentPage: number }>(
     'filterState',
     defaultFilterState
   )
-  const [sort, setSort] = useLocalStorageState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
+  const [sort, setSort] = useLocalState<SortState>('sortState', { orderBy: 'MOTTATT', direction: 'ascending' })
 
   const navigate = useNavigate()
   const { harSkrivetilgang } = useOppgavetilgang()

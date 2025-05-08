@@ -4,11 +4,10 @@ import { MenuGridIcon } from '@navikt/aksel-icons'
 import { Dropdown, InternalHeader, Link } from '@navikt/ds-react'
 
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { useInnloggetSaksbehandler } from '../state/authentication'
+import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { Søk } from './Søk'
 import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
-import { useMemo } from 'react'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -21,15 +20,9 @@ const Lenke = styled.a`
 `
 
 export function Toppmeny() {
-  const { erInnlogget, enhetsnumre, ...rest } = useInnloggetSaksbehandler()
-  const saksbehandler = erInnlogget ? rest : { id: '', navn: '', enheter: [] }
+  const { innloggetAnsatt, valgtEnhet, setValgtEnhet } = useTilgangContext()
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-
-  const gjeldendeEnhet = useMemo(
-    () => saksbehandler.enheter.find((enhet) => enhet.gjeldende) ?? saksbehandler.enheter[0],
-    [saksbehandler.enheter]
-  )
 
   return (
     <InternalHeader>
@@ -65,8 +58,8 @@ export function Toppmeny() {
       </Dropdown>
       <Dropdown>
         <InternalHeader.UserButton
-          name={saksbehandler.navn}
-          description={gjeldendeEnhet?.navn}
+          name={innloggetAnsatt.navn}
+          description={valgtEnhet?.navn}
           as={Dropdown.Toggle}
           className="ml-auto"
         />
@@ -74,11 +67,18 @@ export function Toppmeny() {
           <Eksperiment>
             <Dropdown.Menu.GroupedList>
               <Dropdown.Menu.GroupedList.Heading>Enheter</Dropdown.Menu.GroupedList.Heading>
-              {saksbehandler.enheter.map((enhet) => (
-                <Dropdown.Menu.GroupedList.Item key={enhet.nummer}>
-                  {enhet.nummer} - {enhet.navn}
-                </Dropdown.Menu.GroupedList.Item>
-              ))}
+              {innloggetAnsatt.enheter
+                .filter(({ nummer }) => valgtEnhet.nummer !== nummer)
+                .map((enhet) => (
+                  <Dropdown.Menu.GroupedList.Item
+                    key={enhet.nummer}
+                    onClick={() => {
+                      setValgtEnhet(enhet.nummer)
+                    }}
+                  >
+                    {enhet.nummer} - {enhet.navn}
+                  </Dropdown.Menu.GroupedList.Item>
+                ))}
             </Dropdown.Menu.GroupedList>
             <Dropdown.Menu.Divider />
           </Eksperiment>

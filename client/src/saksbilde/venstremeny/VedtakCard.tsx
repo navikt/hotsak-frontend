@@ -8,7 +8,7 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useErNotatPilot, useInnloggetSaksbehandler } from '../../state/authentication'
+import { useErNotatPilot, useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
@@ -36,7 +36,7 @@ interface VedtakFormValues {
 export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
   const { sakId } = sak
 
-  const saksbehandler = useInnloggetSaksbehandler()
+  const innloggetAnsatt = useInnloggetAnsatt()
   const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
@@ -139,7 +139,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== saksbehandler.id) {
+  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== innloggetAnsatt.id) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>

@@ -1,11 +1,11 @@
 import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
-
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
+
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
-import { useErNotatPilot } from '../../state/authentication'
+import { useErNotatPilot } from '../../tilgang/useTilgang.ts'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'

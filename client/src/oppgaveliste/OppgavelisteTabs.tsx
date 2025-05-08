@@ -1,11 +1,10 @@
 import { useLocation, useNavigate } from 'react-router'
 import styled from 'styled-components'
-
 import { FileTextIcon, TasklistIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment'
-import { useVisOppgavelisteTabs } from '../state/authentication'
+import { useVisOppgavelisteTabs } from '../tilgang/useTilgang.ts'
 
 const TabContainer = styled.div`
   padding-top: var(--a-spacing-4);

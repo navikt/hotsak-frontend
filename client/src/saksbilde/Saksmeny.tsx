@@ -8,7 +8,7 @@ import { BekreftelseModal } from './komponenter/BekreftelseModal.tsx'
 import { mutateSak } from './mutateSak.ts'
 import { useOppgavebehandlere } from '../oppgave/useOppgavebehandlere.ts'
 import { useOppgaveService } from '../oppgave/OppgaveService.ts'
-import type { NavIdent } from '../state/authentication.ts'
+import type { NavIdent } from '../tilgang/Ansatt.ts'
 
 export function Saksmeny() {
   const { sakId, kanBehandleSak } = useSaksregler()

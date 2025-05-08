@@ -1,7 +1,7 @@
-import useSwr from 'swr'
-import { useErNotatPilot } from '../../../state/authentication'
+import useSwr, { KeyedMutator } from 'swr'
+
+import { useErNotatPilot } from '../../../tilgang/useTilgang.ts'
 import { Notat, NotatType, Saksnotater } from '../../../types/types.internal'
-import { KeyedMutator } from 'swr'
 import { useEffect, useState } from 'react'
 
 interface NotaterResponse {

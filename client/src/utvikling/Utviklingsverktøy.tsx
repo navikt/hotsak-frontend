@@ -1,10 +1,10 @@
 import { ChangeEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
-
 import { Button, Heading, Select } from '@navikt/ds-react'
 
 import { Avstand } from '../felleskomponenter/Avstand'
-import { InnloggetSaksbehandler, useInnloggetSaksbehandler } from '../state/authentication'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { InnloggetAnsatt } from '../tilgang/Ansatt.ts'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -18,8 +18,8 @@ const Wrapper = styled.div`
 `
 
 export function Utviklingsverktøy() {
-  const { id: innloggetSaksbehandlerId } = useInnloggetSaksbehandler()
-  const [saksbehandlere, setSaksbehandlere] = useState<InnloggetSaksbehandler[]>([])
+  const { id: innloggetSaksbehandlerId } = useInnloggetAnsatt()
+  const [saksbehandlere, setSaksbehandlere] = useState<InnloggetAnsatt[]>([])
   const [erSkjult, setErSkjult] = useState(false)
 
   useEffect(() => {

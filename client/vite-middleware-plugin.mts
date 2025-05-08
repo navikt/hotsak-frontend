@@ -1,7 +1,12 @@
 import type { Plugin } from 'vite'
 import * as fs from 'fs'
 
-export function middlewarePlugin({}: { development?: boolean }): Plugin {
+export function middlewarePlugin({ proxy }: { development?: boolean; proxy?: boolean }): Plugin {
+  if (proxy) {
+    return {
+      name: 'middleware-plugin',
+    }
+  }
   return {
     name: 'middleware-plugin',
     configureServer(server) {

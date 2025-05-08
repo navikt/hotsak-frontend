@@ -1,47 +1,35 @@
 import useSwr from 'swr'
-import { ReactNode, useEffect, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import fetchIntercept from 'fetch-intercept'
 
 import { httpGet } from '../io/http.ts'
 import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
 import { InnloggetAnsatt } from './Ansatt.ts'
-import { useSessionState } from '../state/useSessionState.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data, error, mutate } = useSwr<{ data: InnloggetAnsatt }>('api/saksbehandler', httpGet)
-  const [valgtEnhet, setValgtEnhet] = useSessionState<string | null>('valgtEnhet', null)
+  const { data, error } = useSwr<{ data: InnloggetAnsatt }>('api/saksbehandler', httpGet)
+  const [erInnlogget, setErInnlogget] = useState<boolean | null>(null)
 
   useEffect(() => {
     return fetchIntercept.register({
-      request(url, config) {
-        if (valgtEnhet?.length === 4) {
-          const { headers, ...rest } = config
-          return [
-            url,
-            {
-              ...rest,
-              headers: {
-                'X-Valgt-Enhet': valgtEnhet,
-                ...headers,
-              },
-            },
-          ]
-        }
-        return [url, config]
-      },
       response(response) {
         if (response.status === 401) {
-          // noinspection JSIgnoredPromiseFromCall
-          mutate({ data: initialState.innloggetAnsatt })
+          setErInnlogget(false)
         }
         return response
       },
     })
-  }, [mutate, valgtEnhet])
+  }, [])
 
   const value = useMemo<TilgangContextType>(() => {
-    if (error) {
-      return initialState
+    if (error || erInnlogget === false) {
+      return {
+        ...initialState,
+        innloggetAnsatt: {
+          ...initialState.innloggetAnsatt,
+          erInnlogget: false,
+        },
+      }
     }
 
     const innloggetAnsatt = data?.data
@@ -49,14 +37,7 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
       return initialState
     }
 
-    const enheter = innloggetAnsatt.enheter
-      .toSorted(({ navn: a }, { navn: b }) => a.localeCompare(b))
-      .map((enhet) => {
-        return {
-          ...enhet,
-          gjeldende: valgtEnhet ? valgtEnhet === enhet.nummer : enhet.gjeldende,
-        }
-      })
+    const enheter = innloggetAnsatt.enheter.toSorted(({ navn: a }, { navn: b }) => a.localeCompare(b))
     return {
       innloggetAnsatt: {
         ...innloggetAnsatt,
@@ -64,16 +45,9 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
         erInnlogget: true,
       },
       valgtEnhet: enheter.find(({ gjeldende }) => gjeldende) ?? enheter[0],
-      setValgtEnhet,
+      setValgtEnhet() {},
     }
-  }, [data, error, valgtEnhet, setValgtEnhet])
-
-  useEffect(() => {
-    if (valgtEnhet) {
-      // noinspection JSIgnoredPromiseFromCall
-      mutate()
-    }
-  }, [mutate, valgtEnhet])
+  }, [data, error, erInnlogget])
 
   return <TilgangContext.Provider value={value}>{children}</TilgangContext.Provider>
 }

@@ -15,7 +15,7 @@ export function IkkkeInnhentetFordiKunTilbehørV2() {
         <Liste>
           <li>
             <Brødtekst>
-              Formidler må ikke innhente fullmakt for melde behov om tilbehøret. Nav går ut fra at fullmakt ble hentet
+              Formidler må ikke innhente fullmakt for å melde behov om tilbehøret. Nav går ut fra at fullmakt ble hentet
               inn da det ble meldt behov om hjelpemiddelet tilbehøret skal brukes sammen med.
             </Brødtekst>
           </li>

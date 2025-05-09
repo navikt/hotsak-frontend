@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
-import { ferdigstillNotat, slettNotatUtkast } from '../../../io/http.ts'
+import { ferdigstillNotat } from '../../../io/http.ts'
 import {
   Brevtype,
   FerdigstillNotatRequest,
@@ -18,6 +18,7 @@ import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { useSak } from '../../useSak.ts'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
+import { Lagreindikator } from './markdown/Lagreindikator.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
@@ -38,7 +39,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const [sletter, setSletter] = useState(false)
   const { sak } = useSak()
 
-  const { mutate: mutateNotatTeller } = useNotater(sakId)
   const [journalførerNotat, setJournalførerNotat] = useState(false)
   const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
@@ -75,7 +75,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const tekst = watch('tekst')
   const klassifisering = watch('klassifisering')
 
-  const { lagrerUtkast } = useUtkastEndret(
+  const { slettNotatUtkast, lagrerUtkast } = useUtkastEndret(
     NotatType.JOURNALFØRT,
     sakId,
     tittel,
@@ -110,7 +110,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     setJournalførerNotat(true)
     await ferdigstillNotat(lagPayload())
     mutateNotater()
-    mutateNotatTeller()
     setVisNotatJournalførtToast(true)
     setJournalførerNotat(false)
     setVisJournalførNotatModal(false)
@@ -122,7 +121,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
       setSletter(true)
       await slettNotatUtkast(sakId, aktivtUtkast.id)
       await mutateNotater()
-      mutateNotatTeller()
       setVisSlettetUtkastToast(true)
 
       reset(defaultValues)
@@ -197,24 +195,26 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
               />
             )}
           />
-          <Controller
-            name="tekst"
-            control={control}
-            rules={{ required: 'Du må skrive en tekst' }}
-            render={({ field }) => (
-              <MarkdownTextArea
-                label="Notat"
-                tekst={field.value}
-                onChange={(e) => {
-                  field.onChange(e)
-                  trigger('tekst')
-                }}
-                readOnly={readOnly}
-                lagrer={lagrerUtkast}
-                valideringsfeil={errors.tekst?.message}
-              />
-            )}
-          />
+          <VStack>
+            <Controller
+              name="tekst"
+              control={control}
+              rules={{ required: 'Du må skrive en tekst' }}
+              render={({ field }) => (
+                <MarkdownTextArea
+                  label="Notat"
+                  tekst={field.value}
+                  onChange={(e) => {
+                    field.onChange(e)
+                    trigger('tekst')
+                  }}
+                  readOnly={readOnly}
+                  valideringsfeil={errors.tekst?.message}
+                />
+              )}
+            />
+            <Lagreindikator lagrerUtkast={lagrerUtkast} sistLagretTidspunkt={aktivtUtkast?.oppdatert} />
+          </VStack>
         </VStack>
       )}
 

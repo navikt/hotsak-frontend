@@ -57,6 +57,7 @@ export class NotatStore extends Dexie {
       målform: MålformType.BOKMÅL,
       tekst: utkast.tekst || '',
       opprettet: nåIso(),
+      oppdatert: nåIso(),
     })
   }
 
@@ -95,6 +96,7 @@ export class NotatStore extends Dexie {
       tittel: utkast.tittel,
       tekst: utkast.tekst,
       klassifisering: utkast.klassifisering,
+      oppdatert: nåIso(),
     })
   }
 
@@ -116,6 +118,7 @@ export class NotatStore extends Dexie {
       tekst: 'Innhold i notat. Masse tekst og greier her.',
       klassifisering: NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER,
       opprettet: nåIso(),
+      oppdatert: nåIso(),
       ferdigstilt: nåIso(),
       journalpostId: '123',
       dokumentId: '456',

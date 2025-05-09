@@ -368,6 +368,7 @@ export interface Notat {
   tittel: string
   tekst: string
   opprettet: string
+  oppdatert: string
   ferdigstilt?: string
   feilregistrert?: string
   journalpostId?: string
@@ -377,7 +378,7 @@ export interface Notat {
 
 export type FerdigstillNotatRequest = Omit<
   Notat,
-  'opprettet' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
+  'opprettet' | 'oppdatert' | 'ferdigstilt' | 'feilregistrert' | 'journalpostId' | 'saksbehandler'
 >
 export enum NotatKlassifisering {
   INTERNE_SAKSOPPLYSNINGER = 'INTERNE_SAKSOPPLYSNINGER',

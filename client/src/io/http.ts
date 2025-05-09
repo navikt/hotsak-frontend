@@ -234,26 +234,12 @@ export const slettSaksnotat = async (sakId: string, notatId: number) => {
   return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
 }
 
-export const opprettNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-  return post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
-}
-
-export const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-  if (utkast.id) {
-    return put(`${baseUrl}/api/sak/${sakId}/notater/${utkast.id}`, utkast)
-  }
-}
-
 export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
   return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
 }
 
 export const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
   return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding })
-}
-
-export const slettNotatUtkast = async (sakId: string, notatId: string) => {
-  return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
 }
 
 export const postBrevutkast = async (brevTekst: BrevTekst) => {

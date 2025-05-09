@@ -1,18 +1,17 @@
-import { BodyShort, Box, ErrorMessage, HStack, Label, Loader } from '@navikt/ds-react'
-import { MarkdownEditor } from './MarkdownEditor'
+import { Box, ErrorMessage, Label } from '@navikt/ds-react'
 import styled from 'styled-components'
+import { MarkdownEditor } from './MarkdownEditor'
 
 type MarkdownTextAreaProps = {
   label: string
   tekst: string
   onChange: (tekst: string) => void
   readOnly: boolean
-  lagrer: boolean
   valideringsfeil?: string
 }
 
 export function MarkdownTextArea(props: MarkdownTextAreaProps) {
-  const { label, tekst, onChange, readOnly, lagrer, valideringsfeil } = props
+  const { label, tekst, onChange, readOnly, valideringsfeil } = props
   return (
     <div>
       <Label size="small">{label}</Label>
@@ -26,22 +25,6 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
           className="mdxEditorBox"
         >
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
-          <div style={{ position: 'relative' }}>
-            <div
-              style={{
-                color: 'gray',
-                position: 'absolute',
-                right: '0.5em',
-                top: '-1.5em',
-                display: lagrer ? 'block' : 'none',
-              }}
-            >
-              <HStack gap="2">
-                <Loader size="small" title="Lagrer..." />
-                <BodyShort size="small">Lagrer utkast</BodyShort>
-              </HStack>
-            </div>
-          </div>
         </Box>
       </MarkdownEditorStyling>
       {valideringsfeil && (
@@ -53,8 +36,7 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
   )
 }
 
-const MarkdownEditorStyling = styled.div`
-  margin-bottom: 0.5rem;
+const MarkdownEditorStyling = styled(Box)`
   margin-top: 0.5rem;
   .mdxEditorBox:has([contenteditable='true']:focus) {
     border: 4px solid rgba(0, 52, 125, 1);

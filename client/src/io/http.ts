@@ -182,7 +182,7 @@ export const putOppdaterVilkår = async (
 }
 
 export const putVedtak = async (sakId: number | string, problemsammendrag: string) => {
-  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId: '' }, ifMatchVersjon(-1)) // fixme
+  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId: null }, ifMatchVersjon(-1))
 }
 
 export const putFerdigstillBestilling = async (

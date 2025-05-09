@@ -71,7 +71,7 @@ export function Høyrekolonne() {
               }
             />
           </Tooltip>
-          {sak != null && (
+          {erNotatPilot && sak != null && (
             <Tooltip content="Notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.NOTATER}

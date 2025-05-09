@@ -1,6 +1,6 @@
 import type { HtmlTagDescriptor, Plugin } from 'vite'
 
-export function htmlPlugin({ development }: { development?: boolean }): Plugin {
+export function htmlPlugin({ development, proxy }: { development?: boolean; proxy?: boolean }): Plugin {
   return {
     name: 'html-plugin',
     transformIndexHtml(html) {
@@ -10,7 +10,7 @@ export function htmlPlugin({ development }: { development?: boolean }): Plugin {
           tag: 'script',
           children: `window.appSettings = {
             GIT_COMMIT: 'unknown',
-            USE_MSW: true,
+            USE_MSW: ${proxy ? 'false' : 'true'},
             MILJO: 'local',
             FARO_URL: '',
             AMPLITUDE_API_KEY: '',

@@ -7,7 +7,6 @@ import type {
   FerdigstillNotatRequest,
   JournalføringRequest,
   Notat,
-  NotatUtkast,
   OppdaterVilkårData,
   OppgaveStatusType,
   OppgaveVersjon,

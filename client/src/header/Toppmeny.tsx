@@ -20,7 +20,8 @@ const Lenke = styled.a`
 `
 
 export function Toppmeny() {
-  const { innloggetAnsatt, valgtEnhet, setValgtEnhet } = useTilgangContext()
+  const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
+  const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 

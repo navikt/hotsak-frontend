@@ -1,11 +1,10 @@
 import { createContext } from 'react'
 
-import type { AnsattEnhet, InnloggetAnsatt } from './Ansatt.ts'
+import type { InnloggetAnsatt } from './Ansatt.ts'
 
 export interface TilgangContextType {
   innloggetAnsatt: InnloggetAnsatt
-  valgtEnhet: AnsattEnhet
-  setValgtEnhet(nummer: string): void
+  setValgtEnhet(nummer: string): Promise<void>
 }
 
 export const initialState: TilgangContextType = {
@@ -15,16 +14,16 @@ export const initialState: TilgangContextType = {
     epost: '',
     grupper: [],
     enheter: [],
+    gjeldendeEnhet: {
+      id: '',
+      nummer: '',
+      navn: '',
+      gjeldende: true,
+    },
     gradering: [],
     enhetsnumre: [],
   },
-  valgtEnhet: {
-    id: '',
-    nummer: '',
-    navn: '',
-    gjeldende: true,
-  },
-  setValgtEnhet() {},
+  async setValgtEnhet() {},
 }
 
 export const TilgangContext = createContext<TilgangContextType>(initialState)

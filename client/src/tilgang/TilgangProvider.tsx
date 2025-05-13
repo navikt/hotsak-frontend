@@ -2,7 +2,7 @@ import useSwr from 'swr'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import fetchIntercept from 'fetch-intercept'
 
-import { httpGet } from '../io/http.ts'
+import { httpGet, post } from '../io/http.ts'
 import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
 import { InnloggetAnsatt } from './Ansatt.ts'
 
@@ -37,15 +37,15 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
       return initialState
     }
 
-    const enheter = innloggetAnsatt.enheter.toSorted(({ navn: a }, { navn: b }) => a.localeCompare(b))
     return {
       innloggetAnsatt: {
         ...innloggetAnsatt,
-        enheter,
         erInnlogget: true,
       },
-      valgtEnhet: enheter.find(({ gjeldende }) => gjeldende) ?? enheter[0],
-      setValgtEnhet() {},
+      async setValgtEnhet(nummer) {
+        await post('/api/ansatte/enhet', { valgtEnhetsnummer: nummer })
+        window.location.href = '/'
+      },
     }
   }, [data, error, erInnlogget])
 

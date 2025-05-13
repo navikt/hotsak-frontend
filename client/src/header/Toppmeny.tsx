@@ -20,7 +20,8 @@ const Lenke = styled.a`
 `
 
 export function Toppmeny() {
-  const { innloggetAnsatt, valgtEnhet, setValgtEnhet } = useTilgangContext()
+  const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
+  const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
 
@@ -68,12 +69,12 @@ export function Toppmeny() {
             <Dropdown.Menu.GroupedList>
               <Dropdown.Menu.GroupedList.Heading>Enheter</Dropdown.Menu.GroupedList.Heading>
               {innloggetAnsatt.enheter
-                .filter(({ nummer }) => valgtEnhet.nummer !== nummer)
+                .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
                 .map((enhet) => (
                   <Dropdown.Menu.GroupedList.Item
                     key={enhet.nummer}
                     onClick={() => {
-                      setValgtEnhet(enhet.nummer)
+                      return setValgtEnhet(enhet.nummer)
                     }}
                   >
                     {enhet.nummer} - {enhet.navn}

@@ -32,6 +32,7 @@ export interface Ansatt {
 export interface InnloggetAnsatt extends Ansatt {
   readonly grupper: ReadonlyArray<AnsattGruppe>
   readonly enheter: ReadonlyArray<AnsattEnhet>
+  readonly gjeldendeEnhet: AnsattEnhet
   /**
    * Graderinger saksbehandler kan behandle.
    */

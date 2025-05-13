@@ -108,6 +108,7 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetAnsatt> & { id: NavIde
     epost: '',
     grupper: [AnsattGruppe.HOTSAK_BRUKERE, AnsattGruppe.HOTSAK_SAKSBEHANDLER, AnsattGruppe.BRILLEADMIN_BRUKERE],
     enheter,
+    gjeldendeEnhet: enheter[0],
     gradering: [],
     enhetsnumre: enheter.map((enhet) => enhet.nummer),
     erInnlogget: true,

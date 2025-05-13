@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Checkbox, CheckboxGroup, Dropdown, Select, Textarea, VStack } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { postHenleggelse } from '../io/http.ts'
 import { useSaksregler } from '../saksregler/useSaksregler.ts'
@@ -79,22 +79,36 @@ const henleggSakÅrsaker = ['Duplikat sak']
 
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
-  const { behandlere } = useOppgavebehandlere()
+  const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
-  const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
-  const [melding, setMelding] = useState<string | null>(null)
+  const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent>('')
+  const [melding, setMelding] = useState<string>('')
+
+  useEffect(() => {
+    if (open) {
+      // noinspection JSIgnoredPromiseFromCall
+      mutateBehandlere()
+    }
+  }, [open, mutateBehandlere])
+
   return (
     <BekreftelseModal
       open={open}
-      loading={loading}
+      loading={loading || behandlereIsValidating}
       heading="Overfør sak til annen saksbehandler"
       bekreftButtonLabel="Overfør sak"
       onBekreft={async () => {
         setLoading(true)
-        await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, melding, overtaHvisTildelt: true })
+        await endreOppgavetildeling({
+          saksbehandlerId: valgtSaksbehandler || null,
+          melding: melding || null,
+          overtaHvisTildelt: true,
+        })
         await mutateSak(sakId)
         setLoading(false)
+        setValgtSaksbehandler('')
+        setMelding('')
         return onClose()
       }}
       onClose={onClose}
@@ -105,11 +119,12 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
             <Select
               label="Navn"
               size="small"
+              value={valgtSaksbehandler}
               onChange={(event) => {
                 setValgtSaksbehandler(event.target.value)
               }}
             >
-              <option>Velg saksbehandler</option>
+              <option value="">Velg saksbehandler</option>
               {behandlere.map((behandler) => (
                 <option key={behandler.id} value={behandler.id}>
                   {behandler.navn}
@@ -121,6 +136,7 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
               maxRows={5}
               label="Melding"
               size="small"
+              value={melding}
               onChange={(event) => {
                 setMelding(event.target.value)
               }}

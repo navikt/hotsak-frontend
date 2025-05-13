@@ -79,7 +79,7 @@ const henleggSakÅrsaker = ['Duplikat sak']
 
 function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
-  const { behandlere } = useOppgavebehandlere()
+  const { behandlere, mutate: mutateBehandlere } = useOppgavebehandlere()
   const { endreOppgavetildeling } = useOppgaveService()
   const [loading, setLoading] = useState(false)
   const [valgtSaksbehandler, setValgtSaksbehandler] = useState<NavIdent | null>(null)
@@ -94,7 +94,10 @@ function OverførTilSaksbehandlerModal(props: { sakId: string; open: boolean; on
         setLoading(true)
         await endreOppgavetildeling({ saksbehandlerId: valgtSaksbehandler, melding, overtaHvisTildelt: true })
         await mutateSak(sakId)
+        await mutateBehandlere()
         setLoading(false)
+        setValgtSaksbehandler(null)
+        setMelding(null)
         return onClose()
       }}
       onClose={onClose}

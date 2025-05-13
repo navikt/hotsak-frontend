@@ -6,7 +6,6 @@ import type {
   EndretHjelpemiddel,
   FerdigstillNotatRequest,
   JournalføringRequest,
-  Notat,
   OppdaterVilkårData,
   OppgaveStatusType,
   OppgaveVersjon,
@@ -225,20 +224,8 @@ export const postEndringslogginnslagLest = async (endringslogginnslagId: string)
   return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
 }
 
-export const postSaksnotat = async (sakId: string, type: 'INTERNT', innhold: string) => {
-  return post(`${baseUrl}/api/sak/${sakId}/notater`, { type, innhold })
-}
-
-export const slettSaksnotat = async (sakId: string, notatId: number) => {
-  return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
-}
-
 export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
   return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
-}
-
-export const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
-  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding })
 }
 
 export const postBrevutkast = async (brevTekst: BrevTekst) => {

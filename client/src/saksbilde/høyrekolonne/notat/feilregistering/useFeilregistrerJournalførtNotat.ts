@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { Tilbakemelding } from '../../../../innsikt/Besvarelse'
+import { ISvar, Tilbakemelding } from '../../../../innsikt/Besvarelse'
 import { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelser'
-import { feilregistrerNotat } from '../../../../io/http'
+import { baseUrl, post } from '../../../../io/http'
+import { useServiceState } from '../../../../service/Service'
 import { Notat, NotatType } from '../../../../types/types.internal'
 
 export interface FeilregistrerJournalførtNotatModalProps {
@@ -20,6 +21,14 @@ export function useFeilregistrerJournalførtNotat(
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const { execute } = useServiceState()
+
+  const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
+    return execute(async () => {
+      await post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding })
+    })
+  }
 
   const spørreundersøkelseId =
     notat.type === NotatType.JOURNALFØRT ? 'journalført_notat_feilregistrert_v1' : 'internt_notat_feilregistrert_v1'

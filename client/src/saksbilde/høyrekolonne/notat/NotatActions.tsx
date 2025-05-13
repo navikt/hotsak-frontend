@@ -105,9 +105,7 @@ function FeilregistrerNotatModal({
       onBesvar={onBekreft}
       onClose={onClose}
     >
-      {notat.type === NotatType.INTERNT && (
-        <Brødtekst>Internt notatet fjernes fra saken. Dette kan ikke angres.</Brødtekst>
-      )}
+      {notat.type === NotatType.INTERNT && <Brødtekst>Notatet fjernes fra saken. Dette kan ikke angres.</Brødtekst>}
       {notat.type === NotatType.JOURNALFØRT &&
         notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
           <Brødtekst>
@@ -116,7 +114,7 @@ function FeilregistrerNotatModal({
         )}
 
       {notat.type === NotatType.JOURNALFØRT &&
-        notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
+        notat.klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
           <Brødtekst>Forvaltningsnotatet feilregistreres på saken.</Brødtekst>
         )}
     </SpørreundersøkelseModal>

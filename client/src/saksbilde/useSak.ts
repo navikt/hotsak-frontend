@@ -21,7 +21,7 @@ export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
 
   const { setGjeldendeOppgave } = useOppgaveContext()
   useEffect(() => {
-    if (data) {
+    if (data && data.data) {
       const { data: sak, oppgave } = data.data
       const sakId = sak.sakId
       setGjeldendeOppgave(lagGjeldendeOppgave(oppgave?.oppgaveId, oppgave?.versjon, sakId))

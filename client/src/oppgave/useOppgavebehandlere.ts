@@ -7,16 +7,20 @@ export interface Oppgavebehandlere {
   behandlere: Ansatt[]
 }
 
-export function useOppgavebehandlere(): Oppgavebehandlere & { mutate: KeyedMutator<Oppgavebehandlere> } {
+export function useOppgavebehandlere(): Oppgavebehandlere & {
+  mutate: KeyedMutator<Oppgavebehandlere>
+  isValidating: boolean
+} {
   const { oppgaveId } = useOppgaveContext()
-  const { data, error, mutate } = useSwr<Oppgavebehandlere>(
+  const { data, error, mutate, isValidating } = useSwr<Oppgavebehandlere>(
     oppgaveId ? `/api/oppgaver-v2/${oppgaveId}/behandlere` : null
   )
   if (error) {
-    return { behandlere: [], mutate }
+    return { behandlere: [], mutate, isValidating }
   }
   return {
     behandlere: data?.behandlere ?? [],
     mutate,
+    isValidating,
   }
 }

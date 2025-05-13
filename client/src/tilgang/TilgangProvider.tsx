@@ -7,7 +7,7 @@ import { initialState, TilgangContext, TilgangContextType } from './TilgangConte
 import { InnloggetAnsatt } from './Ansatt.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data, error } = useSwr<{ data: InnloggetAnsatt }>('api/saksbehandler', httpGet)
+  const { data, error } = useSwr<{ data: InnloggetAnsatt }>('api/ansatte/meg', httpGet)
   const [erInnlogget, setErInnlogget] = useState<boolean | null>(null)
 
   useEffect(() => {

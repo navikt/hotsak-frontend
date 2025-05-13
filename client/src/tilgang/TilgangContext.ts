@@ -18,7 +18,6 @@ export const initialState: TilgangContextType = {
       id: '',
       nummer: '',
       navn: '',
-      gjeldende: true,
     },
     gradering: [],
     enhetsnumre: [],

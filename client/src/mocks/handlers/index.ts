@@ -9,7 +9,7 @@ import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
 import { notatHandlers } from './notat'
 import { oppgaveHandlers } from './oppgaver'
 import { personHandlers } from './person'
-import { saksbehandlerHandlers } from './saksbehandler'
+import { ansatteHandlers } from './ansatte.ts'
 import { saksbehandlingHandlers } from './saksbehandling'
 import { saksoversiktHandlers } from './saksoversikt'
 import { totrinnskontrollHandlers } from './totrinnskontroll'
@@ -21,6 +21,8 @@ import { saksVarslerHandlers } from './saksvarsler'
 import { behovsmeldingHandlers } from './behovsmelding'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
+  ...ansatteHandlers(store),
+  ...behovsmeldingHandlers(store),
   ...bestillingHandlers(store),
   ...brevHandlers(store),
   ...brevutkastHandlers(store),
@@ -33,10 +35,8 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...notatHandlers(store),
   ...oppgaveHandlers(store),
   ...personHandlers(store),
-  ...saksbehandlerHandlers(store),
-  ...saksbehandlingHandlers(store),
-  ...behovsmeldingHandlers(store),
   ...saksVarslerHandlers(store),
+  ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),

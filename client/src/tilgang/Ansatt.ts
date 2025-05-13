@@ -15,7 +15,6 @@ export interface AnsattEnhet {
   readonly id: string
   readonly nummer: string
   readonly navn: string
-  readonly gjeldende: boolean
 }
 
 /**

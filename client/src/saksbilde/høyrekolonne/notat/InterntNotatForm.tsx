@@ -32,6 +32,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatFerdigstiltToast, setVisFerdigstillerNotatToast] = useState(false)
+  const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
 
   const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.INTERNT)
 
@@ -65,11 +66,12 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   )
 
   useEffect(() => {
-    if (aktivtUtkast) {
-      setValue('tittel', aktivtUtkast.tittel || '')
-      setValue('tekst', aktivtUtkast.tekst || '')
+    if (aktivtUtkast && !aktivtUtkastHentet) {
+      setValue('tittel', aktivtUtkast.tittel)
+      setValue('tekst', aktivtUtkast.tekst)
+      setAktivtUtkastHentet(true)
     }
-  }, [aktivtUtkast, setValue])
+  }, [aktivtUtkast, tittel, tekst, setValue])
 
   const lagPayload = (data: InternNotatFormValues): FerdigstillNotatRequest => {
     return {
@@ -98,12 +100,12 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
       setVisSlettUtkastModal(false)
       setVisSlettetUtkastToast(true)
-
+      await mutateNotater()
       reset(defaultValues)
       setTimeout(() => {
         setVisSlettetUtkastToast(false)
       }, 5000)
-      mutateNotater()
+
       setSletter(false)
     } else {
       setVisSlettUtkastModal(false)

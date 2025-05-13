@@ -1,5 +1,6 @@
 import { barnebrillesak_overført_gosys_v1 } from './barnebrillesak_overført_gosys_v1'
 import { journalført_notat_feilregistrert_v1 } from './journalført_notat_feilregistrert_v1'
+import { internt_notat_feilregistrert_v1 } from './internt_notat_feilregistrert_v1'
 import { desanitizeName } from './Besvarelse'
 import { sak_overført_gosys_v1 } from './sak_overført_gosys_v1'
 
@@ -47,6 +48,7 @@ export const spørreundersøkelser = {
   barnebrillesak_overført_gosys_v1,
   sak_overført_gosys_v1,
   journalført_notat_feilregistrert_v1,
+  internt_notat_feilregistrert_v1,
 }
 
 export type SpørreundersøkelseId = keyof typeof spørreundersøkelser

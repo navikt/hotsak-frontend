@@ -17,3 +17,7 @@ export function isError(value: unknown): value is Error {
 export function isNavn(value: unknown): value is Navn {
   return value != null && isString((value as Navn).fornavn) && isString((value as Navn).etternavn)
 }
+
+export function isNotBlank(value: unknown): value is string {
+  return isString(value) && value.trim().length > 0
+}

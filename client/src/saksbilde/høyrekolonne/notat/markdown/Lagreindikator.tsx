@@ -5,7 +5,7 @@ export function Lagreindikator(props: { lagrerUtkast: boolean; sistLagretTidspun
   const { lagrerUtkast, sistLagretTidspunkt } = props
 
   if (!sistLagretTidspunkt) {
-    return <div style={{ marginLeft: 'auto', marginTop: '1.8rem' }}></div>
+    return <div style={{ marginLeft: 'auto', marginTop: '2rem' }}></div>
   }
 
   return (

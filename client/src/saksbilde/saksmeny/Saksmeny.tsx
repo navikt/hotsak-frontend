@@ -17,7 +17,7 @@ export function Saksmeny() {
     onClick?(): void | Promise<void>
   }> = [
     {
-      tekst: 'Overfør sak til medarbeider',
+      tekst: 'Overfør til medarbeider',
       aktiv: kanBehandleSak,
       onClick() {
         setOverførSakTilMedarbeider(true)

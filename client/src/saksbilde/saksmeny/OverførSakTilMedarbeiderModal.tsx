@@ -10,12 +10,15 @@ import { isNotBlank } from '../../utils/type.ts'
 import { mutateSak } from '../mutateSak.ts'
 import { useFormActionState } from '../../utils/form.ts'
 import { ErrorSummaryItem } from '@navikt/ds-react/ErrorSummary'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
 
 export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { harUtkast } = useNotater(sakId)
   const [state, formAction] = useOverførSakTilMedarbeiderActionState(sakId)
+  const { gjeldendeEnhet } = useInnloggetAnsatt()
 
   useEffect(() => {
     if (open) {
@@ -41,7 +44,7 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
   return (
     <FormModal
       open={open}
-      heading="Overfør sak til medarbeider"
+      heading="Overfør til medarbeider"
       submitButtonLabel="Overfør sak"
       action={formAction}
       onClose={onClose}
@@ -53,15 +56,23 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
         </>
       ) : (
         <VStack gap="4">
-          <Select id="valgtSaksbehandler" name="valgtSaksbehandler" label="Navn" size="small">
-            <option value="">Velg saksbehandler</option>
+          <Tekst>Du kan velge blant medarbeidere ved {gjeldendeEnhet.navn} som har tilgang til Hotsak.</Tekst>
+          <Select id="valgtSaksbehandler" name="valgtSaksbehandler" label="Medarbeider" size="small">
+            <option value="">Velg medarbeider</option>
             {behandlere.map((behandler) => (
               <option key={behandler.id} value={behandler.id}>
                 {behandler.navn}
               </option>
             ))}
           </Select>
-          <Textarea name="melding" minRows={5} maxRows={5} label="Melding" size="small" />
+          <Textarea
+            name="melding"
+            minRows={5}
+            maxRows={5}
+            label="Melding til medarbeider"
+            description="Blir synlig i sakshistorikken"
+            size="small"
+          />
           {state.error && (
             <ErrorSummary size="small">
               <ErrorSummaryItem href="#valgtSaksbehandler">{state.error}</ErrorSummaryItem>
@@ -95,6 +106,6 @@ function useOverførSakTilMedarbeiderActionState(sakId: string) {
       await mutateSak(sakId)
       return { success: true }
     }
-    return { success: false, error: 'Velg en saksbehandler fra nedtrekksmenyen' }
+    return { success: false, error: 'Velg en medarbeider fra nedtrekksmenyen' }
   }, {})
 }

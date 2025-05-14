@@ -4,10 +4,10 @@ import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
 import { HttpError } from '../../io/HttpError.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 interface IkkeTildeltProps {
   sakId: number | string
@@ -17,7 +17,7 @@ interface IkkeTildeltProps {
 }
 
 export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const { endreOppgavetildeling, state } = useOppgaveService(gjeldendeOppgave)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()

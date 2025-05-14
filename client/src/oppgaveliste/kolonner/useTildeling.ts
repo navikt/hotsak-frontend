@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { Sakstype } from '../../types/types.internal'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 import type { HttpError } from '../../io/HttpError.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 export function useTildeling({
   sakId,
@@ -19,7 +19,7 @@ export function useTildeling({
   sakstype?: Sakstype
   onTildelingKonflikt: () => void
 }) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const { endreOppgavetildeling } = useOppgaveService()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()

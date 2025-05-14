@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
 
-import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { postOppgaveTildeling } from '../../io/http'
 import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 export interface DokumentIkkeTildeltProps {
   oppgaveId: OppgaveId
@@ -14,7 +14,7 @@ export interface DokumentIkkeTildeltProps {
 }
 
 export function DokumentIkkeTildelt({ oppgaveId, journalpostId, gåTilSak = false }: DokumentIkkeTildeltProps) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()

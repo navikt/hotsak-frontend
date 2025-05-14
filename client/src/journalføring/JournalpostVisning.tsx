@@ -1,6 +1,5 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
-
 import { Heading } from '@navikt/ds-react'
 
 import { Avstand } from '../felleskomponenter/Avstand'
@@ -11,19 +10,19 @@ import { Brødtekst } from '../felleskomponenter/typografi'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
-import { useInnloggetSaksbehandler } from '../state/authentication'
 import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 import { formaterNavn } from '../utils/formater'
 import { Oppgavestatus } from '../types/types.internal'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export function JournalpostVisning({ lesevisning }: { lesevisning: boolean }) {
   const { journalpostId } = useParams<{ journalpostId: string }>()
   const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
 
   if (henterPerson || !personInfo || isLoading || !journalpost) {
     return (

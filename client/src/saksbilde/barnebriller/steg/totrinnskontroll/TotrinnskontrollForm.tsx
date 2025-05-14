@@ -6,17 +6,17 @@ import { useSWRConfig } from 'swr'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { baseUrl, put } from '../../../../io/http'
-import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
 import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
+import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 
 export function TotrinnskontrollForm() {
   const [loading, setLoading] = useState(false)
   const { mutate } = useSWRConfig()
   const [visGodkjenningModal, setVisGodkjenningModal] = useState(false)
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const { sak } = useBarnebrillesak()
   const methods = useForm<TotrinnskontrollData>({
     defaultValues: {

@@ -39,6 +39,6 @@ export interface InnloggetAnsatt extends Ansatt {
   /**
    * Alle numre fra `enheter`.
    */
-  readonly enhetsnumre: string[]
+  readonly enhetsnumre: ReadonlyArray<string>
   readonly erInnlogget?: boolean
 }

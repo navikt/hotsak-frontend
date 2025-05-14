@@ -4,11 +4,11 @@ import { useSWRConfig } from 'swr'
 
 import { putOppdaterStatus } from '../io/http'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { useInnloggetSaksbehandler } from '../state/authentication'
 import { OppgaveStatusType } from '../types/types.internal'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export function useFortsettBehandling({ sakId, gåTilSak = false }: { sakId: string; gåTilSak: boolean }) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate()
   const { mutate } = useSWRConfig()

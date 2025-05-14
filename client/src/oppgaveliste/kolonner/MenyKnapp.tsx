@@ -4,12 +4,12 @@ import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
-import { useInnloggetSaksbehandler } from '../../state/authentication'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 interface MenyKnappProps {
   sakId: string
@@ -36,7 +36,7 @@ export function MenyKnapp({
   knappeTekst,
   knappeIkon,
 }: MenyKnappProps) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const { onTildel } = useTildeling({
     sakId: sakId,
     gåTilSak: gåTilSak,

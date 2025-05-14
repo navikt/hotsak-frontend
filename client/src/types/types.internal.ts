@@ -1,5 +1,6 @@
 import type { OppgaveApiOppgave } from './experimentalTypes'
 import type { OppgaveId } from '../oppgave/oppgaveId.ts'
+import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -607,14 +608,8 @@ export enum Sakstype {
   TILSKUDD = 'TILSKUDD',
 }
 
-/**
- * fixme -> endre navn til `Ansatt`
- */
-export interface Saksbehandler {
-  id: string
-  navn: string
-  epost: string
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface Saksbehandler extends Ansatt {}
 
 export enum JournalpostStatusType {
   MOTTATT = 'MOTTATT',

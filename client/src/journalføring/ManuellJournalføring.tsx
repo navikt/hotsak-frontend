@@ -14,18 +14,18 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
-import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgavestatus } from '../types/types.internal'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
 import { useOppgavetilgang } from '../oppgaveliste/useOppgavetilgang'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export function ManuellJournalføring() {
   const { journalpostId } = useParams<{ journalpostId: string }>()
   const { journalpost, isError, isLoading } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const { harSkrivetilgang } = useOppgavetilgang()
   const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
 

@@ -1,4 +1,4 @@
-import type { InnloggetSaksbehandler } from './state/authentication'
+import type { InnloggetAnsatt } from './tilgang/Ansatt.ts'
 
 declare global {
   interface Window {
@@ -12,7 +12,7 @@ declare global {
       AMPLITUDE_SERVER_URL?: string
     }
     store: {
-      saksbehandlere(): Promise<InnloggetSaksbehandler[]>
+      saksbehandlere(): Promise<InnloggetAnsatt[]>
       byttInnloggetSaksbehandler(id: string): void
       delete(): Promise<any>
     }

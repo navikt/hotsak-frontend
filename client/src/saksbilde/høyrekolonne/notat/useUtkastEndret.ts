@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
-import { baseUrl, del, post, put } from '../../../io/http'
-import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
+import { baseUrl, post, put } from '../../../io/http'
 import { useServiceState } from '../../../service/Service'
+import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
 
 export function useUtkastEndret(
   type: NotatType,

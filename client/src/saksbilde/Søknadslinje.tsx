@@ -6,7 +6,7 @@ import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { TabLink } from './TabLink'
 import { Eksperiment } from '../felleskomponenter/Eksperiment'
-import { Saksmeny } from './Saksmeny'
+import { Saksmeny } from './saksmeny/Saksmeny.tsx'
 
 export interface SøknadslinjeProps {
   id: number | string

@@ -67,7 +67,7 @@ function FormModalFooter({
       <Button type="submit" variant="primary" size="small" disabled={pending} loading={pending}>
         {submitButtonLabel}
       </Button>
-      <Button type="button" variant="secondary" size="small" disabled={pending} onClick={onClose}>
+      <Button type="reset" variant="secondary" size="small" disabled={pending} onClick={onClose}>
         {avbrytButtonLabel}
       </Button>
     </Modal.Footer>

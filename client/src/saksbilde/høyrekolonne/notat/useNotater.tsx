@@ -13,7 +13,7 @@ interface NotaterResponse {
   mutate: KeyedMutator<Saksnotater>
 }
 
-export function useNotater(sakId: string, valgtNotattype?: NotatType, opts?: any): NotaterResponse {
+export function useNotater(sakId?: string, valgtNotattype?: NotatType, opts?: any): NotaterResponse {
   const erNotatPilot = useErNotatPilot()
 
   const [refreshInterval, setRefreshInterval] = useState(0)

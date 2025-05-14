@@ -5,8 +5,8 @@ import { useLocation } from 'react-router'
 import { Sakstype } from '../types/types.internal'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { TabLink } from './TabLink'
-import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { Saksmeny } from './saksmeny/Saksmeny.tsx'
+import { useErSaksmenyPilot } from '../tilgang/useTilgang.ts'
 
 export interface SøknadslinjeProps {
   id: number | string
@@ -15,6 +15,7 @@ export interface SøknadslinjeProps {
 
 export function Søknadslinje({ id, type }: SøknadslinjeProps) {
   const location = useLocation()
+  const erSaksmenyPilot = useErSaksmenyPilot()
   return (
     <SøknadslinjeContainer>
       <Tabs value={location.pathname}>
@@ -28,11 +29,11 @@ export function Søknadslinje({ id, type }: SøknadslinjeProps) {
           <TabLink to={`/sak/${id}/formidler`} title={type === Sakstype.BESTILLING ? 'Bestiller' : 'Formidler'}>
             Formidler
           </TabLink>
-          <Eksperiment>
+          {erSaksmenyPilot && (
             <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
               <Saksmeny />
             </div>
-          </Eksperiment>
+          )}
         </Tabs.List>
       </Tabs>
     </SøknadslinjeContainer>

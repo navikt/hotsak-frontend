@@ -74,6 +74,14 @@ export class SaksbehandlerStore extends Dexie {
     return saksbehandler
   }
 
+  async lagreValgtEnhetsnummer(valgtEnhetsnummer: string) {
+    const saksbehandler = await this.innloggetSaksbehandler()
+    const gjeldendeEnhet = saksbehandler.enheter.find((enhet) => enhet.nummer === valgtEnhetsnummer)
+    this.saksbehandlere.update(saksbehandler.id, {
+      gjeldendeEnhet,
+    })
+  }
+
   byttInnloggetSaksbehandler(id: NavIdent): void {
     this.setInnloggetSaksbehandlerId(id)
   }
@@ -99,6 +107,16 @@ function lagSaksbehandler(saksbehandler: Partial<InnloggetAnsatt> & { id: NavIde
       id: '82465442-7f35-41ed-beeb-c7742c8a0015',
       nummer: '4711',
       navn: 'Nav hjelpemiddelsentral Rogaland',
+    },
+    {
+      id: '81f28e25-3d5e-4094-8255-f5d40fb0df9d',
+      nummer: '4715',
+      navn: 'Nav hjelpemiddelsentral Møre og Romsdal',
+    },
+    {
+      id: 'd546311e-43d2-41c5-9329-282167f6c066',
+      nummer: '4716',
+      navn: 'Nav hjelpemiddelsentral Trøndelag',
     },
   ]
   return {

@@ -2,56 +2,80 @@ import { useContext } from 'react'
 
 import { TilgangContext, TilgangContextType } from './TilgangContext.ts'
 import { AnsattGruppe, InnloggetAnsatt } from './Ansatt.ts'
-import { Enhet } from './Enhet.ts'
+import { Enhet, EnhetsnummerType } from './Enhet.ts'
 
 export function useTilgangContext(): TilgangContextType {
   return useContext(TilgangContext)
 }
 
 export interface ExtendedInnloggetAnsatt extends InnloggetAnsatt {
-  medlemAvGruppe(gruppe: AnsattGruppe): boolean
-  tilhørerEnhet(enhetsnummer: string): boolean
+  /**
+   * Undersøk om innlogget ansatt er medlem av en av de spesifiserte gruppene.
+   */
+  erMedlemAvEnAvGrupper(...grupper: AnsattGruppe[]): boolean
+
+  /**
+   * Undersøk om innlogget ansatt tilhører en av de spesifiserte enhetene.
+   */
+  tilhørerEnAvEnheter(...enhetsnumre: EnhetsnummerType[]): boolean
+
+  /**
+   * Undersøk om gjeldende enhet er en av de spesifiserte enhetene.
+   *
+   * @param enhetsnumre
+   */
+  erGjeldendeEnhetEnAv(...enhetsnumre: EnhetsnummerType[]): boolean
 }
 
 export function useInnloggetAnsatt(): ExtendedInnloggetAnsatt {
   const innloggetAnsatt = useTilgangContext().innloggetAnsatt
+
+  const medlemAvGruppe = (gruppe: AnsattGruppe): boolean => innloggetAnsatt.grupper.includes(gruppe)
+  const tilhørerEnhet = (enhetsnummer: EnhetsnummerType): boolean => innloggetAnsatt.enhetsnumre.includes(enhetsnummer)
+
   return {
     ...innloggetAnsatt,
-    medlemAvGruppe(gruppe) {
-      return innloggetAnsatt.grupper.includes(gruppe)
+    erMedlemAvEnAvGrupper(...grupper) {
+      return grupper.some(medlemAvGruppe)
     },
-    tilhørerEnhet(enhetsnummer) {
-      return innloggetAnsatt.enhetsnumre.includes(enhetsnummer)
+    tilhørerEnAvEnheter(...enhetsnumre) {
+      return enhetsnumre.some(tilhørerEnhet)
+    },
+    erGjeldendeEnhetEnAv(...enhetsnumre): boolean {
+      return enhetsnumre.some((enhetsnummer) => innloggetAnsatt.gjeldendeEnhet.nummer === enhetsnummer)
     },
   }
 }
 
 const piloter = {
-  saksnotat: [Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG],
-  kunTilbehør: [Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND],
+  notat: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG],
+  saksmeny: [
+    Enhet.IT_AVDELINGEN,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
+  ],
+  kunTilbehør: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND],
 }
 
 export function useVisOppgavelisteTabs(): boolean {
-  const { grupper, tilhørerEnhet } = useInnloggetAnsatt()
+  const { erMedlemAvEnAvGrupper, erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
   return (
-    window.appSettings.MILJO !== 'prod-gcp' ||
-    grupper.includes(AnsattGruppe.TEAMDIGIHOT) ||
-    grupper.includes(AnsattGruppe.BRILLEADMIN_BRUKERE) ||
-    tilhørerEnhet(Enhet.NAV_VIKAFOSSEN)
+    erGjeldendeEnhetEnAv(Enhet.IT_AVDELINGEN, Enhet.NAV_VIKAFOSSEN) ||
+    erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE, AnsattGruppe.TEAMDIGIHOT)
   )
 }
 
 export function useErNotatPilot(): boolean {
-  const { enhetsnumre, medlemAvGruppe } = useInnloggetAnsatt()
-  const erSaksbehandlerBarnebriller = medlemAvGruppe(AnsattGruppe.BRILLEADMIN_BRUKERE)
-  return (
-    window.appSettings.MILJO !== 'prod-gcp' ||
-    piloter.saksnotat.some((it) => enhetsnumre.includes(it)) ||
-    erSaksbehandlerBarnebriller
-  )
+  const { erMedlemAvEnAvGrupper, erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+  return erGjeldendeEnhetEnAv(...piloter.notat) || erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE)
+}
+
+export function useErSaksmenyPilot(): boolean {
+  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+  return erGjeldendeEnhetEnAv(...piloter.saksmeny)
 }
 
 export function useErKunTilbehørPilot(): boolean {
-  const { enhetsnumre } = useInnloggetAnsatt()
-  return window.appSettings.MILJO !== 'prod-gcp' || piloter.kunTilbehør.some((it) => enhetsnumre.includes(it))
+  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+  return erGjeldendeEnhetEnAv(...piloter.kunTilbehør)
 }

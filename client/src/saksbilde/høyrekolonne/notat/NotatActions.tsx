@@ -24,10 +24,9 @@ export function NotatActions({ notat }: NotaterProps) {
   const { kanBehandleSak } = useSaksregler()
   const [visFeilregistrertToast] = useState(false)
   const { onOpen: visFeilregistrerNotat, ...feilregistrerJournalførtNotat } = useFeilregistrerJournalførtNotat(notat)
-  const { erProd, erIkkeProd } = useMiljø()
 
-  // Skjuler interne notater actions for brukere uten tilgang eller i prod
-  const skjulActionMenu = notat.type === NotatType.INTERNT && (!kanBehandleSak || erProd)
+  // Skjuler interne notater actions for brukere uten tilgang
+  const skjulActionMenu = notat.type === NotatType.INTERNT && !kanBehandleSak
 
   return (
     <>
@@ -55,21 +54,17 @@ export function NotatActions({ notat }: NotaterProps) {
               </Tooltip>
             )}
 
-            {
-              /* TODO rydde opp i dette når vi åpner for feilregistrering i piloten */
-              erIkkeProd &&
-                kanBehandleSak &&
-                (notat.type === NotatType.JOURNALFØRT ? (
-                  <ActionMenu.Item
-                    disabled={!notat.journalpostId || !notat.dokumentId}
-                    onClick={() => visFeilregistrerNotat()}
-                  >
-                    Feilregistrer
-                  </ActionMenu.Item>
-                ) : (
-                  <ActionMenu.Item onClick={() => visFeilregistrerNotat()}>Feilregistrer</ActionMenu.Item>
-                ))
-            }
+            {kanBehandleSak &&
+              (notat.type === NotatType.JOURNALFØRT ? (
+                <ActionMenu.Item
+                  disabled={!notat.journalpostId || !notat.dokumentId}
+                  onClick={() => visFeilregistrerNotat()}
+                >
+                  Feilregistrer
+                </ActionMenu.Item>
+              ) : (
+                <ActionMenu.Item onClick={() => visFeilregistrerNotat()}>Feilregistrer</ActionMenu.Item>
+              ))}
           </ActionMenu.Content>
         </ActionMenu>
       )}

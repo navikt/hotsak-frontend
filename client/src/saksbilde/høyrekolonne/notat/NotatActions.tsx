@@ -13,7 +13,6 @@ import {
   FeilregistrerJournalførtNotatModalProps,
   useFeilregistrerJournalførtNotat,
 } from './feilregistering/useFeilregistrerJournalførtNotat.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 
 export interface NotaterProps {
   notat: Notat

@@ -1,8 +1,9 @@
 import '@mdxeditor/editor/style.css'
+
 import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
 import { useState } from 'react'
-import { useIsProd } from '../../../felleskomponenter/Eksperiment.tsx'
+
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { SpørreundersøkelseModal } from '../../../innsikt/SpørreundersøkelseModal.tsx'
@@ -12,6 +13,7 @@ import {
   FeilregistrerJournalførtNotatModalProps,
   useFeilregistrerJournalførtNotat,
 } from './feilregistering/useFeilregistrerJournalførtNotat.ts'
+import { useMiljø } from '../../../utils/useMiljø.ts'
 
 export interface NotaterProps {
   notat: Notat
@@ -22,10 +24,10 @@ export function NotatActions({ notat }: NotaterProps) {
   const { kanBehandleSak } = useSaksregler()
   const [visFeilregistrertToast] = useState(false)
   const { onOpen: visFeilregistrerNotat, ...feilregistrerJournalførtNotat } = useFeilregistrerJournalførtNotat(notat)
-  const isProd = useIsProd()
+  const { erProd, erIkkeProd } = useMiljø()
 
   // Skjuler interne notater actions for brukere uten tilgang eller i prod
-  const skjulActionMenu = notat.type === NotatType.INTERNT && (!kanBehandleSak || isProd)
+  const skjulActionMenu = notat.type === NotatType.INTERNT && (!kanBehandleSak || erProd)
 
   return (
     <>
@@ -55,7 +57,7 @@ export function NotatActions({ notat }: NotaterProps) {
 
             {
               /* TODO rydde opp i dette når vi åpner for feilregistrering i piloten */
-              !isProd &&
+              erIkkeProd &&
                 kanBehandleSak &&
                 (notat.type === NotatType.JOURNALFØRT ? (
                   <ActionMenu.Item

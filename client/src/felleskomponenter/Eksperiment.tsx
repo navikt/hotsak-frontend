@@ -1,14 +1,12 @@
-import { useMemo, type ReactElement, type ReactNode } from 'react'
+import { type ReactElement, type ReactNode } from 'react'
+
+import { useMiljø } from '../utils/useMiljø.ts'
 
 export interface EksperimentProps {
   children?: ReactNode
 }
 
 export function Eksperiment({ children }: EksperimentProps): ReactElement | null {
-  const isProd = useIsProd()
-  return isProd ? null : <>{children}</>
-}
-
-export function useIsProd(): boolean {
-  return useMemo(() => window.appSettings.MILJO === 'prod-gcp', [])
+  const { erProd } = useMiljø()
+  return erProd ? null : <>{children}</>
 }

@@ -1,15 +1,15 @@
 import { VStack } from '@navikt/ds-react'
 
 import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi'
-import { useInnloggetSaksbehandler } from '../../../../state/authentication'
 import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { HøyrekolonnePanel } from '../../../høyrekolonne/HøyrekolonnePanel'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
+import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 
 export function TotrinnskontrollPanel() {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
 
   const { sak, isError } = useBarnebrillesak()
 

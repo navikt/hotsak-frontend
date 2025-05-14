@@ -4,10 +4,10 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
 import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
-import { useInnloggetSaksbehandler } from '../state/authentication'
 import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { OppgaveId } from '../oppgave/oppgaveId.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export interface ManuellJournalføringKnappProps {
   oppgaveId: OppgaveId
@@ -23,7 +23,7 @@ export function ManuellJournalføringKnapp({
   tildeltSaksbehandler,
   onMutate,
 }: ManuellJournalføringKnappProps) {
-  const saksbehandler = useInnloggetSaksbehandler()
+  const saksbehandler = useInnloggetAnsatt()
   const [isFetching, setIsFetching] = useState(false)
 
   const menyClick = (event: MouseEvent) => {

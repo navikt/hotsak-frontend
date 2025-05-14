@@ -10,7 +10,9 @@ export const ansatteHandlers: StoreHandlersFactory = ({ saksbehandlerStore }) =>
     const innloggetSaksbehandler = await saksbehandlerStore.innloggetSaksbehandler()
     return HttpResponse.json(innloggetSaksbehandler)
   }),
-  http.post<never, { valgtEnhetsnummer: string }>('/api/ansatte/enhet', async () => {
+  http.post<never, { valgtEnhetsnummer: string }>('/api/ansatte/enhet', async ({ request }) => {
+    const { valgtEnhetsnummer } = await request.json()
+    await saksbehandlerStore.lagreValgtEnhetsnummer(valgtEnhetsnummer)
     return respondNoContent()
   }),
 ]

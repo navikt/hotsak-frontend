@@ -52,6 +52,7 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
       {behandlereIsValidating ? (
         <>
           <Skeleton height={52} />
+          <Skeleton height={52} />
           <Skeleton height={134} />
         </>
       ) : (

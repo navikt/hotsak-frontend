@@ -1,5 +1,4 @@
 import '@mdxeditor/editor/style.css'
-import { TrashIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, TextField, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -20,6 +19,7 @@ import { useSak } from '../../useSak.ts'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
 import { Lagreindikator } from './markdown/Lagreindikator.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
+import { SlettUtkast } from './SlettUtkast.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
@@ -36,21 +36,16 @@ interface NotatFormValues {
 }
 
 export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
-  const [sletter, setSletter] = useState(false)
   const { sak } = useSak()
 
   const [journalførerNotat, setJournalførerNotat] = useState(false)
-  const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
+  const { aktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId, NotatType.JOURNALFØRT)
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-
-  const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.JOURNALFØRT)
 
   const defaultValues = {
     tittel: '',
@@ -75,7 +70,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const tekst = watch('tekst')
   const klassifisering = watch('klassifisering')
 
-  const { slettNotatUtkast, lagrerUtkast } = useUtkastEndret(
+  const { lagrerUtkast } = useUtkastEndret(
     NotatType.JOURNALFØRT,
     sakId,
     tittel,
@@ -114,23 +109,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     setJournalførerNotat(false)
     setVisJournalførNotatModal(false)
     setTimeout(() => setVisNotatJournalførtToast(false), 3000)
-  }
-
-  const slettUtkast = async () => {
-    if (aktivtUtkast) {
-      setSletter(true)
-      await slettNotatUtkast(sakId, aktivtUtkast.id)
-      await mutateNotater()
-      setVisSlettetUtkastToast(true)
-
-      reset(defaultValues)
-
-      setTimeout(() => {
-        setVisSlettetUtkastToast(false)
-      }, 5000)
-      setSletter(false)
-    }
-    setVisSlettUtkastModal(false)
   }
 
   const onSubmit = () => {
@@ -235,18 +213,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
           >
             Forhåndsvis dokument
           </Button>
-
-          <Button
-            icon={<TrashIcon />}
-            variant="tertiary"
-            type="button"
-            size="xsmall"
-            onClick={() => {
-              setVisSlettUtkastModal(true)
-            }}
-          >
-            Slett utkast
-          </Button>
+          <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
         </HStack>
       )}
 
@@ -276,22 +243,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
       )}
 
       {visNotatJournalførtToast && <InfoToast bottomPosition="10px">Notatet er journalført.</InfoToast>}
-      {visSlettetUtkastToast && <InfoToast bottomPosition="10px">Utkast slettet</InfoToast>}
-
-      <BekreftelseModal
-        heading="Er du sikker på at du vil slette utkastet?"
-        bekreftButtonLabel="Ja, slett utkastet"
-        avbrytButtonLabel="Nei, behold utkastet"
-        bekreftButtonVariant="secondary"
-        avbrytButtonVariant="primary"
-        reverserKnapperekkefølge={true}
-        open={visSlettUtkastModal}
-        loading={sletter}
-        onClose={() => setVisSlettUtkastModal(false)}
-        onBekreft={slettUtkast}
-      >
-        <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
-      </BekreftelseModal>
 
       <BekreftelseModal
         heading="Er du sikker på at du vil journalføre notatet?"

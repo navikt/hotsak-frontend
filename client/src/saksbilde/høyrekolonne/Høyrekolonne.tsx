@@ -22,7 +22,7 @@ export function Høyrekolonne() {
   const { kanBehandleSak } = useSaksregler()
   const [searchParams, setSearchParams] = useSearchParams()
   const { sak } = useSak()
-  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
+  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak!.data.sakId)
   const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,

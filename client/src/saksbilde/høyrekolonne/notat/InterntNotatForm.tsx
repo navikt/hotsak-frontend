@@ -1,16 +1,14 @@
 import '@mdxeditor/editor/style.css'
-import { TrashIcon } from '@navikt/aksel-icons'
 import { Alert, Button, HStack, TextField, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { ferdigstillNotat } from '../../../io/http.ts'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { Lagreindikator } from './markdown/Lagreindikator.tsx'
 import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
+import { SlettUtkast } from './SlettUtkast.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
@@ -25,16 +23,10 @@ interface InternNotatFormValues {
 }
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
-  const [sletter, setSletter] = useState(false)
-
-  const { utkast: aktiveUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
+  const { aktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId, NotatType.INTERNT)
   const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
-  const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [visNotatFerdigstiltToast, setVisFerdigstillerNotatToast] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
-
-  const aktivtUtkast = aktiveUtkast.find((u) => u.type === NotatType.INTERNT)
 
   const defaultValues = {
     tittel: '',
@@ -56,14 +48,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const tittel = watch('tittel')
   const tekst = watch('tekst')
 
-  const { lagrerUtkast, slettNotatUtkast } = useUtkastEndret(
-    NotatType.INTERNT,
-    sakId,
-    tittel,
-    tekst,
-    mutateNotater,
-    aktivtUtkast
-  )
+  const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
 
   useEffect(() => {
     if (aktivtUtkast && !aktivtUtkastHentet) {
@@ -92,24 +77,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     setTimeout(() => setVisFerdigstillerNotatToast(false), 3000)
     setFerdigstillerNotat(false)
     reset(defaultValues)
-  }
-
-  const slettUtkast = async () => {
-    if (aktivtUtkast) {
-      setSletter(true)
-      await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
-      setVisSlettUtkastModal(false)
-      setVisSlettetUtkastToast(true)
-      await mutateNotater()
-      reset(defaultValues)
-      setTimeout(() => {
-        setVisSlettetUtkastToast(false)
-      }, 5000)
-
-      setSletter(false)
-    } else {
-      setVisSlettUtkastModal(false)
-    }
   }
 
   const readOnly = lesevisning || ferdigstillerNotat
@@ -157,7 +124,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
           <Lagreindikator lagrerUtkast={lagrerUtkast} sistLagretTidspunkt={aktivtUtkast?.oppdatert} />
         </VStack>
       )}
-
       {!lesevisning && (
         <ResponsivHStack justify={'space-between'}>
           <div>
@@ -165,22 +131,9 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
               Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
             </Alert>
           </div>
-          <div>
-            <Button
-              icon={<TrashIcon />}
-              type="button"
-              variant="tertiary"
-              size="xsmall"
-              onClick={() => {
-                setVisSlettUtkastModal(true)
-              }}
-            >
-              Slett utkast
-            </Button>
-          </div>
+          <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
         </ResponsivHStack>
       )}
-
       {!lesevisning && (
         <VStack gap="4" paddingBlock={'3 0'}>
           <div>
@@ -190,25 +143,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
           </div>
         </VStack>
       )}
-
       {visNotatFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
-
-      <BekreftelseModal
-        heading="Er du sikker på at du vil slette utkastet?"
-        bekreftButtonLabel="Ja, slett utkastet"
-        avbrytButtonLabel="Nei, behold utkastet"
-        bekreftButtonVariant="secondary"
-        avbrytButtonVariant="primary"
-        reverserKnapperekkefølge={true}
-        open={visSlettUtkastModal}
-        loading={sletter}
-        onClose={() => setVisSlettUtkastModal(false)}
-        onBekreft={slettUtkast}
-      >
-        <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
-      </BekreftelseModal>
-
-      {visSlettetUtkastToast && <InfoToast bottomPosition="10px">Utkast slettet</InfoToast>}
     </form>
   )
 }

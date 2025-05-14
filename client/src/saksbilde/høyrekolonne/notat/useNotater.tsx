@@ -1,28 +1,45 @@
 import useSwr, { KeyedMutator } from 'swr'
 
+import { useEffect, useState } from 'react'
 import { useErNotatPilot } from '../../../tilgang/useTilgang.ts'
 import { Notat, NotatType, Saksnotater } from '../../../types/types.internal'
-import { useEffect, useState } from 'react'
 
 interface NotaterResponse {
   antallNotater: number
   harUtkast: boolean
   notater: Notat[]
-  utkast: Notat[]
+  aktivtUtkast?: Notat
   isLoading: boolean
   mutate: KeyedMutator<Saksnotater>
 }
 
-export function useNotater(sakId?: string, opts?: any): NotaterResponse {
+export function useNotater(sakId: string, valgtNotattype?: NotatType, opts?: any): NotaterResponse {
   const erNotatPilot = useErNotatPilot()
 
   const [refreshInterval, setRefreshInterval] = useState(0)
-
+  const [harUtkast, setHarUtkast] = useState(false)
+  const [aktivtUtkast, setAktivtUtkast] = useState<Notat | undefined>(undefined)
   const {
     data: saksnotater,
     mutate,
     isLoading,
   } = useSwr<Saksnotater>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
+
+  useEffect(() => {
+    console.log('useEffect i useNotater')
+
+    if (saksnotater) {
+      const utkast = saksnotater.notater.filter((notat) => !notat.ferdigstilt)
+      setHarUtkast(utkast.length > 0)
+      // TODO egen funksjon for dette
+      if (valgtNotattype) {
+        const utkastForType = utkast.find((notat) => notat.type === valgtNotattype)
+        if (utkastForType) {
+          setAktivtUtkast(utkastForType)
+        }
+      }
+    }
+  }, [saksnotater, valgtNotattype])
 
   opts = {
     ...opts,
@@ -35,7 +52,7 @@ export function useNotater(sakId?: string, opts?: any): NotaterResponse {
 
   const { notater, totalElements } = saksnotater ?? { notater: [], totalElements: 0 }
   const ferdigstilteNotater = notater?.filter((notat) => notat.ferdigstilt) ?? []
-  const utkast = notater?.filter((notat) => !notat.ferdigstilt) ?? []
+
   const avventerJournalføring =
     ferdigstilteNotater
       .filter((notat) => notat.type === NotatType.JOURNALFØRT)
@@ -51,9 +68,9 @@ export function useNotater(sakId?: string, opts?: any): NotaterResponse {
 
   return {
     antallNotater: totalElements,
-    harUtkast: utkast.length > 0,
+    harUtkast,
     notater: ferdigstilteNotater,
-    utkast,
+    aktivtUtkast,
     isLoading,
     mutate,
   }

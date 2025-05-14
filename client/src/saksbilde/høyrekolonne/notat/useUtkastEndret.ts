@@ -39,12 +39,6 @@ export function useUtkastEndret(
     })
   }
 
-  const slettNotatUtkast = async (sakId: string, notatId: string) => {
-    return execute(async () => {
-      return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
-    })
-  }
-
   const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
     if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '' || klassifisering)) {
       setLagrerUtkast(true)
@@ -78,7 +72,6 @@ export function useUtkastEndret(
   }
 
   return {
-    slettNotatUtkast,
     lagrerUtkast,
     state,
   }

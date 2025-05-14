@@ -8,7 +8,7 @@ export interface FormModalProps {
   submitButtonLabel: string
   avbrytButtonLabel?: string
   width?: ModalProps['width']
-  children?: ReactNode
+  children: ReactNode
   action: any
   onClose(): void | Promise<void>
 }
@@ -35,13 +35,13 @@ export function FormModal(props: FormModalProps) {
       size="small"
       aria-label={heading}
     >
-      <Modal.Header>
-        <Heading level="1" size="small">
-          {heading}
-        </Heading>
-      </Modal.Header>
       <form action={action}>
-        {children && <Modal.Body>{children}</Modal.Body>}
+        <Modal.Header>
+          <Heading level="1" size="small">
+            {heading}
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>{children}</Modal.Body>
         <FormModalFooter
           submitButtonLabel={submitButtonLabel}
           avbrytButtonLabel={avbrytButtonLabel}

@@ -70,7 +70,7 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
             minRows={5}
             maxRows={5}
             label="Melding til medarbeider"
-            description="Blir synlig i sakshistorikken"
+            description="Meldingen blir synlig i sakshistorikken."
             size="small"
           />
           {state.error && (

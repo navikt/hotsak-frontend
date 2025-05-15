@@ -8,17 +8,16 @@ interface NotaterResponse {
   antallNotater: number
   harUtkast: boolean
   notater: Notat[]
-  aktivtUtkast?: Notat
+  finnAktivtUtkast: (valgtNotattype?: NotatType) => Notat | undefined
   isLoading: boolean
   mutate: KeyedMutator<Saksnotater>
 }
 
-export function useNotater(sakId?: string, valgtNotattype?: NotatType, opts?: any): NotaterResponse {
+export function useNotater(sakId?: string, opts?: any): NotaterResponse {
   const erNotatPilot = useErNotatPilot()
 
   const [refreshInterval, setRefreshInterval] = useState(0)
   const [harUtkast, setHarUtkast] = useState(false)
-  const [aktivtUtkast, setAktivtUtkast] = useState<Notat | undefined>(undefined)
   const {
     data: saksnotater,
     mutate,
@@ -26,20 +25,15 @@ export function useNotater(sakId?: string, valgtNotattype?: NotatType, opts?: an
   } = useSwr<Saksnotater>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
 
   useEffect(() => {
-    console.log('useEffect i useNotater')
-
     if (saksnotater) {
       const utkast = saksnotater.notater.filter((notat) => !notat.ferdigstilt)
       setHarUtkast(utkast.length > 0)
-      // TODO egen funksjon for dette
-      if (valgtNotattype) {
-        const utkastForType = utkast.find((notat) => notat.type === valgtNotattype)
-        if (utkastForType) {
-          setAktivtUtkast(utkastForType)
-        }
-      }
     }
-  }, [saksnotater, valgtNotattype])
+  }, [saksnotater])
+
+  const finnAktivtUtkast = (valgtNotattype?: NotatType): Notat | undefined => {
+    return saksnotater?.notater.filter((notat) => !notat.ferdigstilt).find((notat) => notat.type === valgtNotattype)
+  }
 
   opts = {
     ...opts,
@@ -70,7 +64,7 @@ export function useNotater(sakId?: string, valgtNotattype?: NotatType, opts?: an
     antallNotater: totalElements,
     harUtkast,
     notater: ferdigstilteNotater,
-    aktivtUtkast,
+    finnAktivtUtkast,
     isLoading,
     mutate,
   }

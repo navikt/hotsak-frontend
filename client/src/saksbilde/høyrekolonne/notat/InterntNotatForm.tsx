@@ -23,10 +23,12 @@ interface InternNotatFormValues {
 }
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
-  const { aktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId, NotatType.INTERNT)
+  const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
   const [visNotatFerdigstiltToast, setVisFerdigstillerNotatToast] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
+
+  const aktivtUtkast = finnAktivtUtkast(NotatType.INTERNT)
 
   const defaultValues = {
     tittel: '',

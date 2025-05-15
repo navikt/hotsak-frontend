@@ -18,7 +18,6 @@ export function OppgaveProvider({ children }: { children: ReactNode }) {
         if (
           !(state.oppgaveId === oppgave.oppgaveId && state.versjon === oppgave.versjon && state.sakId === oppgave.sakId)
         ) {
-          console.debug('Setter gjeldende oppgave: ', oppgave)
           setState(oppgave)
         }
       },

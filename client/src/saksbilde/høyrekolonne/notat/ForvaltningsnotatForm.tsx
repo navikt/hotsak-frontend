@@ -39,13 +39,15 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const { sak } = useSak()
 
   const [journalførerNotat, setJournalførerNotat] = useState(false)
-  const { aktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId, NotatType.JOURNALFØRT)
+  const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
   const { hentForhåndsvisning } = useBrev()
+
+  const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
 
   const defaultValues = {
     tittel: '',

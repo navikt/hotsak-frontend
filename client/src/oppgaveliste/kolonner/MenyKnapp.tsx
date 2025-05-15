@@ -50,7 +50,11 @@ export function MenyKnapp({
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
-  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveService()
+  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveService({
+    oppgaveId: `S-${sakId}`,
+    versjon: -1,
+    sakId,
+  })
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()

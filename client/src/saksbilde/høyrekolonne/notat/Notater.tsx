@@ -13,6 +13,10 @@ export interface NotaterProps {
   sakId: string
   lesevisning: boolean
 }
+export interface NotatFormValues {
+  tittel: string
+  tekst: string
+}
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)

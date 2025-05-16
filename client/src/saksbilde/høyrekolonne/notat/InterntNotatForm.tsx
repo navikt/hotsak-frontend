@@ -1,25 +1,20 @@
 import '@mdxeditor/editor/style.css'
-import { Alert, Button, HStack, TextField, VStack } from '@navikt/ds-react'
+import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { ferdigstillNotat } from '../../../io/http.ts'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
-import { Lagreindikator } from './markdown/Lagreindikator.tsx'
-import { MarkdownTextArea } from './markdown/MarkdownTextArea.tsx'
+import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
+import { NotatFormValues } from './Notater.tsx'
 
 export interface NotaterProps {
   sakId: string
   lesevisning: boolean
-}
-
-interface InternNotatFormValues {
-  tittel: string
-  tekst: string
 }
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
@@ -35,17 +30,8 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     tekst: '',
   }
 
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    reset,
-    watch,
-    trigger,
-    formState: { errors },
-  } = useForm<InternNotatFormValues>({
-    defaultValues,
-  })
+  const form = useForm<NotatFormValues>({ defaultValues })
+  const { handleSubmit, setValue, reset, watch } = form
 
   const tittel = watch('tittel')
   const tekst = watch('tekst')
@@ -60,7 +46,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }, [aktivtUtkast, tittel, tekst, setValue])
 
-  const lagPayload = (data: InternNotatFormValues): FerdigstillNotatRequest => {
+  const lagPayload = (data: NotatFormValues): FerdigstillNotatRequest => {
     return {
       id: aktivtUtkast!.id,
       sakId,
@@ -71,7 +57,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
-  const ferdigstillInterntNotat = async (data: InternNotatFormValues) => {
+  const ferdigstillInterntNotat = async (data: NotatFormValues) => {
     setFerdigstillerNotat(true)
     await ferdigstillNotat(lagPayload(data))
     mutateNotater()
@@ -84,69 +70,35 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const readOnly = lesevisning || ferdigstillerNotat
 
   return (
-    <form onSubmit={handleSubmit(ferdigstillInterntNotat)}>
-      {!notaterLaster && (
-        <VStack>
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(ferdigstillInterntNotat)}>
+        {!notaterLaster && (
           <VStack gap="4" paddingBlock="6 0">
-            <Controller
-              name="tittel"
-              control={control}
-              rules={{ required: 'Du må skrive en tittel' }}
-              render={({ field }) => (
-                <TextField
-                  size="small"
-                  label="Tittel"
-                  error={errors.tittel?.message}
-                  readOnly={readOnly}
-                  value={field.value}
-                  onChange={(e) => {
-                    field.onChange(e)
-                    trigger('tittel')
-                  }}
-                />
-              )}
-            />
-            <Controller
-              name="tekst"
-              control={control}
-              rules={{ required: 'Du må skrive en tekst' }}
-              render={({ field }) => (
-                <MarkdownTextArea
-                  label="Notat"
-                  tekst={field.value}
-                  onChange={(e) => {
-                    field.onChange(e), trigger('tekst')
-                  }}
-                  readOnly={readOnly}
-                  valideringsfeil={errors.tekst?.message}
-                />
-              )}
-            />
+            <NotatForm readOnly={readOnly} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
           </VStack>
-          <Lagreindikator lagrerUtkast={lagrerUtkast} sistLagretTidspunkt={aktivtUtkast?.oppdatert} />
-        </VStack>
-      )}
-      {!lesevisning && (
-        <ResponsivHStack justify={'space-between'}>
-          <div>
-            <Alert variant="info" size="small" inline>
-              Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
-            </Alert>
-          </div>
-          <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
-        </ResponsivHStack>
-      )}
-      {!lesevisning && (
-        <VStack gap="4" paddingBlock={'3 0'}>
-          <div>
-            <Button variant="secondary" size="small" loading={ferdigstillerNotat} type="submit">
-              Opprett internt notat
-            </Button>
-          </div>
-        </VStack>
-      )}
-      {visNotatFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
-    </form>
+        )}
+        {!lesevisning && (
+          <ResponsivHStack justify={'space-between'}>
+            <div>
+              <Alert variant="info" size="small" inline>
+                Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
+              </Alert>
+            </div>
+            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
+          </ResponsivHStack>
+        )}
+        {!lesevisning && (
+          <VStack gap="4" paddingBlock={'3 0'}>
+            <div>
+              <Button variant="secondary" size="small" loading={ferdigstillerNotat} type="submit">
+                Opprett internt notat
+              </Button>
+            </div>
+          </VStack>
+        )}
+        {visNotatFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
+      </form>
+    </FormProvider>
   )
 }
 

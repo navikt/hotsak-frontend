@@ -131,7 +131,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
               rules={{ required: 'Du må velge en verdi' }}
               render={({ field }) => (
                 <RadioGroup
-                  legend="Hvordan oppstod informasjonen i notatet?"
+                  legend="Hvilken type informasjon skal journalføres?"
                   size="small"
                   value={field.value}
                   onChange={(e) => {

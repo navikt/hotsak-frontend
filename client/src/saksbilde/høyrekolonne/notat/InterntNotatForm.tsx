@@ -2,15 +2,14 @@ import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import styled from 'styled-components'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { ferdigstillNotat } from '../../../io/http.ts'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
+import { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
-import { NotatFormValues } from './Notater.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -74,18 +73,16 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
       <form onSubmit={handleSubmit(ferdigstillInterntNotat)}>
         {!notaterLaster && (
           <VStack gap="4" paddingBlock="6 0">
+            <Alert variant="info" size="small" inline>
+              Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
+            </Alert>
             <NotatForm readOnly={readOnly} aktivtUtkast={aktivtUtkast} lagrerUtkast={lagrerUtkast} />
           </VStack>
         )}
         {!lesevisning && (
-          <ResponsivHStack justify={'space-between'}>
-            <div>
-              <Alert variant="info" size="small" inline>
-                Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
-              </Alert>
-            </div>
+          <HStack justify={'end'}>
             <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
-          </ResponsivHStack>
+          </HStack>
         )}
         {!lesevisning && (
           <VStack gap="4" paddingBlock={'3 0'}>
@@ -101,13 +98,3 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     </FormProvider>
   )
 }
-
-const ResponsivHStack = styled(HStack)`
-  // Foreløpig hardkodet px verdi for brekkpunkt. Dette er minste bredde før knappen brekker til ny linje
-  // På sikt bør vi lage hele sideoppsett i Hotsak for de ulike brekkpunktene fra Aksel
-  @media (max-width: 1730px) {
-    order: reverse;
-    flex-direction: column-reverse;
-    gap: var(--a-spacing-4);
-  }
-`

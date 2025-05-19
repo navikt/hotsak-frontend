@@ -55,9 +55,8 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   }
 
   const ferdigstillInterntNotat = async (data: NotatFormValues) => {
-    await ferdigstill(lagPayload(data), () => {
-      reset(defaultValues)
-    })
+    await ferdigstill(lagPayload(data))
+    reset(defaultValues)
   }
 
   const readOnly = lesevisning || ferdigstiller

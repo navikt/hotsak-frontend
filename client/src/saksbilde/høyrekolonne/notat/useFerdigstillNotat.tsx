@@ -15,12 +15,11 @@ export function useFerdigstillNotat() {
     })
   }
 
-  const ferdigstill = async (payload: FerdigstillNotatRequest, callback: () => void) => {
+  const ferdigstill = async (payload: FerdigstillNotatRequest) => {
     await ferdigstillNotat(payload)
     await mutate(`/api/sak/${payload.sakId}/notater`)
     setVisFerdigstiltToast(true)
     setTimeout(() => setVisFerdigstiltToast(false), 3000)
-    callback()
   }
 
   return {

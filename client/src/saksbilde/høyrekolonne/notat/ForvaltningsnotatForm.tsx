@@ -102,10 +102,9 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   }
 
   const journalførNotat = async () => {
-    await ferdigstill(lagPayload(), () => {
-      reset(defaultValues)
-      setVisJournalførNotatModal(false)
-    })
+    await ferdigstill(lagPayload())
+    setVisJournalførNotatModal(false)
+    reset(defaultValues)
   }
 
   const onSubmit = () => {

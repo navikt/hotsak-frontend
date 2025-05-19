@@ -4,7 +4,6 @@ import type {
   BrevTekst,
   Brevtype,
   EndretHjelpemiddel,
-  FerdigstillNotatRequest,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,

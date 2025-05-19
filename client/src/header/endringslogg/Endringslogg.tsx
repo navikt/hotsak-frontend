@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
-import { BodyLong, Label } from '@navikt/ds-react'
-
-import { Strek } from '../../felleskomponenter/Strek'
+import { ActionMenu, Box, Heading } from '@navikt/ds-react'
 import { EndringsloggInnslag, MerkSomLestCallback } from './useEndringslogg'
 import { format } from 'date-fns'
 import { useOnScreen } from './useOnScreen'
@@ -18,12 +16,17 @@ export function Endringslogg({
 }) {
   return (
     <>
-      <Overskrift as="h2">Nytt i HOTSAK</Overskrift>
-      <Liste>
-        {endringslogginnslag.map((innslag) => (
-          <Innslag key={innslag.id} innslag={innslag} merkSomLest={merkSomLest} />
-        ))}
-      </Liste>
+      <Box marginBlock="space-8" marginInline="space-16">
+        <Heading level="2" size="small" spacing>
+          Nytt i Hotsak
+        </Heading>
+      </Box>
+      {endringslogginnslag.map((innslag, index) => (
+        <Fragment key={innslag.id}>
+          <Innslag innslag={innslag} merkSomLest={merkSomLest} />
+          {index + 1 < endringslogginnslag.length && <ActionMenu.Divider />}
+        </Fragment>
+      ))}
     </>
   )
 }
@@ -35,6 +38,7 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
   const innslagRef = useRef<HTMLElement>(null)
   const isOnScreen = useOnScreen(innslagRef)
   const [isFading, setIsFading] = useState(!ulest)
+
   useEffect(() => {
     if (isOnScreen && ulest) {
       timeoutRef.current = window.setTimeout(() => {
@@ -48,43 +52,27 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
       }, 5_000)
     }
   }, [isOnScreen, ulest, merkSomLest, innslag])
+
   useEffect(() => {
     if (!isOnScreen && timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
   }, [isOnScreen])
+
   return (
-    <>
-      <dt ref={innslagRef}>
+    <Box margin="space-16">
+      <header ref={innslagRef}>
         <Ulest $fading={isFading}>{dato}</Ulest>
-        <Label as="h3" spacing>
+        <Heading level="3" size="xsmall" spacing>
           {innslag.tittel}
-        </Label>
-      </dt>
-      <dd>
+        </Heading>
+      </header>
+      <div>
         <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
-      </dd>
-      <Strek />
-    </>
+      </div>
+    </Box>
   )
 }
-
-const Overskrift = styled(BodyLong)`
-  margin: 0 !important;
-  color: var(--a-text-on-inverted);
-  background-color: var(--a-surface-inverted);
-  padding: var(--a-spacing-3) var(--a-spacing-4);
-  text-align: center;
-`
-
-const Liste = styled.dl`
-  margin: var(--a-spacing-3) var(--a-spacing-6) !important;
-
-  dd {
-    margin: var(--a-spacing-3) 0 !important;
-    list-style: initial;
-  }
-`
 
 const Ulest = styled.span<{ $fading: boolean }>`
   position: relative;

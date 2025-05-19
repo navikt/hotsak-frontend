@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { MenuGridIcon } from '@navikt/aksel-icons'
-import { Dropdown, InternalHeader, Link } from '@navikt/ds-react'
+import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { Søk } from './Søk'
-import { EndringsloggDropdown } from './endringslogg/EndringsloggDropdown'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -27,7 +26,9 @@ export function Toppmeny() {
 
   return (
     <InternalHeader>
-      <InternalHeader.Title href="/">HOTSAK</InternalHeader.Title>
+      <InternalHeader.Title as="h1" href="/">
+        HOTSAK
+      </InternalHeader.Title>
       <SøkeContainer>
         <Søk
           onSearch={(value: string) => {
@@ -36,60 +37,49 @@ export function Toppmeny() {
           }}
         />
       </SøkeContainer>
-      <Dropdown>
-        <InternalHeader.Button as={Dropdown.Toggle} className="ml-auto">
-          <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
-        </InternalHeader.Button>
-        <Dropdown.Menu>
-          <Dropdown.Menu.GroupedList>
-            <Dropdown.Menu.GroupedList.Heading>Systemer og oppslagsverk</Dropdown.Menu.GroupedList.Heading>
-            <Dropdown.Menu.GroupedList.Item>
-              <Link href="https://gosys.intern.nav.no/gosys/" target="_new">
-                Gosys
-              </Link>
-            </Dropdown.Menu.GroupedList.Item>
-            <Dropdown.Menu.GroupedList.Item>
-              <Link href="https://app.adeo.no/modiapersonoversikt" target="_new">
-                Modia
-              </Link>
-            </Dropdown.Menu.GroupedList.Item>
-          </Dropdown.Menu.GroupedList>
-        </Dropdown.Menu>
-        <EndringsloggDropdown />
-      </Dropdown>
-      <Dropdown>
-        <InternalHeader.UserButton
-          name={innloggetAnsatt.navn}
-          description={valgtEnhet?.navn}
-          as={Dropdown.Toggle}
-          className="ml-auto"
-        />
-        <Dropdown.Menu>
-          <Eksperiment>
-            <Dropdown.Menu.GroupedList>
-              <Dropdown.Menu.GroupedList.Heading>Enheter</Dropdown.Menu.GroupedList.Heading>
-              {innloggetAnsatt.enheter
-                .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
-                .map((enhet) => (
-                  <Dropdown.Menu.GroupedList.Item
-                    key={enhet.nummer}
-                    onClick={() => {
-                      return setValgtEnhet(enhet.nummer)
-                    }}
-                  >
-                    {enhet.nummer} - {enhet.navn}
-                  </Dropdown.Menu.GroupedList.Item>
-                ))}
-            </Dropdown.Menu.GroupedList>
-            <Dropdown.Menu.Divider />
-          </Eksperiment>
-          <Dropdown.Menu.List>
-            <Dropdown.Menu.List.Item>
-              <Lenke href="/oauth2/logout">Logg ut</Lenke>
-            </Dropdown.Menu.List.Item>
-          </Dropdown.Menu.List>
-        </Dropdown.Menu>
-      </Dropdown>
+      <ActionMenu>
+        <ActionMenu.Trigger>
+          <InternalHeader.Button>
+            <MenuGridIcon style={{ fontSize: '1.5rem' }} title="Systemer og oppslagsverk" />
+          </InternalHeader.Button>
+        </ActionMenu.Trigger>
+        <ActionMenu.Content>
+          <ActionMenu.Group label="Systemer og oppslagsverk">
+            <ActionMenu.Item as="a" href="https://gosys.intern.nav.no/gosys/" target="_new">
+              Gosys
+            </ActionMenu.Item>
+            <ActionMenu.Item as="a" href="https://app.adeo.no/modiapersonoversikt" target="_new">
+              Modia
+            </ActionMenu.Item>
+          </ActionMenu.Group>
+        </ActionMenu.Content>
+        <EndringsloggMenu />
+      </ActionMenu>
+      <ActionMenu>
+        <ActionMenu.Trigger>
+          <InternalHeader.UserButton name={innloggetAnsatt.navn} description={valgtEnhet?.navn} />
+        </ActionMenu.Trigger>
+        <ActionMenu.Content>
+          <ActionMenu.Group label="Andre enheter">
+            {innloggetAnsatt.enheter
+              .filter(({ nummer }) => valgtEnhet?.nummer !== nummer)
+              .map((enhet) => (
+                <ActionMenu.Item
+                  key={enhet.nummer}
+                  onSelect={() => {
+                    return setValgtEnhet(enhet.nummer)
+                  }}
+                >
+                  {enhet.nummer} - {enhet.navn}
+                </ActionMenu.Item>
+              ))}
+          </ActionMenu.Group>
+          <ActionMenu.Divider />
+          <ActionMenu.Item>
+            <Lenke href="/oauth2/logout">Logg ut</Lenke>
+          </ActionMenu.Item>
+        </ActionMenu.Content>
+      </ActionMenu>
     </InternalHeader>
   )
 }

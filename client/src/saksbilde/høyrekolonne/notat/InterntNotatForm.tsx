@@ -3,13 +3,13 @@ import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
-import { ferdigstillNotat } from '../../../io/http.ts'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
+import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -18,8 +18,6 @@ export interface NotaterProps {
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const [ferdigstillerNotat, setFerdigstillerNotat] = useState(false)
-  const [visNotatFerdigstiltToast, setVisFerdigstillerNotatToast] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
 
   const aktivtUtkast = finnAktivtUtkast(NotatType.INTERNT)
@@ -36,7 +34,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const tekst = watch('tekst')
 
   const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
-
+  const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
   useEffect(() => {
     if (aktivtUtkast && !aktivtUtkastHentet) {
       setValue('tittel', aktivtUtkast.tittel)
@@ -57,16 +55,12 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   }
 
   const ferdigstillInterntNotat = async (data: NotatFormValues) => {
-    setFerdigstillerNotat(true)
-    await ferdigstillNotat(lagPayload(data))
-    mutateNotater()
-    setVisFerdigstillerNotatToast(true)
-    setTimeout(() => setVisFerdigstillerNotatToast(false), 3000)
-    setFerdigstillerNotat(false)
-    reset(defaultValues)
+    await ferdigstill(lagPayload(data), () => {
+      reset(defaultValues)
+    })
   }
 
-  const readOnly = lesevisning || ferdigstillerNotat
+  const readOnly = lesevisning || ferdigstiller
 
   return (
     <FormProvider {...form}>
@@ -87,13 +81,13 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
         {!lesevisning && (
           <VStack gap="4" paddingBlock={'3 0'}>
             <div>
-              <Button variant="secondary" size="small" loading={ferdigstillerNotat} type="submit">
+              <Button variant="secondary" size="small" loading={visFerdigstiltToast} type="submit">
                 Opprett internt notat
               </Button>
             </div>
           </VStack>
         )}
-        {visNotatFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
+        {visFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
       </form>
     </FormProvider>
   )

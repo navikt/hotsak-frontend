@@ -224,10 +224,6 @@ export const postEndringslogginnslagLest = async (endringslogginnslagId: string)
   return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
 }
 
-export const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
-  return post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
-}
-
 export const postBrevutkast = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevutkast`, brevTekst)
 }

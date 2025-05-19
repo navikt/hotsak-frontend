@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
-import { ferdigstillNotat } from '../../../io/http.ts'
 import {
   Brevtype,
   FerdigstillNotatRequest,
@@ -20,6 +19,7 @@ import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.t
 import { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
+import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
@@ -36,15 +36,13 @@ export interface ForvaltningsnotatFormValues extends NotatFormValues {
 export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const { sak } = useSak()
 
-  const [journalførerNotat, setJournalførerNotat] = useState(false)
   const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
-  const [visNotatJournalførtToast, setVisNotatJournalførtToast] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-
+  const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
   const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
 
   const defaultValues = {
@@ -104,13 +102,10 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   }
 
   const journalførNotat = async () => {
-    setJournalførerNotat(true)
-    await ferdigstillNotat(lagPayload())
-    mutateNotater()
-    setVisNotatJournalførtToast(true)
-    setJournalførerNotat(false)
-    setVisJournalførNotatModal(false)
-    setTimeout(() => setVisNotatJournalførtToast(false), 3000)
+    await ferdigstill(lagPayload(), () => {
+      reset(defaultValues)
+      setVisJournalførNotatModal(false)
+    })
   }
 
   const onSubmit = () => {
@@ -118,7 +113,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     reset(defaultValues)
   }
 
-  const readOnly = lesevisning || journalførerNotat
+  const readOnly = lesevisning || ferdigstiller
 
   return (
     <FormProvider {...form}>
@@ -208,7 +203,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
           </VStack>
         )}
 
-        {visNotatJournalførtToast && <InfoToast bottomPosition="10px">Notatet er journalført.</InfoToast>}
+        {visFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er journalført.</InfoToast>}
 
         <BekreftelseModal
           heading="Er du sikker på at du vil journalføre notatet?"
@@ -218,7 +213,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
           avbrytButtonVariant="primary"
           width={'660px'}
           open={visJournalførNotatModal}
-          loading={journalførerNotat}
+          loading={ferdigstiller}
           onClose={() => setVisJournalførNotatModal(false)}
           onBekreft={handleSubmit(onSubmit)}
         >

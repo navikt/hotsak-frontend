@@ -26,7 +26,7 @@ export function Toppmeny() {
 
   return (
     <InternalHeader>
-      <InternalHeader.Title as="h1" href="/">
+      <InternalHeader.Title as="a" href="/">
         HOTSAK
       </InternalHeader.Title>
       <SøkeContainer>

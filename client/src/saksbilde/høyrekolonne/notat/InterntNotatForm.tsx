@@ -1,15 +1,15 @@
 import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
+import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
-import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -18,7 +18,6 @@ export interface NotaterProps {
 
 export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
 
   const aktivtUtkast = finnAktivtUtkast(NotatType.INTERNT)
 
@@ -35,11 +34,15 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
   const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
+
   useEffect(() => {
-    if (aktivtUtkast && !aktivtUtkastHentet) {
-      setValue('tittel', aktivtUtkast.tittel)
-      setValue('tekst', aktivtUtkast.tekst)
-      setAktivtUtkastHentet(true)
+    if (aktivtUtkast) {
+      if (tittel === '') {
+        setValue('tittel', aktivtUtkast.tittel)
+      }
+      if (tekst === '') {
+        setValue('tekst', aktivtUtkast.tekst)
+      }
     }
   }, [aktivtUtkast, tittel, tekst, setValue])
 

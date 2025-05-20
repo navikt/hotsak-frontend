@@ -48,17 +48,22 @@ export class NotatStore extends Dexie {
 
   async lagreUtkast(sakId: string, utkast: NotatUtkast) {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-    return this.notater.add({
-      sakId,
-      saksbehandler,
-      type: utkast.type,
-      tittel: utkast.tittel || '',
-      klassifisering: utkast.klassifisering,
-      målform: MålformType.BOKMÅL,
-      tekst: utkast.tekst || '',
-      opprettet: nåIso(),
-      oppdatert: nåIso(),
-    })
+    try {
+      return await this.notater.add({
+        sakId,
+        saksbehandler,
+        type: utkast.type,
+        tittel: utkast.tittel || '',
+        klassifisering: utkast.klassifisering,
+        målform: MålformType.BOKMÅL,
+        tekst: utkast.tekst || '',
+        opprettet: nåIso(),
+        oppdatert: nåIso(),
+      })
+    } catch (error) {
+      console.error('Feil ved lagring av utkast:', error)
+      throw error
+    }
   }
 
   async ferdigstillNotat(notatId: string, payload: FerdigstillNotatRequest) {

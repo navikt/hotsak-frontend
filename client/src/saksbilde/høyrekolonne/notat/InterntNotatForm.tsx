@@ -83,7 +83,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
         {!lesevisning && (
           <VStack gap="4" paddingBlock={'3 0'}>
             <div>
-              <Button variant="secondary" size="small" loading={visFerdigstiltToast} type="submit">
+              <Button variant="secondary" size="small" loading={true} type="submit">
                 Opprett internt notat
               </Button>
             </div>

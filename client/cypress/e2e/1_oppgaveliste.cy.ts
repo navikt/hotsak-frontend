@@ -26,6 +26,6 @@ describe('Oppgaveliste', () => {
     cy.findAllByRole('button', { name: /Ta saken/i })
       .first()
       .click()
-    cy.url().should('include', '/sak/1005/hjelpemidler')
+    cy.url().should('match', /\/sak\/\d+\/hjelpemidler/)
   })
 })

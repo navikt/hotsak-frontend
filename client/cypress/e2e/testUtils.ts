@@ -7,8 +7,11 @@ export const clearIndexDb = () => {
   cy.clearIndexedDb('SakStore')
 }
 
-export const plukkSak = (saksnummer: string) => {
-  cy.visit(`/sak/${saksnummer}/hjelpemidler`)
+export const plukkSak = (sakstype: 'Søknad' | 'Bestilling' | 'Tilskudd') => {
+  cy.visit('/')
+
+  cy.findByLabelText(/Sakstype/i).select('Søknad')
+
   cy.findAllByRole('button', { name: /Ta saken/i })
     .first()
     .click()

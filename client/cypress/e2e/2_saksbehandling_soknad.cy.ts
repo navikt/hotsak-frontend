@@ -9,7 +9,7 @@ describe('Saksbehandling søknad', () => {
   })
 
   it('burde kunne innvilge en søknad', () => {
-    plukkSak('1005')
+    plukkSak('Søknad')
 
     cy.findByRole('button', {
       name: /innvilg søknaden/i,
@@ -30,8 +30,8 @@ describe('Saksbehandling søknad', () => {
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Innvilget')
   })
 
-  it.skip('burde kunne overføre en søknad til Gosys', () => {
-    plukkSak('1005')
+  it('burde kunne overføre en søknad til Gosys', () => {
+    plukkSak('Søknad')
 
     cy.findByRole('button', {
       name: /overfør til gosys/i,
@@ -39,12 +39,13 @@ describe('Saksbehandling søknad', () => {
 
     const overførModal = cy
       .findByRole('dialog', {
-        name: /overfør til gosys/i,
+        name: /Vil du overføre saken til Gosys/i,
       })
       .should('be.visible')
 
     overførModal.within(() => {
       cy.findAllByRole('radio').first().click()
+      cy.findAllByRole('checkbox').first().click()
       cy.findByRole('button', {
         name: /overfør til gosys/i,
       }).click()
@@ -53,8 +54,8 @@ describe('Saksbehandling søknad', () => {
     cy.get('[data-cy="tag-soknad-status"]').should('have.text', 'Overført til Gosys')
   })
 
-  it.skip('Ikke valgt årsak ved overføring til Gosys gir valideringsfeil', () => {
-    plukkSak('1005')
+  it('Ikke valgt årsak ved overføring til Gosys gir valideringsfeil', () => {
+    plukkSak('Søknad')
 
     cy.findByRole('button', {
       name: /overfør til gosys/i,
@@ -62,7 +63,7 @@ describe('Saksbehandling søknad', () => {
 
     const overførModal = cy
       .findByRole('dialog', {
-        name: /overfør til gosys/i,
+        name: /Vil du overføre saken til Gosys/i,
       })
       .should('be.visible')
 
@@ -71,24 +72,26 @@ describe('Saksbehandling søknad', () => {
         name: /overfør til gosys/i,
       }).click()
 
-      cy.findByText(/du må velge minst en årsak i listen over/i).should('be.visible')
+      cy.findByText(/må fylles ut/i).should('be.visible')
     })
   })
 
   it('Navigering mellom tabs i søknadsbildet', () => {
-    plukkSak('1005')
+    plukkSak('Søknad')
 
-    const tabs = cy.findAllByRole('tablist').first()
-
-    tabs.within(() => {
-      cy.findByRole('tab', { name: /bruker/i }).click()
-    })
+    cy.findAllByRole('tablist')
+      .first()
+      .within(() => {
+        cy.findByRole('tab', { name: /bruker/i }).click()
+      })
 
     cy.findByRole('heading', { level: 1, name: /hjelpemiddelbruker/i }).should('exist')
 
-    tabs.within(() => {
-      cy.findByRole('tab', { name: /formidler/i }).click()
-    })
+    cy.findAllByRole('tablist')
+      .first()
+      .within(() => {
+        cy.findByRole('tab', { name: /formidler/i }).click()
+      })
 
     cy.findByRole('heading', { level: 1, name: /formidler og opplæringsansvarlig/i }).should('exist')
 

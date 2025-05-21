@@ -1,5 +1,4 @@
 import { Alert, Button, HelpText, HGrid, HGridProps, HStack, HStackProps, Loader, VStack } from '@navikt/ds-react'
-import { useParams } from 'react-router'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
@@ -11,9 +10,10 @@ import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useJournalposter } from '../../../useJournalposter'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
+import { useSakId } from '../../../useSak.ts'
 
 export function RegistrerSøknadLesevisning() {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const { sak, isLoading } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const { dokumenter } = useJournalposter()
@@ -30,7 +30,7 @@ export function RegistrerSøknadLesevisning() {
   if (!sak) {
     return (
       <div>
-        <Feilmelding>{`Fant ikke sak med saksnummer ${saksnummer}`}</Feilmelding>
+        <Feilmelding>{`Fant ikke sak med saksnummer ${sakId}`}</Feilmelding>
       </div>
     )
   }

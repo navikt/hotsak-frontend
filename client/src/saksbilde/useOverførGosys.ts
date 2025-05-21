@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { putSendTilGosys } from '../io/http'
 import { useSWRConfig } from 'swr'
+
+import { putSendTilGosys } from '../io/http'
 import type { OverførGosysModalProps } from './OverførGosysModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
@@ -12,7 +13,7 @@ export function useOverførGosys(
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const oppgaveState = useOppgaveContext()
+  const { oppgaveId, versjon } = useOppgaveContext()
   return {
     open,
     loading,
@@ -26,7 +27,7 @@ export function useOverførGosys(
     async onBekreft(tilbakemelding) {
       setLoading(true)
       try {
-        await putSendTilGosys(sakId, oppgaveState, tilbakemelding.svar)
+        await putSendTilGosys(sakId, { oppgaveId, versjon }, tilbakemelding.svar)
         await mutate(`api/sak/${sakId}`, `api/sak/${sakId}/historikk`)
       } finally {
         setLoading(false)

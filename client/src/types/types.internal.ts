@@ -6,7 +6,6 @@ export interface SakResponse<T extends SakBase> {
   data: T
   kanTildeles: boolean
   tilganger: Tilgang
-  oppgave?: OppgaveApiOppgave
 }
 
 export type Tilgang = {
@@ -200,7 +199,7 @@ export interface KontonummerResponse {
 export type Utbetalingsmottaker = KontonummerResponse
 
 export interface VurderVilkårRequest {
-  sakId: string
+  sakId: string | number
   sakstype: Sakstype
   målform: MålformType
   data: {

@@ -1,9 +1,7 @@
 import { formatISO } from 'date-fns'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useParams } from 'react-router'
 import styled from 'styled-components'
-
 import { Button, Loader } from '@navikt/ds-react'
 
 import { postVilkårsvurdering } from '../../../../io/http'
@@ -24,13 +22,14 @@ import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
+import { useSakId } from '../../../useSak.ts'
 
 const Container = styled.div`
   overflow: auto;
 `
 
 export function RegistrerSøknadSkjema() {
-  const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const { sak, isLoading, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const [venterPåVilkårsvurdering, setVenterPåVilkårsvurdering] = useState(false)

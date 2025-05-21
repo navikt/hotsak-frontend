@@ -79,7 +79,6 @@ const SaksbildeContent = memo(() => {
               <BestillingCard
                 bestilling={sak.data}
                 hjelpemiddelArtikler={hjelpemiddelArtikler}
-                oppgave={sak.oppgave}
                 lesevisning={!harSkrivetilgang}
                 harNotatUtkast={harUtkast}
               />

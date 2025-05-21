@@ -67,6 +67,19 @@ export interface OppgaveFilterType {
   label: string
 }
 
+/**
+ * Koblingen mellom sak og oppgave som lagres i Hotsak.
+ */
+export interface Oppgavetilknytning {
+  oppgaveId: OppgaveId
+  sakId: string
+  oppgavetype: Oppgavetype
+  opprettet: string
+  ferdigstilt?: string
+  feilregistrert?: string
+  statuskategori: 'ÅPEN' | 'AVSLUTTET'
+}
+
 /*
 
 [

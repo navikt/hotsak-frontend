@@ -5,7 +5,7 @@ import type { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
 import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
-import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
+import { erSakOppgaveId, OppgaveId, oppgaveIdUtenPrefix } from '../../oppgave/oppgaveId.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
@@ -45,9 +45,23 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
   }),
 
   http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
-    await oppgaveStore.tildel(params.oppgaveId)
-    console.log(`Tildeler oppgaveId: ${params.oppgaveId}`)
+    const { oppgaveId } = params
+    console.log(`Tildeler oppgaveId: ${oppgaveId}`)
+    if (erSakOppgaveId(oppgaveId)) {
+      await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
+    } else {
+      await oppgaveStore.tildel(oppgaveId)
+    }
+    await delay(200)
+    return respondNoContent()
+  }),
 
+  http.delete<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+    const { oppgaveId } = params
+    console.log(`Fjerner tildeling for oppgaveId: ${oppgaveId}`)
+    if (erSakOppgaveId(oppgaveId)) {
+      await sakStore.frigi(oppgaveIdUtenPrefix(oppgaveId))
+    }
     await delay(200)
     return respondNoContent()
   }),

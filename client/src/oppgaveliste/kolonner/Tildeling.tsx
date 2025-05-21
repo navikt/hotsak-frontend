@@ -1,8 +1,8 @@
 import { memo } from 'react'
 
-import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
-import { Oppgave, Sakstype } from '../../types/types.internal'
-import { IkkeTildelt } from './IkkeTildelt'
+import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
+import { Oppgave, Sakstype } from '../../types/types.internal.ts'
+import { IkkeTildelt } from './IkkeTildelt.tsx'
 import { lagGjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
 
 interface TildelingProps {

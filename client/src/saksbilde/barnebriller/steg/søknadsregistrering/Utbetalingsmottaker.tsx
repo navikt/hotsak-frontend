@@ -1,10 +1,10 @@
 import { Box, Button, HStack, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
-import { useParams } from 'react-router'
 
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { formaterKontonummer } from '../../../../utils/formater'
 import { useKontonummer } from './useKontonummer'
+import { useSakId } from '../../../useSak.ts'
 
 export interface UtbetalingsmottakerProps {
   defaultInnsenderFnr?: string
@@ -12,7 +12,7 @@ export interface UtbetalingsmottakerProps {
 
 export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
   const { defaultInnsenderFnr } = props
-  const { saksnummer: sakId } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const [textFieldValue, setTextFieldValue] = useState(defaultInnsenderFnr || '')
   const [innsenderFnr, setInnsenderFnr] = useState(defaultInnsenderFnr || '')
   const { data: kontoinformasjon, error, loading } = useKontonummer(sakId, innsenderFnr)

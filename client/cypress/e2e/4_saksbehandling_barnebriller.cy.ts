@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 /// <reference types="@testing-library/cypress" />
 
-import { clearIndexDb, fortsettSaksbehandling, taBrillesak } from './testUtils'
+import { clearIndexDb, fortsettSaksbehandling, plukkSak, byttSaksbehandler } from './testUtils'
 
 describe('Saksbehandling brillesøknad', () => {
   beforeEach(() => {
@@ -9,9 +9,7 @@ describe('Saksbehandling brillesøknad', () => {
   })
 
   it('burde kunne innvilge en brillesøknad', () => {
-    const saksnummer = '1010'
-    cy.visit(`/sak/${saksnummer}`)
-    taBrillesak()
+    plukkSak('Tilskudd')
 
     cy.findByRole('textbox', { name: /fødselsnummer innsender/i }).type('1234')
     cy.findByRole('button', { name: /hent kontonummer/i }).click()
@@ -37,7 +35,7 @@ describe('Saksbehandling brillesøknad', () => {
     cy.findByRole('button', { name: /send til godkjenning/i }).click()
     cy.findByTestId('tag-sak-status').should('contain', 'Til godkjenning')
 
-    taBrillesak('Vurderer Vilkårsen')
+    byttSaksbehandler('Vurderer Vilkårsen')
 
     cy.findByRole('radio', { name: /godkjenn/i }).check()
     cy.findByRole('button', { name: /godkjenn vedtaket/i }).click()
@@ -61,10 +59,8 @@ describe('Saksbehandling brillesøknad', () => {
   it('Manuell overstyring av vilkår', () => {
     const bestillingsdatoForLangtTilbakeITid = '01.01.2023'
 
-    const saksnummer = '1010'
-    cy.visit(`/sak/${saksnummer}`)
+    plukkSak('Tilskudd')
     cy.wait(1000)
-    taBrillesak()
 
     cy.findByRole('textbox', { name: /fødselsnummer innsender/i }).type('1234')
     cy.findByRole('button', { name: /hent kontonummer/i }).click()
@@ -103,10 +99,7 @@ describe('Saksbehandling brillesøknad', () => {
   })
 
   it('burde kunne avslå en brillesøknad', () => {
-    const saksnummer = '1010'
-    cy.visit(`/sak/${saksnummer}`)
-    cy.wait(1000)
-    taBrillesak()
+    plukkSak('Tilskudd')
 
     /* Registrer søknad  */
     cy.findByRole('textbox', { name: /fødselsnummer innsender/i }).type('1234')
@@ -148,7 +141,7 @@ describe('Saksbehandling brillesøknad', () => {
 
     /* Totrinnskontroll */
     cy.wait(2000)
-    taBrillesak('Vurderer Vilkårsen')
+    byttSaksbehandler('Vurderer Vilkårsen')
 
     cy.findByRole('radio', { name: /godkjenn/i }).check()
     cy.findByRole('button', { name: /godkjenn vedtaket/i }).click()
@@ -170,9 +163,7 @@ describe('Saksbehandling brillesøknad', () => {
   })
 
   it('burde kunne avslå en brillesøknad på grunn av manglende opplysninger', () => {
-    const saksnummer = '1010'
-    cy.visit(`/sak/${saksnummer}`)
-    taBrillesak()
+    plukkSak('Tilskudd')
 
     /* Registrer søknad  */
     cy.findByRole('group', { name: /inneholder bestillingen glass/i }).within(() => {

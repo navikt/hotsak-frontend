@@ -22,7 +22,7 @@ export const fortsettSaksbehandling = () => {
   cy.findAllByRole('button', { name: /Fortsett behandling/i }).click()
 }
 
-export const taBrillesak = (saksbehandler: string = 'Silje Saksbehandler') => {
+export const byttSaksbehandler = (saksbehandler: string = 'Silje Saksbehandler') => {
   cy.findByTestId('select-bytt-bruker').select(saksbehandler)
   cy.wait(1000)
   cy.findByTitle(/saksmeny/i).click()

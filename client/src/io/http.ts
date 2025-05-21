@@ -235,18 +235,6 @@ export const postBrevutsending = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevsending`, brevTekst)
 }
 
-/**
- * NB! Fungerer kun for MORS pt.
- *
- * @param sakId
- */
-export async function postHenleggelse(sakId: string) {
-  return post(`${baseUrl}/api/sak/${sakId}/henleggelse`, {
-    valgteÅrsaker: ['Bruker er død'],
-    begrunnelse: undefined,
-  })
-}
-
 export function ifMatchVersjon(versjon?: number) {
   if (versjon) {
     return { 'If-Match': toWeakETag(versjon) }

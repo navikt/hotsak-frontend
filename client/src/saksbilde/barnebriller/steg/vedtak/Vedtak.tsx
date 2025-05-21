@@ -1,5 +1,4 @@
 import { Alert, Box, Button, Detail, Heading, Skeleton, Tag, VStack } from '@navikt/ds-react'
-import { useParams } from 'react-router'
 import styled from 'styled-components'
 
 import { TreKolonner } from '../../../../felleskomponenter/Kolonner'
@@ -14,15 +13,16 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
+import { useSakId } from '../../../useSak.ts'
 
 export function Vedtak() {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const { sak /*, isLoading,*/, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const samletVurdering = useSamletVurdering(sak?.data)
   const { setStep } = useManuellSaksbehandlingContext()
   const { isLoading: henterSaksdokumenter } = useSaksdokumenter(
-    saksnummer!,
+    sakId!,
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER
   )
 

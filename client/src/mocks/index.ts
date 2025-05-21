@@ -1,4 +1,4 @@
-import { RequestHandler } from 'msw'
+import type { RequestHandler } from 'msw'
 import { logDebug } from '../utvikling/logDebug'
 
 export async function initMsw(): Promise<unknown> {

@@ -1,9 +1,8 @@
-import { useParams } from 'react-router'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
-
-import { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes'
+import type { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes'
+import { useSakId } from './useSak.ts'
 
 interface DataResponse {
   behovsmelding: Innsenderbehovsmelding | undefined
@@ -12,9 +11,9 @@ interface DataResponse {
 }
 
 export function useBehovsmelding(): DataResponse {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const { data, error, isLoading } = useSwr<{ data: Innsenderbehovsmelding }>(
-    `api/sak/${saksnummer}/behovsmelding`,
+    sakId ? `api/sak/${sakId}/behovsmelding` : null,
     httpGet
   )
 

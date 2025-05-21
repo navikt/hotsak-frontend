@@ -9,7 +9,7 @@ describe('Saksbehandling bestilling', () => {
   })
 
   it('burde kunne godkjenne en bestilling', () => {
-    plukkSak('1009')
+    plukkSak('Bestilling')
 
     cy.findByRole('button', {
       name: /godkjenn/i,
@@ -35,7 +35,7 @@ describe('Saksbehandling bestilling', () => {
   })
 
   it('burde kunne avvise bestilling', () => {
-    plukkSak('1009')
+    plukkSak('Bestilling')
 
     cy.findByRole('button', {
       name: /avvis/i,

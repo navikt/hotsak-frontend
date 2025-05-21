@@ -10,7 +10,7 @@ export const clearIndexDb = () => {
 export const plukkSak = (sakstype: 'Søknad' | 'Bestilling' | 'Tilskudd') => {
   cy.visit('/')
 
-  cy.findByLabelText(/Sakstype/i).select('Søknad')
+  cy.findByLabelText(/Sakstype/i).select(sakstype)
 
   cy.findAllByRole('button', { name: /Ta saken/i })
     .first()

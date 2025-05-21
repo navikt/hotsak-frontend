@@ -17,6 +17,13 @@ export const plukkSak = (sakstype: 'Søknad' | 'Bestilling' | 'Tilskudd') => {
     .click()
 }
 
+export const plukkJournalføringsoppgave = () => {
+  cy.visit('/oppgaveliste/dokumenter')
+  cy.findAllByRole('button', { name: /start journalføring/i })
+    .first()
+    .click()
+}
+
 export const fortsettSaksbehandling = () => {
   cy.findAllByRole('button').filter(':contains("Meny")').first().click()
   cy.findAllByRole('button', { name: /Fortsett behandling/i }).click()

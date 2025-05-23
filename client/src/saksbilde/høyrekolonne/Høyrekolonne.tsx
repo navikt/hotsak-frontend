@@ -5,7 +5,6 @@ import { useSearchParams } from 'react-router'
 
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
-import { useErNotatPilot } from '../../tilgang/useTilgang.ts'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { Historikk } from './historikk/Historikk'
@@ -23,7 +22,6 @@ export function Høyrekolonne() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { sak } = useSak()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
-  const erNotatPilot = useErNotatPilot()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
@@ -71,7 +69,7 @@ export function Høyrekolonne() {
               }
             />
           </Tooltip>
-          {erNotatPilot && sak != null && (
+          {sak != null && (
             <Tooltip content="Notater">
               <Tabs.Tab
                 value={HøyrekolonneTabs.NOTATER}
@@ -97,7 +95,7 @@ export function Høyrekolonne() {
           <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
             <Hjelpemiddeloversikt />
           </Tabs.Panel>
-          {erNotatPilot && sak != null && (
+          {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
               <HøyrekolonnePanel tittel="Notater">
                 <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />

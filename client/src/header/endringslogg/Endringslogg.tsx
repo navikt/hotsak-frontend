@@ -68,7 +68,17 @@ function Innslag({ innslag, merkSomLest }: { innslag: EndringsloggInnslag; merkS
         </Heading>
       </header>
       <div>
-        <ReactMarkdown>{innslag.innhold}</ReactMarkdown>
+        <ReactMarkdown
+          components={{
+            a: (props) => (
+              <a href={props.href} target="_blank">
+                {props.children}
+              </a>
+            ),
+          }}
+        >
+          {innslag.innhold}
+        </ReactMarkdown>
       </div>
     </Box>
   )

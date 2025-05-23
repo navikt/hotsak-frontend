@@ -7,7 +7,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useErNotatPilot, useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
@@ -43,7 +43,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-  const erNotatPilot = useErNotatPilot()
   const { oppgaveId, versjon } = useOppgaveContext()
 
   const lagreUtleveringMerknad = (merknad: string) => {
@@ -164,7 +163,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
           variant="primary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setFerdigstillBestillingAttempt(true)
             } else {
               setVisOpprettOrdreModal(true)
@@ -177,7 +176,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
           variant="secondary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setFerdigstillBestillingAttempt(true)
             } else {
               setVisAvvisModal(true)

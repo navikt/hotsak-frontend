@@ -1,5 +1,7 @@
 import { OppgaveStatusType, Sakstype, Saksoversikt } from '../../types/types.internal'
 
+// TODO Fjerne denne storen og heller hente data fra sakStore
+
 const saksoversikt: Saksoversikt[] = [
   {
     hotsakSaker: [

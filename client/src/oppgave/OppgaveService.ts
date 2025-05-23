@@ -1,5 +1,5 @@
 import { GjeldendeOppgave, useOppgaveContext } from './OppgaveContext.ts'
-import { erEksternOppgaveId, erInternOppgaveId, erSakOppgaveId, OppgaveId } from './oppgaveId.ts'
+import type { OppgaveId } from './oppgaveId.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
 import { baseUrl, del, ifMatchVersjon, post } from '../io/http.ts'
 import { Service, useServiceState } from '../service/Service.ts'
@@ -34,11 +34,7 @@ export interface OppgaveService extends Service {
  * Opprett `OppgaveService` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext` eller `gjeldendeOppgave`.
  */
 export function useOppgaveService(gjeldendeOppgave?: GjeldendeOppgave): OppgaveService {
-  const {
-    oppgaveId = gjeldendeOppgave?.oppgaveId,
-    versjon = gjeldendeOppgave?.versjon,
-    sakId = gjeldendeOppgave?.sakId,
-  } = useOppgaveContext()
+  const { oppgaveId = gjeldendeOppgave?.oppgaveId, versjon = gjeldendeOppgave?.versjon } = useOppgaveContext()
 
   const { execute, state } = useServiceState()
 
@@ -47,32 +43,13 @@ export function useOppgaveService(gjeldendeOppgave?: GjeldendeOppgave): OppgaveS
   return {
     async endreOppgavetildeling(request) {
       return execute(async () => {
-        if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
-          await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
-        }
-
-        if (erSakOppgaveId(oppgaveId)) {
-          await post(
-            `${baseUrl}/api/sak/${sakId}/tildeling`,
-            {
-              ...request,
-              oppgaveId,
-            },
-            headers
-          )
-        }
+        await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
       })
     },
 
     async fjernOppgavetildeling() {
       return execute(async () => {
-        if (erInternOppgaveId(oppgaveId) || erEksternOppgaveId(oppgaveId)) {
-          await del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, headers)
-        }
-
-        if (erSakOppgaveId(oppgaveId)) {
-          await del(`${baseUrl}/api/sak/${sakId}/tildeling`, null, headers)
-        }
+        await del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, headers)
       })
     },
 

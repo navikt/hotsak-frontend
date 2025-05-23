@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router'
-
 import { Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
 import { baseUrl, post } from '../../../../io/http'
-
 import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
@@ -18,9 +15,10 @@ import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
+import { useSakId } from '../../../useSak.ts'
 
 export function VurderVilkår() {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
+  const sakId = useSakId()
   const { sak, mutate } = useBarnebrillesak()
   const { setStep } = useManuellSaksbehandlingContext()
   const [åpneRader, setÅpneRader] = useState<string[]>([])
@@ -73,7 +71,7 @@ export function VurderVilkår() {
   }
 
   if (!sak) {
-    return <Feilmelding>{`Fant ikke sak med saksnummer ${saksnummer}`}</Feilmelding>
+    return <Feilmelding>{`Fant ikke sak med saksnummer ${sakId}`}</Feilmelding>
   } // TODO: Håndere dette bedre/høyrere opp i komponent treet.
 
   if (!sak.data?.vilkårsvurdering) {

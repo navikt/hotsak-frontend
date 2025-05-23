@@ -7,9 +7,19 @@ export const clearIndexDb = () => {
   cy.clearIndexedDb('SakStore')
 }
 
-export const plukkSak = (saksnummer: string) => {
-  cy.visit(`/sak/${saksnummer}/hjelpemidler`)
+export const plukkSak = (sakstype: 'Søknad' | 'Bestilling' | 'Tilskudd') => {
+  cy.visit('/')
+
+  cy.findByLabelText(/Sakstype/i).select(sakstype)
+
   cy.findAllByRole('button', { name: /Ta saken/i })
+    .first()
+    .click()
+}
+
+export const plukkJournalføringsoppgave = () => {
+  cy.visit('/oppgaveliste/dokumenter')
+  cy.findAllByRole('button', { name: /start journalføring/i })
     .first()
     .click()
 }
@@ -19,7 +29,7 @@ export const fortsettSaksbehandling = () => {
   cy.findAllByRole('button', { name: /Fortsett behandling/i }).click()
 }
 
-export const taBrillesak = (saksbehandler: string = 'Silje Saksbehandler') => {
+export const byttSaksbehandler = (saksbehandler: string = 'Silje Saksbehandler') => {
   cy.findByTestId('select-bytt-bruker').select(saksbehandler)
   cy.wait(1000)
   cy.findByTitle(/saksmeny/i).click()

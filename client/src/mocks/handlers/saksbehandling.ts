@@ -19,26 +19,9 @@ import {
 } from './response'
 import type { SakParams } from './params'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
-import type { EndreOppgavetildelingRequest } from '../../oppgave/OppgaveService.ts'
 import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journalpostStore, saksbehandlerStore }) => [
-  http.post<SakParams, EndreOppgavetildelingRequest>(`/api/sak/:sakId/tildeling`, async ({ params, request }) => {
-    await delay(250)
-    const { sakId } = params
-    const payload = await request.json()
-    const status = await sakStore.tildel(sakId, payload)
-    return new Response(null, { status })
-  }),
-
-  http.delete<SakParams>(`/api/sak/:sakId/tildeling`, async ({ params }) => {
-    const { sakId } = params
-    if (await sakStore.frigi(sakId)) {
-      return respondNoContent()
-    }
-    return respondNotFound()
-  }),
-
   http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
     const { sakId } = params
     if (sakId === '401') {

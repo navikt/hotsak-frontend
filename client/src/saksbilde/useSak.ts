@@ -1,10 +1,10 @@
+import { useDebugValue, useEffect } from 'react'
 import { useParams } from 'react-router'
 import useSwr from 'swr'
-import { useEffect } from 'react'
 
 import { httpGet } from '../io/http'
-import type { Sak, SakBase, SakResponse } from '../types/types.internal'
-import { lagGjeldendeOppgave, useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { Sak, SakBase, SakResponse } from '../types/types.internal'
+import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 
 interface DataResponse<T extends SakBase> {
   sak?: SakResponse<T>
@@ -13,20 +13,31 @@ interface DataResponse<T extends SakBase> {
   mutate(...args: any[]): any
 }
 
-export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
-  const { saksnummer } = useParams<{ saksnummer: string }>()
-  const { data, error, isLoading, mutate } = useSwr<{ data: SakResponse<T> }>(`api/sak/${saksnummer}`, httpGet, {
-    refreshInterval: 10_000,
-  })
+export function useSakId(): string | undefined {
+  const { saksnummer: sakIdUrl } = useParams<{ saksnummer: string }>()
+  const { sakId: sakIdOppgave } = useOppgaveContext()
+  const sakId = sakIdUrl ?? sakIdOppgave
+  useDebugValue(sakId)
+  return sakId?.toString()
+}
 
-  const { setGjeldendeOppgave } = useOppgaveContext()
-  useEffect(() => {
-    if (data && data.data) {
-      const { data: sak, oppgave } = data.data
-      const sakId = sak.sakId
-      setGjeldendeOppgave(lagGjeldendeOppgave(oppgave?.oppgaveId, oppgave?.versjon, sakId))
+export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
+  const sakId = useSakId()
+  const { oppgaveId, setGjeldendeOppgave } = useOppgaveContext()
+  const { data, error, isLoading, mutate } = useSwr<{ data: SakResponse<T> }>(
+    sakId ? `api/sak/${sakId}` : null,
+    httpGet,
+    {
+      refreshInterval: 10_000,
     }
-  }, [data, setGjeldendeOppgave])
+  )
+
+  useEffect(() => {
+    // Vi har en sakId, men ikke oppgaveId fra OppgaveContext, vi er ikke i kontekst av en Oppgave
+    if (sakId && !oppgaveId) {
+      setGjeldendeOppgave({ oppgaveId: `S-${sakId}`, versjon: -1, sakId })
+    }
+  }, [sakId, oppgaveId])
 
   return {
     sak: data?.data,

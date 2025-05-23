@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 /// <reference types="@testing-library/cypress" />
 
-import { clearIndexDb, taBrillesak } from './testUtils'
+import { clearIndexDb, plukkSak } from './testUtils'
 
 describe('Håndtering av notater på brillesaker', () => {
   beforeEach(() => {
@@ -11,10 +11,7 @@ describe('Håndtering av notater på brillesaker', () => {
   // TODO: Skipper denne testen fordi vi skal over til felles notatløsnning og da er ikke flyten under relevant.
   // Blir sannsnyligvis nye tester for felles notatløsning
   it.skip('Legge til notater på åpen sak', () => {
-    const saksnummer = '1010'
-    cy.visit(`/sak/${saksnummer}`)
-
-    taBrillesak()
+    plukkSak('Søknad')
 
     cy.findByRole('tab', { name: /notat/i }).click()
     cy.findByRole('textbox', { name: /nytt notat/i }).type('Tekst i notatet')

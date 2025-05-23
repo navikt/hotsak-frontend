@@ -1,7 +1,7 @@
 /// <reference types="Cypress" />
 /// <reference types="@testing-library/cypress" />
 
-import { clearIndexDb } from './testUtils'
+import { clearIndexDb, plukkJournalføringsoppgave, plukkSak } from './testUtils'
 
 describe('Manuell journalføring og opprettelse av sak', () => {
   beforeEach(() => {
@@ -9,10 +9,8 @@ describe('Manuell journalføring og opprettelse av sak', () => {
   })
 
   it('Standard journalføring uten endringer på journalpost', () => {
-    const journalpostid = '1004'
-    cy.visit(`/oppgaveliste/dokumenter/${journalpostid}`)
+    plukkJournalføringsoppgave()
 
-    cy.findByRole('button', { name: /start journalføring/i }).click()
     cy.findByRole('button', { name: /journalfør og opprett sak/i }).click()
     cy.wait(2000)
     cy.url().should('include', '/sak/')
@@ -24,10 +22,8 @@ describe('Manuell journalføring og opprettelse av sak', () => {
   })
 
   it('Manuell journalføring med endring av bruker tittel', () => {
-    const journalpostid = '1004'
     const nyDokumentTittel = 'Ny tittel på dokumentet'
-    cy.visit(`/oppgaveliste/dokumenter/${journalpostid}`)
-    cy.findByRole('button', { name: /start journalføring/i }).click()
+    plukkJournalføringsoppgave()
     cy.findByRole('region', {
       name: /bruker det skal journalføres på/i,
     }).click()
@@ -51,11 +47,8 @@ describe('Manuell journalføring og opprettelse av sak', () => {
   })
 
   it('Manuell journalføring med knytning til eksisterende sak', () => {
-    const journalpostid = '1003'
-    cy.visit(`/oppgaveliste/dokumenter/${journalpostid}`)
-    cy.wait(1000)
-    cy.findByRole('button', { name: /start journalføring/i }).click()
-
+    plukkSak('Tilskudd')
+    plukkJournalføringsoppgave()
     cy.findByRole('table', { name: /åpne saker/i }).within(() => {
       cy.findAllByRole('radio').first().check()
     })

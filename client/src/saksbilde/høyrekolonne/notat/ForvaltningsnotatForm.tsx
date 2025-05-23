@@ -40,7 +40,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
-  const [aktivtUtkastHentet, setAktivtUtkastHentet] = useState(false)
   const { hentForhåndsvisning } = useBrev()
   const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
   const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
@@ -81,13 +80,16 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   )
 
   useEffect(() => {
-    if (aktivtUtkast && !aktivtUtkastHentet) {
-      setValue('tittel', aktivtUtkast.tittel || '')
-      setValue('tekst', aktivtUtkast.tekst || '')
+    if (aktivtUtkast) {
+      if (tittel === '') {
+        setValue('tittel', aktivtUtkast.tittel || '')
+      }
+      if (tekst === '') {
+        setValue('tekst', aktivtUtkast.tekst || '')
+      }
       setValue('klassifisering', aktivtUtkast.klassifisering)
-      setAktivtUtkastHentet(true)
     }
-  }, [aktivtUtkast, aktivtUtkastHentet, setValue])
+  }, [aktivtUtkast, setValue])
 
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
@@ -101,14 +103,9 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
-  const journalførNotat = async () => {
+  const onSubmit = async () => {
     await ferdigstill(lagPayload())
     setVisJournalførNotatModal(false)
-    reset(defaultValues)
-  }
-
-  const onSubmit = () => {
-    journalførNotat()
     reset(defaultValues)
   }
 

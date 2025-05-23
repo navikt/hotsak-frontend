@@ -12,7 +12,10 @@ interface JournalpostResponse {
 }
 
 export function useJournalpost(journalpostId?: string): JournalpostResponse {
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(`api/journalpost/${journalpostId}`, httpGet)
+  const { data, error, mutate } = useSwr<{ data: Journalpost }>(
+    journalpostId ? `api/journalpost/${journalpostId}` : journalpostId,
+    httpGet
+  )
 
   return {
     journalpost: data?.data,

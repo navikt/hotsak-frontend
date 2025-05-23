@@ -48,7 +48,6 @@ export function useInnloggetAnsatt(): ExtendedInnloggetAnsatt {
 }
 
 const piloter = {
-  notat: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL, Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG],
   saksmeny: [
     Enhet.IT_AVDELINGEN,
     Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
@@ -63,11 +62,6 @@ export function useVisOppgavelisteTabs(): boolean {
     erGjeldendeEnhetEnAv(Enhet.IT_AVDELINGEN, Enhet.NAV_VIKAFOSSEN) ||
     erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE, AnsattGruppe.TEAMDIGIHOT)
   )
-}
-
-export function useErNotatPilot(): boolean {
-  const { erMedlemAvEnAvGrupper, erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
-  return erGjeldendeEnhetEnAv(...piloter.notat) || erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE)
 }
 
 export function useErSaksmenyPilot(): boolean {

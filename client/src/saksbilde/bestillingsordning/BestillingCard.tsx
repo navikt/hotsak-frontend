@@ -7,15 +7,8 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useErNotatPilot, useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { OppgaveApiOppgave } from '../../types/experimentalTypes.ts'
-import {
-  AvvisBestilling,
-  HjelpemiddelArtikkel,
-  OppgaveStatusType,
-  OppgaveVersjon,
-  Sak,
-} from '../../types/types.internal'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
@@ -27,16 +20,16 @@ import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
 import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
   lesevisning: boolean
   harNotatUtkast?: boolean
   hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
-  oppgave?: OppgaveApiOppgave
 }
 
-export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkast }: BestillingCardProps) {
+export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
   const innloggetAnsatt = useInnloggetAnsatt()
   const { endreOppgavetildeling } = useOppgaveService()
@@ -50,13 +43,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
   const [logNesteNavigasjon] = useLogNesteNavigasjon()
-  const erNotatPilot = useErNotatPilot()
-  const oppgaveVersjon: OppgaveVersjon = oppgave
-    ? {
-        oppgaveId: oppgave.oppgaveId,
-        versjon: oppgave.versjon,
-      }
-    : {}
+  const { oppgaveId, versjon } = useOppgaveContext()
 
   const lagreUtleveringMerknad = (merknad: string) => {
     setSubmitAttempt(false)
@@ -72,7 +59,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
     }
 
     setLoading(true)
-    await putFerdigstillBestilling(sakId, oppgaveVersjon, utleveringMerknad).catch(() => setLoading(false))
+    await putFerdigstillBestilling(sakId, { oppgaveId, versjon }, utleveringMerknad).catch(() => setLoading(false))
     setLoading(false)
     setVisOpprettOrdreModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
@@ -91,7 +78,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
 
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
     setLoading(true)
-    await putAvvisBestilling(sakId, oppgaveVersjon, tilbakemelding).catch(() => setLoading(false))
+    await putAvvisBestilling(sakId, { oppgaveId, versjon }, tilbakemelding).catch(() => setLoading(false))
     setLoading(false)
     setVisAvvisModal(false)
     logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)
@@ -176,7 +163,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
           variant="primary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setFerdigstillBestillingAttempt(true)
             } else {
               setVisOpprettOrdreModal(true)
@@ -189,7 +176,7 @@ export function BestillingCard({ bestilling, oppgave, lesevisning, harNotatUtkas
           variant="secondary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setFerdigstillBestillingAttempt(true)
             } else {
               setVisAvvisModal(true)

@@ -8,7 +8,7 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
-import { useErNotatPilot, useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
@@ -42,7 +42,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
-  const erNotatPilot = useErNotatPilot()
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const { endreOppgavetildeling } = useOppgaveService()
 
@@ -180,7 +179,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           variant="primary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setSubmitAttempt(true)
             } else {
               setVisVedtakModal(true)
@@ -193,7 +192,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           variant="secondary"
           size="small"
           onClick={() => {
-            if (erNotatPilot && harNotatUtkast) {
+            if (harNotatUtkast) {
               setSubmitAttempt(true)
             } else {
               visOverførGosys()

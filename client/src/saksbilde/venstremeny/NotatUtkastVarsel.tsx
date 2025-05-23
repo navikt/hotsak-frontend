@@ -1,16 +1,10 @@
 import { ErrorSummary } from '@navikt/ds-react'
 
-import { useErNotatPilot } from '../../tilgang/useTilgang.ts'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 
 export function NotatUtkastVarsel() {
-  const erNotatPilot = useErNotatPilot()
   const navigate = useNavigate()
-
-  if (!erNotatPilot) {
-    return null
-  }
 
   return (
     <ErrorSummary size="small" heading="For å gå videre må du rette opp følgende:" headingTag="h3">

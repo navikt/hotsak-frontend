@@ -1,7 +1,6 @@
 import useSwr, { KeyedMutator } from 'swr'
 
 import { useEffect, useState } from 'react'
-import { useErNotatPilot } from '../../../tilgang/useTilgang.ts'
 import { Notat, NotatType, Saksnotater } from '../../../types/types.internal'
 
 interface NotaterResponse {
@@ -14,15 +13,13 @@ interface NotaterResponse {
 }
 
 export function useNotater(sakId?: string, opts?: any): NotaterResponse {
-  const erNotatPilot = useErNotatPilot()
-
   const [refreshInterval, setRefreshInterval] = useState(0)
   const [harUtkast, setHarUtkast] = useState(false)
   const {
     data: saksnotater,
     mutate,
     isLoading,
-  } = useSwr<Saksnotater>(erNotatPilot && sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
+  } = useSwr<Saksnotater>(sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
 
   useEffect(() => {
     if (saksnotater) {

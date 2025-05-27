@@ -113,7 +113,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} name="forvaltningsnotat-form">
         {!notaterLaster && (
           <VStack gap="4" paddingBlock="6 0">
             <Controller

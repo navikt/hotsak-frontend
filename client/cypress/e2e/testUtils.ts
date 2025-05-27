@@ -5,6 +5,7 @@ export const clearIndexDb = () => {
   cy.clearIndexedDb('JournalpostStore')
   cy.clearIndexedDb('OppgaveStore')
   cy.clearIndexedDb('SakStore')
+  cy.clearIndexedDb('NotatStore')
 }
 
 export const plukkSak = (sakstype: 'Søknad' | 'Bestilling' | 'Tilskudd') => {

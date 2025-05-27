@@ -66,7 +66,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmit(ferdigstillInterntNotat)}>
+      <form onSubmit={handleSubmit(ferdigstillInterntNotat)} name="internt-notat-form">
         {!notaterLaster && (
           <VStack gap="4" paddingBlock="6 0">
             <Alert variant="info" size="small" inline>

@@ -22,18 +22,12 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
   return (
     <>
-      <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge">
+      <Box key={notat.id} background="surface-subtle" padding="3" borderRadius="xlarge" data-testid="notat-card">
         <VStack gap="3">
           <HStack gap="2" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
               {notat.type === NotatType.INTERNT ? 'Internt arbeidsnotat' : 'Forvaltningsnotat'}
             </Tag>
-
-            {/*notat.klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
-              <Tag variant="info-moderate" size="small">
-                Ikke synlig for bruker
-              </Tag>
-            )*/}
 
             {notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
               <Tag variant="success-moderate" size="small">

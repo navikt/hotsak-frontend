@@ -77,9 +77,14 @@ export function Høyrekolonne() {
                   <>
                     <NotePencilIcon title="Notat" />
                     {!henterNotater && (
-                      <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
+                      <Tag
+                        variant="neutral-moderate"
+                        size="xsmall"
+                        style={{ position: 'relative' }}
+                        data-testid="notatteller"
+                      >
                         {antallNotater}
-                        {harUtkast && <NotificationBadge />}
+                        {harUtkast && <NotificationBadge data-testid="utkast-badge" />}
                       </Tag>
                     )}
                   </>

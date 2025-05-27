@@ -13,7 +13,10 @@ export function Lagreindikator(props: { lagrerUtkast: boolean; sistLagretTidspun
       {lagrerUtkast ? (
         <Detail textColor="subtle">Lagrer...</Detail>
       ) : (
-        <Detail textColor="subtle">{`Lagret ${formaterTidsstempelKort(sistLagretTidspunkt)}`}</Detail>
+        <Detail
+          data-testid="utkast-lagret"
+          textColor="subtle"
+        >{`Lagret ${formaterTidsstempelKort(sistLagretTidspunkt)}`}</Detail>
       )}
     </div>
   )

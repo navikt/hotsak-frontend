@@ -37,15 +37,15 @@ export function OverførGosysModal({ open, loading, spørreundersøkelseId, onBe
           <VStack gap="3">
             {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
               <Brødtekst>
-                Journalførte notater feilregistreres ved overføring av sak til Gosys. Hvis du har behov for å knytte
+                Forvaltningsnotater feilregistreres ved overføring av sak til Gosys. Hvis du har behov for å knytte
                 feilregistrert notat til ny sak i Gosys, kan dere inntil videre ta kontakt med DigiHoT på Teams kanalen
                 "DigiHoT - innspill, spørsmål og info" for bistand.
               </Brødtekst>
             )}
             {notater.find((notat) => notat.type === NotatType.INTERNT) && (
               <Brødtekst>
-                Interne notater i saken overføres ikke til Gosys. Hvis du har behov for å overføre disse til oppgaven i
-                Gosys, må det gjøres mannuelt.
+                Interne arbeidsnotater i saken overføres ikke til Gosys. Hvis du har behov for å overføre disse til
+                oppgaven i Gosys, må det gjøres manuelt.
               </Brødtekst>
             )}
           </VStack>

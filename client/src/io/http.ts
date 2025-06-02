@@ -150,7 +150,11 @@ export const hentBrukerdataMedPost: any = async ([
 // Nytt oppgave API
 export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
-  return post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
+  return post(
+    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
+    { overtaHvisTildelt: false },
+    ifMatchVersjon(versjon)
+  )
 }
 
 export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {

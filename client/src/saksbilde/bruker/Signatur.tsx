@@ -4,6 +4,7 @@ import { Fullmakt } from './Fullmakt'
 import { FullmaktFritak } from './FullmaktFritak'
 import { IkkkeInnhentetFordiKunTilbehør } from './IkkeInnhentetFordiKunTilbehør'
 import { IkkkeInnhentetFordiKunTilbehørV2 } from './IkkeInnhentetFordiKunTilbehørV2'
+import { IkkkeInnhentetFordiKunTilbehørV3 } from './IkkeInnhentetFordiKunTilbehørV3'
 
 interface SignaturProps {
   signaturType: Signaturtype
@@ -22,6 +23,8 @@ export function Signatur({ signaturType, navn }: SignaturProps) {
       return <IkkkeInnhentetFordiKunTilbehør />
     case Signaturtype.IKKE_INNHENTET_FORDI_KUN_TILBEHØR_V2:
       return <IkkkeInnhentetFordiKunTilbehørV2 />
+    case Signaturtype.IKKE_INNHENTET_FORDI_KUN_TILBEHØR_V3:
+      return <IkkkeInnhentetFordiKunTilbehørV3 />
     default:
       return null
   }

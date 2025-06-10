@@ -5,6 +5,7 @@ declare global {
 
       API_URL: string
       BRILLEKALKULATOR_API_URL: string
+      FINN_ALTERNATIV_PRODUKT_API_URL: string
       FARO_URL: string
       FINN_HJELPEMIDDEL_API_URL: string
       HEIT_KRUKKA_URL: string

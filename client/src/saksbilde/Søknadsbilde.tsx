@@ -14,7 +14,6 @@ import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
-import { HjelpemiddelListeNyLayout } from './hjelpemidler/HjelpemiddelListe'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useNotater } from './høyrekolonne/notat/useNotater'
@@ -29,6 +28,7 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
+import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
 
 const SaksbildeContent = memo(() => {
   const { sak } = useSak()
@@ -91,7 +91,7 @@ const SaksbildeContent = memo(() => {
                 <Routes>
                   <Route
                     path="/hjelpemidler"
-                    element={<HjelpemiddelListeNyLayout sak={sak.data} behovsmelding={behovsmelding} />}
+                    element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
                   />
                   <Route
                     path="/bruker"

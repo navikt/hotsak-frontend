@@ -1,22 +1,24 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
+import { memo, useMemo } from 'react'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
-import { OebsAlert } from './OebsAlert.tsx'
-import { useArtiklerForSak } from './useArtiklerForSak.ts'
-import { useFinnHjelpemiddel } from './useFinnHjelpemiddel.ts'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
+import { OebsAlert } from './OebsAlert.tsx'
 import { Summering } from './Summering.tsx'
 import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
+import { useArtiklerForSak } from './useArtiklerForSak.ts'
+import { useFinnAlternativprodukt } from './useFinnAlternativprodukt.ts'
+import { useFinnHjelpemiddel } from './useFinnHjelpemiddel.ts'
 
 interface HjelpemiddelListeProps {
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelListeProps) {
+function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
@@ -24,16 +26,22 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
 
-  const alleHmsNr = [
-    ...hjelpemidler.flatMap((hjelpemiddel) => [
-      hjelpemiddel.produkt.hmsArtNr,
-      ...hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
-    ]),
-    ...tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
-  ]
+  const alleHmsNr = useMemo(() => {
+    return [
+      ...hjelpemidler.flatMap((hjelpemiddel) => [
+        hjelpemiddel.produkt.hmsArtNr,
+        ...hjelpemiddel.tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+      ]),
+      ...tilbehør.map((tilbehør) => tilbehør.hmsArtNr),
+    ]
+  }, [hjelpemidler, tilbehør])
+
+  const alleHjelpemidler = useMemo(() => {
+    return hjelpemidler.map((hjelpemiddel) => hjelpemiddel.produkt.hmsArtNr)
+  }, [hjelpemidler])
 
   const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
-
+  const { alternativeProdukter } = useFinnAlternativprodukt(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
@@ -53,7 +61,12 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
       )}
       {hjelpemidler.map((hjelpemiddel) => (
         <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">
-          <Hjelpemiddel hjelpemiddel={hjelpemiddel} sak={sak} produkter={finnHjelpemiddelProdukter} />
+          <Hjelpemiddel
+            hjelpemiddel={hjelpemiddel}
+            sak={sak}
+            produkter={finnHjelpemiddelProdukter}
+            alternativer={alternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
+          />
         </Box>
       ))}
       {tilbehør && tilbehør.length > 0 && (
@@ -70,3 +83,5 @@ export function HjelpemiddelListeNyLayout({ sak, behovsmelding }: HjelpemiddelLi
     </VStack>
   )
 }
+
+export default memo(HjelpemiddelListe)

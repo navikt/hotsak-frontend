@@ -9,7 +9,7 @@ metadata:
   annotations:
     snorlax.nais.io/enabled: "true"
 spec:
-  image: {{image}}
+  image: {{image }}
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no
@@ -40,6 +40,7 @@ spec:
         - application: hm-saksbehandling
         - application: hm-brille-api
         - application: hm-grunndata-search
+        - application: hm-grunndata-alternativprodukter
         - application: heit-krukka
       external:
         - host: heit-krukka.intern.dev.nav.no
@@ -71,6 +72,8 @@ spec:
       value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
     - name: FINN_HJELPEMIDDEL_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
+    - name: FINN_ALTERNATIV_PRODUKT_API_URL
+      value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
     - name: BRILLEKALKULATOR_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: PORT

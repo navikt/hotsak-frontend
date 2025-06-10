@@ -22,8 +22,7 @@ export function useFinnHjelpemiddel(hmsnrs: string[]) {
   const [produkter, setProdukter] = useState<Produkt[]>([])
 
   const unikeHmsnrs = [...new Set(hmsnrs)]
-
-  // TODO Må dette være i use effect? Kan det være use memo i stedet?
+  // TODO skriv om til å ikke være async
   useEffect(() => {
     ;(async () => {
       try {

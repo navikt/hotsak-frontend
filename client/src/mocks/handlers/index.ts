@@ -19,6 +19,7 @@ import { bestillingHandlers } from './bestilling'
 import { brevutkastHandlers } from './brevutkast'
 import { saksVarslerHandlers } from './saksvarsler'
 import { behovsmeldingHandlers } from './behovsmelding'
+import { finnAlternativProduktHandlers } from './finnAlternativProdukt.ts'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
@@ -30,6 +31,7 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
   ...finnHjelpemiddelHandlers(store),
+  ...finnAlternativProduktHandlers(store),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...notatHandlers(store),

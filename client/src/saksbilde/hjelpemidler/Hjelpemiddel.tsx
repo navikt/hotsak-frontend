@@ -1,5 +1,5 @@
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Bleed, Button, Tag, VStack } from '@navikt/ds-react'
+import { ArrowsSquarepathIcon, PencilIcon } from '@navikt/aksel-icons'
+import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
@@ -20,18 +20,23 @@ import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
+import { AlternativeProduct } from '../../generated/finnAlternativprodukt.ts'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
+import { AlternativProduktertModal } from './endreHjelpemiddel/AlternativProduktertModal.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
   sak: Sak
   produkter: ProduktType[]
+  alternativer: AlternativeProduct[]
 }
 
-export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps) {
+export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: HjelpemiddelProps) {
   const { sakId, sakstype } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
-  //const [visEndreGjenbruksproduktModal, setVisEndreGjenbruksproduktModal] = useState(false)
+  const [visAlternativerModal, setVisAlternativerModal] = useState(false)
+
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
     sakId,
@@ -39,8 +44,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
   )
 
   const erBestilling = sakstype === Sakstype.BESTILLING
-
-  //const harAlternativ = window.appSettings.MILJO === 'local' && hjelpemiddel.produkt.hmsArtNr === '177946'
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -54,19 +57,6 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
           </TextContainer>
         ))}
       </VStack>
-      {/* Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
-      <Box>
-        <Alert variant="info" size="small">
-          <VStack gap="3">
-            <Brødtekst>2 alternative produkter tilgjengelig</Brødtekst>
-            <div>
-              <Button variant="secondary-neutral" size="xsmall" onClick={() => setVisEndreGjenbruksproduktModal(true)}>
-                Alternativer
-              </Button>
-            </div>
-          </VStack>
-        </Alert>
-      </Box>*/}
       <HjelpemiddelGrid>
         <TextContainer>
           <VStack justify="start" gap="2">
@@ -86,11 +76,14 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
               gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
               linkTo={produkt?.produkturl}
             />
-            <VStack>
-              <div>
-                <Tag size="xsmall" variant="neutral-moderate">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
-              </div>
-            </VStack>
+            <HStack gap="2">
+              <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              {alternativer.length > 0 && (
+                <Tag size="small" variant="info">
+                  {alternativer.length} alternativer tilgjengelig
+                </Tag>
+              )}
+            </HStack>
           </VStack>
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
             {endretHjelpemiddel && (
@@ -119,20 +112,38 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
         <div>
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
-        <div>
-          {kanEndreHmsnr && (
-            <Bleed marginBlock="1 0">
-              <Button
-                variant="tertiary"
-                size="xsmall"
-                icon={<PencilIcon />}
-                onClick={() => setVisEndreHjelpemiddelModal(true)}
-              >
-                Endre
-              </Button>
-            </Bleed>
-          )}
-        </div>
+        <VStack gap="2">
+          <div>
+            {kanEndreHmsnr && (
+              <Bleed marginBlock="1 0">
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  icon={<PencilIcon />}
+                  onClick={() => setVisEndreHjelpemiddelModal(true)}
+                >
+                  Endre
+                </Button>
+              </Bleed>
+            )}
+          </div>
+          <div>
+            <Eksperiment>
+              {kanEndreHmsnr && (
+                <Bleed marginBlock="1 0">
+                  <Button
+                    variant="tertiary"
+                    size="xsmall"
+                    icon={<ArrowsSquarepathIcon />}
+                    onClick={() => setVisAlternativerModal(true)}
+                  >
+                    Alternativer
+                  </Button>
+                </Bleed>
+              )}
+            </Eksperiment>
+          </div>
+        </VStack>
       </HjelpemiddelGrid>
       <>
         {erBestilling && (
@@ -145,14 +156,13 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter }: HjelpemiddelProps
             onLukk={() => setVisEndreHjelpemiddelModal(false)}
           />
         )}
-
-        {/* Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt 
-        harAlternativ && (
-          <EndreGjenbruksproduktModal
-            åpen={visEndreGjenbruksproduktModal}
-            onLukk={() => setVisEndreGjenbruksproduktModal(false)}
+        <Eksperiment>
+          <AlternativProduktertModal
+            åpen={visAlternativerModal}
+            onLukk={() => setVisAlternativerModal(false)}
+            alternativer={alternativer}
           />
-        )*/}
+        </Eksperiment>
 
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">

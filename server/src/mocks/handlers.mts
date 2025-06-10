@@ -48,4 +48,10 @@ export const handlers: RequestHandler[] = [
   graphql.query('HentProdukter', async () => {
     return HttpResponse.json({ data: { products: [] } })
   }),
+  /**
+   * Stub for FINN_HJELPEMIDDEL_API_URL.
+   */
+  graphql.query('FinnAlternativer', async () => {
+    return HttpResponse.json({ data: { alternativeProducts: [] } })
+  }),
 ]

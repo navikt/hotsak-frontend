@@ -36,6 +36,13 @@ export default defineConfig((env) => {
                 return path.replace(/^\/finnhjelpemiddel-api/, '')
               },
             },
+            '/finnalternativprodukt-api': {
+              target: 'http://localhost:8080',
+              changeOrigin: true,
+              rewrite(path) {
+                return path.replace(/^\/finnalternativprodukt-api/, '')
+              },
+            },
           }
         : undefined,
       strictPort: true,

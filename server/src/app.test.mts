@@ -87,5 +87,15 @@ describe('app', () => {
         .expect(200)
       expect(response.body).toEqual({ data: { products: [] } })
     })
+
+    test('reverse proxy for finnalternativprodukt-api', async () => {
+      const token = await generateToken()
+      const response = await request()
+        .post('/finnalternativprodukt-api/graphql')
+        .send({ query: 'query FinnAlternativer { alternativeProducts { hmsArtNr } }' })
+        .authorization(token)
+        .expect(200)
+      expect(response.body).toEqual({ data: { products: [] } })
+    })
   })
 })

@@ -9,6 +9,7 @@ export default defineConfig({
       BRILLEKALKULATOR_API_URL: 'http://hm-brille-api.test',
       FARO_URL: 'http://faro.test',
       FINN_HJELPEMIDDEL_API_URL: 'http://hm-grunndata-search.test',
+      FINN_ALTERNATIV_PRODUKT_API_URL: 'http://finnalternativprodukt.test',
       HEIT_KRUKKA_URL: 'http://heit-krukka.test',
       CLIENT_ID_HOTSAK_API: 'foo',
       CLIENT_ID_HEIT_KRUKKA_API: 'test',

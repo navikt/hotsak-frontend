@@ -22,6 +22,7 @@ export function reverseProxy(server: Express): void {
   )
   server.use('/finnhjelpemiddel-api', proxy(process.env.FINN_HJELPEMIDDEL_API_URL))
   server.use('/brillekalkulator-api', proxy(process.env.BRILLEKALKULATOR_API_URL))
+  server.use('finnalternativprodukt-api', proxy(process.env.FINN_ALTERNATIV_PRODUKT_API_URL))
 }
 
 function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorator'] {

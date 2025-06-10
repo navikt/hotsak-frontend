@@ -1,0 +1,1648 @@
+{
+  "data": {
+    "alternativeProducts": [
+      {
+        "hmsArtNr": "243525",
+        "title": "SecuCare terskeleliminator 3-sidig",
+        "id": "48ee71e8-ba40-49ee-9452-f08476418854",
+        "articleName": "SecuCare terskeleliminator 3-sidig.",
+        "supplier": {
+          "id": "e56a83a7-b7e2-4b1c-954e-ca70f74798d5",
+          "name": "Øvrebø Rehabilitering AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/56266.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/56266_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/56266.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/56266.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 8
+          },
+          {
+            "uri": "seriedok/3847/56266.pdf",
+            "text": "monteringsanvis",
+            "type": "PDF",
+            "priority": 9
+          },
+          {
+            "uri": "video/56266.mp4",
+            "text": "video",
+            "type": "VIDEO",
+            "priority": 10
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 1,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 1,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:52.449462340",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 2,
+            "postNr": 2,
+            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
+            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
+            "refNr": "2",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "243528",
+        "title": "SecuCare terskeleliminator 3-sidig",
+        "id": "dab8eb32-18b2-4c5a-bf56-1163ee8c65ac",
+        "articleName": "SecuCare terskeleliminator 3-sidig.",
+        "supplier": {
+          "id": "e56a83a7-b7e2-4b1c-954e-ca70f74798d5",
+          "name": "Øvrebø Rehabilitering AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/56266.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/56266_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/56266.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/56266.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 8
+          },
+          {
+            "uri": "seriedok/3847/56266.pdf",
+            "text": "monteringsanvis",
+            "type": "PDF",
+            "priority": 9
+          },
+          {
+            "uri": "video/56266.mp4",
+            "text": "video",
+            "type": "VIDEO",
+            "priority": 10
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 2,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 1,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:55.465689650",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 2,
+            "postNr": 2,
+            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
+            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
+            "refNr": "2",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "243530",
+        "title": "SecuCare terskeleliminator 3-sidig",
+        "id": "5f98afa8-6165-456b-862d-6e4977fa977f",
+        "articleName": "SecuCare terskeleliminator 3-sidig.",
+        "supplier": {
+          "id": "e56a83a7-b7e2-4b1c-954e-ca70f74798d5",
+          "name": "Øvrebø Rehabilitering AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/56266.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/56266_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/56266.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/56266.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 8
+          },
+          {
+            "uri": "seriedok/3847/56266.pdf",
+            "text": "monteringsanvis",
+            "type": "PDF",
+            "priority": 9
+          },
+          {
+            "uri": "video/56266.mp4",
+            "text": "video",
+            "type": "VIDEO",
+            "priority": 10
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 1,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 1,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:09:25.343997997",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 2,
+            "postNr": 2,
+            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
+            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
+            "refNr": "2",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "221397",
+        "title": "Cross 5 allround kort",
+        "id": "15a84821-a096-4210-94dc-2555cc148791",
+        "articleName": "Cross 5 allround sb50 kort",
+        "supplier": {
+          "id": "a2fc1213-1097-480c-b65b-38c60be42dcb",
+          "name": "ETAC AS"
+        },
+        "isoCategory": "12220302",
+        "media": [
+          {
+            "uri": "orig/48871.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/48871.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 4
+          },
+          {
+            "uri": "produktblade/48871.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 5
+          },
+          {
+            "uri": "seriedok/1468/48871.pdf",
+            "text": "målskjema",
+            "type": "PDF",
+            "priority": 6
+          },
+          {
+            "uri": "seriedok/8606/48871.pdf",
+            "text": "quickguide",
+            "type": "PDF",
+            "priority": 7
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 4,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:10:27.536600971",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": false,
+        "agreements": []
+      },
+      {
+        "hmsArtNr": "014124",
+        "title": "Topro Terskeleliminator",
+        "id": "6b270251-7ed0-41fd-85ce-fdbc603050ca",
+        "articleName": "Topro terskeleliminator",
+        "supplier": {
+          "id": "8e0ad89d-05fc-446e-830a-8ab138fc5af2",
+          "name": "TOPRO Industri AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/30418.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/30418_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "orig/30418_3.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/30418.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/30418.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 11
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 3,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Oslo",
+            "available": 11,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Hedmark",
+            "available": 4,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Oppland",
+            "available": 6,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Buskerud",
+            "available": 6,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Vestfold",
+            "available": 4,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 4,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Rogaland",
+            "available": 1,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Hordaland",
+            "available": 2,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 4,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 2,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 3,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 3,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Nordland",
+            "available": 7,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Troms",
+            "available": 7,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Finnmark",
+            "available": 4,
+            "updated": "2025-06-10T01:10:47.030594770",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 1,
+            "postNr": 1,
+            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk.",
+            "postId": "41ea72cc-9a9e-43dc-b71a-32d7ba34d3a3",
+            "refNr": "1",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "278343",
+        "title": "Cross 6 (2020)",
+        "id": "487bcd0d-97c8-42c7-a73a-c04ce9048738",
+        "articleName": "Cross 6 sb50 sd35-50 kort",
+        "supplier": {
+          "id": "a2fc1213-1097-480c-b65b-38c60be42dcb",
+          "name": "ETAC AS"
+        },
+        "isoCategory": "12220302",
+        "media": [
+          {
+            "uri": "orig/64861.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/64861.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 4
+          },
+          {
+            "uri": "produktblade/64861.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 5
+          },
+          {
+            "uri": "seriedok/1468/64861.pdf",
+            "text": "målskjema",
+            "type": "PDF",
+            "priority": 6
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 7,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": true
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 1,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 3,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 2,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 5,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 1,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 1,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 7,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 1,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 2,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 1,
+            "updated": "2025-06-10T01:12:46.681333698",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": false,
+        "agreements": []
+      },
+      {
+        "hmsArtNr": "243520",
+        "title": "SecuCare terskeleliminator 2-sidig",
+        "id": "cb9e9aa1-da81-4190-ae15-73656441a8ed",
+        "articleName": "SecuCare terskeleliminator 2-sidig.",
+        "supplier": {
+          "id": "e56a83a7-b7e2-4b1c-954e-ca70f74798d5",
+          "name": "Øvrebø Rehabilitering AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/56265.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/56265_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "orig/56265_3.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/56265.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/56265.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 11
+          },
+          {
+            "uri": "seriedok/3847/56265.pdf",
+            "text": "monteringsanvis",
+            "type": "PDF",
+            "priority": 12
+          },
+          {
+            "uri": "video/56265.mp4",
+            "text": "video",
+            "type": "VIDEO",
+            "priority": 13
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 1,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 1,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 1,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:54.492400107",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 1,
+            "postNr": 2,
+            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
+            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
+            "refNr": "2",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      },
+      {
+        "hmsArtNr": "243515",
+        "title": "SecuCare terskeleliminator 2-sidig",
+        "id": "81ba6608-56f7-44e6-af91-ec0ce9ce9563",
+        "articleName": "SecuCare terskeleliminator 2-sidig.",
+        "supplier": {
+          "id": "e56a83a7-b7e2-4b1c-954e-ca70f74798d5",
+          "name": "Øvrebø Rehabilitering AS"
+        },
+        "isoCategory": "18301505",
+        "media": [
+          {
+            "uri": "orig/56265.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 1
+          },
+          {
+            "uri": "orig/56265_2.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 4
+          },
+          {
+            "uri": "orig/56265_3.jpg",
+            "text": "billede",
+            "type": "IMAGE",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/56265.pdf",
+            "text": "bruksanvisning",
+            "type": "PDF",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/56265.pdf",
+            "text": "brosjyre",
+            "type": "PDF",
+            "priority": 11
+          },
+          {
+            "uri": "seriedok/3847/56265.pdf",
+            "text": "monteringsanvis",
+            "type": "PDF",
+            "priority": 12
+          },
+          {
+            "uri": "video/56265.mp4",
+            "text": "video",
+            "type": "VIDEO",
+            "priority": 13
+          }
+        ],
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oslo",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hedmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Oppland",
+            "available": 2,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Buskerud",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vestfold",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Telemark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Aust-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Vest-Agder",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Rogaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "available": 3,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Møre og Romsdal",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Nordland",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Troms",
+            "available": 2,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          },
+          {
+            "location": "Finnmark",
+            "available": 0,
+            "updated": "2025-06-10T01:08:49.556624101",
+            "needNotified": 0,
+            "reserved": 0,
+            "minmax": false
+          }
+        ],
+        "hasAgreement": true,
+        "agreements": [
+          {
+            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
+            "title": "Kjøreramper",
+            "label": "Kjøreramper",
+            "rank": 1,
+            "postNr": 2,
+            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
+            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
+            "refNr": "2",
+            "published": "2022-06-01T00:00",
+            "expired": "2026-05-31T00:00"
+          }
+        ]
+      }
+    ]
+  }
+}

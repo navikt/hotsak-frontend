@@ -148,6 +148,7 @@ export const hentBrukerdataMedPost: any = async ([
 }
 
 // Nytt oppgave API
+// TODO, kan dennes fases ut og erstatttees med OppgaveService sin endreOppgavetildeling?
 export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
   return post(

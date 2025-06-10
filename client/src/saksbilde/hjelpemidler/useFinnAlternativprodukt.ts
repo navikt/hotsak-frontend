@@ -53,7 +53,7 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
       setAlternativeProdukter({})
       return
     }
-
+    console.log(`Henter produkter for HMS-nr: ${unikeHmsnrs.join(', ')}`)
     setLoading(true)
 
     request<Query, QueryAlternativeProductsArgs>(
@@ -79,7 +79,6 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
         )
 
         setAlternativeProdukter(alternativeProdukterForHmsnr)
-        console.log(`Henter produkter for HMS-nr: ${unikeHmsnrs.join(', ')}`)
         console.log(`Data: ${alternativeProdukterForHmsnr}`)
       })
       .catch((err) => {

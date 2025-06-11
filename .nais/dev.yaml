@@ -9,7 +9,7 @@ metadata:
   annotations:
     snorlax.nais.io/enabled: "true"
 spec:
-  image: {{image }}
+  image: {{image}}
   port: 3000
   ingresses:
     - https://hotsak.intern.dev.nav.no

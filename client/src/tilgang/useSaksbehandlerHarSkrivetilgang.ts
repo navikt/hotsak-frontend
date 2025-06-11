@@ -8,10 +8,10 @@ export function useSaksbehandlerHarSkrivetilgang(tilganger?: Tilgang): boolean {
   const { grupper } = useInnloggetAnsatt()
 
   if (erLocal) {
-    const harSkrivetilgang = grupper.includes(AnsattGruppe.HOTSAK_SAKSBEHANDLER)
-    return harSkrivetilgang
-  } else {
     // TODO: Denne er ikke helt ferdig testet på alle funksjoner i frontend enda, derfor brukes den bare lokalt. På sikt skal det holde med bare denne
     return !!(tilganger?.[TilgangType.KAN_BEHANDLE_SAK] === TilgangResultat.TILLAT)
+  } else {
+    const harSkrivetilgang = grupper.includes(AnsattGruppe.HOTSAK_SAKSBEHANDLER)
+    return harSkrivetilgang
   }
 }

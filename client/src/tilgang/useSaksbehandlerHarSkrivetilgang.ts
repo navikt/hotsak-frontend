@@ -4,18 +4,14 @@ import { AnsattGruppe } from './Ansatt.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
 
 export function useSaksbehandlerHarSkrivetilgang(tilganger?: Tilgang): boolean {
-  const { erDev, erProd } = useMiljø()
+  const { erLocal } = useMiljø()
   const { grupper } = useInnloggetAnsatt()
 
-  // Hardkoder foreløpig til skrivetilgang i dev og prod frem til backend er klar for å vise dette på sak
-  if (erProd) {
-    return true
-  }
-  if (erDev) {
-    // Kun midlertidig logikk for å teste om resten av logikken rundt lesemodus fungerer frem til ny policy løsning er på plass i backend
+  if (erLocal) {
     const harSkrivetilgang = grupper.includes(AnsattGruppe.HOTSAK_SAKSBEHANDLER)
     return harSkrivetilgang
   } else {
+    // TODO: Denne er ikke helt ferdig testet på alle funksjoner i frontend enda, derfor brukes den bare lokalt. På sikt skal det holde med bare denne
     return !!(tilganger?.[TilgangType.KAN_BEHANDLE_SAK] === TilgangResultat.TILLAT)
   }
 }

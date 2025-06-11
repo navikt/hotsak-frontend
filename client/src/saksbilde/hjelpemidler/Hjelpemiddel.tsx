@@ -78,11 +78,13 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
             />
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
-              {alternativer.length > 0 && (
-                <Tag size="small" variant="info">
-                  {alternativer.length} alternativer tilgjengelig
-                </Tag>
-              )}
+              <Eksperiment>
+                {alternativer.length > 0 && (
+                  <Tag size="small" variant="info">
+                    {alternativer.length} alternativer tilgjengelig
+                  </Tag>
+                )}
+              </Eksperiment>
             </HStack>
           </VStack>
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
@@ -127,8 +129,8 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
               </Bleed>
             )}
           </div>
-          <div>
-            <Eksperiment>
+          <Eksperiment>
+            <div>
               {kanEndreHmsnr && (
                 <Bleed marginBlock="1 0">
                   <Button
@@ -141,8 +143,8 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
                   </Button>
                 </Bleed>
               )}
-            </Eksperiment>
-          </div>
+            </div>
+          </Eksperiment>
         </VStack>
       </HjelpemiddelGrid>
       <>

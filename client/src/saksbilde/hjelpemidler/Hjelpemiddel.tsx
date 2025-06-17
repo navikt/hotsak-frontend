@@ -44,6 +44,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
   )
 
   const erBestilling = sakstype === Sakstype.BESTILLING
+  const harAlternativer = alternativer.length > 0
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -79,7 +80,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
               <Eksperiment>
-                {alternativer.length > 0 && (
+                {harAlternativer && (
                   <Tag size="small" variant="info">
                     {alternativer.length} alternativer tilgjengelig
                   </Tag>
@@ -131,7 +132,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
           </div>
           <Eksperiment>
             <div>
-              {kanEndreHmsnr && (
+              {harAlternativer && kanEndreHmsnr && (
                 <Bleed marginBlock="1 0">
                   <Button
                     variant="tertiary"

@@ -162,8 +162,12 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
         <Eksperiment>
           <AlternativProdukterModal
             åpen={visAlternativerModal}
+            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+            hmsNr={hjelpemiddel.produkt.hmsArtNr}
+            //nåværendeHmsNr={nåværendeHmsnr}
             onLukk={() => setVisAlternativerModal(false)}
             alternativer={alternativer}
+            onLagre={endreHjelpemiddel}
           />
         </Eksperiment>
 

@@ -22,7 +22,7 @@ import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
 import { AlternativeProduct } from '../../generated/finnAlternativprodukt.ts'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
-import { AlternativProduktertModal } from './endreHjelpemiddel/AlternativProduktertModal.tsx'
+import { AlternativProdukterModal } from './endreHjelpemiddel/AlternativProdukterModal.tsx'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype
@@ -159,7 +159,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer }: Hje
           />
         )}
         <Eksperiment>
-          <AlternativProduktertModal
+          <AlternativProdukterModal
             åpen={visAlternativerModal}
             onLukk={() => setVisAlternativerModal(false)}
             alternativer={alternativer}

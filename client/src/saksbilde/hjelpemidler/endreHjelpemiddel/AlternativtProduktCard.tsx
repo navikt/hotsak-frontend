@@ -16,6 +16,9 @@ export function AlternativtProduktCard(props: AlternativtProduktCardProps) {
         <Etikett size="small">
           {alternativtProdukt.hmsArtNr}: {alternativtProdukt.title}
         </Etikett>
+        {alternativtProdukt.title.toLowerCase() !== alternativtProdukt.articleName.toLowerCase() && (
+          <Brødtekst>{alternativtProdukt.articleName}</Brødtekst>
+        )}
         <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
         {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
           <>

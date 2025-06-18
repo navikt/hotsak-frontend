@@ -1,4 +1,13 @@
-import { compareAsc, compareDesc, differenceInYears, format, parseISO, setDefaultOptions, toDate } from 'date-fns'
+import {
+  compareAsc,
+  compareDesc,
+  differenceInYears,
+  format,
+  formatDistanceToNow,
+  parseISO,
+  setDefaultOptions,
+  toDate,
+} from 'date-fns'
 import { nb } from 'date-fns/locale'
 
 setDefaultOptions({ locale: nb })
@@ -18,6 +27,15 @@ export function formaterTidsstempelLesevennlig(dato?: string): string {
   if (!dato) return ''
 
   return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM.yyyy 'kl.' HH.mm")
+}
+
+export function formaterRelativTid(dato?: string): string {
+  if (!dato) return ''
+  const parsedDate = dato.endsWith('Z') ? parseISO(dato) : parseISO(dato + 'Z')
+  //if (isToday(date)) {
+  //  return `I dag kl ${format(date, 'HH:mm')}`
+  //}
+  return formatDistanceToNow(parsedDate, { addSuffix: true, locale: nb })
 }
 
 export function formaterTidsstempelKort(dato?: string): string {

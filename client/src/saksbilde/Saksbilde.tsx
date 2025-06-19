@@ -37,7 +37,7 @@ const SaksbildeContent = memo(() => {
 
   return (
     <>
-      <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
+      <Personlinje loading={personInfoLoading} person={personInfo} />
       {(() => {
         switch (sak.data.sakstype as Sakstype) {
           case Sakstype.BARNEBRILLER:

@@ -55,8 +55,12 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           <Tekst>{formatertFnr}</Tekst>
           <Etikett>{behovsmeldingsbruker.kilde === Brukerkilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
           <Tekst>{adresseBruker}</Tekst>
-          <Etikett>Telefon</Etikett>
-          <Tekst>{formatertTlf}</Tekst>
+          {formatertTlf && (
+            <>
+              <Etikett>Telefon</Etikett>
+              <Tekst>{formatertTlf}</Tekst>
+            </>
+          )}
 
           <Etikett>Funksjonsnedsettelse</Etikett>
           <Tekst>{storForbokstavIAlleOrd(brukerSituasjon.funksjonsnedsettelser.join(', '))}</Tekst>

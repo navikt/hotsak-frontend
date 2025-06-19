@@ -58,7 +58,6 @@ const SaksbildeContent = memo(() => {
               søknadGjelder={sak.data.søknadGjelder}
               søknadMottatt={sak.data.opprettet}
               funksjonsnedsettelser={behovsmelding.brukersituasjon.funksjonsnedsettelser}
-              telefon={sak?.data.bruker.telefon}
             />
             <FormidlerCard
               tittel={erBestilling ? 'Bestiller' : 'Formidler'}

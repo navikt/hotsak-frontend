@@ -33,6 +33,10 @@ export function respondInternalServerError(): Response {
   return new Response(null, { status: 500 })
 }
 
+export function respondImage(buffer: ArrayBuffer): Response {
+  return HttpResponse.arrayBuffer(buffer, { headers: { 'Content-Type': 'image/png' }, status: 200 })
+}
+
 export function respondPdf(buffer: ArrayBuffer): Response {
   return HttpResponse.arrayBuffer(buffer, {
     headers: {

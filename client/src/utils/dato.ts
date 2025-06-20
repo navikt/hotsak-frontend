@@ -39,7 +39,7 @@ export function formaterRelativTid(dato?: string): string {
   }
 
   const now = new Date()
-  return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }) //.replace('omtrent', '')
+  return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }).replace('omtrent', '')
 }
 
 export function formaterTidsstempelKort(dato?: string): string {

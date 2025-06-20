@@ -28,6 +28,14 @@ export function lagTilfeldigTelefonnummer(): string {
   return lagTilfeldigInteger(1, 99_999_999).toString().padEnd(8, '0')
 }
 
+export async function lastTilfeldigProduktbilde(): Promise<ArrayBuffer> {
+  const bilder = [await import(`./produktbilder/mrs.png`), await import(`./produktbilder/rullator.png`)]
+
+  const valgt = bilder[lagTilfeldigInteger(0, bilder.length - 1)]
+  const response = await fetch(valgt.default)
+  return response.arrayBuffer()
+}
+
 export async function lastDokumentBarnebriller(navn: string): Promise<ArrayBuffer> {
   const dokument = await import(`./barnebriller_${navn}.pdf`)
   const response = await fetch(dokument.default)

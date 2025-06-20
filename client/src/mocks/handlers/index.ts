@@ -20,6 +20,7 @@ import { brevutkastHandlers } from './brevutkast'
 import { saksVarslerHandlers } from './saksvarsler'
 import { behovsmeldingHandlers } from './behovsmelding'
 import { finnAlternativProduktHandlers } from './finnAlternativProdukt.ts'
+import { bildeHandlers } from './bilder.ts'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
@@ -43,4 +44,5 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...vilkårsvurderingHandlers(store),
+  ...bildeHandlers(),
 ]

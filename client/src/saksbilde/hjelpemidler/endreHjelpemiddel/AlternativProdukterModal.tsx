@@ -24,7 +24,20 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   const [endretProdukt, setEndretProdukt] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
 
+  const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
+
   const ref = useRef<HTMLDialogElement>(null)
+
+  function produktBilde(produkt: AlternativeProduct): Maybe<string> {
+    const media = produkt.media
+      .filter((m) => m.type === 'IMAGE')
+      .sort((a, b) => (Number(a.priority) ?? 0) - (Number(b.priority) ?? 0))[0]
+
+    if (!media || !media.uri) {
+      return undefined
+    }
+    return `${imageProxyUrl}/${media.uri}`
+  }
 
   return (
     <Modal
@@ -88,9 +101,12 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
                       </div>
                     </HStack>
                   </VStack>
-                  <div>
-                    <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
-                  </div>
+                  <VStack gap="2" paddingBlock={'8 0'}>
+                    {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="150px" />}
+                    <div>
+                      <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
+                    </div>
+                  </VStack>
                 </HGrid>
               </Box>
             ))}

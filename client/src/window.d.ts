@@ -10,6 +10,7 @@ declare global {
       FARO_URL?: string
       AMPLITUDE_API_KEY?: string
       AMPLITUDE_SERVER_URL?: string
+      IMAGE_PROXY_URL: string
     }
     store: {
       saksbehandlere(): Promise<InnloggetAnsatt[]>

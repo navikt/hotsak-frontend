@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend
   namespace: teamdigihot
 spec:
-  image: {{image}}
+  image: { { image } }
   port: 3000
   ingresses:
     - https://hotsak.intern.nav.no
@@ -73,7 +73,7 @@ spec:
     - name: USE_MSW
       value: "false"
     - name: GIT_COMMIT
-      value: {{commit}}
+      value: { { commit } }
     - name: FARO_URL
       value: https://telemetry.nav.no/collect
     - name: HEIT_KRUKKA_URL
@@ -82,3 +82,5 @@ spec:
       value: default
     - name: AMPLITUDE_SERVER_URL
       value: https://amplitude.nav.no/collect-auto
+    - name: IMAGE_PROXY_URL
+      value: https://finnhjelpemiddel.nav.no/imageproxy/400d

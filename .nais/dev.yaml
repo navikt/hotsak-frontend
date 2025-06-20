@@ -96,3 +96,5 @@ spec:
       value: default
     - name: AMPLITUDE_SERVER_URL
       value: https://amplitude.nav.no/collect-auto
+    - name: IMAGE_PROXY_URL
+      value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d

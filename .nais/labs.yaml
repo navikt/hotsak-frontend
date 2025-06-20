@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend-labs
   namespace: teamdigihot
 spec:
-  image: {{image}}
+  image: { { image } }
   port: 3000
   ingresses:
     - https://hotsak.ekstern.dev.nav.no
@@ -50,7 +50,7 @@ spec:
     - name: FINN_ALTERNATIV_PRODUKT_API_URL
       value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
     - name: PORT
-      value: '3000'
+      value: "3000"
     - name: BRILLEKALKULATOR_API_URL
       value: "http://brille/api"
     - name: CLIENT_ID_HOTSAK_API
@@ -62,8 +62,10 @@ spec:
     - name: USE_MSW
       value: "true"
     - name: GIT_COMMIT
-      value: {{commit}}
+      value: { { commit } }
     - name: AMPLITUDE_API_KEY
       value: default
     - name: AMPLITUDE_SERVER_URL
       value: https://amplitude.nav.no/collect-auto
+    - name: IMAGE_PROXY_URL
+      value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d

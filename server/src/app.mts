@@ -27,6 +27,7 @@ app.get('/settings.js', (_, res) => {
     USE_MSW: process.env.USE_MSW === 'true',
     MILJO: process.env.NAIS_CLUSTER_NAME,
     FARO_URL: process.env.FARO_URL,
+    IMAGE_PROXY_URL: process.env.IMAGE_PROXY_URL,
     AMPLITUDE_API_KEY: process.env.AMPLITUDE_API_KEY,
     AMPLITUDE_SERVER_URL: process.env.AMPLITUDE_SERVER_URL,
   }

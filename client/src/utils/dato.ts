@@ -35,7 +35,7 @@ export function formaterRelativTid(dato?: string): string {
   //if (isToday(date)) {
   //  return `I dag kl ${format(date, 'HH:mm')}`
   //}
-  return formatDistanceToNow(parsedDate, { addSuffix: true, locale: nb })
+  return formatDistanceToNow(parsedDate, { addSuffix: true, locale: nb }).replace('omtrent', '')
 }
 
 export function formaterTidsstempelKort(dato?: string): string {

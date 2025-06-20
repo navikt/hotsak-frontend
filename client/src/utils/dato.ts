@@ -3,7 +3,8 @@ import {
   compareDesc,
   differenceInYears,
   format,
-  formatDistanceToNow,
+  formatDistance,
+  isToday,
   parseISO,
   setDefaultOptions,
   toDate,
@@ -31,11 +32,14 @@ export function formaterTidsstempelLesevennlig(dato?: string): string {
 
 export function formaterRelativTid(dato?: string): string {
   if (!dato) return ''
+
   const parsedDate = dato.endsWith('Z') ? parseISO(dato) : parseISO(dato + 'Z')
-  //if (isToday(date)) {
-  //  return `I dag kl ${format(date, 'HH:mm')}`
-  //}
-  return formatDistanceToNow(parsedDate, { addSuffix: true, locale: nb }).replace('omtrent', '')
+  if (isToday(dato)) {
+    return `I dag kl ${format(dato, 'HH:mm')}`
+  }
+
+  const now = new Date()
+  return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }) //.replace('omtrent', '')
 }
 
 export function formaterTidsstempelKort(dato?: string): string {

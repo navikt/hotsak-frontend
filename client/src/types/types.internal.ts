@@ -801,7 +801,7 @@ export interface Bestilling {
 export interface EndretHjelpemiddel {
   hjelpemiddelId: string
   hmsArtNr: string
-  begrunnelse: EndretHjelpemiddelBegrunnelse
+  begrunnelse: EndretHjelpemiddelBegrunnelse | EndretAlternativProduktBegrunnelse
   begrunnelseFritekst?: string
 }
 
@@ -811,10 +811,22 @@ export enum EndretHjelpemiddelBegrunnelse {
   ANNET = 'ANNET',
 }
 
+export enum EndretAlternativProduktBegrunnelse {
+  ALTERNATIV_PRODUKT_RAMMEAVTALE = 'ALTERNATIV_PRODUKT_RAMMEAVTALE',
+  ALTERNATIV_PRODUKT_GJENBRUK = 'ALTERNATIV_PRODUKT_GJENBRUK',
+  ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
+}
+
 export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
   [EndretHjelpemiddelBegrunnelse.RAMMEAVTALE, 'Endring i rammeavtale'],
   [EndretHjelpemiddelBegrunnelse.GJENBRUK, 'Gjenbruk'],
   [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
+])
+
+export const EndretAlternativProduktBegrunnelseLabel = new Map<string, string>([
+  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE, 'Endring i rammeavtale'],
+  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_GJENBRUK, 'Gjenbruk'],
+  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
 ])
 
 export interface Hjelpemiddel {

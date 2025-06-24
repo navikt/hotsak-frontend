@@ -1,7 +1,13 @@
-import { Button, CheckboxGroup, Heading, HGrid, Modal } from '@navikt/ds-react'
+import { Button, CheckboxGroup, Heading, HGrid, Modal, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
-import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from '../../../types/types.internal.ts'
+import {
+  EndretAlternativProduktBegrunnelse,
+  EndretAlternativProduktBegrunnelseLabel,
+  EndretHjelpemiddel,
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+} from '../../../types/types.internal.ts'
 import { AlternativProduktCard } from './AlternativProduktCard.tsx'
 
 interface AlternativProduktModalProps {
@@ -20,8 +26,40 @@ Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
 export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   const { åpen, onLukk, alternativer, hjelpemiddelId, onLagre, onMutate } = props
   const [endretProdukt, setEndretProdukt] = useState<string[]>([])
+  const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretAlternativProduktBegrunnelse | undefined>(undefined)
+  const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
+
+  const [submitAttempt, setSubmitAttempt] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
+
+  const errorBegrunnelse = () => {
+    if (!endreBegrunnelse) {
+      return 'Du må velge en begrunnelse'
+    }
+  }
+
+  const validationError = () => {
+    return errorBegrunnelseFritekst() || errorBegrunnelse()
+  }
+
+  const errorBegrunnelseFritekst = () => {
+    if (
+      endreBegrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET &&
+      endreBegrunnelseFritekst.length === 0
+    ) {
+      return 'Du må fylle inn en begrunnelse'
+    }
+
+    if (
+      endreBegrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET &&
+      endreBegrunnelseFritekst.length > MAX_TEGN_BEGRUNNELSE_FRITEKST
+    ) {
+      const antallForMange = endreBegrunnelseFritekst.length - MAX_TEGN_BEGRUNNELSE_FRITEKST
+      return `Antall tegn for mange ${antallForMange}`
+    }
+  }
 
   return (
     <Modal
@@ -29,63 +67,137 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
       closeOnBackdropClick={false}
       width="650px"
       open={åpen}
-      onClose={onLukk}
+      onClose={() => {
+        setNyttProduktValgt(false)
+        onLukk()
+      }}
       size="small"
       aria-label={'Endre hjelpemiddel'}
     >
       <Modal.Header>
         <Heading level="1" size="small">
-          Alternativer
+          {!nyttProduktValgt ? `Alternativer` : `Velg begrunnelse for å bytte hjelpemiddel`}
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <CheckboxGroup
-          legend="Velg alternativ"
-          hideLegend
-          name="alternativ"
-          onChange={(val) => {
-            setEndretProdukt(val.slice(-1))
-          }}
-          value={endretProdukt ?? ''}
-          size="small"
-        >
-          <HGrid columns={'1fr 1fr'} gap="4">
-            {alternativer.map((alternativ) => (
-              <AlternativProduktCard
-                key={alternativ.id}
-                alternativ={alternativ}
-                onMutate={onMutate}
-                endretProdukt={endretProdukt}
+        {!nyttProduktValgt ? (
+          <CheckboxGroup
+            legend="Velg alternativ"
+            hideLegend
+            name="alternativ"
+            onChange={(val) => {
+              setEndretProdukt(val.slice(-1))
+            }}
+            value={endretProdukt ?? ''}
+            size="small"
+          >
+            <HGrid columns={'1fr 1fr'} gap="4">
+              {alternativer.map((alternativ) => (
+                <AlternativProduktCard
+                  key={alternativ.id}
+                  alternativ={alternativ}
+                  onMutate={onMutate}
+                  endretProdukt={endretProdukt}
+                />
+              ))}
+            </HGrid>
+          </CheckboxGroup>
+        ) : (
+          <VStack gap="3" paddingBlock="4 0">
+            <RadioGroup
+              size="small"
+              legend="Begrunnelse for å endre HMS-nummer:"
+              onChange={(val) => setEndreBegrunnelse(val)}
+              value={endreBegrunnelse ?? ''}
+              error={submitAttempt && errorBegrunnelse()}
+            >
+              <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE}>
+                {EndretAlternativProduktBegrunnelseLabel.get(
+                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE
+                )}
+              </Radio>
+              <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
+                {EndretAlternativProduktBegrunnelseLabel.get(
+                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_GJENBRUK
+                )}
+              </Radio>
+              <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
+                {EndretAlternativProduktBegrunnelseLabel.get(
+                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                )}
+                (begrunn)
+              </Radio>
+            </RadioGroup>
+            {endreBegrunnelse == EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET && (
+              <Textarea
+                label="Begrunn endringen"
+                rows={3}
+                size="small"
+                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
+                value={endreBegrunnelseFritekst}
+                onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
+                error={submitAttempt && errorBegrunnelseFritekst()}
               />
-            ))}
-          </HGrid>
-        </CheckboxGroup>
+            )}
+          </VStack>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="primary"
-          size="small"
-          loading={submitting}
-          onClick={async () => {
-            setSubmitting(true)
+        {!nyttProduktValgt ? (
+          <Button
+            variant="primary"
+            size="small"
+            loading={submitting}
+            onClick={async () => {
+              setNyttProduktValgt(true)
+            }}
+          >
+            Lagre endring
+          </Button>
+        ) : (
+          <Button
+            variant="primary"
+            size="small"
+            loading={submitting}
+            onClick={async () => {
+              if (!validationError()) {
+                setSubmitting(true)
+                const begrunnelseFritekst =
+                  endreBegrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                    ? endreBegrunnelseFritekst
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
 
-            // TODO: Fine ut om og hvordan vi skal be om begrunnelse for endring av hjelpemiddel
-            await onLagre({
-              hjelpemiddelId: hjelpemiddelId,
-              hmsArtNr: endretProdukt[0] ?? '',
-              begrunnelse: EndretHjelpemiddelBegrunnelse.ANNET,
-              begrunnelseFritekst: 'Bytter til alternativt produkt via finn gjenbruksprodukt',
-            })
-            setSubmitting(false)
+                await onLagre({
+                  hjelpemiddelId: hjelpemiddelId,
+                  hmsArtNr: endretProdukt[0] ?? '',
+                  begrunnelse: endreBegrunnelse!,
+                  begrunnelseFritekst: begrunnelseFritekst,
+                })
+                setSubmitting(false)
+                setNyttProduktValgt(false)
+                onLukk()
+              } else {
+                setSubmitAttempt(true)
+              }
+            }}
+          >
+            Ferdig
+          </Button>
+        )}
+
+        <Button
+          variant="tertiary"
+          size="small"
+          onClick={() => {
+            setNyttProduktValgt(false)
             onLukk()
           }}
         >
-          Lagre endring
-        </Button>
-        <Button variant="tertiary" size="small" onClick={() => onLukk()}>
           Avbryt
         </Button>
       </Modal.Footer>
     </Modal>
   )
 }
+
+const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150

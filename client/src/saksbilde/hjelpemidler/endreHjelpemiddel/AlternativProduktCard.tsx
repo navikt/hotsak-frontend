@@ -47,7 +47,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
 
           <HGrid columns={'auto 1fr'} gap="2 2">
             {alternativ.wareHouseStock?.map((lagerstatus) => (
-              <React.Fragment>
+              <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
                 <div>
                   <Tag variant="success" size="xsmall">

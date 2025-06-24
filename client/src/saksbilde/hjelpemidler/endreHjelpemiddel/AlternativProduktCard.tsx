@@ -1,5 +1,5 @@
 import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Box, Button, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
+import { Bleed, Box, Button, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
 import React from 'react'
 import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
@@ -60,7 +60,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
           <div>
             <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
           </div>
-          <div>
+          <Bleed marginInline="3">
             <Button
               variant="tertiary"
               size="small"
@@ -73,7 +73,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
             >
               Sjekk lagerstatus
             </Button>
-          </div>
+          </Bleed>
         </VStack>
       </Box>
       <HStack justify={'center'} paddingBlock="2 0">

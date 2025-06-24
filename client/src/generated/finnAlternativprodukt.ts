@@ -190,3 +190,23 @@ export type SjekkLagerstatusQuery = {
     }>
   }>
 }
+
+export type SjekkLagerstatusForProduktQueryVariables = Exact<{
+  hmsnr: Scalars['String']['input']
+}>
+
+export type SjekkLagerstatusForProduktQuery = {
+  __typename?: 'Query'
+  productStock: {
+    __typename?: 'ProductStock'
+    hmsArtNr: string
+    id: string
+    status: string
+    warehouseStock: Array<{
+      __typename?: 'WareHouseStock'
+      location: string
+      minmax: boolean
+      available?: number | null
+    }>
+  }
+}

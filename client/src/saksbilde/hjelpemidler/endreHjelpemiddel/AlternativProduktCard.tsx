@@ -12,7 +12,7 @@ interface AlternativProduktCardProps {
 }
 
 export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduktCardProps) {
-  const { sjekkLagerstatus, loading: henterLagerstatus } = useSjekkLagerstatus()
+  const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useSjekkLagerstatus()
 
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 
@@ -62,7 +62,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
                 icon={<ClockDashedIcon />}
                 loading={henterLagerstatus}
                 onClick={async () => {
-                  await sjekkLagerstatus([alternativ.hmsArtNr])
+                  await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
                   onMutate()
                 }}
               >

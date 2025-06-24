@@ -38,14 +38,14 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
           <VStack>
             <Etikett size="small">
               <Link href={`https://finnhjelpemiddel.nav.no/${alternativ.hmsArtNr}`} target="_blank">
-                {alternativ.title}
+                {alternativ.articleName || alternativ.title}
               </Link>
             </Etikett>
             <Undertittel>{`Hmsnr: ${alternativ.hmsArtNr}`}</Undertittel>
             <Brødtekst>{alternativ.supplier.name}</Brødtekst>
           </VStack>
 
-          <HGrid columns={'1fr 1fr'} gap="2 0">
+          <HGrid columns={'auto 1fr'} gap="2 2">
             {alternativ.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment>
                 <Etikett>{lagerstatus?.location}: </Etikett>
@@ -58,7 +58,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
             ))}
           </HGrid>
           <div>
-            <Undertittel>{`Oppdatert ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
+            <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
           </div>
           <div>
             <Button
@@ -76,7 +76,7 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
           </div>
         </VStack>
       </Box>
-      <HStack justify={'center'}>
+      <HStack justify={'center'} paddingBlock="2 0">
         <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
       </HStack>
     </VStack>

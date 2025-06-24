@@ -1,5 +1,5 @@
+import { Button, CheckboxGroup, Heading, HGrid, Modal } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import { Button, CheckboxGroup, Heading, Modal, VStack } from '@navikt/ds-react'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
 import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from '../../../types/types.internal.ts'
 import { AlternativProduktCard } from './AlternativProduktCard.tsx'
@@ -49,7 +49,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
           value={endretProdukt ?? ''}
           size="small"
         >
-          <VStack gap="3">
+          <HGrid columns={'1fr 1fr'} gap="4">
             {alternativer.map((alternativ) => (
               <AlternativProduktCard
                 key={alternativ.id}
@@ -58,7 +58,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
                 endretProdukt={endretProdukt}
               />
             ))}
-          </VStack>
+          </HGrid>
         </CheckboxGroup>
       </Modal.Body>
       <Modal.Footer>

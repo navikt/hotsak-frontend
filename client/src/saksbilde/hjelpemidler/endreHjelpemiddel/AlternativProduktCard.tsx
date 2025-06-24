@@ -1,8 +1,9 @@
-import { Box, Button, Checkbox, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
-import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
-import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
-import { formaterRelativTid } from '../../../utils/dato'
 import { ClockDashedIcon } from '@navikt/aksel-icons'
+import { Box, Button, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
+import React from 'react'
+import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
+import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
+import { formaterRelativTid } from '../../../utils/dato'
 import { useSjekkLagerstatus } from '../useSjekkLagerstatus'
 
 interface AlternativProduktCardProps {
@@ -28,56 +29,56 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
   }
 
   return (
-    <Box key={alternativ.id} borderWidth="1" borderColor="border-subtle" borderRadius={'large'} padding="4">
-      <HGrid columns="2fr 1fr" gap="2">
-        <VStack gap="1">
-          <Etikett size="small">
-            {alternativ.hmsArtNr}: {alternativ.title}
-          </Etikett>
-          {alternativ.title.toLowerCase() !== alternativ.articleName.toLowerCase() && (
-            <Brødtekst>{alternativ.articleName}</Brødtekst>
-          )}
-          <Brødtekst>{alternativ.supplier.name}</Brødtekst>
-          <HGrid columns={'1fr 1fr'}>
+    <VStack>
+      <Box key={alternativ.id} borderWidth="1" borderColor="border-subtle" borderRadius={'large'} padding="4">
+        <VStack gap="3">
+          <HStack justify={'center'} paddingBlock={'2 4'}>
+            {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="180px" />}
+          </HStack>
+          <VStack>
+            <Etikett size="small">
+              <Link href={`https://finnhjelpemiddel.nav.no/${alternativ.hmsArtNr}`} target="_blank">
+                {alternativ.title}
+              </Link>
+            </Etikett>
+            <Undertittel>{`Hmsnr: ${alternativ.hmsArtNr}`}</Undertittel>
+            <Brødtekst>{alternativ.supplier.name}</Brødtekst>
+          </VStack>
+
+          <HGrid columns={'1fr 1fr'} gap="2 0">
             {alternativ.wareHouseStock?.map((lagerstatus) => (
-              <VStack key={lagerstatus?.location}>
+              <React.Fragment>
                 <Etikett>{lagerstatus?.location}: </Etikett>
                 <div>
                   <Tag variant="success" size="xsmall">
                     {lagerstatus?.available} stk på lager
                   </Tag>
                 </div>
-                <div style={{ gridColumn: '1 / -1', paddingTop: '0.2rem' }}>
-                  <Undertittel>{formaterRelativTid(lagerstatus?.updated)}</Undertittel>
-                </div>
-              </VStack>
+              </React.Fragment>
             ))}
           </HGrid>
-
-          <HStack gap="2" paddingBlock={'4 0'}>
-            <div>
-              <Button
-                variant="tertiary"
-                size="small"
-                icon={<ClockDashedIcon />}
-                loading={henterLagerstatus}
-                onClick={async () => {
-                  await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
-                  onMutate()
-                }}
-              >
-                Sjekk lagerstatus
-              </Button>
-            </div>
-          </HStack>
-        </VStack>
-        <VStack gap="2" paddingBlock={'8 0'}>
-          {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="150px" />}
           <div>
-            <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
+            <Undertittel>{`Oppdatert ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
+          </div>
+          <div>
+            <Button
+              variant="tertiary"
+              size="small"
+              icon={<ClockDashedIcon />}
+              loading={henterLagerstatus}
+              onClick={async () => {
+                await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
+                onMutate()
+              }}
+            >
+              Sjekk lagerstatus
+            </Button>
           </div>
         </VStack>
-      </HGrid>
-    </Box>
+      </Box>
+      <HStack justify={'center'}>
+        <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
+      </HStack>
+    </VStack>
   )
 }

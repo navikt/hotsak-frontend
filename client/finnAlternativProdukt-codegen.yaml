@@ -1,5 +1,7 @@
 schema: "http://localhost:8080/graphql"
-documents: "src/saksbilde/hjelpemidler/useFinnAlternativprodukt.ts"
+documents:
+  - "src/saksbilde/hjelpemidler/useFinnAlternativprodukt.ts"
+  - "src/saksbilde/hjelpemidler/useSjekkLagerstatus.ts"
 generates:
   ./src/generated/finnAlternativprodukt.ts:
     plugins:

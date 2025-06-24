@@ -10,7 +10,5 @@ export function useOppgavetilgang(): { harSkrivetilgang: boolean } {
     return grupper.includes(AnsattGruppe.HOTSAK_SAKSBEHANDLER)
   }, [grupper])
 
-  console.log('Saksbehandler har skrivetilgang til oppgave', { harSkrivetilgang })
-
   return { harSkrivetilgang }
 }

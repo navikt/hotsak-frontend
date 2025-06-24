@@ -1,5 +1,6 @@
-schema: 'https://hm-grunndata-search.intern.dev.nav.no/graphql'
-documents: 'src/saksbilde/hjelpemidler/useFinnHjelpemiddel.ts'
+schema: "https://hm-grunndata-search.intern.dev.nav.no/graphql"
+documents:
+  - "src/saksbilde/hjelpemidler/useFinnHjelpemiddel.ts"
 generates:
   ./src/generated/finnhjelpemiddel.ts:
     plugins:

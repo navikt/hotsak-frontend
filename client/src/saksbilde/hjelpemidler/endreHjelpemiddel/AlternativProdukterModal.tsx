@@ -1,17 +1,15 @@
 import { useRef, useState } from 'react'
-
-import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Box, Button, Checkbox, CheckboxGroup, Heading, HGrid, HStack, Modal, Tag, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { Button, CheckboxGroup, Heading, Modal, VStack } from '@navikt/ds-react'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
 import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from '../../../types/types.internal.ts'
-import { formaterRelativTid } from '../../../utils/dato.ts'
+import { AlternativProduktCard } from './AlternativProduktCard.tsx'
 
 interface AlternativProduktModalProps {
   åpen: boolean
   hmsNr: string
   hjelpemiddelId: string
   onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
+  onMutate: () => void
   alternativer: AlternativeProduct[]
   onLukk(): void
 }
@@ -20,24 +18,10 @@ interface AlternativProduktModalProps {
 Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
 */
 export function AlternativProdukterModal(props: AlternativProduktModalProps) {
-  const { åpen, onLukk, alternativer, hjelpemiddelId, onLagre } = props
+  const { åpen, onLukk, alternativer, hjelpemiddelId, onLagre, onMutate } = props
   const [endretProdukt, setEndretProdukt] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
-
-  const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
-
   const ref = useRef<HTMLDialogElement>(null)
-
-  function produktBilde(produkt: AlternativeProduct): Maybe<string> {
-    const media = produkt.media
-      .filter((m) => m.type === 'IMAGE')
-      .sort((a, b) => (Number(a.priority) ?? 0) - (Number(b.priority) ?? 0))[0]
-
-    if (!media || !media.uri) {
-      return undefined
-    }
-    return `${imageProxyUrl}/${media.uri}`
-  }
 
   return (
     <Modal
@@ -67,48 +51,12 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
         >
           <VStack gap="3">
             {alternativer.map((alternativ) => (
-              <Box key={alternativ.id} borderWidth="1" borderColor="border-subtle" borderRadius={'large'} padding="4">
-                <HGrid columns="2fr 1fr" gap="2">
-                  <VStack gap="1">
-                    <Etikett size="small">
-                      {alternativ.hmsArtNr}: {alternativ.title}
-                    </Etikett>
-                    {alternativ.title.toLowerCase() !== alternativ.articleName.toLowerCase() && (
-                      <Brødtekst>{alternativ.articleName}</Brødtekst>
-                    )}
-                    <Brødtekst>{alternativ.supplier.name}</Brødtekst>
-                    <HGrid columns={'1fr 1fr'}>
-                      {alternativ.wareHouseStock?.map((lagerstatus) => (
-                        <VStack key={lagerstatus?.location}>
-                          <Etikett>{lagerstatus?.location}: </Etikett>
-                          <div>
-                            <Tag variant="success" size="xsmall">
-                              {lagerstatus?.available} stk på lager
-                            </Tag>
-                          </div>
-                          <div style={{ gridColumn: '1 / -1', paddingTop: '0.2rem' }}>
-                            <Undertittel>{formaterRelativTid(lagerstatus?.updated)}</Undertittel>
-                          </div>
-                        </VStack>
-                      ))}
-                    </HGrid>
-
-                    <HStack gap="2" paddingBlock={'4 0'}>
-                      <div>
-                        <Button variant="tertiary" size="small" icon={<ClockDashedIcon />}>
-                          Sjekk lagerstatus
-                        </Button>
-                      </div>
-                    </HStack>
-                  </VStack>
-                  <VStack gap="2" paddingBlock={'8 0'}>
-                    {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="150px" />}
-                    <div>
-                      <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
-                    </div>
-                  </VStack>
-                </HGrid>
-              </Box>
+              <AlternativProduktCard
+                key={alternativ.id}
+                alternativ={alternativ}
+                onMutate={onMutate}
+                endretProdukt={endretProdukt}
+              />
             ))}
           </VStack>
         </CheckboxGroup>

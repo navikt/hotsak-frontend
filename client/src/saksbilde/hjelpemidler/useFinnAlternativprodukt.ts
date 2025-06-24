@@ -82,6 +82,9 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
         query,
         { hmsnrs: hmsnrs }
       )
+
+      console.log('hentAlternativeProdukter!!', data)
+
       const alternativeProdukterForHmsnr: AlternativeProdukterMap =
         data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
           produkt.alternativeFor.forEach((hmsnr) => {

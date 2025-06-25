@@ -70,7 +70,6 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
     try {
       await Promise.all(
         oebsEnhet.lagerlokasjoner.map(async (lokasjon) => {
-          console.log('sjekker lagerstatus for lokasjon:', lokasjon.lokasjon, hmsnrs)
           return await request<Query, QueryProductStocksArgs>(
             new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
             query,

@@ -54,6 +54,11 @@ const piloter = {
     Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
   ],
   kunTilbehør: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND],
+  ombrukPilot: [
+    Enhet.IT_AVDELINGEN,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
+  ],
 }
 
 export function useVisOppgavelisteTabs(): boolean {
@@ -62,6 +67,11 @@ export function useVisOppgavelisteTabs(): boolean {
     erGjeldendeEnhetEnAv(Enhet.IT_AVDELINGEN, Enhet.NAV_VIKAFOSSEN) ||
     erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE, AnsattGruppe.TEAMDIGIHOT)
   )
+}
+
+export function useErOmbrukPilot(): boolean {
+  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+  return erGjeldendeEnhetEnAv(...piloter.ombrukPilot)
 }
 
 export function useErSaksmenyPilot(): boolean {

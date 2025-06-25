@@ -46,7 +46,6 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
   http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    console.log(`Tildeler oppgaveId: ${oppgaveId}`)
     if (erSakOppgaveId(oppgaveId)) {
       await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
     } else {
@@ -58,7 +57,6 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
   http.delete<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    console.log(`Fjerner tildeling for oppgaveId: ${oppgaveId}`)
     if (erSakOppgaveId(oppgaveId)) {
       await sakStore.frigi(oppgaveIdUtenPrefix(oppgaveId))
     }

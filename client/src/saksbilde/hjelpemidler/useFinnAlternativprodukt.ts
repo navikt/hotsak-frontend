@@ -1,8 +1,7 @@
 import { gql, request } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { AlternativeProduct, Query, QueryAlternativeProductsArgs } from '../../generated/finnAlternativprodukt'
-import { useTilgangContext } from '../../tilgang/useTilgang'
-import { useMiljø } from '../../utils/useMiljø'
+import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang'
 import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
 
 const query = gql`
@@ -51,13 +50,11 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
   const [alternativeProdukter, setAlternativeProdukter] = useState<AlternativeProdukterMap>({})
   const { innloggetAnsatt } = useTilgangContext()
   const [loading, setLoading] = useState(false)
-  const { erIkkeProd } = useMiljø()
+  const erOmbrukPilot = useErOmbrukPilot()
   const gjeldendeEnhetsnummer = innloggetAnsatt.gjeldendeEnhet.nummer
 
   const oebsEnhet = oebs_enheter.find((enhet) => enhet.enhetsnummer === gjeldendeEnhetsnummer)
   const lagerlokasjonsnavn = oebsEnhet?.lagerlokasjoner?.map((lokasjon) => lokasjon.lokasjon.toLowerCase()) || []
-
-  console.log('oebsEnhet', oebsEnhet)
 
   function harProduktPåLager(produkt: AlternativeProduct): boolean {
     const lagerstatusForEnhet =
@@ -69,11 +66,6 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
   }
 
   async function hentAlternativeProdukter(hmsnrs: string[]) {
-    if (hmsnrs.length === 0 || !oebsEnhet) {
-      setAlternativeProdukter({})
-      return
-    }
-
     setLoading(true)
 
     try {
@@ -82,8 +74,6 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
         query,
         { hmsnrs: hmsnrs }
       )
-
-      console.log('hentAlternativeProdukter!!', data)
 
       const alternativeProdukterForHmsnr: AlternativeProdukterMap =
         data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
@@ -117,13 +107,11 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
   const mutate = async () => {
     const unikeHmsnrs = [...new Set(hmsnrs)]
 
-    console.log('mutate alternativeProdukter', unikeHmsnrs)
-
-    if (unikeHmsnrs.length === 0) {
+    if (unikeHmsnrs.length === 0 || !oebsEnhet) {
       setAlternativeProdukter({})
       return
     }
-    if (erIkkeProd) {
+    if (erOmbrukPilot) {
       await hentAlternativeProdukter(unikeHmsnrs)
     }
   }

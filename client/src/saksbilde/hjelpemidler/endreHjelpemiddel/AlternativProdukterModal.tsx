@@ -5,7 +5,6 @@ import {
   EndretAlternativProduktBegrunnelse,
   EndretAlternativProduktBegrunnelseLabel,
   EndretHjelpemiddel,
-  EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
 } from '../../../types/types.internal.ts'
 import { AlternativProduktCard } from './AlternativProduktCard.tsx'

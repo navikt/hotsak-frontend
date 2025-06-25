@@ -111,17 +111,12 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
               value={endreBegrunnelse ?? ''}
               error={submitAttempt && errorBegrunnelse()}
             >
-              <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE}>
+              <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE}>
                 {EndretAlternativProduktBegrunnelseLabel.get(
-                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE
+                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE
                 )}
               </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
-                {EndretAlternativProduktBegrunnelseLabel.get(
-                  EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_GJENBRUK
-                )}
-              </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
+              <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET}>
                 {EndretAlternativProduktBegrunnelseLabel.get(
                   EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                 )}

@@ -812,8 +812,7 @@ export enum EndretHjelpemiddelBegrunnelse {
 }
 
 export enum EndretAlternativProduktBegrunnelse {
-  ALTERNATIV_PRODUKT_RAMMEAVTALE = 'ALTERNATIV_PRODUKT_RAMMEAVTALE',
-  ALTERNATIV_PRODUKT_GJENBRUK = 'ALTERNATIV_PRODUKT_GJENBRUK',
+  ALTERNATIV_PRODUKT_LAGERVARE = 'ALTERNATIV_PRODUKT_LAGERVARE',
   ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
 }
 
@@ -824,8 +823,7 @@ export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
 ])
 
 export const EndretAlternativProduktBegrunnelseLabel = new Map<string, string>([
-  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_RAMMEAVTALE, 'Endring i rammeavtale'],
-  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_GJENBRUK, 'Gjenbruk'],
+  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Lagervare'],
   [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
 ])
 

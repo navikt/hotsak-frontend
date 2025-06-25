@@ -159,7 +159,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
                 const begrunnelseFritekst =
                   endreBegrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endreBegrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
+                    : EndretAlternativProduktBegrunnelseLabel.get(endreBegrunnelse!)
 
                 await onLagre({
                   hjelpemiddelId: hjelpemiddelId,

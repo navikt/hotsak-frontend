@@ -89,7 +89,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
             value={endretProdukt ?? ''}
             size="small"
           >
-            <HGrid columns={'1fr 1fr'} gap="4">
+            <HGrid columns={'1fr 1fr'} gap="4" paddingBlock={'2 0'}>
               {alternativer.map((alternativ) => (
                 <AlternativProduktCard
                   key={alternativ.id}

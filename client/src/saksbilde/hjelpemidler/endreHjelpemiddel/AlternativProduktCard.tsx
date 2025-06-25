@@ -5,6 +5,7 @@ import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typ
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
 import { formaterRelativTid } from '../../../utils/dato'
 import { useSjekkLagerstatus } from '../useSjekkLagerstatus'
+import styled from 'styled-components'
 
 interface AlternativProduktCardProps {
   alternativ: AlternativeProduct
@@ -12,7 +13,7 @@ interface AlternativProduktCardProps {
   endretProdukt: string[]
 }
 
-export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduktCardProps) {
+export function AlternativProduktCard({ alternativ, onMutate, endretProdukt }: AlternativProduktCardProps) {
   const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useSjekkLagerstatus()
 
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
@@ -30,7 +31,14 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
 
   return (
     <VStack>
-      <Box key={alternativ.id} borderWidth="1" borderColor="border-subtle" borderRadius={'large'} padding="4">
+      <ProduktCard
+        key={alternativ.id}
+        borderWidth="1"
+        borderColor="border-subtle"
+        borderRadius={'large'}
+        padding="4"
+        selected={endretProdukt.includes(alternativ.hmsArtNr)}
+      >
         <VStack gap="3">
           <HStack justify={'center'} paddingBlock={'2 4'}>
             {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="180px" />}
@@ -75,10 +83,15 @@ export function AlternativProduktCard({ alternativ, onMutate }: AlternativProduk
             </Button>
           </Bleed>
         </VStack>
-      </Box>
+      </ProduktCard>
       <HStack justify={'center'} paddingBlock="2 0">
         <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
       </HStack>
     </VStack>
   )
 }
+
+const ProduktCard = styled(Box)<{ selected?: boolean }>`
+  border: ${({ selected }) => selected && '4px solid var(--a-border-selected)'};
+  margin: ${({ selected }) => selected && '-3px'};
+`

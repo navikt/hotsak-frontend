@@ -101,6 +101,7 @@ export interface Query {
   getHmsArtnrMappingsById?: Maybe<HmsArtnrMapping>
   productStock: ProductStock
   productStocks: Array<ProductStock>
+  productStocksAllLocations: Array<ProductStock>
 }
 
 export interface QueryAlternativeProductsArgs {
@@ -121,6 +122,10 @@ export interface QueryProductStockArgs {
 
 export interface QueryProductStocksArgs {
   enhetnr: Scalars['String']['input']
+  hmsnrs: Array<Scalars['String']['input']>
+}
+
+export interface QueryProductStocksAllLocationsArgs {
   hmsnrs: Array<Scalars['String']['input']>
 }
 
@@ -172,16 +177,13 @@ export type FinnAlternativerQuery = {
 
 export type SjekkLagerstatusQueryVariables = Exact<{
   hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
-  enhetnr: Scalars['String']['input']
 }>
 
 export type SjekkLagerstatusQuery = {
   __typename?: 'Query'
-  productStocks: Array<{
+  productStocksAllLocations: Array<{
     __typename?: 'ProductStock'
     hmsArtNr: string
-    id: string
-    status: string
     warehouseStock: Array<{
       __typename?: 'WareHouseStock'
       location: string

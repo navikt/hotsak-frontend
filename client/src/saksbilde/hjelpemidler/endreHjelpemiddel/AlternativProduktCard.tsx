@@ -1,19 +1,28 @@
 import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Bleed, Box, Button, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
+import { Bleed, Box, Button, Checkbox, HGrid, HStack, Link, Skeleton, Tag, VStack } from '@navikt/ds-react'
 import React from 'react'
+import styled from 'styled-components'
 import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
 import { formaterRelativTid } from '../../../utils/dato'
 import { useSjekkLagerstatus } from '../useSjekkLagerstatus'
-import styled from 'styled-components'
 
 interface AlternativProduktCardProps {
   alternativ: AlternativeProduct
+  skjulLagerstatusKnapp: boolean
+  lagerstatusLoading: boolean
   onMutate: () => void
   endretProdukt: string[]
 }
 
-export function AlternativProduktCard({ alternativ, onMutate, endretProdukt }: AlternativProduktCardProps) {
+export function AlternativProduktCard({
+  alternativ,
+  onMutate,
+  endretProdukt,
+  skjulLagerstatusKnapp,
+  lagerstatusLoading,
+}: AlternativProduktCardProps) {
+  // TODO flytt denne til egen hook for å unngå kollisjoner
   const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useSjekkLagerstatus()
 
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
@@ -52,36 +61,41 @@ export function AlternativProduktCard({ alternativ, onMutate, endretProdukt }: A
             <Undertittel>{`Hmsnr: ${alternativ.hmsArtNr}`}</Undertittel>
             <Brødtekst>{alternativ.supplier.name}</Brødtekst>
           </VStack>
-
           <HGrid columns={'auto 1fr'} gap="2 2">
             {alternativ.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
-                <div>
-                  <Tag variant="success" size="xsmall">
-                    {lagerstatus?.available} stk på lager
-                  </Tag>
-                </div>
+                {lagerstatusLoading ? (
+                  <Skeleton variant="rectangle" width={100} height={25} />
+                ) : (
+                  <div>
+                    <Tag variant="success" size="small">
+                      {lagerstatus?.available} stk på lager
+                    </Tag>
+                  </div>
+                )}
               </React.Fragment>
             ))}
           </HGrid>
           <div>
             <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
           </div>
-          <Bleed marginInline="3">
-            <Button
-              variant="tertiary"
-              size="small"
-              icon={<ClockDashedIcon />}
-              loading={henterLagerstatus}
-              onClick={async () => {
-                await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
-                onMutate()
-              }}
-            >
-              Sjekk lagerstatus
-            </Button>
-          </Bleed>
+          {!skjulLagerstatusKnapp && !lagerstatusLoading && (
+            <Bleed marginInline="3">
+              <Button
+                variant="tertiary"
+                size="small"
+                icon={<ClockDashedIcon />}
+                loading={henterLagerstatus}
+                onClick={async () => {
+                  await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
+                  onMutate()
+                }}
+              >
+                Sjekk lagerstatus
+              </Button>
+            </Bleed>
+          )}
         </VStack>
       </ProduktCard>
       <HStack justify={'center'} paddingBlock="2 0">

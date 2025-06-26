@@ -1,15 +1,11 @@
 import { gql, request } from 'graphql-request'
 import { useState } from 'react'
-import { useTilgangContext } from '../../tilgang/useTilgang'
-import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
-import { Query, QueryProductStockArgs, QueryProductStocksArgs } from '../../generated/finnAlternativprodukt'
+import { Query, QueryProductStockArgs, QueryProductStocksAllLocationsArgs } from '../../generated/finnAlternativprodukt'
 
 const query = gql`
-  query SjekkLagerstatus($hmsnrs: [String!]!, $enhetnr: String!) {
-    productStocks(hmsnrs: $hmsnrs, enhetnr: $enhetnr) {
+  query SjekkLagerstatus($hmsnrs: [String!]!) {
+    productStocksAllLocations(hmsnrs: $hmsnrs) {
       hmsArtNr
-      id
-      status
       warehouseStock {
         location
         minmax
@@ -35,16 +31,14 @@ const lagerstatusForProduktQuery = gql`
 `
 interface LagerstatusResponse {
   loading: boolean
-  sjekkLagerstatus: (hmsnrs: string[]) => Promise<void>
+  harOppdatertLagerstatus: boolean
+  sjekkLagerstatusFor: (hmsnrs: string[]) => Promise<void>
   sjekkLagerstatusForProdukt: (hmsnr: string) => Promise<void>
 }
 
 export function useSjekkLagerstatus(): LagerstatusResponse {
-  const { innloggetAnsatt } = useTilgangContext()
   const [loading, setLoading] = useState(false)
-  const gjeldendeEnhetsnummer = innloggetAnsatt.gjeldendeEnhet.nummer
-
-  const oebsEnhet = oebs_enheter.find((enhet) => enhet.enhetsnummer === gjeldendeEnhetsnummer)
+  const [harOppdatertLagerstatus, setHarOppdatertLagerstatus] = useState(false)
 
   async function sjekkLagerstatusForProdukt(hmsnr: string) {
     setLoading(true)
@@ -61,22 +55,38 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
     }
   }
 
-  async function sjekkLagerstatus(hmsnrs: string[]) {
-    if (hmsnrs.length === 0 || !oebsEnhet) {
+  // Denne funksjonen sjekker lagerstatus for en liste av HMS-nr mot alle lagerlokasjoner i OeBS for gjeldende enhet og
+  // er et ganske krevende kall for OeBS. Vi bør være litt forsiktige med hvor ofte denne kalle og kun kalle den hvis listen
+  // med HMS-nr er ganske kort < 8
+  const MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK = 8
+
+  async function sjekkLagerstatusFor(hmsnrs: string[]) {
+    if (harOppdatertLagerstatus || hmsnrs.length === 0 || hmsnrs.length > MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK) {
+      if (harOppdatertLagerstatus) {
+        console.log('Ikke behov  for å henter ny lagerstatus, vi har allerede en som en ganske fersk')
+      }
+      if (hmsnrs.length === 0) {
+        console.log('Ingen HMS-nr å sjekke lagerstatus for')
+      }
+      if (hmsnrs.length > MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK) {
+        console.warn(
+          `For mange HMS-nr (${hmsnrs.length}) for å sjekke lagerstatus i bulk. Maks er ${MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK}.`
+        )
+      }
       return
     }
 
+    console.log('Sjekker lagerstatus live mot OeBS   for HMS-nr:', hmsnrs.join(', '))
+
     setLoading(true)
     try {
-      await Promise.all(
-        oebsEnhet.lagerlokasjoner.map(async (lokasjon) => {
-          return await request<Query, QueryProductStocksArgs>(
-            new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
-            query,
-            { enhetnr: lokasjon.oebs_enhetsnummer, hmsnrs: hmsnrs }
-          )
-        })
+      await request<Query, QueryProductStocksAllLocationsArgs>(
+        new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
+        query,
+        { hmsnrs: hmsnrs }
       )
+
+      setHarOppdatertLagerstatus(true)
     } catch (err) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, err)
     } finally {
@@ -86,7 +96,8 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
 
   return {
     loading,
-    sjekkLagerstatus,
+    sjekkLagerstatusFor,
     sjekkLagerstatusForProdukt,
+    harOppdatertLagerstatus,
   }
 }

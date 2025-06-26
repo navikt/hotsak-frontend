@@ -29,10 +29,18 @@ interface HjelpemiddelProps {
   sak: Sak
   produkter: ProduktType[]
   alternativer: AlternativeProduct[]
+  alleAlternativer: AlternativeProduct[]
   onMutate: () => void
 }
 
-export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer, onMutate }: HjelpemiddelProps) {
+export function Hjelpemiddel({
+  hjelpemiddel,
+  sak,
+  produkter,
+  alternativer,
+  alleAlternativer,
+  onMutate,
+}: HjelpemiddelProps) {
   const { sakId, sakstype } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
@@ -167,6 +175,7 @@ export function Hjelpemiddel({ hjelpemiddel, sak, produkter, alternativer, onMut
             onMutate={onMutate}
             onLukk={() => setVisAlternativerModal(false)}
             alternativer={alternativer}
+            alleAlternativer={alleAlternativer}
             onLagre={endreHjelpemiddel}
           />
         )}

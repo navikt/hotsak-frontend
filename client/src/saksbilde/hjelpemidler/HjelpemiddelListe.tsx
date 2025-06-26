@@ -41,7 +41,11 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   }, [hjelpemidler])
 
   const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
-  const { alternativeProdukter, mutate: hentAlternativProdukter } = useFinnAlternativprodukt(alleHjelpemidler)
+  const {
+    alternativeProdukter,
+    alleAlternativeProdukter,
+    mutate: hentAlternativProdukter,
+  } = useFinnAlternativprodukt(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
@@ -66,6 +70,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
             sak={sak}
             produkter={finnHjelpemiddelProdukter}
             alternativer={alternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
+            alleAlternativer={alleAlternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
             onMutate={hentAlternativProdukter}
           />
         </Box>

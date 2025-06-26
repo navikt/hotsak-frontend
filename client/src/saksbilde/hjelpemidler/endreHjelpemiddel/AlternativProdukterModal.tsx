@@ -1,11 +1,12 @@
 import { Button, CheckboxGroup, Heading, HGrid, Modal, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
 import {
   EndretAlternativProduktBegrunnelse,
   EndretAlternativProduktBegrunnelseLabel,
   EndretHjelpemiddel,
 } from '../../../types/types.internal.ts'
+import { useSjekkLagerstatus } from '../useSjekkLagerstatus.ts'
 import { AlternativProduktCard } from './AlternativProduktCard.tsx'
 
 interface AlternativProduktModalProps {
@@ -15,6 +16,7 @@ interface AlternativProduktModalProps {
   onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
   onMutate: () => void
   alternativer: AlternativeProduct[]
+  alleAlternativer: AlternativeProduct[]
   onLukk(): void
 }
 
@@ -22,15 +24,32 @@ interface AlternativProduktModalProps {
 Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
 */
 export function AlternativProdukterModal(props: AlternativProduktModalProps) {
-  const { åpen, onLukk, alternativer, hjelpemiddelId, onLagre, onMutate } = props
+  const { åpen, onLukk, alternativer, alleAlternativer, hjelpemiddelId, onLagre, onMutate } = props
   const [endretProdukt, setEndretProdukt] = useState<string[]>([])
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretAlternativProduktBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
-
+  const { sjekkLagerstatusFor, harOppdatertLagerstatus } = useSjekkLagerstatus()
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
+
+  const hmsnrForAlternativer = alleAlternativer.map((a) => a.hmsArtNr)
+  const [henterLagerstatus, setHenterLagerstatus] = useState(false)
+
+  useEffect(() => {
+    if (!henterLagerstatus && åpen && !harOppdatertLagerstatus) {
+      setHenterLagerstatus(true)
+      const oppdaterLagerstatus = async () => {
+        await sjekkLagerstatusFor(hmsnrForAlternativer)
+        await onMutate()
+        await setHenterLagerstatus(false)
+      }
+      console.log('Nå er det på tide å sjekke lagerstatus for disse hmsnr:', hmsnrForAlternativer)
+      oppdaterLagerstatus()
+      console.log('Da har vi ny lagerstatus')
+    }
+  }, [åpen, hmsnrForAlternativer, harOppdatertLagerstatus])
 
   const errorBegrunnelse = () => {
     if (!endreBegrunnelse) {
@@ -96,6 +115,8 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
                   alternativ={alternativ}
                   onMutate={onMutate}
                   endretProdukt={endretProdukt}
+                  lagerstatusLoading={henterLagerstatus}
+                  skjulLagerstatusKnapp={harOppdatertLagerstatus}
                 />
               ))}
             </HGrid>

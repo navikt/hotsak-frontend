@@ -42,12 +42,14 @@ const query = gql`
 type AlternativeProdukterMap = Record<string, AlternativeProduct[]>
 interface AlternativeProdukterResponse {
   alternativeProdukter: AlternativeProdukterMap
+  alleAlternativeProdukter: AlternativeProdukterMap
   loading: boolean
   mutate: () => Promise<void>
 }
 
 export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukterResponse {
   const [alternativeProdukter, setAlternativeProdukter] = useState<AlternativeProdukterMap>({})
+  const [alleAlternativeProdukter, setAlleAlternativeProdukter] = useState<AlternativeProdukterMap>({})
   const { innloggetAnsatt } = useTilgangContext()
   const [loading, setLoading] = useState(false)
   const erOmbrukPilot = useErOmbrukPilot()
@@ -69,11 +71,32 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
     setLoading(true)
 
     try {
+      console.log('Henter alternative produkter på nytt mot Finn Gjernbruksprodukt')
+
       const data = await request<Query, QueryAlternativeProductsArgs>(
         new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
         query,
         { hmsnrs: hmsnrs }
       )
+
+      const alleAlternativer = data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
+        produkt.alternativeFor.forEach((hmsnr) => {
+          if (!produktMap[hmsnr]) {
+            produktMap[hmsnr] = []
+          }
+          const filtrertProdukt: AlternativeProduct = {
+            ...produkt,
+            wareHouseStock:
+              produkt.wareHouseStock?.filter((lagerstatus) => {
+                return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
+              }) ?? [],
+          }
+          produktMap[hmsnr].push(filtrertProdukt)
+        })
+        return produktMap
+      }, {})
+
+      setAlleAlternativeProdukter(alleAlternativer)
 
       const alternativeProdukterForHmsnr: AlternativeProdukterMap =
         data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
@@ -122,6 +145,7 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
 
   return {
     alternativeProdukter,
+    alleAlternativeProdukter,
     loading,
     mutate,
   }

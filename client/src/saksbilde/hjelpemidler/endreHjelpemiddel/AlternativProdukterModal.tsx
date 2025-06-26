@@ -42,6 +42,8 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
       setHenterLagerstatus(true)
       const oppdaterLagerstatus = async () => {
         await sjekkLagerstatusFor(hmsnrForAlternativer)
+        await new Promise((resolve) => setTimeout(resolve, 2000)) // Må midlertidig vente litt før ny lagerstatus er oppdatert
+
         await onMutate()
         setHenterLagerstatus(false)
       }

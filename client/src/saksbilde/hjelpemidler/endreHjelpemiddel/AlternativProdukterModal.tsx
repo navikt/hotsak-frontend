@@ -43,7 +43,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
       const oppdaterLagerstatus = async () => {
         await sjekkLagerstatusFor(hmsnrForAlternativer)
         await onMutate()
-        await setHenterLagerstatus(false)
+        setHenterLagerstatus(false)
       }
       console.log('Nå er det på tide å sjekke lagerstatus for disse hmsnr:', hmsnrForAlternativer)
       oppdaterLagerstatus()

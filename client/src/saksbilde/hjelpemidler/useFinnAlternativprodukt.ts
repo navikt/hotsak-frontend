@@ -120,6 +120,7 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
           return produktMap
         }, {})
       setAlternativeProdukter(alternativeProdukterForHmsnr)
+      console.log(`Hentet alternative produkter`, alternativeProdukterForHmsnr)
     } catch (err) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, err)
     } finally {

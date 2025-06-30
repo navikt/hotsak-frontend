@@ -20,9 +20,6 @@ interface AlternativProduktModalProps {
   onLukk(): void
 }
 
-/*
-Eksperiment for å teste konseptet om integrasjons med Finn Gjenbruksprodukt
-*/
 export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   const { åpen, onLukk, alternativer, alleAlternativer, hjelpemiddelId, onLagre, onMutate } = props
   const [endretProdukt, setEndretProdukt] = useState<string[]>([])

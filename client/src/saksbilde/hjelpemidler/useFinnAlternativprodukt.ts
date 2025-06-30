@@ -50,71 +50,23 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
   const oebsEnhet = oebs_enheter.find((enhet) => enhet.enhetsnummer === gjeldendeEnhetsnummer)
   const lagerlokasjonsnavn = oebsEnhet?.lagerlokasjoner?.map((lokasjon) => lokasjon.lokasjon.toLowerCase()) || []
 
-  function harProduktPåLager(produkt: AlternativeProduct): boolean {
-    const lagerstatusForEnhet =
-      produkt.wareHouseStock?.filter((lagerstatus) => {
-        return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
-      }) || []
-    const harPåLager = lagerstatusForEnhet?.filter(
-      (lagerstatus) => lagerstatus?.amountInStock && lagerstatus.amountInStock > 0
-    )
-    return harPåLager.length > 0
-  }
-
   async function hentAlternativeProdukter(hmsnrs: string[]) {
     setLoading(true)
 
     try {
-      console.log('Henter alternative produkter på nytt mot Finn Gjernbruksprodukt')
-
       const data = await request<Query, QueryAlternativeProductsArgs>(
         new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
         query,
         { hmsnrs: hmsnrs }
       )
 
-      const alleAlternativer = data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
-        produkt.alternativeFor.forEach((hmsnr) => {
-          if (!produktMap[hmsnr]) {
-            produktMap[hmsnr] = []
-          }
-          const filtrertProdukt: AlternativeProduct = {
-            ...produkt,
-            wareHouseStock:
-              produkt.wareHouseStock?.filter((lagerstatus) => {
-                return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
-              }) ?? [],
-          }
-          produktMap[hmsnr].push(filtrertProdukt)
-        })
-        return produktMap
-      }, {})
-
+      const alleAlternativer = byggProduktMap(data.alternativeProducts)
       setAlleAlternativeProdukter(alleAlternativer)
 
-      const alternativeProdukterForHmsnr: AlternativeProdukterMap =
-        data.alternativeProducts.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
-          produkt.alternativeFor.forEach((hmsnr) => {
-            if (harProduktPåLager(produkt)) {
-              if (!produktMap[hmsnr]) {
-                produktMap[hmsnr] = []
-              }
-              const filtrertProdukt: AlternativeProduct = {
-                ...produkt,
-                wareHouseStock:
-                  produkt.wareHouseStock?.filter((lagerstatus) => {
-                    return (
-                      lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
-                    )
-                  }) ?? [],
-              }
-              produktMap[hmsnr].push(filtrertProdukt)
-            }
-          })
-          return produktMap
-        }, {})
+      const alternativeProdukterForHmsnr: AlternativeProdukterMap = Object.fromEntries(
+        Object.entries(alleAlternativer).map(([hmsnr, produkter]) => [hmsnr, produkter.filter(harProduktPåLager)])
+      )
       setAlternativeProdukter(alternativeProdukterForHmsnr)
-      console.log(`Hentet alternative produkter`, alternativeProdukterForHmsnr)
     } catch (err) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, err)
     } finally {
@@ -143,5 +95,37 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
     alleAlternativeProdukter,
     loading,
     mutate,
+  }
+
+  function byggProduktMap(produkter: AlternativeProduct[]): AlternativeProdukterMap {
+    return produkter.reduce<AlternativeProdukterMap>((produktMap, produkt) => {
+      const filtrertProdukt: AlternativeProduct = {
+        ...produkt,
+        wareHouseStock:
+          produkt.wareHouseStock?.filter((lagerstatus) => {
+            return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
+          }) ?? [],
+      }
+
+      produkt.alternativeFor.forEach((hmsnr) => {
+        if (!produktMap[hmsnr]) {
+          produktMap[hmsnr] = []
+        }
+        produktMap[hmsnr].push(filtrertProdukt)
+      })
+      return produktMap
+    }, {})
+  }
+
+  function harProduktPåLager(produkt: AlternativeProduct): boolean {
+    const lagerstatusForEnhet =
+      produkt.wareHouseStock?.filter((lagerstatus) => {
+        return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
+      }) || []
+
+    const harPåLager = lagerstatusForEnhet?.filter(
+      (lagerstatus) => lagerstatus?.amountInStock && lagerstatus.amountInStock > 0
+    )
+    return harPåLager.length > 0
   }
 }

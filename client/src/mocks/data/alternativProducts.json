@@ -52,7 +52,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -60,7 +60,7 @@
           },
           {
             "location": "Oslo",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -68,7 +68,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -76,7 +76,7 @@
           },
           {
             "location": "Oppland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -84,7 +84,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -92,7 +92,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -100,7 +100,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -108,7 +108,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -116,7 +116,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -124,7 +124,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -132,7 +132,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -140,7 +140,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -148,7 +148,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -156,7 +156,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -164,7 +164,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -172,7 +172,7 @@
           },
           {
             "location": "Nordland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -180,7 +180,7 @@
           },
           {
             "location": "Troms",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
@@ -188,26 +188,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:52.449462340",
             "needNotified": 0,
             "reserved": 0,
             "minmax": false
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 2,
-            "postNr": 2,
-            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
-            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
-            "refNr": "2",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       },
@@ -262,7 +247,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -270,7 +255,7 @@
           },
           {
             "location": "Oslo",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -278,7 +263,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -286,7 +271,7 @@
           },
           {
             "location": "Oppland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -294,7 +279,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -302,7 +287,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -310,7 +295,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -318,7 +303,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -326,7 +311,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -334,7 +319,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -342,7 +327,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -350,7 +335,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -358,7 +343,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -366,7 +351,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 2,
+            "amountInStock": 2,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -374,7 +359,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -382,7 +367,7 @@
           },
           {
             "location": "Nordland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -390,7 +375,7 @@
           },
           {
             "location": "Troms",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
@@ -398,26 +383,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:55.465689650",
             "needNotified": 0,
             "reserved": 0,
             "minmax": false
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 2,
-            "postNr": 2,
-            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
-            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
-            "refNr": "2",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       },
@@ -472,7 +442,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -480,7 +450,7 @@
           },
           {
             "location": "Oslo",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -488,7 +458,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -496,7 +466,7 @@
           },
           {
             "location": "Oppland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -504,7 +474,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -512,7 +482,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -520,7 +490,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -528,7 +498,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -536,7 +506,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -544,7 +514,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -552,7 +522,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -560,7 +530,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -568,7 +538,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -576,7 +546,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -584,7 +554,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -592,7 +562,7 @@
           },
           {
             "location": "Nordland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -600,7 +570,7 @@
           },
           {
             "location": "Troms",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
@@ -608,26 +578,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:09:25.343997997",
             "needNotified": 0,
             "reserved": 0,
             "minmax": false
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 2,
-            "postNr": 2,
-            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
-            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
-            "refNr": "2",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       },
@@ -676,7 +631,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 3,
+            "amountInStock": 3,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -684,7 +639,7 @@
           },
           {
             "location": "Oslo",
-            "available": 11,
+            "amountInStock": 11,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -692,7 +647,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 4,
+            "amountInStock": 4,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -700,7 +655,7 @@
           },
           {
             "location": "Oppland",
-            "available": 6,
+            "amountInStock": 6,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -708,7 +663,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 6,
+            "amountInStock": 6,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -716,7 +671,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 4,
+            "amountInStock": 4,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -724,7 +679,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -732,7 +687,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -740,7 +695,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 4,
+            "amountInStock": 4,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -748,7 +703,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -756,7 +711,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 2,
+            "amountInStock": 2,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -764,7 +719,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 4,
+            "amountInStock": 4,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -772,7 +727,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 2,
+            "amountInStock": 2,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -780,7 +735,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 3,
+            "amountInStock": 3,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -788,7 +743,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 3,
+            "amountInStock": 3,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -796,7 +751,7 @@
           },
           {
             "location": "Nordland",
-            "available": 7,
+            "amountInStock": 7,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -804,7 +759,7 @@
           },
           {
             "location": "Troms",
-            "available": 7,
+            "amountInStock": 7,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
@@ -812,26 +767,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 4,
+            "amountInStock": 4,
             "updated": "2025-06-10T01:10:47.030594770",
             "needNotified": 0,
             "reserved": 0,
             "minmax": true
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 1,
-            "postNr": 1,
-            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk.",
-            "postId": "41ea72cc-9a9e-43dc-b71a-32d7ba34d3a3",
-            "refNr": "1",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       },
@@ -892,7 +832,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -900,7 +840,7 @@
           },
           {
             "location": "Oslo",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -908,7 +848,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -916,7 +856,7 @@
           },
           {
             "location": "Oppland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -924,7 +864,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -932,7 +872,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -940,7 +880,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -948,7 +888,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -956,7 +896,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -964,7 +904,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -972,7 +912,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -980,7 +920,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 1,
+            "amountInStock": 1,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -988,7 +928,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -996,7 +936,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -1004,7 +944,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -1012,7 +952,7 @@
           },
           {
             "location": "Nordland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -1020,7 +960,7 @@
           },
           {
             "location": "Troms",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
@@ -1028,26 +968,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:54.492400107",
             "needNotified": 0,
             "reserved": 0,
             "minmax": false
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 1,
-            "postNr": 2,
-            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
-            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
-            "refNr": "2",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       },
@@ -1108,7 +1033,7 @@
         "wareHouseStock": [
           {
             "location": "Østfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1116,7 +1041,7 @@
           },
           {
             "location": "Oslo",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1124,7 +1049,7 @@
           },
           {
             "location": "Hedmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1132,7 +1057,7 @@
           },
           {
             "location": "Oppland",
-            "available": 2,
+            "amountInStock": 2,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1140,7 +1065,7 @@
           },
           {
             "location": "Buskerud",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1148,7 +1073,7 @@
           },
           {
             "location": "Vestfold",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1156,7 +1081,7 @@
           },
           {
             "location": "Telemark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1164,7 +1089,7 @@
           },
           {
             "location": "Aust-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1172,7 +1097,7 @@
           },
           {
             "location": "Vest-Agder",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1180,7 +1105,7 @@
           },
           {
             "location": "Rogaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1188,7 +1113,7 @@
           },
           {
             "location": "Hordaland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1196,7 +1121,7 @@
           },
           {
             "location": "Sogn og Fjordane",
-            "available": 3,
+            "amountInStock": 3,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1204,7 +1129,7 @@
           },
           {
             "location": "Møre og Romsdal",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1212,7 +1137,7 @@
           },
           {
             "location": "Sør-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1220,7 +1145,7 @@
           },
           {
             "location": "Nord-Trøndelag",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1228,7 +1153,7 @@
           },
           {
             "location": "Nordland",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1236,7 +1161,7 @@
           },
           {
             "location": "Troms",
-            "available": 2,
+            "amountInStock": 2,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
@@ -1244,26 +1169,11 @@
           },
           {
             "location": "Finnmark",
-            "available": 0,
+            "amountInStock": 0,
             "updated": "2025-06-10T01:08:49.556624101",
             "needNotified": 0,
             "reserved": 0,
             "minmax": false
-          }
-        ],
-        "hasAgreement": true,
-        "agreements": [
-          {
-            "id": "e86fd988-0381-4d0a-a027-7654e2d8dbab",
-            "title": "Kjøreramper",
-            "label": "Kjøreramper",
-            "rank": 1,
-            "postNr": 2,
-            "postTitle": "2: Terskeleliminator - påkjøring fra minimum to sider, for innendørs og begrenset utendørs bruk",
-            "postId": "92ba0349-3488-470c-a04e-c61452e8ea1a",
-            "refNr": "2",
-            "published": "2022-06-01T00:00",
-            "expired": "2026-05-31T00:00"
           }
         ]
       }

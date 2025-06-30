@@ -8,8 +8,8 @@ const query = gql`
       hmsArtNr
       warehouseStock {
         location
-        minmax
-        available
+        amountInStock
+        updated
       }
     }
   }
@@ -20,11 +20,10 @@ const lagerstatusForProduktQuery = gql`
     productStock(hmsnr: $hmsnr) {
       hmsArtNr
       id
-      status
       warehouseStock {
         location
-        minmax
-        available
+        amountInStock
+        updated
       }
     }
   }

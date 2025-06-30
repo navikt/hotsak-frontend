@@ -17,12 +17,6 @@ const query = gql`
       }
       isoCategory
       alternativeFor
-      hasAgreement
-      agreements {
-        title
-        rank
-        postNr
-      }
       media {
         uri
         text
@@ -31,10 +25,8 @@ const query = gql`
       }
       wareHouseStock {
         location
-        available
+        amountInStock
         updated
-        reserved
-        minmax
       }
     }
   }
@@ -63,7 +55,9 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
       produkt.wareHouseStock?.filter((lagerstatus) => {
         return lagerstatus?.location && lagerlokasjonsnavn.includes(lagerstatus.location.toLocaleLowerCase())
       }) || []
-    const harPåLager = lagerstatusForEnhet?.filter((lagerstatus) => lagerstatus?.available && lagerstatus.available > 0)
+    const harPåLager = lagerstatusForEnhet?.filter(
+      (lagerstatus) => lagerstatus?.amountInStock && lagerstatus.amountInStock > 0
+    )
     return harPåLager.length > 0
   }
 

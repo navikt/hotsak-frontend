@@ -14,26 +14,10 @@ export interface Scalars {
   Float: { input: number; output: number }
 }
 
-export interface Agreement {
-  __typename?: 'Agreement'
-  expired?: Maybe<Scalars['String']['output']>
-  id: Scalars['String']['output']
-  label?: Maybe<Scalars['String']['output']>
-  postId: Scalars['String']['output']
-  postNr?: Maybe<Scalars['Int']['output']>
-  postTitle: Scalars['String']['output']
-  published?: Maybe<Scalars['String']['output']>
-  rank: Scalars['Int']['output']
-  refNr: Scalars['String']['output']
-  title: Scalars['String']['output']
-}
-
 export interface AlternativeProduct {
   __typename?: 'AlternativeProduct'
-  agreements?: Maybe<Array<Maybe<Agreement>>>
   alternativeFor: Array<Scalars['String']['output']>
   articleName: Scalars['String']['output']
-  hasAgreement: Scalars['Boolean']['output']
   hmsArtNr: Scalars['String']['output']
   id: Scalars['String']['output']
   isoCategory: Scalars['String']['output']
@@ -137,12 +121,18 @@ export interface Supplier {
 
 export interface WareHouseStock {
   __typename?: 'WareHouseStock'
-  available?: Maybe<Scalars['Int']['output']>
+  amountInStock: Scalars['Int']['output']
+  backOrders: Scalars['Int']['output']
+  inStock: Scalars['Boolean']['output']
+  intRequest: Scalars['Int']['output']
   location: Scalars['String']['output']
-  locationId?: Maybe<Scalars['Int']['output']>
+  locationId: Scalars['Int']['output']
   minmax: Scalars['Boolean']['output']
-  needNotified?: Maybe<Scalars['Int']['output']>
-  reserved?: Maybe<Scalars['Int']['output']>
+  needNotified: Scalars['Int']['output']
+  orders: Scalars['Int']['output']
+  physical: Scalars['Int']['output']
+  request: Scalars['Int']['output']
+  reserved: Scalars['Int']['output']
   updated: Scalars['String']['output']
 }
 
@@ -160,17 +150,13 @@ export type FinnAlternativerQuery = {
     articleName: string
     isoCategory: string
     alternativeFor: Array<string>
-    hasAgreement: boolean
     supplier: { __typename?: 'Supplier'; id: string; name: string }
-    agreements?: Array<{ __typename?: 'Agreement'; title: string; rank: number; postNr?: number | null } | null> | null
     media: Array<{ __typename?: 'Media'; uri: string; text: string; type: string; priority?: number | null }>
     wareHouseStock?: Array<{
       __typename?: 'WareHouseStock'
       location: string
-      available?: number | null
+      amountInStock: number
       updated: string
-      reserved?: number | null
-      minmax: boolean
     } | null> | null
   }>
 }
@@ -184,12 +170,7 @@ export type SjekkLagerstatusQuery = {
   productStocksAllLocations: Array<{
     __typename?: 'ProductStock'
     hmsArtNr: string
-    warehouseStock: Array<{
-      __typename?: 'WareHouseStock'
-      location: string
-      minmax: boolean
-      available?: number | null
-    }>
+    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
   }>
 }
 
@@ -203,12 +184,6 @@ export type SjekkLagerstatusForProduktQuery = {
     __typename?: 'ProductStock'
     hmsArtNr: string
     id: string
-    status: string
-    warehouseStock: Array<{
-      __typename?: 'WareHouseStock'
-      location: string
-      minmax: boolean
-      available?: number | null
-    }>
+    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
   }
 }

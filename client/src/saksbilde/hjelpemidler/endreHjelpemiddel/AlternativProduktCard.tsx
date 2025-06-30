@@ -70,7 +70,7 @@ export function AlternativProduktCard({
                 ) : (
                   <div>
                     <Tag variant="success" size="small">
-                      {lagerstatus?.available} stk på lager
+                      {lagerstatus?.amountInStock} stk på lager
                     </Tag>
                   </div>
                 )}

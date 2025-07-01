@@ -44,9 +44,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
         await onMutate()
         setHenterLagerstatus(false)
       }
-      console.log('Nå er det på tide å sjekke lagerstatus for disse hmsnr:', hmsnrForAlternativer)
       oppdaterLagerstatus()
-      console.log('Da har vi ny lagerstatus')
     }
   }, [åpen, hmsnrForAlternativer, harOppdatertLagerstatus])
 
@@ -135,10 +133,9 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
                 )}
               </Radio>
               <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET}>
-                {EndretAlternativProduktBegrunnelseLabel.get(
+                {`${EndretAlternativProduktBegrunnelseLabel.get(
                   EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
-                )}
-                (begrunn)
+                )} (begrunn)`}
               </Radio>
             </RadioGroup>
             {endreBegrunnelse == EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET && (

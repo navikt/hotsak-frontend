@@ -32,12 +32,6 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   const hmsnrForAlternativer = alleAlternativer.map((a) => a.hmsArtNr)
   const [henterLagerstatus, setHenterLagerstatus] = useState(false)
 
-  interface EndreArtikkelData {
-    endretProdukt: string
-    endreBegrunnelse: EndretAlternativProduktBegrunnelse | undefined
-    endreBegrunnelseFritekst: ''
-  }
-  // TODO type
   const methods = useForm<EndreArtikkelData>({
     defaultValues: {
       endretProdukt: '',
@@ -132,4 +126,10 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
       </FormProvider>
     </Modal>
   )
+}
+
+interface EndreArtikkelData {
+  endretProdukt: string
+  endreBegrunnelse: EndretAlternativProduktBegrunnelse | undefined
+  endreBegrunnelseFritekst: ''
 }

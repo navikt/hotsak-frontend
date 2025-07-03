@@ -111,6 +111,7 @@ export function Hjelpemiddel({
               </div>
             )}
             <Varsler varsler={hjelpemiddel.varsler} />
+            <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
             <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
             {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (

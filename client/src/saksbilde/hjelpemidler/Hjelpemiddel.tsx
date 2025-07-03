@@ -2,16 +2,18 @@ import { ArrowsSquarepathIcon, PencilIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { AlternativeProduct } from '../../generated/finnAlternativprodukt.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
+import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
   Produkt as ProduktType,
   Sak,
-  Sakstype,
 } from '../../types/types.internal.ts'
 import Bytter from './Bytter.tsx'
+import { AlternativProdukterModal } from './endreHjelpemiddel/AlternativProdukterModal.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -20,9 +22,6 @@ import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
-import { AlternativeProduct } from '../../generated/finnAlternativprodukt.ts'
-import { AlternativProdukterModal } from './endreHjelpemiddel/AlternativProdukterModal.tsx'
-import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 
 interface HjelpemiddelProps {
   hjelpemiddel: Hjelpemiddeltype

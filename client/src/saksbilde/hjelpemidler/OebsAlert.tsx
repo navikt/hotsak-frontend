@@ -2,8 +2,8 @@ import { Box, List } from '@navikt/ds-react'
 import { SystemAlert } from '../../felleskomponenter/SystemAlert.tsx'
 import { Hjelpemiddel } from '../../types/types.internal.ts'
 
-export function OebsAlert(props: { hjelpemider: Hjelpemiddel[] }) {
-  const { hjelpemider } = props
+export function OebsAlert(props: { hjelpemidler: Hjelpemiddel[] }) {
+  const { hjelpemidler } = props
 
   return (
     <Box paddingBlock={'4 0'}>
@@ -11,10 +11,10 @@ export function OebsAlert(props: { hjelpemider: Hjelpemiddel[] }) {
         <List
           as="ul"
           size="small"
-          title={`${hjelpemider.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OeBS og blir derfor ikke 
+          title={`${hjelpemidler.length > 1 ? 'Artiklene' : 'Artikkelen'} under finnes ikke i OeBS og blir derfor ikke 
             automatisk overført til SF:`}
         >
-          {hjelpemider.map((hjelpemiddel) => {
+          {hjelpemidler.map((hjelpemiddel) => {
             return (
               <List.Item
                 key={hjelpemiddel.hmsArtNr}

@@ -61,7 +61,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
         </Heading>
       )}
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
-        <OebsAlert hjelpemider={artiklerSomIkkeFinnesIOebs} />
+        <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
         <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">

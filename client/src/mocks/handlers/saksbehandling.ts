@@ -155,7 +155,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   http.get<SakParams>('/api/sak/:sakId/hjelpemidler', async ({ params }) => {
     const endredeHjelpemidler = await endreHjelpemiddelStore.hent(params.sakId)
 
-    const hjelpemidler = endredeHjelpemidler.endredeHjelpemidler.map(
+    const hjelpemidler = endredeHjelpemidler?.endredeHjelpemidler.map(
       (endretHjelpemiddel: EndretHjelpemiddelRequest) => {
         return {
           hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,

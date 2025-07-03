@@ -221,7 +221,7 @@ export interface Hjelpemiddel {
   utlevertinfo: Utlevertinfo
   opplysninger: Opplysning[]
   varsler: Varsel[]
-  saksbehandlingvarsel: Varsel[]
+  saksbehandlingvarsel?: Varsel[]
 }
 
 export interface HjelpemiddelProdukt {

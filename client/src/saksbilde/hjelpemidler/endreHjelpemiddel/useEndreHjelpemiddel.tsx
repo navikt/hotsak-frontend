@@ -1,30 +1,31 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { useBestilling } from './useBestilling'
 import { putEndreHjelpemiddel } from '../../../io/http'
-import { EndretHjelpemiddel } from '../../../types/types.internal'
 import { useHjelpemiddel } from './useHjelpemiddel'
+import { useArtiklerForSak } from '../useArtiklerForSak'
+import { Hjelpemiddel as BehovsmeldingHjelpemiddel } from '../../../types/BehovsmeldingTypes'
+import { EndretHjelpemiddelRequest } from '../../../types/types.internal'
 
-export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: any) => {
+export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) => {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
-  const { bestilling, mutate: mutateBestilling } = useBestilling()
+  const { artikler, mutate: mutateBestilling } = useArtiklerForSak(sakId)
 
-  const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddel) => {
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
     await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         // TODO Klarer vi å hente url til det nye hjelpemidlet?
         // TODO Trenger vi å mutere saken lenger??
-        mutate(`api/sak/${sakId}`)
+        //mutate(`api/sak/${sakId}`)
         mutateBestilling()
         mutate(`api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)
   }
 
-  const endretHjelpemiddel = bestilling?.endredeHjelpemidler.find(
-    (hjlpm) => hjlpm.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
+  const endretHjelpemiddel = artikler.find(
+    (hjlpm) => hjlpm.endretHjelpemiddel && hjlpm.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(

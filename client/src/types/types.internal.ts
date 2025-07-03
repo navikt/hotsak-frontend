@@ -409,10 +409,12 @@ export interface BrevTekst {
   brevtype: string
 }
 
-export interface Artikkel {
+export interface Hjelpemiddel {
+  hjelpemiddelId: string
   hmsArtNr: string
   artikkelnavn: string
   antall: number
+  endretHjelpemiddel?: EndretHjelpemiddel
   finnesIOebs: boolean
 }
 
@@ -793,25 +795,21 @@ export interface Saksoversikt_Sak_Felles_Type {
   barnebrilleSak?: Saksoversikt_Barnebrille_Sak
 }
 
-export interface Bestilling {
-  sakId: string
-  endredeHjelpemidler: EndretHjelpemiddel[]
-}
-
 export interface EndretHjelpemiddel {
   hjelpemiddelId: string
-  hmsArtNr: string
-  begrunnelse: EndretHjelpemiddelBegrunnelse | EndretAlternativProduktBegrunnelse
+  begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
+  artikkelnavn?: string
+}
+
+export interface EndretHjelpemiddelRequest extends EndretHjelpemiddel {
+  hmsArtNr: string
 }
 
 export enum EndretHjelpemiddelBegrunnelse {
   RAMMEAVTALE = 'RAMMEAVTALE',
   GJENBRUK = 'GJENBRUK',
   ANNET = 'ANNET',
-}
-
-export enum EndretAlternativProduktBegrunnelse {
   ALTERNATIV_PRODUKT_LAGERVARE = 'ALTERNATIV_PRODUKT_LAGERVARE',
   ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
 }
@@ -820,14 +818,11 @@ export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
   [EndretHjelpemiddelBegrunnelse.RAMMEAVTALE, 'Endring i rammeavtale'],
   [EndretHjelpemiddelBegrunnelse.GJENBRUK, 'Gjenbruk'],
   [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
+  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Lagervare'],
+  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
 ])
 
-export const EndretAlternativProduktBegrunnelseLabel = new Map<string, string>([
-  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Lagervare'],
-  [EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
-])
-
-export interface Hjelpemiddel {
+export interface HjelpemiddelProdukt {
   hmsnr: string
   navn: string
 }

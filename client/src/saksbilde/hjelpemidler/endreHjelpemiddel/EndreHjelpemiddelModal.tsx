@@ -15,9 +15,9 @@ import {
 } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import {
-  EndretHjelpemiddel,
   EndretHjelpemiddelBegrunnelse,
   EndretHjelpemiddelBegrunnelseLabel,
+  EndretHjelpemiddelRequest,
 } from '../../../types/types.internal.ts'
 import { useHjelpemiddel } from './useHjelpemiddel.ts'
 
@@ -26,7 +26,7 @@ interface EndreHjelpemiddelModalProps {
   hmsNr: string
   nåværendeHmsNr?: string
   åpen: boolean
-  onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
+  onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
   onLukk(): void
 }
 
@@ -164,6 +164,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
               await onLagre({
                 hjelpemiddelId: hjelpemiddelId,
                 hmsArtNr: endreProduktHmsnr,
+                artikkelnavn: hjelpemiddel?.navn ?? '',
                 begrunnelse: endreBegrunnelse!,
                 begrunnelseFritekst: begrunnelseFritekst,
               })

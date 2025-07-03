@@ -1,9 +1,6 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { RadioGroup, Radio, Textarea, VStack } from '@navikt/ds-react'
-import {
-  EndretAlternativProduktBegrunnelse,
-  EndretAlternativProduktBegrunnelseLabel,
-} from '../../../types/types.internal'
+import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from '../../../types/types.internal'
 
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
@@ -24,19 +21,17 @@ export function BegrunnelseForBytte() {
             {...field}
             error={fieldState.error?.message}
           >
-            <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE}>
-              {EndretAlternativProduktBegrunnelseLabel.get(
-                EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE
-              )}
+            <Radio value={EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE}>
+              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE)}
             </Radio>
-            <Radio value={EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET}>
-              {EndretAlternativProduktBegrunnelseLabel.get(EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET)}
+            <Radio value={EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET}>
+              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET)}
               (begrunn)
             </Radio>
           </RadioGroup>
         )}
       />
-      {begrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET && (
+      {begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET && (
         <Controller
           name="endreBegrunnelseFritekst"
           control={control}

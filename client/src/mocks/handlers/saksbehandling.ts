@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 import {
-  Artikkel,
+  EndretHjelpemiddelRequest,
   OppgaveStatusType,
   StegType,
   TilgangResultat,
@@ -9,6 +9,9 @@ import {
   VedtakPayload,
 } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
+import { hentJournalførteNotater } from '../data/journalførteNotater'
+import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
+import type { SakParams } from './params'
 import {
   delay,
   respondForbidden,
@@ -17,11 +20,13 @@ import {
   respondNotFound,
   respondUnauthorized,
 } from './response'
-import type { SakParams } from './params'
-import { hentJournalførteNotater } from '../data/journalførteNotater'
-import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
 
-export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journalpostStore, saksbehandlerStore }) => [
+export const saksbehandlingHandlers: StoreHandlersFactory = ({
+  sakStore,
+  journalpostStore,
+  saksbehandlerStore,
+  endreHjelpemiddelStore,
+}) => [
   http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
     const { sakId } = params
     if (sakId === '401') {
@@ -143,36 +148,38 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({ sakStore, journal
     return respondNoContent()
   }),
 
-  http.get<SakParams, never, Artikkel[] | any>('/api/sak/:sakId/artikler', async ({ params }) => {
-    const sak = await sakStore.hent(params.sakId)
-    if (!sak) {
+  http.post<SakParams>('/api/sak/:sakId/henleggelse', async ({ params }) => {
+    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
+    return respondNoContent()
+  }),
+  http.get<SakParams>('/api/sak/:sakId/hjelpemidler', async ({ params }) => {
+    const endredeHjelpemidler = await endreHjelpemiddelStore.hent(params.sakId)
+
+    const hjelpemidler = endredeHjelpemidler.endredeHjelpemidler.map(
+      (endretHjelpemiddel: EndretHjelpemiddelRequest) => {
+        return {
+          hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
+          hmsArtNr: endretHjelpemiddel.hmsArtNr,
+          finnesIOebs: true,
+          endretHjelpemiddel: {
+            hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
+            begrunnelse: endretHjelpemiddel.begrunnelse,
+            begrunnelseFritekst: endretHjelpemiddel.begrunnelseFritekst,
+          },
+        }
+      }
+    )
+
+    if (!endredeHjelpemidler) {
       return respondNotFound()
     }
 
-    /* fixme -> hent fra behovsmeldingen
-    const artikler: Artikkel[] = sak?.hjelpemidler
-      .map((hjelpemiddel) => {
-        return [
-          {
-            hmsnr: hjelpemiddel.hmsnr,
-            navn: '',
-            antall: 1,
-            finnesIOebs: hjelpemiddel.hmsnr === '102030',
-          },
-        ].concat(
-          hjelpemiddel.tilbehør.map((tilbehør) => {
-            return { hmsnr: tilbehør.hmsNr, navn: tilbehør.navn, antall: tilbehør.antall, finnesIOebs: true }
-          })
-        )
-      })
-      .flat()
-    */
-
-    return HttpResponse.json([])
+    return HttpResponse.json({ hjelpemidler })
   }),
+  http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
+    console.log('Håndterer endring av hjelpemiddel for sak:', params.sakId)
 
-  http.post<SakParams>('/api/sak/:sakId/henleggelse', async ({ params }) => {
-    await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
+    await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),
 ]

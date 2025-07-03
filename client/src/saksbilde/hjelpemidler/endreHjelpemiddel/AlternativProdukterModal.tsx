@@ -2,20 +2,20 @@ import { Button, Heading, Modal } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
-import {
-  EndretAlternativProduktBegrunnelse,
-  EndretAlternativProduktBegrunnelseLabel,
-  EndretHjelpemiddel,
-} from '../../../types/types.internal.ts'
 import { useSjekkLagerstatus } from '../useSjekkLagerstatus.ts'
 import { AlternativProduktVelger } from './AlternativProduktVelger.tsx'
 import { BegrunnelseForBytte } from './BegrunnelseForBytte.tsx'
+import {
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+  EndretHjelpemiddelRequest,
+} from '../../../types/types.internal.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
   hmsNr: string
   hjelpemiddelId: string
-  onLagre(endreHjelpemiddel: EndretHjelpemiddel): void | Promise<void>
+  onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
   onMutate: () => void
   alternativer: AlternativeProduct[]
   alleAlternativer: AlternativeProduct[]
@@ -80,9 +80,9 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
             } else {
               setSubmitting(true)
               const begrunnelseFritekst =
-                data.endreBegrunnelse === EndretAlternativProduktBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                data.endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                   ? data.endreBegrunnelseFritekst
-                  : EndretAlternativProduktBegrunnelseLabel.get(data.endreBegrunnelse!)
+                  : EndretHjelpemiddelBegrunnelseLabel.get(data.endreBegrunnelse!)
               await onLagre({
                 hjelpemiddelId: hjelpemiddelId,
                 hmsArtNr: data.endretProdukt[0] ?? '',
@@ -130,6 +130,6 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
 
 interface EndreArtikkelData {
   endretProdukt: string
-  endreBegrunnelse: EndretAlternativProduktBegrunnelse | undefined
+  endreBegrunnelse: EndretHjelpemiddelBegrunnelse | undefined
   endreBegrunnelseFritekst: ''
 }

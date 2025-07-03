@@ -48,10 +48,14 @@ export function Hjelpemiddel({
   const erOmbrukPilot = useErOmbrukPilot()
 
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
-  const { endreHjelpemiddel, nåværendeHmsnr, endretHjelpemiddelNavn, endretHjelpemiddel } = useEndreHjelpemiddel(
-    sakId,
-    hjelpemiddel
-  )
+  const {
+    endreHjelpemiddel,
+    nåværendeHmsnr,
+    endretHjelpemiddelNavn,
+    endretHjelpemiddel: endretHjelpemiddelResponse,
+  } = useEndreHjelpemiddel(sakId, hjelpemiddel)
+
+  const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
 
   const erBestilling = sakstype === Sakstype.BESTILLING
   const harAlternativer = alternativer.length > 0
@@ -73,7 +77,7 @@ export function Hjelpemiddel({
           <VStack justify="start" gap="2">
             {endretHjelpemiddel && (
               <Produkt
-                hmsnr={endretHjelpemiddel.hmsArtNr}
+                hmsnr={endretHjelpemiddelResponse.hmsArtNr}
                 navn={endretHjelpemiddelNavn?.navn || '-'}
                 gjennomstrek={false}
                 // TODO Fiks at vi får tak i url til det nye hjelpemidlet
@@ -101,9 +105,10 @@ export function Hjelpemiddel({
               <div>
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <Brødtekst>
-                  {endretHjelpemiddel.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
+                  {endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
+                  endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel.begrunnelse)}
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse)}
                 </Brødtekst>
               </div>
             )}

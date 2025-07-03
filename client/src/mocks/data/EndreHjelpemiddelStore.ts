@@ -23,7 +23,7 @@ export class EndreHjelpemiddelStore extends Dexie {
 
     this.endredeHjelpemidler.bulkAdd(
       saker
-        .filter((sak) => sak.sakstype === Sakstype.BESTILLING)
+        .filter((sak) => sak.sakstype === Sakstype.BESTILLING || sak.sakstype === Sakstype.SØKNAD)
         .map((sak) => {
           return { sakId: sak.sakId, endredeHjelpemidler: [] }
         }),

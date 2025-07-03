@@ -41,7 +41,7 @@ export function Hjelpemiddel({
   alleAlternativer,
   onMutate,
 }: HjelpemiddelProps) {
-  const { sakId, sakstype } = sak
+  const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
@@ -57,7 +57,6 @@ export function Hjelpemiddel({
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
 
-  const erBestilling = sakstype === Sakstype.BESTILLING
   const harAlternativer = alternativer.length > 0
 
   return (
@@ -88,7 +87,7 @@ export function Hjelpemiddel({
             <Produkt
               hmsnr={hjelpemiddel.produkt.hmsArtNr}
               navn={hjelpemiddel.produkt.artikkelnavn}
-              gjennomstrek={erBestilling && endretHjelpemiddel !== undefined}
+              gjennomstrek={endretHjelpemiddel !== undefined}
               linkTo={produkt?.produkturl}
             />
             <HStack gap="2">
@@ -162,16 +161,14 @@ export function Hjelpemiddel({
         </VStack>
       </HjelpemiddelGrid>
       <>
-        {erBestilling && (
-          <EndreHjelpemiddelModal
-            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-            hmsNr={hjelpemiddel.produkt.hmsArtNr}
-            nåværendeHmsNr={nåværendeHmsnr}
-            åpen={visEndreHjelpemiddelModal}
-            onLagre={endreHjelpemiddel}
-            onLukk={() => setVisEndreHjelpemiddelModal(false)}
-          />
-        )}
+        <EndreHjelpemiddelModal
+          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+          hmsNr={hjelpemiddel.produkt.hmsArtNr}
+          nåværendeHmsNr={nåværendeHmsnr}
+          åpen={visEndreHjelpemiddelModal}
+          onLagre={endreHjelpemiddel}
+          onLukk={() => setVisEndreHjelpemiddelModal(false)}
+        />
         {erOmbrukPilot && (
           <AlternativProdukterModal
             åpen={visAlternativerModal}

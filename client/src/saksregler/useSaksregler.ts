@@ -1,7 +1,7 @@
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { useSaksbehandlerErTildeltSak } from '../tilgang/useSaksbehandlerErTildeltSak.ts'
-import { OppgaveStatusType, Sakstype } from '../types/types.internal.ts'
+import { OppgaveStatusType } from '../types/types.internal.ts'
 
 export function useSaksregler() {
   const { data: sak } = useSak()?.sak ?? { data: undefined }
@@ -11,11 +11,7 @@ export function useSaksregler() {
 
   const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
 
-  const kanEndreHmsnr = !!(
-    sak?.sakstype === Sakstype.BESTILLING &&
-    saksbehandlerErTildeltSak &&
-    sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
-  )
+  const kanEndreHmsnr = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
 
   return {
     sakId: sak?.sakId,

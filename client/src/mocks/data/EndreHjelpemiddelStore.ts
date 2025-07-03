@@ -1,10 +1,15 @@
 import Dexie, { Table } from 'dexie'
 
-import { Bestilling, EndretHjelpemiddel, Sakstype } from '../../types/types.internal'
+import { EndretHjelpemiddelRequest, Sakstype } from '../../types/types.internal'
 import { SakStore } from './SakStore'
 
+export interface EndretHjelpemiddelEntitet {
+  sakId: string
+  endredeHjelpemidler: EndretHjelpemiddelRequest[]
+}
+
 export class EndreHjelpemiddelStore extends Dexie {
-  private readonly endredeHjelpemidler!: Table<Bestilling, string>
+  private readonly endredeHjelpemidler!: Table<EndretHjelpemiddelEntitet, string>
 
   constructor(private readonly sakStore: SakStore) {
     super('EndredeHjelpemidlerStore')
@@ -32,7 +37,7 @@ export class EndreHjelpemiddelStore extends Dexie {
     return endringer
   }
 
-  async endreHjelpemiddel(sakId: string, request: EndretHjelpemiddel) {
+  async endreHjelpemiddel(sakId: string, request: EndretHjelpemiddelRequest) {
     const endringer = await this.hent(sakId)
     if (!endringer) return
 

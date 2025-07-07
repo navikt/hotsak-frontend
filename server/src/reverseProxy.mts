@@ -5,13 +5,6 @@ import { logger } from './logging.mjs'
 
 export function reverseProxy(server: Express): void {
   server.use(
-    '/heit-krukka/',
-    proxy(process.env.HEIT_KRUKKA_URL, {
-      parseReqBody: false,
-      proxyReqOptDecorator: onBehalfOfDecorator(process.env.CLIENT_ID_HEIT_KRUKKA_API),
-    })
-  )
-  server.use(
     '/api/',
     proxy(process.env.API_URL, {
       parseReqBody: false,

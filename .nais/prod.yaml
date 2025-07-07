@@ -66,20 +66,14 @@ spec:
       value: "3000"
     - name: CLIENT_ID_HOTSAK_API
       value: api://prod-gcp.teamdigihot.hm-saksbehandling/.default
-    - name: CLIENT_ID_HEIT_KRUKKA_API
-      value: api://prod-gcp.teamdigihot.heit-krukka/.default
-    - name: REDIS_HOST
-      value: saksbehandling-redis.teamdigihot.svc.cluster.local
     - name: USE_MSW
       value: "false"
     - name: GIT_COMMIT
       value: {{commit}}
     - name: FARO_URL
       value: https://telemetry.nav.no/collect
-    - name: HEIT_KRUKKA_URL
-      value: http://heit-krukka.teamdigihot.svc.cluster.local
     - name: AMPLITUDE_API_KEY
-      value: default
+      value: 10798841ebeba333b8ece6c046322d76
     - name: AMPLITUDE_SERVER_URL
       value: https://amplitude.nav.no/collect-auto
     - name: IMAGE_PROXY_URL

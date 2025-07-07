@@ -43,29 +43,19 @@ spec:
   env:
     - name: API_URL
       value: "http://hotsak/api"
-    - name: GRUNNDATA_API_URL
-      value: "http://grunndata/api"
     - name: FINN_HJELPEMIDDEL_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
     - name: FINN_ALTERNATIV_PRODUKT_API_URL
       value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
-    - name: PORT
-      value: "3000"
     - name: BRILLEKALKULATOR_API_URL
       value: "http://brille/api"
+    - name: PORT
+      value: "3000"
     - name: CLIENT_ID_HOTSAK_API
       value: ""
-    - name: REDIS_HOST
-      value: "http://redis"
-    - name: HEIT_KRUKKA_URL
-      value: http://heit-krukka
     - name: USE_MSW
       value: "true"
     - name: GIT_COMMIT
       value: {{commit}}
-    - name: AMPLITUDE_API_KEY
-      value: default
-    - name: AMPLITUDE_SERVER_URL
-      value: https://amplitude.nav.no/collect-auto
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d

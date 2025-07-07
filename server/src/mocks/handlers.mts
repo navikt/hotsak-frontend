@@ -36,13 +36,6 @@ export const handlers: RequestHandler[] = [
   }),
 
   /**
-   * Stub for HEIT_KRUKKA_URL.
-   */
-  http.post<{ skjemaId: string }>('http://heit-krukka.test/api/skjema/:skjemaId', async ({ params: { skjemaId } }) => {
-    return HttpResponse.json({ skjemaId })
-  }),
-
-  /**
    * Stub for FINN_HJELPEMIDDEL_API_URL.
    */
   graphql.query('HentProdukter', async () => {

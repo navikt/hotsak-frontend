@@ -41,7 +41,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   })
 
   useEffect(() => {
-    if (!henterLagerstatus && åpen && !harOppdatertLagerstatus) {
+    if (åpen && !henterLagerstatus && !harOppdatertLagerstatus) {
       setHenterLagerstatus(true)
       const oppdaterLagerstatus = async () => {
         await sjekkLagerstatusFor(hmsnrForAlternativer)
@@ -51,7 +51,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
       }
       oppdaterLagerstatus()
     }
-  }, [åpen, hmsnrForAlternativer, harOppdatertLagerstatus])
+  }, [åpen, henterLagerstatus, hmsnrForAlternativer, harOppdatertLagerstatus])
 
   return (
     <Modal

@@ -75,7 +75,7 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
       return
     }
 
-    console.log('Sjekker lagerstatus live mot OeBS   for HMS-nr:', hmsnrs.join(', '))
+    console.log('Sjekker lagerstatus live mot OeBS for HMS-nr:', hmsnrs.join(', '))
 
     setLoading(true)
     try {

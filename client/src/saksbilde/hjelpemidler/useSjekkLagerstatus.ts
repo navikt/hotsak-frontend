@@ -1,6 +1,8 @@
 import { gql, request } from 'graphql-request'
 import { useState } from 'react'
+
 import { Query, QueryProductStockArgs, QueryProductStocksAllLocationsArgs } from '../../generated/finnAlternativprodukt'
+import { pushError } from '../../utils/faro.ts'
 
 const query = gql`
   query SjekkLagerstatus($hmsnrs: [String!]!) {
@@ -47,8 +49,9 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
         lagerstatusForProduktQuery,
         { hmsnr: hmsnr }
       )
-    } catch (err) {
+    } catch (err: unknown) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnr}`, err)
+      pushError(err)
     } finally {
       setLoading(false)
     }
@@ -86,8 +89,9 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
       )
 
       setHarOppdatertLagerstatus(true)
-    } catch (err) {
+    } catch (err: unknown) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, err)
+      pushError(err)
     } finally {
       setLoading(false)
     }

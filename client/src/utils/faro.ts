@@ -6,16 +6,17 @@ export async function initFaro(): Promise<void> {
   const {
     ConsoleInstrumentation,
     ErrorsInstrumentation,
-    getWebInstrumentations,
-    initializeFaro,
     LogLevel,
     SessionInstrumentation,
+    getWebInstrumentations,
+    initializeFaro,
   } = await import('@grafana/faro-web-sdk')
 
   initializeFaro({
     url: window.appSettings.FARO_URL,
     app: {
       name: 'hotsak-frontend',
+      version: window.appSettings.GIT_COMMIT,
     },
     instrumentations: [
       new ErrorsInstrumentation(),
@@ -26,4 +27,10 @@ export async function initFaro(): Promise<void> {
       new SessionInstrumentation(),
     ],
   })
+}
+
+export function pushError(err: unknown) {
+  if (window.faro && err instanceof Error) {
+    window.faro.api.pushError(err)
+  }
 }

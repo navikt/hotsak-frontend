@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { HMDBHentProdukterQuery, HMDBHentProdukterQueryVariables } from '../../generated/finnhjelpemiddel'
 import { Produkt } from '../../types/types.internal'
+import { pushError } from '../../utils/faro.ts'
 
 const query = gql`
   query HentProdukter($hmsnrs: [String!]!) {
@@ -45,8 +46,9 @@ export function useFinnHjelpemiddel(hmsnrs: string[]) {
         })
 
         setProdukter(produkter ? produkter : [])
-      } catch (e) {
-        console.warn(`Kunne ikke hente hjelpemidler fra FinnHjelpemiddel, hmsnrs: ${unikeHmsnrs}`, e)
+      } catch (err: unknown) {
+        console.warn(`Kunne ikke hente hjelpemidler fra FinnHjelpemiddel, hmsnrs: ${unikeHmsnrs}`, err)
+        pushError(err)
         setProdukter([])
       }
     })()

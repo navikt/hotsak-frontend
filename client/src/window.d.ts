@@ -1,8 +1,9 @@
+import type { Faro } from '@grafana/faro-web-sdk'
 import type { InnloggetAnsatt } from './tilgang/Ansatt.ts'
 
 declare global {
   interface Window {
-    msw: any
+    msw?: any
     appSettings: {
       USE_MSW?: boolean
       GIT_COMMIT?: string
@@ -10,6 +11,7 @@ declare global {
       FARO_URL?: string
       IMAGE_PROXY_URL: string
     }
+    faro?: Faro
     store: {
       saksbehandlere(): Promise<InnloggetAnsatt[]>
       byttInnloggetSaksbehandler(id: string): void

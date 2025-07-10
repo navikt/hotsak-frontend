@@ -27,7 +27,7 @@ export const logger = {
   stdout: pino(options),
 }
 
-interface LogPayload {
+interface ErrorPayload {
   level?: Level
   message: string
   stack?: string
@@ -36,9 +36,9 @@ interface LogPayload {
   userAgent: string
 }
 
-export function clientLog(server: Express) {
-  server.post<never, never, LogPayload>('/log', (req, res) => {
-    const { level = 'info', message, ...payload } = req.body
+export function clientError(server: Express) {
+  server.post<never, never, ErrorPayload>('/errors', (req, res) => {
+    const { level = 'error', message, ...payload } = req.body
     logger.stdout[level]?.(
       {
         ...payload,

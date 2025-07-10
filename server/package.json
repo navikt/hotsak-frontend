@@ -41,8 +41,8 @@
     "test": "vitest",
     "build": "tsc -p .",
     "clean": "rimraf ./dist",
-    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test FINN_ALTERNATIV_PRODUKT_API_URL=http://hm-grunndata-alternativprodukter.test tsx --enable-source-maps src/server.mts",
-    "start": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test FINN_ALTERNATIV_PRODUKT_API_URL=http://hm-grunndata-alternativprodukter.test node --enable-source-maps dist/server.mjs",
+    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test tsx --enable-source-maps src/server.mts",
+    "start": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test node --enable-source-maps dist/server.mjs",
     "lint": "eslint ."
   }
 }

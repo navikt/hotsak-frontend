@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { AlternativeProduct, Query, QueryAlternativeProductsArgs } from '../../generated/finnAlternativprodukt'
 import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang'
 import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
-import { logError } from '../../utvikling/logError.ts'
+import { backendLog } from '../../utvikling/backendLog.ts'
 
 const query = gql`
   query FinnAlternativer($hmsnrs: [String!]!) {
@@ -72,7 +72,7 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
     } catch (err) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nummere: ${hmsnrs.join(', ')}`, err)
       if (err instanceof Error) {
-        logError(err)
+        backendLog.error(err)
       }
     } finally {
       setLoading(false)

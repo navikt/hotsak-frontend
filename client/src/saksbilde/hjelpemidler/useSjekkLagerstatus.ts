@@ -2,7 +2,7 @@ import { gql, request } from 'graphql-request'
 import { useState } from 'react'
 
 import { Query, QueryProductStockArgs, QueryProductStocksAllLocationsArgs } from '../../generated/finnAlternativprodukt'
-import { logError } from '../../utvikling/logError.ts'
+import { backendLog } from '../../utvikling/backendLog.ts'
 
 const query = gql`
   query SjekkLagerstatus($hmsnrs: [String!]!) {
@@ -52,7 +52,7 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
     } catch (err) {
       console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnr}`, err)
       if (err instanceof Error) {
-        logError(err)
+        backendLog.error(err)
       }
     } finally {
       setLoading(false)
@@ -94,7 +94,7 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
     } catch (err) {
       console.warn(`Kunne ikke hente lagerstatus for HMS-nummere: ${hmsnrs.join(', ')}`, err)
       if (err instanceof Error) {
-        logError(err)
+        backendLog.error(err)
       }
     } finally {
       setLoading(false)

@@ -36,8 +36,6 @@ spec:
     requests:
       cpu: 10m
       memory: 256Mi
-  secureLogs:
-    enabled: true
   envFrom:
     - secret: hm-saksbehandling
   env:

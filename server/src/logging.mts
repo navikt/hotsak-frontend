@@ -1,5 +1,4 @@
-import fs from 'fs'
-import { LoggerOptions, pino, stdSerializers, transport } from 'pino'
+import { LoggerOptions, pino, stdSerializers } from 'pino'
 
 const options: LoggerOptions = {
   timestamp() {
@@ -25,13 +24,4 @@ const options: LoggerOptions = {
 
 export const logger = {
   stdout: pino(options),
-  secure: pino(
-    options,
-    transport({
-      target: 'pino/file',
-      options: {
-        destination: fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log',
-      },
-    })
-  ),
 }

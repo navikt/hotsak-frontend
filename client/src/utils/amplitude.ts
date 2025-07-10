@@ -30,43 +30,6 @@ export enum amplitude_taxonomy {
   KOPIKNAPP_BRUKT = 'kopiknapp brukt',
 }
 
-export let logAmplitudeEvent: (eventName: amplitude_taxonomy, data?: Record<string, any>) => void = (
-  eventName,
-  data
-): void => {
+export function logAmplitudeEvent(eventName: amplitude_taxonomy, data?: Record<string, any>): void {
   logDebug('eventName: %o, data: %o', eventName, data)
-}
-
-export async function initAmplitude(): Promise<void> {
-  if (window.appSettings.MILJO !== 'prod-gcp') return
-  const { AMPLITUDE_API_KEY: apiKey, AMPLITUDE_SERVER_URL: serverUrl } = window.appSettings
-  if (!(apiKey && serverUrl)) return
-  const { init, track, identify, Identify } = await import('@amplitude/analytics-browser')
-
-  identify(
-    new Identify()
-      .set('skjermbredde', window.screen.width)
-      .set('skjermhoyde', window.screen.height)
-      .set('vindusbredde', window.innerWidth)
-      .set('vindushoyde', window.innerHeight)
-  )
-
-  init(apiKey, undefined, {
-    serverUrl,
-    defaultTracking: false,
-    ingestionMetadata: {
-      sourceName: window.location.toString(),
-    },
-  })
-  logAmplitudeEvent = (eventName, data): void => {
-    try {
-      track(eventName, {
-        app: 'hotsak-frontend',
-        team: 'teamdigihot',
-        ...data,
-      })
-    } catch (err: unknown) {
-      console.warn(err)
-    }
-  }
 }

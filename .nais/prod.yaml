@@ -70,9 +70,5 @@ spec:
       value: {{commit}}
     - name: FARO_URL
       value: https://telemetry.nav.no/collect
-    - name: AMPLITUDE_API_KEY
-      value: 10798841ebeba333b8ece6c046322d76
-    - name: AMPLITUDE_SERVER_URL
-      value: https://amplitude.nav.no/collect-auto
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.nav.no/imageproxy/400d

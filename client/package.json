@@ -4,7 +4,6 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@amplitude/analytics-browser": "2.18.0",
     "@grafana/faro-web-sdk": "1.18.2",
     "@grafana/faro-web-tracing": "1.18.2",
     "@mdxeditor/editor": "3.39.1",

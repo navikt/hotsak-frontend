@@ -15,9 +15,6 @@ declare global {
       PORT?: string
 
       USE_MSW?: 'true' | 'false'
-
-      AMPLITUDE_API_KEY: string
-      AMPLITUDE_SERVER_URL: string
     }
   }
 }

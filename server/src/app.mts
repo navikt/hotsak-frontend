@@ -1,4 +1,4 @@
-import { clientError, logger } from './logging.mjs'
+import { clientLog, logger } from './logging.mjs'
 import { ipAddressFromRequest } from './ipAddressFromRequest.mjs'
 import { reverseProxy } from './reverseProxy.mjs'
 import express, { ErrorRequestHandler } from 'express'
@@ -58,7 +58,7 @@ app.use('/{*splat}', async (req, res, next) => {
   res.sendStatus(401)
 })
 
-clientError(app)
+clientLog(app)
 reverseProxy(app)
 
 const __filename = fileURLToPath(import.meta.url)

@@ -1,5 +1,5 @@
-import fs from 'fs'
-import { LoggerOptions, pino, stdSerializers, transport } from 'pino'
+import { Level, LoggerOptions, pino, stdSerializers } from 'pino'
+import type { Express } from 'express-serve-static-core'
 
 const options: LoggerOptions = {
   timestamp() {
@@ -25,13 +25,28 @@ const options: LoggerOptions = {
 
 export const logger = {
   stdout: pino(options),
-  secure: pino(
-    options,
-    transport({
-      target: 'pino/file',
-      options: {
-        destination: fs.existsSync('/secure-logs/') ? '/secure-logs/secure.log' : './secure.log',
+}
+
+interface ErrorPayload {
+  level?: Level
+  message: string
+  stack?: string
+  context?: Record<string, unknown>
+  url: string
+  userAgent: string
+}
+
+export function clientError(server: Express) {
+  server.post<never, never, ErrorPayload>('/errors', (req, res) => {
+    const { level = 'error', message, ...payload } = req.body
+    logger.stdout[level]?.(
+      {
+        ...payload,
+        source: 'client',
+        ip: req.ip,
       },
-    })
-  ),
+      message
+    )
+    res.status(202).send()
+  })
 }

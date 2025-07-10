@@ -36,7 +36,7 @@ interface AlternativeProdukterResponse {
   alternativeProdukter: AlternativeProdukterMap
   alleAlternativeProdukter: AlternativeProdukterMap
   loading: boolean
-  mutate: () => Promise<void>
+  mutate(): Promise<void>
 }
 
 export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukterResponse {

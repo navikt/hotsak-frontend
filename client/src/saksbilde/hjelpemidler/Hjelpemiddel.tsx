@@ -29,7 +29,7 @@ interface HjelpemiddelProps {
   produkter: ProduktType[]
   alternativer: AlternativeProduct[]
   alleAlternativer: AlternativeProduct[]
-  onMutate: () => void
+  onMutate(): Promise<void>
 }
 
 export function Hjelpemiddel({

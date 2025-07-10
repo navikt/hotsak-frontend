@@ -1,5 +1,5 @@
 import { Button, Heading, Modal } from '@navikt/ds-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
 import { useSjekkLagerstatus } from '../useSjekkLagerstatus.ts'
@@ -16,7 +16,7 @@ interface AlternativProduktModalProps {
   hmsNr: string
   hjelpemiddelId: string
   onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
-  onMutate: () => void
+  onMutate(): Promise<void>
   alternativer: AlternativeProduct[]
   alleAlternativer: AlternativeProduct[]
   onLukk(): void
@@ -29,7 +29,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   const { sjekkLagerstatusFor, harOppdatertLagerstatus } = useSjekkLagerstatus()
   const ref = useRef<HTMLDialogElement>(null)
 
-  const hmsnrForAlternativer = alleAlternativer.map((a) => a.hmsArtNr)
+  const hmsnrForAlternativer = useMemo(() => alleAlternativer.map((it) => it.hmsArtNr), [alleAlternativer])
   const [henterLagerstatus, setHenterLagerstatus] = useState(false)
 
   const methods = useForm<EndreArtikkelData>({
@@ -41,17 +41,23 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
   })
 
   useEffect(() => {
-    if (åpen && !henterLagerstatus && !harOppdatertLagerstatus) {
+    if (!åpen || henterLagerstatus || harOppdatertLagerstatus) {
+      return
+    }
+
+    const oppdaterLagerstatus = async () => {
       setHenterLagerstatus(true)
-      const oppdaterLagerstatus = async () => {
+      try {
         await sjekkLagerstatusFor(hmsnrForAlternativer)
         await new Promise((resolve) => setTimeout(resolve, 2000)) // Må midlertidig vente litt før ny lagerstatus er oppdatert
         await onMutate()
+      } finally {
         setHenterLagerstatus(false)
       }
-      oppdaterLagerstatus()
     }
-  }, [åpen, henterLagerstatus, hmsnrForAlternativer, harOppdatertLagerstatus])
+
+    oppdaterLagerstatus()
+  }, [åpen, henterLagerstatus, harOppdatertLagerstatus, hmsnrForAlternativer])
 
   return (
     <Modal

@@ -61,7 +61,7 @@ export function AlternativProduktCard({
             <Undertittel>{`Hmsnr: ${alternativ.hmsArtNr}`}</Undertittel>
             <Brødtekst>{alternativ.supplier.name}</Brødtekst>
           </VStack>
-          <HGrid columns={'auto 1fr'} gap="2 2">
+          <HGrid columns={'auto 1fr'} gap="2 2" align="center">
             {alternativ.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
@@ -69,9 +69,15 @@ export function AlternativProduktCard({
                   <Skeleton variant="rectangle" width={100} height={25} />
                 ) : (
                   <div>
-                    <Tag variant="success" size="small">
-                      {lagerstatus?.amountInStock} stk på lager
-                    </Tag>
+                    {lagerstatus ? (
+                      <Tag variant="success" size="small">
+                        {lagerstatus.amountInStock} stk på lager
+                      </Tag>
+                    ) : (
+                      <Tag variant="warning-moderate" size="small">
+                        Ukjent
+                      </Tag>
+                    )}
                   </div>
                 )}
               </React.Fragment>

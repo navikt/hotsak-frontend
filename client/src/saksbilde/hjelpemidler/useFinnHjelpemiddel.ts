@@ -46,7 +46,7 @@ export function useFinnHjelpemiddel(hmsnrs: string[]) {
 
         setProdukter(produkter ? produkter : [])
       } catch (e) {
-        console.warn(`Kunne ikke hente hjelpemidler fra FinnHjelpemiddel, hmsnrs: ${unikeHmsnrs}`, e)
+        console.warn(`Kunne ikke hente hjelpemidler fra FinnHjelpemiddel, HMS-nummere: ${unikeHmsnrs}`, e)
         setProdukter([])
       }
     })()

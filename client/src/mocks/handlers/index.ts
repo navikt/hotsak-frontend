@@ -21,18 +21,20 @@ import { saksVarslerHandlers } from './saksvarsler'
 import { behovsmeldingHandlers } from './behovsmelding'
 import { finnAlternativProduktHandlers } from './finnAlternativProdukt.ts'
 import { bildeHandlers } from './bilder.ts'
+import { utviklingHandlers } from './utvikling.ts'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
   ...behovsmeldingHandlers(store),
   ...bestillingHandlers(store),
+  ...bildeHandlers(),
   ...brevHandlers(store),
   ...brevutkastHandlers(store),
   ...brillekalkulatorHandlers(store),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
-  ...finnHjelpemiddelHandlers(store),
   ...finnAlternativProduktHandlers(store),
+  ...finnHjelpemiddelHandlers(store),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...notatHandlers(store),
@@ -43,6 +45,6 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...saksoversiktHandlers(store),
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),
+  ...utviklingHandlers(store),
   ...vilkårsvurderingHandlers(store),
-  ...bildeHandlers(),
 ]

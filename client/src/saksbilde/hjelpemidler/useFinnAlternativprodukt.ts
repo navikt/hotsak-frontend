@@ -1,8 +1,10 @@
 import { gql, request } from 'graphql-request'
 import { useEffect, useState } from 'react'
+
 import { AlternativeProduct, Query, QueryAlternativeProductsArgs } from '../../generated/finnAlternativprodukt'
 import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang'
 import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
+import { logError } from '../../utvikling/logError.ts'
 
 const query = gql`
   query FinnAlternativer($hmsnrs: [String!]!) {
@@ -68,7 +70,10 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
       )
       setAlternativeProdukter(alternativeProdukterForHmsnr)
     } catch (err) {
-      console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, err)
+      console.warn(`Kunne ikke hente alternative produkter for HMS-nummere: ${hmsnrs.join(', ')}`, err)
+      if (err instanceof Error) {
+        logError(err)
+      }
     } finally {
       setLoading(false)
     }

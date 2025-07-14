@@ -57,15 +57,17 @@ export function useSjekkLagerstatus(): LagerstatusResponse {
     }
   }
 
-  // Denne funksjonen sjekker lagerstatus for en liste av HMS-nr mot alle lagerlokasjoner i OeBS for gjeldende enhet og
-  // er et ganske krevende kall for OeBS. Vi bør være litt forsiktige med hvor ofte denne kalle og kun kalle den hvis listen
-  // med HMS-nr er ganske kort < 8
+  /**
+   * Denne funksjonen sjekker lagerstatus for en liste av HMS-nr mot alle lagerlokasjoner i OeBS for gjeldende enhet og
+   * er et ganske krevende kall for OeBS. Vi bør være litt forsiktige med hvor ofte denne kalles og kun kalle den hvis listen
+   * med HMS-nr er ganske kort (< 8).
+   */
   const MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK = 8
 
   async function sjekkLagerstatusFor(hmsnrs: string[]) {
     if (harOppdatertLagerstatus || hmsnrs.length === 0 || hmsnrs.length > MAX_HMSNR_FOR_Å_SJEKKE_LAGERSTATUS_I_BULK) {
       if (harOppdatertLagerstatus) {
-        console.log('Ikke behov  for å henter ny lagerstatus, vi har allerede en som en ganske fersk')
+        console.log('Ikke behov for å hente ny lagerstatus, vi har allerede en som en ganske fersk')
       }
       if (hmsnrs.length === 0) {
         console.log('Ingen HMS-nr å sjekke lagerstatus for')

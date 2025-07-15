@@ -25,10 +25,9 @@ spec:
     outbound:
       rules:
         - application: hm-saksbehandling
-        - application: hm-brille-api
         - application: hm-grunndata-search
-        - application: heit-krukka
         - application: hm-grunndata-alternativprodukter
+        - application: hm-brille-api
   azure:
     application:
       enabled: true

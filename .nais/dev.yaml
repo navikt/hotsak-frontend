@@ -36,14 +36,11 @@ spec:
           cluster: dev-gcp
     outbound:
       rules:
-        - application: hm-mocks
         - application: hm-saksbehandling
-        - application: hm-brille-api
         - application: hm-grunndata-search
         - application: hm-grunndata-alternativprodukter
-        - application: heit-krukka
-      external:
-        - host: heit-krukka.intern.dev.nav.no
+        - application: hm-brille-api
+        - application: hm-mocks
   azure:
     application:
       enabled: true

@@ -22,29 +22,29 @@ export const handlers: RequestHandler[] = [
   }),
 
   /**
-   * Stub for API_URL (hm-saksbehandling).
+   * Stub for HOTSAK_API_URL (hm-saksbehandling).
    */
   http.get<{ sakId: string }>('http://hm-saksbehandling.test/api/sak/:sakId', async ({ params: { sakId } }) => {
     return HttpResponse.json({ sakId })
   }),
 
   /**
-   * Stub for BRILLEKALKULATOR_API_URL.
+   * Stub for BRILLE_API_URL.
    */
   http.post('http://hm-brille-api.test/api/brillesedler', async () => {
     return HttpResponse.json({ sats: 1 })
   }),
 
   /**
-   * Stub for FINN_HJELPEMIDDEL_API_URL.
+   * Stub for GRUNNDATA_API_URL.
    */
-  graphql.query('HentProdukter', async () => {
+  graphql.query('FinnHjelpemiddelprodukter', async () => {
     return HttpResponse.json({ data: { products: [] } })
   }),
   /**
-   * Stub for FINN_HJELPEMIDDEL_API_URL.
+   * Stub for ALTERNATIVPRODUKTER_API_URL.
    */
-  graphql.query('FinnAlternativer', async () => {
+  graphql.query('FinnAlternativeProdukter', async () => {
     return HttpResponse.json({ data: { alternativeProducts: [] } })
   }),
 ]

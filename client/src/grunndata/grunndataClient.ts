@@ -5,6 +5,6 @@ function url(path: string): string {
 }
 
 export const grunndataClient = {
-  alternativprodukter: new GraphQLClient(url('/finnalternativprodukt-api/graphql')),
-  hjelpemidler: new GraphQLClient(url('/finnhjelpemiddel-api/graphql')),
+  alternativprodukter: new GraphQLClient(url('/alternativprodukter-api/graphql')),
+  grunndata: new GraphQLClient(url('/grunndata-api/graphql')),
 }

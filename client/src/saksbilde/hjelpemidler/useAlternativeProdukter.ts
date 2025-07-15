@@ -7,7 +7,7 @@ import { pushError } from '../../utils/faro.ts'
 import {
   FinnAlternativeProdukterQuery,
   FinnAlternativeProdukterQueryVariables,
-} from '../../generated/grunndataAlternativprodukter.ts'
+} from '../../generated/alternativprodukter.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 
 const finnAlternativeProdukterQuery = gql`

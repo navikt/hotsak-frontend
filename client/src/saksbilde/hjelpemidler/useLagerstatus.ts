@@ -6,8 +6,8 @@ import type {
   SjekkLagerstatusForProduktQueryVariables,
   SjekkLagerstatusQuery,
   SjekkLagerstatusQueryVariables,
-} from '../../generated/grunndataAlternativprodukter.ts'
-import { useGrunndataAlternativprodukterExecute } from '../../grunndata/useGrunndata.ts'
+} from '../../generated/alternativprodukter.ts'
+import { useAlternativprodukterExecute } from '../../grunndata/useGrunndata.ts'
 
 const sjekkLagerstatusForProduktQuery = gql`
   query SjekkLagerstatusForProdukt($hmsnr: String!) {
@@ -46,12 +46,12 @@ interface LagerstatusResponse {
 export function useLagerstatus(): LagerstatusResponse {
   const [harOppdatertLagerstatus, setHarOppdatertLagerstatus] = useState(false)
 
-  const { loading: sjekkerLagerstatusForProdukt, execute: sjekkLagerstatusForProdukt } =
-    useGrunndataAlternativprodukterExecute<SjekkLagerstatusForProduktQuery, SjekkLagerstatusForProduktQueryVariables>(
-      sjekkLagerstatusForProduktQuery
-    )
+  const { loading: sjekkerLagerstatusForProdukt, execute: sjekkLagerstatusForProdukt } = useAlternativprodukterExecute<
+    SjekkLagerstatusForProduktQuery,
+    SjekkLagerstatusForProduktQueryVariables
+  >(sjekkLagerstatusForProduktQuery)
 
-  const { loading: sjekkerLagerstatus, execute: sjekkLagerstatus } = useGrunndataAlternativprodukterExecute<
+  const { loading: sjekkerLagerstatus, execute: sjekkLagerstatus } = useAlternativprodukterExecute<
     SjekkLagerstatusQuery,
     SjekkLagerstatusQueryVariables
   >(sjekkLagerstatusQuery)

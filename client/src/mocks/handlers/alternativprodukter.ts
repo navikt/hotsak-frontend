@@ -1,8 +1,9 @@
 import { graphql, HttpResponse } from 'msw'
-import alternativeProdukter from '../data/alternativProducts.json'
 
+import alternativeProdukter from '../data/alternativProducts.json'
 import type { StoreHandlersFactory } from '../data'
-export const finnAlternativProduktHandlers: StoreHandlersFactory = () => [
+
+export const alternativprodukterHandlers: StoreHandlersFactory = () => [
   graphql.query('SjekkLagerstatusForProdukt', async ({ variables }) => {
     const { hmsnr } = variables
     console.log('Mock for sjekk å oppdatere lagerstatus for HMS-nr:', hmsnr)
@@ -16,7 +17,7 @@ export const finnAlternativProduktHandlers: StoreHandlersFactory = () => [
 
     return HttpResponse.json({})
   }),
-  graphql.query('FinnAlternativer', async ({ variables }) => {
+  graphql.query('FinnAlternativeProdukter', async ({ variables }) => {
     const { hmsnrs } = variables
     const produkterMedAlternativeFor = alternativeProdukter.data.alternativeProducts.map((produkt: any) => ({
       ...produkt,

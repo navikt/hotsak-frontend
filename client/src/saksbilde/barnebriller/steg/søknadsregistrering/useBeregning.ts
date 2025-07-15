@@ -17,7 +17,7 @@ export function useBeregning(): BeregnSatsResponse | undefined {
   const bestillingsdatoDate = watch('bestillingsdato')
   const bestillingsdato = formatISO(bestillingsdatoDate || Date.now(), { representation: 'date' })
 
-  const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brillekalkulator-api/api/brillesedler')
+  const { post, data, reset } = usePost<BeregnSatsRequest, BeregnSatsResponse>('/brille-api/api/brillesedler')
 
   useEffect(() => {
     if (høyreSfære && høyreSylinder && venstreSfære && venstreSylinder) {

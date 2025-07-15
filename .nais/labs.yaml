@@ -39,18 +39,18 @@ spec:
   envFrom:
     - secret: hm-saksbehandling
   env:
-    - name: API_URL
-      value: "http://hotsak/api"
-    - name: FINN_HJELPEMIDDEL_API_URL
-      value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
-    - name: FINN_ALTERNATIV_PRODUKT_API_URL
-      value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
-    - name: BRILLEKALKULATOR_API_URL
-      value: "http://brille/api"
     - name: PORT
       value: "3000"
-    - name: CLIENT_ID_HOTSAK_API
+    - name: HOTSAK_API_URL
+      value: "http://hotsak/api"
+    - name: HOTSAK_API_CLIENT_ID
       value: ""
+    - name: GRUNNDATA_API_URL
+      value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
+    - name: ALTERNATIVPRODUKTER_API_URL
+      value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
+    - name: BRILLE_API_URL
+      value: "http://brille/api"
     - name: USE_MSW
       value: "true"
     - name: GIT_COMMIT

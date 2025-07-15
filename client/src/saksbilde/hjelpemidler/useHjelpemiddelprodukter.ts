@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from 'react'
 import type {
   HMDBFinnHjelpemiddelprodukterQuery,
   HMDBFinnHjelpemiddelprodukterQueryVariables,
-} from '../../generated/grunndataHjelpemidler.ts'
+} from '../../generated/grunndata.ts'
 import type { Produkt } from '../../types/types.internal'
-import { useGrunndataHjelpemidlerQuery } from '../../grunndata/useGrunndata.ts'
+import { useGrunndataQuery } from '../../grunndata/useGrunndata.ts'
 
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
@@ -24,7 +24,7 @@ const finnHjelpemiddelprodukterQuery = gql`
 
 export function useHjelpemiddelprodukter(hmsnrs: string[]) {
   const variables = useMemo(() => ({ hmsnrs: [...new Set(hmsnrs)] }), [hmsnrs])
-  const { data, error } = useGrunndataHjelpemidlerQuery<
+  const { data, error } = useGrunndataQuery<
     HMDBFinnHjelpemiddelprodukterQuery,
     HMDBFinnHjelpemiddelprodukterQueryVariables
   >(finnHjelpemiddelprodukterQuery, variables)

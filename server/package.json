@@ -41,8 +41,8 @@
     "test": "vitest",
     "build": "tsc -p .",
     "clean": "rimraf ./dist",
-    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test tsx --enable-source-maps src/server.mts",
-    "start": "cross-env-shell USE_MSW=true NODE_ENV=development API_URL=http://hm-saksbehandling.test BRILLEKALKULATOR_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test FINN_HJELPEMIDDEL_API_URL=http://hm-grunndata-search.test node --enable-source-maps dist/server.mjs",
+    "dev": "cross-env-shell USE_MSW=true NODE_ENV=development HOTSAK_API_URL=http://hm-saksbehandling.test BRILLE_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test GRUNNDATA_API_URL=http://hm-grunndata-search.test tsx --enable-source-maps src/server.mts",
+    "start": "cross-env-shell USE_MSW=true NODE_ENV=development HOTSAK_API_URL=http://hm-saksbehandling.test BRILLE_API_URL=http://hm-brille-api.test FARO_URL=http://faro.test GRUNNDATA_API_URL=http://hm-grunndata-search.test node --enable-source-maps dist/server.mjs",
     "lint": "eslint ."
   }
 }

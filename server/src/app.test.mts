@@ -46,7 +46,7 @@ describe('app', () => {
   })
 
   test('settings.js', async () => {
-    const response = await request().get('/settings.js').expect(200).contentType(ContentType.Application.JavaScript)
+    const response = await request().get('/settings.js').expect(200).contentType(ContentType.Text.JavaScript)
     expect(response.text).toContain('window.appSettings')
   })
 
@@ -60,42 +60,36 @@ describe('app', () => {
       await request().get('/test').authorization(token).expect(200)
     })
 
-    test('obo flyt hvis token er gyldig for hm-saksbehandling', async () => {
+    test('obo flyt hvis token er gyldig for hotsak-api', async () => {
       const token = await generateToken()
       const response = await request().get('/api/sak/1').authorization(token).expect(200)
       expect(response.body).toEqual({ sakId: '1' })
     })
 
-    test('obo flyt hvis token er gyldig for heit-krukka', async () => {
+    test('reverse proxy for brille-api', async () => {
       const token = await generateToken()
-      const response = await request().post('/heit-krukka/api/skjema/1').authorization(token).expect(200)
-      expect(response.body).toEqual({ skjemaId: '1' })
-    })
-
-    test('reverse proxy for brillekalkulator-api', async () => {
-      const token = await generateToken()
-      const response = await request().post('/brillekalkulator-api/api/brillesedler').authorization(token).expect(200)
+      const response = await request().post('/brille-api/api/brillesedler').authorization(token).expect(200)
       expect(response.body).toEqual({ sats: 1 })
     })
 
-    test('reverse proxy for finnhjelpemiddel-api', async () => {
+    test('reverse proxy for grunndata-api', async () => {
       const token = await generateToken()
       const response = await request()
-        .post('/finnhjelpemiddel-api/graphql')
-        .send({ query: 'query HentProdukter { products { hmsArtNr } }' })
+        .post('/grunndata-api/graphql')
+        .send({ query: 'query FinnHjelpemiddelprodukter { products { hmsArtNr } }' })
         .authorization(token)
         .expect(200)
       expect(response.body).toEqual({ data: { products: [] } })
     })
 
-    test('reverse proxy for finnalternativprodukt-api', async () => {
+    test('reverse proxy for alternativprodukter-api', async () => {
       const token = await generateToken()
       const response = await request()
-        .post('/finnalternativprodukt-api/graphql')
-        .send({ query: 'query FinnAlternativer { alternativeProducts { hmsArtNr } }' })
+        .post('/alternativprodukter-api/graphql')
+        .send({ query: 'query FinnAlternativeProdukter { alternativeProducts { hmsArtNr } }' })
         .authorization(token)
         .expect(200)
-      expect(response.body).toEqual({ data: { products: [] } })
+      expect(response.body).toEqual({ data: { alternativeProducts: [] } })
     })
   })
 })

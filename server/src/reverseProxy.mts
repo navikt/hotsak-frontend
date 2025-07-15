@@ -6,16 +6,16 @@ import { logger } from './logging.mjs'
 export function reverseProxy(server: Express): void {
   server.use(
     '/api/',
-    proxy(process.env.API_URL, {
+    proxy(process.env.HOTSAK_API_URL, {
       parseReqBody: false,
-      proxyReqOptDecorator: onBehalfOfDecorator(process.env.CLIENT_ID_HOTSAK_API),
+      proxyReqOptDecorator: onBehalfOfDecorator(process.env.HOTSAK_API_CLIENT_ID),
       // vi vil ha med "/api/" i kall mot hm-saksbehandling
       proxyReqPathResolver: (req) => req.originalUrl,
     })
   )
-  server.use('/finnhjelpemiddel-api', proxy(process.env.FINN_HJELPEMIDDEL_API_URL))
-  server.use('/brillekalkulator-api', proxy(process.env.BRILLEKALKULATOR_API_URL))
-  server.use('/finnalternativprodukt-api', proxy(process.env.FINN_ALTERNATIV_PRODUKT_API_URL))
+  server.use('/grunndata-api', proxy(process.env.GRUNNDATA_API_URL))
+  server.use('/alternativprodukter-api', proxy(process.env.ALTERNATIVPRODUKTER_API_URL))
+  server.use('/brille-api', proxy(process.env.BRILLE_API_URL))
 }
 
 function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorator'] {

@@ -5,6 +5,7 @@ export const ContentType = {
   },
   Text: {
     Html: 'text/html; charset=utf-8',
+    JavaScript: 'text/javascript; charset=utf-8',
     Plain: 'text/plain; charset=utf-8',
   },
 }

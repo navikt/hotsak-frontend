@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-import type { HMDBFinnHjelpemiddelprodukterQuery } from '../../generated/grunndataHjelpemidler.ts'
+import type { HMDBFinnHjelpemiddelprodukterQuery } from '../../generated/grunndata.ts'
 import products from './products.json'
 
 type LagretHjelpemiddel = HMDBFinnHjelpemiddelprodukterQuery['products'][0]

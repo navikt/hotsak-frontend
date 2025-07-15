@@ -3,7 +3,7 @@ import { brillekalkulatorHandlers } from './brillekalkulator'
 import { brevHandlers } from './brev'
 import { dokumentHandlers } from './dokumenter'
 import { endringsloggHandlers } from './endringslogg'
-import { finnHjelpemiddelHandlers } from './finnHjelpemiddel'
+import { grunndataHandler } from './grunndata.ts'
 import { hjelpemiddelHandlers } from './hjelpemiddel'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt'
 import { notatHandlers } from './notat'
@@ -19,7 +19,7 @@ import { bestillingHandlers } from './bestilling'
 import { brevutkastHandlers } from './brevutkast'
 import { saksVarslerHandlers } from './saksvarsler'
 import { behovsmeldingHandlers } from './behovsmelding'
-import { finnAlternativProduktHandlers } from './finnAlternativProdukt.ts'
+import { alternativprodukterHandlers } from './alternativprodukter.ts'
 import { bildeHandlers } from './bilder.ts'
 
 export const setupHandlers: StoreHandlersFactory = (store) => [
@@ -31,8 +31,8 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...brillekalkulatorHandlers(store),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
-  ...finnHjelpemiddelHandlers(store),
-  ...finnAlternativProduktHandlers(store),
+  ...grunndataHandler(store),
+  ...alternativprodukterHandlers(store),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...notatHandlers(store),

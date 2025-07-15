@@ -5,12 +5,15 @@ export default defineConfig({
     environment: 'node',
     env: {
       NAIS_CLUSTER_NAME: 'test',
-      API_URL: 'http://hm-saksbehandling.test',
-      BRILLEKALKULATOR_API_URL: 'http://hm-brille-api.test',
       FARO_URL: 'http://faro.test',
-      FINN_HJELPEMIDDEL_API_URL: 'http://hm-grunndata-search.test',
-      FINN_ALTERNATIV_PRODUKT_API_URL: 'http://finnalternativprodukt.test',
-      CLIENT_ID_HOTSAK_API: 'test',
+
+      HOTSAK_API_URL: 'http://hm-saksbehandling.test',
+      HOTSAK_API_CLIENT_ID: 'test',
+
+      GRUNNDATA_API_URL: 'http://hm-grunndata-search.test',
+      ALTERNATIVPRODUKTER_API_URL: 'http://hm-grunndata-alternativprodukter.test',
+      BRILLE_API_URL: 'http://hm-brille-api.test',
+
       USE_MSW: 'false',
 
       AZURE_APP_CLIENT_ID: 'test',

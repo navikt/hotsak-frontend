@@ -1,8 +1,8 @@
 schema: "https://hm-grunndata-search.intern.dev.nav.no/graphql"
 documents:
-  - "src/saksbilde/hjelpemidler/useFinnHjelpemiddel.ts"
+  - "src/saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts"
 generates:
-  ./src/generated/finnhjelpemiddel.ts:
+  ./src/generated/grunndataHjelpemidler.ts:
     plugins:
       - typescript
       - typescript-operations

@@ -1,9 +1,10 @@
 import { Button, Heading, Modal } from '@navikt/ds-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { AlternativeProduct } from '../../../generated/finnAlternativprodukt.ts'
-import { useSjekkLagerstatus } from '../useSjekkLagerstatus.ts'
-import { AlternativProduktVelger } from './AlternativProduktVelger.tsx'
+
+import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
+import { useLagerstatus } from '../useLagerstatus.ts'
+import { AlternativtProduktVelger } from './AlternativtProduktVelger.tsx'
 import { BegrunnelseForBytte } from './BegrunnelseForBytte.tsx'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -22,11 +23,11 @@ interface AlternativProduktModalProps {
   onLukk(): void
 }
 
-export function AlternativProdukterModal(props: AlternativProduktModalProps) {
+export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const { åpen, onLukk, alternativer, alleAlternativer, hjelpemiddelId, onLagre, onMutate } = props
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const { sjekkLagerstatusFor, harOppdatertLagerstatus } = useSjekkLagerstatus()
+  const { sjekkLagerstatusFor, harOppdatertLagerstatus } = useLagerstatus()
   const ref = useRef<HTMLDialogElement>(null)
 
   const hmsnrForAlternativer = useMemo(() => alleAlternativer.map((it) => it.hmsArtNr), [alleAlternativer])
@@ -48,9 +49,10 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
     const oppdaterLagerstatus = async () => {
       setHenterLagerstatus(true)
       try {
-        await sjekkLagerstatusFor(hmsnrForAlternativer)
-        await new Promise((resolve) => setTimeout(resolve, 2000)) // Må midlertidig vente litt før ny lagerstatus er oppdatert
-        await onMutate()
+        if (await sjekkLagerstatusFor(hmsnrForAlternativer)) {
+          await new Promise((resolve) => setTimeout(resolve, 2000)) // Må midlertidig vente litt før ny lagerstatus er oppdatert
+          await onMutate()
+        }
       } finally {
         setHenterLagerstatus(false)
       }
@@ -103,7 +105,7 @@ export function AlternativProdukterModal(props: AlternativProduktModalProps) {
         >
           <Modal.Body>
             {!nyttProduktValgt ? (
-              <AlternativProduktVelger
+              <AlternativtProduktVelger
                 alternativer={alternativer}
                 onMutate={onMutate}
                 henterLagerstatus={henterLagerstatus}

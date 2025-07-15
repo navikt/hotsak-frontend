@@ -1,13 +1,17 @@
-import { gql, request } from 'graphql-request'
+import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 
-import { AlternativeProduct, Query, QueryAlternativeProductsArgs } from '../../generated/finnAlternativprodukt'
 import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang'
 import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
 import { pushError } from '../../utils/faro.ts'
+import {
+  FinnAlternativeProdukterQuery,
+  FinnAlternativeProdukterQueryVariables,
+} from '../../generated/grunndataAlternativprodukter.ts'
+import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 
-const query = gql`
-  query FinnAlternativer($hmsnrs: [String!]!) {
+const finnAlternativeProdukterQuery = gql`
+  query FinnAlternativeProdukter($hmsnrs: [String!]!) {
     alternativeProducts(hmsnrs: $hmsnrs) {
       hmsArtNr
       id
@@ -33,19 +37,26 @@ const query = gql`
     }
   }
 `
+
+export type AlternativeProduct = FinnAlternativeProdukterQuery['alternativeProducts'][0]
+
 type AlternativeProdukterMap = Record<string, AlternativeProduct[]>
-interface AlternativeProdukterResponse {
+
+interface AlternativeProdukter {
   alternativeProdukter: AlternativeProdukterMap
   alleAlternativeProdukter: AlternativeProdukterMap
   loading: boolean
   mutate(): Promise<void>
 }
 
-export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukterResponse {
+export function useAlternativeProdukter(hmsnrs: string[]): AlternativeProdukter {
+  const { innloggetAnsatt } = useTilgangContext()
+
   const [alternativeProdukter, setAlternativeProdukter] = useState<AlternativeProdukterMap>({})
   const [alleAlternativeProdukter, setAlleAlternativeProdukter] = useState<AlternativeProdukterMap>({})
-  const { innloggetAnsatt } = useTilgangContext()
+
   const [loading, setLoading] = useState(false)
+
   const erOmbrukPilot = useErOmbrukPilot()
   const gjeldendeEnhetsnummer = innloggetAnsatt.gjeldendeEnhet.nummer
 
@@ -56,11 +67,10 @@ export function useFinnAlternativprodukt(hmsnrs: string[]): AlternativeProdukter
     setLoading(true)
 
     try {
-      const data = await request<Query, QueryAlternativeProductsArgs>(
-        new URL('/finnalternativprodukt-api/graphql', window.location.href).toString(),
-        query,
-        { hmsnrs: hmsnrs }
-      )
+      const data = await grunndataClient.alternativprodukter.request<
+        FinnAlternativeProdukterQuery,
+        FinnAlternativeProdukterQueryVariables
+      >(finnAlternativeProdukterQuery, { hmsnrs })
 
       const alleAlternativer = byggProduktMap(data.alternativeProducts)
       setAlleAlternativeProdukter(alleAlternativer)

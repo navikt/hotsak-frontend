@@ -55,7 +55,8 @@ export interface HMDBBestillingsordning {
 
 export interface HMDBCompatibleWith {
   __typename?: 'CompatibleWith'
-  seriesIds: Array<Scalars['String']['output']>
+  productIds?: Maybe<Array<Maybe<Scalars['String']['output']>>>
+  seriesIds?: Maybe<Array<Maybe<Scalars['String']['output']>>>
 }
 
 export interface HMDBMediaDoc {
@@ -111,6 +112,7 @@ export interface HMDBProduct {
   isoCategoryTextShort?: Maybe<Scalars['String']['output']>
   isoCategoryTitle?: Maybe<Scalars['String']['output']>
   isoCategoryTitleShort?: Maybe<Scalars['String']['output']>
+  main: Scalars['Boolean']['output']
   media: Array<HMDBMediaDoc>
   productURL: Scalars['String']['output']
   productVariantURL: Scalars['String']['output']
@@ -183,11 +185,11 @@ export interface HMDBTechDataFilters {
   totalVektKG?: Maybe<Scalars['Int']['output']>
 }
 
-export type HMDBHentProdukterQueryVariables = Exact<{
+export type HMDBFinnHjelpemiddelprodukterQueryVariables = Exact<{
   hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
 }>
 
-export type HMDBHentProdukterQuery = {
+export type HMDBFinnHjelpemiddelprodukterQuery = {
   __typename?: 'Query'
   products: Array<{
     __typename?: 'Product'

@@ -12,7 +12,7 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
             GIT_COMMIT: 'unknown',
             USE_MSW: ${proxy ? 'false' : 'true'},
             MILJO: 'local',
-            IMAGE_PROXY_URL: 'http://localhost:3001/imageproxy',
+            IMAGE_PROXY_URL: ${proxy ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
             FARO_URL: '',
           }`,
         })

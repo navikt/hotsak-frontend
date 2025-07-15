@@ -2,10 +2,11 @@ import { ClockDashedIcon } from '@navikt/aksel-icons'
 import { Bleed, Box, Button, Checkbox, HGrid, HStack, Link, Skeleton, Tag, VStack } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
+
 import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
-import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
+import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
 import { formaterRelativTid } from '../../../utils/dato'
-import { useSjekkLagerstatus } from '../useSjekkLagerstatus'
+import { useLagerstatus } from '../useLagerstatus.ts'
 
 interface AlternativProduktCardProps {
   alternativ: AlternativeProduct
@@ -15,7 +16,7 @@ interface AlternativProduktCardProps {
   endretProdukt: string[]
 }
 
-export function AlternativProduktCard({
+export function AlternativtProduktCard({
   alternativ,
   onMutate,
   endretProdukt,
@@ -23,7 +24,7 @@ export function AlternativProduktCard({
   lagerstatusLoading,
 }: AlternativProduktCardProps) {
   // TODO flytt denne til egen hook for å unngå kollisjoner
-  const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useSjekkLagerstatus()
+  const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useLagerstatus()
 
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 

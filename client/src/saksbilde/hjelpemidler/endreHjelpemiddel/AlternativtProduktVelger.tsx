@@ -1,7 +1,8 @@
 import { CheckboxGroup, HGrid } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { AlternativeProduct } from '../../../generated/finnAlternativprodukt'
-import { AlternativProduktCard } from './AlternativProduktCard'
+
+import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
+import { AlternativtProduktCard } from './AlternativtProduktCard.tsx'
 
 interface AlternativProduktVelgerProps {
   onMutate: () => void
@@ -10,7 +11,7 @@ interface AlternativProduktVelgerProps {
   harOppdatertLagerstatus: boolean
 }
 
-export function AlternativProduktVelger({
+export function AlternativtProduktVelger({
   alternativer,
   onMutate,
   henterLagerstatus,
@@ -35,7 +36,7 @@ export function AlternativProduktVelger({
         >
           <HGrid columns={'1fr 1fr'} gap="4" paddingBlock={'2 0'}>
             {alternativer.map((alternativ) => (
-              <AlternativProduktCard
+              <AlternativtProduktCard
                 key={alternativ.id}
                 alternativ={alternativ}
                 onMutate={onMutate}

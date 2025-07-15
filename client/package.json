@@ -72,9 +72,9 @@
     "test:ci": "echo 'vitest --run --dir ./src'",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "codegen:finnHjelpemiddel": "graphql-codegen --config finnhjelpemiddel-codegen.yaml",
-    "codegen:finnAlternativProdukt": "graphql-codegen --config finnAlternativProdukt-codegen.yaml",
-    "codegen:all": "npm run codegen:finnAlternativProdukt && npm run codegen:finnHjelpemiddel",
+    "codegen:grunndata-alternativprodukter": "graphql-codegen --config grunndata-alternativprodukter-codegen.yaml",
+    "codegen:grunndata-hjelpemidler": "graphql-codegen --config grunndata-hjelpemidler-codegen.yaml",
+    "codegen:all": "npm run codegen:grunndata-alternativprodukter && npm run codegen:grunndata-hjelpemidler",
     "lint": "eslint .",
     "prettier": "prettier -w ./src",
     "clean": "rimraf ./dist"

@@ -14,10 +14,26 @@ export interface Scalars {
   Float: { input: number; output: number }
 }
 
+export interface Agreement {
+  __typename?: 'Agreement'
+  expired?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  label?: Maybe<Scalars['String']['output']>
+  postId: Scalars['String']['output']
+  postNr?: Maybe<Scalars['Int']['output']>
+  postTitle: Scalars['String']['output']
+  published?: Maybe<Scalars['String']['output']>
+  rank: Scalars['Int']['output']
+  refNr: Scalars['String']['output']
+  title: Scalars['String']['output']
+}
+
 export interface AlternativeProduct {
   __typename?: 'AlternativeProduct'
+  agreements?: Maybe<Array<Maybe<Agreement>>>
   alternativeFor: Array<Scalars['String']['output']>
   articleName: Scalars['String']['output']
+  hasAgreement: Scalars['Boolean']['output']
   hmsArtNr: Scalars['String']['output']
   id: Scalars['String']['output']
   isoCategory: Scalars['String']['output']
@@ -26,6 +42,14 @@ export interface AlternativeProduct {
   supplier: Supplier
   title: Scalars['String']['output']
   wareHouseStock?: Maybe<Array<Maybe<WareHouseStock>>>
+}
+
+export interface AlternativeProductPage {
+  __typename?: 'AlternativeProductPage'
+  content: Array<AlternativeProduct>
+  from: Scalars['Int']['output']
+  size: Scalars['Int']['output']
+  total: Scalars['Int']['output']
 }
 
 export interface HmsArtnrMapping {
@@ -51,7 +75,7 @@ export interface Media {
 
 export interface Mutation {
   __typename?: 'Mutation'
-  createHmsArtnrMapping: HmsArtnrMapping
+  createHmsArtnrMapping: Array<HmsArtnrMapping>
   deleteHmsArtnrMapping: Scalars['Boolean']['output']
   updateHmsArtnrMapping: HmsArtnrMapping
 }
@@ -61,7 +85,7 @@ export interface MutationCreateHmsArtnrMappingArgs {
 }
 
 export interface MutationDeleteHmsArtnrMappingArgs {
-  id: Scalars['String']['input']
+  input: HmsArtnrMappingInput
 }
 
 export interface MutationUpdateHmsArtnrMappingArgs {
@@ -81,6 +105,7 @@ export interface ProductStock {
 export interface Query {
   __typename?: 'Query'
   alternativeProducts: Array<AlternativeProduct>
+  alternativeProductsPage: AlternativeProductPage
   getHmsArtnrMappingBySourceHmsArtnr: Array<HmsArtnrMapping>
   getHmsArtnrMappingsById?: Maybe<HmsArtnrMapping>
   productStock: ProductStock
@@ -90,6 +115,12 @@ export interface Query {
 
 export interface QueryAlternativeProductsArgs {
   hmsnrs: Array<Scalars['String']['input']>
+}
+
+export interface QueryAlternativeProductsPageArgs {
+  from?: InputMaybe<Scalars['Int']['input']>
+  hmsnrs: Array<Scalars['String']['input']>
+  size?: InputMaybe<Scalars['Int']['input']>
 }
 
 export interface QueryGetHmsArtnrMappingBySourceHmsArtnrArgs {
@@ -122,6 +153,7 @@ export interface Supplier {
 export interface WareHouseStock {
   __typename?: 'WareHouseStock'
   amountInStock: Scalars['Int']['output']
+  available: Scalars['Int']['output']
   backOrders: Scalars['Int']['output']
   inStock: Scalars['Boolean']['output']
   intRequest: Scalars['Int']['output']
@@ -136,11 +168,11 @@ export interface WareHouseStock {
   updated: Scalars['String']['output']
 }
 
-export type FinnAlternativerQueryVariables = Exact<{
+export type FinnAlternativeProdukterQueryVariables = Exact<{
   hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
 }>
 
-export type FinnAlternativerQuery = {
+export type FinnAlternativeProdukterQuery = {
   __typename?: 'Query'
   alternativeProducts: Array<{
     __typename?: 'AlternativeProduct'
@@ -161,19 +193,6 @@ export type FinnAlternativerQuery = {
   }>
 }
 
-export type SjekkLagerstatusQueryVariables = Exact<{
-  hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
-}>
-
-export type SjekkLagerstatusQuery = {
-  __typename?: 'Query'
-  productStocksAllLocations: Array<{
-    __typename?: 'ProductStock'
-    hmsArtNr: string
-    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
-  }>
-}
-
 export type SjekkLagerstatusForProduktQueryVariables = Exact<{
   hmsnr: Scalars['String']['input']
 }>
@@ -182,8 +201,22 @@ export type SjekkLagerstatusForProduktQuery = {
   __typename?: 'Query'
   productStock: {
     __typename?: 'ProductStock'
-    hmsArtNr: string
     id: string
+    hmsArtNr: string
     warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
   }
+}
+
+export type SjekkLagerstatusQueryVariables = Exact<{
+  hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
+}>
+
+export type SjekkLagerstatusQuery = {
+  __typename?: 'Query'
+  productStocksAllLocations: Array<{
+    __typename?: 'ProductStock'
+    id: string
+    hmsArtNr: string
+    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
+  }>
 }

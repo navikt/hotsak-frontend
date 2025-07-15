@@ -1,5 +1,6 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
+
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
@@ -10,8 +11,8 @@ import { OebsAlert } from './OebsAlert.tsx'
 import { Summering } from './Summering.tsx'
 import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak.ts'
-import { useFinnAlternativprodukt } from './useFinnAlternativprodukt.ts'
-import { useFinnHjelpemiddel } from './useFinnHjelpemiddel.ts'
+import { useAlternativeProdukter } from './useAlternativeProdukter.ts'
+import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -40,12 +41,12 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
     return hjelpemidler.map((hjelpemiddel) => hjelpemiddel.produkt.hmsArtNr)
   }, [hjelpemidler])
 
-  const finnHjelpemiddelProdukter = useFinnHjelpemiddel(alleHmsNr)
+  const hjelpemiddelprodukter = useHjelpemiddelprodukter(alleHmsNr)
   const {
     alternativeProdukter,
     alleAlternativeProdukter,
     mutate: hentAlternativeProdukter,
-  } = useFinnAlternativprodukt(alleHjelpemidler)
+  } = useAlternativeProdukter(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
@@ -68,7 +69,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <Hjelpemiddel
             hjelpemiddel={hjelpemiddel}
             sak={sak}
-            produkter={finnHjelpemiddelProdukter}
+            produkter={hjelpemiddelprodukter}
             alternativer={alternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
             alleAlternativer={alleAlternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
             onMutate={hentAlternativeProdukter}
@@ -80,7 +81,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={finnHjelpemiddelProdukter} />
+          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
       <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />

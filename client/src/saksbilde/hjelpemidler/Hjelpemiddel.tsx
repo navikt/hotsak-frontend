@@ -1,8 +1,9 @@
 import { ArrowsSquarepathIcon, PencilIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
-import { AlternativeProduct } from '../../generated/finnAlternativprodukt.ts'
+import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
@@ -13,7 +14,7 @@ import {
   Sak,
 } from '../../types/types.internal.ts'
 import Bytter from './Bytter.tsx'
-import { AlternativProdukterModal } from './endreHjelpemiddel/AlternativProdukterModal.tsx'
+import { AlternativeProdukterModal } from './endreHjelpemiddel/AlternativeProdukterModal.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -174,7 +175,7 @@ export function Hjelpemiddel({
           onLukk={() => setVisEndreHjelpemiddelModal(false)}
         />
         {erOmbrukPilot && (
-          <AlternativProdukterModal
+          <AlternativeProdukterModal
             åpen={visAlternativerModal}
             hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
             hmsNr={hjelpemiddel.produkt.hmsArtNr}

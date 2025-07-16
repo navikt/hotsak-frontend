@@ -7,6 +7,7 @@ import type {
 } from '../../generated/grunndata.ts'
 import type { Produkt } from '../../types/types.internal'
 import { useGrunndataQuery } from '../../grunndata/useGrunndata.ts'
+import { unique } from '../../utils/array.ts'
 
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
@@ -23,7 +24,7 @@ const finnHjelpemiddelprodukterQuery = gql`
 `
 
 export function useHjelpemiddelprodukter(hmsnrs: string[]) {
-  const variables = useMemo(() => ({ hmsnrs: [...new Set(hmsnrs)] }), [hmsnrs])
+  const variables = useMemo(() => ({ hmsnrs: unique(hmsnrs) }), [hmsnrs])
   const { data, error } = useGrunndataQuery<
     HMDBFinnHjelpemiddelprodukterQuery,
     HMDBFinnHjelpemiddelprodukterQueryVariables

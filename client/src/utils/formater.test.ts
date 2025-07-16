@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from './formater'
 
 describe('formater', () => {

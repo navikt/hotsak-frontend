@@ -9,6 +9,7 @@ import {
   FinnAlternativeProdukterSideQueryVariables,
 } from '../../generated/alternativprodukter.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
+import { unique } from '../../utils/array.ts'
 
 const finnAlternativeProdukterSideQuery = gql`
   query FinnAlternativeProdukterSide($hmsnrs: [String!]!, $from: Int, $size: Int) {
@@ -93,7 +94,7 @@ export function useAlternativeProdukter(hmsnrs: string[]): AlternativeProdukter 
   }
 
   const mutate = async () => {
-    const unikeHmsnrs = [...new Set(hmsnrs)]
+    const unikeHmsnrs = unique(hmsnrs)
 
     if (unikeHmsnrs.length === 0 || !oebsEnhet) {
       setAlternativeProdukter({})

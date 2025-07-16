@@ -5,40 +5,45 @@ import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang'
 import { oebs_enheter } from './endreHjelpemiddel/oebsMapping'
 import { pushError } from '../../utils/faro.ts'
 import {
-  FinnAlternativeProdukterQuery,
-  FinnAlternativeProdukterQueryVariables,
+  FinnAlternativeProdukterSideQuery,
+  FinnAlternativeProdukterSideQueryVariables,
 } from '../../generated/alternativprodukter.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 
-const finnAlternativeProdukterQuery = gql`
-  query FinnAlternativeProdukter($hmsnrs: [String!]!) {
-    alternativeProducts(hmsnrs: $hmsnrs) {
-      hmsArtNr
-      id
-      title
-      articleName
-      supplier {
+const finnAlternativeProdukterSideQuery = gql`
+  query FinnAlternativeProdukterSide($hmsnrs: [String!]!, $from: Int, $size: Int) {
+    alternativeProductsPage(hmsnrs: $hmsnrs, from: $from, size: $size) {
+      total
+      from
+      size
+      content {
         id
-        name
-      }
-      isoCategory
-      alternativeFor
-      media {
-        uri
-        text
-        type
-        priority
-      }
-      wareHouseStock {
-        location
-        amountInStock
-        updated
+        hmsArtNr
+        title
+        articleName
+        supplier {
+          id
+          name
+        }
+        isoCategory
+        alternativeFor
+        media {
+          uri
+          type
+          priority
+          text
+        }
+        wareHouseStock {
+          location
+          updated
+          amountInStock
+        }
       }
     }
   }
 `
 
-export type AlternativeProduct = FinnAlternativeProdukterQuery['alternativeProducts'][0]
+export type AlternativeProduct = FinnAlternativeProdukterSideQuery['alternativeProductsPage']['content'][0]
 
 type AlternativeProdukterMap = Record<string, AlternativeProduct[]>
 
@@ -68,11 +73,11 @@ export function useAlternativeProdukter(hmsnrs: string[]): AlternativeProdukter 
 
     try {
       const data = await grunndataClient.alternativprodukter.request<
-        FinnAlternativeProdukterQuery,
-        FinnAlternativeProdukterQueryVariables
-      >(finnAlternativeProdukterQuery, { hmsnrs })
+        FinnAlternativeProdukterSideQuery,
+        FinnAlternativeProdukterSideQueryVariables
+      >(finnAlternativeProdukterSideQuery, { hmsnrs })
 
-      const alleAlternativer = byggProduktMap(data.alternativeProducts)
+      const alleAlternativer = byggProduktMap(data.alternativeProductsPage.content)
       setAlleAlternativeProdukter(alleAlternativer)
 
       const alternativeProdukterForHmsnr: AlternativeProdukterMap = Object.fromEntries(

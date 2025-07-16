@@ -17,13 +17,13 @@ export const alternativprodukterHandlers: StoreHandlersFactory = () => [
 
     return HttpResponse.json({})
   }),
-  graphql.query('FinnAlternativeProdukter', async ({ variables }) => {
+  graphql.query('FinnAlternativeProdukterSide', async ({ variables }) => {
     const { hmsnrs } = variables
-    const produkterMedAlternativeFor = alternativeProdukter.data.alternativeProducts.map((produkt: any) => ({
+    const content = alternativeProdukter.data.alternativeProducts.map((produkt: any) => ({
       ...produkt,
       alternativeFor: hmsnrs,
     }))
 
-    return HttpResponse.json({ data: { alternativeProducts: produkterMedAlternativeFor } })
+    return HttpResponse.json({ data: { alternativeProductsPage: { content } } })
   }),
 ]

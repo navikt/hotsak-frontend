@@ -168,29 +168,37 @@ export interface WareHouseStock {
   updated: Scalars['String']['output']
 }
 
-export type FinnAlternativeProdukterQueryVariables = Exact<{
+export type FinnAlternativeProdukterSideQueryVariables = Exact<{
   hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
+  from?: InputMaybe<Scalars['Int']['input']>
+  size?: InputMaybe<Scalars['Int']['input']>
 }>
 
-export type FinnAlternativeProdukterQuery = {
+export type FinnAlternativeProdukterSideQuery = {
   __typename?: 'Query'
-  alternativeProducts: Array<{
-    __typename?: 'AlternativeProduct'
-    hmsArtNr: string
-    id: string
-    title: string
-    articleName: string
-    isoCategory: string
-    alternativeFor: Array<string>
-    supplier: { __typename?: 'Supplier'; id: string; name: string }
-    media: Array<{ __typename?: 'Media'; uri: string; text: string; type: string; priority?: number | null }>
-    wareHouseStock?: Array<{
-      __typename?: 'WareHouseStock'
-      location: string
-      amountInStock: number
-      updated: string
-    } | null> | null
-  }>
+  alternativeProductsPage: {
+    __typename?: 'AlternativeProductPage'
+    total: number
+    from: number
+    size: number
+    content: Array<{
+      __typename?: 'AlternativeProduct'
+      id: string
+      hmsArtNr: string
+      title: string
+      articleName: string
+      isoCategory: string
+      alternativeFor: Array<string>
+      supplier: { __typename?: 'Supplier'; id: string; name: string }
+      media: Array<{ __typename?: 'Media'; uri: string; type: string; priority?: number | null; text: string }>
+      wareHouseStock?: Array<{
+        __typename?: 'WareHouseStock'
+        location: string
+        updated: string
+        amountInStock: number
+      } | null> | null
+    }>
+  }
 }
 
 export type SjekkLagerstatusForProduktQueryVariables = Exact<{

@@ -44,7 +44,7 @@ export const handlers: RequestHandler[] = [
   /**
    * Stub for ALTERNATIVPRODUKTER_API_URL.
    */
-  graphql.query('FinnAlternativeProdukter', async () => {
-    return HttpResponse.json({ data: { alternativeProducts: [] } })
+  graphql.query('FinnAlternativeProdukterSide', async () => {
+    return HttpResponse.json({ data: { alternativeProductsPage: { content: [] } } })
   }),
 ]

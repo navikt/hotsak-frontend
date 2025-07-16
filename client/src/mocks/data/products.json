@@ -2,307 +2,308 @@
   "data": {
     "products": [
       {
-        "hmsArtNr": "014112",
-        "articleName": "Topro terskeleliminator",
-        "isoCategoryTitleShort": "Terskeleliminator",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/014112",
-        "agreements": [
-          {
-            "postTitle": "Post 1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "289689",
-        "articleName": "Varslingsmottaker Nora Flexiwatch, LIFE",
-        "isoCategoryTitleShort": "Indikatorer med lyssignaler",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/289689",
-        "agreements": [
-          {
-            "postTitle": "Post 8: Trådløs varsling til nærpersoner"
-          },
-          {
-            "postTitle": "Post 9: Tilkalling - sender uten bryter"
-          },
-          {
-            "postTitle": "Post 13: Varslingssystem"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "176090",
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176090",
-
-        "articleName": "Antisklimatte serveringsbrett rullator 4hjul Topro Troja Original M/S/Topro Olympos ATR M",
-        "agreements": [
-          {
-            "postTitle": "4. Rullator - utendørs bruk"
-          },
-          {
-            "postTitle": "3. Rullator - innendørs bruk til brukere med stor kroppsstørrelse og/eller høy vekt"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "174791",
-        "articleName": "Puls NAV 90 x 200",
-        "isoCategoryTitleShort": "Madrasser skumbaserte",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/174791",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "231053",
-        "articleName": "Hiro180 høyre",
-        "isoCategoryTitleShort": "Trappeheiser med sete",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/231053",
-        "agreements": [
-          {
-            "postTitle": "Post 13: Trappeheis med sete for trapp med sving/repos "
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "235352",
-        "articleName": "Gemino 30M Parkinson",
-        "isoCategoryTitleShort": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/235352",
-        "agreements": [
-          {
-            "postTitle": "6. Rullator - brukere med akinesi"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "170093",
-        "articleName": "Eliramp",
-        "isoCategoryTitleShort": "Terskeleliminatorer",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/170093",
-        "agreements": [
-          {
-            "postTitle": "Post 1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "171506",
+        "id": "2bc83864-bc3d-4bd6-9956-a1eb1845d53f",
         "articleName": "Basic Cushion 38x44",
-        "isoCategoryTitleShort": "Sitteputer for komfort",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/171506",
-        "agreements": [
-          {
-            "postTitle": "Post 1: Enkel sittepute"
-          }
-        ]
+        "hmsArtNr": "171506",
+        "isoCategoryTitleShort": "Sittepute",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171506"
       },
       {
-        "hmsArtNr": "171509",
+        "id": "f4a64674-47bd-49d2-83a1-912166d87d79",
         "articleName": "Basic Cushion 40x44",
-        "isoCategoryTitleShort": "Sitteputer for komfort",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/171509",
-        "agreements": [
-          {
-            "postTitle": "Post 1: Enkel sittepute"
-          }
-        ]
+        "hmsArtNr": "171509",
+        "isoCategoryTitleShort": "Sittepute",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171509"
       },
       {
-        "hmsArtNr": "177946",
+        "id": "28f06fce-b254-4a52-a685-6bec1e4b0aaf",
         "articleName": "Gemino 20",
-        "isoCategoryTitleShort": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/177946",
+        "hmsArtNr": "177946",
+        "isoCategoryTitleShort": "Rullator",
         "agreements": [
           {
             "postTitle": "2. Rullator - innendørs bruk"
           }
-        ]
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/177946"
       },
       {
-        "hmsArtNr": "241475",
+        "id": "9a8ac4a9-a696-4bf8-a436-91aae6de6a75",
+        "articleName": "Gemino 30M Parkinson",
+        "hmsArtNr": "235352",
+        "isoCategoryTitleShort": "Rullator",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/235352"
+      },
+      {
+        "id": "c89b7823-2b8c-44ed-94ca-2fd34c398b91",
+        "articleName": "Puls NAV 90 x 200",
+        "hmsArtNr": "174791",
+        "isoCategoryTitleShort": "Madrass",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/174791"
+      },
+      {
+        "id": "78a28169-5df0-485d-90c3-b3fa58893485",
+        "articleName": "Eliramp",
+        "hmsArtNr": "170093",
+        "isoCategoryTitleShort": "Terskeleliminator",
+        "agreements": [
+          {
+            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk."
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/170093"
+      },
+      {
+        "id": "96709aaf-d314-48dc-8149-953a1e853fd8",
+        "articleName": "Hiro180 høyre",
+        "hmsArtNr": "231053",
+        "isoCategoryTitleShort": "Trappeheis",
+        "agreements": [
+          {
+            "postTitle": "13: Trappeheis med sete for trapp med sving/repos - utendørs bruk"
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/231053"
+      },
+      {
+        "id": "9c33f8e8-5678-47b8-bf64-78840902189f",
         "articleName": "Nova 30",
-        "isoCategoryTitleShort": "Løftestoler med individuell regulering av rygg, benstøtter og oppreisning",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/241475",
-        "agreements": []
+        "hmsArtNr": "241475",
+        "isoCategoryTitleShort": "Løftestol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/241475"
       },
       {
-        "hmsArtNr": "097820",
+        "id": "54f8736f-84cb-4f85-b303-cdbc6f7543ab",
         "articleName": "Aquatec 90000 10 cm",
-        "isoCategoryTitleShort": "Faste toalettforhøyere",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/097820",
-        "agreements": []
+        "hmsArtNr": "097820",
+        "isoCategoryTitleShort": "Toalettforhøyer",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/097820"
       },
       {
-        "hmsArtNr": "072517",
+        "id": "1e1ee1d9-b769-4b4f-91e1-6daaee07aeec",
+        "articleName": "Etac Swift",
+        "hmsArtNr": "019161",
+        "isoCategoryTitleShort": "Dusjkrakk",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/019161"
+      },
+      {
+        "id": "20e1cc4f-bc09-4909-911b-8d1edb3aedfe",
+        "articleName": "Topro Olympos ATR M",
+        "hmsArtNr": "286589",
+        "isoCategoryTitleShort": "Rullator",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/286589"
+      },
+      {
+        "id": "c32e137a-1de1-4dd6-8a92-1c980bc07d62",
         "articleName": "Topro Taurus E Premium",
-        "isoCategoryTitleShort": "Gåbord med støttebord",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/072517",
+        "hmsArtNr": "072517",
+        "isoCategoryTitleShort": "Gåbord",
         "agreements": [
           {
             "postTitle": "10. Gåbord - støttebord og elektrisk høyderegulering til innendørs bruk "
           }
-        ]
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/072517"
       },
       {
-        "hmsArtNr": "250470",
+        "id": "814c8285-501b-493c-8a91-7c724edd03ad",
         "articleName": "Minicrosser X1 4W CAB",
-        "isoCategoryTitleShort": "Elektriske rullestoler manuell styring utebruk",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/250470",
-        "agreements": []
+        "hmsArtNr": "250470",
+        "isoCategoryTitleShort": "Elektrisk rullestol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/250470"
       },
       {
-        "hmsArtNr": "286589",
-        "articleName": "Topro Olympos ATR M",
-        "isoCategoryTitleShort": "Rullatorer, 4 hjul utebruk",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/286589",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "215765",
+        "id": "56a17b03-ca56-47f9-91b5-7aa9e88363e7",
         "articleName": "E-fix E35 24 tommer",
-        "isoCategoryTitleShort": "Drivhjul og drivaggregat med motorisert styring",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/215765",
-        "agreements": [
-          {
-            "postTitle": "Post 17: Drivaggregat med motorisert styring - brukerstyrt "
-          }
-        ]
+        "hmsArtNr": "215765",
+        "isoCategoryTitleShort": "Hjelpemotor",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/215765"
       },
       {
-        "hmsArtNr": "174787",
-        "articleName": "Puls NAV 85 x 200",
-        "isoCategoryTitleShort": "Madrasser skumbaserte",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/174787",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "243548",
-        "articleName": "Topro høydejusterbart skråbrett",
-        "isoCategoryTitleShort": "Terskeleliminatorer",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/243548",
-        "agreements": [
-          {
-            "postTitle": "Post 3: Terskeleliminator - påkjøring fra en side, for utendørs bruk"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "166438",
-        "articleName": "Dorma ED 100 LE",
-        "isoCategoryTitleShort": "Åpnere og lukkere til dører",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/166438",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "019161",
-        "articleName": "Etac Swift",
-        "isoCategoryTitleShort": "Dusjkrakker",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/019161",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "214967",
+        "id": "8db75612-8dc3-4b41-b0b1-ccf6ebd7c877",
         "articleName": "Opus 90c",
-        "isoCategoryTitleShort": "Senger med elektrisk regulering av liggeflaten",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/214967",
-        "agreements": []
+        "hmsArtNr": "214967",
+        "isoCategoryTitleShort": "Seng",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/214967"
       },
       {
-        "hmsArtNr": "255799",
+        "id": "570ff1b5-0905-4490-9fc6-673a38c33023",
         "articleName": "Opus 90DW",
-        "isoCategoryTitleShort": "Senger med elektrisk regulering av liggeflaten",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/255799",
-        "agreements": []
+        "hmsArtNr": "255799",
+        "isoCategoryTitleShort": "Seng",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/255799"
       },
       {
-        "hmsArtNr": "089700",
-        "articleName": "Regncape Omega M-L",
-        "isoCategoryTitleShort": "Regntøy",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/089700",
+        "id": "7d0acabe-2f77-4f79-b078-e794503d8b31",
+        "articleName": "Puls NAV 85 x 200",
+        "hmsArtNr": "174787",
+        "isoCategoryTitleShort": "Madrass",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/174787"
+      },
+      {
+        "id": "133856c3-f50d-46b9-a3c3-2dd140f8cc84",
+        "articleName": "Dorma ED 100 LE",
+        "hmsArtNr": "166438",
+        "isoCategoryTitleShort": "Døråpner",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/166438"
+      },
+      {
+        "id": "14ce1815-9184-462f-8cfb-83dc58a4c20e",
+        "articleName": "Topro høydejusterbart skråbrett",
+        "hmsArtNr": "243548",
+        "isoCategoryTitleShort": "Terskeleliminator",
         "agreements": [
           {
-            "postTitle": "Post 5: Regncape med ermer - voksne, til bruk i rullestol med høy rygg"
+            "postTitle": "3: Terskeleliminator - påkjøring fra en side, for utendørs bruk"
           }
-        ]
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/243548"
       },
       {
-        "hmsArtNr": "216075",
-        "articleName": "Hepro E2 Basic 15 M",
-        "isoCategoryTitleShort": "Arbeidsstoler med elektrisk seteløfter",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/216075",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "184973",
-        "articleName": "XLT Swing",
-        "isoCategoryTitleShort": "Manuelle rullestoler aktive",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/184973",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "229770",
-        "articleName": "Compact Attract",
-        "isoCategoryTitleShort": "Manuelle rullestoler aktive",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/229770",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "176787",
-        "articleName": "Topro Trillebord",
-        "isoCategoryTitleShort": "Traller og trillebord",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/176787",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "199325",
-        "articleName": "DS130",
-        "isoCategoryTitleShort": "Dusjkrakker",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/199325",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "247627",
+        "id": "c1c697e7-c0d9-4746-ba62-a6074b2741c7",
         "articleName": "Jay Easy Visco Cushion 40x42 buet",
-        "isoCategoryTitleShort": "Sitteputer for komfort",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/247627",
-        "agreements": [
-          {
-            "postTitle": "Post 2: Sittepute som ikke kan innstilles - lav modell"
-          }
-        ]
+        "hmsArtNr": "247627",
+        "isoCategoryTitleShort": "Sittepute",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/247627"
       },
       {
-        "hmsArtNr": "286813",
-        "articleName": "CuroCell M4 CX10 90x200",
-        "isoCategoryTitleShort": "Overmadrasser dynamiske",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/286813",
-        "agreements": []
+        "id": "ea05b70e-d4b7-4e8c-90dc-6d384c47e2c9",
+        "articleName": "Regncape Omega M-L",
+        "hmsArtNr": "089700",
+        "isoCategoryTitleShort": "Regntøy",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/089700"
       },
       {
-        "hmsArtNr": "289732",
-        "articleName": "Hodebøylemikrofon, mod. 10 med VA-sender",
-        "isoCategoryTitleShort": "Mikrofoner",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/289732",
-        "agreements": [
-          {
-            "postTitle": "Post 10: Samtaleanlegg med høyttaler, portabelt"
-          },
-          {
-            "postTitle": "Post 11: Samtaleanlegg med høyttaler(e), stasjonært"
-          }
-        ]
-      },
-      {
-        "hmsArtNr": "186868",
-        "articleName": "Impera",
-        "isoCategoryTitleShort": "Manuelle rullestoler aktive",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/186868",
-        "agreements": []
-      },
-      {
-        "hmsArtNr": "217574",
+        "id": "5db69e4a-77b0-4d0c-ac12-bf7c82b340b6",
         "articleName": "Invacare 9630 Styxo",
-        "isoCategoryTitleShort": "Frittstående toalettforhøyere",
-        "productVariantURL": "https://finnhjelpemiddel.nav.no/produkt/hmsartnr/217574",
-        "agreements": []
+        "hmsArtNr": "217574",
+        "isoCategoryTitleShort": "Toalettforhøyer",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/217574"
+      },
+      {
+        "id": "b514327f-09f7-4248-9d82-0968ca99b4ed",
+        "articleName": "DS130",
+        "hmsArtNr": "199325",
+        "isoCategoryTitleShort": "Dusjkrakk",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/199325"
+      },
+      {
+        "id": "792473e0-08eb-4165-81db-30d52bb15ad4",
+        "articleName": "Impera",
+        "hmsArtNr": "186868",
+        "isoCategoryTitleShort": "Manuell rullestol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/186868"
+      },
+      {
+        "id": "07a882ee-ff18-47f4-ba7e-77a3aadc42df",
+        "articleName": "XLT Swing",
+        "hmsArtNr": "184973",
+        "isoCategoryTitleShort": "Manuell rullestol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/184973"
+      },
+      {
+        "id": "8bcb46be-b720-4125-bd08-6930c74af229",
+        "articleName": "Compact Attract",
+        "hmsArtNr": "229770",
+        "isoCategoryTitleShort": "Manuell rullestol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/229770"
+      },
+      {
+        "id": "7ef560c6-f094-4f32-adcf-f65d728a9988",
+        "articleName": "Hepro E2 Basic 15 M",
+        "hmsArtNr": "216075",
+        "isoCategoryTitleShort": "Arbeidsstol",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/216075"
+      },
+      {
+        "id": "4636c975-4afe-49f5-b5b0-4dc7dd873408",
+        "articleName": "CuroCell M4 CX10 90x200",
+        "hmsArtNr": "286813",
+        "isoCategoryTitleShort": "Madrass",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/286813"
+      },
+      {
+        "id": "9756ff5c-689b-4573-8c58-6f4ff61f7f2a",
+        "articleName": "Topro terskeleliminator",
+        "hmsArtNr": "014112",
+        "isoCategoryTitleShort": "Terskeleliminator",
+        "agreements": [
+          {
+            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk."
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/014112"
+      },
+      {
+        "id": "5b91de09-be65-4a43-8299-4a8298c380fe",
+        "articleName": "Hodebøylemikrofon, mod. 10 med VA-sender",
+        "hmsArtNr": "289732",
+        "isoCategoryTitleShort": "Mikrofon",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/289732"
+      },
+      {
+        "id": "4bc97ffa-d655-4178-898c-8e321b3fabe6",
+        "articleName": "Topro Trillebord",
+        "hmsArtNr": "176787",
+        "isoCategoryTitleShort": "Trillebord",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176787"
+      },
+      {
+        "id": "90893ebc-5686-4b0b-bc8d-a8fa39b013f1",
+        "articleName": "Antisklimatte serveringsbrett rullator 4hjul Topro Troja Original M/S/Topro Olympos ATR M",
+        "hmsArtNr": "176090",
+        "isoCategoryTitleShort": null,
+        "agreements": [
+          {
+            "postTitle": "4. Rullator - utendørs bruk"
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176090"
+      },
+      {
+        "id": "2dce8854-8760-4e12-8559-006a4c22ecd0",
+        "articleName": "Varslingsmottaker Nora Flexiwatch, LIFE",
+        "hmsArtNr": "289689",
+        "isoCategoryTitleShort": "Varslingshjelpemiddel",
+        "agreements": [],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/289689"
+      },
+      {
+        "id": "c3872ed4-9a8a-4d16-9806-e6292b61e520",
+        "articleName": "Nova 30 smal lav stoff",
+        "hmsArtNr": "296321",
+        "isoCategoryTitleShort": "Løftestol",
+        "agreements": [
+          {
+            "postTitle": "4: Stol med individuell elektrisk"
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/296321"
       }
     ]
   }

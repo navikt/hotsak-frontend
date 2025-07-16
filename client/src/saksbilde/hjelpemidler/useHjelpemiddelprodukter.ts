@@ -12,13 +12,14 @@ import { unique } from '../../utils/array.ts'
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
     products(hmsnrs: $hmsnrs) {
-      hmsArtNr
-      productVariantURL
-      isoCategoryTitleShort
+      id
       articleName
+      hmsArtNr
+      isoCategoryTitleShort
       agreements {
         postTitle
       }
+      productVariantURL
     }
   }
 `

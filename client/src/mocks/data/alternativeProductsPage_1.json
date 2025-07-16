@@ -1,0 +1,319 @@
+{
+  "data": {
+    "alternativeProductsPage": {
+      "total": 2,
+      "from": 0,
+      "size": 1000,
+      "content": [
+        {
+          "id": "9ce918c7-f6d2-4b64-a9ec-8a5dca89e416",
+          "hmsArtNr": "177948",
+          "title": "Gemino 20",
+          "articleName": "Gemino 20M",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "12060602",
+          "alternativeFor": ["177946", "177947"],
+          "media": [
+            {
+              "uri": "orig/34825.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_3.jpg",
+              "type": "IMAGE",
+              "priority": 7,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_4.jpg",
+              "type": "IMAGE",
+              "priority": 10,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/34825.pdf",
+              "type": "PDF",
+              "priority": 13,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/34825.pdf",
+              "type": "PDF",
+              "priority": 14,
+              "text": "brosjyre"
+            },
+            {
+              "uri": "seriedok/8606/34825.pdf",
+              "type": "PDF",
+              "priority": 15,
+              "text": "quickguide"
+            },
+            {
+              "uri": "video/34825.mp4",
+              "type": "VIDEO",
+              "priority": 16,
+              "text": "video"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 42
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 10
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 17
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 9
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 6
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 16
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 22
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 63
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 20
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 8
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 16
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 14
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 9
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 13
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 24
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T12:49:13.012696933",
+              "amountInStock": 23
+            }
+          ]
+        },
+        {
+          "id": "366ec729-9c06-4dc3-9d61-ae6435caabe9",
+          "hmsArtNr": "177947",
+          "title": "Gemino 20",
+          "articleName": "Gemino 20S",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "12060602",
+          "alternativeFor": ["177948", "177946"],
+          "media": [
+            {
+              "uri": "orig/34825.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_3.jpg",
+              "type": "IMAGE",
+              "priority": 7,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/34825_4.jpg",
+              "type": "IMAGE",
+              "priority": 10,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/34825.pdf",
+              "type": "PDF",
+              "priority": 13,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/34825.pdf",
+              "type": "PDF",
+              "priority": 14,
+              "text": "brosjyre"
+            },
+            {
+              "uri": "seriedok/8606/34825.pdf",
+              "type": "PDF",
+              "priority": 15,
+              "text": "quickguide"
+            },
+            {
+              "uri": "video/34825.mp4",
+              "type": "VIDEO",
+              "priority": 16,
+              "text": "video"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 2
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 15
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 5
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 3
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 1
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 2
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 20
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 5
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 2
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 5
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 3
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 4
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 5
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 4
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T12:49:13.012689763",
+              "amountInStock": 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

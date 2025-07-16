@@ -193,10 +193,11 @@ export type HMDBFinnHjelpemiddelprodukterQuery = {
   __typename?: 'Query'
   products: Array<{
     __typename?: 'Product'
-    hmsArtNr?: string | null
-    productVariantURL: string
-    isoCategoryTitleShort?: string | null
+    id: string
     articleName: string
+    hmsArtNr?: string | null
+    isoCategoryTitleShort?: string | null
+    productVariantURL: string
     agreements: Array<{ __typename?: 'AgreementInfoDoc'; postTitle?: string | null }>
   }>
 }

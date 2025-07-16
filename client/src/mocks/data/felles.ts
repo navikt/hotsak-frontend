@@ -51,3 +51,7 @@ export async function lastDokument(navn: string): Promise<ArrayBuffer> {
 export function nåIso(): string {
   return new Date().toISOString()
 }
+
+export function lagTilfeldigHmsArtNr(): string {
+  return lagTilfeldigInteger(1, 999999).toString().padStart(6, '0')
+}

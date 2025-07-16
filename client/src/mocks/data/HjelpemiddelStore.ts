@@ -2,6 +2,7 @@ import Dexie, { Table } from 'dexie'
 
 import type { HMDBFinnHjelpemiddelprodukterQuery } from '../../generated/grunndata.ts'
 import products from './products.json'
+import { lagTilfeldigHmsArtNr, lagUUID } from './felles.ts'
 
 type LagretHjelpemiddel = HMDBFinnHjelpemiddelprodukterQuery['products'][0]
 
@@ -29,25 +30,29 @@ export class HjelpemiddelStore extends Dexie {
       (hjelpemiddel) => hjelpemiddel.hmsArtNr && hmsnrs.includes(hjelpemiddel?.hmsArtNr)
     )
 
-    return filtrerteHjelpemidler.length > 0 ? filtrerteHjelpemidler : mockHjelpemiddel
+    return filtrerteHjelpemidler.length > 0 ? filtrerteHjelpemidler : [lagHjelpemiddel()]
   }
 
   async alle() {
     return this.hjelpemidler.toArray()
   }
 
-  async hent(hmsnr: string) {
-    return (await this.hjelpemidler.get(hmsnr)) || mockHjelpemiddel
+  async hent(hmsArtNr: string) {
+    return (await this.hjelpemidler.get(hmsArtNr)) || lagHjelpemiddel(hmsArtNr)
   }
 }
-const mockHjelpemiddel = {
-  hmsArtNr: '112233',
-  articleName: 'Hjelpemiddelnavn',
-  isoCategoryTitle: 'ISO-kategori',
-  productVariantURL: 'https://finnhjelpemiddel.nav.no/produkt/HMDB-65088',
-  agreements: [
-    {
-      postTitle: 'Post 42: Posttittel',
-    },
-  ],
+
+function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelpemiddel {
+  return {
+    id: lagUUID(),
+    articleName: 'articleName',
+    hmsArtNr,
+    isoCategoryTitleShort: 'isoCategoryTitleShort',
+    agreements: [
+      {
+        postTitle: 'postTitle',
+      },
+    ],
+    productVariantURL: 'https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/' + hmsArtNr,
+  }
 }

@@ -1,0 +1,1789 @@
+{
+  "data": {
+    "alternativeProductsPage": {
+      "total": 12,
+      "from": 0,
+      "size": 1000,
+      "content": [
+        {
+          "id": "451415f8-02d5-487d-bd2f-881fbd4ef41f",
+          "hmsArtNr": "195755",
+          "title": "Fitform Nordic Swing",
+          "articleName": "Fitform 574 Nordic Tilt Swing Dyp",
+          "supplier": {
+            "id": "f89f2bf4-e8fc-4209-8455-dab22df3301e",
+            "name": "Medema Norge AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/39466.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/39466.pdf",
+              "type": "PDF",
+              "priority": 4,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/39466.pdf",
+              "type": "PDF",
+              "priority": 5,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:47.954648",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "54791cfd-6abc-4acb-af3e-9226db123df5",
+          "hmsArtNr": "241461",
+          "title": "Nova 30",
+          "articleName": "Nova 30",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54609.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54609_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54609.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54609.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 1
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 1
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:47.959823",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "dc0601b3-13f5-4e9c-a846-1d45ab259485",
+          "hmsArtNr": "296163",
+          "title": "Aurora Tilt",
+          "articleName": "Aurora Tilt 50 Stoff",
+          "supplier": {
+            "id": "c612e224-69a3-46ae-ac6e-872be8226f51",
+            "name": "Hepro AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/65631.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65631_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65631_3.jpg",
+              "type": "IMAGE",
+              "priority": 7,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/65631.pdf",
+              "type": "PDF",
+              "priority": 10,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/65631.pdf",
+              "type": "PDF",
+              "priority": 11,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 1
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": -1
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:47.965542",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "76a52641-913f-4af8-a9e4-b54fc9b985e7",
+          "hmsArtNr": "296323",
+          "title": "Nova 30",
+          "articleName": "Nova 30 smal standard stoff",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/65635.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_3.jpg",
+              "type": "IMAGE",
+              "priority": 7,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_4.jpg",
+              "type": "IMAGE",
+              "priority": 10,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/65635.pdf",
+              "type": "PDF",
+              "priority": 13,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/65635.pdf",
+              "type": "PDF",
+              "priority": 14,
+              "text": "brosjyre"
+            },
+            {
+              "uri": "seriedok/8606/65635.pdf",
+              "type": "PDF",
+              "priority": 15,
+              "text": "quickguide"
+            },
+            {
+              "uri": "video/65635.mp4",
+              "type": "VIDEO",
+              "priority": 16,
+              "text": "video"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 3
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": -1
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": -4
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 3
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 8
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 4
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 1
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": -1
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 2
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 5
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:47.971193",
+              "amountInStock": 5
+            }
+          ]
+        },
+        {
+          "id": "b6ed0cad-3118-4c17-964a-9763ab20be25",
+          "hmsArtNr": "240547",
+          "title": "Arctic 17 Tilt Sving",
+          "articleName": "Arctic 17/50 Tilt S Sving",
+          "supplier": {
+            "id": "c612e224-69a3-46ae-ac6e-872be8226f51",
+            "name": "Hepro AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54626.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54626_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54626.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54626.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": -1
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T01:08:55.440170852",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "8d28b314-b3f5-4795-abc1-c87db5f13e56",
+          "hmsArtNr": "241463",
+          "title": "Nova 30",
+          "articleName": "Nova 30",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54609.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54609_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54609.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54609.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 3
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T01:09:07.980716912",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "c3872ed4-9a8a-4d16-9806-e6292b61e520",
+          "hmsArtNr": "296321",
+          "title": "Nova 30",
+          "articleName": "Nova 30 smal lav stoff",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/65635.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_3.jpg",
+              "type": "IMAGE",
+              "priority": 7,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/65635_4.jpg",
+              "type": "IMAGE",
+              "priority": 10,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/65635.pdf",
+              "type": "PDF",
+              "priority": 13,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/65635.pdf",
+              "type": "PDF",
+              "priority": 14,
+              "text": "brosjyre"
+            },
+            {
+              "uri": "seriedok/8606/65635.pdf",
+              "type": "PDF",
+              "priority": 15,
+              "text": "quickguide"
+            },
+            {
+              "uri": "video/65635.mp4",
+              "type": "VIDEO",
+              "priority": 16,
+              "text": "video"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 4
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 1
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": -1
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 1
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 4
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": -1
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 5
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 2
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 4
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:26.170573",
+              "amountInStock": 4
+            }
+          ]
+        },
+        {
+          "id": "b0dfd97c-3a4c-48e9-b185-cc0eefb03f13",
+          "hmsArtNr": "195745",
+          "title": "Fitform Nordic",
+          "articleName": "Fitform 574 Nordic Tilt Dyp",
+          "supplier": {
+            "id": "f89f2bf4-e8fc-4209-8455-dab22df3301e",
+            "name": "Medema Norge AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/39554.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/39554.pdf",
+              "type": "PDF",
+              "priority": 4,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/39554.pdf",
+              "type": "PDF",
+              "priority": 5,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:42.773868",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "3fc96bcc-077b-4704-9ef5-362c3b09b030",
+          "hmsArtNr": "195751",
+          "title": "Fitform Nordic",
+          "articleName": "Fitform 574 Nordic Tilt Std",
+          "supplier": {
+            "id": "f89f2bf4-e8fc-4209-8455-dab22df3301e",
+            "name": "Medema Norge AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481"
+          ],
+          "media": [
+            {
+              "uri": "orig/39554.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/39554.pdf",
+              "type": "PDF",
+              "priority": 4,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/39554.pdf",
+              "type": "PDF",
+              "priority": 5,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T10:17:47.946765",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "4b9250c0-8fc8-459f-a00b-eef2424f3485",
+          "hmsArtNr": "240527",
+          "title": "Arctic 17 Tilt",
+          "articleName": "Arctic 17/50 Tilt S",
+          "supplier": {
+            "id": "c612e224-69a3-46ae-ac6e-872be8226f51",
+            "name": "Hepro AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54622.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54622_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54622.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54622.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T01:08:35.637854844",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "b323605c-d317-4b30-9fd7-2a61e527fb39",
+          "hmsArtNr": "241481",
+          "title": "Nova 30 sving",
+          "articleName": "Nova 30",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241483",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54608.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54608_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54608.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54608.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 1
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": -1
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T01:09:32.778836311",
+              "amountInStock": 0
+            }
+          ]
+        },
+        {
+          "id": "0f5f1044-0df6-4194-9063-f09ef617b160",
+          "hmsArtNr": "241483",
+          "title": "Nova 30 sving",
+          "articleName": "Nova 30",
+          "supplier": {
+            "id": "228b044b-dabe-4f35-97d4-b498a4ca18d8",
+            "name": "Sunrise Medical AS"
+          },
+          "isoCategory": "18091502",
+          "alternativeFor": [
+            "241463",
+            "241461",
+            "240527",
+            "296323",
+            "296321",
+            "330199",
+            "330100",
+            "240547",
+            "296163",
+            "195745",
+            "195755",
+            "330081",
+            "241481",
+            "195751"
+          ],
+          "media": [
+            {
+              "uri": "orig/54608.jpg",
+              "type": "IMAGE",
+              "priority": 1,
+              "text": "billede"
+            },
+            {
+              "uri": "orig/54608_2.jpg",
+              "type": "IMAGE",
+              "priority": 4,
+              "text": "billede"
+            },
+            {
+              "uri": "brugsvejl/54608.pdf",
+              "type": "PDF",
+              "priority": 7,
+              "text": "bruksanvisning"
+            },
+            {
+              "uri": "produktblade/54608.pdf",
+              "type": "PDF",
+              "priority": 8,
+              "text": "brosjyre"
+            }
+          ],
+          "wareHouseStock": [
+            {
+              "location": "Østfold",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oslo",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 2
+            },
+            {
+              "location": "Hedmark",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Oppland",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Buskerud",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vestfold",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Telemark",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Aust-Agder",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Vest-Agder",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Rogaland",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Hordaland",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sogn og Fjordane",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Møre og Romsdal",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Sør-Trøndelag",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nord-Trøndelag",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Nordland",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 1
+            },
+            {
+              "location": "Troms",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            },
+            {
+              "location": "Finnmark",
+              "updated": "2025-07-16T01:09:35.285772332",
+              "amountInStock": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

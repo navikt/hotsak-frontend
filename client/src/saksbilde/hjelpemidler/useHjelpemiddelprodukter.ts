@@ -1,13 +1,14 @@
 import { gql } from 'graphql-request'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import type {
   HMDBFinnHjelpemiddelprodukterQuery,
   HMDBFinnHjelpemiddelprodukterQueryVariables,
 } from '../../generated/grunndata.ts'
 import type { Produkt } from '../../types/types.internal'
-import { useGrunndataQuery } from '../../grunndata/useGrunndata.ts'
 import { unique } from '../../utils/array.ts'
+import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
+import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 
 const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
@@ -24,33 +25,31 @@ const finnHjelpemiddelprodukterQuery = gql`
   }
 `
 
-export function useHjelpemiddelprodukter(hmsnrs: string[]) {
-  const variables = useMemo(() => ({ hmsnrs: unique(hmsnrs) }), [hmsnrs])
-  const { data, error } = useGrunndataQuery<
+const ingenProdukter: Produkt[] = []
+
+export function useHjelpemiddelprodukter(hmsnrs: string[]): Produkt[] {
+  const { data, error } = useGraphQLQuery<
     HMDBFinnHjelpemiddelprodukterQuery,
     HMDBFinnHjelpemiddelprodukterQueryVariables
-  >(finnHjelpemiddelprodukterQuery, variables)
+  >(grunndataClient.grunndata, () => ({
+    document: finnHjelpemiddelprodukterQuery,
+    variables: { hmsnrs: unique(hmsnrs) },
+  }))
 
-  const [produkter, setProdukter] = useState<Produkt[]>([])
-  useEffect(() => {
-    if (data) {
-      const produkter: Produkt[] = data.products.map((produkt) => {
-        return {
-          isotittel: produkt.isoCategoryTitleShort || '',
-          posttitler: produkt.agreements?.map((agreement) => agreement?.postTitle || '') || [],
-          produkturl: produkt.productVariantURL || '',
-          artikkelnavn: produkt.articleName,
-          hmsnr: produkt.hmsArtNr || '',
-        }
-      })
-
-      setProdukter(produkter ? produkter : [])
-    }
+  return useMemo(() => {
     if (error) {
-      console.warn(`Kunne ikke hente hjelpemiddelprodukter fra grunndata-search, hmsnrs: ${variables.hmsnrs}`, error)
-      setProdukter([])
+      console.warn(`Kunne ikke hente hjelpemiddelprodukter fra grunndata-search, hmsnrs: ${hmsnrs}`, error)
+      return ingenProdukter
     }
-  }, [data, error, variables.hmsnrs])
-
-  return produkter
+    if (data) {
+      return data.products.map((produkt) => ({
+        isotittel: produkt.isoCategoryTitleShort || '',
+        posttitler: produkt.agreements?.map((agreement) => agreement?.postTitle || '') || [],
+        produkturl: produkt.productVariantURL || '',
+        artikkelnavn: produkt.articleName,
+        hmsnr: produkt.hmsArtNr || '',
+      }))
+    }
+    return ingenProdukter
+  }, [data, error, hmsnrs])
 }

@@ -25,22 +25,14 @@ import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
 
 interface HjelpemiddelProps {
-  hjelpemiddel: Hjelpemiddeltype
   sak: Sak
+  hjelpemiddel: Hjelpemiddeltype
   produkter: ProduktType[]
   alternativer: AlternativeProduct[]
   alleAlternativer: AlternativeProduct[]
-  onMutate(): Promise<void>
 }
 
-export function Hjelpemiddel({
-  hjelpemiddel,
-  sak,
-  produkter,
-  alternativer,
-  alleAlternativer,
-  onMutate,
-}: HjelpemiddelProps) {
+export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleAlternativer }: HjelpemiddelProps) {
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
@@ -177,13 +169,12 @@ export function Hjelpemiddel({
         {erOmbrukPilot && (
           <AlternativeProdukterModal
             åpen={visAlternativerModal}
-            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
             hmsNr={hjelpemiddel.produkt.hmsArtNr}
-            onMutate={onMutate}
-            onLukk={() => setVisAlternativerModal(false)}
+            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
             alternativer={alternativer}
             alleAlternativer={alleAlternativer}
             onLagre={endreHjelpemiddel}
+            onLukk={() => setVisAlternativerModal(false)}
           />
         )}
 

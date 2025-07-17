@@ -1,7 +1,6 @@
 schema: "http://localhost:9000/graphql"
 documents:
   - "src/saksbilde/hjelpemidler/useAlternativeProdukter.ts"
-  - "src/saksbilde/hjelpemidler/useLagerstatus.ts"
 generates:
   ./src/generated/alternativprodukter.ts:
     plugins:

@@ -1,31 +1,17 @@
-import { ClockDashedIcon } from '@navikt/aksel-icons'
-import { Bleed, Box, Button, Checkbox, HGrid, HStack, Link, Skeleton, Tag, VStack } from '@navikt/ds-react'
+import { Box, Checkbox, HGrid, HStack, Link, Skeleton, Tag, VStack } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
 
 import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
 import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
 import { formaterRelativTid } from '../../../utils/dato'
-import { useLagerstatus } from '../useLagerstatus.ts'
 
 interface AlternativProduktCardProps {
   alternativ: AlternativeProduct
-  skjulLagerstatusKnapp: boolean
-  lagerstatusLoading: boolean
-  onMutate: () => void
   endretProdukt: string[]
 }
 
-export function AlternativtProduktCard({
-  alternativ,
-  onMutate,
-  endretProdukt,
-  skjulLagerstatusKnapp,
-  lagerstatusLoading,
-}: AlternativProduktCardProps) {
-  // TODO flytt denne til egen hook for å unngå kollisjoner
-  const { sjekkLagerstatusForProdukt, loading: henterLagerstatus } = useLagerstatus()
-
+export function AlternativtProduktCard({ alternativ, endretProdukt }: AlternativProduktCardProps) {
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 
   function produktBilde(produkt: AlternativeProduct): Maybe<string> {
@@ -66,7 +52,7 @@ export function AlternativtProduktCard({
             {alternativ.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
-                {lagerstatusLoading ? (
+                {false ? (
                   <Skeleton variant="rectangle" width={100} height={25} />
                 ) : (
                   <div>
@@ -87,22 +73,6 @@ export function AlternativtProduktCard({
           <div>
             <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
           </div>
-          {!skjulLagerstatusKnapp && !lagerstatusLoading && (
-            <Bleed marginInline="3">
-              <Button
-                variant="tertiary"
-                size="small"
-                icon={<ClockDashedIcon />}
-                loading={henterLagerstatus}
-                onClick={async () => {
-                  await sjekkLagerstatusForProdukt(alternativ.hmsArtNr)
-                  onMutate()
-                }}
-              >
-                Sjekk lagerstatus
-              </Button>
-            </Bleed>
-          )}
         </VStack>
       </ProduktCard>
       <HStack justify={'center'} paddingBlock="2 0">

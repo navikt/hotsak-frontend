@@ -42,11 +42,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   }, [hjelpemidler])
 
   const hjelpemiddelprodukter = useHjelpemiddelprodukter(alleHmsNr)
-  const {
-    alternativeProdukter,
-    alleAlternativeProdukter,
-    mutate: hentAlternativeProdukter,
-  } = useAlternativeProdukter(alleHjelpemidler)
+  const { alternativeProdukter, alleAlternativeProdukter } = useAlternativeProdukter(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
@@ -67,12 +63,11 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
       {hjelpemidler.map((hjelpemiddel) => (
         <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">
           <Hjelpemiddel
-            hjelpemiddel={hjelpemiddel}
             sak={sak}
+            hjelpemiddel={hjelpemiddel}
             produkter={hjelpemiddelprodukter}
             alternativer={alternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
             alleAlternativer={alleAlternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
-            onMutate={hentAlternativeProdukter}
           />
         </Box>
       ))}

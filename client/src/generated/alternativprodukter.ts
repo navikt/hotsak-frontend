@@ -200,31 +200,3 @@ export type FinnAlternativeProdukterSideQuery = {
     }>
   }
 }
-
-export type SjekkLagerstatusForProduktQueryVariables = Exact<{
-  hmsnr: Scalars['String']['input']
-}>
-
-export type SjekkLagerstatusForProduktQuery = {
-  __typename?: 'Query'
-  productStock: {
-    __typename?: 'ProductStock'
-    id: string
-    hmsArtNr: string
-    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
-  }
-}
-
-export type SjekkLagerstatusQueryVariables = Exact<{
-  hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
-}>
-
-export type SjekkLagerstatusQuery = {
-  __typename?: 'Query'
-  productStocksAllLocations: Array<{
-    __typename?: 'ProductStock'
-    id: string
-    hmsArtNr: string
-    warehouseStock: Array<{ __typename?: 'WareHouseStock'; location: string; amountInStock: number; updated: string }>
-  }>
-}

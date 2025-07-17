@@ -1,3 +1,8 @@
+import { useMemo } from 'react'
+
+import type { AlternativeProduct, AlternativeProdukterByHmsArtNr } from '../useAlternativeProdukter.ts'
+import { useTilgangContext } from '../../../tilgang/useTilgang.ts'
+
 interface Lagerlokasjon {
   oebs_enhetsnummer: string
   lokasjon: string
@@ -9,7 +14,7 @@ interface OebsEnhet {
   lagerlokasjoner: Lagerlokasjon[]
 }
 
-export const oebs_enheter: OebsEnhet[] = [
+const oebsEnheter: OebsEnhet[] = [
   { enhetsnummer: '2970', navn: 'IT-avdelingen', lagerlokasjoner: [{ oebs_enhetsnummer: '03', lokasjon: 'Oslo' }] },
   {
     enhetsnummer: '4701',
@@ -99,3 +104,57 @@ export const oebs_enheter: OebsEnhet[] = [
     ],
   },
 ]
+
+type WareHouseStock = NonNullable<AlternativeProduct['wareHouseStock']>[0]
+
+export function finnGjeldendeOebsEnhet(enhetsnummer: string) {
+  const oebsEnhet = oebsEnheter.find((enhet) => enhet.enhetsnummer === enhetsnummer)
+  const lagerlokasjoner = oebsEnhet?.lagerlokasjoner?.map((lokasjon) => lokasjon.lokasjon.toLowerCase()) || []
+
+  const forLagerlokasjon = (lagerstatus: WareHouseStock | null) =>
+    lagerstatus?.location && lagerlokasjoner.includes(lagerstatus.location.toLocaleLowerCase())
+
+  return {
+    oebsEnhet,
+    lagerlokasjoner,
+    /**
+     * Grupper på hmsArtNr og inkluder kun lagerstatus for gjeldende OeBS-enhet.
+     *
+     * @param produkter
+     */
+    grupperPåHmsArtNr(produkter: AlternativeProduct[]): AlternativeProdukterByHmsArtNr {
+      return produkter.reduce<AlternativeProdukterByHmsArtNr>((result, produkt) => {
+        const filtrertProdukt: AlternativeProduct = {
+          ...produkt,
+          wareHouseStock: produkt.wareHouseStock?.filter(forLagerlokasjon) ?? [],
+        }
+
+        produkt.alternativeFor.forEach((hmsArtNr) => {
+          if (!result[hmsArtNr]) {
+            result[hmsArtNr] = []
+          }
+          result[hmsArtNr].push(filtrertProdukt)
+        })
+        return result
+      }, {})
+    },
+    /**
+     * Undersøk om den gjeldende OeBS-enheten har produktet på lager.
+     *
+     * @param produkt
+     */
+    harProduktPåLager(produkt: AlternativeProduct): boolean {
+      const lagerstatusForEnhet = produkt.wareHouseStock?.filter(forLagerlokasjon) ?? []
+      const påLager = lagerstatusForEnhet?.filter(
+        (lagerstatus) => lagerstatus?.amountInStock && lagerstatus.amountInStock > 0
+      )
+      return påLager.length > 0
+    },
+  }
+}
+
+export function useGjeldendeOebsEnhet() {
+  const { innloggetAnsatt } = useTilgangContext()
+  const gjeldendeEnhetsnummer = innloggetAnsatt.gjeldendeEnhet.nummer
+  return useMemo(() => finnGjeldendeOebsEnhet(gjeldendeEnhetsnummer), [gjeldendeEnhetsnummer])
+}

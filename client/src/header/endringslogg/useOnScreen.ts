@@ -1,25 +1,20 @@
-import { RefObject, useEffect, useRef, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
-export function useOnScreen(ref: RefObject<HTMLElement | null>) {
-  const observerRef = useRef<IntersectionObserver | null>(null)
+export function useOnScreen(ref: RefObject<HTMLElement | null>, threshold: number = 0.1, rootMargin: string = '0px') {
   const [isOnScreen, setIsOnScreen] = useState(false)
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(([entry]) => setIsOnScreen(entry.isIntersecting), {
-      threshold: 1.0,
-    })
-  }, [])
+    if (!ref.current) return
 
-  useEffect(() => {
-    if (observerRef && observerRef.current && ref.current) {
-      observerRef.current.observe(ref.current)
-    }
-    return () => {
-      if (observerRef && observerRef.current) {
-        observerRef.current.disconnect()
-      }
-    }
-  }, [ref])
+    const observer = new IntersectionObserver(([entry]) => setIsOnScreen(entry.isIntersecting), {
+      threshold,
+      rootMargin,
+    })
+
+    observer.observe(ref.current)
+
+    return () => observer.disconnect()
+  }, [ref, threshold, rootMargin])
 
   return isOnScreen
 }

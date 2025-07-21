@@ -31,13 +31,13 @@ import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { Tildeling } from './kolonner/Tildeling'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
-import { Paging } from './paging/Paging'
 import { useLocalState } from '../state/useLocalState'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
+import { Paginering } from '../felleskomponenter/Paginering.tsx'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
   statuskategori: Statuskategori.ÅPEN,
@@ -61,7 +61,7 @@ export function Oppgaveliste() {
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { currentPage, ...filters } = filterState
-  const { oppgaver, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(
+  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(
     currentPage,
     sort,
     filters
@@ -371,10 +371,12 @@ export function Oppgaveliste() {
                     ))}
                   </Table.Body>
                 </Table>
-                <Paging
+                <Paginering
+                  pageNumber={pageNumber}
+                  pageSize={pageSize}
                   totalElements={totalElements}
-                  currentPage={currentPage}
-                  onPageChange={(page: number) => setFilterState({ ...filterState, currentPage: page })}
+                  tekst="oppgaver"
+                  onPageChange={(page) => setFilterState({ ...filterState, currentPage: page })}
                 />
                 <TildelingKonfliktModal
                   open={!!visTildelingKonfliktModalForSak}

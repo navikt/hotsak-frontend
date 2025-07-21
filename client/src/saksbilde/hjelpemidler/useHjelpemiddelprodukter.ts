@@ -38,7 +38,7 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): Produkt[] {
 
   return useMemo(() => {
     if (error) {
-      console.warn(`Kunne ikke hente hjelpemiddelprodukter fra grunndata-search, hmsnrs: ${hmsnrs}`, error)
+      console.warn(`Kunne ikke hente hjelpemiddelprodukter fra grunndata-search`, error)
       return ingenProdukter
     }
     if (data) {
@@ -51,5 +51,5 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): Produkt[] {
       }))
     }
     return ingenProdukter
-  }, [data, error, hmsnrs])
+  }, [data, error])
 }

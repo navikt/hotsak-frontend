@@ -12,7 +12,8 @@ import {
   Statuskategori,
 } from '../types/types.internal'
 import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-import { PAGE_SIZE } from './paging/Paging'
+
+const PAGE_SIZE = 50
 
 interface DataResponse {
   oppgaver: Oppgave[]

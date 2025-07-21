@@ -28,11 +28,17 @@ interface HjelpemiddelProps {
   sak: Sak
   hjelpemiddel: Hjelpemiddeltype
   produkter: ProduktType[]
-  alternativer: AlternativeProduct[]
-  alleAlternativer: AlternativeProduct[]
+  alternativeProdukter: AlternativeProduct[]
+  harOppdatertLagerstatus: boolean
 }
 
-export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleAlternativer }: HjelpemiddelProps) {
+export function Hjelpemiddel({
+  sak,
+  hjelpemiddel,
+  produkter,
+  alternativeProdukter,
+  harOppdatertLagerstatus,
+}: HjelpemiddelProps) {
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
@@ -49,7 +55,7 @@ export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleA
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
 
-  const harAlternativer = alternativer.length > 0
+  const harAlternativeProdukter = alternativeProdukter.length > 0
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -84,9 +90,9 @@ export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleA
             />
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
-              {harAlternativer && (
+              {harAlternativeProdukter && (
                 <Tag size="small" variant="info">
-                  {alternativer.length} alternativer tilgjengelig
+                  {alternativeProdukter.length} alternativer tilgjengelig
                 </Tag>
               )}
             </HStack>
@@ -141,7 +147,7 @@ export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleA
           </div>
           {erOmbrukPilot && (
             <div>
-              {harAlternativer && kanEndreHmsnr && (
+              {harAlternativeProdukter && kanEndreHmsnr && (
                 <Bleed marginBlock="1 0">
                   <Button
                     variant="tertiary"
@@ -159,25 +165,24 @@ export function Hjelpemiddel({ sak, hjelpemiddel, produkter, alternativer, alleA
       </HjelpemiddelGrid>
       <>
         <EndreHjelpemiddelModal
-          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-          hmsNr={hjelpemiddel.produkt.hmsArtNr}
-          nåværendeHmsNr={nåværendeHmsnr}
           åpen={visEndreHjelpemiddelModal}
+          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+          hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+          nåværendeHmsArtNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onLukk={() => setVisEndreHjelpemiddelModal(false)}
         />
         {erOmbrukPilot && (
           <AlternativeProdukterModal
             åpen={visAlternativerModal}
-            hmsNr={hjelpemiddel.produkt.hmsArtNr}
             hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-            alternativer={alternativer}
-            alleAlternativer={alleAlternativer}
+            hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+            alternativeProdukter={alternativeProdukter}
+            harOppdatertLagerstatus={harOppdatertLagerstatus}
             onLagre={endreHjelpemiddel}
             onLukk={() => setVisAlternativerModal(false)}
           />
         )}
-
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">
             <Etikett size="medium">Tilbehør</Etikett>

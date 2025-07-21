@@ -7,32 +7,37 @@ import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
 import { erSakOppgaveId, OppgaveId, oppgaveIdUtenPrefix } from '../../oppgave/oppgaveId.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
+import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
     const url = new URL(request.url)
     const oppgavetype = url.searchParams.get('oppgavetype')
+    const pageNumber = +(url.searchParams.get('page') ?? 1)
+    const pageSize = +(url.searchParams.get('limit') ?? 10)
+    const offset = calculateOffset({ pageNumber, pageSize })
 
     await delay(200)
+    const alleOppgaver = await oppgaveStore.alle()
     if (oppgavetype === 'JOURNALFØRING') {
-      const oppgaver = await oppgaveStore.alle()
-
+      const journalføringsoppgaver = alleOppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING)
+      const totalElements = journalføringsoppgaver.length
       const pagedOppgaver: OppgaveApiResponse = {
-        oppgaver: oppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING),
-        pageNumber: 1,
-        pageSize: 10,
-        totalPages: 1,
-        totalElements: oppgaver.length,
+        oppgaver: journalføringsoppgaver.slice(offset, offset + pageSize),
+        pageNumber,
+        pageSize,
+        totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
+        totalElements,
       }
       return HttpResponse.json(pagedOppgaver)
     } else {
-      const oppgaver = await oppgaveStore.alle()
+      const totalElements = alleOppgaver.length
       const pagedOppgaver: OppgaveApiResponse = {
-        oppgaver: oppgaver,
-        pageNumber: 1,
-        pageSize: 10,
-        totalPages: 1,
-        totalElements: oppgaver.length,
+        oppgaver: alleOppgaver.slice(offset, offset + pageSize),
+        pageNumber,
+        pageSize,
+        totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
+        totalElements,
       }
       return HttpResponse.json(pagedOppgaver)
     }

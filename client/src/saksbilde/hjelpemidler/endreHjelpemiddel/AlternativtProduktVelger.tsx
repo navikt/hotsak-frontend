@@ -5,10 +5,10 @@ import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
 import { AlternativtProduktCard } from './AlternativtProduktCard.tsx'
 
 interface AlternativProduktVelgerProps {
-  alternativer: AlternativeProduct[]
+  alternativeProdukter: AlternativeProduct[]
 }
 
-export function AlternativtProduktVelger({ alternativer }: AlternativProduktVelgerProps) {
+export function AlternativtProduktVelger({ alternativeProdukter }: AlternativProduktVelgerProps) {
   const { control } = useFormContext()
 
   return (
@@ -27,8 +27,8 @@ export function AlternativtProduktVelger({ alternativer }: AlternativProduktVelg
           error={fieldState.error?.message}
         >
           <HGrid columns={'1fr 1fr'} gap="4" paddingBlock={'2 0'}>
-            {alternativer.map((alternativ) => (
-              <AlternativtProduktCard key={alternativ.id} alternativ={alternativ} endretProdukt={field.value} />
+            {alternativeProdukter.map((produkt) => (
+              <AlternativtProduktCard key={produkt.id} alternativtProdukt={produkt} endretProdukt={field.value} />
             ))}
           </HGrid>
         </CheckboxGroup>

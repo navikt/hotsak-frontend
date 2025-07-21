@@ -3,15 +3,28 @@ import { graphql, HttpResponse } from 'msw'
 // import alternativeProdukter from '../data/alternativeProductsPage_1.json'
 import alternativeProdukter from '../data/alternativeProductsPage_2.json'
 import type { StoreHandlersFactory } from '../data'
+import type {
+  FinnAlternativeProdukterSideQuery,
+  FinnAlternativeProdukterSideQueryVariables,
+} from '../../generated/alternativprodukter.ts'
 
 export const alternativprodukterHandlers: StoreHandlersFactory = () => [
-  graphql.query('FinnAlternativeProdukterSide', async ({ variables }) => {
-    const { hmsnrs } = variables
-    const content = alternativeProdukter.data.alternativeProductsPage.content.map((produkt: any) => ({
-      ...produkt,
-      alternativeFor: hmsnrs,
-    }))
+  graphql.query<FinnAlternativeProdukterSideQuery, FinnAlternativeProdukterSideQueryVariables>(
+    'FinnAlternativeProdukterSide',
+    async ({ variables }) => {
+      const { hmsnrs } = variables
+      const from = variables.from ?? 0
+      const size = variables.size ?? 1000
+      const content = alternativeProdukter.data.alternativeProductsPage.content.map((produkt: any) => ({
+        ...produkt,
+        alternativeFor: hmsnrs,
+      }))
 
-    return HttpResponse.json({ data: { alternativeProductsPage: { content } } })
-  }),
+      return HttpResponse.json({
+        data: {
+          alternativeProductsPage: { total: content.length, from, size, content: content.slice(from, from + size) },
+        },
+      })
+    }
+  ),
 ]

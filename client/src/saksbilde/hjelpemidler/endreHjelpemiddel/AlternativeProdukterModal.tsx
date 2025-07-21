@@ -2,7 +2,11 @@ import { Button, Heading, Modal } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
+import {
+  AlternativeProduct,
+  ingenAlternativeProdukterForHmsArtNr,
+  useAlternativeProdukter,
+} from '../useAlternativeProdukter.ts'
 import { AlternativtProduktVelger } from './AlternativtProduktVelger.tsx'
 import { BegrunnelseForBytte } from './BegrunnelseForBytte.tsx'
 import {
@@ -10,22 +14,43 @@ import {
   EndretHjelpemiddelBegrunnelseLabel,
   EndretHjelpemiddelRequest,
 } from '../../../types/types.internal.ts'
+import { Paginering } from '../../../felleskomponenter/Paginering.tsx'
 
 interface AlternativProduktModalProps {
   åpen: boolean
-  hmsNr: string
   hjelpemiddelId: string
-  alternativer: AlternativeProduct[]
-  alleAlternativer: AlternativeProduct[]
+  hmsArtNr: string
+  alternativeProdukter?: AlternativeProduct[]
+  harOppdatertLagerstatus: boolean
   onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
   onLukk(): void
 }
 
+const PAGE_SIZE = 4
+
 export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
-  const { åpen, onLukk, alternativer, hjelpemiddelId, onLagre } = props
+  const {
+    åpen,
+    hjelpemiddelId,
+    hmsArtNr,
+    alternativeProdukter: alternativeProdukterInitial = ingenAlternativeProdukterForHmsArtNr,
+    harOppdatertLagerstatus,
+    onLagre,
+    onLukk,
+  } = props
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
+
+  const { alternativeProdukterByHmsArtNr, pageNumber, pageSize, totalElements, onPageChange } = useAlternativeProdukter(
+    åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [],
+    PAGE_SIZE,
+    false
+  )
+
+  const alternativeProdukter = harOppdatertLagerstatus
+    ? alternativeProdukterInitial
+    : (alternativeProdukterByHmsArtNr[hmsArtNr] ?? ingenAlternativeProdukterForHmsArtNr)
 
   const methods = useForm<EndreArtikkelData>({
     defaultValues: {
@@ -53,7 +78,6 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
           {!nyttProduktValgt ? `Alternativer` : `Velg begrunnelse for å bytte hjelpemiddel`}
         </Heading>
       </Modal.Header>
-
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(async (data) => {
@@ -78,13 +102,29 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
           })}
         >
           <Modal.Body>
-            {!nyttProduktValgt ? <AlternativtProduktVelger alternativer={alternativer} /> : <BegrunnelseForBytte />}
+            {!nyttProduktValgt ? (
+              <>
+                <AlternativtProduktVelger alternativeProdukter={alternativeProdukter} />
+                {!harOppdatertLagerstatus && (
+                  <Paginering
+                    pageNumber={pageNumber}
+                    pageSize={pageSize}
+                    totalElements={totalElements}
+                    tekst="produkter"
+                    onPageChange={onPageChange}
+                  />
+                )}
+              </>
+            ) : (
+              <BegrunnelseForBytte />
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="primary" size="small" loading={submitting}>
               {!nyttProduktValgt ? 'Lagre endring' : 'Ferdig'}
             </Button>
             <Button
+              type="button"
               variant="tertiary"
               size="small"
               onClick={() => {

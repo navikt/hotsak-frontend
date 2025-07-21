@@ -22,16 +22,16 @@ import {
 import { useHjelpemiddel } from './useHjelpemiddel.ts'
 
 interface EndreHjelpemiddelModalProps {
-  hjelpemiddelId: string
-  hmsNr: string
-  nåværendeHmsNr?: string
   åpen: boolean
+  hjelpemiddelId: string
+  hmsArtNr: string
+  nåværendeHmsArtNr?: string
   onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
   onLukk(): void
 }
 
 export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
-  const { åpen, onLukk, onLagre, hjelpemiddelId, hmsNr, nåværendeHmsNr } = props
+  const { åpen, hjelpemiddelId, hmsArtNr, nåværendeHmsArtNr, onLagre, onLukk } = props
   const [submitting, setSubmitting] = useState(false)
   const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
   const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
@@ -42,7 +42,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
 
   const errorEndretProdukt = () => {
-    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsNr) {
+    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsArtNr) {
       return 'Du må oppgi et nytt, gyldig HMS-nr'
     }
   }
@@ -54,9 +54,9 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
 
     if (
       endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET &&
-      endreBegrunnelseFritekst.length > MAX_TEGN_BEGRUNNELSE_FRITEKST
+      endreBegrunnelseFritekst.length > MAKS_TEGN_BEGRUNNELSE_FRITEKST
     ) {
-      const antallForMange = endreBegrunnelseFritekst.length - MAX_TEGN_BEGRUNNELSE_FRITEKST
+      const antallForMange = endreBegrunnelseFritekst.length - MAKS_TEGN_BEGRUNNELSE_FRITEKST
       return `Antall tegn for mange ${antallForMange}`
     }
   }
@@ -109,7 +109,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
               <VStack gap="1">
                 <Etikett>Beskrivelse</Etikett>
                 <Tekst>
-                  {hmsNr !== '' && isError ? (
+                  {hmsArtNr !== '' && isError ? (
                     <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
                   ) : (
                     (hjelpemiddel?.navn ?? '')
@@ -185,4 +185,4 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
   )
 }
 
-const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
+const MAKS_TEGN_BEGRUNNELSE_FRITEKST = 150

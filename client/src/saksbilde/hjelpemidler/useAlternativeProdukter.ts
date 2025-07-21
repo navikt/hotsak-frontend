@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
-import { useErOmbrukPilot } from '../../tilgang/useTilgang'
-import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping'
+import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
+import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping.ts'
 import type {
   FinnAlternativeProdukterSideQuery,
   FinnAlternativeProdukterSideQueryVariables,
@@ -10,6 +10,7 @@ import type {
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 import { unique } from '../../utils/array.ts'
 import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
+import { calculateOffset, PageResponse } from '../../felleskomponenter/Page.ts'
 
 const finnAlternativeProdukterSideQuery = gql`
   query FinnAlternativeProdukterSide($hmsnrs: [String!]!, $from: Int, $size: Int) {
@@ -47,45 +48,81 @@ const finnAlternativeProdukterSideQuery = gql`
 export type AlternativeProduct = FinnAlternativeProdukterSideQuery['alternativeProductsPage']['content'][0]
 export type AlternativeProdukterByHmsArtNr = Record<string, AlternativeProduct[]>
 
-interface AlternativeProdukter {
-  alternativeProdukter: AlternativeProdukterByHmsArtNr
-  alleAlternativeProdukter: AlternativeProdukterByHmsArtNr
+/**
+ * Hvis argumentet `$size` eller feltet `total` i query `FinnAlternativeProdukterSide` er mindre eller lik enn denne
+ * verdien, vil feltet `wareHouseStock` inneholde oppdatert lagerstatus.
+ */
+const MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS = 10
+
+interface AlternativeProdukter extends PageResponse {
+  alternativeProdukterByHmsArtNr: AlternativeProdukterByHmsArtNr
+  harOppdatertLagerstatus: boolean
+  isLoading: boolean
+  onPageChange(pageNumber: number): void
 }
 
 const ingenAlternativeProdukter: AlternativeProdukter = {
-  alleAlternativeProdukter: {},
-  alternativeProdukter: {},
+  alternativeProdukterByHmsArtNr: {},
+  harOppdatertLagerstatus: true,
+  isLoading: false,
+  onPageChange() {},
+  pageNumber: 1,
+  pageSize: 1000,
+  totalElements: 0,
 }
 
-export function useAlternativeProdukter(hmsnrs: string[]): AlternativeProdukter {
+export const ingenAlternativeProdukterForHmsArtNr: AlternativeProduct[] = []
+
+export function useAlternativeProdukter(
+  hmsnrs: string[],
+  pageSize: number = 1000,
+  filter: boolean = true
+): AlternativeProdukter {
   const erOmbrukPilot = useErOmbrukPilot()
-  const { data, error } = useGraphQLQuery<
+  const [pageNumber, setPageNumber] = useState(1)
+  const { data, error, isLoading } = useGraphQLQuery<
     FinnAlternativeProdukterSideQuery,
     FinnAlternativeProdukterSideQueryVariables
-  >(grunndataClient.alternativprodukter, () => {
-    return erOmbrukPilot ? { document: finnAlternativeProdukterSideQuery, variables: { hmsnrs: unique(hmsnrs) } } : null
-  })
+  >(grunndataClient.alternativprodukter, () =>
+    erOmbrukPilot && hmsnrs.length > 0
+      ? {
+          document: finnAlternativeProdukterSideQuery,
+          variables: { hmsnrs: unique(hmsnrs), from: calculateOffset({ pageNumber, pageSize }), size: pageSize },
+        }
+      : null
+  )
 
   const { grupperPåHmsArtNr, harProduktPåLager } = useGjeldendeOebsEnhet()
 
   return useMemo(() => {
     if (error) {
-      console.warn(`Kunne ikke hente alternative produkter for HMS-nr: ${hmsnrs.join(', ')}`, error)
+      console.warn(`Kunne ikke hente alternative produkter`, error)
       return ingenAlternativeProdukter
     }
     if (data) {
-      const alleAlternativeProdukter = grupperPåHmsArtNr(data.alternativeProductsPage.content)
+      const {
+        alternativeProductsPage: { total: totalElements, content },
+      } = data
+      const produkterByHmsArtNr = grupperPåHmsArtNr(content)
       return {
-        alleAlternativeProdukter,
-        alternativeProdukter: Object.fromEntries(
-          Object.entries(alleAlternativeProdukter).map(([hmsArtNr, produkter]) => [
+        alternativeProdukterByHmsArtNr: Object.fromEntries(
+          Object.entries(produkterByHmsArtNr).map(([hmsArtNr, produkter]) => [
             hmsArtNr,
-            produkter.filter(harProduktPåLager),
+            filter ? produkter.filter(harProduktPåLager) : produkter,
           ])
         ),
+        harOppdatertLagerstatus:
+          pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS ||
+          totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS,
+        isLoading,
+        pageNumber,
+        pageSize,
+        totalElements,
+        totalPages: Math.ceil(totalElements / pageSize),
+        onPageChange: setPageNumber,
       }
     }
 
     return ingenAlternativeProdukter
-  }, [data, error, hmsnrs])
+  }, [pageSize, filter, pageNumber, data, error, isLoading])
 }

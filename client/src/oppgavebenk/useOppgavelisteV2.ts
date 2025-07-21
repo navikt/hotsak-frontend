@@ -2,8 +2,9 @@ import useSwr from 'swr'
 
 import { SortState } from '@navikt/ds-react'
 import { httpGet } from '../io/http'
-import { PAGE_SIZE } from '../oppgaveliste/paging/Paging'
 import { OppgaveApiOppgave, OppgaveApiResponse, TildeltFilter } from '../types/experimentalTypes'
+
+const PAGE_SIZE = 50
 
 interface DataResponse {
   oppgaver: OppgaveApiOppgave[]

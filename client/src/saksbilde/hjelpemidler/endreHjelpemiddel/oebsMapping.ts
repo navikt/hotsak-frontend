@@ -3,17 +3,15 @@ import { useMemo } from 'react'
 import type { AlternativeProduct, AlternativeProdukterByHmsArtNr } from '../useAlternativeProdukter.ts'
 import { useTilgangContext } from '../../../tilgang/useTilgang.ts'
 
-interface Lagerlokasjon {
-  oebsEnhetsnummer: string
-  lokasjon: string
-}
-
 interface OebsEnhet {
-  navn: string
-  lagerlokasjoner: Lagerlokasjon[]
+  readonly navn: string
+  readonly lagerlokasjoner: ReadonlyArray<{
+    readonly oebsEnhetsnummer: string
+    readonly lokasjon: string
+  }>
 }
 
-const oebsEnheter: Record<string, OebsEnhet> = {
+const oebsEnheter: Readonly<Record<string, OebsEnhet>> = {
   '2970': { navn: 'IT-avdelingen', lagerlokasjoner: [{ oebsEnhetsnummer: '03', lokasjon: 'Oslo' }] },
   '4701': {
     navn: 'Nav hjelpemiddelsentral Øst-Viken',
@@ -86,14 +84,16 @@ const oebsEnheter: Record<string, OebsEnhet> = {
   },
 }
 
-type WareHouseStock = NonNullable<AlternativeProduct['wareHouseStock']>[0]
+type WareHouseStock = NonNullable<AlternativeProduct['wareHouseStock']>
 
 export function finnGjeldendeOebsEnhet(enhetsnummer: string) {
   const oebsEnhet = oebsEnheter[enhetsnummer]
   const lagerlokasjoner = oebsEnhet?.lagerlokasjoner?.map((lokasjon) => lokasjon.lokasjon.toLowerCase()) || []
 
-  const forLagerlokasjon = (lagerstatus: WareHouseStock | null) =>
-    lagerstatus?.location && lagerlokasjoner.includes(lagerstatus.location.toLocaleLowerCase())
+  const lagerstatusForEnhet = (produkt: AlternativeProduct): WareHouseStock =>
+    produkt.wareHouseStock?.filter(
+      (lagerstatus) => lagerstatus?.location && lagerlokasjoner.includes(lagerstatus.location.toLocaleLowerCase())
+    ) ?? []
 
   return {
     oebsEnhet,
@@ -107,7 +107,7 @@ export function finnGjeldendeOebsEnhet(enhetsnummer: string) {
       return produkter.reduce<AlternativeProdukterByHmsArtNr>((result, produkt) => {
         const filtrertProdukt: AlternativeProduct = {
           ...produkt,
-          wareHouseStock: produkt.wareHouseStock?.filter(forLagerlokasjon) ?? [],
+          wareHouseStock: lagerstatusForEnhet(produkt),
         }
 
         produkt.alternativeFor.forEach((hmsArtNr) => {
@@ -125,8 +125,7 @@ export function finnGjeldendeOebsEnhet(enhetsnummer: string) {
      * @param produkt
      */
     harProduktPåLager(produkt: AlternativeProduct): boolean {
-      const lagerstatusForEnhet = produkt.wareHouseStock?.filter(forLagerlokasjon) ?? []
-      const påLager = lagerstatusForEnhet?.filter(
+      const påLager = lagerstatusForEnhet(produkt).filter(
         (lagerstatus) => lagerstatus?.amountInStock && lagerstatus.amountInStock > 0
       )
       return påLager.length > 0

@@ -3,12 +3,10 @@ import styled from 'styled-components'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
-
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
-import { Paging } from '../oppgaveliste/paging/Paging'
 import { OppgaveApiOppgave } from '../types/experimentalTypes'
 import { Oppgavetype } from '../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
@@ -19,13 +17,14 @@ import { Oppgavefilter } from './OppgaveFilter'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
 import { oppgaveIdUtenPrefix } from '../oppgave/oppgaveId.ts'
+import { Paginering } from '../felleskomponenter/Paginering.tsx'
 
 // TODO vise sakId i egen kolonne
 
 export function Oppgavebenk() {
   const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useFilterContext()
 
-  const { oppgaver, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
+  const { oppgaver, pageNumber, pageSize, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
     tildeltFilter,
     gjelderFilter,
   })
@@ -230,11 +229,12 @@ export function Oppgavebenk() {
                     ))}
                   </Table.Body>
                 </Table>
-
-                <Paging
+                <Paginering
+                  pageNumber={pageNumber}
+                  pageSize={pageSize}
                   totalElements={totalElements}
-                  currentPage={currentPage}
-                  onPageChange={(page: number) => setCurrentPage(page)}
+                  tekst="oppgaver"
+                  onPageChange={(page) => setCurrentPage(page)}
                 />
               </>
             ) : (

@@ -11,7 +11,7 @@ import { OebsAlert } from './OebsAlert.tsx'
 import { Summering } from './Summering.tsx'
 import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak.ts'
-import { useAlternativeProdukter } from './useAlternativeProdukter.ts'
+import { ingenAlternativeProdukterForHmsArtNr, useAlternativeProdukter } from './useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
 
 interface HjelpemiddelListeProps {
@@ -42,7 +42,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   }, [hjelpemidler])
 
   const hjelpemiddelprodukter = useHjelpemiddelprodukter(alleHmsNr)
-  const { alternativeProdukter, alleAlternativeProdukter } = useAlternativeProdukter(alleHjelpemidler)
+  const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
@@ -66,8 +66,10 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
             sak={sak}
             hjelpemiddel={hjelpemiddel}
             produkter={hjelpemiddelprodukter}
-            alternativer={alternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
-            alleAlternativer={alleAlternativeProdukter[hjelpemiddel.produkt.hmsArtNr] || []}
+            alternativeProdukter={
+              alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ?? ingenAlternativeProdukterForHmsArtNr
+            }
+            harOppdatertLagerstatus={harOppdatertLagerstatus}
           />
         </Box>
       ))}

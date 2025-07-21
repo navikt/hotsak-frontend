@@ -7,11 +7,11 @@ import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
 import { formaterRelativTid } from '../../../utils/dato'
 
 interface AlternativProduktCardProps {
-  alternativ: AlternativeProduct
+  alternativtProdukt: AlternativeProduct
   endretProdukt: string[]
 }
 
-export function AlternativtProduktCard({ alternativ, endretProdukt }: AlternativProduktCardProps) {
+export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: AlternativProduktCardProps) {
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 
   function produktBilde(produkt: AlternativeProduct): Maybe<string> {
@@ -28,28 +28,28 @@ export function AlternativtProduktCard({ alternativ, endretProdukt }: Alternativ
   return (
     <VStack>
       <ProduktCard
-        key={alternativ.id}
+        key={alternativtProdukt.id}
         borderWidth="1"
         borderColor="border-subtle"
         borderRadius={'large'}
         padding="4"
-        selected={endretProdukt.includes(alternativ.hmsArtNr)}
+        selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}
       >
         <VStack gap="3">
           <HStack justify={'center'} paddingBlock={'2 4'}>
-            {produktBilde(alternativ) && <img src={produktBilde(alternativ)} width="180px" />}
+            {produktBilde(alternativtProdukt) && <img src={produktBilde(alternativtProdukt)} width="180px" />}
           </HStack>
           <VStack>
             <Etikett size="small">
-              <Link href={`https://finnhjelpemiddel.nav.no/${alternativ.hmsArtNr}`} target="_blank">
-                {alternativ.articleName || alternativ.title}
+              <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
+                {alternativtProdukt.articleName || alternativtProdukt.title}
               </Link>
             </Etikett>
-            <Undertittel>{`Hmsnr: ${alternativ.hmsArtNr}`}</Undertittel>
-            <Brødtekst>{alternativ.supplier.name}</Brødtekst>
+            <Undertittel>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Undertittel>
+            <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
           </VStack>
           <HGrid columns={'auto 1fr'} gap="2 2" align="center">
-            {alternativ.wareHouseStock?.map((lagerstatus) => (
+            {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
                 {false ? (
@@ -71,12 +71,12 @@ export function AlternativtProduktCard({ alternativ, endretProdukt }: Alternativ
             ))}
           </HGrid>
           <div>
-            <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativ?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
+            <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
           </div>
         </VStack>
       </ProduktCard>
       <HStack justify={'center'} paddingBlock="2 0">
-        <Checkbox value={alternativ.hmsArtNr}>Bytt til denne</Checkbox>
+        <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </HStack>
     </VStack>
   )

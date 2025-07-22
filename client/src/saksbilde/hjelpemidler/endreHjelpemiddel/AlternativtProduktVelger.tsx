@@ -21,12 +21,12 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
           legend="Velg alternativ"
           hideLegend
           name={field.name}
-          onChange={(val) => field.onChange(val.slice(-1))}
+          onChange={(value) => field.onChange(value.slice(-1))}
           value={field.value}
           size="small"
           error={fieldState.error?.message}
         >
-          <HGrid columns={'1fr 1fr'} gap="4" paddingBlock={'2 0'}>
+          <HGrid columns="1fr 1fr" gap="4" paddingBlock="2 0">
             {alternativeProdukter.map((produkt) => (
               <AlternativtProduktCard key={produkt.id} alternativtProdukt={produkt} endretProdukt={field.value} />
             ))}

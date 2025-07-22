@@ -92,7 +92,9 @@ export function Hjelpemiddel({
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
               {harAlternativeProdukter && (
                 <Tag size="small" variant="info">
-                  {alternativeProdukter.length} alternativer tilgjengelig
+                  {harOppdatertLagerstatus
+                    ? `${alternativeProdukter.length} alternativer tilgjengelig`
+                    : 'Har alternativer'}
                 </Tag>
               )}
             </HStack>

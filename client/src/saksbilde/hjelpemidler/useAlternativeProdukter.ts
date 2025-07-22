@@ -63,7 +63,7 @@ interface AlternativeProdukter extends PageResponse {
 
 const ingenAlternativeProdukter: AlternativeProdukter = {
   alternativeProdukterByHmsArtNr: {},
-  harOppdatertLagerstatus: true,
+  harOppdatertLagerstatus: false,
   isLoading: false,
   onPageChange() {},
   pageNumber: 1,
@@ -96,33 +96,30 @@ export function useAlternativeProdukter(
 
   return useMemo(() => {
     if (error) {
-      console.warn(`Kunne ikke hente alternative produkter`, error)
-      return ingenAlternativeProdukter
+      console.warn(`Kunne ikke hente alternative produkter:`, error)
     }
-    if (data) {
-      const {
-        alternativeProductsPage: { total: totalElements, content },
-      } = data
-      const produkterByHmsArtNr = grupperPåHmsArtNr(content)
-      return {
-        alternativeProdukterByHmsArtNr: Object.fromEntries(
-          Object.entries(produkterByHmsArtNr).map(([hmsArtNr, produkter]) => [
-            hmsArtNr,
-            filter ? produkter.filter(harProduktPåLager) : produkter,
-          ])
-        ),
-        harOppdatertLagerstatus:
-          pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS ||
-          totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS,
-        isLoading,
-        pageNumber,
-        pageSize,
-        totalElements,
-        totalPages: Math.ceil(totalElements / pageSize),
-        onPageChange: setPageNumber,
-      }
+    if (!data) {
+      return { ...ingenAlternativeProdukter, isLoading, pageNumber, pageSize }
     }
-
-    return ingenAlternativeProdukter
-  }, [pageSize, filter, pageNumber, data, error, isLoading])
+    const {
+      alternativeProductsPage: { total: totalElements, content },
+    } = data
+    const produkterByHmsArtNr = grupperPåHmsArtNr(content)
+    return {
+      alternativeProdukterByHmsArtNr: Object.fromEntries(
+        Object.entries(produkterByHmsArtNr).map(([hmsArtNr, produkter]) => [
+          hmsArtNr,
+          filter ? produkter.filter(harProduktPåLager) : produkter,
+        ])
+      ),
+      harOppdatertLagerstatus:
+        pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS ||
+        totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS,
+      isLoading,
+      pageNumber,
+      pageSize,
+      totalElements,
+      onPageChange: setPageNumber,
+    }
+  }, [filter, pageNumber, pageSize, data, error, isLoading])
 }

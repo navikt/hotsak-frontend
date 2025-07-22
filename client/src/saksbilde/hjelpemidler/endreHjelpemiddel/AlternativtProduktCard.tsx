@@ -1,4 +1,4 @@
-import { Box, Checkbox, HGrid, HStack, Link, Skeleton, Tag, VStack } from '@navikt/ds-react'
+import { Box, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -14,11 +14,10 @@ interface AlternativProduktCardProps {
 export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: AlternativProduktCardProps) {
   const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 
-  function produktBilde(produkt: AlternativeProduct): Maybe<string> {
+  function produktbilde(produkt: AlternativeProduct): Maybe<string> {
     const media = produkt.media
       .filter((m) => m.type === 'IMAGE')
       .sort((a, b) => (Number(a.priority) ?? 0) - (Number(b.priority) ?? 0))[0]
-
     if (!media || !media.uri) {
       return undefined
     }
@@ -31,13 +30,19 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         key={alternativtProdukt.id}
         borderWidth="1"
         borderColor="border-subtle"
-        borderRadius={'large'}
+        borderRadius="large"
         padding="4"
         selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}
       >
         <VStack gap="3">
-          <HStack justify={'center'} paddingBlock={'2 4'}>
-            {produktBilde(alternativtProdukt) && <img src={produktBilde(alternativtProdukt)} width="180px" />}
+          <HStack justify="center">
+            {produktbilde(alternativtProdukt) && (
+              <img
+                alt="Produktbilde"
+                src={produktbilde(alternativtProdukt)}
+                style={{ maxWidth: '100%', maxHeight: '200px' }}
+              />
+            )}
           </HStack>
           <VStack>
             <Etikett size="small">
@@ -48,25 +53,21 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
             <Undertittel>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Undertittel>
             <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
           </VStack>
-          <HGrid columns={'auto 1fr'} gap="2 2" align="center">
+          <HGrid columns="auto 1fr" gap="2 2" align="center">
             {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
               <React.Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
-                {false ? (
-                  <Skeleton variant="rectangle" width={100} height={25} />
-                ) : (
-                  <div>
-                    {lagerstatus ? (
-                      <Tag variant="success" size="small">
-                        {lagerstatus.amountInStock} stk på lager
-                      </Tag>
-                    ) : (
-                      <Tag variant="warning-moderate" size="small">
-                        Ukjent
-                      </Tag>
-                    )}
-                  </div>
-                )}
+                <div>
+                  {lagerstatus ? (
+                    <Tag variant="success" size="small">
+                      {lagerstatus.amountInStock} stk på lager
+                    </Tag>
+                  ) : (
+                    <Tag variant="warning-moderate" size="small">
+                      Ukjent
+                    </Tag>
+                  )}
+                </div>
               </React.Fragment>
             ))}
           </HGrid>
@@ -75,7 +76,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           </div>
         </VStack>
       </ProduktCard>
-      <HStack justify={'center'} paddingBlock="2 0">
+      <HStack justify="center" paddingBlock="2 0">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </HStack>
     </VStack>

@@ -1,4 +1,4 @@
-import { graphql, HttpResponse } from 'msw'
+import { delay, graphql, HttpResponse } from 'msw'
 
 // import alternativeProdukter from '../data/alternativeProductsPage_1.json'
 import alternativeProdukter from '../data/alternativeProductsPage_2.json'
@@ -20,9 +20,15 @@ export const alternativprodukterHandlers: StoreHandlersFactory = () => [
         alternativeFor: hmsnrs,
       }))
 
+      const total = content.length
+      // Simulerer henting av lagerstatus hvis antallet produkter returnert er <= 10.
+      if (total >= 10 && size <= 10) {
+        await delay(1000)
+      }
+
       return HttpResponse.json({
         data: {
-          alternativeProductsPage: { total: content.length, from, size, content: content.slice(from, from + size) },
+          alternativeProductsPage: { total, from, size, content: content.slice(from, from + size) },
         },
       })
     }

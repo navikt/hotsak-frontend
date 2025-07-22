@@ -1,5 +1,5 @@
 import { Box, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
-import React from 'react'
+import { Fragment } from 'react'
 import styled from 'styled-components'
 
 import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
@@ -25,7 +25,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
   }
 
   return (
-    <VStack>
+    <VStack gap="3">
       <ProduktCard
         key={alternativtProdukt.id}
         borderWidth="1"
@@ -40,7 +40,11 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
               <img
                 alt="Produktbilde"
                 src={produktbilde(alternativtProdukt)}
-                style={{ maxWidth: '100%', maxHeight: '200px' }}
+                style={{
+                  height: '185px',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                }}
               />
             )}
           </HStack>
@@ -55,7 +59,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           </VStack>
           <HGrid columns="auto 1fr" gap="2 2" align="center">
             {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-              <React.Fragment key={lagerstatus?.location}>
+              <Fragment key={lagerstatus?.location}>
                 <Etikett>{lagerstatus?.location}: </Etikett>
                 <div>
                   {lagerstatus ? (
@@ -68,7 +72,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                     </Tag>
                   )}
                 </div>
-              </React.Fragment>
+              </Fragment>
             ))}
           </HGrid>
           <div>
@@ -76,7 +80,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           </div>
         </VStack>
       </ProduktCard>
-      <HStack justify="center" paddingBlock="2 0">
+      <HStack justify="center">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </HStack>
     </VStack>

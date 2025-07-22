@@ -26,7 +26,7 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
           size="small"
           error={fieldState.error?.message}
         >
-          <HGrid columns="1fr 1fr" gap="4" paddingBlock="2 0">
+          <HGrid columns="1fr 1fr 1fr" gap="3">
             {alternativeProdukter.map((produkt) => (
               <AlternativtProduktCard key={produkt.id} alternativtProdukt={produkt} endretProdukt={field.value} />
             ))}

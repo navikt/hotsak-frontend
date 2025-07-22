@@ -14,7 +14,7 @@ export function Paginering(props: PagineringProps) {
   const first = pageSize * (pageNumber - 1) + 1
   const last = first + pageSize - 1
   return (
-    <VStack gap="3" marginBlock="6 0">
+    <VStack gap="3" marginBlock="3 0">
       {totalPages > 1 && (
         <Pagination page={pageNumber} count={totalPages} size="small" onPageChange={onPageChange} prevNextTexts />
       )}

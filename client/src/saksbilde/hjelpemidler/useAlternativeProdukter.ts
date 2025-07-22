@@ -121,5 +121,5 @@ export function useAlternativeProdukter(
       totalElements,
       onPageChange: setPageNumber,
     }
-  }, [filter, pageNumber, pageSize, data, error, isLoading])
+  }, [data, error, isLoading, pageNumber, pageSize, filter])
 }

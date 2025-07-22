@@ -104,15 +104,19 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
                 {isLoading ? (
                   <Loading count={4} />
                 ) : (
-                  <AlternativtProduktVelger alternativeProdukter={alternativeProdukter} />
+                  <>
+                    <AlternativtProduktVelger alternativeProdukter={alternativeProdukter} />
+                    {!harOppdatertLagerstatus && (
+                      <Paginering
+                        pageNumber={pageNumber}
+                        pageSize={pageSize}
+                        totalElements={totalElements}
+                        tekst="produkter"
+                        onPageChange={onPageChange}
+                      />
+                    )}
+                  </>
                 )}
-                <Paginering
-                  pageNumber={pageNumber}
-                  pageSize={pageSize}
-                  totalElements={totalElements}
-                  tekst="produkter"
-                  onPageChange={onPageChange}
-                />
               </>
             ) : (
               <BegrunnelseForBytte />

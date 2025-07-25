@@ -43,7 +43,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
 
   const { isLoading, alternativeProdukterByHmsArtNr, pageNumber, pageSize, totalElements, onPageChange } =
-    useAlternativeProdukter(åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [], PAGE_SIZE, false)
+    useAlternativeProdukter(åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [], PAGE_SIZE)
 
   const alternativeProdukter = harOppdatertLagerstatus
     ? alternativeProdukterInitial
@@ -51,8 +51,8 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
 
   const methods = useForm<EndreArtikkelData>({
     defaultValues: {
-      endretProdukt: '',
-      endreBegrunnelse: undefined,
+      endretProdukt: [],
+      endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
     },
   })
@@ -82,15 +82,16 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               setNyttProduktValgt(true)
             } else {
               setSubmitting(true)
+              const begrunnelse = data.endreBegrunnelse as EndretHjelpemiddelBegrunnelse
               const begrunnelseFritekst =
-                data.endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                   ? data.endreBegrunnelseFritekst
-                  : EndretHjelpemiddelBegrunnelseLabel.get(data.endreBegrunnelse!)
+                  : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
               await onLagre({
-                hjelpemiddelId: hjelpemiddelId,
+                hjelpemiddelId,
                 hmsArtNr: data.endretProdukt[0] ?? '',
-                begrunnelse: data.endreBegrunnelse!,
-                begrunnelseFritekst: begrunnelseFritekst,
+                begrunnelse,
+                begrunnelseFritekst,
               })
               setSubmitting(false)
               setNyttProduktValgt(false)
@@ -145,9 +146,9 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
 }
 
 interface EndreArtikkelData {
-  endretProdukt: string
-  endreBegrunnelse: EndretHjelpemiddelBegrunnelse | undefined
-  endreBegrunnelseFritekst: ''
+  endretProdukt: string[]
+  endreBegrunnelse: EndretHjelpemiddelBegrunnelse | ''
+  endreBegrunnelseFritekst: string | ''
 }
 
 function Loading({ count }: { count: number }) {

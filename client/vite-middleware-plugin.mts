@@ -1,8 +1,10 @@
 import type { Plugin } from 'vite'
 import * as fs from 'fs'
 
-export function middlewarePlugin({ proxy }: { development?: boolean; proxy?: boolean }): Plugin {
-  if (proxy) {
+import type { Proxy } from './proxy'
+
+export function middlewarePlugin({ proxy }: { development?: boolean; proxy: Proxy }): Plugin {
+  if (proxy.api) {
     return {
       name: 'middleware-plugin',
     }

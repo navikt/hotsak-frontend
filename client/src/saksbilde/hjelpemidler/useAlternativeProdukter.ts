@@ -73,11 +73,7 @@ const ingenAlternativeProdukter: AlternativeProdukter = {
 
 export const ingenAlternativeProdukterForHmsArtNr: AlternativeProduct[] = []
 
-export function useAlternativeProdukter(
-  hmsnrs: string[],
-  pageSize: number = 1000,
-  filter: boolean = true
-): AlternativeProdukter {
+export function useAlternativeProdukter(hmsnrs: string[], pageSize: number = 1000): AlternativeProdukter {
   const erOmbrukPilot = useErOmbrukPilot()
   const [pageNumber, setPageNumber] = useState(1)
   const { data, error, isLoading } = useGraphQLQuery<
@@ -105,21 +101,20 @@ export function useAlternativeProdukter(
       alternativeProductsPage: { total: totalElements, content },
     } = data
     const produkterByHmsArtNr = grupperPåHmsArtNr(content)
+    const paginering = totalElements > MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS
     return {
       alternativeProdukterByHmsArtNr: Object.fromEntries(
         Object.entries(produkterByHmsArtNr).map(([hmsArtNr, produkter]) => [
           hmsArtNr,
-          filter ? produkter.filter(harProduktPåLager) : produkter,
+          paginering ? produkter : produkter.filter(harProduktPåLager),
         ])
       ),
-      harOppdatertLagerstatus:
-        pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS ||
-        totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS,
+      harOppdatertLagerstatus: pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS || !paginering,
       isLoading,
       pageNumber,
       pageSize,
       totalElements,
       onPageChange: setPageNumber,
     }
-  }, [data, error, isLoading, pageNumber, pageSize, filter])
+  }, [data, error, isLoading, pageNumber, pageSize])
 }

@@ -5,7 +5,7 @@ import type { StoreHandlersFactory } from '../data'
 import type { SakParams } from './params'
 import { respondNotFound } from './response'
 
-export const saksVarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
+export const saksvarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.get<SakParams>(`/api/sak/:sakId/varsler`, async ({ params }) => {
     const { sakId } = params
 

@@ -13,6 +13,8 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
           children: `window.appSettings = {
             GIT_COMMIT: 'unknown',
             USE_MSW: ${proxy.api ? 'false' : 'true'},
+            USE_MSW_GRUNNDATA: ${proxy.grunndata ? 'false' : 'true'},
+            USE_MSW_ALTERNATIVPRODUKTER: ${proxy.alternativprodukter ? 'false' : 'true'},
             MILJO: 'local',
             IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
             FARO_URL: '',

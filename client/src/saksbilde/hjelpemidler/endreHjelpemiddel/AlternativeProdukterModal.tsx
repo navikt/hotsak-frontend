@@ -42,8 +42,15 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const [submitting, setSubmitting] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
 
-  const { isLoading, alternativeProdukterByHmsArtNr, pageNumber, pageSize, totalElements, onPageChange } =
-    useAlternativeProdukter(åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [], PAGE_SIZE)
+  const {
+    isLoading,
+    alternativeProdukterByHmsArtNr,
+    harPaginering,
+    pageNumber,
+    pageSize,
+    totalElements,
+    onPageChange,
+  } = useAlternativeProdukter(åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [], PAGE_SIZE, false)
 
   const alternativeProdukter = harOppdatertLagerstatus
     ? alternativeProdukterInitial
@@ -107,7 +114,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
                 ) : (
                   <>
                     <AlternativtProduktVelger alternativeProdukter={alternativeProdukter} />
-                    {!harOppdatertLagerstatus && (
+                    {harPaginering && (
                       <Paginering
                         pageNumber={pageNumber}
                         pageSize={pageSize}

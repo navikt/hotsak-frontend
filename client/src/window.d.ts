@@ -6,6 +6,8 @@ declare global {
     msw?: any
     appSettings: {
       USE_MSW?: boolean
+      USE_MSW_GRUNNDATA?: boolean
+      USE_MSW_ALTERNATIVPRODUKTER?: boolean
       GIT_COMMIT?: string
       MILJO?: 'local' | 'dev-gcp' | 'prod-gcp' | string
       FARO_URL?: string

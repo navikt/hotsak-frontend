@@ -41,22 +41,22 @@ export default defineConfig((env) => {
           : {}),
         ...(proxy.grunndata
           ? {
-              '/finnhjelpemiddel-api': {
+              '/grunndata-api': {
                 target: 'https://hm-grunndata-search.intern.dev.nav.no',
                 changeOrigin: true,
                 rewrite(path) {
-                  return path.replace(/^\/finnhjelpemiddel-api/, '')
+                  return path.replace(/^\/grunndata-api/, '')
                 },
               },
             }
           : {}),
         ...(proxy.alternativprodukter
           ? {
-              '/finnalternativprodukt-api': {
+              '/alternativprodukter-api': {
                 target: 'http://localhost:9000',
                 changeOrigin: true,
                 rewrite(path) {
-                  return path.replace(/^\/finnalternativprodukt-api/, '')
+                  return path.replace(/^\/alternativprodukter-api/, '')
                 },
               },
             }

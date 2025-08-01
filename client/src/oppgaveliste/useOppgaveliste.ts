@@ -2,14 +2,8 @@ import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
-import {
-  OmrådeFilter,
-  Oppgave,
-  OppgaveStatusType,
-  SakerFilter,
-  SakstypeFilter,
-  Statuskategori,
-} from '../types/types.internal'
+import { Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { OmrådeFilter, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
 
 const PAGE_SIZE = 50
 

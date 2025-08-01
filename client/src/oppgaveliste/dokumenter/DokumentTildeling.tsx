@@ -1,6 +1,5 @@
-import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle'
-import { OppgaveApiOppgave } from '../../types/experimentalTypes'
-
+import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
+import { OppgaveApiOppgave } from '../../oppgave/oppgaveTypes.ts'
 import { formaterNavn } from '../../utils/formater'
 import { DokumentIkkeTildelt } from './DokumentIkkeTildelt'
 

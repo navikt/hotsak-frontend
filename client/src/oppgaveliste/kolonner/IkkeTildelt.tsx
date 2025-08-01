@@ -1,47 +1,39 @@
-import { MouseEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
+import { MouseEventHandler } from 'react'
+import { useSWRConfig } from 'swr'
 
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
-import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
 import { HttpError } from '../../io/HttpError.ts'
+import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 interface IkkeTildeltProps {
-  sakId: number | string
-  gjeldendeOppgave?: GjeldendeOppgave
-  gåTilSak: boolean
   onTildelingKonflikt?(): void
 }
 
-export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTildelingKonflikt }: IkkeTildeltProps) {
+export function IkkeTildelt({ onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetAnsatt()
-  const { endreOppgavetildeling, state } = useOppgaveService(gjeldendeOppgave)
-  const navigate = useNavigate()
+  const { sakId } = useOppgaveContext()
+  const { endreOppgavetildeling, state } = useOppgaveActions()
   const { mutate } = useSWRConfig()
+
   const oppdaterSakOgSakshistorikk = () => {
-    mutate(`api/sak/${sakId}`)
-    mutate(`api/sak/${sakId}/historikk`)
+    return Promise.all([mutate(`api/sak/${sakId}`), mutate(`api/sak/${sakId}/historikk`)])
   }
-  const tildel = (event: MouseEvent) => {
+
+  const tildel: MouseEventHandler = (event) => {
     event.stopPropagation()
 
     if (!saksbehandler || state.loading) return
     endreOppgavetildeling({ overtaHvisTildelt: false })
-      .then(() => {
-        if (gåTilSak) {
-          const destinationUrl = `/sak/${sakId}/hjelpemidler`
-          return navigate(destinationUrl)
-        } else {
-          return oppdaterSakOgSakshistorikk()
-        }
+      .then(async () => {
+        return oppdaterSakOgSakshistorikk()
       })
-      .catch((e: HttpError) => {
-        if (e.isConflict() && onTildelingKonflikt) {
+      .catch((err: HttpError) => {
+        if (err.isConflict() && onTildelingKonflikt) {
           onTildelingKonflikt()
         } else {
-          oppdaterSakOgSakshistorikk()
+          return oppdaterSakOgSakshistorikk()
         }
       })
   }
@@ -49,10 +41,10 @@ export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTild
   return (
     <Button
       type="button"
-      size={gåTilSak ? 'xsmall' : 'small'}
-      variant={gåTilSak ? 'tertiary' : 'secondary'}
-      onClick={tildel}
+      size="small"
+      variant="secondary"
       name="Ta saken"
+      onClick={tildel}
       disabled={state.loading}
       loading={state.loading}
     >

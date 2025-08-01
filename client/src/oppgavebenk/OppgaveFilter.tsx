@@ -1,6 +1,7 @@
 import { Box, Button, HStack } from '@navikt/ds-react'
+
 import { FilterChips, FilterToggleGroup } from '../oppgaveliste/filter/filter'
-import { OppgaveFilterType, OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
+import { OppgaveFilterType, OppgaveGjelderFilter, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
 import { useFilterContext } from './FilterContext'
 
 export function Oppgavefilter() {

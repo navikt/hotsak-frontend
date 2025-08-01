@@ -14,14 +14,12 @@ import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
-  Oppgave,
   OppgaveStatusLabel,
   OppgaveStatusType,
   SakerFilter,
   Sakstype,
   SakstypeFilter,
   SakstypeFilterLabel,
-  Statuskategori,
 } from '../types/types.internal'
 import { formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
@@ -29,7 +27,6 @@ import { isError } from '../utils/type'
 import { FilterDropdown, FilterToggle } from './filter/filter.tsx'
 import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
-import { Tildeling } from './kolonner/Tildeling'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
 import { useLocalState } from '../state/useLocalState'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
@@ -38,6 +35,8 @@ import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
 import { Paginering } from '../felleskomponenter/Paginering.tsx'
+import { Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgave } from '../oppgave/oppgaveliste/TaOppgave.tsx'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
   statuskategori: Statuskategori.ÅPEN,
@@ -85,14 +84,7 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return (
-          <Tildeling
-            oppgave={oppgave}
-            lesevisning={!harSkrivetilgang}
-            visTildelingKonfliktModalForSak={setVisTildelingKonfliktModalForSak}
-            onMutate={mutate}
-          />
-        )
+        return <TaOppgave oppgave={oppgave} />
       },
     },
     {
@@ -348,14 +340,7 @@ export function Oppgaveliste() {
                   </Table.Header>
                   <Table.Body>
                     {oppgaver.map((oppgave) => (
-                      <LinkRow
-                        key={oppgave.sakId}
-                        path={
-                          oppgave.sakstype !== Sakstype.TILSKUDD
-                            ? `/sak/${oppgave.sakId}/hjelpemidler`
-                            : `/sak/${oppgave.sakId}`
-                        }
-                      >
+                      <LinkRow key={oppgave.sakId} path={utledOppgavePath(oppgave)}>
                         {kolonner.filter(filterHide).map(({ key, width, render }) => (
                           <DataCell
                             key={key}
@@ -394,6 +379,12 @@ export function Oppgaveliste() {
       )}
     </>
   )
+}
+
+function utledOppgavePath(oppgave: Oppgave): string {
+  return oppgave.sakstype === Sakstype.TILSKUDD
+    ? `/oppgave/${oppgave.oppgaveId}`
+    : `/oppgave/${oppgave.oppgaveId}/hjelpemidler`
 }
 
 const Container = styled.div`

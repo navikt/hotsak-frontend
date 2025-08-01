@@ -7,8 +7,7 @@ import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeade
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
-import { OppgaveApiOppgave } from '../types/experimentalTypes'
-import { Oppgavetype } from '../types/types.internal'
+import { OppgaveApiOppgave, oppgaveIdUtenPrefix } from '../oppgave/oppgaveTypes.ts'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
@@ -16,7 +15,6 @@ import { useFilterContext } from './FilterContext'
 import { Oppgavefilter } from './OppgaveFilter'
 import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
-import { oppgaveIdUtenPrefix } from '../oppgave/oppgaveId.ts'
 import { Paginering } from '../felleskomponenter/Paginering.tsx'
 
 // TODO vise sakId i egen kolonne
@@ -136,36 +134,15 @@ export function Oppgavebenk() {
       },
     },
     {
-      key: 'HANDLING',
-      name: 'Handling',
+      key: 'HOTSAK',
+      name: 'Hotsak',
       width: 96,
       render: (oppgave: OppgaveApiOppgave) => (
-        <Link
-          variant="neutral"
-          href={
-            oppgave.oppgavetype === Oppgavetype.JOURNALFØRING
-              ? `/oppgaveliste/dokumenter/${oppgave.journalpostId}`
-              : `/sak/${oppgave.sakId}/hjelpemidler`
-          }
-        >
-          Gå til
+        <Link variant="neutral" href={`/oppgave/${oppgave.oppgaveId}`}>
+          {oppgave.sakId}
         </Link>
       ),
     },
-
-    /*{
-      key: 'MENU',
-      sortable: false,
-      render: (oppgave: OppgaveV2) => (
-        <MenyKnapp
-          sakId={oppgave.sakId}
-          status={oppgave.oppgavestatus}
-          tildeltSaksbehandler={oppgave.saksbehandler}
-          kanTildeles={oppgave.ka}
-          onMutate={mutate}
-        />
-      ),
-    }*/
   ]
 
   if (error) {

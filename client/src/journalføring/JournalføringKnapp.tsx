@@ -1,12 +1,12 @@
-import { MouseEvent, useState } from 'react'
-import styled from 'styled-components'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Button, Dropdown, Loader } from '@navikt/ds-react'
+import { MouseEvent, useState } from 'react'
+import styled from 'styled-components'
 
-import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
-import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
-import { OppgaveId } from '../oppgave/oppgaveId.ts'
+import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http.ts'
+import { OppgaveId, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { Saksbehandler } from '../types/types.internal.ts'
 
 export interface ManuellJournalføringKnappProps {
   oppgaveId: OppgaveId
@@ -16,7 +16,7 @@ export interface ManuellJournalføringKnappProps {
   onMutate(...args: any[]): any
 }
 
-export function ManuellJournalføringKnapp({
+export function JournalføringKnapp({
   oppgaveId,
   status,
   tildeltSaksbehandler,

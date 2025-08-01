@@ -1,29 +1,30 @@
-import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import styled from 'styled-components'
-
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
-
-import { postJournalføring } from '../io/http'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter'
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { Kolonner } from '../felleskomponenter/Kolonner'
 import { Toast } from '../felleskomponenter/Toast'
+import { postJournalføring } from '../io/http'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
 import { formaterNavn } from '../utils/formater'
+import { JournalføringKnapp } from './JournalføringKnapp.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
-import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 
-export function JournalpostSkjema() {
+export interface JournalpostSkjemaProps {
+  journalpostId: string
+}
+
+export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const navigate = useNavigate()
-  const { journalpostId } = useParams<{ journalpostId: string }>()
-  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
+  const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -64,7 +65,7 @@ export function JournalpostSkjema() {
 
   return (
     <Container>
-      <ManuellJournalføringKnapp
+      <JournalføringKnapp
         oppgaveId={oppgave.oppgaveId}
         status={oppgave.oppgavestatus}
         tildeltSaksbehandler={journalpost?.oppgave.tildeltSaksbehandler}

@@ -8,11 +8,11 @@ export function useSaksbehandlerKanRedigereBarnebrillesak(sakResponse?: SakRespo
   const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(tilganger)
 
-  const saksbehandlerKanRedigereBarnebrillesak =
+  return (
     harSkrivetilgang &&
     saksbehandlerErTildeltSak &&
     sak?.steg !== StegType.GODKJENNE &&
     sak?.steg !== StegType.FERDIG_BEHANDLET &&
     sak?.status !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
-  return saksbehandlerKanRedigereBarnebrillesak
+  )
 }

@@ -1,26 +1,28 @@
+import { Box, HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
-import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { Box, HStack, Loader } from '@navikt/ds-react'
-import { headerHøydeRem } from '../GlobalStyles'
 import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
 import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
+import { headerHøydeRem } from '../GlobalStyles'
+import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgavetilgang } from '../oppgaveliste/useOppgavetilgang'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { Oppgavestatus } from '../types/types.internal'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
 
-export function ManuellJournalføring() {
-  const { journalpostId } = useParams<{ journalpostId: string }>()
+export interface JournalføringProps {
+  journalpostId: string
+}
+
+export function Journalføring({ journalpostId }: JournalføringProps) {
   const { journalpost, isError, isLoading } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
@@ -84,14 +86,13 @@ export function ManuellJournalføring() {
 
   return (
     <>
-      {/* Loading state på personlinje */}
       <Personlinje person={personInfo} loading={personInfoLoading} />
       <Container>
         <ToKolonner>
           {journalpostTildeltSaksbehandler && harSkrivetilgang ? (
-            <JournalpostSkjema />
+            <JournalpostSkjema journalpostId={journalpostId} />
           ) : (
-            <JournalpostVisning lesevisning={!harSkrivetilgang} />
+            <JournalpostVisning journalpostId={journalpostId} lesevisning={!harSkrivetilgang} />
           )}
           <DokumentPanel />
         </ToKolonner>
@@ -100,7 +101,7 @@ export function ManuellJournalføring() {
   )
 }
 
-export default ManuellJournalføring
+export default Journalføring
 
 const ToKolonner = styled.div`
   display: grid;

@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react'
 import { useLocalState } from '../state/useLocalState'
-import { OppgaveGjelderFilter, TildeltFilter } from '../types/experimentalTypes'
+import { OppgaveGjelderFilter, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
 import { SortState } from '@navikt/ds-react'
 
 interface FilterContextType {

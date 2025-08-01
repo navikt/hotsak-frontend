@@ -1,8 +1,8 @@
-import { GjeldendeOppgave, useOppgaveContext } from './OppgaveContext.ts'
-import type { OppgaveId } from './oppgaveId.ts'
+import { useOppgaveContext } from './OppgaveContext.ts'
+import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
 import { baseUrl, del, ifMatchVersjon, post } from '../io/http.ts'
-import { Service, useServiceState } from '../service/Service.ts'
+import { Actions, useActionState } from '../action/Actions.ts'
 
 export interface EndreOppgavetildelingRequest {
   oppgaveId?: OppgaveId | null
@@ -17,7 +17,7 @@ export interface EndreOppgavetildelingRequest {
   overtaHvisTildelt?: boolean
 }
 
-export interface OppgaveService extends Service {
+export interface UseOppgaveActions extends Actions {
   /**
    * Endre tildeling av oppgave/sak. Støtter også overtagelse av oppgave/sak.
    *
@@ -31,12 +31,12 @@ export interface OppgaveService extends Service {
 }
 
 /**
- * Opprett `OppgaveService` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext` eller `gjeldendeOppgave`.
+ * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
  */
-export function useOppgaveService(gjeldendeOppgave?: GjeldendeOppgave): OppgaveService {
-  const { oppgaveId = gjeldendeOppgave?.oppgaveId, versjon = gjeldendeOppgave?.versjon } = useOppgaveContext()
+export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
+  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOppgaveContext()
 
-  const { execute, state } = useServiceState()
+  const { execute, state } = useActionState()
 
   const headers = ifMatchVersjon(versjon)
 

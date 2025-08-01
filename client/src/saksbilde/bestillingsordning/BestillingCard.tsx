@@ -17,7 +17,7 @@ import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
 import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
 
 export interface BestillingCardProps {
@@ -30,7 +30,7 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
   const innloggetAnsatt = useInnloggetAnsatt()
-  const { endreOppgavetildeling } = useOppgaveService()
+  const { endreOppgavetildeling } = useOppgaveActions()
   const { behovsmelding } = useBehovsmelding()
   const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
@@ -110,7 +110,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt sakId={sakId} gåTilSak={false}></IkkeTildelt>
+            <IkkeTildelt />
           </Knappepanel>
         )}
       </VenstremenyCard>

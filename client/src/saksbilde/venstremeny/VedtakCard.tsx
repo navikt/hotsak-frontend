@@ -19,7 +19,7 @@ import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { useOverførGosys } from '../useOverførGosys'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -41,7 +41,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
-  const { endreOppgavetildeling } = useOppgaveService()
+  const { endreOppgavetildeling } = useOppgaveActions()
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -120,11 +120,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt
-              sakId={sakId}
-              gåTilSak={false}
-              onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}
-            ></IkkeTildelt>
+            <IkkeTildelt onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}></IkkeTildelt>
           </Knappepanel>
         )}
       </VenstremenyCard>

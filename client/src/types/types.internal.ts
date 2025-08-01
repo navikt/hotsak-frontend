@@ -1,6 +1,5 @@
-import type { OppgaveApiOppgave } from './experimentalTypes'
-import type { OppgaveId } from '../oppgave/oppgaveId.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
+import type { OppgaveApiOppgave, OppgaveId } from '../oppgave/oppgaveTypes.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -469,68 +468,9 @@ export enum GreitÅViteType {
   MERKNAD = 'MERKNAD',
 }
 
-export enum Oppgavetype {
-  JOURNALFØRING = 'JOURNALFØRING',
-  BEHANDLE_SAK = 'BEHANDLE_SAK',
-  GODKJENNE_VEDTAK = 'GODKJENNE_VEDTAK',
-}
-
-export enum Oppgavestatus {
-  OPPRETTET = 'OPPRETTET',
-  ÅPNET = 'ÅPNET',
-  UNDER_BEHANDLING = 'UNDER_BEHANDLING',
-  FERDIGSTILT = 'FERDIGSTILT',
-  FEILREGISTRERT = 'FEILREGISTRERT',
-}
-
-export enum Statuskategori {
-  ÅPEN = 'ÅPEN',
-  AVSLUTTET = 'AVSLUTTET',
-}
-
-export const OppgavestatusLabel = new Map<string, string>([
-  [Oppgavestatus.OPPRETTET, 'Mottatt'],
-  [Oppgavestatus.ÅPNET, 'Mottatt'],
-  [Oppgavestatus.UNDER_BEHANDLING, 'Under journalføring'],
-  [Oppgavestatus.FERDIGSTILT, 'Journalført'],
-  [Oppgavestatus.FEILREGISTRERT, 'Feilregistrert'],
-])
-
-export interface OppgaverResponse {
-  oppgaver: OppgaveApiOppgave[]
-  totalElements: number
-}
-
 export interface Bydel {
   bydelsnummer: string
   bydelsnavn: string
-}
-
-/* Bør fjernes når vi er over på ny oppgavemodell */
-export interface Oppgave {
-  sakId: string
-  sakstype: Sakstype
-  status: OppgaveStatusType
-  statusEndret: string
-  beskrivelse: string
-  mottatt: string
-  innsender: string
-  bruker: OppgaveBruker
-  enhet: Enhet
-  saksbehandler?: Saksbehandler
-  kanTildeles: boolean
-  hast?: Hast
-  oppgaveId?: OppgaveId
-  versjon?: number
-}
-
-export interface OppgaveBruker {
-  fnr: string
-  fornavn: string
-  mellomnavn?: string
-  etternavn: string
-  funksjonsnedsettelser: string[]
-  bosted: string
 }
 
 export interface Journalpost {
@@ -665,12 +605,6 @@ export const VedtakStatusLabel = new Map<VedtakStatusType, string>([
   [VedtakStatusType.INNVILGET, 'Innvilget'],
   [VedtakStatusType.AVSLÅTT, 'Avslått'],
 ])
-
-export interface Error {
-  message: string
-  statusCode?: number
-  technical?: string
-}
 
 export enum Kjønn {
   MANN = 'MANN',

@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect } from 'react'
+import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
 import useSwr from 'swr'
 
@@ -14,7 +14,7 @@ interface DataResponse<T extends SakBase> {
 }
 
 export function useSakId(): string | undefined {
-  const { saksnummer: sakIdUrl } = useParams<{ saksnummer: string }>()
+  const { sakId: sakIdUrl } = useParams<{ sakId: string }>()
   const { sakId: sakIdOppgave } = useOppgaveContext()
   const sakId = sakIdUrl ?? sakIdOppgave
   useDebugValue(sakId)
@@ -23,7 +23,6 @@ export function useSakId(): string | undefined {
 
 export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
   const sakId = useSakId()
-  const { oppgaveId, setGjeldendeOppgave } = useOppgaveContext()
   const { data, error, isLoading, mutate } = useSwr<{ data: SakResponse<T> }>(
     sakId ? `api/sak/${sakId}` : null,
     httpGet,
@@ -31,13 +30,6 @@ export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
       refreshInterval: 10_000,
     }
   )
-
-  useEffect(() => {
-    // Vi har en sakId, men ikke oppgaveId fra OppgaveContext, vi er ikke i kontekst av en Oppgave
-    if (sakId && !oppgaveId) {
-      setGjeldendeOppgave({ oppgaveId: `S-${sakId}`, versjon: -1, sakId })
-    }
-  }, [sakId, oppgaveId])
 
   return {
     sak: data?.data,

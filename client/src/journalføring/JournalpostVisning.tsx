@@ -1,4 +1,3 @@
-import { useParams } from 'react-router'
 import styled from 'styled-components'
 import { Box, Heading, VStack } from '@navikt/ds-react'
 
@@ -11,14 +10,18 @@ import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
 import { Dokumenter } from '../dokument/Dokumenter'
-import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
+import { JournalføringKnapp } from './JournalføringKnapp.tsx'
 import { formaterNavn } from '../utils/formater'
-import { Oppgavestatus } from '../types/types.internal'
+import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
-export function JournalpostVisning({ lesevisning }: { lesevisning: boolean }) {
-  const { journalpostId } = useParams<{ journalpostId: string }>()
-  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
+export interface JournalpostVisningProps {
+  journalpostId: string
+  lesevisning: boolean
+}
+
+export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVisningProps) {
+  const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer } = usePersonContext()
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const saksbehandler = useInnloggetAnsatt()
@@ -61,7 +64,7 @@ export function JournalpostVisning({ lesevisning }: { lesevisning: boolean }) {
   return (
     <Container>
       {!lesevisning && (
-        <ManuellJournalføringKnapp
+        <JournalføringKnapp
           oppgaveId={oppgave.oppgaveId}
           status={oppgave.oppgavestatus}
           tildeltSaksbehandler={oppgave?.tildeltSaksbehandler}

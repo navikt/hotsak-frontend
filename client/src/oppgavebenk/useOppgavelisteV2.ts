@@ -2,7 +2,7 @@ import useSwr from 'swr'
 
 import { SortState } from '@navikt/ds-react'
 import { httpGet } from '../io/http'
-import { OppgaveApiOppgave, OppgaveApiResponse, TildeltFilter } from '../types/experimentalTypes'
+import { OppgaveApiOppgave, OppgaveApiResponse, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
 
 const PAGE_SIZE = 50
 

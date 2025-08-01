@@ -5,7 +5,7 @@ import { useOppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { useNotater } from '../høyrekolonne/notat/useNotater.tsx'
 import { InfoModal } from '../komponenter/InfoModal.tsx'
 import { FormModal } from '../../felleskomponenter/modal/FormModal.tsx'
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { isNotBlank } from '../../utils/type.ts'
 import { mutateSak } from '../mutateSak.ts'
 import { useFormActionState } from '../../utils/form.ts'
@@ -86,7 +86,7 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
 }
 
 function useOverførSakTilMedarbeiderActionState(sakId: string) {
-  const { endreOppgavetildeling } = useOppgaveService()
+  const { endreOppgavetildeling } = useOppgaveActions()
   return useFormActionState<
     {
       success?: boolean

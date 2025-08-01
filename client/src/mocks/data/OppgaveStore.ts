@@ -1,13 +1,18 @@
 import Dexie, { Table } from 'dexie'
 
 import { addBusinessDays, parseISO } from 'date-fns'
-import { OppgaveApiOppgave, OppgavePrioritet } from '../../types/experimentalTypes'
-import { Oppgavestatus, Oppgavetype, Sakstype } from '../../types/types.internal'
+import {
+  OppgaveApiOppgave,
+  OppgaveId,
+  OppgavePrioritet,
+  Oppgavestatus,
+  Oppgavetype,
+} from '../../oppgave/oppgaveTypes.ts'
+import { Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { JournalpostStore } from './JournalpostStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { OppgaveId } from '../../oppgave/oppgaveId.ts'
 import { LagretHjelpemiddelsak } from './lagSak.ts'
 
 type LagretOppgave = OppgaveApiOppgave

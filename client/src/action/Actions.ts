@@ -1,23 +1,23 @@
 import { useState } from 'react'
 import { toError } from '../utils/error.ts'
 
-export interface Service {
+export interface Actions {
   /**
    * Holder på tilstand inkludert evt. `error`.
    */
-  state: ServiceState
+  state: ActionState
 }
 
-export interface ServiceState {
+export interface ActionState {
   loading: boolean
   error?: Error | null
 }
 
-export function useServiceState() {
+export function useActionState() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
 
-  const state: ServiceState = {
+  const state: ActionState = {
     loading,
     error,
   }
@@ -33,7 +33,7 @@ export function useServiceState() {
     },
 
     /**
-     * Funksjon som kan brukes til kjøre et asynkront kall med håndtering av `loading` og `error`.
+     * Funksjon som f.eks. kan brukes til kjøre et asynkront kall med håndtering av `loading` og `error`.
      */
     async execute<T = unknown>(action: () => Promise<T>): Promise<T | undefined> {
       setLoading(true)

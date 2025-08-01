@@ -8,7 +8,6 @@ import {
   Kjønn,
   MålformType,
   OppdaterVilkårRequest,
-  Oppgave,
   OppgaveStatusType,
   Sak,
   Saksdokument,
@@ -27,7 +26,7 @@ import { formaterNavn } from '../../utils/formater'
 import { enheter } from './enheter'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { EndreOppgavetildelingRequest } from '../../oppgave/OppgaveService.ts'
+import { EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -51,6 +50,7 @@ import {
 import { JournalpostStore } from './JournalpostStore.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { nåIso } from './felles.ts'
+import { Oppgave } from '../../oppgave/oppgaveTypes.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -141,8 +141,11 @@ export class SakStore extends Dexie {
         sakstype = Sakstype.TILSKUDD
         funksjonsnedsettelser = ['syn']
       }
+      const sakId = sak.sakId
       return {
-        sakId: sak.sakId,
+        oppgaveId: `S-${sakId}`,
+        versjon: -1,
+        sakId,
         sakstype,
         status: sak.status,
         statusEndret: sak.statusEndret,

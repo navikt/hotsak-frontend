@@ -3,15 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@navikt/ds-react'
 
 import { postOppgaveTildeling } from '../io/http'
-import { OppgaveApiOppgave } from '../types/experimentalTypes'
-import { Oppgavetype } from '../types/types.internal'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { OppgaveApiOppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 
 interface OppgaveIkkeTildeltProps {
   oppgave: OppgaveApiOppgave
 }
 
-export const OppgaveIkkeTildelt = ({ oppgave }: OppgaveIkkeTildeltProps) => {
+export function OppgaveIkkeTildelt({ oppgave }: OppgaveIkkeTildeltProps) {
   const saksbehandler = useInnloggetAnsatt()
   const { oppgaveId, oppgavetype, sakId, journalpostId, versjon } = oppgave
 

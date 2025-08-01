@@ -1,9 +1,9 @@
 import Dexie, { Table } from 'dexie'
 
-import { type OppgaveApiOppgave } from '../../types/experimentalTypes'
-import { Journalpost } from '../../types/types.internal'
-import { lagPerson, PersonStore } from './PersonStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { OppgaveApiOppgave } from '../../oppgave/oppgaveTypes.ts'
+import { Journalpost } from '../../types/types.internal.ts'
+import { lagPerson, PersonStore } from './PersonStore.ts'
+import { SaksbehandlerStore } from './SaksbehandlerStore.ts'
 import {
   InsertDokument,
   InsertHendelse,

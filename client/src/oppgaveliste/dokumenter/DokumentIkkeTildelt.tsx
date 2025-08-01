@@ -4,7 +4,7 @@ import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
 
 import { postOppgaveTildeling } from '../../io/http'
-import type { OppgaveId } from '../../oppgave/oppgaveId.ts'
+import type { OppgaveId } from '../../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 export interface DokumentIkkeTildeltProps {

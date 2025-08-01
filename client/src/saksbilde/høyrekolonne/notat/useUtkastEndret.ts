@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
 import { baseUrl, post, put } from '../../../io/http'
-import { useServiceState } from '../../../service/Service'
+import { useActionState } from '../../../action/Actions.ts'
 import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
 
 export function useUtkastEndret(
@@ -17,7 +17,7 @@ export function useUtkastEndret(
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
 
-  const { execute, state } = useServiceState()
+  const { execute, state } = useActionState()
 
   useEffect(() => {
     if (!oppretterNyttUtkast) {

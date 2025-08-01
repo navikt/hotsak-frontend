@@ -1,13 +1,19 @@
 import { http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
-import type { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
-import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
+import {
+  erSakOppgaveId,
+  Oppgave,
+  OppgaveApiResponse,
+  OppgaveId,
+  oppgaveIdUtenPrefix,
+  Oppgavetype,
+} from '../../oppgave/oppgaveTypes.ts'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
-import { erSakOppgaveId, OppgaveId, oppgaveIdUtenPrefix } from '../../oppgave/oppgaveId.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
+import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {

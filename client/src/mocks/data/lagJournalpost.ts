@@ -1,16 +1,9 @@
-import {
-  Dokument,
-  Hendelse,
-  Journalpost,
-  JournalpostStatusType,
-  Oppgavestatus,
-  Oppgavetype,
-} from '../../types/types.internal.ts'
+import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { lagTilfeldigInteger } from './felles.ts'
 import { lagTilfeldigNavn } from './navn.ts'
-import { OppgavePrioritet } from '../../types/experimentalTypes.ts'
 import { enheter } from './enheter.ts'
+import { OppgavePrioritet, Oppgavestatus, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
 
 export type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 export type InsertJournalpost = Omit<LagretJournalpost, 'journalpostId'>

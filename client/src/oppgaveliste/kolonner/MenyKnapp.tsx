@@ -7,7 +7,7 @@ import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.in
 import { useTildeling } from './useTildeling'
 import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
 interface MenyKnappProps {
@@ -49,11 +49,7 @@ export function MenyKnapp({
   const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
   const [isFetching, setIsFetching] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
-  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveService({
-    oppgaveId: `S-${sakId}`,
-    versjon: -1,
-    sakId,
-  })
+  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions()
 
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()

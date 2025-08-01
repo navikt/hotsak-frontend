@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { Chips, Label, Select, Switch, ToggleGroup, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
-import { OppgaveFilterType } from '../../types/experimentalTypes'
+import type { OppgaveFilterType } from '../../oppgave/oppgaveTypes.ts'
 
 const Dropdown = styled(Select)`
   width: 210px;

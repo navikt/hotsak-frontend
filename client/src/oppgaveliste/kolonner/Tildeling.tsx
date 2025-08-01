@@ -1,18 +1,19 @@
 import { memo } from 'react'
 
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
-import { Oppgave, Sakstype } from '../../types/types.internal.ts'
+import { Sakstype } from '../../types/types.internal.ts'
 import { IkkeTildelt } from './IkkeTildelt.tsx'
-import { lagGjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
+import type { Oppgave } from '../../oppgave/oppgaveTypes.ts'
 
-interface TildelingProps {
+export interface TildelingProps {
   oppgave: Oppgave
   lesevisning?: boolean
-  visTildelingKonfliktModalForSak: (val: string | undefined) => void
-  onMutate: ((...args: any[]) => any) | null
+  visTildelingKonfliktModalForOppgave(value: string | undefined): void
+  onMutate?(...args: any[]): any
 }
 
-export const Tildeling = memo(({ oppgave, lesevisning, visTildelingKonfliktModalForSak, onMutate }: TildelingProps) => {
+export const Tildeling = memo((props: TildelingProps) => {
+  const { oppgave, lesevisning, visTildelingKonfliktModalForOppgave, onMutate } = props
   if (lesevisning) {
     return <TekstCell value="-" />
   }
@@ -24,12 +25,11 @@ export const Tildeling = memo(({ oppgave, lesevisning, visTildelingKonfliktModal
   if (!oppgave.saksbehandler && oppgave.kanTildeles) {
     return (
       <IkkeTildelt
-        sakId={oppgave.sakId}
-        gjeldendeOppgave={lagGjeldendeOppgave(oppgave.oppgaveId, oppgave.versjon, oppgave.sakId)}
-        gåTilSak={true}
         onTildelingKonflikt={() => {
-          visTildelingKonfliktModalForSak(
-            oppgave.sakstype !== Sakstype.TILSKUDD ? `/sak/${oppgave.sakId}/hjelpemidler` : `/sak/${oppgave.sakId}`
+          visTildelingKonfliktModalForOppgave(
+            oppgave.sakstype === Sakstype.TILSKUDD
+              ? `/oppgave/${oppgave.oppgaveId}`
+              : `/oppgave/${oppgave.oppgaveId}/hjelpemidler`
           )
           if (onMutate) onMutate()
         }}

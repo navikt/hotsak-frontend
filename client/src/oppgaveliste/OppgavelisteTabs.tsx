@@ -19,8 +19,8 @@ export function OppgavelisteTabs() {
 
   function navigateToPath(nyTab?: string) {
     switch (nyTab) {
-      case 'dokumenter':
-        return '/oppgaveliste/dokumenter'
+      case 'journalforing':
+        return '/journalforing'
       case 'oppgavebenk':
         return '/oppgavebenk'
       default:
@@ -49,7 +49,7 @@ export function OppgavelisteTabs() {
             icon={<TasklistIcon focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
           />
           <Tabs.Tab
-            value="dokumenter"
+            value="journalforing"
             label="Journalføring"
             icon={<FileTextIcon focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
           />

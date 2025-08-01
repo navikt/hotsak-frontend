@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import { EllipsisCell } from '../felleskomponenter/table/Celle'
-import { OppgaveApiOppgave } from '../types/experimentalTypes'
+import type { OppgaveApiOppgave } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveIkkeTildelt } from './OppgaveIkkeTildelt'
 
 interface OppgavetildelingProps {

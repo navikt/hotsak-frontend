@@ -14,11 +14,10 @@ import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { OppgavestatusLabel } from '../../types/types.internal'
+import { OppgaveApiOppgave, OppgavestatusLabel } from '../../oppgave/oppgaveTypes.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
 import { DokumentTildeling } from './DokumentTildeling'
-import { OppgaveApiOppgave } from '../../types/experimentalTypes'
 import { useOppgavetilgang } from '../useOppgavetilgang'
 
 export function Dokumentliste() {
@@ -136,7 +135,7 @@ export function Dokumentliste() {
                   </Table.Header>
                   <Table.Body>
                     {sorterteDokumenter.map((oppgave) => (
-                      <LinkRow key={oppgave.journalpostId} path={`/oppgaveliste/dokumenter/${oppgave.journalpostId}`}>
+                      <LinkRow key={oppgave.journalpostId} path={`/oppgave/${oppgave.oppgaveId}`}>
                         {kolonner.map(({ render, width, key }) => {
                           return (
                             <DataCell

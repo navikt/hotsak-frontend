@@ -1,28 +1,22 @@
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useMemo } from 'react'
 
-import { GjeldendeOppgave, OppgaveContext, OppgaveContextType } from './OppgaveContext.ts'
+import { OppgaveContext, OppgaveContextType } from './OppgaveContext.ts'
+import type { OppgaveBase } from './oppgaveTypes.ts'
+
+export interface OppgaveProviderProps {
+  oppgave: OppgaveBase
+  children: ReactNode
+}
 
 /**
  * Holder på hvilken oppgave vi er i kontekst av.
  */
-export function OppgaveProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<Partial<GjeldendeOppgave>>({})
+export function OppgaveProvider({ oppgave, children }: OppgaveProviderProps) {
   const value = useMemo<OppgaveContextType>(() => {
     return {
-      ...state,
-      setGjeldendeOppgave(oppgave) {
-        if (!oppgave) {
-          setState({})
-          return
-        }
-
-        if (
-          !(state.oppgaveId === oppgave.oppgaveId && state.versjon === oppgave.versjon && state.sakId === oppgave.sakId)
-        ) {
-          setState(oppgave)
-        }
-      },
+      ...oppgave,
+      erIOppgavekontekst: !!oppgave.oppgaveId,
     }
-  }, [state])
+  }, [oppgave])
   return <OppgaveContext value={value}>{children}</OppgaveContext>
 }

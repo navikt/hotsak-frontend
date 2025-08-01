@@ -1,6 +1,6 @@
 import useSwr from 'swr'
 import { httpGet } from '../../io/http'
-import { OppgaverResponse, Oppgavetype, Statuskategori } from '../../types/types.internal'
+import { OppgaverResponse, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 
 const oppgaverBasePath = 'api/oppgaver-v2'
 

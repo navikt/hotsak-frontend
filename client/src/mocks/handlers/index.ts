@@ -1,30 +1,29 @@
 import type { StoreHandlersFactory } from '../data'
 
-import { brillekalkulatorHandlers } from './brillekalkulator.ts'
+import { alternativprodukterHandlers } from './alternativprodukter.ts'
+import { ansatteHandlers } from './ansatte.ts'
+import { behovsmeldingHandlers } from './behovsmelding.ts'
+import { bestillingHandlers } from './bestilling.ts'
+import { bildeHandlers } from './bilder.ts'
 import { brevHandlers } from './brev.ts'
+import { brevutkastHandlers } from './brevutkast.ts'
+import { brillekalkulatorHandlers } from './brillekalkulator.ts'
 import { dokumentHandlers } from './dokumenter.ts'
 import { endringsloggHandlers } from './endringslogg.ts'
-import { grunndataHandler } from './grunndata.ts'
+import { grunndataHandlers } from './grunndata.ts'
 import { hjelpemiddelHandlers } from './hjelpemiddel.ts'
 import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt.ts'
 import { notatHandlers } from './notat.ts'
 import { oppgaveHandlers } from './oppgaver.ts'
 import { personHandlers } from './person.ts'
-import { ansatteHandlers } from './ansatte.ts'
 import { saksbehandlingHandlers } from './saksbehandling.ts'
 import { saksoversiktHandlers } from './saksoversikt.ts'
+import { saksvarslerHandlers } from './saksvarsler.ts'
 import { totrinnskontrollHandlers } from './totrinnskontroll.ts'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker.ts'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering.ts'
-import { bestillingHandlers } from './bestilling.ts'
-import { brevutkastHandlers } from './brevutkast.ts'
-import { saksvarslerHandlers } from './saksvarsler.ts'
-import { behovsmeldingHandlers } from './behovsmelding.ts'
-import { alternativprodukterHandlers } from './alternativprodukter.ts'
-import { bildeHandlers } from './bilder.ts'
 
-export const setupHandlers: StoreHandlersFactory = (store) => [
-  ...(window.appSettings.USE_MSW_ALTERNATIVPRODUKTER ? alternativprodukterHandlers(store) : []),
+export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
   ...behovsmeldingHandlers(store),
   ...bestillingHandlers(store),
@@ -34,7 +33,6 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...brillekalkulatorHandlers(store),
   ...dokumentHandlers(store),
   ...endringsloggHandlers(store),
-  ...(window.appSettings.USE_MSW_GRUNNDATA ? grunndataHandler(store) : []),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
   ...notatHandlers(store),
@@ -47,3 +45,6 @@ export const setupHandlers: StoreHandlersFactory = (store) => [
   ...utbetalingsmottakerHandlers(store),
   ...vilkårsvurderingHandlers(store),
 ]
+
+export const setupGrunndataHandlers: StoreHandlersFactory = (store) => grunndataHandlers(store)
+export const setupAlternativprodukterHandlers: StoreHandlersFactory = (store) => alternativprodukterHandlers(store)

@@ -66,6 +66,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "tsc": "tsc -b",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "echo 'vitest --dir ./src'",

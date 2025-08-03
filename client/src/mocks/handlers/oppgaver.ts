@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
 import {
-  erSakOppgaveId,
+  erInternOppgaveId,
   FinnOppgaverResponse,
   OppgaveId,
   oppgaveIdUtenPrefix,
@@ -10,10 +10,14 @@ import {
   OppgaveV1,
 } from '../../oppgave/oppgaveTypes.ts'
 import type { StoreHandlersFactory } from '../data'
-import { delay, respondNoContent } from './response.ts'
+import { delay, respondNoContent, respondNotFound } from './response.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
+
+export interface OppgaveParams {
+  oppgaveId: OppgaveId
+}
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
@@ -49,26 +53,36 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     }
   }),
 
+  http.get<OppgaveParams>('/api/oppgaver-v2/:oppgaveId', async ({ params }) => {
+    const { oppgaveId } = params
+    const oppgave = await oppgaveStore.hent(oppgaveId)
+    await delay(75)
+    if (!oppgave) {
+      return respondNotFound()
+    }
+    return HttpResponse.json(oppgave)
+  }),
+
   http.get<never, never, Oppgavebehandlere>('/api/oppgaver-v2/:oppgaveId/behandlere', async () => {
     const behandlere = await saksbehandlerStore.alle()
     await delay(75)
     return HttpResponse.json({ behandlere })
   }),
 
-  http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.post<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erSakOppgaveId(oppgaveId)) {
-      await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
-    } else {
+    if (erInternOppgaveId(oppgaveId)) {
       await oppgaveStore.tildel(oppgaveId)
+    } else {
+      await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)
     return respondNoContent()
   }),
 
-  http.delete<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.delete<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erSakOppgaveId(oppgaveId)) {
+    if (!erInternOppgaveId(oppgaveId)) {
       await sakStore.frigi(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)

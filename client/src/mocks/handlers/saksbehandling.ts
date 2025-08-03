@@ -42,7 +42,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
     const sak = await sakStore.hent(sakId)
     const { navn: bruker } = await saksbehandlerStore.innloggetSaksbehandler()
-    const harSkrivetilgang = bruker !== 'Les Visningrud'
+    const harSkrivetilgang = bruker !== 'Lese Visningsrud'
 
     const tilganger = {
       [TilgangType.KAN_BEHANDLE_SAK]: harSkrivetilgang ? TilgangResultat.TILLAT : TilgangResultat.NEKT,
@@ -131,10 +131,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return respondNoContent()
   }),
 
-  http.post<SakParams>('/api/sak/:sakId/informasjon-om-hjelpemiddel', async () => {
-    return respondNoContent()
-  }),
-
   http.put<SakParams, { status: OppgaveStatusType }>('/api/sak/:sakId/status', async ({ request, params }) => {
     const sakId = params.sakId
     const { status } = await request.json()
@@ -152,6 +148,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     await sakStore.oppdaterStatus(params.sakId, OppgaveStatusType.HENLAGT)
     return respondNoContent()
   }),
+
   http.get<SakParams>('/api/sak/:sakId/hjelpemidler', async ({ params }) => {
     const endredeHjelpemidler = await endreHjelpemiddelStore.hent(params.sakId)
 
@@ -176,6 +173,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
     return HttpResponse.json({ hjelpemidler })
   }),
+
   http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
     console.log('Håndterer endring av hjelpemiddel for sak:', params.sakId)
 

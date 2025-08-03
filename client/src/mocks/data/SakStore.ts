@@ -94,9 +94,17 @@ export class SakStore extends Dexie {
       lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
       lagBarnebrillesak(),
       lagBarnebrillesak(),
       lagBarnebrillesak(),
@@ -143,8 +151,8 @@ export class SakStore extends Dexie {
       }
       const sakId = sak.sakId
       return {
-        oppgaveId: `S-${sakId}`,
-        versjon: -1,
+        oppgaveId: `E-${sakId}`,
+        versjon: 1,
         sakId,
         sakstype,
         status: sak.status,
@@ -271,8 +279,6 @@ export class SakStore extends Dexie {
         this.oppdaterSak(sak.sakId, {
           status: status,
         })
-        // this.lagreHendelse(sak.sakId, `Saksstatus endret: ${OppgaveStatusLabel.get(status)}`)
-        // this.lagreHendelse(sak.sakId, 'Brev sendt', 'Innhente opplysninger')
       })
       return true
     }

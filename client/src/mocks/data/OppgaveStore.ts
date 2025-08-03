@@ -10,7 +10,7 @@ import { SakStore } from './SakStore'
 import { LagretHjelpemiddelsak } from './lagSak.ts'
 
 type LagretOppgave = OppgaveV2
-type InsertOppgave = Omit<LagretOppgave, 'oppgaveId'>
+type InsertOppgave = LagretOppgave
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
@@ -36,7 +36,9 @@ export class OppgaveStore extends Dexie {
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: InsertOppgave[] = saker.map((sak) => {
+      const sakId = sak.sakId
       return {
+        oppgaveId: `E-${sakId}`,
         oppgavetype: Oppgavetype.BEHANDLE_SAK,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',
@@ -46,7 +48,7 @@ export class OppgaveStore extends Dexie {
         prioritet: (sak as LagretHjelpemiddelsak)?.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
         tildeltEnhet: sak.enhet,
         tildeltSaksbehandler: sak.saksbehandler,
-        sakId: sak.sakId,
+        sakId: sakId,
         aktivDato: sak.opprettet,
         behandlesAvApplikasjon: 'HOTSAK',
         fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
@@ -59,7 +61,9 @@ export class OppgaveStore extends Dexie {
     })
 
     const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map((journalføring) => {
+      const journalpostId = journalføring.journalpostId
       return {
+        oppgaveId: `I-${journalpostId}`,
         oppgavetype: Oppgavetype.JOURNALFØRING,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',
@@ -71,7 +75,7 @@ export class OppgaveStore extends Dexie {
         aktivDato: journalføring.journalpostOpprettetTid,
         opprettetAv: 'hm-saksbehandling',
         opprettetAvEnhet: enheter.agder,
-        journalpostId: journalføring.journalpostId,
+        journalpostId: journalpostId,
         fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
         opprettetTidspunkt: journalføring.journalpostOpprettetTid,
         endretTidspunkt: journalføring.journalpostOpprettetTid,

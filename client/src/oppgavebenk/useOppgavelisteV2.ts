@@ -2,12 +2,12 @@ import useSwr from 'swr'
 
 import { SortState } from '@navikt/ds-react'
 import { httpGet } from '../io/http'
-import { OppgaveApiOppgave, OppgaveApiResponse, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
+import { FinnOppgaverResponse, OppgaveTildeltFilter, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 
 const PAGE_SIZE = 50
 
 interface DataResponse {
-  oppgaver: OppgaveApiOppgave[]
+  oppgaver: OppgaveV2[]
   pageNumber: number
   pageSize: number
   totalPages: number
@@ -51,7 +51,7 @@ const pathConfig = (currentPage: number, sort: SortState, filters: Filters): Pat
     })
   }
 
-  if (tildeltFilter && tildeltFilter !== TildeltFilter.ALLE) {
+  if (tildeltFilter && tildeltFilter !== OppgaveTildeltFilter.ALLE) {
     queryParams.push({ key: 'tildelt', value: tildeltFilter })
   }
 
@@ -70,7 +70,7 @@ const buildQueryParamString = (queryParams: QueryParam[]) => {
 export function useOppgavelisteV2(currentPage: number, sort: SortState, filters: Filters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: OppgaveApiResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
+  const { data, error, mutate } = useSwr<{ data: FinnOppgaverResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
 
   return {
     oppgaver: data?.data.oppgaver || [],

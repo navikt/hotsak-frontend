@@ -14,7 +14,7 @@ import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { OppgaveApiOppgave, OppgavestatusLabel } from '../../oppgave/oppgaveTypes.ts'
+import { OppgavestatusLabel, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
 import { DokumentTildeling } from './DokumentTildeling'
@@ -25,15 +25,15 @@ export function Dokumentliste() {
   const { harSkrivetilgang } = useOppgavetilgang()
   const oppgaver = data?.oppgaver || []
 
-  const kolonner: Tabellkolonne<OppgaveApiOppgave>[] = [
+  const kolonner: Tabellkolonne<OppgaveV2>[] = [
     {
       key: 'saksbehandler',
       name: 'Eier',
       width: 160,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         return <DokumentTildeling dokumentOppgave={oppgave} lesevisning={!harSkrivetilgang} />
       },
-      accessor(verdi: OppgaveApiOppgave): string {
+      accessor(verdi: OppgaveV2): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')
       },
     },
@@ -41,7 +41,7 @@ export function Dokumentliste() {
       key: 'beskrivelse',
       name: 'Beskrivelse',
       width: 400,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         const oppgaveBeskrivelse = oppgave.beskrivelse || 'Uten tittel'
         return (
           <TooltipWrapper visTooltip={oppgaveBeskrivelse.length > 40} content={oppgaveBeskrivelse}>
@@ -54,7 +54,7 @@ export function Dokumentliste() {
       key: 'oppgavestatus',
       name: 'Status',
       width: 150,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         return <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />
       },
     },
@@ -62,7 +62,7 @@ export function Dokumentliste() {
       key: 'bruker',
       name: 'Bruker',
       width: 135,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         const fulltNavn = formaterNavn(oppgave.bruker?.navn || '-')
         return (
           <TooltipWrapper visTooltip={fulltNavn.length > 20} content={fulltNavn}>
@@ -70,7 +70,7 @@ export function Dokumentliste() {
           </TooltipWrapper>
         )
       },
-      accessor(verdi: OppgaveApiOppgave): string {
+      accessor(verdi: OppgaveV2): string {
         return formaterNavn(verdi.bruker?.navn || '')
       },
     },
@@ -78,7 +78,7 @@ export function Dokumentliste() {
       key: 'fnr',
       name: 'Fødselsnr.',
       width: 135,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         return <TekstCell value={formaterFødselsnummer(oppgave?.fnr || '-')} />
       },
     },
@@ -86,7 +86,7 @@ export function Dokumentliste() {
       key: 'opprettet',
       name: 'Mottatt dato',
       width: 152,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         return <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />
       },
     },
@@ -96,7 +96,7 @@ export function Dokumentliste() {
     sort,
     sortedElements: sorterteDokumenter,
     onSortChange,
-  } = useSortedElements<OppgaveApiOppgave>(oppgaver, kolonner, {
+  } = useSortedElements<OppgaveV2>(oppgaver, kolonner, {
     orderBy: 'opprettetTidspunkt',
     direction: 'descending',
   })

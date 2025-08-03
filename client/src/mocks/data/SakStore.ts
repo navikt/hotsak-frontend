@@ -50,7 +50,7 @@ import {
 import { JournalpostStore } from './JournalpostStore.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { nåIso } from './felles.ts'
-import { Oppgave } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -132,9 +132,9 @@ export class SakStore extends Dexie {
     return this.saker.toArray()
   }
 
-  async oppgaver(): Promise<Oppgave[]> {
+  async oppgaver(): Promise<OppgaveV1[]> {
     const saker = await this.alle()
-    return saker.map<Oppgave>(({ bruker, ...sak }) => {
+    return saker.map<OppgaveV1>(({ bruker, ...sak }) => {
       let sakstype = sak.sakstype
       let funksjonsnedsettelser = ['bevegelse']
       if (sakstype === Sakstype.BARNEBRILLER) {

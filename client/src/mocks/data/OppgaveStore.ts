@@ -1,13 +1,7 @@
 import Dexie, { Table } from 'dexie'
 
 import { addBusinessDays, parseISO } from 'date-fns'
-import {
-  OppgaveApiOppgave,
-  OppgaveId,
-  OppgavePrioritet,
-  Oppgavestatus,
-  Oppgavetype,
-} from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveId, Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { JournalpostStore } from './JournalpostStore'
@@ -15,7 +9,7 @@ import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
 import { LagretHjelpemiddelsak } from './lagSak.ts'
 
-type LagretOppgave = OppgaveApiOppgave
+type LagretOppgave = OppgaveV2
 type InsertOppgave = Omit<LagretOppgave, 'oppgaveId'>
 
 export class OppgaveStore extends Dexie {
@@ -49,22 +43,15 @@ export class OppgaveStore extends Dexie {
         gjelder: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : 'Bestilling',
         beskrivelse:
           '--- 25.11.2024 13:13 (azure-token-generator) ---\nNok en test!\n\n--- 22.11.2024 13:27  (Z994377, 2970) ---\nTest.\nOppgaven er flyttet fra saksbehandler Z994377 til <ingen>\n\nSøknad om: terskeleliminator',
-        prioritet: (sak as LagretHjelpemiddelsak)?.hast ? OppgavePrioritet.HØY : OppgavePrioritet.NORMAL,
+        prioritet: (sak as LagretHjelpemiddelsak)?.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
         tildeltEnhet: sak.enhet,
         tildeltSaksbehandler: sak.saksbehandler,
-        opprettetAv: 'hm-saksbehandling',
-        opprettetAvEnhet: sak.enhet,
         sakId: sak.sakId,
-        // endretAv: null,
-        // endretAvEnhet: null,
         aktivDato: sak.opprettet,
-        // journalpostId: null,
-        behandlesAvApplikasjon: 'Hotsak',
-        // mappeId: null,
+        behandlesAvApplikasjon: 'HOTSAK',
         fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
         opprettetTidspunkt: sak.opprettet,
         endretTidspunkt: sak.opprettet,
-        // ferdigstiltTidspunkt: null,
         fnr: sak.bruker.fnr,
         bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
         versjon: 1,
@@ -76,10 +63,9 @@ export class OppgaveStore extends Dexie {
         oppgavetype: Oppgavetype.JOURNALFØRING,
         oppgavestatus: Oppgavestatus.OPPRETTET,
         tema: 'HJE',
-        gjelder: 'Briller/linser',
+        gjelder: 'Briller til barn',
         beskrivelse: journalføring.tittel,
-        prioritet: OppgavePrioritet.NORMAL,
-        // område: ['syn'],
+        prioritet: Oppgaveprioritet.NORMAL,
         tildeltEnhet: enheter.agder,
         // tildeltSaksbehandler: journalføring.saksbehandler,
         aktivDato: journalføring.journalpostOpprettetTid,
@@ -102,7 +88,7 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.bulkAdd(oppgaver, { allKeys: true })
   }
 
-  async hent(oppgaveId: OppgaveId): Promise<OppgaveApiOppgave | undefined> {
+  async hent(oppgaveId: OppgaveId): Promise<OppgaveV2 | undefined> {
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {
       return
@@ -110,7 +96,7 @@ export class OppgaveStore extends Dexie {
     return oppgave
   }
 
-  async finnOppgaveForJournalpostId(journalpostId: string): Promise<OppgaveApiOppgave | undefined> {
+  async finnOppgaveForJournalpostId(journalpostId: string): Promise<OppgaveV2 | undefined> {
     return this.oppgaver.filter((oppgave) => oppgave.journalpostId === journalpostId).first()
   }
 

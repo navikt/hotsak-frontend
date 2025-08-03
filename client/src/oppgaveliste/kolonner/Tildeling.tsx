@@ -3,10 +3,10 @@ import { memo } from 'react'
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
 import { Sakstype } from '../../types/types.internal.ts'
 import { IkkeTildelt } from './IkkeTildelt.tsx'
-import type { Oppgave } from '../../oppgave/oppgaveTypes.ts'
+import type { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
 
 export interface TildelingProps {
-  oppgave: Oppgave
+  oppgave: OppgaveV1
   lesevisning?: boolean
   visTildelingKonfliktModalForOppgave(value: string | undefined): void
   onMutate?(...args: any[]): any

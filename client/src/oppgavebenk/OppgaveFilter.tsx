@@ -1,7 +1,7 @@
 import { Box, Button, HStack } from '@navikt/ds-react'
 
 import { FilterChips, FilterToggleGroup } from '../oppgaveliste/filter/filter'
-import { OppgaveFilterType, OppgaveGjelderFilter, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveFilterType, OppgaveGjelderFilter, OppgaveTildeltFilter } from '../oppgave/oppgaveTypes.ts'
 import { useFilterContext } from './FilterContext'
 
 export function Oppgavefilter() {
@@ -49,9 +49,9 @@ export function Oppgavefilter() {
 }
 
 const tildeltFilterOptions = [
-  { key: TildeltFilter.ALLE, label: 'Enhetens oppgaver' },
-  { key: TildeltFilter.MEG, label: 'Mine oppgaver' },
-  { key: TildeltFilter.INGEN, label: 'Ufordelte' },
+  { key: OppgaveTildeltFilter.ALLE, label: 'Enhetens oppgaver' },
+  { key: OppgaveTildeltFilter.MEG, label: 'Mine oppgaver' },
+  { key: OppgaveTildeltFilter.INGEN, label: 'Ufordelte' },
 ]
 
 const oppgavetema: OppgaveFilterType[] = [

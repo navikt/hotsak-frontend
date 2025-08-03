@@ -3,11 +3,11 @@ import { http, HttpResponse } from 'msw'
 import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
 import {
   erSakOppgaveId,
-  Oppgave,
-  OppgaveApiResponse,
+  FinnOppgaverResponse,
   OppgaveId,
   oppgaveIdUtenPrefix,
   Oppgavetype,
+  OppgaveV1,
 } from '../../oppgave/oppgaveTypes.ts'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response.ts'
@@ -28,7 +28,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     if (oppgavetype === 'JOURNALFØRING') {
       const journalføringsoppgaver = alleOppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING)
       const totalElements = journalføringsoppgaver.length
-      const pagedOppgaver: OppgaveApiResponse = {
+      const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: journalføringsoppgaver.slice(offset, offset + pageSize),
         pageNumber,
         pageSize,
@@ -38,7 +38,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
       return HttpResponse.json(pagedOppgaver)
     } else {
       const totalElements = alleOppgaver.length
-      const pagedOppgaver: OppgaveApiResponse = {
+      const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: alleOppgaver.slice(offset, offset + pageSize),
         pageNumber,
         pageSize,
@@ -107,7 +107,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
     const filterApplied = oppgaver.length !== filtrerteOppgaver.length
 
-    const haster = (oppgave: Oppgave) => oppgave.hast?.årsaker?.length || 0
+    const haster = (oppgave: OppgaveV1) => oppgave.hast?.årsaker?.length || 0
 
     const response: OppgavelisteResponse = {
       oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),

@@ -4,10 +4,10 @@ import { Button } from '@navikt/ds-react'
 
 import { postOppgaveTildeling } from '../io/http'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { OppgaveApiOppgave, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
+import { Oppgavetype, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 
 interface OppgaveIkkeTildeltProps {
-  oppgave: OppgaveApiOppgave
+  oppgave: OppgaveV2
 }
 
 export function OppgaveIkkeTildelt({ oppgave }: OppgaveIkkeTildeltProps) {

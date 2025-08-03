@@ -1,10 +1,10 @@
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
-import { OppgaveApiOppgave } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterNavn } from '../../utils/formater'
 import { DokumentIkkeTildelt } from './DokumentIkkeTildelt'
 
 export interface DokumentTildelingProps {
-  dokumentOppgave: OppgaveApiOppgave
+  dokumentOppgave: OppgaveV2
   lesevisning?: boolean
 }
 

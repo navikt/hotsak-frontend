@@ -1,18 +1,18 @@
 import useSwr from 'swr'
 import { httpGet } from '../../io/http'
-import { OppgaverResponse, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { FinnOppgaverResponse, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 
 const oppgaverBasePath = 'api/oppgaver-v2'
 
 interface OppgaverData {
-  data?: OppgaverResponse
+  data?: FinnOppgaverResponse
   isLoading: boolean
   error: unknown
   mutate: (...args: any[]) => any
 }
 
 export function useDokumentliste(): OppgaverData {
-  const { data, error, mutate, isLoading } = useSwr<{ data: OppgaverResponse }>(
+  const { data, error, mutate, isLoading } = useSwr<{ data: FinnOppgaverResponse }>(
     `${oppgaverBasePath}?oppgavetype=${encodeURIComponent(Oppgavetype.JOURNALFØRING)}&statuskategori=${encodeURIComponent(Statuskategori.ÅPEN)}`,
     httpGet,
     {

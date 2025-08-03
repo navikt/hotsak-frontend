@@ -7,7 +7,7 @@ import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeade
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
-import { OppgaveApiOppgave, oppgaveIdUtenPrefix } from '../oppgave/oppgaveTypes.ts'
+import { oppgaveIdUtenPrefix, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
@@ -32,7 +32,7 @@ export function Oppgavebenk() {
       key: 'EIER',
       name: 'Eier',
       width: 155,
-      render(oppgave: OppgaveApiOppgave) {
+      render(oppgave: OppgaveV2) {
         return <Oppgavetildeling oppgave={oppgave} />
       },
     },
@@ -41,20 +41,20 @@ export function Oppgavebenk() {
       name: 'Opprettet',
       sortable: true,
       width: 122,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
     },
     {
       key: 'ENDRET_TIDSPUNKT',
       name: 'Endret',
       sortable: true,
       width: 122,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
     },
     {
       key: 'GJELDER',
       name: 'Gjelder',
       width: 140,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={oppgave.gjelder ?? ''} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={oppgave.gjelder ?? ''} />,
     },
     {
       /* Workaround for at beskrivelsen fra gosys enn så lenge 
@@ -64,7 +64,7 @@ export function Oppgavebenk() {
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
       width: 175,
-      render: (oppgave: OppgaveApiOppgave) => (
+      render: (oppgave: OppgaveV2) => (
         <EllipsisCell
           minLength={18}
           value={storForbokstavIOrd(
@@ -83,7 +83,7 @@ export function Oppgavebenk() {
       key: 'OPPGAVETYPE',
       name: 'Oppgavetype',
       width: 152,
-      render: (oppgave: OppgaveApiOppgave) => (
+      render: (oppgave: OppgaveV2) => (
         <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.oppgavetype.replaceAll('_', ' '))} />
       ),
     },
@@ -91,15 +91,13 @@ export function Oppgavebenk() {
       key: 'PRIORITET',
       name: 'Prioritet',
       width: 120,
-      render: (oppgave: OppgaveApiOppgave) => (
-        <EllipsisCell minLength={20} value={storForbokstavIAlleOrd(oppgave.prioritet)} />
-      ),
+      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={20} value={storForbokstavIAlleOrd(oppgave.prioritet)} />,
     },
     {
       key: 'BRUKER',
       name: 'Bruker',
       width: 188,
-      render: (oppgave: OppgaveApiOppgave) => (
+      render: (oppgave: OppgaveV2) => (
         <EllipsisCell minLength={20} value={formaterNavn(oppgave?.bruker?.navn) || '-'} />
       ),
     },
@@ -107,20 +105,20 @@ export function Oppgavebenk() {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterFødselsnummer(oppgave.fnr || '-')} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.fnr || '-')} />,
     },
     {
       key: 'FRIST',
       name: 'Frist',
       sortable: true,
       width: 114,
-      render: (oppgave: OppgaveApiOppgave) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
+      render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
     },
     {
       key: 'GOSYS',
       name: 'Gosys',
       width: 96,
-      render: (oppgave: OppgaveApiOppgave) => {
+      render: (oppgave: OppgaveV2) => {
         const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
         return (
           <Link
@@ -137,7 +135,7 @@ export function Oppgavebenk() {
       key: 'HOTSAK',
       name: 'Hotsak',
       width: 96,
-      render: (oppgave: OppgaveApiOppgave) => (
+      render: (oppgave: OppgaveV2) => (
         <Link variant="neutral" href={`/oppgave/${oppgave.oppgaveId}`}>
           {oppgave.sakId}
         </Link>
@@ -189,7 +187,7 @@ export function Oppgavebenk() {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {oppgaver.map((oppgave: OppgaveApiOppgave) => (
+                    {oppgaver.map((oppgave: OppgaveV2) => (
                       <Table.Row key={oppgave.oppgaveId}>
                         {kolonner.map(({ render, width, key }) => (
                           <DataCell

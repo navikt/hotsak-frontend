@@ -1,5 +1,5 @@
 import type { Ansatt } from '../tilgang/Ansatt.ts'
-import type { OppgaveApiOppgave, OppgaveId } from '../oppgave/oppgaveTypes.ts'
+import type { OppgaveId, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -480,7 +480,7 @@ export interface Journalpost {
   fnrInnsender: string
   journalstatus: JournalpostStatusType
   dokumenter: Dokument[]
-  oppgave: OppgaveApiOppgave
+  oppgave: OppgaveV2
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
 }
@@ -556,6 +556,9 @@ export enum JournalpostStatusType {
   MOTTATT = 'MOTTATT',
 }
 
+/**
+ * Kombinert saks- og oppgavetype.
+ */
 export enum OppgaveStatusType {
   AVVENTER_JOURNALFØRING = 'AVVENTER_JOURNALFORING',
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',

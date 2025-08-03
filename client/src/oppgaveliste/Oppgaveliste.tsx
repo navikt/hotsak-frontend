@@ -35,7 +35,7 @@ import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
 import { Paginering } from '../felleskomponenter/Paginering.tsx'
-import { Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveV1, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { TaOppgave } from '../oppgave/oppgaveliste/TaOppgave.tsx'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
@@ -78,7 +78,7 @@ export function Oppgaveliste() {
   const oppgaveStatusLabel = useOppgaveStatusLabel(filterState.statuskategori)
   const erPilotKunTilbehør = useErKunTilbehørPilot()
 
-  const kolonner: ReadonlyArray<Tabellkolonne<Oppgave>> = [
+  const kolonner: ReadonlyArray<Tabellkolonne<OppgaveV1>> = [
     {
       key: 'EIER',
       name: 'Eier',
@@ -236,7 +236,7 @@ export function Oppgaveliste() {
 
   const hasData = oppgaver && oppgaver.length > 0
 
-  const filterHide = ({ hide }: Tabellkolonne<Oppgave>): boolean => hide !== true
+  const filterHide = ({ hide }: Tabellkolonne<OppgaveV1>): boolean => hide !== true
 
   return (
     <>
@@ -381,7 +381,7 @@ export function Oppgaveliste() {
   )
 }
 
-function utledOppgavePath(oppgave: Oppgave): string {
+function utledOppgavePath(oppgave: OppgaveV1): string {
   return oppgave.sakstype === Sakstype.TILSKUDD
     ? `/oppgave/${oppgave.oppgaveId}`
     : `/oppgave/${oppgave.oppgaveId}/hjelpemidler`

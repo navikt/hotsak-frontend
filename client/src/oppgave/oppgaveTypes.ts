@@ -61,6 +61,12 @@ export enum Statuskategori {
   AVSLUTTET = 'AVSLUTTET',
 }
 
+export enum Oppgaveprioritet {
+  HØY = 'HØY',
+  NORMAL = 'NORMAL',
+  LAV = 'LAV',
+}
+
 export const OppgavestatusLabel = new Map<string, string>([
   [Oppgavestatus.OPPRETTET, 'Mottatt'],
   [Oppgavestatus.ÅPNET, 'Mottatt'],
@@ -79,15 +85,13 @@ export interface OppgaveBase {
   sakId?: string | number
 }
 
-export interface OppgaveApiOppgave extends OppgaveBase {
+export interface OppgaveV2 extends OppgaveBase {
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
   tema: string
-  behandlingstema?: string | null
-  behandlingstype?: string | null
   gjelder?: string | null
   beskrivelse?: string
-  prioritet: OppgavePrioritet
+  prioritet: Oppgaveprioritet
   tildeltEnhet: Enhet
   tildeltSaksbehandler?: Saksbehandler
   opprettetAv?: string
@@ -97,28 +101,21 @@ export interface OppgaveApiOppgave extends OppgaveBase {
   aktivDato: string
   journalpostId?: string
   behandlesAvApplikasjon?: string
-  mappeId?: string
   fristFerdigstillelse?: string
   opprettetTidspunkt?: string
   endretTidspunkt?: string
   ferdigstiltTidspunkt?: string
   fnr?: string
-  bruker?: OppgaveApiOppgaveBruker
+  bruker?: OppgaveBrukerV2
 }
 
-export interface OppgaveApiOppgaveBruker {
+export interface OppgaveBrukerV2 {
   fnr: string
   navn?: Navn
 }
 
-export enum OppgavePrioritet {
-  HØY = 'HØY',
-  NORMAL = 'NORMAL',
-  LAV = 'LAV',
-}
-
-export interface OppgaveApiResponse {
-  oppgaver: OppgaveApiOppgave[]
+export interface FinnOppgaverResponse {
+  oppgaver: OppgaveV2[]
   pageNumber: number
   pageSize: number
   totalPages: number
@@ -131,7 +128,7 @@ export enum OppgaveGjelderFilter {
   HASTESØKNAD = 'HASTESØKNAD',
 }
 
-export enum TildeltFilter {
+export enum OppgaveTildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',
   MEG = 'MEG',
@@ -155,15 +152,10 @@ export interface Oppgavetilknytning {
   statuskategori: Statuskategori
 }
 
-export interface OppgaverResponse {
-  oppgaver: OppgaveApiOppgave[]
-  totalElements: number
-}
-
 /**
- * @deprecated
+ * @deprecated Skal erstattes med `OppgaveV2`.
  */
-export interface Oppgave extends OppgaveBase {
+export interface OppgaveV1 extends OppgaveBase {
   sakId: string
   sakstype: Sakstype
   status: OppgaveStatusType
@@ -171,14 +163,17 @@ export interface Oppgave extends OppgaveBase {
   beskrivelse: string
   mottatt: string
   innsender: string
-  bruker: OppgaveBruker
+  bruker: OppgaveBrukerV1
   enhet: Enhet
   saksbehandler?: Saksbehandler
   kanTildeles: boolean
   hast?: Hast
 }
 
-export interface OppgaveBruker extends Navn {
+/**
+ * @deprecated Skal erstattes med `OppgaveBrukerV2`.
+ */
+export interface OppgaveBrukerV1 extends Navn {
   fnr: string
   funksjonsnedsettelser: string[]
   bosted: string

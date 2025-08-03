@@ -2,13 +2,13 @@ import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
-import { Oppgave, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveV1, Statuskategori } from '../oppgave/oppgaveTypes.ts'
 import { OmrådeFilter, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
 
 const PAGE_SIZE = 50
 
 interface DataResponse {
-  oppgaver: Oppgave[]
+  oppgaver: OppgaveV1[]
   pageNumber: number
   pageSize: number
   totalPages: number
@@ -40,7 +40,7 @@ export interface OppgavelisteFilters {
 export type OppgavelisteFiltersKey = keyof OppgavelisteFilters
 
 export interface OppgavelisteResponse {
-  oppgaver: Oppgave[]
+  oppgaver: OppgaveV1[]
   pageNumber: number
   pageSize: number
   totalPages: number

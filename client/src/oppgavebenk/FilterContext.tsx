@@ -1,11 +1,11 @@
 import { createContext, ReactNode, useContext } from 'react'
 import { useLocalState } from '../state/useLocalState'
-import { OppgaveGjelderFilter, TildeltFilter } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveGjelderFilter, OppgaveTildeltFilter } from '../oppgave/oppgaveTypes.ts'
 import { SortState } from '@navikt/ds-react'
 
 interface FilterContextType {
-  tildeltFilter: TildeltFilter
-  setTildeltFilter(tildelt: TildeltFilter): void
+  tildeltFilter: OppgaveTildeltFilter
+  setTildeltFilter(tildelt: OppgaveTildeltFilter): void
   gjelderFilter: OppgaveGjelderFilter[]
   setGjelderFilter(gjelder: OppgaveGjelderFilter[]): void
   currentPage: number
@@ -21,7 +21,7 @@ const initialSortState: SortState = {
 }
 
 const initialState: FilterContextType = {
-  tildeltFilter: TildeltFilter.INGEN,
+  tildeltFilter: OppgaveTildeltFilter.INGEN,
   setTildeltFilter() {},
   gjelderFilter: [],
   setGjelderFilter() {},
@@ -43,7 +43,7 @@ function FilterProvider({ children }: { children: ReactNode }) {
 
   function clearFilters() {
     setGjelderFilter([])
-    setTildeltFilter(TildeltFilter.INGEN)
+    setTildeltFilter(OppgaveTildeltFilter.INGEN)
     setSort(initialSortState)
     setCurrentPage(1)
   }

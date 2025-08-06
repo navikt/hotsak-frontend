@@ -13,7 +13,7 @@ export async function generateToken(
   audience: string = 'test'
 ): Promise<string> {
   if (!keyPair) {
-    keyPair = await generateKeyPair(alg)
+    keyPair = await generateKeyPair(alg, { extractable: true })
     privateJwk = await exportJWK(keyPair.privateKey)
     publicJwk = await exportJWK(keyPair.publicKey)
     process.env.AZURE_APP_JWK = JSON.stringify(privateJwk)

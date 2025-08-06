@@ -1,7 +1,9 @@
 import proxy, { ProxyOptions } from 'express-http-proxy'
 import type { Express } from 'express-serve-static-core'
-import { getToken, requestAzureOboToken } from '@navikt/oasis'
+
 import { logger } from './logging.mjs'
+import { exchangeUserToken } from './texas.mjs'
+import { tokenFromRequest } from './request.mjs'
 
 export function reverseProxy(server: Express): void {
   server.use(
@@ -20,23 +22,22 @@ export function reverseProxy(server: Express): void {
 
 function onBehalfOfDecorator(clientId: string): ProxyOptions['proxyReqOptDecorator'] {
   return async (options, req) => {
-    const token = getToken(req)
-    if (!token) {
-      const message = 'Token mangler'
+    const userToken = tokenFromRequest(req)
+    if (!userToken) {
+      const message = 'User token mangler'
       logger.stdout.warn(message)
       return options
     }
 
-    const obo = await requestAzureOboToken(token, clientId)
-    if (obo.ok) {
+    const result = await exchangeUserToken(userToken, clientId)
+    if (result.success) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${obo.token}`,
+        Authorization: `Bearer ${result.data.access_token}`,
       }
     } else {
-      const error = new Error('Feil under OnBehalfOf-flyt', { cause: obo.error })
-      logger.stdout.warn(error)
-      return Promise.reject(error)
+      logger.stdout.warn(result.error)
+      return Promise.reject(result.error)
     }
 
     return options

@@ -12,6 +12,7 @@ import {
   Sak,
   Saksdokument,
   SaksdokumentType,
+  Saksoversikt,
   Sakstype,
   StegType,
   Totrinnskontroll,
@@ -76,7 +77,7 @@ export class SakStore extends Dexie {
     this.version(1).stores({
       brevtekst: 'sakId',
       hendelser: '++id,sakId',
-      saker: 'sakId',
+      saker: 'sakId,bruker.fnr',
       saksdokumenter: '++id,sakId',
       vilkår: '++id,vilkårsvurderingId',
       vilkårsgrunnlag: 'sakId',
@@ -485,6 +486,24 @@ export class SakStore extends Dexie {
         })
       })
       return true
+    }
+  }
+
+  async saksoversikt(fnr: string): Promise<Saksoversikt> {
+    const saker = await this.saker.where('bruker.fnr').equals(fnr).toArray()
+    return {
+      hotsakSaker: saker.map((sak) => ({
+        sakId: sak.sakId,
+        sakstype: sak.sakstype,
+        mottattDato: sak.opprettet,
+        status: sak.status,
+        statusEndretDato: sak.statusEndret,
+        søknadGjelder: sak.søknadGjelder,
+        saksbehandler: sak.saksbehandler?.navn,
+        område: [],
+        fagsystem: 'HOTSAK',
+      })),
+      barnebrilleSaker: [],
     }
   }
 

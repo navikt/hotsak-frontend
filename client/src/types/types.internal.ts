@@ -586,6 +586,7 @@ export enum BehandlingstatusType {
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.ALLE, 'Alle'],
   [OppgaveStatusType.INNVILGET, 'Innvilget'],
+  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
   [OppgaveStatusType.AVSLÅTT, 'Avslått'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
   [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],

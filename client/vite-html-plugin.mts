@@ -18,6 +18,8 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
             MILJO: 'local',
             IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
             FARO_URL: '',
+            UMAMI_ENABLED: false,
+            UMAMI_WEBSITE_ID: '',
           }`,
         })
       } else {

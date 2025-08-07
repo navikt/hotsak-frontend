@@ -13,6 +13,7 @@ import { Toppmeny } from './header/Toppmeny'
 import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
+import { initUmami } from './utils/umami'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { OppgaveProvider } from './oppgave/OppgaveProvider.tsx'
@@ -26,6 +27,7 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
   logUserStats()
+  initUmami()
   const SakTitle = () => (
     <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
   )

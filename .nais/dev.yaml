@@ -83,3 +83,7 @@ spec:
       value: https://telemetry.ekstern.dev.nav.no/collect
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d
+    - name: UMAMI_WEBSITE_ID
+      value: 6f5bb9df-1dfe-4d77-aa40-9cd5d88c7b24
+    - name: UMAMI_ENABLED
+      value: "true"

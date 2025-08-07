@@ -57,3 +57,5 @@ spec:
       value: {{commit}}
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d
+    - name: UMAMI_ENABLED
+      value: "false"

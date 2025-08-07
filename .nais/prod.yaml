@@ -71,3 +71,7 @@ spec:
       value: https://telemetry.nav.no/collect
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.nav.no/imageproxy/400d
+    - name: UMAMI_WEBSITE_ID
+      value: 97bc2b63-e714-42e8-b364-39d59e022039
+    - name: UMAMI_ENABLED
+      value: "false"

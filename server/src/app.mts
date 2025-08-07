@@ -28,6 +28,8 @@ app.get('/settings.js', (_, res) => {
     MILJO: process.env.NAIS_CLUSTER_NAME,
     FARO_URL: process.env.FARO_URL,
     IMAGE_PROXY_URL: process.env.IMAGE_PROXY_URL,
+    UMAMI_ENABLED: process.env.UMAMI_ENABLED === 'true',
+    UMAMI_WEBSITE_ID: process.env.UMAMI_WEBSITE_ID,
   }
   res.type('.js')
   res.send(`window.appSettings = ${JSON.stringify(appSettings)}`)

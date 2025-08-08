@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
+import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -45,6 +45,7 @@ export function Hjelpemiddel({
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
   const erOmbrukPilot = useErOmbrukPilot()
+  const { innloggetAnsatt } = useTilgangContext()
 
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const {
@@ -159,6 +160,7 @@ export function Hjelpemiddel({
                     onClick={() => {
                       logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
                         tekst: 'Alternativer',
+                        enhet: innloggetAnsatt.gjeldendeEnhet.navn,
                         alternativerTilgjengelig: alternativeProdukter.length,
                       })
                       setVisAlternativerModal(true)

@@ -148,6 +148,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               onClick={() => {
                 logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
                   appnavn: 'hotsak',
+
                   komponent: 'AlternativeProdukterModal',
                   tekst: 'Avbryt endre til alternativt produkt',
                 })

@@ -15,6 +15,7 @@ import {
   EndretHjelpemiddelRequest,
 } from '../../../types/types.internal.ts'
 import { Paginering } from '../../../felleskomponenter/Paginering.tsx'
+import { logUmamiHendelse, UMAMI_TAKSONOMI } from '../../../utils/umami.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -88,6 +89,10 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
             if (!nyttProduktValgt) {
               setNyttProduktValgt(true)
             } else {
+              logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
+                tekst: 'Lagre endret alternativ produkt',
+                valgtAlternativ: data.endretProdukt[0],
+              })
               setSubmitting(true)
               const begrunnelse = data.endreBegrunnelse as EndretHjelpemiddelBegrunnelse
               const begrunnelseFritekst =
@@ -139,6 +144,9 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               variant="tertiary"
               size="small"
               onClick={() => {
+                logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
+                  tekst: 'Avbryt endre til alternativt produkt',
+                })
                 setNyttProduktValgt(false)
                 onLukk()
               }}

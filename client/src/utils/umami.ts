@@ -21,8 +21,12 @@ export function initUmami(): void {
   console.debug('Umami er initialisert med website ID:', window.appSettings.UMAMI_WEBSITE_ID)
 }
 
-export const sendHendelseTilUmami = (navn: string, data: object) => {
+export const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data: object) => {
   if (typeof window !== 'undefined' && window.umami) {
     window.umami.track(navn, data)
   }
+}
+
+export const enum UMAMI_TAKSONOMI {
+  KNAPP_KLIKKET = 'knapp klikket',
 }

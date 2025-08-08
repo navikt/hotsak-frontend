@@ -23,6 +23,7 @@ import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
+import { logUmamiHendelse, UMAMI_TAKSONOMI } from '../../utils/umami.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -155,7 +156,13 @@ export function Hjelpemiddel({
                     variant="tertiary"
                     size="xsmall"
                     icon={<ArrowsSquarepathIcon />}
-                    onClick={() => setVisAlternativerModal(true)}
+                    onClick={() => {
+                      logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
+                        tekst: 'Alternativer',
+                        alternativerTilgjengelig: alternativeProdukter.length,
+                      })
+                      setVisAlternativerModal(true)
+                    }}
                   >
                     Alternativer
                   </Button>

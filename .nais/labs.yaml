@@ -53,6 +53,10 @@ spec:
       value: "http://brille/api"
     - name: USE_MSW
       value: "true"
+    - name: USE_MSW_ALTERNATIVPRODUKTER
+      value: "true"
+    - name: USE_MSW_GRUNNDATA
+      value: "true"
     - name: GIT_COMMIT
       value: {{commit}}
     - name: IMAGE_PROXY_URL

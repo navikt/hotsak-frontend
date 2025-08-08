@@ -29,4 +29,5 @@ export const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data: object) => {
 
 export const enum UMAMI_TAKSONOMI {
   KNAPP_KLIKKET = 'knapp klikket',
+  SKJEMA_FULLFØRT = 'skjema fullført',
 }

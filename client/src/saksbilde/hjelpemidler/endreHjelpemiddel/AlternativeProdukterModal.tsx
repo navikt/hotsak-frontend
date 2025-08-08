@@ -89,8 +89,10 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
             if (!nyttProduktValgt) {
               setNyttProduktValgt(true)
             } else {
-              logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
-                tekst: 'Lagre endret alternativ produkt',
+              logUmamiHendelse(UMAMI_TAKSONOMI.SKJEMA_FULLFØRT, {
+                appnavn: 'hotsak',
+                komponent: 'AlternativeProdukterModal',
+                tekst: 'Lagre endring',
                 valgtAlternativ: data.endretProdukt[0],
               })
               setSubmitting(true)
@@ -145,6 +147,8 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               size="small"
               onClick={() => {
                 logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
+                  appnavn: 'hotsak',
+                  komponent: 'AlternativeProdukterModal',
                   tekst: 'Avbryt endre til alternativt produkt',
                 })
                 setNyttProduktValgt(false)

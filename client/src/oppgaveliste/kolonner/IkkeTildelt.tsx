@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 import { Button } from '@navikt/ds-react'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 import { GjeldendeOppgave } from '../../oppgave/OppgaveContext.ts'
 import { HttpError } from '../../io/HttpError.ts'
@@ -27,12 +26,6 @@ export function IkkeTildelt({ sakId, gjeldendeOppgave, gåTilSak = false, onTild
   }
   const tildel = (event: MouseEvent) => {
     event.stopPropagation()
-
-    if (gåTilSak) {
-      logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_OPPGAVELISTE)
-    } else {
-      logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_SAK)
-    }
 
     if (!saksbehandler || state.loading) return
     endreOppgavetildeling({ overtaHvisTildelt: false })

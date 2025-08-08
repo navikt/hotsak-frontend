@@ -4,12 +4,10 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
@@ -42,7 +40,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
-  const [logNesteNavigasjon] = useLogNesteNavigasjon()
   const { oppgaveId, versjon } = useOppgaveContext()
 
   const lagreUtleveringMerknad = (merknad: string) => {
@@ -62,8 +59,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     await putFerdigstillBestilling(sakId, { oppgaveId, versjon }, utleveringMerknad).catch(() => setLoading(false))
     setLoading(false)
     setVisOpprettOrdreModal(false)
-    logAmplitudeEvent(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
-    logNesteNavigasjon(amplitude_taxonomy.BESTILLING_FERDIGSTILT)
     return mutateSak(sakId)
   }
 
@@ -72,7 +67,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
-    logAmplitudeEvent(amplitude_taxonomy.BESTILLING_OVERTATT)
     return mutateSak(sakId)
   }
 
@@ -81,8 +75,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     await putAvvisBestilling(sakId, { oppgaveId, versjon }, tilbakemelding).catch(() => setLoading(false))
     setLoading(false)
     setVisAvvisModal(false)
-    logAmplitudeEvent(amplitude_taxonomy.BESTILLING_AVVIST)
-    logNesteNavigasjon(amplitude_taxonomy.BESTILLING_AVVIST)
     return mutateSak(sakId)
   }
 

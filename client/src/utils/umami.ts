@@ -17,6 +17,8 @@ export function initUmami(): void {
   script.setAttribute('data-website-id', window.appSettings.UMAMI_WEBSITE_ID)
 
   document.head.appendChild(script)
+
+  console.debug('Umami er initialisert med website ID:', window.appSettings.UMAMI_WEBSITE_ID)
 }
 
 export const sendHendelseTilUmami = (navn: string, data: object) => {

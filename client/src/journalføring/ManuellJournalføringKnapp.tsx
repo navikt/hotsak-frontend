@@ -5,7 +5,6 @@ import { Button, Dropdown, Loader } from '@navikt/ds-react'
 
 import { deleteFjernOppgaveTildeling, postOppgaveTildeling } from '../io/http'
 import { Oppgavestatus, Saksbehandler } from '../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { OppgaveId } from '../oppgave/oppgaveId.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
@@ -46,7 +45,6 @@ export function ManuellJournalføringKnapp({
     postOppgaveTildeling({ oppgaveId, versjon: -1 })
       .catch(() => setIsFetching(false))
       .then(() => {
-        logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
         setIsFetching(false)
         onMutate()
       })
@@ -60,7 +58,6 @@ export function ManuellJournalføringKnapp({
     deleteFjernOppgaveTildeling({ oppgaveId, versjon: -1 })
       .catch(() => setIsFetching(false))
       .then(() => {
-        logAmplitudeEvent(amplitude_taxonomy.SAK_FRIGITT)
         setIsFetching(false)
         onMutate()
       })

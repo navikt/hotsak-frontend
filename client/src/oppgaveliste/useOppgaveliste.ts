@@ -1,5 +1,4 @@
 import { SortState } from '@navikt/ds-react'
-import { useEffect } from 'react'
 import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
@@ -11,7 +10,6 @@ import {
   SakstypeFilter,
   Statuskategori,
 } from '../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 
 const PAGE_SIZE = 50
 
@@ -97,14 +95,6 @@ export function useOppgaveliste(currentPage: number, sort: SortState, filters: O
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
-
-  useEffect(() => {
-    logAmplitudeEvent(amplitude_taxonomy.OPPGAVELISTE_OPPDATERT, {
-      currentPage,
-      ...sort,
-      ...filters,
-    })
-  }, [currentPage, sort, filters])
 
   return {
     oppgaver: data?.data.oppgaver || [],

@@ -12,7 +12,6 @@ import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Toppmeny } from './header/Toppmeny'
 import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
-import { amplitude_taxonomy, logAmplitudeEvent } from './utils/amplitude'
 import { initUmami } from './utils/umami'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
@@ -26,7 +25,6 @@ const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
-  logUserStats()
   initUmami()
   const SakTitle = () => (
     <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
@@ -118,11 +116,6 @@ function App() {
       {/*<Toasts />*/}
     </ErrorBoundary>
   )
-}
-
-function logUserStats(): void {
-  const { innerWidth: width, innerHeight: height } = window
-  logAmplitudeEvent(amplitude_taxonomy.CLIENT_INFO, { res: { width, height } })
 }
 
 function withRoutingAndState(Component: ComponentType): () => ReactNode {

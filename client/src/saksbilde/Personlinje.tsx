@@ -8,7 +8,6 @@ import { Tekst } from '../felleskomponenter/typografi'
 import { hotsakTotalMinWidth, søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 
@@ -40,7 +39,6 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           href="#"
           onClick={(event) => {
             event.preventDefault()
-            logAmplitudeEvent(amplitude_taxonomy.PERSONOVERSIKT)
             setFodselsnummer(fnr)
             navigate('/personoversikt/saker')
           }}

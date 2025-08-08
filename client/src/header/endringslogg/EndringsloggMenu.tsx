@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
-
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './useEndringslogg'
 
@@ -18,7 +16,6 @@ export function EndringsloggMenu() {
           style={{ position: 'relative' }}
           onClick={() => {
             if (contentRef.current && contentRef.current.getAttribute('aria-hidden') === 'true') {
-              logAmplitudeEvent(amplitude_taxonomy.ENDRINGSLOGG_APNET)
             }
           }}
         >

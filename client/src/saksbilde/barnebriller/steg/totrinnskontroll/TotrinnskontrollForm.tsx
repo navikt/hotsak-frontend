@@ -7,7 +7,6 @@ import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
 import { baseUrl, put } from '../../../../io/http'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../../../utils/amplitude'
 import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
@@ -105,7 +104,6 @@ export function TotrinnskontrollForm() {
         open={visGodkjenningModal}
         onBekreft={() => {
           lagreTotrinnskontroll()
-          logAmplitudeEvent(amplitude_taxonomy.TOTRINNSKONTROLL_GODKJENT)
         }}
         loading={loading}
         onClose={() => {

@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { Tabs } from '@navikt/ds-react'
 
 export interface TabLinkProps {
@@ -21,7 +20,6 @@ export function TabLink({ children, to, title, icon }: TabLinkProps) {
       data-href={to}
       onClick={() => {
         navigate(to)
-        logAmplitudeEvent(amplitude_taxonomy.SAKSBILDE_BYTT_TAB, { tab: title })
       }}
     />
   )

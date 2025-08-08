@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Search } from '@navikt/ds-react'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
-
 export function Søk({ onSearch }: { onSearch: (...args: any[]) => any }) {
   const [søketekst, setSøketekst] = useState<string>('')
 
@@ -25,7 +23,6 @@ export function Søk({ onSearch }: { onSearch: (...args: any[]) => any }) {
         onClear={() => setSøketekst('')}
         value={søketekst}
         onSubmit={() => {
-          logAmplitudeEvent(amplitude_taxonomy.PERSONSØK)
           onSearch(søketekst)
         }}
       />

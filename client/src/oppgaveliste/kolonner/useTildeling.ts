@@ -2,7 +2,6 @@ import { MouseEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { Sakstype } from '../../types/types.internal'
 import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
 import type { HttpError } from '../../io/HttpError.ts'
@@ -27,12 +26,6 @@ export function useTildeling({
 
   const onTildel = (event: MouseEvent) => {
     event.stopPropagation()
-
-    if (gåTilSak) {
-      logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_OPPGAVELISTE)
-    } else {
-      logAmplitudeEvent(amplitude_taxonomy.SAK_STARTET_FRA_SAK)
-    }
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)

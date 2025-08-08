@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { putOppdaterStatus } from '../io/http'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../utils/amplitude'
 import { OppgaveStatusType } from '../types/types.internal'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
@@ -15,12 +14,6 @@ export function useFortsettBehandling({ sakId, gåTilSak = false }: { sakId: str
 
   const onFortsettBehandling = (event: MouseEvent) => {
     event.stopPropagation()
-
-    if (gåTilSak) {
-      logAmplitudeEvent(amplitude_taxonomy.FORTSETT_BEHANDLING_FRA_OPPGAVELISTE)
-    } else {
-      logAmplitudeEvent(amplitude_taxonomy.FORTSETT_BEHANDLING_FRA_SAK)
-    }
 
     if (!saksbehandler || isFetching) return
     setIsFetching(true)

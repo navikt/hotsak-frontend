@@ -5,12 +5,10 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { useLogNesteNavigasjon } from '../../hooks/useLogNesteNavigasjon'
 import { putVedtak } from '../../io/http'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
-import { amplitude_taxonomy, logAmplitudeEvent } from '../../utils/amplitude'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
@@ -45,8 +43,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
   const { endreOppgavetildeling } = useOppgaveService()
 
-  const [logNesteNavigasjon] = useLogNesteNavigasjon()
-
   const form = useForm<VedtakFormValues>({
     defaultValues: {
       problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
@@ -59,8 +55,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     await putVedtak(sakId, problemsammendrag).catch(() => setLoading(false))
     setLoading(false)
     setVisVedtakModal(false)
-    logAmplitudeEvent(amplitude_taxonomy.SOKNAD_INNVILGET)
-    logNesteNavigasjon(amplitude_taxonomy.SOKNAD_INNVILGET)
     return mutateSak(sakId)
   }
 
@@ -69,7 +63,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
     setLoading(false)
     setVisOvertaSakModal(false)
-    logAmplitudeEvent(amplitude_taxonomy.SAK_OVERTATT)
     return mutateSak(sakId)
   }
 
@@ -238,8 +231,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         {...overførGosys}
         onBekreft={async (tilbakemelding) => {
           await overførGosys.onBekreft(tilbakemelding)
-          logAmplitudeEvent(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
-          logNesteNavigasjon(amplitude_taxonomy.SOKNAD_OVERFORT_TIL_GOSYS)
         }}
       />
     </VenstremenyCard>

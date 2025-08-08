@@ -6,11 +6,10 @@ import { Tabs } from '@navikt/ds-react'
 export interface TabLinkProps {
   children?: string | ReactNode
   to: string
-  title?: string
   icon?: ReactNode
 }
 
-export function TabLink({ children, to, title, icon }: TabLinkProps) {
+export function TabLink({ children, to, icon }: TabLinkProps) {
   const navigate = useNavigate()
   return (
     <Tabs.Tab

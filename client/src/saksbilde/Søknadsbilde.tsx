@@ -48,7 +48,7 @@ const SaksbildeContent = memo(() => {
     <HGrid columns={`max(${hovedInnholdMaxWidth} )  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}>
       <section>
         <HGrid columns="auto">
-          <Søknadslinje id={sak.data.sakId} type={sak.data.sakstype} />
+          <Søknadslinje id={sak.data.sakId} />
         </HGrid>
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
           <Venstremeny gap="5">

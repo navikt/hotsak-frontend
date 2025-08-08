@@ -25,6 +25,8 @@ app.get('/isready', (_, res) => {
 app.get('/settings.js', (_, res) => {
   const appSettings = {
     USE_MSW: process.env.USE_MSW === 'true',
+    USE_MSW_GRUNNDATA: process.env.USE_MSW_GRUNNDATA === 'true',
+    USE_MSW_ALTERNATIVPRODUKTER: process.env.USE_MSW_ALTERNATIVPRODUKTER === 'true',
     MILJO: process.env.NAIS_CLUSTER_NAME,
     FARO_URL: process.env.FARO_URL,
     IMAGE_PROXY_URL: process.env.IMAGE_PROXY_URL,

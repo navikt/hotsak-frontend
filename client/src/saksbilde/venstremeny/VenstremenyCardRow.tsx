@@ -9,7 +9,6 @@ export interface VenstremenyCardRowProps {
   icon?: ReactNode
   title?: string
   copyText?: string
-  copyKind?: string
   paddingBlock?: HGridProps['paddingBlock']
   align?: HGridProps['align']
   columns?: HGridProps['columns']
@@ -19,7 +18,7 @@ export interface VenstremenyCardRowProps {
 const hStack = true
 
 export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
-  const { children, icon, copyText, copyKind, paddingBlock, align, columns, title, skjulKopiknapp = false } = props
+  const { children, icon, copyText, paddingBlock, align, columns, title, skjulKopiknapp = false } = props
 
   if (hStack) {
     return (

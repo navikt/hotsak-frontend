@@ -29,7 +29,6 @@ export function LeveringCard(props: UtleveringCardProps) {
         paddingBlock={'0 2'}
         icon={lagLeveringsIkon()}
         copyText={leveringsmåteCopyText}
-        copyKind="leveringsmåte"
         title={leveringsmåteLabel}
       >
         {leveringsmåteCopyText !== '' && leveringsmåteCopyText}
@@ -40,7 +39,6 @@ export function LeveringCard(props: UtleveringCardProps) {
           paddingBlock={'0 2'}
           title="Beskjed til kommunen"
           copyText={utleveringMerknad}
-          copyKind="merknad"
           skjulKopiknapp={skjulKopiknapp}
         >
           {utleveringMerknad}
@@ -50,7 +48,6 @@ export function LeveringCard(props: UtleveringCardProps) {
         <VenstremenyCardRow
           icon={lagKontaktpersonIkon()}
           copyText={kontaktpersonTekst}
-          copyKind="kontaktperson"
           title="Kontaktperson"
           skjulKopiknapp={skjulKopiknapp}
         >

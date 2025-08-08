@@ -36,7 +36,7 @@ export function SøknadCard({ sakstype, sakId, søknadMottatt, funksjonsnedsette
         {storForbokstavIAlleOrd(funksjonsnedsettelser.join(', '))}
       </VenstremenyCardRow>
       {telefon && (
-        <VenstremenyCardRow icon={<PhoneIcon />} copyText={telefon} copyKind="formidlers telefon">
+        <VenstremenyCardRow icon={<PhoneIcon />} copyText={telefon}>
           {formaterTelefonnummer(telefon)}
         </VenstremenyCardRow>
       )}

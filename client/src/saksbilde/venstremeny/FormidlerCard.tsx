@@ -20,14 +20,12 @@ export function FormidlerCard({ tittel, formidlerNavn, kommune, formidlerTelefon
       <VenstremenyCardRow
         icon={<PersonIcon />}
         copyText={formidlerNavnFormatert}
-        copyKind="formidlers navn"
       >{`${formidlerNavnFormatert}`}</VenstremenyCardRow>
       <VenstremenyCardRow
         icon={<BriefcaseIcon />}
         copyText={stilling}
-        copyKind="formidlers stilling"
       >{`${storForbokstavIAlleOrd(stilling)} - ${storForbokstavIAlleOrd(kommune)}`}</VenstremenyCardRow>
-      <VenstremenyCardRow icon={<PhoneIcon />} copyText={formidlerTelefon} copyKind="formidlers telefon">
+      <VenstremenyCardRow icon={<PhoneIcon />} copyText={formidlerTelefon}>
         {formaterTelefonnummer(formidlerTelefon)}
       </VenstremenyCardRow>
     </VenstremenyCard>

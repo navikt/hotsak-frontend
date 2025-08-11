@@ -1,5 +1,5 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
-import { memo, useMemo } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
@@ -13,6 +13,8 @@ import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
 import { useArtiklerForSak } from './useArtiklerForSak.ts'
 import { ingenAlternativeProdukterForHmsArtNr, useAlternativeProdukter } from './useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
+import { UMAMI_TAKSONOMI } from '../../sporing/umamiTaksonomi.ts'
+import { useUmami } from '../../sporing/useUmami.ts'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -21,6 +23,7 @@ interface HjelpemiddelListeProps {
 
 function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
+  const { logUmamiHendelse } = useUmami()
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const { brukersituasjon, levering } = behovsmelding
@@ -44,6 +47,13 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const hjelpemiddelprodukter = useHjelpemiddelprodukter(alleHmsNr)
   const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
+
+  useEffect(() => {
+    logUmamiHendelse(UMAMI_TAKSONOMI.ALTERNATIVE_PRODUKTER_MOTTATT, {
+      produkterFraSøknad: alleHmsNr,
+      alternativer: alternativeProdukterByHmsArtNr,
+    })
+  }, [alternativeProdukterByHmsArtNr])
 
   return (
     <VStack gap="4">

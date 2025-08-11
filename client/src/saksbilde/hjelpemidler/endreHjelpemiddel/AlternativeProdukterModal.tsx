@@ -43,7 +43,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
-  const { logUmamiHendelse, logKnappKlikket, logSkjemaFullført } = useUmami()
+  const { logUmamiHendelse, logSkjemaFullført } = useUmami()
 
   const {
     isLoading,

@@ -3,9 +3,9 @@ import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
-import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { useErOmbrukPilot, useTilgangContext } from '../../tilgang/useTilgang.ts'
+import { useUmami } from '../../sporing/useUmami.ts'
+import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -21,9 +21,9 @@ import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
+import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
-import { logUmamiHendelse, UMAMI_TAKSONOMI } from '../../utils/umami.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -45,8 +45,7 @@ export function Hjelpemiddel({
   const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
   const erOmbrukPilot = useErOmbrukPilot()
-  const { innloggetAnsatt } = useTilgangContext()
-
+  const { logModalÅpnet } = useUmami()
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const {
     endreHjelpemiddel,
@@ -158,10 +157,12 @@ export function Hjelpemiddel({
                     size="xsmall"
                     icon={<ArrowsSquarepathIcon />}
                     onClick={() => {
-                      logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
-                        tekst: 'Alternativer',
-                        enhet: innloggetAnsatt.gjeldendeEnhet.navn,
+                      logModalÅpnet({
+                        tekst: 'alterrnative-produkter-modal',
                         alternativerTilgjengelig: alternativeProdukter.length,
+                        alternativer: alternativeProdukter.map((p) => {
+                          p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                        }),
                       })
                       setVisAlternativerModal(true)
                     }}

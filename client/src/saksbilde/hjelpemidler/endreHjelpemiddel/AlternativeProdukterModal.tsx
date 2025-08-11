@@ -15,7 +15,8 @@ import {
   EndretHjelpemiddelRequest,
 } from '../../../types/types.internal.ts'
 import { Paginering } from '../../../felleskomponenter/Paginering.tsx'
-import { logUmamiHendelse, UMAMI_TAKSONOMI } from '../../../utils/umami.ts'
+import { UMAMI_TAKSONOMI } from '../../../sporing/umamiTaksonomi.ts'
+import { useUmami } from '../../../sporing/useUmami.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -42,6 +43,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
+  const { logUmamiHendelse, logKnappKlikket, logSkjemaFullført } = useUmami()
 
   const {
     isLoading,
@@ -89,10 +91,8 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
             if (!nyttProduktValgt) {
               setNyttProduktValgt(true)
             } else {
-              logUmamiHendelse(UMAMI_TAKSONOMI.SKJEMA_FULLFØRT, {
-                appnavn: 'hotsak',
+              logSkjemaFullført({
                 komponent: 'AlternativeProdukterModal',
-                tekst: 'Lagre endring',
                 valgtAlternativ: data.endretProdukt[0],
               })
               setSubmitting(true)
@@ -147,8 +147,6 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               size="small"
               onClick={() => {
                 logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
-                  appnavn: 'hotsak',
-
                   komponent: 'AlternativeProdukterModal',
                   tekst: 'Avbryt endre til alternativt produkt',
                 })

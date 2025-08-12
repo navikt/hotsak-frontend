@@ -2,23 +2,22 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router'
 import styled from 'styled-components'
 
-import { HStack, Loader } from '@navikt/ds-react'
+import { Box, HStack, Loader } from '@navikt/ds-react'
 import { headerHøydeRem } from '../GlobalStyles'
 import { useDokumentContext } from '../dokument/DokumentContext'
 import { DokumentPanel } from '../dokument/DokumentPanel'
-import { Avstand } from '../felleskomponenter/Avstand'
 import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
+import { useOppgavetilgang } from '../oppgaveliste/useOppgavetilgang'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { Oppgavestatus } from '../types/types.internal'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
-import { useOppgavetilgang } from '../oppgaveliste/useOppgavetilgang'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export function ManuellJournalføring() {
   const { journalpostId } = useParams<{ journalpostId: string }>()
@@ -68,16 +67,14 @@ export function ManuellJournalføring() {
         <Personlinje person={personInfo} loading={personInfoLoading} />
         <Container>
           <ToKolonner>
-            <Avstand paddingTop={4}>
-              <HStack>
-                <span>
-                  <Loader size="medium" title="Henter journalpost..." />
-                </span>
-                <Avstand paddingLeft={4}>
-                  <Etikett>Henter journalpost...</Etikett>
-                </Avstand>
-              </HStack>
-            </Avstand>
+            <HStack paddingBlock="4 0">
+              <span>
+                <Loader size="medium" title="Henter journalpost..." />
+              </span>
+              <Box paddingInline="4 0">
+                <Etikett>Henter journalpost...</Etikett>
+              </Box>
+            </HStack>
             <DokumentPanel />
           </ToKolonner>
         </Container>

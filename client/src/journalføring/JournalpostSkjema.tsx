@@ -7,19 +7,18 @@ import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '
 
 import { postJournalføring } from '../io/http'
 
-import { Avstand } from '../felleskomponenter/Avstand'
+import { Dokumenter } from '../dokument/Dokumenter'
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { Kolonner } from '../felleskomponenter/Kolonner'
 import { Toast } from '../felleskomponenter/Toast'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { usePerson } from '../personoversikt/usePerson'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
+import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
-import { Dokumenter } from '../dokument/Dokumenter'
+import { formaterNavn } from '../utils/formater'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
 import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
-import { formaterNavn } from '../utils/formater'
 
 export function JournalpostSkjema() {
   const navigate = useNavigate()

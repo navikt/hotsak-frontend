@@ -1,8 +1,7 @@
 import { useParams } from 'react-router'
 import styled from 'styled-components'
-import { Heading } from '@navikt/ds-react'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 
-import { Avstand } from '../felleskomponenter/Avstand'
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/Toast'
@@ -69,27 +68,26 @@ export function JournalpostVisning({ lesevisning }: { lesevisning: boolean }) {
           onMutate={mutate}
         />
       )}
-      <Heading level="1" size="small" spacing>
-        Journalføring
-      </Heading>
-      <Avstand paddingTop={4} />
-      <Heading size="small" level="2" spacing>
-        Bruker
-      </Heading>
-      <Avstand marginRight={3}>
-        <Brødtekst>{`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}</Brødtekst>
-      </Avstand>
-      <Avstand paddingTop={8} marginRight={3}>
-        <Heading size="small" level="2" spacing>
-          Journalpost
+      <VStack gap="3">
+        <Heading level="1" size="xsmall" spacing>
+          Journalføring
         </Heading>
-      </Avstand>
-      <Avstand paddingTop={4}>
-        <Dokumenter dokumenter={journalpost.dokumenter} />
-      </Avstand>
-      <Avstand paddingTop={6} paddingRight={6}>
-        <StatusVisning />
-      </Avstand>
+        <VStack>
+          <Heading size="xsmall" level="2">
+            Bruker
+          </Heading>
+          <Brødtekst>{`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}</Brødtekst>
+        </VStack>
+        <VStack marginInline="0 3">
+          <Heading size="xsmall" level="2" spacing>
+            Journalpost
+          </Heading>
+          <Dokumenter dokumenter={journalpost.dokumenter} />
+        </VStack>
+        <Box paddingBlock="6 0" paddingInline="0 6">
+          <StatusVisning />
+        </Box>
+      </VStack>
     </Container>
   )
 }

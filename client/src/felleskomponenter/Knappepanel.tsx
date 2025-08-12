@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 
+// TODO Skrive om denne komponenten til å bruke Aksel HStack/VStack
 export function Knappepanel({ children, gap, spacing }: { children: ReactNode; gap?: string; spacing?: number }) {
   return (
     <Container $gap={gap} $spacing={spacing ? spacing : 6}>

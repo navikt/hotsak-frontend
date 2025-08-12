@@ -131,12 +131,14 @@ export function JournalpostSkjema() {
           </Box>
 
           <Dokumenter dokumenter={journalpost?.dokumenter || []} />
-          <KnyttTilEksisterendeSak
-            åpneSaker={saksoversikt?.hotsakSaker || []}
-            valgtEksisterendeSakId={valgtEksisterendeSakId}
-            onChange={setValgtEksisterendeSakId}
-          />
-          <Avstand paddingLeft={2}>
+          {saksoversikt?.hotsakSaker && saksoversikt.hotsakSaker.length > 0 && (
+            <KnyttTilEksisterendeSak
+              åpneSaker={saksoversikt?.hotsakSaker || []}
+              valgtEksisterendeSakId={valgtEksisterendeSakId}
+              onChange={setValgtEksisterendeSakId}
+            />
+          )}
+          <Box paddingBlock={'2 0'}>
             <Knappepanel>
               <Button
                 type="submit"
@@ -152,7 +154,7 @@ export function JournalpostSkjema() {
                 {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
               </Button>
             </Knappepanel>
-          </Avstand>
+          </Box>
         </VStack>
       </form>
     </Container>

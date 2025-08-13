@@ -2,9 +2,7 @@
   "name": "hotsak-frontend-server",
   "version": "0.1.0",
   "type": "module",
-  "author": "Team DigiHoT",
   "private": true,
-  "license": "MIT",
   "engines": {
     "node": ">=22.11.0"
   },

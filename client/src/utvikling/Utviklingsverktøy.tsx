@@ -1,10 +1,9 @@
+import { Button, Heading, Select, VStack } from '@navikt/ds-react'
 import { ChangeEventHandler, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Select } from '@navikt/ds-react'
 
-import { Avstand } from '../felleskomponenter/Avstand'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { InnloggetAnsatt } from '../tilgang/Ansatt.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 const Wrapper = styled.div`
   position: fixed;
@@ -73,32 +72,34 @@ export function Utviklingsverktøy() {
       >
         -
       </Button>
-      <Heading size="xsmall">[UTVIKLINGSVERKTØY]</Heading>
-      <Select
-        data-testid="select-bytt-bruker"
-        size="small"
-        label="Innlogget saksbehandler"
-        value={innloggetSaksbehandlerId}
-        onChange={byttSaksbehandler}
-      >
-        {saksbehandlere.map(({ id, navn }) => (
-          <option key={id} value={id}>
-            {navn}
-          </option>
-        ))}
-      </Select>
-      <Avstand marginTop={3}>
-        <Button
+      <VStack gap="2">
+        <Heading size="xsmall">[UTVIKLINGSVERKTØY]</Heading>
+        <Select
+          data-testid="select-bytt-bruker"
           size="small"
-          variant="secondary"
-          onClick={async () => {
-            await window.store.delete()
-            window.location.reload()
-          }}
+          label="Innlogget saksbehandler"
+          value={innloggetSaksbehandlerId}
+          onChange={byttSaksbehandler}
         >
-          Slett testdata
-        </Button>
-      </Avstand>
+          {saksbehandlere.map(({ id, navn }) => (
+            <option key={id} value={id}>
+              {navn}
+            </option>
+          ))}
+        </Select>
+        <div>
+          <Button
+            size="small"
+            variant="secondary"
+            onClick={async () => {
+              await window.store.delete()
+              window.location.reload()
+            }}
+          >
+            Slett testdata
+          </Button>
+        </div>
+      </VStack>
     </Wrapper>
   )
 }

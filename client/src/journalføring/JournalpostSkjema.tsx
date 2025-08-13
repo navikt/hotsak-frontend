@@ -137,7 +137,7 @@ export function JournalpostSkjema() {
               onChange={setValgtEksisterendeSakId}
             />
           )}
-          <Box paddingBlock={'2 0'}>
+          <Box paddingBlock={'1 0'}>
             <Knappepanel>
               <Button
                 type="submit"

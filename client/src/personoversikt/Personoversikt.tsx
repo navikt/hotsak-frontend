@@ -18,6 +18,7 @@ import { Avstand } from '../felleskomponenter/Avstand'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { formaterNavn } from '../utils/formater.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
+import { Box } from '@navikt/ds-react'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -57,7 +58,7 @@ function PersonoversiktContent() {
             sakerCount={hotsakSaker.length + (barnebrilleSaker?.length || 0)}
             hjelpemidlerCount={antallUtlånteHjelpemidler}
           />
-          <Avstand paddingTop={4} paddingLeft={8} paddingRight={8}>
+          <Box paddingBlock="4 0" paddingInline="8 1">
             <Routes>
               <Route
                 path="/saker"
@@ -87,7 +88,7 @@ function PersonoversiktContent() {
                 }
               />
             </Routes>
-          </Avstand>
+          </Box>
         </>
       )}
     </>

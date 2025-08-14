@@ -10,12 +10,11 @@ import { Feilside } from './feilsider/Feilside'
 import { GlobalFeilside } from './feilsider/GlobalFeilside'
 import { Eksperiment } from './felleskomponenter/Eksperiment'
 import { Toppmeny } from './header/Toppmeny'
+import { OppgaveProvider } from './oppgave/OppgaveProvider.tsx'
 import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
-import { initUmami } from './sporing/umami.ts'
-import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
-import { OppgaveProvider } from './oppgave/OppgaveProvider.tsx'
+import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
 
 const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
@@ -25,7 +24,6 @@ const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
 
 function App() {
-  initUmami()
   const SakTitle = () => (
     <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
   )

@@ -1,4 +1,4 @@
-export function initUmami(): void {
+export async function initUmami(): Promise<void> {
   // Ikke last Umami i lokalt miljø eller hvis det er deaktivert
   if (!window.appSettings.UMAMI_ENABLED || !window.appSettings.UMAMI_WEBSITE_ID) {
     console.debug('Umami er deaktivert eller ikke konfigurert, laster ikke sporing.')

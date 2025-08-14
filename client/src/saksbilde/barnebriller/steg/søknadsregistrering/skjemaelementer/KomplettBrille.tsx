@@ -2,7 +2,6 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { HStack, HelpText, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 
-import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { VilkårsResultat, Vurdering } from '../../../../../types/types.internal'
 

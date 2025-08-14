@@ -15,7 +15,6 @@ import {
   EndretHjelpemiddelRequest,
 } from '../../../types/types.internal.ts'
 import { Paginering } from '../../../felleskomponenter/Paginering.tsx'
-import { UMAMI_TAKSONOMI } from '../../../sporing/umamiTaksonomi.ts'
 import { useUmami } from '../../../sporing/useUmami.ts'
 
 interface AlternativProduktModalProps {
@@ -43,7 +42,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
   const [nyttProduktValgt, setNyttProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const ref = useRef<HTMLDialogElement>(null)
-  const { logUmamiHendelse, logSkjemaFullført } = useUmami()
+  const { logKnappKlikket, logSkjemaFullført } = useUmami()
 
   const {
     isLoading,
@@ -146,7 +145,7 @@ export function AlternativeProdukterModal(props: AlternativProduktModalProps) {
               variant="tertiary"
               size="small"
               onClick={() => {
-                logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, {
+                logKnappKlikket({
                   komponent: 'AlternativeProdukterModal',
                   tekst: 'Avbryt endre til alternativt produkt',
                 })

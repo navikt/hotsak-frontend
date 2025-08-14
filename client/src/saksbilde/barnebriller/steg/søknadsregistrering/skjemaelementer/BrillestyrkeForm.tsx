@@ -1,26 +1,23 @@
-import { Alert, BodyLong } from '@navikt/ds-react'
+import { Alert, BodyLong, Box, VStack } from '@navikt/ds-react'
 
-import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
 import { SatsType } from '../../../../../types/types.internal'
+import { formaterBeløp } from '../../../../../utils/formater'
 import { useBeregning } from '../useBeregning'
 import { Øye } from './Øye'
-import { formaterBeløp } from '../../../../../utils/formater'
 
 export function BrillestyrkeForm() {
   const beregning = useBeregning()
 
   return (
-    <>
-      <Avstand paddingTop={10}>
+    <div>
+      <VStack gap="8">
         <Øye type="høyre" />
-      </Avstand>
-      <Avstand paddingTop={8}>
         <Øye type="venstre" />
-      </Avstand>
+      </VStack>
 
       {beregning && (
-        <Avstand paddingBottom={1} paddingTop={3}>
+        <Box paddingBlock="3 1">
           {beregning.sats === SatsType.INGEN ? (
             <Alert variant="warning">
               <BodyLong>Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt</BodyLong>
@@ -33,8 +30,8 @@ export function BrillestyrkeForm() {
               </Brødtekst>
             </Alert>
           )}
-        </Avstand>
+        </Box>
       )}
-    </>
+    </div>
   )
 }

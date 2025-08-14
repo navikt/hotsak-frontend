@@ -1,14 +1,12 @@
+import { Box, Button, Loader } from '@navikt/ds-react'
 import { formatISO } from 'date-fns'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import { Button, Loader } from '@navikt/ds-react'
 
-import { postVilkårsvurdering } from '../../../../io/http'
 import { Dokumenter } from '../../../../dokument/Dokumenter'
-import { tilDato } from '../../../../utils/dato'
-import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
+import { postVilkårsvurdering } from '../../../../io/http'
 import {
   Brilleseddel,
   MålformType,
@@ -17,12 +15,13 @@ import {
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
-import { useJournalposter } from '../../../useJournalposter'
+import { tilDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
+import { useJournalposter } from '../../../useJournalposter'
+import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { RegistrerBrillegrunnlag } from './RegistrerBrillegrunnlag'
 import { Målform } from './skjemaelementer/Målform'
-import { useSakId } from '../../../useSak.ts'
 
 const Container = styled.div`
   overflow: auto;
@@ -110,9 +109,10 @@ export function RegistrerSøknadSkjema() {
 
   return (
     <Container>
-      <Avstand paddingTop={4} paddingBottom={2} />
-      <Dokumenter dokumenter={dokumenter} />
-      <Avstand marginTop={10} paddingLeft={2} paddingRight={2}>
+      <Box paddingBlock="4 2">
+        <Dokumenter dokumenter={dokumenter} />
+      </Box>
+      <Box marginBlock="10 0" paddingInline="2">
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit((data) => {
@@ -135,7 +135,7 @@ export function RegistrerSøknadSkjema() {
             </Knappepanel>
           </form>
         </FormProvider>
-      </Avstand>
+      </Box>
     </Container>
   )
 }

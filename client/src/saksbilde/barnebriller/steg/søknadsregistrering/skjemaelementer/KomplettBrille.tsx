@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { HStack, HelpText, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { HStack, HelpText, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 
 import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
@@ -17,41 +17,37 @@ export function KomplettBrille() {
   const vilkårOppfylt = watch('komplettBrille.vilkårOppfylt')
 
   return (
-    <>
-      <Avstand paddingTop={10}>
-        <Controller
-          name="komplettBrille.vilkårOppfylt"
-          control={control}
-          rules={{ required: 'Velg en verdi' }}
-          render={({ field }) => (
-            <RadioGroup
-              legend={
-                <HStack wrap={false} gap="2" align="center">
-                  <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
-                  <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
-                </HStack>
-              }
-              size="small"
-              {...field}
-              error={errors.komplettBrille?.vilkårOppfylt?.message}
-            >
-              <Radio value={VilkårsResultat.JA}>Ja</Radio>
-              <Radio value={VilkårsResultat.NEI}>Nei</Radio>
-              <Radio value={VilkårsResultat.OPPLYSNINGER_MANGLER}>Opplysninger mangler</Radio>
-            </RadioGroup>
-          )}
-        />
-      </Avstand>
-      {vilkårOppfylt === VilkårsResultat.NEI && (
-        <Avstand paddingTop={4}>
-          <Textarea
+    <VStack gap="4">
+      <Controller
+        name="komplettBrille.vilkårOppfylt"
+        control={control}
+        rules={{ required: 'Velg en verdi' }}
+        render={({ field }) => (
+          <RadioGroup
+            legend={
+              <HStack wrap={false} gap="2" align="center">
+                <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
+                <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
+              </HStack>
+            }
             size="small"
-            label="Begrunnelse"
-            description="Skriv din individuelle begrunnelse"
-            {...register('komplettBrille.begrunnelse')}
-          ></Textarea>
-        </Avstand>
+            {...field}
+            error={errors.komplettBrille?.vilkårOppfylt?.message}
+          >
+            <Radio value={VilkårsResultat.JA}>Ja</Radio>
+            <Radio value={VilkårsResultat.NEI}>Nei</Radio>
+            <Radio value={VilkårsResultat.OPPLYSNINGER_MANGLER}>Opplysninger mangler</Radio>
+          </RadioGroup>
+        )}
+      />
+      {vilkårOppfylt === VilkårsResultat.NEI && (
+        <Textarea
+          size="small"
+          label="Begrunnelse"
+          description="Skriv din individuelle begrunnelse"
+          {...register('komplettBrille.begrunnelse')}
+        ></Textarea>
       )}
-    </>
+    </VStack>
   )
 }

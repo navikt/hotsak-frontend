@@ -1,7 +1,6 @@
-import { HelpText, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
+import { Box, HelpText, HStack, Radio, RadioGroup, Textarea } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { VilkårsResultat, Vurdering } from '../../../../../types/types.internal'
 
@@ -16,7 +15,7 @@ export function BestiltHosOptiker() {
   const vilkårOppfylt = watch('bestiltHosOptiker.vilkårOppfylt')
 
   return (
-    <Avstand paddingTop={10}>
+    <div>
       <Controller
         name="bestiltHosOptiker.vilkårOppfylt"
         control={control}
@@ -42,15 +41,15 @@ export function BestiltHosOptiker() {
         )}
       />
       {vilkårOppfylt === VilkårsResultat.NEI && (
-        <Avstand paddingTop={4}>
+        <Box paddingBlock="4 0">
           <Textarea
             size="small"
             label="Begrunnelse"
             description="Skriv din individuelle begrunnelse"
             {...register('bestiltHosOptiker.begrunnelse')}
           ></Textarea>
-        </Avstand>
+        </Box>
       )}
-    </Avstand>
+    </div>
   )
 }

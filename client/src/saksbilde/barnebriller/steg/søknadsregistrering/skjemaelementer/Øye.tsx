@@ -90,6 +90,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
   )
 }
 
+// TODO bytte ut med Hstack?
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: 145px 155px;

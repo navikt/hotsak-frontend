@@ -1,6 +1,6 @@
 import 'date-fns'
 
-import { Avstand } from '../../../../felleskomponenter/Avstand'
+import { VStack } from '@navikt/ds-react'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { Utbetalingsmottaker } from './Utbetalingsmottaker'
 import { Bestillingsdato } from './skjemaelementer/Bestillingsdato'
@@ -13,17 +13,13 @@ export function RegistrerBrillegrunnlag() {
   const { sak } = useBarnebrillesak()
 
   return (
-    <>
-      <Avstand paddingTop={10}>
-        <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
-      </Avstand>
+    <VStack gap="10" paddingBlock="10 0" marginInline="0 1">
+      <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
       <BrillestyrkeForm />
-      <Avstand paddingTop={10}>
-        <Bestillingsdato />
-      </Avstand>
+      <Bestillingsdato />
       <KjøptBrille />
       <KomplettBrille />
       <BestiltHosOptiker />
-    </>
+    </VStack>
   )
 }

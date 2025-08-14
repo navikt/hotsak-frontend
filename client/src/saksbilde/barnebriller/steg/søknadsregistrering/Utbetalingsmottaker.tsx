@@ -20,7 +20,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
   const kontonummerFunnet = kontoinformasjon?.kontonummer && kontoinformasjon.kontonummer !== ''
 
   return (
-    <>
+    <div>
       <HStack gap="2" align="end">
         <TextField
           label="Fødselsnummer innsender"
@@ -60,6 +60,6 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
           )}`}</SkjemaAlert>
         )}
       </Box>
-    </>
+    </div>
   )
 }

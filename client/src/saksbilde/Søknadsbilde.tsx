@@ -31,12 +31,17 @@ import { Venstremeny } from './venstremeny/Venstremeny'
 import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
 
 const SaksbildeContent = memo(() => {
-  const { sak } = useSak()
-  const { behovsmelding } = useBehovsmelding()
+  const { sak, isLoading: sakLoading } = useSak()
+  const { behovsmelding, isLoading: behøvsmeldingLoading } = useBehovsmelding()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { harUtkast } = useNotater(sak?.data.sakId)
+
+  // TODO: Teste ut suspense mode i swr
+  if (true || sakLoading || behøvsmeldingLoading) {
+    return <SakLoader />
+  }
 
   if (!sak || !behovsmelding) return <div>Fant ikke sak</div>
 
@@ -125,8 +130,6 @@ const Container = styled.section`
 
 export const Søknadsbilde = () => (
   <ErrorBoundary FallbackComponent={AlertError}>
-    <Suspense fallback={<SakLoader />}>
-      <SaksbildeContent />
-    </Suspense>
+    <SaksbildeContent />
   </ErrorBoundary>
 )

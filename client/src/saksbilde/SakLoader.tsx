@@ -1,7 +1,6 @@
 import { Box, HGrid, Skeleton } from '@navikt/ds-react'
 
-import { spacingVar } from '../felleskomponenter/Avstand.tsx'
-import { hotsakHistorikkMinWidth, hotsakVenstremenyWidth, søknadsbildeHovedinnholdMaxWidth } from '../GlobalStyles'
+import { hotsakHistorikkMinWidth, hotsakVenstremenyWidth } from '../GlobalStyles'
 import { LasterPersonlinje } from './Personlinje'
 
 export function SakLoader() {
@@ -14,13 +13,9 @@ export function SakLoader() {
           <Box margin={spacing}>
             <Skeleton variant="rectangle" width="100%" height={30} />
           </Box>
-          <HGrid columns={`${hotsakVenstremenyWidth} auto`} gap={spacing}>
-            <div style={{ marginLeft: spacingVar(spacing) }}>
-              <Skeleton variant="rectangle" width="100%" height={800} />
-            </div>
-            <div style={{ marginRight: spacingVar(spacing), maxWidth: `${søknadsbildeHovedinnholdMaxWidth}` }}>
-              <Skeleton variant="rectangle" width="100%" height={800} />
-            </div>
+          <HGrid columns={`${hotsakVenstremenyWidth} auto`} gap={spacing} marginInline="0 4">
+            <Skeleton variant="rectangle" width="100%" height={800} />
+            <Skeleton variant="rectangle" width="100%" height={800} />
           </HGrid>
         </section>
         <Box

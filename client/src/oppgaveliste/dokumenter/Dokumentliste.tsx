@@ -1,28 +1,25 @@
+import { Box, Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { Box, Table } from '@navikt/ds-react'
-
+import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { TekstCell } from '../../felleskomponenter/table/Celle'
-import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow'
+import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne'
 import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
-import { formaterTidsstempel } from '../../utils/dato'
-import { formaterFødselsnummer, formaterNavn } from '../../utils/formater'
-import { isError } from '../../utils/type'
-import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
 import { Toast } from '../../felleskomponenter/Toast'
 import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
 import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
 import { OppgavestatusLabel, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
+import { formaterTidsstempel } from '../../utils/dato'
+import { formaterFødselsnummer, formaterNavn } from '../../utils/formater'
+import { isError } from '../../utils/type'
 import { OppgavelisteTabs } from '../OppgavelisteTabs'
 import { useDokumentliste } from './useDokumentliste'
-import { DokumentTildeling } from './DokumentTildeling'
-import { useOppgavetilgang } from '../useOppgavetilgang'
 
 export function Dokumentliste() {
   const { data, isLoading, error } = useDokumentliste()
-  const { harSkrivetilgang } = useOppgavetilgang()
   const oppgaver = data?.oppgaver || []
 
   const kolonner: Tabellkolonne<OppgaveV2>[] = [
@@ -31,7 +28,7 @@ export function Dokumentliste() {
       name: 'Eier',
       width: 160,
       render(oppgave: OppgaveV2) {
-        return <DokumentTildeling dokumentOppgave={oppgave} lesevisning={!harSkrivetilgang} />
+        return <TaOppgaveButton oppgave={oppgave} />
       },
       accessor(verdi: OppgaveV2): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')

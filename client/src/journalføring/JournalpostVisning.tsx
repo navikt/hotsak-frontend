@@ -1,19 +1,19 @@
-import styled from 'styled-components'
 import { Box, Heading, VStack } from '@navikt/ds-react'
+import styled from 'styled-components'
 
+import { Dokumenter } from '../dokument/Dokumenter'
 import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/Toast'
 import { Brødtekst } from '../felleskomponenter/typografi'
+import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgaveContextButton } from '../oppgave/TaOppgaveContextButton.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
-import { DokumentIkkeTildelt } from '../oppgaveliste/dokumenter/DokumentIkkeTildelt'
-import { Dokumenter } from '../dokument/Dokumenter'
-import { JournalføringKnapp } from './JournalføringKnapp.tsx'
-import { formaterNavn } from '../utils/formater'
-import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { formaterNavn } from '../utils/formater'
+import { JournalføringKnapp } from './JournalføringKnapp.tsx'
 
 export interface JournalpostVisningProps {
   journalpostId: string
@@ -50,11 +50,13 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
       return (
         !lesevisning && (
           <Knappepanel>
-            <DokumentIkkeTildelt
-              oppgaveId={journalpost.oppgave.oppgaveId}
-              journalpostId={journalpost.journalpostId}
-              gåTilSak={false}
-            />
+            <TaOppgaveContextButton
+              onAction={async () => {
+                await mutate()
+              }}
+            >
+              Start journalføring
+            </TaOppgaveContextButton>
           </Knappepanel>
         )
       )

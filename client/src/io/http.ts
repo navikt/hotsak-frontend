@@ -1,4 +1,4 @@
-import type { ISvar, Tilbakemelding } from '../innsikt/Besvarelse'
+import type { ISvar } from '../innsikt/Besvarelse'
 import type {
   AvvisBestilling,
   BrevTekst,
@@ -148,7 +148,7 @@ export const hentBrukerdataMedPost: any = async ([
 }
 
 // Nytt oppgave API
-// TODO, kan dennes fases ut og erstatttees med OppgaveService sin endreOppgavetildeling?
+// TODO, kan dennes fases ut og erstattes med OppgaveActions sin endreOppgavetildeling?
 export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
   const { oppgaveId, versjon } = oppgaveVersjon
   return post(
@@ -156,11 +156,6 @@ export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
     { overtaHvisTildelt: false },
     ifMatchVersjon(versjon)
   )
-}
-
-export const deleteFjernOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, ifMatchVersjon(versjon))
 }
 
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
@@ -216,12 +211,6 @@ export const putSendTilGosys = async (
 ) => {
   const { oppgaveId, versjon } = oppgaveVersjon
   return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
-}
-
-export const postTilbakemelding = async (sakId: number | string, tilbakemelding: Tilbakemelding) => {
-  return post(`${baseUrl}/api/sak/${sakId}/tilbakemelding`, {
-    tilbakemelding,
-  })
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {

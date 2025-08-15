@@ -1,5 +1,5 @@
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import { Actions, useActionState } from '../action/Actions.ts'
+import { useRequiredOppgaveContext } from '../oppgave/OppgaveContext.ts'
 
 export interface SakActions extends Actions {
   overførSakTilGosys(): Promise<void>
@@ -9,7 +9,7 @@ export interface SakActions extends Actions {
 
 export function useSakActions(): SakActions {
   const { state } = useActionState()
-  const { oppgaveId, versjon } = useOppgaveContext()
+  const { oppgaveId, versjon } = useRequiredOppgaveContext()
   return {
     async overførSakTilGosys() {
       console.log(oppgaveId, versjon)

@@ -1,10 +1,10 @@
 import { ReactNode, useMemo } from 'react'
 
 import { OppgaveContext, OppgaveContextType } from './OppgaveContext.ts'
-import type { OppgaveBase } from './oppgaveTypes.ts'
+import type { OppgaveV2 } from './oppgaveTypes.ts'
 
 export interface OppgaveProviderProps {
-  oppgave: OppgaveBase
+  oppgave: OppgaveV2
   children: ReactNode
 }
 
@@ -14,8 +14,10 @@ export interface OppgaveProviderProps {
 export function OppgaveProvider({ oppgave, children }: OppgaveProviderProps) {
   const value = useMemo<OppgaveContextType>(() => {
     return {
-      ...oppgave,
-      erIOppgavekontekst: !!oppgave.oppgaveId,
+      oppgaveId: oppgave.oppgaveId,
+      versjon: oppgave.versjon,
+      sakId: oppgave.sakId,
+      oppgave,
     }
   }, [oppgave])
   return <OppgaveContext value={value}>{children}</OppgaveContext>

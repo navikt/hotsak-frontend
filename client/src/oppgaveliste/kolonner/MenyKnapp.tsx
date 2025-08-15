@@ -1,14 +1,13 @@
-import { MouseEvent, useState } from 'react'
-import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
-import { Button, Dropdown, Loader } from '@navikt/ds-react'
+import { ChevronDownIcon } from '@navikt/aksel-icons'
+import { ActionMenu, Button } from '@navikt/ds-react'
 
-import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
+// import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
+import { Oppgavemeny } from '../../oppgave/Oppgavemeny.tsx'
+import { Saksmeny } from '../../sak/Saksmeny.tsx'
+// import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
-import { useTildeling } from './useTildeling'
-import { useOverførGosys } from '../../saksbilde/useOverførGosys'
-import { OverførGosysModal } from '../../saksbilde/OverførGosysModal'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
-import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+
+// import { useTildeling } from './useTildeling'
 
 interface MenyKnappProps {
   sakId: string
@@ -16,26 +15,13 @@ interface MenyKnappProps {
   tildeltSaksbehandler?: Saksbehandler
   sakstype?: Sakstype
   kanTildeles: boolean
-  gåTilSak?: boolean
-  knappeTekst?: string
-  knappeIkon?: any
   setKonfliktModalOpen?(val: string | undefined): void
   onMutate(...args: any[]): any
 }
 
-export function MenyKnapp({
-  sakId,
-  status,
-  tildeltSaksbehandler,
-  kanTildeles,
-  sakstype,
-  gåTilSak = false,
-  setKonfliktModalOpen,
-  onMutate,
-  knappeTekst,
-  knappeIkon,
-}: MenyKnappProps) {
-  const saksbehandler = useInnloggetAnsatt()
+export function MenyKnapp({ onMutate }: MenyKnappProps) {
+  // const saksbehandler = useInnloggetAnsatt()
+  /*
   const { onTildel } = useTildeling({
     sakId: sakId,
     gåTilSak: gåTilSak,
@@ -46,17 +32,21 @@ export function MenyKnapp({
       onMutate()
     },
   })
-  const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
-  const [isFetching, setIsFetching] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
-  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions()
+  */
+  // const { onFortsettBehandling, isFetching: endrerStatus } = useFortsettBehandling({ sakId: sakId, gåTilSak: false })
+  // const [isFetching, setIsFetching] = useState(false)
+  // const { onOpen: visOverførGosys } = useOverførGosys(sakId, 'barnebrillesak_overført_gosys_v1')
+  // const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions()
 
+  /*
   const menyClick = (event: MouseEvent) => {
     event.stopPropagation()
   }
+  */
 
-  const kanOvertaSakStatuser = [OppgaveStatusType.TILDELT_SAKSBEHANDLER, OppgaveStatusType.AVVENTER_DOKUMENTASJON]
+  // const kanOvertaSakStatuser = [OppgaveStatusType.TILDELT_SAKSBEHANDLER, OppgaveStatusType.AVVENTER_DOKUMENTASJON]
 
+  /*
   const fjernTildelingDisabled =
     !tildeltSaksbehandler ||
     tildeltSaksbehandler.id !== saksbehandler.id ||
@@ -100,7 +90,32 @@ export function MenyKnapp({
         onMutate()
       })
   }
+  */
 
+  return (
+    <ActionMenu>
+      <ActionMenu.Trigger>
+        <Button
+          variant="tertiary"
+          size="xsmall"
+          icon={<ChevronDownIcon title="Saksmeny" />}
+          iconPosition="right"
+          onClick={(event) => {
+            event.stopPropagation()
+          }}
+        >
+          Meny
+        </Button>
+      </ActionMenu.Trigger>
+      <ActionMenu.Content>
+        <Oppgavemeny onAction={onMutate} />
+        <ActionMenu.Divider />
+        <Saksmeny />
+      </ActionMenu.Content>
+    </ActionMenu>
+  )
+
+  /*
   return (
     <>
       <div style={{ display: 'flex', marginBlock: -2 }}>
@@ -147,4 +162,5 @@ export function MenyKnapp({
       <OverførGosysModal {...overførGosys} />
     </>
   )
+  */
 }

@@ -1,9 +1,9 @@
-import { lazy, ReactNode } from 'react'
+import { lazy } from 'react'
 
-import { useOppgave } from './useOppgave.ts'
-import { OppgaveProvider } from './OppgaveProvider.tsx'
-import { Oppgavetype } from './oppgaveTypes.ts'
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
+import { OppgaveProvider } from './OppgaveProvider.tsx'
+import { Oppgavetype, OppgaveV2 } from './oppgaveTypes.ts'
+import { useOppgave } from './useOppgave.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
 const Saksbehandling = lazy(() => import('../saksbilde/Saksbilde.tsx'))
@@ -15,24 +15,26 @@ export default function Oppgave() {
     return null
   }
 
-  let component: ReactNode
+  return (
+    <OppgaveProvider oppgave={oppgave}>
+      <OppgavetypeSwitch oppgave={oppgave} />
+    </OppgaveProvider>
+  )
+}
+
+function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
   switch (oppgave.oppgavetype) {
     case Oppgavetype.JOURNALFØRING:
-      component = (
+      return (
         <DokumentProvider>
           <Journalføring journalpostId={oppgave.journalpostId ?? ''} />
         </DokumentProvider>
       )
-      break
     case Oppgavetype.BEHANDLE_SAK:
     case Oppgavetype.GODKJENNE_VEDTAK:
     case Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK:
-      component = <Saksbehandling />
-      break
+      return <Saksbehandling />
     default:
-      component = null
-      break
+      return null
   }
-
-  return <OppgaveProvider oppgave={oppgave}>{component}</OppgaveProvider>
 }

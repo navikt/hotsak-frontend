@@ -3,7 +3,7 @@ import { MouseEventHandler } from 'react'
 import { useSWRConfig } from 'swr'
 
 import { HttpError } from '../../io/HttpError.ts'
-import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
+import { useOptionalOppgaveContext } from '../../oppgave/OppgaveContext.ts'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 
@@ -13,7 +13,7 @@ interface IkkeTildeltProps {
 
 export function IkkeTildelt({ onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetAnsatt()
-  const { sakId } = useOppgaveContext()
+  const { sakId } = useOptionalOppgaveContext()
   const { endreOppgavetildeling, state } = useOppgaveActions()
   const { mutate } = useSWRConfig()
 

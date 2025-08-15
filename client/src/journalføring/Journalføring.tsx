@@ -23,7 +23,7 @@ export interface JournalføringProps {
 }
 
 export function Journalføring({ journalpostId }: JournalføringProps) {
-  const { journalpost, isError, isLoading } = useJournalpost(journalpostId)
+  const { journalpost, error, isLoading } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetAnsatt()
@@ -49,10 +49,10 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
     }
   }, [journalpostId, dokumenter, setValgtDokument])
 
-  if (isError) {
-    if (isError?.statusCode === 403) {
+  if (error) {
+    if (error?.status === 403) {
       return <Feilmelding>Du har ikke tilgang til å se denne journalposten.</Feilmelding>
-    } else if (isError?.statusCode === 404) {
+    } else if (error?.status === 404) {
       return <Feilmelding>Journalpost {journalpostId} ikke funnet.</Feilmelding>
     } else {
       return <Feilmelding>Teknisk feil. Klarte ikke å hente journalposten.</Feilmelding>

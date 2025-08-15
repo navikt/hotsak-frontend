@@ -1,8 +1,9 @@
-import { useOppgaveContext } from './OppgaveContext.ts'
-import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
-import type { NavIdent } from '../tilgang/Ansatt.ts'
-import { baseUrl, del, ifMatchVersjon, post } from '../io/http.ts'
 import { Actions, useActionState } from '../action/Actions.ts'
+import { baseUrl } from '../io/http.ts'
+import { http } from '../io/HttpClient.ts'
+import type { NavIdent } from '../tilgang/Ansatt.ts'
+import { useOptionalOppgaveContext } from './OppgaveContext.ts'
+import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
   oppgaveId?: OppgaveId | null
@@ -19,11 +20,15 @@ export interface EndreOppgavetildelingRequest {
 
 export interface UseOppgaveActions extends Actions {
   /**
-   * Endre tildeling av oppgave/sak. Støtter også overtagelse av oppgave/sak.
+   * Endre tildeling av oppgave. Støtter også overtagelse av oppgave.
    *
    * @param request
+   * @param onConflict
    */
-  endreOppgavetildeling(request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>): Promise<void>
+  endreOppgavetildeling(
+    request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>,
+    onConflict?: () => void | Promise<void>
+  ): Promise<void>
   /**
    * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
    */
@@ -34,22 +39,24 @@ export interface UseOppgaveActions extends Actions {
  * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
  */
 export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
-  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOppgaveContext()
+  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOptionalOppgaveContext()
 
   const { execute, state } = useActionState()
-
-  const headers = ifMatchVersjon(versjon)
 
   return {
     async endreOppgavetildeling(request) {
       return execute(async () => {
-        await post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, headers)
+        await http.post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, {
+          versjon,
+        })
       })
     },
 
     async fjernOppgavetildeling() {
       return execute(async () => {
-        await del(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, null, headers)
+        await http.delete(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {
+          versjon,
+        })
       })
     },
 

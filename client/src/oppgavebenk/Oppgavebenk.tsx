@@ -2,20 +2,20 @@ import { Box, Link, Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
+import { Paginering } from '../felleskomponenter/Paginering.tsx'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { oppgaveIdUtenPrefix, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
+import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
 import { formaterDato, formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 import { useFilterContext } from './FilterContext'
 import { Oppgavefilter } from './OppgaveFilter'
-import { Oppgavetildeling } from './Oppgavetildeling'
 import { useOppgavelisteV2 } from './useOppgavelisteV2'
-import { Paginering } from '../felleskomponenter/Paginering.tsx'
 
 // TODO vise sakId i egen kolonne
 
@@ -33,7 +33,7 @@ export function Oppgavebenk() {
       name: 'Eier',
       width: 155,
       render(oppgave: OppgaveV2) {
-        return <Oppgavetildeling oppgave={oppgave} />
+        return <TaOppgaveButton oppgave={oppgave} />
       },
     },
     {

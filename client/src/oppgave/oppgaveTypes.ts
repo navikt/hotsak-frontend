@@ -67,7 +67,7 @@ export enum Oppgaveprioritet {
   LAV = 'LAV',
 }
 
-export const OppgavestatusLabel = new Map<string, string>([
+export const OppgavestatusLabel = new Map<Oppgavestatus, string>([
   [Oppgavestatus.OPPRETTET, 'Mottatt'],
   [Oppgavestatus.ÅPNET, 'Mottatt'],
   [Oppgavestatus.UNDER_BEHANDLING, 'Under journalføring'],

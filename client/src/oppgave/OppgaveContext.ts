@@ -1,18 +1,29 @@
 import { createContext, useContext } from 'react'
+import type { SetRequired } from 'type-fest'
 
-import type { OppgaveBase } from './oppgaveTypes.ts'
+import type { OppgaveBase, OppgaveV2 } from './oppgaveTypes.ts'
 
 export interface OppgaveContextType extends Partial<OppgaveBase> {
-  erIOppgavekontekst: boolean
+  oppgave?: OppgaveV2
 }
 
-const initialState: OppgaveContextType = {
-  erIOppgavekontekst: false,
-}
+const initialState: OppgaveContextType = {}
 
 export const OppgaveContext = createContext<OppgaveContextType>(initialState)
 OppgaveContext.displayName = 'Oppgave'
 
-export function useOppgaveContext() {
+export function useOptionalOppgaveContext() {
   return useContext(OppgaveContext)
+}
+
+export function useErIOppgavekontekst(): boolean {
+  return useOptionalOppgaveContext().oppgave != null
+}
+
+export function useRequiredOppgaveContext(): SetRequired<OppgaveContextType, 'oppgaveId' | 'versjon' | 'oppgave'> {
+  const { oppgaveId, versjon, sakId, oppgave, ...rest } = useOptionalOppgaveContext()
+  if (oppgaveId == null || versjon == null || oppgave == null) {
+    throw new Error('Oppgave er ikke satt')
+  }
+  return { oppgaveId, versjon, sakId, oppgave, ...rest }
 }

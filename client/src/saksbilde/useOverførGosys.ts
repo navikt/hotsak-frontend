@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { putSendTilGosys } from '../io/http'
-import type { OverførGosysModalProps } from './OverførGosysModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { putSendTilGosys } from '../io/http'
+import { useRequiredOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import type { OverførGosysModalProps } from './OverførGosysModal'
 
 export function useOverførGosys(
   sakId: string,
@@ -13,7 +13,7 @@ export function useOverførGosys(
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { oppgaveId, versjon } = useOppgaveContext()
+  const { oppgaveId, versjon } = useRequiredOppgaveContext()
   return {
     open,
     loading,

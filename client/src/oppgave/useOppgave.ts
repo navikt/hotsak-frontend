@@ -1,13 +1,13 @@
-import useSwr from 'swr'
-import { useParams } from 'react-router'
 import { useDebugValue } from 'react'
+import { useParams } from 'react-router'
+import useSwr from 'swr'
 
+import { useOptionalOppgaveContext } from './OppgaveContext.ts'
 import type { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
-import { useOppgaveContext } from './OppgaveContext.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
   const { oppgaveId: oppgaveIdUrl } = useParams<{ oppgaveId: OppgaveId }>()
-  const { oppgaveId: oppgaveIdOppgave } = useOppgaveContext()
+  const { oppgaveId: oppgaveIdOppgave } = useOptionalOppgaveContext()
   const oppgaveId = oppgaveIdUrl ?? oppgaveIdOppgave
   useDebugValue(oppgaveId)
   return oppgaveId

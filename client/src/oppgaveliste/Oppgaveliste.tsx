@@ -1,16 +1,23 @@
 import { Box, Button, HStack, SortState, Table, Tag } from '@navikt/ds-react'
-import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import styled from 'styled-components'
 
 import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
+import { Paginering } from '../felleskomponenter/Paginering.tsx'
 import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { LinkRow } from '../felleskomponenter/table/LinkRow'
 import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { Oppgavelistemeny } from '../oppgave/oppgaveliste/Oppgavelistemeny.tsx'
+import { oppgaveV1ToV2 } from '../oppgave/oppgaveTools.ts'
+import { OppgaveV1, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
 import { TildelingKonfliktModal } from '../saksbilde/TildelingKonfliktModal.tsx'
+import { useLocalState } from '../state/useLocalState'
+import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
 import {
   OmrådeFilter,
   OmrådeFilterLabel,
@@ -25,18 +32,12 @@ import { formaterTidsstempel } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
 import { isError } from '../utils/type'
 import { FilterDropdown, FilterToggle } from './filter/filter.tsx'
-import { MenyKnapp } from './kolonner/MenyKnapp'
 import { SakstypeEtikett } from './kolonner/SakstypeEtikett'
 import { OppgavelisteTabs } from './OppgavelisteTabs'
-import { useLocalState } from '../state/useLocalState'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgaveliste } from './useOppgaveliste'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
-import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
-import { useErKunTilbehørPilot } from '../tilgang/useTilgang.ts'
-import { Paginering } from '../felleskomponenter/Paginering.tsx'
-import { OppgaveV1, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import { TaOppgave } from '../oppgave/oppgaveliste/TaOppgave.tsx'
+import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
 
 const defaultFilterState: OppgavelisteFilters & { currentPage: number } = {
   statuskategori: Statuskategori.ÅPEN,
@@ -60,7 +61,7 @@ export function Oppgaveliste() {
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { currentPage, ...filters } = filterState
-  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error, mutate } = useOppgaveliste(
+  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error } = useOppgaveliste(
     currentPage,
     sort,
     filters
@@ -84,7 +85,7 @@ export function Oppgaveliste() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <TaOppgave oppgave={oppgave} />
+        return <TaOppgaveButton oppgave={oppgaveV1ToV2(oppgave)} />
       },
     },
     {
@@ -202,18 +203,7 @@ export function Oppgaveliste() {
       sortable: false,
       hide: !harSkrivetilgang,
       render(oppgave) {
-        return (
-          <MenyKnapp
-            sakId={oppgave.sakId}
-            status={oppgave.status}
-            tildeltSaksbehandler={oppgave.saksbehandler}
-            gåTilSak={true}
-            sakstype={oppgave.sakstype}
-            kanTildeles={oppgave.kanTildeles}
-            setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
-            onMutate={mutate}
-          />
-        )
+        return <Oppgavelistemeny oppgave={oppgaveV1ToV2(oppgave)} />
       },
     },
   ]

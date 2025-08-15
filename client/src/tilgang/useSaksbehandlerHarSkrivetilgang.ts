@@ -1,13 +1,13 @@
+import { useErIOppgavekontekst } from '../oppgave/OppgaveContext.ts'
 import { Tilgang, TilgangResultat, TilgangType } from '../types/types.internal.ts'
-import { useInnloggetAnsatt } from './useTilgang.ts'
-import { AnsattGruppe } from './Ansatt.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { AnsattGruppe } from './Ansatt.ts'
+import { useInnloggetAnsatt } from './useTilgang.ts'
 
 export function useSaksbehandlerHarSkrivetilgang(tilganger?: Tilgang): boolean {
   const { erLocal } = useMiljø()
   const { grupper } = useInnloggetAnsatt()
-  const { erIOppgavekontekst } = useOppgaveContext()
+  const erIOppgavekontekst = useErIOppgavekontekst()
 
   let harSkrivetilgang
   if (erLocal) {

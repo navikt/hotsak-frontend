@@ -4,7 +4,7 @@ import useSwr from 'swr'
 
 import { httpGet } from '../io/http'
 import { Sak, SakBase, SakResponse } from '../types/types.internal'
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { useOptionalOppgaveContext } from '../oppgave/OppgaveContext.ts'
 
 interface DataResponse<T extends SakBase> {
   sak?: SakResponse<T>
@@ -15,7 +15,7 @@ interface DataResponse<T extends SakBase> {
 
 export function useSakId(): string | undefined {
   const { sakId: sakIdUrl } = useParams<{ sakId: string }>()
-  const { sakId: sakIdOppgave } = useOppgaveContext()
+  const { sakId: sakIdOppgave } = useOptionalOppgaveContext()
   const sakId = sakIdUrl ?? sakIdOppgave
   useDebugValue(sakId)
   return sakId?.toString()

@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
+import { useRequiredOppgaveContext } from '../../oppgave/OppgaveContext.ts'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
@@ -13,12 +15,10 @@ import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
 import { OvertaSakModal } from '../OvertaSakModal'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
+import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
-import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
-import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -40,7 +40,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
-  const { oppgaveId, versjon } = useOppgaveContext()
+  const { oppgaveId, versjon } = useRequiredOppgaveContext()
 
   const lagreUtleveringMerknad = (merknad: string) => {
     setSubmitAttempt(false)

@@ -2,7 +2,7 @@ import { HouseIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 import { useLocation } from 'react-router'
 
-import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { useRequiredOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import { useErSaksmenyPilot } from '../tilgang/useTilgang.ts'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { Saksmeny } from './saksmeny/Saksmeny.tsx'
@@ -16,7 +16,7 @@ export function Søknadslinje({ id }: SøknadslinjeProps) {
   const location = useLocation()
   const erSaksmenyPilot = useErSaksmenyPilot()
 
-  const { oppgaveId } = useOppgaveContext()
+  const { oppgaveId } = useRequiredOppgaveContext()
   const basePath = oppgaveId ? `/oppgave/${oppgaveId}` : `/sak/${id}`
 
   return (

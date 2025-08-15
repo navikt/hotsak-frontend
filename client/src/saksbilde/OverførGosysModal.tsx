@@ -20,8 +20,6 @@ export function OverførGosysModal({ open, loading, spørreundersøkelseId, onBe
   const sakId = useSakId()
   const { notater } = useNotater(sakId)
 
-  if (notater.length > 0) {
-  }
   return (
     <SpørreundersøkelseModal
       open={open}

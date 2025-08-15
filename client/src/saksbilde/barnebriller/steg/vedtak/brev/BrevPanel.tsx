@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { Loader } from '@navikt/ds-react'
+import { HStack, Loader } from '@navikt/ds-react'
 
-import { Avstand } from '../../../../../felleskomponenter/Avstand'
 import { Feilmelding } from '../../../../../felleskomponenter/feil/Feilmelding'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
 import { Brevtype, RessursStatus } from '../../../../../types/types.internal'
@@ -12,11 +11,6 @@ import { useBrev } from './useBrev'
 const DokumentDiv = styled.div`
   width: 100%;
   height: calc(100vh - 140px);
-`
-
-const FeilmeldingDiv = styled.div`
-  display: flex;
-  justify-content: center;
 `
 
 interface BrevPanelProps {
@@ -39,21 +33,13 @@ export function BrevPanel(props: BrevPanelProps) {
   if (!sakId) {
     return <div>Saksnummer mangler.</div>
   } else if (isDokumentError) {
-    return (
-      <FeilmeldingDiv>
-        <div>
-          <Feilmelding>Det oppstod en feil ved opprettelse av brev</Feilmelding>
-        </div>
-      </FeilmeldingDiv>
-    )
+    return <Feilmelding>Det oppstod en feil ved opprettelse av brev</Feilmelding>
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
-      <FeilmeldingDiv>
+      <HStack justify="center" gap="4" marginBlock="4">
         <Loader size="medium" title="Henter brev..." />
-        <Avstand paddingLeft={4}>
-          <Etikett>Genererer forhåndsvisning av brev...</Etikett>
-        </Avstand>
-      </FeilmeldingDiv>
+        <Etikett>Genererer forhåndsvisning av brev...</Etikett>
+      </HStack>
     )
   } else
     return (

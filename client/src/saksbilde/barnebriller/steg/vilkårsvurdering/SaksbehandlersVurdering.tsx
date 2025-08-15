@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
-import { BodyShort, Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
+import { BodyShort, Box, Detail, Heading, Label, Link, Panel, VStack } from '@navikt/ds-react'
 
-import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { StepType, Vilkår } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
@@ -35,42 +34,44 @@ export function SaksbehandlersVurdering({
             </Link>
           </Heading>
           <Brødtekst>{metadataFor(vilkår.vilkårId)?.beskrivelse}</Brødtekst>
-          <Avstand paddingTop={6} paddingBottom={4}>
+          <Box paddingBlock="4 2">
             <Detail>VURDERINGEN ER BASERT PÅ:</Detail>
-          </Avstand>
+          </Box>
           {vilkår.manuellVurdering && (
             <>
               <Etikett>Saksbehandler sin vurdering</Etikett>
               <RedigerGrunnlagLink />
             </>
           )}
-          {Object.keys(vilkår.grunnlag)
-            .filter((grunnlagKey: string) => {
-              return grunnlagMetadata.get(grunnlagKey) !== undefined
-            })
-            .map((grunnlagKey: string) => {
-              const metadata = grunnlagMetadata.get(grunnlagKey)
-              const transform = metadata?.transform
-              const verdi = transform ? transform(grunnlag[grunnlagKey]) : grunnlag[grunnlagKey]
+          <VStack gap="4">
+            {Object.keys(vilkår.grunnlag)
+              .filter((grunnlagKey: string) => {
+                return grunnlagMetadata.get(grunnlagKey) !== undefined
+              })
+              .map((grunnlagKey: string) => {
+                const metadata = grunnlagMetadata.get(grunnlagKey)
+                const transform = metadata?.transform
+                const verdi = transform ? transform(grunnlag[grunnlagKey]) : grunnlag[grunnlagKey]
 
-              return (
-                <Avstand paddingBottom={4} key={grunnlagKey}>
-                  <Label as="p" size="small">
-                    {metadata?.etikett}
-                  </Label>
-                  <BodyShort as="p" size="small">
-                    {verdi}
-                  </BodyShort>
-                  <Detail>{metadata?.beskrivelse}</Detail>
-                  {metadata?.lagtInnAvSaksbehandler && (
-                    <>
-                      <Detail>Lagt inn av saksbehandler.</Detail>
-                      <RedigerGrunnlagLink />
-                    </>
-                  )}
-                </Avstand>
-              )
-            })}
+                return (
+                  <div>
+                    <Label as="p" size="small">
+                      {metadata?.etikett}
+                    </Label>
+                    <BodyShort as="p" size="small">
+                      {verdi}
+                    </BodyShort>
+                    <Detail>{metadata?.beskrivelse}</Detail>
+                    {metadata?.lagtInnAvSaksbehandler && (
+                      <>
+                        <Detail>Lagt inn av saksbehandler.</Detail>
+                        <RedigerGrunnlagLink />
+                      </>
+                    )}
+                  </div>
+                )
+              })}
+          </VStack>
           {lesevisning ? (
             <SaksbehandlersVurderingLesevisning sakId={sakId} vilkår={vilkår} />
           ) : (
@@ -85,14 +86,14 @@ export function SaksbehandlersVurdering({
 const RedigerGrunnlagLink = () => {
   const { setStep } = useManuellSaksbehandlingContext()
   return (
-    <Avstand paddingTop={4}>
+    <Box paddingBlock="4">
       <Detail>
         Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
         <Link href="#" onClick={() => setStep(StepType.REGISTRER)}>
           Registrer søknad
         </Link>
       </Detail>
-    </Avstand>
+    </Box>
   )
 }
 

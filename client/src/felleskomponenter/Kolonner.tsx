@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { headerHøydeRem, hotsakRegistrerSøknadHøyreKolonne, hotsakRegistrerSøknadKolonne } from '../GlobalStyles'
 
+// TODO bytte ut disse med aksel HGrid
 export const Kolonner = styled.div`
   display: flex;
   gap: 1rem;

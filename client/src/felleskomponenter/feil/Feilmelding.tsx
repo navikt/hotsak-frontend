@@ -8,7 +8,6 @@ import { Tekst } from '../typografi'
 const FeilmeldingAlert = styled(Alert)`
   width: max-content;
   margin: 2rem;
-  padding: 0.5rem;
 `
 
 export function Feilmelding({ children }: { children: ReactNode }) {

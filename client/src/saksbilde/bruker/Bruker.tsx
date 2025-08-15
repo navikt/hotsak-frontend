@@ -1,7 +1,6 @@
 import { PersonIcon } from '@navikt/aksel-icons'
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, List, Tooltip } from '@navikt/ds-react'
 
-import { Avstand } from '../../felleskomponenter/Avstand'
 import { Merknad } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
@@ -76,7 +75,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           {utleveringMerknad && (
             <>
               <Merknad>
-                <Avstand paddingTop={1} />
+                <Box paddingBlock="1" />
                 <Etikett>Merknad til utlevering</Etikett>
               </Merknad>
               <HStack align="center">

@@ -1,8 +1,7 @@
 import { Tabs } from '@navikt/ds-react'
 
-import { TabLink } from '../saksbilde/TabLink'
-import { spacingVar } from '../felleskomponenter/Avstand'
 import { useLocation } from 'react-router'
+import { TabLink } from '../saksbilde/TabLink'
 
 interface SaksoversiktLinjeProps {
   sakerCount: number
@@ -13,7 +12,7 @@ export function SaksoversiktLinje({ sakerCount, hjelpemidlerCount }: Saksoversik
   const location = useLocation()
   return (
     <Tabs value={location.pathname}>
-      <Tabs.List style={{ padding: `0 ${spacingVar(8)}` }}>
+      <Tabs.List style={{ padding: `0 var(--a-spacing-8)` }}>
         <TabLink to={`/personoversikt/saker`}>{`Saker (${sakerCount})`}</TabLink>
         <TabLink to={`/personoversikt/hjelpemidler`}>{`Utlånsoversikt (${hjelpemidlerCount})`}</TabLink>
       </Tabs.List>

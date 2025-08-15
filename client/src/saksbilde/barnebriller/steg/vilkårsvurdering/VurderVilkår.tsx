@@ -1,21 +1,20 @@
+import { Box, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
 
-import { baseUrl, post } from '../../../../io/http'
-import { Avstand } from '../../../../felleskomponenter/Avstand'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
+import { baseUrl, post } from '../../../../io/http'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
+import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { metadataFor } from './vilkårMetada'
-import { useSakId } from '../../../useSak.ts'
 
 export function VurderVilkår() {
   const sakId = useSakId()
@@ -95,80 +94,84 @@ export function VurderVilkår() {
         </Tag>
 
         {errors.length > 0 && (
-          <Avstand paddingTop={6}>
+          <Box paddingBlock="6 0">
             <ErrorSummary heading="Vilkår mangler vurdering og må vurders av saksbehandler" size="small" ref={errorRef}>
               {errors.map((error) => (
                 <ErrorSummary.Item key={error}>{error}</ErrorSummary.Item>
               ))}
             </ErrorSummary>
-          </Avstand>
+          </Box>
         )}
-        <Avstand paddingTop={6} />
-        <Table size="small">
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell scope="col">Resultat</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Baseres på</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Detaljer</Table.HeaderCell>
-              <Table.HeaderCell scope="col">Hjemmel</Table.HeaderCell>
-              <Table.HeaderCell />
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {vilkår.map((vilkår) => {
-              const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt } = vilkår
+        <Box paddingBlock="6 0">
+          <Table size="small">
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell scope="col">Resultat</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Vilkår</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Baseres på</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Vurdert</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Detaljer</Table.HeaderCell>
+                <Table.HeaderCell scope="col">Hjemmel</Table.HeaderCell>
+                <Table.HeaderCell />
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {vilkår.map((vilkår) => {
+                const { id, vilkårId, beskrivelse, manuellVurdering, lovReferanse, vilkårOppfylt } = vilkår
 
-              const vilkårMetadata = metadataFor(vilkårId)
-              const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
+                const vilkårMetadata = metadataFor(vilkårId)
+                const lesevisning = !vilkårMetadata?.overstyrbarAvSaksbehandler
 
-              return (
-                <Table.ExpandableRow
-                  onClick={() => toggleExpandedRad(id)}
-                  key={id}
-                  colSpan={6}
-                  onOpenChange={() => toggleExpandedRad(id)}
-                  open={åpneRader.includes(id)}
-                  togglePlacement={'right'}
-                  content={
-                    <SaksbehandlersVurdering
-                      lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
-                      sakId={sak.data.sakId}
-                      vilkår={vilkår}
-                      onCanceled={() => toggleExpandedRad(id)}
-                      onSaved={() => {
-                        mutate()
-                        toggleExpandedRad(id)
-                      }}
-                    />
-                  }
-                >
-                  <Table.DataCell scope="row" style={{ width: '180px' }}>
-                    <Resultat vilkårOppfylt={vilkårOppfylt} />
-                  </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '500px' }}>
-                    <Brødtekst>{beskrivelse}</Brødtekst>
-                  </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '300px' }}>
-                    {vilkårMetadata?.basertPå.map((metadata) => (
-                      <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
-                    )) || '-'}
-                  </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    <VurdertAv vilkårOppfylt={vilkårOppfylt} resultatSaksbehandler={manuellVurdering?.vilkårOppfylt} />
-                  </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '250px' }}>
-                    <Brødtekst>{manuellVurdering?.begrunnelse || '-'}</Brødtekst>
-                  </Table.DataCell>
-                  <Table.DataCell scope="row" style={{ width: '150px' }}>
-                    <Brødtekst>{lovReferanse}</Brødtekst>
-                  </Table.DataCell>
-                </Table.ExpandableRow>
-              )
-            })}
-          </Table.Body>
-        </Table>
+                return (
+                  <Table.ExpandableRow
+                    onClick={() => toggleExpandedRad(id)}
+                    key={id}
+                    colSpan={6}
+                    onOpenChange={() => toggleExpandedRad(id)}
+                    open={åpneRader.includes(id)}
+                    togglePlacement={'right'}
+                    content={
+                      <SaksbehandlersVurdering
+                        lesevisning={lesevisning || !saksbehandlerKanRedigereBarnebrillesak}
+                        sakId={sak.data.sakId}
+                        vilkår={vilkår}
+                        onCanceled={() => toggleExpandedRad(id)}
+                        onSaved={() => {
+                          mutate()
+                          toggleExpandedRad(id)
+                        }}
+                      />
+                    }
+                  >
+                    <Table.DataCell scope="row" style={{ width: '180px' }}>
+                      <Resultat vilkårOppfylt={vilkårOppfylt} />
+                    </Table.DataCell>
+                    <Table.DataCell scope="row" style={{ width: '500px' }}>
+                      <Brødtekst>{beskrivelse}</Brødtekst>
+                    </Table.DataCell>
+                    <Table.DataCell scope="row" style={{ width: '300px' }}>
+                      {vilkårMetadata?.basertPå.map((metadata) => (
+                        <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
+                      )) || '-'}
+                    </Table.DataCell>
+                    <Table.DataCell scope="row" style={{ width: '250px' }}>
+                      <VurdertAv
+                        vilkårOppfylt={vilkårOppfylt}
+                        resultatSaksbehandler={manuellVurdering?.vilkårOppfylt}
+                      />
+                    </Table.DataCell>
+                    <Table.DataCell scope="row" style={{ width: '250px' }}>
+                      <Brødtekst>{manuellVurdering?.begrunnelse || '-'}</Brødtekst>
+                    </Table.DataCell>
+                    <Table.DataCell scope="row" style={{ width: '150px' }}>
+                      <Brødtekst>{lovReferanse}</Brødtekst>
+                    </Table.DataCell>
+                  </Table.ExpandableRow>
+                )
+              })}
+            </Table.Body>
+          </Table>
+        </Box>
         {
           <Knappepanel>
             <Button variant="secondary" size="small" onClick={() => setStep(StepType.REGISTRER)}>

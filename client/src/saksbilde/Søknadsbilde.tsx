@@ -1,5 +1,5 @@
 import { HGrid } from '@navikt/ds-react'
-import { memo, Suspense } from 'react'
+import { memo } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
@@ -14,6 +14,7 @@ import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
+import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
 import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useNotater } from './høyrekolonne/notat/useNotater'
@@ -28,7 +29,6 @@ import { LeveringCard } from './venstremeny/LeveringCard'
 import { SøknadCard } from './venstremeny/SøknadCard'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
-import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
 
 const SaksbildeContent = memo(() => {
   const { sak, isLoading: sakLoading } = useSak()
@@ -39,7 +39,7 @@ const SaksbildeContent = memo(() => {
   const { harUtkast } = useNotater(sak?.data.sakId)
 
   // TODO: Teste ut suspense mode i swr
-  if (true || sakLoading || behøvsmeldingLoading) {
+  if (sakLoading || behøvsmeldingLoading) {
     return <SakLoader />
   }
 

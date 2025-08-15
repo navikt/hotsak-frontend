@@ -1,4 +1,4 @@
-import { Box, Button, Detail, ErrorSummary, Heading, Panel, Table, Tag } from '@navikt/ds-react'
+import { Box, Button, Detail, ErrorSummary, Heading, Table, Tag } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
@@ -84,7 +84,7 @@ export function VurderVilkår() {
 
   return (
     <>
-      <Panel>
+      <Box padding="4">
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
@@ -197,7 +197,7 @@ export function VurderVilkår() {
             </Button>
           </Knappepanel>
         }
-      </Panel>
+      </Box>
     </>
   )
 

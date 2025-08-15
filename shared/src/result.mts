@@ -42,6 +42,13 @@ export function flatMapResult<T, R>(result: Result<T>, transform: (data: T) => R
   }
 }
 
+export function dataOrThrow<T>(result: Result<T>): T {
+  if (isSuccess(result)) {
+    return result.data
+  }
+  throw result.error
+}
+
 export function runCatching<T>(action: () => Promise<T>): Promise<Result<T>>
 export function runCatching<T>(action: () => T): Result<T>
 export function runCatching<T>(action: () => T | Promise<T>): Promise<Result<T>> | Result<T> {

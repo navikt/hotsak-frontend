@@ -1,18 +1,26 @@
 export class HttpError extends Error {
-  static kallFeilet(url: string, response: Response): HttpError {
-    return new HttpError(`Kall mot url: '${url}' feilet, status: ${response.status}`, response.status)
+  static async reject(url: string, response: Response): Promise<never> {
+    const status = response.status
+    const message = `HttpError, url: '${url}', status: ${status}`
+    const contentType = response.headers.get('Content-Type') ?? ''
+    try {
+      let cause: unknown
+      if (contentType.startsWith('application/json')) {
+        cause = await response.json()
+      } else {
+        cause = await response.text()
+      }
+      return Promise.reject(new HttpError(message, status, { cause }))
+    } catch (err: unknown) {
+      return Promise.reject(new HttpError(message, status, { cause: err }))
+    }
   }
 
-  static wrap(err: unknown): HttpError {
-    let error: HttpError
-    if (err instanceof Error) {
-      error = new HttpError(err.message, 500, { cause: err })
-    } else if (typeof err === 'string') {
-      error = new HttpError(err, 500)
-    } else {
-      error = new HttpError('Ukjent feil', 500)
+  static wrap(cause: unknown): HttpError {
+    if (cause instanceof HttpError) {
+      return cause
     }
-    return error
+    return new HttpError('HttpError', 500, { cause })
   }
 
   static isHttpError(value: unknown): value is HttpError {

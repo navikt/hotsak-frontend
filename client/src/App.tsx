@@ -7,6 +7,7 @@ import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { Eksperiment } from './felleskomponenter/Eksperiment.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
+import { http } from './io/HttpClient.ts'
 import { FilterProvider } from './oppgavebenk/FilterContext.tsx'
 import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
@@ -105,26 +106,7 @@ function App() {
 function withRoutingAndState(Component: ComponentType): () => ReactNode {
   const swrConfig: SWRConfiguration = {
     async fetcher(...args) {
-      const response = await fetch(args[0], {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      })
-      if (response.ok) {
-        return response.json()
-      }
-      try {
-        const contentType = response.headers.get('Content-Type') ?? ''
-        if (contentType.startsWith('application/json')) {
-          return Promise.reject(await response.json())
-        } else {
-          return Promise.reject(await response.text())
-        }
-      } catch (e: unknown) {
-        return Promise.reject(e)
-      }
+      return http.get(args[0])
     },
   }
 

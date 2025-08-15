@@ -1,4 +1,4 @@
-import { LoggerOptions, pino, stdSerializers } from 'pino'
+import pino, { LoggerOptions, stdSerializers } from 'pino'
 
 const options: LoggerOptions = {
   timestamp() {

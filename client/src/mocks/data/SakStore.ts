@@ -244,7 +244,7 @@ export class SakStore extends Dexie {
     return 204
   }
 
-  async frigi(sakId: string) {
+  async fjernTildeling(sakId: string) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false

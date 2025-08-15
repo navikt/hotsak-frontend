@@ -1,13 +1,13 @@
+import { addBusinessDays, parseISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
-import { addBusinessDays, parseISO } from 'date-fns'
 import { OppgaveId, Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { JournalpostStore } from './JournalpostStore'
+import { LagretHjelpemiddelsak } from './lagSak.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { LagretHjelpemiddelsak } from './lagSak.ts'
 
 type LagretOppgave = OppgaveV2
 type InsertOppgave = LagretOppgave
@@ -112,6 +112,15 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.update(oppgaveId, {
       tildeltSaksbehandler: saksbehandler,
       oppgavestatus: Oppgavestatus.UNDER_BEHANDLING,
+    })
+  }
+
+  async fjernTildeling(oppgaveId: OppgaveId) {
+    console.log(`Fjerner tildeling for oppgaveId: ${oppgaveId}`)
+
+    return this.oppgaver.update(oppgaveId, {
+      tildeltSaksbehandler: undefined,
+      oppgavestatus: Oppgavestatus.OPPRETTET,
     })
   }
 

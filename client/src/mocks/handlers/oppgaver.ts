@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
+import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import {
   erInternOppgaveId,
   FinnOppgaverResponse,
@@ -9,11 +9,11 @@ import {
   Oppgavetype,
   OppgaveV1,
 } from '../../oppgave/oppgaveTypes.ts'
+import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
+import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
+import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
-import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
-import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
-import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -82,8 +82,10 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
   http.delete<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (!erInternOppgaveId(oppgaveId)) {
-      await sakStore.frigi(oppgaveIdUtenPrefix(oppgaveId))
+    if (erInternOppgaveId(oppgaveId)) {
+      await oppgaveStore.fjernTildeling(oppgaveId)
+    } else {
+      await sakStore.fjernTildeling(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)
     return respondNoContent()

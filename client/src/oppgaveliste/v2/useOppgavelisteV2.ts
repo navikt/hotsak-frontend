@@ -1,8 +1,8 @@
+import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 
-import { SortState } from '@navikt/ds-react'
-import { httpGet } from '../io/http'
-import { FinnOppgaverResponse, OppgaveTildeltFilter, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { httpGet } from '../../io/http.ts'
+import { FinnOppgaverResponse, OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 
 const PAGE_SIZE = 50
 

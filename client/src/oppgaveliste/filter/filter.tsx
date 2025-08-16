@@ -1,6 +1,6 @@
+import { Chips, Label, Select, Switch, ToggleGroup, VStack } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { Chips, Label, Select, Switch, ToggleGroup, UNSAFE_Combobox, VStack } from '@navikt/ds-react'
 import type { OppgaveFilterType } from '../../oppgave/oppgaveTypes.ts'
 
 const Dropdown = styled(Select)`
@@ -11,27 +11,21 @@ interface FilterProps {
   label: string
   value: string
   options: Map<string, string>
-  handleChange: (...args: any[]) => any
+  handleChange(...args: any[]): any
 }
 
 interface ToggleGroupProps {
   label: string
   value: string
   options: OppgaveFilterType[]
-  handleChange: (...args: any[]) => any
+  handleChange(...args: any[]): any
 }
 
 interface ChipsProps {
   label?: string
   selected: string[]
   options: OppgaveFilterType[]
-  handleChange: (...args: any[]) => any
-}
-
-interface ComboboxProps {
-  label: string
-  value: string
-  options: string[]
+  handleChange(...args: any[]): any
 }
 
 export function FilterDropdown({ label, value, options, handleChange }: FilterProps) {
@@ -91,12 +85,6 @@ export function FilterChips({ label, selected, options, handleChange }: ChipsPro
         })}
       </Chips>
     </VStack>
-  )
-}
-
-export function FilterCombobox({ label, value, options }: ComboboxProps) {
-  return (
-    <UNSAFE_Combobox size="small" allowNewValues={false} value={value} label={label} isMultiSelect options={options} />
   )
 }
 

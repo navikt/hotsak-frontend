@@ -1,9 +1,8 @@
-import { useLocation, useNavigate } from 'react-router'
-import styled from 'styled-components'
 import { FileTextIcon, TasklistIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
+import { useLocation, useNavigate } from 'react-router'
+import styled from 'styled-components'
 
-import { Eksperiment } from '../felleskomponenter/Eksperiment'
 import { useVisOppgavelisteTabs } from '../tilgang/useTilgang.ts'
 
 const TabContainer = styled.div`
@@ -53,9 +52,6 @@ export function OppgavelisteTabs() {
             label="Journalføring"
             icon={<FileTextIcon focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
           />
-          <Eksperiment>
-            <Tabs.Tab value="oppgavebenk" label="Oppgavebenk" />
-          </Eksperiment>
         </Tabs.List>
       </Tabs>
     </TabContainer>

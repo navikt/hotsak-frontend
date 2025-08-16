@@ -1,15 +1,13 @@
+import { Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { Table } from '@navikt/ds-react'
-
+import { IngentingFunnet } from '../felleskomponenter/IngentingFunnet.tsx'
 import { DataCelle, EllipsisCell, ExternalLinkCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { formaterDato } from '../utils/dato'
-
-import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
 import { Toast } from '../felleskomponenter/Toast'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { HjelpemiddelArtikkel } from '../types/types.internal'
+import { formaterDato } from '../utils/dato'
 
 const Container = styled.div`
   min-height: 300px;

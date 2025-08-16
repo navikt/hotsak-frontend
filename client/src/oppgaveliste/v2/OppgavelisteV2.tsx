@@ -1,25 +1,28 @@
 import { Box, Link, Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
-import { Paginering } from '../felleskomponenter/Paginering.tsx'
-import { EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
-import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { Toast } from '../felleskomponenter/Toast'
-import { Skjermlesertittel } from '../felleskomponenter/typografi'
-import { oppgaveIdUtenPrefix, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
-import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs'
-import { formaterDato, formaterTidsstempel } from '../utils/dato'
-import { formaterFødselsnummer, formaterNavn, storForbokstavIAlleOrd, storForbokstavIOrd } from '../utils/formater'
-import { isError } from '../utils/type'
-import { useFilterContext } from './FilterContext'
-import { Oppgavefilter } from './OppgaveFilter'
-import { useOppgavelisteV2 } from './useOppgavelisteV2'
+import { IngentingFunnet } from '../../felleskomponenter/IngentingFunnet.tsx'
+import { Paginering } from '../../felleskomponenter/Paginering.tsx'
+import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
+import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader.tsx'
+import { Toast } from '../../felleskomponenter/Toast.tsx'
+import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
+import { oppgaveIdUtenPrefix, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
+import { formaterDato, formaterTidsstempel } from '../../utils/dato.ts'
+import {
+  formaterFødselsnummer,
+  formaterNavn,
+  storForbokstavIAlleOrd,
+  storForbokstavIOrd,
+} from '../../utils/formater.ts'
+import { isError } from '../../utils/type.ts'
+import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
+import { useFilterContext } from './FilterContext.tsx'
+import { Oppgavefilter } from './OppgaveFilter.tsx'
+import { useOppgavelisteV2 } from './useOppgavelisteV2.ts'
 
-// TODO vise sakId i egen kolonne
-
-export function Oppgavebenk() {
+export default function OppgavelisteV2() {
   const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useFilterContext()
 
   const { oppgaver, pageNumber, pageSize, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
@@ -57,10 +60,10 @@ export function Oppgavebenk() {
       render: (oppgave: OppgaveV2) => <TekstCell value={oppgave.gjelder ?? ''} />,
     },
     {
-      /* Workaround for at beskrivelsen fra gosys enn så lenge 
+      /* Workaround for at beskrivelsen fra Gosys enn så lenge
         er en lang streng med alle hendelser og kommentarer skilt med \n
         dette filtreres vekk under for å gjøre beskrivelsen mer leslig i oppgavelista 
-        forhåpentligvis blir dette bedre i neste versjon av Gosys apiet */
+        forhåpentligvis blir dette bedre i neste versjon av Gosys API-et */
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
       width: 175,
@@ -166,7 +169,6 @@ export function Oppgavebenk() {
             {hasData ? (
               <>
                 <Table
-                  //style={{ width: 'initial' }}
                   size="small"
                   sort={sort}
                   onSortChange={(sortKey) => {
@@ -221,8 +223,6 @@ export function Oppgavebenk() {
     </>
   )
 }
-
-export default Oppgavebenk
 
 const Container = styled.div`
   min-height: 300px;

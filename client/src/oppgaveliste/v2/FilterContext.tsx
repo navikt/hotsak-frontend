@@ -1,7 +1,8 @@
-import { createContext, ReactNode, useContext } from 'react'
-import { useLocalState } from '../state/useLocalState'
-import { OppgaveGjelderFilter, OppgaveTildeltFilter } from '../oppgave/oppgaveTypes.ts'
 import { SortState } from '@navikt/ds-react'
+import { createContext, ReactNode, useContext } from 'react'
+
+import { OppgaveGjelderFilter, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
+import { useLocalState } from '../../state/useLocalState.ts'
 
 interface FilterContextType {
   tildeltFilter: OppgaveTildeltFilter

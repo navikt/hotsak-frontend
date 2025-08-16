@@ -5,10 +5,8 @@ import { SWRConfig, SWRConfiguration } from 'swr'
 
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
-import { Eksperiment } from './felleskomponenter/Eksperiment.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { http } from './io/HttpClient.ts'
-import { FilterProvider } from './oppgavebenk/FilterContext.tsx'
 import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
@@ -16,9 +14,8 @@ import { SakTitle } from './SakTitle.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
-const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste.tsx'))
+const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
-const Oppgavebenk = lazy(() => import('./oppgavebenk/Oppgavebenk.tsx'))
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
 const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
@@ -47,8 +44,8 @@ function App() {
                     path="/journalforing"
                     element={
                       <RequireAuth>
-                        <title>Hotsak - Journalføringsliste</title>
-                        <Dokumentliste />
+                        <title>Hotsak - Journalføringsoppgaver</title>
+                        <Journalføringsoppgaver />
                       </RequireAuth>
                     }
                   />
@@ -76,19 +73,6 @@ function App() {
                       <RequireAuth>
                         <title>Hotsak - Personoversikt</title>
                         <Personoversikt />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/oppgavebenk"
-                    element={
-                      <RequireAuth>
-                        <title>Hotsak - Oppgaver</title>
-                        <Eksperiment>
-                          <FilterProvider>
-                            <Oppgavebenk />
-                          </FilterProvider>
-                        </Eksperiment>
                       </RequireAuth>
                     }
                   />

@@ -1,10 +1,10 @@
+import { memo } from 'react'
 import styled from 'styled-components'
 
 import { Oppgaveetikett } from '../../felleskomponenter/Oppgaveetikett'
 import { Sakstype } from '../../types/types.internal'
-import { memo } from 'react'
 
-interface SakstypeEtikettProps {
+export interface SakstypeEtikettProps {
   sakstype: Sakstype
 }
 

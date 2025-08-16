@@ -11,6 +11,7 @@ interface IkkeTildeltProps {
   onTildelingKonflikt?(): void
 }
 
+// fixme -> byttes med ny knapp
 export function IkkeTildelt({ onTildelingKonflikt }: IkkeTildeltProps) {
   const saksbehandler = useInnloggetAnsatt()
   const { sakId } = useOptionalOppgaveContext()

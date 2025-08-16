@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 
-import { Oppgavemeny } from '../oppgave/Oppgavemeny.tsx'
+import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OppgaveId, Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { Saksbehandler } from '../types/types.internal.ts'
 
@@ -37,7 +37,7 @@ export function JournalføringKnapp({ onMutate }: JournalføringKnappProps) {
           </Button>
         </ActionMenu.Trigger>
         <ActionMenu.Content>
-          <Oppgavemeny onAction={onMutate} />
+          <OppgaveMenu onAction={onMutate} />
         </ActionMenu.Content>
       </ActionMenu>
     </HStack>

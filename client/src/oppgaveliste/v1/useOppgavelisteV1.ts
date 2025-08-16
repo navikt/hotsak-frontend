@@ -1,9 +1,9 @@
 import { SortState } from '@navikt/ds-react'
 import useSwr from 'swr'
 
-import { httpGet } from '../io/http'
-import { OppgaveV1, Statuskategori } from '../oppgave/oppgaveTypes.ts'
-import { OmrådeFilter, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../types/types.internal'
+import { httpGet } from '../../io/http.ts'
+import { OppgaveV1, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { OmrådeFilter, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../../types/types.internal.ts'
 
 const PAGE_SIZE = 50
 
@@ -85,7 +85,7 @@ function buildQueryParamString(queryParams: QueryParams) {
     .join('&')
 }
 
-export function useOppgaveliste(currentPage: number, sort: SortState, filters: OppgavelisteFilters): DataResponse {
+export function useOppgavelisteV1(currentPage: number, sort: SortState, filters: OppgavelisteFilters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
   const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, { refreshInterval: 10000 })

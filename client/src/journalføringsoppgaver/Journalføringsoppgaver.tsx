@@ -1,25 +1,25 @@
 import { Box, Table } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { IngentingFunnet } from '../../felleskomponenter/IngenOppgaver'
-import { TekstCell } from '../../felleskomponenter/table/Celle'
-import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader'
-import { LinkRow } from '../../felleskomponenter/table/LinkRow'
-import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne'
-import { useSortedElements } from '../../felleskomponenter/table/useSortedElements'
-import { Toast } from '../../felleskomponenter/Toast'
-import { TooltipWrapper } from '../../felleskomponenter/TooltipWrapper'
-import { Skjermlesertittel, TekstMedEllipsis } from '../../felleskomponenter/typografi'
-import { OppgavestatusLabel, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
-import { formaterTidsstempel } from '../../utils/dato'
-import { formaterFødselsnummer, formaterNavn } from '../../utils/formater'
-import { isError } from '../../utils/type'
-import { OppgavelisteTabs } from '../OppgavelisteTabs'
-import { useDokumentliste } from './useDokumentliste'
+import { IngentingFunnet } from '../felleskomponenter/IngentingFunnet.tsx'
+import { TekstCell } from '../felleskomponenter/table/Celle.tsx'
+import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeader.tsx'
+import { LinkRow } from '../felleskomponenter/table/LinkRow.tsx'
+import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne.ts'
+import { useSortedElements } from '../felleskomponenter/table/useSortedElements.ts'
+import { Toast } from '../felleskomponenter/Toast.tsx'
+import { TooltipWrapper } from '../felleskomponenter/TooltipWrapper.tsx'
+import { Skjermlesertittel, TekstMedEllipsis } from '../felleskomponenter/typografi.tsx'
+import { OppgavestatusLabel, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
+import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs.tsx'
+import { formaterTidsstempel } from '../utils/dato.ts'
+import { formaterFødselsnummer, formaterNavn } from '../utils/formater.ts'
+import { isError } from '../utils/type.ts'
+import { useJournalføringsoppgaver } from './useJournalføringsoppgaver.ts'
 
-export function Dokumentliste() {
-  const { data, isLoading, error } = useDokumentliste()
+export default function Journalføringsoppgaver() {
+  const { data, isLoading, error } = useJournalføringsoppgaver()
   const oppgaver = data?.oppgaver || []
 
   const kolonner: Tabellkolonne<OppgaveV2>[] = [
@@ -152,7 +152,7 @@ export function Dokumentliste() {
                 </Table>
               </>
             ) : (
-              <IngentingFunnet>Ingen dokumenter funnet</IngentingFunnet>
+              <IngentingFunnet>Ingen journalføringsoppgaver funnet.</IngentingFunnet>
             )}
           </Box>
         </Container>
@@ -160,8 +160,6 @@ export function Dokumentliste() {
     </>
   )
 }
-
-export default Dokumentliste
 
 const Container = styled.div`
   min-height: 300px;

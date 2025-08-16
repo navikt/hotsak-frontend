@@ -10,7 +10,7 @@ import {
   OppgaveV1,
 } from '../../oppgave/oppgaveTypes.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
-import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
+import type { OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
 import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'

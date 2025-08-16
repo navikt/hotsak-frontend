@@ -1,14 +1,14 @@
 import { MenuElipsisVerticalIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
-import { Oppgavemeny } from '../Oppgavemeny.tsx'
-import { OppgaveV2 } from '../oppgaveTypes.ts'
+import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
+import { OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 
-export interface OppgavelistemenyProps {
+export interface OppgavelisteMenuProps {
   oppgave: OppgaveV2
 }
 
-export function Oppgavelistemeny(props: OppgavelistemenyProps) {
+export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
   const { oppgave } = props
   const onMutate = () => {}
   return (
@@ -24,7 +24,7 @@ export function Oppgavelistemeny(props: OppgavelistemenyProps) {
         />
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <Oppgavemeny oppgave={oppgave} onAction={onMutate} />
+        <OppgaveMenu oppgave={oppgave} onAction={onMutate} />
       </ActionMenu.Content>
     </ActionMenu>
   )

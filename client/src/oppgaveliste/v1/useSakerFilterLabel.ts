@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { SakerFilter, SakerFilterLabel } from '../types/types.internal.ts'
-import { Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { SakerFilter, SakerFilterLabel } from '../../types/types.internal.ts'
 
 export function useSakerFilterLabel(statuskategori?: Statuskategori) {
   return useMemo(() => {

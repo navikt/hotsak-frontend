@@ -3,7 +3,7 @@ import { Alert, Table } from '@navikt/ds-react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { IngentingFunnet } from '../felleskomponenter/IngenOppgaver'
+import { IngentingFunnet } from '../felleskomponenter/IngentingFunnet.tsx'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'

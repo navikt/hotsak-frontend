@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
-import { OppgaveStatusLabel, OppgaveStatusType } from '../types/types.internal.ts'
-import { Statuskategori } from '../oppgave/oppgaveTypes.ts'
+
+import { Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveStatusLabel, OppgaveStatusType } from '../../types/types.internal.ts'
 
 const avsluttede = [
   OppgaveStatusType.AVSLÅTT,

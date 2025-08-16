@@ -3,12 +3,12 @@ import { OppgaveV2 } from './oppgaveTypes.ts'
 
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
-export interface OppgavemenyProps {
+export interface OppgaveMenuProps {
   oppgave?: OppgaveV2
   onAction?(): void | Promise<void>
 }
 
-export function Oppgavemeny(props: OppgavemenyProps) {
+export function OppgaveMenu(props: OppgaveMenuProps) {
   const { oppgave, onAction } = props
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
 

@@ -2,7 +2,7 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
 // import { useFortsettBehandling } from '../../hooks/useFortsettBehandling'
-import { Oppgavemeny } from '../../oppgave/Oppgavemeny.tsx'
+import { OppgaveMenu } from '../../oppgave/OppgaveMenu.tsx'
 import { Saksmeny } from '../../sak/Saksmeny.tsx'
 // import { useOverførGosys } from '../../saksbilde/useOverførGosys'
 import { OppgaveStatusType, Saksbehandler, Sakstype } from '../../types/types.internal'
@@ -19,6 +19,7 @@ interface MenyKnappProps {
   onMutate(...args: any[]): any
 }
 
+// fixme -> byttes med ny saksmeny
 export function MenyKnapp({ onMutate }: MenyKnappProps) {
   // const saksbehandler = useInnloggetAnsatt()
   /*
@@ -108,7 +109,7 @@ export function MenyKnapp({ onMutate }: MenyKnappProps) {
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <Oppgavemeny onAction={onMutate} />
+        <OppgaveMenu onAction={onMutate} />
         <ActionMenu.Divider />
         <Saksmeny />
       </ActionMenu.Content>

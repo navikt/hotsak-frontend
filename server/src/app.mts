@@ -53,7 +53,6 @@ app.use('/{*splat}', async (req, res, next) => {
   }
 
   const response = await validateToken(token)
-
   if (isSuccess(response)) {
     return next()
   }

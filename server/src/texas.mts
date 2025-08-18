@@ -2,7 +2,7 @@
  * https://github.com/nais/texas/blob/master/doc/openapi-spec.json
  */
 
-import { failure, flatMapResult, Result, runCatching, success } from '@shared/result.mjs'
+import { failure, flatMapResult, Result, runCatching, success } from './result.mjs'
 
 export interface TokenResponse {
   access_token: string

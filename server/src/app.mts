@@ -1,10 +1,10 @@
-import { isSuccess } from '@shared/result.mjs'
 import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-
 import { logger } from './logging.mjs'
 import { ipAddressFromRequest, tokenFromRequest } from './request.mjs'
+
+import { isSuccess } from './result.mjs'
 import { reverseProxy } from './reverseProxy.mjs'
 import { validateToken } from './texas.mjs'
 import { tryDecodeJwt } from './tryDecodeJwt.mjs'

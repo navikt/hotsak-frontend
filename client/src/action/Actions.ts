@@ -1,6 +1,5 @@
-import { toError } from '@shared/error.mjs'
-
 import { useState } from 'react'
+import { toError } from '../utils/error.ts'
 
 export interface Actions {
   /**

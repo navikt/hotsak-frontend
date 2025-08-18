@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 
 import { useNyOppgaveliste } from './useNyOppgaveliste.ts'
-import { FilterProvider } from './v2/FilterContext.tsx'
+import { OppgaveFilterProvider } from './v2/OppgaveFilterProvider.tsx'
 
 const OppgavelisteV1 = lazy(() => import('./v1/OppgavelisteV1.tsx'))
 const OppgavelisteV2 = lazy(() => import('./v2/OppgavelisteV2.tsx'))
@@ -11,9 +11,9 @@ export default function Oppgaveliste() {
 
   if (nyOppgaveliste) {
     return (
-      <FilterProvider>
+      <OppgaveFilterProvider>
         <OppgavelisteV2 />
-      </FilterProvider>
+      </OppgaveFilterProvider>
     )
   }
 

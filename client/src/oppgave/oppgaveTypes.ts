@@ -134,11 +134,6 @@ export enum OppgaveTildeltFilter {
   MEG = 'MEG',
 }
 
-export interface OppgaveFilterType {
-  key: string
-  label: string
-}
-
 /**
  * Koblingen mellom sak og oppgave som lagres i Hotsak.
  */

@@ -1,8 +1,10 @@
 import { Box, Button, HStack } from '@navikt/ds-react'
 
-import { OppgaveFilterType, OppgaveGjelderFilter, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
-import { FilterChips, FilterToggleGroup } from '../filter/filter.tsx'
-import { useFilterContext } from './FilterContext.tsx'
+import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
+import { FilterToggleGroup } from '../../felleskomponenter/filter/FilterToggleGroup.tsx'
+import type { FilterOption } from '../../felleskomponenter/filter/filterTypes.ts'
+import { OppgaveGjelderFilter, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
+import { useFilterContext } from './OppgaveFilterContext.tsx'
 
 export function Oppgavefilter() {
   const { setCurrentPage, gjelderFilter, setGjelderFilter, tildeltFilter, setTildeltFilter, clearFilters } =
@@ -31,7 +33,6 @@ export function Oppgavefilter() {
           }}
           options={tildeltFilterOptions}
         />
-
         <FilterChips
           label="Gjelder"
           selected={gjelderFilter}
@@ -54,7 +55,7 @@ const tildeltFilterOptions = [
   { key: OppgaveTildeltFilter.INGEN, label: 'Ufordelte' },
 ]
 
-const oppgavetema: OppgaveFilterType[] = [
+const oppgavetema: FilterOption[] = [
   { key: OppgaveGjelderFilter.BESTILLING, label: 'Bestilling' },
   { key: OppgaveGjelderFilter.DIGITAL_SØKNAD, label: 'Søknad' },
   { key: OppgaveGjelderFilter.HASTESØKNAD, label: 'Hastesøknad' },

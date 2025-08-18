@@ -14,7 +14,7 @@ import { formaterFødselsnummer, storForbokstavIAlleOrd, storForbokstavIOrd } fr
 import { isError } from '../../utils/type.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
 import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
-import { useFilterContext } from './FilterContext.tsx'
+import { useFilterContext } from './OppgaveFilterContext.tsx'
 import { Oppgavefilter } from './OppgaveFilter.tsx'
 import { useOppgavelisteV2 } from './useOppgavelisteV2.ts'
 

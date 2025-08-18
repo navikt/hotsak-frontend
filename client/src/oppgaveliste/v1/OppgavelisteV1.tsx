@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import styled from 'styled-components'
 
+import { FilterDropdown } from '../../felleskomponenter/filter/FilterDropdown.tsx'
+import { FilterToggle } from '../../felleskomponenter/filter/FilterToggle.tsx'
 import { IngentingFunnet } from '../../felleskomponenter/IngentingFunnet.tsx'
 import { Paginering } from '../../felleskomponenter/Paginering.tsx'
 import { SakstypeEtikett } from '../../felleskomponenter/SakstypeEtikett.tsx'
@@ -35,7 +37,6 @@ import {
   storForbokstavIOrd,
 } from '../../utils/formater.ts'
 import { isError } from '../../utils/type.ts'
-import { FilterDropdown, FilterToggle } from '../filter/filter.tsx'
 import { OppgavelisteMenu } from '../OppgavelisteMenu.tsx'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
 import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'

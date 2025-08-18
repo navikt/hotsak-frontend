@@ -6,14 +6,14 @@ import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
 import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
 import { useRequiredOppgaveContext } from '../../oppgave/OppgaveContext.ts'
+import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
-import { OvertaSakModal } from '../OvertaSakModal'
+import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
@@ -110,7 +110,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt />
+            <TaOppgaveISakButton sakId={sakId} />
           </Knappepanel>
         )}
       </VenstremenyCard>
@@ -131,7 +131,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
             </Button>
           </Knappepanel>
         )}
-        <OvertaSakModal
+        <OvertaOppgaveModal
           open={visOvertaSakModal}
           saksbehandler={bestilling?.saksbehandler?.navn || '<Ukjent>'}
           type="bestilling"
@@ -179,15 +179,15 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         </Button>
       </Knappepanel>
       {
-        /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke
-        
+        /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke.
         harVarsler ? (
         <BekreftManuellOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-        />*/
+        />
+        */
         <BekreftAutomatiskOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}

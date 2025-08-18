@@ -1,13 +1,14 @@
 import { Alert, VStack } from '@navikt/ds-react'
+
+import { Brødtekst } from '../felleskomponenter/typografi'
 import type { Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import { NotatType } from '../types/types.internal'
 import { useNotater } from './høyrekolonne/notat/useNotater'
 import { useSakId } from './useSak'
-import { Brødtekst } from '../felleskomponenter/typografi'
-import { NotatType } from '../types/types.internal'
 
-export interface OverførGosysModalProps {
+export interface OverførSakTilGosysModalProps {
   open: boolean
   loading: boolean
   spørreundersøkelseId: SpørreundersøkelseId
@@ -16,7 +17,13 @@ export interface OverførGosysModalProps {
   onClose(): void
 }
 
-export function OverførGosysModal({ open, loading, spørreundersøkelseId, onBekreft, onClose }: OverførGosysModalProps) {
+export function OverførSakTilGosysModal({
+  open,
+  loading,
+  spørreundersøkelseId,
+  onBekreft,
+  onClose,
+}: OverførSakTilGosysModalProps) {
   const sakId = useSakId()
   const { notater } = useNotater(sakId)
 

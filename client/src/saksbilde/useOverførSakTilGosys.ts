@@ -4,12 +4,12 @@ import { useSWRConfig } from 'swr'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
 import { putSendTilGosys } from '../io/http'
 import { useRequiredOppgaveContext } from '../oppgave/OppgaveContext.ts'
-import type { OverførGosysModalProps } from './OverførGosysModal'
+import type { OverførSakTilGosysModalProps } from './OverførSakTilGosysModal.tsx'
 
-export function useOverførGosys(
+export function useOverførSakTilGosys(
   sakId: string,
   spørreundersøkelseId: SpørreundersøkelseId
-): OverførGosysModalProps & { onOpen(): void } {
+): OverførSakTilGosysModalProps & { onOpen(): void } {
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)

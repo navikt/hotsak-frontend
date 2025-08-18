@@ -1,7 +1,7 @@
-import { Tekst } from '../felleskomponenter/typografi'
-import { BekreftelseModal } from './komponenter/BekreftelseModal'
+import { Tekst } from '../felleskomponenter/typografi.tsx'
+import { BekreftelseModal } from '../saksbilde/komponenter/BekreftelseModal.tsx'
 
-interface OvertaSakModalProps {
+export interface OvertaOppgaveModalProps {
   open: boolean
   onBekreft: () => void
   loading: boolean
@@ -10,14 +10,14 @@ interface OvertaSakModalProps {
   type?: string
 }
 
-export function OvertaSakModal({
+export function OvertaOppgaveModal({
   open,
   saksbehandler,
   onBekreft,
   loading,
   onClose,
   type = 'sak',
-}: OvertaSakModalProps) {
+}: OvertaOppgaveModalProps) {
   return (
     <BekreftelseModal
       onBekreft={onBekreft}

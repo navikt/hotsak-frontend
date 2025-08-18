@@ -11,8 +11,8 @@ import { Toast } from '../felleskomponenter/Toast.tsx'
 import { TooltipWrapper } from '../felleskomponenter/TooltipWrapper.tsx'
 import { Skjermlesertittel, TekstMedEllipsis } from '../felleskomponenter/typografi.tsx'
 import { OppgavestatusLabel, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
 import { OppgavelisteTabs } from '../oppgaveliste/OppgavelisteTabs.tsx'
+import { TaOppgaveIOppgavelisteButton } from '../oppgaveliste/TaOppgaveIOppgavelisteButton.tsx'
 import { formaterTidsstempel } from '../utils/dato.ts'
 import { formaterFødselsnummer, formaterNavn } from '../utils/formater.ts'
 import { isError } from '../utils/type.ts'
@@ -20,7 +20,7 @@ import { useJournalføringsoppgaver } from './useJournalføringsoppgaver.ts'
 
 export default function Journalføringsoppgaver() {
   const { data, isLoading, error } = useJournalføringsoppgaver()
-  const oppgaver = data?.oppgaver || []
+  const oppgaver = data?.oppgaver ?? []
 
   const kolonner: Tabellkolonne<OppgaveV2>[] = [
     {
@@ -28,7 +28,7 @@ export default function Journalføringsoppgaver() {
       name: 'Eier',
       width: 160,
       render(oppgave: OppgaveV2) {
-        return <TaOppgaveButton oppgave={oppgave} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} />
       },
       accessor(verdi: OppgaveV2): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')

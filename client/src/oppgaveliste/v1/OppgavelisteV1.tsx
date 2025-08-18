@@ -5,16 +5,16 @@ import styled from 'styled-components'
 
 import { IngentingFunnet } from '../../felleskomponenter/IngentingFunnet.tsx'
 import { Paginering } from '../../felleskomponenter/Paginering.tsx'
+import { SakstypeEtikett } from '../../felleskomponenter/SakstypeEtikett.tsx'
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader.tsx'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow.tsx'
 import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne.ts'
 import { Toast } from '../../felleskomponenter/Toast.tsx'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
+import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { oppgaveV1ToV2 } from '../../oppgave/oppgaveTools.ts'
 import { OppgaveV1, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
-import { TildelingKonfliktModal } from '../../saksbilde/TildelingKonfliktModal.tsx'
 import { useLocalState } from '../../state/useLocalState.ts'
 import { useErKunTilbehørPilot } from '../../tilgang/useTilgang.ts'
 import {
@@ -36,9 +36,9 @@ import {
 } from '../../utils/formater.ts'
 import { isError } from '../../utils/type.ts'
 import { FilterDropdown, FilterToggle } from '../filter/filter.tsx'
-import { SakstypeEtikett } from '../kolonner/SakstypeEtikett.tsx'
 import { OppgavelisteMenu } from '../OppgavelisteMenu.tsx'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
+import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
 import { useOppgavetilgang } from '../useOppgavetilgang.ts'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgavelisteV1 } from './useOppgavelisteV1.ts'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
@@ -90,7 +90,7 @@ export default function OppgavelisteV1() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <TaOppgaveButton oppgave={oppgaveV1ToV2(oppgave)} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgaveV1ToV2(oppgave)} />
       },
     },
     {
@@ -358,7 +358,7 @@ export default function OppgavelisteV1() {
                   tekst="oppgaver"
                   onPageChange={(page) => setFilterState({ ...filterState, currentPage: page })}
                 />
-                <TildelingKonfliktModal
+                <OppgavetildelingKonfliktModal
                   open={!!visTildelingKonfliktModalForSak}
                   onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
                   onPrimaryAction={() => {

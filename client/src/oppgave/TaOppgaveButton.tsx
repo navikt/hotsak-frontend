@@ -1,21 +1,23 @@
-import { Button } from '@navikt/ds-react'
+import { Button, ButtonProps } from '@navikt/ds-react'
 import { MouseEventHandler } from 'react'
-import { useNavigate } from 'react-router'
 
 import { EllipsisCell } from '../felleskomponenter/table/Celle.tsx'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { OppgaveV2 } from './oppgaveTypes.ts'
+import { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
 export interface TaOppgaveButtonProps {
   oppgave: OppgaveV2
+  variant?: ButtonProps['variant']
+  size?: ButtonProps['size']
+  children?: string
+  onOppgavetildeling?(oppgaveId: OppgaveId): void | Promise<void>
 }
 
 export function TaOppgaveButton(props: TaOppgaveButtonProps) {
-  const { oppgave } = props
+  const { oppgave, size = 'small', variant = 'secondary', children = 'Ta oppgave', onOppgavetildeling } = props
   const ansatt = useInnloggetAnsatt()
   const { endreOppgavetildeling, state } = useOppgaveActions(oppgave)
-  const navigate = useNavigate()
 
   // todo -> sjekk at ansatt faktisk kan ta oppgaven
 
@@ -30,19 +32,21 @@ export function TaOppgaveButton(props: TaOppgaveButtonProps) {
   const onClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation()
     await endreOppgavetildeling({})
-    return navigate(`/oppgave/${oppgave.oppgaveId}`)
+    if (onOppgavetildeling) {
+      return onOppgavetildeling(oppgave.oppgaveId)
+    }
   }
 
   return (
     <Button
-      size="xsmall"
-      variant="tertiary"
+      variant={variant}
+      size={size}
       onClick={onClick}
-      name="Ta oppgave"
+      name={children}
       disabled={state.loading}
       loading={state.loading}
     >
-      Ta oppgave
+      {children}
     </Button>
   )
 }

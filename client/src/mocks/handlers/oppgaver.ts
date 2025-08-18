@@ -71,9 +71,8 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
   http.post<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erInternOppgaveId(oppgaveId)) {
-      await oppgaveStore.tildel(oppgaveId)
-    } else {
+    await oppgaveStore.tildel(oppgaveId)
+    if (!erInternOppgaveId(oppgaveId)) {
       await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)
@@ -82,9 +81,8 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
   http.delete<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erInternOppgaveId(oppgaveId)) {
-      await oppgaveStore.fjernTildeling(oppgaveId)
-    } else {
+    await oppgaveStore.fjernTildeling(oppgaveId)
+    if (!erInternOppgaveId(oppgaveId)) {
       await sakStore.fjernTildeling(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)

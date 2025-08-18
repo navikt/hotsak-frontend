@@ -1,23 +1,23 @@
-import { useEffect } from 'react'
 import { ErrorSummary, Select, Skeleton, Textarea, VStack } from '@navikt/ds-react'
-
-import { useOppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
-import { useNotater } from '../høyrekolonne/notat/useNotater.tsx'
-import { InfoModal } from '../komponenter/InfoModal.tsx'
-import { FormModal } from '../../felleskomponenter/modal/FormModal.tsx'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
-import { isNotBlank } from '../../utils/type.ts'
-import { mutateSak } from '../mutateSak.ts'
-import { useFormActionState } from '../../utils/form.ts'
 import { ErrorSummaryItem } from '@navikt/ds-react/ErrorSummary'
-import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { Tekst } from '../../felleskomponenter/typografi.tsx'
+import { useEffect } from 'react'
 
-export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
+import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
+import { Tekst } from '../felleskomponenter/typografi.tsx'
+import { useNotater } from '../saksbilde/høyrekolonne/notat/useNotater.tsx'
+import { InfoModal } from '../saksbilde/komponenter/InfoModal.tsx'
+import { mutateSak } from '../saksbilde/mutateSak.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { useFormActionState } from '../utils/form.ts'
+import { isNotBlank } from '../utils/type.ts'
+import { useOppgaveActions } from './useOppgaveActions.ts'
+import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
+
+export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { harUtkast } = useNotater(sakId)
-  const [state, formAction] = useOverførSakTilMedarbeiderActionState(sakId)
+  const [state, formAction] = useOverførOppgaveTilMedarbeiderActionState(sakId)
   const { gjeldendeEnhet } = useInnloggetAnsatt()
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export function OverførSakTilMedarbeiderModal(props: { sakId: string; open: boo
   )
 }
 
-function useOverførSakTilMedarbeiderActionState(sakId: string) {
+function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
   const { endreOppgavetildeling } = useOppgaveActions()
   return useFormActionState<
     {

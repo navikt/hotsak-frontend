@@ -6,13 +6,13 @@ import styled from 'styled-components'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
-import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
+import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
 import { StatusTag } from '../komponenter/StatusTag'
 import { LasterPersonlinje } from '../Personlinje'
-import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
+import { SaksbildeMenu } from '../SaksbildeMenu.tsx'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakSidebar } from './BarnebrillesakSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
@@ -34,7 +34,7 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
-  const { sak, isError, mutate } = useBarnebrillesak()
+  const { sak, isError } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
@@ -62,15 +62,8 @@ const BarnebrillesakContent = memo(() => {
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           {harSkrivetilgang && (
             <>
-              <MenyKnapp
-                sakId={sak.data.sakId}
-                tildeltSaksbehandler={sak.data.saksbehandler}
-                status={sak.data.status}
-                kanTildeles={sak.kanTildeles}
-                setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
-                onMutate={mutate}
-              />
-              <TildelingKonfliktModal
+              <SaksbildeMenu sakId={sak.data.sakId} spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
+              <OppgavetildelingKonfliktModal
                 open={!!visTildelingKonfliktModalForSak}
                 onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
                 saksbehandler={sak.data.saksbehandler}

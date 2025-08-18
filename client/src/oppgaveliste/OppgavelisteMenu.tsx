@@ -10,7 +10,6 @@ export interface OppgavelisteMenuProps {
 
 export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
   const { oppgave } = props
-  const onMutate = () => {}
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -24,7 +23,7 @@ export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
         />
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <OppgaveMenu oppgave={oppgave} onAction={onMutate} />
+        <OppgaveMenu oppgave={oppgave} />
       </ActionMenu.Content>
     </ActionMenu>
   )

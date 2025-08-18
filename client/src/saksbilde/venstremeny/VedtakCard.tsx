@@ -6,20 +6,20 @@ import styled from 'styled-components'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { putVedtak } from '../../io/http'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
+import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
+import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { mutateSak } from '../mutateSak.ts'
-import { OverførGosysModal } from '../OverførGosysModal'
-import { OvertaSakModal } from '../OvertaSakModal'
-import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
-import { useOverførGosys } from '../useOverførGosys'
+import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
+import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
+import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -40,7 +40,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførGosys(sakId, 'sak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(sakId, 'sak_overført_gosys_v1')
   const { endreOppgavetildeling } = useOppgaveActions()
 
   const form = useForm<VedtakFormValues>({
@@ -120,7 +120,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt onTildelingKonflikt={() => setVisTildelSakKonfliktModalForSak(true)}></IkkeTildelt>
+            <TaOppgaveISakButton sakId={sakId} />
           </Knappepanel>
         )}
       </VenstremenyCard>
@@ -138,14 +138,14 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                 Overta saken
               </Knapp>
             </Knappepanel>
-            <OvertaSakModal
+            <OvertaOppgaveModal
               open={visOvertaSakModal}
               saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
               onBekreft={() => overtaSak()}
               loading={loading}
               onClose={() => setVisOvertaSakModal(false)}
             />
-            <TildelingKonfliktModal
+            <OppgavetildelingKonfliktModal
               open={visTildelSakKonfliktModalForSak}
               onClose={() => setVisTildelSakKonfliktModalForSak(false)}
               saksbehandler={sak.saksbehandler}
@@ -223,7 +223,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           />
         </FormProvider>
       </BekreftelseModal>
-      <OverførGosysModal
+      <OverførSakTilGosysModal
         {...overførGosys}
         onBekreft={async (tilbakemelding) => {
           await overførGosys.onBekreft(tilbakemelding)

@@ -8,7 +8,6 @@ import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHe
 import { Toast } from '../../felleskomponenter/Toast.tsx'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
 import { oppgaveIdUtenPrefix, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato.ts'
 import {
   formaterFødselsnummer,
@@ -18,6 +17,7 @@ import {
 } from '../../utils/formater.ts'
 import { isError } from '../../utils/type.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
+import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
 import { useFilterContext } from './FilterContext.tsx'
 import { Oppgavefilter } from './OppgaveFilter.tsx'
 import { useOppgavelisteV2 } from './useOppgavelisteV2.ts'
@@ -36,7 +36,7 @@ export default function OppgavelisteV2() {
       name: 'Eier',
       width: 155,
       render(oppgave: OppgaveV2) {
-        return <TaOppgaveButton oppgave={oppgave} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} />
       },
     },
     {

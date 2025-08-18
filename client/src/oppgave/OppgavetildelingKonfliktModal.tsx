@@ -1,16 +1,21 @@
-import { Tekst } from '../felleskomponenter/typografi'
 import { Button, Modal } from '@navikt/ds-react'
 import { useRef } from 'react'
+import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { Saksbehandler } from '../types/types.internal.ts'
 
-interface TildelingKonfliktModalProps {
+export interface OppgavetildelingKonfliktModalProps {
   open: boolean
   onClose: () => void
   onPrimaryAction?: () => void
   saksbehandler?: Saksbehandler
 }
 
-export function TildelingKonfliktModal({ open, onClose, onPrimaryAction, saksbehandler }: TildelingKonfliktModalProps) {
+export function OppgavetildelingKonfliktModal({
+  open,
+  onClose,
+  onPrimaryAction,
+  saksbehandler,
+}: OppgavetildelingKonfliktModalProps) {
   const ref = useRef<HTMLDialogElement>(null)
   return (
     <div

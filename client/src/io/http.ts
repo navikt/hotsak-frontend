@@ -147,17 +147,6 @@ export const hentBrukerdataMedPost: any = async ([
   }
 }
 
-// Nytt oppgave API
-// TODO, kan dennes fases ut og erstattes med OppgaveActions sin endreOppgavetildeling?
-export const postOppgaveTildeling = async (oppgaveVersjon: OppgaveVersjon) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return post(
-    `${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`,
-    { overtaHvisTildelt: false },
-    ifMatchVersjon(versjon)
-  )
-}
-
 export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
   return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }

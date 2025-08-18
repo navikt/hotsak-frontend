@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-
-import { TilgangContext, TilgangContextType } from './TilgangContext.ts'
 import { AnsattGruppe, InnloggetAnsatt } from './Ansatt.ts'
 import { Enhet, EnhetsnummerType } from './Enhet.ts'
+
+import { TilgangContext, TilgangContextType } from './TilgangContext.ts'
 
 export function useTilgangContext(): TilgangContextType {
   return useContext(TilgangContext)
@@ -48,11 +48,6 @@ export function useInnloggetAnsatt(): ExtendedInnloggetAnsatt {
 }
 
 const piloter = {
-  saksmeny: [
-    Enhet.IT_AVDELINGEN,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
-  ],
   kunTilbehør: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND],
   ombrukPilot: [
     Enhet.IT_AVDELINGEN,
@@ -72,11 +67,6 @@ export function useVisOppgavelisteTabs(): boolean {
 export function useErOmbrukPilot(): boolean {
   const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
   return erGjeldendeEnhetEnAv(...piloter.ombrukPilot)
-}
-
-export function useErSaksmenyPilot(): boolean {
-  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
-  return erGjeldendeEnhetEnAv(...piloter.saksmeny)
 }
 
 export function useErKunTilbehørPilot(): boolean {

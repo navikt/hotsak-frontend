@@ -5,16 +5,12 @@ import { IngentingFunnet } from '../../felleskomponenter/IngentingFunnet.tsx'
 import { Paginering } from '../../felleskomponenter/Paginering.tsx'
 import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx'
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader.tsx'
+import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne.ts'
 import { Toast } from '../../felleskomponenter/Toast.tsx'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
 import { oppgaveIdUtenPrefix, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato.ts'
-import {
-  formaterFødselsnummer,
-  formaterNavn,
-  storForbokstavIAlleOrd,
-  storForbokstavIOrd,
-} from '../../utils/formater.ts'
+import { formaterFødselsnummer, storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
 import { isError } from '../../utils/type.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
 import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
@@ -30,12 +26,12 @@ export default function OppgavelisteV2() {
     gjelderFilter,
   })
 
-  const kolonner = [
+  const kolonner: ReadonlyArray<Tabellkolonne<OppgaveV2>> = [
     {
       key: 'EIER',
       name: 'Eier',
       width: 155,
-      render(oppgave: OppgaveV2) {
+      render(oppgave) {
         return <TaOppgaveIOppgavelisteButton oppgave={oppgave} />
       },
     },
@@ -44,20 +40,26 @@ export default function OppgavelisteV2() {
       name: 'Opprettet',
       sortable: true,
       width: 122,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />,
+      render(oppgave) {
+        return <TekstCell value={formaterTidsstempel(oppgave.opprettetTidspunkt)} />
+      },
     },
     {
       key: 'ENDRET_TIDSPUNKT',
       name: 'Endret',
       sortable: true,
       width: 122,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />,
+      render(oppgave) {
+        return <TekstCell value={formaterTidsstempel(oppgave.endretTidspunkt)} />
+      },
     },
     {
       key: 'GJELDER',
       name: 'Gjelder',
       width: 140,
-      render: (oppgave: OppgaveV2) => <TekstCell value={oppgave.gjelder ?? ''} />,
+      render(oppgave) {
+        return <TekstCell value={oppgave.gjelder ?? ''} />
+      },
     },
     {
       /* Workaround for at beskrivelsen fra Gosys enn så lenge
@@ -67,61 +69,61 @@ export default function OppgavelisteV2() {
       key: 'BESKRIVELSE',
       name: 'Beskrivelse',
       width: 175,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell
-          minLength={18}
-          value={storForbokstavIOrd(
-            oppgave.beskrivelse
-              ?.toLocaleLowerCase()
-              .split('\n')
-              .reverse()[0]
-              .replace('søknad om: ', '')
-              .replace('bestilling av: ', '')
-          )}
-        />
-      ),
+      render(oppgave) {
+        return (
+          <EllipsisCell
+            minLength={18}
+            value={storForbokstavIOrd(
+              oppgave.beskrivelse
+                ?.toLocaleLowerCase()
+                .split('\n')
+                .reverse()[0]
+                .replace('søknad om: ', '')
+                .replace('bestilling av: ', '')
+            )}
+          />
+        )
+      },
     },
 
     {
       key: 'OPPGAVETYPE',
       name: 'Oppgavetype',
       width: 152,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.oppgavetype.replaceAll('_', ' '))} />
-      ),
+      render(oppgave) {
+        return <EllipsisCell minLength={18} value={storForbokstavIAlleOrd(oppgave.oppgavetype.replaceAll('_', ' '))} />
+      },
     },
     {
       key: 'PRIORITET',
       name: 'Prioritet',
       width: 120,
-      render: (oppgave: OppgaveV2) => <EllipsisCell minLength={20} value={storForbokstavIAlleOrd(oppgave.prioritet)} />,
-    },
-    {
-      key: 'BRUKER',
-      name: 'Bruker',
-      width: 188,
-      render: (oppgave: OppgaveV2) => (
-        <EllipsisCell minLength={20} value={formaterNavn(oppgave?.bruker?.navn) || '-'} />
-      ),
+      render(oppgave) {
+        return <EllipsisCell minLength={20} value={storForbokstavIAlleOrd(oppgave.prioritet)} />
+      },
     },
     {
       key: 'FØDSELSNUMMER',
       name: 'Fødselsnr.',
       width: 124,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterFødselsnummer(oppgave.fnr || '-')} />,
+      render(oppgave) {
+        return <TekstCell value={formaterFødselsnummer(oppgave.fnr || '-')} />
+      },
     },
     {
       key: 'FRIST',
       name: 'Frist',
       sortable: true,
       width: 114,
-      render: (oppgave: OppgaveV2) => <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />,
+      render(oppgave) {
+        return <TekstCell value={formaterDato(oppgave.fristFerdigstillelse)} />
+      },
     },
     {
       key: 'GOSYS',
       name: 'Gosys',
       width: 96,
-      render: (oppgave: OppgaveV2) => {
+      render(oppgave) {
         const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
         return (
           <Link
@@ -138,11 +140,13 @@ export default function OppgavelisteV2() {
       key: 'HOTSAK',
       name: 'Hotsak',
       width: 96,
-      render: (oppgave: OppgaveV2) => (
-        <Link variant="neutral" href={`/oppgave/${oppgave.oppgaveId}`}>
-          {oppgave.sakId}
-        </Link>
-      ),
+      render(oppgave) {
+        return (
+          <Link variant="neutral" href={`/oppgave/${oppgave.oppgaveId}`}>
+            {oppgave.sakId}
+          </Link>
+        )
+      },
     },
   ]
 

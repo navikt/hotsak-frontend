@@ -17,7 +17,7 @@ export interface IntrospectResponse extends Record<string, unknown> {
 
 type Parameter = [string, string]
 async function request<T>(url: string, ...parameters: Parameter[]): Promise<Result<T>> {
-  const body = new FormData()
+  const body = new URLSearchParams()
   body.set('identity_provider', 'azuread')
   parameters.forEach(([name, value]) => {
     body.set(name, value)

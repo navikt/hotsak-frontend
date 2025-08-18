@@ -20,8 +20,6 @@ export function OppgavelisteTabs() {
     switch (nyTab) {
       case 'journalforing':
         return '/journalforing'
-      case 'oppgavebenk':
-        return '/oppgavebenk'
       default:
         return '/'
     }

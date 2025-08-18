@@ -35,6 +35,6 @@ export const initialState: OppgaveFilterContextType = {
 export const OppgaveFilterContext = createContext<OppgaveFilterContextType>(initialState)
 OppgaveFilterContext.displayName = 'OppgaveFilter'
 
-export function useFilterContext(): OppgaveFilterContextType {
+export function useOppgaveFilterContext(): OppgaveFilterContextType {
   return useContext(OppgaveFilterContext)
 }

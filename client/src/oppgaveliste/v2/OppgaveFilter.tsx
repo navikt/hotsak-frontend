@@ -4,11 +4,11 @@ import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
 import { FilterToggleGroup } from '../../felleskomponenter/filter/FilterToggleGroup.tsx'
 import type { FilterOption } from '../../felleskomponenter/filter/filterTypes.ts'
 import { OppgaveGjelderFilter, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
-import { useFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export function Oppgavefilter() {
   const { setCurrentPage, gjelderFilter, setGjelderFilter, tildeltFilter, setTildeltFilter, clearFilters } =
-    useFilterContext()
+    useOppgaveFilterContext()
 
   const handleFilter = (handler: (...args: any[]) => any, value: OppgaveGjelderFilter | string) => {
     handler(value)

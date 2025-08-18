@@ -14,12 +14,12 @@ import { formaterFødselsnummer, storForbokstavIAlleOrd, storForbokstavIOrd } fr
 import { isError } from '../../utils/type.ts'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
 import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
-import { useFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { Oppgavefilter } from './OppgaveFilter.tsx'
 import { useOppgavelisteV2 } from './useOppgavelisteV2.ts'
 
 export default function OppgavelisteV2() {
-  const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useFilterContext()
+  const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useOppgaveFilterContext()
 
   const { oppgaver, pageNumber, pageSize, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
     tildeltFilter,

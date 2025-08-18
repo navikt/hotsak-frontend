@@ -35,7 +35,7 @@ async function request<T>(url: string, ...parameters: Parameter[]): Promise<Resu
 export async function exchangeUserToken(userToken: string, target: string): Promise<Result<TokenResponse>> {
   const url = process.env.NAIS_TOKEN_EXCHANGE_ENDPOINT
   if (!url) {
-    throw new Error('NAIS_TOKEN_EXCHANGE_ENDPOINT er ikke satt!')
+    return failure('NAIS_TOKEN_EXCHANGE_ENDPOINT er ikke satt!')
   }
   return request<TokenResponse>(url, ['target', target], ['user_token', userToken])
 }
@@ -43,7 +43,7 @@ export async function exchangeUserToken(userToken: string, target: string): Prom
 export async function introspectToken(token: string): Promise<Result<IntrospectResponse>> {
   const url = process.env.NAIS_TOKEN_INTROSPECTION_ENDPOINT
   if (!url) {
-    throw new Error('NAIS_TOKEN_INTROSPECTION_ENDPOINT er ikke satt!')
+    return failure('NAIS_TOKEN_INTROSPECTION_ENDPOINT er ikke satt!')
   }
   return request<IntrospectResponse>(url, ['token', token])
 }

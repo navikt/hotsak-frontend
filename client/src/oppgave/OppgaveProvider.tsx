@@ -17,7 +17,7 @@ export function OppgaveProvider({ oppgave, children }: OppgaveProviderProps) {
       oppgaveId: oppgave.oppgaveId,
       versjon: oppgave.versjon,
       sakId: oppgave.sakId,
-      oppgave,
+      isOppgaveContext: true,
     }
   }, [oppgave])
   return <OppgaveContext value={value}>{children}</OppgaveContext>

@@ -2,7 +2,7 @@ import { HouseIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 import { useLocation } from 'react-router'
 
-import { useOptionalOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import { SøknadslinjeContainer } from './komponenter/SøknadslinjeContainer'
 import { SaksbildeMenu } from './SaksbildeMenu.tsx'
 import { TabLink } from './TabLink'
@@ -14,7 +14,7 @@ export interface SøknadslinjeProps {
 export function Søknadslinje({ id }: SøknadslinjeProps) {
   const location = useLocation()
 
-  const { oppgaveId } = useOptionalOppgaveContext()
+  const { oppgaveId, isOppgaveContext } = useOppgaveContext()
   const basePath = oppgaveId ? `/oppgave/${oppgaveId}` : `/sak/${id}`
 
   return (
@@ -26,7 +26,7 @@ export function Søknadslinje({ id }: SøknadslinjeProps) {
           </TabLink>
           <TabLink to={`${basePath}/bruker`}>Bruker</TabLink>
           <TabLink to={`${basePath}/formidler`}>Formidler</TabLink>
-          {oppgaveId != null && (
+          {isOppgaveContext && (
             <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
               <SaksbildeMenu sakId={id.toString()} spørreundersøkelseId="sak_overført_gosys_v1" />
             </div>

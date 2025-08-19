@@ -3,12 +3,12 @@ import { useParams } from 'react-router'
 import useSwr, { SWRResponse } from 'swr'
 
 import { HttpError } from '../io/HttpError.ts'
-import { useOptionalOppgaveContext } from './OppgaveContext.ts'
+import { useOppgaveContext } from './OppgaveContext.ts'
 import { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
   const { oppgaveId: oppgaveIdUrl } = useParams<{ oppgaveId: OppgaveId }>()
-  const { oppgaveId: oppgaveIdOppgave } = useOptionalOppgaveContext()
+  const { oppgaveId: oppgaveIdOppgave } = useOppgaveContext()
   const oppgaveId = oppgaveIdUrl ?? oppgaveIdOppgave
   useDebugValue(oppgaveId)
   return oppgaveId

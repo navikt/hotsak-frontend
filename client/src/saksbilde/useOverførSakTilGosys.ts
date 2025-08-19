@@ -1,22 +1,19 @@
 import { useState } from 'react'
-import { useSWRConfig } from 'swr'
 
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
-import { putSendTilGosys } from '../io/http'
-import { useRequiredOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { mutateSak } from './mutateSak.ts'
 import type { OverførSakTilGosysModalProps } from './OverførSakTilGosysModal.tsx'
+import { useSakActions } from './useSakActions.ts'
 
 export function useOverførSakTilGosys(
   sakId: string,
   spørreundersøkelseId: SpørreundersøkelseId
 ): OverførSakTilGosysModalProps & { onOpen(): void } {
-  const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { oppgaveId, versjon } = useRequiredOppgaveContext()
+  const { overførSakTilGosys, state } = useSakActions()
   return {
     open,
-    loading,
+    loading: state.loading,
     spørreundersøkelseId,
     onOpen() {
       setOpen(true)
@@ -25,12 +22,10 @@ export function useOverførSakTilGosys(
       setOpen(false)
     },
     async onBekreft(tilbakemelding) {
-      setLoading(true)
       try {
-        await putSendTilGosys(sakId, { oppgaveId, versjon }, tilbakemelding.svar)
-        await mutate(`api/sak/${sakId}`, `api/sak/${sakId}/historikk`)
+        await overførSakTilGosys(tilbakemelding.svar)
+        await mutateSak(sakId)
       } finally {
-        setLoading(false)
         setOpen(false)
       }
     },

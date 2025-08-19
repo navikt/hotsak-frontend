@@ -1,16 +1,12 @@
-import type { ISvar } from '../innsikt/Besvarelse'
 import type {
-  AvvisBestilling,
   BrevTekst,
   Brevtype,
   EndretHjelpemiddelRequest,
   JournalføringRequest,
   OppdaterVilkårData,
   OppgaveStatusType,
-  OppgaveVersjon,
   VurderVilkårRequest,
 } from '../types/types.internal'
-import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
 
 export interface SaksbehandlingApiResponse<T = any> {
@@ -167,39 +163,8 @@ export const putOppdaterVilkår = async (
   return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
 }
 
-export const putVedtak = async (sakId: number | string, problemsammendrag: string) => {
-  return put(`${baseUrl}/api/sak/${sakId}/vedtak`, { problemsammendrag, oppgaveId: null }, ifMatchVersjon(-1))
-}
-
-export const putFerdigstillBestilling = async (
-  sakId: number | string,
-  oppgaveVersjon: OppgaveVersjon,
-  beskjed?: string
-) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return put(`${baseUrl}/api/bestilling/${sakId}/ferdigstilling`, { beskjed, oppgaveId }, ifMatchVersjon(versjon))
-}
-
-export const putAvvisBestilling = async (
-  sakId: number | string,
-  oppgaveVersjon: OppgaveVersjon,
-  tilbakemelding: AvvisBestilling
-) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return put(`${baseUrl}/api/bestilling/${sakId}/avvisning`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
-}
-
 export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemiddel: EndretHjelpemiddelRequest) => {
   return put(`${baseUrl}/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
-}
-
-export const putSendTilGosys = async (
-  sakId: number | string,
-  oppgaveVersjon: OppgaveVersjon,
-  tilbakemelding: ISvar[]
-) => {
-  const { oppgaveId, versjon } = oppgaveVersjon
-  return put(`${baseUrl}/api/sak/${sakId}/tilbakeforing`, { tilbakemelding, oppgaveId }, ifMatchVersjon(versjon))
 }
 
 export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {
@@ -216,10 +181,4 @@ export const deleteBrevutkast = async (sakId: string, brevtype: Brevtype) => {
 
 export const postBrevutsending = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevsending`, brevTekst)
-}
-
-export function ifMatchVersjon(versjon?: number) {
-  if (versjon) {
-    return { 'If-Match': toWeakETag(versjon) }
-  }
 }

@@ -2,7 +2,7 @@ import { Actions, useActionState } from '../action/Actions.ts'
 import { baseUrl } from '../io/http.ts'
 import { http } from '../io/HttpClient.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
-import { useOptionalOppgaveContext } from './OppgaveContext.ts'
+import { useOppgaveContext } from './OppgaveContext.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
 
 export interface EndreOppgavetildelingRequest {
@@ -39,7 +39,7 @@ export interface UseOppgaveActions extends Actions {
  * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
  */
 export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
-  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOptionalOppgaveContext()
+  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOppgaveContext()
 
   const { execute, state } = useActionState()
 

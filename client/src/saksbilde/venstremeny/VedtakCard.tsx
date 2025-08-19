@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { putVedtak } from '../../io/http'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
@@ -18,6 +17,7 @@ import { mutateSak } from '../mutateSak.ts'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
+import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 
@@ -35,13 +35,13 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const { sakId } = sak
 
   const innloggetAnsatt = useInnloggetAnsatt()
-  const [loading, setLoading] = useState(false)
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(sakId, 'sak_overført_gosys_v1')
-  const { endreOppgavetildeling } = useOppgaveActions()
+  const oppgaveActions = useOppgaveActions()
+  const sakActions = useSakActions()
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -49,19 +49,14 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     },
   })
 
-  const opprettVedtak = async (data: VedtakFormValues) => {
-    const { problemsammendrag } = data
-    setLoading(true)
-    await putVedtak(sakId, problemsammendrag).catch(() => setLoading(false))
-    setLoading(false)
+  const fattVedtak = async (data: VedtakFormValues) => {
+    await sakActions.fattVedtak(data.problemsammendrag)
     setVisVedtakModal(false)
     return mutateSak(sakId)
   }
 
   const overtaSak = async () => {
-    setLoading(true)
-    await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
-    setLoading(false)
+    await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
     setVisOvertaSakModal(false)
     return mutateSak(sakId)
   }
@@ -142,7 +137,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
               open={visOvertaSakModal}
               saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
               onBekreft={() => overtaSak()}
-              loading={loading}
+              loading={oppgaveActions.state.loading}
               onClose={() => setVisOvertaSakModal(false)}
             />
             <OppgavetildelingKonfliktModal
@@ -193,11 +188,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       </Knappepanel>
       <BekreftelseModal
         heading="Vil du innvilge søknaden?"
-        loading={loading}
+        loading={sakActions.state.loading}
         open={visVedtakModal}
         width="700px"
         bekreftButtonLabel="Innvilg søknaden"
-        onBekreft={form.handleSubmit(opprettVedtak)}
+        onBekreft={form.handleSubmit(fattVedtak)}
         onClose={() => setVisVedtakModal(false)}
       >
         <Brødtekst spacing>

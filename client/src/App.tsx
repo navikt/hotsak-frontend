@@ -15,6 +15,7 @@ import { FilterProvider } from './oppgavebenk/FilterContext'
 import { PersonProvider } from './personoversikt/PersonContext'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
+import { Theme } from '@navikt/ds-react'
 
 const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
 const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
@@ -146,7 +147,9 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
     <BrowserRouter>
       <SWRConfig value={swrConfig}>
         <TilgangProvider>
-          <Component />
+          <Theme theme="light">
+            <Component />
+          </Theme>
         </TilgangProvider>
       </SWRConfig>
     </BrowserRouter>

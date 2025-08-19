@@ -29,7 +29,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
       <ProduktCard
         key={alternativtProdukt.id}
         borderWidth="1"
-        borderColor="border-subtle"
+        //borderColor="border-subtle"
         borderRadius="large"
         padding="4"
         selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}
@@ -87,7 +87,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
   )
 }
 
-const ProduktCard = styled(Box)<{ selected?: boolean }>`
+const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
   border: ${({ selected }) => selected && '4px solid var(--a-border-selected)'};
   margin: ${({ selected }) => selected && '-3px'};
 `

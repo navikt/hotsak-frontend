@@ -14,9 +14,9 @@ export function FrittStåendeTilbehør({ tilbehør, produkter }: { tilbehør: Ti
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
         return (
-          <Box key={idx} background="surface-subtle" padding="4">
+          <Box.New key={idx} background="neutral-soft" padding="4">
             <Tilbehør tilbehør={t} produkt={produkt} frittståendeTilbehør={true} />
-          </Box>
+          </Box.New>
         )
       })}
     </VStack>

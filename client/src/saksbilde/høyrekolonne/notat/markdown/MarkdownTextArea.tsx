@@ -16,16 +16,15 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
     <div>
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
-        <Box
-          background="surface-default"
+        <Box.New
           marginBlock="0 0"
           borderRadius="medium"
-          borderColor="border-default"
+          //borderColor="border-default"
           borderWidth="1"
           className="mdxEditorBox"
         >
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
-        </Box>
+        </Box.New>
       </MarkdownEditorStyling>
       {valideringsfeil && (
         <ErrorMessage showIcon size="small">

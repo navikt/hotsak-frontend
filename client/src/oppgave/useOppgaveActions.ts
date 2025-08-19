@@ -1,6 +1,9 @@
+import { useSWRConfig } from 'swr'
+
 import { Actions, useActionState } from '../action/Actions.ts'
 import { baseUrl } from '../io/http.ts'
 import { http } from '../io/HttpClient.ts'
+import { mutateSak } from '../saksbilde/mutateSak.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
 import { useOppgaveContext } from './OppgaveContext.ts'
 import type { OppgaveBase, OppgaveId } from './oppgaveTypes.ts'
@@ -39,9 +42,23 @@ export interface UseOppgaveActions extends Actions {
  * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
  */
 export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
-  const { oppgaveId = oppgave?.oppgaveId, versjon = oppgave?.versjon } = useOppgaveContext()
+  const { mutate } = useSWRConfig()
+  const {
+    oppgaveId = oppgave?.oppgaveId,
+    versjon = oppgave?.versjon,
+    sakId = oppgave?.sakId,
+    isOppgaveContext,
+  } = useOppgaveContext()
 
   const { execute, state } = useActionState()
+
+  const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgaveId}`)
+  const mutateOppgaveOgSak = () => {
+    if (sakId) {
+      return Promise.all([mutateOppgave(), mutateSak(sakId)])
+    }
+    return mutateOppgave()
+  }
 
   return {
     async endreOppgavetildeling(request) {
@@ -49,6 +66,9 @@ export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
         await http.post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, {
           versjon,
         })
+        if (isOppgaveContext) {
+          await mutateOppgaveOgSak()
+        }
       })
     },
 
@@ -57,6 +77,9 @@ export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
         await http.delete(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {
           versjon,
         })
+        if (isOppgaveContext) {
+          await mutateOppgaveOgSak()
+        }
       })
     },
 

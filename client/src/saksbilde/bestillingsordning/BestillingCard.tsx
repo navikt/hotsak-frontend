@@ -10,7 +10,6 @@ import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
-import { mutateSak } from '../mutateSak.ts'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { useSakActions } from '../useSakActions.ts'
@@ -27,7 +26,6 @@ export interface BestillingCardProps {
 }
 
 export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
-  const { sakId } = bestilling
   const innloggetAnsatt = useInnloggetAnsatt()
   const oppgaveActions = useOppgaveActions()
   const sakActions = useSakActions()
@@ -49,7 +47,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const overtaBestilling = async () => {
     await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
     setVisOvertaSakModal(false)
-    return mutateSak(sakId)
   }
 
   const godkjennBestilling = async () => {
@@ -57,13 +54,11 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     if (utleveringMerknad && !harLagretBeskjed) return
     await sakActions.godkjennBestilling(utleveringMerknad)
     setVisOpprettOrdreModal(false)
-    return mutateSak(sakId)
   }
 
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
     await sakActions.avvisBestilling(tilbakemelding)
     setVisAvvisModal(false)
-    return mutateSak(sakId)
   }
 
   if (bestilling.status === OppgaveStatusType.FERDIGSTILT) {
@@ -98,7 +93,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <TaOppgaveISakButton sakId={sakId} />
+            <TaOppgaveISakButton />
           </Knappepanel>
         )}
       </VenstremenyCard>

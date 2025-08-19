@@ -1,11 +1,12 @@
+import { contentTypeIsJson } from './response.ts'
+
 export class HttpError extends Error {
   static async reject(url: string, response: Response): Promise<never> {
     const status = response.status
     const message = `HttpError, url: '${url}', status: ${status}`
-    const contentType = response.headers.get('Content-Type') ?? ''
     try {
       let cause: unknown
-      if (contentType.startsWith('application/json')) {
+      if (contentTypeIsJson(response)) {
         cause = await response.json()
       } else {
         cause = await response.text()

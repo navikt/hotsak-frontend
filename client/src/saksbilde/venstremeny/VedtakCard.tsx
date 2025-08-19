@@ -13,7 +13,6 @@ import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.inte
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
-import { mutateSak } from '../mutateSak.ts'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
@@ -39,7 +38,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(sakId, 'sak_overført_gosys_v1')
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
   const oppgaveActions = useOppgaveActions()
   const sakActions = useSakActions()
 
@@ -52,13 +51,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const fattVedtak = async (data: VedtakFormValues) => {
     await sakActions.fattVedtak(data.problemsammendrag)
     setVisVedtakModal(false)
-    return mutateSak(sakId)
   }
 
   const overtaSak = async () => {
     await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
     setVisOvertaSakModal(false)
-    return mutateSak(sakId)
   }
 
   if (sak.status === OppgaveStatusType.HENLAGT) {
@@ -115,7 +112,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <TaOppgaveISakButton sakId={sakId} />
+            <TaOppgaveISakButton />
           </Knappepanel>
         )}
       </VenstremenyCard>

@@ -40,6 +40,7 @@ export function useActionState() {
       try {
         return await action()
       } catch (err: unknown) {
+        console.error(err)
         setError(toError(err))
       } finally {
         setLoading(false)

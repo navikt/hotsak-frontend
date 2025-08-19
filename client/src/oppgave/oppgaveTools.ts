@@ -11,7 +11,7 @@ export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
     oppgaveId: oppgave.oppgaveId,
     versjon: oppgave.versjon,
     sakId: oppgave.sakId,
-    oppgavetype: Oppgavetype.BEHANDLE_SAK, // fixme
+    oppgavetype: utledOppgavetypeForOppgave(oppgave),
     oppgavestatus: oppgavestatusByOppgaveStatusType[oppgave.status],
     tema: 'HJE',
     gjelder: oppgave.sakstype,
@@ -35,20 +35,30 @@ export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
   }
 }
 
-// const oppgavetypeByOppgaveStatusType: Record<OppgaveStatusType, Oppgavestatus> = {}
+function utledOppgavetypeForOppgave(oppgave: OppgaveV1): Oppgavetype {
+  switch (oppgave.status) {
+    case OppgaveStatusType.AVVENTER_GODKJENNER:
+    case OppgaveStatusType.TILDELT_GODKJENNER:
+      return Oppgavetype.GODKJENNE_VEDTAK
+    case OppgaveStatusType.RETURNERT: // Dette vil ikke holde siden status endres når saksbehandler1 tar oppgaven
+      return Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+    default:
+      return Oppgavetype.BEHANDLE_SAK
+  }
+}
 
 const oppgavestatusByOppgaveStatusType: Record<OppgaveStatusType, Oppgavestatus> = {
-  ALLE: Oppgavestatus.OPPRETTET, // fixme
+  ALLE: Oppgavestatus.OPPRETTET, // Skjer ikke i praksis da ingen oppgaver i lista har denne statusen
   AVSLÅTT: Oppgavestatus.FERDIGSTILT,
   AVVENTER_DOKUMENTASJON: Oppgavestatus.UNDER_BEHANDLING,
   AVVENTER_GODKJENNER: Oppgavestatus.OPPRETTET,
-  AVVENTER_JOURNALFORING: Oppgavestatus.OPPRETTET, // fixme
+  AVVENTER_JOURNALFORING: Oppgavestatus.OPPRETTET, // Skjer ikke i praksis da ingen oppgaver i lista har denne statusen
   AVVENTER_SAKSBEHANDLER: Oppgavestatus.OPPRETTET,
   AVVIST: Oppgavestatus.FERDIGSTILT,
   FERDIGSTILT: Oppgavestatus.FERDIGSTILT,
   HENLAGT: Oppgavestatus.FERDIGSTILT,
   INNVILGET: Oppgavestatus.FERDIGSTILT,
-  RETURNERT: Oppgavestatus.OPPRETTET, // fixme
+  RETURNERT: Oppgavestatus.OPPRETTET,
   SENDT_GOSYS: Oppgavestatus.FERDIGSTILT,
   TILDELT_GODKJENNER: Oppgavestatus.UNDER_BEHANDLING,
   TILDELT_SAKSBEHANDLER: Oppgavestatus.UNDER_BEHANDLING,

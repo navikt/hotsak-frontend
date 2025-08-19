@@ -16,11 +16,11 @@ export interface SaksbildeMenuProps {
 
 export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
   const { oppgave } = useOppgave()
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const [visOverførMedarbeider, setVisOverførMedarbeider] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
 
-  if (!oppgave) {
+  if (!oppgave || oppgaveErAvsluttet) {
     return null
   }
 

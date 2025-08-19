@@ -62,7 +62,7 @@ const BarnebrillesakContent = memo(() => {
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           {harSkrivetilgang && (
             <>
-              <SaksbildeMenu sakId={sak.data.sakId} spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
+              <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
               <OppgavetildelingKonfliktModal
                 open={!!visTildelingKonfliktModalForSak}
                 onClose={() => setVisTildelingKonfliktModalForSak(undefined)}

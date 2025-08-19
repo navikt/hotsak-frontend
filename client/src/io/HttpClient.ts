@@ -1,5 +1,6 @@
 import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
+import { contentTypeIsJson } from './response.ts'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -26,7 +27,11 @@ async function request<ResponseBody = unknown>(
       ...(body == null ? {} : { body: JSON.stringify(body) }),
     })
     if (response.ok) {
-      return (await response.json()) as ResponseBody
+      if (contentTypeIsJson(response)) {
+        return (await response.json()) as ResponseBody
+      } else {
+        return undefined as ResponseBody
+      }
     } else {
       return HttpError.reject(url, response)
     }

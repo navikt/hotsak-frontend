@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { useState } from 'react'
-import { useSWRConfig } from 'swr'
 
 import { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
@@ -12,18 +11,16 @@ import { OverførSakTilGosysModal } from './OverførSakTilGosysModal.tsx'
 import { useOverførSakTilGosys } from './useOverførSakTilGosys.ts'
 
 export interface SaksbildeMenuProps {
-  sakId: string
   spørreundersøkelseId: SpørreundersøkelseId
 }
 
-export function SaksbildeMenu({ sakId, spørreundersøkelseId }: SaksbildeMenuProps) {
-  const { oppgave, mutate: mutateOppgave } = useOppgave()
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
+  const { oppgave } = useOppgave()
+  const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const [visOverførMedarbeider, setVisOverførMedarbeider] = useState(false)
-  const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(sakId, spørreundersøkelseId)
-  const { mutate } = useSWRConfig()
+  const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
 
-  if (!oppgave) {
+  if (!oppgave || oppgaveErAvsluttet) {
     return null
   }
 
@@ -46,25 +43,24 @@ export function SaksbildeMenu({ sakId, spørreundersøkelseId }: SaksbildeMenuPr
         <ActionMenu.Content>
           <OppgaveMenu
             oppgave={oppgave}
-            onAction={async () => {
-              await Promise.all([mutateOppgave(), mutate(`api/sak/${sakId}`), mutate(`api/sak/${sakId}/historikk`)])
-            }}
             onSelectOverførOppgaveTilMedarbeider={() => {
               setVisOverførMedarbeider(true)
             }}
           />
-          <ActionMenu.Divider />
-          <ActionMenu.Group label="Sak">
-            {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-              <ActionMenu.Item
-                onSelect={() => {
-                  visOverførGosys()
-                }}
-              >
-                Overfør sak til Gosys
-              </ActionMenu.Item>
-            )}
-          </ActionMenu.Group>
+          {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+            <>
+              <ActionMenu.Divider />
+              <ActionMenu.Group aria-label="Saksmeny">
+                <ActionMenu.Item
+                  onSelect={() => {
+                    visOverførGosys()
+                  }}
+                >
+                  Overfør sak til Gosys
+                </ActionMenu.Item>
+              </ActionMenu.Group>
+            </>
+          )}
         </ActionMenu.Content>
       </ActionMenu>
       <OverførOppgaveTilMedarbeiderModal

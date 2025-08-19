@@ -17,6 +17,7 @@ import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { oppgaveV1ToV2 } from '../../oppgave/oppgaveTools.ts'
 import { OppgaveV1, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgavetilgang } from '../../oppgave/useOppgavetilgang.ts'
 import { useLocalState } from '../../state/useLocalState.ts'
 import { useErKunTilbehørPilot } from '../../tilgang/useTilgang.ts'
 import {
@@ -40,7 +41,6 @@ import { isError } from '../../utils/type.ts'
 import { OppgavelisteMenu } from '../OppgavelisteMenu.tsx'
 import { OppgavelisteTabs } from '../OppgavelisteTabs.tsx'
 import { TaOppgaveIOppgavelisteButton } from '../TaOppgaveIOppgavelisteButton.tsx'
-import { useOppgavetilgang } from '../useOppgavetilgang.ts'
 import { OppgavelisteFilters, OppgavelisteFiltersKey, useOppgavelisteV1 } from './useOppgavelisteV1.ts'
 import { useOppgaveStatusLabel } from './useOppgaveStatusLabel.ts'
 import { useSakerFilterLabel } from './useSakerFilterLabel.ts'
@@ -67,7 +67,7 @@ export default function OppgavelisteV1() {
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { currentPage, ...filters } = filterState
-  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error } = useOppgavelisteV1(
+  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error, mutate } = useOppgavelisteV1(
     currentPage,
     sort,
     filters
@@ -209,7 +209,16 @@ export default function OppgavelisteV1() {
       sortable: false,
       hide: !harSkrivetilgang,
       render(oppgave) {
-        return <OppgavelisteMenu oppgave={oppgaveV1ToV2(oppgave)} />
+        return (
+          <div style={{ display: 'flex' }}>
+            <OppgavelisteMenu
+              oppgave={oppgaveV1ToV2(oppgave)}
+              onAction={async () => {
+                await mutate()
+              }}
+            />
+          </div>
+        )
       },
     },
   ]
@@ -338,13 +347,7 @@ export default function OppgavelisteV1() {
                     {oppgaver.map((oppgave) => (
                       <LinkRow key={oppgave.sakId} path={utledOppgavePath(oppgave)}>
                         {kolonner.filter(filterHide).map(({ key, width, render }) => (
-                          <DataCell
-                            key={key}
-                            width={width}
-                            style={{
-                              padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
-                            }}
-                          >
+                          <DataCell key={key} width={width}>
                             {render(oppgave)}
                           </DataCell>
                         ))}

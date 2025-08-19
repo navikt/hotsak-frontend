@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { AnsattGruppe } from '../tilgang/Ansatt.ts'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 
 export function useOppgavetilgang(): { harSkrivetilgang: boolean } {
   const { grupper } = useInnloggetAnsatt()

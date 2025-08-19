@@ -3,13 +3,21 @@ import { ActionMenu, Button } from '@navikt/ds-react'
 
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
 export interface OppgavelisteMenuProps {
   oppgave: OppgaveV2
+  onAction?(): void | Promise<void>
 }
 
 export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
-  const { oppgave } = props
+  const { oppgave, onAction } = props
+
+  const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
+  if (oppgaveErAvsluttet) {
+    return null
+  }
+
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -23,7 +31,7 @@ export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
         />
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <OppgaveMenu oppgave={oppgave} />
+        <OppgaveMenu oppgave={oppgave} onAction={onAction} />
       </ActionMenu.Content>
     </ActionMenu>
   )

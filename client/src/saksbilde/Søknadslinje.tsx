@@ -28,7 +28,7 @@ export function Søknadslinje({ id }: SøknadslinjeProps) {
           <TabLink to={`${basePath}/formidler`}>Formidler</TabLink>
           {isOppgaveContext && (
             <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
-              <SaksbildeMenu sakId={id.toString()} spørreundersøkelseId="sak_overført_gosys_v1" />
+              <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />
             </div>
           )}
         </Tabs.List>

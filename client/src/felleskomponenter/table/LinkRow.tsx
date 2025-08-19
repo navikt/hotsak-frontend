@@ -1,7 +1,7 @@
+import { Table } from '@navikt/ds-react'
 import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Table } from '@navikt/ds-react'
 
 const ClickableRow = styled(Table.Row)`
   &:hover,
@@ -21,7 +21,10 @@ export function LinkRow({ path, children }: LinkRowProps) {
   return (
     <ClickableRow
       tabIndex={0}
-      onClick={() => {
+      onClick={(event) => {
+        if (event.target instanceof HTMLElement && event.target.role === 'menuitem') {
+          return
+        }
         navigate(path)
       }}
     >

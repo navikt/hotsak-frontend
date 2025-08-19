@@ -37,14 +37,11 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   useEffect(() => {
     if (aktivtUtkast) {
-      if (tittel === '') {
         setValue('tittel', aktivtUtkast.tittel)
-      }
-      if (tekst === '') {
         setValue('tekst', aktivtUtkast.tekst)
-      }
+    
     }
-  }, [aktivtUtkast, tittel, tekst, setValue])
+  }, [aktivtUtkast, setValue])
 
   const lagPayload = (data: NotatFormValues): FerdigstillNotatRequest => {
     return {

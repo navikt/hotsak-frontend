@@ -29,7 +29,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   }
 
   return (
-    <ActionMenu.Group label="Oppgave">
+    <ActionMenu.Group aria-label="Oppgavemeny">
       {oppgaveErKlarTilBehandling && (
         <ActionMenu.Item
           onSelect={async (event) => {

@@ -7,10 +7,11 @@ import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 
 export interface OppgavelisteMenuProps {
   oppgave: OppgaveV2
+  onAction?(): void | Promise<void>
 }
 
 export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
-  const { oppgave } = props
+  const { oppgave, onAction } = props
 
   const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
   if (oppgaveErAvsluttet) {
@@ -30,7 +31,7 @@ export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
         />
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <OppgaveMenu oppgave={oppgave} />
+        <OppgaveMenu oppgave={oppgave} onAction={onAction} />
       </ActionMenu.Content>
     </ActionMenu>
   )

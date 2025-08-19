@@ -1,7 +1,6 @@
 import { SortState } from '@navikt/ds-react'
-import useSwr from 'swr'
+import useSwr, { KeyedMutator } from 'swr'
 
-import { httpGet } from '../../io/http.ts'
 import { OppgaveV1, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { OmrådeFilter, OppgaveStatusType, SakerFilter, SakstypeFilter } from '../../types/types.internal.ts'
 
@@ -16,10 +15,10 @@ interface DataResponse {
   antallHaster: number
   isLoading: boolean
   error: unknown
-  mutate: (...args: any[]) => any
+  mutate: KeyedMutator<OppgavelisteResponse>
 }
 
-const basePath = 'api/oppgaver'
+const basePath = '/api/oppgaver'
 
 type QueryParams = Record<string, boolean | number | string>
 
@@ -88,16 +87,27 @@ function buildQueryParamString(queryParams: QueryParams) {
 export function useOppgavelisteV1(currentPage: number, sort: SortState, filters: OppgavelisteFilters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: OppgavelisteResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
+  const { data, error, mutate, isLoading } = useSwr<OppgavelisteResponse>(fullPath, {
+    refreshInterval: 10000,
+  })
+
+  if (!data) {
+    return {
+      oppgaver: [],
+      pageNumber: currentPage,
+      pageSize: PAGE_SIZE,
+      totalPages: 0,
+      totalElements: 0,
+      antallHaster: 0,
+      isLoading,
+      error,
+      mutate,
+    }
+  }
 
   return {
-    oppgaver: data?.data.oppgaver || [],
-    pageNumber: data?.data.pageNumber || currentPage,
-    pageSize: data?.data.pageSize || PAGE_SIZE,
-    totalPages: data?.data.totalPages || 0,
-    totalElements: data?.data.totalElements || 0,
-    antallHaster: data?.data.antallHaster || 0,
-    isLoading: !error && !data,
+    ...data,
+    isLoading,
     error,
     mutate,
   }

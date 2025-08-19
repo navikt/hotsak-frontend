@@ -1,7 +1,6 @@
 import { SortState } from '@navikt/ds-react'
-import useSwr from 'swr'
+import useSwr, { KeyedMutator } from 'swr'
 
-import { httpGet } from '../../io/http.ts'
 import { FinnOppgaverResponse, OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 
 const PAGE_SIZE = 50
@@ -14,10 +13,10 @@ interface DataResponse {
   totalElements: number
   isLoading: boolean
   error: unknown
-  mutate: (...args: any[]) => any
+  mutate: KeyedMutator<FinnOppgaverResponse>
 }
 
-const basePath = 'api/oppgaver-v2'
+const basePath = '/api/oppgaver-v2'
 
 interface PathConfigType {
   path: string
@@ -70,15 +69,26 @@ const buildQueryParamString = (queryParams: QueryParam[]) => {
 export function useOppgavelisteV2(currentPage: number, sort: SortState, filters: Filters): DataResponse {
   const { path, queryParams } = pathConfig(currentPage, sort, filters)
   const fullPath = `${path}?${buildQueryParamString(queryParams)}`
-  const { data, error, mutate } = useSwr<{ data: FinnOppgaverResponse }>(fullPath, httpGet, { refreshInterval: 10000 })
+  const { data, error, mutate, isLoading } = useSwr<FinnOppgaverResponse>(fullPath, {
+    refreshInterval: 10000,
+  })
+
+  if (!data) {
+    return {
+      oppgaver: [],
+      pageNumber: currentPage,
+      pageSize: PAGE_SIZE,
+      totalPages: 0,
+      totalElements: 0,
+      isLoading,
+      error,
+      mutate,
+    }
+  }
 
   return {
-    oppgaver: data?.data.oppgaver || [],
-    pageNumber: data?.data.pageNumber || currentPage,
-    pageSize: data?.data.pageSize || PAGE_SIZE,
-    totalPages: data?.data.totalPages || 0,
-    totalElements: data?.data.totalElements || 0,
-    isLoading: !error && !data,
+    ...data,
+    isLoading,
     error,
     mutate,
   }

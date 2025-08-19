@@ -67,7 +67,7 @@ export default function OppgavelisteV1() {
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   const { currentPage, ...filters } = filterState
-  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error } = useOppgavelisteV1(
+  const { oppgaver, pageNumber, pageSize, totalElements, antallHaster, isLoading, error, mutate } = useOppgavelisteV1(
     currentPage,
     sort,
     filters
@@ -211,7 +211,12 @@ export default function OppgavelisteV1() {
       render(oppgave) {
         return (
           <div style={{ display: 'flex' }}>
-            <OppgavelisteMenu oppgave={oppgaveV1ToV2(oppgave)} />
+            <OppgavelisteMenu
+              oppgave={oppgaveV1ToV2(oppgave)}
+              onAction={async () => {
+                await mutate()
+              }}
+            />
           </div>
         )
       },

@@ -50,7 +50,7 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <>
               <ActionMenu.Divider />
-              <ActionMenu.Group label="Sak">
+              <ActionMenu.Group aria-label="Saksmeny">
                 <ActionMenu.Item
                   onSelect={() => {
                     visOverførGosys()

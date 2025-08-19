@@ -29,7 +29,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
       <ProduktCard
         key={alternativtProdukt.id}
         borderWidth="1"
-        //borderColor="border-subtle"
+        borderColor="neutral-subtle"
         borderRadius="large"
         padding="4"
         selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}

@@ -16,13 +16,7 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
     <div>
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
-        <Box.New
-          marginBlock="0 0"
-          borderRadius="medium"
-          //borderColor="border-default"
-          borderWidth="1"
-          className="mdxEditorBox"
-        >
+        <Box.New marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
         </Box.New>
       </MarkdownEditorStyling>

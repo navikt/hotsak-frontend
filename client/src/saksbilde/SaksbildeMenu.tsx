@@ -57,7 +57,6 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
               >
                 Overfør sak til Gosys
               </ActionMenu.Item>
-              )
             </ActionMenu.Group>
           )}
         </ActionMenu.Content>

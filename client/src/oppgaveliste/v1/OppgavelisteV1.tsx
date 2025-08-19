@@ -209,7 +209,11 @@ export default function OppgavelisteV1() {
       sortable: false,
       hide: !harSkrivetilgang,
       render(oppgave) {
-        return <OppgavelisteMenu oppgave={oppgaveV1ToV2(oppgave)} />
+        return (
+          <div style={{ display: 'flex' }}>
+            <OppgavelisteMenu oppgave={oppgaveV1ToV2(oppgave)} />
+          </div>
+        )
       },
     },
   ]
@@ -338,13 +342,7 @@ export default function OppgavelisteV1() {
                     {oppgaver.map((oppgave) => (
                       <LinkRow key={oppgave.sakId} path={utledOppgavePath(oppgave)}>
                         {kolonner.filter(filterHide).map(({ key, width, render }) => (
-                          <DataCell
-                            key={key}
-                            width={width}
-                            style={{
-                              padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
-                            }}
-                          >
+                          <DataCell key={key} width={width}>
                             {render(oppgave)}
                           </DataCell>
                         ))}

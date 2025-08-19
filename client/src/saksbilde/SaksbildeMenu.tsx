@@ -47,17 +47,19 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
               setVisOverførMedarbeider(true)
             }}
           />
-          <ActionMenu.Divider />
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-            <ActionMenu.Group label="Sak">
-              <ActionMenu.Item
-                onSelect={() => {
-                  visOverførGosys()
-                }}
-              >
-                Overfør sak til Gosys
-              </ActionMenu.Item>
-            </ActionMenu.Group>
+            <>
+              <ActionMenu.Divider />
+              <ActionMenu.Group label="Sak">
+                <ActionMenu.Item
+                  onSelect={() => {
+                    visOverførGosys()
+                  }}
+                >
+                  Overfør sak til Gosys
+                </ActionMenu.Item>
+              </ActionMenu.Group>
+            </>
           )}
         </ActionMenu.Content>
       </ActionMenu>

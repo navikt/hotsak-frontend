@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Accordion, BodyShort, CopyButton, Heading, Link, Panel } from '@navikt/ds-react'
+import { Accordion, BodyShort, Box, CopyButton, Heading, Link } from '@navikt/ds-react'
 import { useStackTrace } from './useStackTrace'
 
 export interface FeilsideProps {
@@ -11,7 +11,14 @@ export interface FeilsideProps {
 export function Feilside({ statusCode, error }: FeilsideProps) {
   const stackTrace = useStackTrace(error)
   return (
-    <Feilpanel>
+    <Box.New
+      background="neutral-moderate"
+      borderColor="neutral-subtle"
+      marginBlock="space-36"
+      marginInline="space-64"
+      padding="space-16"
+      borderRadius="large"
+    >
       <Heading size="large" spacing>
         {overskrift[statusCode] || 'Teknisk feil'} | <Feilkode>Feilkode {statusCode}</Feilkode>
       </Heading>
@@ -36,14 +43,9 @@ export function Feilside({ statusCode, error }: FeilsideProps) {
           </Accordion.Item>
         </Accordion>
       )}
-    </Feilpanel>
+    </Box.New>
   )
 }
-
-const Feilpanel = styled(Panel)`
-  margin: 2rem 100px;
-  background-color: var(--a-bg-subtle);
-`
 
 const Feilkode = styled.small`
   font-weight: normal;

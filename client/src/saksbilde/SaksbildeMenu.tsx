@@ -48,8 +48,8 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
             }}
           />
           <ActionMenu.Divider />
-          <ActionMenu.Group label="Sak">
-            {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+          {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+            <ActionMenu.Group label="Sak">
               <ActionMenu.Item
                 onSelect={() => {
                   visOverførGosys()
@@ -57,8 +57,9 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
               >
                 Overfør sak til Gosys
               </ActionMenu.Item>
-            )}
-          </ActionMenu.Group>
+              )
+            </ActionMenu.Group>
+          )}
         </ActionMenu.Content>
       </ActionMenu>
       <OverførOppgaveTilMedarbeiderModal

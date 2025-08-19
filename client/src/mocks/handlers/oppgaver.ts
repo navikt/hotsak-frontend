@@ -1,13 +1,23 @@
 import { http, HttpResponse } from 'msw'
 
-import type { OppgavelisteResponse } from '../../oppgaveliste/useOppgaveliste.ts'
-import type { OppgaveApiResponse } from '../../types/experimentalTypes.ts'
-import { Oppgave, OppgaveStatusType, Oppgavetype, SakerFilter } from '../../types/types.internal'
-import type { StoreHandlersFactory } from '../data'
-import { delay, respondNoContent } from './response.ts'
-import { erSakOppgaveId, OppgaveId, oppgaveIdUtenPrefix } from '../../oppgave/oppgaveId.ts'
-import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
+import {
+  erInternOppgaveId,
+  FinnOppgaverResponse,
+  OppgaveId,
+  oppgaveIdUtenPrefix,
+  Oppgavetype,
+  OppgaveV1,
+} from '../../oppgave/oppgaveTypes.ts'
+import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
+import type { OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
+import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
+import type { StoreHandlersFactory } from '../data'
+import { delay, respondNoContent, respondNotFound } from './response.ts'
+
+export interface OppgaveParams {
+  oppgaveId: OppgaveId
+}
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
@@ -22,7 +32,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     if (oppgavetype === 'JOURNALFØRING') {
       const journalføringsoppgaver = alleOppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING)
       const totalElements = journalføringsoppgaver.length
-      const pagedOppgaver: OppgaveApiResponse = {
+      const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: journalføringsoppgaver.slice(offset, offset + pageSize),
         pageNumber,
         pageSize,
@@ -32,7 +42,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
       return HttpResponse.json(pagedOppgaver)
     } else {
       const totalElements = alleOppgaver.length
-      const pagedOppgaver: OppgaveApiResponse = {
+      const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: alleOppgaver.slice(offset, offset + pageSize),
         pageNumber,
         pageSize,
@@ -43,27 +53,37 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     }
   }),
 
+  http.get<OppgaveParams>('/api/oppgaver-v2/:oppgaveId', async ({ params }) => {
+    const { oppgaveId } = params
+    const oppgave = await oppgaveStore.hent(oppgaveId)
+    await delay(75)
+    if (!oppgave) {
+      return respondNotFound()
+    }
+    return HttpResponse.json(oppgave)
+  }),
+
   http.get<never, never, Oppgavebehandlere>('/api/oppgaver-v2/:oppgaveId/behandlere', async () => {
     const behandlere = await saksbehandlerStore.alle()
     await delay(75)
     return HttpResponse.json({ behandlere })
   }),
 
-  http.post<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.post<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erSakOppgaveId(oppgaveId)) {
+    await oppgaveStore.tildel(oppgaveId)
+    if (!erInternOppgaveId(oppgaveId)) {
       await sakStore.tildel(oppgaveIdUtenPrefix(oppgaveId))
-    } else {
-      await oppgaveStore.tildel(oppgaveId)
     }
     await delay(200)
     return respondNoContent()
   }),
 
-  http.delete<{ oppgaveId: OppgaveId }>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.delete<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
-    if (erSakOppgaveId(oppgaveId)) {
-      await sakStore.frigi(oppgaveIdUtenPrefix(oppgaveId))
+    await oppgaveStore.fjernTildeling(oppgaveId)
+    if (!erInternOppgaveId(oppgaveId)) {
+      await sakStore.fjernTildeling(oppgaveIdUtenPrefix(oppgaveId))
     }
     await delay(200)
     return respondNoContent()
@@ -101,7 +121,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
     const filterApplied = oppgaver.length !== filtrerteOppgaver.length
 
-    const haster = (oppgave: Oppgave) => oppgave.hast?.årsaker?.length || 0
+    const haster = (oppgave: OppgaveV1) => oppgave.hast?.årsaker?.length || 0
 
     const response: OppgavelisteResponse = {
       oppgaver: !filterApplied ? oppgaver.slice(startIndex, endIndex) : filtrerteOppgaver.slice(startIndex, endIndex),

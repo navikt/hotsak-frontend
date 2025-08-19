@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { http } from './HttpClient.ts'
 import { HttpError } from './HttpError.ts'
 
 export interface Resultat<T> {
@@ -8,13 +9,19 @@ export interface Resultat<T> {
   loading?: boolean
 }
 
-export function usePost<B, T>(url: string): { post(body: B): Promise<void>; reset(): void } & Resultat<T> {
-  const [[resultat, loading], setResultat] = useState<[Resultat<T>, boolean]>([{}, false])
+export function usePost<RequestBody, ResponseBody>(
+  url: string
+): { post(body: RequestBody): Promise<void>; reset(): void } & Resultat<ResponseBody> {
+  const [[resultat, loading], setResultat] = useState<[Resultat<ResponseBody>, boolean]>([{}, false])
   return {
     async post(body) {
       setResultat([{}, true])
-      const resultat = await http.post<B, T>(url, body)
-      setResultat([resultat, false])
+      try {
+        const data = await http.post<RequestBody, ResponseBody>(url, body)
+        return setResultat([{ data }, false])
+      } catch (err: unknown) {
+        return setResultat([{ error: HttpError.wrap(err) }, false])
+      }
     },
     reset() {
       setResultat([{}, false])
@@ -22,32 +29,4 @@ export function usePost<B, T>(url: string): { post(body: B): Promise<void>; rese
     ...resultat,
     loading,
   }
-}
-
-export const http = {
-  async post<B, T>(path: string, body: B): Promise<Resultat<T>> {
-    try {
-      const response = await fetch(path, {
-        method: 'post',
-        cache: 'no-store',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify(body),
-      })
-      if (response.ok) {
-        const data = await response.json()
-        return { data }
-      }
-      return {
-        error: HttpError.kallFeilet(path, response),
-      }
-    } catch (err: unknown) {
-      return {
-        error: HttpError.wrap(err),
-      }
-    }
-  },
 }

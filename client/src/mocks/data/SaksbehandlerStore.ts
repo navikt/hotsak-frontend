@@ -36,8 +36,8 @@ export class SaksbehandlerStore extends Dexie {
         }),
         lagSaksbehandler({
           id: 'V123456',
-          navn: 'Les Visningrud',
-          epost: 'les.visningrud@nav.no',
+          navn: 'Lese Visningsrud',
+          epost: 'lese.visningsrud@nav.no',
           grupper: [AnsattGruppe.HOTSAK_BRUKERE, AnsattGruppe.HOTSAK_NASJONAL],
         }),
       ])

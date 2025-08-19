@@ -21,6 +21,9 @@ export default defineConfig({
       AZURE_OPENID_CONFIG_ISSUER: 'test',
       AZURE_OPENID_CONFIG_JWKS_URI: 'http://azure.test/keys',
       AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: 'http://azure.test/token',
+
+      NAIS_TOKEN_EXCHANGE_ENDPOINT: 'http://nais.token/exchange',
+      NAIS_TOKEN_INTROSPECTION_ENDPOINT: 'http://nais.token/introspection',
     },
   },
 })

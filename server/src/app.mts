@@ -1,10 +1,12 @@
-import { logger } from './logging.mjs'
-import { ipAddressFromRequest } from './ipAddressFromRequest.mjs'
-import { reverseProxy } from './reverseProxy.mjs'
 import express, { ErrorRequestHandler } from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { getToken, validateAzureToken } from '@navikt/oasis'
+import { logger } from './logging.mjs'
+import { ipAddressFromRequest, tokenFromRequest } from './request.mjs'
+
+import { isSuccess } from './result.mjs'
+import { reverseProxy } from './reverseProxy.mjs'
+import { validateToken } from './texas.mjs'
 import { tryDecodeJwt } from './tryDecodeJwt.mjs'
 
 const app = express()
@@ -44,20 +46,20 @@ app.use('/{*splat}', async (req, res, next) => {
     return next()
   }
 
-  const token = getToken(req)
+  const token = tokenFromRequest(req)
   if (!token) {
     logger.stdout.debug("Token mangler, redirect til '/oauth2/login'")
     return res.redirect('/oauth2/login')
   }
 
-  const validation = await validateAzureToken(token)
-  if (validation.ok) {
+  const response = await validateToken(token)
+  if (isSuccess(response)) {
     return next()
   }
 
   const navIdent = tryDecodeJwt(token).NAVident || 'unknown'
   const message = `Ugyldig token for navIdent: ${navIdent}, koblet til via: ${ipAddressFromRequest(req)}`
-  logger.stdout.warn(new Error(message, { cause: validation.error }))
+  logger.stdout.warn(new Error(message, { cause: response.error }))
 
   res.sendStatus(401)
 })

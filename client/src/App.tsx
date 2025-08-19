@@ -1,33 +1,27 @@
 import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { useParams } from 'react-router'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, SWRConfiguration } from 'swr'
 
-import { RequireAuth } from './RequireAuth'
-import { DokumentProvider } from './dokument/DokumentContext'
-import { Feilside } from './feilsider/Feilside'
-import { GlobalFeilside } from './feilsider/GlobalFeilside'
-import { Eksperiment } from './felleskomponenter/Eksperiment'
-import { Toppmeny } from './header/Toppmeny'
-import { OppgaveProvider } from './oppgave/OppgaveProvider.tsx'
-import { FilterProvider } from './oppgavebenk/FilterContext'
-import { PersonProvider } from './personoversikt/PersonContext'
+import { Feilside } from './feilsider/Feilside.tsx'
+import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
+import { Toppmeny } from './header/Toppmeny.tsx'
+import { http } from './io/HttpClient.ts'
+import { OppgaveTitle } from './OppgaveTitle.tsx'
+import { PersonProvider } from './personoversikt/PersonContext.tsx'
+import { RequireAuth } from './RequireAuth.tsx'
+import { SakTitle } from './SakTitle.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
-import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy'
+import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { Theme } from '@navikt/ds-react'
 
-const Dokumentliste = lazy(() => import('./oppgaveliste/dokumenter/Dokumentliste'))
-const ManuellJournalføring = lazy(() => import('./journalføring/ManuellJournalføring'))
-const Oppgavebenk = lazy(() => import('./oppgavebenk/Oppgavebenk'))
-const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste'))
-const Personoversikt = lazy(() => import('./personoversikt/Personoversikt'))
-const Saksbilde = lazy(() => import('./saksbilde/Saksbilde'))
+const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
+const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
+const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
+const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
+const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
-  const SakTitle = () => (
-    <title>{`Hotsak - Sak ${useParams<{ saksnummer: string }>().saksnummer?.toString() || ''}`}</title>
-  )
   return (
     <ErrorBoundary FallbackComponent={GlobalFeilside}>
       <PersonProvider>
@@ -36,7 +30,6 @@ function App() {
           <Utviklingsverktøy />
           <ErrorBoundary FallbackComponent={GlobalFeilside}>
             <Suspense fallback={<div />}>
-              {/*<Varsler />*/}
               <main>
                 <Routes>
                   <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
@@ -49,35 +42,29 @@ function App() {
                     }
                   />
                   <Route
-                    path="/oppgaveliste/dokumenter"
+                    path="/journalforing"
                     element={
                       <RequireAuth>
-                        <title>Hotsak - Journalføringsliste</title>
-                        <Dokumentliste />
+                        <title>Hotsak - Journalføringsoppgaver</title>
+                        <Journalføringsoppgaver />
                       </RequireAuth>
                     }
                   />
                   <Route
-                    path="/oppgaveliste/dokumenter/:journalpostId"
-                    element={
-                      <RequireAuth>
-                        <title>Hotsak - Journalføring</title>
-                        <OppgaveProvider>
-                          <DokumentProvider>
-                            <ManuellJournalføring />
-                          </DokumentProvider>
-                        </OppgaveProvider>
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/sak/:saksnummer/*"
+                    path="/sak/:sakId/*"
                     element={
                       <RequireAuth>
                         <SakTitle />
-                        <OppgaveProvider>
-                          <Saksbilde />
-                        </OppgaveProvider>
+                        <Saksbilde />
+                      </RequireAuth>
+                    }
+                  />
+                  <Route
+                    path="/oppgave/:oppgaveId/*"
+                    element={
+                      <RequireAuth>
+                        <OppgaveTitle />
+                        <Oppgave />
                       </RequireAuth>
                     }
                   />
@@ -90,20 +77,6 @@ function App() {
                       </RequireAuth>
                     }
                   />
-
-                  <Route
-                    path="/oppgavebenk"
-                    element={
-                      <RequireAuth>
-                        <title>Hotsak - Oppgavebenk</title>
-                        <Eksperiment>
-                          <FilterProvider>
-                            <Oppgavebenk />
-                          </FilterProvider>
-                        </Eksperiment>
-                      </RequireAuth>
-                    }
-                  />
                   <Route path="*" element={<Feilside statusCode={404} />} />
                 </Routes>
               </main>
@@ -111,8 +84,6 @@ function App() {
           </ErrorBoundary>
         </div>
       </PersonProvider>
-
-      {/*<Toasts />*/}
     </ErrorBoundary>
   )
 }
@@ -120,26 +91,7 @@ function App() {
 function withRoutingAndState(Component: ComponentType): () => ReactNode {
   const swrConfig: SWRConfiguration = {
     async fetcher(...args) {
-      const response = await fetch(args[0], {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-      })
-      if (response.ok) {
-        return response.json()
-      }
-      try {
-        const contentType = response.headers.get('Content-Type') ?? ''
-        if (contentType.startsWith('application/json')) {
-          return Promise.reject(await response.json())
-        } else {
-          return Promise.reject(await response.text())
-        }
-      } catch (e: unknown) {
-        return Promise.reject(e)
-      }
+      return http.get(args[0])
     },
   }
 

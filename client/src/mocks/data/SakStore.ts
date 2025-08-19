@@ -8,11 +8,11 @@ import {
   Kjønn,
   MålformType,
   OppdaterVilkårRequest,
-  Oppgave,
   OppgaveStatusType,
   Sak,
   Saksdokument,
   SaksdokumentType,
+  Saksoversikt,
   Sakstype,
   StegType,
   Totrinnskontroll,
@@ -27,7 +27,7 @@ import { formaterNavn } from '../../utils/formater'
 import { enheter } from './enheter'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { EndreOppgavetildelingRequest } from '../../oppgave/OppgaveService.ts'
+import { EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -51,6 +51,7 @@ import {
 import { JournalpostStore } from './JournalpostStore.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { nåIso } from './felles.ts'
+import { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -76,7 +77,7 @@ export class SakStore extends Dexie {
     this.version(1).stores({
       brevtekst: 'sakId',
       hendelser: '++id,sakId',
-      saker: 'sakId',
+      saker: 'sakId,bruker.fnr',
       saksdokumenter: '++id,sakId',
       vilkår: '++id,vilkårsvurderingId',
       vilkårsgrunnlag: 'sakId',
@@ -94,9 +95,17 @@ export class SakStore extends Dexie {
       lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
+      lagHjelpemiddelsak(Sakstype.SØKNAD),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
       lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagHjelpemiddelsak(Sakstype.BESTILLING),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
       lagBarnebrillesak(),
       lagBarnebrillesak(),
       lagBarnebrillesak(),
@@ -132,17 +141,20 @@ export class SakStore extends Dexie {
     return this.saker.toArray()
   }
 
-  async oppgaver(): Promise<Oppgave[]> {
+  async oppgaver(): Promise<OppgaveV1[]> {
     const saker = await this.alle()
-    return saker.map<Oppgave>(({ bruker, ...sak }) => {
+    return saker.map<OppgaveV1>(({ bruker, ...sak }) => {
       let sakstype = sak.sakstype
       let funksjonsnedsettelser = ['bevegelse']
       if (sakstype === Sakstype.BARNEBRILLER) {
         sakstype = Sakstype.TILSKUDD
         funksjonsnedsettelser = ['syn']
       }
+      const sakId = sak.sakId
       return {
-        sakId: sak.sakId,
+        oppgaveId: `E-${sakId}`,
+        versjon: 1,
+        sakId,
         sakstype,
         status: sak.status,
         statusEndret: sak.statusEndret,
@@ -232,7 +244,7 @@ export class SakStore extends Dexie {
     return 204
   }
 
-  async frigi(sakId: string) {
+  async fjernTildeling(sakId: string) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
@@ -268,8 +280,6 @@ export class SakStore extends Dexie {
         this.oppdaterSak(sak.sakId, {
           status: status,
         })
-        // this.lagreHendelse(sak.sakId, `Saksstatus endret: ${OppgaveStatusLabel.get(status)}`)
-        // this.lagreHendelse(sak.sakId, 'Brev sendt', 'Innhente opplysninger')
       })
       return true
     }
@@ -476,6 +486,24 @@ export class SakStore extends Dexie {
         })
       })
       return true
+    }
+  }
+
+  async saksoversikt(fnr: string): Promise<Saksoversikt> {
+    const saker = await this.saker.where('bruker.fnr').equals(fnr).toArray()
+    return {
+      hotsakSaker: saker.map((sak) => ({
+        sakId: sak.sakId,
+        sakstype: sak.sakstype,
+        mottattDato: sak.opprettet,
+        status: sak.status,
+        statusEndretDato: sak.statusEndret,
+        søknadGjelder: sak.søknadGjelder,
+        saksbehandler: sak.saksbehandler?.navn,
+        område: [],
+        fagsystem: 'HOTSAK',
+      })),
+      barnebrilleSaker: [],
     }
   }
 

@@ -1,19 +1,18 @@
-import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
-import styled from 'styled-components'
-import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
 import { memo, Suspense, useState } from 'react'
+import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
+import styled from 'styled-components'
 
-import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
-import { MenyKnapp } from '../../oppgaveliste/kolonner/MenyKnapp'
+import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
+import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
-import { LasterPersonlinje } from '../Personlinje'
-import { TildelingKonfliktModal } from '../TildelingKonfliktModal.tsx'
 import { StatusTag } from '../komponenter/StatusTag'
+import { LasterPersonlinje } from '../Personlinje'
+import { SaksbildeMenu } from '../SaksbildeMenu.tsx'
 import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakSidebar } from './BarnebrillesakSidebar'
 import { ManuellSaksbehandlingProvider, useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
@@ -35,7 +34,7 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
-  const { sak, isError, mutate } = useBarnebrillesak()
+  const { sak, isError } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
@@ -63,17 +62,8 @@ const BarnebrillesakContent = memo(() => {
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           {harSkrivetilgang && (
             <>
-              <MenyKnapp
-                sakId={sak.data.sakId}
-                tildeltSaksbehandler={sak.data.saksbehandler}
-                status={sak.data.status}
-                kanTildeles={sak.kanTildeles}
-                setKonfliktModalOpen={setVisTildelingKonfliktModalForSak}
-                onMutate={mutate}
-                knappeTekst="Meny"
-                knappeIkon={<ChevronDownIcon />}
-              />
-              <TildelingKonfliktModal
+              <SaksbildeMenu sakId={sak.data.sakId} spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
+              <OppgavetildelingKonfliktModal
                 open={!!visTildelingKonfliktModalForSak}
                 onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
                 saksbehandler={sak.data.saksbehandler}

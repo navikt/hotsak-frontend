@@ -1,11 +1,13 @@
 import '@mdxeditor/editor/style.css'
 import { Box, List, Loader, ReadMore, ToggleGroup, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+
+import { FilterChips } from '../../../felleskomponenter/filter/FilterChips.tsx'
+import type { FilterOption } from '../../../felleskomponenter/filter/filterTypes.ts'
 import { Brødtekst, Etikett, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { FilterChips } from '../../../oppgaveliste/filter/filter.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
-import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
+import { InterntNotatForm } from './InterntNotatForm.tsx'
 import { NotatCard } from './NotatCard.tsx'
 import { useNotater } from './useNotater.tsx'
 
@@ -22,7 +24,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
   const { notater, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
   const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
 
-  const filterOptions = [
+  const filterOptions: FilterOption[] = [
     { key: 'ALLE', label: 'Alle' },
     { key: NotatType.INTERNT.toString(), label: 'Internt arbeidsnotat' },
     { key: NotatType.JOURNALFØRT.toString(), label: 'Forvaltningsnotat' },

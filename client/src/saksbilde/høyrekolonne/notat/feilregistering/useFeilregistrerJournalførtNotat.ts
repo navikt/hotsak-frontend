@@ -3,7 +3,7 @@ import { useSWRConfig } from 'swr'
 import { ISvar, Tilbakemelding } from '../../../../innsikt/Besvarelse'
 import { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelser'
 import { baseUrl, post } from '../../../../io/http'
-import { useServiceState } from '../../../../service/Service'
+import { useActionState } from '../../../../action/Actions.ts'
 import { Notat, NotatType } from '../../../../types/types.internal'
 
 export interface FeilregistrerJournalførtNotatModalProps {
@@ -22,7 +22,7 @@ export function useFeilregistrerJournalførtNotat(
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const { execute } = useServiceState()
+  const { execute } = useActionState()
 
   const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
     return execute(async () => {

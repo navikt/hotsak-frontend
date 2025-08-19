@@ -6,7 +6,7 @@ import { useSWRConfig } from 'swr'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { baseUrl, del } from '../../../io/http.ts'
-import { useServiceState } from '../../../service/Service.ts'
+import { useActionState } from '../../../action/Actions.ts'
 import { Notat } from '../../../types/types.internal.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 
@@ -20,7 +20,7 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const { mutate } = useSWRConfig()
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
-  const { execute, state: sletterUtkast } = useServiceState()
+  const { execute, state: sletterUtkast } = useActionState()
 
   const slettNotatUtkast = async (sakId: string, notatId: string) => {
     return execute(async () => {

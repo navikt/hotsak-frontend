@@ -4,21 +4,20 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { putAvvisBestilling, putFerdigstillBestilling } from '../../io/http'
-import { IkkeTildelt } from '../../oppgaveliste/kolonner/IkkeTildelt'
+import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
+import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { mutateSak } from '../mutateSak.ts'
-import { OvertaSakModal } from '../OvertaSakModal'
+import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
+import { useSakActions } from '../useSakActions.ts'
+import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from '../venstremeny/VenstremenyCard'
 import { AvvisBestillingModal } from './AvvisBestillingModal'
 import { BekreftAutomatiskOrdre } from './Modal'
-import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
-import { useOppgaveService } from '../../oppgave/OppgaveService.ts'
-import { useOppgaveContext } from '../../oppgave/OppgaveContext.ts'
 
 export interface BestillingCardProps {
   bestilling: Sak
@@ -30,9 +29,9 @@ export interface BestillingCardProps {
 export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const { sakId } = bestilling
   const innloggetAnsatt = useInnloggetAnsatt()
-  const { endreOppgavetildeling } = useOppgaveService()
+  const oppgaveActions = useOppgaveActions()
+  const sakActions = useSakActions()
   const { behovsmelding } = useBehovsmelding()
-  const [loading, setLoading] = useState(false)
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
   const [harLagretBeskjed, setHarLagretBeskjed] = useState(false)
   const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
@@ -40,7 +39,6 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
-  const { oppgaveId, versjon } = useOppgaveContext()
 
   const lagreUtleveringMerknad = (merknad: string) => {
     setSubmitAttempt(false)
@@ -48,32 +46,22 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     setHarLagretBeskjed(true)
   }
 
-  const ferdigstillBestilling = async () => {
-    setSubmitAttempt(true)
-
-    if (utleveringMerknad && !harLagretBeskjed) {
-      return
-    }
-
-    setLoading(true)
-    await putFerdigstillBestilling(sakId, { oppgaveId, versjon }, utleveringMerknad).catch(() => setLoading(false))
-    setLoading(false)
-    setVisOpprettOrdreModal(false)
-    return mutateSak(sakId)
-  }
-
   const overtaBestilling = async () => {
-    setLoading(true)
-    await endreOppgavetildeling({ overtaHvisTildelt: true }).catch(() => setLoading(false))
-    setLoading(false)
+    await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
     setVisOvertaSakModal(false)
     return mutateSak(sakId)
   }
 
+  const godkjennBestilling = async () => {
+    setSubmitAttempt(true)
+    if (utleveringMerknad && !harLagretBeskjed) return
+    await sakActions.godkjennBestilling(utleveringMerknad)
+    setVisOpprettOrdreModal(false)
+    return mutateSak(sakId)
+  }
+
   const avvisBestilling = async (tilbakemelding: AvvisBestilling) => {
-    setLoading(true)
-    await putAvvisBestilling(sakId, { oppgaveId, versjon }, tilbakemelding).catch(() => setLoading(false))
-    setLoading(false)
+    await sakActions.avvisBestilling(tilbakemelding)
     setVisAvvisModal(false)
     return mutateSak(sakId)
   }
@@ -110,7 +98,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
         {!lesevisning && (
           <Knappepanel>
-            <IkkeTildelt sakId={sakId} gåTilSak={false}></IkkeTildelt>
+            <TaOppgaveISakButton sakId={sakId} />
           </Knappepanel>
         )}
       </VenstremenyCard>
@@ -131,12 +119,12 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
             </Button>
           </Knappepanel>
         )}
-        <OvertaSakModal
+        <OvertaOppgaveModal
           open={visOvertaSakModal}
           saksbehandler={bestilling?.saksbehandler?.navn || '<Ukjent>'}
           type="bestilling"
           onBekreft={() => overtaBestilling()}
-          loading={loading}
+          loading={oppgaveActions.state.loading}
           onClose={() => setVisOvertaSakModal(false)}
         />
       </VenstremenyCard>
@@ -179,19 +167,19 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
         </Button>
       </Knappepanel>
       {
-        /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke
-        
+        /* Foreløpig kommentert ut frem til vi vet om vi skal tilby "manuelle ordre" eller ikke.
         harVarsler ? (
         <BekreftManuellOrdre
           open={visOpprettOrdreModal}
           onBekreft={() => ferdigstillBestilling()}
           loading={loading}
           onClose={() => setVisOpprettOrdreModal(false)}
-        />*/
+        />
+        */
         <BekreftAutomatiskOrdre
           open={visOpprettOrdreModal}
-          onBekreft={() => ferdigstillBestilling()}
-          loading={loading}
+          onBekreft={() => godkjennBestilling()}
+          loading={sakActions.state.loading}
           onClose={() => setVisOpprettOrdreModal(false)}
           error={submitAttempt && !harLagretBeskjed}
           harLagretBeskjed={harLagretBeskjed}
@@ -200,11 +188,10 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
           onEndre={() => setHarLagretBeskjed(false)}
         />
       }
-
       <AvvisBestillingModal
         open={visAvvisModal}
         onBekreft={(tilbakemelding) => avvisBestilling(tilbakemelding)}
-        loading={loading}
+        loading={sakActions.state.loading}
         onClose={() => setVisAvvisModal(false)}
       />
     </VenstremenyCard>

@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
 import { MenuGridIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
+import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
-import { Søk } from './Søk'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
+import { Søk } from './Søk'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -23,6 +24,7 @@ export function Toppmeny() {
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
+  const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
 
   return (
     <InternalHeader>
@@ -50,6 +52,18 @@ export function Toppmeny() {
             </ActionMenu.Item>
             <ActionMenu.Item as="a" href="https://app.adeo.no/modiapersonoversikt" target="_new">
               Modia
+            </ActionMenu.Item>
+          </ActionMenu.Group>
+          <ActionMenu.Divider />
+          <ActionMenu.Group label="Oppgaveintegrasjon">
+            <ActionMenu.Item
+              as="a"
+              href="/"
+              onClick={() => {
+                setNyOppgaveliste(!nyOppgaveliste)
+              }}
+            >
+              {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
             </ActionMenu.Item>
           </ActionMenu.Group>
         </ActionMenu.Content>

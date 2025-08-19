@@ -1,26 +1,27 @@
-import useSwr from 'swr'
+import useSwr, { KeyedMutator } from 'swr'
 
-import { httpGet } from '../io/http'
-
+import type { HttpError } from '../io/HttpError.ts'
 import type { Journalpost } from '../types/types.internal'
 
-interface JournalpostResponse {
+export interface JournalpostResponse {
   journalpost: Journalpost | undefined
+  error?: HttpError
+  mutate: KeyedMutator<Journalpost>
   isLoading: boolean
-  isError: any
-  mutate: (...args: any[]) => any
 }
 
 export function useJournalpost(journalpostId?: string): JournalpostResponse {
-  const { data, error, mutate } = useSwr<{ data: Journalpost }>(
-    journalpostId ? `api/journalpost/${journalpostId}` : journalpostId,
-    httpGet
-  )
+  const {
+    data: journalpost,
+    error,
+    mutate,
+    isLoading,
+  } = useSwr<Journalpost, HttpError>(journalpostId ? `/api/journalpost/${journalpostId}` : null)
 
   return {
-    journalpost: data?.data,
-    isLoading: !error && !data,
-    isError: error,
+    journalpost,
+    error,
     mutate,
+    isLoading,
   }
 }

@@ -2,7 +2,8 @@ import type { RequestHandler } from 'msw'
 import { logDebug } from '../utvikling/logDebug'
 
 export async function initMsw(): Promise<unknown> {
-  if (!window.appSettings.USE_MSW) {
+  const { USE_MSW, USE_MSW_GRUNNDATA, USE_MSW_ALTERNATIVPRODUKTER } = window.appSettings
+  if (!(USE_MSW || USE_MSW_GRUNNDATA || USE_MSW_ALTERNATIVPRODUKTER)) {
     return
   }
 
@@ -10,7 +11,9 @@ export async function initMsw(): Promise<unknown> {
 
   const { setupWorker } = await import('msw/browser')
   const { setupStore } = await import('./data')
-  const { setupHandlers } = await import('./handlers')
+  const { setupHotsakApiHandlers, setupGrunndataHandlers, setupAlternativprodukterHandlers } = await import(
+    './handlers'
+  )
 
   const store = await setupStore()
   const {
@@ -64,7 +67,12 @@ export async function initMsw(): Promise<unknown> {
     },
   }
 
-  const worker = setupWorker(...setupHandlers(store))
+  const handlers = [
+    ...(USE_MSW ? setupHotsakApiHandlers(store) : []),
+    ...(USE_MSW_GRUNNDATA ? setupGrunndataHandlers(store) : []),
+    ...(USE_MSW_ALTERNATIVPRODUKTER ? setupAlternativprodukterHandlers(store) : []),
+  ]
+  const worker = setupWorker(...handlers)
   worker.listHandlers().forEach((handler) => {
     if ((handler as RequestHandler).info) {
       logDebug((handler as RequestHandler).info.header)

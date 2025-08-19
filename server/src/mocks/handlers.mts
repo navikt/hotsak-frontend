@@ -22,6 +22,26 @@ export const handlers: RequestHandler[] = [
   }),
 
   /**
+   * Stub for NAIS_TOKEN_EXCHANGE_ENDPOINT.
+   */
+  http.post('http://nais.token/exchange', async ({ request }) => {
+    const formData = await request.formData()
+    return HttpResponse.json({
+      access_token: formData.get('user_token'),
+      expires_in: 600,
+      token_type: 'Bearer',
+    })
+  }),
+
+  /**
+   * Stub for NAIS_TOKEN_INTROSPECTION_ENDPOINT.
+   */
+  http.post('http://nais.token/introspection', async ({ request }) => {
+    const formData = await request.formData()
+    return HttpResponse.json({ active: true })
+  }),
+
+  /**
    * Stub for HOTSAK_API_URL (hm-saksbehandling).
    */
   http.get<{ sakId: string }>('http://hm-saksbehandling.test/api/sak/:sakId', async ({ params: { sakId } }) => {

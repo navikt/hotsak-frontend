@@ -14,3 +14,5 @@ declare type DeepNullable<T> = {
 
 declare type Tuple<A, B = A> = [A, B]
 declare type Triple<A, B = A, C = A> = [A, B, C]
+
+declare module '@navikt/ds-css'

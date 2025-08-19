@@ -1,29 +1,29 @@
-import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import styled from 'styled-components'
-
 import { PersonEnvelopeIcon } from '@navikt/aksel-icons'
 import { Box, Button, ExpansionCard, Heading, HStack, TextField, VStack } from '@navikt/ds-react'
-
-import { postJournalføring } from '../io/http'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter'
-import { Knappepanel } from '../felleskomponenter/Knappepanel'
 import { Kolonner } from '../felleskomponenter/Kolonner'
 import { Toast } from '../felleskomponenter/Toast'
+import { postJournalføring } from '../io/http'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
 import { usePerson } from '../personoversikt/usePerson'
 import { useJournalpost } from '../saksbilde/useJournalpost'
 import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
 import { formaterNavn } from '../utils/formater'
+import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
-import { ManuellJournalføringKnapp } from './ManuellJournalføringKnapp'
 
-export function JournalpostSkjema() {
+export interface JournalpostSkjemaProps {
+  journalpostId: string
+}
+
+export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const navigate = useNavigate()
-  const { journalpostId } = useParams<{ journalpostId: string }>()
-  const { journalpost, /*isError,*/ isLoading, mutate } = useJournalpost(journalpostId)
+  const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
@@ -60,17 +60,9 @@ export function JournalpostSkjema() {
     )
   }
 
-  const oppgave = journalpost!.oppgave
-
   return (
     <Container>
-      <ManuellJournalføringKnapp
-        oppgaveId={oppgave.oppgaveId}
-        status={oppgave.oppgavestatus}
-        tildeltSaksbehandler={journalpost?.oppgave.tildeltSaksbehandler}
-        onMutate={mutate}
-      />
-
+      <JournalføringMenu onAction={mutate} />
       <Heading level="1" size="small" spacing>
         Journalføring
       </Heading>
@@ -137,22 +129,20 @@ export function JournalpostSkjema() {
               onChange={setValgtEksisterendeSakId}
             />
           )}
-          <Box paddingBlock={'1 0'}>
-            <Knappepanel>
-              <Button
-                type="submit"
-                variant="primary"
-                size="small"
-                onClick={(e) => {
-                  e.preventDefault()
-                  journalfør()
-                }}
-                disabled={journalfører}
-                loading={journalfører}
-              >
-                {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
-              </Button>
-            </Knappepanel>
+          <Box paddingBlock="1 0">
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              onClick={(e) => {
+                e.preventDefault()
+                journalfør()
+              }}
+              disabled={journalfører}
+              loading={journalfører}
+            >
+              {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
+            </Button>
           </Box>
         </VStack>
       </form>

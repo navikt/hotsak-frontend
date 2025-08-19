@@ -1,24 +1,22 @@
-import { usePerson } from '../personoversikt/usePerson.ts'
+import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { useSaksbehandlerErTildeltSak } from '../tilgang/useSaksbehandlerErTildeltSak.ts'
 import { OppgaveStatusType } from '../types/types.internal.ts'
 
 export function useSaksregler() {
   const { data: sak } = useSak()?.sak ?? { data: undefined }
-  const { personInfo: person } = usePerson(sak?.bruker.fnr)
+  const { isOppgaveContext } = useOppgaveContext()
 
   const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
 
-  const kanBehandleSak = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
-
-  const kanEndreHmsnr = !!(saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER)
+  const kanBehandleSak =
+    isOppgaveContext && saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+  const kanEndreHmsnr =
+    isOppgaveContext && saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return {
     sakId: sak?.sakId,
     kanEndreHmsnr,
-    kanHenleggeSak(): boolean {
-      return !!(saksbehandlerErTildeltSak && person?.dødsdato)
-    },
     kanBehandleSak,
   }
 }

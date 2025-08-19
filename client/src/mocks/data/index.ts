@@ -6,14 +6,12 @@ import { JournalpostStore } from './JournalpostStore'
 import { PersonStore } from './PersonStore'
 import { SakStore } from './SakStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { SaksoversiktStore } from './SaksoversiktStore'
 import { OppgaveStore } from './OppgaveStore'
 import { EndreHjelpemiddelStore } from './EndreHjelpemiddelStore'
 import { NotatStore } from './NotatStore'
 
 export async function setupStore() {
   const hjelpemiddelStore = new HjelpemiddelStore()
-  const saksoversiktStore = new SaksoversiktStore()
   const saksbehandlerStore = new SaksbehandlerStore()
   const personStore = new PersonStore()
   const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore).use(idGenerator)
@@ -28,7 +26,6 @@ export async function setupStore() {
     hjelpemiddelStore,
     journalpostStore,
     sakStore,
-    saksoversiktStore,
     oppgaveStore,
     endreHjelpemiddelStore,
     notatStore,

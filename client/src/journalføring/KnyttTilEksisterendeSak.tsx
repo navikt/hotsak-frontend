@@ -1,11 +1,10 @@
 import { Alert, Box, Button, HStack, Radio, RadioGroup, Table } from '@navikt/ds-react'
 
-import { formaterDato } from '../utils/dato'
-
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
+import { SakstypeEtikett } from '../felleskomponenter/SakstypeEtikett.tsx'
 import { Brødtekst } from '../felleskomponenter/typografi'
 import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
-import { SakstypeEtikett } from '../oppgaveliste/kolonner/SakstypeEtikett.tsx'
+import { formaterDato } from '../utils/dato'
 
 export interface KnyttTilEksisterendeSakProps {
   åpneSaker: Saksoversikt_Sak[]

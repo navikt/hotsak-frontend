@@ -88,6 +88,6 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
 }
 
 const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
-  border: ${({ selected }) => selected && '4px solid var(--a-border-selected)'};
+  border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};
   margin: ${({ selected }) => selected && '-3px'};
 `

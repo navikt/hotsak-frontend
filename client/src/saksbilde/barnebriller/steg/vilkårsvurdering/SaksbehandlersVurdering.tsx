@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { BodyShort, Box, Detail, Heading, Label, Link, Panel, VStack } from '@navikt/ds-react'
+import { BodyShort, Box, Detail, Heading, Label, Link, VStack } from '@navikt/ds-react'
 
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { StepType, Vilkår } from '../../../../types/types.internal'
@@ -8,6 +8,7 @@ import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabC
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
 import { SaksbehandlersVurderingLesevisning } from './SaksbehandlersVurderingLesevisning'
 import { grunnlagMetadata, metadataFor } from './vilkårMetada'
+import { Merknad } from '../../../../felleskomponenter/Merknad'
 
 export function SaksbehandlersVurdering({
   sakId,
@@ -97,20 +98,7 @@ const RedigerGrunnlagLink = () => {
   )
 }
 
-const Merknad = styled.div`
-  position: relative;
-
-  &:before {
-    content: '';
-    position: absolute;
-    background-color: var(--a-border-info);
-    width: 6px;
-    height: 100%;
-    bottom: 0;
-  }
-`
-
-const SaksbehandlersVurderingPanel = styled(Panel)`
+const SaksbehandlersVurderingPanel = styled(Box.New)`
   align-items: left;
   background-color: var(--a-gray-100);
 `

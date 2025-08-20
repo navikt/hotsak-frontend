@@ -16,5 +16,5 @@ export function Venstremeny({ gap, children }: VenstremenyProps) {
 }
 
 const Container = styled(VStack)`
-  border-right: 1px solid var(--a-border-subtle);
+  border-right: 1px solid var(--ax-border-neutral-subtle);
 `

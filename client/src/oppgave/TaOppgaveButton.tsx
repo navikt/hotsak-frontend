@@ -2,7 +2,6 @@ import { Button, ButtonProps } from '@navikt/ds-react'
 import { MouseEventHandler } from 'react'
 
 import { EllipsisCell } from '../felleskomponenter/table/Celle.tsx'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
@@ -16,14 +15,7 @@ export interface TaOppgaveButtonProps {
 
 export function TaOppgaveButton(props: TaOppgaveButtonProps) {
   const { oppgave, size = 'small', variant = 'secondary', children = 'Ta oppgave', onOppgavetildeling } = props
-  const ansatt = useInnloggetAnsatt()
   const { endreOppgavetildeling, state } = useOppgaveActions(oppgave)
-
-  // todo -> sjekk at ansatt faktisk kan ta oppgaven
-
-  if (!ansatt) {
-    return null
-  }
 
   if (oppgave.tildeltSaksbehandler) {
     return <EllipsisCell minLength={15} value={oppgave.tildeltSaksbehandler.navn} />

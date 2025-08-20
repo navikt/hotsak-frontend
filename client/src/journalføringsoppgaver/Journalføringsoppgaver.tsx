@@ -28,7 +28,7 @@ export default function Journalføringsoppgaver() {
       name: 'Eier',
       width: 160,
       render(oppgave: OppgaveV2) {
-        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} kanTildeles />
       },
       accessor(verdi: OppgaveV2): string {
         return formaterNavn(verdi.tildeltSaksbehandler?.navn || '')

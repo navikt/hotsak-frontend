@@ -32,7 +32,7 @@ export default function OppgavelisteV2() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgave} kanTildeles />
       },
     },
     {

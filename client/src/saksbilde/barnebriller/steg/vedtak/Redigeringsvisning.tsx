@@ -2,9 +2,10 @@ import { Button, Detail, HStack } from '@navikt/ds-react'
 import { useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
+import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
-import { post, postBrevutkast } from '../../../../io/http'
+import { postBrevutkast } from '../../../../io/http'
 import {
   Barnebrillesak,
   Brevkode,
@@ -15,24 +16,22 @@ import {
   StepType,
   VilkårsResultat,
 } from '../../../../types/types.internal'
+import { useNotater } from '../../../høyrekolonne/notat/useNotater'
+import { useSakActions } from '../../../useSakActions.ts'
+import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
 import { useBrevtekst } from '../../brevutkast/useBrevtekst'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
 import { useBrev } from './brev/useBrev'
-import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
-import { useNotater } from '../../../høyrekolonne/notat/useNotater'
-import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
 
 interface RedigeringsvisningProps {
   sak: Barnebrillesak
-  mutate(...args: any[]): any
 }
 
 export function Redigeringsvisning(props: RedigeringsvisningProps) {
-  const { sak, mutate } = props
+  const { sak } = props
   const { setStep } = useManuellSaksbehandlingContext()
-  const [loading, setLoading] = useState(false)
   const samletVurdering = useSamletVurdering(sak)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { harUtkast: harNotatUtkast } = useNotater(sak?.sakId)
@@ -41,6 +40,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     sak.sakId,
     Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
   )
+  const sakActions = useSakActions()
   const [lagrer, setLagrer] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const brevtekst = data?.data.brevtekst
@@ -115,19 +115,6 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     }
   }
 
-  const sendTilGodkjenning = () => {
-    setLoading(true)
-    post(`/api/sak/${sak.sakId}/kontroll`, {})
-      .catch(() => {
-        setLoading(false)
-        // todo -> håndtere feil her
-      })
-      .then(() => {
-        setLoading(false)
-        mutate()
-      })
-  }
-
   return (
     <>
       {visFritekstFelt && (
@@ -182,15 +169,15 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
         </Button>
         {!manglerPåkrevdEtterspørreOpplysningerBrev && !manglerPåkrevdUtbetalingsmottakerVedInnvilgelse && (
           <Button
-            loading={loading}
-            disabled={loading}
+            loading={sakActions.state.loading}
+            disabled={sakActions.state.loading}
             size="small"
             variant="primary"
-            onClick={() => {
+            onClick={async () => {
               setSubmitAttempt(true)
 
               if ((!visFritekstFelt || valider()) && !harNotatUtkast) {
-                sendTilGodkjenning()
+                await sakActions.opprettTotrinnskontroll()
               }
             }}
           >

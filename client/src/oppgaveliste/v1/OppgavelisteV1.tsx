@@ -91,7 +91,7 @@ export default function OppgavelisteV1() {
       name: 'Eier',
       width: 155,
       render(oppgave) {
-        return <TaOppgaveIOppgavelisteButton oppgave={oppgaveV1ToV2(oppgave)} />
+        return <TaOppgaveIOppgavelisteButton oppgave={oppgaveV1ToV2(oppgave)} kanTildeles={oppgave.kanTildeles} />
       },
     },
     {

@@ -1,19 +1,17 @@
 import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { useSWRConfig } from 'swr'
 
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
-import { baseUrl, put } from '../../../../io/http'
+import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
-import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
+import { useSakActions } from '../../../useSakActions.ts'
 
 export function TotrinnskontrollForm() {
-  const [loading, setLoading] = useState(false)
-  const { mutate } = useSWRConfig()
+  const sakActions = useSakActions()
   const [visGodkjenningModal, setVisGodkjenningModal] = useState(false)
   const saksbehandler = useInnloggetAnsatt()
   const { sak } = useBarnebrillesak()
@@ -33,17 +31,8 @@ export function TotrinnskontrollForm() {
 
   const resultat = watch('resultat')
 
-  const lagreTotrinnskontroll = () => {
-    const formData = getValues()
-
-    setLoading(true)
-    put(`${baseUrl}/api/sak/${sak!.data.sakId}/kontroll`, formData)
-      .catch(() => setLoading(false))
-      .then(() => {
-        setLoading(false)
-        mutate(`/api/sak/${sak!.data.sakId}`)
-        mutate(`/api/sak/${sak!.data.sakId}/historikk`)
-      })
+  const fullførTotrinnskontroll = () => {
+    return sakActions.fullførTotrinnskontroll(getValues())
   }
 
   const totrinnskontrollMulig =
@@ -58,8 +47,9 @@ export function TotrinnskontrollForm() {
             onSubmit={methods.handleSubmit(() => {
               if (resultat === TotrinnskontrollVurdering.GODKJENT) {
                 setVisGodkjenningModal(true)
+                return Promise.resolve()
               } else {
-                lagreTotrinnskontroll()
+                return fullførTotrinnskontroll()
               }
             })}
           >
@@ -90,7 +80,7 @@ export function TotrinnskontrollForm() {
                 />
               )}
               <div>
-                <Button variant="primary" type="submit" size="small" loading={loading}>
+                <Button variant="primary" type="submit" size="small" loading={sakActions.state.loading}>
                   {resultat === TotrinnskontrollVurdering.GODKJENT ? 'Godkjenn vedtaket' : 'Returner saken'}
                 </Button>
               </div>
@@ -103,9 +93,9 @@ export function TotrinnskontrollForm() {
         bekreftButtonLabel="Godkjenn vedtak"
         open={visGodkjenningModal}
         onBekreft={() => {
-          lagreTotrinnskontroll()
+          return fullførTotrinnskontroll()
         }}
-        loading={loading}
+        loading={sakActions.state.loading}
         onClose={() => {
           setVisGodkjenningModal(false)
         }}

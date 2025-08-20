@@ -1,4 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
+import { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
+import { EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 
 import {
   Barnebrillesak,
@@ -25,9 +27,8 @@ import {
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
 import { enheter } from './enheter'
-import { PersonStore } from './PersonStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
+import { nåIso } from './felles.ts'
+import { JournalpostStore } from './JournalpostStore.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
@@ -48,10 +49,9 @@ import {
   lagVilkårsgrunnlag,
   lagVilkårsvurdering,
 } from './lagSak.ts'
-import { JournalpostStore } from './JournalpostStore.ts'
 import { lagTilfeldigNavn } from './navn.ts'
-import { nåIso } from './felles.ts'
-import { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
+import { PersonStore } from './PersonStore'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -494,7 +494,7 @@ export class SakStore extends Dexie {
     return {
       hotsakSaker: saker.map((sak) => ({
         sakId: sak.sakId,
-        sakstype: sak.sakstype,
+        sakstype: sak.sakstype === Sakstype.BARNEBRILLER ? Sakstype.TILSKUDD : sak.sakstype,
         mottattDato: sak.opprettet,
         status: sak.status,
         statusEndretDato: sak.statusEndret,

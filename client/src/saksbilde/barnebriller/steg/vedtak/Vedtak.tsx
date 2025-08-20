@@ -6,6 +6,7 @@ import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/u
 import { Brevtype, OppgaveStatusType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
+import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { useSaksdokumenter } from '../../useSaksdokumenter'
 import { useSamletVurdering } from '../../useSamletVurdering'
@@ -13,11 +14,10 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
-import { useSakId } from '../../../useSak.ts'
 
 export function Vedtak() {
   const sakId = useSakId()
-  const { sak /*, isLoading,*/, mutate } = useBarnebrillesak()
+  const { sak, mutate } = useBarnebrillesak()
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const samletVurdering = useSamletVurdering(sak?.data)
   const { setStep } = useManuellSaksbehandlingContext()
@@ -73,7 +73,7 @@ export function Vedtak() {
                 lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
               />
             )}
-            {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} mutate={mutate} />}
+            {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} />}
             {visAlertGodkjenning && (
               <Alert variant="info" size="small">
                 {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}

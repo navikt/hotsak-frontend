@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useSWRConfig } from 'swr'
 
 import { putOppdaterStatus } from '../io/http'
-import { OppgaveStatusType } from '../types/types.internal'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { OppgaveStatusType } from '../types/types.internal'
 
 export function useFortsettBehandling({ sakId, gåTilSak = false }: { sakId: string; gåTilSak: boolean }) {
   const saksbehandler = useInnloggetAnsatt()
@@ -25,8 +25,7 @@ export function useFortsettBehandling({ sakId, gåTilSak = false }: { sakId: str
           const destinationUrl = `/sak/${sakId}`
           navigate(destinationUrl)
         } else {
-          mutate(`api/sak/${sakId}`)
-          mutate(`api/sak/${sakId}/historikk`)
+          return Promise.all([mutate(`/api/sak/${sakId}`), mutate(`/api/sak/${sakId}/historikk`)])
         }
       })
   }

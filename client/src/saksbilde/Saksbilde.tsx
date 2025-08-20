@@ -5,7 +5,7 @@ import { DokumentProvider } from '../dokument/DokumentContext'
 import { AlertError } from '../feilsider/AlertError'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { usePerson } from '../personoversikt/usePerson'
-import { Sakstype } from '../types/types.internal'
+import { SakBase, Sakstype } from '../types/types.internal'
 import { Barnebrillesaksbilde } from './barnebriller/Barnebrillesaksbilde'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
@@ -38,26 +38,28 @@ const SaksbildeContent = memo(() => {
   return (
     <>
       <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
-      {(() => {
-        switch (sak.data.sakstype as Sakstype) {
-          case Sakstype.BARNEBRILLER:
-            return (
-              <DokumentProvider>
-                <Barnebrillesaksbilde />
-              </DokumentProvider>
-            )
-          case Sakstype.BESTILLING:
-          default:
-            return (
-              <DokumentProvider>
-                <Søknadsbilde />
-              </DokumentProvider>
-            )
-        }
-      })()}
+      <SakstypeSwitch sak={sak.data} />
     </>
   )
 })
+
+function SakstypeSwitch({ sak }: { sak: SakBase }) {
+  switch (sak.sakstype) {
+    case Sakstype.BARNEBRILLER:
+      return (
+        <DokumentProvider>
+          <Barnebrillesaksbilde />
+        </DokumentProvider>
+      )
+    case Sakstype.BESTILLING:
+    default:
+      return (
+        <DokumentProvider>
+          <Søknadsbilde />
+        </DokumentProvider>
+      )
+  }
+}
 
 export default function Saksbilde() {
   return (

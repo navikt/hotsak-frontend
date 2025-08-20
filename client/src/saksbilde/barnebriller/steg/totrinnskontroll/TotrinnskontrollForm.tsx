@@ -41,8 +41,8 @@ export function TotrinnskontrollForm() {
       .catch(() => setLoading(false))
       .then(() => {
         setLoading(false)
-        mutate(`api/sak/${sak!.data.sakId}`)
-        mutate(`api/sak/${sak!.data.sakId}/historikk`)
+        mutate(`/api/sak/${sak!.data.sakId}`)
+        mutate(`/api/sak/${sak!.data.sakId}/historikk`)
       })
   }
 

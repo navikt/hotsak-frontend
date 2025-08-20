@@ -17,9 +17,9 @@ export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: BehovsmeldingH
       .then(() => {
         // TODO Klarer vi å hente url til det nye hjelpemidlet?
         // TODO Trenger vi å mutere saken lenger??
-        //mutate(`api/sak/${sakId}`)
+        //mutate(`/api/sak/${sakId}`)
         mutateBestilling()
-        mutate(`api/sak/${sakId}/historikk`)
+        mutate(`/api/sak/${sakId}/historikk`)
       })
     setVisEndreProdukt(false)
   }

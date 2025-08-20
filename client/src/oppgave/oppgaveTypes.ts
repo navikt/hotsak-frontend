@@ -83,6 +83,7 @@ export interface OppgaveBase {
    * NB! Journalføringsoppgaver har ikke `sakId`.
    */
   sakId?: string | number
+  sakstype?: Sakstype
 }
 
 export interface OppgaveV2 extends OppgaveBase {

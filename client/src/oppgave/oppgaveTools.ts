@@ -11,6 +11,7 @@ export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
     oppgaveId: oppgave.oppgaveId,
     versjon: oppgave.versjon,
     sakId: oppgave.sakId,
+    sakstype: oppgave.sakstype,
     oppgavetype: utledOppgavetypeForOppgave(oppgave),
     oppgavestatus: oppgavestatusByOppgaveStatusType[oppgave.status],
     tema: 'HJE',

@@ -123,7 +123,7 @@ const SaksbildeContent = memo(() => {
 })
 
 const Container = styled.section`
-  padding: 0 var(--a-spacing-4);
+  padding: 0 var(--ax-space-16);
   padding-top: 1rem;
   box-sizing: border-box;
 `

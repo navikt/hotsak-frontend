@@ -27,7 +27,7 @@ export function Søknadslinje({ id }: SøknadslinjeProps) {
           <TabLink to={`${basePath}/bruker`}>Bruker</TabLink>
           <TabLink to={`${basePath}/formidler`}>Formidler</TabLink>
           {isOppgaveContext && (
-            <div style={{ alignSelf: 'center', margin: '0 var(--a-spacing-3) 0 auto' }}>
+            <div style={{ alignSelf: 'center', margin: '0 var(--ax-space-12) 0 auto' }}>
               <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />
             </div>
           )}

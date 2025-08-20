@@ -111,5 +111,5 @@ const ToKolonner = styled.div`
 `
 
 const Container = styled.div`
-  padding-left: var(--a-spacing-6);
+  padding-left: var(--ax-space-24);
 `

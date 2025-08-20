@@ -1,21 +1,18 @@
+import { HStack, StackProps } from '@navikt/ds-react'
 import { ReactNode } from 'react'
-import styled from 'styled-components'
 
-// TODO Skrive om denne komponenten til å bruke Aksel HStack/VStack
-export function Knappepanel({ children, gap, spacing }: { children: ReactNode; gap?: string; spacing?: number }) {
+export function Knappepanel({
+  children,
+  gap,
+  marginBlock,
+}: {
+  children: ReactNode
+  gap?: StackProps['gap']
+  marginBlock?: StackProps['marginBlock']
+}) {
   return (
-    <Container $gap={gap} $spacing={spacing ? spacing : 6}>
+    <HStack gap={gap ? gap : 'space-16'} marginBlock={marginBlock ? marginBlock : 'space-24 0'}>
       {children}
-    </Container>
+    </HStack>
   )
 }
-
-const Container = styled.div<{
-  $gap?: string
-  $spacing: number
-}>`
-  display: flex;
-  justify-content: flex-start;
-  gap: ${(props) => (props.$gap ? props.$gap : 'var(--a-spacing-2)')};
-  margin-top: var(--a-spacing-${(props) => props.$spacing});
-`

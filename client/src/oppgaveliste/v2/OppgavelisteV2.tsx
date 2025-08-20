@@ -200,7 +200,7 @@ export default function OppgavelisteV2() {
                             key={key}
                             width={width}
                             style={{
-                              padding: 'var(--a-spacing-1) 0rem var(--a-spacing-1) var(--a-spacing-3)',
+                              padding: 'var(--ax-space-4) 0rem var(--ax-space-4) var(---ax-space-12)',
                             }}
                           >
                             {render(oppgave)}

@@ -37,9 +37,8 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
 
   useEffect(() => {
     if (aktivtUtkast) {
-        setValue('tittel', aktivtUtkast.tittel)
-        setValue('tekst', aktivtUtkast.tekst)
-    
+      setValue('tittel', aktivtUtkast.tittel)
+      setValue('tekst', aktivtUtkast.tekst)
     }
   }, [aktivtUtkast, setValue])
 

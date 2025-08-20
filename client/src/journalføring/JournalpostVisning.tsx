@@ -92,6 +92,6 @@ function Status({ lesevisning, onOppgavetildeling }: { lesevisning: boolean; onO
 const Container = styled.div`
   overflow: auto;
   border-right: 1px solid var(--a-border-default);
-  padding-top: var(--a-spacing-4);
-  padding-right: var(--a-spacing-4);
+  padding-top: var(--ax-space-16);
+  padding-right: var(--ax-space-16);
 `

@@ -11,7 +11,7 @@ export const Bakgrunnslagring = styled(HStack)`
   gap: 0.4rem;
   padding-top: 0.5rem;
   padding-right: 0.6rem;
-  height: var(--a-spacing-8);
+  height: var(--ax-space-32);
   margin-left: auto;
 `
 

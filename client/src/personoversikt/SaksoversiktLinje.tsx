@@ -12,7 +12,7 @@ export function SaksoversiktLinje({ sakerCount, hjelpemidlerCount }: Saksoversik
   const location = useLocation()
   return (
     <Tabs value={location.pathname}>
-      <Tabs.List style={{ padding: `0 var(--a-spacing-8)` }}>
+      <Tabs.List style={{ padding: `0 var(--ax-space-16)` }}>
         <TabLink to={`/personoversikt/saker`}>{`Saker (${sakerCount})`}</TabLink>
         <TabLink to={`/personoversikt/hjelpemidler`}>{`Utlånsoversikt (${hjelpemidlerCount})`}</TabLink>
       </Tabs.List>

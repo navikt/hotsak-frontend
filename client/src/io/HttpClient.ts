@@ -56,24 +56,24 @@ export interface HttpClient {
 }
 
 export const http: HttpClient = {
-  async get<ResponseBody = unknown>(url: string, options?: RequestOptions): Promise<ResponseBody> {
+  get<ResponseBody = unknown>(url: string, options?: RequestOptions): Promise<ResponseBody> {
     return request('GET', url, undefined, options)
   },
-  async post<RequestBody = unknown, ResponseBody = unknown>(
+  post<RequestBody = unknown, ResponseBody = unknown>(
     url: string,
     body?: RequestBody,
     options?: RequestOptions
   ): Promise<ResponseBody> {
     return request('POST', url, body, options)
   },
-  async put<RequestBody = unknown, ResponseBody = unknown>(
+  put<RequestBody = unknown, ResponseBody = unknown>(
     url: string,
     body?: RequestBody,
     options?: RequestOptions
   ): Promise<ResponseBody> {
     return request('PUT', url, body, options)
   },
-  async delete(url: string, options?: RequestOptions): Promise<void> {
+  delete(url: string, options?: RequestOptions): Promise<void> {
     return request('DELETE', url, undefined, options)
   },
 }

@@ -1,16 +1,16 @@
 import { useDebugValue } from 'react'
 import { useParams } from 'react-router'
-import useSwr from 'swr'
+import useSwr, { KeyedMutator } from 'swr'
 
-import { httpGet } from '../io/http'
-import { Sak, SakBase, SakResponse } from '../types/types.internal'
+import { HttpError } from '../io/HttpError.ts'
 import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import { Sak, SakBase, SakResponse } from '../types/types.internal'
 
 interface DataResponse<T extends SakBase> {
   sak?: SakResponse<T>
-  isLoading: boolean
   isError: any
-  mutate(...args: any[]): any
+  isLoading: boolean
+  mutate: KeyedMutator<SakResponse<T>>
 }
 
 export function useSakId(): string | undefined {
@@ -23,18 +23,19 @@ export function useSakId(): string | undefined {
 
 export function useSak<T extends SakBase = Sak>(): DataResponse<T> {
   const sakId = useSakId()
-  const { data, error, isLoading, mutate } = useSwr<{ data: SakResponse<T> }>(
-    sakId ? `api/sak/${sakId}` : null,
-    httpGet,
-    {
-      refreshInterval: 10_000,
-    }
-  )
+  const {
+    data: sak,
+    error,
+    isLoading,
+    mutate,
+  } = useSwr<SakResponse<T>, HttpError>(sakId ? `/api/sak/${sakId}` : null, {
+    refreshInterval: 10_000,
+  })
 
   return {
-    sak: data?.data,
-    isLoading: isLoading,
-    isError: error,
+    sak,
+    isError: error, // fixme -> dette høres ut som en boolean, men er en HttpError, endre til bare `error`
+    isLoading,
     mutate,
   }
 }

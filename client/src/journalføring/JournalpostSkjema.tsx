@@ -43,11 +43,11 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
     setJournalfører(true)
     postJournalføring(journalføringRequest)
       .then((opprettetSakResponse: any) => {
-        const opprettetSakID = opprettetSakResponse.data.sakId
-        if (!opprettetSakID) {
+        const opprettetSakId = opprettetSakResponse.data.sakId
+        if (!opprettetSakId) {
           throw new Error('Klarte ikke å opprette sak')
         }
-        navigate(`/sak/${opprettetSakID}`)
+        navigate(`/oppgave/S-${opprettetSakId}`)
       })
       .catch(() => setJournalfører(false))
   }

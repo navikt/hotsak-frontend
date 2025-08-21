@@ -28,6 +28,7 @@ export interface UseOppgavereglerResponse {
    * Oppgaver er under behandling av en annen ansatt.
    */
   oppgaveErUnderBehandlingAvAnnenAnsatt: boolean
+  oppgaveErPåVent: boolean
 }
 
 const initialResponse: UseOppgavereglerResponse = {
@@ -37,6 +38,7 @@ const initialResponse: UseOppgavereglerResponse = {
   oppgaveErUnderBehandling: false,
   oppgaveErUnderBehandlingAvInnloggetAnsatt: false,
   oppgaveErUnderBehandlingAvAnnenAnsatt: false,
+  oppgaveErPåVent: false,
 }
 
 export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse {
@@ -51,6 +53,7 @@ export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse 
     const oppgaveErUnderBehandling = oppgaveErÅpen && tildeltSaksbehandler != null
     const oppgaveErUnderBehandlingAvInnloggetAnsatt = oppgaveErUnderBehandling && tildeltSaksbehandler?.id === ansattId
     const oppgaveErUnderBehandlingAvAnnenAnsatt = oppgaveErUnderBehandling && tildeltSaksbehandler?.id !== ansattId
+    const oppgaveErPåVent = oppgaveErÅpen && oppgave.isPåVent === true
     return {
       oppgaveErÅpen,
       oppgaveErAvsluttet,
@@ -58,6 +61,7 @@ export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse 
       oppgaveErUnderBehandling,
       oppgaveErUnderBehandlingAvInnloggetAnsatt,
       oppgaveErUnderBehandlingAvAnnenAnsatt,
+      oppgaveErPåVent,
     }
   }, [ansattId, oppgave])
 }

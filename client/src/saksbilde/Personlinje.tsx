@@ -44,7 +44,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
           }}
           aria-live="polite"
         >
-          {`${formaterNavn(person)} (${fødselsdato && beregnAlder(fødselsdato)} år)`}
+          {fødselsdato ? `${formaterNavn(person)} (${beregnAlder(fødselsdato)} år)` : formaterNavn(person)}
         </Label>
       </Element>
       {fnr ? (

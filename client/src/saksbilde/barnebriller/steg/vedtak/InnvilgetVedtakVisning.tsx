@@ -1,7 +1,7 @@
 import { HGrid } from '@navikt/ds-react'
 import { Etikett } from '../../../../felleskomponenter/typografi'
 import { Barnebrillesak } from '../../../../types/types.internal'
-import { formaterKontonummer, formaterNavn } from '../../../../utils/formater.ts'
+import { formaterBeløp, formaterKontonummer, formaterNavn } from '../../../../utils/formater.ts'
 import { UtbetalingsmottakerAlert } from './Utbetalingsmottaker'
 
 export interface InnvilgetVedtakVisningProps {
@@ -17,9 +17,9 @@ export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
     <>
       <HGrid gap="2" columns="180px auto">
         <div>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</div>
-        <Etikett>{`${vilkårsvurdering?.data?.satsBeløp} kr`}</Etikett>
+        <Etikett>{`${formaterBeløp(vilkårsvurdering?.data?.satsBeløp)} kr`}</Etikett>
         <div>Beløp som utbetales:</div>
-        <Etikett>{vilkårsvurdering?.data?.beløp} kr</Etikett>
+        <Etikett>{formaterBeløp(vilkårsvurdering?.data?.beløp)} kr</Etikett>
         {utbetalingsmottaker?.fnr && (
           <>
             <div>Utbetales til:</div>

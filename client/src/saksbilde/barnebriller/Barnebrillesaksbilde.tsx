@@ -61,7 +61,7 @@ const BarnebrillesakContent = memo(() => {
       <Header wrap={false} align={'baseline'}>
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
-        <HStack justify="center" align="center">
+        <HStack justify="center" align="center" gap="space-16">
           <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
           {harSkrivetilgang && (
             <>

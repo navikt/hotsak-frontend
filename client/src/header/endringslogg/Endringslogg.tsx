@@ -95,7 +95,7 @@ const Ulest = styled.span<{ $fading: boolean }>`
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background-color: var(--a-icon-warning);
+    background-color: var(--ax-text-warning-decoration);
     content: '';
     visibility: ${(props) => (props.$fading ? 'hidden' : undefined)};
     opacity: ${(props) => (props.$fading ? 0 : undefined)};

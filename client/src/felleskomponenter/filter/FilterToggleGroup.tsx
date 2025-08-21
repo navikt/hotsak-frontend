@@ -18,7 +18,7 @@ export function FilterToggleGroup({ label, value, options, handleChange }: Filte
       onChange={(filterValue) => {
         handleChange(filterValue)
       }}
-      style={{ background: 'var(--a-bg-default)' }}
+      style={{ background: 'var(--ax-bg-default)' }}
     >
       {options.map((option) => {
         return <ToggleGroup.Item key={option.key} value={option.key} label={option.label} />

@@ -53,7 +53,7 @@ export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
 }
 
 const Ikon = styled.div`
-  font-size: var(--a-font-size-xlarge);
+  font-size: var(--ax-font-size-xlarge);
 `
 
 const RowCopyButton = styled(CopyButton)`

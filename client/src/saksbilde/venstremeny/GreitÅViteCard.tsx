@@ -40,7 +40,7 @@ export function GreitÅViteCard({ greitÅViteFakta }: GreitÅViteCardProps) {
 function ikon(faktumType: GreitÅViteType) {
   switch (faktumType) {
     case GreitÅViteType.ADVARSEL:
-      return <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" />
+      return <ExclamationmarkTriangleFillIcon color="var(--ax-text-warning-decoration)" />
     case GreitÅViteType.INFO:
       return <CheckmarkIcon />
     case GreitÅViteType.MERKNAD:

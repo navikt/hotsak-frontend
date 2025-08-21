@@ -3,7 +3,7 @@
   --navds-stepper-border-width: 2px;
   --navds-stepper-line-length: 1rem;
 
-  color: var(--ac-stepper-text, var(--a-surface-action));
+  color: var(--ac-stepper-text, var(--ax-bg-accent-strong));
   font-weight: normal;
   line-height: 1;
   list-style: none;
@@ -176,7 +176,7 @@ button.hot-stepper__step {
 
 /* Active step */
 :where(.hot-stepper__step--active) .hot-stepper__text__only {
-  color: var(--ac-stepper-active, var(--a-text-action-selected));
+  color: var(--ac-stepper-active, var(--ax-text-accent-subtle));
   /*border-style: solid;*/
   font-weight: bolder;
 }
@@ -190,23 +190,23 @@ button.hot-stepper__step {
 }
 
 :where(.hot-stepper__step--active) .hot-stepper__circle {
-  /* background-color: var(--ac-stepper-active-bg, var(--a-surface-action-selected));  */
+  /* background-color: var(--ac-stepper-active-bg, var(--ax-bg-accent-strong-pressed));  */
   border-color: var(--ac-stepper-active-border, var(--ax-border-accent));
-  color: var(--ac-stepper-active-text, var(--a-text-on-action));
+  color: var(--ac-stepper-active-text, var(--ax-text-accent-contrast));
 }
 
 :where(.hot-stepper__step:not(.hot-stepper__step--active):hover) .hot-stepper__circle {
-  background-color: var(--ac-stepper-hover-bg, var(--a-surface-action-subtle-hover));
+  background-color: var(--ac-stepper-hover-bg, var(--ax-bg-accent-moderate-hover));
 }
 
 :where(.hot-stepper__step:not(.hot-stepper__step--active):hover) .hot-stepper__circle--success {
-  color: var(--ac-stepper-hover-bg, var(--a-surface-action-subtle-hover));
-  background-color: var(--ac-stepper-text, var(--a-surface-action));
+  color: var(--ac-stepper-hover-bg, var(--ax-bg-accent-moderate-hover));
+  background-color: var(--ac-stepper-text, var(--ax-bg-accent-strong));
 }
 
 /* Non-interactive */
 :where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__text__only {
-  color: var(--ac-stepper-non-interactive-active, var(--a-text-default));
+  color: var(--ac-stepper-non-interactive-active, var(--ax-text-neutral));
 }
 
 .hot-stepper__step--non-interactive.hot-stepper__step--behind.hot-stepper__step--completed + .hot-stepper__line {
@@ -223,7 +223,7 @@ button.hot-stepper__step {
 :where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__circle {
   background-color: var(--ac-stepper-non-interactive-active-bg, var(--a-surface-inverted));
   border-color: var(--ac-stepper-non-interactive-active-border, var(--a-surface-inverted));
-  color: var(--ac-stepper-non-interactive-active-text, var(--a-text-on-inverted));
+  color: var(--ac-stepper-non-interactive-active-text, var(--ax-text-neutral-contrast));
 }
 */
 
@@ -237,32 +237,32 @@ button.hot-stepper__step {
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active) .hot-stepper__circle {
   background-color: inherit;
-  color: var(--ac-stepper-active-completed, var(--a-text-action-selected));
+  color: var(--ac-stepper-active-completed, var(--ax-text-accent-subtle));
 }
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active) .hot-stepper__circle--success {
-  color: var(--a-text-on-action);
-  background-color: var(--ac-stepper-active-completed, var(--a-surface-action-selected));
+  color: var(--ax-text-accent-contrast);
+  background-color: var(--ac-stepper-active-completed, var(--ax-bg-accent-strong-pressed));
 }
 
 :where(.hot-stepper__step--non-interactive, .hot-stepper__step--non-interactive:hover) .hot-stepper__circle--success {
-  color: var(--a-text-on-inverted);
-  background-color: var(--ac-stepper-non-interactive-completed-bg, var(--a-surface-neutral));
+  color: var(--ax-text-neutral-contrast);
+  background-color: var(--ac-stepper-non-interactive-completed-bg, var(--ax-bg-neutral-strong));
 }
 
 /*
 :where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__circle--success {
-   color: var(--a-text-on-inverted);
+   color: var(--ax-text-neutral-contrast);
    background-color: var(--ac-stepper-non-interactive-active-completed, var(--a-surface-inverted));
 }
 */
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active.hot-stepper__step--non-interactive)
   .hot-stepper__circle {
-  color: var(--ac-stepper-non-interactive-active-completed, var(--a-text-default));
+  color: var(--ac-stepper-non-interactive-active-completed, var(--ax-text-neutral));
 }
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active.hot-stepper__step--non-interactive)
   .hot-stepper__circle--success {
-  color: var(--ac-stepper-non-interactive-active-completed, var(--a-text-on-inverted));
+  color: var(--ac-stepper-non-interactive-active-completed, var(--ax-text-neutral-contrast));
 }

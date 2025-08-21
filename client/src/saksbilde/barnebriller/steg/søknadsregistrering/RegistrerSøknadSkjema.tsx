@@ -93,7 +93,7 @@ export function RegistrerSøknadSkjema() {
       },
       kjøptBrille: {
         vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data.kjøptBrille?.vilkårOppfylt || VilkårsResultat.JA,
-        brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris?.replace('.', ',') || '',
+        brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris?.toString()?.replace('.', ',') || '',
       },
     },
   })

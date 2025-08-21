@@ -70,7 +70,7 @@ export function Undertittel({ children }: { children: ReactNode }) {
 
 export function Mellomtittel({ children, spacing = true }: { children: ReactNode; spacing?: boolean }) {
   return (
-    <UppercaseHeading level="1" size="small" spacing={spacing}>
+    <UppercaseHeading level="1" size="xsmall" spacing={spacing}>
       {children}
     </UppercaseHeading>
   )
@@ -101,7 +101,7 @@ const FlytendeBrytbarTekst = styled(BodyLong)`
 `
 
 const UppercaseHeading = styled(Heading)`
-  color: var(--a-text-subtle);
-  font-size: var(--a-font-size-medium);
+  color: var(--ax-text-neutral-subtle);
+  font-size: var(--ax-font-size-small);
   text-transform: uppercase;
 `

@@ -80,7 +80,7 @@ button.hot-stepper__step {
 }
 
 .hot-stepper__step--non-interactive {
-  color: var(--ac-stepper-non-interactive, var(--a-text-subtle));
+  color: var(--ac-stepper-non-interactive, var(--ax-text-neutral-subtle));
   cursor: default;
 }
 

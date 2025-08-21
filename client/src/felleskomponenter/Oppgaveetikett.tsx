@@ -1,24 +1,24 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { BodyShort, HStack, Tag } from '@navikt/ds-react'
+import { BodyShort, Detail, HStack, Tag } from '@navikt/ds-react'
 import { Sakstype } from '../types/types.internal'
 import { storForbokstavIAlleOrd } from '../utils/formater'
 
 const SøknadEtikett = () => (
   <Tag variant="alt1" size="xsmall">
-    S
+    <Detail>S</Detail>
   </Tag>
 )
 
 const BestillingEtikett = () => (
   <Tag variant="alt2" size="xsmall">
-    B
+    <Detail>B</Detail>
   </Tag>
 )
 
 const TilskuddEtikett = () => (
   <Tag variant="alt3" size="xsmall">
-    T
+    <Detail>T</Detail>
   </Tag>
 )
 

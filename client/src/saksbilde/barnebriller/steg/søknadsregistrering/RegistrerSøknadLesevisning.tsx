@@ -107,7 +107,7 @@ export function RegistrerSøknadLesevisning() {
             synsundersøkelse skal ikke inkluderes i prisen.
           </HelpText>
         </HStack>
-        <Brødtekst>{vilkårsgrunnlag?.data?.brillepris || '-'}</Brødtekst>
+        <Brødtekst>{formaterBeløp(vilkårsgrunnlag?.data?.brillepris) || '-'}</Brødtekst>
       </div>
       <div>
         <HStack {...hStackProps}>

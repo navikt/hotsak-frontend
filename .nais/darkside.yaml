@@ -60,6 +60,6 @@ spec:
     - name: GIT_COMMIT
       value: {{commit}}
     - name: IMAGE_PROXY_URL
-      value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d
+      value: https://finnhjelpemiddel.nav.no/imageproxy/400d
     - name: UMAMI_ENABLED
       value: "false"

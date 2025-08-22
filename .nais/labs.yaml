@@ -7,7 +7,7 @@ metadata:
   name: hotsak-frontend-labs
   namespace: teamdigihot
 spec:
-  image: {{image}}
+  image: { { image } }
   port: 3000
   ingresses:
     - https://hotsak.ekstern.dev.nav.no
@@ -58,8 +58,8 @@ spec:
     - name: USE_MSW_GRUNNDATA
       value: "true"
     - name: GIT_COMMIT
-      value: {{commit}}
+      value: { { commit } }
     - name: IMAGE_PROXY_URL
-      value: https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d
+      value: https://finnhjelpemiddel.nav.no/imageproxy/400d
     - name: UMAMI_ENABLED
       value: "false"

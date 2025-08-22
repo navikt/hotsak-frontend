@@ -14,6 +14,7 @@ import { SakTitle } from './SakTitle.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { Theme } from '@navikt/ds-react'
+import { useDarkmode } from './header/useDarkmode.ts'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -22,69 +23,73 @@ const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
 const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
+  const [darkmode] = useDarkmode()
   return (
-    <ErrorBoundary FallbackComponent={GlobalFeilside}>
-      <PersonProvider>
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-          <Toppmeny />
-          <Utviklingsverktøy />
-          <ErrorBoundary FallbackComponent={GlobalFeilside}>
-            <Suspense fallback={<div />}>
-              <main>
-                <Routes>
-                  <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-                  <Route
-                    path="/"
-                    element={
-                      <RequireAuth>
-                        <Oppgaveliste />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/journalforing"
-                    element={
-                      <RequireAuth>
-                        <title>Hotsak - Journalføringsoppgaver</title>
-                        <Journalføringsoppgaver />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/sak/:sakId/*"
-                    element={
-                      <RequireAuth>
-                        <SakTitle />
-                        <Saksbilde />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/oppgave/:oppgaveId/*"
-                    element={
-                      <RequireAuth>
-                        <OppgaveTitle />
-                        <Oppgave />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route
-                    path="/personoversikt/*"
-                    element={
-                      <RequireAuth>
-                        <title>Hotsak - Personoversikt</title>
-                        <Personoversikt />
-                      </RequireAuth>
-                    }
-                  />
-                  <Route path="*" element={<Feilside statusCode={404} />} />
-                </Routes>
-              </main>
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-      </PersonProvider>
-    </ErrorBoundary>
+    <Theme theme={darkmode ? 'dark' : 'light'}>
+      <ErrorBoundary FallbackComponent={GlobalFeilside}>
+        <PersonProvider>
+          {/* TODO Se på layout her, denne diven er kanskje ikke nødvendig lenger */}
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+            <Toppmeny />
+            <Utviklingsverktøy />
+            <ErrorBoundary FallbackComponent={GlobalFeilside}>
+              <Suspense fallback={<div />}>
+                <main>
+                  <Routes>
+                    <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                    <Route
+                      path="/"
+                      element={
+                        <RequireAuth>
+                          <Oppgaveliste />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="/journalforing"
+                      element={
+                        <RequireAuth>
+                          <title>Hotsak - Journalføringsoppgaver</title>
+                          <Journalføringsoppgaver />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="/sak/:sakId/*"
+                      element={
+                        <RequireAuth>
+                          <SakTitle />
+                          <Saksbilde />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="/oppgave/:oppgaveId/*"
+                      element={
+                        <RequireAuth>
+                          <OppgaveTitle />
+                          <Oppgave />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="/personoversikt/*"
+                      element={
+                        <RequireAuth>
+                          <title>Hotsak - Personoversikt</title>
+                          <Personoversikt />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route path="*" element={<Feilside statusCode={404} />} />
+                  </Routes>
+                </main>
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        </PersonProvider>
+      </ErrorBoundary>
+    </Theme>
   )
 }
 
@@ -99,9 +104,7 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
     <BrowserRouter>
       <SWRConfig value={swrConfig}>
         <TilgangProvider>
-          <Theme theme="light">
-            <Component />
-          </Theme>
+          <Component />
         </TilgangProvider>
       </SWRConfig>
     </BrowserRouter>

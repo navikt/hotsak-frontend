@@ -25,8 +25,6 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { fortsettBehandling } = useSakActions()
 
-  // todo -> fortsett behandling hvis OppgaveStatusType.AVVENTER_DOKUMENTASJON og oppgaveErUnderBehandlingAvInnloggetAnsatt
-
   if (!oppgave || !harSkrivetilgang || oppgaveErAvsluttet) {
     return null
   }
@@ -77,15 +75,17 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           Fortsett behandling
         </ActionMenu.Item>
       )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectOverførOppgaveTilMedarbeider && (
-        <ActionMenu.Item
-          onSelect={() => {
-            onSelectOverførOppgaveTilMedarbeider()
-          }}
-        >
-          Overfør til medarbeider
-        </ActionMenu.Item>
-      )}
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt &&
+        onSelectOverførOppgaveTilMedarbeider &&
+        oppgave.gjelder !== 'BARNEBRILLER' && (
+          <ActionMenu.Item
+            onSelect={() => {
+              onSelectOverførOppgaveTilMedarbeider()
+            }}
+          >
+            Overfør til medarbeider
+          </ActionMenu.Item>
+        )}
     </ActionMenu.Group>
   )
 }

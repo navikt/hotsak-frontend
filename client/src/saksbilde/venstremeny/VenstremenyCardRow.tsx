@@ -21,7 +21,7 @@ export function VenstremenyCardRow(props: VenstremenyCardRowProps) {
   return (
     <>
       {title ? (
-        <HGrid width="100%" columns={'1.6rem auto 1.25rem'}>
+        <HGrid width="100%" columns={'1.6rem auto 1.25rem'} paddingBlock="0 space-8">
           <div>{icon}</div>
           <VStack>
             <Etikett>{title}</Etikett>

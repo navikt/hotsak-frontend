@@ -11,7 +11,7 @@ export function InlineKopiknapp(props: KopiknappProps) {
   return (
     <Bleed marginBlock="1 0">
       <Tooltip content={tooltip} placement={placement}>
-        <CopyButton size="small" copyText={copyText} />
+        <CopyButton size="xsmall" copyText={copyText} />
       </Tooltip>
     </Bleed>
   )

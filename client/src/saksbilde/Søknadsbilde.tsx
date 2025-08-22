@@ -56,7 +56,7 @@ const SaksbildeContent = memo(() => {
           <Søknadslinje id={sak.data.sakId} />
         </HGrid>
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
-          <Venstremeny gap="5">
+          <Venstremeny gap="space-24">
             <SøknadCard
               sakId={sak.data.sakId}
               sakstype={sak.data.sakstype}

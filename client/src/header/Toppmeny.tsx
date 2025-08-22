@@ -2,6 +2,7 @@ import { MenuGridIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -54,18 +55,20 @@ export function Toppmeny() {
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>
-          <ActionMenu.Divider />
-          <ActionMenu.Group label="Oppgaveintegrasjon">
-            <ActionMenu.Item
-              as="a"
-              href="/"
-              onClick={() => {
-                setNyOppgaveliste(!nyOppgaveliste)
-              }}
-            >
-              {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
-            </ActionMenu.Item>
-          </ActionMenu.Group>
+          <Eksperiment>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Oppgaveintegrasjon">
+              <ActionMenu.Item
+                as="a"
+                href="/"
+                onClick={() => {
+                  setNyOppgaveliste(!nyOppgaveliste)
+                }}
+              >
+                {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
+              </ActionMenu.Item>
+            </ActionMenu.Group>
+          </Eksperiment>
         </ActionMenu.Content>
         <EndringsloggMenu />
       </ActionMenu>

@@ -32,7 +32,7 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
 const MarkdownEditorStyling = styled(Box)`
   margin-top: 0.5rem;
   .mdxEditorBox:has([contenteditable='true']:focus) {
-    border: 4px solid rgba(0, 52, 125, 1);
+    border: 4px solid var(--ax-border-focus);
     margin: -3px;
   }
 `

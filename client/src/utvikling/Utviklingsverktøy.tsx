@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   right: 10px;
   z-index: 999999;
   padding: 20px;
-  background: #ececec;
+  background: var(--ax-bg-neutral-moderate);
   border: 2px dashed black;
   min-width: 220px;
 `

@@ -44,7 +44,7 @@ export function RegistrerSøknadSkjema() {
       målform: målform,
       data: {
         bestillingsdato: bestillingsdato ? formatISO(bestillingsdato, { representation: 'date' }) : undefined,
-        brillepris: kjøptBrille.brillepris,
+        brillepris: kjøptBrille.brillepris.replace(',', '.'),
         brilleseddel: !tomBrilleseddel(brilleseddel) ? brilleseddel : undefined,
         kjøptBrille: {
           vilkårOppfylt: kjøptBrille.vilkårOppfylt,
@@ -93,7 +93,7 @@ export function RegistrerSøknadSkjema() {
       },
       kjøptBrille: {
         vilkårOppfylt: sak?.data.vilkårsgrunnlag?.data.kjøptBrille?.vilkårOppfylt || VilkårsResultat.JA,
-        brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris || '',
+        brillepris: sak?.data.vilkårsgrunnlag?.data?.brillepris?.toString()?.replace('.', ',') || '',
       },
     },
   })

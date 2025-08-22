@@ -108,6 +108,7 @@ export interface OppgaveV2 extends OppgaveBase {
   ferdigstiltTidspunkt?: string
   fnr?: string
   bruker?: OppgaveBrukerV2
+  isPåVent?: boolean
 }
 
 export interface OppgaveBrukerV2 {

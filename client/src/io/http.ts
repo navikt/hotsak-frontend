@@ -4,7 +4,6 @@ import type {
   EndretHjelpemiddelRequest,
   JournalføringRequest,
   OppdaterVilkårData,
-  OppgaveStatusType,
   VurderVilkårRequest,
 } from '../types/types.internal'
 import { HttpError } from './HttpError.ts'
@@ -141,10 +140,6 @@ export const hentBrukerdataMedPost: any = async ([
     status: response.status,
     data: response.data,
   }
-}
-
-export const putOppdaterStatus = async (sakId: number | string, nyStatus: OppgaveStatusType) => {
-  return put(`${baseUrl}/api/sak/${sakId}/status`, { status: nyStatus })
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {

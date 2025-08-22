@@ -1,5 +1,6 @@
 import { ActionMenu } from '@navikt/ds-react'
 
+import { useSakActions } from '../saksbilde/useSakActions.ts'
 import { OppgaveV2 } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
@@ -18,9 +19,11 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     oppgaveErKlarTilBehandling,
     oppgaveErUnderBehandlingAvInnloggetAnsatt,
     oppgaveErUnderBehandlingAvAnnenAnsatt,
+    oppgaveErPåVent,
   } = useOppgaveregler(oppgave)
   const { harSkrivetilgang } = useOppgavetilgang()
   const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
+  const { fortsettBehandling } = useSakActions()
 
   // todo -> fortsett behandling hvis OppgaveStatusType.AVVENTER_DOKUMENTASJON og oppgaveErUnderBehandlingAvInnloggetAnsatt
 
@@ -61,6 +64,17 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           }}
         >
           Overta oppgave
+        </ActionMenu.Item>
+      )}
+      {oppgaveErPåVent && (
+        <ActionMenu.Item
+          onSelect={async (event) => {
+            event.stopPropagation()
+            await fortsettBehandling()
+            if (onAction) return onAction()
+          }}
+        >
+          Fortsett behandling
         </ActionMenu.Item>
       )}
       {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectOverførOppgaveTilMedarbeider && (

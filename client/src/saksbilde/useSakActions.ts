@@ -3,7 +3,7 @@ import type { ISvar } from '../innsikt/Besvarelse.ts'
 import { baseUrl } from '../io/http.ts'
 import { http } from '../io/HttpClient.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
-import { AvvisBestilling, TotrinnskontrollData } from '../types/types.internal.ts'
+import { AvvisBestilling, OppgaveStatusType, TotrinnskontrollData } from '../types/types.internal.ts'
 import { mutateSak } from './mutateSak.ts'
 
 export interface UseSakActions extends Actions {
@@ -13,6 +13,11 @@ export interface UseSakActions extends Actions {
   avvisBestilling(tilbakemelding: AvvisBestilling): Promise<void>
   opprettTotrinnskontroll(): Promise<void>
   fullførTotrinnskontroll(data: TotrinnskontrollData): Promise<void>
+
+  /**
+   * På sikt blir nok dette noe man gjør på oppgavenivå.
+   */
+  fortsettBehandling(): Promise<void>
 }
 
 export function useSakActions(): UseSakActions {
@@ -61,6 +66,13 @@ export function useSakActions(): UseSakActions {
     async fullførTotrinnskontroll(data: TotrinnskontrollData): Promise<void> {
       return execute(async () => {
         await http.put(`${baseUrl}/api/sak/${sakId}/kontroll`, data)
+        await mutateOppgaveOgSak()
+      })
+    },
+
+    async fortsettBehandling(): Promise<void> {
+      return execute(async () => {
+        await http.put(`${baseUrl}/api/sak/${sakId}/status`, { status: OppgaveStatusType.TILDELT_SAKSBEHANDLER })
         await mutateOppgaveOgSak()
       })
     },

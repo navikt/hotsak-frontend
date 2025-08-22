@@ -3,24 +3,30 @@ import { Link } from 'react-router-dom'
 import { BodyShort, Detail, HStack, Tag } from '@navikt/ds-react'
 import { Sakstype } from '../types/types.internal'
 import { storForbokstavIAlleOrd } from '../utils/formater'
+import styled from 'styled-components'
 
 const SøknadEtikett = () => (
-  <Tag variant="alt1" size="xsmall">
+  <SquareTag variant="alt1" size="xsmall">
     <Detail>S</Detail>
-  </Tag>
+  </SquareTag>
 )
 
 const BestillingEtikett = () => (
-  <Tag variant="alt2" size="xsmall">
+  <SquareTag variant="alt2" size="xsmall">
     <Detail>B</Detail>
-  </Tag>
+  </SquareTag>
 )
 
 const TilskuddEtikett = () => (
-  <Tag variant="alt3" size="xsmall">
+  <SquareTag variant="alt3" size="xsmall">
     <Detail>T</Detail>
-  </Tag>
+  </SquareTag>
 )
+
+const SquareTag = styled(Tag)`
+  padding-left: 5px;
+  padding-right: 5px;
+`
 
 interface LabelProps {
   labelLinkTo?: string

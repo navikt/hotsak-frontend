@@ -7,6 +7,7 @@ import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
+import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 
@@ -35,8 +36,13 @@ export function Toppmeny() {
       <SøkeContainer>
         <Søk
           onSearch={(value: string) => {
-            setFodselsnummer(value)
-            navigate('/personoversikt/saker')
+            const fnrEllerSakId = fjernMellomrom(value)
+            if (fnrEllerSakId.length === 11) {
+              setFodselsnummer(fnrEllerSakId)
+              navigate('/personoversikt/saker')
+            } else {
+              navigate(`/sak/${fnrEllerSakId}`)
+            }
           }}
         />
       </SøkeContainer>

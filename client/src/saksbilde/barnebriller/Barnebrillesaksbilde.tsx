@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
-import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth } from '../../GlobalStyles'
+import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
@@ -31,9 +31,8 @@ const BarnebrillesakContainer = styled.div`
 const Header = styled(HStack)`
   box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--ax-border-neutral-subtleA));
   padding-right: 2rem;
-
-  padding-top: 10px;
-  padding-bottom: 11px;
+  height: ${søknadslinjeHøyde};
+  align-items: center;
 `
 
 const BarnebrillesakContent = memo(() => {

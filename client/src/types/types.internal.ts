@@ -533,10 +533,6 @@ export interface JournalføringRequest {
   oppgaveId?: string
 }
 
-export interface OpprettetSakResponse {
-  sakId: string
-}
-
 export enum DokumentFormat {
   ARKIV = 'ARKIV',
   ORIGINAL = 'ORIGINAL',

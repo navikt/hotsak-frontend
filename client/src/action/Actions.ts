@@ -1,5 +1,8 @@
 import { useState } from 'react'
+
 import { toError } from '../utils/error.ts'
+
+export type ExecutionPromise<T> = Promise<T | undefined>
 
 export interface Actions {
   /**
@@ -9,6 +12,7 @@ export interface Actions {
 }
 
 export interface ActionState {
+  // todo -> rename til isLoading
   loading: boolean
   error?: Error | null
 }
@@ -35,7 +39,7 @@ export function useActionState() {
     /**
      * Funksjon som f.eks. kan brukes til kjøre et asynkront kall med håndtering av `loading` og `error`.
      */
-    async execute<T = unknown>(action: () => Promise<T>): Promise<T | undefined> {
+    async execute<T = unknown>(action: () => Promise<T>): ExecutionPromise<T> {
       setLoading(true)
       try {
         return await action()

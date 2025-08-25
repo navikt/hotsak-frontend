@@ -1,9 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
-import type { JournalføringRequest, OpprettetSakResponse } from '../../types/types.internal'
+import type { JournalføringResponse } from '../../journalføring/useJournalføringActions.ts'
+import type { JournalføringRequest } from '../../types/types.internal.ts'
 import type { StoreHandlersFactory } from '../data'
-import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
-import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response'
+import { lastDokument, lastDokumentBarnebriller } from '../data/felles.ts'
+import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response.ts'
 
 interface JournalpostParams {
   journalpostId: string
@@ -62,7 +63,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
     return respondPdf(buffer)
   }),
 
-  http.post<JournalpostParams, JournalføringRequest, OpprettetSakResponse>(
+  http.post<JournalpostParams, JournalføringRequest, JournalføringResponse>(
     `/api/journalpost/:journalpostId/journalforing`,
     async ({ request }) => {
       const journalføring = await request.json()
@@ -81,7 +82,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)
 
-        return HttpResponse.json({ sakId: sakId.toString() })
+        return HttpResponse.json({ sakId: sakId.toString(), oppgaveId: `E-${sakId}` })
       }
     }
   ),

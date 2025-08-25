@@ -1,4 +1,4 @@
-import type { BrevTekst, Brevtype, JournalføringRequest, VurderVilkårRequest } from '../types/types.internal'
+import type { BrevTekst, Brevtype, VurderVilkårRequest } from '../types/types.internal.ts'
 import { HttpError } from './HttpError.ts'
 
 export interface SaksbehandlingApiResponse<T = any> {
@@ -56,10 +56,6 @@ export const post = async (url: string, data: any, headers?: Headers): Promise<S
 
 export const del = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
   return save(url, 'DELETE', data, headers)
-}
-
-export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
-  return post(`${baseUrl}/api/journalpost/${journalføringRequest.journalpostId}/journalforing`, journalføringRequest)
 }
 
 export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårRequest) => {

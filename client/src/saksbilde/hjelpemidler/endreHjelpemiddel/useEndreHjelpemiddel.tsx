@@ -1,22 +1,24 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { putEndreHjelpemiddel } from '../../../io/http'
-import { useHjelpemiddel } from './useHjelpemiddel'
-import { useArtiklerForSak } from '../useArtiklerForSak'
+
+import { http } from '../../../io/HttpClient.ts'
 import { Hjelpemiddel as BehovsmeldingHjelpemiddel } from '../../../types/BehovsmeldingTypes'
 import { EndretHjelpemiddelRequest } from '../../../types/types.internal'
+import { useArtiklerForSak } from '../useArtiklerForSak'
+import { useHjelpemiddel } from './useHjelpemiddel'
 
-export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) => {
+export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const { artikler, mutate: mutateBestilling } = useArtiklerForSak(sakId)
 
   const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
-    await putEndreHjelpemiddel(sakId, endreHjelpemiddel)
+    await http
+      .put(`/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
-        // TODO Klarer vi å hente url til det nye hjelpemidlet?
-        // TODO Trenger vi å mutere saken lenger??
+        // TODO Klarer vi å hente URL til det nye hjelpemiddelet?
+        // TODO Trenger vi å mutere saken lenger?
         //mutate(`/api/sak/${sakId}`)
         mutateBestilling()
         mutate(`/api/sak/${sakId}/historikk`)
@@ -25,7 +27,7 @@ export const useEndreHjelpemiddel = (sakId: string, hjelpemiddel: BehovsmeldingH
   }
 
   const endretHjelpemiddel = artikler.find(
-    (hjlpm) => hjlpm.endretHjelpemiddel && hjlpm.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
+    (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(

@@ -1,11 +1,4 @@
-import type {
-  BrevTekst,
-  Brevtype,
-  EndretHjelpemiddelRequest,
-  JournalføringRequest,
-  OppdaterVilkårData,
-  VurderVilkårRequest,
-} from '../types/types.internal'
+import type { BrevTekst, Brevtype, JournalføringRequest, VurderVilkårRequest } from '../types/types.internal'
 import { HttpError } from './HttpError.ts'
 
 export interface SaksbehandlingApiResponse<T = any> {
@@ -73,10 +66,6 @@ const save = async (url: string, method: string, data: any, headers?: Headers): 
 
 export const post = async (url: string, data: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
   return save(url, 'POST', data, headers)
-}
-
-export const put = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
-  return save(url, 'PUT', data, headers)
 }
 
 export const del = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
@@ -148,18 +137,6 @@ export const postJournalføring = async (journalføringRequest: JournalføringRe
 
 export const postVilkårsvurdering = async (vurderVilkårRequest: VurderVilkårRequest) => {
   return post(`${baseUrl}/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
-}
-
-export const putOppdaterVilkår = async (
-  sakId: number | string,
-  vilkårId: string,
-  oppdaterVilkårData: OppdaterVilkårData
-) => {
-  return put(`${baseUrl}/api/sak/${sakId}/vilkar/${vilkårId}`, oppdaterVilkårData)
-}
-
-export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemiddel: EndretHjelpemiddelRequest) => {
-  return put(`${baseUrl}/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
 }
 
 export const postBrevutkast = async (brevTekst: BrevTekst) => {

@@ -6,11 +6,6 @@ export interface SaksbehandlingApiResponse<T = any> {
   data: T
 }
 
-export interface PDFResponse {
-  status: number
-  data: Blob
-}
-
 export const baseUrl = import.meta.env.NODE_ENV === 'test' || import.meta.env.NODE_ENV === 'production' ? '' : ''
 
 type Headers = { [key: string]: any }
@@ -18,15 +13,6 @@ type Headers = { [key: string]: any }
 async function getData<T = any>(response: Response): Promise<T | undefined> {
   try {
     return (await response.json()) as T
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e: unknown) {
-    return undefined
-  }
-}
-
-async function getBlob(response: Response): Promise<undefined | Blob> {
-  try {
-    return await response.blob()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
     return undefined
@@ -70,31 +56,6 @@ export const post = async (url: string, data: any, headers?: Headers): Promise<S
 
 export const del = async (url: string, data?: any, headers?: Headers): Promise<SaksbehandlingApiResponse> => {
   return save(url, 'DELETE', data, headers)
-}
-
-export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
-  const headers = {
-    headers: {
-      Accept: 'application/pdf, application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-    },
-  }
-
-  const response = await fetch(`${baseUrl}/${url}`, headers)
-  if (!response.ok) {
-    const errorMessage = await getErrorMessage(response)
-    throw new HttpError(errorMessage, response.status)
-  }
-
-  const blob = await getBlob(response)
-  if (!blob) {
-    throw new HttpError('Feil ved uthenting av PDF-blob', response.status)
-  }
-
-  return {
-    status: response.status,
-    data: blob,
-  }
 }
 
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {

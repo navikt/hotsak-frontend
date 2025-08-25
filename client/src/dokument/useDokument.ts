@@ -1,22 +1,20 @@
 import { useCallback, useState } from 'react'
 
-import { httpGetPdf, PDFResponse } from '../io/http'
-import type { Ressurs } from '../types/types.internal'
-import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from '../io/ressursFunksjoner'
+import { http } from '../io/HttpClient.ts'
+import { HttpError } from '../io/HttpError.ts'
+import { byggDataRessurs, byggFeiletRessurs, byggHenterRessurs, byggTomRessurs } from '../io/ressursFunksjoner.ts'
+import type { Ressurs } from '../types/types.internal.ts'
 
-export interface DokumentResponse {
-  isPdfError: any
-  hentForhåndsvisning: (journalpostId: string, dokumentId: string) => any
-  nullstillDokument: () => any
-  hentetDokument: any
-  settHentetDokument: any
+export interface UseDokumentResponse {
+  hentetDokument: Ressurs<string>
+  dokumentError: HttpError | null
+  hentForhåndsvisning(valgtJournalpostId: string, dokumentId: string): void
+  nullstillDokument(): void
 }
 
-const journalpostBasePath = 'api/journalpost'
-
-export function useDokument(): DokumentResponse {
+export function useDokument(): UseDokumentResponse {
   const [hentetDokument, settHentetDokument] = useState<Ressurs<string>>(byggTomRessurs())
-  const [isPdfError, setIsPdfError] = useState<any>(null)
+  const [dokumentError, setDokumentError] = useState<HttpError | null>(null)
 
   const nullstillDokument = () => {
     settHentetDokument(byggTomRessurs)
@@ -24,25 +22,24 @@ export function useDokument(): DokumentResponse {
 
   const hentForhåndsvisning = useCallback((valgtJournalpostId: string, dokumentId: string) => {
     settHentetDokument(byggHenterRessurs())
-    setIsPdfError(null)
+    setDokumentError(null)
 
-    const pdfResponse = httpGetPdf(`${journalpostBasePath}/${valgtJournalpostId}/${dokumentId}`)
-
-    pdfResponse
-      .then((response: PDFResponse) => {
-        settHentetDokument(byggDataRessurs(window.URL.createObjectURL(response.data)))
-        setIsPdfError(null)
+    http
+      .get<Blob>(`/api/journalpost/${valgtJournalpostId}/${dokumentId}`, { accept: 'application/pdf' })
+      .then((data) => {
+        settHentetDokument(byggDataRessurs(window.URL.createObjectURL(data)))
+        setDokumentError(null)
       })
-      .catch((error: any) => {
+      .catch((error: HttpError) => {
         settHentetDokument(byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
-        setIsPdfError(error)
+        setDokumentError(error)
       })
   }, [])
+
   return {
-    isPdfError,
+    hentetDokument,
+    dokumentError,
     hentForhåndsvisning,
     nullstillDokument,
-    hentetDokument,
-    settHentetDokument,
   }
 }

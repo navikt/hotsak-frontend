@@ -162,10 +162,6 @@ export const putEndreHjelpemiddel = async (sakId: number | string, endreHjelpemi
   return put(`${baseUrl}/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
 }
 
-export const postEndringslogginnslagLest = async (endringslogginnslagId: string) => {
-  return post(`${baseUrl}/api/endringslogg/leste`, { endringslogginnslagId })
-}
-
 export const postBrevutkast = async (brevTekst: BrevTekst) => {
   return post(`${baseUrl}/api/sak/${brevTekst.sakId}/brevutkast`, brevTekst)
 }

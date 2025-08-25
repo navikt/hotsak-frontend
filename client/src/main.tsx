@@ -11,12 +11,7 @@ async function main(): Promise<void> {
   await initUmami()
 
   const container = document.getElementById('root')!
-  createRoot(container).render(
-    <>
-      {/*<AppRoot />*/}
-      <App />
-    </>
-  )
+  createRoot(container).render(<App />)
 }
 
 main().catch((err) => console.error(err))

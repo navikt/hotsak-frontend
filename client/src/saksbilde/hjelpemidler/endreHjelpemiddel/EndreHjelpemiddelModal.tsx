@@ -1,5 +1,3 @@
-import { useRef, useState } from 'react'
-
 import {
   Box,
   Button,
@@ -13,6 +11,8 @@ import {
   TextField,
   VStack,
 } from '@navikt/ds-react'
+import { useRef, useState } from 'react'
+
 import { Etikett, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -38,7 +38,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
 
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
-  const { hjelpemiddel, isError } = useHjelpemiddel(endreProduktHmsnr)
+  const { hjelpemiddel, error } = useHjelpemiddel(endreProduktHmsnr)
   const ref = useRef<HTMLDialogElement>(null)
 
   const errorEndretProdukt = () => {
@@ -109,7 +109,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
               <VStack gap="1">
                 <Etikett>Beskrivelse</Etikett>
                 <Tekst>
-                  {hmsArtNr !== '' && isError ? (
+                  {hmsArtNr !== '' && error ? (
                     <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
                   ) : (
                     (hjelpemiddel?.navn ?? '')

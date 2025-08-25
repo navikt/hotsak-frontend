@@ -1,26 +1,25 @@
 import useSwr from 'swr'
 
-import { httpGet } from '../../../io/http'
+import type { HttpError } from '../../../io/HttpError.ts'
+import type { HjelpemiddelProdukt } from '../../../types/types.internal'
 
-import { HjelpemiddelProdukt } from '../../../types/types.internal'
-
-interface DataResponse {
-  hjelpemiddel: HjelpemiddelProdukt | undefined
+interface UseHjelpemiddelResponse {
+  hjelpemiddel?: HjelpemiddelProdukt
+  error?: HttpError
   isLoading: boolean
-  isError: any
 }
 
-export function useHjelpemiddel(hmsnummer?: string): DataResponse {
-  const shouldFetch = hmsnummer && hmsnummer !== undefined && hmsnummer !== ''
-  // TODO kalle FH for å hente hjelpemiddel her og eventuelt fallback til OeBS hvis ikke funnet i FH
-  const { data, error } = useSwr<{ data: HjelpemiddelProdukt }>(
-    shouldFetch ? `api/hjelpemiddel/${hmsnummer}` : null,
-    httpGet
-  )
+export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
+  // TODO kalle FinnHjelpemiddel for å hente hjelpemiddel her og eventuelt fallback til OeBS hvis ikke funnet i FinnHjelpemiddel
+  const {
+    data: hjelpemiddel,
+    error,
+    isLoading,
+  } = useSwr<HjelpemiddelProdukt, HttpError>(hmsnr ? `/api/hjelpemiddel/${hmsnr}` : null)
 
   return {
-    hjelpemiddel: data?.data,
-    isLoading: !error && !data,
-    isError: error,
+    hjelpemiddel,
+    error,
+    isLoading,
   }
 }

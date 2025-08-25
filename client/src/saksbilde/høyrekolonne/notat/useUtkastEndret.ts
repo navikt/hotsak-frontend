@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { baseUrl, post } from '../../../io/http'
 import { http } from '../../../io/HttpClient.ts'
-import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
+import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -28,9 +27,7 @@ export function useUtkastEndret(
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
   const opprettNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-    return execute(async () => {
-      await post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
-    })
+    return execute(() => http.post(`/api/sak/${sakId}/notater`, utkast))
   }
 
   const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {

@@ -18,6 +18,7 @@ export interface UseBrevResponse {
   nullstillBrev(brevtype: Brevtype): void
 }
 
+// todo -> flytt denne til mer egnet mappe, den brukes ikke bare for vedtaksbrev
 export function useBrev(): UseBrevResponse {
   const { hentedeBrev, settHentetBrev } = useDokumentContext()
   const [brevError, setBrevError] = useState<HttpError | null>(null)

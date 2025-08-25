@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { ISvar, Tilbakemelding } from '../../../../innsikt/Besvarelse'
-import { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelser'
-import { baseUrl, post } from '../../../../io/http'
+
 import { useActionState } from '../../../../action/Actions.ts'
-import { Notat, NotatType } from '../../../../types/types.internal'
+import type { ISvar, Tilbakemelding } from '../../../../innsikt/Besvarelse.ts'
+import type { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelser.ts'
+import { http } from '../../../../io/HttpClient.ts'
+import { Notat, NotatType } from '../../../../types/types.internal.ts'
 
 export interface FeilregistrerJournalførtNotatModalProps {
   open: boolean
@@ -25,9 +26,7 @@ export function useFeilregistrerJournalførtNotat(
   const { execute } = useActionState()
 
   const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
-    return execute(async () => {
-      await post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding })
-    })
+    return execute(() => http.post(`/api/sak/${notat.sakId}/notater/${notat.id}/feilregistrering`, { tilbakemelding }))
   }
 
   const spørreundersøkelseId =

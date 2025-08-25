@@ -1,19 +1,19 @@
 import { Box, Button, Detail, ErrorSummary, Heading, Table, Tag } from '@navikt/ds-react'
 import { useEffect, useRef, useState } from 'react'
 
-import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
+import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
 import { Brødtekst } from '../../../../felleskomponenter/typografi'
-import { baseUrl, post } from '../../../../io/http'
+import { http } from '../../../../io/HttpClient.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
-import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { Resultat } from './kolonner/Resultat'
 import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
+import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { metadataFor } from './vilkårMetada'
 
 export function VurderVilkår() {
@@ -59,11 +59,13 @@ export function VurderVilkår() {
       setStep(StepType.FATTE_VEDTAK)
     } else {
       setLagrer(true)
-      post(`${baseUrl}/api/sak/${sakId}/vilkarsvurdering`, {})
-        .catch(() => setLagrer(false))
+      http
+        .post(`/api/sak/${sakId}/vilkarsvurdering`, {})
         .then(async () => {
           await mutate()
           setStep(StepType.FATTE_VEDTAK)
+        })
+        .finally(() => {
           setLagrer(false)
         })
     }

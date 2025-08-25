@@ -3,10 +3,11 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
+
+import { useActionState } from '../../../action/Actions.ts'
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
-import { baseUrl, del } from '../../../io/http.ts'
-import { useActionState } from '../../../action/Actions.ts'
+import { http } from '../../../io/HttpClient.ts'
 import { Notat } from '../../../types/types.internal.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 
@@ -22,11 +23,8 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const { execute, state: sletterUtkast } = useActionState()
 
-  const slettNotatUtkast = async (sakId: string, notatId: string) => {
-    return execute(async () => {
-      return del(`${baseUrl}/api/sak/${sakId}/notater/${notatId}`)
-    })
-  }
+  const slettNotatUtkast = (sakId: string, notatId: string) =>
+    execute(() => http.delete(`/api/sak/${sakId}/notater/${notatId}`))
 
   const slettUtkast = async () => {
     if (aktivtUtkast) {

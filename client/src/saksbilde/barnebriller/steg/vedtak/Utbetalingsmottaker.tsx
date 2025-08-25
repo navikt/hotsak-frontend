@@ -2,7 +2,7 @@ import { Button, Detail, Link } from '@navikt/ds-react'
 import { useState } from 'react'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
-import { post } from '../../../../io/http'
+import { http } from '../../../../io/HttpClient.ts'
 import { StepType, Utbetalingsmottaker } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 
@@ -49,16 +49,20 @@ export function UtbetalingsmottakerAlert(props: UtbetalingsmottakerAlertProps) {
           size="small"
           loading={lagrerUtbetalingsmottaker}
           disabled={lagrerUtbetalingsmottaker}
-          onClick={(e) => {
-            e.preventDefault()
+          onClick={(event) => {
+            event.preventDefault()
             setLagrerUtbetalingsmottaker(true)
-            post('/api/utbetalingsmottaker', {
-              fnr: utbetalingsmottaker?.fnr,
-              sakId: Number(sakId),
-            }).then(() => {
-              setLagrerUtbetalingsmottaker(false)
-              mutate()
-            })
+            http
+              .post('/api/utbetalingsmottaker', {
+                fnr: utbetalingsmottaker?.fnr,
+                sakId: Number(sakId),
+              })
+              .then(() => {
+                mutate()
+              })
+              .finally(() => {
+                setLagrerUtbetalingsmottaker(false)
+              })
           }}
         >
           Hent kontonummer på nytt

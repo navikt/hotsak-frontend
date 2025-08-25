@@ -3,19 +3,19 @@ import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } 
 import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
+import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
-import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
+import { useBrevActions } from '../../useBrevActions.ts'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
-import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 
 export interface SendBrevProps {
   sakId: string
@@ -25,6 +25,7 @@ export interface SendBrevProps {
 export const SendBrevPanel = memo((props: SendBrevProps) => {
   const { sakId, lesevisning } = props
   const { data, mutate: hentBrevtekst } = useBrevtekst(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
+  const brevActions = useBrevActions()
   const brevtekst = data?.data.brevtekst
   const [lagrer, setLagrer] = useState(false)
   const [sletter, setSletter] = useState(false)
@@ -58,7 +59,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const lagreUtkast = useCallback(
     async (tekst: string, valgtMålform?: MålformType) => {
       setLagrer(true)
-      await postBrevutkast(byggBrevPayload(tekst, valgtMålform))
+      await brevActions.lagreBrevutkast(byggBrevPayload(tekst, valgtMålform))
       setTimeout(() => {
         setLagrer(false)
       }, 500)
@@ -105,7 +106,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
 
   const sendBrev = async () => {
     setSenderBrev(true)
-    await postBrevutsending(byggBrevPayload())
+    await brevActions.lagreBrevsending(byggBrevPayload())
 
     setSenderBrev(false)
     setVisSendBrevModal(false)
@@ -124,7 +125,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
 
   const slettUtkast = async () => {
     setSletter(true)
-    await deleteBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
+    await brevActions.slettBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
     setFritekst('')
     setVisSlettUtkastModal(false)
     setVisSlettetUtkastToast(true)

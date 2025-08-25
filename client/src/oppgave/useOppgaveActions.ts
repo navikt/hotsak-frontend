@@ -1,7 +1,6 @@
 import { useSWRConfig } from 'swr'
 
 import { Actions, useActionState } from '../action/Actions.ts'
-import { baseUrl } from '../io/http.ts'
 import { http } from '../io/HttpClient.ts'
 import { mutateSak } from '../saksbilde/mutateSak.ts'
 import type { NavIdent } from '../tilgang/Ansatt.ts'
@@ -21,7 +20,7 @@ export interface EndreOppgavetildelingRequest {
   overtaHvisTildelt?: boolean
 }
 
-export interface UseOppgaveActions extends Actions {
+export interface OppgaveActions extends Actions {
   /**
    * Endre tildeling av oppgave. Støtter også overtagelse av oppgave.
    *
@@ -41,7 +40,7 @@ export interface UseOppgaveActions extends Actions {
 /**
  * Opprett `OppgaveActions` som er knyttet til `oppgaveId`, `versjon` og `sakId` fra `OppgaveContext`.
  */
-export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
+export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
   const { mutate } = useSWRConfig()
   const {
     oppgaveId = oppgave?.oppgaveId,
@@ -63,7 +62,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
   return {
     async endreOppgavetildeling(request) {
       return execute(async () => {
-        await http.post(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, request, {
+        await http.post(`/api/oppgaver-v2/${oppgaveId}/tildeling`, request, {
           versjon,
         })
         if (isOppgaveContext) {
@@ -74,7 +73,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): UseOppgaveActions {
 
     async fjernOppgavetildeling() {
       return execute(async () => {
-        await http.delete(`${baseUrl}/api/oppgaver-v2/${oppgaveId}/tildeling`, {
+        await http.delete(`/api/oppgaver-v2/${oppgaveId}/tildeling`, {
           versjon,
         })
         if (isOppgaveContext) {

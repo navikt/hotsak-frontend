@@ -4,7 +4,7 @@ import { http } from '../../../io/HttpClient.ts'
 import type { HttpError } from '../../../io/HttpError.ts'
 import { HjelpemiddelArtikkel, Vedtaksgrunnlag, VedtaksgrunnlagType } from '../../../types/types.internal'
 
-interface HjelpemiddeloversiktResponse {
+export interface UseHjelpemiddeloversiktResponse {
   hjelpemiddelArtikler: HjelpemiddelArtikkel[]
   error?: HttpError
   isLoading: boolean
@@ -14,7 +14,7 @@ interface HjelpemiddeloversiktResponse {
 export function useHjelpemiddeloversikt(
   fnr?: string,
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
-): HjelpemiddeloversiktResponse {
+): UseHjelpemiddeloversiktResponse {
   const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
   const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
 
@@ -22,11 +22,9 @@ export function useHjelpemiddeloversikt(
     data: hjelpemiddelArtikler = [],
     error,
     isLoading,
-  } = useSwr<HjelpemiddelArtikkel[], HttpError>(
+  } = useSwr<HjelpemiddelArtikkel[], HttpError, [string, string] | null>(
     fnr && !harUtlånshistorikkFraVedtak ? ['/api/hjelpemiddeloversikt', fnr] : null,
-    ([url, fnr]: [string, string]) => {
-      return http.post<{ fnr: string }, HjelpemiddelArtikkel[]>(url, { fnr })
-    }
+    ([url, fnr]) => http.post<{ fnr: string }, HjelpemiddelArtikkel[]>(url, { fnr })
   )
 
   if (harUtlånshistorikkFraVedtak) {

@@ -35,10 +35,11 @@ export function SaksbehandlersVurderingForm({
     setVenterPåVilkårsvurdering(true)
     http
       .put(`/api/sak/${sakId}/vilkar/${vilkårId}`, data)
-      .catch(() => setVenterPåVilkårsvurdering(false))
       .then(() => {
-        setVenterPåVilkårsvurdering(false)
         onSaved()
+      })
+      .finally(() => {
+        setVenterPåVilkårsvurdering(false)
       })
   }
 

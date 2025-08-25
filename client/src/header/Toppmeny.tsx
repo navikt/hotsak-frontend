@@ -3,13 +3,13 @@ import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useDarkmode } from './useDarkmode.ts'
 
 const SøkeContainer = styled.div`
@@ -17,11 +17,6 @@ const SøkeContainer = styled.div`
   padding-left: 1rem;
   margin-right: auto;
 `
-
-const Lenke = styled.a`
-  text-decoration: none;
-`
-
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
@@ -115,8 +110,8 @@ export function Toppmeny() {
               ))}
           </ActionMenu.Group>
           <ActionMenu.Divider />
-          <ActionMenu.Item>
-            <Lenke href="/oauth2/logout">Logg ut</Lenke>
+          <ActionMenu.Item as="a" href="/oauth2/logout">
+            Logg ut
           </ActionMenu.Item>
         </ActionMenu.Content>
       </ActionMenu>

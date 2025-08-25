@@ -184,7 +184,7 @@ function Loading({ count }: { count: number }) {
 function LoadingCard() {
   return (
     <VStack gap="3">
-      <Box.New borderWidth="1" /*borderColor="border-subtle"*/ borderRadius="large" padding="4">
+      <Box.New borderWidth="1" borderColor="neutral-subtle" borderRadius="large" padding="4">
         <VStack gap="3">
           <Skeleton variant="rectangle" width="100%" height={185} />
           <Skeleton variant="rectangle" width="90%" height={64} />

@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
+import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
@@ -37,8 +38,13 @@ export function Toppmeny() {
       <SøkeContainer>
         <Søk
           onSearch={(value: string) => {
-            setFodselsnummer(value)
-            navigate('/personoversikt/saker')
+            const fnrEllerSakId = fjernMellomrom(value)
+            if (fnrEllerSakId.length === 11) {
+              setFodselsnummer(fnrEllerSakId)
+              navigate('/personoversikt/saker')
+            } else {
+              navigate(`/sak/${fnrEllerSakId}`)
+            }
           }}
         />
       </SøkeContainer>
@@ -57,19 +63,20 @@ export function Toppmeny() {
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>
-          <ActionMenu.Divider />
-          <ActionMenu.Group label="Oppgaveintegrasjon">
-            <ActionMenu.Item
-              as="a"
-              href="/"
-              onClick={() => {
-                setNyOppgaveliste(!nyOppgaveliste)
-              }}
-            >
-              {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
-            </ActionMenu.Item>
-          </ActionMenu.Group>
-
+          <Eksperiment>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Oppgaveintegrasjon">
+              <ActionMenu.Item
+                as="a"
+                href="/"
+                onClick={() => {
+                  setNyOppgaveliste(!nyOppgaveliste)
+                }}
+              >
+                {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
+              </ActionMenu.Item>
+            </ActionMenu.Group>
+          </Eksperiment>
           <Eksperiment>
             <ActionMenu.Divider />
             <ActionMenu.Group label="Eksperimenter">

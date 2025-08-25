@@ -68,3 +68,8 @@ export function formaterAdresse(verdi?: Veiadresse): string {
   const { adresse, postnummer, poststed } = verdi
   return `${storForbokstavIAlleOrd(adresse)}, ${postnummer} ${storForbokstavIAlleOrd(poststed)}`
 }
+
+export function fjernMellomrom(verdi?: string): string {
+  if (!verdi) return ''
+  return verdi.replace(/\s+/g, '')
+}

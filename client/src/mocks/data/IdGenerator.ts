@@ -1,4 +1,5 @@
 import type { DBCore, Middleware } from 'dexie'
+import { getDayOfYear } from 'date-fns'
 
 export const idGenerator: Middleware<DBCore> = {
   stack: 'dbcore',
@@ -35,11 +36,6 @@ export const idGenerator: Middleware<DBCore> = {
 let i = 1
 
 function createId(): string {
-  const date = new Date()
-  return [
-    date.getFullYear(),
-    (date.getMonth() + 1).toString().padStart(2, '0'),
-    date.getDate().toString().padStart(2, '0'),
-    (++i).toString().padStart(3, '0'),
-  ].join('')
+  const dayOfYear = getDayOfYear(new Date())
+  return [dayOfYear, (++i).toString().padStart(3, '0')].join('')
 }

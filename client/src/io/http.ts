@@ -97,40 +97,6 @@ export const httpGetPdf = async (url: string): Promise<PDFResponse> => {
   }
 }
 
-export const httpGet = async <T = any>(url: string): Promise<SaksbehandlingApiResponse<T>> => {
-  const headers = {
-    headers: {
-      Accept: 'application/json',
-      'X-Requested-With': 'XMLHttpRequest',
-    },
-  }
-
-  const response = await fetch(`${baseUrl}/${url}`, headers)
-  if (!response.ok) {
-    const errorMessage = await getErrorMessage(response)
-    throw new HttpError(errorMessage, response.status)
-  }
-
-  return {
-    status: response.status,
-    data: (await getData<T>(response)) as T,
-  }
-}
-
-export const hentBrukerdataMedPost: any = async ([
-  url,
-  fnr,
-  sakstype,
-  behandlingsstatus,
-]: string[]): Promise<SaksbehandlingApiResponse> => {
-  const response = await post(`${baseUrl}/${url}`, { fnr, sakstype, behandlingsstatus }, {})
-
-  return {
-    status: response.status,
-    data: response.data,
-  }
-}
-
 export const postJournalføring = async (journalføringRequest: JournalføringRequest) => {
   return post(`${baseUrl}/api/journalpost/${journalføringRequest.journalpostId}/journalforing`, journalføringRequest)
 }

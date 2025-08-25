@@ -15,14 +15,14 @@ import { formaterNavn } from '../utils/formater.ts'
 import { HjelpemiddeloversiktTabell } from './HjelpemiddeloversiktTabell'
 import { usePersonContext } from './PersonContext'
 import { Saksoversikt } from './Saksoversikt'
-import { useSaksoversikt } from './saksoversiktHook'
 import { SaksoversiktLinje } from './SaksoversiktLinje'
 import { usePerson } from './usePerson'
+import { useSaksoversikt } from './useSaksoversikt.ts'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
   const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
-  const { saksoversikt, isLoading, isError } = useSaksoversikt(fodselsnummer)
+  const { saksoversikt, error, isLoading } = useSaksoversikt(fodselsnummer)
   const {
     hjelpemiddelArtikler,
     error: hjelpemiddeloversiktError,
@@ -62,7 +62,7 @@ function PersonoversiktContent() {
               <Route
                 path="/saker"
                 element={
-                  isError ? (
+                  error ? (
                     <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
                   ) : (
                     <Saksoversikt

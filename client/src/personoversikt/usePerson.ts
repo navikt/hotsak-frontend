@@ -1,21 +1,27 @@
 import useSwr from 'swr'
 
-import { hentBrukerdataMedPost } from '../io/http'
-
-import { Person } from '../types/types.internal'
+import { http } from '../io/HttpClient.ts'
+import type { HttpError } from '../io/HttpError.ts'
+import type { Person } from '../types/types.internal'
 
 export interface PersonResponse {
-  personInfo: Person | undefined
+  personInfo?: Person
+  error?: HttpError
   isLoading: boolean
-  isError: any
 }
 
 export function usePerson(fnr?: string): PersonResponse {
-  const { data, error } = useSwr<{ data: Person | undefined }>(fnr ? ['api/person', fnr] : null, hentBrukerdataMedPost)
+  const {
+    data: personInfo,
+    error,
+    isLoading,
+  } = useSwr<Person, HttpError>(fnr ? ['/api/person', fnr] : null, ([url, fnr]: [string, string]) => {
+    return http.post<{ fnr: string }, Person>(url, { fnr })
+  })
 
   return {
-    personInfo: data?.data,
-    isLoading: !error && !data,
-    isError: error,
+    personInfo,
+    error,
+    isLoading,
   }
 }

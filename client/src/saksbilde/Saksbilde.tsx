@@ -17,7 +17,7 @@ const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
   const { isLoading: isBehovsmeldingLoading, isError: isBehovsmeldingError } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
 
   if (isLoading || personInfoLoading || isBehovsmeldingLoading) return <SakLoader />
 

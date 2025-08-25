@@ -1,13 +1,14 @@
-import useSwr from 'swr'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
 import fetchIntercept from 'fetch-intercept'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
+import useSwr from 'swr'
 
-import { httpGet, post } from '../io/http.ts'
-import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
+import { http } from '../io/HttpClient.ts'
+import type { HttpError } from '../io/HttpError.ts'
 import { InnloggetAnsatt } from './Ansatt.ts'
+import { initialState, TilgangContext, TilgangContextType } from './TilgangContext.ts'
 
 export function TilgangProvider({ children }: { children: ReactNode }) {
-  const { data, error } = useSwr<{ data: InnloggetAnsatt }>('api/ansatte/meg', httpGet)
+  const { data: innloggetAnsatt, error } = useSwr<InnloggetAnsatt, HttpError>('/api/ansatte/meg')
   const [erInnlogget, setErInnlogget] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -32,7 +33,6 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    const innloggetAnsatt = data?.data
     if (!innloggetAnsatt) {
       return initialState
     }
@@ -43,11 +43,11 @@ export function TilgangProvider({ children }: { children: ReactNode }) {
         erInnlogget: true,
       },
       async setValgtEnhet(nummer) {
-        await post('/api/ansatte/enhet', { valgtEnhetsnummer: nummer })
+        await http.post('/api/ansatte/enhet', { valgtEnhetsnummer: nummer })
         window.location.href = '/'
       },
     }
-  }, [data, error, erInnlogget])
+  }, [innloggetAnsatt, error, erInnlogget])
 
   return <TilgangContext.Provider value={value}>{children}</TilgangContext.Provider>
 }

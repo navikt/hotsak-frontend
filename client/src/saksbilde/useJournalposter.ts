@@ -1,24 +1,21 @@
-import useSwr from 'swr'
+import useSwr, { SWRResponse } from 'swr'
 
-import type { Dokument } from '../types/types.internal'
-import { httpGet } from '../io/http'
 import type { HttpError } from '../io/HttpError.ts'
+import type { Dokument } from '../types/types.internal.ts'
 import { useSakId } from './useSak.ts'
 
-interface JournalposterResponse {
+interface UseJournalposterResponse extends Omit<SWRResponse<Dokument[], HttpError>, 'data'> {
   dokumenter: Dokument[]
-  isLoading: boolean
-  error: HttpError
 }
 
-export function useJournalposter(): JournalposterResponse {
+export function useJournalposter(): UseJournalposterResponse {
   const sakId = useSakId()
-  const { data, error } = useSwr<{ data: Dokument[] }>(sakId ? `api/sak/${sakId}/dokumenter` : null, httpGet)
-
+  const { data: dokumenter = ingenDokumenter, ...rest } = useSwr<Dokument[]>(
+    sakId ? `/api/sak/${sakId}/dokumenter` : null
+  )
   return {
-    dokumenter: data?.data || ingenDokumenter,
-    isLoading: !error && !data,
-    error,
+    dokumenter,
+    ...rest,
   }
 }
 

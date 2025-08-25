@@ -29,7 +29,7 @@ const BarnebrillesakContainer = styled.div`
 `
 
 const Header = styled(HStack)`
-  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--ax-border-neutral-subtleA));
+  box-shadow: inset 0 -1px 0 0 var(--ac-tabs-border, var(--ax-border-neutral-subtle));
   padding-right: 2rem;
   height: ${søknadslinjeHøyde};
   align-items: center;

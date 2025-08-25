@@ -97,7 +97,7 @@ export function Vedtak() {
 }
 
 const VenstreKolonne = styled('div')`
-  border-left: 1px solid var(--ax-border-neutral);
+  border-left: 1px solid var(--ax-border-neutral-subtle);
   padding: 0;
   margin: 0;
   height: 100%;

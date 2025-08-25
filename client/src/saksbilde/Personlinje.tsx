@@ -133,7 +133,7 @@ function Container({ children }: { children?: ReactNode }) {
       paddingInline="8"
       style={{
         background: 'var(--ax-bg-neutral-soft)',
-        borderBottom: '1px solid var(--ax-border-neutral)',
+        borderBottom: '1px solid var(--ax-border-neutral-subtle)',
         color: 'var(--ax-text-neutral)',
       }}
     >

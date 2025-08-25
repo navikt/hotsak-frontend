@@ -42,7 +42,7 @@ export function Høyrekolonne() {
   }, [valgtHøyrekolonneTab])
 
   return (
-    <Box.New borderWidth="0 1" /*borderColor="border-subtle"*/>
+    <Box.New borderWidth="0 1" borderColor="neutral-subtle">
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}

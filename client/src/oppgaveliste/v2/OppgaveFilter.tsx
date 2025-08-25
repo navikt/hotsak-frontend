@@ -16,13 +16,13 @@ export function Oppgavefilter() {
   }
 
   return (
-    <Box
+    <Box.New
       marginInline="4"
       marginBlock="4"
       padding="4"
-      background="surface-subtle"
+      background="neutral-soft"
       borderWidth="1"
-      borderColor="border-subtle"
+      borderColor="neutral-subtle"
     >
       <HStack gap="4" align="end">
         <FilterToggleGroup
@@ -45,7 +45,7 @@ export function Oppgavefilter() {
           Tilbakestill filtre
         </Button>
       </HStack>
-    </Box>
+    </Box.New>
   )
 }
 

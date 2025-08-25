@@ -16,16 +16,9 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
     <div>
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
-        <Box
-          background="surface-default"
-          marginBlock="0 0"
-          borderRadius="medium"
-          borderColor="border-default"
-          borderWidth="1"
-          className="mdxEditorBox"
-        >
+        <Box.New marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
-        </Box>
+        </Box.New>
       </MarkdownEditorStyling>
       {valideringsfeil && (
         <ErrorMessage showIcon size="small">
@@ -39,7 +32,7 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
 const MarkdownEditorStyling = styled(Box)`
   margin-top: 0.5rem;
   .mdxEditorBox:has([contenteditable='true']:focus) {
-    border: 4px solid rgba(0, 52, 125, 1);
+    border: 4px solid var(--ax-border-focus);
     margin: -3px;
   }
 `

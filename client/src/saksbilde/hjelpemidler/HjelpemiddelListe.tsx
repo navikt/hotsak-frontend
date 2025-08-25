@@ -61,7 +61,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box key={hjelpemiddel.produkt.hmsArtNr} background="surface-subtle" padding="4">
+        <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
           <Hjelpemiddel
             sak={sak}
             hjelpemiddel={hjelpemiddel}
@@ -71,7 +71,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
             }
             harOppdatertLagerstatus={harOppdatertLagerstatus}
           />
-        </Box>
+        </Box.New>
       ))}
       {tilbehør && tilbehør.length > 0 && (
         <>

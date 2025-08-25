@@ -122,7 +122,7 @@ export function RegistrerSøknadSkjema() {
           >
             <Målform />
             <RegistrerBrillegrunnlag />
-            <Knappepanel spacing={10}>
+            <Knappepanel marginBlock={'space-40'}>
               <Button
                 type="submit"
                 variant="primary"

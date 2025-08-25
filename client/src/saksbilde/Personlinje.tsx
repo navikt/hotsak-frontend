@@ -110,7 +110,7 @@ function Element({ children }: { children: ReactNode }) {
 
 function Kjønnsikon({ kjønn }: { kjønn?: Kjønn }) {
   const iconProps: SVGProps<SVGSVGElement> = {
-    fontSize: 'var(--a-font-size-heading-large)',
+    fontSize: 'var(--ax-font-size-heading-large)',
   }
   switch (kjønn) {
     case Kjønn.KVINNE:
@@ -132,9 +132,9 @@ function Container({ children }: { children?: ReactNode }) {
       minWidth={hotsakTotalMinWidth}
       paddingInline="8"
       style={{
-        background: 'var(--a-bg-subtle)',
-        borderBottom: '1px solid var(--a-border-default)',
-        color: 'var(--a-text-default)',
+        background: 'var(--ax-bg-neutral-soft)',
+        borderBottom: '1px solid var(--ax-border-neutral)',
+        color: 'var(--ax-text-neutral)',
       }}
     >
       {Children.map(children, (child, index) => (

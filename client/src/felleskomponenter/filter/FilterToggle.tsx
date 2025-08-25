@@ -20,5 +20,5 @@ export function FilterToggle({ label, value, handleChange }: FilterToggleProps) 
 const ToggleContainer = styled.div`
   display: flex;
   align-items: flex-end;
-  padding-right: var(--a-spacing-4);
+  padding-right: var(--ax-space-16);
 `

@@ -105,8 +105,8 @@ export const MardownEditorPreviewStyling = styled.div.withConfig({
 
   .mdxEditorRemoveMargin {
     padding: 0;
-    font-size: var(--a-font-size-medium);
-    color: var(--a-text-default);
+    font-size: var(--ax-font-size-medium);
+    color: var(--ax-text-neutral);
     font-family: 'Source Sans Pro';
   }
 `

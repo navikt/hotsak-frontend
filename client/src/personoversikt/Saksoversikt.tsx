@@ -67,19 +67,17 @@ export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: Sak
       name: 'Sakstype',
       width: 100,
       render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
-        <div style={{ display: 'flex' }}>
-          <Oppgaveetikett
-            type={sak.sakstype ? sak.sakstype : Sakstype.SØKNAD}
-            showLabel={true}
-            labelLinkTo={
-              barnebrilleSak
-                ? undefined
-                : sak.sakstype === Sakstype.TILSKUDD
-                  ? `/oppgave/S-${sak.sakId}`
-                  : `/oppgave/S-${sak.sakId}/hjelpemidler`
-            }
-          />
-        </div>
+        <Oppgaveetikett
+          type={sak.sakstype ? sak.sakstype : Sakstype.SØKNAD}
+          showLabel={true}
+          labelLinkTo={
+            barnebrilleSak
+              ? undefined
+              : sak.sakstype === Sakstype.TILSKUDD
+                ? `/oppgave/S-${sak.sakId}`
+                : `/oppgave/S-${sak.sakId}/hjelpemidler`
+          }
+        />
       ),
     },
     {

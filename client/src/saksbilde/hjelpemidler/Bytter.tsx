@@ -15,7 +15,9 @@ const Bytter = ({ bytter, harVarsel = false }: Props) => {
       {bytter.map((bytte, idx) => (
         <VStack gap="2" key={idx}>
           <HStack gap="2">
-            {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />}
+            {harVarsel && (
+              <ExclamationmarkTriangleFillIcon color="var(--ax-text-warning-decoration)" fontSize="1.25rem" />
+            )}
             <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
           </HStack>
 

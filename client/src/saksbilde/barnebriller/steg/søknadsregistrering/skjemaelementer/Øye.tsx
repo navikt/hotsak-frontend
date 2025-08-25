@@ -94,7 +94,7 @@ export function Øye(props: { type: 'venstre' | 'høyre' }) {
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: 145px 155px;
-  gap: var(--a-spacing-5);
+  gap: var(--ax-space-20);
 
   align-items: start;
 `

@@ -90,7 +90,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
         <Box paddingBlock="0 4">
           <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
         </Box>
-        <Box padding="6" background="bg-subtle" borderRadius="large">
+        <Box.New padding="6" background="neutral-soft" borderRadius="large">
           <VStack gap="3">
             <HStack gap="3" wrap={false}>
               <div>
@@ -146,7 +146,7 @@ export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
               />
             )}
           </VStack>
-        </Box>
+        </Box.New>
       </Modal.Body>
       <Modal.Footer>
         <Button

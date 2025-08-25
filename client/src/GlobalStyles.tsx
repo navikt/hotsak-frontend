@@ -1,5 +1,3 @@
-import { createGlobalStyle } from 'styled-components'
-
 export const hotsakTotalMinWidth = '1200px'
 export const hotsakVenstremenyWidth = '340px'
 export const hotsakRegistrerSøknadKolonne = '420px'
@@ -18,11 +16,3 @@ export const personlinjeHøyde = headerHøyde
 export const søknadslinjeHøyde = headerHøyde
 
 export const textcontainerBredde = '38em'
-
-export const AppRoot = createGlobalStyle`
- body {
-    font-family: 'Source Sans Pro', Helvetica, sans-serif;
-    font-size: 1rem;
-    color: var(--a-text-default)
-  }
-`

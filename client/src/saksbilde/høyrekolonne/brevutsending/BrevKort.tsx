@@ -28,7 +28,7 @@ const Container = styled.li`
   display: flex;
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid var(--a-border-default);
+    border-bottom: 1px solid var(--ax-border-neutral);
   }
 `
 

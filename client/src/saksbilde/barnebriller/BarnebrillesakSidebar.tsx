@@ -18,7 +18,7 @@ import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabConte
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
 
 const Sidebar = styled(Tabs)`
-  border-left: 1px solid var(--a-border-default);
+  border-left: 1px solid var(--ax-border-neutral);
   height: 90vh;
   margin: 0;
   padding: 0;

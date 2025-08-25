@@ -90,22 +90,10 @@ export const Step: OverridableComponent<StepperStepProps, HTMLAnchorElement> = f
         }}
       >
         {
-          /*
-          completed ? (
-            <span className="hot-stepper__circle hot-stepper__circle--success">
-              <CompletedIcon />
-            </span>
-          ) :
-          */
           <Label className="hot-stepper__text__only" as="span" aria-hidden="true">
             {`${unsafe_index + 1}. ${children}`}
           </Label>
         }
-        {/*
-        <Label as="span" className="hot-stepper__content">
-          {children}
-        </Label>
-        */}
       </Comp>
     )
   }

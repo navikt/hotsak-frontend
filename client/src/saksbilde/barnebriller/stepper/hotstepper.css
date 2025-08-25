@@ -3,12 +3,12 @@
   --navds-stepper-border-width: 2px;
   --navds-stepper-line-length: 1rem;
 
-  color: var(--ac-stepper-text, var(--a-surface-action));
+  color: var(--ac-stepper-text, var(--ax-bg-accent-strong));
   font-weight: normal;
   line-height: 1;
   list-style: none;
   /* padding-left: 0; */
-  /* margin: 0; */
+  margin: 0px;
 }
 
 .hot-stepper--horizontal {
@@ -26,7 +26,7 @@
 }
 
 .hot-stepper__line {
-  background-color: var(--ac-stepper-line, var(--a-border-default));
+  background-color: var(--ac-stepper-line, var(--ax-border-neutral));
   width: var(--navds-stepper-border-width);
   height: 100%;
   min-height: var(--navds-stepper-line-length);
@@ -35,11 +35,11 @@
 }
 
 .hot-stepper__step--behind.hot-stepper__step--completed + .hot-stepper__line {
-  background-color: var(--ac-stepper-line-completed, var(--a-border-selected));
+  background-color: var(--ac-stepper-line-completed, var(--ax-border-accent));
 }
 
 .hot-stepper__item--behind.hot-stepper__item--completed + .hot-stepper__item > .hot-stepper__line--1 {
-  background-color: var(--ac-stepper-line-completed, var(--a-border-selected));
+  background-color: var(--ac-stepper-line-completed, var(--ax-border-accent));
 }
 
 /*
@@ -62,7 +62,7 @@
   /* grid-column: 1 / -1; */
   /* display: grid; */
   /* grid-template-columns: 14rem; */
-  gap: var(--a-spacing-4);
+  gap: var(--ax-space-16);
   justify-content: flex-start;
   text-decoration: none;
   cursor: pointer;
@@ -80,22 +80,8 @@ button.hot-stepper__step {
 }
 
 .hot-stepper__step--non-interactive {
-  color: var(--ac-stepper-non-interactive, var(--a-text-subtle));
+  color: var(--ac-stepper-non-interactive, var(--ax-text-neutral-subtle));
   cursor: default;
-}
-
-:where(.hot-stepper__step):focus-visible {
-  outline: none;
-  box-shadow: var(--a-shadow-focus);
-  isolation: isolate;
-}
-
-@supports not selector(:focus-visible) {
-  .hot-stepper__step:focus {
-    outline: none;
-    box-shadow: var(--a-shadow-focus);
-    isolation: isolate;
-  }
 }
 
 .hot-stepper__text__only {
@@ -105,35 +91,8 @@ button.hot-stepper__step {
   font-weight: 100;
   /* place-items: center; */
   flex-shrink: 0;
-  /* width: var(--navds-stepper-circle-size); */
-  /* height: var(--navds-stepper-circle-size); */
-  /* border: var(--navds-stepper-border-width) solid currentColor; */
-  /* border-radius: var(--a-border-radius-full); */
   line-height: 1;
 }
-
-.hot-stepper__circle {
-  grid-column: circle;
-  display: inline-block;
-  white-space: nowrap;
-  place-items: center;
-  flex-shrink: 0;
-  width: var(--navds-stepper-circle-size);
-  height: var(--navds-stepper-circle-size);
-  border: var(--navds-stepper-border-width) solid currentColor;
-  border-radius: var(--a-border-radius-full);
-  line-height: 1;
-}
-
-/*
-.hot-stepper__circle--success {
-  border: none;
-  background: none;
-  font-size: 1.75rem;
-  color: var(--a-text-on-action);
-  background-color: var(--ac-stepper-text, var(--a-surface-action));
-}
-*/
 
 /*
 .hot-stepper__content {
@@ -203,8 +162,8 @@ button.hot-stepper__step {
 
 /* Active step */
 :where(.hot-stepper__step--active) .hot-stepper__text__only {
-  color: var(--ac-stepper-active, var(--a-text-action-selected));
-  border-style: solid;
+  color: var(--ac-stepper-active, var(--ax-text-accent-subtle));
+  /*border-style: solid;*/
   font-weight: bolder;
 }
 
@@ -217,79 +176,60 @@ button.hot-stepper__step {
 }
 
 :where(.hot-stepper__step--active) .hot-stepper__circle {
-  /* background-color: var(--ac-stepper-active-bg, var(--a-surface-action-selected));  */
-  border-color: var(--ac-stepper-active-border, var(--a-border-action-selected));
-  color: var(--ac-stepper-active-text, var(--a-text-on-action));
+  /* background-color: var(--ac-stepper-active-bg, var(--ax-bg-accent-strong-pressed));  */
+  border-color: var(--ac-stepper-active-border, var(--ax-border-accent));
+  color: var(--ac-stepper-active-text, var(--ax-text-accent-contrast));
 }
 
 :where(.hot-stepper__step:not(.hot-stepper__step--active):hover) .hot-stepper__circle {
-  background-color: var(--ac-stepper-hover-bg, var(--a-surface-action-subtle-hover));
+  background-color: var(--ac-stepper-hover-bg, var(--ax-bg-accent-moderate-hover));
 }
 
 :where(.hot-stepper__step:not(.hot-stepper__step--active):hover) .hot-stepper__circle--success {
-  color: var(--ac-stepper-hover-bg, var(--a-surface-action-subtle-hover));
-  background-color: var(--ac-stepper-text, var(--a-surface-action));
+  color: var(--ac-stepper-hover-bg, var(--ax-bg-accent-moderate-hover));
+  background-color: var(--ac-stepper-text, var(--ax-bg-accent-strong));
 }
 
 /* Non-interactive */
 :where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__text__only {
-  color: var(--ac-stepper-non-interactive-active, var(--a-text-default));
+  color: var(--ac-stepper-non-interactive-active, var(--ax-text-neutral));
 }
 
 .hot-stepper__step--non-interactive.hot-stepper__step--behind.hot-stepper__step--completed + .hot-stepper__line {
-  background-color: var(--ac-stepper-non-interactive-line-completed, var(--a-border-strong));
+  background-color: var(--ac-stepper-non-interactive-line-completed, var(--ax-border-neutral-strong));
 }
 
 .hot-stepper__item--non-interactive.hot-stepper__item--behind.hot-stepper__item--completed
   + .hot-stepper__item
   > .hot-stepper__line--1 {
-  background-color: var(--ac-stepper-non-interactive-line-completed, var(--a-border-strong));
+  background-color: var(--ac-stepper-non-interactive-line-completed, var(--ax-border-neutral-strong));
 }
-
-/*
-:where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__circle {
-  background-color: var(--ac-stepper-non-interactive-active-bg, var(--a-surface-inverted));
-  border-color: var(--ac-stepper-non-interactive-active-border, var(--a-surface-inverted));
-  color: var(--ac-stepper-non-interactive-active-text, var(--a-text-on-inverted));
-}
-*/
 
 :where(.hot-stepper__step--non-interactive:hover) .hot-stepper__circle {
   background-color: transparent;
 }
 
-:where(.hot-stepper__step--non-interactive.hot-stepper__step--active:hover) .hot-stepper__circle {
-  background-color: var(--ac-stepper-non-interactive-active-bg, var(--a-surface-inverted));
-}
-
 :where(.hot-stepper__step--completed.hot-stepper__step--active) .hot-stepper__circle {
   background-color: inherit;
-  color: var(--ac-stepper-active-completed, var(--a-text-action-selected));
+  color: var(--ac-stepper-active-completed, var(--ax-text-accent-subtle));
 }
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active) .hot-stepper__circle--success {
-  color: var(--a-text-on-action);
-  background-color: var(--ac-stepper-active-completed, var(--a-surface-action-selected));
+  color: var(--ax-text-accent-contrast);
+  background-color: var(--ac-stepper-active-completed, var(--ax-bg-accent-strong-pressed));
 }
 
 :where(.hot-stepper__step--non-interactive, .hot-stepper__step--non-interactive:hover) .hot-stepper__circle--success {
-  color: var(--a-text-on-inverted);
-  background-color: var(--ac-stepper-non-interactive-completed-bg, var(--a-surface-neutral));
+  color: var(--ax-text-neutral-contrast);
+  background-color: var(--ac-stepper-non-interactive-completed-bg, var(--ax-bg-neutral-strong));
 }
-
-/*
-:where(.hot-stepper__step--non-interactive.hot-stepper__step--active) .hot-stepper__circle--success {
-   color: var(--a-text-on-inverted);
-   background-color: var(--ac-stepper-non-interactive-active-completed, var(--a-surface-inverted));
-}
-*/
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active.hot-stepper__step--non-interactive)
   .hot-stepper__circle {
-  color: var(--ac-stepper-non-interactive-active-completed, var(--a-text-default));
+  color: var(--ac-stepper-non-interactive-active-completed, var(--ax-text-neutral));
 }
 
 :where(.hot-stepper__step--completed.hot-stepper__step--active.hot-stepper__step--non-interactive)
   .hot-stepper__circle--success {
-  color: var(--ac-stepper-non-interactive-active-completed, var(--a-text-on-inverted));
+  color: var(--ac-stepper-non-interactive-active-completed, var(--ax-text-neutral-contrast));
 }

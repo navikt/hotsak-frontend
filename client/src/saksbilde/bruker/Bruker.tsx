@@ -1,7 +1,7 @@
 import { PersonIcon } from '@navikt/aksel-icons'
 import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, List, Tooltip } from '@navikt/ds-react'
 
-import { Merknad } from '../../felleskomponenter/Merknad'
+import { MerknadBox } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import {
@@ -74,10 +74,9 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           <Kontaktperson levering={levering} />
           {utleveringMerknad && (
             <>
-              <Merknad>
-                <Box paddingBlock="1" />
+              <MerknadBox>
                 <Etikett>Merknad til utlevering</Etikett>
-              </Merknad>
+              </MerknadBox>
               <HStack align="center">
                 <Brødtekst>{utleveringMerknad}</Brødtekst>
                 <Tooltip content="Kopier merknad til utlevering" placement="right">

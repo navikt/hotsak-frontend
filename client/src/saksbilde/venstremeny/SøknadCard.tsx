@@ -21,7 +21,7 @@ export interface SøknadCardProps {
 export function SøknadCard({ sakstype, sakId, søknadMottatt, funksjonsnedsettelser, telefon }: SøknadCardProps) {
   return (
     <VenstremenyCard>
-      <VenstremenyCardRow icon={<Oppgaveetikett type={sakstype} />} align="center">
+      <VenstremenyCardRow icon={<Oppgaveetikett type={sakstype} />}>
         <Mellomtittel spacing={false}>{sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Søknad'}</Mellomtittel>
       </VenstremenyCardRow>
       <BodyShort

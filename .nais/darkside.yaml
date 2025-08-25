@@ -2,15 +2,15 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   labels:
-    app: hotsak-frontend-labs
+    app: hotsak-frontend-labs-darkside
     team: teamdigihot
-  name: hotsak-frontend-labs
+  name: hotsak-frontend-labs-darkside
   namespace: teamdigihot
 spec:
-  image: { { image } }
+  image: {{image}}
   port: 3000
   ingresses:
-    - https://hotsak.ekstern.dev.nav.no
+    - https://hotsak-darkside.ekstern.dev.nav.no
   liveness:
     path: /isalive
   readiness:
@@ -58,7 +58,7 @@ spec:
     - name: USE_MSW_GRUNNDATA
       value: "true"
     - name: GIT_COMMIT
-      value: { { commit } }
+      value: {{commit}}
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.nav.no/imageproxy/400d
     - name: UMAMI_ENABLED

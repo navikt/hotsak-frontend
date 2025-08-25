@@ -56,7 +56,7 @@ const SaksbildeContent = memo(() => {
           <Søknadslinje id={sak.data.sakId} />
         </HGrid>
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
-          <Venstremeny gap="5">
+          <Venstremeny gap="space-24">
             <SøknadCard
               sakId={sak.data.sakId}
               sakstype={sak.data.sakstype}
@@ -123,7 +123,7 @@ const SaksbildeContent = memo(() => {
 })
 
 const Container = styled.section`
-  padding: 0 var(--a-spacing-4);
+  padding: 0 var(--ax-space-16);
   padding-top: 1rem;
   box-sizing: border-box;
 `

@@ -3,7 +3,7 @@ import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { PersonIcon } from '@navikt/aksel-icons'
-import { Merknad } from '../../felleskomponenter/Merknad'
+import { MerknadBox } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
@@ -55,22 +55,20 @@ export function Formidler({ levering }: FormidlerProps) {
           }
 
     return (
-      <Box paddingBlock="4 0">
-        <Merknad>
-          <HGrid {...hGridProps}>
-            <Etikett>Navn</Etikett>
-            <Brødtekst>{formaterNavn(oppfølging.navn)}</Brødtekst>
-            <Etikett>Arbeidssted</Etikett>
-            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</Brødtekst>
-            <Etikett>Stilling</Etikett>
-            <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Brødtekst>
-            <Etikett>Telefon</Etikett>
-            <Brødtekst>{formaterTelefonnummer(oppfølging.telefon)}</Brødtekst>
-            <Etikett>Ansvar</Etikett>
-            <Brødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Brødtekst>
-          </HGrid>
-        </Merknad>
-      </Box>
+      <MerknadBox>
+        <HGrid {...hGridProps}>
+          <Etikett>Navn</Etikett>
+          <Brødtekst>{formaterNavn(oppfølging.navn)}</Brødtekst>
+          <Etikett>Arbeidssted</Etikett>
+          <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</Brødtekst>
+          <Etikett>Stilling</Etikett>
+          <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Brødtekst>
+          <Etikett>Telefon</Etikett>
+          <Brødtekst>{formaterTelefonnummer(oppfølging.telefon)}</Brødtekst>
+          <Etikett>Ansvar</Etikett>
+          <Brødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Brødtekst>
+        </HGrid>
+      </MerknadBox>
     )
   }
 
@@ -93,7 +91,7 @@ export function Formidler({ levering }: FormidlerProps) {
           <>
             <Strek />
             <Box paddingBlock="4 0">
-              <Heading level="1" size="small" spacing={false}>
+              <Heading level="1" size="small" spacing>
                 Oppfølgings- og opplæringsansvarlig
               </Heading>
               <InfoOppfølgingsansvarlig />

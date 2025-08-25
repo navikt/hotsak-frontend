@@ -76,7 +76,7 @@ export function FritekstPanel({
   const [beskjedlengdeError, setBeskjedlengdeError] = useState(false)
 
   return (
-    <Box padding="4" background="surface-subtle">
+    <Box.New padding="4" background="neutral-soft">
       <VStack gap="4">
         <Heading level="2" size="xsmall" spacing>
           Beskjed fra formidler til kommunen om utlevering
@@ -138,7 +138,7 @@ export function FritekstPanel({
           </VStack>
         </form>
       </VStack>
-    </Box>
+    </Box.New>
   )
 }
 

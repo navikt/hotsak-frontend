@@ -1,10 +1,9 @@
 import App from './App'
 import { createRoot } from 'react-dom/client'
-import { AppRoot } from './GlobalStyles'
 import { initMsw } from './mocks'
 import { initFaro } from './utils/faro'
 import { initUmami } from './sporing/umami'
-import '@navikt/ds-css'
+import '@navikt/ds-css/darkside'
 
 async function main(): Promise<void> {
   await initMsw()
@@ -14,7 +13,7 @@ async function main(): Promise<void> {
   const container = document.getElementById('root')!
   createRoot(container).render(
     <>
-      <AppRoot />
+      {/*<AppRoot />*/}
       <App />
     </>
   )

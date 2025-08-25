@@ -24,5 +24,5 @@ export function HeadingMedHjelpetekst(props: HeadingMedHjelpetekstProps) {
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  gap: var(--a-spacing-2);
+  gap: var(--ax-space-8);
 `

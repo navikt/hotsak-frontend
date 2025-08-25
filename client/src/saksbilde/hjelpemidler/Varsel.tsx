@@ -11,9 +11,9 @@ export function Varsler({ varsler }: { varsler: Varsel[] }) {
           <HStack gap="2" key={varsel.tekst.nb} wrap={false}>
             <div>
               {varsel.type === Varseltype.WARNING ? (
-                <ExclamationmarkTriangleFillIcon color="var(--a-icon-warning)" fontSize="1.25rem" />
+                <ExclamationmarkTriangleFillIcon color="var(--ax-text-warning-decoration)" fontSize="1.25rem" />
               ) : (
-                <InformationSquareFillIcon color="var(--a-icon-info)" fontSize="1.25rem" />
+                <InformationSquareFillIcon color="var(--ax-text-info-decoration)" fontSize="1.25rem" />
               )}
             </div>
             <Brødtekst>{varsel.tekst.nb}</Brødtekst>

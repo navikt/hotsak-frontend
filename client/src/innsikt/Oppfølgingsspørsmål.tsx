@@ -9,7 +9,7 @@ export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspør
       background="surface-action-subtle"
       padding={nivå > 1 ? '0' : '3'}
       style={{
-        marginTop: nivå > 1 ? 'var(--a-spacing-3)' : 0,
+        marginTop: nivå > 1 ? 'var(--ax-space-12)' : 0,
       }}
     >
       <VStack gap="5">

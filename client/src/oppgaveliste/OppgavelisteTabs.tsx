@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { useVisOppgavelisteTabs } from '../tilgang/useTilgang.ts'
 
 const TabContainer = styled.div`
-  padding-top: var(--a-spacing-4);
+  padding-top: var(--ax-space-16);
 `
 
 export function OppgavelisteTabs() {

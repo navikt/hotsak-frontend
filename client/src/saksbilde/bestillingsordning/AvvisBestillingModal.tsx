@@ -83,5 +83,5 @@ export function AvvisBestillingModal({ open, onBekreft, loading, onClose }: Avvi
 const avvisÅrsaker: ReadonlyArray<string> = ['Duplikat av en annen bestilling', 'Annet']
 
 const AvvisBestillingRadioGroup = styled(RadioGroup)`
-  margin: var(--a-spacing-4) 0;
+  margin: var(--ax-space-16) 0;
 `

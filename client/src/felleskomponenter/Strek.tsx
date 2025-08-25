@@ -11,5 +11,5 @@ export function Skillelinje() {
 export const Strek = styled.hr`
   border: none;
   height: 1px;
-  background-color: var(--a-border-subtle);
+  background-color: var(--ax-border-neutral-subtle);
 `

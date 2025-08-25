@@ -20,7 +20,10 @@ export function SakLoader() {
         </section>
         <Box
           padding={spacing}
-          style={{ borderLeft: '1px solid var(--a-border-subtle)', borderRight: '1px solid var(--a-border-subtle)' }}
+          style={{
+            borderLeft: '1px solid var(--ax-border-neutral-subtle)',
+            borderRight: '1px solid var(--ax-border-neutral-subtle)',
+          }}
         >
           <Skeleton variant="rectangle" width="100%" height={845} />
         </Box>

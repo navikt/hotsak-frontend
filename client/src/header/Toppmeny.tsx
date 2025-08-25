@@ -1,8 +1,7 @@
-import { MenuGridIcon } from '@navikt/aksel-icons'
+import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -10,6 +9,8 @@ import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { useDarkmode } from './useDarkmode.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -27,6 +28,7 @@ export function Toppmeny() {
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
   const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
+  const [darkmode, setDarkmode] = useDarkmode()
 
   return (
     <InternalHeader>
@@ -72,6 +74,21 @@ export function Toppmeny() {
                 }}
               >
                 {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
+              </ActionMenu.Item>
+            </ActionMenu.Group>
+          </Eksperiment>
+          <Eksperiment>
+            <ActionMenu.Divider />
+            <ActionMenu.Group label="Eksperimenter">
+              <ActionMenu.Item
+                icon={<ThemeIcon />}
+                as="a"
+                href="/"
+                onClick={() => {
+                  setDarkmode(!darkmode)
+                }}
+              >
+                {darkmode ? 'Tilbake til lyset' : 'Darkmode'}
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>

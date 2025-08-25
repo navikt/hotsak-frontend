@@ -42,7 +42,7 @@ export function Høyrekolonne() {
   }, [valgtHøyrekolonneTab])
 
   return (
-    <Box borderWidth="0 1" borderColor="border-subtle">
+    <Box.New borderWidth="0 1" /*borderColor="border-subtle"*/>
       <Tabs
         size="small"
         value={valgtHøyrekolonneTab}
@@ -109,6 +109,6 @@ export function Høyrekolonne() {
           )}
         </ScrollContainer>
       </Tabs>
-    </Box>
+    </Box.New>
   )
 }

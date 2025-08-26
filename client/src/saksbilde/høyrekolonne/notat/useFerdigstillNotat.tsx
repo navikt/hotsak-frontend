@@ -10,9 +10,8 @@ export function useFerdigstillNotat() {
   const [visFerdigstiltToast, setVisFerdigstiltToast] = useState(false)
   const { state, execute } = useActionState()
 
-  const ferdigstillNotat = async (request: FerdigstillNotatRequest) => {
-    return execute(() => http.post(`/api/sak/${request.sakId}/notater/${request.id}/ferdigstilling`, request))
-  }
+  const ferdigstillNotat = (request: FerdigstillNotatRequest) =>
+    execute(() => http.post(`/api/sak/${request.sakId}/notater/${request.id}/ferdigstilling`, request))
 
   const ferdigstill = async (payload: FerdigstillNotatRequest) => {
     await ferdigstillNotat(payload)

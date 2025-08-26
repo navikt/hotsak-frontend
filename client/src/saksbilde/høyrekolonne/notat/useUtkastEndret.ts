@@ -26,17 +26,16 @@ export function useUtkastEndret(
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
-  const opprettNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-    return execute(() => http.post(`/api/sak/${sakId}/notater`, utkast))
-  }
+  const opprettNotatUtkast = (sakId: string, utkast: NotatUtkast) =>
+    execute(() => http.post(`/api/sak/${sakId}/notater`, utkast))
 
-  const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-    return execute(async () => {
+  const oppdaterNotatUtkast = (sakId: string, utkast: NotatUtkast) =>
+    execute(() => {
       if (utkast.id) {
         return http.put(`/api/sak/${sakId}/notater/${utkast.id}`, utkast)
       }
+      return Promise.resolve()
     })
-  }
 
   const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
     if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '' || klassifisering)) {

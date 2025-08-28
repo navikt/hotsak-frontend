@@ -40,7 +40,7 @@ export function useUtkastEndret(
   }
 
   const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
-    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '' || klassifisering)) {
+    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '')) {
       setLagrerUtkast(true)
       setOppretterNyttUtkast(true)
       await opprettNotatUtkast(sakId, { tittel, tekst, klassifisering, type })

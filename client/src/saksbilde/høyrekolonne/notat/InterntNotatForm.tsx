@@ -2,6 +2,7 @@ import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+
 import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { NotatFormValues } from './Notater.tsx'
@@ -22,8 +23,8 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const aktivtUtkast = finnAktivtUtkast(NotatType.INTERNT)
 
   const defaultValues = {
-    tittel: '',
-    tekst: '',
+    tittel: aktivtUtkast?.tittel ?? '',
+    tekst: aktivtUtkast?.tekst ?? '',
   }
 
   const form = useForm<NotatFormValues>({ defaultValues })

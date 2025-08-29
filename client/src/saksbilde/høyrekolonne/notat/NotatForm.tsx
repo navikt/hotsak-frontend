@@ -34,7 +34,7 @@ export function NotatForm({ readOnly, aktivtUtkast, lagrerUtkast }: NotatFormPro
             value={field.value}
             onChange={(e) => {
               field.onChange(e)
-              trigger('tittel')
+              return trigger('tittel')
             }}
           />
         )}
@@ -50,7 +50,7 @@ export function NotatForm({ readOnly, aktivtUtkast, lagrerUtkast }: NotatFormPro
               tekst={field.value}
               onChange={(e) => {
                 field.onChange(e)
-                trigger('tekst')
+                return trigger('tekst')
               }}
               readOnly={readOnly}
               valideringsfeil={errors.tekst?.message}

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
 
-import { useActionState } from '../../../action/Actions.ts'
 import { http } from '../../../io/HttpClient.ts'
 import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
 
@@ -18,58 +17,43 @@ export function useUtkastEndret(
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
 
-  const { execute, state } = useActionState()
-
-  useEffect(() => {
-    if (!oppretterNyttUtkast) {
-      utkastEndret(tittel, tekst, klassifisering)
-    }
-  }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
-
-  const opprettNotatUtkast = (sakId: string, utkast: NotatUtkast): Promise<void> =>
-    execute(() => http.post(`/api/sak/${sakId}/notater`, utkast))
-
-  const oppdaterNotatUtkast = (sakId: string, utkast: NotatUtkast): Promise<void> =>
-    execute(async () => {
-      if (utkast.id) {
-        return http.put(`/api/sak/${sakId}/notater/${utkast.id}`, utkast)
-      }
-    })
-
   const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
-    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '' || klassifisering)) {
-      setLagrerUtkast(true)
+    const utkastId = aktivtUtkast?.id
+    if (!utkastId) {
       setOppretterNyttUtkast(true)
-      await opprettNotatUtkast(sakId, { tittel, tekst, klassifisering, type })
-      await mutateNotater()
-      setOppretterNyttUtkast(false)
-      setLagrerUtkast(false)
+      try {
+        await http.post(`/api/sak/${sakId}/notater`, { tittel, tekst, klassifisering, type })
+        await mutateNotater()
+      } finally {
+        setOppretterNyttUtkast(false)
+      }
+      return
     }
 
     if (debounceTimer) clearTimeout(debounceTimer)
-    if (tittel !== '' || tekst !== '' || klassifisering) {
-      setDebounceTimer(
-        setTimeout(async () => {
-          setLagrerUtkast(true)
-          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 500))
-
-          await oppdaterNotatUtkast(sakId, {
-            id: aktivtUtkast?.id,
-            tittel,
-            tekst,
-            klassifisering,
-            type,
-          })
-          mutateNotater()
-          await minimumPeriodeVisLagrerUtkast
-          setLagrerUtkast(false)
-        }, 500)
-      )
-    }
+    setDebounceTimer(
+      setTimeout(async () => {
+        await http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
+          id: utkastId,
+          tittel,
+          tekst,
+          klassifisering,
+          type,
+        })
+        await new Promise((resolve) => setTimeout(resolve, 500))
+      }, 500)
+    )
   }
+
+  useEffect(() => {
+    if (oppretterNyttUtkast) return
+    if (tittel !== '' || tekst !== '' || klassifisering) {
+      setLagrerUtkast(true)
+      utkastEndret(tittel, tekst, klassifisering).finally(() => setLagrerUtkast(false))
+    }
+  }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
   return {
     lagrerUtkast,
-    state,
   }
 }

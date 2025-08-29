@@ -14,11 +14,15 @@ export function useUtkastEndret(
   aktivtUtkast?: NotatUtkast,
   klassifisering?: NotatKlassifisering | null
 ) {
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
 
-  const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
+  const utkastEndret = async (
+    tittel: string,
+    tekst: string,
+    klassifisering?: NotatKlassifisering | null
+  ): Promise<void> => {
     const utkastId = aktivtUtkast?.id
     if (!utkastId) {
       setOppretterNyttUtkast(true)
@@ -52,7 +56,7 @@ export function useUtkastEndret(
     if (tittel !== '' || tekst !== '' || klassifisering) {
       setLagrerUtkast(true)
       utkastEndret(tittel, tekst, klassifisering)
-        .finally(() => delay(500))
+        .then(() => delay(500))
         .finally(() => setLagrerUtkast(false))
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])

@@ -26,10 +26,10 @@ export function useUtkastEndret(
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
-  const opprettNotatUtkast = (sakId: string, utkast: NotatUtkast) =>
+  const opprettNotatUtkast = (sakId: string, utkast: NotatUtkast): Promise<void> =>
     execute(() => http.post(`/api/sak/${sakId}/notater`, utkast))
 
-  const oppdaterNotatUtkast = (sakId: string, utkast: NotatUtkast) =>
+  const oppdaterNotatUtkast = (sakId: string, utkast: NotatUtkast): Promise<void> =>
     execute(async () => {
       if (utkast.id) {
         return http.put(`/api/sak/${sakId}/notater/${utkast.id}`, utkast)

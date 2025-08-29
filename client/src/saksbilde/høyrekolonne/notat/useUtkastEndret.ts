@@ -56,7 +56,7 @@ export function useUtkastEndret(
     if (tittel !== '' || tekst !== '' || klassifisering) {
       setLagrerUtkast(true)
       utkastEndret(tittel, tekst, klassifisering)
-        .then(() => delay(500)) // Ikke vis "Lagrer..." kortere enn "tid brukt + 500 millisekunder"
+        .then(() => delay(500)) // Ikke vis "Lagrer..." kortere enn tid brukt + 500 millisekunder
         .finally(() => setLagrerUtkast(false))
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])

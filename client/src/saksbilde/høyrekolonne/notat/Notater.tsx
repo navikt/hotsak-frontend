@@ -21,13 +21,21 @@ export interface NotatFormValues {
 }
 
 export function Notater({ sakId, lesevisning }: NotaterProps) {
-  const { notater, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
-  const [notatType, setNotatType] = useState<string>(NotatType.INTERNT.toString())
+  const {
+    notater,
+    mutate: mutateNotater,
+    isLoading: notaterLaster,
+    harLastet: notaterLastet,
+    finnAktivtUtkast,
+  } = useNotater(sakId)
+  const [notatType, setNotatType] = useState<NotatType>(NotatType.INTERNT)
+
+  const aktivtUtkast = finnAktivtUtkast(notatType)
 
   const filterOptions: FilterOption[] = [
     { key: 'ALLE', label: 'Alle' },
-    { key: NotatType.INTERNT.toString(), label: 'Internt arbeidsnotat' },
-    { key: NotatType.JOURNALFØRT.toString(), label: 'Forvaltningsnotat' },
+    { key: NotatType.INTERNT, label: 'Internt arbeidsnotat' },
+    { key: NotatType.JOURNALFØRT, label: 'Forvaltningsnotat' },
   ]
   const [filter, setFilter] = useState(['ALLE'])
 
@@ -68,10 +76,10 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             size="small"
             value={notatType}
             label="Opprett nytt notat"
-            onChange={(notatType) => setNotatType(notatType)}
+            onChange={(type) => setNotatType(type as NotatType)}
           >
-            <ToggleGroup.Item value={NotatType.INTERNT.toString()} label="Internt arbeidsnotat" />
-            <ToggleGroup.Item value={NotatType.JOURNALFØRT.toString()} label="Forvaltningsnotat" />
+            <ToggleGroup.Item value={NotatType.INTERNT} label="Internt arbeidsnotat" />
+            <ToggleGroup.Item value={NotatType.JOURNALFØRT} label="Forvaltningsnotat" />
           </ToggleGroup>
         </Box>
       </VStack>
@@ -80,11 +88,14 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
           <Loader size="large" style={{ margin: '2em auto', display: 'block' }} />
         </div>
       )}
-
-      {notatType === NotatType.JOURNALFØRT ? (
-        <ForvaltningsnotatForm sakId={sakId} lesevisning={lesevisning} />
-      ) : (
-        <InterntNotatForm sakId={sakId} lesevisning={lesevisning} />
+      {notaterLastet && (
+        <>
+          {notatType === NotatType.JOURNALFØRT ? (
+            <ForvaltningsnotatForm sakId={sakId} lesevisning={lesevisning} aktivtUtkast={aktivtUtkast} />
+          ) : (
+            <InterntNotatForm sakId={sakId} lesevisning={lesevisning} aktivtUtkast={aktivtUtkast} />
+          )}
+        </>
       )}
       <VStack gap="4" paddingBlock="8 0">
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
@@ -107,9 +118,9 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             )}
             {notater
               .filter((notat) => filter[0] === 'ALLE' || notat.type === filter[0])
-              .map((notat) => {
-                return <NotatCard key={notat.id} notat={notat} mutate={mutateNotater} />
-              })}
+              .map((notat) => (
+                <NotatCard key={notat.id} notat={notat} mutate={mutateNotater} />
+              ))}
           </>
         )}
       </VStack>

@@ -3,6 +3,7 @@ import { KeyedMutator } from 'swr'
 
 import { http } from '../../../io/HttpClient.ts'
 import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
+import { delay } from '../../../utils/delay.ts'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -32,24 +33,27 @@ export function useUtkastEndret(
 
     if (debounceTimer) clearTimeout(debounceTimer)
     setDebounceTimer(
-      setTimeout(async () => {
-        await http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
-          id: utkastId,
-          tittel,
-          tekst,
-          klassifisering,
-          type,
-        })
-        await new Promise((resolve) => setTimeout(resolve, 500))
-      }, 500)
+      setTimeout(
+        () =>
+          http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
+            id: utkastId,
+            tittel,
+            tekst,
+            klassifisering,
+            type,
+          }),
+        500
+      )
     )
   }
 
   useEffect(() => {
-    if (oppretterNyttUtkast) return
+    if (oppretterNyttUtkast) return // Nytt notat er under opprettelse, ikke gjør noe
     if (tittel !== '' || tekst !== '' || klassifisering) {
       setLagrerUtkast(true)
-      utkastEndret(tittel, tekst, klassifisering).finally(() => setLagrerUtkast(false))
+      utkastEndret(tittel, tekst, klassifisering)
+        .finally(() => delay(500))
+        .finally(() => setLagrerUtkast(false))
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 

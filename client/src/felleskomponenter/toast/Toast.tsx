@@ -5,8 +5,6 @@ import { Alert, Box, HStack, Loader } from '@navikt/ds-react'
 
 import { BrytbarBrødtekst, Tekst } from '../typografi'
 
-export { ToastProvider, useToast as useToastContext } from './ToastContext'
-
 // TODO: Flytte denne og rename. Dette er ikke en Toast med en loding indikator
 export function Toast({ children }: { children: ReactNode }) {
   return (

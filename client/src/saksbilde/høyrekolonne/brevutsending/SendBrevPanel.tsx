@@ -3,7 +3,8 @@ import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } 
 import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
-import { useToastContext } from '../../../felleskomponenter/toast/Toast.tsx'
+import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
@@ -15,7 +16,6 @@ import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
-import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
 
 export interface SendBrevProps {
   sakId: string
@@ -39,7 +39,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const { mutate: hentBarnebrillesak } = useBarnebrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
-  const { showSuccessToast } = useToastContext()
+  const { showSuccessToast } = useToast()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
   useEffect(() => {

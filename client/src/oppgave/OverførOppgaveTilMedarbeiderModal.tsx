@@ -12,7 +12,7 @@ import { useFormActionState } from '../utils/form.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
-import { useToastContext } from '../felleskomponenter/toast/Toast.tsx'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 
 export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
@@ -88,7 +88,7 @@ export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open:
 
 function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
   const { endreOppgavetildeling } = useOppgaveActions()
-  const { showSuccessToast } = useToastContext()
+  const { showSuccessToast } = useToast()
   return useFormActionState<
     {
       success?: boolean

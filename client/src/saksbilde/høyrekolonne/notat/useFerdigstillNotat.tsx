@@ -1,13 +1,13 @@
 import { useSWRConfig } from 'swr'
 import { useActionState } from '../../../action/Actions.ts'
-import { useToastContext } from '../../../felleskomponenter/toast/Toast.tsx'
 import { baseUrl, post } from '../../../io/http'
 import { FerdigstillNotatRequest, NotatType } from '../../../types/types.internal'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export function useFerdigstillNotat() {
   const { mutate } = useSWRConfig()
   const { state, execute } = useActionState()
-  const { showSuccessToast } = useToastContext()
+  const { showSuccessToast } = useToast()
 
   const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
     return execute(async () => {

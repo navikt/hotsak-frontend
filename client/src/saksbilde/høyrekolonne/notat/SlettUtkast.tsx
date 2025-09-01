@@ -3,12 +3,12 @@ import { TrashIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { useToastContext } from '../../../felleskomponenter/toast/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { baseUrl, del } from '../../../io/http.ts'
 import { useActionState } from '../../../action/Actions.ts'
 import { Notat } from '../../../types/types.internal.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -19,7 +19,7 @@ export interface NotaterProps {
 export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const { mutate } = useSWRConfig()
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const { showSuccessToast } = useToastContext()
+  const { showSuccessToast } = useToast()
   const { execute, state: sletterUtkast } = useActionState()
   showSuccessToast
 

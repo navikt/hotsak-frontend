@@ -15,7 +15,7 @@ import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { Theme } from '@navikt/ds-react'
 import { useDarkmode } from './header/useDarkmode.ts'
-import { ToastProvider } from './felleskomponenter/toast/Toast.tsx'
+import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))

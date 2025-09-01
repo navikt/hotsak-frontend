@@ -5,7 +5,7 @@ import { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelse
 import { baseUrl, post } from '../../../../io/http'
 import { useActionState } from '../../../../action/Actions.ts'
 import { Notat, NotatType } from '../../../../types/types.internal'
-import { useToastContext } from '../../../../felleskomponenter/toast/Toast.tsx'
+import { useToast } from '../../../../felleskomponenter/toast/ToastContext.tsx'
 
 export interface FeilregistrerJournalførtNotatModalProps {
   open: boolean
@@ -22,7 +22,7 @@ export function useFeilregistrerJournalførtNotat(
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { showSuccessToast } = useToastContext()
+  const { showSuccessToast } = useToast()
   const { execute } = useActionState()
 
   const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {

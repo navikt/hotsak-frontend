@@ -7,7 +7,7 @@ import { DataCell, KolonneHeader } from '../felleskomponenter/table/KolonneHeade
 import { LinkRow } from '../felleskomponenter/table/LinkRow.tsx'
 import type { Tabellkolonne } from '../felleskomponenter/table/Tabellkolonne.ts'
 import { useSortedElements } from '../felleskomponenter/table/useSortedElements.ts'
-import { Toast } from '../felleskomponenter/Toast.tsx'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { TooltipWrapper } from '../felleskomponenter/TooltipWrapper.tsx'
 import { Skjermlesertittel, TekstMedEllipsis } from '../felleskomponenter/typografi.tsx'
 import { OppgavestatusLabel, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'

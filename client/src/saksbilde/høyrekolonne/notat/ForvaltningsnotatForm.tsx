@@ -2,7 +2,6 @@ import '@mdxeditor/editor/style.css'
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   Brevtype,
@@ -41,7 +40,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-  const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
+  const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
   const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
 
   const defaultValues = {
@@ -198,8 +197,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
             </div>
           </VStack>
         )}
-
-        {visFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er journalført.</InfoToast>}
 
         <BekreftelseModal
           heading="Er du sikker på at du vil journalføre notatet?"

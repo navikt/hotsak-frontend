@@ -2,7 +2,6 @@ import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
 import { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
@@ -33,7 +32,7 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
   const tekst = watch('tekst')
 
   const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
-  const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
+  const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
 
   useEffect(() => {
     if (aktivtUtkast) {
@@ -85,7 +84,6 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
             </div>
           </VStack>
         )}
-        {visFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er opprettet</InfoToast>}
       </form>
     </FormProvider>
   )

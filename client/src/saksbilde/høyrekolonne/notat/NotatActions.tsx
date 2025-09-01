@@ -2,9 +2,7 @@ import '@mdxeditor/editor/style.css'
 
 import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
-import { useState } from 'react'
 
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { SpørreundersøkelseModal } from '../../../innsikt/SpørreundersøkelseModal.tsx'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
@@ -21,7 +19,6 @@ export interface NotaterProps {
 
 export function NotatActions({ notat }: NotaterProps) {
   const { kanBehandleSak } = useSaksregler()
-  const [visFeilregistrertToast] = useState(false)
   const { onOpen: visFeilregistrerNotat, ...feilregistrerJournalførtNotat } = useFeilregistrerJournalførtNotat(notat)
 
   // Skjuler interne notater actions for brukere uten tilgang
@@ -73,8 +70,6 @@ export function NotatActions({ notat }: NotaterProps) {
           await feilregistrerJournalførtNotat.onBekreft(tilbakemelding)
         }}
       />
-
-      {visFeilregistrertToast && <InfoToast bottomPosition="10px">Notat feilregistrert</InfoToast>}
     </>
   )
 }

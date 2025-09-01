@@ -12,7 +12,7 @@ import { EllipsisCell, TekstCell } from '../../felleskomponenter/table/Celle.tsx
 import { DataCell, KolonneHeader } from '../../felleskomponenter/table/KolonneHeader.tsx'
 import { LinkRow } from '../../felleskomponenter/table/LinkRow.tsx'
 import type { Tabellkolonne } from '../../felleskomponenter/table/Tabellkolonne.ts'
-import { Toast } from '../../felleskomponenter/Toast.tsx'
+import { Toast } from '../../felleskomponenter/toast/Toast.tsx'
 import { Skjermlesertittel } from '../../felleskomponenter/typografi.tsx'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { oppgaveV1ToV2 } from '../../oppgave/oppgaveTools.ts'

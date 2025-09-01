@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter'
 import { Kolonner } from '../felleskomponenter/Kolonner'
-import { Toast } from '../felleskomponenter/Toast'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { postJournalføring } from '../io/http'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useSaksoversikt } from '../personoversikt/saksoversiktHook'

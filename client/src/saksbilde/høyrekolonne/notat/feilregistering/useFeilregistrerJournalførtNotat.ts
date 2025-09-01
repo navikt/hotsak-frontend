@@ -5,6 +5,7 @@ import { SpørreundersøkelseId } from '../../../../innsikt/spørreundersøkelse
 import { baseUrl, post } from '../../../../io/http'
 import { useActionState } from '../../../../action/Actions.ts'
 import { Notat, NotatType } from '../../../../types/types.internal'
+import { useToastContext } from '../../../../felleskomponenter/toast/Toast.tsx'
 
 export interface FeilregistrerJournalførtNotatModalProps {
   open: boolean
@@ -21,7 +22,7 @@ export function useFeilregistrerJournalførtNotat(
   const { mutate } = useSWRConfig()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-
+  const { showSuccessToast } = useToastContext()
   const { execute } = useActionState()
 
   const feilregistrerNotat = async (notat: Notat, tilbakemelding?: ISvar[]) => {
@@ -48,6 +49,7 @@ export function useFeilregistrerJournalførtNotat(
 
       try {
         await feilregistrerNotat(notat, tilbakemelding?.svar)
+        showSuccessToast('Notatet er feilregistrert')
         await mutate(`/api/sak/${notat.sakId}/notater`)
       } finally {
         setOpen(false)

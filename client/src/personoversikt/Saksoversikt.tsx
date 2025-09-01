@@ -7,7 +7,7 @@ import { IngentingFunnet } from '../felleskomponenter/IngentingFunnet.tsx'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
 import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
-import { Toast } from '../felleskomponenter/Toast'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Brødtekst, Skjermlesertittel } from '../felleskomponenter/typografi'
 import {
   OppgaveStatusLabel,

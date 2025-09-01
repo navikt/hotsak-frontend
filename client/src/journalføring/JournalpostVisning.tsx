@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
-import { Toast } from '../felleskomponenter/Toast'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Brødtekst } from '../felleskomponenter/typografi'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'

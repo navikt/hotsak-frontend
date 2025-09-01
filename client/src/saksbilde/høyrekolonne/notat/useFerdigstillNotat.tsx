@@ -1,13 +1,13 @@
-import { useState } from 'react'
 import { useSWRConfig } from 'swr'
-import { baseUrl, post } from '../../../io/http'
 import { useActionState } from '../../../action/Actions.ts'
-import { FerdigstillNotatRequest } from '../../../types/types.internal'
+import { useToastContext } from '../../../felleskomponenter/toast/Toast.tsx'
+import { baseUrl, post } from '../../../io/http'
+import { FerdigstillNotatRequest, NotatType } from '../../../types/types.internal'
 
 export function useFerdigstillNotat() {
   const { mutate } = useSWRConfig()
-  const [visFerdigstiltToast, setVisFerdigstiltToast] = useState(false)
   const { state, execute } = useActionState()
+  const { showSuccessToast } = useToastContext()
 
   const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
     return execute(async () => {
@@ -18,13 +18,11 @@ export function useFerdigstillNotat() {
   const ferdigstill = async (payload: FerdigstillNotatRequest) => {
     await ferdigstillNotat(payload)
     await mutate(`/api/sak/${payload.sakId}/notater`)
-    setVisFerdigstiltToast(true)
-    setTimeout(() => setVisFerdigstiltToast(false), 3000)
+    showSuccessToast(payload.type === NotatType.JOURNALFØRT ? 'Notatet er journalført' : 'Notatet er opprettet')
   }
 
   return {
     ferdigstiller: state.loading,
-    visFerdigstiltToast,
     ferdigstill,
   }
 }

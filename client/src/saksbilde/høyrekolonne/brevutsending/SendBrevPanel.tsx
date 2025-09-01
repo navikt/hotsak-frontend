@@ -3,7 +3,7 @@ import { Button, Heading, HStack, Radio, RadioGroup, Select, Skeleton, VStack } 
 import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
-import { InfoToast } from '../../../felleskomponenter/Toast'
+import { useToastContext } from '../../../felleskomponenter/toast/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { deleteBrevutkast, postBrevutkast, postBrevutsending } from '../../../io/http'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
@@ -35,12 +35,11 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { mutate: hentBarnebrillesak } = useBarnebrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
+  const { showSuccessToast } = useToastContext()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
   useEffect(() => {
@@ -111,12 +110,11 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setVisSendBrevModal(false)
     setSubmitAttempt(false)
     setFritekst('')
-    setVisSendtBrevToast(true)
+    showSuccessToast('Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.')
     hentBarnebrillesak()
     await hentSaksdokumenter()
 
     setTimeout(() => {
-      setVisSendtBrevToast(false)
       hentBarnebrillesak()
       hentSaksdokumenter()
     }, 3000)
@@ -127,10 +125,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     await deleteBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
     setFritekst('')
     setVisSlettUtkastModal(false)
-    setVisSlettetUtkastToast(true)
-    setTimeout(() => {
-      setVisSlettetUtkastToast(false)
-    }, 3000)
+    showSuccessToast('Utkast slettet')
     await hentBrevtekst()
     setSletter(false)
   }
@@ -238,12 +233,6 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
           return slettUtkast()
         }}
       />
-      {visSendtBrevToast && (
-        <InfoToast bottomPosition="300px">
-          Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.
-        </InfoToast>
-      )}
-      {visSlettetUtkastToast && <InfoToast bottomPosition="400px">Utkast slettet</InfoToast>}
     </>
   )
 })

@@ -13,35 +13,19 @@ COPY client .
 RUN npm run test:ci && npm run build
 
 # build server
-FROM node AS server-builder
-ENV HUSKY=0
+FROM golang:1.25.1-alpine AS server-builder
 WORKDIR /app
-COPY server/package.json server/package-lock.json ./
-RUN npm ci
-COPY server .
-RUN npm run build
-
-# install server dependencies
-FROM node AS server-dependencies
-ENV HUSKY=0
-WORKDIR /app
-COPY server/package.json server/package-lock.json ./
-RUN npm ci --omit dev
+COPY server ./
+RUN go test -v ./... && go build .
 
 # runtime
-FROM gcr.io/distroless/nodejs22-debian12 AS runtime
+FROM gcr.io/distroless/static-debian12 AS runtime
 WORKDIR /app
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
 ENV TZ="Europe/Oslo"
 EXPOSE 3000
 
-COPY --from=client-builder /app/dist ./client/dist
-COPY --from=server-builder /app/dist ./server/dist
+COPY --from=client-builder /app/dist ./dist
+COPY --from=server-builder /app/hotsak-frontend-server .
 
-WORKDIR /app/server
-
-COPY --from=server-dependencies /app/node_modules ./node_modules
-
-CMD [ "--enable-source-maps", "dist/server.mjs" ]
+CMD [ "./hotsak-frontend-server" ]

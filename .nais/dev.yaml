@@ -67,7 +67,7 @@ spec:
       value: "3000"
     - name: HOTSAK_API_URL
       value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
-    - name: HOTSAK_API_CLIENT_ID
+    - name: HOTSAK_API_SCOPE
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: GRUNNDATA_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
@@ -76,6 +76,10 @@ spec:
     - name: BRILLE_API_URL
       value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: USE_MSW
+      value: "false"
+    - name: USE_MSW_GRUNNDATA
+      value: "false"
+    - name: USE_MSW_ALTERNATIVPRODUKTER
       value: "false"
     - name: GIT_COMMIT
       value: {{commit}}

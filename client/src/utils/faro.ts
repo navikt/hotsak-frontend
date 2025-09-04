@@ -1,5 +1,5 @@
 export async function initFaro(): Promise<void> {
-  if (!import.meta.env.PROD || window.appSettings.USE_MSW) {
+  if (!import.meta.env.PROD || window.appSettings.USE_MSW || !window.appSettings.FARO_URL) {
     return
   }
 

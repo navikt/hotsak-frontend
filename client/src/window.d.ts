@@ -5,15 +5,19 @@ declare global {
   interface Window {
     msw?: any
     appSettings: {
+      NAIS_CLUSTER_NAME?: 'local' | 'dev-gcp' | 'prod-gcp' | string
+
+      FARO_URL?: string
+      IMAGE_PROXY_URL: string
+
+      UMAMI_ENABLED?: boolean
+      UMAMI_WEBSITE_ID?: string
+
       USE_MSW?: boolean
       USE_MSW_GRUNNDATA?: boolean
       USE_MSW_ALTERNATIVPRODUKTER?: boolean
+
       GIT_COMMIT?: string
-      MILJO?: 'local' | 'dev-gcp' | 'prod-gcp' | string
-      FARO_URL?: string
-      IMAGE_PROXY_URL: string
-      UMAMI_ENABLED?: boolean
-      UMAMI_WEBSITE_ID?: string
     }
     faro?: Faro
     umami?: {

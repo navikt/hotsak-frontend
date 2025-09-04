@@ -1,12 +1,32 @@
-version: '3'
 services:
   hotsak-frontend:
     build: .
-    image: 'hotsak-frontend'
+    image: "hotsak-frontend"
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
-      PORT: '3000'
-      NODE_ENV: 'development'
-      NAIS_CLUSTER_NAME: 'local'
-      USE_MSW: 'true'
+      PORT: "3000"
+
+      NAIS_TOKEN_ENDPOINT: http://localhost:4040/texas/api/v1/token
+      NAIS_TOKEN_EXCHANGE_ENDPOINT: http://localhost:4040/texas/api/v1/token/exchange
+      NAIS_TOKEN_INTROSPECTION_ENDPOINT: http://localhost:4040/texas/api/v1/introspect
+
+      HOTSAK_API_URL: https://hotsak-api.intern.dev.nav.no
+      HOTSAK_API_SCOPE: api://local.teamdigihot.hm-saksbehandling/.default
+
+      GRUNNDATA_API_URL: https://hm-grunndata-search.intern.dev.nav.no
+      ALTERNATIVPRODUKTER_API_URL: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
+      BRILLE_API_URL: http://hm-brille-api.teamdigihot.svc.cluster.local
+
+      NAIS_CLUSTER_NAME: local
+
+      FARO_URL: ""
+
+      IMAGE_PROXY_URL: ""
+
+      UMAMI_ENABLED: "false"
+      UMAMI_WEBSITE_ID:
+
+      USE_MSW: "false"
+      USE_MSW_GRUNNDATA: "false"
+      USE_MSW_ALTERNATIVPRODUKTER: "true"

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 export function useMiljø() {
-  const miljø = window.appSettings.MILJO
+  const miljø = window.appSettings.NAIS_CLUSTER_NAME
   return useMemo(() => {
     const erLocal = miljø === 'local'
     const erDev = miljø === 'dev-gcp'

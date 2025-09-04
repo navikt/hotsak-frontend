@@ -11,15 +11,19 @@ export function htmlPlugin({ development, proxy }: { development?: boolean; prox
         tags.push({
           tag: 'script',
           children: `window.appSettings = {
-            GIT_COMMIT: 'unknown',
+            NAIS_CLUSTER_NAME: 'local',
+            
+            FARO_URL: '',
+            IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
+            
+            UMAMI_ENABLED: false,
+            UMAMI_WEBSITE_ID: '',
+            
             USE_MSW: ${proxy.api ? 'false' : 'true'},
             USE_MSW_GRUNNDATA: ${proxy.grunndata ? 'false' : 'true'},
             USE_MSW_ALTERNATIVPRODUKTER: ${proxy.alternativprodukter ? 'false' : 'true'},
-            MILJO: 'local',
-            IMAGE_PROXY_URL: ${proxy.grunndata ? "'https://finnhjelpemiddel.intern.dev.nav.no/imageproxy/400d'" : "'http://localhost:3001/imageproxy'"},
-            FARO_URL: '',
-            UMAMI_ENABLED: false,
-            UMAMI_WEBSITE_ID: '',
+            
+            GIT_COMMIT: '',
           }`,
         })
       } else {

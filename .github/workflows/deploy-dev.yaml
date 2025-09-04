@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - varsel-tilbehør-ikke-på-rammeavtale
+      - golang_server
 
 jobs:
   test:

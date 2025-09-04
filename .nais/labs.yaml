@@ -42,24 +42,28 @@ spec:
     - name: PORT
       value: "3000"
     - name: HOTSAK_API_URL
-      value: "http://hotsak/api"
-    - name: HOTSAK_API_CLIENT_ID
-      value: ""
+      value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
+    - name: HOTSAK_API_SCOPE
+      value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: GRUNNDATA_API_URL
       value: http://hm-grunndata-search.teamdigihot.svc.cluster.local
     - name: ALTERNATIVPRODUKTER_API_URL
       value: http://hm-grunndata-alternativprodukter.teamdigihot.svc.cluster.local
     - name: BRILLE_API_URL
-      value: "http://brille/api"
+      value: http://hm-brille-api.teamdigihot.svc.cluster.local
     - name: USE_MSW
-      value: "true"
-    - name: USE_MSW_ALTERNATIVPRODUKTER
       value: "true"
     - name: USE_MSW_GRUNNDATA
       value: "true"
+    - name: USE_MSW_ALTERNATIVPRODUKTER
+      value: "true"
     - name: GIT_COMMIT
       value: {{commit}}
+    - name: FARO_URL
+      value: https://telemetry.ekstern.dev.nav.no/collect
     - name: IMAGE_PROXY_URL
       value: https://finnhjelpemiddel.nav.no/imageproxy/400d
+    - name: UMAMI_WEBSITE_ID
+      value: ""
     - name: UMAMI_ENABLED
       value: "false"

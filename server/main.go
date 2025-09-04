@@ -28,13 +28,13 @@ func main() {
 	http.HandleFunc("GET /isready", func(w http.ResponseWriter, req *http.Request) {
 		_, _ = fmt.Fprint(w, "READY")
 	})
-
 	http.Handle("GET /settings.js", settingsHandler())
 
 	mux := http.NewServeMux()
-	proxies.configure(mux)
+	for prefix, t := range proxies {
+		mux.Handle(prefix, t.handler(prefix))
+	}
 	mux.Handle("/", rootHandler(*rootDir))
-
 	http.Handle("/", protectedHandler(mux))
 
 	slog.Info("server starting", "port", *port)

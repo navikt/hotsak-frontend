@@ -14,7 +14,7 @@ func (r *statusCodeRecorder) Write(data []byte) (int, error) {
 	if r.statusCode != http.StatusNotFound {
 		return r.ResponseWriter.Write(data)
 	}
-	return 0, nil
+	return len(data), nil
 }
 
 func (r *statusCodeRecorder) WriteHeader(statusCode int) {

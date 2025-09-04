@@ -15,18 +15,18 @@ func protectedHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		userToken, ok := texas.GetBearerToken(req)
 		if !ok {
-			slog.Warn("unauthorized: userToken missing")
+			slog.DebugContext(req.Context(), "unauthorized: userToken missing")
 			http.Redirect(w, req, "/oauth2/login", http.StatusTemporaryRedirect)
 			return
 		}
 		i, err := texas.IntrospectToken(texas.IdentityProviderEntraId, userToken)
 		if err != nil {
-			slog.Error("unauthorized: error", "error", err)
+			slog.ErrorContext(req.Context(), "unauthorized: error", "error", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		if !i.Active {
-			slog.Warn("unauthorized: userToken inactive")
+			slog.WarnContext(req.Context(), "unauthorized: userToken inactive")
 			http.Redirect(w, req, "/oauth2/login", http.StatusTemporaryRedirect)
 			return
 		}

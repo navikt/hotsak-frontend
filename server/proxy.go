@@ -32,12 +32,6 @@ func (t *proxyTarget) handler(prefix string) http.Handler {
 
 type proxyMap map[string]*proxyTarget
 
-func (m proxyMap) configure(mux *http.ServeMux) {
-	for prefix, t := range m {
-		mux.Handle(prefix, t.handler(prefix))
-	}
-}
-
 var proxies = proxyMap{
 	"/api/": &proxyTarget{
 		Target:           getEnvUrl("HOTSAK_API_URL"),
@@ -73,12 +67,12 @@ func tokenExchangeReverseProxy(target *url.URL, identityProvider texas.IdentityP
 			r.SetURL(target)
 			userToken, ok := getUserToken(r.In)
 			if !ok {
-				slog.Warn("proxy: token missing")
+				slog.WarnContext(r.In.Context(), "proxy: token missing")
 				return
 			}
 			token, err := texas.ExchangeToken(identityProvider, scope, userToken)
 			if err != nil {
-				slog.Error("proxy: token error", "error", err)
+				slog.ErrorContext(r.In.Context(), "proxy: token error", "error", err)
 				return
 			}
 			r.Out.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))

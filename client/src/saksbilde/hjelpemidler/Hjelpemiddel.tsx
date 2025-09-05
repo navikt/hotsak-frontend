@@ -1,4 +1,4 @@
-import { ArrowsSquarepathIcon, PencilIcon } from '@navikt/aksel-icons'
+import { ArrowsSquarepathIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
@@ -14,7 +14,6 @@ import {
   Sak,
 } from '../../types/types.internal.ts'
 import Bytter from './Bytter.tsx'
-import { AlternativeProdukterModal } from './endreHjelpemiddel/AlternativeProdukterModal.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
@@ -42,7 +41,6 @@ export function Hjelpemiddel({
 }: HjelpemiddelProps) {
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
-  const [visEndreHjelpemiddelModal, setVisEndreHjelpemiddelModal] = useState(false)
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
   const erOmbrukPilot = useErOmbrukPilot()
   const { logModalÅpnet } = useUmami()
@@ -134,7 +132,7 @@ export function Hjelpemiddel({
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
         <VStack gap="2">
-          <div>
+          {/* <div>
             {kanEndreHmsnr && (
               <Bleed marginBlock="1 0">
                 <Button
@@ -147,7 +145,7 @@ export function Hjelpemiddel({
                 </Button>
               </Bleed>
             )}
-          </div>
+          </div> */}
           {erOmbrukPilot && (
             <div>
               {harAlternativeProdukter && kanEndreHmsnr && (
@@ -161,7 +159,7 @@ export function Hjelpemiddel({
                         tekst: 'alterrnative-produkter-modal',
                         alternativerTilgjengelig: alternativeProdukter.length,
                         alternativer: alternativeProdukter.map((p) => {
-                          p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                          return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
                         }),
                       })
                       setVisAlternativerModal(true)
@@ -176,16 +174,16 @@ export function Hjelpemiddel({
         </VStack>
       </HjelpemiddelGrid>
       <>
-        <EndreHjelpemiddelModal
+        {/*<EndreHjelpemiddelModal
           åpen={visEndreHjelpemiddelModal}
           hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
           hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
           nåværendeHmsArtNr={nåværendeHmsnr}
           onLagre={endreHjelpemiddel}
           onLukk={() => setVisEndreHjelpemiddelModal(false)}
-        />
+        />*/}
         {erOmbrukPilot && (
-          <AlternativeProdukterModal
+          <EndreHjelpemiddelModal
             åpen={visAlternativerModal}
             hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
             hmsArtNr={hjelpemiddel.produkt.hmsArtNr}

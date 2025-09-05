@@ -1,7 +1,7 @@
 import { CheckboxGroup, HGrid } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
+import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { AlternativtProduktCard } from './AlternativtProduktCard.tsx'
 
 interface AlternativProduktVelgerProps {

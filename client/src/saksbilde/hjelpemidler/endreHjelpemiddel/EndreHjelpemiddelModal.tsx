@@ -1,188 +1,131 @@
+import { Modal, Tabs } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
+import { useUmami } from '../../../sporing/useUmami.ts'
+import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from '../../../types/types.internal.ts'
 import {
-  Box,
-  Button,
-  ErrorMessage,
-  Heading,
-  HStack,
-  Modal,
-  Radio,
-  RadioGroup,
-  Textarea,
-  TextField,
-  VStack,
-} from '@navikt/ds-react'
-import { Etikett, Tekst } from '../../../felleskomponenter/typografi.tsx'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-  EndretHjelpemiddelRequest,
-} from '../../../types/types.internal.ts'
-import { useHjelpemiddel } from './useHjelpemiddel.ts'
+  AlternativeProduct,
+  ingenAlternativeProdukterForHmsArtNr,
+  useAlternativeProdukter,
+} from '../useAlternativeProdukter.ts'
+import { AlternativeProdukterTabPanel } from './alternativtProdukt/AlternativeProdukterTabPanel.tsx'
+import { EndreArtikkelData, EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
+import { ManueltSøkTabPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 
-interface EndreHjelpemiddelModalProps {
+interface AlternativProduktModalProps {
   åpen: boolean
   hjelpemiddelId: string
   hmsArtNr: string
-  nåværendeHmsArtNr?: string
+  alternativeProdukter?: AlternativeProduct[]
+  harOppdatertLagerstatus: boolean
   onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
   onLukk(): void
 }
 
-export function EndreHjelpemiddelModal(props: EndreHjelpemiddelModalProps) {
-  const { åpen, hjelpemiddelId, hmsArtNr, nåværendeHmsArtNr, onLagre, onLukk } = props
+export const PAGE_SIZE = 6
+
+export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
+  const {
+    åpen,
+    hjelpemiddelId,
+    hmsArtNr,
+    alternativeProdukter: alternativeProdukterInitial = ingenAlternativeProdukterForHmsArtNr,
+    harOppdatertLagerstatus,
+    onLagre,
+    onLukk,
+  } = props
+  const [activeTab, setActiveTab] = useState(alternativeProdukterInitial.length > 0 ? 'alternativer' : 'manuelt')
   const [submitting, setSubmitting] = useState(false)
-  const [endreBegrunnelse, setEndreBegrunnelse] = useState<EndretHjelpemiddelBegrunnelse | undefined>(undefined)
-  const [endreBegrunnelseFritekst, setEndreBegrunnelseFritekst] = useState('')
-
-  const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [endreProduktHmsnr, setEndreProduktHmsnr] = useState('')
-  const { hjelpemiddel, isError } = useHjelpemiddel(endreProduktHmsnr)
   const ref = useRef<HTMLDialogElement>(null)
+  const { logKnappKlikket } = useUmami()
 
-  const errorEndretProdukt = () => {
-    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsArtNr) {
-      return 'Du må oppgi et nytt, gyldig HMS-nr'
+  const {
+    isLoading,
+    alternativeProdukterByHmsArtNr,
+    harPaginering,
+    pageNumber,
+    pageSize,
+    totalElements,
+    onPageChange,
+  } = useAlternativeProdukter(åpen && !harOppdatertLagerstatus ? [hmsArtNr] : [], PAGE_SIZE, false)
+
+  const alternativeProdukter = harOppdatertLagerstatus
+    ? alternativeProdukterInitial
+    : (alternativeProdukterByHmsArtNr[hmsArtNr] ?? ingenAlternativeProdukterForHmsArtNr)
+
+  const handleSubmit = async (data: EndreArtikkelData) => {
+    try {
+      setSubmitting(true)
+      const begrunnelse = data.endreBegrunnelse as EndretHjelpemiddelBegrunnelse
+      const begrunnelseFritekst =
+        begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
+        begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+          ? data.endreBegrunnelseFritekst
+          : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
+      await onLagre({
+        hjelpemiddelId,
+        hmsArtNr: data.endretProdukt[0] ?? '',
+        begrunnelse,
+        begrunnelseFritekst,
+      })
+      onLukk()
+    } finally {
+      setSubmitting(false)
     }
+    //}
   }
 
-  const errorBegrunnelseFritekst = () => {
-    if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length === 0) {
-      return 'Du må fylle inn en begrunnelse'
-    }
-
-    if (
-      endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET &&
-      endreBegrunnelseFritekst.length > MAKS_TEGN_BEGRUNNELSE_FRITEKST
-    ) {
-      const antallForMange = endreBegrunnelseFritekst.length - MAKS_TEGN_BEGRUNNELSE_FRITEKST
-      return `Antall tegn for mange ${antallForMange}`
-    }
-  }
-
-  const errorBegrunnelse = () => {
-    if (!endreBegrunnelse) {
-      return 'Du må velge en begrunnelse'
-    }
-  }
-
-  const validationError = () => {
-    return errorEndretProdukt() || errorBegrunnelseFritekst() || errorBegrunnelse()
+  const handleCancel = () => {
+    logKnappKlikket({
+      komponent: 'AlternativeProdukterModal',
+      tekst: 'Avbryt endre til alternativt produkt',
+    })
+    onLukk()
   }
 
   return (
     <Modal
       ref={ref}
+      placement="top"
       closeOnBackdropClick={false}
-      width="600px"
+      width="900px"
       open={åpen}
-      onClose={onLukk}
+      onClose={() => {
+        onLukk()
+      }}
       size="small"
       aria-label={'Endre hjelpemiddel'}
     >
-      <Modal.Header>
-        <Heading level="1" size="small">
-          Endre HMS-nummer
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Box paddingBlock="0 4">
-          <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
-        </Box>
-        <Box.New padding="6" background="neutral-soft" borderRadius="large">
-          <VStack gap="3">
-            <HStack gap="3" wrap={false}>
-              <div>
-                <TextField
-                  label="HMS-nummer"
-                  size="small"
-                  maxLength={6}
-                  onChange={(event) => {
-                    if (event.target.value.length === 6) {
-                      setEndreProduktHmsnr(event.target.value)
-                    }
-                  }}
-                  error={submitAttempt && errorEndretProdukt()}
-                />
-              </div>
-              <VStack gap="1">
-                <Etikett>Beskrivelse</Etikett>
-                <Tekst>
-                  {hmsArtNr !== '' && isError ? (
-                    <ErrorMessage>Hjelpemiddel ikke funnet i hjelpemiddeldatabasen eller OeBS</ErrorMessage>
-                  ) : (
-                    (hjelpemiddel?.navn ?? '')
-                  )}
-                </Tekst>
-              </VStack>
-            </HStack>
-            <RadioGroup
-              size="small"
-              legend="Begrunnelse for å endre HMS-nummer:"
-              onChange={(val) => setEndreBegrunnelse(val)}
-              value={endreBegrunnelse ?? ''}
-              error={submitAttempt && errorBegrunnelse()}
-            >
-              <Radio value={EndretHjelpemiddelBegrunnelse.RAMMEAVTALE}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.RAMMEAVTALE)}
-              </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.GJENBRUK}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.GJENBRUK)}
-              </Radio>
-              <Radio value={EndretHjelpemiddelBegrunnelse.ANNET}>
-                {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ANNET)} (begrunn)
-              </Radio>
-            </RadioGroup>
-            {endreBegrunnelse == EndretHjelpemiddelBegrunnelse.ANNET && (
-              <Textarea
-                label="Begrunn endringen"
-                rows={3}
-                size="small"
-                description="Begrunnelsen lagres som en del av sakshistorikken. Svarene kan også bli brukt i videreutvikling av løsningen."
-                value={endreBegrunnelseFritekst}
-                onChange={(event) => setEndreBegrunnelseFritekst(event.target.value)}
-                error={submitAttempt && errorBegrunnelseFritekst()}
-              />
-            )}
-          </VStack>
-        </Box.New>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="primary"
-          size="small"
-          loading={submitting}
-          onClick={async () => {
-            if (!validationError()) {
-              setSubmitting(true)
-              const begrunnelseFritekst =
-                endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET
-                  ? endreBegrunnelseFritekst
-                  : EndretHjelpemiddelBegrunnelseLabel.get(endreBegrunnelse!)
+      <Tabs value={activeTab} onChange={setActiveTab}>
+        <Tabs.List>
+          <Tabs.Tab value="alternativer" label="Alternativer på lager" />
+          <Tabs.Tab value="manuelt" label="Søk manuelt" />
+        </Tabs.List>
 
-              await onLagre({
-                hjelpemiddelId: hjelpemiddelId,
-                hmsArtNr: endreProduktHmsnr,
-                artikkelnavn: hjelpemiddel?.navn ?? '',
-                begrunnelse: endreBegrunnelse!,
-                begrunnelseFritekst: begrunnelseFritekst,
-              })
-              setSubmitting(false)
-              onLukk()
-            } else {
-              setSubmitAttempt(true)
-            }
-          }}
-        >
-          Lagre endring
-        </Button>
-        <Button variant="tertiary" size="small" onClick={() => onLukk()}>
-          Avbryt
-        </Button>
-      </Modal.Footer>
+        <Tabs.Panel value="alternativer">
+          <AlternativeProdukterTabPanel
+            alternativeProdukter={alternativeProdukter}
+            isLoading={isLoading}
+            harPaginering={harPaginering}
+            pageNumber={pageNumber}
+            pageSize={pageSize}
+            totalElements={totalElements}
+            onPageChange={onPageChange}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitting={submitting}
+          />
+        </Tabs.Panel>
+        <Tabs.Panel value="manuelt">
+          <ManueltSøkTabPanel
+            hjelpemiddelId={hjelpemiddelId}
+            hmsArtNr={hmsArtNr}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            submitting={submitting}
+          />
+        </Tabs.Panel>
+      </Tabs>
     </Modal>
   )
 }
-
-const MAKS_TEGN_BEGRUNNELSE_FRITEKST = 150

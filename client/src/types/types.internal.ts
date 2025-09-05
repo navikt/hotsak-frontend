@@ -437,6 +437,27 @@ export interface HjelpemiddelArtikkel {
   hjelpemiddeldatabasenURL?: string
 }
 
+export interface EndretHjelpemiddel {
+  hjelpemiddelId: string
+  begrunnelse: EndretHjelpemiddelBegrunnelse
+  begrunnelseFritekst?: string
+  artikkelnavn?: string
+}
+
+export enum EndretHjelpemiddelBegrunnelse {
+  LAGERVARE = 'LAGERVARE',
+  ANNET = 'ANNET',
+  ALTERNATIV_PRODUKT_LAGERVARE = 'ALTERNATIV_PRODUKT_LAGERVARE',
+  ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
+}
+
+export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
+  [EndretHjelpemiddelBegrunnelse.LAGERVARE, 'Tilgjengelig på lager'],
+  [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
+  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Tilgjengelig på lager'],
+  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
+])
+
 export interface VedtakType {
   vedtaksdato: string
   status: VedtakStatusType
@@ -732,33 +753,6 @@ export interface Saksoversikt_Sak_Felles_Type {
   sak: Saksoversikt_Sak
   barnebrilleSak?: Saksoversikt_Barnebrille_Sak
 }
-
-export interface EndretHjelpemiddel {
-  hjelpemiddelId: string
-  begrunnelse: EndretHjelpemiddelBegrunnelse
-  begrunnelseFritekst?: string
-  artikkelnavn?: string
-}
-
-export interface EndretHjelpemiddelRequest extends EndretHjelpemiddel {
-  hmsArtNr: string
-}
-
-export enum EndretHjelpemiddelBegrunnelse {
-  RAMMEAVTALE = 'RAMMEAVTALE',
-  GJENBRUK = 'GJENBRUK',
-  ANNET = 'ANNET',
-  ALTERNATIV_PRODUKT_LAGERVARE = 'ALTERNATIV_PRODUKT_LAGERVARE',
-  ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
-}
-
-export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
-  [EndretHjelpemiddelBegrunnelse.RAMMEAVTALE, 'Endring i rammeavtale'],
-  [EndretHjelpemiddelBegrunnelse.GJENBRUK, 'Gjenbruk'],
-  [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
-  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Lagervare'],
-  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
-])
 
 export interface HjelpemiddelProdukt {
   hmsnr: string

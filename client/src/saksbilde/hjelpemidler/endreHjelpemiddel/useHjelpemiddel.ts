@@ -11,7 +11,7 @@ interface DataResponse {
 }
 
 export function useHjelpemiddel(hmsnummer?: string): DataResponse {
-  const shouldFetch = hmsnummer && hmsnummer !== undefined && hmsnummer !== ''
+  const shouldFetch = hmsnummer && hmsnummer !== undefined && hmsnummer !== '' && hmsnummer.length === 6
   // TODO kalle FH for å hente hjelpemiddel her og eventuelt fallback til OeBS hvis ikke funnet i FH
   const { data, error } = useSwr<{ data: HjelpemiddelProdukt }>(
     shouldFetch ? `api/hjelpemiddel/${hmsnummer}` : null,

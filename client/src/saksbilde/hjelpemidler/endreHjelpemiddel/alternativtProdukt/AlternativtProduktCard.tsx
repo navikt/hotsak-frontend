@@ -2,9 +2,9 @@ import { Box, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-reac
 import { Fragment } from 'react'
 import styled from 'styled-components'
 
-import { Brødtekst, Etikett, Undertittel } from '../../../felleskomponenter/typografi'
-import type { AlternativeProduct } from '../useAlternativeProdukter.ts'
-import { formaterRelativTid } from '../../../utils/dato'
+import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
+import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
+import { formaterRelativTid } from '../../../../utils/dato.ts'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct

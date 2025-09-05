@@ -87,8 +87,8 @@ function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
 
 const ToastContainerWrapper = styled(Stack)`
   position: fixed;
-  bottom: var(--ax-space-20);
-  right: var(--ax-space-20);
+  bottom: var(--ax-space-40);
+  right: var(--ax-space-40);
   width: 350px;
   z-index: 999999;
 `

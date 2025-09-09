@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { KeyedMutator } from 'swr'
-import { baseUrl, post, put } from '../../../io/http'
-import { useActionState } from '../../../action/Actions.ts'
-import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal'
+
+import { http } from '../../../io/HttpClient.ts'
+import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
+import { delay } from '../../../utils/delay.ts'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -13,66 +14,55 @@ export function useUtkastEndret(
   aktivtUtkast?: NotatUtkast,
   klassifisering?: NotatKlassifisering | null
 ) {
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | undefined>(undefined)
+  const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
 
-  const { execute, state } = useActionState()
-
-  useEffect(() => {
-    if (!oppretterNyttUtkast) {
-      utkastEndret(tittel, tekst, klassifisering)
-    }
-  }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
-
-  const opprettNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-    return execute(async () => {
-      await post(`${baseUrl}/api/sak/${sakId}/notater`, utkast)
-    })
-  }
-
-  const oppdaterNotatUtkast = async (sakId: string, utkast: NotatUtkast) => {
-    return execute(async () => {
-      if (utkast.id) {
-        return put(`${baseUrl}/api/sak/${sakId}/notater/${utkast.id}`, utkast)
-      }
-    })
-  }
-
-  const utkastEndret = async (tittel: string, tekst: string, klassifisering?: NotatKlassifisering | null) => {
-    if (!aktivtUtkast?.id && (tittel !== '' || tekst !== '')) {
-      setLagrerUtkast(true)
+  const utkastEndret = async (
+    tittel: string,
+    tekst: string,
+    klassifisering?: NotatKlassifisering | null
+  ): Promise<void> => {
+    const utkastId = aktivtUtkast?.id
+    /* TODO Teste med dette for å se om det hindrer at det opprettes utkast når det kun er valgt klassifisering */
+    if (!utkastId /*&& (tittel !== '' || tekst !== '')*/) {
       setOppretterNyttUtkast(true)
-      await opprettNotatUtkast(sakId, { tittel, tekst, klassifisering, type })
-      await mutateNotater()
-      setOppretterNyttUtkast(false)
-      setLagrerUtkast(false)
+      try {
+        await http.post(`/api/sak/${sakId}/notater`, { tittel, tekst, klassifisering, type })
+        await mutateNotater()
+      } finally {
+        setOppretterNyttUtkast(false)
+      }
+      return
     }
 
     if (debounceTimer) clearTimeout(debounceTimer)
-    if (tittel !== '' || tekst !== '' || klassifisering) {
-      setDebounceTimer(
-        setTimeout(async () => {
-          setLagrerUtkast(true)
-          const minimumPeriodeVisLagrerUtkast = new Promise((r) => setTimeout(r, 500))
-
-          await oppdaterNotatUtkast(sakId, {
-            id: aktivtUtkast?.id,
+    setDebounceTimer(
+      setTimeout(
+        () =>
+          http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
+            id: utkastId,
             tittel,
             tekst,
             klassifisering,
             type,
-          })
-          mutateNotater()
-          await minimumPeriodeVisLagrerUtkast
-          setLagrerUtkast(false)
-        }, 500)
+          }),
+        500
       )
-    }
+    )
   }
+
+  useEffect(() => {
+    if (oppretterNyttUtkast) return // Nytt notat er under opprettelse, ikke gjør noe
+    if (tittel !== '' || tekst !== '' || klassifisering) {
+      setLagrerUtkast(true)
+      utkastEndret(tittel, tekst, klassifisering)
+        .then(() => delay(500)) // Ikke vis "Lagrer..." kortere enn tid brukt + 500 millisekunder
+        .finally(() => setLagrerUtkast(false))
+    }
+  }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 
   return {
     lagrerUtkast,
-    state,
   }
 }

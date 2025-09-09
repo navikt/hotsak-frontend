@@ -1,5 +1,5 @@
-import type { Ansatt } from '../tilgang/Ansatt.ts'
 import type { OppgaveId, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
@@ -552,10 +552,6 @@ export interface JournalføringRequest {
   journalføresPåFnr: string
   sakId?: string
   oppgaveId?: string
-}
-
-export interface OpprettetSakResponse {
-  sakId: string
 }
 
 export enum DokumentFormat {

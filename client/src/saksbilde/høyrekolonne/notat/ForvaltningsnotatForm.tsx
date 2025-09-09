@@ -1,12 +1,14 @@
 import '@mdxeditor/editor/style.css'
 import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
+
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   Brevtype,
   FerdigstillNotatRequest,
   MålformType,
+  Notat,
   NotatKlassifisering,
   NotatType,
 } from '../../../types/types.internal.ts'
@@ -15,49 +17,46 @@ import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 import { InfoModal } from '../../komponenter/InfoModal.tsx'
 import { useSak } from '../../useSak.ts'
 import { ForhåndsvisningsModal } from '../brevutsending/ForhåndsvisningModal.tsx'
-import { NotatFormValues } from './Notater.tsx'
+import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
-export interface NotaterProps {
-  sakId: string
-  lesevisning: boolean
-}
-
 export interface ForvaltningsnotatFormValues extends NotatFormValues {
   klassifisering?: NotatKlassifisering | null
   bekreftSynlighet: boolean
 }
 
-export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
+export interface ForvaltningsnotatFormProps {
+  sakId: string
+  lesevisning: boolean
+  aktivtUtkast?: Notat
+}
+
+export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: ForvaltningsnotatFormProps) {
   const { sak } = useSak()
 
-  const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
+  const { mutate: mutateNotater, isLoading: notaterLaster } = useNotater(sakId)
   const [visJournalførNotatModal, setVisJournalførNotatModal] = useState(false)
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const { hentForhåndsvisning } = useBrev()
   const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
-  const aktivtUtkast = finnAktivtUtkast(NotatType.JOURNALFØRT)
-
-  const defaultValues = {
-    tittel: '',
-    tekst: '',
-    bekreftSynlighet: false,
-    klassifisering: null,
-  }
 
   const form = useForm<ForvaltningsnotatFormValues>({
-    defaultValues,
+    defaultValues: {
+      tittel: aktivtUtkast?.tittel ?? '',
+      tekst: aktivtUtkast?.tekst ?? '',
+      klassifisering: aktivtUtkast?.klassifisering ?? null,
+      bekreftSynlighet: false,
+    },
   })
 
   const {
     control,
     handleSubmit,
-    setValue,
     watch,
     reset,
     trigger,
@@ -78,18 +77,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     klassifisering
   )
 
-  useEffect(() => {
-    if (aktivtUtkast) {
-      if (tittel === '') {
-        setValue('tittel', aktivtUtkast.tittel || '')
-      }
-      if (tekst === '') {
-        setValue('tekst', aktivtUtkast.tekst || '')
-      }
-      setValue('klassifisering', aktivtUtkast.klassifisering)
-    }
-  }, [aktivtUtkast, setValue])
-
   const lagPayload = (): FerdigstillNotatRequest => {
     return {
       id: aktivtUtkast!.id,
@@ -102,10 +89,18 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
+  const resetForm = () =>
+    reset({
+      tittel: '',
+      tekst: '',
+      klassifisering: null,
+      bekreftSynlighet: false,
+    })
+
   const onSubmit = async () => {
     await ferdigstill(lagPayload())
     setVisJournalførNotatModal(false)
-    reset(defaultValues)
+    resetForm()
   }
 
   const readOnly = lesevisning || ferdigstiller
@@ -169,7 +164,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning }: NotaterProps) {
             >
               Forhåndsvis dokument
             </Button>
-            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
+            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
           </HStack>
         )}
 

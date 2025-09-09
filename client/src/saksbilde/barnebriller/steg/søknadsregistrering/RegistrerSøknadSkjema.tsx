@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { postVilkårsvurdering } from '../../../../io/http'
+import { http } from '../../../../io/HttpClient.ts'
 import {
   Brilleseddel,
   MålformType,
@@ -54,13 +54,13 @@ export function RegistrerSøknadSkjema() {
     }
 
     setVenterPåVilkårsvurdering(true)
-    postVilkårsvurdering(vurderVilkårRequest)
-      .catch(() => setVenterPåVilkårsvurdering(false))
+    http
+      .post(`/api/sak/${vurderVilkårRequest.sakId}/vilkarsgrunnlag`, vurderVilkårRequest)
       .then(async () => {
         await mutate()
         setStep(StepType.VILKÅR)
-        setVenterPåVilkårsvurdering(false)
       })
+      .finally(() => setVenterPåVilkårsvurdering(false))
   }
 
   function tomBrilleseddel(brilleseddel?: Brilleseddel) {

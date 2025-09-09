@@ -1,10 +1,11 @@
 import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
-import { contentTypeIsJson } from './response.ts'
+import { contentTypeIsJson, contentTypeIsPdf } from './response.ts'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 export interface RequestOptions {
+  accept?: 'application/json' | 'application/pdf'
   versjon?: string | number
 }
 
@@ -14,12 +15,12 @@ async function request<ResponseBody = unknown>(
   body?: any,
   options: RequestOptions = {}
 ): Promise<ResponseBody> {
-  const { versjon } = options
+  const { accept: Accept = 'application/json', versjon } = options
   try {
     const response = await fetch(url, {
       method,
       headers: {
-        Accept: 'application/json',
+        Accept,
         ...(body == null ? {} : { 'Content-Type': 'application/json' }),
         ...(versjon == null ? {} : { 'If-Match': toWeakETag(versjon) }),
         'X-Requested-With': 'XMLHttpRequest',
@@ -29,12 +30,13 @@ async function request<ResponseBody = unknown>(
     if (response.ok) {
       if (contentTypeIsJson(response)) {
         return (await response.json()) as ResponseBody
-      } else {
-        return undefined as ResponseBody
       }
-    } else {
-      return HttpError.reject(url, response)
+      if (contentTypeIsPdf(response)) {
+        return (await response.blob()) as ResponseBody
+      }
+      return undefined as ResponseBody
     }
+    return HttpError.reject(url, response)
   } catch (err: unknown) {
     throw HttpError.wrap(err)
   }

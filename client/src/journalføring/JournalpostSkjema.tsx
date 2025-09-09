@@ -4,18 +4,18 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import styled from 'styled-components'
 
-import { Dokumenter } from '../dokument/Dokumenter'
-import { Kolonner } from '../felleskomponenter/Kolonner'
-import { Toast } from '../felleskomponenter/toast/Toast.tsx'
-import { postJournalføring } from '../io/http'
-import { usePersonContext } from '../personoversikt/PersonContext'
-import { useSaksoversikt } from '../personoversikt/saksoversiktHook'
-import { usePerson } from '../personoversikt/usePerson'
-import { useJournalpost } from '../saksbilde/useJournalpost'
-import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal'
-import { formaterNavn } from '../utils/formater'
+import { Dokumenter } from '../dokument/Dokumenter.tsx'
+import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
+import { usePersonContext } from '../personoversikt/PersonContext.tsx'
+import { usePerson } from '../personoversikt/usePerson.ts'
+import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
+import { useJournalpost } from '../saksbilde/useJournalpost.ts'
+import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal.ts'
+import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
-import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak'
+import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
+import { useJournalføringActions } from './useJournalføringActions.ts'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 
 export interface JournalpostSkjemaProps {
   journalpostId: string
@@ -24,13 +24,13 @@ export interface JournalpostSkjemaProps {
 export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const navigate = useNavigate()
   const { journalpost, isLoading, mutate } = useJournalpost(journalpostId)
+  const journalføringActions = useJournalføringActions()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
   const { saksoversikt } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
-  const [journalfører, setJournalfører] = useState(false)
 
   const journalfør = () => {
     const journalføringRequest: JournalføringRequest = {
@@ -40,16 +40,16 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
       sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
       oppgaveId: journalpost!.oppgave.oppgaveId,
     }
-    setJournalfører(true)
-    postJournalføring(journalføringRequest)
-      .then((opprettetSakResponse: any) => {
-        const opprettetSakId = opprettetSakResponse.data.sakId
-        if (!opprettetSakId) {
-          throw new Error('Klarte ikke å opprette sak')
-        }
-        navigate(`/oppgave/S-${opprettetSakId}`)
-      })
-      .catch(() => setJournalfører(false))
+    journalføringActions.journalfør(journalføringRequest).then((response) => {
+      // todo -> dette blir det eneste caset på sikt, men backend (og mock) er ikke klar ennå
+      if (response?.oppgaveId) {
+        return navigate(`/oppgave/${response.oppgaveId}`)
+      }
+      if (response?.sakId) {
+        return navigate(`/oppgave/S-${response.sakId}`)
+      }
+      throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
+    })
   }
 
   if (henterPerson || !personInfo || isLoading) {
@@ -138,8 +138,8 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
                 e.preventDefault()
                 journalfør()
               }}
-              disabled={journalfører}
-              loading={journalfører}
+              disabled={journalføringActions.state.loading}
+              loading={journalføringActions.state.loading}
             >
               {valgtEksisterendeSakId !== '' ? 'Journalfør og knytt til sak' : 'Journalfør og opprett sak'}
             </Button>

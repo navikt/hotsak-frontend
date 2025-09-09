@@ -1,7 +1,6 @@
+import { HStack, Loader } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
-
-import { HStack, Loader } from '@navikt/ds-react'
 
 import { Feilmelding } from '../../../../../felleskomponenter/feil/Feilmelding'
 import { Etikett } from '../../../../../felleskomponenter/typografi'
@@ -21,7 +20,7 @@ interface BrevPanelProps {
 
 export function BrevPanel(props: BrevPanelProps) {
   const { sakId, brevtype, fullSize } = props
-  const { hentedeBrev, hentForhåndsvisning, isDokumentError } = useBrev()
+  const { hentedeBrev, brevError, hentForhåndsvisning } = useBrev()
   const hentetDokument = hentedeBrev[brevtype]
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export function BrevPanel(props: BrevPanelProps) {
 
   if (!sakId) {
     return <div>Saksnummer mangler.</div>
-  } else if (isDokumentError) {
+  } else if (brevError) {
     return <Feilmelding>Det oppstod en feil ved opprettelse av brev</Feilmelding>
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (

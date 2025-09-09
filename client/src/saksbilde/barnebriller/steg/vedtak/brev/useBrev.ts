@@ -1,62 +1,60 @@
 import { useCallback, useState } from 'react'
 
-import { httpGetPdf, PDFResponse } from '../../../../../io/http'
-import { useDokumentContext } from '../../../../../dokument/DokumentContext'
+import { useDokumentContext } from '../../../../../dokument/DokumentContext.tsx'
+import { http } from '../../../../../io/HttpClient.ts'
+import { HttpError } from '../../../../../io/HttpError.ts'
 import {
   byggDataRessurs,
   byggFeiletRessurs,
   byggHenterRessurs,
   byggTomRessurs,
-} from '../../../../../io/ressursFunksjoner'
+} from '../../../../../io/ressursFunksjoner.ts'
+import { Brevtype, Ressurs } from '../../../../../types/types.internal.ts'
 
-import { Brevtype, Ressurs } from '../../../../../types/types.internal'
-
-interface BrevResponse {
-  //isLoading: boolean
-  //isError: any
-  isDokumentError: any
-  hentForhåndsvisning(sakId: number | string, brevtype: Brevtype, notatId?: string): any
-  nullstillDokument(brevtype: Brevtype): any
+export interface UseBrevResponse {
   hentedeBrev: Record<Brevtype, Ressurs<string>>
+  brevError: HttpError | null
+  hentForhåndsvisning(sakId: number | string, brevtype: Brevtype, notatId?: string): void
+  nullstillBrev(brevtype: Brevtype): void
 }
 
-export function useBrev(): BrevResponse {
+// todo -> flytt denne til mer egnet mappe, den brukes ikke bare for vedtaksbrev
+export function useBrev(): UseBrevResponse {
   const { hentedeBrev, settHentetBrev } = useDokumentContext()
-  const [isDokumentError, setIsDokumentError] = useState<any>(null)
+  const [brevError, setBrevError] = useState<HttpError | null>(null)
 
-  const nullstillDokument = (brevtype: Brevtype) => {
+  const nullstillBrev = (brevtype: Brevtype) => {
     settHentetBrev(brevtype, byggTomRessurs())
   }
 
   const hentForhåndsvisning = useCallback(
     (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK, notatId?: string) => {
       settHentetBrev(brevtype, byggHenterRessurs())
-      setIsDokumentError(null)
+      setBrevError(null)
 
-      let response
-      if (brevtype === Brevtype.JOURNALFØRT_NOTAT && notatId) {
-        response = httpGetPdf(`api/sak/${sakId}/notater/${notatId}`)
-      } else {
-        response = httpGetPdf(`api/sak/${sakId}/brev/${brevtype}`)
-      }
+      const url =
+        brevtype === Brevtype.JOURNALFØRT_NOTAT && notatId
+          ? `/api/sak/${sakId}/notater/${notatId}`
+          : `/api/sak/${sakId}/brev/${brevtype}`
 
-      response
-        .then((response: PDFResponse) => {
-          settHentetBrev(brevtype, byggDataRessurs(window.URL.createObjectURL(response.data)))
-          setIsDokumentError(null)
+      http
+        .get<Blob>(url, { accept: 'application/pdf' })
+        .then((data) => {
+          settHentetBrev(brevtype, byggDataRessurs(window.URL.createObjectURL(data)))
+          setBrevError(null)
         })
-        .catch((error: any) => {
-          settHentetBrev(brevtype, byggFeiletRessurs(`Ukjent feil, kunne ikke generer forhåndsvisning: ${error}`))
-          setIsDokumentError(error)
+        .catch((error: HttpError) => {
+          settHentetBrev(brevtype, byggFeiletRessurs(`Ukjent feil, kunne ikke generere forhåndsvisning: ${error}`))
+          setBrevError(error)
         })
     },
     [settHentetBrev]
   )
+
   return {
-    isDokumentError,
-    hentForhåndsvisning,
-    nullstillDokument,
     hentedeBrev,
-    //mutate,
+    brevError,
+    hentForhåndsvisning,
+    nullstillBrev,
   }
 }

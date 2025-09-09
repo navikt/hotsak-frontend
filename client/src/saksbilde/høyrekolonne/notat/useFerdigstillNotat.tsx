@@ -1,19 +1,17 @@
 import { useSWRConfig } from 'swr'
+
 import { useActionState } from '../../../action/Actions.ts'
-import { baseUrl, post } from '../../../io/http'
 import { FerdigstillNotatRequest, NotatType } from '../../../types/types.internal'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { http } from '../../../io/HttpClient.ts'
 
 export function useFerdigstillNotat() {
   const { mutate } = useSWRConfig()
   const { state, execute } = useActionState()
   const { showSuccessToast } = useToast()
 
-  const ferdigstillNotat = async (notat: FerdigstillNotatRequest) => {
-    return execute(async () => {
-      await post(`${baseUrl}/api/sak/${notat.sakId}/notater/${notat.id}/ferdigstilling`, notat)
-    })
-  }
+  const ferdigstillNotat = (request: FerdigstillNotatRequest) =>
+    execute(() => http.post(`/api/sak/${request.sakId}/notater/${request.id}/ferdigstilling`, request))
 
   const ferdigstill = async (payload: FerdigstillNotatRequest) => {
     await ferdigstillNotat(payload)

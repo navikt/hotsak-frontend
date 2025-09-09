@@ -1,40 +1,44 @@
 import useSwr from 'swr'
 
-import { hentBrukerdataMedPost } from '../../../io/http'
+import { http } from '../../../io/HttpClient.ts'
+import type { HttpError } from '../../../io/HttpError.ts'
 import { HjelpemiddelArtikkel, Vedtaksgrunnlag, VedtaksgrunnlagType } from '../../../types/types.internal'
 
-interface HjelpemiddeloversiktResponse {
+export interface UseHjelpemiddeloversiktResponse {
   hjelpemiddelArtikler: HjelpemiddelArtikkel[]
+  error?: HttpError
   isLoading: boolean
-  error: any
   isFromVedtak: boolean
 }
 
 export function useHjelpemiddeloversikt(
   fnr?: string,
   vedtaksgrunnlag?: Vedtaksgrunnlag[]
-): HjelpemiddeloversiktResponse {
+): UseHjelpemiddeloversiktResponse {
   const utlånshistorikkFraVedtak = vedtaksgrunnlag?.find((it) => it.type === VedtaksgrunnlagType.UTLAANSHISTORIKK)?.data
   const harUtlånshistorikkFraVedtak = utlånshistorikkFraVedtak !== null && utlånshistorikkFraVedtak !== undefined
 
-  const { data, error, isLoading } = useSwr<{ data: HjelpemiddelArtikkel[] | undefined }>(
-    fnr && !harUtlånshistorikkFraVedtak ? ['api/hjelpemiddeloversikt', fnr] : null,
-    hentBrukerdataMedPost
+  const {
+    data: hjelpemiddelArtikler = [],
+    error,
+    isLoading,
+  } = useSwr<HjelpemiddelArtikkel[], HttpError, [string, string] | null>(
+    fnr && !harUtlånshistorikkFraVedtak ? ['/api/hjelpemiddeloversikt', fnr] : null,
+    ([url, fnr]) => http.post<{ fnr: string }, HjelpemiddelArtikkel[]>(url, { fnr })
   )
 
   if (harUtlånshistorikkFraVedtak) {
     return {
       hjelpemiddelArtikler: utlånshistorikkFraVedtak,
-      error: false,
       isLoading: false,
       isFromVedtak: true,
     }
-  } else {
-    return {
-      hjelpemiddelArtikler: data?.data || [],
-      error,
-      isLoading,
-      isFromVedtak: false,
-    }
+  }
+
+  return {
+    hjelpemiddelArtikler,
+    error,
+    isLoading,
+    isFromVedtak: false,
   }
 }

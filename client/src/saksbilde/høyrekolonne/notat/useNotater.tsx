@@ -1,25 +1,28 @@
+import { useEffect, useState } from 'react'
 import useSwr, { KeyedMutator } from 'swr'
 
-import { useEffect, useState } from 'react'
-import { Notat, NotatType, Saksnotater } from '../../../types/types.internal'
+import { HttpError } from '../../../io/HttpError.ts'
+import { Notat, NotatType, Saksnotater } from '../../../types/types.internal.ts'
 
 interface NotaterResponse {
   antallNotater: number
   harUtkast: boolean
   notater: Notat[]
-  finnAktivtUtkast: (valgtNotattype?: NotatType) => Notat | undefined
-  isLoading: boolean
   mutate: KeyedMutator<Saksnotater>
+  isLoading: boolean
+  harLastet: boolean
+  finnAktivtUtkast(valgtType?: NotatType): Notat | undefined
 }
 
-export function useNotater(sakId?: string, opts?: any): NotaterResponse {
+export function useNotater(sakId?: string): NotaterResponse {
   const [refreshInterval, setRefreshInterval] = useState(0)
   const [harUtkast, setHarUtkast] = useState(false)
   const {
     data: saksnotater,
+    error,
     mutate,
     isLoading,
-  } = useSwr<Saksnotater>(sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
+  } = useSwr<Saksnotater, HttpError>(sakId ? `/api/sak/${sakId}/notater` : null, { refreshInterval })
 
   useEffect(() => {
     if (saksnotater) {
@@ -28,17 +31,8 @@ export function useNotater(sakId?: string, opts?: any): NotaterResponse {
     }
   }, [saksnotater])
 
-  const finnAktivtUtkast = (valgtNotattype?: NotatType): Notat | undefined => {
-    return saksnotater?.notater.filter((notat) => !notat.ferdigstilt).find((notat) => notat.type === valgtNotattype)
-  }
-
-  opts = {
-    ...opts,
-    refreshInterval: saksnotater?.notater.some(
-      (notat) => notat.type === NotatType.JOURNALFØRT && (!notat.journalpostId || !notat.dokumentId)
-    )
-      ? 5000
-      : 0,
+  const finnAktivtUtkast = (valgtType?: NotatType): Notat | undefined => {
+    return saksnotater?.notater.filter((notat) => !notat.ferdigstilt).find((notat) => notat.type === valgtType)
   }
 
   const { notater, totalElements } = saksnotater ?? { notater: [], totalElements: 0 }
@@ -61,8 +55,9 @@ export function useNotater(sakId?: string, opts?: any): NotaterResponse {
     antallNotater: totalElements,
     harUtkast,
     notater: ferdigstilteNotater,
-    finnAktivtUtkast,
-    isLoading,
     mutate,
+    isLoading,
+    harLastet: !isLoading && (saksnotater != null || error != null),
+    finnAktivtUtkast,
   }
 }

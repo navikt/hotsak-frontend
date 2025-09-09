@@ -1,45 +1,38 @@
 import '@mdxeditor/editor/style.css'
 import { Alert, Button, HStack, VStack } from '@navikt/ds-react'
-import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { FerdigstillNotatRequest, MålformType, NotatType } from '../../../types/types.internal.ts'
-import { NotatFormValues } from './Notater.tsx'
+
+import { FerdigstillNotatRequest, MålformType, Notat, NotatType } from '../../../types/types.internal.ts'
+import type { NotatFormValues } from './Notater.tsx'
 import { NotatForm } from './NotatForm.tsx'
 import { SlettUtkast } from './SlettUtkast.tsx'
 import { useFerdigstillNotat } from './useFerdigstillNotat.tsx'
 import { useNotater } from './useNotater.tsx'
 import { useUtkastEndret } from './useUtkastEndret.ts'
 
-export interface NotaterProps {
+export interface InterntNotatFormProps {
   sakId: string
   lesevisning: boolean
+  aktivtUtkast?: Notat
 }
 
-export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
-  const { finnAktivtUtkast, isLoading: notaterLaster, mutate: mutateNotater } = useNotater(sakId)
+export function InterntNotatForm({ sakId, lesevisning, aktivtUtkast }: InterntNotatFormProps) {
+  const { mutate: mutateNotater, isLoading: notaterLaster } = useNotater(sakId)
 
-  const aktivtUtkast = finnAktivtUtkast(NotatType.INTERNT)
+  const form = useForm<NotatFormValues>({
+    defaultValues: {
+      tittel: aktivtUtkast?.tittel ?? '',
+      tekst: aktivtUtkast?.tekst ?? '',
+    },
+  })
 
-  const defaultValues = {
-    tittel: '',
-    tekst: '',
-  }
-
-  const form = useForm<NotatFormValues>({ defaultValues })
-  const { handleSubmit, setValue, reset, watch } = form
+  const { handleSubmit, reset, watch } = form
 
   const tittel = watch('tittel')
   const tekst = watch('tekst')
 
   const { lagrerUtkast } = useUtkastEndret(NotatType.INTERNT, sakId, tittel, tekst, mutateNotater, aktivtUtkast)
   const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
-
-  useEffect(() => {
-    if (aktivtUtkast) {
-      setValue('tittel', aktivtUtkast.tittel)
-      setValue('tekst', aktivtUtkast.tekst)
-    }
-  }, [aktivtUtkast, setValue])
 
   const lagPayload = (data: NotatFormValues): FerdigstillNotatRequest => {
     return {
@@ -52,9 +45,11 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
     }
   }
 
+  const resetForm = () => reset({ tittel: '', tekst: '' })
+
   const ferdigstillInterntNotat = async (data: NotatFormValues) => {
     await ferdigstill(lagPayload(data))
-    reset(defaultValues)
+    resetForm()
   }
 
   const readOnly = lesevisning || ferdigstiller
@@ -71,12 +66,12 @@ export function InterntNotatForm({ sakId, lesevisning }: NotaterProps) {
           </VStack>
         )}
         {!lesevisning && (
-          <HStack justify={'end'}>
-            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={() => reset(defaultValues)} />
+          <HStack justify="end">
+            <SlettUtkast sakId={sakId} aktivtUtkast={aktivtUtkast} onReset={resetForm} />
           </HStack>
         )}
         {!lesevisning && (
-          <VStack gap="4" paddingBlock={'3 0'}>
+          <VStack gap="4" paddingBlock="3 0">
             <div>
               <Button variant="secondary" size="small" loading={ferdigstiller} type="submit">
                 Opprett internt notat

@@ -1,5 +1,6 @@
-import { Box, ErrorMessage, Label } from '@navikt/ds-react'
+import { Box, ErrorMessage, Label, VStack } from '@navikt/ds-react'
 import styled from 'styled-components'
+
 import { MarkdownEditor } from './MarkdownEditor'
 
 type MarkdownTextAreaProps = {
@@ -13,7 +14,7 @@ type MarkdownTextAreaProps = {
 export function MarkdownTextArea(props: MarkdownTextAreaProps) {
   const { label, tekst, onChange, readOnly, valideringsfeil } = props
   return (
-    <div>
+    <VStack gap="2">
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
         <Box.New marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
@@ -25,12 +26,11 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
           {valideringsfeil}
         </ErrorMessage>
       )}
-    </div>
+    </VStack>
   )
 }
 
 const MarkdownEditorStyling = styled(Box)`
-  margin-top: 0.5rem;
   .mdxEditorBox:has([contenteditable='true']:focus) {
     border: 4px solid var(--ax-border-focus);
     margin: -3px;

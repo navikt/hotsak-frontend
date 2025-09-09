@@ -1,25 +1,20 @@
-import useSwr from 'swr'
+import useSwr, { SWRResponse } from 'swr'
 
-import { httpGet } from '../io/http'
+import type { HttpError } from '../io/HttpError.ts'
 import type { Innsenderbehovsmelding } from '../types/BehovsmeldingTypes'
 import { useSakId } from './useSak.ts'
 
-interface DataResponse {
-  behovsmelding: Innsenderbehovsmelding | undefined
-  isLoading: boolean
-  isError: any
+interface UseBehovsmeldingResponse extends Omit<SWRResponse<Innsenderbehovsmelding, HttpError>, 'data'> {
+  behovsmelding?: Innsenderbehovsmelding
 }
 
-export function useBehovsmelding(): DataResponse {
+export function useBehovsmelding(): UseBehovsmeldingResponse {
   const sakId = useSakId()
-  const { data, error, isLoading } = useSwr<{ data: Innsenderbehovsmelding }>(
-    sakId ? `api/sak/${sakId}/behovsmelding` : null,
-    httpGet
+  const { data: behovsmelding, ...rest } = useSwr<Innsenderbehovsmelding, HttpError>(
+    sakId ? `/api/sak/${sakId}/behovsmelding` : null
   )
-
   return {
-    behovsmelding: data?.data,
-    isLoading: isLoading,
-    isError: error,
+    behovsmelding,
+    ...rest,
   }
 }

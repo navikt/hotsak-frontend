@@ -31,15 +31,15 @@ import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
 const SaksbildeContent = memo(() => {
-  const { sak, isLoading: sakLoading } = useSak()
-  const { behovsmelding, isLoading: behøvsmeldingLoading } = useBehovsmelding()
+  const { sak, isLoading: isSakLoading } = useSak()
+  const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { harUtkast } = useNotater(sak?.data.sakId)
 
   // TODO: Teste ut suspense mode i swr
-  if (sakLoading || behøvsmeldingLoading) {
+  if (isSakLoading || isBehovsmeldingLoading) {
     return <SakLoader />
   }
 

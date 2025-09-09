@@ -1,12 +1,10 @@
+import { Box, Button, Detail, Radio, RadioGroup } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
-import { Box, Button, Detail, Radio, RadioGroup } from '@navikt/ds-react'
-
-import { putOppdaterVilkår } from '../../../../io/http'
-
 import { Kolonner } from '../../../../felleskomponenter/Kolonner'
 import { Tekstområde } from '../../../../felleskomponenter/skjema/Tekstfelt'
+import { http } from '../../../../io/HttpClient.ts'
 import { OppdaterVilkårData, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
 
 export function SaksbehandlersVurderingForm({
@@ -33,13 +31,15 @@ export function SaksbehandlersVurderingForm({
     formState: { errors },
   } = methods
 
-  const oppdaterVilkår = (vilkårID: string, data: OppdaterVilkårData) => {
+  const oppdaterVilkår = (vilkårId: string, data: OppdaterVilkårData) => {
     setVenterPåVilkårsvurdering(true)
-    putOppdaterVilkår(sakId, vilkårID, data)
-      .catch(() => setVenterPåVilkårsvurdering(false))
+    http
+      .put(`/api/sak/${sakId}/vilkar/${vilkårId}`, data)
       .then(() => {
-        setVenterPåVilkårsvurdering(false)
         onSaved()
+      })
+      .finally(() => {
+        setVenterPåVilkårsvurdering(false)
       })
   }
 

@@ -1,25 +1,20 @@
-import useSWR from 'swr'
-import { httpGet } from '../../io/http'
-import { Hjelpemiddel } from '../../types/types.internal'
+import useSWR, { SWRResponse } from 'swr'
 
-interface ArtiklerResponse {
-  artikler: Hjelpemiddel[]
-  isLoading: boolean
-  isError: any
-  mutate: () => void
-}
+import type { HttpError } from '../../io/HttpError.ts'
+import type { Hjelpemiddel } from '../../types/types.internal'
 
 interface HjelpemidlerJson {
   hjelpemidler: Hjelpemiddel[]
 }
 
-export function useArtiklerForSak(sakId: string): ArtiklerResponse {
-  const { data, error, mutate } = useSWR<{ data: HjelpemidlerJson }>(`api/sak/${sakId}/hjelpemidler`, httpGet)
+interface UseArtiklerForSakResponse extends Omit<SWRResponse<HjelpemidlerJson, HttpError>, 'data'> {
+  artikler: Hjelpemiddel[]
+}
 
+export function useArtiklerForSak(sakId: string): UseArtiklerForSakResponse {
+  const { data, ...rest } = useSWR<HjelpemidlerJson, HttpError>(`/api/sak/${sakId}/hjelpemidler`)
   return {
-    artikler: data?.data.hjelpemidler || [],
-    isLoading: !error && !data,
-    isError: error,
-    mutate,
+    artikler: data?.hjelpemidler ?? [],
+    ...rest,
   }
 }

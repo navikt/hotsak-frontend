@@ -8,7 +8,7 @@ import { useDokumentContext } from './DokumentContext'
 import { useDokument } from './useDokument'
 
 export function DokumentPanel() {
-  const { hentetDokument, hentForhåndsvisning, isPdfError } = useDokument()
+  const { hentetDokument, dokumentError, hentForhåndsvisning } = useDokument()
   const { valgtDokument } = useDokumentContext()
 
   const { journalpostId, dokumentId } = valgtDokument
@@ -19,7 +19,7 @@ export function DokumentPanel() {
     }
   }, [journalpostId, dokumentId, hentForhåndsvisning])
 
-  if (isPdfError) {
+  if (dokumentError) {
     return (
       <FeilmeldingContainer>
         <div>

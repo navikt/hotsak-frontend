@@ -1,7 +1,7 @@
-import { useRef } from 'react'
-import styled from 'styled-components'
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
+import { useRef } from 'react'
+import styled from 'styled-components'
 
 import { Endringslogg } from './Endringslogg'
 import { useEndringslogg } from './useEndringslogg'
@@ -19,7 +19,7 @@ export function EndringsloggMenu() {
             }
           }}
         >
-          {!endringslogg.loading && <Uleste $fading={endringslogg.fading} />}
+          {!endringslogg.isLoading && <Uleste $fading={endringslogg.fading} />}
           <InformationSquareIcon title="Endringslogg" width={20} height={20} />
         </InternalHeader.Button>
       </ActionMenu.Trigger>

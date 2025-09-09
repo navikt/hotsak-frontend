@@ -5,7 +5,6 @@ import { Fritekst } from '../../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../../felleskomponenter/brev/useDebounce'
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
 import { Etikett } from '../../../../felleskomponenter/typografi'
-import { postBrevutkast } from '../../../../io/http'
 import {
   Barnebrillesak,
   Brevkode,
@@ -17,6 +16,7 @@ import {
   VilkårsResultat,
 } from '../../../../types/types.internal'
 import { useNotater } from '../../../høyrekolonne/notat/useNotater'
+import { useBrevActions } from '../../../useBrevActions.ts'
 import { useSakActions } from '../../../useSakActions.ts'
 import { NotatUtkastVarsel } from '../../../venstremeny/NotatUtkastVarsel'
 import { useBrevtekst } from '../../brevutkast/useBrevtekst'
@@ -41,11 +41,11 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
     Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
   )
   const sakActions = useSakActions()
-  const [lagrer, setLagrer] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const brevtekst = data?.data.brevtekst
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const { hentForhåndsvisning } = useBrev()
+  const brevActions = useBrevActions()
 
   const { data: saksdokumenter } = useSaksdokumenter(
     sak.sakId,
@@ -84,11 +84,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   }, [fritekst, submitAttempt])
 
   const lagreUtkast = useCallback(
-    async (tekst: string) => {
-      setLagrer(true)
-      await postBrevutkast(byggBrevPayload(tekst))
-      setLagrer(false)
-    },
+    (tekst: string) => brevActions.lagreBrevutkast(byggBrevPayload(tekst)),
     [sak.sakId, fritekst]
   )
 
@@ -124,8 +120,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
             beskrivelse="Vises i brevet som en del av begrunnelsen for avslaget"
             valideringsfeil={valideringsfeil}
             fritekst={fritekst}
-            //onLagre={lagreUtkast}
-            lagrer={lagrer}
+            lagrer={brevActions.state.loading}
             onTextChange={setFritekst}
           />
           <div>

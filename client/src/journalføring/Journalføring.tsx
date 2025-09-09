@@ -28,7 +28,7 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
   const saksbehandler = useInnloggetAnsatt()
   const { harSkrivetilgang } = useOppgavetilgang()
-  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(fodselsnummer)
+  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
 
   const journalpostTildeltSaksbehandler =
     journalpost?.oppgave.oppgavestatus === Oppgavestatus.UNDER_BEHANDLING &&

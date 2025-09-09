@@ -15,9 +15,9 @@ import { useSak } from './useSak'
 
 const SaksbildeContent = memo(() => {
   const { sak, isLoading, isError } = useSak()
-  const { isLoading: isBehovsmeldingLoading, isError: isBehovsmeldingError } = useBehovsmelding()
+  const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
-  const { personInfo, isLoading: personInfoLoading, isError: personInfoError } = usePerson(sak?.data.bruker.fnr)
+  const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
 
   if (isLoading || personInfoLoading || isBehovsmeldingLoading) return <SakLoader />
 
@@ -29,8 +29,8 @@ const SaksbildeContent = memo(() => {
     showBoundary(isError)
   }
 
-  if (isBehovsmeldingError) {
-    showBoundary(isBehovsmeldingError)
+  if (behovsmeldingError) {
+    showBoundary(behovsmeldingError)
   }
 
   if (!sak?.data) return <div>Fant ikke sak</div>

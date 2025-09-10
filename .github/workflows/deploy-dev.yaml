@@ -9,8 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - varsel-tilbehør-ikke-på-rammeavtale
-      - golang_server
+      - hotbff
 
 jobs:
   test:

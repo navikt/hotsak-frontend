@@ -1,45 +1,53 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"log/slog"
-	"net/http"
 	"os"
-)
 
-var (
-	port    = flag.Int("p", 3000, "")
-	rootDir = flag.String("d", "./dist", "")
+	"github.com/navikt/hotbff"
+	"github.com/navikt/hotbff/proxy"
+	"github.com/navikt/hotbff/texas"
 )
-
-func init() {
-	handler := slog.NewJSONHandler(os.Stdout, nil)
-	logger := slog.New(handler)
-	slog.SetDefault(logger)
-}
 
 func main() {
-	flag.Parse()
+	opts := &hotbff.ServerOptions{
+		BasePath: "/",
+		RootDir:  "../client/dist",
+		Proxy: &proxy.Map{
+			"/api/": &proxy.Options{
+				Target:      os.Getenv("HOTSAK_API_URL"),
+				StripPrefix: false,
+				IDP:         texas.EntraId,
+				IDPTarget:   os.Getenv("HOTSAK_API_SCOPE"),
+			},
+			"/grunndata-api/": &proxy.Options{
+				Target:      os.Getenv("GRUNNDATA_API_URL"),
+				StripPrefix: true,
+			},
+			"/alternativprodukter-api/": &proxy.Options{
+				Target:      os.Getenv("ALTERNATIVPRODUKTER_API_URL"),
+				StripPrefix: true,
+			},
+			"/brille-api/": &proxy.Options{
+				Target:      os.Getenv("BRILLE_API_URL"),
+				StripPrefix: true,
+			},
+		},
+		IDP: texas.EntraId,
+		EnvKeys: &[]string{
+			"NAIS_CLUSTER_NAME",
 
-	http.HandleFunc("GET /isalive", func(w http.ResponseWriter, req *http.Request) {
-		_, _ = fmt.Fprint(w, "ALIVE")
-	})
-	http.HandleFunc("GET /isready", func(w http.ResponseWriter, req *http.Request) {
-		_, _ = fmt.Fprint(w, "READY")
-	})
-	http.Handle("GET /settings.js", settingsHandler())
+			"FARO_URL",
+			"IMAGE_PROXY_URL",
 
-	mux := http.NewServeMux()
-	for prefix, t := range proxies {
-		mux.Handle(prefix, t.handler(prefix))
+			"UMAMI_ENABLED",
+			"UMAMI_WEBSITE_ID",
+
+			"USE_MSW",
+			"USE_MSW_GRUNNDATA",
+			"USE_MSW_ALTERNATIVPRODUKTER",
+
+			"GIT_COMMIT",
+		},
 	}
-	mux.Handle("/", rootHandler(*rootDir))
-	http.Handle("/", protectedHandler(mux))
-
-	slog.Info("server starting", "port", *port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", *port), nil); err != nil {
-		slog.Error("server startup failed", "error", err)
-		os.Exit(1)
-	}
+	hotbff.StartServer(opts)
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-export PORT=3000
+export BIND_ADDRESS=:3000
 
 # hm-mocks
 export NAIS_TOKEN_ENDPOINT=http://localhost:4040/texas/api/v1/token
@@ -23,8 +23,8 @@ export IMAGE_PROXY_URL=
 export UMAMI_ENABLED=false
 export UMAMI_WEBSITE_ID=
 
-export USE_MSW=false
-export USE_MSW_GRUNNDATA=false
+export USE_MSW=true
+export USE_MSW_GRUNNDATA=true
 export USE_MSW_ALTERNATIVPRODUKTER=true
 
-go run . -p=$PORT -d=../client/dist
+go run .

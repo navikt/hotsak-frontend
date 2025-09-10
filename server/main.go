@@ -11,7 +11,7 @@ import (
 func main() {
 	opts := &hotbff.ServerOptions{
 		BasePath: "/",
-		RootDir:  "../client/dist",
+		RootDir:  "dist",
 		Proxy: &proxy.Map{
 			"/api/": &proxy.Options{
 				Target:      os.Getenv("HOTSAK_API_URL"),

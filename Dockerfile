@@ -28,4 +28,4 @@ EXPOSE 3000
 COPY --from=client-builder /app/dist ./dist
 COPY --from=server-builder /app/hotsak-frontend-server .
 
-CMD [ "./hotsak-frontend-server", "-d", "dist", "-c", "config.json" ]
+CMD [ "./hotsak-frontend-server" ]

@@ -1,11 +1,11 @@
 services:
   hotsak-frontend:
     build: .
-    image: "hotsak-frontend"
+    image: 'hotsak-frontend'
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
-      PORT: "3000"
+      BIND_ADDRESS: ':3000'
 
       NAIS_TOKEN_ENDPOINT: http://localhost:4040/texas/api/v1/token
       NAIS_TOKEN_EXCHANGE_ENDPOINT: http://localhost:4040/texas/api/v1/token/exchange
@@ -20,13 +20,13 @@ services:
 
       NAIS_CLUSTER_NAME: local
 
-      FARO_URL: ""
+      FARO_URL: ''
 
-      IMAGE_PROXY_URL: ""
+      IMAGE_PROXY_URL: ''
 
-      UMAMI_ENABLED: "false"
+      UMAMI_ENABLED: 'false'
       UMAMI_WEBSITE_ID:
 
-      USE_MSW: "false"
-      USE_MSW_GRUNNDATA: "false"
-      USE_MSW_ALTERNATIVPRODUKTER: "true"
+      USE_MSW: 'false'
+      USE_MSW_GRUNNDATA: 'false'
+      USE_MSW_ALTERNATIVPRODUKTER: 'true'

@@ -8,7 +8,15 @@ import (
 	"github.com/navikt/hotbff/texas"
 )
 
+var (
+	useMSW = os.Getenv("USE_MSW") == "true"
+	idp    = texas.EntraId
+)
+
 func main() {
+	if useMSW {
+		idp = ""
+	}
 	opts := &hotbff.ServerOptions{
 		BasePath: "/",
 		RootDir:  "dist",
@@ -32,7 +40,7 @@ func main() {
 				StripPrefix: true,
 			},
 		},
-		IDP: texas.EntraId,
+		IDP: idp,
 		EnvKeys: &[]string{
 			"NAIS_CLUSTER_NAME",
 

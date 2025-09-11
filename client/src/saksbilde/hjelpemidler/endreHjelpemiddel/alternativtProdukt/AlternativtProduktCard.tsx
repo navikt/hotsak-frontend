@@ -28,6 +28,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
     <VStack gap="3">
       <ProduktCard
         key={alternativtProdukt.id}
+        height="100%"
         borderWidth="1"
         borderColor="neutral-subtle"
         borderRadius="large"
@@ -41,7 +42,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                 alt="Produktbilde"
                 src={produktbilde(alternativtProdukt)}
                 style={{
-                  height: '185px',
+                  height: '140px',
                   maxWidth: '100%',
                   objectFit: 'contain',
                 }}
@@ -90,4 +91,9 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
 const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
   border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};
   margin: ${({ selected }) => selected && '-3px'};
+
+  &:hover {
+    border: 4px solid var(--ax-border-accent-strong);
+    margin: -3px;
+  }
 `

@@ -638,6 +638,8 @@ export interface Produkt {
   produkturl: string
   posttitler?: string[]
   artikkelnavn: string
+  leverandør?: string
+  produktbildeUri?: string
   hmsnr: string
 }
 

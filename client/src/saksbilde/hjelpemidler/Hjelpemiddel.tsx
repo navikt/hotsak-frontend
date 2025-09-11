@@ -1,4 +1,3 @@
-import { ArrowsSquarepathIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
@@ -23,6 +22,7 @@ import { TilbehørListe } from './TilbehørListe.tsx'
 import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
+import { PencilIcon } from '@navikt/aksel-icons'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -55,6 +55,8 @@ export function Hjelpemiddel({
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
 
   const harAlternativeProdukter = alternativeProdukter.length > 0
+
+  console.log('Hjprod', produkter, produkt)
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -146,14 +148,15 @@ export function Hjelpemiddel({
               </Bleed>
             )}
           </div> */}
-          {erOmbrukPilot && (
+
+          {kanEndreHmsnr && (
             <div>
-              {harAlternativeProdukter && kanEndreHmsnr && (
-                <Bleed marginBlock="1 0">
+              <Bleed marginBlock="1 0">
+                {erOmbrukPilot ? (
                   <Button
                     variant="tertiary"
                     size="xsmall"
-                    icon={<ArrowsSquarepathIcon />}
+                    icon={<PencilIcon />}
                     onClick={() => {
                       logModalÅpnet({
                         tekst: 'alterrnative-produkter-modal',
@@ -165,10 +168,12 @@ export function Hjelpemiddel({
                       setVisAlternativerModal(true)
                     }}
                   >
-                    Alternativer
+                    Endre
                   </Button>
-                </Bleed>
-              )}
+                ) : (
+                  <>{/*TODO */}</>
+                )}
+              </Bleed>
             </div>
           )}
         </VStack>
@@ -185,10 +190,11 @@ export function Hjelpemiddel({
         {erOmbrukPilot && (
           <EndreHjelpemiddelModal
             åpen={visAlternativerModal}
-            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-            hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-            alternativeProdukter={alternativeProdukter}
+            hjelpemiddel={hjelpemiddel}
+            grunndataProdukt={produkt}
             harOppdatertLagerstatus={harOppdatertLagerstatus}
+            alternativeProdukter={alternativeProdukter}
+            harAlternativeProdukter={harAlternativeProdukter}
             onLagre={endreHjelpemiddel}
             onLukk={() => setVisAlternativerModal(false)}
           />

@@ -5,7 +5,7 @@ import { BegrunnelseForBytte } from '../BegrunnelseForBytte'
 import { EndreArtikkelData, EndreHjelpemiddelType } from '../endreHjelpemiddelTypes'
 import { HmsNrVelger } from './HmsNrVelger'
 
-export function ManueltSøkTabPanel({
+export function ManueltSøkPanel({
   hmsArtNr,
   onSubmit,
   onCancel,
@@ -30,9 +30,7 @@ export function ManueltSøkTabPanel({
   const endretProdukt = methods.watch('endretProdukt.0')
 
   const handleFormSubmit = async (data: EndreArtikkelData) => {
-    console.log('Skjer dette da?', !produktValgt, endretProdukt, !produktValgt && data.endretProdukt[0]?.length === 6)
-
-    if (!produktValgt && data.endretProdukt[0]?.length === 6) {
+    if (!produktValgt) {
       setProdukterValgt(true)
     } else {
       await onSubmit(data)

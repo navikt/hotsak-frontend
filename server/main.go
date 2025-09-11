@@ -13,11 +13,14 @@ var (
 	idp    = texas.EntraId
 )
 
-func main() {
+func init() {
 	if useMSW {
 		idp = ""
 	}
-	opts := &hotbff.ServerOptions{
+}
+
+func main() {
+	opts := &hotbff.Options{
 		BasePath: "/",
 		RootDir:  "dist",
 		Proxy: &proxy.Map{
@@ -57,5 +60,5 @@ func main() {
 			"GIT_COMMIT",
 		},
 	}
-	hotbff.StartServer(opts)
+	hotbff.Start(opts)
 }

@@ -1,4 +1,4 @@
-import { Box, Modal, Tabs } from '@navikt/ds-react'
+import { Box, Button, Modal, Tabs } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useUmami } from '../../../sporing/useUmami.ts'
@@ -18,6 +18,7 @@ import { AlternativeProdukterTabPanel } from './alternativtProdukt/AlternativePr
 import { EndreArtikkelData, EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 import { ManueltSøkPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 import { OriginaltHjelpemiddel } from './OriginaltHjelpemiddel.tsx'
+import { FormProvider, useForm } from 'react-hook-form'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -44,8 +45,10 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
     onLukk,
   } = props
   const [activeTab, setActiveTab] = useState('alternativer')
+  const [produktValgt, setProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const erOmbrukPilot = useErOmbrukPilot()
+  const { logSkjemaFullført } = useUmami()
   const ref = useRef<HTMLDialogElement>(null)
   const { logKnappKlikket } = useUmami()
 
@@ -63,6 +66,27 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const alternativeProdukter = harOppdatertLagerstatus
     ? alternativeProdukterInitial
     : (alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ?? ingenAlternativeProdukterForHmsArtNr)
+
+  const form = useForm<EndreArtikkelData>({
+    defaultValues: {
+      endretProdukt: [],
+      endreBegrunnelse: '',
+      endreBegrunnelseFritekst: '',
+    },
+  })
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    if (!produktValgt) {
+      setProduktValgt(true)
+    } else {
+      logSkjemaFullført({
+        komponent: 'EndreHjelpemiddelModal',
+        valgtAlternativ: data.endretProdukt[0],
+      })
+      await handleSubmit(data)
+      setProduktValgt(false)
+    }
+  })
 
   const handleSubmit = async (data: EndreArtikkelData) => {
     try {
@@ -85,6 +109,12 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
     }
   }
 
+  const handleTabChange = (newTab: string) => {
+    form.reset()
+    setProduktValgt(false)
+    setActiveTab(newTab)
+  }
+
   const handleCancel = () => {
     logKnappKlikket({
       komponent: 'AlternativeProdukterModal',
@@ -94,66 +124,88 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   }
 
   return (
-    <Modal
-      ref={ref}
-      placement="top"
-      closeOnBackdropClick={false}
-      width="950px"
-      //style={{ minHeight: '60vh' }}
-      open={åpen}
-      onClose={() => {
-        onLukk()
-      }}
-      header={{ heading: 'Endre hjelpemiddel' }}
-      size="small"
-      aria-label={'Endre hjelpemiddel'}
-    >
-      <Box.New style={{ padding: 'var(--ax-space-40) var(--ax-space-40)' }}>
-        <OriginaltHjelpemiddel hjelpemiddel={hjelpemiddel} grunndataProdukt={grunndataProdukt} />
+    <FormProvider {...form}>
+      <form onSubmit={onSubmit}>
+        <Modal
+          ref={ref}
+          placement="top"
+          closeOnBackdropClick={false}
+          width="950px"
+          //style={{ minHeight: '60vh' }}
+          open={åpen}
+          onClose={() => {
+            onLukk()
+          }}
+          header={{ heading: 'Endre hjelpemiddel' }}
+          size="small"
+          aria-label={'Endre hjelpemiddel'}
+        >
+          <Modal.Body style={{ scrollbarGutter: 'stable both-edges' }}>
+            <Box.New paddingBlock="space-24 0" paddingInline="space-16">
+              <OriginaltHjelpemiddel hjelpemiddel={hjelpemiddel} grunndataProdukt={grunndataProdukt} />
 
-        {harAlternativeProdukter && erOmbrukPilot ? (
-          <Box.New paddingBlock="space-24 0">
-            <Tabs value={activeTab} onChange={setActiveTab}>
-              <Tabs.List>
-                <Tabs.Tab value="alternativer" label="Alternativer på lager" />
-                <Tabs.Tab value="manuelt" label="Søk manuelt" />
-              </Tabs.List>
+              {harAlternativeProdukter && erOmbrukPilot ? (
+                <Box.New paddingBlock="space-24 0">
+                  <Tabs value={activeTab} onChange={handleTabChange}>
+                    <Tabs.List>
+                      <Tabs.Tab value="alternativer" label="Alternativer på lager" />
+                      <Tabs.Tab value="manuelt" label="Søk manuelt" />
+                    </Tabs.List>
 
-              <Tabs.Panel value="alternativer">
-                <AlternativeProdukterTabPanel
-                  alternativeProdukter={alternativeProdukter}
-                  isLoading={isLoading}
-                  harPaginering={harPaginering}
-                  pageNumber={pageNumber}
-                  pageSize={pageSize}
-                  totalElements={totalElements}
-                  onPageChange={onPageChange}
-                  onSubmit={handleSubmit}
-                  onCancel={handleCancel}
-                  submitting={submitting}
-                />
-              </Tabs.Panel>
-              <Tabs.Panel value="manuelt">
+                    <Tabs.Panel value="alternativer">
+                      <AlternativeProdukterTabPanel
+                        alternativeProdukter={alternativeProdukter}
+                        isLoading={isLoading}
+                        harPaginering={harPaginering}
+                        pageNumber={pageNumber}
+                        pageSize={pageSize}
+                        totalElements={totalElements}
+                        onPageChange={onPageChange}
+                        produktValgt={produktValgt}
+                      />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="manuelt">
+                      <ManueltSøkPanel
+                        hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
+                        hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                        produktValgt={produktValgt}
+                      />
+                    </Tabs.Panel>
+                  </Tabs>
+                </Box.New>
+              ) : (
                 <ManueltSøkPanel
                   hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
                   hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-                  onSubmit={handleSubmit}
-                  onCancel={handleCancel}
-                  submitting={submitting}
+                  produktValgt={produktValgt}
                 />
-              </Tabs.Panel>
-            </Tabs>
-          </Box.New>
-        ) : (
-          <ManueltSøkPanel
-            hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-            hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            submitting={submitting}
-          />
-        )}
-      </Box.New>
-    </Modal>
+              )}
+            </Box.New>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              type="submit"
+              variant="primary"
+              size="small"
+              loading={submitting}
+              //disabled={!produktValgt && endretProdukt?.length !== 6}
+            >
+              {!produktValgt ? 'Lagre endring' : 'Ferdig'}
+            </Button>
+            <Button
+              type="button"
+              variant="tertiary"
+              size="small"
+              onClick={() => {
+                setProduktValgt(false)
+                handleCancel()
+              }}
+            >
+              Avbryt
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </form>
+    </FormProvider>
   )
 }

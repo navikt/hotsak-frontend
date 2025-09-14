@@ -40,13 +40,10 @@ const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 const HMSNR_LENGDE = 6
 
 export function useHjelpemiddelprodukt(hmsnr?: string): Produkt | undefined {
-  console.log('Blir det trøbbel her ', hmsnr)
   return useHjelpemiddelprodukter(hmsnr ? [hmsnr] : [])[0] || undefined
 }
 
 export function useHjelpemiddelprodukter(hmsnrs: string[]): Produkt[] {
-  console.log('Bruker useHjelpemiddelprodukter med hmsnrs:', hmsnrs)
-
   const gyldigeHmsnrs = unique(hmsnrs).filter((hmsnr) => hmsnr.length === HMSNR_LENGDE)
 
   const { data, error } = useGraphQLQuery<

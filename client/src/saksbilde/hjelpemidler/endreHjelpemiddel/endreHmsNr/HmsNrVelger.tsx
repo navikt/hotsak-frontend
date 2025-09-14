@@ -30,14 +30,15 @@ export function HmsNrVelger(props: EndreHjelpemiddelModalProps) {
   }
 
   // TODO legg på igjen custom valideringsregler
-  // TODO legg tilbake duplisert endreHjelpemiddel komponent for de som ikke er pilot
+  // Samme layout på produkt card i Originalt hmsnummer
+  // Teste hvordan card i endre hms nummer funker når kilde er OEBS
+
   // TODO visning når det ikke finnes noen alternativer på lager
   // TODO fix sånn at endreProdukt ikke trenger å være en array
   // TODO forenkle markup under
   // TODO validering på 6 siffer i HmsNr før det er lov å lagre
   // Finn ut av det med nåværendeHmsNr, trenger vi det fortsatt?
-  // Teste hvordan card i endre hms nummer funker når kilde er OEBS
-  // Fast bredde som tar høyde for scrollbare sånn at modal ikke hopper i bredden
+
   /*const errorBegrunnelseFritekst = () => {
     if (endreBegrunnelse === EndretHjelpemiddelBegrunnelse.ANNET && endreBegrunnelseFritekst.length === 0) {
       return 'Du må fylle inn en begrunnelse'

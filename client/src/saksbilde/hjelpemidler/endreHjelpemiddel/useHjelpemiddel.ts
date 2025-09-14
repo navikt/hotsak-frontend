@@ -33,7 +33,6 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
 
   const hjelpemiddel = useMemo((): HjelpemiddelData | undefined => {
     if (grunndataProdukt) {
-      console.log('Fant hjelpemiddel i grunndata:', grunndataProdukt)
       return {
         hmsnr: grunndataProdukt.hmsnr,
         navn: grunndataProdukt.artikkelnavn,
@@ -44,7 +43,6 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
     }
 
     if (oebsProdukt) {
-      console.log('Fant hjelpemiddel i OeBS:', oebsProdukt)
       return {
         hmsnr: oebsProdukt.hmsnr,
         navn: oebsProdukt.navn,

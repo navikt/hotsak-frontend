@@ -1,10 +1,10 @@
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
+import { PencilIcon } from '@navikt/aksel-icons'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
-import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -22,7 +22,6 @@ import { TilbehørListe } from './TilbehørListe.tsx'
 import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
-import { PencilIcon } from '@navikt/aksel-icons'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -42,7 +41,6 @@ export function Hjelpemiddel({
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
-  const erOmbrukPilot = useErOmbrukPilot()
   const { logModalÅpnet } = useUmami()
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const {
@@ -53,10 +51,7 @@ export function Hjelpemiddel({
   } = useEndreHjelpemiddel(sakId, hjelpemiddel)
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
-
   const harAlternativeProdukter = alternativeProdukter.length > 0
-
-  console.log('Hjprod', produkter, produkt)
 
   return (
     <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
@@ -152,53 +147,40 @@ export function Hjelpemiddel({
           {kanEndreHmsnr && (
             <div>
               <Bleed marginBlock="1 0">
-                {erOmbrukPilot ? (
-                  <Button
-                    variant="tertiary"
-                    size="xsmall"
-                    icon={<PencilIcon />}
-                    onClick={() => {
-                      logModalÅpnet({
-                        tekst: 'alterrnative-produkter-modal',
-                        alternativerTilgjengelig: alternativeProdukter.length,
-                        alternativer: alternativeProdukter.map((p) => {
-                          return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
-                        }),
-                      })
-                      setVisAlternativerModal(true)
-                    }}
-                  >
-                    Endre
-                  </Button>
-                ) : (
-                  <>{/*TODO */}</>
-                )}
+                <Button
+                  variant="tertiary"
+                  size="xsmall"
+                  icon={<PencilIcon />}
+                  onClick={() => {
+                    logModalÅpnet({
+                      tekst: 'alterrnative-produkter-modal',
+                      alternativerTilgjengelig: alternativeProdukter.length,
+                      alternativer: alternativeProdukter.map((p) => {
+                        return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                      }),
+                    })
+                    setVisAlternativerModal(true)
+                  }}
+                >
+                  Endre
+                </Button>
               </Bleed>
             </div>
           )}
         </VStack>
       </HjelpemiddelGrid>
       <>
-        {/*<EndreHjelpemiddelModal
-          åpen={visEndreHjelpemiddelModal}
-          hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
-          hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
-          nåværendeHmsArtNr={nåværendeHmsnr}
+        <EndreHjelpemiddelModal
+          åpen={visAlternativerModal}
+          hjelpemiddel={hjelpemiddel}
+          grunndataProdukt={produkt}
+          harOppdatertLagerstatus={harOppdatertLagerstatus}
+          alternativeProdukter={alternativeProdukter}
+          harAlternativeProdukter={harAlternativeProdukter}
           onLagre={endreHjelpemiddel}
-          onLukk={() => setVisEndreHjelpemiddelModal(false)}
-        />*/}
-        {erOmbrukPilot && (
-          <EndreHjelpemiddelModal
-            åpen={visAlternativerModal}
-            hjelpemiddel={hjelpemiddel}
-            grunndataProdukt={produkt}
-            harOppdatertLagerstatus={harOppdatertLagerstatus}
-            alternativeProdukter={alternativeProdukter}
-            harAlternativeProdukter={harAlternativeProdukter}
-            onLagre={endreHjelpemiddel}
-            onLukk={() => setVisAlternativerModal(false)}
-          />
-        )}
+          onLukk={() => setVisAlternativerModal(false)}
+        />
+
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">
             <Etikett size="medium">Tilbehør</Etikett>

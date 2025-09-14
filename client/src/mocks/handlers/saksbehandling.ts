@@ -175,8 +175,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   }),
 
   http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
-    console.log('Håndterer endring av hjelpemiddel for sak:', params.sakId)
-
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),

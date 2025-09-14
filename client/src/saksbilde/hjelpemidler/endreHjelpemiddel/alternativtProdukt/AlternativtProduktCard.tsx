@@ -1,10 +1,10 @@
-import { Box, Checkbox, HGrid, HStack, Link, Tag, VStack } from '@navikt/ds-react'
+import { Box, Checkbox, HGrid, Link, Tag, VStack } from '@navikt/ds-react'
 import { Fragment } from 'react'
 import styled from 'styled-components'
 
 import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
-import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { formaterRelativTid } from '../../../../utils/dato.ts'
+import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct
@@ -32,58 +32,61 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         borderWidth="1"
         borderColor="neutral-subtle"
         borderRadius="large"
-        padding="4"
+        paddingBlock="space-16 space-8"
+        paddingInline="space-16"
         selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}
       >
-        <VStack gap="3">
-          <HStack justify="center">
+        <VStack>
+          <Etikett size="small" spacing>
+            {alternativtProdukt.articleName || alternativtProdukt.title}
+          </Etikett>
+          <HGrid columns="1fr 1fr">
+            <VStack gap="space-4">
+              <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
+                <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
+              </Link>
+              <VStack paddingBlock="space-16">
+                <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
+                {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
+                  <Fragment key={lagerstatus?.location}>
+                    <Etikett>{lagerstatus?.location}: </Etikett>
+                    <div>
+                      {lagerstatus ? (
+                        <Tag variant="success-moderate" size="small">
+                          {lagerstatus.amountInStock} stk på lager
+                        </Tag>
+                      ) : (
+                        <Tag variant="success-moderate" size="small">
+                          Ukjent
+                        </Tag>
+                      )}
+                    </div>
+                  </Fragment>
+                ))}
+                <div>
+                  <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
+                </div>
+              </VStack>
+            </VStack>
             {produktbilde(alternativtProdukt) && (
               <img
                 alt="Produktbilde"
                 src={produktbilde(alternativtProdukt)}
                 style={{
-                  height: '140px',
-                  maxWidth: '100%',
+                  //height: '130px',
+                  //maxWidth: '100%',
+                  width: '150px',
                   objectFit: 'contain',
+                  borderRadius: 'var(--ax-radius-8)',
                 }}
               />
             )}
-          </HStack>
-          <VStack>
-            <Etikett size="small">
-              <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
-                {alternativtProdukt.articleName || alternativtProdukt.title}
-              </Link>
-            </Etikett>
-            <Undertittel>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Undertittel>
-            <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
-          </VStack>
-          <HGrid columns="auto 1fr" gap="2 2" align="center">
-            {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-              <Fragment key={lagerstatus?.location}>
-                <Etikett>{lagerstatus?.location}: </Etikett>
-                <div>
-                  {lagerstatus ? (
-                    <Tag variant="success" size="small">
-                      {lagerstatus.amountInStock} stk på lager
-                    </Tag>
-                  ) : (
-                    <Tag variant="warning-moderate" size="small">
-                      Ukjent
-                    </Tag>
-                  )}
-                </div>
-              </Fragment>
-            ))}
           </HGrid>
-          <div>
-            <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
-          </div>
         </VStack>
+        <Box.New background="accent-soft" padding="space-12" borderRadius="xlarge">
+          <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
+        </Box.New>
       </ProduktCard>
-      <HStack justify="center">
-        <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
-      </HStack>
     </VStack>
   )
 }

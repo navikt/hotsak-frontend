@@ -28,9 +28,11 @@ export function AlternativeProdukterTabPanel({
 }) {
   return (
     <Box.New paddingBlock="space-24 0">
-      <Heading level="1" size="small">
-        {!produktValgt ? `Alternativer` : `Velg begrunnelse for å bytte hjelpemiddel`}
-      </Heading>
+      {produktValgt && (
+        <Heading level="1" size="small">
+          Velg begrunnelse for å bytte hjelpemiddel
+        </Heading>
+      )}
 
       {!produktValgt ? (
         <>

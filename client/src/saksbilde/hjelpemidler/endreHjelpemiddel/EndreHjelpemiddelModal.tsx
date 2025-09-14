@@ -130,7 +130,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           ref={ref}
           placement="top"
           closeOnBackdropClick={false}
-          width="950px"
+          width="1200px"
           //style={{ minHeight: '60vh' }}
           open={åpen}
           onClose={() => {

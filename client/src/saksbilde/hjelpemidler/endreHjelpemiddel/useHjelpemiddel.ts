@@ -20,13 +20,12 @@ interface HjelpemiddelData {
 }
 
 export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
-  const grunndataProdukt = useHjelpemiddelprodukt(hmsnr)
+  const { data: grunndataProdukt, isLoading: grunndataLoading } = useHjelpemiddelprodukt(hmsnr)
 
-  // TODO kalle FinnHjelpemiddel for å hente hjelpemiddel her og eventuelt fallback til OeBS hvis ikke funnet i FinnHjelpemiddel
   const {
     data: oebsProdukt,
     error,
-    isLoading,
+    isLoading: oebsLoading,
   } = useSwr<HjelpemiddelProdukt, HttpError>(
     !grunndataProdukt && hmsnr?.length === 6 ? `/api/hjelpemiddel/${hmsnr}` : null
   )
@@ -52,6 +51,8 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
 
     return undefined
   }, [grunndataProdukt, oebsProdukt])
+
+  const isLoading = grunndataLoading || (oebsLoading && !grunndataProdukt)
 
   return {
     hjelpemiddel,

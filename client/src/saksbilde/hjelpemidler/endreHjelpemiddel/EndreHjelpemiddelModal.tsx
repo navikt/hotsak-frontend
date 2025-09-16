@@ -120,6 +120,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
       komponent: 'AlternativeProdukterModal',
       tekst: 'Avbryt endre til alternativt produkt',
     })
+    form.reset()
     onLukk()
   }
 
@@ -183,13 +184,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
             </Box.New>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              loading={submitting}
-              //disabled={!produktValgt && endretProdukt?.length !== 6}
-            >
+            <Button type="submit" variant="primary" size="small" loading={submitting}>
               {!produktValgt ? 'Lagre endring' : 'Ferdig'}
             </Button>
             <Button

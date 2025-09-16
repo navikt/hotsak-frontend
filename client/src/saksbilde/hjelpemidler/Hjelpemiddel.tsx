@@ -45,7 +45,7 @@ export function Hjelpemiddel({
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const {
     endreHjelpemiddel,
-    nåværendeHmsnr,
+    // nåværendeHmsnr,
     endretHjelpemiddelNavn,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, hjelpemiddel)
@@ -129,21 +129,6 @@ export function Hjelpemiddel({
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
         <VStack gap="2">
-          {/* <div>
-            {kanEndreHmsnr && (
-              <Bleed marginBlock="1 0">
-                <Button
-                  variant="tertiary"
-                  size="xsmall"
-                  icon={<PencilIcon />}
-                  onClick={() => setVisEndreHjelpemiddelModal(true)}
-                >
-                  Endre
-                </Button>
-              </Bleed>
-            )}
-          </div> */}
-
           {kanEndreHmsnr && (
             <div>
               <Bleed marginBlock="1 0">

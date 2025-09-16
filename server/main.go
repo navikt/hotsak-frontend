@@ -10,7 +10,7 @@ import (
 
 var (
 	useMSW = os.Getenv("USE_MSW") == "true"
-	idp    = texas.EntraId
+	idp    = texas.EntraID
 )
 
 func init() {
@@ -27,7 +27,7 @@ func main() {
 			"/api/": &proxy.Options{
 				Target:      os.Getenv("HOTSAK_API_URL"),
 				StripPrefix: false,
-				IDP:         texas.EntraId,
+				IDP:         texas.EntraID,
 				IDPTarget:   os.Getenv("HOTSAK_API_SCOPE"),
 			},
 			"/grunndata-api/": &proxy.Options{

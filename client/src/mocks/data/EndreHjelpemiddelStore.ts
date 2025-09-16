@@ -1,7 +1,8 @@
 import Dexie, { Table } from 'dexie'
 
-import { EndretHjelpemiddelRequest, Sakstype } from '../../types/types.internal'
+import { Sakstype } from '../../types/types.internal'
 import { SakStore } from './SakStore'
+import { EndretHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes'
 
 export interface EndretHjelpemiddelEntitet {
   sakId: string

@@ -23,7 +23,7 @@ func main() {
 	opts := &hotbff.Options{
 		BasePath: "/",
 		RootDir:  "dist",
-		Proxy: &proxy.Map{
+		Proxy: proxy.Map{
 			"/api/": &proxy.Options{
 				Target:      os.Getenv("HOTSAK_API_URL"),
 				StripPrefix: false,
@@ -44,7 +44,7 @@ func main() {
 			},
 		},
 		IDP: idp,
-		EnvKeys: &[]string{
+		EnvKeys: []string{
 			"NAIS_CLUSTER_NAME",
 
 			"FARO_URL",

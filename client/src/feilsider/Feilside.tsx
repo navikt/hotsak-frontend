@@ -60,7 +60,7 @@ function IkkeLoggetInn() {
     <>
       <BodyShort spacing>Du må logge inn for å få tilgang til systemet.</BodyShort>
       <BodyShort spacing>
-        <Link href="/">Gå til innloggingssiden</Link>.
+        <Link href="/oauth2/login">Gå til innloggingssiden</Link>.
       </BodyShort>
     </>
   )

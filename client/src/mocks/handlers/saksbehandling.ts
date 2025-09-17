@@ -1,13 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import {
-  EndretHjelpemiddelRequest,
-  OppgaveStatusType,
-  StegType,
-  TilgangResultat,
-  TilgangType,
-  VedtakPayload,
-} from '../../types/types.internal'
+import { OppgaveStatusType, StegType, TilgangResultat, TilgangType, VedtakPayload } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
 import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
@@ -20,6 +13,7 @@ import {
   respondNotFound,
   respondUnauthorized,
 } from './response'
+import { EndretHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   sakStore,
@@ -175,8 +169,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   }),
 
   http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
-    console.log('Håndterer endring av hjelpemiddel for sak:', params.sakId)
-
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),

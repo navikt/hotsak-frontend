@@ -3,9 +3,9 @@ import { useSWRConfig } from 'swr'
 
 import { http } from '../../../io/HttpClient.ts'
 import { Hjelpemiddel as BehovsmeldingHjelpemiddel } from '../../../types/BehovsmeldingTypes'
-import { EndretHjelpemiddelRequest } from '../../../types/types.internal'
 import { useArtiklerForSak } from '../useArtiklerForSak'
 import { useHjelpemiddel } from './useHjelpemiddel'
+import { EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 
 export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
@@ -30,6 +30,8 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
     (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
+  // TODO sjekke her om 6 siffer lang eller i hooken?
+  // sjekke at vi bruker ny måte å kalle useHjelpemiddel på, ref merge
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
   )

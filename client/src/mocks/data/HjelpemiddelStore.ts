@@ -1,6 +1,10 @@
 import Dexie, { Table } from 'dexie'
 
-import type { HMDBFinnHjelpemiddelprodukterQuery } from '../../generated/grunndata.ts'
+import {
+  HMDBMediaSourceType,
+  HMDBMediaType,
+  type HMDBFinnHjelpemiddelprodukterQuery,
+} from '../../generated/grunndata.ts'
 import products from './products.json'
 import { lagTilfeldigHmsArtNr, lagUUID } from './felles.ts'
 
@@ -21,16 +25,18 @@ export class HjelpemiddelStore extends Dexie {
     if (count !== 0) {
       return []
     }
+
+    // @ts-ignore
     return this.hjelpemidler.bulkAdd(products.data.products, { allKeys: true }).catch(console.warn)
   }
 
   async finn(hmsnrs: string[]) {
     const hjelpemidler = await this.alle()
     const filtrerteHjelpemidler = hjelpemidler.filter(
-      (hjelpemiddel) => hjelpemiddel.hmsArtNr && hmsnrs.includes(hjelpemiddel?.hmsArtNr)
+      (hjelpemiddel) => hjelpemiddel.hmsArtNr && hmsnrs.includes(hjelpemiddel.hmsArtNr)
     )
 
-    return filtrerteHjelpemidler.length > 0 ? filtrerteHjelpemidler : [lagHjelpemiddel()]
+    return filtrerteHjelpemidler.length > 0 ? filtrerteHjelpemidler : [lagHjelpemiddel(hmsnrs[0])]
   }
 
   async alle() {
@@ -45,12 +51,23 @@ export class HjelpemiddelStore extends Dexie {
 function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelpemiddel {
   return {
     id: lagUUID(),
-    articleName: 'articleName',
+    articleName: 'Dummyartikkel fra FinnHjelpemiddel for ' + hmsArtNr,
     hmsArtNr,
     isoCategoryTitleShort: 'isoCategoryTitleShort',
+    supplier: {
+      name: 'Leverandøren AS',
+    },
     agreements: [
       {
         postTitle: 'postTitle',
+      },
+    ],
+    media: [
+      {
+        uri: 'orig/60048.jpg',
+        type: HMDBMediaType.Image,
+        source: HMDBMediaSourceType.Import,
+        priority: 1,
       },
     ],
     productVariantURL: 'https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/' + hmsArtNr,

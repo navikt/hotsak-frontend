@@ -5,11 +5,11 @@ import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import { http } from '../../../io/HttpClient.ts'
 import { Notat } from '../../../types/types.internal.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -20,8 +20,9 @@ export interface NotaterProps {
 export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const { mutate } = useSWRConfig()
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
+  const { showSuccessToast } = useToast()
   const { execute, state: sletterUtkast } = useActionState()
+  showSuccessToast
 
   const slettNotatUtkast = (sakId: string, notatId: string) =>
     execute(() => http.delete(`/api/sak/${sakId}/notater/${notatId}`))
@@ -30,12 +31,9 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
     if (aktivtUtkast) {
       await slettNotatUtkast(sakId, aktivtUtkast?.id || '')
       setVisSlettUtkastModal(false)
-      setVisSlettetUtkastToast(true)
+      showSuccessToast('Utkast slettet')
       await mutate(`/api/sak/${sakId}/notater`)
       onReset()
-      setTimeout(() => {
-        setVisSlettetUtkastToast(false)
-      }, 5000)
     } else {
       setVisSlettUtkastModal(false)
     }
@@ -71,7 +69,6 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
       >
         <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
       </BekreftelseModal>
-      {visSlettetUtkastToast && <InfoToast bottomPosition="10px">Utkast slettet</InfoToast>}
     </>
   )
 }

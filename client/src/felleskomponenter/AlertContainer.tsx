@@ -5,7 +5,6 @@ export const AlertContainer = styled.div`
   justify-content: center;
   padding-top: var(--ax-space-24);
   margin: auto;
-  width: 600px;
 `
 
 export const AlertContainerMedium = styled.div`

@@ -5,19 +5,17 @@ import { storForbokstavIOrd } from '../../utils/formater'
 
 export function Opplysninger({ opplysninger }: { opplysninger: Opplysning[] }) {
   return (
-    <VStack gap="3">
+    <VStack gap="space-8">
       {opplysninger.map((opplysning) => {
         return (
           <Box key={opplysning.ledetekst.nb}>
             <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
             {opplysning.innhold.length === 1 ? (
-              <>
-                <Brødtekst>
-                  {opplysning.innhold[0].forhåndsdefinertTekst
-                    ? opplysning.innhold[0].forhåndsdefinertTekst.nb
-                    : opplysning.innhold[0].fritekst}
-                </Brødtekst>
-              </>
+              <Brødtekst>
+                {opplysning.innhold[0].forhåndsdefinertTekst
+                  ? opplysning.innhold[0].forhåndsdefinertTekst.nb
+                  : opplysning.innhold[0].fritekst}
+              </Brødtekst>
             ) : (
               <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
                 {opplysning.innhold.map((element, idx) => (

@@ -41,7 +41,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
     return hjelpemidler.map((hjelpemiddel) => hjelpemiddel.produkt.hmsArtNr)
   }, [hjelpemidler])
 
-  const hjelpemiddelprodukter = useHjelpemiddelprodukter(alleHmsNr)
+  const { data: hjelpemiddelprodukter } = useHjelpemiddelprodukter(alleHmsNr)
   const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 

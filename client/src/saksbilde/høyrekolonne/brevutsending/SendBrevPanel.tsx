@@ -4,7 +4,6 @@ import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
-import { InfoToast } from '../../../felleskomponenter/Toast'
 import { Brødtekst } from '../../../felleskomponenter/typografi'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
@@ -16,6 +15,7 @@ import { useBrevActions } from '../../useBrevActions.ts'
 import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export interface SendBrevProps {
   sakId: string
@@ -36,12 +36,11 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   const [målform, setMålform] = useState(MålformType.BOKMÅL)
   const [fritekst, setFritekst] = useState(brevtekst || '')
   const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [visSendtBrevToast, setVisSendtBrevToast] = useState(false)
-  const [visSlettetUtkastToast, setVisSlettetUtkastToast] = useState(false)
   const [valideringsfeil, setValideringsfeil] = useState<string | undefined>(undefined)
   const { mutate: hentBarnebrillesak } = useBarnebrillesak()
   const { mutate: hentSaksdokumenter } = useSaksdokumenter(sakId)
   const { hentForhåndsvisning } = useBrev()
+  const { showSuccessToast } = useToast()
   const brevtype = Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER
 
   useEffect(() => {
@@ -112,12 +111,11 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     setVisSendBrevModal(false)
     setSubmitAttempt(false)
     setFritekst('')
-    setVisSendtBrevToast(true)
+    showSuccessToast('Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.')
     hentBarnebrillesak()
     await hentSaksdokumenter()
 
     setTimeout(() => {
-      setVisSendtBrevToast(false)
       hentBarnebrillesak()
       hentSaksdokumenter()
     }, 3000)
@@ -128,10 +126,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
     await brevActions.slettBrevutkast(sakId, Brevtype.BARNEBRILLER_INNHENTE_OPPLYSNINGER)
     setFritekst('')
     setVisSlettUtkastModal(false)
-    setVisSlettetUtkastToast(true)
-    setTimeout(() => {
-      setVisSlettetUtkastToast(false)
-    }, 3000)
+    showSuccessToast('Utkast slettet')
     await hentBrevtekst()
     setSletter(false)
   }
@@ -239,12 +234,6 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
           return slettUtkast()
         }}
       />
-      {visSendtBrevToast && (
-        <InfoToast bottomPosition="300px">
-          Brevet er sendt. Det kan ta litt tid før det dukker opp i listen over.
-        </InfoToast>
-      )}
-      {visSlettetUtkastToast && <InfoToast bottomPosition="400px">Utkast slettet</InfoToast>}
     </>
   )
 })

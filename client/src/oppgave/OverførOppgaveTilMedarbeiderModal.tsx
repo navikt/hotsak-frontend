@@ -12,6 +12,7 @@ import { useFormActionState } from '../utils/form.ts'
 import { isNotBlank } from '../utils/type.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 
 export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
@@ -87,6 +88,7 @@ export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open:
 
 function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
   const { endreOppgavetildeling } = useOppgaveActions()
+  const { showSuccessToast } = useToast()
   return useFormActionState<
     {
       success?: boolean
@@ -105,6 +107,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
         overtaHvisTildelt: true,
       })
       await mutateSak(sakId)
+      showSuccessToast(`Saken er overført`)
       return { success: true }
     }
     return { success: false, error: 'Velg en medarbeider fra nedtrekksmenyen' }

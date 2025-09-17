@@ -15,6 +15,7 @@ import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { Theme } from '@navikt/ds-react'
 import { useDarkmode } from './header/useDarkmode.ts'
+import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -28,65 +29,67 @@ function App() {
     <Theme theme={darkmode ? 'dark' : 'light'}>
       <ErrorBoundary FallbackComponent={GlobalFeilside}>
         <PersonProvider>
-          {/* TODO Se på layout her, denne diven er kanskje ikke nødvendig lenger */}
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-            <Toppmeny />
-            <Utviklingsverktøy />
-            <ErrorBoundary FallbackComponent={GlobalFeilside}>
-              <Suspense fallback={<div />}>
-                <main>
-                  <Routes>
-                    <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-                    <Route
-                      path="/"
-                      element={
-                        <RequireAuth>
-                          <Oppgaveliste />
-                        </RequireAuth>
-                      }
-                    />
-                    <Route
-                      path="/journalforing"
-                      element={
-                        <RequireAuth>
-                          <title>Hotsak - Journalføringsoppgaver</title>
-                          <Journalføringsoppgaver />
-                        </RequireAuth>
-                      }
-                    />
-                    <Route
-                      path="/sak/:sakId/*"
-                      element={
-                        <RequireAuth>
-                          <SakTitle />
-                          <Saksbilde />
-                        </RequireAuth>
-                      }
-                    />
-                    <Route
-                      path="/oppgave/:oppgaveId/*"
-                      element={
-                        <RequireAuth>
-                          <OppgaveTitle />
-                          <Oppgave />
-                        </RequireAuth>
-                      }
-                    />
-                    <Route
-                      path="/personoversikt/*"
-                      element={
-                        <RequireAuth>
-                          <title>Hotsak - Personoversikt</title>
-                          <Personoversikt />
-                        </RequireAuth>
-                      }
-                    />
-                    <Route path="*" element={<Feilside statusCode={404} />} />
-                  </Routes>
-                </main>
-              </Suspense>
-            </ErrorBoundary>
-          </div>
+          <ToastProvider>
+            {/* TODO Se på layout her, denne diven er kanskje ikke nødvendig lenger */}
+            <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+              <Toppmeny />
+              <Utviklingsverktøy />
+              <ErrorBoundary FallbackComponent={GlobalFeilside}>
+                <Suspense fallback={<div />}>
+                  <main>
+                    <Routes>
+                      <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                      <Route
+                        path="/"
+                        element={
+                          <RequireAuth>
+                            <Oppgaveliste />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route
+                        path="/journalforing"
+                        element={
+                          <RequireAuth>
+                            <title>Hotsak - Journalføringsoppgaver</title>
+                            <Journalføringsoppgaver />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route
+                        path="/sak/:sakId/*"
+                        element={
+                          <RequireAuth>
+                            <SakTitle />
+                            <Saksbilde />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route
+                        path="/oppgave/:oppgaveId/*"
+                        element={
+                          <RequireAuth>
+                            <OppgaveTitle />
+                            <Oppgave />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route
+                        path="/personoversikt/*"
+                        element={
+                          <RequireAuth>
+                            <title>Hotsak - Personoversikt</title>
+                            <Personoversikt />
+                          </RequireAuth>
+                        }
+                      />
+                      <Route path="*" element={<Feilside statusCode={404} />} />
+                    </Routes>
+                  </main>
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+          </ToastProvider>
         </PersonProvider>
       </ErrorBoundary>
     </Theme>

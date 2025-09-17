@@ -3,7 +3,6 @@ import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VSta
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
-import { InfoToast } from '../../../felleskomponenter/Toast.tsx'
 import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   Brevtype,
@@ -44,7 +43,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
   const [visUtkastManglerModal, setVisUtkastManglerModal] = useState(false)
   const [visForhåndsvisningsmodal, setVisForhåndsvisningsmodal] = useState(false)
   const { hentForhåndsvisning } = useBrev()
-  const { ferdigstill, ferdigstiller, visFerdigstiltToast } = useFerdigstillNotat()
+  const { ferdigstill, ferdigstiller } = useFerdigstillNotat()
 
   const form = useForm<ForvaltningsnotatFormValues>({
     defaultValues: {
@@ -193,8 +192,6 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
             </div>
           </VStack>
         )}
-
-        {visFerdigstiltToast && <InfoToast bottomPosition="10px">Notatet er journalført.</InfoToast>}
 
         <BekreftelseModal
           heading="Er du sikker på at du vil journalføre notatet?"

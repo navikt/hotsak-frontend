@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
-import { Toast } from '../felleskomponenter/Toast.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
@@ -16,6 +15,7 @@ import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 
 export interface JournalpostSkjemaProps {
   journalpostId: string

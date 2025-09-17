@@ -199,5 +199,13 @@ export type HMDBFinnHjelpemiddelprodukterQuery = {
     isoCategoryTitleShort?: string | null
     productVariantURL: string
     agreements: Array<{ __typename?: 'AgreementInfoDoc'; postTitle?: string | null }>
+    supplier: { __typename?: 'ProductSupplier'; name: string }
+    media: Array<{
+      __typename?: 'MediaDoc'
+      uri: string
+      type: HMDBMediaType
+      source: HMDBMediaSourceType
+      priority: number
+    }>
   }>
 }

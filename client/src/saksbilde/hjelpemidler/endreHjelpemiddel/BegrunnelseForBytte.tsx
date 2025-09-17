@@ -1,12 +1,22 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { RadioGroup, Radio, Textarea, VStack } from '@navikt/ds-react'
 import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from '../../../types/types.internal'
+import { EndreHjelpemiddelType } from './endreHjelpemiddelTypes'
 
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
-export function BegrunnelseForBytte() {
+export function BegrunnelseForBytte({ type }: { type: EndreHjelpemiddelType }) {
   const { control, watch } = useFormContext()
   const begrunnelse = watch('endreBegrunnelse')
+
+  const lagerVareType =
+    type === EndreHjelpemiddelType.ENDRE_HMS_NUMMER
+      ? EndretHjelpemiddelBegrunnelse.LAGERVARE
+      : EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE
+  const annetType =
+    type === EndreHjelpemiddelType.ENDRE_HMS_NUMMER
+      ? EndretHjelpemiddelBegrunnelse.ANNET
+      : EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
 
   return (
     <VStack gap="3" paddingBlock="4 0">
@@ -21,17 +31,16 @@ export function BegrunnelseForBytte() {
             {...field}
             error={fieldState.error?.message}
           >
-            <Radio value={EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE)}
-            </Radio>
-            <Radio value={EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET)}
+            <Radio value={lagerVareType}>{EndretHjelpemiddelBegrunnelseLabel.get(lagerVareType)}</Radio>
+            <Radio value={annetType}>
+              {EndretHjelpemiddelBegrunnelseLabel.get(annetType)}
               (begrunn)
             </Radio>
           </RadioGroup>
         )}
       />
-      {begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET && (
+      {(begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
+        begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET) && (
         <Controller
           name="endreBegrunnelseFritekst"
           control={control}

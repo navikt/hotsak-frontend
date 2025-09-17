@@ -14,19 +14,6 @@ export function useSaksregler() {
   const kanEndreHmsnr =
     isOppgaveContext && saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
-  console.log(
-    'useSaksregler - sak?.status:',
-    sak?.status,
-    'isOppgaveContext:',
-    isOppgaveContext,
-    'saksbehandlerErTildeltSak:',
-    saksbehandlerErTildeltSak,
-    'kanBehandleSak:',
-    kanBehandleSak,
-    'kanEndreHmsnr:',
-    kanEndreHmsnr
-  )
-
   return {
     sakId: sak?.sakId,
     kanEndreHmsnr,

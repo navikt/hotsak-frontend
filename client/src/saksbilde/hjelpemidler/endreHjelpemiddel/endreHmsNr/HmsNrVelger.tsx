@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import { Box, HGrid, HStack, Link, Loader, TextField, VStack } from '@navikt/ds-react'
+import { Alert, Box, HGrid, HStack, Link, Loader, TextField, VStack } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Brødtekst, Etikett, Tekst } from '../../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Etikett, Tekst, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
 
 /*interface EndreHjelpemiddelModalProps {
@@ -13,10 +13,10 @@ import { useHjelpemiddel } from '../useHjelpemiddel.ts'
 export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
   //const { hmsArtNr, nåværendeHmsArtNr } = props
 
-  const [harProduktResultat, setHarProduktResultat] = useState(false)
   const {
     watch,
     trigger,
+    setValue,
     control,
     //formState: { errors },
   } = useFormContext()
@@ -36,11 +36,15 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
   // TODO forenkle markup under
   // Finn ut av det med nåværendeHmsNr, trenger vi det fortsatt?
   // Slå sammen de ulike produktkortene til en felles komponent
+  // Teste mot gamle ENUM verdier på endret begrunnelse?
+  // Reset form etter submit
+  // Annen layout hvis produkt finnes kun i Oebs
+  // Velge checkbox ved klikk hvor som helst på boksen
+  // Toast når endring er lagret
 
   useEffect(() => {
-    if (endreProduktHmsnr.length === 6 && !isLoading) {
-      setHarProduktResultat(true)
-      trigger('endretProdukt.0')
+    if (endreProduktHmsnr.length === 6 && !isLoading && error) {
+      setValue('produktMangler', true)
     }
   }, [hjelpemiddel, error, isLoading, endreProduktHmsnr, trigger])
 
@@ -49,7 +53,7 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
       <Box paddingBlock="0 4">
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
-      <Box.New padding="0" /*background="neutral-soft"*/ borderRadius="large">
+      <Box.New padding="0" borderRadius="large">
         <HStack align="start" gap="space-64" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
@@ -61,15 +65,7 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
 
                   validate: (value) => {
                     if (value.length !== 6) {
-                      return 'Fyll inn et gylidig HMS-nummer'
-                    }
-
-                    if (!harProduktResultat) {
-                      return true
-                    }
-
-                    if (value.length === 6 && !hjelpemiddel && !isLoading) {
-                      return 'HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS'
+                      return 'Fyll inn et gyldig HMS-nummer'
                     }
                   },
                 }}
@@ -86,11 +82,18 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
               />
             </Box>
 
-            {isLoading && (
+            {isLoading && !error && (
               <HStack gap="3" align={'center'} marginBlock={'0 space-4'}>
                 <Loader size="medium" title="Søker etter hjelpemiddel..." />
                 <Brødtekst>Søker etter hjelpemiddel...</Brødtekst>
               </HStack>
+            )}
+            {!hjelpemiddel && error && (
+              <Box marginBlock={'0 space-4'}>
+                <Alert variant="error" inline title="Fant ikke hjelpemiddel" size="small">
+                  <Brødtekst>HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS</Brødtekst>
+                </Alert>
+              </Box>
             )}
           </HStack>
           {hjelpemiddel && (
@@ -101,6 +104,7 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
               borderRadius="large"
               marginBlock="space-28 0"
               padding="4"
+              maxWidth="350px"
             >
               <VStack>
                 <Etikett size="small" spacing>
@@ -120,9 +124,15 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
                     )}
                   </HStack>
                   <VStack>
-                    <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.hmsnr}`} target="_blank">
+                    {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (
+                      <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.hmsnr}`} target="_blank">
+                        <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
+                      </Link>
+                    ) : (
                       <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
-                    </Link>
+                    )}
+
+                    <Undertittel>Kilde: {hjelpemiddel.kilde}</Undertittel>
                     <Brødtekst>{hjelpemiddel.leverandør}</Brødtekst>
                   </VStack>
                 </HGrid>

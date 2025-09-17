@@ -51,7 +51,7 @@ export class HjelpemiddelStore extends Dexie {
 function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelpemiddel {
   return {
     id: lagUUID(),
-    articleName: 'Dummyartikkel fra FinnHjelpemiddel for ' + hmsArtNr,
+    articleName: 'Dummyartikkel for ' + hmsArtNr,
     hmsArtNr,
     isoCategoryTitleShort: 'isoCategoryTitleShort',
     supplier: {

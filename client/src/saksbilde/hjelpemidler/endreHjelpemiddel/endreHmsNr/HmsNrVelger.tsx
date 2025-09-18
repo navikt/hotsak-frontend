@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 
-import { Alert, Box, HGrid, HStack, Link, Loader, TextField, VStack } from '@navikt/ds-react'
+import { Alert, Box, HStack, Loader, TextField } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Brødtekst, Etikett, Tekst, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
+import { ProduktCard } from './ProduktCard.tsx'
 
 /*interface EndreHjelpemiddelModalProps {
   hmsArtNr: string
@@ -38,7 +39,6 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
   // Slå sammen de ulike produktkortene til en felles komponent
   // Teste mot gamle ENUM verdier på endret begrunnelse?
   // Reset form etter submit
-  // Annen layout hvis produkt finnes kun i Oebs
   // Velge checkbox ved klikk hvor som helst på boksen
   // Toast når endring er lagret
 
@@ -96,49 +96,7 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
               </Box>
             )}
           </HStack>
-          {hjelpemiddel && (
-            <Box.New
-              borderWidth="1"
-              borderColor="neutral-subtle"
-              background="raised"
-              borderRadius="large"
-              marginBlock="space-28 0"
-              padding="4"
-              maxWidth="350px"
-            >
-              <VStack>
-                <Etikett size="small" spacing>
-                  {hjelpemiddel.navn}
-                </Etikett>
-                <HGrid columns="1fr 1fr" gap="space-16">
-                  <HStack justify="center">
-                    {hjelpemiddel.produktbildeUri && (
-                      <img
-                        alt="Produktbilde"
-                        src={hjelpemiddel.produktbildeUri}
-                        style={{
-                          width: '150px',
-                          objectFit: 'contain',
-                        }}
-                      />
-                    )}
-                  </HStack>
-                  <VStack>
-                    {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (
-                      <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.hmsnr}`} target="_blank">
-                        <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
-                      </Link>
-                    ) : (
-                      <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
-                    )}
-
-                    <Undertittel>Kilde: {hjelpemiddel.kilde}</Undertittel>
-                    <Brødtekst>{hjelpemiddel.leverandør}</Brødtekst>
-                  </VStack>
-                </HGrid>
-              </VStack>
-            </Box.New>
-          )}
+          {hjelpemiddel && <ProduktCard hjelpemiddel={hjelpemiddel} />}
         </HStack>
       </Box.New>
     </>

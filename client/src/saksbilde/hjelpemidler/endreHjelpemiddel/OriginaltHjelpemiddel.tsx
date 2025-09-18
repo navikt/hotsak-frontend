@@ -16,7 +16,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
 
   return (
     <>
-      <Box.New borderRadius="large" padding="space-24">
+      <Box.New borderRadius="large">
         <HGrid columns="1fr 1fr" gap="space-16">
           <div>
             <Heading level="2" size="xsmall" spacing>
@@ -47,35 +47,37 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
             </HGrid>
           </div>
 
-          <VStack gap="space-8">
-            <Heading level="2" size="xsmall">
-              Brukers behov:
-            </Heading>
-            {opplysninger.map((opplysning) => {
-              return (
-                <Box key={opplysning.ledetekst.nb}>
-                  <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
-                  {opplysning.innhold.length === 1 ? (
-                    <Brødtekst>
-                      {opplysning.innhold[0].forhåndsdefinertTekst
-                        ? opplysning.innhold[0].forhåndsdefinertTekst.nb
-                        : opplysning.innhold[0].fritekst}
-                    </Brødtekst>
-                  ) : (
-                    <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
-                      {opplysning.innhold.map((element, idx) => (
-                        <li key={idx}>
-                          <Brødtekst>
-                            {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                          </Brødtekst>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </Box>
-              )
-            })}
-          </VStack>
+          {opplysninger.length > 0 && (
+            <VStack gap="space-8">
+              <Heading level="2" size="xsmall">
+                Brukers behov:
+              </Heading>
+              {opplysninger.map((opplysning) => {
+                return (
+                  <Box key={opplysning.ledetekst.nb}>
+                    <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
+                    {opplysning.innhold.length === 1 ? (
+                      <Brødtekst>
+                        {opplysning.innhold[0].forhåndsdefinertTekst
+                          ? opplysning.innhold[0].forhåndsdefinertTekst.nb
+                          : opplysning.innhold[0].fritekst}
+                      </Brødtekst>
+                    ) : (
+                      <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
+                        {opplysning.innhold.map((element, idx) => (
+                          <li key={idx}>
+                            <Brødtekst>
+                              {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
+                            </Brødtekst>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </Box>
+                )
+              })}
+            </VStack>
+          )}
         </HGrid>
       </Box.New>
     </>

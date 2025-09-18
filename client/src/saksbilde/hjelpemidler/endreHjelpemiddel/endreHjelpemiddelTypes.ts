@@ -2,6 +2,7 @@ import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from '../../../type
 
 export interface EndreArtikkelData {
   endretProdukt: string[]
+  produktMangler: boolean
   endreBegrunnelse: EndretHjelpemiddelBegrunnelse | ''
   endreBegrunnelseFritekst: string | ''
 }

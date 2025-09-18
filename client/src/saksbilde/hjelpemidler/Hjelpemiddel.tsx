@@ -22,6 +22,7 @@ import { TilbehørListe } from './TilbehørListe.tsx'
 import type { AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -103,7 +104,8 @@ export function Hjelpemiddel({
                   {endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
                   endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse)}
+                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse) ||
+                      `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
                 </Brødtekst>
               </div>
             )}

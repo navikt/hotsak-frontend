@@ -14,7 +14,7 @@ interface UseHjelpemiddelResponse {
 interface HjelpemiddelData {
   hmsnr: string
   navn: string
-  kilde: 'finnhjelpemiddel' | 'oebs'
+  kilde: 'FinnHjelpemiddel' | 'OeBS'
   produktbildeUri?: string
   leverandør?: string
 }
@@ -35,7 +35,7 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
       return {
         hmsnr: grunndataProdukt.hmsnr,
         navn: grunndataProdukt.artikkelnavn,
-        kilde: 'finnhjelpemiddel',
+        kilde: 'FinnHjelpemiddel',
         produktbildeUri: grunndataProdukt.produktbildeUri,
         leverandør: grunndataProdukt.leverandør,
       }
@@ -45,7 +45,7 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
       return {
         hmsnr: oebsProdukt.hmsnr,
         navn: oebsProdukt.navn,
-        kilde: 'oebs',
+        kilde: 'OeBS',
       }
     }
 

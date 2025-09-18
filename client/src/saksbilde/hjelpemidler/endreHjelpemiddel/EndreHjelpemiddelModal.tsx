@@ -70,12 +70,16 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
       endretProdukt: [],
+      produktMangler: false,
       endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
     },
   })
 
   const onSubmit = form.handleSubmit(async (data) => {
+    if (data.produktMangler) {
+      return
+    }
     if (!produktValgt) {
       setProduktValgt(true)
     } else {

@@ -1,4 +1,4 @@
-import { Box, HGrid, HStack, Link, VStack } from '@navikt/ds-react'
+import { Box, HGrid, Link, VStack } from '@navikt/ds-react'
 import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi'
 import { HjelpemiddelData } from '../useHjelpemiddel'
 

@@ -72,21 +72,19 @@ export function Toppmeny() {
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>
-          <Eksperiment>
-            <ActionMenu.Divider />
-            <ActionMenu.Group label="Eksperimenter">
-              <ActionMenu.Item
-                icon={<ThemeIcon />}
-                as="a"
-                href="/"
-                onClick={() => {
-                  setDarkmode(!darkmode)
-                }}
-              >
-                {darkmode ? 'Tilbake til lyset' : 'Darkmode'}
-              </ActionMenu.Item>
-            </ActionMenu.Group>
-          </Eksperiment>
+          <ActionMenu.Divider />
+          <ActionMenu.Group label="Utseende">
+            <ActionMenu.Item
+              icon={<ThemeIcon />}
+              as="a"
+              href="/"
+              onClick={() => {
+                setDarkmode(!darkmode)
+              }}
+            >
+              {darkmode ? 'Endre til lyst tema' : 'Endre til mørkt tema'}
+            </ActionMenu.Item>
+          </ActionMenu.Group>
         </ActionMenu.Content>
         <EndringsloggMenu />
       </ActionMenu>

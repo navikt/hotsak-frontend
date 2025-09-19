@@ -11,6 +11,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { pushLog } from '../utils/faro.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -79,6 +80,7 @@ export function Toppmeny() {
               as="a"
               href="/"
               onClick={() => {
+                pushLog(`Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`)
                 setDarkmode(!darkmode)
               }}
             >
@@ -115,4 +117,8 @@ export function Toppmeny() {
       </ActionMenu>
     </InternalHeader>
   )
+}
+
+function darkmodeLabel(darkmode: boolean) {
+  return darkmode ? 'mørkt tema' : 'lyst tema'
 }

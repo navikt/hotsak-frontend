@@ -1,3 +1,5 @@
+import { LogLevel } from '@grafana/faro-web-sdk'
+
 export async function initFaro(): Promise<void> {
   if (!import.meta.env.PROD || window.appSettings.USE_MSW) {
     return
@@ -32,5 +34,11 @@ export async function initFaro(): Promise<void> {
 export function pushError(err: unknown) {
   if (window.faro && err instanceof Error) {
     window.faro.api.pushError(err)
+  }
+}
+
+export function pushLog(message: string, level: LogLevel = LogLevel.INFO) {
+  if (window.faro) {
+    window.faro.api.pushLog([message], { level })
   }
 }

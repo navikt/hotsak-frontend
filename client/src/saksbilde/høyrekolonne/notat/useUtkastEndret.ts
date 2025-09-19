@@ -24,8 +24,7 @@ export function useUtkastEndret(
     klassifisering?: NotatKlassifisering | null
   ): Promise<void> => {
     const utkastId = aktivtUtkast?.id
-    /* TODO Teste med dette for å se om det hindrer at det opprettes utkast når det kun er valgt klassifisering */
-    if (!utkastId /*&& (tittel !== '' || tekst !== '')*/) {
+    if (!utkastId && (tittel !== '' || tekst !== '')) {
       setOppretterNyttUtkast(true)
       try {
         await http.post(`/api/sak/${sakId}/notater`, { tittel, tekst, klassifisering, type })

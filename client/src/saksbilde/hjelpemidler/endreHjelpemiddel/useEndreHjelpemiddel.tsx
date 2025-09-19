@@ -18,8 +18,6 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
         // TODO Klarer vi å hente URL til det nye hjelpemiddelet?
-        // TODO Trenger vi å mutere saken lenger?
-        //mutate(`/api/sak/${sakId}`)
         mutateBestilling()
         mutate(`/api/sak/${sakId}/historikk`)
       })
@@ -30,8 +28,6 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
     (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
-  // TODO sjekke her om 6 siffer lang eller i hooken?
-  // sjekke at vi bruker ny måte å kalle useHjelpemiddel på, ref merge
   const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
   )

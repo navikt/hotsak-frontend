@@ -23,6 +23,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 interface AlternativProduktModalProps {
   åpen: boolean
   hjelpemiddel: Hjelpemiddel
+  nåværendeHmsnr: string
   grunndataProdukt: Produkt | undefined
   alternativeProdukter?: AlternativeProduct[]
   harAlternativeProdukter: boolean
@@ -37,6 +38,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const {
     åpen,
     hjelpemiddel,
+    nåværendeHmsnr,
     grunndataProdukt,
     alternativeProdukter: alternativeProdukterInitial = ingenAlternativeProdukterForHmsArtNr,
     harOppdatertLagerstatus,
@@ -136,7 +138,6 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           placement="top"
           closeOnBackdropClick={false}
           width="1200px"
-          //style={{ minHeight: '60vh' }}
           open={åpen}
           onClose={() => {
             onLukk()
@@ -173,6 +174,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                       <ManueltSøkPanel
                         hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
                         hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                        nåværendeHmsnr={nåværendeHmsnr}
                         produktValgt={produktValgt}
                       />
                     </Tabs.Panel>
@@ -182,6 +184,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                 <ManueltSøkPanel
                   hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
                   hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                  nåværendeHmsnr={nåværendeHmsnr}
                   produktValgt={produktValgt}
                 />
               )}

@@ -6,36 +6,15 @@ import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
 import { ProduktCard } from './ProduktCard.tsx'
 
-/*interface EndreHjelpemiddelModalProps {
-  hmsArtNr: string
-  nåværendeHmsArtNr?: string
-}*/
-
-export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
-  //const { hmsArtNr, nåværendeHmsArtNr } = props
-
-  const {
-    watch,
-    trigger,
-    setValue,
-    control,
-    //formState: { errors },
-  } = useFormContext()
+export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string }) {
+  const { watch, trigger, setValue, control } = useFormContext()
   const endreProduktHmsnr = watch('endretProdukt.0') || ''
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  /*const errorEndretProdukt = () => {
-    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsArtNr) {
-      return 'Du må oppgi et nytt, gyldig HMS-nr'
-    }
-  }*/
-
-  // Teste hvordan card i endre hms nummer funker når kilde er OEBS
-  // TODO visning når det ikke finnes noen alternativer på lager
   // TODO fix sånn at endreProdukt ikke trenger å være en array
   // TODO forenkle markup under
-  // Finn ut av det med nåværendeHmsNr, trenger vi det fortsatt?
+  // TODO unngå prop drilling av nåværendeHmsnr
   // Slå sammen de ulike produktkortene til en felles komponent
   // Teste mot gamle ENUM verdier på endret begrunnelse?
   // Reset form etter submit
@@ -66,6 +45,9 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
                   validate: (value) => {
                     if (value.length !== 6) {
                       return 'Fyll inn et gyldig HMS-nummer'
+                    }
+                    if (value === nåværendeHmsnr) {
+                      return 'Du må oppgi et annet HMS-nummer enn det nåværende'
                     }
                   },
                 }}

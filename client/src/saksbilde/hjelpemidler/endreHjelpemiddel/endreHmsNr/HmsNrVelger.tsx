@@ -8,11 +8,10 @@ import { ProduktCard } from './ProduktCard.tsx'
 
 export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string }) {
   const { watch, trigger, setValue, control } = useFormContext()
-  const endreProduktHmsnr = watch('endretProdukt.0') || ''
+  const endreProduktHmsnr = watch('endretProdukt') || ''
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  // TODO fix sånn at endreProdukt ikke trenger å være en array
   // TODO forenkle markup under
   // TODO unngå prop drilling av nåværendeHmsnr
   // Slå sammen de ulike produktkortene til en felles komponent
@@ -20,6 +19,9 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
   // Reset form etter submit
   // Velge checkbox ved klikk hvor som helst på boksen
   // Toast når endring er lagret
+  // select er hvit i darkmode, hvorfor?
+  // Fix Because of strict accessibility concers we encourage all Tooltips to have less than 80 characters. Can be overwritten with the maxChar-propLength:84Tooltip-content: Arbeidsstol, dusjkrakk, manuell rullestol, sittepute, støttehåndtak, toalettforhøyer
+  // og fix div i p
 
   useEffect(() => {
     if (endreProduktHmsnr.length === 6 && !isLoading && error) {
@@ -37,7 +39,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
               <Controller
-                name="endretProdukt.0"
+                name="endretProdukt"
                 control={control}
                 rules={{
                   required: 'Fyll inn et HMS-nummer',

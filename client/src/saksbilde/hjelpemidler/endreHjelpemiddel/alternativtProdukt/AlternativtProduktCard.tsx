@@ -8,7 +8,7 @@ import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct
-  endretProdukt: string[]
+  endretProdukt: string
 }
 
 export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: AlternativProduktCardProps) {
@@ -34,7 +34,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         borderRadius="large"
         paddingBlock="space-16 space-8"
         paddingInline="space-16"
-        selected={endretProdukt.includes(alternativtProdukt.hmsArtNr)}
+        selected={endretProdukt === alternativtProdukt.hmsArtNr}
       >
         <VStack>
           <Etikett size="small" spacing>

@@ -71,7 +71,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
 
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
-      endretProdukt: [],
+      endretProdukt: '',
       produktMangler: false,
       endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
@@ -87,7 +87,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
     } else {
       logSkjemaFullført({
         komponent: 'EndreHjelpemiddelModal',
-        valgtAlternativ: data.endretProdukt[0],
+        valgtAlternativ: data.endretProdukt,
       })
       await handleSubmit(data)
       setProduktValgt(false)
@@ -105,7 +105,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
       await onLagre({
         hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
-        hmsArtNr: data.endretProdukt[0] ?? '',
+        hmsArtNr: data.endretProdukt ?? '',
         begrunnelse,
         begrunnelseFritekst,
       })

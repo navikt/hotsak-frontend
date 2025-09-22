@@ -109,6 +109,10 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
         begrunnelse,
         begrunnelseFritekst,
       })
+      form.reset()
+      if (harAlternativeProdukter) {
+        setActiveTab('alternativer')
+      }
       onLukk()
     } finally {
       setSubmitting(false)

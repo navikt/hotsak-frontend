@@ -25,69 +25,67 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
   }
 
   return (
-    <VStack gap="3">
-      <ProduktCard
-        key={alternativtProdukt.id}
-        height="100%"
-        borderWidth="1"
-        borderColor="neutral-subtle"
-        borderRadius="large"
-        paddingBlock="space-16 space-8"
-        paddingInline="space-16"
-        selected={endretProdukt === alternativtProdukt.hmsArtNr}
-      >
-        <VStack>
-          <Etikett size="small" spacing>
-            {alternativtProdukt.articleName || alternativtProdukt.title}
-          </Etikett>
-          <HGrid columns="1fr 1fr">
-            <VStack gap="space-4">
-              <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
-                <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
-              </Link>
-              <VStack paddingBlock="space-16">
-                <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
-                {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-                  <Fragment key={lagerstatus?.location}>
-                    <Etikett>{lagerstatus?.location}: </Etikett>
-                    <div>
-                      {lagerstatus ? (
-                        <Tag variant="success-moderate" size="small">
-                          {lagerstatus.amountInStock} stk på lager
-                        </Tag>
-                      ) : (
-                        <Tag variant="success-moderate" size="small">
-                          Ukjent
-                        </Tag>
-                      )}
-                    </div>
-                  </Fragment>
-                ))}
-                <div>
-                  <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
-                </div>
-              </VStack>
+    <ProduktCard
+      key={alternativtProdukt.id}
+      height="100%"
+      borderWidth="1"
+      borderColor="neutral-subtle"
+      borderRadius="large"
+      paddingBlock="space-16 space-8"
+      paddingInline="space-16"
+      selected={endretProdukt === alternativtProdukt.hmsArtNr}
+    >
+      <VStack>
+        <Etikett size="small" spacing>
+          {alternativtProdukt.articleName || alternativtProdukt.title}
+        </Etikett>
+        <HGrid columns="1fr 1fr">
+          <VStack gap="space-4">
+            <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
+              <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
+            </Link>
+            <VStack paddingBlock="space-16">
+              <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
+              {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
+                <Fragment key={lagerstatus?.location}>
+                  <Etikett>{lagerstatus?.location}: </Etikett>
+                  <div>
+                    {lagerstatus ? (
+                      <Tag variant="success-moderate" size="small">
+                        {lagerstatus.amountInStock} stk på lager
+                      </Tag>
+                    ) : (
+                      <Tag variant="success-moderate" size="small">
+                        Ukjent
+                      </Tag>
+                    )}
+                  </div>
+                </Fragment>
+              ))}
+              <div>
+                <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
+              </div>
             </VStack>
-            {produktbilde(alternativtProdukt) && (
-              <img
-                alt="Produktbilde"
-                src={produktbilde(alternativtProdukt)}
-                style={{
-                  //height: '130px',
-                  //maxWidth: '100%',
-                  width: '150px',
-                  objectFit: 'contain',
-                  borderRadius: 'var(--ax-radius-8)',
-                }}
-              />
-            )}
-          </HGrid>
-        </VStack>
-        <Box.New background="accent-soft" padding="space-12" borderRadius="xlarge">
-          <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
-        </Box.New>
-      </ProduktCard>
-    </VStack>
+          </VStack>
+          {produktbilde(alternativtProdukt) && (
+            <img
+              alt="Produktbilde"
+              src={produktbilde(alternativtProdukt)}
+              style={{
+                //height: '130px',
+                //maxWidth: '100%',
+                width: '150px',
+                objectFit: 'contain',
+                borderRadius: 'var(--ax-radius-8)',
+              }}
+            />
+          )}
+        </HGrid>
+      </VStack>
+      <Box.New background="accent-soft" padding="space-12" borderRadius="xlarge">
+        <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
+      </Box.New>
+    </ProduktCard>
   )
 }
 

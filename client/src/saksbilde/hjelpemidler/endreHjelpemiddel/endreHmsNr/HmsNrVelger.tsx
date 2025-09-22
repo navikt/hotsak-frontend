@@ -12,11 +12,6 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  // TODO forenkle markup under
-  // TODO unngå prop drilling av nåværendeHmsnr
-  // Slå sammen de ulike produktkortene til en felles komponent
-  // Teste mot gamle ENUM verdier på endret begrunnelse?
-  // Reset form etter submit
   // Velge checkbox ved klikk hvor som helst på boksen
   // Toast når endring er lagret
   // select er hvit i darkmode, hvorfor?
@@ -35,7 +30,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
       <Box.New padding="0" borderRadius="large">
-        <HStack align="start" gap="space-64" wrap={true}>
+        <HStack align="start" gap="space-32" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
               <Controller

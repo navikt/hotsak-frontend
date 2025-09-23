@@ -7,7 +7,7 @@ import { Theme } from '@navikt/ds-react'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
-import { hotsakTotalMinWidth } from './GlobalStyles.tsx'
+import { hotsakMaxWidth } from './GlobalStyles.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkmode } from './header/useDarkmode.ts'
 import { http } from './io/HttpClient.ts'
@@ -32,9 +32,8 @@ function App() {
       <div
         style={{
           minHeight: '100vh',
-          minWidth: hotsakTotalMinWidth,
           background: 'var(--ax-bg-default)',
-          width: 'min-content',
+          width: hotsakMaxWidth,
         }}
       >
         <ErrorBoundary FallbackComponent={GlobalFeilside}>

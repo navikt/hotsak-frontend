@@ -50,7 +50,10 @@ const SaksbildeContent = memo(() => {
   const formidler = levering.hjelpemiddelformidler
 
   return (
-    <HGrid columns={`max(${hovedInnholdMaxWidth} )  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}>
+    <HGrid
+      columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
+      style={{ background: 'var(--ax-bg-default)' }}
+    >
       <section>
         <HGrid columns="auto">
           <Søknadslinje id={sak.data.sakId} />

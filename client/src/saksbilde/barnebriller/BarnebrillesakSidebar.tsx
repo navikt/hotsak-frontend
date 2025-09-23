@@ -19,7 +19,7 @@ import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollP
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--ax-border-neutral-subtle);
-  //height: 90vh;
+  min-height: 90vh;
   margin: 0;
   padding: 0;
 `

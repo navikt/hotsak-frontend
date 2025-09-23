@@ -25,7 +25,7 @@ const BarnebrillesakContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  //height: 96vh;
+  min-height: 96vh;
 `
 
 const Header = styled(HStack)`

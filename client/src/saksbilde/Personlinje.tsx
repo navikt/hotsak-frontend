@@ -129,7 +129,6 @@ function Container({ children }: { children?: ReactNode }) {
       flexShrink="0"
       height={søknadslinjeHøyde}
       gap="4"
-      minWidth={hotsakTotalMinWidth}
       paddingInline="8"
       style={{
         background: 'var(--ax-bg-neutral-soft)',

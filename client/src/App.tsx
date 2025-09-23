@@ -1,4 +1,4 @@
-import { ComponentType, lazy, ReactNode, Suspense } from 'react'
+import { ComponentType, lazy, ReactNode, Suspense, useEffect } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, SWRConfiguration } from 'swr'
@@ -16,6 +16,7 @@ import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { Theme } from '@navikt/ds-react'
 import { useDarkmode } from './header/useDarkmode.ts'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
+import { hotsakTotalMinWidth } from './GlobalStyles.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -25,9 +26,17 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
   const [darkmode] = useDarkmode()
+
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <div style={{ minHeight: '100vh' }}>
+      <div
+        style={{
+          minHeight: '100vh',
+          minWidth: hotsakTotalMinWidth,
+          background: 'var(--ax-bg-default)',
+          width: 'min-content',
+        }}
+      >
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>

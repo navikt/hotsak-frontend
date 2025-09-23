@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
-import { hotsakTotalMinWidth, søknadslinjeHøyde } from '../GlobalStyles'
+import { søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { beregnAlder, formaterDato } from '../utils/dato'

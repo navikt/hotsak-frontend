@@ -4,9 +4,10 @@ import { EndreHjelpemiddelType } from '../endreHjelpemiddelTypes'
 import { HmsNrVelger } from './HmsNrVelger'
 
 export function ManueltSøkPanel({
-  //hmsArtNr,
+  nåværendeHmsnr,
   produktValgt,
 }: {
+  nåværendeHmsnr: string
   hjelpemiddelId: string
   hmsArtNr: string
   produktValgt: boolean
@@ -18,11 +19,7 @@ export function ManueltSøkPanel({
           <Heading level="1" size="small">
             Endre HMS nummer
           </Heading>
-          <HmsNrVelger
-          //hjelpemiddelId={hjelpemiddelId}
-          //hmsArtNr={hmsArtNr}
-          //nåværendeHmsArtNr={'TODO'}
-          />
+          <HmsNrVelger nåværendeHmsnr={nåværendeHmsnr} />
         </>
       ) : (
         <>

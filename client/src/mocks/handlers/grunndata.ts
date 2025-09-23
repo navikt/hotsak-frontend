@@ -6,7 +6,8 @@ import { respondNotFound } from './response'
 export const grunndataHandlers: StoreHandlersFactory = ({ hjelpemiddelStore }) => [
   graphql.query('FinnHjelpemiddelprodukter', async ({ variables }) => {
     const { hmsnrs } = variables
-    if (hmsnrs.includes('404404')) {
+    const ikkeFunnetHmsNr = ['404404', '404000']
+    if (hmsnrs.some((hmsnr: string) => ikkeFunnetHmsNr.includes(hmsnr))) {
       return respondNotFound()
     }
 

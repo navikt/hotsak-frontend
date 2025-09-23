@@ -1,46 +1,22 @@
 import { useEffect } from 'react'
 
-import { Alert, Box, HGrid, HStack, Link, Loader, TextField, VStack } from '@navikt/ds-react'
+import { Alert, Box, HStack, Loader, TextField } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Brødtekst, Etikett, Tekst, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
+import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
+import { ProduktCard } from './ProduktCard.tsx'
 
-/*interface EndreHjelpemiddelModalProps {
-  hmsArtNr: string
-  nåværendeHmsArtNr?: string
-}*/
-
-export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
-  //const { hmsArtNr, nåværendeHmsArtNr } = props
-
-  const {
-    watch,
-    trigger,
-    setValue,
-    control,
-    //formState: { errors },
-  } = useFormContext()
-  const endreProduktHmsnr = watch('endretProdukt.0') || ''
+export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string }) {
+  const { watch, trigger, setValue, control } = useFormContext()
+  const endreProduktHmsnr = watch('endretProdukt') || ''
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  /*const errorEndretProdukt = () => {
-    if (!hjelpemiddel || hjelpemiddel?.hmsnr === nåværendeHmsArtNr) {
-      return 'Du må oppgi et nytt, gyldig HMS-nr'
-    }
-  }*/
-
-  // Teste hvordan card i endre hms nummer funker når kilde er OEBS
-  // TODO visning når det ikke finnes noen alternativer på lager
-  // TODO fix sånn at endreProdukt ikke trenger å være en array
-  // TODO forenkle markup under
-  // Finn ut av det med nåværendeHmsNr, trenger vi det fortsatt?
-  // Slå sammen de ulike produktkortene til en felles komponent
-  // Teste mot gamle ENUM verdier på endret begrunnelse?
-  // Reset form etter submit
-  // Annen layout hvis produkt finnes kun i Oebs
   // Velge checkbox ved klikk hvor som helst på boksen
   // Toast når endring er lagret
+  // select er hvit i darkmode, hvorfor?
+  // Fix Because of strict accessibility concers we encourage all Tooltips to have less than 80 characters. Can be overwritten with the maxChar-propLength:84Tooltip-content: Arbeidsstol, dusjkrakk, manuell rullestol, sittepute, støttehåndtak, toalettforhøyer
+  // og fix div i p
 
   useEffect(() => {
     if (endreProduktHmsnr.length === 6 && !isLoading && error) {
@@ -54,11 +30,11 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
       <Box.New padding="0" borderRadius="large">
-        <HStack align="start" gap="space-64" wrap={true}>
+        <HStack align="start" gap="space-32" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
               <Controller
-                name="endretProdukt.0"
+                name="endretProdukt"
                 control={control}
                 rules={{
                   required: 'Fyll inn et HMS-nummer',
@@ -66,6 +42,9 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
                   validate: (value) => {
                     if (value.length !== 6) {
                       return 'Fyll inn et gyldig HMS-nummer'
+                    }
+                    if (value === nåværendeHmsnr) {
+                      return 'Du må oppgi et annet HMS-nummer enn det nåværende'
                     }
                   },
                 }}
@@ -96,49 +75,7 @@ export function HmsNrVelger(/*props: EndreHjelpemiddelModalProps*/) {
               </Box>
             )}
           </HStack>
-          {hjelpemiddel && (
-            <Box.New
-              borderWidth="1"
-              borderColor="neutral-subtle"
-              background="raised"
-              borderRadius="large"
-              marginBlock="space-28 0"
-              padding="4"
-              maxWidth="350px"
-            >
-              <VStack>
-                <Etikett size="small" spacing>
-                  {hjelpemiddel.navn}
-                </Etikett>
-                <HGrid columns="1fr 1fr" gap="space-16">
-                  <HStack justify="center">
-                    {hjelpemiddel.produktbildeUri && (
-                      <img
-                        alt="Produktbilde"
-                        src={hjelpemiddel.produktbildeUri}
-                        style={{
-                          width: '150px',
-                          objectFit: 'contain',
-                        }}
-                      />
-                    )}
-                  </HStack>
-                  <VStack>
-                    {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (
-                      <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.hmsnr}`} target="_blank">
-                        <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
-                      </Link>
-                    ) : (
-                      <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
-                    )}
-
-                    <Undertittel>Kilde: {hjelpemiddel.kilde}</Undertittel>
-                    <Brødtekst>{hjelpemiddel.leverandør}</Brødtekst>
-                  </VStack>
-                </HGrid>
-              </VStack>
-            </Box.New>
-          )}
+          {hjelpemiddel && <ProduktCard hjelpemiddel={hjelpemiddel} />}
         </HStack>
       </Box.New>
     </>

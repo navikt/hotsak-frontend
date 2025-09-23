@@ -11,7 +11,7 @@ interface UseHjelpemiddelResponse {
   isLoading: boolean
 }
 
-interface HjelpemiddelData {
+export interface HjelpemiddelData {
   hmsnr: string
   navn: string
   kilde: 'FinnHjelpemiddel' | 'OeBS'

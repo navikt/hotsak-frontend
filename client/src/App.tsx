@@ -27,11 +27,10 @@ function App() {
   const [darkmode] = useDarkmode()
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <ErrorBoundary FallbackComponent={GlobalFeilside}>
-        <PersonProvider>
-          <ToastProvider>
-            {/* TODO Se på layout her, denne diven er kanskje ikke nødvendig lenger */}
-            <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      <div style={{ minHeight: '100vh' }}>
+        <ErrorBoundary FallbackComponent={GlobalFeilside}>
+          <PersonProvider>
+            <ToastProvider>
               <Toppmeny />
               <Utviklingsverktøy />
               <ErrorBoundary FallbackComponent={GlobalFeilside}>
@@ -88,10 +87,10 @@ function App() {
                   </main>
                 </Suspense>
               </ErrorBoundary>
-            </div>
-          </ToastProvider>
-        </PersonProvider>
-      </ErrorBoundary>
+            </ToastProvider>
+          </PersonProvider>
+        </ErrorBoundary>
+      </div>
     </Theme>
   )
 }

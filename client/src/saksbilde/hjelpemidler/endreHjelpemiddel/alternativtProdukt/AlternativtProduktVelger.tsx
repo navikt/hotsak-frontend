@@ -21,8 +21,10 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
           legend="Velg alternativ"
           hideLegend
           name={field.name}
-          onChange={(value) => field.onChange(value.slice(-1))}
-          value={field.value}
+          onChange={(value) => {
+            field.onChange(value.at(-1))
+          }}
+          value={[field.value]}
           size="small"
           error={fieldState.error?.message}
         >

@@ -46,7 +46,7 @@ export function Hjelpemiddel({
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
   const {
     endreHjelpemiddel,
-    // nåværendeHmsnr,
+    nåværendeHmsnr,
     endretHjelpemiddelNavn,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, hjelpemiddel)
@@ -161,6 +161,7 @@ export function Hjelpemiddel({
           åpen={visAlternativerModal}
           hjelpemiddel={hjelpemiddel}
           grunndataProdukt={produkt}
+          nåværendeHmsnr={nåværendeHmsnr}
           harOppdatertLagerstatus={harOppdatertLagerstatus}
           alternativeProdukter={alternativeProdukter}
           harAlternativeProdukter={harAlternativeProdukter}

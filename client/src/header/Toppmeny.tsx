@@ -11,6 +11,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { pushLog } from '../utils/faro.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -72,21 +73,20 @@ export function Toppmeny() {
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>
-          <Eksperiment>
-            <ActionMenu.Divider />
-            <ActionMenu.Group label="Eksperimenter">
-              <ActionMenu.Item
-                icon={<ThemeIcon />}
-                as="a"
-                href="/"
-                onClick={() => {
-                  setDarkmode(!darkmode)
-                }}
-              >
-                {darkmode ? 'Tilbake til lyset' : 'Darkmode'}
-              </ActionMenu.Item>
-            </ActionMenu.Group>
-          </Eksperiment>
+          <ActionMenu.Divider />
+          <ActionMenu.Group label="Utseende">
+            <ActionMenu.Item
+              icon={<ThemeIcon />}
+              as="a"
+              href="/"
+              onClick={() => {
+                pushLog(`Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`)
+                setDarkmode(!darkmode)
+              }}
+            >
+              {darkmode ? 'Endre til lyst tema' : 'Endre til mørkt tema'}
+            </ActionMenu.Item>
+          </ActionMenu.Group>
         </ActionMenu.Content>
         <EndringsloggMenu />
       </ActionMenu>
@@ -117,4 +117,8 @@ export function Toppmeny() {
       </ActionMenu>
     </InternalHeader>
   )
+}
+
+function darkmodeLabel(darkmode: boolean) {
+  return darkmode ? 'mørkt tema' : 'lyst tema'
 }

@@ -23,6 +23,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 interface AlternativProduktModalProps {
   åpen: boolean
   hjelpemiddel: Hjelpemiddel
+  nåværendeHmsnr: string
   grunndataProdukt: Produkt | undefined
   alternativeProdukter?: AlternativeProduct[]
   harAlternativeProdukter: boolean
@@ -37,6 +38,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const {
     åpen,
     hjelpemiddel,
+    nåværendeHmsnr,
     grunndataProdukt,
     alternativeProdukter: alternativeProdukterInitial = ingenAlternativeProdukterForHmsArtNr,
     harOppdatertLagerstatus,
@@ -69,7 +71,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
 
   const form = useForm<EndreArtikkelData>({
     defaultValues: {
-      endretProdukt: [],
+      endretProdukt: '',
       produktMangler: false,
       endreBegrunnelse: '',
       endreBegrunnelseFritekst: '',
@@ -85,7 +87,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
     } else {
       logSkjemaFullført({
         komponent: 'EndreHjelpemiddelModal',
-        valgtAlternativ: data.endretProdukt[0],
+        valgtAlternativ: data.endretProdukt,
       })
       await handleSubmit(data)
       setProduktValgt(false)
@@ -103,10 +105,14 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
       await onLagre({
         hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
-        hmsArtNr: data.endretProdukt[0] ?? '',
+        hmsArtNr: data.endretProdukt ?? '',
         begrunnelse,
         begrunnelseFritekst,
       })
+      form.reset()
+      if (harAlternativeProdukter) {
+        setActiveTab('alternativer')
+      }
       onLukk()
     } finally {
       setSubmitting(false)
@@ -136,7 +142,6 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           placement="top"
           closeOnBackdropClick={false}
           width="1200px"
-          //style={{ minHeight: '60vh' }}
           open={åpen}
           onClose={() => {
             onLukk()
@@ -173,6 +178,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                       <ManueltSøkPanel
                         hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
                         hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                        nåværendeHmsnr={nåværendeHmsnr}
                         produktValgt={produktValgt}
                       />
                     </Tabs.Panel>
@@ -182,6 +188,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                 <ManueltSøkPanel
                   hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
                   hmsArtNr={hjelpemiddel.produkt.hmsArtNr}
+                  nåværendeHmsnr={nåværendeHmsnr}
                   produktValgt={produktValgt}
                 />
               )}

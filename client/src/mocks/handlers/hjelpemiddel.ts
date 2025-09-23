@@ -11,10 +11,6 @@ interface HjelpemiddelParams {
 export const hjelpemiddelHandlers: StoreHandlersFactory = (/*{ hjelpemiddelStore }*/) => [
   http.get<HjelpemiddelParams>(`/api/hjelpemiddel/:hmsnr`, async ({ params }) => {
     const { hmsnr } = params
-    //const hjelpemiddel = await hjelpemiddelStore.hent(hmsnr)
-    /*if (!hjelpemiddel) {
-      return respondNotFound()
-    }*/
     if (hmsnr === '404404') {
       return respondNotFound()
     }

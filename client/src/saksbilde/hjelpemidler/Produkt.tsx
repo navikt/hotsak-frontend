@@ -23,11 +23,11 @@ export function Produkt({
         {<InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
       </HStack>
       {linkTo ? (
-        <Tekst>
-          <Link href={linkTo} target="_blank">
-            <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>{navn}</div>
-          </Link>
-        </Tekst>
+        <Link href={linkTo} target="_blank">
+          <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
+            <Tekst>{navn}</Tekst>
+          </div>
+        </Link>
       ) : (
         <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
       )}

@@ -25,7 +25,7 @@ const BarnebrillesakContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: 96vh;
+  //height: 96vh;
 `
 
 const Header = styled(HStack)`
@@ -110,7 +110,10 @@ export function Barnebrillesaksbilde() {
     <ErrorBoundary FallbackComponent={AlertError}>
       <Suspense fallback={<LasterBarnebrillesaksbilde />}>
         <ManuellSaksbehandlingProvider>
-          <HGrid columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}>
+          <HGrid
+            columns={`auto minmax(${hotsakHistorikkMinWidth}, ${hotsakBarnebrilleHistorikkMaxWidth})`}
+            style={{ paddingBottom: 'var(--ax-space-12)' }}
+          >
             <BarnebrillesakContent />
             <BarnebrillesakSidebar />
           </HGrid>

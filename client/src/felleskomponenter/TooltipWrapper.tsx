@@ -10,7 +10,11 @@ interface TooltipWrapperProps {
 
 export function TooltipWrapper({ visTooltip, content, children }: TooltipWrapperProps) {
   if (visTooltip) {
-    return <Tooltip content={content}>{children}</Tooltip>
+    return (
+      <Tooltip content={content} maxChar={content.length}>
+        {children}
+      </Tooltip>
+    )
   } else {
     return <>{children}</>
   }

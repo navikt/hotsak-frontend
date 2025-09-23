@@ -72,8 +72,6 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
               alt="Produktbilde"
               src={produktbilde(alternativtProdukt)}
               style={{
-                //height: '130px',
-                //maxWidth: '100%',
                 width: '150px',
                 objectFit: 'contain',
                 borderRadius: 'var(--ax-radius-8)',
@@ -92,9 +90,4 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
 const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
   border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};
   margin: ${({ selected }) => selected && '-3px'};
-
-  &:hover {
-    border: 4px solid var(--ax-border-accent-strong);
-    margin: -3px;
-  }
 `

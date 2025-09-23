@@ -12,11 +12,9 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  // Velge checkbox ved klikk hvor som helst på boksen
-  // Toast når endring er lagret
   // select er hvit i darkmode, hvorfor?
-  // Fix Because of strict accessibility concers we encourage all Tooltips to have less than 80 characters. Can be overwritten with the maxChar-propLength:84Tooltip-content: Arbeidsstol, dusjkrakk, manuell rullestol, sittepute, støttehåndtak, toalettforhøyer
-  // og fix div i p
+  // Teste i dev med ulike bildestørrelser på alternative produkter
+  // Dynamisk bredde på høyrekolonne
 
   useEffect(() => {
     if (endreProduktHmsnr.length === 6 && !isLoading && error) {

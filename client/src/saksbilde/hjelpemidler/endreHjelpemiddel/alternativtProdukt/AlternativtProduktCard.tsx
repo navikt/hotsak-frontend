@@ -68,15 +68,16 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
             </VStack>
           </VStack>
           {produktbilde(alternativtProdukt) && (
-            <img
-              alt="Produktbilde"
-              src={produktbilde(alternativtProdukt)}
+            <div
               style={{
-                width: '150px',
-                objectFit: 'contain',
-                borderRadius: 'var(--ax-radius-8)',
+                height: '170px',
+                position: 'relative',
+                margin: 'auto',
+                marginBottom: 'var(--ax-space-16)',
               }}
-            />
+            >
+              <Bilde alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
+            </div>
           )}
         </HGrid>
       </VStack>
@@ -86,6 +87,13 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
     </ProduktCard>
   )
 }
+
+const Bilde = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--ax-radius-12);
+`
 
 const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
   border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};

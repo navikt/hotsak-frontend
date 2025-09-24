@@ -12,8 +12,6 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  // Teste i dev med ulike bildestørrelser på alternative produkter
-  // Dynamisk bredde på høyrekolonne
   // Vise lagervare tag
   // Link til endret hjelpemiddel hvis kilder !== oebs
 

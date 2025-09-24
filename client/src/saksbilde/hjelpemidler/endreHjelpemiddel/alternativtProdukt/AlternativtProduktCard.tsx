@@ -1,9 +1,7 @@
 import { Box, Checkbox, HGrid, Link, Tag, VStack } from '@navikt/ds-react'
-import { Fragment } from 'react'
 import styled from 'styled-components'
 
-import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
-import { formaterRelativTid } from '../../../../utils/dato.ts'
+import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 
 interface AlternativProduktCardProps {
@@ -44,10 +42,10 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
             <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
               <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
             </Link>
-            <VStack paddingBlock="space-16">
+            <VStack paddingBlock="space-12" gap="space-8">
               <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
               {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-                <Fragment key={lagerstatus?.location}>
+                <Box.New key={lagerstatus?.location}>
                   <Etikett>{lagerstatus?.location}: </Etikett>
                   <div>
                     {lagerstatus ? (
@@ -60,11 +58,8 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                       </Tag>
                     )}
                   </div>
-                </Fragment>
+                </Box.New>
               ))}
-              <div>
-                <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
-              </div>
             </VStack>
           </VStack>
           {produktbilde(alternativtProdukt) && (
@@ -81,7 +76,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           )}
         </HGrid>
       </VStack>
-      <Box.New background="accent-soft" padding="space-12" borderRadius="xlarge">
+      <Box.New background="accent-soft" padding="space-8" borderRadius="xlarge">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </Box.New>
     </ProduktCard>

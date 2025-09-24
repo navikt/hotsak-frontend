@@ -1,4 +1,5 @@
-import { Box, Heading, HGrid, Link, VStack } from '@navikt/ds-react'
+import { Box, Heading, HGrid, VStack } from '@navikt/ds-react'
+import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
 import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes'
 import { Produkt } from '../../../types/types.internal'
@@ -39,9 +40,9 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
               </div>
               <VStack gap="space-4">
                 <Etikett size="small">{hjelpemiddel.produkt.artikkelnavn}</Etikett>
-                <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.produkt.hmsArtNr}`} target="_blank">
+                <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
                   <Brødtekst>{`Hmsnr: ${hjelpemiddel.produkt.hmsArtNr}`}</Brødtekst>
-                </Link>
+                </FinnHjelpemiddelLink>
                 {grunndataProdukt && <Brødtekst>{grunndataProdukt?.leverandør}</Brødtekst>}
               </VStack>
             </HGrid>

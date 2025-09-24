@@ -12,7 +12,6 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   const { hjelpemiddel, error, isLoading } = useHjelpemiddel(endreProduktHmsnr)
 
-  // select er hvit i darkmode, hvorfor?
   // Teste i dev med ulike bildestørrelser på alternative produkter
   // Dynamisk bredde på høyrekolonne
 

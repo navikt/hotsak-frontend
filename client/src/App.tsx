@@ -32,7 +32,7 @@ function App() {
         style={{
           minHeight: '100vh',
           background: 'var(--ax-bg-default)',
-          minWidth: '100vw',
+          minWidth: '90vw',
           overflowX: 'auto',
           //width: hotsakMaxWidth,
         }}

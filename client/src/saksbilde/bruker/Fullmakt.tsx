@@ -10,14 +10,13 @@ interface FullmaktProps {
 }
 
 const Container = styled.div`
-  padding-top: 1rem;
   padding-bottom: 2rem;
 `
 
 export function Fullmakt({ navn }: FullmaktProps) {
   return (
     <>
-      <Heading level="1" size="medium" spacing={true}>
+      <Heading level="1" size="medium">
         Fullmakt
       </Heading>
       <Container>

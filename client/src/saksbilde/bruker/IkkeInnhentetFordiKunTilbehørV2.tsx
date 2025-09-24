@@ -8,7 +8,7 @@ import { Brødtekst } from '../../felleskomponenter/typografi'
 export function IkkkeInnhentetFordiKunTilbehørV2() {
   return (
     <>
-      <Heading level="1" size="medium" spacing={true}>
+      <Heading level="1" size="medium">
         Fullmakt
       </Heading>
       <Container>

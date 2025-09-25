@@ -1,9 +1,8 @@
-import { Box, CheckboxGroup, HGrid } from '@navikt/ds-react'
+import { Box, CheckboxGroup, HGrid, Tag } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { AlternativtProduktCard } from './AlternativtProduktCard.tsx'
-import { Brødtekst } from '../../../../felleskomponenter/typografi.tsx'
 import { formaterRelativTid } from '../../../../utils/dato.ts'
 
 interface AlternativProduktVelgerProps {
@@ -19,7 +18,7 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
     <>
       <Box.New paddingBlock={'0 space-16'}>
         {lagerStatusOppdatert && (
-          <Brødtekst>{`Lagerstatus oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Brødtekst>
+          <Tag size="small" variant="neutral-moderate">{`Oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Tag>
         )}
       </Box.New>
       <Controller

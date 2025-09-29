@@ -2,7 +2,6 @@ import { Box, Button, Modal, Tabs } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 
 import { useUmami } from '../../../sporing/useUmami.ts'
-import { useErOmbrukPilot } from '../../../tilgang/useTilgang.ts'
 import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes.ts'
 import {
   EndretHjelpemiddelBegrunnelse,
@@ -49,7 +48,6 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
   const [activeTab, setActiveTab] = useState('alternativer')
   const [produktValgt, setProduktValgt] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const erOmbrukPilot = useErOmbrukPilot()
   const { logSkjemaFullført } = useUmami()
   const ref = useRef<HTMLDialogElement>(null)
   const { logKnappKlikket } = useUmami()
@@ -154,7 +152,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
             <Box.New paddingBlock="space-24 0" paddingInline="space-16">
               <OriginaltHjelpemiddel hjelpemiddel={hjelpemiddel} grunndataProdukt={grunndataProdukt} />
 
-              {harAlternativeProdukter && erOmbrukPilot ? (
+              {harAlternativeProdukter ? (
                 <Box.New paddingBlock="space-24 0">
                   <Tabs value={activeTab} onChange={handleTabChange}>
                     <Tabs.List>

@@ -64,11 +64,6 @@ export function useVisOppgavelisteTabs(): boolean {
   )
 }
 
-export function useErOmbrukPilot(): boolean {
-  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
-  return erGjeldendeEnhetEnAv(...piloter.ombrukPilot)
-}
-
 export function useErKunTilbehørPilot(): boolean {
   const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
   return erGjeldendeEnhetEnAv(...piloter.kunTilbehør)

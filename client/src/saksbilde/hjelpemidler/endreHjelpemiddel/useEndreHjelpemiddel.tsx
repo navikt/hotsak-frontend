@@ -6,20 +6,22 @@ import { Hjelpemiddel as BehovsmeldingHjelpemiddel } from '../../../types/Behovs
 import { useArtiklerForSak } from '../useArtiklerForSak'
 import { useHjelpemiddel } from './useHjelpemiddel'
 import { EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const { artikler, mutate: mutateBestilling } = useArtiklerForSak(sakId)
+  const { showSuccessToast } = useToast()
 
   const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
     await http
       .put(`/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))
       .then(() => {
-        // TODO Klarer vi å hente URL til det nye hjelpemiddelet?
         mutateBestilling()
         mutate(`/api/sak/${sakId}/historikk`)
+        showSuccessToast(`Endret hjelpemiddel til ${endreHjelpemiddel.hmsArtNr}`)
       })
     setVisEndreProdukt(false)
   }
@@ -28,7 +30,7 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
     (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
   )
 
-  const { hjelpemiddel: endretHjelpemiddelNavn } = useHjelpemiddel(
+  const { hjelpemiddel: endretHjelpemiddelProdukt } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
   )
 
@@ -40,6 +42,6 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
     endreHjelpemiddel,
     nåværendeHmsnr,
     endretHjelpemiddel,
-    endretHjelpemiddelNavn,
+    endretHjelpemiddelProdukt,
   }
 }

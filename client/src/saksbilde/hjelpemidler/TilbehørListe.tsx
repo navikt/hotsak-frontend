@@ -28,7 +28,6 @@ export function TilbehørListe({ tilbehør, produkter }: { tilbehør: Tilbehørt
     <VStack gap="4">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
-
         return <Tilbehør key={idx} tilbehør={t} produkt={produkt} />
       })}
     </VStack>
@@ -37,7 +36,6 @@ export function TilbehørListe({ tilbehør, produkter }: { tilbehør: Tilbehørt
 
 export function Tilbehør({
   tilbehør,
-  produkt,
   frittståendeTilbehør = false,
 }: {
   tilbehør: Tilbehørtype
@@ -51,7 +49,7 @@ export function Tilbehør({
     <HjelpemiddelGrid>
       <TextContainer>
         <VStack gap="1">
-          <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} linkTo={produkt?.produkturl} />
+          <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
           {harSaksbehandlingvarsel && (
             <Box paddingInline="4 0">
               <Varsler varsler={tilbehør.saksbehandlingvarsel!} />

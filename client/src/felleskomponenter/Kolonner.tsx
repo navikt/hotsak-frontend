@@ -16,5 +16,5 @@ export const TreKolonner = styled.div`
   /*grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto ${hotsakRegistrerSøknadHøyreKolonne};*/
   grid-template-columns: ${hotsakRegistrerSøknadKolonne} auto;
   grid-template-rows: 1fr;
-  height: calc(100vh - ${headerHøydeRem}rem);
+  //height: calc(100vh - ${headerHøydeRem}rem);
 `

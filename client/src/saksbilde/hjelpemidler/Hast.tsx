@@ -1,4 +1,4 @@
-import { Alert, Box, List, VStack } from '@navikt/ds-react'
+import { Alert, Box, Heading, List, VStack } from '@navikt/ds-react'
 import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { BrytbarBrødtekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { Hasteårsak, Hast as HastType } from '../../types/BehovsmeldingTypes.ts'
@@ -15,7 +15,10 @@ export function Hast(props: { hast?: HastType }) {
             Hast: Formidler har markert saken som hast.
           </Alert>
           <Box paddingInline="8 0">
-            <List size="small" title="Årsak til at det haster">
+            <Heading level="3" size="xsmall" spacing>
+              Årsak til at det haster
+            </Heading>
+            <List size="small">
               {hasteårsaker.map((årsak) => (
                 <List.Item key={årsak}>
                   <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>

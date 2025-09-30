@@ -3,9 +3,12 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, SWRConfiguration } from 'swr'
 
+import { Theme } from '@navikt/ds-react'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
+import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
+import { useDarkmode } from './header/useDarkmode.ts'
 import { http } from './io/HttpClient.ts'
 import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
@@ -13,9 +16,6 @@ import { RequireAuth } from './RequireAuth.tsx'
 import { SakTitle } from './SakTitle.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
-import { Theme } from '@navikt/ds-react'
-import { useDarkmode } from './header/useDarkmode.ts'
-import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -25,9 +25,18 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
   const [darkmode] = useDarkmode()
+
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <div style={{ minHeight: '100vh' }}>
+      <div
+        style={{
+          minHeight: '100vh',
+          background: 'var(--ax-bg-default)',
+          minWidth: '90vw',
+          overflowX: 'auto',
+          //width: hotsakMaxWidth,
+        }}
+      >
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>

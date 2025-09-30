@@ -1,7 +1,6 @@
 import { gql } from 'graphql-request'
 import { useMemo, useState } from 'react'
 
-import { useErOmbrukPilot } from '../../tilgang/useTilgang.ts'
 import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping.ts'
 import type {
   FinnAlternativeProdukterSideQuery,
@@ -80,13 +79,12 @@ export function useAlternativeProdukter(
   pageSize: number = 1000,
   kunProdukterPåLager: boolean = true
 ): AlternativeProdukter {
-  const erOmbrukPilot = useErOmbrukPilot()
   const [pageNumber, setPageNumber] = useState(1)
   const { data, error, isLoading } = useGraphQLQuery<
     FinnAlternativeProdukterSideQuery,
     FinnAlternativeProdukterSideQueryVariables
   >(grunndataClient.alternativprodukter, () =>
-    erOmbrukPilot && hmsnrs.length > 0
+    hmsnrs.length > 0
       ? {
           document: finnAlternativeProdukterSideQuery,
           variables: { hmsnrs: unique(hmsnrs), from: calculateOffset({ pageNumber, pageSize }), size: pageSize },

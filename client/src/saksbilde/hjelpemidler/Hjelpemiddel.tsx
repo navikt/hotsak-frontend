@@ -47,7 +47,7 @@ export function Hjelpemiddel({
   const {
     endreHjelpemiddel,
     nåværendeHmsnr,
-    endretHjelpemiddelNavn,
+    endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, hjelpemiddel)
 
@@ -72,10 +72,8 @@ export function Hjelpemiddel({
             {endretHjelpemiddel && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-                navn={endretHjelpemiddelNavn?.navn || '-'}
-                gjennomstrek={false}
-                // TODO Fiks at vi får tak i url til det nye hjelpemidlet
-                //linkTo={produkt?.produkturl}
+                navn={endretHjelpemiddelProdukt?.navn || '-'}
+                showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}
 
@@ -83,7 +81,6 @@ export function Hjelpemiddel({
               hmsnr={hjelpemiddel.produkt.hmsArtNr}
               navn={hjelpemiddel.produkt.artikkelnavn}
               gjennomstrek={endretHjelpemiddel !== undefined}
-              linkTo={produkt?.produkturl}
             />
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
@@ -143,7 +140,7 @@ export function Hjelpemiddel({
                       tekst: 'alterrnative-produkter-modal',
                       alternativerTilgjengelig: alternativeProdukter.length,
                       alternativer: alternativeProdukter.map((p) => {
-                        return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                        return (p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor)
                       }),
                     })
                     setVisAlternativerModal(true)

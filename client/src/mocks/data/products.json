@@ -2,238 +2,293 @@
   "data": {
     "products": [
       {
-        "id": "cfd1e2ea-959c-4a6e-a2c4-2e6587101b52",
-        "articleName": "Jay Easy Visco Cushion 40x42 buet",
-        "hmsArtNr": "247627",
-        "isoCategoryTitleShort": "Sittepute",
+        "id": "5ee41ddf-5055-45bd-9556-a8512418b6da",
+        "articleName": "Aquatec 90000 10 cm",
+        "hmsArtNr": "097820",
+        "isoCategoryTitleShort": "Toalettforhøyer",
+        "attributes": {
+          "text": "Fast toalettforhøyer med oppfellbare armlener. Tilgjengelig i tre høyder: 2, 6 og 10 cm."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Invacare AS"
+        },
+        "media": [
+          {
+            "uri": "orig/24489.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/24489.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "produktblade/24489.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 5
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/097820"
+      },
+      {
+        "id": "da24f2ea-6322-4fa1-a523-3d505027bdb8",
+        "articleName": "Gemino 30M Parkinson",
+        "hmsArtNr": "235352",
+        "isoCategoryTitleShort": "Rullator",
+        "attributes": {
+          "text": "Rullator for personer som trenger ekstra trygghet ved gange. Omvendt bremsefunksjon, som innebærer at bremsene aktiveres når håndtaket slippes. Utstyrt med laserlys for å stimulere start av gange ved tilstivning av bevegelser. Leveres med slepebrems, parkeringsbrems, sete og kurv som standard. Hjul med kompakte dekk. "
+        },
         "agreements": [],
         "supplier": {
           "name": "Sunrise Medical AS"
         },
         "media": [
           {
-            "uri": "https://vimeo.com/1071701208?share=copy",
-            "type": "VIDEO",
-            "source": "EXTERNALURL",
-            "priority": 0
-          },
-          {
-            "uri": "orig/60048.jpg",
+            "uri": "orig/47681.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 1
           },
           {
-            "uri": "orig/60048_2.jpg",
+            "uri": "orig/47681_2.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 4
           },
           {
-            "uri": "orig/60048_3.jpg",
+            "uri": "orig/47681_3.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 7
           },
           {
-            "uri": "brugsvejl/60048.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "produktblade/60048.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 11
-          },
-          {
-            "uri": "video/60048.mp4",
-            "type": "VIDEO",
-            "source": "HMDB",
-            "priority": 12
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/247627"
-      },
-      {
-        "id": "1e051bb5-6386-4592-b457-1ece8dea4e53",
-        "articleName": "Basic Cushion 38x44",
-        "hmsArtNr": "171506",
-        "isoCategoryTitleShort": "Sittepute",
-        "agreements": [],
-        "supplier": {
-          "name": "Sunrise Medical AS"
-        },
-        "media": [
-          {
-            "uri": "https://vimeo.com/1071699037?share=copy",
-            "type": "VIDEO",
-            "source": "EXTERNALURL",
-            "priority": 0
-          },
-          {
-            "uri": "orig/29744.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/29744_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/29744_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "brugsvejl/29744.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "produktblade/29744.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 11
-          },
-          {
-            "uri": "video/29744.mp4",
-            "type": "VIDEO",
-            "source": "HMDB",
-            "priority": 12
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171506"
-      },
-      {
-        "id": "8040b46c-e1d9-4667-a5fc-c07ad32e36c8",
-        "articleName": "Eliramp b90 h1.5",
-        "hmsArtNr": "170093",
-        "isoCategoryTitleShort": "Terskeleliminator",
-        "agreements": [
-          {
-            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
-          }
-        ],
-        "supplier": {
-          "name": "ETAC AS"
-        },
-        "media": [
-          {
-            "uri": "orig/30381.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/30381_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/30381_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "orig/30381_4.jpg",
+            "uri": "orig/47681_4.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 10
           },
           {
-            "uri": "brugsvejl/30381.pdf",
+            "uri": "brugsvejl/47681.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 13
           },
           {
-            "uri": "produktblade/30381.pdf",
+            "uri": "produktblade/47681.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 14
+          },
+          {
+            "uri": "seriedok/8606/47681.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 15
           }
         ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/170093"
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/235352"
       },
       {
-        "id": "c569724d-fdeb-4b03-9f92-097b797c5ccf",
-        "articleName": "Topro Taurus E Premium",
-        "hmsArtNr": "072517",
-        "isoCategoryTitleShort": "Gåbord",
-        "agreements": [
-          {
-            "postTitle": "10. Gåbord - støttebord og elektrisk høyderegulering til innendørs bruk "
-          }
-        ],
+        "id": "bcaacdcf-4ee5-4e5c-8457-d4cf73d6ebb1",
+        "articleName": "Topro Trillebord",
+        "hmsArtNr": "176787",
+        "isoCategoryTitleShort": "Trillebord",
+        "attributes": {
+          "text": "Høydejusterbart trillebord. Utstyrt med svingbare hjul med brems. "
+        },
+        "agreements": [],
         "supplier": {
           "name": "TOPRO Industri AS"
         },
         "media": [
           {
-            "uri": "https://www.youtube.com/watch?v=xWVzO7g1NNo",
-            "type": "VIDEO",
-            "source": "EXTERNALURL",
-            "priority": 0
-          },
-          {
-            "uri": "orig/47755.jpg",
+            "uri": "orig/35624.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 1
           },
           {
-            "uri": "orig/47755_2.jpg",
+            "uri": "orig/35624_2.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 4
           },
           {
-            "uri": "orig/47755_3.jpg",
+            "uri": "brugsvejl/35624.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/35624.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 8
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176787"
+      },
+      {
+        "id": "9283eacc-5acb-4a0c-8d0a-7f0821916957",
+        "articleName": "Opus 90c",
+        "hmsArtNr": "214967",
+        "isoCategoryTitleShort": "Seng",
+        "attributes": {
+          "text": "Seng med elektrisk regulering av sengehøyde. Elektrisk, firedelt sengebunn hvor hver del kan reguleres separat."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Varodd Velferdsteknologi AS"
+        },
+        "media": [
+          {
+            "uri": "orig/47144.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/47144_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/47144_3.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 7
           },
           {
-            "uri": "orig/47755_4.jpg",
-            "type": "IMAGE",
+            "uri": "brugsvejl/47144.pdf",
+            "type": "PDF",
             "source": "HMDB",
             "priority": 10
           },
           {
-            "uri": "brugsvejl/47755.pdf",
+            "uri": "produktblade/47144.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 11
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/214967"
+      },
+      {
+        "id": "e88ee301-f3fa-4997-910a-aaf4b671408f",
+        "articleName": "Puls NAV 90 x 200",
+        "hmsArtNr": "174791",
+        "isoCategoryTitleShort": "Madrass",
+        "attributes": {
+          "text": "Skummadrass med trekk i bomull og polyester. Både madrass og trekk kan vaskes på 60 grader. Inkontinenstrekk leveres som tilbehør. Leveres i flere størrelser. Høyde: 13 cm. Maks brukervekt: 120 kg."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Bano Life AS"
+        },
+        "media": [
+          {
+            "uri": "orig/64443.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/64443_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/64443.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/64443.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 8
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/174791"
+      },
+      {
+        "id": "5fecde2f-f912-4408-8727-7a07ae9e81be",
+        "articleName": "Hiro180 høyre",
+        "hmsArtNr": "231053",
+        "isoCategoryTitleShort": "Trappeheis",
+        "attributes": {
+          "text": "Trappeheis for bruk i utendørs trapp med sving eller repos. Hiro 180 betjenes med joystick og har svingbart sete. Finnes for montering på høyre og venstre side. Maks brukervekt: 135 kg. "
+        },
+        "agreements": [
+          {
+            "postTitle": "13: Trappeheis med sete for trapp med sving/repos - utendørs bruk"
+          }
+        ],
+        "supplier": {
+          "name": "Stannah AS"
+        },
+        "media": [
+          {
+            "uri": "orig/49649.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/49649_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/49649_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/49649.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/49649.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 11
+          },
+          {
+            "uri": "seriedok/2705/49649.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 12
+          },
+          {
+            "uri": "seriedok/3847/49649.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 13
-          },
-          {
-            "uri": "produktblade/47755.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 14
-          },
-          {
-            "uri": "video/47755.mp4",
-            "type": "VIDEO",
-            "source": "HMDB",
-            "priority": 15
           }
         ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/072517"
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/231053"
       },
       {
         "id": "709fad28-5296-4443-a865-9b8476efcef8",
         "articleName": "Nova 30 smal lav stoff",
         "hmsArtNr": "296321",
         "isoCategoryTitleShort": "Løftestol",
+        "attributes": {
+          "text": "Stol med individuell elektrisk regulering som gjør at rygg, leggstøtte og oppreisingsfunksjon kan reguleres uavhengig av hverandre. Har tilt. Låsbar svingfunksjon. Finnes i fem størrelser i stoff eller hud. Brukervekt maks 150 kg."
+        },
         "agreements": [
           {
             "postTitle": "4: Stol med individuell elektrisk regulering"
@@ -313,402 +368,253 @@
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/296321"
       },
       {
-        "id": "9283eacc-5acb-4a0c-8d0a-7f0821916957",
-        "articleName": "Opus 90c",
-        "hmsArtNr": "214967",
-        "isoCategoryTitleShort": "Seng",
-        "agreements": [],
+        "id": "c569724d-fdeb-4b03-9f92-097b797c5ccf",
+        "articleName": "Topro Taurus E Premium",
+        "hmsArtNr": "072517",
+        "isoCategoryTitleShort": "Gåbord",
+        "attributes": {
+          "text": "Høyderegulerbart gåbord med støttebord. Gåbordet har elektrisk høydejustering. Armstøttene er justerbare. Leveres med kjørebrems, parkeringsbrems og fotbrems som standard. Svingfunksjon på bakhjulene kan låses. Passer brukere med høyde inntil 210 cm. Hjul med kompakte dekk. "
+        },
+        "agreements": [
+          {
+            "postTitle": "10. Gåbord - støttebord og elektrisk høyderegulering til innendørs bruk "
+          }
+        ],
         "supplier": {
-          "name": "Varodd Velferdsteknologi AS"
+          "name": "TOPRO Industri AS"
         },
         "media": [
           {
-            "uri": "orig/47144.jpg",
+            "uri": "https://www.youtube.com/watch?v=xWVzO7g1NNo",
+            "type": "VIDEO",
+            "source": "EXTERNALURL",
+            "priority": 0
+          },
+          {
+            "uri": "orig/47755.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 1
           },
           {
-            "uri": "orig/47144_2.jpg",
+            "uri": "orig/47755_2.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 4
           },
           {
-            "uri": "orig/47144_3.jpg",
+            "uri": "orig/47755_3.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 7
           },
           {
-            "uri": "brugsvejl/47144.pdf",
-            "type": "PDF",
+            "uri": "orig/47755_4.jpg",
+            "type": "IMAGE",
             "source": "HMDB",
             "priority": 10
           },
           {
-            "uri": "produktblade/47144.pdf",
+            "uri": "brugsvejl/47755.pdf",
             "type": "PDF",
             "source": "HMDB",
-            "priority": 11
+            "priority": 13
+          },
+          {
+            "uri": "produktblade/47755.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 14
+          },
+          {
+            "uri": "video/47755.mp4",
+            "type": "VIDEO",
+            "source": "HMDB",
+            "priority": 15
           }
         ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/214967"
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/072517"
       },
       {
-        "id": "5ee41ddf-5055-45bd-9556-a8512418b6da",
-        "articleName": "Aquatec 90000 10 cm",
-        "hmsArtNr": "097820",
-        "isoCategoryTitleShort": "Toalettforhøyer",
-        "agreements": [],
-        "supplier": {
-          "name": "Invacare AS"
+        "id": "1e051bb5-6386-4592-b457-1ece8dea4e53",
+        "articleName": "Basic Cushion 38x44",
+        "hmsArtNr": "171506",
+        "isoCategoryTitleShort": "Sittepute",
+        "attributes": {
+          "text": "Trykkfordelende sittepute i skummateriale med anatomisk form. Puten skal ikke innstilles. Passer til rullestoler med plan- og hengekøyesete. Høyde foran: 4,8 cm. Høyde bak: 4,7 cm. Leveres med to inkontinenstrekk. "
         },
-        "media": [
-          {
-            "uri": "orig/24489.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "brugsvejl/24489.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "produktblade/24489.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 5
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/097820"
-      },
-      {
-        "id": "da24f2ea-6322-4fa1-a523-3d505027bdb8",
-        "articleName": "Gemino 30M Parkinson",
-        "hmsArtNr": "235352",
-        "isoCategoryTitleShort": "Rullator",
         "agreements": [],
         "supplier": {
           "name": "Sunrise Medical AS"
         },
         "media": [
           {
-            "uri": "orig/47681.jpg",
+            "uri": "https://vimeo.com/1071699037?share=copy",
+            "type": "VIDEO",
+            "source": "EXTERNALURL",
+            "priority": 0
+          },
+          {
+            "uri": "orig/29744.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 1
           },
           {
-            "uri": "orig/47681_2.jpg",
+            "uri": "orig/29744_2.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 4
           },
           {
-            "uri": "orig/47681_3.jpg",
+            "uri": "orig/29744_3.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 7
           },
           {
-            "uri": "orig/47681_4.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "brugsvejl/47681.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 13
-          },
-          {
-            "uri": "produktblade/47681.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 14
-          },
-          {
-            "uri": "seriedok/8606/47681.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 15
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/235352"
-      },
-      {
-        "id": "e88ee301-f3fa-4997-910a-aaf4b671408f",
-        "articleName": "Puls NAV 90 x 200",
-        "hmsArtNr": "174791",
-        "isoCategoryTitleShort": "Madrass",
-        "agreements": [],
-        "supplier": {
-          "name": "Bano Life AS"
-        },
-        "media": [
-          {
-            "uri": "orig/64443.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/64443_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "brugsvejl/64443.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "produktblade/64443.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 8
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/174791"
-      },
-      {
-        "id": "5fecde2f-f912-4408-8727-7a07ae9e81be",
-        "articleName": "Hiro180 høyre",
-        "hmsArtNr": "231053",
-        "isoCategoryTitleShort": "Trappeheis",
-        "agreements": [
-          {
-            "postTitle": "13: Trappeheis med sete for trapp med sving/repos - utendørs bruk"
-          }
-        ],
-        "supplier": {
-          "name": "Stannah AS"
-        },
-        "media": [
-          {
-            "uri": "orig/49649.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/49649_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/49649_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "brugsvejl/49649.pdf",
+            "uri": "brugsvejl/29744.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 10
           },
           {
-            "uri": "produktblade/49649.pdf",
+            "uri": "produktblade/29744.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 11
           },
           {
-            "uri": "seriedok/2705/49649.pdf",
-            "type": "PDF",
+            "uri": "video/29744.mp4",
+            "type": "VIDEO",
             "source": "HMDB",
             "priority": 12
-          },
-          {
-            "uri": "seriedok/3847/49649.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 13
           }
         ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/231053"
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171506"
       },
       {
-        "id": "bcaacdcf-4ee5-4e5c-8457-d4cf73d6ebb1",
-        "articleName": "Topro Trillebord",
-        "hmsArtNr": "176787",
-        "isoCategoryTitleShort": "Trillebord",
+        "id": "cfd1e2ea-959c-4a6e-a2c4-2e6587101b52",
+        "articleName": "Jay Easy Visco Cushion 40x42 buet",
+        "hmsArtNr": "247627",
+        "isoCategoryTitleShort": "Sittepute",
+        "attributes": {
+          "text": "Trykkfordelende sittepute i skummateriale med anatomisk form. Puten skal ikke innstilles. Passer til rullestoler med hengekøye- (buet) og plansete (flat). Flytt musepeker over forstørrelsesglasset i tekniske data for å se info om puten er buet eller flat. Høyde foran: 6 cm. Høyde bak: 6,3 cm. Leveres med to trekk.\n"
+        },
         "agreements": [],
         "supplier": {
-          "name": "TOPRO Industri AS"
+          "name": "Sunrise Medical AS"
         },
         "media": [
           {
-            "uri": "orig/35624.jpg",
+            "uri": "https://vimeo.com/1071701208?share=copy",
+            "type": "VIDEO",
+            "source": "EXTERNALURL",
+            "priority": 0
+          },
+          {
+            "uri": "orig/60048.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 1
           },
           {
-            "uri": "orig/35624_2.jpg",
+            "uri": "orig/60048_2.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 4
           },
           {
-            "uri": "brugsvejl/35624.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "produktblade/35624.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 8
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176787"
-      },
-      {
-        "id": "9669b4a2-4c8b-4ec3-a7af-24e1475604f9",
-        "articleName": "Dorma ED 100 LE",
-        "hmsArtNr": "166438",
-        "isoCategoryTitleShort": "Døråpner",
-        "agreements": [],
-        "supplier": {
-          "name": "CANTEC AS"
-        },
-        "media": [
-          {
-            "uri": "orig/28737.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/166438"
-      },
-      {
-        "id": "4b46dcd9-c29b-49f9-9cbf-b7c33992d2cf",
-        "articleName": "DS130",
-        "hmsArtNr": "199325",
-        "isoCategoryTitleShort": "Dusjkrakk",
-        "agreements": [],
-        "supplier": {
-          "name": "Varodd Velferdsteknologi AS"
-        },
-        "media": [
-          {
-            "uri": "orig/42236.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "brugsvejl/42236.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "produktblade/42236.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 5
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/199325"
-      },
-      {
-        "id": "1c7a7679-99b2-4994-94d7-2b524869b7ab",
-        "articleName": "Minicrosser X1 4W CAB",
-        "hmsArtNr": "250470",
-        "isoCategoryTitleShort": "Elektrisk rullestol",
-        "agreements": [],
-        "supplier": {
-          "name": "Medema Norge AS"
-        },
-        "media": [
-          {
-            "uri": "orig/61673.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/61673_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/61673_3.jpg",
+            "uri": "orig/60048_3.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 7
           },
           {
-            "uri": "orig/61673_4.jpg",
+            "uri": "brugsvejl/60048.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/60048.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 11
+          },
+          {
+            "uri": "video/60048.mp4",
+            "type": "VIDEO",
+            "source": "HMDB",
+            "priority": 12
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/247627"
+      },
+      {
+        "id": "8040b46c-e1d9-4667-a5fc-c07ad32e36c8",
+        "articleName": "Eliramp b90 h1.5",
+        "hmsArtNr": "170093",
+        "isoCategoryTitleShort": "Terskeleliminator",
+        "attributes": {
+          "text": "Terskeleliminator med påkjøring fra en side og avrundede sidekanter. Produsert  i gummi med sklisikker overflate. Leveres i bredde 90 cm. og 7 ulike høyder fra 1,5 - 12,5 cm. Kan tilpasses noe til ønsket bredde og dybde."
+        },
+        "agreements": [
+          {
+            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
+          }
+        ],
+        "supplier": {
+          "name": "ETAC AS"
+        },
+        "media": [
+          {
+            "uri": "orig/30381.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/30381_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/30381_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "orig/30381_4.jpg",
             "type": "IMAGE",
             "source": "HMDB",
             "priority": 10
           },
           {
-            "uri": "brugsvejl/61673.pdf",
+            "uri": "brugsvejl/30381.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 13
           },
           {
-            "uri": "produktblade/61673.pdf",
+            "uri": "produktblade/30381.pdf",
             "type": "PDF",
             "source": "HMDB",
             "priority": 14
           }
         ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/250470"
-      },
-      {
-        "id": "7b41f0c4-06cc-481d-a72b-dbfc2e5354af",
-        "articleName": "Hepro E2 Basic 15 M",
-        "hmsArtNr": "216075",
-        "isoCategoryTitleShort": "Arbeidsstol",
-        "agreements": [],
-        "supplier": {
-          "name": "Hepro AS"
-        },
-        "media": [
-          {
-            "uri": "orig/48196.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/48196_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "brugsvejl/48196.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 7
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/216075"
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/170093"
       },
       {
         "id": "7f51a2d0-f41e-4e24-8ab5-c30eec5477c5",
         "articleName": "Hodebøylemikrofon, mod. 10 med VA-sender",
         "hmsArtNr": "289732",
         "isoCategoryTitleShort": "Mikrofon",
+        "attributes": {
+          "text": "<p>Mikrofon-pakke som består av Hodebøylemikrofon og Mikrofonsender. Dette er en mikrofon som framhever konsonantene i talen og dermed taleforståelsen. Regulerbar nakkebøyle og justerbar bom gir god passform og meget høy bærekomfort. Utskiftbar mikrofonkabel.Leveres med integrert oppladbart batteri. </p><p></p><p>OBS! Mikrofonen kan kun benyttes sammen med andre produkter fra VOX serien. Dersom det er ønskelig å benytte en annen mikrofon må denne erstattes av en annen VOX mikrofon.</p>"
+        },
         "agreements": [
           {
             "postTitle": "8: Samtaleanlegg med høyttaler(e)"
@@ -744,6 +650,9 @@
         "articleName": "Topro Olympos ATR M",
         "hmsArtNr": "286589",
         "isoCategoryTitleShort": "Rullator",
+        "attributes": {
+          "text": "Høyderegulerbar rullator. Finnes i to størrelser. Leveres med kjørebrems, parkeringsbrems, sete og kurv som standard. Hjul med kompakte dekk. Maks. brukervekt: 150 kg."
+        },
         "agreements": [],
         "supplier": {
           "name": "TOPRO Industri AS"
@@ -793,6 +702,9 @@
         "articleName": "Opus 90DW",
         "hmsArtNr": "255799",
         "isoCategoryTitleShort": "Seng",
+        "attributes": {
+          "text": "Seng med elektrisk regulering av høyde, rygg-, lår- og bendel. Hver del  kan reguleres separat. Sengen kan forlenges med 20 cm uten tilbehør. Leveres til madrassbreddene 90, 110 og 120 cm. Leveres komplett med hode- og fotgavl, samt nedfellbare og avtagbare sengegrinder på begge langsider. Kan vaskes i vaskemaskin. Maks brukervekt: 200 kg."
+        },
         "agreements": [],
         "supplier": {
           "name": "Varodd Velferdsteknologi AS"
@@ -842,6 +754,9 @@
         "articleName": "E-fix E35 24 tommer",
         "hmsArtNr": "215765",
         "isoCategoryTitleShort": "Hjelpemotor",
+        "attributes": {
+          "text": "Drivaggregat med elektrisk motor i drivhjulene og med motorisert styring. Batteripakken monteres under rullestolsetet. Drivaggregatet betjenes med joystick. Drivaggregatet kan montres på de fleste rullestoler. Leveres med batteri og lader. Totalvekt: 19kg. Rekkevidde inntil 16 km. Maks belastning: 120kg for e35 og 160kg for e36. "
+        },
         "agreements": [],
         "supplier": {
           "name": "Invacare AS"
@@ -897,6 +812,9 @@
         "articleName": "Etac Swift",
         "hmsArtNr": "019161",
         "isoCategoryTitleShort": "Dusjkrakk",
+        "attributes": {
+          "text": "Dusjkrakk med firkantet sete. Høyderegulerbar. Armlener og seterygg kan leveres som tilbehør (se  bilder 2 og 3). "
+        },
         "agreements": [],
         "supplier": {
           "name": "ETAC AS"
@@ -936,10 +854,217 @@
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/019161"
       },
       {
+        "id": "de58fba0-2371-4d78-a43f-a43a702fa867",
+        "articleName": "XLT Swing",
+        "hmsArtNr": "184973",
+        "isoCategoryTitleShort": "Manuell rullestol",
+        "attributes": {
+          "text": "Leveres som standard med klesbeskyttere, avtakbare benstøtter, kjørehåndtak, luftfylte dekk, tippesikringer (2 stk) og velcrorygg. Uten sittepute. Totalvekt/transportvekt i str. 45x45: 14,5/10,8. "
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Invacare AS"
+        },
+        "media": [
+          {
+            "uri": "orig/37314.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/37314.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "produktblade/37314.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 5
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/184973"
+      },
+      {
+        "id": "dec77707-274d-49e8-a2e5-fed99b9b8a92",
+        "articleName": "Invacare 9630 Styxo",
+        "hmsArtNr": "217574",
+        "isoCategoryTitleShort": "Toalettforhøyer",
+        "attributes": {
+          "text": "Frittstående toaforhøyer med armlener."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Invacare AS"
+        },
+        "media": [
+          {
+            "uri": "orig/54931.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/54931.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 4
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/217574"
+      },
+      {
+        "id": "4b46dcd9-c29b-49f9-9cbf-b7c33992d2cf",
+        "articleName": "DS130",
+        "hmsArtNr": "199325",
+        "isoCategoryTitleShort": "Dusjkrakk",
+        "attributes": {
+          "text": "Dusjkrakk med firkantet sete og sidebøyler. Høyderegulerbar."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Varodd Velferdsteknologi AS"
+        },
+        "media": [
+          {
+            "uri": "orig/42236.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "brugsvejl/42236.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "produktblade/42236.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 5
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/199325"
+      },
+      {
+        "id": "1c7a7679-99b2-4994-94d7-2b524869b7ab",
+        "articleName": "Minicrosser X1 4W CAB",
+        "hmsArtNr": "250470",
+        "isoCategoryTitleShort": "Elektrisk rullestol",
+        "attributes": {
+          "text": "4-hjuls scooter med kabin og enkelt display. Manuell regulering av seteløft, ryggvinkel og seterotasjon. Leveres som standard med varmeapparat og Ergo2 sitteenhet. Setebredde 45 cm. Setedybde 32-55 cm. Maks brukervekt: 175 kg."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Medema Norge AS"
+        },
+        "media": [
+          {
+            "uri": "orig/61673.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/61673_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/61673_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "orig/61673_4.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "brugsvejl/61673.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 13
+          },
+          {
+            "uri": "produktblade/61673.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 14
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/250470"
+      },
+      {
+        "id": "7b41f0c4-06cc-481d-a72b-dbfc2e5354af",
+        "articleName": "Hepro E2 Basic 15 M",
+        "hmsArtNr": "216075",
+        "isoCategoryTitleShort": "Arbeidsstol",
+        "attributes": {
+          "text": "Arbeidsstol med elektrisk seteløft og seterotasjon"
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Hepro AS"
+        },
+        "media": [
+          {
+            "uri": "orig/48196.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/48196_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/48196.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 7
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/216075"
+      },
+      {
+        "id": "9669b4a2-4c8b-4ec3-a7af-24e1475604f9",
+        "articleName": "Dorma ED 100 LE",
+        "hmsArtNr": "166438",
+        "isoCategoryTitleShort": "Døråpner",
+        "attributes": {
+          "text": "Automatikk slagdør tung. Meget støysvak. Åpningshjelp. Forsinket start i forbindelse med åpning av lås."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "CANTEC AS"
+        },
+        "media": [
+          {
+            "uri": "orig/28737.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/166438"
+      },
+      {
         "id": "a41c277d-cb8b-4aa1-8351-a5c9fd25b76b",
         "articleName": "Puls NAV 85 x 200",
         "hmsArtNr": "174787",
         "isoCategoryTitleShort": "Madrass",
+        "attributes": {
+          "text": "Skummadrass med trekk i bomull og polyester. Både madrass og trekk kan vaskes på 60 grader. Inkontinenstrekk leveres som tilbehør. Leveres i flere størrelser. Høyde: 13 cm. Maks brukervekt: 120 kg."
+        },
         "agreements": [],
         "supplier": {
           "name": "Bano Life AS"
@@ -973,72 +1098,19 @@
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/174787"
       },
       {
-        "id": "de58fba0-2371-4d78-a43f-a43a702fa867",
-        "articleName": "XLT Swing",
-        "hmsArtNr": "184973",
-        "isoCategoryTitleShort": "Manuell rullestol",
-        "agreements": [],
-        "supplier": {
-          "name": "Invacare AS"
-        },
-        "media": [
-          {
-            "uri": "orig/37314.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "brugsvejl/37314.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "produktblade/37314.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 5
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/184973"
-      },
-      {
-        "id": "dec77707-274d-49e8-a2e5-fed99b9b8a92",
-        "articleName": "Invacare 9630 Styxo",
-        "hmsArtNr": "217574",
-        "isoCategoryTitleShort": "Toalettforhøyer",
-        "agreements": [],
-        "supplier": {
-          "name": "Invacare AS"
-        },
-        "media": [
-          {
-            "uri": "orig/54931.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "brugsvejl/54931.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 4
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/217574"
-      },
-      {
         "id": "afa1a398-8b7e-45cd-bfca-970a58cb962e",
         "articleName": "Antisklimatte serveringsbrett rullator 4hjul Topro Troja Original M/S/Topro Olympos ATR M",
         "hmsArtNr": "176090",
         "isoCategoryTitleShort": null,
+        "attributes": {
+          "text": "Antisklimatte serveringsbrett rullator 4hjul Topro"
+        },
         "agreements": [
           {
-            "postTitle": "4. Rullator - utendørs bruk"
+            "postTitle": "3. Rullator - innendørs bruk til brukere med stor kroppsstørrelse og/eller høy vekt"
           },
           {
-            "postTitle": "3. Rullator - innendørs bruk til brukere med stor kroppsstørrelse og/eller høy vekt"
+            "postTitle": "4. Rullator - utendørs bruk"
           }
         ],
         "supplier": {
@@ -1048,165 +1120,13 @@
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/176090"
       },
       {
-        "id": "0830fcd2-d982-40d7-8dcc-4b8c99f2856f",
-        "articleName": "Basic Cushion 40x44",
-        "hmsArtNr": "171509",
-        "isoCategoryTitleShort": "Sittepute",
-        "agreements": [],
-        "supplier": {
-          "name": "Sunrise Medical AS"
-        },
-        "media": [
-          {
-            "uri": "https://vimeo.com/1071699037?share=copy",
-            "type": "VIDEO",
-            "source": "EXTERNALURL",
-            "priority": 0
-          },
-          {
-            "uri": "orig/29744.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/29744_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/29744_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "brugsvejl/29744.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "produktblade/29744.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 11
-          },
-          {
-            "uri": "video/29744.mp4",
-            "type": "VIDEO",
-            "source": "HMDB",
-            "priority": 12
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171509"
-      },
-      {
-        "id": "21c47622-ce1e-44ec-aa53-b81e62878207",
-        "articleName": "Topro terskeleliminator b70 h2.3-3.8",
-        "hmsArtNr": "014112",
-        "isoCategoryTitleShort": "Terskeleliminator",
-        "agreements": [
-          {
-            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
-          }
-        ],
-        "supplier": {
-          "name": "TOPRO Industri AS"
-        },
-        "media": [
-          {
-            "uri": "orig/30418.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/30418_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/30418_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "brugsvejl/30418.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "produktblade/30418.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 11
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/014112"
-      },
-      {
-        "id": "644852ff-983b-44d8-9147-7881ba45c225",
-        "articleName": "Topro høydejusterbart skråbrett b90 h5-20 l176",
-        "hmsArtNr": "243548",
-        "isoCategoryTitleShort": "Terskeleliminator",
-        "agreements": [
-          {
-            "postTitle": "3: Terskeleliminator - påkjøring fra en side, for utendørs bruk"
-          }
-        ],
-        "supplier": {
-          "name": "TOPRO Industri AS"
-        },
-        "media": [
-          {
-            "uri": "orig/30389.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/30389_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "orig/30389_3.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "orig/30389_4.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 10
-          },
-          {
-            "uri": "brugsvejl/30389.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 13
-          },
-          {
-            "uri": "produktblade/30389.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 14
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/243548"
-      },
-      {
         "id": "cee67363-db23-4156-99ea-ae797e333745",
         "articleName": "Varslingsmottaker Nora Flexiwatch, LIFE",
         "hmsArtNr": "289689",
         "isoCategoryTitleShort": "Varslingshjelpemiddel",
+        "attributes": {
+          "text": "Alarmmottaker som varsler med lyd og vibrasjon, samt symbol og tekst på touchskjerm.  Bæres på håndleddet og viser tiden som en vanlig smartklokke. Mottar alarm fra ulike LIFE-sendere. Skiller mellom ulike sendere / varslinger, som vandring inne, vandring ute, passasjealarm, fravær fra seng. Fungerer også som klokke (ikke smartklokke).  IP: 54\n"
+        },
         "agreements": [],
         "supplier": {
           "name": "Sensio AS, Sensio avd. Vestfold"
@@ -1250,6 +1170,9 @@
         "articleName": "CuroCell M4 CX10 90x200",
         "hmsArtNr": "286813",
         "isoCategoryTitleShort": "Madrass",
+        "attributes": {
+          "text": "Dynamisk overmadrass med luft. Innstillingene (pulserende, vekseltrykk og konstant lavtrykk) justeres  manuelt. Luften i cellene gjenbrukes, slik at strømforbruk og støy reduseres. Leveres med avtagbart, elastisk inkontinenstrekk og pumpe. Finnes i bredder mellom 80-120 cm. Lengde: 200/210. Maksimal brukervekt: 200 kg."
+        },
         "agreements": [],
         "supplier": {
           "name": "Mediq Norge AS"
@@ -1299,6 +1222,9 @@
         "articleName": "Gemino 20",
         "hmsArtNr": "177946",
         "isoCategoryTitleShort": "Rullator",
+        "attributes": {
+          "text": "Høyderegulerbar rullator. Finnes i tre størrelser. Leveres med kjørebrems, parkeringsbrems, sete og kurv som standard.  Hjul med kompakte dekk. "
+        },
         "agreements": [
           {
             "postTitle": "2. Rullator - innendørs bruk"
@@ -1366,47 +1292,13 @@
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/177946"
       },
       {
-        "id": "d41e4905-557b-4c34-b5d9-7594ee4adaa5",
-        "articleName": "Nova 30",
-        "hmsArtNr": "241475",
-        "isoCategoryTitleShort": "Løftestol",
-        "agreements": [],
-        "supplier": {
-          "name": "Sunrise Medical AS"
-        },
-        "media": [
-          {
-            "uri": "orig/54608.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 1
-          },
-          {
-            "uri": "orig/54608_2.jpg",
-            "type": "IMAGE",
-            "source": "HMDB",
-            "priority": 4
-          },
-          {
-            "uri": "brugsvejl/54608.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 7
-          },
-          {
-            "uri": "produktblade/54608.pdf",
-            "type": "PDF",
-            "source": "HMDB",
-            "priority": 8
-          }
-        ],
-        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/241475"
-      },
-      {
         "id": "9a6a72d3-d11d-4337-b4cf-615bc4cdae6a",
         "articleName": "Regncape Omega M-L",
         "hmsArtNr": "089700",
         "isoCategoryTitleShort": "Regntøy",
+        "attributes": {
+          "text": "Heldekkende regncape med ermer og hette. Ermene har strikk rundt håndleddene. Det er beregnet for bruk i rullestoler der seteryggen er høy, eventuelt med nakkestøtte. Regncapet har refleks foran og bak. Materialet er pustende, vind- og vanntett. Finnes i fire ulike størrelser. \n"
+        },
         "agreements": [],
         "supplier": {
           "name": "Varodd Velferdsteknologi AS"
@@ -1456,6 +1348,9 @@
         "articleName": "Impera",
         "hmsArtNr": "186868",
         "isoCategoryTitleShort": "Manuell rullestol",
+        "attributes": {
+          "text": "Rullestolen leveres med kompakte dekk, tippesikring og armlener som standard.\nSetehøyde med skifte av deler (uten pute): 39-51 cm."
+        },
         "agreements": [],
         "supplier": {
           "name": "Sunrise Medical AS"
@@ -1493,6 +1388,9 @@
         "articleName": "Compact Attract",
         "hmsArtNr": "229770",
         "isoCategoryTitleShort": "Manuell rullestol",
+        "attributes": {
+          "text": "Leveres som std. med klesbeskyttere, armlener, avtakbare benstøtter, høyderegulerbare kjørehåndtak, luftfylte dekk, tippesikringer og velcrorygg. Uten sittepute. Setehøyde ved skifte av deler (uten pute): 43-52 cm. Kan leveres i andre str. hvis ønsket setemål ikke er oppgitt, spesifiseres ved bestilling. Totalvekt i str. 45x45: 16,3."
+        },
         "agreements": [],
         "supplier": {
           "name": "Invacare AS"
@@ -1518,6 +1416,210 @@
           }
         ],
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/229770"
+      },
+      {
+        "id": "d41e4905-557b-4c34-b5d9-7594ee4adaa5",
+        "articleName": "Nova 30",
+        "hmsArtNr": "241475",
+        "isoCategoryTitleShort": "Løftestol",
+        "attributes": {
+          "text": "Stol med individuell elektrisk regulering av rygg, leggstøtter og oppreisningsfunksjon. Rett og vinklet seteløft, tiltfunksjon. Nedfellbare armlener. Svingbart understell som kan låses i ulike posisjoner. Tiltfunksjon.  Fås med trekk i stoff og hud. Inkontinenstrekk fås som tilbehør. Tåler brukervekt opptil 150 kg."
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Sunrise Medical AS"
+        },
+        "media": [
+          {
+            "uri": "orig/54608.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/54608_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "brugsvejl/54608.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "produktblade/54608.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 8
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/241475"
+      },
+      {
+        "id": "0830fcd2-d982-40d7-8dcc-4b8c99f2856f",
+        "articleName": "Basic Cushion 40x44",
+        "hmsArtNr": "171509",
+        "isoCategoryTitleShort": "Sittepute",
+        "attributes": {
+          "text": "Trykkfordelende sittepute i skummateriale med anatomisk form. Puten skal ikke innstilles. Passer til rullestoler med plan- og hengekøyesete. Høyde foran: 4,8 cm. Høyde bak: 4,7 cm. Leveres med to inkontinenstrekk. "
+        },
+        "agreements": [],
+        "supplier": {
+          "name": "Sunrise Medical AS"
+        },
+        "media": [
+          {
+            "uri": "https://vimeo.com/1071699037?share=copy",
+            "type": "VIDEO",
+            "source": "EXTERNALURL",
+            "priority": 0
+          },
+          {
+            "uri": "orig/29744.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/29744_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/29744_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/29744.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/29744.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 11
+          },
+          {
+            "uri": "video/29744.mp4",
+            "type": "VIDEO",
+            "source": "HMDB",
+            "priority": 12
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/171509"
+      },
+      {
+        "id": "644852ff-983b-44d8-9147-7881ba45c225",
+        "articleName": "Topro høydejusterbart skråbrett b90 h5-20 l176",
+        "hmsArtNr": "243548",
+        "isoCategoryTitleShort": "Terskeleliminator",
+        "attributes": {
+          "text": "Høydejusterbart skråbrett i aluminium med sklisikker overflate. Leveres i bredder fra 90 - 126 cm. Høyden er justerbar fra 5 - 20 cm."
+        },
+        "agreements": [
+          {
+            "postTitle": "3: Terskeleliminator - påkjøring fra en side, for utendørs bruk"
+          }
+        ],
+        "supplier": {
+          "name": "TOPRO Industri AS"
+        },
+        "media": [
+          {
+            "uri": "orig/30389.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/30389_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/30389_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "orig/30389_4.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "brugsvejl/30389.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 13
+          },
+          {
+            "uri": "produktblade/30389.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 14
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/243548"
+      },
+      {
+        "id": "21c47622-ce1e-44ec-aa53-b81e62878207",
+        "articleName": "Topro terskeleliminator b70 h2.3-3.8",
+        "hmsArtNr": "014112",
+        "isoCategoryTitleShort": "Terskeleliminator",
+        "attributes": {
+          "text": "Terskeliminator med påkjøring fra en side. Produsert i aluminium med sklisikker overflate. Leveres i bredder fra 70 - 90 cm. og høyder fra 1,5 - 16 cm. Festes med skruer eller dobbeltsidig tape."
+        },
+        "agreements": [
+          {
+            "postTitle": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk"
+          }
+        ],
+        "supplier": {
+          "name": "TOPRO Industri AS"
+        },
+        "media": [
+          {
+            "uri": "orig/30418.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/30418_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/30418_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "brugsvejl/30418.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "produktblade/30418.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 11
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/014112"
       }
     ]
   }

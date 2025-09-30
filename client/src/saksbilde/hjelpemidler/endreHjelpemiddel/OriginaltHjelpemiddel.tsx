@@ -1,8 +1,10 @@
-import { Box, Heading, HGrid, Link, VStack } from '@navikt/ds-react'
+import { Box, Heading, HGrid, VStack } from '@navikt/ds-react'
+import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
 import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes'
 import { Produkt } from '../../../types/types.internal'
 import { storForbokstavIOrd } from '../../../utils/formater'
+import DOMPurify from 'dompurify'
 
 export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
   const { hjelpemiddel, grunndataProdukt } = props
@@ -13,6 +15,8 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
       opplysning.ledetekst.nb.toLowerCase() !== 'funksjon' &&
       opplysning.ledetekst.nb.toLowerCase() !== 'grunnen til behovet'
   )
+
+  const sanitizeHTML = (html: string): string => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['em', 'strong', 'p'] })
 
   return (
     <>
@@ -39,10 +43,18 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
               </div>
               <VStack gap="space-4">
                 <Etikett size="small">{hjelpemiddel.produkt.artikkelnavn}</Etikett>
-                <Link href={`https://finnhjelpemiddel.nav.no/${hjelpemiddel.produkt.hmsArtNr}`} target="_blank">
+                <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
                   <Brødtekst>{`Hmsnr: ${hjelpemiddel.produkt.hmsArtNr}`}</Brødtekst>
-                </Link>
+                </FinnHjelpemiddelLink>
                 {grunndataProdukt && <Brødtekst>{grunndataProdukt?.leverandør}</Brødtekst>}
+                {grunndataProdukt?.produktinfoFraRammeavtale && (
+                  <div>
+                    <Etikett>Generell informasjon</Etikett>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: sanitizeHTML(grunndataProdukt?.produktinfoFraRammeavtale) }}
+                    />
+                  </div>
+                )}
               </VStack>
             </HGrid>
           </div>

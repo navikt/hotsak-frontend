@@ -1,9 +1,8 @@
-import { Box, Checkbox, HGrid, Link, Tag, VStack } from '@navikt/ds-react'
-import { Fragment } from 'react'
+import { Box, Checkbox, HGrid, Tag, VStack } from '@navikt/ds-react'
 import styled from 'styled-components'
 
-import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi.tsx'
-import { formaterRelativTid } from '../../../../utils/dato.ts'
+import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink.tsx'
+import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 
 interface AlternativProduktCardProps {
@@ -41,13 +40,13 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         </Etikett>
         <HGrid columns="1fr 1fr">
           <VStack gap="space-4">
-            <Link href={`https://finnhjelpemiddel.nav.no/${alternativtProdukt.hmsArtNr}`} target="_blank">
+            <FinnHjelpemiddelLink hmsnr={alternativtProdukt.hmsArtNr}>
               <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
-            </Link>
-            <VStack paddingBlock="space-16">
+            </FinnHjelpemiddelLink>
+            <VStack paddingBlock="space-12" gap="space-8">
               <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
               {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-                <Fragment key={lagerstatus?.location}>
+                <Box.New key={lagerstatus?.location}>
                   <Etikett>{lagerstatus?.location}: </Etikett>
                   <div>
                     {lagerstatus ? (
@@ -60,41 +59,39 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                       </Tag>
                     )}
                   </div>
-                </Fragment>
+                </Box.New>
               ))}
-              <div>
-                <Undertittel>{`Oppdatert: ${formaterRelativTid(alternativtProdukt?.wareHouseStock?.[0]?.updated)}`}</Undertittel>
-              </div>
             </VStack>
           </VStack>
           {produktbilde(alternativtProdukt) && (
-            <img
-              alt="Produktbilde"
-              src={produktbilde(alternativtProdukt)}
+            <div
               style={{
-                //height: '130px',
-                //maxWidth: '100%',
-                width: '150px',
-                objectFit: 'contain',
-                borderRadius: 'var(--ax-radius-8)',
+                height: '170px',
+                position: 'relative',
+                margin: 'auto',
+                marginBottom: 'var(--ax-space-16)',
               }}
-            />
+            >
+              <Bilde alt="Produktbilde" src={produktbilde(alternativtProdukt)} />
+            </div>
           )}
         </HGrid>
       </VStack>
-      <Box.New background="accent-soft" padding="space-12" borderRadius="xlarge">
+      <Box.New background="accent-soft" padding="space-8" borderRadius="xlarge">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </Box.New>
     </ProduktCard>
   )
 }
 
+const Bilde = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--ax-radius-12);
+`
+
 const ProduktCard = styled(Box.New)<{ selected?: boolean }>`
   border: ${({ selected }) => selected && '4px solid var(--ax-border-accent)'};
   margin: ${({ selected }) => selected && '-3px'};
-
-  &:hover {
-    border: 4px solid var(--ax-border-accent-strong);
-    margin: -3px;
-  }
 `

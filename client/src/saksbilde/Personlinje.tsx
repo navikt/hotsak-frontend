@@ -127,9 +127,9 @@ function Container({ children }: { children?: ReactNode }) {
     <HStack
       align="center"
       flexShrink="0"
+      minWidth={hotsakTotalMinWidth}
       height={søknadslinjeHøyde}
       gap="4"
-      minWidth={hotsakTotalMinWidth}
       paddingInline="8"
       style={{
         background: 'var(--ax-bg-neutral-soft)',

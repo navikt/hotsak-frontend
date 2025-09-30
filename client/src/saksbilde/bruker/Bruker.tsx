@@ -93,7 +93,10 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
       <Strek />
 
       <Box paddingBlock="4" paddingInline={{ xs: '0 4', md: '0 16' }}>
-        <List as="ul" size="small" title="Formidlers vurdering">
+        <Heading level="2" size="small" spacing>
+          Formidlers vurdering
+        </Heading>
+        <List as="ul" size="small">
           {vilkår.map((vilkårItem) => (
             <List.Item key={vilkårItem.vilkårtype}>{vilkårItem.tekst.nb}</List.Item>
           ))}

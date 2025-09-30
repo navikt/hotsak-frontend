@@ -9,6 +9,7 @@ export const hotsakHistorikkMinWidth = '492px'
 export const sidebarMinWidth = '350px'
 export const hotsakHistorikkMaxWidth = '700px'
 export const hotsakBarnebrilleHistorikkMaxWidth = '600px'
+export const hotsakMaxWidth = '1800px'
 export const headerHøydeRem = '3'
 
 export const headerHøyde = '48px'

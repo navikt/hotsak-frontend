@@ -3,6 +3,7 @@ import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
+import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
@@ -14,7 +15,6 @@ import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
-import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 
 export function Høyrekolonne() {
   const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())

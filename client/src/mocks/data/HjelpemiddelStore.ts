@@ -54,6 +54,9 @@ function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelp
     articleName: 'Dummyartikkel for ' + hmsArtNr,
     hmsArtNr,
     isoCategoryTitleShort: 'isoCategoryTitleShort',
+    attributes: {
+      text: 'Beskrivelse av hjelpemidler på denne rammeavtalen. <p>Kan også bestå av flere paragrafer</p> ',
+    },
     supplier: {
       name: 'Leverandøren AS',
     },

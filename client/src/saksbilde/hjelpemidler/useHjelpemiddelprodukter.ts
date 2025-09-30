@@ -18,6 +18,9 @@ const finnHjelpemiddelprodukterQuery = gql`
       articleName
       hmsArtNr
       isoCategoryTitleShort
+      attributes {
+        text
+      }
       agreements {
         postTitle
       }
@@ -89,6 +92,7 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): ProdukterResponse {
           isotittel: produkt.isoCategoryTitleShort || '',
           posttitler: produkt.agreements?.map((agreement) => agreement?.postTitle || '') || [],
           produkturl: produkt.productVariantURL || '',
+          produktinfoFraRammeavtale: produkt.attributes?.text ?? undefined,
           artikkelnavn: produkt.articleName,
           leverandør: produkt.supplier.name,
           produktbildeUri: produktbilde(produkt.media || []),

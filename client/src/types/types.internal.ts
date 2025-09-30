@@ -637,6 +637,7 @@ export interface Produkt {
   isotittel: string
   produkturl: string
   posttitler?: string[]
+  produktinfoFraRammeavtale?: string
   artikkelnavn: string
   leverandør?: string
   produktbildeUri?: string

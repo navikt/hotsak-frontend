@@ -12,6 +12,7 @@
     "@navikt/ds-react": "7.31.0",
     "date-fns": "4.1.0",
     "debug": "4.4.1",
+    "dompurify": "^3.2.7",
     "fetch-intercept": "2.4.0",
     "graphql-request": "7.2.0",
     "react": "19.1.1",

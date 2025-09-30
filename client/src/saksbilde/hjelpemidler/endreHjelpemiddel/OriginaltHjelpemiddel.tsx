@@ -4,7 +4,7 @@ import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
 import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes'
 import { Produkt } from '../../../types/types.internal'
 import { storForbokstavIOrd } from '../../../utils/formater'
-import DOMPurify from 'dompurify'
+//import DOMPurify from 'dompurify'
 
 export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
   const { hjelpemiddel, grunndataProdukt } = props
@@ -16,7 +16,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
       opplysning.ledetekst.nb.toLowerCase() !== 'grunnen til behovet'
   )
 
-  const sanitizeHTML = (html: string): string => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['em', 'strong', 'p'] })
+  // const sanitizeHTML = (html: string): string => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['em', 'strong', 'p'] })
 
   return (
     <>
@@ -47,14 +47,14 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
                   <Brødtekst>{`Hmsnr: ${hjelpemiddel.produkt.hmsArtNr}`}</Brødtekst>
                 </FinnHjelpemiddelLink>
                 {grunndataProdukt && <Brødtekst>{grunndataProdukt?.leverandør}</Brødtekst>}
-                {grunndataProdukt?.produktinfoFraRammeavtale && (
+                {/*grunndataProdukt?.produktinfoFraRammeavtale && (
                   <div>
                     <Etikett>Generell informasjon</Etikett>
                     <div
                       dangerouslySetInnerHTML={{ __html: sanitizeHTML(grunndataProdukt?.produktinfoFraRammeavtale) }}
                     />
                   </div>
-                )}
+                )*/}
               </VStack>
             </HGrid>
           </div>

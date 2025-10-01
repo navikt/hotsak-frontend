@@ -14,17 +14,19 @@
   },
   "scripts": {
     "build:client": "npm --prefix client run build",
-    "build:server": "npm --prefix server run build",
+    "build:server": "go build -C server ./...",
     "build": "npm-run-all build:*",
     "test:client": "npm --prefix client run test:ci",
-    "test": "npm-run-all test:client",
+    "test:server": "go test -C server ./...",
+    "test": "npm-run-all test:*",
     "dev": "npm --prefix client run dev",
+    "dev:server": "<read .env> && go run -C ./server .",
     "cypress:open": "npm --prefix client run cypress:open",
     "cypress:run": "npm --prefix client run cypress:run",
     "prepare": "husky || true",
     "lint:client": "npm --prefix client run lint",
-    "lint:server": "npm --prefix server run lint",
-    "lint": "npm-run-all lint:client lint:server"
+    "lint:server": "go vet -C server ./...",
+    "lint": "npm-run-all lint:*"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,md}": [

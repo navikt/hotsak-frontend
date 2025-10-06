@@ -12,6 +12,7 @@ import {
   Produkt as ProduktType,
   Sak,
 } from '../../types/types.internal.ts'
+import { storForbokstavIOrd } from '../../utils/formater.ts'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
@@ -19,10 +20,9 @@ import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
 import { TilbehørListe } from './TilbehørListe.tsx'
-import type { AlternativeProduct } from './useAlternativeProdukter.ts'
+import { type AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
-import { storForbokstavIOrd } from '../../utils/formater.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -30,6 +30,7 @@ interface HjelpemiddelProps {
   produkter: ProduktType[]
   alternativeProdukter: AlternativeProduct[]
   harOppdatertLagerstatus: boolean
+  minmaxStyrt: boolean
 }
 
 export function Hjelpemiddel({
@@ -38,6 +39,7 @@ export function Hjelpemiddel({
   produkter,
   alternativeProdukter,
   harOppdatertLagerstatus,
+  minmaxStyrt,
 }: HjelpemiddelProps) {
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
@@ -84,6 +86,11 @@ export function Hjelpemiddel({
             />
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              {minmaxStyrt && (
+                <Tag variant="neutral" size="small">
+                  Lagervare
+                </Tag>
+              )}
               {harAlternativeProdukter && (
                 <Tag size="small" variant="info">
                   {harOppdatertLagerstatus
@@ -140,7 +147,7 @@ export function Hjelpemiddel({
                       tekst: 'alterrnative-produkter-modal',
                       alternativerTilgjengelig: alternativeProdukter.length,
                       alternativer: alternativeProdukter.map((p) => {
-                        return (p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor)
+                        return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
                       }),
                     })
                     setVisAlternativerModal(true)

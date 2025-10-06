@@ -106,6 +106,7 @@ export interface Query {
   __typename?: 'Query'
   alternativeProducts: Array<AlternativeProduct>
   alternativeProductsPage: AlternativeProductPage
+  fetchAlternativeProducts: Array<AlternativeProduct>
   getHmsArtnrMappingBySourceHmsArtnr: Array<HmsArtnrMapping>
   getHmsArtnrMappingsById?: Maybe<HmsArtnrMapping>
   productStock: ProductStock
@@ -121,6 +122,10 @@ export interface QueryAlternativeProductsPageArgs {
   from?: InputMaybe<Scalars['Int']['input']>
   hmsnrs: Array<Scalars['String']['input']>
   size?: InputMaybe<Scalars['Int']['input']>
+}
+
+export interface QueryFetchAlternativeProductsArgs {
+  hmsnrs: Array<Scalars['String']['input']>
 }
 
 export interface QueryGetHmsArtnrMappingBySourceHmsArtnrArgs {
@@ -199,4 +204,18 @@ export type FinnAlternativeProdukterSideQuery = {
       } | null> | null
     }>
   }
+}
+
+export type HentProduktInfoQueryVariables = Exact<{
+  hmsnrs: Array<Scalars['String']['input']> | Scalars['String']['input']
+}>
+
+export type HentProduktInfoQuery = {
+  __typename?: 'Query'
+  fetchAlternativeProducts: Array<{
+    __typename?: 'AlternativeProduct'
+    hmsArtNr: string
+    id: string
+    wareHouseStock?: Array<{ __typename?: 'WareHouseStock'; location: string; minmax: boolean } | null> | null
+  }>
 }

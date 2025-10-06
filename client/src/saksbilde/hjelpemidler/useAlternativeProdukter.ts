@@ -1,15 +1,17 @@
 import { gql } from 'graphql-request'
 import { useMemo, useState } from 'react'
 
-import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping.ts'
+import { calculateOffset, PageResponse } from '../../felleskomponenter/Page.ts'
 import type {
   FinnAlternativeProdukterSideQuery,
   FinnAlternativeProdukterSideQueryVariables,
+  HentProduktInfoQuery,
+  HentProduktInfoQueryVariables,
 } from '../../generated/alternativprodukter.ts'
+import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 import { unique } from '../../utils/array.ts'
-import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
-import { calculateOffset, PageResponse } from '../../felleskomponenter/Page.ts'
+import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping.ts'
 
 const finnAlternativeProdukterSideQuery = gql`
   query FinnAlternativeProdukterSide($hmsnrs: [String!]!, $from: Int, $size: Int) {
@@ -43,9 +45,24 @@ const finnAlternativeProdukterSideQuery = gql`
     }
   }
 `
+const hentProduktInfo = gql`
+  query HentProduktInfo($hmsnrs: [String!]!) {
+    fetchAlternativeProducts(hmsnrs: $hmsnrs) {
+      hmsArtNr
+      id
+      wareHouseStock {
+        location
+        minmax
+      }
+    }
+  }
+`
 
 export type AlternativeProduct = FinnAlternativeProdukterSideQuery['alternativeProductsPage']['content'][0]
 export type AlternativeProdukterByHmsArtNr = Record<string, AlternativeProduct[]>
+export type Produktinfo = HentProduktInfoQuery['fetchAlternativeProducts'][0]
+export type ProduktinfoByHmsArtNr = Record<string, Produktinfo>
+type ProduktLagerinfo = NonNullable<Produktinfo['wareHouseStock']>
 
 /**
  * Hvis argumentet `$size` eller feltet `total` i query `FinnAlternativeProdukterSide` er mindre eller lik enn denne
@@ -73,6 +90,48 @@ const ingenAlternativeProdukter: AlternativeProdukter = {
 }
 
 export const ingenAlternativeProdukterForHmsArtNr: AlternativeProduct[] = []
+
+export function useProduktLagerInfo(hmsnrs: string[]): Lagerinfo {
+  const { data, error, isLoading } = useGraphQLQuery<HentProduktInfoQuery, HentProduktInfoQueryVariables>(
+    grunndataClient.alternativprodukter,
+    () =>
+      hmsnrs.length > 0
+        ? {
+            document: hentProduktInfo,
+            variables: { hmsnrs: unique(hmsnrs) },
+          }
+        : null
+  )
+
+  const { lagerlokasjoner } = useGjeldendeOebsEnhet()
+
+  const lagerstatusForEnhet = (produkt: Produktinfo): ProduktLagerinfo =>
+    produkt.wareHouseStock?.filter(
+      (lagerstatus) => lagerstatus?.location && lagerlokasjoner.includes(lagerstatus.location.toLocaleLowerCase())
+    ) ?? []
+
+  function produktinfoByHmsArtNr(produkter: Produktinfo[]): ProduktinfoByHmsArtNr {
+    return Object.fromEntries(
+      produkter.map((produkt) => [produkt.hmsArtNr, { ...produkt, wareHouseStock: lagerstatusForEnhet(produkt) }])
+    )
+  }
+
+  return useMemo(() => {
+    if (error) {
+      console.warn(`Kunne ikke hente produktinfo produkter:`, error)
+    }
+    if (!data) {
+      return { produkter: {}, isLoading }
+    }
+
+    const produkterByHmsArtNr = produktinfoByHmsArtNr(data.fetchAlternativeProducts)
+
+    return {
+      produkter: produkterByHmsArtNr,
+      isLoading,
+    }
+  }, [data, error, isLoading])
+}
 
 export function useAlternativeProdukter(
   hmsnrs: string[],
@@ -124,4 +183,9 @@ export function useAlternativeProdukter(
       onPageChange: setPageNumber,
     }
   }, [data, error, isLoading, pageNumber, pageSize, kunProdukterPåLager])
+}
+
+export interface Lagerinfo {
+  isLoading: boolean
+  produkter: ProduktinfoByHmsArtNr
 }

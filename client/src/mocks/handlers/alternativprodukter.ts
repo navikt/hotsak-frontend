@@ -1,12 +1,16 @@
 import { delay, graphql, HttpResponse } from 'msw'
 
-// import alternativeProdukter from '../data/alternativeProductsPage_1.json'
-import alternativeProdukter from '../data/alternativeProductsPage_2.json'
-import type { StoreHandlersFactory } from '../data'
 import type {
   FinnAlternativeProdukterSideQuery,
   FinnAlternativeProdukterSideQueryVariables,
+  HentProduktInfoQuery,
+  HentProduktInfoQueryVariables,
 } from '../../generated/alternativprodukter.ts'
+import { Produktinfo } from '../../saksbilde/hjelpemidler/useAlternativeProdukter.ts'
+import type { StoreHandlersFactory } from '../data'
+import alternativeProdukter from '../data/alternativeProductsPage_2.json'
+import { lagUUID } from '../data/felles.ts'
+import produktInfo from '../data/fetchAlternativeProducts.json'
 
 export const alternativprodukterHandlers: StoreHandlersFactory = () => [
   graphql.query<FinnAlternativeProdukterSideQuery, FinnAlternativeProdukterSideQueryVariables>(
@@ -33,4 +37,26 @@ export const alternativprodukterHandlers: StoreHandlersFactory = () => [
       })
     }
   ),
+
+  graphql.query<HentProduktInfoQuery, HentProduktInfoQueryVariables>('HentProduktInfo', async ({ variables }) => {
+    const { hmsnrs } = variables
+
+    const hmsnrsArray = Array.isArray(hmsnrs) ? hmsnrs : [hmsnrs]
+
+    const produkt = produktInfo.data.fetchAlternativeProducts.at(0)
+
+    const content: Produktinfo[] = hmsnrsArray.map((hmsnr) => {
+      return {
+        ...produkt,
+        id: produkt!.id ?? lagUUID(),
+        hmsArtNr: hmsnr,
+      }
+    })
+
+    return HttpResponse.json({
+      data: {
+        fetchAlternativeProducts: content,
+      },
+    })
+  }),
 ]

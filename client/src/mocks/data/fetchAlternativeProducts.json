@@ -1,0 +1,84 @@
+{
+  "data": {
+    "fetchAlternativeProducts": [
+      {
+        "hmsArtNr": "214967",
+        "id": "9283eacc-5acb-4a0c-8d0a-7f0821916957",
+        "wareHouseStock": [
+          {
+            "location": "Østfold",
+            "minmax": true
+          },
+          {
+            "location": "Oslo",
+            "minmax": true
+          },
+          {
+            "location": "Hedmark",
+            "minmax": true
+          },
+          {
+            "location": "Oppland",
+            "minmax": true
+          },
+          {
+            "location": "Buskerud",
+            "minmax": true
+          },
+          {
+            "location": "Vestfold",
+            "minmax": true
+          },
+          {
+            "location": "Telemark",
+            "minmax": true
+          },
+          {
+            "location": "Aust-Agder",
+            "minmax": true
+          },
+          {
+            "location": "Vest-Agder",
+            "minmax": true
+          },
+          {
+            "location": "Rogaland",
+            "minmax": false
+          },
+          {
+            "location": "Hordaland",
+            "minmax": true
+          },
+          {
+            "location": "Sogn og Fjordane",
+            "minmax": true
+          },
+          {
+            "location": "Møre og Romsdal",
+            "minmax": true
+          },
+          {
+            "location": "Sør-Trøndelag",
+            "minmax": true
+          },
+          {
+            "location": "Nord-Trøndelag",
+            "minmax": true
+          },
+          {
+            "location": "Nordland",
+            "minmax": true
+          },
+          {
+            "location": "Troms",
+            "minmax": true
+          },
+          {
+            "location": "Finnmark",
+            "minmax": true
+          }
+        ]
+      }
+    ]
+  }
+}

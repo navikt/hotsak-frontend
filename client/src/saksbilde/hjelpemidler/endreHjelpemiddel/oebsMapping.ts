@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import type { AlternativeProduct, AlternativeProdukterByHmsArtNr } from '../useAlternativeProdukter.ts'
 import { useTilgangContext } from '../../../tilgang/useTilgang.ts'
+import type { AlternativeProduct, AlternativeProdukterByHmsArtNr } from '../useAlternativeProdukter.ts'
 
 interface OebsEnhet {
   readonly navn: string

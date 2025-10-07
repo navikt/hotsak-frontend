@@ -88,7 +88,7 @@ export function Hjelpemiddel({
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
               {minmaxStyrt && (
                 <Tag variant="neutral" size="small">
-                  Lagervare
+                  Min/max lagervare
                 </Tag>
               )}
               {harAlternativeProdukter && (

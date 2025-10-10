@@ -1,0 +1,30 @@
+.togglePanel {
+  padding-left: var(--ax-space-24);
+  border-left: 1px solid var(--ax-border-neutral-subtle);
+}
+
+.resizeHandle {
+  background-color: var(--ax-bg-neutral-moderate);
+  flex: 0 0 var(--ax-space-24);
+  position: relative;
+  outline: none;
+
+  &[data-resize-handle-active] {
+    background-color: var(--ax-border-accent-subtle);
+  }
+
+  /*.resizeHandle-inner {
+    background-color: hotpink;
+    transition: background-color 0.2s linear;
+  }*/
+}
+
+.søknadContainer {
+  padding: 0 var(--ax-space-16);
+  padding-top: 1rem;
+  box-sizing: border-box;
+}
+
+.fullHeight {
+  height: 100%;
+}

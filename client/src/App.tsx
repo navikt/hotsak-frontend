@@ -16,6 +16,9 @@ import { RequireAuth } from './RequireAuth.tsx'
 import { SakTitle } from './SakTitle.tsx'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
+import { useEksperimenter } from './eksperimentelt/useEksperimenter.ts'
+import { EksperimentellApp } from './eksperimentelt/EksperimentellApp.tsx'
+import { useMiljø } from './utils/useMiljø.ts'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -122,4 +125,14 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
   )
 }
 
-export default withRoutingAndState(App)
+function AppVelger() {
+  const [eksperimentell] = useEksperimenter()
+  const { erProd } = useMiljø()
+
+  if (erProd) {
+    return <App />
+  }
+  return eksperimentell ? <EksperimentellApp /> : <App />
+}
+
+export default withRoutingAndState(AppVelger)

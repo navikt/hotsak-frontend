@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
-import { hotsakTotalMinWidth, søknadslinjeHøyde } from '../GlobalStyles'
+import { søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
+import styles from './personlinje.module.css'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -127,15 +128,11 @@ function Container({ children }: { children?: ReactNode }) {
     <HStack
       align="center"
       flexShrink="0"
-      minWidth={hotsakTotalMinWidth}
+      //minWidth={hotsakTotalMinWidth}
       height={søknadslinjeHøyde}
       gap="4"
-      paddingInline="8"
-      style={{
-        background: 'var(--ax-bg-neutral-soft)',
-        borderBottom: '1px solid var(--ax-border-neutral-subtle)',
-        color: 'var(--ax-text-neutral)',
-      }}
+      paddingInline="space-8"
+      className={styles.container}
     >
       {Children.map(children, (child, index) => (
         <>

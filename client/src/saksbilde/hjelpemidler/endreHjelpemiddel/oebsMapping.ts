@@ -36,17 +36,11 @@ const oebsEnheter: Readonly<Record<string, OebsEnhet>> = {
   },
   '4707': {
     navn: 'Nav hjelpemiddelsentral Vestfold og Telemark',
-    lagerlokasjoner: [
-      { oebsEnhetsnummer: '07', lokasjon: 'Vestfold' },
-      { oebsEnhetsnummer: '08', lokasjon: 'Telemark' },
-    ],
+    lagerlokasjoner: [{ oebsEnhetsnummer: '07', lokasjon: 'Vestfold' }],
   },
   '4710': {
     navn: 'Nav hjelpemiddelsentral Agder',
-    lagerlokasjoner: [
-      { oebsEnhetsnummer: '09', lokasjon: 'Aust-Agder' },
-      { oebsEnhetsnummer: '10', lokasjon: 'Vest-Agder' },
-    ],
+    lagerlokasjoner: [{ oebsEnhetsnummer: '10', lokasjon: 'Vest-Agder' }],
   },
   '4711': {
     navn: 'Nav hjelpemiddelsentral Rogaland',

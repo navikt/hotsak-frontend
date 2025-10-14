@@ -1,11 +1,4 @@
-import {
-  ClockDashedIcon,
-  FileIcon,
-  FolderFileIcon,
-  InformationIcon,
-  InformationSquareIcon,
-  WheelchairIcon,
-} from '@navikt/aksel-icons'
+import { ClockDashedIcon, FileIcon, FolderFileIcon, InformationSquareIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'

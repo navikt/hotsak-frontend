@@ -11,9 +11,9 @@ import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 import { Bruker } from '../../../../saksbilde/bruker/Bruker'
 import { Formidler } from '../../../../saksbilde/formidler/Formidler'
 import HjelpemiddelListe from '../../../../saksbilde/hjelpemidler/HjelpemiddelListe'
-import { Høyrekolonne } from '../../../../saksbilde/høyrekolonne/Høyrekolonne'
 import { Søknadslinje } from '../../../../saksbilde/Søknadslinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
+import { InfokolonneEksperiment } from './infokolonne/InfokolonneEksperiment'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { TingÅGjøreEksperiment } from './TingÅGjøraEksperiment'
@@ -35,7 +35,7 @@ export function SaksbehandlingEksperiment() {
           {venstreKolonne && (
             <>
               <Panel defaultSize={30} minSize={10} order={1}>
-                <Høyrekolonne />
+                <InfokolonneEksperiment />
               </Panel>
               <ResizeHandle />
             </>

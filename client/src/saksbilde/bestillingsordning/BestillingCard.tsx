@@ -7,7 +7,7 @@ import { Tekst } from '../../felleskomponenter/typografi'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { AvvisBestilling, HjelpemiddelArtikkel, OppgaveStatusType, Sak } from '../../types/types.internal'
+import { AvvisBestilling, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
@@ -22,7 +22,6 @@ export interface BestillingCardProps {
   bestilling: Sak
   lesevisning: boolean
   harNotatUtkast?: boolean
-  hjelpemiddelArtikler: HjelpemiddelArtikkel[] | undefined
 }
 
 export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {

@@ -9,13 +9,11 @@ import { ScrollContainer } from '../felleskomponenter/ScrollContainer'
 import { hotsakHistorikkMaxWidth, hotsakVenstremenyWidth, hovedInnholdMaxWidth, sidebarMinWidth } from '../GlobalStyles'
 import { useSaksbehandlerHarSkrivetilgang } from '../tilgang/useSaksbehandlerHarSkrivetilgang'
 import { Sakstype } from '../types/types.internal'
-import { formaterAdresse } from '../utils/formater'
 import { BestillingCard } from './bestillingsordning/BestillingCard'
 import { Saksvarsler } from './bestillingsordning/Saksvarsler'
 import { Bruker } from './bruker/Bruker'
 import { Formidler } from './formidler/Formidler'
 import HjelpemiddelListe from './hjelpemidler/HjelpemiddelListe'
-import { useHjelpemiddeloversikt } from './høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { Høyrekolonne } from './høyrekolonne/Høyrekolonne'
 import { useNotater } from './høyrekolonne/notat/useNotater'
 import { SakLoader } from './SakLoader'
@@ -23,10 +21,7 @@ import { Søknadslinje } from './Søknadslinje'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 import { useSøknadsVarsler } from './varsler/useVarsler'
-import { FormidlerCard } from './venstremeny/FormidlerCard'
-import { GreitÅViteCard } from './venstremeny/GreitÅViteCard'
-import { LeveringCard } from './venstremeny/LeveringCard'
-import { SøknadCard } from './venstremeny/SøknadCard'
+import { Søknadsinfo } from './venstremeny/Søknadsinfo'
 import { VedtakCard } from './venstremeny/VedtakCard'
 import { Venstremeny } from './venstremeny/Venstremeny'
 
@@ -34,7 +29,6 @@ const SaksbildeContent = memo(() => {
   const { sak, isLoading: isSakLoading } = useSak()
   const { behovsmelding, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
-  const { hjelpemiddelArtikler } = useHjelpemiddeloversikt(sak?.data?.bruker?.fnr)
   const { varsler, harVarsler } = useSøknadsVarsler()
   const { harUtkast } = useNotater(sak?.data.sakId)
 
@@ -47,7 +41,6 @@ const SaksbildeContent = memo(() => {
 
   const erBestilling = sak.data.sakstype === Sakstype.BESTILLING
   const levering = behovsmelding.levering
-  const formidler = levering.hjelpemiddelformidler
 
   return (
     <HGrid
@@ -60,36 +53,12 @@ const SaksbildeContent = memo(() => {
         </HGrid>
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
           <Venstremeny gap="space-24">
-            <SøknadCard
-              sakId={sak.data.sakId}
-              sakstype={sak.data.sakstype}
-              søknadGjelder={sak.data.søknadGjelder}
-              søknadMottatt={sak.data.opprettet}
-              funksjonsnedsettelser={behovsmelding.brukersituasjon.funksjonsnedsettelser}
-              telefon={sak?.data.bruker.telefon}
-            />
-            <FormidlerCard
-              tittel={erBestilling ? 'Bestiller' : 'Formidler'}
-              stilling={formidler.stilling}
-              formidlerNavn={formidler.navn}
-              formidlerTelefon={formidler.telefon}
-              kommune={formidler.adresse.poststed}
-            />
-            <LeveringCard
-              levering={behovsmelding.levering}
-              adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
-            />
-            <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
+            <Søknadsinfo />
             {sak.data.sakstype === Sakstype.SØKNAD && (
               <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
             )}
             {erBestilling && (
-              <BestillingCard
-                bestilling={sak.data}
-                hjelpemiddelArtikler={hjelpemiddelArtikler}
-                lesevisning={!harSkrivetilgang}
-                harNotatUtkast={harUtkast}
-              />
+              <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
             )}
           </Venstremeny>
           <section>

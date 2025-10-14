@@ -62,9 +62,11 @@ export function OppgaveTable(props: OppgaveTableProps) {
             <Table.DataCell>
               <HStack gap="2">
                 <OppgavetypeTag oppgavetype={oppgave.oppgavetype} />
-                <Tag size="small" variant="neutral">
-                  {oppgave.gjelder}
-                </Tag>
+                {oppgave.gjelder && (
+                  <Tag size="small" variant="neutral">
+                    {oppgave.gjelder}
+                  </Tag>
+                )}
               </HStack>
             </Table.DataCell>
             <Table.DataCell width={150}>

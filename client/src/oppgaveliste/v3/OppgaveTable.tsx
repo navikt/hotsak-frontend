@@ -94,6 +94,7 @@ export function OppgaveTable(props: OppgaveTableProps) {
 function OppgaveDetails({ oppgave }: { oppgave: OppgaveV2 }) {
   return (
     <VStack gap="2">
+      <OppgaveDetailsItem label="OppgaveID:" value={oppgave.oppgaveId} />
       <OppgaveDetailsItem label="JournalpostID:" value={oppgave.journalpostId} />
       <OppgaveDetailsItem label="Saksnummer:" value={oppgave.sakId} />
       <OppgaveDetailsItem label="Beskrivelse:" value={oppgave.beskrivelse} />

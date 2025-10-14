@@ -1,6 +1,5 @@
-import { CaretLeftRightIcon } from '@navikt/aksel-icons'
-import { Box, Button, HGrid, HStack, VStack } from '@navikt/ds-react'
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+import { Box, Button, HGrid, HStack } from '@navikt/ds-react'
+import { Panel, PanelGroup } from 'react-resizable-panels'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { Personlinje } from '../../../../saksbilde/Personlinje'
 import { useSak } from '../../../../saksbilde/useSak'
@@ -13,6 +12,7 @@ import { Formidler } from '../../../../saksbilde/formidler/Formidler'
 import HjelpemiddelListe from '../../../../saksbilde/hjelpemidler/HjelpemiddelListe'
 import { Søknadslinje } from '../../../../saksbilde/Søknadslinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
+import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
 import { InfokolonneEksperiment } from './infokolonne/InfokolonneEksperiment'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
@@ -124,15 +124,5 @@ export function SaksbehandlingEksperiment() {
         </Box.New>
       </HStack>
     </>
-  )
-}
-
-const ResizeHandle = () => {
-  return (
-    <PanelResizeHandle className={styles.resizeHandle}>
-      <VStack>
-        <CaretLeftRightIcon />
-      </VStack>
-    </PanelResizeHandle>
   )
 }

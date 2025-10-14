@@ -1,0 +1,15 @@
+.resizeHandle {
+  background-color: var(--ax-bg-neutral-moderate);
+  flex: 0 0 var(--ax-space-24);
+  position: relative;
+  outline: none;
+
+  &[data-resize-handle-active] {
+    background-color: var(--ax-border-accent-subtle);
+  }
+
+  /*.resizeHandle-inner {
+    background-color: hotpink;
+    transition: background-color 0.2s linear;
+  }*/
+}

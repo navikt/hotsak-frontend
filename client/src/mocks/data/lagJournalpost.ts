@@ -1,6 +1,6 @@
 import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
-import { lagTilfeldigInteger } from './felles.ts'
+import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { enheter } from './enheter.ts'
 import { Oppgaveprioritet, Oppgavestatus, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
@@ -20,10 +20,10 @@ export type InsertHendelse = Omit<LagretHendelse, 'id'>
 
 export function lagJournalpost(): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
-  const now = new Date()
+  const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   return {
     journalstatus: JournalpostStatusType.MOTTATT,
-    journalpostOpprettetTid: now.toISOString(),
+    journalpostOpprettetTid,
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
     // enhet: enheter.agder,
@@ -42,7 +42,7 @@ export function lagJournalpost(): InsertJournalpost {
       oppgavestatus: Oppgavestatus.OPPRETTET,
       prioritet: Oppgaveprioritet.NORMAL,
       tildeltEnhet: enheter.agder,
-      aktivDato: now.toISOString(),
+      aktivDato: journalpostOpprettetTid,
       versjon: 1,
     },
   }

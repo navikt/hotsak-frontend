@@ -79,3 +79,23 @@ export const http: HttpClient = {
     return request('DELETE', url, undefined, options)
   },
 }
+
+export type QueryParameter = string | number | boolean | null | undefined
+export type QueryParameters = Record<string, QueryParameter | QueryParameter[]>
+export function createQueryString(record: QueryParameters): string {
+  const params = new URLSearchParams()
+  Object.entries(record).forEach(([name, valueOrValues]) => {
+    if (valueOrValues) {
+      if (Array.isArray(valueOrValues)) {
+        valueOrValues.forEach((value) => {
+          if (value) {
+            params.append(name, value.toString())
+          }
+        })
+      } else {
+        params.set(name, valueOrValues.toString())
+      }
+    }
+  })
+  return params.toString()
+}

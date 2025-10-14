@@ -1,42 +1,68 @@
-import { Chips, HStack, Search } from '@navikt/ds-react'
-import { FormEventHandler } from 'react'
+import { HStack, Search } from '@navikt/ds-react'
+import { type FormEventHandler } from 'react'
+
+import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
+import { Oppgaveprioritet, OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export interface OppgaveFilterProps {
-  søk?: boolean
+  oppgavetyper?: Oppgavetype[]
+  gjelder?: string[]
+  oppgaveprioritet?: Oppgaveprioritet[]
+  onSøk?: FormEventHandler
 }
 
 export function OppgaveFilter(props: OppgaveFilterProps) {
-  const { søk } = props
-  const sok: FormEventHandler = (e) => e.preventDefault()
+  const {
+    oppgavetypeFilter,
+    gjelderFilter,
+    oppgaveprioritetFilter,
+    setOppgavetypeFilter,
+    setGjelderFilter,
+    setOppgaveprioritetFilter,
+  } = useOppgaveFilterContext()
+  const { oppgavetyper = [], gjelder = [], oppgaveprioritet = [], onSøk } = props
   return (
     <>
-      {søk && (
-        <HStack as="form" role="search" gap="2" align="center" onSubmit={sok} marginBlock="5">
+      {onSøk && (
+        <HStack as="form" role="search" gap="2" align="center" marginBlock="5" onSubmit={(e) => e.preventDefault()}>
           <div>
-            <Search label="Søk" size="small" variant="secondary" />
+            <Search label="Søk" size="small" variant="secondary" name="søkeord" />
           </div>
         </HStack>
       )}
       <HStack gap="5">
         <div>
-          <Chips size="small">
-            <Chips.Toggle>Journalføring</Chips.Toggle>
-            <Chips.Toggle>Behandle sak</Chips.Toggle>
-            <Chips.Toggle>Godkjenne vedtak</Chips.Toggle>
-          </Chips>
+          <FilterChips
+            options={oppgavetyper}
+            labels={OppgavetypeLabel}
+            selected={oppgavetypeFilter}
+            handleChange={setOppgavetypeFilter}
+            size="small"
+            checkmark
+            multiple
+          />
         </div>
         <div>
-          <Chips size="small">
-            <Chips.Toggle>Bestilling</Chips.Toggle>
-            <Chips.Toggle>Digital søknad</Chips.Toggle>
-          </Chips>
+          <FilterChips
+            options={gjelder}
+            selected={gjelderFilter}
+            handleChange={setGjelderFilter}
+            size="small"
+            checkmark
+            multiple
+          />
         </div>
         <div>
-          <Chips size="small">
-            <Chips.Toggle>Lav</Chips.Toggle>
-            <Chips.Toggle>Normal</Chips.Toggle>
-            <Chips.Toggle>Høy</Chips.Toggle>
-          </Chips>
+          <FilterChips
+            options={oppgaveprioritet}
+            labels={OppgaveprioritetLabel}
+            selected={oppgaveprioritetFilter}
+            handleChange={setOppgaveprioritetFilter}
+            size="small"
+            checkmark
+            multiple
+          />
         </div>
       </HStack>
     </>

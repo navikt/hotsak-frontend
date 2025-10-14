@@ -1,9 +1,12 @@
-import { SortState } from '@navikt/ds-react'
-import useSwr, { KeyedMutator } from 'swr'
+import useSwr, { type KeyedMutator } from 'swr'
 
-import { FinnOppgaverResponse, OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-
-const PAGE_SIZE = 50
+import { createQueryString, type QueryParameters } from '../../io/HttpClient.ts'
+import {
+  type FinnOppgaverResponse,
+  type OppgaveSortState,
+  OppgaveTildeltFilter,
+  type OppgaveV2,
+} from '../../oppgave/oppgaveTypes.ts'
 
 interface DataResponse {
   oppgaver: OppgaveV2[]
@@ -20,64 +23,61 @@ const basePath = '/api/oppgaver-v2'
 
 interface PathConfigType {
   path: string
-  queryParams: QueryParam[]
+  queryParams: QueryParameters
 }
 
-interface Filters {
+interface OppgaveFilters {
   tildeltFilter: string
+  oppgavetypeFilter: string[]
   gjelderFilter: string[]
 }
 
-interface QueryParam {
-  key: string
-  value: string
-}
-
-const pathConfig = (currentPage: number, sort: SortState, filters: Filters): PathConfigType => {
-  const { tildeltFilter, gjelderFilter } = filters
-  const sortDirection = sort.direction === 'ascending' ? 'ASC' : 'DESC'
-
-  const queryParams: QueryParam[] = [
-    { key: 'sorteringsfelt', value: sort.orderBy },
-    { key: 'sorteringsrekkefølge', value: sortDirection },
-    { key: 'limit', value: PAGE_SIZE.toString() },
-    { key: 'page', value: currentPage.toString() },
-  ]
-
-  if (gjelderFilter.length > 0) {
-    gjelderFilter.forEach((filter) => {
-      queryParams.push({ key: 'gjelder', value: filter })
-    })
+const pathConfig = (
+  currentPage: number,
+  pageSize: number,
+  sort: OppgaveSortState,
+  filters: OppgaveFilters
+): PathConfigType => {
+  const { tildeltFilter, oppgavetypeFilter, gjelderFilter } = filters
+  const queryParams: QueryParameters = {
+    tildelt: tildeltFilter === OppgaveTildeltFilter.ALLE ? undefined : tildeltFilter,
+    oppgavetype: oppgavetypeFilter,
+    gjelder: gjelderFilter,
+    page: currentPage,
+    limit: pageSize,
   }
-
-  if (tildeltFilter && tildeltFilter !== OppgaveTildeltFilter.ALLE) {
-    queryParams.push({ key: 'tildelt', value: tildeltFilter })
+  if (sort.orderBy === 'fristFerdigstillelse') {
+    queryParams.sorteringsfelt = 'FRIST'
   }
-
+  if (sort.orderBy === 'opprettetTidspunkt') {
+    queryParams.sorteringsfelt = 'OPPRETTET_TIDSPUNKT'
+  }
+  if (queryParams.sorteringsfelt) {
+    queryParams.sorteringsrekkefølge = sort.direction === 'ascending' ? 'ASC' : 'DESC'
+  }
   return {
     path: `${basePath}`,
     queryParams: queryParams,
   }
 }
 
-const buildQueryParamString = (queryParams: QueryParam[]) => {
-  return queryParams
-    .map((queryParam) => `${encodeURIComponent(queryParam.key)}=${encodeURIComponent(queryParam.value)}`)
-    .join('&')
-}
-
-export function useOppgavelisteV2(currentPage: number, sort: SortState, filters: Filters): DataResponse {
-  const { path, queryParams } = pathConfig(currentPage, sort, filters)
-  const fullPath = `${path}?${buildQueryParamString(queryParams)}`
+export function useOppgavelisteV2(
+  currentPage: number,
+  pageSize: number,
+  sort: OppgaveSortState,
+  filters: OppgaveFilters
+): DataResponse {
+  const { path, queryParams } = pathConfig(currentPage, pageSize, sort, filters)
+  const fullPath = `${path}?${createQueryString(queryParams)}`
   const { data, error, mutate, isLoading } = useSwr<FinnOppgaverResponse>(fullPath, {
-    refreshInterval: 10000,
+    refreshInterval: 10_000,
   })
 
   if (!data) {
     return {
       oppgaver: [],
       pageNumber: currentPage,
-      pageSize: PAGE_SIZE,
+      pageSize,
       totalPages: 0,
       totalElements: 0,
       isLoading,

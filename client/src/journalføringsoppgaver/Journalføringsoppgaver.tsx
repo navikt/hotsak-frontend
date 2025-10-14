@@ -52,7 +52,7 @@ export default function Journalføringsoppgaver() {
       name: 'Status',
       width: 150,
       render(oppgave: OppgaveV2) {
-        return <TekstCell value={OppgavestatusLabel.get(oppgave.oppgavestatus)!} />
+        return <TekstCell value={OppgavestatusLabel[oppgave.oppgavestatus]} />
       },
     },
     {

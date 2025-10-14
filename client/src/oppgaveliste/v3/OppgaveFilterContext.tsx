@@ -1,16 +1,23 @@
 import { SortState } from '@navikt/ds-react'
 import { createContext, useContext } from 'react'
 
-import { OppgaveGjelderFilter, OppgaveSortState, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
+import {
+  type OppgaveGjelderFilter,
+  Oppgaveprioritet,
+  type OppgaveSortState,
+  Oppgavetype,
+} from '../../oppgave/oppgaveTypes.ts'
 
 interface OppgaveFilterContextType {
-  tildeltFilter: OppgaveTildeltFilter
-  setTildeltFilter(tildelt: OppgaveTildeltFilter): void
-  gjelderFilter: OppgaveGjelderFilter[]
-  setGjelderFilter(gjelder: OppgaveGjelderFilter[]): void
+  oppgavetypeFilter: Oppgavetype[]
+  gjelderFilter: Array<OppgaveGjelderFilter | string>
+  oppgaveprioritetFilter: Oppgaveprioritet[]
   currentPage: number
-  setCurrentPage(currentPage: number): void
   sort: OppgaveSortState
+  setOppgavetypeFilter(oppgavetype: Oppgavetype[]): void
+  setGjelderFilter(gjelder: OppgaveGjelderFilter[]): void
+  setOppgaveprioritetFilter(oppgaveprioritet: Oppgaveprioritet[]): void
+  setCurrentPage(currentPage: number): void
   setSort(sort: SortState): void
   clearFilters(): void
 }
@@ -21,13 +28,15 @@ const initialSortState: OppgaveSortState = {
 }
 
 export const initialState: OppgaveFilterContextType = {
-  tildeltFilter: OppgaveTildeltFilter.INGEN,
-  setTildeltFilter() {},
+  oppgavetypeFilter: [],
   gjelderFilter: [],
-  setGjelderFilter() {},
+  oppgaveprioritetFilter: [],
   currentPage: 1,
-  setCurrentPage() {},
   sort: initialSortState,
+  setOppgavetypeFilter() {},
+  setGjelderFilter() {},
+  setOppgaveprioritetFilter() {},
+  setCurrentPage() {},
   setSort() {},
   clearFilters() {},
 }

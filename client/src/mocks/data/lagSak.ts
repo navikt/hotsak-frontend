@@ -16,7 +16,13 @@ import {
 } from '../../types/types.internal.ts'
 import { beregnSats } from './beregnSats.ts'
 import { vurderteVilkår } from './vurderteVilkår.ts'
-import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer, nåIso } from './felles.ts'
+import {
+  lagTilfeldigDato,
+  lagTilfeldigFødselsdato,
+  lagTilfeldigInteger,
+  lagTilfeldigTelefonnummer,
+  nåIso,
+} from './felles.ts'
 import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { formatISO } from 'date-fns'
@@ -53,7 +59,7 @@ export function lagHjelpemiddelsak(
   } = {}
 ): InsertHjelpemiddelsak {
   const bruker = lagBruker(overstyringer.bruker)
-  const opprettet = new Date()
+  const opprettet = lagTilfeldigDato(new Date().getFullYear())
 
   return {
     ...bruker,
@@ -158,12 +164,12 @@ export type InsertBarnebrillesak = Omit<LagretBarnebrillesak, 'sakId'>
 
 export function lagBarnebrillesak(): InsertBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
-  const now = nåIso()
+  const opprettet = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   return {
     sakstype: Sakstype.BARNEBRILLER,
     status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: now,
-    opprettet: now,
+    statusEndret: opprettet,
+    opprettet,
     søknadGjelder: 'Briller til barn',
     bruker: {
       fnr: lagTilfeldigFødselsnummer(fødselsdatoBruker),

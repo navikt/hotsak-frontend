@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 
 import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
 import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgavetypeTag } from './OppgavetypeTag.tsx'
 import { isBefore } from 'date-fns'
 
@@ -15,22 +16,33 @@ export interface OppgaveTableProps {
 
 export function OppgaveTable(props: OppgaveTableProps) {
   const { oppgaver, mine } = props
+  const { sort, setSort } = useOppgaveFilterContext()
   const navigate = useNavigate()
   return (
-    <Table size="medium" zebraStripes>
+    <Table
+      size="medium"
+      sort={sort}
+      onSortChange={(sortKey) => {
+        setSort({
+          orderBy: sortKey || 'fristFerdigstillelse',
+          direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
+        })
+      }}
+      zebraStripes
+    >
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan={3} />
-          <Table.ColumnHeader sortKey="opprettetTidspunkt" sortable>
+          <Table.ColumnHeader style={{ width: 150 }} sortKey="opprettetTidspunkt" sortable>
             Opprettet
           </Table.ColumnHeader>
-          <Table.ColumnHeader sortKey="fristFerdigstillelse" sortable>
+          <Table.ColumnHeader style={{ width: 150 }} sortKey="fristFerdigstillelse" sortable>
             Frist
           </Table.ColumnHeader>
-          <Table.ColumnHeader sortKey="fnr" sortable>
+          <Table.ColumnHeader style={{ width: 150 }} sortKey="fnr" sortable>
             Bruker
           </Table.ColumnHeader>
-          <Table.HeaderCell />
+          <Table.HeaderCell style={{ width: 25 }} />
         </Table.Row>
       </Table.Header>
       <Table.Body>

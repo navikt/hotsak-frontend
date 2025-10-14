@@ -15,8 +15,11 @@ export function lagTilfeldigInteger(min: number, max: number): number {
 }
 
 export function lagTilfeldigDato(år: number): Date {
-  const d = new Date(år, lagTilfeldigInteger(0, 11), 1)
-  const date = lagTilfeldigInteger(1, getDaysInMonth(d))
+  const now = new Date()
+  const isCurrentYear = now.getFullYear() == år
+  const month = lagTilfeldigInteger(0, isCurrentYear ? now.getMonth() : 11)
+  const d = new Date(år, month, 1)
+  const date = lagTilfeldigInteger(1, isCurrentYear && now.getMonth() == month ? now.getDate() : getDaysInMonth(d))
   return setDate(d, date)
 }
 

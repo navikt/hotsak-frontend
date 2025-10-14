@@ -1,3 +1,5 @@
+import type { SortState } from '@navikt/ds-react'
+
 import type { Enhet, Hast, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
 
 /**
@@ -48,12 +50,27 @@ export enum Oppgavetype {
   BEHANDLE_UNDERKJENT_VEDTAK = 'BEHANDLE_UNDERKJENT_VEDTAK',
 }
 
+export const OppgavetypeLabel: Record<Oppgavetype, string> = {
+  JOURNALFØRING: 'Journalføring',
+  BEHANDLE_SAK: 'Behandle sak',
+  GODKJENNE_VEDTAK: 'Godkjenne vedtak',
+  BEHANDLE_UNDERKJENT_VEDTAK: 'Behandle underkjent vedtak',
+}
+
 export enum Oppgavestatus {
   OPPRETTET = 'OPPRETTET',
   ÅPNET = 'ÅPNET',
   UNDER_BEHANDLING = 'UNDER_BEHANDLING',
   FERDIGSTILT = 'FERDIGSTILT',
   FEILREGISTRERT = 'FEILREGISTRERT',
+}
+
+export const OppgavestatusLabel: Record<Oppgavestatus, string> = {
+  OPPRETTET: 'Mottatt',
+  ÅPNET: 'Mottatt',
+  UNDER_BEHANDLING: 'Under behandling',
+  FERDIGSTILT: 'Ferdigstilt',
+  FEILREGISTRERT: 'Feilregistrert',
 }
 
 export enum Statuskategori {
@@ -67,13 +84,11 @@ export enum Oppgaveprioritet {
   LAV = 'LAV',
 }
 
-export const OppgavestatusLabel = new Map<Oppgavestatus, string>([
-  [Oppgavestatus.OPPRETTET, 'Mottatt'],
-  [Oppgavestatus.ÅPNET, 'Mottatt'],
-  [Oppgavestatus.UNDER_BEHANDLING, 'Under journalføring'],
-  [Oppgavestatus.FERDIGSTILT, 'Journalført'],
-  [Oppgavestatus.FEILREGISTRERT, 'Feilregistrert'],
-])
+export const OppgaveprioritetLabel: Record<Oppgaveprioritet, string> = {
+  HØY: 'Høy',
+  NORMAL: 'Normal',
+  LAV: 'Lav',
+}
 
 export interface OppgaveBase {
   oppgaveId: OppgaveId
@@ -134,6 +149,10 @@ export enum OppgaveTildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',
   MEG = 'MEG',
+}
+
+export interface OppgaveSortState extends SortState {
+  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | string
 }
 
 /**

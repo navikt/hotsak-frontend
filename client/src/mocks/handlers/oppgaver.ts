@@ -41,9 +41,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
       }
       return HttpResponse.json(pagedOppgaver)
     } else {
-      const totalElements = alleOppgaver.length
+      const tildelt = url.searchParams.get('tildelt')
+      const meg = await saksbehandlerStore.innloggetSaksbehandler()
+      const oppgaver =
+        tildelt === 'MEG' ? alleOppgaver.filter((it) => it.tildeltSaksbehandler?.id === meg.id) : alleOppgaver
+      const totalElements = oppgaver.length
       const pagedOppgaver: FinnOppgaverResponse = {
-        oppgaver: alleOppgaver.slice(offset, offset + pageSize),
+        oppgaver: oppgaver.slice(offset, offset + pageSize),
         pageNumber,
         pageSize,
         totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),

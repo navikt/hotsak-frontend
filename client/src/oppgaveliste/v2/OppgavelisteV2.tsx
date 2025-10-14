@@ -21,10 +21,16 @@ import { useOppgavelisteV2 } from './useOppgavelisteV2.ts'
 export default function OppgavelisteV2() {
   const { tildeltFilter, gjelderFilter, currentPage, setCurrentPage, sort, setSort } = useOppgaveFilterContext()
 
-  const { oppgaver, pageNumber, pageSize, isLoading, error, totalElements } = useOppgavelisteV2(currentPage, sort, {
-    tildeltFilter,
-    gjelderFilter,
-  })
+  const { oppgaver, pageNumber, pageSize, isLoading, error, totalElements } = useOppgavelisteV2(
+    currentPage,
+    100,
+    sort,
+    {
+      tildeltFilter,
+      oppgavetypeFilter: [],
+      gjelderFilter,
+    }
+  )
 
   const kolonner: ReadonlyArray<Tabellkolonne<OppgaveV2>> = [
     {

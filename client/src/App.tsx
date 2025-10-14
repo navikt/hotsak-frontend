@@ -51,7 +51,7 @@ function App() {
                     <Routes>
                       <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
                       <Route
-                        path="/"
+                        path="/*"
                         element={
                           <RequireAuth>
                             <Oppgaveliste />

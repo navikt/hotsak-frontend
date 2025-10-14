@@ -1,13 +1,22 @@
 import { EnvelopeOpenIcon, NotePencilIcon, ParagraphIcon } from '@navikt/aksel-icons'
 import { Tabs, Tag } from '@navikt/ds-react'
 import { NotificationBadge } from '../../../../saksbilde/høyrekolonne/notat/NotificationBadge'
+import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
+import { HøyrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
 
 export function TingÅGjøreEksperiment() {
+  const { valgtHøyreKolonneTab, setValgtHøyreKolonneTab } = useSaksbehandlingEksperimentContext()
   return (
-    <Tabs size="small" defaultValue="Behandling" loop iconPosition="top">
+    <Tabs
+      size="small"
+      value={valgtHøyreKolonneTab.toString()}
+      onChange={(value) => setValgtHøyreKolonneTab(value as HøyrekolonneTabs)}
+      loop
+      iconPosition="top"
+    >
       <Tabs.List style={{ height: `60px` }}>
         <Tabs.Tab
-          value="Notater"
+          value={HøyrekolonneTabs.NOTATER}
           label="Notater"
           icon={
             <>
@@ -18,9 +27,9 @@ export function TingÅGjøreEksperiment() {
             </>
           }
         />
-        <Tabs.Tab value="Behandling" label="Behandling" icon={<ParagraphIcon title="Behandling" />} />
+        <Tabs.Tab value={HøyrekolonneTabs.BEHANDLING} label="Behandling" icon={<ParagraphIcon title="Behandling" />} />
         <Tabs.Tab
-          value="Brev"
+          value={HøyrekolonneTabs.BREV}
           label="Brev"
           icon={
             <>

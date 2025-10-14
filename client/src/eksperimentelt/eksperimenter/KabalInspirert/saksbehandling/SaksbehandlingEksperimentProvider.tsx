@@ -1,14 +1,11 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
 
-type SaksbehandlingEksperimentContextType = {
-  venstreKolonne: boolean
-  setVenstreKolonne(visible: boolean): void
-  midtreKolonne: boolean
-  setMidtreKolonne(visible: boolean): void
-  høyreKolonne: boolean
-  setHøyreKolonne(visible: boolean): void
-}
-
+/**
+ * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
+ * med det som brukes i resten av Hotsak (og prod). Kan på sikt merges inn i OppgaveProvider?
+ *
+ */
 const initialState = {
   venstreKolonne: false,
   setVenstreKolonne() {},
@@ -16,17 +13,21 @@ const initialState = {
   setMidtreKolonne() {},
   høyreKolonne: false,
   setHøyreKolonne() {},
+  valgtVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
+  setValgtVenstreKolonneTab() {},
+  valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
+  setValgtHøyreKolonneTab() {},
 }
 
-/**
- * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
- * med det som brukes i resten av Hotsak (og prod). Kan på sikt merges inn i OppgaveProvider?
- */
 const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
 SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
 
 function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
   const [venstreKolonne, setVenstreKolonne] = useState(true)
+  const [valgtVenstreKolonneTab, setValgtVenstreKolonneTab] = useState<VenstrekolonneTabs>(
+    VenstrekolonneTabs.BEHOVSMELDINGSINFO
+  )
+  const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
   const [midtreKolonne, setMidtreKolonne] = useState(true)
   const [høyreKolonne, setHøyreKolonne] = useState(true)
 
@@ -37,8 +38,12 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setVenstreKolonne,
         midtreKolonne,
         setMidtreKolonne,
+        valgtVenstreKolonneTab,
+        setValgtVenstreKolonneTab,
         høyreKolonne,
         setHøyreKolonne,
+        valgtHøyreKolonneTab,
+        setValgtHøyreKolonneTab,
       }}
     >
       {children}
@@ -54,6 +59,19 @@ function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContext
   }
 
   return context
+}
+
+type SaksbehandlingEksperimentContextType = {
+  venstreKolonne: boolean
+  setVenstreKolonne(visible: boolean): void
+  midtreKolonne: boolean
+  setMidtreKolonne(visible: boolean): void
+  høyreKolonne: boolean
+  setHøyreKolonne(visible: boolean): void
+  valgtVenstreKolonneTab: VenstrekolonneTabs
+  setValgtVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  valgtHøyreKolonneTab: HøyrekolonneTabs
+  setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
 }
 
 export { SaksbehandlingEksperimentContext, SaksbehandlingEksperimentProvider, useSaksbehandlingEksperimentContext }

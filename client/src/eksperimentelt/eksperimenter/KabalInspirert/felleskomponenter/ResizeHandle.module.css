@@ -4,12 +4,12 @@
   position: relative;
   outline: none;
 
+  &:hover {
+    background-color: var(--ax-border-accent-subtleA);
+    transition: background-color 0.4s linear;
+  }
+
   &[data-resize-handle-active] {
     background-color: var(--ax-border-accent-subtle);
   }
-
-  /*.resizeHandle-inner {
-    background-color: hotpink;
-    transition: background-color 0.2s linear;
-  }*/
 }

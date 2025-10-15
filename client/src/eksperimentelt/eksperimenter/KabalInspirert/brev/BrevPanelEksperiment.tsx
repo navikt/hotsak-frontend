@@ -7,15 +7,15 @@ import { Breveditor } from './Breveditor'
 import { BrevmalVelger } from './BrevmalVelger'
 
 export function BrevPanelEksperiment() {
-  const [skjulBrevvelger, setSkjulBrevvelger] = useState(false)
+  const [visBrevvelger, setVisBrevvelger] = useState(false)
 
   return (
     <Box.New style={{ height: '100dvh' }} padding={'space-16'}>
-      <Switch checked={skjulBrevvelger} size="small" onChange={() => setSkjulBrevvelger(!skjulBrevvelger)}>
+      <Switch checked={visBrevvelger} size="small" onChange={() => setVisBrevvelger(!visBrevvelger)}>
         Brevvelger
       </Switch>
       <PanelGroup direction="horizontal" autoSaveId="eksperimenteltBrevPanel">
-        {!skjulBrevvelger && (
+        {visBrevvelger && (
           <>
             <Panel defaultSize={30} minSize={10} order={1}>
               <BrevmalVelger />

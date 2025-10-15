@@ -7,7 +7,7 @@ import { Breveditor } from './Breveditor'
 import { BrevmalVelger } from './BrevmalVelger'
 
 export function BrevPanelEksperiment() {
-  const [visBrevvelger, setVisBrevvelger] = useState(false)
+  const [visBrevvelger, setVisBrevvelger] = useState(true)
 
   return (
     <Box.New style={{ height: '100dvh' }} padding={'space-16'}>

@@ -76,7 +76,7 @@ export function SaksbehandlingEksperiment() {
                   </>
                 )}
               </Panel>
-              <ResizeHandle />
+              {høyreKolonne && <ResizeHandle />}
             </>
           )}
           {høyreKolonne && (

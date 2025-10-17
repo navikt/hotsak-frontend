@@ -1,9 +1,9 @@
-import { IEnkeltvalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Radio, RadioGroup } from '@navikt/ds-react'
-import { Controller, get, useFormContext } from 'react-hook-form'
 import { Fragment } from 'react'
+import { Controller, get, useFormContext } from 'react-hook-form'
 import { joinToName, sanitizeName } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
+import { IEnkeltvalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import type { SpørsmålProps } from './Spørsmål'
 
 export function Enkeltvalg(props: SpørsmålProps<IEnkeltvalg>) {

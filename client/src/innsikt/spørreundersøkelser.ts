@@ -10,7 +10,13 @@ export interface ISpørsmål {
   type: Spørsmålstype
   tekst: string
   beskrivelse?: string
+  tips?: ITips
   påkrevd?: boolean | string
+}
+
+export interface ITips {
+  tittel: string
+  tekst: string
 }
 
 export interface IAlternativer {

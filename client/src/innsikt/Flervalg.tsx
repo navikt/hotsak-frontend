@@ -1,9 +1,9 @@
-import { IFlervalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react'
-import { Controller, get, useFormContext } from 'react-hook-form'
 import { Fragment } from 'react'
+import { Controller, get, useFormContext } from 'react-hook-form'
 import { joinToName, sanitizeName } from './Besvarelse'
 import { Oppfølgingsspørsmål } from './Oppfølgingsspørsmål'
+import { IFlervalg, isOppfølgingsspørsmål } from './spørreundersøkelser'
 import type { SpørsmålProps } from './Spørsmål'
 
 const defaultValue: string[] = []

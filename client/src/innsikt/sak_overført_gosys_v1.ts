@@ -48,6 +48,11 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Må kontakte formidler/bruker',
+          tips: {
+            tittel: 'Kan du bruke notatfunksjonen i Hotsak og behandle saken her?',
+            tekst:
+              'Du trenger ikke overføre saken selv om du må kontakte formidler/bruker. Du kan i stedet lage et forvaltningsnotat direkte i Hotsak, og legge inn opplysningene der. Hvis informasjonen er kommet via e-post, følg rutinen for journalføring av e-post',
+          },
           spørsmål: [
             {
               type: 'flervalg',
@@ -78,6 +83,11 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Må vurderes av noen som ikke jobber i Hotsak',
+          tips: {
+            tittel: 'Bør flere ta i bruk Hotsak?',
+            tekst:
+              'I tiden fremover vil stadig flere typer saker sendes til Hotsak. Derfor bør så mange som mulig ta i bruk Hotsak, slik at dere ikke må bruke tid på å overføre saker til Gosys og journalføre dem der.',
+          },
           spørsmål: [
             {
               type: 'fritekst',

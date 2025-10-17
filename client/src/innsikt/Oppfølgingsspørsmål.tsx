@@ -5,18 +5,17 @@ import { Box, VStack } from '@navikt/ds-react'
 export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspørsmål>) {
   const { spørsmål, navn, nivå = 0, size } = props
   return (
-    <Box
-      background="surface-action-subtle"
-      padding={nivå > 1 ? '0' : '3'}
+    <Box.New
+      padding={nivå > 1 ? '0' : 'space-12'}
       style={{
         marginTop: nivå > 1 ? 'var(--ax-space-12)' : 0,
       }}
     >
-      <VStack gap="5">
+      <VStack gap="space-20">
         {spørsmål.spørsmål.map((spørsmål) => (
           <Spørsmål key={spørsmål.tekst} spørsmål={spørsmål} navn={navn} nivå={nivå} size={size} />
         ))}
       </VStack>
-    </Box>
+    </Box.New>
   )
 }

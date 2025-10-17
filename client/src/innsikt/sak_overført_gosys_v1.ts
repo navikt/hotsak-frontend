@@ -11,8 +11,40 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
     {
       type: 'enkeltvalg',
       tekst: 'Hvorfor overfører du saken til Gosys?',
-      beskrivelse: 'Årsaken du velger vil vises i Gosys. Eventuell fritekst vises ikke i Gosys, og brukes kun internt.',
+      beskrivelse:
+        'Vi i Digihot spør for å lære mer om hvorfor saker overføres. Valgene du gjør her blir ikke synlige i Gosys.',
       alternativer: [
+        {
+          type: 'oppfølgingsspørsmål',
+          tekst: 'Hotsak fungerer ikke godt nok, eller mangler nødvendige funksjoner',
+          spørsmål: [
+            {
+              type: 'flervalg',
+              tekst: 'Hva har du behov for å kunne gjøre i Hotsak for å behandle denne saken?',
+              alternativer: [
+                'Henlegge saken',
+                'Sende brev for å innhente opplysninger',
+                'Sende avslagsbrev',
+                'Sende brev om delvis innvilgelse',
+                'Sende brev om innvilgelse',
+                {
+                  type: 'oppfølgingsspørsmål',
+                  tekst: 'Annet',
+                  spørsmål: [
+                    {
+                      type: 'fritekst',
+                      tekst: 'Hva har du behov for å kunne gjøre i Hotsak for å behandle denne saken?',
+                      beskrivelse: 'Vi er interessert i å lære mer om hvordan Hotsak kan bli et bedre system for dere',
+                      påkrevd: true,
+                    },
+                  ],
+                },
+              ],
+              påkrevd: true,
+            },
+          ],
+        },
+
         {
           type: 'oppfølgingsspørsmål',
           tekst: 'Må kontakte formidler/bruker',
@@ -32,7 +64,8 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
                   spørsmål: [
                     {
                       type: 'fritekst',
-                      tekst: 'Utdyp hvorfor du vil kontakte formidler/bruker. Ikke skriv personopplysninger.',
+                      tekst:
+                        'Oppgi hvorfor du vil kontakte formidler/bruker. Ikke skriv personopplysninger (navn, telefonnummer e.l), verken om bruker, formidler eller andre. ',
                       påkrevd: true,
                     },
                   ],
@@ -44,39 +77,13 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
         },
         {
           type: 'oppfølgingsspørsmål',
-          tekst: 'Må ha skriftlig vedtak',
+          tekst: 'Må vurderes av noen som ikke jobber i Hotsak',
           spørsmål: [
             {
-              type: 'enkeltvalg',
-              tekst: 'Hva slags type vedtak?',
-              alternativer: ['Avslag', 'Delvis innvilgelse', 'Innvilges med brev'],
-              påkrevd: true,
-            },
-          ],
-        },
-        'Må vurderes av noen som ikke jobber i Hotsak',
-        {
-          type: 'oppfølgingsspørsmål',
-          tekst: 'Skal henlegges',
-          spørsmål: [
-            {
-              type: 'enkeltvalg',
-              tekst: 'Hvorfor skal saken henlegges?',
-              alternativer: [
-                'Duplikat-sak',
-                'MORS',
-                {
-                  type: 'oppfølgingsspørsmål',
-                  tekst: 'Annet',
-                  spørsmål: [
-                    {
-                      type: 'fritekst',
-                      tekst: 'Utdyp hvorfor saken skal henlegges. Ikke skriv personopplysninger.',
-                      påkrevd: true,
-                    },
-                  ],
-                },
-              ],
+              type: 'fritekst',
+              tekst: 'Har du noen tanker om hvorfor ikke flere jobber i Hotsak?',
+              beskrivelse:
+                'Vi er interessert i å lære med om hvordan dere jobber og hvordan Hotsak fungerer for dere. Ikke skriv navn eller andre personopplysninger.',
               påkrevd: true,
             },
           ],
@@ -87,7 +94,8 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
           spørsmål: [
             {
               type: 'fritekst',
-              tekst: 'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger.',
+              tekst:
+                'Hva er grunnen til at du vil overføre saken? Ikke skriv personopplysninger (navn, telefonnummer e.l), verken om bruker, formidler eller andre.',
               påkrevd: true,
             },
           ],

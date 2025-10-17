@@ -6,6 +6,7 @@ import { besvarelseToSvar, IBesvarelse, Tilbakemelding } from './Besvarelse'
 import type { ISpørreundersøkelse, SpørreundersøkelseId } from './spørreundersøkelser'
 import { SpørreundersøkelseStack } from './SpørreundersøkelseStack'
 import { useSpørreundersøkelse } from './useSpørreundersøkelse'
+import { textcontainerBredde } from '../GlobalStyles'
 
 export interface SpørreundersøkelseModalProps extends Pick<ModalProps, 'open'> {
   loading?: boolean
@@ -62,7 +63,7 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
       onCancel={resetForm}
       onBeforeClose={resetForm}
       onClose={onClose}
-      width={800}
+      width={700}
     >
       <FormProvider {...form}>
         <form
@@ -79,7 +80,7 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>
-            <VStack gap="4">
+            <VStack gap="4" style={{ maxWidth: `${textcontainerBredde}` }} marginInline={'space-0 space-24'}>
               {children}
               <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
             </VStack>

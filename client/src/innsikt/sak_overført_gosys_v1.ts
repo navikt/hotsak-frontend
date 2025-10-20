@@ -51,7 +51,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
           tips: {
             tittel: 'Kan du bruke notatfunksjonen i Hotsak og behandle saken her?',
             tekst:
-              'Du trenger ikke overføre saken selv om du må kontakte formidler/bruker. Du kan i stedet lage et forvaltningsnotat direkte i Hotsak, og legge inn opplysningene der. Hvis informasjonen er kommet via e-post, følg rutinen for journalføring av e-post',
+              'Du trenger ikke overføre saken selv om du må kontakte formidler/bruker. Du kan i stedet lage et forvaltningsnotat direkte i Hotsak, og legge inn opplysningene der. Hvis informasjonen er kommet via e-post, følg [rutinen for journalføring av e-post](https://navno.sharepoint.com/sites/intranett-arkiv-og-dokumenthandtering/SitePages/Rutine-for-%C3%A5-motta-dokumenter,-gj%C3%B8re-dem-klar-for-skanning-og-lage-f%C3%B8rsteside.aspx).',
           },
           spørsmål: [
             {

@@ -1,7 +1,7 @@
-import { Brødtekst } from '../felleskomponenter/typografi'
+import { Alert, Box, Heading, Link, VStack } from '@navikt/ds-react'
+import ReactMarkdown from 'react-markdown'
 import type { IOppfølgingsspørsmål } from './spørreundersøkelser'
 import { Spørsmål, SpørsmålProps } from './Spørsmål'
-import { Alert, Box, Heading, VStack } from '@navikt/ds-react'
 
 export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspørsmål>) {
   const { spørsmål, navn, nivå = 0, size } = props
@@ -15,10 +15,20 @@ export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspør
       <VStack gap="space-20">
         {spørsmål.tips && (
           <Alert size="small" variant="info" style={{ marginBottom: '1rem' }}>
-            <Heading spacing size="xsmall" level="3">
+            <Heading size="xsmall" level="3">
               {spørsmål.tips.tittel}
             </Heading>
-            <Brødtekst>{spørsmål.tips.tekst}</Brødtekst>
+            <ReactMarkdown
+              components={{
+                a: (props) => (
+                  <Link href={props.href} target="_blank">
+                    {props.children}
+                  </Link>
+                ),
+              }}
+            >
+              {spørsmål.tips.tekst}
+            </ReactMarkdown>
           </Alert>
         )}
         {spørsmål.spørsmål.map((spørsmål) => (

@@ -53,11 +53,11 @@ export function OverførSakTilGosysModal({
             </Alert>
           )}
           {notater.find((notat) => notat.type === NotatType.INTERNT) && (
-            <Alert variant="info" size="small">
+            <Alert variant="warning" size="small">
               <Brødtekst>
                 Denne saken har et eller flere interne arbeidsnotater knyttet til seg. Disse notatene følger ikke med
                 til Gosys hvis du overfører saken. Hvis du har behov for å overføre disse notatene til oppgaven i Gosys,
-                må det gjøres manuelt.
+                må du gjøre dette manuelt ved å kopiere notatteksten fra Hotsak og lime inn i Gosys.
               </Brødtekst>
             </Alert>
           )}

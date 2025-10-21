@@ -180,6 +180,7 @@ export enum InnbyggersVarigeFunksjonsnedsettelse {
   ALDERDOMSSVEKKELSE = 'ALDERDOMSSVEKKELSE',
   ANNEN_VARIG_DIAGNOSE = 'ANNEN_VARIG_DIAGNOSE',
   UAVKLART = 'UAVKLART',
+  UAVKLART_V2 = 'UAVKLART_V2',
 }
 
 enum Funksjonsnedsettelse {

@@ -179,6 +179,7 @@ export interface Funksjonsbeskrivelse {
 export enum InnbyggersVarigeFunksjonsnedsettelse {
   ALDERDOMSSVEKKELSE = 'ALDERDOMSSVEKKELSE',
   ANNEN_VARIG_DIAGNOSE = 'ANNEN_VARIG_DIAGNOSE',
+  ANNEN_DIAGNOSE = 'ANNEN_DIAGNOSE',
   UAVKLART = 'UAVKLART',
   UAVKLART_V2 = 'UAVKLART_V2',
 }

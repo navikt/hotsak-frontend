@@ -1,4 +1,4 @@
-import { Alert, VStack } from '@navikt/ds-react'
+import { Alert, Heading, VStack } from '@navikt/ds-react'
 
 import { Brødtekst } from '../felleskomponenter/typografi'
 import type { Tilbakemelding } from '../innsikt/Besvarelse'
@@ -38,23 +38,30 @@ export function OverførSakTilGosysModal({
       onClose={onClose}
     >
       {notater.length > 0 && (
-        <Alert variant="info" size="small">
-          <VStack gap="3">
-            {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
+        <VStack gap="3">
+          {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
+            <Alert variant="warning" size="small">
+              <Heading size="xsmall" level="2" spacing>
+                Saken har forvaltningsnotat - kontakt DigiHoT for hjelp
+              </Heading>
               <Brødtekst>
-                Forvaltningsnotater feilregistreres ved overføring av sak til Gosys. Hvis du har behov for å knytte
-                feilregistrert notat til ny sak i Gosys, kan dere inntil videre ta kontakt med DigiHoT på Teams kanalen
-                "DigiHoT - innspill, spørsmål og info" for bistand.
+                Denne saken har et eller flere forvaltningsnotater knyttet til seg. Når saken overføres til Gosys vil
+                disse notatene bli feilregistrert og miste knytning til den nye saken. Hvis dere har behov for å knytte
+                disse notatene til den nye saken i Gosys, ta kontakt med DigiHoT på teamskanalen "DigiHoT - innspill,
+                spørsmål og info", så hjelper vi dere.
               </Brødtekst>
-            )}
-            {notater.find((notat) => notat.type === NotatType.INTERNT) && (
+            </Alert>
+          )}
+          {notater.find((notat) => notat.type === NotatType.INTERNT) && (
+            <Alert variant="info" size="small">
               <Brødtekst>
-                Interne arbeidsnotater i saken overføres ikke til Gosys. Hvis du har behov for å overføre disse til
-                oppgaven i Gosys, må det gjøres manuelt.
+                Denne saken har et eller flere interne arbeidsnotater knyttet til seg. Disse notatene følger ikke med
+                til Gosys hvis du overfører saken. Hvis du har behov for å overføre disse notatene til oppgaven i Gosys,
+                må det gjøres manuelt.
               </Brødtekst>
-            )}
-          </VStack>
-        </Alert>
+            </Alert>
+          )}
+        </VStack>
       )}
     </SpørreundersøkelseModal>
   )

@@ -2,7 +2,13 @@ import { HStack, Search } from '@navikt/ds-react'
 import { type FormEventHandler } from 'react'
 
 import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
-import { Oppgaveprioritet, OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel } from '../../oppgave/oppgaveTypes.ts'
+import {
+  OppgaveGjelderFilterLabel,
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  Oppgavetype,
+  OppgavetypeLabel,
+} from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export interface OppgaveFilterProps {
@@ -46,6 +52,7 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
         <div>
           <FilterChips
             options={gjelder}
+            labels={OppgaveGjelderFilterLabel}
             selected={gjelderFilter}
             handleChange={setGjelderFilter}
             size="small"

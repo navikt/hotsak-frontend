@@ -145,6 +145,12 @@ export enum OppgaveGjelderFilter {
   HASTESØKNAD = 'HASTESØKNAD',
 }
 
+export const OppgaveGjelderFilterLabel: Record<OppgaveGjelderFilter, string> = {
+  BESTILLING: 'Bestilling',
+  DIGITAL_SØKNAD: 'Digital søknad',
+  HASTESØKNAD: 'Digital hastesøknad',
+}
+
 export enum OppgaveTildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',

@@ -173,6 +173,7 @@ export function useAlternativeProdukter(
       alternativerFor: hmsnrs.join(','),
       pageSize: pageSize.toString(),
       totalElements: totalElements.toString(),
+      harOppdatertLagerstatus: harOppdatertLagerstatus.toString(),
     })
 
     return {

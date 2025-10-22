@@ -11,6 +11,7 @@ import type {
 import { useGraphQLQuery } from '../../graphql/useGraphQL.ts'
 import { grunndataClient } from '../../grunndata/grunndataClient.ts'
 import { unique } from '../../utils/array.ts'
+import { pushEvent } from '../../utils/faro.ts'
 import { useGjeldendeOebsEnhet } from './endreHjelpemiddel/oebsMapping.ts'
 
 const finnAlternativeProdukterSideQuery = gql`
@@ -167,6 +168,13 @@ export function useAlternativeProdukter(
     const harOppdatertLagerstatus =
       pageSize <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS ||
       totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS
+
+    pushEvent('alternative_produkter_hentet', 'ombruk', {
+      alternativerFor: hmsnrs.join(','),
+      pageSize: pageSize.toString(),
+      totalElements: totalElements.toString(),
+    })
+
     return {
       alternativeProdukterByHmsArtNr: Object.fromEntries(
         Object.entries(produkterByHmsArtNr).map(([hmsArtNr, produkter]) => [

@@ -2,7 +2,7 @@ import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { PencilIcon } from '@navikt/aksel-icons'
-import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'

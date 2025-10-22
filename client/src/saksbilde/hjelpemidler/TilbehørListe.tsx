@@ -1,5 +1,5 @@
 import { Box, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../types/types.internal'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
@@ -74,7 +74,7 @@ function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
       {tilbehør.begrunnelse && (
         <Box paddingInline="4 0">
           <Etikett>Begrunnelse</Etikett>
-          <Brødtekst>{tilbehør.begrunnelse}</Brødtekst>
+          <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
         </Box>
       )}
 

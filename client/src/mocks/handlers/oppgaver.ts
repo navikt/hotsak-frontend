@@ -8,6 +8,7 @@ import {
   oppgaveIdUtenPrefix,
   Oppgavetype,
   OppgaveV1,
+  OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import type { OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
@@ -42,9 +43,13 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
       return HttpResponse.json(pagedOppgaver)
     } else {
       const tildelt = url.searchParams.get('tildelt')
-      const meg = await saksbehandlerStore.innloggetSaksbehandler()
-      const oppgaver =
-        tildelt === 'MEG' ? alleOppgaver.filter((it) => it.tildeltSaksbehandler?.id === meg.id) : alleOppgaver
+      let oppgaver: OppgaveV2[] = alleOppgaver
+      if (tildelt === 'MEG') {
+        const meg = await saksbehandlerStore.innloggetSaksbehandler()
+        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler?.id === meg.id)
+      } else if (tildelt === 'INGEN') {
+        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler == null)
+      }
       const totalElements = oppgaver.length
       const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: oppgaver.slice(offset, offset + pageSize),

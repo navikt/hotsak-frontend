@@ -170,7 +170,7 @@ export function useAlternativeProdukter(
       totalElements <= MAKS_ANTALL_ALTERNATIVER_SOM_GIR_OPPDATERT_LAGERSTATUS
 
     pushEvent('alternative_produkter_hentet', 'ombruk', {
-      alternativerFor: hmsnrs.join(','),
+      alternativerFor: JSON.stringify(hmsnrs),
       pageSize: pageSize.toString(),
       totalElements: totalElements.toString(),
       harOppdatertLagerstatus: harOppdatertLagerstatus.toString(),

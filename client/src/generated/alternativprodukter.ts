@@ -201,6 +201,14 @@ export type FinnAlternativeProdukterSideQuery = {
         location: string
         updated: string
         amountInStock: number
+        physical: number
+        orders: number
+        request: number
+        intRequest: number
+        needNotified: number
+        reserved: number
+        backOrders: number
+        available: number
       } | null> | null
     }>
   }

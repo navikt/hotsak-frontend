@@ -55,92 +55,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:47.954648",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -200,92 +344,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 3,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 2,
+              "orders": 0,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 1,
+              "backOrders": 1,
+              "available": 1
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:47.959823",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -351,92 +639,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 3,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 1,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 1,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 1,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:47.965542",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -521,92 +953,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 3
+              "amountInStock": 3,
+              "physical": 5,
+              "orders": 2,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 3
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 1,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": -4
+              "amountInStock": -4,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 1,
+              "needNotified": 3,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": -4
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 3
+              "amountInStock": 3,
+              "physical": 4,
+              "orders": 1,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 3
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 8
+              "amountInStock": 8,
+              "physical": 10,
+              "orders": 3,
+              "request": 2,
+              "intRequest": 1,
+              "needNotified": 4,
+              "reserved": 4,
+              "backOrders": 0,
+              "available": 8
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 4
+              "amountInStock": 4,
+              "physical": 6,
+              "orders": 2,
+              "request": 0,
+              "intRequest": 1,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 4
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 3,
+              "orders": 0,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 2
+              "amountInStock": 2,
+              "physical": 4,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 2
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 5
+              "amountInStock": 5,
+              "physical": 7,
+              "orders": 2,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 5
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:47.971193",
-              "amountInStock": 5
+              "amountInStock": 5,
+              "physical": 8,
+              "orders": 1,
+              "request": 2,
+              "intRequest": 0,
+              "needNotified": 3,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 5
             }
           ]
         },
@@ -666,92 +1242,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T01:08:55.440170852",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -811,92 +1531,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 3
+              "amountInStock": 3,
+              "physical": 5,
+              "orders": 1,
+              "request": 2,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 3
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T01:09:07.980716912",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -981,92 +1845,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 4
+              "amountInStock": 4,
+              "physical": 6,
+              "orders": 2,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 4
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 2,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 2,
+              "orders": 0,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 4
+              "amountInStock": 4,
+              "physical": 6,
+              "orders": 1,
+              "request": 2,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 4
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 1,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 5
+              "amountInStock": 5,
+              "physical": 7,
+              "orders": 2,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 5
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 2
+              "amountInStock": 2,
+              "physical": 4,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 2
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 4
+              "amountInStock": 4,
+              "physical": 6,
+              "orders": 2,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 4
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:26.170573",
-              "amountInStock": 4
+              "amountInStock": 4,
+              "physical": 7,
+              "orders": 1,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 2,
+              "reserved": 3,
+              "backOrders": 0,
+              "available": 4
             }
           ]
         },
@@ -1120,92 +2128,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:42.773868",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -1259,92 +2411,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T10:17:47.946765",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -1404,92 +2700,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T01:08:35.637854844",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -1549,92 +2989,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 2,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": -1
+              "amountInStock": -1,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": -1
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T01:09:32.778836311",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         },
@@ -1694,92 +3278,236 @@
             {
               "location": "Østfold",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oslo",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 2
+              "amountInStock": 2,
+              "physical": 4,
+              "orders": 1,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 2,
+              "backOrders": 0,
+              "available": 2
             },
             {
               "location": "Hedmark",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Oppland",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Buskerud",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vestfold",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Telemark",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Aust-Agder",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Vest-Agder",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Rogaland",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Hordaland",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sogn og Fjordane",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Møre og Romsdal",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Sør-Trøndelag",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nord-Trøndelag",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Nordland",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 1
+              "amountInStock": 1,
+              "physical": 2,
+              "orders": 0,
+              "request": 1,
+              "intRequest": 0,
+              "needNotified": 1,
+              "reserved": 1,
+              "backOrders": 0,
+              "available": 1
             },
             {
               "location": "Troms",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             },
             {
               "location": "Finnmark",
               "updated": "2025-07-16T01:09:35.285772332",
-              "amountInStock": 0
+              "amountInStock": 0,
+              "physical": 0,
+              "orders": 0,
+              "request": 0,
+              "intRequest": 0,
+              "needNotified": 0,
+              "reserved": 0,
+              "backOrders": 0,
+              "available": 0
             }
           ]
         }

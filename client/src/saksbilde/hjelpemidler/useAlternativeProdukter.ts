@@ -41,6 +41,14 @@ const finnAlternativeProdukterSideQuery = gql`
           location
           updated
           amountInStock
+          physical
+          orders
+          request
+          intRequest
+          needNotified
+          reserved
+          backOrders
+          available
         }
       }
     }

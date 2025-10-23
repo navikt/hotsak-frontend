@@ -45,5 +45,7 @@ export function pushLog(message: string, level: LogLevel = LogLevel.INFO) {
 
 // Usage pushEvent('toggle-panel', 'panels', { enabled: isEnabled.toString() });
 export function pushEvent(name: string, domain: string, attributes?: Record<string, string>) {
-  faro.api.pushEvent(name, { ...attributes, domain }, domain, { skipDedupe: true })
+  if (window.faro) {
+    window.faro.api.pushEvent(name, { ...attributes, domain }, domain, { skipDedupe: true })
+  }
 }

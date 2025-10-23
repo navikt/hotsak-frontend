@@ -14,7 +14,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
         <VStack gap="6">
           <Box>
             <Etikett>
-              Innbyggers varige sykdom, skade eller lyte som har ført til vesentlig og varig nedsatt funksjonsevne:
+              Innbyggers sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne:
             </Etikett>
             <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
           </Box>

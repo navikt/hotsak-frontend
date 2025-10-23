@@ -1,4 +1,4 @@
-import { LogLevel, faro } from '@grafana/faro-web-sdk'
+import { LogLevel } from '@grafana/faro-web-sdk'
 
 export async function initFaro(): Promise<void> {
   if (!import.meta.env.PROD || window.appSettings.USE_MSW || !window.appSettings.FARO_URL) {

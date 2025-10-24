@@ -1,9 +1,10 @@
-import { Box, Checkbox, HelpText, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
+import { Box, Checkbox, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink.tsx'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
+import { LagerstatusUtregning } from './LagerstatusUtregning.tsx'
 
 interface AlternativProduktCardProps {
   alternativtProdukt: AlternativeProduct
@@ -50,58 +51,12 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                   <Etikett>{lagerstatus?.location}: </Etikett>
                   <div>
                     {lagerstatus ? (
-                      <HStack gap="space-16">
+                      <HStack gap="space-4">
                         <>
                           <Tag variant="success-moderate" size="small">
                             {lagerstatus.amountInStock} stk på lager
                           </Tag>
-                          <HelpText title="Forklaring på utregning av lagerstatus">
-                            <Etikett>Lagerstatus er regnet ut slik:</Etikett>
-                            <HGrid columns="auto auto 1fr" gap="0 space-8" paddingBlock={'space-12 0'}>
-                              <div />
-                              <div>Fysisk</div>
-                              <div style={{ justifySelf: 'end' }}>{lagerstatus.physical}</div>
-                              <div>+</div>
-                              <div>Bestilt</div>
-                              <div style={{ justifySelf: 'end' }}>{lagerstatus.orders}</div>
-                              <div>+</div>
-                              <div>Anmodet eksternt</div>
-                              <div style={{ justifySelf: 'end' }}> {lagerstatus.request}</div>
-                              <div>+</div>
-                              <div>Anmodet internt</div>
-                              <div style={{ justifySelf: 'end' }}> {lagerstatus.intRequest}</div>
-                              <div>-</div>
-                              <div>Behovsmeldt</div>
-                              <div style={{ justifySelf: 'end' }}> {lagerstatus.needNotified}</div>
-                              <div>-</div>
-                              <div>Reservert</div>
-                              <div style={{ justifySelf: 'end' }}> {lagerstatus.reserved}</div>
-                              <div>-</div>
-                              <div>Restordre</div>
-                              <div style={{ justifySelf: 'end' }}> {lagerstatus.backOrders}</div>
-                            </HGrid>
-                            <HGrid
-                              columns="auto auto 1fr"
-                              gap="0 space-8"
-                              style={{
-                                borderTopWidth: '1px',
-                                borderTopStyle: 'solid',
-                                borderTopColor: 'var(--ax-border-subtle)',
-                                borderBottomStyle: 'double',
-                                borderBottomColor: 'var(--ax-border-subtle)',
-                              }}
-                            >
-                              <div>
-                                <Etikett>=</Etikett>
-                              </div>
-                              <div>
-                                <Etikett>På lager</Etikett>
-                              </div>
-                              <div style={{ justifySelf: 'end' }}>
-                                <Etikett>{lagerstatus.amountInStock}</Etikett>
-                              </div>
-                            </HGrid>
-                          </HelpText>
+                          <LagerstatusUtregning lagerstatus={lagerstatus} />
                         </>
                       </HStack>
                     ) : (

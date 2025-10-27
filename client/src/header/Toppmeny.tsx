@@ -102,7 +102,7 @@ export function Toppmeny() {
                   setNyOppgaveliste(true)
                 }}
               >
-                Kabalinspirert saksbilde
+                Hotsak 1.5
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>

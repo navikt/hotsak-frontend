@@ -17,13 +17,13 @@ export function BrevPanelEksperiment() {
       <PanelGroup direction="horizontal" autoSaveId="eksperimenteltBrevPanel">
         {visBrevvelger && (
           <>
-            <Panel defaultSize={30} minSize={10} order={1}>
+            <Panel defaultSize={40} minSize={10} order={1}>
               <BrevmalVelger />
             </Panel>
             <ResizeHandle />
           </>
         )}
-        <Panel defaultSize={70} minSize={30} order={2}>
+        <Panel defaultSize={60} minSize={30} order={2}>
           <Breveditor />
         </Panel>
       </PanelGroup>

@@ -1,46 +1,57 @@
 import { Box, Button, HGrid, HStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
-import { usePerson } from '../../../../personoversikt/usePerson'
-import { Personlinje } from '../../../../saksbilde/Personlinje'
-import { useSak } from '../../../../saksbilde/useSak'
-import { LayoutKontroller } from './LayoutKontroller'
-
-import { Route, Routes } from 'react-router'
+import { Navigate, Route, Routes, useLocation } from 'react-router'
 import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
+import { usePerson } from '../../../../personoversikt/usePerson'
 import { Bruker } from '../../../../saksbilde/bruker/Bruker'
 import { Formidler } from '../../../../saksbilde/formidler/Formidler'
-import HjelpemiddelListe from '../../../../saksbilde/hjelpemidler/HjelpemiddelListe'
+import { Personlinje } from '../../../../saksbilde/Personlinje'
 import { Søknadslinje } from '../../../../saksbilde/Søknadslinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
+import { useSak } from '../../../../saksbilde/useSak'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
-import { InfokolonneEksperiment } from './infokolonne/InfokolonneEksperiment'
+import { SakKontrollPanel } from './SakKontrollPanel'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
+import SøknadEksperiment from './søknad/SøknadEksperiment'
 import { TingÅGjøreEksperiment } from './TingÅGjøraEksperiment'
+import { VilkårPanelEksperiment } from './vilkår/VilkårPanelEksperiment'
+import { NedreVenstrePanel } from './venstrepanel/NedreVenstrePanel'
+import { ØvreVenstrePanel } from './venstrepanel/ØvreVenstrePanel'
 
 export function SaksbehandlingEksperiment() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
-  const { venstreKolonne, midtreKolonne, høyreKolonne } = useSaksbehandlingEksperimentContext()
+
+  const { venstrePanel, søknadPanel, brevKolonne, vilkårPanel } = useSaksbehandlingEksperimentContext()
+  const location = useLocation()
 
   return (
     <>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
-        <LayoutKontroller />
+        <SakKontrollPanel />
       </HStack>
       <div style={{ flex: 1, minHeight: 0 }}>
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
-          {venstreKolonne && (
+          {venstrePanel && (
             <>
-              <Panel defaultSize={30} minSize={10} order={1}>
-                <InfokolonneEksperiment />
+              <Panel defaultSize={15} minSize={10} order={1}>
+                <PanelGroup direction="vertical">
+                  <Panel defaultSize={40} minSize={20} maxSize={80} order={1}>
+                    <ØvreVenstrePanel />
+                  </Panel>
+                  <ResizeHandle retning="vertikal" />
+                  <Panel defaultSize={60} minSize={20} maxSize={80} order={1}>
+                    <NedreVenstrePanel />
+                  </Panel>
+                </PanelGroup>
               </Panel>
               <ResizeHandle />
             </>
           )}
-          {midtreKolonne && (
+          {søknadPanel && (
             <>
               <Panel defaultSize={40} minSize={20} order={2}>
                 {!sak || !behovsmelding ? (
@@ -48,15 +59,17 @@ export function SaksbehandlingEksperiment() {
                 ) : (
                   <>
                     <HGrid columns="auto">
-                      <Søknadslinje id={sak.data.sakId} />
+                      <Søknadslinje id={sak.data.sakId} skjulSaksmeny={true} />
                     </HGrid>
                     <ScrollContainer>
                       <section className={styles.søknadContainer}>
                         <Routes>
+                          <Route path="/" element={<Navigate to={`${location.pathname}/hjelpemidler`} replace />} />
                           <Route
-                            path="/"
-                            element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
+                            path="/hjelpemidler"
+                            element={<SøknadEksperiment sak={sak.data} behovsmelding={behovsmelding} />}
                           />
+
                           <Route
                             path="/bruker"
                             element={
@@ -76,11 +89,19 @@ export function SaksbehandlingEksperiment() {
                   </>
                 )}
               </Panel>
-              {høyreKolonne && <ResizeHandle />}
+              {(brevKolonne || vilkårPanel) && <ResizeHandle />}
             </>
           )}
-          {høyreKolonne && (
-            <Panel defaultSize={30} minSize={10} order={3}>
+          {vilkårPanel && (
+            <>
+              <Panel defaultSize={30} minSize={10} order={3}>
+                <VilkårPanelEksperiment />
+              </Panel>
+              {brevKolonne && <ResizeHandle />}
+            </>
+          )}
+          {brevKolonne && (
+            <Panel defaultSize={30} minSize={10} order={4}>
               <TingÅGjøreEksperiment />
             </Panel>
           )}
@@ -113,12 +134,6 @@ export function SaksbehandlingEksperiment() {
             </Button>
             <Button type="button" variant="secondary-neutral" size="small">
               Sett på vent
-            </Button>
-            <Button type="button" variant="secondary-neutral" size="small">
-              Overfør til medarbeider
-            </Button>
-            <Button type="button" variant="secondary-neutral" size="small">
-              Send til Gosys
             </Button>
           </HStack>
         </Box.New>

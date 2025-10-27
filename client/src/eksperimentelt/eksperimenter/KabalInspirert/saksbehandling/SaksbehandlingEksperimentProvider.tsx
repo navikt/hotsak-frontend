@@ -7,14 +7,18 @@ import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperime
  *
  */
 const initialState = {
-  venstreKolonne: false,
-  setVenstreKolonne() {},
-  midtreKolonne: false,
-  setMidtreKolonne() {},
-  høyreKolonne: false,
-  setHøyreKolonne() {},
-  valgtVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
-  setValgtVenstreKolonneTab() {},
+  venstrePanel: false,
+  setVenstrePanel() {},
+  søknadPanel: false,
+  setSøknadPanel() {},
+  vilkårPanel: false,
+  setVilkårPanel() {},
+  brevKolonne: false,
+  setBrevKolonne() {},
+  valgtØvreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
+  setValgtØvreVenstreKolonneTab() {},
+  valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
+  setValgtNedreVenstreKolonneTab() {},
   valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
   setValgtHøyreKolonneTab() {},
 }
@@ -23,25 +27,33 @@ const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperiment
 SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
 
 function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
-  const [venstreKolonne, setVenstreKolonne] = useState(true)
-  const [valgtVenstreKolonneTab, setValgtVenstreKolonneTab] = useState<VenstrekolonneTabs>(
+  const [venstrePanel, setVenstrePanel] = useState(true)
+  const [valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.BEHOVSMELDINGSINFO
   )
+  const [valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
+    VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
+  )
   const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
-  const [midtreKolonne, setMidtreKolonne] = useState(true)
-  const [høyreKolonne, setHøyreKolonne] = useState(true)
+  const [søknadPanel, setSøknadPanel] = useState(true)
+  const [vilkårPanel, setVilkårPanel] = useState(false)
+  const [brevKolonne, setBrevKolonne] = useState(true)
 
   return (
     <SaksbehandlingEksperimentContext.Provider
       value={{
-        venstreKolonne,
-        setVenstreKolonne,
-        midtreKolonne,
-        setMidtreKolonne,
-        valgtVenstreKolonneTab,
-        setValgtVenstreKolonneTab,
-        høyreKolonne,
-        setHøyreKolonne,
+        venstrePanel,
+        setVenstrePanel,
+        søknadPanel,
+        setSøknadPanel,
+        valgtØvreVenstreKolonneTab,
+        setValgtØvreVenstreKolonneTab,
+        valgtNedreVenstreKolonneTab,
+        setValgtNedreVenstreKolonneTab,
+        vilkårPanel,
+        setVilkårPanel,
+        brevKolonne,
+        setBrevKolonne,
         valgtHøyreKolonneTab,
         setValgtHøyreKolonneTab,
       }}
@@ -62,14 +74,18 @@ function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContext
 }
 
 type SaksbehandlingEksperimentContextType = {
-  venstreKolonne: boolean
-  setVenstreKolonne(visible: boolean): void
-  midtreKolonne: boolean
-  setMidtreKolonne(visible: boolean): void
-  høyreKolonne: boolean
-  setHøyreKolonne(visible: boolean): void
-  valgtVenstreKolonneTab: VenstrekolonneTabs
-  setValgtVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  venstrePanel: boolean
+  setVenstrePanel(visible: boolean): void
+  søknadPanel: boolean
+  setSøknadPanel(visible: boolean): void
+  brevKolonne: boolean
+  setBrevKolonne(visible: boolean): void
+  vilkårPanel: boolean
+  setVilkårPanel(visible: boolean): void
+  valgtØvreVenstreKolonneTab: VenstrekolonneTabs
+  setValgtØvreVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  valgtNedreVenstreKolonneTab: VenstrekolonneTabs
+  setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
   valgtHøyreKolonneTab: HøyrekolonneTabs
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
 }

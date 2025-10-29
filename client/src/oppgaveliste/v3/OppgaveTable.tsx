@@ -9,6 +9,7 @@ import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgavetypeTag } from './OppgavetypeTag.tsx'
+import { MappeTag } from './MappeTag.tsx'
 
 export interface OppgaveTableProps {
   oppgaver: OppgaveV2[]
@@ -82,6 +83,9 @@ export function OppgaveTable(props: OppgaveTableProps) {
                   <Tag size="small" variant="neutral">
                     {oppgave.gjelder}
                   </Tag>
+                )}
+                {oppgave.mappenavn && (
+                  <MappeTag mappenavn={oppgave.mappenavn} />
                 )}
               </HStack>
             </Table.DataCell>

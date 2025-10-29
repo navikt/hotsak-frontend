@@ -124,6 +124,8 @@ export interface OppgaveV2 extends OppgaveBase {
   fnr?: string
   bruker?: OppgaveBrukerV2
   isPåVent?: boolean
+  mappeId?: string
+  mappenavn?: string
 }
 
 export interface OppgaveBrukerV2 {

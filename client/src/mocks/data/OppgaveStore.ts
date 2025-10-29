@@ -8,6 +8,8 @@ import { JournalpostStore } from './JournalpostStore'
 import { LagretHjelpemiddelsak } from './lagSak.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
+import { lagTilfeldigInteger } from './felles.ts'
+import { hentMappe } from './mappe.ts'
 
 type LagretOppgave = OppgaveV2
 type InsertOppgave = LagretOppgave
@@ -36,6 +38,7 @@ export class OppgaveStore extends Dexie {
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: InsertOppgave[] = saker.map((sak) => {
+      const mappeId = lagTilfeldigInteger(0, 12).toString();
       const sakId = sak.sakId
       return {
         oppgaveId: `E-${sakId}`,
@@ -57,10 +60,13 @@ export class OppgaveStore extends Dexie {
         fnr: sak.bruker.fnr,
         bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
         versjon: 1,
+        mappeId: mappeId,
+        mappenavn: hentMappe(mappeId),
       }
     })
 
     const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map((journalføring) => {
+      const mappeId = lagTilfeldigInteger(0, 12).toString();
       const journalpostId = journalføring.journalpostId
       return {
         oppgaveId: `I-${journalpostId}`,
@@ -82,6 +88,8 @@ export class OppgaveStore extends Dexie {
         fnr: journalføring.bruker!.fnr,
         bruker: { fnr: journalføring.bruker!.fnr, navn: journalføring.bruker!.navn! },
         versjon: 1,
+        mappeId: mappeId,
+        mappenavn: hentMappe(mappeId),
       }
     })
 

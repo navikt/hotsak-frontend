@@ -45,7 +45,7 @@ export function SaksbehandlingEksperiment() {
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
           {venstrePanel && (
             <>
-              <Panel defaultSize={12} minSize={10} order={1}>
+              <Panel defaultSize={12} minSize={11} order={1}>
                 <VStack gap="space-16" height={'100%'}>
                   <ØvreVenstrePanel />
                   <div style={{ flex: 1, minHeight: 0 }}>
@@ -129,19 +129,10 @@ export function SaksbehandlingEksperiment() {
         width="100%"
         className="z-23"
       >
-        <Box.New background="accent-moderate" borderWidth="1 0 0 0" borderColor="neutral-subtle">
+        <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
           <HStack align="center" justify="space-between" gap="space-16">
-            <Button type="button" variant="primary-neutral" size="small">
-              Innvilg
-            </Button>
-            <Button type="button" variant="secondary-neutral" size="small">
-              Henlegg
-            </Button>
-            <Button type="button" variant="secondary-neutral" size="small">
-              Avslå
-            </Button>
-            <Button type="button" variant="secondary-neutral" size="small">
-              Sett på vent
+            <Button type="button" variant="primary" size="small">
+              Ferdigstill
             </Button>
           </HStack>
         </Box.New>

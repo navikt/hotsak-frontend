@@ -1,9 +1,9 @@
 import { HStack, Switch } from '@navikt/ds-react'
 
 import globalStyles from '../../../../styles/shared.module.css'
+import { SakMenyEksperiment } from './SakMenyEksperiment'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
-import { SaksbildeMenu } from '../../../../saksbilde/SaksbildeMenu'
 
 export const SakKontrollPanel = () => {
   const {
@@ -31,7 +31,7 @@ export const SakKontrollPanel = () => {
       <ToggleKnapp checked={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
         Brev
       </ToggleKnapp>
-      <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />
+      <SakMenyEksperiment spørreundersøkelseId="sak_overført_gosys_v1" />
     </HStack>
   )
 }

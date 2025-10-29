@@ -27,7 +27,7 @@ export function NedreVenstrePanel() {
       borderWidth="0 1"
       borderColor="neutral-subtle"
       background="default"
-      borderRadius="large large 0 0"
+      borderRadius="large"
       style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <Tabs
@@ -37,7 +37,7 @@ export function NedreVenstrePanel() {
         loop
         style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
       >
-        <Tabs.List style={{ height: `${søknadslinjeHøyde}`, flexShrink: 0 }}>
+        <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
           <Tooltip content="Utlånsoversikt">
             <Tabs.Tab
               value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT}

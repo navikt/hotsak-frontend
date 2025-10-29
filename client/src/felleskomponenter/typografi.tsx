@@ -26,15 +26,17 @@ export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: Rea
 
 export function Brødtekst({
   spacing,
+  textColor = 'default',
   weight = 'regular',
   children,
 }: {
   spacing?: boolean
+  textColor?: 'subtle' | 'default'
   weight?: 'regular' | 'semibold'
   children: ReactNode
 }) {
   return (
-    <FlytendeTekst size="small" weight={weight} spacing={spacing}>
+    <FlytendeTekst textColor={textColor} size="small" weight={weight} spacing={spacing}>
       {children}
     </FlytendeTekst>
   )
@@ -70,7 +72,7 @@ export function Undertittel({ children }: { children: ReactNode }) {
 
 export function Mellomtittel({ children, spacing = true }: { children: ReactNode; spacing?: boolean }) {
   return (
-    <UppercaseHeading level="1" size="xsmall" spacing={spacing}>
+    <UppercaseHeading level="1" size="xsmall" spacing={spacing} textColor="subtle">
       {children}
     </UppercaseHeading>
   )

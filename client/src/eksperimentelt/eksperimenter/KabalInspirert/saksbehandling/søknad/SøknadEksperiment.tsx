@@ -1,4 +1,4 @@
-import { Box, Heading, VStack } from '@navikt/ds-react'
+import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 import { Sak } from '../../../../../types/types.internal'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
@@ -9,7 +9,7 @@ import {
   useAlternativeProdukter,
   useProduktLagerInfo,
 } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
-import { storForbokstavIOrd } from '../../../../../utils/formater'
+import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../../utils/formater'
 import { Hast } from '../../../../../saksbilde/hjelpemidler/Hast'
 import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
 import { Hjelpemiddel } from '../../../../../saksbilde/hjelpemidler/Hjelpemiddel'
@@ -18,6 +18,8 @@ import { Summering } from '../../../../../saksbilde/hjelpemidler/Summering'
 import { BrukersFunksjon } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
 import { GreitÅViteCard } from '../../../../../saksbilde/venstremeny/GreitÅViteCard'
 import { Strek } from '../../../../../felleskomponenter/Strek'
+import { Brødtekst } from '../../../../../felleskomponenter/typografi'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 interface SøknadEksperimentProps {
   sak: Sak
@@ -69,6 +71,12 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
+      <HStack gap="space-8" align="center">
+        <InformationSquareIcon fontSize="1.5rem" />
+        <Brødtekst>
+          Område: {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
+        </Brødtekst>
+      </HStack>
       {hjelpemidler.map((hjelpemiddel) => (
         <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
           <Hjelpemiddel

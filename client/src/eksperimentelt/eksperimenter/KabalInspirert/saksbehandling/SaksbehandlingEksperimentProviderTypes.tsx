@@ -11,3 +11,9 @@ export enum HøyrekolonneTabs {
   BREV = 'BREV',
   BEHANDLING = 'BEHANDLING',
 }
+
+export enum SøknadPanelTabs {
+  SØKNAD = 'SØKNAD',
+  FORMIDLER = 'FORMIDLER',
+  BRUKER = 'BRUKER',
+}

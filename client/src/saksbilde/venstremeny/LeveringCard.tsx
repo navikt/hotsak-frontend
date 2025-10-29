@@ -70,7 +70,7 @@ export function LeveringCard(props: UtleveringCardProps) {
   }
 }
 
-function lagLeveringsmåteTekst(
+export function lagLeveringsmåteTekst(
   { utleveringsmåte, annenUtleveringsadresse }: Levering,
   adresseBruker: string
 ): [string, string] {

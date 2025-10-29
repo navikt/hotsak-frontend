@@ -1,6 +1,5 @@
 import { ClockDashedIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tooltip } from '@navikt/ds-react'
-import { ScrollContainer } from '../../../../../felleskomponenter/ScrollContainer'
 import { søknadslinjeHøyde } from '../../../../../GlobalStyles'
 import { Historikk } from '../../../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
@@ -11,7 +10,7 @@ export function ØvreVenstrePanel() {
   const { valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab } = useSaksbehandlingEksperimentContext()
 
   return (
-    <Box.New borderWidth="0 1" borderColor="neutral-subtle">
+    <Box.New background="default" borderRadius="large" style={{ overflow: 'auto' }}>
       <Tabs
         size="small"
         value={valgtØvreVenstreKolonneTab.toString()}
@@ -29,16 +28,15 @@ export function ØvreVenstrePanel() {
             <Tabs.Tab value={VenstrekolonneTabs.SAKSHISTORIKK} icon={<ClockDashedIcon title="Sakshistorikk" />} />
           </Tooltip>
         </Tabs.List>
-        <ScrollContainer>
-          <Tabs.Panel value={VenstrekolonneTabs.BEHOVSMELDINGSINFO.toString()}>
-            <Box padding="space-16">
-              <SøknadsinfoEksperiment />
-            </Box>
-          </Tabs.Panel>
-          <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
-            <Historikk />
-          </Tabs.Panel>
-        </ScrollContainer>
+
+        <Tabs.Panel value={VenstrekolonneTabs.BEHOVSMELDINGSINFO.toString()}>
+          <Box padding="space-16">
+            <SøknadsinfoEksperiment />
+          </Box>
+        </Tabs.Panel>
+        <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
+          <Historikk />
+        </Tabs.Panel>
       </Tabs>
     </Box.New>
   )

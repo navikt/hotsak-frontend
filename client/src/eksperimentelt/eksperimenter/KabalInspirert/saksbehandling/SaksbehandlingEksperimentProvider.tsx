@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
+import { HøyrekolonneTabs, SøknadPanelTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
 
 /**
  * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
@@ -17,6 +17,8 @@ const initialState = {
   setBrevKolonne() {},
   valgtØvreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
   setValgtØvreVenstreKolonneTab() {},
+  valgtSøknadPanelTab: SøknadPanelTabs.SØKNAD,
+  setValgtSøknadPanelTab() {},
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
   setValgtNedreVenstreKolonneTab() {},
   valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
@@ -35,6 +37,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
     VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
   )
   const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
+  const [valgtSøknadPanelTab, setValgtSøknadPanelTab] = useState<SøknadPanelTabs>(SøknadPanelTabs.SØKNAD)
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [vilkårPanel, setVilkårPanel] = useState(false)
   const [brevKolonne, setBrevKolonne] = useState(true)
@@ -50,6 +53,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setValgtØvreVenstreKolonneTab,
         valgtNedreVenstreKolonneTab,
         setValgtNedreVenstreKolonneTab,
+        valgtSøknadPanelTab,
+        setValgtSøknadPanelTab,
         vilkårPanel,
         setVilkårPanel,
         brevKolonne,
@@ -86,6 +91,8 @@ type SaksbehandlingEksperimentContextType = {
   setValgtØvreVenstreKolonneTab(tab: VenstrekolonneTabs): void
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  valgtSøknadPanelTab: SøknadPanelTabs
+  setValgtSøknadPanelTab(tab: SøknadPanelTabs): void
   valgtHøyreKolonneTab: HøyrekolonneTabs
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
 }

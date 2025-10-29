@@ -19,7 +19,7 @@ export function EksperimentellApp() {
   const [darkmode] = useDarkmode()
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <VStack width="100%" gap="0" style={{ height: '100vh' }}>
+      <VStack width="100%" gap="0" style={{ height: '100vh', backgroundColor: 'var(--ax-bg-neutral-moderate) ' }}>
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>

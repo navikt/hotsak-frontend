@@ -23,14 +23,21 @@ export function NedreVenstrePanel() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <Box.New borderWidth="0 1" borderColor="neutral-subtle">
+    <Box.New
+      borderWidth="0 1"
+      borderColor="neutral-subtle"
+      background="default"
+      borderRadius="large large 0 0"
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    >
       <Tabs
         size="small"
         value={valgtNedreVenstreKolonneTab.toString()}
         onChange={(value) => setValgtNedreVenstreKolonneTab(value as VenstrekolonneTabs)}
         loop
+        style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
       >
-        <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
+        <Tabs.List style={{ height: `${søknadslinjeHøyde}`, flexShrink: 0 }}>
           <Tooltip content="Utlånsoversikt">
             <Tabs.Tab
               value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT}
@@ -72,19 +79,20 @@ export function NedreVenstrePanel() {
             <Tabs.Tab value={VenstrekolonneTabs.DOKUMENTOVERSIKT} icon={<FileIcon title="Dokumentoversikt" />} />
           </Tooltip>
         </Tabs.List>
-
-        <Tabs.Panel value={VenstrekolonneTabs.SAKSOVERSIKT.toString()}>TODO</Tabs.Panel>
-        <Tabs.Panel value={VenstrekolonneTabs.DOKUMENTOVERSIKT.toString()}>TODO</Tabs.Panel>
-        <Tabs.Panel value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
-          <Hjelpemiddeloversikt />
-        </Tabs.Panel>
-        {sak != null && (
-          <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
-            <HøyrekolonnePanel tittel="Notater">
-              <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
-            </HøyrekolonnePanel>
+        <div style={{ overflow: 'auto' }}>
+          <Tabs.Panel value={VenstrekolonneTabs.SAKSOVERSIKT.toString()}>TODO</Tabs.Panel>
+          <Tabs.Panel value={VenstrekolonneTabs.DOKUMENTOVERSIKT.toString()}>TODO</Tabs.Panel>
+          <Tabs.Panel value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
+            <Hjelpemiddeloversikt />
           </Tabs.Panel>
-        )}
+          {sak != null && (
+            <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
+              <HøyrekolonnePanel tittel="Notater">
+                <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
+              </HøyrekolonnePanel>
+            </Tabs.Panel>
+          )}
+        </div>
       </Tabs>
     </Box.New>
   )

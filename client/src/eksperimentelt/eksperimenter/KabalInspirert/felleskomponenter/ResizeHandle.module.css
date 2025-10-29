@@ -1,6 +1,6 @@
 .resizeHandle {
   background-color: var(--ax-bg-neutral-moderate);
-  flex: 0 0 var(--ax-space-24);
+  flex: 0 0 var(--ax-space-16);
   position: relative;
   outline: none;
 

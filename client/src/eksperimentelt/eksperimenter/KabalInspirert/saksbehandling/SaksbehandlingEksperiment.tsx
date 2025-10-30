@@ -58,7 +58,7 @@ export function SaksbehandlingEksperiment() {
           )}
           {søknadPanel && (
             <>
-              <Panel defaultSize={40} minSize={20} order={2}>
+              <Panel defaultSize={35} minSize={20} order={2}>
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
@@ -109,7 +109,7 @@ export function SaksbehandlingEksperiment() {
             </>
           )}
           {brevKolonne && (
-            <Panel defaultSize={30} minSize={10} order={4}>
+            <Panel defaultSize={40} minSize={10} order={4}>
               <BrevPanelEksperiment />
             </Panel>
           )}

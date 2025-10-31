@@ -11,8 +11,8 @@ export const SakKontrollPanel = () => {
     setVenstrePanel,
     søknadPanel,
     setSøknadPanel,
-    vilkårPanel,
-    setVilkårPanel,
+    behandlingPanel,
+    setBehandlingPanel,
     brevKolonne,
     setBrevKolonne,
   } = useSaksbehandlingEksperimentContext()
@@ -25,8 +25,8 @@ export const SakKontrollPanel = () => {
       <ToggleKnapp checked={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
         Søknad
       </ToggleKnapp>
-      <ToggleKnapp checked={vilkårPanel} onToggle={() => setVilkårPanel(!vilkårPanel)}>
-        Vilkår
+      <ToggleKnapp checked={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
+        Behandling
       </ToggleKnapp>
       <ToggleKnapp checked={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
         Brev

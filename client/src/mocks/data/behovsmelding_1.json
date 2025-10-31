@@ -59,7 +59,7 @@
     "hjelpemidler": [
       {
         "hjelpemiddelId": "526f9e0d-2f5a-4946-acb3-afbfe72e227f",
-        "antall": 1,
+        "antall": 2,
         "produkt": {
           "hmsArtNr": "177946",
           "artikkelnavn": "Gemino 20",
@@ -95,12 +95,6 @@
             "hmsnr": "123456",
             "hjmNavn": "Hjelpemiddelnavn",
             "serienr": "987654321"
-          },
-          {
-            "erTilsvarende": false,
-            "hmsnr": "678967",
-            "hjmNavn": "Nelpemiddelhjavn",
-            "årsak": "ENDRINGER_I_INNBYGGERS_FUNKSJON"
           }
         ],
         "bruksarenaer": ["EGET_HJEM"],
@@ -236,7 +230,7 @@
     "annenKontaktperson": null,
     "utleveringMerknad": "",
     "hast": {
-      "hasteårsaker": ["UTVIKLING_AV_TRYKKSÅR", "RASK_FORVERRING_AV_ALVORLIG_DIAGNOSE", "ANNET"],
+      "hasteårsaker": ["UTVIKLING_AV_TRYKKSÅR"],
       "hastBegrunnelse": "En begrunnelse fra formidler om hvorfor det haster med denne saken."
     },
     "automatiskUtledetTilleggsinfo": []

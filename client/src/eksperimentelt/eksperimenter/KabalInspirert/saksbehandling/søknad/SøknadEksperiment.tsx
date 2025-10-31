@@ -1,13 +1,9 @@
-import { InformationSquareIcon } from '@navikt/aksel-icons'
-import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 import { Strek } from '../../../../../felleskomponenter/Strek'
-import { Brødtekst } from '../../../../../felleskomponenter/typografi'
 import { BrukersFunksjon } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
-import { Hjelpemiddel } from '../../../../../saksbilde/hjelpemidler/Hjelpemiddel'
 import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
 import { Summering } from '../../../../../saksbilde/hjelpemidler/Summering'
-import { FrittStåendeTilbehør } from '../../../../../saksbilde/hjelpemidler/TilbehørListe'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
@@ -18,7 +14,8 @@ import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/
 import { GreitÅViteCard } from '../../../../../saksbilde/venstremeny/GreitÅViteCard'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
-import { storForbokstavIAlleOrd } from '../../../../../utils/formater'
+import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment'
+import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment'
 
 interface SøknadEksperimentProps {
   sak: Sak
@@ -67,15 +64,10 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
-      <HStack gap="space-8" align="center">
-        <InformationSquareIcon fontSize="1.5rem" />
-        <Brødtekst>
-          Område: {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
-        </Brødtekst>
-      </HStack>
+
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
-          <Hjelpemiddel
+        <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4" borderRadius="large">
+          <HjelpemiddelEksperiment
             sak={sak}
             hjelpemiddel={hjelpemiddel}
             produkter={hjelpemiddelprodukter}
@@ -95,7 +87,7 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
           <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
+          <FrittStåendeTilbehørEksperiment tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
       <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />

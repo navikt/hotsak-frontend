@@ -2,7 +2,7 @@ import { Heading } from '@navikt/ds-react'
 import { OppgaveProvider } from '../../../oppgave/OppgaveProvider'
 import { Oppgavetype, OppgaveV2 } from '../../../oppgave/oppgaveTypes'
 import { useOppgave } from '../../../oppgave/useOppgave'
-import { SaksbehandlingEksperiment } from './saksbehandling/SaksbehandlingEksperiment'
+import { SaksbehandlingEksperiment } from './saksbehandling/SaksbehandlingEksperimentPanel'
 import { SaksbehandlingEksperimentProvider } from './saksbehandling/SaksbehandlingEksperimentProvider'
 
 export default function OppgaveEksperiment() {

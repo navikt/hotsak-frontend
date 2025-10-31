@@ -1,8 +1,8 @@
 import { HouseIcon } from '@navikt/aksel-icons'
-import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, VStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
+import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { BehovsmeldingEtikett } from '../../../../felleskomponenter/Oppgaveetikett'
-import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 import { Skillelinje } from '../../../../felleskomponenter/Strek'
 import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../oppgave/useOppgave'
@@ -12,11 +12,12 @@ import { Formidler } from '../../../../saksbilde/formidler/Formidler'
 import { Personlinje } from '../../../../saksbilde/Personlinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { useSak } from '../../../../saksbilde/useSak'
-import { OppgaveStatusLabel, Sakstype } from '../../../../types/types.internal'
+import { Sakstype } from '../../../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../../../utils/dato'
 import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
+import BehandlingEksperimentPanel from './behandling/BehandlingEksperiment'
 import { SakKontrollPanel } from './SakKontrollPanel'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
@@ -25,7 +26,6 @@ import { HastEksperiment } from './søknad/HastEksperiment'
 import SøknadEksperiment from './søknad/SøknadEksperiment'
 import { NedreVenstrePanel } from './venstrepanel/NedreVenstrePanel'
 import { ØvreVenstrePanel } from './venstrepanel/ØvreVenstrePanel'
-import { VilkårPanelEksperiment } from './vilkår/VilkårPanelEksperiment'
 
 export function SaksbehandlingEksperiment() {
   const { sak } = useSak()
@@ -34,7 +34,7 @@ export function SaksbehandlingEksperiment() {
   const { oppgave } = useOppgave()
   const formidlerNavnFormatert = formaterNavn(behovsmelding?.levering.hjelpemiddelformidler.navn)
 
-  const { venstrePanel, søknadPanel, brevKolonne, vilkårPanel, valgtSøknadPanelTab, setValgtSøknadPanelTab } =
+  const { venstrePanel, søknadPanel, brevKolonne, behandlingPanel, valgtSøknadPanelTab, setValgtSøknadPanelTab } =
     useSaksbehandlingEksperimentContext()
 
   return (
@@ -72,7 +72,7 @@ export function SaksbehandlingEksperiment() {
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
-                  <VStack gap="space-16">
+                  <VStack gap="space-16" style={{ overflowY: 'auto', height: '100%' }}>
                     <Box.New background="default" borderRadius="large">
                       <VStack paddingBlock="0 space-20" gap="space-16">
                         <HGrid
@@ -86,6 +86,11 @@ export function SaksbehandlingEksperiment() {
                             {sak.data.sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Søknad om hjelpemidler'}
                           </Heading>
                           <div />
+                          <Brødtekst textColor="subtle">
+                            Område:
+                            {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
+                          </Brødtekst>
+                          <div />
                           <HStack gap="space-24">
                             <Brødtekst
                               data-tip="Saksnummer"
@@ -98,13 +103,6 @@ export function SaksbehandlingEksperiment() {
                                 Frist: {formaterDato(oppgave.fristFerdigstillelse)}
                               </Brødtekst>
                             )}
-                          </HStack>
-                          <div />
-                          <HStack gap="space-4">
-                            <Tag variant="info-moderate" size="small">
-                              {OppgaveStatusLabel.get(sak.data.status)}
-                            </Tag>
-                            <Brødtekst>av {storForbokstavIAlleOrd(sak.data.saksbehandler?.navn)}</Brødtekst>
                           </HStack>
                         </HGrid>
                         <Skillelinje />
@@ -136,37 +134,41 @@ export function SaksbehandlingEksperiment() {
                           <Tabs.Tab value={SøknadPanelTabs.BRUKER} label="Bruker" />
                           <Tabs.Tab value={SøknadPanelTabs.FORMIDLER} label="Formidler" />
                         </Tabs.List>
-                        <ScrollContainer>
-                          <section className={styles.søknadContainer}>
-                            <Tabs.Panel value={SøknadPanelTabs.SØKNAD.toString()}>
-                              <SøknadEksperiment sak={sak.data} behovsmelding={behovsmelding} />
-                            </Tabs.Panel>
-                            <Tabs.Panel value={SøknadPanelTabs.BRUKER.toString()}>
-                              <Bruker
-                                bruker={sak.data.bruker}
-                                behovsmeldingsbruker={behovsmelding.bruker}
-                                brukerSituasjon={behovsmelding.brukersituasjon}
-                                levering={behovsmelding.levering}
-                                vilkår={behovsmelding.brukersituasjon.vilkår}
-                              />
-                            </Tabs.Panel>
-                            <Tabs.Panel value={SøknadPanelTabs.FORMIDLER.toString()}>
-                              <Formidler levering={behovsmelding.levering} />
-                            </Tabs.Panel>
-                          </section>
-                        </ScrollContainer>
+                        {/*  <ScrollContainer>*/}
+                        <section className={styles.søknadContainer}>
+                          <Tabs.Panel value={SøknadPanelTabs.SØKNAD.toString()}>
+                            <SøknadEksperiment sak={sak.data} behovsmelding={behovsmelding} />
+                          </Tabs.Panel>
+                          <Tabs.Panel value={SøknadPanelTabs.BRUKER.toString()}>
+                            <Bruker
+                              bruker={sak.data.bruker}
+                              behovsmeldingsbruker={behovsmelding.bruker}
+                              brukerSituasjon={behovsmelding.brukersituasjon}
+                              levering={behovsmelding.levering}
+                              vilkår={behovsmelding.brukersituasjon.vilkår}
+                            />
+                          </Tabs.Panel>
+                          <Tabs.Panel value={SøknadPanelTabs.FORMIDLER.toString()}>
+                            <Formidler levering={behovsmelding.levering} />
+                          </Tabs.Panel>
+                        </section>
+                        {/* </ScrollContainer>*/}
                       </Tabs>
                     </Box.New>
                   </VStack>
                 )}
               </Panel>
-              {(brevKolonne || vilkårPanel) && <ResizeHandle />}
+              {(brevKolonne || behandlingPanel) && <ResizeHandle />}
             </>
           )}
-          {vilkårPanel && (
+          {behandlingPanel && (
             <>
               <Panel defaultSize={30} minSize={10} order={3}>
-                <VilkårPanelEksperiment />
+                {sak && behovsmelding ? (
+                  <BehandlingEksperimentPanel sak={sak.data} behovsmelding={behovsmelding} />
+                ) : (
+                  <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
+                )}
               </Panel>
               {brevKolonne && <ResizeHandle />}
             </>

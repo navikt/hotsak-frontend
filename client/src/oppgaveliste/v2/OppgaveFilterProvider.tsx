@@ -1,32 +1,43 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
-import { type OppgaveSortState, OppgaveTildeltFilter } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveSortState } from '../../oppgave/oppgaveTypes.ts'
 import { useLocalState } from '../../state/useLocalState.ts'
 import { initialState, OppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
-export function OppgaveFilterProvider({ children }: { children: ReactNode }) {
-  const [tildeltFilter, setTildeltFilter] = useLocalState('oppgaveTildeltFilterV2', initialState.tildeltFilter)
-  const [gjelderFilter, setGjelderFilter] = useLocalState('oppgaveGjelderFilterV2', initialState.gjelderFilter)
-  const [currentPage, setCurrentPage] = useLocalState('oppgaveCurrentPageV2', initialState.currentPage)
-  const [sort, setSort] = useLocalState<OppgaveSortState>('oppgaveSortV2', initialState.sort)
+export function OppgaveFilterProvider({ prefix, children }: { prefix: 'mine' | 'kø'; children: ReactNode }) {
+  const key = (key: string) => prefix + key
+  const [oppgavetypeFilter, setOppgavetypeFilter] = useLocalState(
+    key('OppgavetypeFilter'),
+    initialState.oppgavetypeFilter
+  )
+  const [gjelderFilter, setGjelderFilter] = useLocalState(key('OppgaveGjelderFilter'), initialState.gjelderFilter)
+  const [oppgaveprioritetFilter, setOppgaveprioritetFilter] = useLocalState(
+    key('OppgaveprioritetFilter'),
+    initialState.oppgaveprioritetFilter
+  )
+  const [currentPage, setCurrentPage] = useLocalState(key('OppgaveCurrentPage'), initialState.currentPage)
+  const [sort, setSort] = useLocalState<OppgaveSortState>(key('OppgaveSort'), initialState.sort)
 
   function clearFilters() {
+    setOppgavetypeFilter([])
     setGjelderFilter([])
-    setTildeltFilter(OppgaveTildeltFilter.INGEN)
-    setSort(initialState.sort)
+    setOppgaveprioritetFilter([])
     setCurrentPage(1)
+    setSort(initialState.sort)
   }
 
   return (
     <OppgaveFilterContext.Provider
       value={{
-        tildeltFilter,
-        setTildeltFilter,
+        oppgavetypeFilter,
         gjelderFilter,
-        setGjelderFilter,
+        oppgaveprioritetFilter,
         currentPage,
-        setCurrentPage,
         sort,
+        setOppgavetypeFilter,
+        setGjelderFilter,
+        setOppgaveprioritetFilter,
+        setCurrentPage,
         setSort,
         clearFilters,
       }}

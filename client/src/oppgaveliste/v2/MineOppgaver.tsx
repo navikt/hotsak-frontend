@@ -4,14 +4,14 @@ import { useMemo } from 'react'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { compareBy, notEmpty, uniqueBy } from '../../utils/array.ts'
-import { useOppgavelisteV2 } from '../v2/useOppgavelisteV2'
+import { useMineOppgaver } from './useMineOppgaver.ts'
 import { OppgaveFilter } from './OppgaveFilter.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgaveTable } from './OppgaveTable.tsx'
 
 export function MineOppgaver() {
   const { oppgavetypeFilter, gjelderFilter, oppgaveprioritetFilter, sort } = useOppgaveFilterContext()
-  const { oppgaver: eksterneOppgaver } = useOppgavelisteV2(
+  const { oppgaver: eksterneOppgaver } = useMineOppgaver(
     1,
     500,
     {

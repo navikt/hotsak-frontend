@@ -1,4 +1,4 @@
-import { HourglassBottomFilledIcon, MenuElipsisVerticalIcon } from '@navikt/aksel-icons'
+import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
 import { BodyShort, Button, HStack, Label, Table, Tag, VStack } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 import { ReactNode, useState } from 'react'
@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router'
 import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
 import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
+import { MappeTag } from './MappeTag.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgavetypeTag } from './OppgavetypeTag.tsx'
-import { MappeTag } from './MappeTag.tsx'
 
 export interface OppgaveTableProps {
   oppgaver: OppgaveV2[]
@@ -45,7 +45,6 @@ export function OppgaveTable(props: OppgaveTableProps) {
           <Table.ColumnHeader style={{ width: 150 }} sortKey="fnr" sortable>
             Bruker
           </Table.ColumnHeader>
-          <Table.HeaderCell style={{ width: 25 }} />
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -84,9 +83,7 @@ export function OppgaveTable(props: OppgaveTableProps) {
                     {oppgave.gjelder}
                   </Tag>
                 )}
-                {oppgave.mappenavn && (
-                  <MappeTag mappenavn={oppgave.mappenavn} />
-                )}
+                {oppgave.mappenavn && <MappeTag mappenavn={oppgave.mappenavn} />}
               </HStack>
             </Table.DataCell>
             <Table.DataCell width={150}>
@@ -101,11 +98,6 @@ export function OppgaveTable(props: OppgaveTableProps) {
               </HStack>
             </Table.DataCell>
             <Table.DataCell width={150}>{oppgave.fnr}</Table.DataCell>
-            <Table.DataCell width={25}>
-              <div>
-                <MenuElipsisVerticalIcon />
-              </div>
-            </Table.DataCell>
           </Table.ExpandableRow>
         ))}
       </Table.Body>

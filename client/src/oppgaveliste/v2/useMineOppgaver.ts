@@ -61,7 +61,7 @@ const pathConfig = (
   }
 }
 
-export function useOppgavelisteV2(
+export function useMineOppgaver(
   currentPage: number,
   pageSize: number,
   sort: OppgaveSortState,

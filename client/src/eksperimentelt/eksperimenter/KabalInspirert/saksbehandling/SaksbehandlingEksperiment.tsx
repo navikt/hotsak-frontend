@@ -1,19 +1,27 @@
 import { HouseIcon } from '@navikt/aksel-icons'
-import { Box, Button, HStack, Tabs, VStack } from '@navikt/ds-react'
+import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, Tag, VStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
+import { BehovsmeldingEtikett } from '../../../../felleskomponenter/Oppgaveetikett'
 import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
+import { Skillelinje } from '../../../../felleskomponenter/Strek'
+import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { useOppgave } from '../../../../oppgave/useOppgave'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { Bruker } from '../../../../saksbilde/bruker/Bruker'
 import { Formidler } from '../../../../saksbilde/formidler/Formidler'
 import { Personlinje } from '../../../../saksbilde/Personlinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { useSak } from '../../../../saksbilde/useSak'
+import { OppgaveStatusLabel, Sakstype } from '../../../../types/types.internal'
+import { formaterDato, formaterTidsstempel } from '../../../../utils/dato'
+import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
 import { SakKontrollPanel } from './SakKontrollPanel'
 import styles from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SøknadPanelTabs } from './SaksbehandlingEksperimentProviderTypes'
+import { HastEksperiment } from './søknad/HastEksperiment'
 import SøknadEksperiment from './søknad/SøknadEksperiment'
 import { NedreVenstrePanel } from './venstrepanel/NedreVenstrePanel'
 import { ØvreVenstrePanel } from './venstrepanel/ØvreVenstrePanel'
@@ -23,6 +31,8 @@ export function SaksbehandlingEksperiment() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
+  const { oppgave } = useOppgave()
+  const formidlerNavnFormatert = formaterNavn(behovsmelding?.levering.hjelpemiddelformidler.navn)
 
   const { venstrePanel, søknadPanel, brevKolonne, vilkårPanel, valgtSøknadPanelTab, setValgtSøknadPanelTab } =
     useSaksbehandlingEksperimentContext()
@@ -64,6 +74,59 @@ export function SaksbehandlingEksperiment() {
                 ) : (
                   <VStack gap="space-16">
                     <Box.New background="default" borderRadius="large">
+                      <VStack paddingBlock="0 space-20" gap="space-16">
+                        <HGrid
+                          columns={'var(--ax-space-24) auto'}
+                          gap="space-8"
+                          paddingBlock={'space-16 0'}
+                          paddingInline={'space-16 0'}
+                        >
+                          <BehovsmeldingEtikett variant="alt1" label="S" />
+                          <Heading level="1" size="small" spacing={false}>
+                            {sak.data.sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Søknad om hjelpemidler'}
+                          </Heading>
+                          <div />
+                          <HStack gap="space-24">
+                            <Brødtekst
+                              data-tip="Saksnummer"
+                              data-for="sak"
+                              textColor="subtle"
+                            >{`Sak: ${sak.data.sakId}`}</Brødtekst>
+                            <Brødtekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.data.opprettet)}</Brødtekst>
+                            {oppgave?.fristFerdigstillelse && (
+                              <Brødtekst textColor="subtle">
+                                Frist: {formaterDato(oppgave.fristFerdigstillelse)}
+                              </Brødtekst>
+                            )}
+                          </HStack>
+                          <div />
+                          <HStack gap="space-4">
+                            <Tag variant="info-moderate" size="small">
+                              {OppgaveStatusLabel.get(sak.data.status)}
+                            </Tag>
+                            <Brødtekst>av {storForbokstavIAlleOrd(sak.data.saksbehandler?.navn)}</Brødtekst>
+                          </HStack>
+                        </HGrid>
+                        <Skillelinje />
+                        <HStack gap="space-16" paddingInline={'space-40 0'} align={'end'}>
+                          <VStack gap="1">
+                            <Etikett>Innsendt av</Etikett>
+                            <HStack>
+                              <Brødtekst textColor="subtle">{formidlerNavnFormatert}</Brødtekst>
+                              <CopyButton copyText={formidlerNavnFormatert} size="xsmall" />
+                            </HStack>
+                          </VStack>
+                          <HStack>
+                            <Brødtekst textColor="subtle">
+                              {formaterTelefonnummer(behovsmelding.levering.hjelpemiddelformidler.telefon)}
+                            </Brødtekst>
+                            <CopyButton copyText={behovsmelding.levering.hjelpemiddelformidler.telefon} size="xsmall" />
+                          </HStack>
+                          <Brødtekst textColor="subtle">{`${storForbokstavIAlleOrd(behovsmelding.levering.hjelpemiddelformidler.stilling)}`}</Brødtekst>
+                          <Brødtekst textColor="subtle">{`${storForbokstavIAlleOrd(behovsmelding.levering.hjelpemiddelformidler.adresse.poststed)}`}</Brødtekst>
+                        </HStack>
+                        {behovsmelding.levering.hast && <HastEksperiment hast={behovsmelding.levering.hast} />}
+                      </VStack>
                       <Tabs
                         value={valgtSøknadPanelTab}
                         onChange={(value) => setValgtSøknadPanelTab(value as SøknadPanelTabs)}

@@ -5,6 +5,7 @@ import { Mellomtittel, Tekst } from '../../felleskomponenter/typografi.tsx'
 export interface HøyrekolonnePanelProps {
   tittel: string
   error?: false | string
+  spacing?: boolean
   loading?: false | string
   children: ReactNode
 }
@@ -13,10 +14,10 @@ export interface HøyrekolonnePanelProps {
  * @see {@link VenstremenyCard}
  */
 export function HøyrekolonnePanel(props: HøyrekolonnePanelProps) {
-  const { tittel, loading, error, children } = props
+  const { tittel, loading, error, spacing = true, children } = props
   return (
     <Box as="aside" padding="4">
-      <Mellomtittel>{tittel}</Mellomtittel>
+      <Mellomtittel spacing={spacing}>{tittel}</Mellomtittel>
       {error && <Tekst>{error}</Tekst>}
       {loading && <Tekst>{loading}</Tekst>}
       {!loading && !error && children}

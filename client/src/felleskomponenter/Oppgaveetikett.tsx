@@ -5,9 +5,15 @@ import { Sakstype } from '../types/types.internal'
 import { storForbokstavIAlleOrd } from '../utils/formater'
 import styled from 'styled-components'
 
+export const BehovsmeldingEtikett = ({ variant, label }: { variant: 'alt1' | 'alt2' | 'alt3'; label: string }) => (
+  <Tag variant={variant} size="small">
+    <BodyShort>{label}</BodyShort>
+  </Tag>
+)
+
 const SøknadEtikett = () => (
   <SquareTag variant="alt1" size="xsmall">
-    <Detail>S</Detail>
+    <BodyShort>S</BodyShort>
   </SquareTag>
 )
 
@@ -24,8 +30,10 @@ const TilskuddEtikett = () => (
 )
 
 const SquareTag = styled(Tag)`
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 `
 
 interface LabelProps {

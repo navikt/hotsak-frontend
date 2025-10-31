@@ -15,8 +15,8 @@ const initialState = {
   setVilkårPanel() {},
   brevKolonne: false,
   setBrevKolonne() {},
-  valgtØvreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
-  setValgtØvreVenstreKolonneTab() {},
+  //valgtØvreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
+  //setValgtØvreVenstreKolonneTab() {},
   valgtSøknadPanelTab: SøknadPanelTabs.SØKNAD,
   setValgtSøknadPanelTab() {},
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
@@ -30,9 +30,9 @@ SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
 
 function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
   const [venstrePanel, setVenstrePanel] = useState(true)
-  const [valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
+  /*const [valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.BEHOVSMELDINGSINFO
-  )
+  )*/
   const [valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
   )
@@ -49,8 +49,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setVenstrePanel,
         søknadPanel,
         setSøknadPanel,
-        valgtØvreVenstreKolonneTab,
-        setValgtØvreVenstreKolonneTab,
+        //valgtØvreVenstreKolonneTab,
+        //setValgtØvreVenstreKolonneTab,
         valgtNedreVenstreKolonneTab,
         setValgtNedreVenstreKolonneTab,
         valgtSøknadPanelTab,
@@ -87,8 +87,8 @@ type SaksbehandlingEksperimentContextType = {
   setBrevKolonne(visible: boolean): void
   vilkårPanel: boolean
   setVilkårPanel(visible: boolean): void
-  valgtØvreVenstreKolonneTab: VenstrekolonneTabs
-  setValgtØvreVenstreKolonneTab(tab: VenstrekolonneTabs): void
+  //valgtØvreVenstreKolonneTab: VenstrekolonneTabs
+  //setValgtØvreVenstreKolonneTab(tab: VenstrekolonneTabs): void
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
   valgtSøknadPanelTab: SøknadPanelTabs

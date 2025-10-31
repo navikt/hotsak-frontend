@@ -236,7 +236,10 @@
     "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
     "annenKontaktperson": null,
     "utleveringMerknad": "",
-    "hast": null,
+    "hast": {
+      "hasteårsaker": ["ANNET"],
+      "hastBegrunnelse": "En begrunnelse fra formidler om hvorfor det haster med denne saken."
+    },
     "automatiskUtledetTilleggsinfo": []
   },
   "innsender": {

@@ -1,7 +1,7 @@
-import { FileIcon, FolderFileIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, FileIcon, FolderFileIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { søknadslinjeHøyde } from '../../../../../GlobalStyles'
-import { Hjelpemiddeloversikt } from '../../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/Hjelpemiddeloversikt'
+import { Historikk } from '../../../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useHjelpemiddeloversikt } from '../../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { HøyrekolonnePanel } from '../../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
 import { Notater } from '../../../../../saksbilde/høyrekolonne/notat/Notater'
@@ -10,6 +10,7 @@ import { useSak } from '../../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperimentProviderTypes'
+import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
 
 export function NedreVenstrePanel() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSaksbehandlingEksperimentContext()
@@ -38,6 +39,9 @@ export function NedreVenstrePanel() {
         style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
       >
         <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
+          <Tooltip content="Historikk">
+            <Tabs.Tab value={VenstrekolonneTabs.SAKSHISTORIKK} icon={<ClockDashedIcon title="Sakshistorikk" />} />
+          </Tooltip>
           <Tooltip content="Utlånsoversikt">
             <Tabs.Tab
               value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT}
@@ -80,10 +84,13 @@ export function NedreVenstrePanel() {
           </Tooltip>
         </Tabs.List>
         <div style={{ overflow: 'auto' }}>
+          <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
+            <Historikk />
+          </Tabs.Panel>
           <Tabs.Panel value={VenstrekolonneTabs.SAKSOVERSIKT.toString()}>TODO</Tabs.Panel>
           <Tabs.Panel value={VenstrekolonneTabs.DOKUMENTOVERSIKT.toString()}>TODO</Tabs.Panel>
           <Tabs.Panel value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
-            <Hjelpemiddeloversikt />
+            <UtlånsoversiktEksperiment />
           </Tabs.Panel>
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>

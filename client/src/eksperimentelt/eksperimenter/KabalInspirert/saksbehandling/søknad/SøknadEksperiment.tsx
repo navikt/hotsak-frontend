@@ -1,25 +1,24 @@
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
-import { Sak } from '../../../../../types/types.internal'
-import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
-import { useArtiklerForSak } from '../../../../../saksbilde/hjelpemidler/useArtiklerForSak'
-import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter'
+import { Strek } from '../../../../../felleskomponenter/Strek'
+import { Brødtekst } from '../../../../../felleskomponenter/typografi'
+import { BrukersFunksjon } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
+import { Hjelpemiddel } from '../../../../../saksbilde/hjelpemidler/Hjelpemiddel'
+import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
+import { Summering } from '../../../../../saksbilde/hjelpemidler/Summering'
+import { FrittStåendeTilbehør } from '../../../../../saksbilde/hjelpemidler/TilbehørListe'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
   useProduktLagerInfo,
 } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
-import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../../utils/formater'
-import { Hast } from '../../../../../saksbilde/hjelpemidler/Hast'
-import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
-import { Hjelpemiddel } from '../../../../../saksbilde/hjelpemidler/Hjelpemiddel'
-import { FrittStåendeTilbehør } from '../../../../../saksbilde/hjelpemidler/TilbehørListe'
-import { Summering } from '../../../../../saksbilde/hjelpemidler/Summering'
-import { BrukersFunksjon } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
+import { useArtiklerForSak } from '../../../../../saksbilde/hjelpemidler/useArtiklerForSak'
+import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter'
 import { GreitÅViteCard } from '../../../../../saksbilde/venstremeny/GreitÅViteCard'
-import { Strek } from '../../../../../felleskomponenter/Strek'
-import { Brødtekst } from '../../../../../felleskomponenter/typografi'
-import { InformationSquareIcon } from '@navikt/aksel-icons'
+import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
+import { Sak } from '../../../../../types/types.internal'
+import { storForbokstavIAlleOrd } from '../../../../../utils/formater'
 
 interface SøknadEksperimentProps {
   sak: Sak
@@ -30,7 +29,7 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
-  const { brukersituasjon, levering } = behovsmelding
+  const { brukersituasjon } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
 
@@ -55,11 +54,8 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
 
   return (
     <VStack gap="4">
-      <Heading level="1" size="small" visuallyHidden={true}>
-        {storForbokstavIOrd(sak.sakstype)}
-      </Heading>
       {<GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />}
-      {levering.hast && <Hast hast={levering.hast} />}
+
       <div>
         <Strek />
       </div>

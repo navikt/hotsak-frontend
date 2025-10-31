@@ -33,7 +33,7 @@ export const sak_overført_gosys_v1: ISpørreundersøkelse = {
                   spørsmål: [
                     {
                       type: 'fritekst',
-                      tekst: 'Hva har du behov for å kunne gjøre i Hotsak for å behandle denne saken?',
+                      tekst: 'Oppgi hva du har behov for å kunne gjøre i Hotsak for å behandle denne saken.',
                       beskrivelse: 'Vi er interessert i å lære mer om hvordan Hotsak kan bli et bedre system for dere',
                       påkrevd: true,
                     },

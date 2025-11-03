@@ -11,6 +11,8 @@ const initialState = {
   setVenstrePanel() {},
   søknadPanel: false,
   setSøknadPanel() {},
+  notatPanel: false,
+  setNotatPanel() {},
   behandlingPanel: false,
   setBehandlingPanel() {},
   brevKolonne: false,
@@ -38,6 +40,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   )
   const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
   const [valgtSøknadPanelTab, setValgtSøknadPanelTab] = useState<SøknadPanelTabs>(SøknadPanelTabs.SØKNAD)
+  const [notatPanel, setNotatPanel] = useState(false)
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
@@ -49,6 +52,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setVenstrePanel,
         søknadPanel,
         setSøknadPanel,
+        notatPanel,
+        setNotatPanel,
         //valgtØvreVenstreKolonneTab,
         //setValgtØvreVenstreKolonneTab,
         valgtNedreVenstreKolonneTab,
@@ -84,6 +89,8 @@ type SaksbehandlingEksperimentContextType = {
   søknadPanel: boolean
   setSøknadPanel(visible: boolean): void
   brevKolonne: boolean
+  notatPanel: boolean
+  setNotatPanel(visible: boolean): void
   setBrevKolonne(visible: boolean): void
   behandlingPanel: boolean
   setBehandlingPanel(visible: boolean): void

@@ -1,4 +1,4 @@
-import { ClockDashedIcon, FileIcon, FolderFileIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
+import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { søknadslinjeHøyde } from '../../../../../GlobalStyles'
 import { Historikk } from '../../../../../saksbilde/høyrekolonne/historikk/Historikk'
@@ -75,20 +75,11 @@ export function NedreVenstrePanel() {
               }
             />
           </Tooltip>
-          <Tooltip content="Saksoversikt">
-            <Tabs.Tab value={VenstrekolonneTabs.SAKSOVERSIKT} icon={<FolderFileIcon title="Saksoversikt" />} />
-          </Tooltip>
-
-          <Tooltip content="Dokumentoversikt">
-            <Tabs.Tab value={VenstrekolonneTabs.DOKUMENTOVERSIKT} icon={<FileIcon title="Dokumentoversikt" />} />
-          </Tooltip>
         </Tabs.List>
         <div style={{ overflow: 'auto' }}>
           <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
             <Historikk />
           </Tabs.Panel>
-          <Tabs.Panel value={VenstrekolonneTabs.SAKSOVERSIKT.toString()}>TODO</Tabs.Panel>
-          <Tabs.Panel value={VenstrekolonneTabs.DOKUMENTOVERSIKT.toString()}>TODO</Tabs.Panel>
           <Tabs.Panel value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
             <UtlånsoversiktEksperiment />
           </Tabs.Panel>

@@ -1,4 +1,12 @@
-import { HouseIcon } from '@navikt/aksel-icons'
+import {
+  BriefcaseIcon,
+  CheckmarkIcon,
+  EnvelopeClosedIcon,
+  FileTextIcon,
+  HouseIcon,
+  NotePencilIcon,
+  WheelchairIcon,
+} from '@navikt/aksel-icons'
 import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, VStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
@@ -9,9 +17,11 @@ import { useOppgave } from '../../../../oppgave/useOppgave'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { Bruker } from '../../../../saksbilde/bruker/Bruker'
 import { Formidler } from '../../../../saksbilde/formidler/Formidler'
+import { Notater } from '../../../../saksbilde/høyrekolonne/notat/Notater'
 import { Personlinje } from '../../../../saksbilde/Personlinje'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { useSak } from '../../../../saksbilde/useSak'
+import { useSaksregler } from '../../../../saksregler/useSaksregler'
 import { Sakstype } from '../../../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../../../utils/dato'
 import { formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../../../utils/formater'
@@ -33,9 +43,27 @@ export function SaksbehandlingEksperiment() {
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const { oppgave } = useOppgave()
   const formidlerNavnFormatert = formaterNavn(behovsmelding?.levering.hjelpemiddelformidler.navn)
+  const { kanBehandleSak } = useSaksregler()
 
-  const { venstrePanel, søknadPanel, brevKolonne, behandlingPanel, valgtSøknadPanelTab, setValgtSøknadPanelTab } =
-    useSaksbehandlingEksperimentContext()
+  const {
+    venstrePanel,
+    setVenstrePanel,
+    søknadPanel,
+    setSøknadPanel,
+    notatPanel,
+    setNotatPanel,
+    brevKolonne,
+    setBrevKolonne,
+    behandlingPanel,
+    setBehandlingPanel,
+    valgtSøknadPanelTab,
+    setValgtSøknadPanelTab,
+  } = useSaksbehandlingEksperimentContext()
+
+  if (!sak || !behovsmelding) {
+    // TODO skeleton eller loader her?
+    return <div>Fant ikke sak eller behovsmelding</div>
+  }
 
   return (
     <>
@@ -66,9 +94,19 @@ export function SaksbehandlingEksperiment() {
               <ResizeHandle />
             </>
           )}
+          {notatPanel && (
+            <>
+              <Panel defaultSize={25} minSize={10} order={2}>
+                <Box.New background="default" borderRadius="large" padding="space-16" style={{ height: '100%' }}>
+                  <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
+                </Box.New>
+              </Panel>
+              <ResizeHandle />
+            </>
+          )}
           {søknadPanel && (
             <>
-              <Panel defaultSize={35} minSize={20} order={2}>
+              <Panel defaultSize={35} minSize={20} order={3}>
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
@@ -163,7 +201,7 @@ export function SaksbehandlingEksperiment() {
           )}
           {behandlingPanel && (
             <>
-              <Panel defaultSize={30} minSize={10} order={3}>
+              <Panel defaultSize={30} minSize={10} order={4}>
                 {sak && behovsmelding ? (
                   <BehandlingEksperimentPanel sak={sak.data} behovsmelding={behovsmelding} />
                 ) : (
@@ -174,7 +212,7 @@ export function SaksbehandlingEksperiment() {
             </>
           )}
           {brevKolonne && (
-            <Panel defaultSize={40} minSize={10} order={4}>
+            <Panel defaultSize={40} minSize={10} order={5}>
               <BrevPanelEksperiment />
             </Panel>
           )}
@@ -198,6 +236,67 @@ export function SaksbehandlingEksperiment() {
           <HStack align="center" justify="space-between" gap="space-16">
             <Button type="button" variant="primary" size="small">
               Ferdigstill
+            </Button>
+            <Button
+              type="button"
+              variant="secondary-neutral"
+              size="small"
+              icon={notatPanel ? <CheckmarkIcon /> : <WheelchairIcon />}
+              style={venstrePanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              onClick={() => {
+                setVenstrePanel(!venstrePanel)
+              }}
+            >
+              Utlånsoversikt
+            </Button>
+            <Button
+              type="button"
+              variant="secondary-neutral"
+              size="small"
+              icon={søknadPanel ? <CheckmarkIcon /> : <FileTextIcon />}
+              onClick={() => {
+                setSøknadPanel(!søknadPanel)
+              }}
+              style={søknadPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+            >
+              Søknad
+            </Button>
+
+            <Button
+              type="button"
+              variant="secondary-neutral"
+              size="small"
+              icon={notatPanel ? <CheckmarkIcon /> : <NotePencilIcon />}
+              style={notatPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              onClick={() => {
+                setNotatPanel(!notatPanel)
+              }}
+            >
+              Notater
+            </Button>
+            <Button
+              type="button"
+              variant="secondary-neutral"
+              size="small"
+              icon={behandlingPanel ? <CheckmarkIcon /> : <BriefcaseIcon />}
+              onClick={() => {
+                setBehandlingPanel(!behandlingPanel)
+              }}
+              style={behandlingPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+            >
+              Behandling
+            </Button>
+            <Button
+              type="button"
+              variant="secondary-neutral"
+              size="small"
+              icon={brevKolonne ? <CheckmarkIcon /> : <EnvelopeClosedIcon />}
+              onClick={() => {
+                setBrevKolonne(!brevKolonne)
+              }}
+              style={brevKolonne ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+            >
+              Brev
             </Button>
           </HStack>
         </Box.New>

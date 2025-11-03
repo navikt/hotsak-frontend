@@ -11,6 +11,8 @@ export const SakKontrollPanel = () => {
     setVenstrePanel,
     søknadPanel,
     setSøknadPanel,
+    notatPanel,
+    setNotatPanel,
     behandlingPanel,
     setBehandlingPanel,
     brevKolonne,
@@ -27,6 +29,9 @@ export const SakKontrollPanel = () => {
       </ToggleKnapp>
       <ToggleKnapp checked={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
         Behandling
+      </ToggleKnapp>
+      <ToggleKnapp checked={notatPanel} onToggle={() => setNotatPanel(!notatPanel)}>
+        Notater
       </ToggleKnapp>
       <ToggleKnapp checked={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
         Brev

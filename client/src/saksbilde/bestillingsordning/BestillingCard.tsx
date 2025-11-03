@@ -60,6 +60,19 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     setVisAvvisModal(false)
   }
 
+  if (bestilling.status === OppgaveStatusType.HENLAGT) {
+    return (
+      <VenstremenyCard heading="Henlagt">
+        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+          Henlagt
+        </Tag>
+        <StatusTekst>
+          <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
+        </StatusTekst>
+      </VenstremenyCard>
+    )
+  }
+
   if (bestilling.status === OppgaveStatusType.FERDIGSTILT) {
     return (
       <VenstremenyCard>

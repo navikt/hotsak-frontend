@@ -1,18 +1,18 @@
 import { Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Skillelinje } from '../../../../../felleskomponenter/Strek'
 import { Etikett, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { Produkt } from '../../../../../saksbilde/hjelpemidler/Produkt'
 import { EndreHjelpemiddelModal } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreHjelpemiddelModal'
 import { useEndreHjelpemiddel } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
 import { type AlternativeProduct } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
+import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { Hjelpemiddel as HjelpemiddelType } from '../../../../../types/BehovsmeldingTypes'
 import { Produkt as ProduktType, Sak } from '../../../../../types/types.internal'
 import { AntallTag } from '../../felleskomponenter/AntallTag'
 import BytteBehandlingEksperiment from './BytteBehandlingEksperiment'
-import { useSaksregler } from '../../../../../saksregler/useSaksregler'
-import { PencilIcon } from '@navikt/aksel-icons'
-import { Skillelinje } from '../../../../../felleskomponenter/Strek'
 
 interface HjelpemiddelBehandlingEksperimentProps {
   sak: Sak

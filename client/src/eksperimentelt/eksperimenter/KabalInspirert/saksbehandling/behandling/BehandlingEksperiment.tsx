@@ -14,6 +14,7 @@ import { HjelpemiddelBehandlingEksperiment } from './HjelpemiddelBehandlingEkspe
 import { FrittStåendeTilbehørBehandling, TilbehørListeBehandling } from './TilbehørBehandling'
 import { Skillelinje } from '../../../../../felleskomponenter/Strek'
 import { PlusCircleIcon } from '@navikt/aksel-icons'
+import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -41,6 +42,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   const { data: hjelpemiddelprodukter } = useHjelpemiddelprodukter(alleHmsNr)
   const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const { produkter: lagerinfoForProdukter } = useProduktLagerInfo(alleHmsNr)
+  const { setBrevKolonne } = useSaksbehandlingEksperimentContext()
 
   return (
     <Box.New
@@ -103,7 +105,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
             </Select>
           </div>
           <div>
-            <Button variant="secondary" size="small" icon={<PlusCircleIcon />}>
+            <Button variant="secondary" size="small" icon={<PlusCircleIcon />} onClick={() => setBrevKolonne(true)}>
               Åpne brepanelet
             </Button>
           </div>

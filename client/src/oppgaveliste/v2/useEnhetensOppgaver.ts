@@ -30,7 +30,7 @@ export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverRespon
       let sorteringsrekkefølge: string | undefined
       switch (sort.direction) {
         case 'ascending':
-          sorteringsfelt = 'ASC'
+          sorteringsrekkefølge = 'ASC'
           break
         case 'descending':
           sorteringsrekkefølge = 'DESC'

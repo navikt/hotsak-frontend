@@ -21,7 +21,7 @@ interface HjelpemiddelProps {
   minmaxStyrt: boolean
 }
 
-export function HjelpemiddelEksperiment({ sak, hjelpemiddel, produkter }: HjelpemiddelProps) {
+export function HjelpemiddelEksperiment({ hjelpemiddel, produkter }: HjelpemiddelProps) {
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
 
   return (

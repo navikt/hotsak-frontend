@@ -1,5 +1,6 @@
 import type { SortState } from '@navikt/ds-react'
 
+import type { PageResponse } from '../felleskomponenter/Page.ts'
 import type { Enhet, Hast, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
 
 /**
@@ -133,12 +134,9 @@ export interface OppgaveBrukerV2 {
   navn?: Navn
 }
 
-export interface FinnOppgaverResponse {
+export interface FinnOppgaverResponse extends PageResponse {
   oppgaver: OppgaveV2[]
-  pageNumber: number
-  pageSize: number
   totalPages: number
-  totalElements: number
 }
 
 export enum OppgaveGjelderFilter {

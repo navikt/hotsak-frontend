@@ -4,26 +4,14 @@ import { useMemo } from 'react'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { compareBy, notEmpty, uniqueBy } from '../../utils/array.ts'
-import { useMineOppgaver } from './useMineOppgaver.ts'
 import { OppgaveFilter } from './OppgaveFilter.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgaveTable } from './OppgaveTable.tsx'
+import { useMineOppgaver } from './useMineOppgaver.ts'
 
 export function MineOppgaver() {
   const { oppgavetypeFilter, gjelderFilter, oppgaveprioritetFilter, sort } = useOppgaveFilterContext()
-  const { oppgaver: eksterneOppgaver } = useMineOppgaver(
-    1,
-    500,
-    {
-      orderBy: 'fristFerdigstillelse',
-      direction: 'ascending',
-    },
-    {
-      tildeltFilter: OppgaveTildeltFilter.MEG,
-      oppgavetypeFilter: [],
-      gjelderFilter: [],
-    }
-  )
+  const { oppgaver: eksterneOppgaver } = useMineOppgaver()
   const journalføringsoppgaver =
     useJournalføringsoppgaver(OppgaveTildeltFilter.MEG)?.data?.oppgaver ?? ingenJournalføringsoppgaver
   const alleOppgaver = useMemo(

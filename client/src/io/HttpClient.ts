@@ -82,20 +82,28 @@ export const http: HttpClient = {
 
 export type QueryParameter = string | number | boolean | null | undefined
 export type QueryParameters = Record<string, QueryParameter | QueryParameter[]>
-export function createQueryString(record: QueryParameters): string {
-  const params = new URLSearchParams()
-  Object.entries(record).forEach(([name, valueOrValues]) => {
+export function createQueryString(queryParameters: QueryParameters): string {
+  const destination = new URLSearchParams()
+  populateQueryParameters(destination, queryParameters)
+  return destination.toString()
+}
+export function createUrl(path: string, queryParameters: QueryParameters = {}): string {
+  const url = new URL(path, window.location.href)
+  populateQueryParameters(url.searchParams, queryParameters)
+  return url.toString()
+}
+function populateQueryParameters(destination: URLSearchParams, queryParameters: QueryParameters) {
+  Object.entries(queryParameters).forEach(([name, valueOrValues]) => {
     if (valueOrValues) {
       if (Array.isArray(valueOrValues)) {
         valueOrValues.forEach((value) => {
           if (value) {
-            params.append(name, value.toString())
+            destination.append(name, value.toString())
           }
         })
       } else {
-        params.set(name, valueOrValues.toString())
+        destination.set(name, valueOrValues.toString())
       }
     }
   })
-  return params.toString()
 }

@@ -29,6 +29,7 @@ export function HjelpemiddelBehandlingEksperiment({
   produkter,
   alternativeProdukter,
   harOppdatertLagerstatus,
+  minmaxStyrt,
 }: HjelpemiddelBehandlingEksperimentProps) {
   const { sakId } = sak
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
@@ -37,6 +38,7 @@ export function HjelpemiddelBehandlingEksperiment({
   const {
     endreHjelpemiddel,
     nåværendeHmsnr,
+    endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, hjelpemiddel)
 
@@ -51,14 +53,34 @@ export function HjelpemiddelBehandlingEksperiment({
         </TextContainer>
         <TextContainer>
           <VStack justify="start" gap="2">
+            {endretHjelpemiddel && (
+              <Produkt
+                hmsnr={endretHjelpemiddelResponse.hmsArtNr}
+                navn={endretHjelpemiddelProdukt?.navn || '-'}
+                showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
+              />
+            )}
             <Produkt
               hmsnr={hjelpemiddel.produkt.hmsArtNr}
               navn={hjelpemiddel.produkt.artikkelnavn}
               gjennomstrek={endretHjelpemiddel !== undefined}
             />
+
             <HStack gap="2">
               <AntallTag antall={hjelpemiddel.antall} />
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              {minmaxStyrt && (
+                <Tag variant="neutral" size="small">
+                  Min/max lagervare
+                </Tag>
+              )}
+              {harAlternativeProdukter && (
+                <Tag size="small" variant="info">
+                  {harOppdatertLagerstatus
+                    ? `${alternativeProdukter.length} alternativer på lager`
+                    : 'Har alternativliste'}
+                </Tag>
+              )}
             </HStack>
           </VStack>
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">

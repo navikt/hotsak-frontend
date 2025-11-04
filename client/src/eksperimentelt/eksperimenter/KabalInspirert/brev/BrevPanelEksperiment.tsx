@@ -28,7 +28,12 @@ export function BrevPanelEksperiment() {
   }
 
   return (
-    <Box.New style={{ height: '100dvh' }} padding={'space-16'} background="default" borderRadius="large large 0 0">
+    <Box.New
+      style={{ height: '100dvh', padding: 'var(--ax-radius-8) 0 50px 0' }}
+      padding={'space-16'}
+      background="default"
+      borderRadius="large large 0 0"
+    >
       {errorEr404 && valgtMal === undefined && <BrevmalVelger velgMal={velgMal} />}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div

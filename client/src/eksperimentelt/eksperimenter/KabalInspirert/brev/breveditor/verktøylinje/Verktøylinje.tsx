@@ -16,7 +16,7 @@ import LeggTilDelmalKnapp from './LeggTilDelmalKnapp.tsx'
 const Verktøylinje = ({}: {}) => {
   const breveditor = useBreveditorContext()
   return (
-    <Box
+    <Box.New
       className="toolbar"
       onMouseDown={(e) => {
         // Prevent default for all other elements
@@ -59,7 +59,7 @@ const Verktøylinje = ({}: {}) => {
         </div>
         <SlettBrevutkastKnapp />
       </div>
-    </Box>
+    </Box.New>
   )
 }
 

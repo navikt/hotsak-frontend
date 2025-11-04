@@ -8,7 +8,7 @@ import {
   useFloatingLinkUrlInput,
   useFloatingLinkUrlInputState,
 } from '@platejs/link/react'
-import { Box, type BoxProps, Button, HStack } from '@navikt/ds-react'
+import { Box, BoxNewProps, Button, HStack } from '@navikt/ds-react'
 import { DocPencilIcon, LinkBrokenIcon } from '@navikt/aksel-icons'
 import { OpprettEndreLinkPanel } from './OpprettEndreLinkPanel.tsx'
 import { OpenLinkButton } from './OpenLinkButton.tsx'
@@ -28,7 +28,7 @@ export const useFlytendeLinkVerktøylinjeContext = () => {
     console.error(
       'FlytendeLinkVerktøylinjeContext må eksistere utenfor alle andre flytendelink-verktøylinje komponenter!'
     )
-  return ctx!!
+  return ctx!
 }
 
 export function FlytendeLinkVerktøylinje() {
@@ -52,13 +52,13 @@ export function FlytendeLinkVerktøylinje() {
 
   const floatingLinkUrlInput = useFloatingLinkUrlInput(useFloatingLinkUrlInputState())
 
-  const flytendeBoxProps: BoxProps = {
-    background: 'surface-default',
+  const flytendeBoxProps: BoxNewProps = {
+    background: 'default',
     padding: 'space-8',
     borderRadius: 'xlarge',
-    borderColor: 'border-subtle',
+    borderColor: 'neutral-subtle',
     borderWidth: '1',
-    shadow: 'small',
+    shadow: 'dialog',
   }
 
   if (floatingLinkInsert.hidden) return null
@@ -71,27 +71,34 @@ export function FlytendeLinkVerktøylinje() {
         floatingLinkUrlInput,
       }}
     >
-      <Box ref={floatingLinkInsert.ref} {...floatingLinkInsert.props} {...flytendeBoxProps}>
+      <Box.New ref={floatingLinkInsert.ref} {...floatingLinkInsert.props} {...flytendeBoxProps}>
         <OpprettEndreLinkPanel />
-      </Box>
-      <Box ref={floatingLinkEdit.ref} {...floatingLinkEdit.props} {...flytendeBoxProps}>
-        {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
-        {!floatingLinkEditState.isEditing && (
-          <HStack gap="1" wrap={false}>
-            <Button
-              icon={<DocPencilIcon />}
-              variant="tertiary"
-              size="small"
-              {...floatingLinkEdit.editButtonProps}
-              style={{ textWrap: 'nowrap' }}
-            >
-              Endre link
-            </Button>
-            <OpenLinkButton />
-            <Button icon={<LinkBrokenIcon />} variant="tertiary" size="small" {...floatingLinkEdit.unlinkButtonProps} />
-          </HStack>
-        )}
-      </Box>
+      </Box.New>
+      <Box.New ref={floatingLinkEdit.ref} {...floatingLinkEdit.props} {...flytendeBoxProps}>
+        <>
+          {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
+          {!floatingLinkEditState.isEditing && (
+            <HStack gap="1" wrap={false}>
+              <Button
+                icon={<DocPencilIcon />}
+                variant="tertiary"
+                size="small"
+                {...floatingLinkEdit.editButtonProps}
+                style={{ textWrap: 'nowrap' }}
+              >
+                Endre link
+              </Button>
+              <OpenLinkButton />
+              <Button
+                icon={<LinkBrokenIcon />}
+                variant="tertiary"
+                size="small"
+                {...floatingLinkEdit.unlinkButtonProps}
+              />
+            </HStack>
+          )}
+        </>
+      </Box.New>
     </FlytendeLinkVerktøylinjeContext>
   )
 }

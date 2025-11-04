@@ -1,0 +1,97 @@
+import { flip, offset } from '@platejs/floating'
+import {
+  type LinkFloatingToolbarState,
+  useFloatingLinkEdit,
+  useFloatingLinkEditState,
+  useFloatingLinkInsert,
+  useFloatingLinkInsertState,
+  useFloatingLinkUrlInput,
+  useFloatingLinkUrlInputState,
+} from '@platejs/link/react'
+import { Box, type BoxProps, Button, HStack } from '@navikt/ds-react'
+import { DocPencilIcon, LinkBrokenIcon } from '@navikt/aksel-icons'
+import { OpprettEndreLinkPanel } from './OpprettEndreLinkPanel.tsx'
+import { OpenLinkButton } from './OpenLinkButton.tsx'
+import { createContext, useContext } from 'react'
+
+export interface FlytendeLinkVerktøylinjeContextType {
+  floatingLinkInsert: ReturnType<typeof useFloatingLinkInsert>
+  floatingLinkEdit: ReturnType<typeof useFloatingLinkEdit>
+  floatingLinkUrlInput: ReturnType<typeof useFloatingLinkUrlInput>
+}
+
+export const FlytendeLinkVerktøylinjeContext = createContext<FlytendeLinkVerktøylinjeContextType | undefined>(undefined)
+
+export const useFlytendeLinkVerktøylinjeContext = () => {
+  const ctx = useContext(FlytendeLinkVerktøylinjeContext)
+  if (!ctx)
+    console.error(
+      'FlytendeLinkVerktøylinjeContext må eksistere utenfor alle andre flytendelink-verktøylinje komponenter!'
+    )
+  return ctx!!
+}
+
+export function FlytendeLinkVerktøylinje() {
+  const state: LinkFloatingToolbarState = {
+    floatingOptions: {
+      middleware: [
+        offset(8),
+        flip({
+          fallbackPlacements: ['bottom-end', 'top-start', 'top-end'],
+          padding: 12,
+        }),
+      ],
+      placement: 'bottom-start',
+    },
+  }
+
+  const floatingLinkInsert = useFloatingLinkInsert(useFloatingLinkInsertState(state))
+
+  const floatingLinkEditState = useFloatingLinkEditState(state)
+  const floatingLinkEdit = useFloatingLinkEdit(floatingLinkEditState)
+
+  const floatingLinkUrlInput = useFloatingLinkUrlInput(useFloatingLinkUrlInputState())
+
+  const flytendeBoxProps: BoxProps = {
+    background: 'surface-default',
+    padding: 'space-8',
+    borderRadius: 'xlarge',
+    borderColor: 'border-subtle',
+    borderWidth: '1',
+    shadow: 'small',
+  }
+
+  if (floatingLinkInsert.hidden) return null
+
+  return (
+    <FlytendeLinkVerktøylinjeContext
+      value={{
+        floatingLinkInsert,
+        floatingLinkEdit,
+        floatingLinkUrlInput,
+      }}
+    >
+      <Box ref={floatingLinkInsert.ref} {...floatingLinkInsert.props} {...flytendeBoxProps}>
+        <OpprettEndreLinkPanel />
+      </Box>
+      <Box ref={floatingLinkEdit.ref} {...floatingLinkEdit.props} {...flytendeBoxProps}>
+        {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
+        {!floatingLinkEditState.isEditing && (
+          <HStack gap="1" wrap={false}>
+            <Button
+              icon={<DocPencilIcon />}
+              variant="tertiary"
+              size="small"
+              {...floatingLinkEdit.editButtonProps}
+              style={{ textWrap: 'nowrap' }}
+            >
+              Endre link
+            </Button>
+            <OpenLinkButton />
+            <Button icon={<LinkBrokenIcon />} variant="tertiary" size="small" {...floatingLinkEdit.unlinkButtonProps} />
+          </HStack>
+        )}
+      </Box>
+    </FlytendeLinkVerktøylinjeContext>
+  )
+}

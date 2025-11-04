@@ -1,0 +1,117 @@
+h1 {
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  line-height: 20pt;
+  margin: 0 0 26pt 0;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-size: 13pt;
+  font-weight: bold;
+  letter-spacing: 0.025em;
+  margin: 0 0 6pt 0;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  margin: 0 0 6pt 0;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: bold;
+  letter-spacing: 0.01em;
+  margin: 0 0 6pt 0;
+  page-break-after: avoid;
+}
+
+p, div.slate-p {
+  display: block;
+  margin: 0 0 16pt 0;
+}
+
+section {
+  margin: 0 0 26pt 0;
+}
+
+/* Fikser noen rare greier med at marginer stackes på toppen av hverandre ved page-breaks */
+section p:last-child {
+  margin-bottom: 0;
+}
+
+.header {
+  position: relative;
+  margin-bottom: 48pt;
+
+  svg {
+    height: 16pt;
+    margin-bottom: 48pt;
+  }
+
+  dl {
+    dd {
+      display: inline;
+      margin: 0;
+
+      &:after {
+        display: block;
+        content: '';
+      }
+    }
+
+    dt {
+      display: inline-block;
+      min-width: 160px;
+    }
+  }
+
+  span {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+section.signatur {
+  margin-top: 32pt;
+  page-break-inside: avoid;
+}
+
+ul, ol {
+  padding-inline-start: 1.3em;
+  margin: 0 0 16pt 0;
+}
+
+a, div.slate-a {
+  color: #000000;
+  white-space: nowrap;
+  display: inline-block;
+  text-decoration: underline;
+}
+
+.no-wrap {
+  white-space: nowrap;
+  page-break-inside: avoid;
+  display: inline-block;
+}
+
+.merkepenn {
+  background: yellowgreen;
+}
+
+.variabel {
+  background: #ccc;
+  border-radius: 5px;
+  padding: 0.3em;
+
+  &:active, &:focus {
+    background: #000;
+  }
+}

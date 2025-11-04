@@ -38,7 +38,7 @@ export function BrevPanelEksperiment() {
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div
           style={{
-            background: '#242424',
+            //background: '#242424',
             height: '100%',
           }}
         >

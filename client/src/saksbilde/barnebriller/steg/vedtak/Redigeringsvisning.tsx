@@ -63,7 +63,7 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
   const manglerPåkrevdEtterspørreOpplysningerBrev =
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
     !etterspørreOpplysningerBrevFinnes &&
-    sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    sak.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   const manglerPåkrevdUtbetalingsmottakerVedInnvilgelse =
     sak.vilkårsvurdering?.resultat === VilkårsResultat.JA && !sak.utbetalingsmottaker?.kontonummer

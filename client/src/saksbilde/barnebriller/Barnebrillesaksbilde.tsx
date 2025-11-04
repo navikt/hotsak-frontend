@@ -61,7 +61,7 @@ const BarnebrillesakContent = memo(() => {
         <Hotstepper steg={sak.data.steg} lesemodus={!saksbehandlerKanRedigereBarnebrillesak} />
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
-          <StatusTag sakStatus={sak.data.status} vedtakStatus={sak.data.vedtak?.status} />
+          <StatusTag sakStatus={sak.data.saksstatus} vedtakStatus={sak.data.vedtak?.status} />
           {harSkrivetilgang && (
             <>
               <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
@@ -74,7 +74,7 @@ const BarnebrillesakContent = memo(() => {
           )}
         </HStack>
       </Header>
-      {sak.data.status === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
+      {sak.data.saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (
         <AlertContainerMedium>
           <Alert variant="info" size="small">
             Saken avventer opplysninger, og er satt på vent. Fortsett behandlingen av saken via menyen til høyre.

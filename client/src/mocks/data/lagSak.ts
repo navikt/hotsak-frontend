@@ -88,8 +88,8 @@ export function lagHjelpemiddelsak(
         type: GreitÅViteType.INFO,
       },
     ],
-    status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: opprettet.toISOString(),
+    saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+    saksstatusGyldigFra: opprettet.toISOString(),
     enhet: enheter.oslo,
 
     // fixme -> tilby som overstyring
@@ -167,8 +167,8 @@ export function lagBarnebrillesak(): InsertBarnebrillesak {
   const opprettet = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   return {
     sakstype: Sakstype.BARNEBRILLER,
-    status: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    statusEndret: opprettet,
+    saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+    saksstatusGyldigFra: opprettet,
     opprettet,
     søknadGjelder: 'Briller til barn',
     bruker: {

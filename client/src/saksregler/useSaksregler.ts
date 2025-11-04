@@ -10,9 +10,9 @@ export function useSaksregler() {
   const saksbehandlerErTildeltSak = useSaksbehandlerErTildeltSak(sak)
 
   const kanBehandleSak =
-    isOppgaveContext && saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    isOppgaveContext && saksbehandlerErTildeltSak && sak?.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
   const kanEndreHmsnr =
-    isOppgaveContext && saksbehandlerErTildeltSak && sak?.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER
+    isOppgaveContext && saksbehandlerErTildeltSak && sak?.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER
 
   return {
     sakId: sak?.sakId,

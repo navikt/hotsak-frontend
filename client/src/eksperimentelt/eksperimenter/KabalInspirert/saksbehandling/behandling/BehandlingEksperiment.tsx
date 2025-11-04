@@ -59,7 +59,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         )}
         <HStack gap="space-4">
           <Tag variant="info-moderate" size="small">
-            {OppgaveStatusLabel.get(sak.status)}
+            {OppgaveStatusLabel.get(sak.saksstatus)}
           </Tag>
           <Brødtekst>av {storForbokstavIAlleOrd(sak.saksbehandler?.navn)}</Brødtekst>
         </HStack>

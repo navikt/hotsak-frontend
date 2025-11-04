@@ -4,6 +4,7 @@ import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useMemo, useState } from 'react'
 import { useSak } from '../../../../saksbilde/useSak.ts'
 import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
+import { formaterDatoLang } from '../../../../utils/dato.ts'
 
 export function BrevPanelEksperiment() {
   const { sak } = useSak()
@@ -12,6 +13,7 @@ export function BrevPanelEksperiment() {
     {
       error?: string
       data?: StateMangement
+      opprettet: string
     },
     Error
   >(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, async (key: string) =>
@@ -44,13 +46,13 @@ export function BrevPanelEksperiment() {
         >
           <Breveditor
             metadata={{
-              brukersNavn: 'Ola Nordmann',
-              brukersFødselsnummer: '26848497710',
+              brukersNavn: sak?.data.bruker.fulltNavn || '',
+              brukersFødselsnummer: sak?.data.bruker.fnr || '',
               saksnummer: Number(sak!.data.sakId),
-              brevOpprettet: '1. Januar 2025',
-              saksbehandlerNavn: 'Jon Åsen',
-              attestantsNavn: 'Kari Hansen',
-              hjelpemiddelsentral: 'Nav hjelpemiddelsentral Agder',
+              brevOpprettet: formaterDatoLang(brevutkast.data?.opprettet),
+              saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
+              attestantsNavn: undefined,
+              hjelpemiddelsentral: sak?.data.enhet.enhetsnavn || 'Nav hjelpemiddelsentral',
             }}
             brevId={sak!.data.sakId.toString()}
             templateMarkdown={valgtMal}

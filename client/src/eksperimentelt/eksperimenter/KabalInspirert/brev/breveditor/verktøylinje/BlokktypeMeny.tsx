@@ -84,38 +84,36 @@ const BlokktypeMeny = () => {
           </Button>
         </ActionMenu.Trigger>
         <ActionMenu.Content>
-          <ActionMenu.Group label="Grunnleggende stiler">
-            <ActionMenu.Item icon={<Density3Icon fontSize="1rem" />} onSelect={(_) => turnInto(KEYS.p)}>
-              Brødtekst
-            </ActionMenu.Item>
-          </ActionMenu.Group>
-          <ActionMenu.Group label="Overskrifter">
-            <ActionMenu.Item icon={<PencilWritingFillIcon fontSize="1rem" />} onSelect={(_) => turnInto(KEYS.h1)}>
+          <ActionMenu.Group label="Størrelser">
+            <ActionMenu.Item icon={<PencilWritingFillIcon fontSize="1rem" />} onSelect={() => turnInto(KEYS.h1)}>
               Tittel
             </ActionMenu.Item>
             <ActionMenu.Item
               icon={<TypeH1 fontSize="1rem" style={{ scale: '0.7' }} />}
-              onSelect={(_) => turnInto(KEYS.h2)}
+              onSelect={() => turnInto(KEYS.h2)}
             >
               Overskrift 1
             </ActionMenu.Item>
             <ActionMenu.Item
               icon={<TypeH2 title="Overskrift 2" fontSize="1rem" style={{ scale: '0.7' }} />}
-              onSelect={(_) => turnInto(KEYS.h3)}
+              onSelect={() => turnInto(KEYS.h3)}
             >
               Overskrift 2
             </ActionMenu.Item>
             <ActionMenu.Item
               icon={<TypeH3 title="Overskrift 3" fontSize="1rem" style={{ scale: '0.7' }} />}
-              onSelect={(_) => turnInto(KEYS.h4)}
+              onSelect={() => turnInto(KEYS.h4)}
             >
               Overskrift 3
+            </ActionMenu.Item>
+            <ActionMenu.Item icon={<Density3Icon fontSize="1rem" />} onSelect={() => turnInto(KEYS.p)}>
+              Brødtekst
             </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Lister">
             <ActionMenu.Item
               icon={<BulletListIcon fontSize="1rem" />}
-              onSelect={(_) =>
+              onSelect={() =>
                 !punktlistePressed &&
                 toggleList(editor, {
                   type: 'ul',
@@ -126,7 +124,7 @@ const BlokktypeMeny = () => {
             </ActionMenu.Item>
             <ActionMenu.Item
               icon={<NumberListIcon fontSize="1rem" />}
-              onSelect={(_) =>
+              onSelect={() =>
                 !nummerertListePressed &&
                 toggleList(editor, {
                   type: 'ol',

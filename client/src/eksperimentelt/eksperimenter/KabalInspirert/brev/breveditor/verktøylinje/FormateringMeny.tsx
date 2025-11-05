@@ -2,12 +2,10 @@ import { ActionMenu, Button } from '@navikt/ds-react'
 import {
   ArrowRedoIcon,
   ArrowUndoIcon,
-  BulletListIcon,
   ExpandIcon,
   FileParagraphIcon,
   LinkIcon,
   MenuElipsisVerticalCircleIcon,
-  NumberListIcon,
   ShrinkIcon,
 } from '@navikt/aksel-icons'
 import { useBreveditorContext } from '../Breveditor.tsx'
@@ -15,7 +13,6 @@ import { useAngreKnapp } from './AngreKnapp.tsx'
 import { useGjentaKnapp } from './GjentaKnapp.tsx'
 import { useMarkKnapp } from './hjelpere/MarkKnapp.tsx'
 import { useLinkKnapp } from './LinkKnapp.tsx'
-import { useListeKnapp } from './hjelpere/ListeKnapp.tsx'
 import { SettInnDelmalModal } from './SettInnDelmalKnapp.tsx'
 import { useState } from 'react'
 
@@ -28,8 +25,6 @@ const FormateringMeny = () => {
   const kursivKnapp = useMarkKnapp('italic')
   const underlinjeKnapp = useMarkKnapp('underline')
   const linkKnapp = useLinkKnapp()
-  const punktlisteKnapp = useListeKnapp('ul')
-  const nummerertListeKnapp = useListeKnapp('ol')
   const [visSettInnDelmal, settVisSettInnDelmal] = useState(false)
   return (
     <div
@@ -114,14 +109,6 @@ const FormateringMeny = () => {
               onSelect={linkKnapp.onClick}
             >
               Link
-            </ActionMenu.Item>
-          </ActionMenu.Group>
-          <ActionMenu.Group label="Lister">
-            <ActionMenu.Item icon={<BulletListIcon fontSize="1rem" />} onSelect={punktlisteKnapp.onClick}>
-              Punktliste
-            </ActionMenu.Item>
-            <ActionMenu.Item icon={<NumberListIcon fontSize="1rem" />} onSelect={nummerertListeKnapp.onClick}>
-              Nummerert liste
             </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Annet">

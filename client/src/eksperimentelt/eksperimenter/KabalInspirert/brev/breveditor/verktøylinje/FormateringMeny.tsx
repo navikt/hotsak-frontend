@@ -14,6 +14,7 @@ import { useAngreKnapp } from './AngreKnapp.tsx'
 import { useGjentaKnapp } from './GjentaKnapp.tsx'
 import { useMarkKnapp } from './hjelpere/MarkKnapp.tsx'
 import { useLinkKnapp } from './LinkKnapp.tsx'
+import { useListeKnapp } from './hjelpere/ListeKnapp.tsx'
 
 const FormateringMeny = () => {
   const breveditor = useBreveditorContext()
@@ -24,6 +25,8 @@ const FormateringMeny = () => {
   const kursivKnapp = useMarkKnapp('italic')
   const underlinjeKnapp = useMarkKnapp('underline')
   const linkKnapp = useLinkKnapp()
+  const punktlisteKnapp = useListeKnapp('ul')
+  const nummerertListeKnapp = useListeKnapp('ol')
   return (
     <div
       style={{
@@ -110,8 +113,12 @@ const FormateringMeny = () => {
             </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Lister">
-            <ActionMenu.Item icon={<BulletListIcon fontSize="1rem" />}>Punktliste</ActionMenu.Item>
-            <ActionMenu.Item icon={<NumberListIcon fontSize="1rem" />}>Nummerert liste</ActionMenu.Item>
+            <ActionMenu.Item icon={<BulletListIcon fontSize="1rem" />} onSelect={punktlisteKnapp.onClick}>
+              Punktliste
+            </ActionMenu.Item>
+            <ActionMenu.Item icon={<NumberListIcon fontSize="1rem" />} onSelect={nummerertListeKnapp.onClick}>
+              Nummerert liste
+            </ActionMenu.Item>
           </ActionMenu.Group>
           <ActionMenu.Group label="Annet">
             <ActionMenu.Item icon={<FileParagraphIcon fontSize="1rem" />}>Sett inn delmal</ActionMenu.Item>

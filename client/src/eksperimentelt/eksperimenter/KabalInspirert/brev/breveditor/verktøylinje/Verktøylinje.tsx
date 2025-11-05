@@ -11,7 +11,7 @@ import SvitsjMargerKnapp from './SvitsjMargerKnapp.tsx'
 import { useBreveditorContext } from '../Breveditor.tsx'
 import LinkKnapp from './LinkKnapp.tsx'
 import SlettBrevutkastKnapp from './SlettBrevutkastKnapp.tsx'
-import LeggTilDelmalKnapp from './LeggTilDelmalKnapp.tsx'
+import SettInnDelmalKnapp from './SettInnDelmalKnapp.tsx'
 import { useLayoutEffect, useRef, useState } from 'react'
 import FormateringMeny from './FormateringMeny.tsx'
 
@@ -64,7 +64,7 @@ const Verktøylinje = () => {
             <PunktlisteKnapp />
             <NummerertListeKnapp />
             <Skillelinje />
-            <LeggTilDelmalKnapp />
+            <SettInnDelmalKnapp />
             <SvitsjMargerKnapp />
             <BlokktypeMeny />
           </>
@@ -78,7 +78,7 @@ const Verktøylinje = () => {
             <KursivKnapp />
             <UnderlinjeKnapp />
             <PunktlisteKnapp />
-            <LeggTilDelmalKnapp />
+            <SettInnDelmalKnapp />
             <FormateringMeny />
             <BlokktypeMeny />
           </>
@@ -89,7 +89,7 @@ const Verktøylinje = () => {
             <FetKnapp />
             <KursivKnapp />
             <PunktlisteKnapp />
-            <LeggTilDelmalKnapp />
+            <SettInnDelmalKnapp />
             <FormateringMeny />
             <BlokktypeMeny />
           </>

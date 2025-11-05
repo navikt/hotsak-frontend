@@ -5,9 +5,10 @@ import {
   FileTextIcon,
   HouseIcon,
   NotePencilIcon,
+  ParagraphIcon,
   WheelchairIcon,
 } from '@navikt/aksel-icons'
-import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, VStack } from '@navikt/ds-react'
+import { Box, Button, CopyButton, Heading, HGrid, HStack, Tabs, Tooltip, VStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { BehovsmeldingEtikett } from '../../../../felleskomponenter/Oppgaveetikett'
@@ -71,15 +72,67 @@ export function SaksbehandlingEksperiment() {
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
-      <div
+      <HGrid
+        columns={'50px auto'}
         style={{
           flex: 1,
           minHeight: 0,
-          marginTop: 'var(--ax-space-16)',
-          marginLeft: 'var(--ax-space-16)',
+          marginTop: 'var(--ax-space-4)',
           marginRight: 'var(--ax-space-16)',
         }}
       >
+        <VStack paddingInline={'space-6'} gap="space-8">
+          <Tooltip content="Utlånsoversikt">
+            <Button
+              variant="secondary-neutral"
+              icon={<WheelchairIcon />}
+              style={venstrePanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
+              onClick={() => {
+                setVenstrePanel(!venstrePanel)
+              }}
+            />
+          </Tooltip>
+          <Tooltip content="Søknad">
+            <Button
+              variant="secondary-neutral"
+              icon={<FileTextIcon />}
+              style={søknadPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
+              onClick={() => {
+                setSøknadPanel(!søknadPanel)
+              }}
+            />
+          </Tooltip>
+          <Tooltip content="Notater">
+            <Button
+              variant="secondary-neutral"
+              icon={<NotePencilIcon />}
+              style={notatPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
+              onClick={() => {
+                setNotatPanel(!notatPanel)
+              }}
+            />
+          </Tooltip>
+          <Tooltip content="Behandling">
+            <Button
+              variant="secondary-neutral"
+              icon={<ParagraphIcon />}
+              style={behandlingPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
+              onClick={() => {
+                setBehandlingPanel(!behandlingPanel)
+              }}
+            />
+          </Tooltip>
+          <Tooltip content="Brev">
+            <Button
+              variant="secondary-neutral"
+              icon={<EnvelopeClosedIcon />}
+              style={brevKolonne ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
+              onClick={() => {
+                setBrevKolonne(!brevKolonne)
+              }}
+            />
+          </Tooltip>
+        </VStack>
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
           {venstrePanel && (
             <>
@@ -217,7 +270,7 @@ export function SaksbehandlingEksperiment() {
             </Panel>
           )}
         </PanelGroup>
-      </div>
+      </HGrid>
 
       <HStack
         asChild
@@ -242,7 +295,7 @@ export function SaksbehandlingEksperiment() {
               variant="secondary-neutral"
               size="small"
               icon={notatPanel ? <CheckmarkIcon /> : <WheelchairIcon />}
-              style={venstrePanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              style={venstrePanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
               onClick={() => {
                 setVenstrePanel(!venstrePanel)
               }}
@@ -257,7 +310,7 @@ export function SaksbehandlingEksperiment() {
               onClick={() => {
                 setSøknadPanel(!søknadPanel)
               }}
-              style={søknadPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              style={søknadPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
             >
               Søknad
             </Button>
@@ -267,7 +320,7 @@ export function SaksbehandlingEksperiment() {
               variant="secondary-neutral"
               size="small"
               icon={notatPanel ? <CheckmarkIcon /> : <NotePencilIcon />}
-              style={notatPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              style={notatPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
               onClick={() => {
                 setNotatPanel(!notatPanel)
               }}
@@ -282,7 +335,7 @@ export function SaksbehandlingEksperiment() {
               onClick={() => {
                 setBehandlingPanel(!behandlingPanel)
               }}
-              style={behandlingPanel ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              style={behandlingPanel ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
             >
               Behandling
             </Button>

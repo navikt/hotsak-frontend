@@ -37,7 +37,7 @@ export interface BreveditorContextType {
   visMarger: boolean
   settVisMarger: (visMarger: boolean) => void
   onSlettBrev?: () => void
-  lagrerEndringer: boolean | { error: string }
+  endringsstatus: { lagrerNå: boolean; erEndret: boolean; error?: string }
 }
 
 export const BreveditorContext = createContext<BreveditorContextType | undefined>(undefined)
@@ -186,15 +186,18 @@ const Breveditor = ({
     }
   }, [visMarger, editorContainerRef, editorContentScale])
 
-  const [lagrerEndringer, setLagrerEndringer] = useState<boolean | { error: string }>(false)
+  const [endringsstatus, setEndringsstatus] = useState<{
+    lagrerNå: boolean
+    erEndret: boolean
+    error?: string
+  }>({ lagrerNå: false, erEndret: false })
   const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
 
   // Desperat forsøk på å lagre brev når nettleseren lukkes i tilfelle debounce ikke er over
   // (vil ikke alltid funke, men kanskje bedre enn ingenting...)
-  const erAlleEndringerLagret = useRef(true)
   useEffect(() => {
     const listener = async (ev: BeforeUnloadEvent) => {
-      if (onLagreBrev && !erAlleEndringerLagret.current) {
+      if (onLagreBrev && endringsstatus.erEndret) {
         ev.preventDefault()
         return (ev.returnValue =
           'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?')
@@ -215,13 +218,13 @@ const Breveditor = ({
 
   const kallOnLagreBrevMedDebounceOgRetry = (constructedState: StateMangement) => {
     if (onLagreBrev) {
-      erAlleEndringerLagret.current = false
+      setEndringsstatus({ ...endringsstatus, erEndret: true }) // Behold evt. error men sett erEndret=true.
       clearTimeout(debounceLagring.current) // Kanseller pågående timere, enten de var startet på enste linjer eller i retry nedenfor
       debounceLagring.current = setTimeout(async () => {
-        setLagrerEndringer(true) // Vis at vi forsøker å lagre
+        setEndringsstatus({ erEndret: true, lagrerNå: true, error: undefined }) // Vis at vi forsøker å lagre
         await onLagreBrev(constructedState)
           .catch((e) => {
-            setLagrerEndringer({ error: e.toString() }) // Vis at vi feilet
+            setEndringsstatus({ erEndret: true, lagrerNå: false, error: e.toString() }) // Vis at vi feilet
             debounceLagring.current = setTimeout(
               () => kallOnLagreBrevMedDebounceOgRetry(constructedState), // Try, try again...
               2000
@@ -229,8 +232,7 @@ const Breveditor = ({
             throw e // Hopp over then blokken under
           })
           .then(() => {
-            setLagrerEndringer(false)
-            erAlleEndringerLagret.current = true
+            setEndringsstatus({ erEndret: false, lagrerNå: false, error: undefined })
           })
           .catch(() => {
             /* Ignorer exception... */
@@ -251,7 +253,7 @@ const Breveditor = ({
         visMarger: visMarger,
         settVisMarger: settVisMarger,
         onSlettBrev: onSlettBrev,
-        lagrerEndringer,
+        endringsstatus: endringsstatus,
       }}
     >
       <Plate

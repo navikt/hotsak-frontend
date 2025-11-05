@@ -13,7 +13,7 @@ import LinkKnapp from './LinkKnapp.tsx'
 import SlettBrevutkastKnapp from './SlettBrevutkastKnapp.tsx'
 import LeggTilDelmalKnapp from './LeggTilDelmalKnapp.tsx'
 
-const Verktøylinje = ({}: {}) => {
+const Verktøylinje = () => {
   const breveditor = useBreveditorContext()
   return (
     <Box.New
@@ -22,8 +22,8 @@ const Verktøylinje = ({}: {}) => {
         // Prevent default for all other elements
         e.preventDefault()
       }}
-      onFocusCapture={(_) => breveditor.settBreveditorEllerVerktoylinjeFokusert(true)}
-      onBlurCapture={(_) => breveditor.settBreveditorEllerVerktoylinjeFokusert(breveditor.erPlateContentFokusert)}
+      onFocusCapture={() => breveditor.settBreveditorEllerVerktoylinjeFokusert(true)}
+      onBlurCapture={() => breveditor.settBreveditorEllerVerktoylinjeFokusert(breveditor.erPlateContentFokusert)}
     >
       <div className="left-items">
         <AngreKnapp />
@@ -47,12 +47,16 @@ const Verktøylinje = ({}: {}) => {
             fontSize: '0.8rem',
             padding: '4px',
             alignContent: 'center',
+            width: '5em',
+            textAlign: 'right',
           }}
         >
-          {typeof breveditor.lagrerEndringer === 'object' && breveditor.lagrerEndringer ? (
+          {breveditor.endringsstatus.error ? (
             <span style={{ color: 'rgb(226, 41, 72)' }}>Lagring feilet!</span>
-          ) : breveditor.lagrerEndringer ? (
+          ) : breveditor.endringsstatus.lagrerNå ? (
             <>Lagrer...</>
+          ) : breveditor.endringsstatus.erEndret ? (
+            <>Endret</>
           ) : (
             <>Lagret</>
           )}

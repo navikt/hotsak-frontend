@@ -40,7 +40,6 @@ export function BrevPanelEksperiment() {
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div
           style={{
-            //background: '#242424',
             height: '100%',
           }}
         >
@@ -60,6 +59,10 @@ export function BrevPanelEksperiment() {
             onLagreBrev={async (state) => {
               await fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
                 method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest',
+                },
                 body: JSON.stringify({
                   brevtype: 'BREVEDITOR_VEDTAKSBREV',
                   målform: 'BOKMÅL',

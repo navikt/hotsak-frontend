@@ -21,13 +21,13 @@ export function MineOppgaver() {
   const filtrerteOppgaver = useMemo(() => {
     return alleOppgaver
       .filter(oneOf(oppgavetypeFilter, 'oppgavetype'))
-      .filter(oneOf(gjelderFilter, 'gjelder'))
+      .filter(oneOf(gjelderFilter, 'behandlingstema'))
       .filter(oneOf(oppgaveprioritetFilter, 'prioritet'))
       .toSorted(compareBy(sort.orderBy as any, sort.direction)) // fixme
   }, [alleOppgaver, oppgavetypeFilter, gjelderFilter, oppgaveprioritetFilter, sort])
 
   const oppgavetyper = useMemo(() => uniqueBy(alleOppgaver, 'oppgavetype'), [alleOppgaver])
-  const gjelder = useMemo(() => uniqueBy(alleOppgaver, 'gjelder').filter(notEmpty), [alleOppgaver])
+  const gjelder = useMemo(() => uniqueBy(alleOppgaver, 'behandlingstema').filter(notEmpty), [alleOppgaver])
   const oppgaveprioritet = useMemo(() => uniqueBy(alleOppgaver, 'prioritet'), [alleOppgaver])
 
   return (

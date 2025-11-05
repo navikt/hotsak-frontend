@@ -12,12 +12,18 @@ import {
 import { useBreveditorContext } from '../Breveditor.tsx'
 import { useAngreKnapp } from './AngreKnapp.tsx'
 import { useGjentaKnapp } from './GjentaKnapp.tsx'
+import { useMarkKnapp } from './hjelpere/MarkKnapp.tsx'
+import { useLinkKnapp } from './LinkKnapp.tsx'
 
 const FormateringMeny = () => {
   const breveditor = useBreveditorContext()
   const erMac = window.navigator.platform.startsWith('Mac') || window.navigator.platform === 'iPhone'
   const angreKnapp = useAngreKnapp()
   const gjentaKnapp = useGjentaKnapp()
+  const fetKnapp = useMarkKnapp('bold')
+  const kursivKnapp = useMarkKnapp('italic')
+  const underlinjeKnapp = useMarkKnapp('underline')
+  const linkKnapp = useLinkKnapp()
   return (
     <div
       style={{
@@ -61,6 +67,7 @@ const FormateringMeny = () => {
             <ActionMenu.Item
               icon={<span style={{ fontWeight: 'bold' }}>F</span>}
               shortcut={erMac ? '⌘ + B' : 'Ctrl + B'}
+              onSelect={fetKnapp.toggle}
             >
               Fet
             </ActionMenu.Item>
@@ -75,6 +82,7 @@ const FormateringMeny = () => {
                 </span>
               }
               shortcut={erMac ? '⌘ + I' : 'Ctrl + I'}
+              onSelect={kursivKnapp.toggle}
             >
               Kursiv
             </ActionMenu.Item>
@@ -89,10 +97,15 @@ const FormateringMeny = () => {
                 </span>
               }
               shortcut={erMac ? '⌘ + U' : 'Ctrl + U'}
+              onSelect={underlinjeKnapp.toggle}
             >
               Underlinje
             </ActionMenu.Item>
-            <ActionMenu.Item icon={<LinkIcon fontSize="1rem" />} shortcut={erMac ? '⌘ + K' : 'Ctrl + K'}>
+            <ActionMenu.Item
+              icon={<LinkIcon fontSize="1rem" />}
+              shortcut={erMac ? '⌘ + K' : 'Ctrl + K'}
+              onSelect={linkKnapp.onClick}
+            >
               Link
             </ActionMenu.Item>
           </ActionMenu.Group>

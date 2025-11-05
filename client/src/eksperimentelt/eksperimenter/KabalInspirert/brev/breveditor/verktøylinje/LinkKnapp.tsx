@@ -4,12 +4,7 @@ import { useLinkToolbarButton, useLinkToolbarButtonState } from '@platejs/link/r
 import { useBreveditorContext } from '../Breveditor.tsx'
 
 const LinkKnapp = () => {
-  const breveditor = useBreveditorContext()
-  const state = useLinkToolbarButtonState()
-  const {
-    props: { pressed, onClick, onMouseDown },
-  } = useLinkToolbarButton(state)
-  const active = breveditor.erPlateContentFokusert && pressed
+  const { disabled, active, onMouseDown, onClick } = useLinkKnapp()
   return (
     <Tooltip
       content={'Link'}
@@ -18,7 +13,7 @@ const LinkKnapp = () => {
       }
     >
       <Button
-        disabled={!breveditor.erPlateContentFokusert}
+        disabled={disabled}
         variant={active ? 'primary-neutral' : 'tertiary-neutral'}
         size="small"
         icon={<LinkIcon fontSize="1rem" />}
@@ -30,3 +25,17 @@ const LinkKnapp = () => {
 }
 
 export default LinkKnapp
+
+export const useLinkKnapp = () => {
+  const breveditor = useBreveditorContext()
+  const state = useLinkToolbarButtonState()
+  const {
+    props: { pressed, onClick, onMouseDown },
+  } = useLinkToolbarButton(state)
+  return {
+    onClick,
+    onMouseDown,
+    active: breveditor.erPlateContentFokusert && pressed,
+    disabled: !breveditor.erPlateContentFokusert,
+  }
+}

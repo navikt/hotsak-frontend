@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorState } from 'platejs/react'
+import { useEditorRef } from 'platejs/react'
 import type { ReactNode } from 'react'
 import { useBreveditorContext } from '../../Breveditor.tsx'
 
@@ -14,16 +14,14 @@ const MarkKnapp = ({
   ikon: ReactNode
   shortcuts?: string[]
 }) => {
-  const breveditor = useBreveditorContext()
-  const editor = useEditorState()
-  const active = breveditor.erPlateContentFokusert && !!editor.api.mark(markKey)
+  const { disabled, active, toggle } = useMarkKnapp(markKey)
   return (
     <Tooltip content={tittel} keys={shortcuts}>
       <Button
-        disabled={!breveditor.erPlateContentFokusert}
+        disabled={disabled}
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
-          editor.tf.toggleMark(markKey)
+          toggle()
         }}
         variant={active ? 'primary-neutral' : 'tertiary-neutral'}
         size="small"
@@ -34,3 +32,13 @@ const MarkKnapp = ({
 }
 
 export default MarkKnapp
+
+export const useMarkKnapp = (markKey: string) => {
+  const editor = useEditorRef()
+  const breveditor = useBreveditorContext()
+  return {
+    toggle: () => editor.tf.toggleMark(markKey),
+    active: breveditor.erPlateContentFokusert && !!editor.api.mark(markKey),
+    disabled: !breveditor.erPlateContentFokusert,
+  }
+}

@@ -27,7 +27,7 @@ export function TotrinnskontrollLesevisning() {
         </Alert>
       )}
       {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.GODKJENT &&
-        sak.data.status === OppgaveStatusType.VEDTAK_FATTET && (
+        sak.data.saksstatus === OppgaveStatusType.VEDTAK_FATTET && (
           <Alert role="status" size="small" variant="success">
             Vedtaket er fattet {formaterDato(sak?.data.vedtak?.vedtaksdato)}
           </Alert>

@@ -44,7 +44,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
 
     if (erLagretHjelpemiddelsak(sak)) {
       return HttpResponse.json({
-        kanTildeles: sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+        kanTildeles: sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
         data: sak,
         tilganger,
       })
@@ -54,8 +54,8 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return HttpResponse.json({
         tilganger,
         kanTildeles:
-          sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
-          sak.status === OppgaveStatusType.AVVENTER_GODKJENNER,
+          sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER ||
+          sak.saksstatus === OppgaveStatusType.AVVENTER_GODKJENNER,
         data: sak,
       })
     }

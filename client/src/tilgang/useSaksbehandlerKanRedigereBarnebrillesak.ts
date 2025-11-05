@@ -13,6 +13,6 @@ export function useSaksbehandlerKanRedigereBarnebrillesak(sakResponse?: SakRespo
     saksbehandlerErTildeltSak &&
     sak?.steg !== StegType.GODKJENNE &&
     sak?.steg !== StegType.FERDIG_BEHANDLET &&
-    sak?.status !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
+    sak?.saksstatus !== OppgaveStatusType.AVVENTER_DOKUMENTASJON
   )
 }

@@ -78,6 +78,11 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return HttpResponse.json({ behandlere })
   }),
 
+  http.get<never, never, any[]>('/api/oppgaver-v2/:oppgaveId/kommentarer', async () => {
+    await delay(75)
+    return HttpResponse.json([])
+  }),
+
   http.post<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
     await oppgaveStore.tildel(oppgaveId)

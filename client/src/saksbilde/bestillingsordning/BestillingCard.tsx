@@ -60,46 +60,46 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
     setVisAvvisModal(false)
   }
 
-  if (bestilling.status === OppgaveStatusType.HENLAGT) {
+  if (bestilling.saksstatus === OppgaveStatusType.HENLAGT) {
     return (
       <VenstremenyCard heading="Henlagt">
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (bestilling.status === OppgaveStatusType.FERDIGSTILT) {
+  if (bestilling.saksstatus === OppgaveStatusType.FERDIGSTILT) {
     return (
       <VenstremenyCard>
         <Tag data-cy="tag-soknad-status" variant="success" size="small">
           Ferdigstilt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (bestilling.status === OppgaveStatusType.AVVIST) {
+  if (bestilling.saksstatus === OppgaveStatusType.AVVIST) {
     return (
       <VenstremenyCard>
         <Tag data-cy="tag-soknad-status" variant="error" size="small">
           Avvist
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(bestilling.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(bestilling.saksstatusGyldigFra)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (bestilling.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
+  if (bestilling.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <VenstremenyCard heading="Bestilling ikke startet">
         <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
@@ -113,7 +113,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   }
 
   if (
-    bestilling.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    bestilling.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     bestilling.saksbehandler?.id !== innloggetAnsatt.id
   ) {
     return (

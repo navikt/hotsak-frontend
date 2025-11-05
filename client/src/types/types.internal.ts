@@ -30,8 +30,8 @@ export interface OppgaveVersjon {
 export interface SakBase {
   sakId: string
   sakstype: Sakstype
-  status: OppgaveStatusType
-  statusEndret: string
+  saksstatus: OppgaveStatusType
+  saksstatusGyldigFra: string
   opprettet: string
   søknadGjelder: string
   bruker: Bruker

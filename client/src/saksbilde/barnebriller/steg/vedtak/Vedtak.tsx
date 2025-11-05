@@ -30,13 +30,13 @@ export function Vedtak() {
 
   const status = sak.data.vilkårsvurdering!.resultat
   const alertType = alertVariant(status)
-  const vedtakFattet = sak.data.status === OppgaveStatusType.VEDTAK_FATTET
+  const vedtakFattet = sak.data.saksstatus === OppgaveStatusType.VEDTAK_FATTET
 
   const visAlertGodkjenning =
-    sak.data.status === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
+    sak.data.saksstatus === OppgaveStatusType.AVVENTER_GODKJENNER || sak.data.steg === StegType.GODKJENNE
 
   const visSkeleton =
-    sak.data.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
+    sak.data.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER &&
     samletVurdering === VilkårsResultat.OPPLYSNINGER_MANGLER &&
     henterSaksdokumenter
 

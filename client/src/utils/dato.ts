@@ -18,6 +18,11 @@ export function formaterDato(dato?: string): string {
   return format(dato, 'P')
 }
 
+export function formaterDatoLang(dato?: string): string {
+  if (!dato) return ''
+  return format(dato, 'PPP')
+}
+
 export function formaterTidsstempel(dato?: string): string {
   if (!dato) return ''
 

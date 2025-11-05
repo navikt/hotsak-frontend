@@ -29,9 +29,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const brevTekst = await sakStore.hentBrevtekst(params.sakId)
     await delay(800)
     if (brevTekst) {
-      return HttpResponse.json(brevTekst)
+      return HttpResponse.json({ ...brevTekst, opprettet: new Date().toISOString() })
     } else {
-      return HttpResponse.json({ sakId: params.sakId, brevtype: '', data: { brevtekst: '' } })
+      return HttpResponse.json({
+        sakId: params.sakId,
+        brevtype: '',
+        data: { brevtekst: '' },
+        opprettet: new Date().toISOString(),
+      })
     }
   }),
 ]

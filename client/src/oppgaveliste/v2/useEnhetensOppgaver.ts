@@ -9,12 +9,13 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
   error?: HttpError
   mutate: SWRInfiniteKeyedMutator<FinnOppgaverResponse[]>
   isLoading: boolean
+  isValidating: boolean
   lastInnFlere(): Promise<FinnOppgaverResponse[] | undefined>
 }
 
 export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
   const { sort, oppgavetypeFilter, gjelderFilter } = useOppgaveFilterContext()
-  const { data, error, mutate, isLoading, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
+  const { data, error, mutate, isLoading, isValidating, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
     (index, previousPageData) => {
       if (previousPageData && !previousPageData.oppgaver.length) return null
       const page = index + 1
@@ -61,6 +62,7 @@ export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverRespon
       error,
       mutate,
       isLoading,
+      isValidating,
       lastInnFlere,
     }
   }
@@ -75,6 +77,7 @@ export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverRespon
     error,
     mutate,
     isLoading,
+    isValidating,
     lastInnFlere,
   }
 }

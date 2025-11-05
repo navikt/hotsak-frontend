@@ -35,7 +35,7 @@ export function TotrinnskontrollPanel() {
 
   if (
     !totrinnskontrollFullført &&
-    sak.data.status !== OppgaveStatusType.VEDTAK_FATTET &&
+    sak.data.saksstatus !== OppgaveStatusType.VEDTAK_FATTET &&
     sak.data.saksbehandler &&
     sak.data.saksbehandler.id !== saksbehandler.id
   ) {

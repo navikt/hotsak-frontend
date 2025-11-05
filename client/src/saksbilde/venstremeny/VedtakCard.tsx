@@ -58,14 +58,14 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     setVisOvertaSakModal(false)
   }
 
-  if (sak.status === OppgaveStatusType.HENLAGT) {
+  if (sak.saksstatus === OppgaveStatusType.HENLAGT) {
     return (
       <VenstremenyCard heading="Henlagt">
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(sak.saksstatusGyldigFra)}`}</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
@@ -84,21 +84,21 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.status === OppgaveStatusType.SENDT_GOSYS) {
+  if (sak.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <VenstremenyCard heading="Overført">
         <Tag data-cy="tag-soknad-status" variant="info" size="small">
           Overført til Gosys
         </Tag>
         <StatusTekst>
-          <Tekst>{`${formaterTidsstempel(sak.statusEndret)}`}</Tekst>
+          <Tekst>{`${formaterTidsstempel(sak.saksstatusGyldigFra)}`}</Tekst>
           <Tekst>Saken er overført Gosys og behandles videre der.</Tekst>
         </StatusTekst>
       </VenstremenyCard>
     )
   }
 
-  if (sak.status === OppgaveStatusType.AVVENTER_JOURNALFØRING) {
+  if (sak.saksstatus === OppgaveStatusType.AVVENTER_JOURNALFØRING) {
     return (
       <VenstremenyCard heading="Avventer journalføring">
         <Tekst>Prøv igjen senere.</Tekst>
@@ -106,7 +106,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.status === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
+  if (sak.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
@@ -119,7 +119,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.status === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== innloggetAnsatt.id) {
+  if (sak.saksstatus === OppgaveStatusType.TILDELT_SAKSBEHANDLER && sak.saksbehandler?.id !== innloggetAnsatt.id) {
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>

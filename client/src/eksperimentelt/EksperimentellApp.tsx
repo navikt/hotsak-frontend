@@ -31,7 +31,7 @@ export function EksperimentellApp() {
                     <Routes>
                       <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
                       <Route
-                        path="/"
+                        path="/*"
                         element={
                           <RequireAuth>
                             <Oppgaveliste />

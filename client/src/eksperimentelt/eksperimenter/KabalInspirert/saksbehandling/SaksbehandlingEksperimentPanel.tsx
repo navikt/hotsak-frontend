@@ -347,7 +347,7 @@ export function SaksbehandlingEksperiment() {
               onClick={() => {
                 setBrevKolonne(!brevKolonne)
               }}
-              style={brevKolonne ? { backgroundColor: 'var(--ax-bg-success-soft)' } : {}}
+              style={brevKolonne ? { backgroundColor: 'var(--ax-bg-accent-moderate)' } : {}}
             >
               Brev
             </Button>

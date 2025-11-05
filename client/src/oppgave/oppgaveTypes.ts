@@ -106,6 +106,8 @@ export interface OppgaveV2 extends OppgaveBase {
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
   tema: string
+  behandlingstema?: string
+  behandlingstype?: string
   gjelder?: string | null
   beskrivelse?: string
   prioritet: Oppgaveprioritet

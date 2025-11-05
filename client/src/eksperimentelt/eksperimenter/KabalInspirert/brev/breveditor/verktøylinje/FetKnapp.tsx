@@ -1,11 +1,11 @@
 import MarkKnapp from './hjelpere/MarkKnapp.tsx'
 
-const FetKnapp = ({}: {}) => {
+const FetKnapp = () => {
   return (
     <MarkKnapp
       tittel="Fet"
       markKey="bold"
-      ikon={<span>F</span>}
+      ikon={<span style={{ fontWeight: 'bold' }}>F</span>}
       shortcuts={
         window.navigator.platform.startsWith('Mac') || window.navigator.platform === 'iPhone' ? ['⌘ + B'] : ['Ctrl + B']
       }

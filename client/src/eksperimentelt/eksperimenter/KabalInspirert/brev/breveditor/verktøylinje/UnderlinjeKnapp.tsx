@@ -1,6 +1,6 @@
 import MarkKnapp from './hjelpere/MarkKnapp.tsx'
 
-const UnderlinjeKnapp = ({}: {}) => {
+const UnderlinjeKnapp = () => {
   return (
     <MarkKnapp
       tittel="Underlinje"

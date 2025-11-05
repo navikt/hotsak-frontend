@@ -1,6 +1,6 @@
 import MarkKnapp from './hjelpere/MarkKnapp.tsx'
 
-const KursivKnapp = ({}: {}) => {
+const KursivKnapp = () => {
   return (
     <MarkKnapp
       tittel="Kursiv"

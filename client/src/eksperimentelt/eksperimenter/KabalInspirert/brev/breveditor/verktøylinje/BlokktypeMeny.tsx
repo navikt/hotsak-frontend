@@ -13,7 +13,7 @@ import { someList, toggleList } from '@platejs/list-classic'
 import { TypeH1, TypeH2, TypeH3 } from '@styled-icons/bootstrap'
 import { useBreveditorContext } from '../Breveditor.tsx'
 
-const BlokktypeMeny = ({}: {}) => {
+const BlokktypeMeny = () => {
   const breveditor = useBreveditorContext()
   // const { editor } = useEditorPlugin(BlockMenuPlugin);
 
@@ -38,13 +38,17 @@ const BlokktypeMeny = ({}: {}) => {
   const editorStateChange = useEditorState()
   const topLevelBlocks = editorStateChange.api.blocks().filter((it) => it[1].length == 1)
   const blockType = (() => {
-    return topLevelBlocks.length == 1 ? topLevelBlocks[0]!![0]!!.type : undefined
+    return topLevelBlocks.length == 1 ? topLevelBlocks[0]![0]!.type : undefined
   })()
   const moreThanOneBlockSelected = (() => topLevelBlocks.length > 1)()
   const noBlockSelected = (() => !breveditor.erBreveditorEllerVerktoylinjeFokusert || topLevelBlocks.length == 0)()
 
   return (
-    <div style={{ margin: '0 0.5em' }}>
+    <div
+      style={{
+        margin: '0 0.5em',
+      }}
+    >
       <ActionMenu
         onOpenChange={(open) => {
           if (!open) breveditor.fokuserPlateContent()
@@ -58,15 +62,25 @@ const BlokktypeMeny = ({}: {}) => {
             size="small"
             disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert}
           >
-            {noBlockSelected && <span style={{ minWidth: '50px', display: 'inline-block' }}>-</span>}
-            {!noBlockSelected && moreThanOneBlockSelected && <>Flere</>}
-            {!noBlockSelected && blockType == KEYS.p && <>Brødtekst</>}
-            {!noBlockSelected && blockType == KEYS.h1 && <>Tittel</>}
-            {!noBlockSelected && blockType == KEYS.h2 && <>Overskrift 1</>}
-            {!noBlockSelected && blockType == KEYS.h3 && <>Overskrift 2</>}
-            {!noBlockSelected && blockType == KEYS.h4 && <>Overskrift 3</>}
-            {!noBlockSelected && !moreThanOneBlockSelected && blockType == KEYS.ulClassic && <>Punktliste</>}
-            {!noBlockSelected && !moreThanOneBlockSelected && blockType == KEYS.olClassic && <>Nummerert liste</>}
+            <span
+              style={{
+                width: '82px',
+                whiteSpace: 'nowrap' /* Prevents text from wrapping */,
+                overflow: 'hidden' /* Hides overflowing text */,
+                textOverflow: 'ellipsis' /* Displays '...' when text is cut off */,
+                display: 'block',
+              }}
+            >
+              {noBlockSelected && <span style={{ minWidth: '50px', display: 'inline-block' }}>-</span>}
+              {!noBlockSelected && moreThanOneBlockSelected && <>Flere</>}
+              {!noBlockSelected && blockType == KEYS.p && <>Brødtekst</>}
+              {!noBlockSelected && blockType == KEYS.h1 && <>Tittel</>}
+              {!noBlockSelected && blockType == KEYS.h2 && <>Overskrift 1</>}
+              {!noBlockSelected && blockType == KEYS.h3 && <>Overskrift 2</>}
+              {!noBlockSelected && blockType == KEYS.h4 && <>Overskrift 3</>}
+              {!noBlockSelected && !moreThanOneBlockSelected && blockType == KEYS.ulClassic && <>Punktliste</>}
+              {!noBlockSelected && !moreThanOneBlockSelected && blockType == KEYS.olClassic && <>Nummerert liste</>}
+            </span>
           </Button>
         </ActionMenu.Trigger>
         <ActionMenu.Content>

@@ -3,7 +3,7 @@ import { LinkIcon } from '@navikt/aksel-icons'
 import { useLinkToolbarButton, useLinkToolbarButtonState } from '@platejs/link/react'
 import { useBreveditorContext } from '../Breveditor.tsx'
 
-const LinkKnapp = ({}: {}) => {
+const LinkKnapp = () => {
   const breveditor = useBreveditorContext()
   const state = useLinkToolbarButtonState()
   const {

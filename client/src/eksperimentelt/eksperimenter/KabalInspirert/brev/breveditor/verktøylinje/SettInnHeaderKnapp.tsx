@@ -3,7 +3,7 @@ import { PlusIcon } from '@navikt/aksel-icons'
 import { useBreveditorContext } from '../Breveditor.tsx'
 import { useEditorRef } from 'platejs/react'
 
-const SettInnHeaderKnapp = ({}: {}) => {
+const SettInnHeaderKnapp = () => {
   const breveditor = useBreveditorContext()
   const editor = useEditorRef()
   return (

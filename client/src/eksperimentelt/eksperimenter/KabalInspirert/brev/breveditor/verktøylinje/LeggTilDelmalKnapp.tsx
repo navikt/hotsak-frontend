@@ -7,7 +7,7 @@ import { useBreveditorContext } from '../Breveditor.tsx'
 import avslagDetYtesIkkeStonadTilSengForSmertelindringOgAvlasting from '../../brevmaler/delmaler/avslag-det-ytes-ikke-stønad-for-smertelindring-avlasting.md?raw'
 import avslagDyneKuledyne from '../../brevmaler/delmaler/avslag-dyne-kulekjededyne.md?raw'
 
-const LeggTilDelmalKnapp = ({}: {}) => {
+const LeggTilDelmalKnapp = () => {
   const breveditor = useBreveditorContext()
   const editor = useEditorState()
   const [visModal, settVisModal] = useState(false)

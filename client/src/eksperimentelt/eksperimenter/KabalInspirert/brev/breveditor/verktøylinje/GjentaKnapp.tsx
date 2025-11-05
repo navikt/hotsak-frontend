@@ -1,9 +1,9 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorState } from 'platejs/react'
+import { useEditorRef } from 'platejs/react'
 import { ArrowRedoIcon } from '@navikt/aksel-icons'
 
-const GjentaKnapp = ({}: {}) => {
-  const editor = useEditorState()
+const GjentaKnapp = () => {
+  const { disabled, redo } = useGjentaKnapp()
   return (
     <Tooltip
       content={'Gjenta'}
@@ -15,10 +15,10 @@ const GjentaKnapp = ({}: {}) => {
       }
     >
       <Button
-        disabled={editor.history.redos.length == 0}
+        disabled={disabled}
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
-          editor.redo()
+          redo()
         }}
         variant="tertiary-neutral"
         size="small"
@@ -29,3 +29,11 @@ const GjentaKnapp = ({}: {}) => {
 }
 
 export default GjentaKnapp
+
+export const useGjentaKnapp = () => {
+  const editor = useEditorRef()
+  return {
+    redo: () => editor.redo(),
+    disabled: editor.history.redos.length == 0,
+  }
+}

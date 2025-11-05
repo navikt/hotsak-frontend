@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { useBreveditorContext } from '../Breveditor.tsx'
 
-const SlettBrevutkastKnapp = ({}: {}) => {
+const SlettBrevutkastKnapp = () => {
   const breveditor = useBreveditorContext()
   if (!breveditor.onSlettBrev) return undefined
   return (

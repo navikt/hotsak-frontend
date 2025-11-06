@@ -141,12 +141,12 @@ const Breveditor = ({
 
   const settPlateContentFokusertWrapped = useCallback(
     (b: boolean) => settPlateContentFokusert(b),
-    [settPlateContentFokusert, erVerktoylinjeFokusert]
+    [settPlateContentFokusert]
   )
 
   const settVerktoylinjeFokusertWrapped = useCallback(
     (b: boolean) => settVerktoylinjeFokusert(b),
-    [settVerktoylinjeFokusert, erPlateContentFokusert]
+    [settVerktoylinjeFokusert]
   )
 
   const plateContentRef = useRef(null)

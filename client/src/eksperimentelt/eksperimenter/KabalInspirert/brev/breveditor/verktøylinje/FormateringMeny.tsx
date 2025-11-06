@@ -27,11 +27,7 @@ const FormateringMeny = () => {
   const linkKnapp = useLinkKnapp()
   const [visSettInnDelmal, settVisSettInnDelmal] = useState(false)
   return (
-    <div
-      style={{
-        margin: '0 0.5em',
-      }}
-    >
+    <>
       <ActionMenu
         onOpenChange={(open) => {
           if (!open) breveditor.fokuserPlateContent()
@@ -40,7 +36,7 @@ const FormateringMeny = () => {
         <ActionMenu.Trigger>
           <Button
             variant="tertiary-neutral"
-            icon={<MenuElipsisVerticalCircleIcon aria-hidden />}
+            icon={<MenuElipsisVerticalCircleIcon aria-hidden fontSize="1rem" />}
             iconPosition="right"
             size="small"
             disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert}
@@ -125,7 +121,7 @@ const FormateringMeny = () => {
         </ActionMenu.Content>
       </ActionMenu>
       {visSettInnDelmal && <SettInnDelmalModal onClose={() => settVisSettInnDelmal(false)} />}
-    </div>
+    </>
   )
 }
 

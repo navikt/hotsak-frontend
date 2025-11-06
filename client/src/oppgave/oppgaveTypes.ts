@@ -129,8 +129,6 @@ export interface OppgaveV2 extends OppgaveBase {
   isPåVent?: boolean
   mappeId?: string
   mappenavn?: string
-  behandlingstema?: string
-  behandlingstype?: string
 }
 
 export interface GjelderAlternativerResponse {

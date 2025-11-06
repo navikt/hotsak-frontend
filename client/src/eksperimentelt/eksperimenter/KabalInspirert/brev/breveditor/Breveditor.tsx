@@ -204,7 +204,7 @@ const Breveditor = ({
     return () => {
       window.removeEventListener('beforeunload', listener)
     }
-  }, [])
+  }, [onLagreBrev, endringsstatus.erEndret])
 
   // Stopp debounce / retry etter dismount av brevkomponenten
   useEffect(() => {

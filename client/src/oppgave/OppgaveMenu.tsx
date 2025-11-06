@@ -10,10 +10,11 @@ export interface OppgaveMenuProps {
   oppgave?: OppgaveV2
   onAction?(): void | Promise<void>
   onSelectOverførOppgaveTilMedarbeider?(): void | Promise<void>
+  onSelectEndreOppgave?(): void | Promise<void>
 }
 
 export function OppgaveMenu(props: OppgaveMenuProps) {
-  const { oppgave, onAction, onSelectOverførOppgaveTilMedarbeider } = props
+  const { oppgave, onAction, onSelectOverførOppgaveTilMedarbeider, onSelectEndreOppgave } = props
   const {
     oppgaveErAvsluttet,
     oppgaveErKlarTilBehandling,
@@ -84,6 +85,16 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
             }}
           >
             Overfør til medarbeider
+          </ActionMenu.Item>
+        )}
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt &&
+        onSelectEndreOppgave && (
+          <ActionMenu.Item
+            onSelect={() => {
+              onSelectEndreOppgave()
+            }}
+          >
+            Endre oppgave
           </ActionMenu.Item>
         )}
     </ActionMenu.Group>

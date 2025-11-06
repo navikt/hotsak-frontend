@@ -1,7 +1,7 @@
 import { addBusinessDays, parseISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
-import { OppgaveId, Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { GjelderAlternativerResponse, OppgaveId, Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { JournalpostStore } from './JournalpostStore'
@@ -10,6 +10,7 @@ import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
 import { lagTilfeldigInteger } from './felles.ts'
 import { hentMappe } from './mappe.ts'
+import { hentBehandlingstemaKode, hentRandomBehandlingstema, hentRandomBehandlingstype } from './oppgaveGjelder.ts'
 
 type LagretOppgave = OppgaveV2
 type InsertOppgave = LagretOppgave
@@ -62,6 +63,8 @@ export class OppgaveStore extends Dexie {
         versjon: 1,
         mappeId: mappeId,
         mappenavn: hentMappe(mappeId),
+        behandlingstema: hentRandomBehandlingstema(),
+        behandlingstype: hentRandomBehandlingstype(),
       }
     })
 
@@ -90,6 +93,8 @@ export class OppgaveStore extends Dexie {
         versjon: 1,
         mappeId: mappeId,
         mappenavn: hentMappe(mappeId),
+        behandlingstema: hentRandomBehandlingstema(),
+        behandlingstype: hentRandomBehandlingstype(),
       }
     })
 
@@ -130,6 +135,51 @@ export class OppgaveStore extends Dexie {
       tildeltSaksbehandler: undefined,
       oppgavestatus: Oppgavestatus.OPPRETTET,
     })
+  }
+
+  async oppdaterKategorisering(oppgaveId: OppgaveId, behandlingstema: string) {
+    console.log(`Oppdaterer behandlingstema for oppgaveId: ${oppgaveId}`)
+    return this.oppgaver.update(oppgaveId, {
+      behandlingstema,
+    })
+  }
+
+  async hentGjelderInfo(oppgaveId: OppgaveId): Promise<{ behandlingstema: string, behandlingstype: string, alternativer: GjelderAlternativerResponse } | undefined> {
+    console.log(`Henter gjelder-info for oppgaveId: ${oppgaveId}`)
+    const oppgave = await this.oppgaver.get(oppgaveId)
+    if (!oppgave) {
+      return
+    }
+    return {
+      behandlingstema: oppgave.behandlingstema || "",
+      behandlingstype: oppgave.behandlingstype || "",
+      alternativer: {
+        behandlingstemaKode: hentBehandlingstemaKode(oppgave.behandlingstema || ""),
+        behandlingstemaTerm: oppgave.behandlingstema || "",
+        alternativer: [
+          {
+            behandlingstemaKode: "ab0013",
+            behandlingstemaTerm: "Ortopediske hjelpemidler"
+          },
+          {
+            behandlingstemaKode: "ab0253",
+            behandlingstemaTerm: "Tinnitusmaskerer"
+          },
+          {
+            behandlingstemaKode: "ab0315",
+            behandlingstemaTerm: "Arbeids- og utdanningsreiser"
+          },
+          {
+            behandlingstemaKode: "ab0332",
+            behandlingstemaTerm: "Servicehund",
+          },
+          {
+            behandlingstemaKode: "ab0369",
+            behandlingstemaTerm: "Aktivitetshjelpemidler"
+          }
+        ]
+      }
+    }
   }
 
   async alle() {

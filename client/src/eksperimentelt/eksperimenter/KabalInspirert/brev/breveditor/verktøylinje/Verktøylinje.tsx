@@ -47,8 +47,8 @@ const Verktøylinje = () => {
         // Prevent default for all other elements
         e.preventDefault()
       }}
-      onFocusCapture={() => breveditor.settBreveditorEllerVerktoylinjeFokusert(true)}
-      onBlurCapture={() => breveditor.settBreveditorEllerVerktoylinjeFokusert(breveditor.erPlateContentFokusert)}
+      onFocusCapture={() => breveditor.settVerktoylinjeFokusert(true)}
+      onBlurCapture={() => breveditor.settVerktoylinjeFokusert(false)}
     >
       <div className="left-items">
         {toolbarCollapsed == 'full' && (

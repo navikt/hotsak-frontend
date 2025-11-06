@@ -9,6 +9,7 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -33,7 +34,6 @@ export interface BreveditorContextType {
   erVerktoylinjeFokusert: boolean
   settVerktoylinjeFokusert: (fokus: boolean) => void
   erBreveditorEllerVerktoylinjeFokusert: boolean
-  settBreveditorEllerVerktoylinjeFokusert: (fokus: boolean) => void
   visMarger: boolean
   settVisMarger: (visMarger: boolean) => void
   onSlettBrev?: () => void
@@ -133,22 +133,19 @@ const Breveditor = ({
   // Sett opp breveditor-context state
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
-  const [erBreveditorEllerVerktoylinjeFokusert, settBreveditorEllerVerktoylinjeFokusert] = useState(false)
+  const erBreveditorEllerVerktoylinjeFokusert = useMemo(
+    () => erPlateContentFokusert || erVerktoylinjeFokusert,
+    [erPlateContentFokusert, erVerktoylinjeFokusert]
+  )
   const [visMarger, settVisMarger] = useState(true)
 
   const settPlateContentFokusertWrapped = useCallback(
-    (b: boolean) => {
-      settPlateContentFokusert(b)
-      settBreveditorEllerVerktoylinjeFokusert(b || erVerktoylinjeFokusert)
-    },
+    (b: boolean) => settPlateContentFokusert(b),
     [settPlateContentFokusert, erVerktoylinjeFokusert]
   )
 
   const settVerktoylinjeFokusertWrapped = useCallback(
-    (b: boolean) => {
-      settVerktoylinjeFokusert(b)
-      settBreveditorEllerVerktoylinjeFokusert(b || erPlateContentFokusert)
-    },
+    (b: boolean) => settVerktoylinjeFokusert(b),
     [settVerktoylinjeFokusert, erPlateContentFokusert]
   )
 
@@ -249,7 +246,6 @@ const Breveditor = ({
         erVerktoylinjeFokusert: erVerktoylinjeFokusert,
         settVerktoylinjeFokusert: settVerktoylinjeFokusertWrapped,
         erBreveditorEllerVerktoylinjeFokusert: erBreveditorEllerVerktoylinjeFokusert,
-        settBreveditorEllerVerktoylinjeFokusert: settBreveditorEllerVerktoylinjeFokusert,
         visMarger: visMarger,
         settVisMarger: settVisMarger,
         onSlettBrev: onSlettBrev,

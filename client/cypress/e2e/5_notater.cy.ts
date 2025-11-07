@@ -87,7 +87,7 @@ describe('Håndtering av notater', () => {
     cy.findByRole('button', { name: /innvilg søknaden/i }).click()
     cy.contains('h3', 'For å gå videre må du rette opp følgende:')
       .next('ul')
-      .should('contain.text', 'Du har et utkast til notat som må ferdigstilles eller slettes')
+      .should('contain.text', 'Du har et utkast til notat som må ferdigstilles eller slettes.')
 
     slettUtkast()
     assertUtkastEr('ikke synlig')
@@ -109,7 +109,7 @@ describe('Håndtering av notater', () => {
     cy.findByRole('button', { name: /overfør til gosys/i }).click()
     cy.contains('h3', 'For å gå videre må du rette opp følgende:')
       .next('ul')
-      .should('contain.text', 'Du har et utkast til notat som må ferdigstilles eller slettes')
+      .should('contain.text', 'Du har et utkast til notat som må ferdigstilles eller slettes.')
     cy.findByRole('dialog', { name: /vil du overføre saken til gosys/i }).should('not.exist')
 
     slettUtkast()

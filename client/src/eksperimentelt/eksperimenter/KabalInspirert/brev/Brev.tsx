@@ -35,6 +35,7 @@ export const Brev = () => {
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div style={{ height: '100%' }}>
           <Breveditor
+            placeholder="Skriv et fantastisk brev her..."
             metadata={{
               brukersNavn: sak?.data.bruker.fulltNavn || '',
               brukersFødselsnummer: sak?.data.bruker.fnr || '',

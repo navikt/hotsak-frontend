@@ -63,6 +63,7 @@ const Breveditor = ({
   onStateChange,
   onLagreBrev,
   onSlettBrev,
+  placeholder,
 }: {
   brevId?: string
   metadata: Metadata
@@ -71,8 +72,8 @@ const Breveditor = ({
   onStateChange?: (newState: StateMangement) => void
   onLagreBrev?: (newState: StateMangement) => Promise<void>
   onSlettBrev?: () => void
+  placeholder?: string
 }) => {
-  const state = useRef<StateMangement | undefined>(undefined)
   const editor = usePlateEditor(
     {
       plugins: [
@@ -121,25 +122,17 @@ const Breveditor = ({
     []
   )
 
-  // Sett opp breveditor-context state
+  // Diverse state
+  const state = useRef<StateMangement | undefined>(undefined)
+  const [visMarger, settVisMarger] = useState(true)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
   const erBreveditorEllerVerktoylinjeFokusert = useMemo(
     () => erPlateContentFokusert || erVerktoylinjeFokusert,
     [erPlateContentFokusert, erVerktoylinjeFokusert]
   )
-  const [visMarger, settVisMarger] = useState(true)
 
-  const settPlateContentFokusertWrapped = useCallback(
-    (b: boolean) => settPlateContentFokusert(b),
-    [settPlateContentFokusert]
-  )
-
-  const settVerktoylinjeFokusertWrapped = useCallback(
-    (b: boolean) => settVerktoylinjeFokusert(b),
-    [settVerktoylinjeFokusert]
-  )
-
+  // Hjelper for å kunne fokusere text-editoren
   const plateContentRef = useRef(null)
   const fokuserPlateContent = useCallback(() => {
     if (plateContentRef)
@@ -148,7 +141,8 @@ const Breveditor = ({
       setTimeout(() => (plateContentRef as RefObject<any>).current?.focus(), 100)
   }, [plateContentRef])
 
-  // Skallér breveditor sitt innhold slik at Navs brevstandard sine px/pt verdier vises korrekt og propersjonalt.
+  // Skaler breveditor sitt innhold slik at Navs brevstandard sine px/pt verdier vises korrekt og propersjonalt, med
+  // korrekt lengde i scrollbart felt.
   const { size: editorWidthScaleRefSize, ref: editorWidthScaleRef } = useRefSize()
   const editorWidthScale = (() => {
     if (!editorWidthScaleRefSize) return 1.0
@@ -161,27 +155,26 @@ const Breveditor = ({
     ? `${editorHeightScaleRefSize.height * editorWidthScale}px`
     : 'auto'
 
+  // Track endringsstatus (er alle endringer lagret)
   const [endringsstatus, setEndringsstatus] = useState<{
     lagrerNå: boolean
     erEndret: boolean
     error?: string
   }>({ lagrerNå: false, erEndret: false })
-  const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
 
-  // Desperat forsøk på å lagre brev når nettleseren lukkes i tilfelle debounce ikke er over
-  // (vil ikke alltid funke, men kanskje bedre enn ingenting...)
+  // Stopp refresh/lukking av nettsiden hvis man har ulagrede endringer
   useBeforeUnload(
     onLagreBrev ? endringsstatus.erEndret : false,
     'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?'
   )
 
-  // Stopp debounce / retry etter dismount av brevkomponenten
+  // Debounce/retry av onLagreBrev (inkl. cancel etter dismount av brevkomponenten)
+  const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
   useEffect(() => {
     return () => {
       clearTimeout(debounceLagring.current)
     }
   }, [])
-
   const kallOnLagreBrevMedDebounceOgRetry = (constructedState: StateMangement) => {
     if (onLagreBrev) {
       setEndringsstatus({ ...endringsstatus, erEndret: true }) // Behold evt. error men sett erEndret=true.
@@ -213,7 +206,7 @@ const Breveditor = ({
         erPlateContentFokusert: erPlateContentFokusert,
         fokuserPlateContent: fokuserPlateContent,
         erVerktoylinjeFokusert: erVerktoylinjeFokusert,
-        settVerktoylinjeFokusert: settVerktoylinjeFokusertWrapped,
+        settVerktoylinjeFokusert: settVerktoylinjeFokusert,
         erBreveditorEllerVerktoylinjeFokusert: erBreveditorEllerVerktoylinjeFokusert,
         visMarger: visMarger,
         settVisMarger: settVisMarger,
@@ -268,9 +261,9 @@ const Breveditor = ({
                       </div>
                       <PlateContent
                         ref={plateContentRef}
-                        onBlur={() => settPlateContentFokusertWrapped(false)}
-                        onFocus={() => settPlateContentFokusertWrapped(true)}
-                        placeholder="Skriv et fantastisk brev her..."
+                        onBlur={() => settPlateContentFokusert(false)}
+                        onFocus={() => settPlateContentFokusert(true)}
+                        placeholder={placeholder}
                         className="contentEditable"
                       />
                       <p>

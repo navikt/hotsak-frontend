@@ -1,3 +1,5 @@
+import { Bydel, Kommune } from './types.internal'
+
 export interface Innsenderbehovsmelding {
   id: string
   type: BehovsmeldingType
@@ -61,6 +63,8 @@ export interface Levering {
   annenOppfølgingsansvarlig: AnnenOppfølgingsansvarlig | undefined
   utleveringsmåte: Utleveringsmåte | undefined
   annenUtleveringsadresse: Veiadresse
+  annenUtleveringskommune: Kommune | undefined
+  annenUtleveringsbydel: Bydel | undefined
   utleveringKontaktperson: Kontaktperson | undefined
   annenKontaktperson: AnnenKontaktperson | undefined
   utleveringMerknad: string | undefined

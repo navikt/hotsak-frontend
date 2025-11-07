@@ -1,7 +1,7 @@
 import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
-import { formaterAdresse } from '../../utils/formater.ts'
+import { formaterAdresse, storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
 
 import { useSkjulUIElementer } from '../useSkjulUiElementer.ts'
@@ -9,6 +9,8 @@ import { useSøknadsVarsler } from '../varsler/useVarsler.tsx'
 import { VarselIkonNøytralt } from '../varsler/varselIkon.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
+import { BodyShort } from '@navikt/ds-react'
+import { Bydel, Kommune } from '../../types/types.internal.ts'
 
 export interface UtleveringCardProps {
   levering: Levering
@@ -18,7 +20,7 @@ export interface UtleveringCardProps {
 export function LeveringCard(props: UtleveringCardProps) {
   const { levering, adresseBruker } = props
   const { utleveringMerknad } = levering
-  const [leveringsmåteLabel, leveringsmåteCopyText] = lagLeveringsmåteTekst(levering, adresseBruker)
+  const leveringsmåte = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
   const { harAnnenLeveringsadresse, harBeskjedTilKommune, harAnnenKontaktperson } = useSøknadsVarsler()
   const { skjulKopiknapp } = useSkjulUIElementer()
@@ -28,11 +30,24 @@ export function LeveringCard(props: UtleveringCardProps) {
       <VenstremenyCardRow
         paddingBlock={'0 2'}
         icon={lagLeveringsIkon()}
-        copyText={leveringsmåteCopyText}
-        title={leveringsmåteLabel}
+        copyText={leveringsmåte.copyText}
+        title={leveringsmåte.label}
       >
-        {leveringsmåteCopyText !== '' && leveringsmåteCopyText}
+        {leveringsmåte.copyText !== undefined && <BodyShort>{leveringsmåte.copyText}</BodyShort>}
       </VenstremenyCardRow>
+
+      {leveringsmåte.bydel === undefined && leveringsmåte.kommune && (
+        <VenstremenyCardRow paddingBlock={'0 2'} copyText={leveringsmåte.kommune.nummer} title="Kommune">
+          {storForbokstavIAlleOrd(leveringsmåte.kommune.navn)} {leveringsmåte.kommune.nummer}
+        </VenstremenyCardRow>
+      )}
+
+      {leveringsmåte.bydel && (
+        <VenstremenyCardRow paddingBlock={'0 2'} copyText={leveringsmåte.bydel.nummer} title="Bydel">
+          {leveringsmåte.bydel.navn} {leveringsmåte.bydel.nummer}
+        </VenstremenyCardRow>
+      )}
+
       {utleveringMerknad && (
         <VenstremenyCardRow
           icon={lagMerknadIkon()}
@@ -71,21 +86,33 @@ export function LeveringCard(props: UtleveringCardProps) {
 }
 
 export function lagLeveringsmåteTekst(
-  { utleveringsmåte, annenUtleveringsadresse }: Levering,
+  { utleveringsmåte, annenUtleveringsadresse, annenUtleveringskommune, annenUtleveringsbydel }: Levering,
   adresseBruker: string
-): [string, string] {
+): LeveringsmåteTekst {
   const annenAdresse = formaterAdresse(annenUtleveringsadresse)
 
   switch (utleveringsmåte) {
     case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
-      return ['Allerede levert', '']
+      return { label: 'Allerede levert' }
     case Utleveringsmåte.ANNEN_BRUKSADRESSE:
-      return [`Til annen adresse`, annenAdresse || '']
+      return {
+        label: `Til annen adresse`,
+        copyText: annenAdresse,
+        kommune: annenUtleveringskommune,
+        bydel: annenUtleveringsbydel,
+      }
     case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      return [`Til folkeregistert adresse`, adresseBruker]
+      return { label: `Til folkeregistert adresse`, copyText: adresseBruker }
     case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
-      return ['Hentes på hjelpemiddelsentralen', '']
+      return { label: 'Hentes på hjelpemiddelsentralen' }
     default:
-      return ['Ukjent leveringsmåte', '']
+      return { label: 'Ukjent leveringsmåte' }
   }
+}
+
+interface LeveringsmåteTekst {
+  label: string
+  copyText?: string
+  kommune?: Kommune
+  bydel?: Bydel
 }

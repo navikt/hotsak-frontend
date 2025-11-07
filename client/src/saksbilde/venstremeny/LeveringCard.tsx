@@ -36,7 +36,7 @@ export function LeveringCard(props: UtleveringCardProps) {
         {leveringsmåte.copyText !== undefined && <BodyShort>{leveringsmåte.copyText}</BodyShort>}
       </VenstremenyCardRow>
 
-      {leveringsmåte.bydel === undefined && leveringsmåte.kommune && (
+      {!leveringsmåte.bydel && leveringsmåte.kommune && (
         <VenstremenyCardRow paddingBlock={'0 2'} copyText={leveringsmåte.kommune.nummer} title="Kommune">
           {storForbokstavIAlleOrd(leveringsmåte.kommune.navn)} {leveringsmåte.kommune.nummer}
         </VenstremenyCardRow>

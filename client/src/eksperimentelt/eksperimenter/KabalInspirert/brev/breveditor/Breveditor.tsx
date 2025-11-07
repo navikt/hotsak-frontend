@@ -1,5 +1,5 @@
 import './Breveditor.less'
-import { Plate, PlateContent, usePlateEditor } from 'platejs/react'
+import { Plate, PlateContent, PlateContainer, usePlateEditor } from 'platejs/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import { KEYS, serializeHtml, type Value } from 'platejs'
 import { createContext, type RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
@@ -231,7 +231,6 @@ const Breveditor = ({
               history: changedEditor.history,
             }
             if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {
-              console.log('diff', state.current?.value, constructedState.value)
               // On state-change
               state.current = constructedState
               if (onStateChange) onStateChange(constructedState)
@@ -267,13 +266,15 @@ const Breveditor = ({
                         </dl>
                         <span>{metadata.brevOpprettet}</span>
                       </div>
-                      <PlateContent
-                        ref={plateContentRef}
-                        onBlur={() => settPlateContentFokusert(false)}
-                        onFocus={() => settPlateContentFokusert(true)}
-                        placeholder={placeholder}
-                        className="contentEditable"
-                      />
+                      <PlateContainer>
+                        <PlateContent
+                          ref={plateContentRef}
+                          onBlur={() => settPlateContentFokusert(false)}
+                          onFocus={() => settPlateContentFokusert(true)}
+                          placeholder={placeholder}
+                          className="contentEditable"
+                        />
+                      </PlateContainer>
                       <p ref={footerRef}>
                         Med vennlig hilsen <br />
                         {metadata.saksbehandlerNavn}

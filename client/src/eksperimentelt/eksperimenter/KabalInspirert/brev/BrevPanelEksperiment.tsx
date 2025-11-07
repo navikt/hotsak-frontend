@@ -1,6 +1,6 @@
 import { Alert, Box } from '@navikt/ds-react'
 import { Brev } from './Brev.tsx'
-import { useRefSize } from './util.ts'
+import { useRefSize } from './breveditor/hooks.ts'
 
 export function BrevPanelEksperiment() {
   // Vis alert hvis panelet blir for tynt for å vise editoren med en brukbar verktøylinje

@@ -17,7 +17,7 @@ import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøyli
 import type { History } from '@platejs/slate'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import { ListPlugin } from '@platejs/list-classic/react'
-import { useRefSize } from '../util.ts'
+import { useBeforeUnload, useRefSize } from './hooks.ts'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -170,19 +170,10 @@ const Breveditor = ({
 
   // Desperat forsøk på å lagre brev når nettleseren lukkes i tilfelle debounce ikke er over
   // (vil ikke alltid funke, men kanskje bedre enn ingenting...)
-  useEffect(() => {
-    const listener = async (ev: BeforeUnloadEvent) => {
-      if (onLagreBrev && endringsstatus.erEndret) {
-        ev.preventDefault()
-        return (ev.returnValue =
-          'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?')
-      }
-    }
-    window.addEventListener('beforeunload', listener)
-    return () => {
-      window.removeEventListener('beforeunload', listener)
-    }
-  }, [onLagreBrev, endringsstatus.erEndret])
+  useBeforeUnload(
+    onLagreBrev ? endringsstatus.erEndret : false,
+    'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?'
+  )
 
   // Stopp debounce / retry etter dismount av brevkomponenten
   useEffect(() => {

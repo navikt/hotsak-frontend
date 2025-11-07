@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 export const useRefSize = () => {
   const ref = useRef<HTMLDivElement | null>(null)
@@ -17,4 +17,18 @@ export const useRefSize = () => {
     }
   }, [ref, size])
   return { size, ref }
+}
+
+export const useBeforeUnload = (kreverBekreftelse: boolean, melding: string) => {
+  useEffect(() => {
+    if (!kreverBekreftelse) return
+    const listener = async (ev: BeforeUnloadEvent) => {
+      ev.preventDefault()
+      return (ev.returnValue = melding)
+    }
+    window.addEventListener('beforeunload', listener)
+    return () => {
+      window.removeEventListener('beforeunload', listener)
+    }
+  }, [kreverBekreftelse, melding])
 }

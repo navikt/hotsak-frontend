@@ -19,16 +19,17 @@ const Verktøylinje = () => {
   const breveditor = useBreveditorContext()
 
   const toolbarRef = useRef<HTMLDivElement>(null)
-  const [toolbarCollapsed, setToolbarCollapsed] = useState<'full' | 'passe' | 'minimal'>('full')
+  const [toolbarCollapsed, setToolbarCollapsed] = useState<'large' | 'medium' | 'small' | 'xsmall'>('large')
   useLayoutEffect(() => {
     const element = toolbarRef.current
     if (!element) return
 
     const resizeObserver = new ResizeObserver(() => {
       const { width } = element.getBoundingClientRect()
-      if (width >= 660) setToolbarCollapsed('full')
-      else if (width >= 585) setToolbarCollapsed('passe')
-      else setToolbarCollapsed('minimal')
+      if (width >= 660) setToolbarCollapsed('large')
+      else if (width >= 585) setToolbarCollapsed('medium')
+      else if (width >= 490) setToolbarCollapsed('small')
+      else setToolbarCollapsed('xsmall')
     })
 
     resizeObserver.observe(element)
@@ -51,7 +52,7 @@ const Verktøylinje = () => {
       onBlurCapture={() => breveditor.settVerktoylinjeFokusert(false)}
     >
       <div className="left-items">
-        {toolbarCollapsed == 'full' && (
+        {toolbarCollapsed == 'large' && (
           <>
             <AngreKnapp />
             <GjentaKnapp />
@@ -69,7 +70,7 @@ const Verktøylinje = () => {
             <BlokktypeMeny />
           </>
         )}
-        {toolbarCollapsed == 'passe' && (
+        {toolbarCollapsed == 'medium' && (
           <>
             <AngreKnapp />
             <GjentaKnapp />
@@ -83,13 +84,19 @@ const Verktøylinje = () => {
             <BlokktypeMeny />
           </>
         )}
-        {toolbarCollapsed == 'minimal' && (
+        {toolbarCollapsed == 'small' && (
           <>
             <AngreKnapp />
             <FetKnapp />
             <KursivKnapp />
             <PunktlisteKnapp />
             <SettInnDelmalKnapp />
+            <FormateringMeny />
+            <BlokktypeMeny />
+          </>
+        )}
+        {toolbarCollapsed == 'xsmall' && (
+          <>
             <FormateringMeny />
             <BlokktypeMeny />
           </>

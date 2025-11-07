@@ -5,12 +5,12 @@ export function OppgavelisteTabs() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const valgtTab = location.pathname.split('/').pop() || 'mine'
+  const valgtFane = location.pathname.split('/').pop() || 'mine'
 
   return (
     <>
       <Tabs
-        value={valgtTab}
+        value={valgtFane}
         defaultValue="mine"
         onChange={(value) => {
           navigate(`/${value}`)

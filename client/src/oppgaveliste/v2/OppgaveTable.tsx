@@ -124,5 +124,5 @@ function OppgaveRow({ oppgave, mine, children }: { oppgave: OppgaveV2; mine?: bo
       </Table.ExpandableRow>
     )
   }
-  return <Table.Row> {children}</Table.Row>
+  return <Table.Row>{children}</Table.Row>
 }

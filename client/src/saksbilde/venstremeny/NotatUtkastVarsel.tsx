@@ -10,11 +10,11 @@ export function NotatUtkastVarsel() {
     <ErrorSummary size="small" heading="For å gå videre må du rette opp følgende:" headingTag="h3">
       <ErrorSummary.Item
         onClick={() => {
-          const sp = createSearchParams({ valgttab: HøyrekolonneTabs.NOTATER.toString() })
-          navigate({ search: sp.toString() })
+          const searchParams = createSearchParams({ fane: HøyrekolonneTabs.NOTATER })
+          navigate({ search: searchParams.toString() })
         }}
       >
-        Du har et utkast til notat som må ferdigstilles eller slettes
+        Du har et utkast til notat som må ferdigstilles eller slettes.
       </ErrorSummary.Item>
     </ErrorSummary>
   )

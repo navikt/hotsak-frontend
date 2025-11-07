@@ -1,13 +1,12 @@
 import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
 import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
+import { useValgtFane } from '../useValgtFane.ts'
 import { Historikk } from './historikk/Historikk'
 import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
@@ -17,37 +16,24 @@ import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
 
 export function Høyrekolonne() {
-  const [valgtHøyrekolonneTab, setValgtHøyrekolonneTab] = useState(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString())
   const { kanBehandleSak } = useSaksregler()
-  const [searchParams, setSearchParams] = useSearchParams()
   const { sak } = useSak()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
+  const [valgtFane, setValgtFane] = useValgtFane(HøyrekolonneTabs.HJELPEMIDDELOVERSIKT)
 
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
-  const valgtSidebarParam = searchParams.get('valgttab')?.toUpperCase()
-
-  useEffect(() => {
-    const nyValgtTab = HøyrekolonneTabs[valgtSidebarParam as keyof typeof HøyrekolonneTabs]
-    if (nyValgtTab && nyValgtTab !== valgtHøyrekolonneTab) {
-      setValgtHøyrekolonneTab(nyValgtTab)
-    }
-  }, [valgtSidebarParam])
-
-  useEffect(() => {
-    setSearchParams({ valgttab: valgtHøyrekolonneTab })
-  }, [valgtHøyrekolonneTab])
 
   return (
     <Box.New borderWidth="0 1" borderColor="neutral-subtle">
       <Tabs
         size="small"
-        value={valgtHøyrekolonneTab}
-        defaultValue={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}
-        onChange={setValgtHøyrekolonneTab}
+        value={valgtFane}
+        defaultValue={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}
+        onChange={setValgtFane}
         loop
       >
         <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
@@ -94,14 +80,14 @@ export function Høyrekolonne() {
           )}
         </Tabs.List>
         <ScrollContainer>
-          <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
+          <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK}>
             <Historikk />
           </Tabs.Panel>
-          <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
+          <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}>
             <Hjelpemiddeloversikt />
           </Tabs.Panel>
           {sak != null && (
-            <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
+            <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
               <HøyrekolonnePanel tittel="Notater">
                 <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
               </HøyrekolonnePanel>

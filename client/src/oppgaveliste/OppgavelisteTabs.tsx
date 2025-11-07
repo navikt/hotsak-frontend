@@ -14,7 +14,7 @@ export function OppgavelisteTabs() {
   const navigate = useNavigate()
   const visOppgavelisteTabs = useVisOppgavelisteTabs()
 
-  const valgtTab = location.pathname.split('/').pop() || 'oppgaveliste'
+  const valgtFane = location.pathname.split('/').pop() || 'oppgaveliste'
 
   function navigateToPath(nyTab?: string) {
     switch (nyTab) {
@@ -32,7 +32,7 @@ export function OppgavelisteTabs() {
   return (
     <TabContainer>
       <Tabs
-        value={valgtTab}
+        value={valgtFane}
         defaultValue="oppgaveliste"
         onChange={(value) => {
           navigate(navigateToPath(value))

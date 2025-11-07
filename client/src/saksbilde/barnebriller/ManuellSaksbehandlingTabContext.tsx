@@ -1,20 +1,19 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 import { HøyrekolonneTabs, StepType } from '../../types/types.internal'
+import { useValgtFane } from '../useValgtFane.ts'
 
 type ManuellSaksbehandlingContextType = {
   step: number
   setStep(steg: number): void
-  valgtSidebarTab: string
+  valgtSidebarTab: HøyrekolonneTabs
   setValgtSidebarTab(valgtSidebarTab: string): void
 }
 
 const initialState = {
   step: StepType.REGISTRER,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setStep() {},
-  valgtSidebarTab: HøyrekolonneTabs.SAKSHISTORIKK.toString(),
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  valgtSidebarTab: HøyrekolonneTabs.SAKSHISTORIKK,
   setValgtSidebarTab() {},
 }
 
@@ -22,7 +21,7 @@ const ManuellSaksbehandlingContext = createContext<ManuellSaksbehandlingContextT
 ManuellSaksbehandlingContext.displayName = 'ManuellSaksbehandling'
 
 function ManuellSaksbehandlingProvider({ children }: { children: ReactNode }) {
-  const [valgtSidebarTab, setValgtSidebarTab] = useState(initialState.valgtSidebarTab)
+  const [valgtSidebarTab, setValgtSidebarTab] = useValgtFane(initialState.valgtSidebarTab)
   const [step, setStep] = useState(initialState.step)
 
   return (

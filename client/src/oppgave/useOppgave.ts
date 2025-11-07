@@ -4,21 +4,17 @@ import useSwr, { SWRResponse } from 'swr'
 
 import { HttpError } from '../io/HttpError.ts'
 import { useOppgaveContext } from './OppgaveContext.ts'
-import { erEksternOppgaveId, erInternOppgaveId, erSakOppgaveId, OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
+import { erOppgaveId, OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
 
 export function useOppgaveId(): OppgaveId | undefined {
   const { oppgaveId: oppgaveIdUrl } = useParams<{ oppgaveId: OppgaveId | string }>()
   const { oppgaveId: oppgaveIdOppgave } = useOppgaveContext()
-  let oppgaveId: OppgaveId | undefined
-  if (!oppgaveIdUrl) {
-    oppgaveId = oppgaveIdOppgave
-  } else if (erInternOppgaveId(oppgaveIdUrl) || erEksternOppgaveId(oppgaveIdUrl) || erSakOppgaveId(oppgaveIdUrl)) {
-    oppgaveId = oppgaveIdUrl
-  } else {
-    oppgaveId = 'E-' + oppgaveIdUrl
-  }
+  const oppgaveId = oppgaveIdUrl ?? oppgaveIdOppgave
   useDebugValue(oppgaveId)
-  return oppgaveId
+  if (erOppgaveId(oppgaveId)) {
+    return oppgaveId
+  }
+  return
 }
 
 export interface UseOppgaveResponse extends Omit<SWRResponse<OppgaveV2, HttpError>, 'data'> {

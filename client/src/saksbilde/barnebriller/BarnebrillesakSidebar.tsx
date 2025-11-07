@@ -1,10 +1,8 @@
+import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
+import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ClockIcon, EnvelopeClosedIcon, NotePencilIcon, PersonGavelIcon } from '@navikt/aksel-icons'
-import { Tabs, Tag, Tooltip } from '@navikt/ds-react'
-
-import { useSearchParams } from 'react-router'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
@@ -27,7 +25,6 @@ const Sidebar = styled(Tabs)`
 export function BarnebrillesakSidebar() {
   const { sak } = useBarnebrillesak()
   const { valgtSidebarTab, setValgtSidebarTab } = useManuellSaksbehandlingContext()
-  const [searchParams, setSearchParams] = useSearchParams()
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
 
@@ -37,30 +34,17 @@ export function BarnebrillesakSidebar() {
     }
   }, [])
 
-  const valgtSidebarParam = searchParams.get('valgttab')?.toUpperCase()
-
-  useEffect(() => {
-    const nyValgtTab = HøyrekolonneTabs[valgtSidebarParam as keyof typeof HøyrekolonneTabs]
-    if (nyValgtTab && nyValgtTab !== valgtSidebarTab) {
-      setValgtSidebarTab(nyValgtTab)
-    }
-  }, [valgtSidebarParam])
-
-  useEffect(() => {
-    setSearchParams({ valgttab: valgtSidebarTab })
-  }, [valgtSidebarTab])
-
   if (!sak) {
     return <></>
   }
 
   return (
     <Sidebar
-      defaultValue={HøyrekolonneTabs.SAKSHISTORIKK.toString()}
       value={valgtSidebarTab}
-      loop
+      defaultValue={HøyrekolonneTabs.SAKSHISTORIKK}
       iconPosition="top"
       onChange={setValgtSidebarTab}
+      loop
     >
       <Tabs.List>
         <Tooltip content="Historikk">
@@ -89,16 +73,16 @@ export function BarnebrillesakSidebar() {
           />
         </Tooltip>
       </Tabs.List>
-      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK}>
         <BarnebrillesakHistorikk />
       </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL}>
         <TotrinnskontrollPanel />
       </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV}>
         <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
+      <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
         <HøyrekolonnePanel tittel="Notater">
           <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
         </HøyrekolonnePanel>

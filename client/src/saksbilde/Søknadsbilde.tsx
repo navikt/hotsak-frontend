@@ -1,6 +1,7 @@
 import { HGrid } from '@navikt/ds-react'
 import { memo } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { Navigate } from 'react-router'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -83,6 +84,7 @@ const SaksbildeContent = memo(() => {
                     }
                   />
                   <Route path="/formidler" element={<Formidler levering={levering} />} />
+                  <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
                 </Routes>
               </Container>
             </ScrollContainer>

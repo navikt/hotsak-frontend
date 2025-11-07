@@ -12,33 +12,20 @@ import { useBreveditorContext } from '../Breveditor.tsx'
 import LinkKnapp from './LinkKnapp.tsx'
 import SlettBrevutkastKnapp from './SlettBrevutkastKnapp.tsx'
 import SettInnDelmalKnapp from './SettInnDelmalKnapp.tsx'
-import { useLayoutEffect, useRef, useState } from 'react'
 import FormateringMeny from './FormateringMeny.tsx'
+import { useRefSize } from '../hooks.ts'
 
 const Verktøylinje = () => {
   const breveditor = useBreveditorContext()
 
-  const toolbarRef = useRef<HTMLDivElement>(null)
-  const [toolbarCollapsed, setToolbarCollapsed] = useState<'large' | 'medium' | 'small' | 'xsmall'>('large')
-  useLayoutEffect(() => {
-    const element = toolbarRef.current
-    if (!element) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      const { width } = element.getBoundingClientRect()
-      if (width >= 660) setToolbarCollapsed('large')
-      else if (width >= 585) setToolbarCollapsed('medium')
-      else if (width >= 490) setToolbarCollapsed('small')
-      else setToolbarCollapsed('xsmall')
-    })
-
-    resizeObserver.observe(element)
-
-    // Cleanup on unmount
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [setToolbarCollapsed])
+  const { size: toolbarRefSize, ref: toolbarRef } = useRefSize()
+  const toolbarCollapsed = (() => {
+    const width = toolbarRefSize?.width || 1000
+    if (width < 490) return 'xsmall'
+    else if (width < 585) return 'small'
+    else if (width < 660) return 'medium'
+    return 'large'
+  })()
 
   return (
     <Box.New

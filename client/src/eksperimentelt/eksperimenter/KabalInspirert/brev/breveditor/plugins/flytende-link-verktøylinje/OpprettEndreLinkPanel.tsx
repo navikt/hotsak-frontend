@@ -3,13 +3,11 @@ import { FloppydiskIcon, LinkBrokenIcon } from '@navikt/aksel-icons'
 import { useEditorPlugin, useEditorRef } from 'platejs/react'
 import { type KeyboardEvent, useEffect, useState } from 'react'
 import { LinkPlugin, submitFloatingLink } from '@platejs/link/react'
-import { useBreveditorContext } from '../../Breveditor.tsx'
 import { useFlytendeLinkVerktøylinjeContext } from './FlytendeLinkVerktøylinje.tsx'
 import { urlTransform } from './urlTransform.ts'
 
 export function OpprettEndreLinkPanel() {
   const ctx = useFlytendeLinkVerktøylinjeContext()
-  const breveditor = useBreveditorContext()
 
   const editor = useEditorRef()
   const { getOptions, setOptions } = useEditorPlugin(LinkPlugin)
@@ -69,7 +67,6 @@ export function OpprettEndreLinkPanel() {
         size="small"
         onClick={() => {
           ctx.floatingLinkEdit.unlinkButtonProps.onClick()
-          breveditor.fokuserPlateContent()
         }}
       >
         Fjern link

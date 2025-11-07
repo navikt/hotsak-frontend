@@ -10,9 +10,11 @@ export function BrevPanelEksperiment() {
   return (
     <Box.New ref={elmRef} style={{ height: '100%' }} background="default" borderRadius="large large 0 0">
       {erPanelForSmalt && (
-        <Alert size="small" variant="info" style={{ margin: '0.4em' }}>
-          Det ser ut som panelet er litt smalt til å vise brevet — kan du gjøre det litt bredere?
-        </Alert>
+        <div style={{ padding: '0.4em' }}>
+          <Alert size="small" variant="info">
+            Det ser ut som panelet er litt smalt til å vise brevet — kan du gjøre det litt bredere?
+          </Alert>
+        </div>
       )}
       {!erPanelForSmalt && <Brev />}
     </Box.New>

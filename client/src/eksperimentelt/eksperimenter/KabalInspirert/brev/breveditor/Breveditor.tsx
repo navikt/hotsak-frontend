@@ -231,6 +231,7 @@ const Breveditor = ({
               history: changedEditor.history,
             }
             if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {
+              console.log('diff', state.current?.value, constructedState.value)
               // On state-change
               state.current = constructedState
               if (onStateChange) onStateChange(constructedState)

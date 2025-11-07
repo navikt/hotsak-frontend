@@ -2,17 +2,7 @@ import './Breveditor.less'
 import { Plate, PlateContent, usePlateEditor } from 'platejs/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import { KEYS, serializeHtml, type Value } from 'platejs'
-import {
-  createContext,
-  type RefObject,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, type RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import {
   BoldPlugin,
   H1Plugin,

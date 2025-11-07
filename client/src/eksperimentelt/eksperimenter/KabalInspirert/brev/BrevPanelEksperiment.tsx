@@ -31,18 +31,14 @@ export function BrevPanelEksperiment() {
 
   return (
     <Box.New
-      style={{ height: '100dvh', padding: 'var(--ax-radius-8) 0 50px 0' }}
+      style={{ height: '100%', padding: 'var(--ax-radius-8) 0 0 0' }}
       padding={'space-16'}
       background="default"
       borderRadius="large large 0 0"
     >
       {errorEr404 && valgtMal === undefined && <BrevmalVelger velgMal={velgMal} />}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
-        <div
-          style={{
-            height: '100%',
-          }}
-        >
+        <div style={{ height: '100%' }}>
           <Breveditor
             metadata={{
               brukersNavn: sak?.data.bruker.fulltNavn || '',

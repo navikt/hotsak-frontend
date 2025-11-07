@@ -28,17 +28,55 @@
     height: 100%;
     overflow-y: auto;
 
-    .scrollable-content {
-      flex: 1;
-      background: #fff;
 
-      .content {
-        width: 794px; /* 595pt converted to px */
+      .scaled-height {
+        height: auto;
+        overflow: hidden;
+
+        .measured-height {
+          .scaled-width {
+            scale: 1.0;
+            transform-origin: top left;
+
+            .clear-styles {
+              all: unset;
+
+              .brev-stilark {
+                width: 794px; /* 595pt converted to px */
+                padding: 64pt 64pt 74pt 64pt;
+                font-size: 11pt;
+                font-weight: normal;
+                font-family: 'Source Sans 3', sans-serif;
+                line-height: 16pt;
+                position: relative;
+
+                &.zoomed {
+                  width: 650px; /* 595pt - 108pt ((64-10)*2=108) */
+                  padding: 30pt 10pt 10pt 10pt !important;
+                }
+
+                &.brev-stilark-v1 {
+                  @import "versjonerte-brev-stilark/v1";
+                }
+
+                .contentEditable {
+                  &:focus-visible {
+                    outline-style: none;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+
+      /*.content {
+        width: 794px; /* 595pt converted to px *//*
         min-height: 1123px;
         transform-origin: top left;
 
         &.zoomed {
-          width: 650px; /* 595pt - 108pt ((64-10)*2=108) */
+          width: 650px; /* 595pt - 108pt ((64-10)*2=108) *//*
 
           .page {
             margin: 30pt 10pt 74pt 10pt !important;
@@ -71,7 +109,7 @@
             @import "versjonerte-brev-stilark/v1";
           }
         }
-      }
+      }*/
     }
   }
 }

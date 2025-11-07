@@ -1,11 +1,11 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
-import { BodyShort, Detail, HStack, Label, VStack } from '@navikt/ds-react'
+import { BodyShort, Detail, HStack, Label, Link, VStack } from '@navikt/ds-react'
 import { isValidElement, type ReactNode } from 'react'
 
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { FormatertTidspunkt } from '../../felleskomponenter/format/FormatertTidspunkt.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { oppgaveIdUtenPrefix, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { useOppgavekommentarer } from './useOppgavekommentarer.ts'
 
@@ -17,6 +17,7 @@ export interface OppgaveDetailsProps {
 export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
   const { data: kommentarer = [] } = useOppgavekommentarer(visible ? oppgave.oppgaveId : null)
   const sisteKommentar = kommentarer[0]
+  const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
   return (
     <VStack gap="5">
       <VStack gap="3">
@@ -71,7 +72,20 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
         <div>
           <Strek />
           <VStack gap="3">
-            <OppgaveDetailsItem label="OppgaveID" value={oppgave.oppgaveId} />
+            <OppgaveDetailsItem
+              label="OppgaveID"
+              value={
+                <BodyShort
+                  as={Link}
+                  href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgaveId}`}
+                  size="small"
+                  target="_blank"
+                  variant="subtle"
+                >
+                  {oppgaveId}
+                </BodyShort>
+              }
+            />
             <OppgaveDetailsItem label="JournalpostID" value={oppgave.journalpostId} />
             <OppgaveDetailsItem label="Saksnummer" value={oppgave.sakId} />
           </VStack>

@@ -127,10 +127,14 @@ const Breveditor = ({
   const [visMarger, settVisMarger] = useState(true)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
+
   const erBreveditorEllerVerktoylinjeFokusert = useMemo(
     () => erPlateContentFokusert || erVerktoylinjeFokusert,
     [erPlateContentFokusert, erVerktoylinjeFokusert]
   )
+
+  const headerRef = useRef<HTMLDivElement | null>(null)
+  const footerRef = useRef<HTMLParagraphElement | null>(null)
 
   // Hjelper for å kunne fokusere text-editoren
   const plateContentRef = useRef(null)
@@ -220,7 +224,10 @@ const Breveditor = ({
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: StateMangement = {
               value: newValue,
-              valueAsHtml: await serializeHtml(editor),
+              valueAsHtml:
+                (headerRef.current?.outerHTML || '') +
+                (await serializeHtml(editor)) +
+                (footerRef.current?.outerHTML || ''),
               history: changedEditor.history,
             }
             if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {
@@ -240,7 +247,7 @@ const Breveditor = ({
                 <div style={{ scale: editorWidthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div className="header">
+                      <div ref={headerRef} className="header">
                         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="20" viewBox="0 0 64 20">
                           <path
                             fill-rule="evenodd"
@@ -266,7 +273,7 @@ const Breveditor = ({
                         placeholder={placeholder}
                         className="contentEditable"
                       />
-                      <p>
+                      <p ref={footerRef}>
                         Med vennlig hilsen <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />

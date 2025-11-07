@@ -28,88 +28,45 @@
     height: 100%;
     overflow-y: auto;
 
+    .scaled-height {
+      height: auto;
+      overflow: hidden;
 
-      .scaled-height {
-        height: auto;
-        overflow: hidden;
+      .measured-height {
+        .scaled-width {
+          scale: 1.0;
+          transform-origin: top left;
 
-        .measured-height {
-          .scaled-width {
-            scale: 1.0;
-            transform-origin: top left;
+          .clear-styles {
+            all: unset;
 
-            .clear-styles {
-              all: unset;
+            .brev-stilark {
+              width: 794px; /* 595pt converted to px */
+              padding: 64pt 64pt 74pt 64pt;
+              font-size: 11pt;
+              font-weight: normal;
+              font-family: 'Source Sans 3', sans-serif;
+              line-height: 16pt;
+              position: relative;
 
-              .brev-stilark {
-                width: 794px; /* 595pt converted to px */
-                padding: 64pt 64pt 74pt 64pt;
-                font-size: 11pt;
-                font-weight: normal;
-                font-family: 'Source Sans 3', sans-serif;
-                line-height: 16pt;
-                position: relative;
+              &.zoomed {
+                width: 650px; /* 595pt - 108pt ((64-10)*2=108) */
+                padding: 30pt 10pt 10pt 10pt !important;
+              }
 
-                &.zoomed {
-                  width: 650px; /* 595pt - 108pt ((64-10)*2=108) */
-                  padding: 30pt 10pt 10pt 10pt !important;
-                }
+              &.brev-stilark-v1 {
+                @import "versjonerte-brev-stilark/v1";
+              }
 
-                &.brev-stilark-v1 {
-                  @import "versjonerte-brev-stilark/v1";
-                }
-
-                .contentEditable {
-                  &:focus-visible {
-                    outline-style: none;
-                  }
+              .contentEditable {
+                &:focus-visible {
+                  outline-style: none;
                 }
               }
             }
           }
         }
-
-
-      /*.content {
-        width: 794px; /* 595pt converted to px *//*
-        min-height: 1123px;
-        transform-origin: top left;
-
-        &.zoomed {
-          width: 650px; /* 595pt - 108pt ((64-10)*2=108) *//*
-
-          .page {
-            margin: 30pt 10pt 74pt 10pt !important;
-          }
-        }
-
-        .page {
-          margin: 64pt 64pt 74pt 64pt;
-          font-family: 'Source Sans 3', sans-serif;
-          font-size: 11pt;
-          font-weight: normal;
-          line-height: 16pt;
-          position: relative;
-
-          .contentEditable {
-            margin: 0;
-            padding: 0;
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 11pt;
-            font-weight: normal;
-            line-height: 16pt;
-
-            &:focus-visible {
-              outline-style: none;
-            }
-          }
-
-          .brev-stilark-v1 {
-            all: unset;
-            @import "versjonerte-brev-stilark/v1";
-          }
-        }
-      }*/
+      }
     }
   }
 }

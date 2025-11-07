@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorRef } from 'platejs/react'
-import type { ReactNode } from 'react'
+import { useEditorState } from 'platejs/react'
+import { ReactNode } from 'react'
 import { useBreveditorContext } from '../../Breveditor.tsx'
 
 const MarkKnapp = ({
@@ -34,7 +34,7 @@ const MarkKnapp = ({
 export default MarkKnapp
 
 export const useMarkKnapp = (markKey: string) => {
-  const editor = useEditorRef()
+  const editor = useEditorState()
   const breveditor = useBreveditorContext()
   return {
     toggle: () => editor.tf.toggleMark(markKey),

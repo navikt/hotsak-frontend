@@ -27,6 +27,7 @@ import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøyli
 import type { History } from '@platejs/slate'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import { ListPlugin } from '@platejs/list-classic/react'
+import { useRefSize } from '../util.ts'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -158,54 +159,17 @@ const Breveditor = ({
   }, [plateContentRef])
 
   // Skallér breveditor sitt innhold slik at Navs brevstandard sine px/pt verdier vises korrekt og propersjonalt.
-  const editorWidthScaleRef = useRef<HTMLDivElement>(null)
-  const [editorWidthScale, setEditorWidthScale] = useState(1.0)
-  useLayoutEffect(() => {
-    const element = editorWidthScaleRef.current
-    if (!element) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      const { width } = element.getBoundingClientRect()
-      let designedWidth = 794 // 595pt in px
-      if (!visMarger) designedWidth = 650 // 595pt - 108pt ((64-10)*2=108)
-      const scale = width / designedWidth
-      if (editorWidthScale != scale) {
-        console.log('updating editor content scale', width, editorWidthScale, scale)
-        setEditorWidthScale(scale)
-      }
-    })
-
-    resizeObserver.observe(element)
-
-    // Cleanup on unmount
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [visMarger, editorWidthScaleRef, editorWidthScale])
-
-  const editorHeightScaleRef = useRef<HTMLDivElement>(null)
-  const [editorHeightScale, setEditorHeightScale] = useState('auto')
-  useLayoutEffect(() => {
-    const element = editorHeightScaleRef.current
-    if (!element) return
-
-    const resizeObserver = new ResizeObserver(() => {
-      const { height } = element.getBoundingClientRect()
-      const newHeight = `${height * editorWidthScale}px`
-      console.log('newHeight', newHeight, 'scale', editorWidthScale)
-      if (editorHeightScale != newHeight) {
-        console.log('updating editor content scale')
-        setEditorHeightScale(newHeight)
-      }
-    })
-
-    resizeObserver.observe(element)
-
-    // Cleanup on unmount
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [visMarger, editorHeightScale, editorHeightScaleRef, editorWidthScale])
+  const { size: editorWidthScaleRefSize, ref: editorWidthScaleRef } = useRefSize()
+  const editorWidthScale = (() => {
+    if (!editorWidthScaleRefSize) return 1.0
+    let designedWidth = 794 // 595pt in px
+    if (!visMarger) designedWidth = 650 // 595pt - 108pt ((64-10)*2=108)
+    return editorWidthScaleRefSize.width / designedWidth
+  })()
+  const { size: editorHeightScaleRefSize, ref: editorHeightScaleRef } = useRefSize()
+  const editorHeightScale = editorHeightScaleRefSize?.height
+    ? `${editorHeightScaleRefSize.height * editorWidthScale}px`
+    : 'auto'
 
   const [endringsstatus, setEndringsstatus] = useState<{
     lagrerNå: boolean

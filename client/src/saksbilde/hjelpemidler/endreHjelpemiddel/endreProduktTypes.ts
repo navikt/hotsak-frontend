@@ -4,6 +4,7 @@ export interface EndretProdukt {
   navn: string
 }
 
+// TODO bedre navn på denne
 export interface HjelpemiddelEndring {
   id: string
   hmsArtNr: string

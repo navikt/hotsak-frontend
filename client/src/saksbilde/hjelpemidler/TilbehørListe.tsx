@@ -1,22 +1,22 @@
 import { PencilIcon } from '@navikt/aksel-icons'
-import { Bleed, Box, Button, VStack } from '@navikt/ds-react'
+import { Box, Button, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../types/types.internal'
+import { storForbokstavIOrd } from '../../utils/formater'
+import {
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+} from './endreHjelpemiddel/endreProduktTypes'
 import { EndreTilbehørModal } from './endreHjelpemiddel/EndreTilbehørModal'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
 import { Opplysninger } from './Opplysninger'
 import { Produkt } from './Produkt'
 import { Varsler } from './Varsel'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-} from './endreHjelpemiddel/endreProduktTypes'
-import { storForbokstavIOrd } from '../../utils/formater'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 
 export function FrittStåendeTilbehør({
   sakId,

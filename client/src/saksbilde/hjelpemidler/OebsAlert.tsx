@@ -1,8 +1,8 @@
 import { Box, Heading, List } from '@navikt/ds-react'
 import { SystemAlert } from '../../felleskomponenter/SystemAlert.tsx'
-import { Hjelpemiddel } from '../../types/types.internal.ts'
+import { HjelpemiddelEndring } from './endreHjelpemiddel/endreProduktTypes.ts'
 
-export function OebsAlert(props: { hjelpemidler: Hjelpemiddel[] }) {
+export function OebsAlert(props: { hjelpemidler: HjelpemiddelEndring[] }) {
   const { hjelpemidler } = props
 
   return (

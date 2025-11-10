@@ -1,14 +1,14 @@
 import useSWR, { SWRResponse } from 'swr'
 
 import type { HttpError } from '../../io/HttpError.ts'
-import type { Hjelpemiddel } from '../../types/types.internal'
+import { HjelpemiddelEndring } from './endreHjelpemiddel/endreProduktTypes.ts'
 
 interface HjelpemidlerJson {
-  hjelpemidler: Hjelpemiddel[]
+  hjelpemidler: HjelpemiddelEndring[]
 }
 
 interface UseArtiklerForSakResponse extends Omit<SWRResponse<HjelpemidlerJson, HttpError>, 'data'> {
-  artikler: Hjelpemiddel[]
+  artikler: HjelpemiddelEndring[]
 }
 
 export function useArtiklerForSak(sakId: string): UseArtiklerForSakResponse {

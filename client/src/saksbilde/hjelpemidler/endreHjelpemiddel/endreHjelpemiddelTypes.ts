@@ -1,4 +1,4 @@
-import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from '../../../types/types.internal'
+import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from './endreProduktTypes'
 
 export interface EndreArtikkelData {
   endretProdukt: string
@@ -14,4 +14,5 @@ export enum EndreHjelpemiddelType {
 
 export interface EndretHjelpemiddelRequest extends EndretHjelpemiddel {
   hmsArtNr: string
+  navn?: string
 }

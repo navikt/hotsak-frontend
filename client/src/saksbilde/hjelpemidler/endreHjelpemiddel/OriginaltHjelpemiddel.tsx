@@ -1,22 +1,19 @@
 import { Box, Heading, HGrid, VStack } from '@navikt/ds-react'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
-import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes'
+import { Opplysning } from '../../../types/BehovsmeldingTypes'
 import { Produkt } from '../../../types/types.internal'
 import { storForbokstavIOrd } from '../../../utils/formater'
-//import DOMPurify from 'dompurify'
 
 export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
-  const { hjelpemiddel, grunndataProdukt } = props
+  const { hmsnr, navn, opplysninger = [], grunndataProdukt } = props
 
-  const opplysninger = hjelpemiddel.opplysninger.filter(
+  const relevanteOpplysninger = (opplysninger ?? []).filter(
     (opplysning) =>
       opplysning.ledetekst.nb.toLowerCase() !== 'bruksarena' &&
       opplysning.ledetekst.nb.toLowerCase() !== 'funksjon' &&
       opplysning.ledetekst.nb.toLowerCase() !== 'grunnen til behovet'
   )
-
-  // const sanitizeHTML = (html: string): string => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['em', 'strong', 'p'] })
 
   return (
     <>
@@ -42,19 +39,11 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
                 )}
               </div>
               <VStack gap="space-4">
-                <Etikett size="small">{hjelpemiddel.produkt.artikkelnavn}</Etikett>
-                <FinnHjelpemiddelLink hmsnr={hjelpemiddel.produkt.hmsArtNr}>
-                  <Brødtekst>{`Hmsnr: ${hjelpemiddel.produkt.hmsArtNr}`}</Brødtekst>
+                <Etikett size="small">{navn}</Etikett>
+                <FinnHjelpemiddelLink hmsnr={hmsnr}>
+                  <Brødtekst>{`Hmsnr: ${hmsnr}`}</Brødtekst>
                 </FinnHjelpemiddelLink>
                 {grunndataProdukt && <Brødtekst>{grunndataProdukt?.leverandør}</Brødtekst>}
-                {/*grunndataProdukt?.produktinfoFraRammeavtale && (
-                  <div>
-                    <Etikett>Generell informasjon</Etikett>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: sanitizeHTML(grunndataProdukt?.produktinfoFraRammeavtale) }}
-                    />
-                  </div>
-                )*/}
               </VStack>
             </HGrid>
           </div>
@@ -64,7 +53,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
               <Heading level="2" size="xsmall">
                 Brukers behov:
               </Heading>
-              {opplysninger.map((opplysning) => {
+              {relevanteOpplysninger.map((opplysning) => {
                 return (
                   <Box key={opplysning.ledetekst.nb}>
                     <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
@@ -97,6 +86,8 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
 }
 
 interface OriginaltHjelpemiddelProps {
-  hjelpemiddel: Hjelpemiddel
+  navn: string
+  hmsnr: string
+  opplysninger?: Opplysning[]
   grunndataProdukt?: Produkt | undefined
 }

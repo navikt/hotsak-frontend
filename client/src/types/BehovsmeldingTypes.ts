@@ -238,6 +238,7 @@ export interface HjelpemiddelProdukt {
 
 export interface Tilbehør {
   hmsArtNr: string
+  tilbehørId?: string
   navn: string
   antall: number
   opplysninger?: Opplysning[]

@@ -1,7 +1,7 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { RadioGroup, Radio, Textarea, VStack } from '@navikt/ds-react'
-import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from '../../../types/types.internal'
 import { EndreHjelpemiddelType } from './endreHjelpemiddelTypes'
+import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from './endreProduktTypes'
 
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 

@@ -71,19 +71,15 @@
         },
         "tilbehør": [
           {
-            "hmsArtNr": "014112",
-            "navn": "Topro terskeleliminator",
-            "antall": 1,
-            "begrunnelse": "Her er en begrunnelse fra formidler"
-          },
-          {
             "hmsArtNr": "014113",
+            "tilbehørId": "2bd9e3f1-38c2-4e9d-9f85-585f3d5f021c",
             "navn": "Armlene mrs Cross 6/Cross 5XL Prio aktiv/Prio komfort teleskop l38 høyre",
             "antall": 1,
             "fritakFraBegrunnelseÅrsak": "ER_PÅ_BESTILLINGSORDNING"
           },
           {
             "hmsArtNr": "014124",
+            "tilbehørId": "db4f38bf-6a34-4bf5-bb86-3054a25adc0a",
             "navn": "Polstring integrert sengegrind seng Opus 90EW/120EW +20cm",
             "antall": 1,
             "begrunnelse": "Her er en begrunnelse fra formidler"
@@ -144,32 +140,13 @@
     "tilbehør": [
       {
         "hmsArtNr": "014112",
+        "tilbehørId": "e3a4f092-0f50-4236-b1ac-18846595849b",
         "navn": "Topro terskeleliminator",
         "antall": 1
       },
       {
-        "hmsArtNr": "014112",
-        "navn": "Topro terskeleliminator",
-        "antall": 1,
-        "opplysninger": [
-          {
-            "ledetekst": {
-              "nb": "Forhåndsdefinert opplysning",
-              "nn": "Forhåndsdefinert opplysning"
-            },
-            "innhold": [
-              {
-                "forhåndsdefinertTekst": {
-                  "nb": "Forhåndsdefinert tekst",
-                  "nn": "Forhåndsdefinert tekst"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
         "hmsArtNr": "176090",
+        "tilbehørId": "9119612e-5044-47a0-a414-8fb40d74fb0e",
         "navn": "Antisklimatte serveringsbrett rullator 4hjul Topro Troja Original M/S/Topro Olympos ATR M",
         "antall": 1,
         "opplysninger": [

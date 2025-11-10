@@ -6,12 +6,7 @@ import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../fellesko
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-  Produkt as ProduktType,
-  Sak,
-} from '../../types/types.internal.ts'
+import { Produkt as ProduktType, Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
@@ -23,6 +18,10 @@ import { TilbehørListe } from './TilbehørListe.tsx'
 import { type AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
+import {
+  EndretHjelpemiddelBegrunnelse,
+  EndretHjelpemiddelBegrunnelseLabel,
+} from './endreHjelpemiddel/endreProduktTypes.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -51,7 +50,11 @@ export function Hjelpemiddel({
     nåværendeHmsnr,
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
-  } = useEndreHjelpemiddel(sakId, hjelpemiddel)
+  } = useEndreHjelpemiddel(sakId, {
+    id: hjelpemiddel.hjelpemiddelId,
+    hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
+    navn: hjelpemiddel.produkt.artikkelnavn,
+  })
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
   const harAlternativeProdukter = alternativeProdukter.length > 0
@@ -100,6 +103,7 @@ export function Hjelpemiddel({
               )}
             </HStack>
           </VStack>
+          {/* TODO fjerne VStack her */}
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
             {endretHjelpemiddel && (
               <div>
@@ -134,31 +138,29 @@ export function Hjelpemiddel({
         <div>
           <Tekst>{hjelpemiddel.antall} stk</Tekst>
         </div>
-        <VStack gap="2">
-          {kanEndreHmsnr && (
-            <div>
-              <Bleed marginBlock="1 0">
-                <Button
-                  variant="tertiary"
-                  size="xsmall"
-                  icon={<PencilIcon />}
-                  onClick={() => {
-                    logModalÅpnet({
-                      tekst: 'alterrnative-produkter-modal',
-                      alternativerTilgjengelig: alternativeProdukter.length,
-                      alternativer: alternativeProdukter.map((p) => {
-                        return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
-                      }),
-                    })
-                    setVisAlternativerModal(true)
-                  }}
-                >
-                  Endre
-                </Button>
-              </Bleed>
-            </div>
-          )}
-        </VStack>
+        {kanEndreHmsnr && (
+          <div>
+            <Bleed marginBlock="1 0">
+              <Button
+                variant="tertiary"
+                size="xsmall"
+                icon={<PencilIcon />}
+                onClick={() => {
+                  logModalÅpnet({
+                    tekst: 'alterrnative-produkter-modal',
+                    alternativerTilgjengelig: alternativeProdukter.length,
+                    alternativer: alternativeProdukter.map((p) => {
+                      return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                    }),
+                  })
+                  setVisAlternativerModal(true)
+                }}
+              >
+                Endre
+              </Button>
+            </Bleed>
+          </div>
+        )}
       </HjelpemiddelGrid>
       <>
         <EndreHjelpemiddelModal
@@ -176,7 +178,7 @@ export function Hjelpemiddel({
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">
             <Etikett size="medium">Tilbehør</Etikett>
-            <TilbehørListe tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
+            <TilbehørListe sakId={sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
           </VStack>
         )}
       </>

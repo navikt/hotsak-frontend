@@ -87,7 +87,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <FrittStåendeTilbehør tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
+          <FrittStåendeTilbehør sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
       <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />

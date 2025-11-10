@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
-import { http } from '../../../io/HttpClient.ts'
-import { Hjelpemiddel as BehovsmeldingHjelpemiddel } from '../../../types/BehovsmeldingTypes'
-import { useArtiklerForSak } from '../useArtiklerForSak'
-import { useHjelpemiddel } from './useHjelpemiddel'
-import { EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { http } from '../../../io/HttpClient.ts'
+import { useArtiklerForSak } from '../useArtiklerForSak'
+import { EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
+import { EndretProdukt } from './endreProduktTypes.ts'
+import { useHjelpemiddel } from './useHjelpemiddel'
 
-export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingHjelpemiddel) {
+export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt) {
   const [visEndreProdukt, setVisEndreProdukt] = useState(false)
   const { mutate } = useSWRConfig()
   const { artikler, mutate: mutateBestilling } = useArtiklerForSak(sakId)
   const { showSuccessToast } = useToast()
+  const { id, hmsArtNr } = endretProdukt
 
+  // TODO, sende med navn også
   const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
     await http
       .put(`/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
@@ -26,15 +28,13 @@ export function useEndreHjelpemiddel(sakId: string, hjelpemiddel: BehovsmeldingH
     setVisEndreProdukt(false)
   }
 
-  const endretHjelpemiddel = artikler.find(
-    (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddel.hjelpemiddelId
-  )
+  const endretHjelpemiddel = artikler.find((it) => it.endretHjelpemiddel && it.endretHjelpemiddel.id === id)
 
   const { hjelpemiddel: endretHjelpemiddelProdukt } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined
   )
 
-  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hjelpemiddel.produkt.hmsArtNr
+  const nåværendeHmsnr = endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : hmsArtNr
 
   return {
     visEndreProdukt,

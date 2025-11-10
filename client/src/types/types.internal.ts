@@ -408,15 +408,6 @@ export interface BrevTekst {
   brevtype: string
 }
 
-export interface Hjelpemiddel {
-  hjelpemiddelId: string
-  hmsArtNr: string
-  artikkelnavn: string
-  antall: number
-  endretHjelpemiddel?: EndretHjelpemiddel
-  finnesIOebs: boolean
-}
-
 export interface HjelpemiddelArtikkel {
   antall: number
   antallEnhet: string
@@ -436,27 +427,6 @@ export interface HjelpemiddelArtikkel {
   grunndataKategoriKortnavn?: string
   hjelpemiddeldatabasenURL?: string
 }
-
-export interface EndretHjelpemiddel {
-  hjelpemiddelId: string
-  begrunnelse: EndretHjelpemiddelBegrunnelse
-  begrunnelseFritekst?: string
-  artikkelnavn?: string
-}
-
-export enum EndretHjelpemiddelBegrunnelse {
-  LAGERVARE = 'LAGERVARE',
-  ANNET = 'ANNET',
-  ALTERNATIV_PRODUKT_LAGERVARE = 'ALTERNATIV_PRODUKT_LAGERVARE',
-  ALTERNATIV_PRODUKT_ANNET = 'ALTERNATIV_PRODUKT_ANNET',
-}
-
-export const EndretHjelpemiddelBegrunnelseLabel = new Map<string, string>([
-  [EndretHjelpemiddelBegrunnelse.LAGERVARE, 'Tilgjengelig på lager'],
-  [EndretHjelpemiddelBegrunnelse.ANNET, 'Annet'],
-  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE, 'Tilgjengelig på lager'],
-  [EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET, 'Annet'],
-])
 
 export interface VedtakType {
   vedtaksdato: string

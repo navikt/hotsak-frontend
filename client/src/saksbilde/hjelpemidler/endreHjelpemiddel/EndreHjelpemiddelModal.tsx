@@ -3,11 +3,7 @@ import { useRef, useState } from 'react'
 
 import { useUmami } from '../../../sporing/useUmami.ts'
 import { Hjelpemiddel } from '../../../types/BehovsmeldingTypes.ts'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-  Produkt,
-} from '../../../types/types.internal.ts'
+import { Produkt } from '../../../types/types.internal.ts'
 import {
   AlternativeProduct,
   ingenAlternativeProdukterForHmsArtNr,
@@ -18,6 +14,7 @@ import { EndreArtikkelData, EndretHjelpemiddelRequest } from './endreHjelpemidde
 import { ManueltSøkPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 import { OriginaltHjelpemiddel } from './OriginaltHjelpemiddel.tsx'
 import { FormProvider, useForm } from 'react-hook-form'
+import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from './endreProduktTypes.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
@@ -102,7 +99,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           ? data.endreBegrunnelseFritekst
           : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
       await onLagre({
-        hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
+        id: hjelpemiddel.hjelpemiddelId,
         hmsArtNr: data.endretProdukt ?? '',
         begrunnelse,
         begrunnelseFritekst,
@@ -150,7 +147,12 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
         >
           <Modal.Body style={{ scrollbarGutter: 'stable both-edges' }}>
             <Box.New paddingBlock="space-24 0" paddingInline="space-16">
-              <OriginaltHjelpemiddel hjelpemiddel={hjelpemiddel} grunndataProdukt={grunndataProdukt} />
+              <OriginaltHjelpemiddel
+                navn={hjelpemiddel.produkt.artikkelnavn}
+                hmsnr={hjelpemiddel.produkt.hmsArtNr}
+                opplysninger={hjelpemiddel.opplysninger}
+                grunndataProdukt={grunndataProdukt}
+              />
 
               {harAlternativeProdukter ? (
                 <Box.New paddingBlock="space-24 0">

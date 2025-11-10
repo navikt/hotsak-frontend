@@ -57,7 +57,10 @@ export function NotatForm({ readOnly, aktivtUtkast, lagrerUtkast }: NotatFormPro
             />
           )}
         />
-        <Lagreindikator lagrerUtkast={lagrerUtkast} sistLagretTidspunkt={aktivtUtkast?.oppdatert} />
+        <Lagreindikator
+          lagrerUtkast={lagrerUtkast}
+          sistLagretTidspunkt={aktivtUtkast?.oppdatert || aktivtUtkast?.opprettet}
+        />
       </VStack>
     </>
   )

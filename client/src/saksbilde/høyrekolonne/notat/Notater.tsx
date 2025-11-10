@@ -32,6 +32,8 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
   const aktivtUtkast = finnAktivtUtkast(notatType)
 
+  console.log('Aktivt utkast', aktivtUtkast)
+
   const filterOptions: FilterOption[] = [
     { key: 'ALLE', label: 'Alle' },
     { key: NotatType.INTERNT, label: 'Internt arbeidsnotat' },

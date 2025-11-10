@@ -9,6 +9,7 @@ const UnderlinjeKnapp = () => {
         <span
           style={{
             textDecoration: 'underline',
+            fontSize: '1rem',
           }}
         >
           U

@@ -1,89 +1,22 @@
-import { Alert, Box, Loader } from '@navikt/ds-react'
-import useSWR from 'swr'
-import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
-import { useMemo, useState } from 'react'
-import { useSak } from '../../../../saksbilde/useSak.ts'
-import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
-import { formaterDatoLang } from '../../../../utils/dato.ts'
+import { Alert, Box } from '@navikt/ds-react'
+import { Brev } from './Brev.tsx'
+import { useRefSize } from './breveditor/hooks.ts'
 
 export function BrevPanelEksperiment() {
-  const { sak } = useSak()
-
-  const brevutkast = useSWR<
-    {
-      error?: string
-      data?: StateMangement
-      opprettet: string
-    },
-    Error
-  >(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, async (key: string) =>
-    fetch(key, { method: 'get' }).then((res) => res.json())
-  )
-
-  const [valgtMal, velgMal] = useState<string>()
-  const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
-
-  if (brevutkast.isLoading) {
-    return <Loader title="Laster inn brevutkast..." />
-  } else if (brevutkast.error) {
-    return <Alert variant="warning">Brev ikke tilgjengelig.</Alert>
-  }
+  // Vis alert hvis panelet blir for tynt for å vise editoren med en brukbar verktøylinje
+  const { size, ref: elmRef } = useRefSize()
+  const erPanelForSmalt = size && size.width < 320
 
   return (
-    <Box.New
-      style={{ height: '100dvh', padding: 'var(--ax-radius-8) 0 50px 0' }}
-      padding={'space-16'}
-      background="default"
-      borderRadius="large large 0 0"
-    >
-      {errorEr404 && valgtMal === undefined && <BrevmalVelger velgMal={velgMal} />}
-      {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
-        <div
-          style={{
-            height: '100%',
-          }}
-        >
-          <Breveditor
-            metadata={{
-              brukersNavn: sak?.data.bruker.fulltNavn || '',
-              brukersFødselsnummer: sak?.data.bruker.fnr || '',
-              saksnummer: Number(sak!.data.sakId),
-              brevOpprettet: formaterDatoLang(brevutkast.data?.opprettet),
-              saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
-              attestantsNavn: undefined,
-              hjelpemiddelsentral: sak?.data.enhet.enhetsnavn || 'Nav hjelpemiddelsentral',
-            }}
-            brevId={sak!.data.sakId.toString()}
-            templateMarkdown={valgtMal}
-            initialState={brevutkast.data?.data}
-            onLagreBrev={async (state) => {
-              await fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
-                method: 'post',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: JSON.stringify({
-                  brevtype: 'BREVEDITOR_VEDTAKSBREV',
-                  målform: 'BOKMÅL',
-                  data: state,
-                }),
-              }).then((res) => {
-                if (!res.ok) throw new Error(`Brev ikke lagret, statuskode ${res.status}`)
-              })
-            }}
-            onSlettBrev={async () => {
-              velgMal(undefined) // Unngå at forrige valgte mal trigger at breveditoren laster den på nytt
-              await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, {
-                method: 'delete',
-              }).then((res) => {
-                if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
-              })
-              await brevutkast.mutate()
-            }}
-          />
+    <Box.New ref={elmRef} style={{ height: '100%' }} background="default" borderRadius="large large 0 0">
+      {erPanelForSmalt && (
+        <div style={{ padding: '0.4em' }}>
+          <Alert size="small" variant="info">
+            Det ser ut som panelet er litt smalt til å vise brevet — kan du gjøre det litt bredere?
+          </Alert>
         </div>
       )}
+      {!erPanelForSmalt && <Brev />}
     </Box.New>
   )
 }

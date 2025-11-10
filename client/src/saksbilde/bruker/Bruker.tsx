@@ -69,7 +69,6 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
       </Heading>
       <Box paddingBlock="4 8">
         <HGrid {...hGridProps}>
-          <Etikett>Leveringsadresse</Etikett>
           <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
           <Kontaktperson levering={levering} />
           {utleveringMerknad && (

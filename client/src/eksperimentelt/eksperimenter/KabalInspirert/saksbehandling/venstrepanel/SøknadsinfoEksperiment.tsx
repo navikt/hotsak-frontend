@@ -22,7 +22,7 @@ export const SøknadsinfoEksperiment = memo(() => {
 
   const levering = behovsmelding.levering
   const adresseBruker = formaterAdresse(behovsmelding.bruker.veiadresse)
-  const [leveringsmåteLabel] = lagLeveringsmåteTekst(levering, adresseBruker)
+  const leveringsmåte = lagLeveringsmåteTekst(levering, adresseBruker)
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
 
   return (
@@ -30,7 +30,7 @@ export const SøknadsinfoEksperiment = memo(() => {
       <VenstremenyCard heading="Levering" spacing={false}>
         <VStack>
           <Brødtekst textColor="subtle">
-            {leveringsmåteLabel}: {formaterAdresse(behovsmelding.bruker.veiadresse)}
+            {leveringsmåte.label}: {formaterAdresse(behovsmelding.bruker.veiadresse)}
           </Brødtekst>
           {behovsmelding.levering.utleveringMerknad && (
             <HStack>

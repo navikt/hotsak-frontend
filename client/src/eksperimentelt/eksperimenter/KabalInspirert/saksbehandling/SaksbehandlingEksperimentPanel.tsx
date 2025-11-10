@@ -265,7 +265,7 @@ export function SaksbehandlingEksperiment() {
             </>
           )}
           {brevKolonne && (
-            <Panel defaultSize={40} minSize={32} order={5}>
+            <Panel defaultSize={40} minSize={10} order={5}>
               <BrevPanelEksperiment />
             </Panel>
           )}

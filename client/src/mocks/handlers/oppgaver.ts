@@ -103,6 +103,29 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
+  http.put<OppgaveParams, { behandlingstema?: string }>(`/api/oppgaver-v2/:oppgaveId`, async ({ request, params }) => {
+    const { behandlingstema } = await request.json()
+    const { oppgaveId } = params
+    if (!behandlingstema) {
+      return respondNoContent()
+    }
+    await oppgaveStore.oppdaterKategorisering(oppgaveId, behandlingstema)
+    await delay(200)
+    return respondNoContent()
+  }),
+
+  http.get<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/gjelder`, async ({ params }) => {
+    const { oppgaveId } = params
+    const result = await oppgaveStore.hentGjelderInfo(oppgaveId)
+    const { behandlingstema, behandlingstype, alternativer } = result ?? { behandlingstema: undefined, behandlingstype: undefined, alternativer: undefined }
+    await delay(75)
+    return HttpResponse.json({
+      behandlingstema,
+      behandlingstype,
+      alternativer,
+    })
+  }),
+
   http.get(`/api/oppgaver`, async ({ request }) => {
     const url = new URL(request.url)
     const statusFilter = url.searchParams.get('status')

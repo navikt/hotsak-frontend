@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorRef } from 'platejs/react'
+import { useEditorState } from 'platejs/react'
 import { ArrowRedoIcon } from '@navikt/aksel-icons'
 
 const GjentaKnapp = () => {
@@ -31,7 +31,7 @@ const GjentaKnapp = () => {
 export default GjentaKnapp
 
 export const useGjentaKnapp = () => {
-  const editor = useEditorRef()
+  const editor = useEditorState()
   return {
     redo: () => editor.redo(),
     disabled: editor.history.redos.length == 0,

@@ -12,7 +12,7 @@ const SettInnDelmalKnapp = () => {
   const editor = useEditorState()
   const [visModal, settVisModal] = useState(false)
   return (
-    <div>
+    <>
       <Tooltip content={'Sett inn delmal'} keys={[]}>
         <Button
           disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert || !editor.selection}
@@ -26,7 +26,7 @@ const SettInnDelmalKnapp = () => {
         />
       </Tooltip>
       {visModal && <SettInnDelmalModal onClose={() => settVisModal(false)} />}
-    </div>
+    </>
   )
 }
 

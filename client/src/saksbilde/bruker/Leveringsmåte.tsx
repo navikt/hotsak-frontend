@@ -1,6 +1,6 @@
-import { Tekst } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
-import { formaterAdresse } from '../../utils/formater'
+import { formaterAdresse, storForbokstavIAlleOrd } from '../../utils/formater'
 
 export interface LeveringsmåteProps {
   levering: Levering
@@ -9,7 +9,28 @@ export interface LeveringsmåteProps {
 
 export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
-  return <Tekst>{leveringsmåteTekst}</Tekst>
+  return (
+    <>
+      <Etikett>Leveringsadresse</Etikett>
+      <Tekst>{leveringsmåteTekst}</Tekst>
+      {levering.annenUtleveringskommune && (
+        <>
+          <Etikett>Kommune</Etikett>
+          <Tekst>
+            {storForbokstavIAlleOrd(levering.annenUtleveringskommune.navn)} ({levering.annenUtleveringskommune.nummer})
+          </Tekst>
+        </>
+      )}
+      {levering.annenUtleveringsbydel && (
+        <>
+          <Etikett>Bydel</Etikett>
+          <Tekst>
+            {levering.annenUtleveringsbydel.navn} ({levering.annenUtleveringsbydel.nummer})
+          </Tekst>
+        </>
+      )}
+    </>
+  )
 }
 
 function lagLeveringsmåteTekst({ utleveringsmåte, annenUtleveringsadresse }: Levering, adresseBruker: string): string {

@@ -51,26 +51,37 @@ export function OppgaveTable(props: OppgaveTableProps) {
       <Table.Body>
         {oppgaver.map((oppgave) => (
           <OppgaveRow key={oppgave.oppgaveId} oppgave={oppgave} mine={mine}>
-            <Table.DataCell width={100}>
+            <Table.DataCell width={135}>
               {mine ? (
-                <Button size="xsmall" type="button" onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}>
-                  Behandle
+                <Button
+                  size="xsmall"
+                  type="button"
+                  variant="secondary"
+                  onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}
+                >
+                  Åpne oppgave
                 </Button>
               ) : (
                 <>
                   {valgte[oppgave.oppgaveId] ? (
-                    <Button size="xsmall" type="button" onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}>
-                      Behandle
+                    <Button
+                      size="xsmall"
+                      type="button"
+                      variant="secondary"
+                      onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}
+                    >
+                      Åpne oppgave
                     </Button>
                   ) : (
                     <TaOppgaveButton
                       size="xsmall"
+                      variant="secondary"
                       oppgave={oppgave}
                       onOppgavetildeling={(id) => {
                         setValgte({ ...valgte, [id]: true })
                       }}
                     >
-                      Velg
+                      Tildel meg
                     </TaOppgaveButton>
                   )}
                 </>
@@ -124,5 +135,5 @@ function OppgaveRow({ oppgave, mine, children }: { oppgave: OppgaveV2; mine?: bo
       </Table.ExpandableRow>
     )
   }
-  return <Table.Row> {children}</Table.Row>
+  return <Table.Row>{children}</Table.Row>
 }

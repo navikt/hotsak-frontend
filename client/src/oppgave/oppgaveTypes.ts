@@ -40,6 +40,10 @@ export function erSakOppgaveId(value: unknown): value is SakOppgaveId {
   return harPrefix('S-', value)
 }
 
+export function erOppgaveId(value: unknown): value is OppgaveId {
+  return erInternOppgaveId(value) || erEksternOppgaveId(value) || erSakOppgaveId(value)
+}
+
 export function oppgaveIdUtenPrefix(oppgaveId: OppgaveId): string {
   return oppgaveId.substring(2)
 }
@@ -129,6 +133,15 @@ export interface OppgaveV2 extends OppgaveBase {
   isPåVent?: boolean
   mappeId?: string
   mappenavn?: string
+}
+
+export interface GjelderAlternativerResponse {
+  behandlingstemaKode: string
+  behandlingstemaTerm: string
+  alternativer: Array<{
+    behandlingstemaKode: string
+    behandlingstemaTerm: string
+  }>
 }
 
 export interface OppgaveBrukerV2 {

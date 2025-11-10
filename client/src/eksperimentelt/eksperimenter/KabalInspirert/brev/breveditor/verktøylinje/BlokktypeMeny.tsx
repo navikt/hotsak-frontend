@@ -15,15 +15,14 @@ import { useBreveditorContext } from '../Breveditor.tsx'
 
 const BlokktypeMeny = () => {
   const breveditor = useBreveditorContext()
-  // const { editor } = useEditorPlugin(BlockMenuPlugin);
-
   const editor = useEditorState()
+
   const turnInto = React.useCallback(
     (type: string) => {
       editor.api
         .blocks()
         .filter((it) => it[1].length == 1)
-        .forEach(([_, path]) => {
+        .forEach(([, path]) => {
           editor.tf.resetBlock({ at: path })
           editor.tf.toggleBlock(type, { at: path })
         })
@@ -32,11 +31,9 @@ const BlokktypeMeny = () => {
   )
 
   const punktlistePressed = useEditorSelector((editor) => someList(editor, 'ul'), [])
-
   const nummerertListePressed = useEditorSelector((editor) => someList(editor, 'ol'), [])
 
-  const editorStateChange = useEditorState()
-  const topLevelBlocks = editorStateChange.api.blocks().filter((it) => it[1].length == 1)
+  const topLevelBlocks = editor.api.blocks().filter((it) => it[1].length == 1)
   const blockType = (() => {
     return topLevelBlocks.length == 1 ? topLevelBlocks[0]![0]!.type : undefined
   })()

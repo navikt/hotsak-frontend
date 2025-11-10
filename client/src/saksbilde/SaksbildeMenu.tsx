@@ -9,6 +9,7 @@ import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { OverførSakTilGosysModal } from './OverførSakTilGosysModal.tsx'
 import { useOverførSakTilGosys } from './useOverførSakTilGosys.ts'
+import { EndreOppgaveModal } from '../oppgave/EndreOppgaveModal.tsx'
 
 export interface SaksbildeMenuProps {
   spørreundersøkelseId: SpørreundersøkelseId
@@ -19,6 +20,7 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const [visOverførMedarbeider, setVisOverførMedarbeider] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
+  const [endreOppgave, setEndreOppgave] = useState(false);
 
   if (!oppgave || oppgaveErAvsluttet) {
     return null
@@ -46,6 +48,9 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
             onSelectOverførOppgaveTilMedarbeider={() => {
               setVisOverførMedarbeider(true)
             }}
+            onSelectEndreOppgave={() => {
+              setEndreOppgave(true)
+            }}
           />
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <>
@@ -71,6 +76,13 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
         }}
       />
       <OverførSakTilGosysModal {...overførGosys} />
+      <EndreOppgaveModal
+        oppgave={oppgave}
+        open={endreOppgave}
+        onClose={() => {
+          setEndreOppgave(false)
+        }}
+      />
     </>
   )
 }

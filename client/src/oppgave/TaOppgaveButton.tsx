@@ -26,12 +26,13 @@ export function TaOppgaveButton(props: TaOppgaveButtonProps) {
 
   return (
     <Button
-      variant={variant}
-      size={size}
-      onClick={onClick}
-      name={children}
       disabled={state.loading}
       loading={state.loading}
+      name={children}
+      onClick={onClick}
+      size={size}
+      type="button"
+      variant={variant}
     >
       {children}
     </Button>

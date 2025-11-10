@@ -9,6 +9,7 @@ const KursivKnapp = () => {
         <span
           style={{
             fontStyle: 'italic',
+            fontSize: '1rem',
           }}
         >
           K

@@ -7,7 +7,7 @@ export const FlytendeLinkVerktøylinjeKit = [
   LinkPlugin.configure({
     render: {
       node: LinkElement,
-      afterEditable: () => <FlytendeLinkVerktøylinje />,
+      afterContainer: () => <FlytendeLinkVerktøylinje />,
     },
     options: {
       allowedSchemes: ['http', 'https'],

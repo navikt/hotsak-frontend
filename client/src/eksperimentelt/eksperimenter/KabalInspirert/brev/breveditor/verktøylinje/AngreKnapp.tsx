@@ -1,5 +1,5 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorRef } from 'platejs/react'
+import { useEditorState } from 'platejs/react'
 import { ArrowUndoIcon } from '@navikt/aksel-icons'
 
 const AngreKnapp = () => {
@@ -28,7 +28,7 @@ const AngreKnapp = () => {
 export default AngreKnapp
 
 export const useAngreKnapp = () => {
-  const editor = useEditorRef()
+  const editor = useEditorState()
   return {
     undo: () => editor.undo(),
     disabled: editor.history.undos.length == 0,

@@ -40,7 +40,11 @@ export function HjelpemiddelBehandlingEksperiment({
     nåværendeHmsnr,
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
-  } = useEndreHjelpemiddel(sakId, hjelpemiddel)
+  } = useEndreHjelpemiddel(sakId, {
+    id: hjelpemiddel.hjelpemiddelId,
+    hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
+    navn: hjelpemiddel.produkt.artikkelnavn,
+  })
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
   const harAlternativeProdukter = alternativeProdukter.length > 0

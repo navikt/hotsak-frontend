@@ -149,7 +149,7 @@ export const Brev = () => {
                 </div>
               </div>
               <iframe
-                src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV#toolbar=0&navpanes=0&zoom=FitV`}
+                src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV#navpanes=0&zoom=FitV`}
                 width="100%"
                 height="100%"
                 allow="fullscreen"

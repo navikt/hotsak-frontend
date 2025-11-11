@@ -31,7 +31,7 @@ const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperiment
 SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
 
 function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
-  const [venstrePanel, setVenstrePanel] = useState(true)
+  const [venstrePanel, setVenstrePanel] = useState(false)
   /*const [valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.BEHOVSMELDINGSINFO
   )*/

@@ -1,3 +1,4 @@
+import './Brev.less'
 import { Alert, Button, Loader, Tag } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
@@ -58,39 +59,29 @@ export const Brev = () => {
     <>
       {errorEr404 && valgtMal === undefined && <BrevmalVelger velgMal={velgMal} />}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
-        <div style={{ height: '100%' }}>
+        <div className="brev">
           {!brevutkast.data?.data?.markertKlart && (
             <>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '0em 1em',
-                  alignContent: 'center',
-                  height: '3.5em',
-                }}
-              >
-                <Tag variant="warning-moderate" style={{ margin: '1em 0' }}>
-                  Delvis innvilget
-                </Tag>
-                <div
-                  style={{
-                    alignContent: 'center',
-                    justifyContent: 'space-between',
-                    gap: '1em',
-                    display: 'flex',
-                    margin: '1em 0',
-                  }}
-                >
+              <div className="brevtoolbar">
+                <div className="left">
+                  <Tag variant="warning-moderate" size="small">
+                    Delvis innvilget
+                  </Tag>
+                </div>
+                <div className="right">
                   <Button
                     variant="primary"
                     size="small"
                     icon={<CheckmarkIcon aria-hidden />}
                     onClick={() => makerKlart(true)}
                   >
-                    Marker som klart
+                    Marker som ferdig
                   </Button>
-                  <Button variant="tertiary-neutral" icon={<MenuElipsisVerticalCircleIcon aria-hidden />} />
+                  <Button
+                    variant="tertiary-neutral"
+                    size="small"
+                    icon={<MenuElipsisVerticalCircleIcon aria-hidden />}
+                  />
                 </div>
               </div>
               <Breveditor
@@ -126,37 +117,23 @@ export const Brev = () => {
           )}
           {brevutkast.data?.data?.markertKlart && (
             <>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '0em 1em',
-                  alignContent: 'center',
-                  height: '3.5em',
-                }}
-              >
-                <Tag variant="warning-moderate" style={{ margin: '1em 0' }}>
-                  Delvis innvilget
-                </Tag>
-                <Tag variant="success-moderate" style={{ margin: '1em 0' }}>
-                  Brev klart
-                </Tag>
-                <div
-                  style={{
-                    alignContent: 'center',
-                    justifyContent: 'space-between',
-                    gap: '1em',
-                    display: 'flex',
-                    margin: '1em 0',
-                  }}
-                >
+              <div className="brevtoolbar">
+                <div className="left">
+                  <Tag variant="warning-moderate" size="small">
+                    Delvis innvilget
+                  </Tag>
+                  <Tag variant="success-moderate" size="small">
+                    Brev klart
+                  </Tag>
+                </div>
+                <div className="right">
                   <Button
-                    variant="tertiary-neutral"
+                    variant="tertiary"
                     size="small"
                     icon={<PadlockUnlockedIcon aria-hidden />}
                     onClick={() => makerKlart(false)}
                   >
-                    Gjenåpne brevutkast
+                    Åpne for redigering
                   </Button>
                 </div>
               </div>

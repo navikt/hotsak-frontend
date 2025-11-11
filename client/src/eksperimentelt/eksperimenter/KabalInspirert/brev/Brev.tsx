@@ -1,12 +1,12 @@
 import './Brev.less'
-import { Alert, Button, Loader, Tag } from '@navikt/ds-react'
+import { ActionMenu, Alert, Button, Loader, Tag } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useMemo, useState } from 'react'
 import { useSak } from '../../../../saksbilde/useSak.ts'
 import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
 import { formaterDatoLang } from '../../../../utils/dato.ts'
-import { CheckmarkIcon, MenuElipsisVerticalCircleIcon, PadlockUnlockedIcon } from '@navikt/aksel-icons'
+import { CheckmarkIcon, MenuElipsisVerticalCircleIcon, PadlockUnlockedIcon, TrashIcon } from '@navikt/aksel-icons'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -48,6 +48,16 @@ export const Brev = () => {
     })
   }
 
+  const onSlettBrev = async () => {
+    velgMal(undefined) // Unngå at forrige valgte mal trigger at breveditoren laster den på nytt
+    await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, {
+      method: 'delete',
+    }).then((res) => {
+      if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
+    })
+    await brevutkast.mutate()
+  }
+
   const makerKlart = async (klart: boolean) => {
     if (brevutkast.data?.data?.value) {
       await lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
@@ -77,11 +87,20 @@ export const Brev = () => {
                   >
                     Marker som ferdig
                   </Button>
-                  <Button
-                    variant="tertiary-neutral"
-                    size="small"
-                    icon={<MenuElipsisVerticalCircleIcon aria-hidden />}
-                  />
+                  <ActionMenu>
+                    <ActionMenu.Trigger>
+                      <Button
+                        variant="tertiary-neutral"
+                        size="small"
+                        icon={<MenuElipsisVerticalCircleIcon aria-hidden />}
+                      />
+                    </ActionMenu.Trigger>
+                    <ActionMenu.Content>
+                      <ActionMenu.Item icon={<TrashIcon fontSize="1rem" />} onSelect={onSlettBrev}>
+                        Slett brevutkastet
+                      </ActionMenu.Item>
+                    </ActionMenu.Content>
+                  </ActionMenu>
                 </div>
               </div>
               <Breveditor
@@ -103,15 +122,7 @@ export const Brev = () => {
                     if (!res.ok) throw new Error(`Brev ikke lagret, statuskode ${res.status}`)
                   })
                 }}
-                onSlettBrev={async () => {
-                  velgMal(undefined) // Unngå at forrige valgte mal trigger at breveditoren laster den på nytt
-                  await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, {
-                    method: 'delete',
-                  }).then((res) => {
-                    if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
-                  })
-                  await brevutkast.mutate()
-                }}
+                onSlettBrev={onSlettBrev}
               />
             </>
           )}

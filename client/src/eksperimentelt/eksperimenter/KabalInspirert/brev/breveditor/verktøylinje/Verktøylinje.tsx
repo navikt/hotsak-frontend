@@ -10,7 +10,6 @@ import NummerertListeKnapp from './NummerertListeKnapp.tsx'
 import SvitsjMargerKnapp from './SvitsjMargerKnapp.tsx'
 import { useBreveditorContext } from '../Breveditor.tsx'
 import LinkKnapp from './LinkKnapp.tsx'
-import SlettBrevutkastKnapp from './SlettBrevutkastKnapp.tsx'
 import SettInnDelmalKnapp from './SettInnDelmalKnapp.tsx'
 import FormateringMeny from './FormateringMeny.tsx'
 import { useRefSize } from '../hooks.ts'
@@ -109,7 +108,7 @@ const Verktøylinje = () => {
             <>Lagret</>
           )}
         </div>
-        <SlettBrevutkastKnapp />
+        {/*<SlettBrevutkastKnapp />*/}
       </div>
     </Box.New>
   )

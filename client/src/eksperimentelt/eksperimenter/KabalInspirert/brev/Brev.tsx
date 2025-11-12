@@ -2,7 +2,7 @@ import './Brev.less'
 import { ActionMenu, Alert, Button, Loader, Tag } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSak } from '../../../../saksbilde/useSak.ts'
 import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
 import { formaterDatoLang } from '../../../../utils/dato.ts'
@@ -27,6 +27,11 @@ export const Brev = () => {
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
 
+  useEffect(() => {
+    // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
+    if (brevutkast.data?.data?.value) velgMal(undefined)
+  }, [brevutkast.data])
+
   if (brevutkast.isLoading) {
     return <Loader title="Laster inn brevutkast..." />
   } else if (brevutkast.error) {
@@ -45,6 +50,15 @@ export const Brev = () => {
         målform: 'BOKMÅL',
         data: data,
       }),
+    }).then((res) => {
+      if (brevutkast.data) {
+        const mutBody = {
+          ...brevutkast.data,
+          data: data,
+        }
+        brevutkast.mutate(mutBody)
+      }
+      return res
     })
   }
 
@@ -58,10 +72,9 @@ export const Brev = () => {
     await brevutkast.mutate()
   }
 
-  const makerKlart = async (klart: boolean) => {
+  const makerKlart = (klart: boolean) => {
     if (brevutkast.data?.data?.value) {
-      await lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
-      await brevutkast.mutate()
+      lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
     }
   }
 

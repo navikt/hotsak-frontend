@@ -537,7 +537,7 @@ export enum Sakstype {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Saksbehandler extends Ansatt { }
+export interface Saksbehandler extends Ansatt {}
 
 export enum JournalpostStatusType {
   MOTTATT = 'MOTTATT',
@@ -739,24 +739,24 @@ export enum RessursStatus {
 
 export type Ressurs<T> =
   | {
-    status: RessursStatus.IKKE_HENTET
-  }
+      status: RessursStatus.IKKE_HENTET
+    }
   | {
-    status: RessursStatus.HENTER
-  }
+      status: RessursStatus.HENTER
+    }
   | {
-    data: T
-    status: RessursStatus.SUKSESS
-  }
+      data: T
+      status: RessursStatus.SUKSESS
+    }
   | {
-    frontendFeilmelding: string
-    status: RessursStatus.IKKE_TILGANG
-  }
+      frontendFeilmelding: string
+      status: RessursStatus.IKKE_TILGANG
+    }
   | {
-    frontendFeilmelding: string
-    status: RessursStatus.FEILET
-  }
+      frontendFeilmelding: string
+      status: RessursStatus.FEILET
+    }
   | {
-    frontendFeilmelding: string
-    status: RessursStatus.FUNKSJONELL_FEIL
-  }
+      frontendFeilmelding: string
+      status: RessursStatus.FUNKSJONELL_FEIL
+    }

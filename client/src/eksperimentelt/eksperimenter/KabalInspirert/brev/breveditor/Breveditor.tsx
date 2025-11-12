@@ -1,8 +1,8 @@
 import './Breveditor.less'
-import { Plate, PlateContent, PlateContainer, usePlateEditor } from 'platejs/react'
+import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import { KEYS, serializeHtml, type Value } from 'platejs'
-import { createContext, type RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   BoldPlugin,
   H1Plugin,
@@ -172,13 +172,8 @@ const Breveditor = ({
     'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?'
   )
 
-  // Debounce/retry av onLagreBrev (inkl. cancel etter dismount av brevkomponenten)
+  // Debounce/retry av onLagreBrev
   const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
-  useEffect(() => {
-    return () => {
-      clearTimeout(debounceLagring.current)
-    }
-  }, [])
   const kallOnLagreBrevMedDebounceOgRetry = (constructedState: StateMangement) => {
     if (onLagreBrev) {
       setEndringsstatus({ ...endringsstatus, erEndret: true }) // Behold evt. error men sett erEndret=true.

@@ -110,10 +110,10 @@ export function Hjelpemiddel({
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>
                   {endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-                  endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                    endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
                     : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse) ||
-                      `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
+                    `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
                 </BrytbarBrødtekst>
               </div>
             )}

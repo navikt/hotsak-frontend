@@ -1,5 +1,5 @@
-import { Box, VStack } from '@navikt/ds-react'
-import { BrytbarBrødtekst, Etikett } from '../../felleskomponenter/typografi'
+import { VStack } from '@navikt/ds-react'
+import { BrytbarBrødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { Opplysning } from '../../types/BehovsmeldingTypes'
 import { storForbokstavIOrd } from '../../utils/formater'
 
@@ -8,7 +8,7 @@ export function Opplysninger({ opplysninger }: { opplysninger: Opplysning[] }) {
     <VStack gap="space-8">
       {opplysninger.map((opplysning) => {
         return (
-          <Box key={opplysning.ledetekst.nb}>
+          <TextContainer key={opplysning.ledetekst.nb}>
             <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
             {opplysning.innhold.length === 1 ? (
               <BrytbarBrødtekst>
@@ -27,7 +27,7 @@ export function Opplysninger({ opplysninger }: { opplysninger: Opplysning[] }) {
                 ))}
               </ul>
             )}
-          </Box>
+          </TextContainer>
         )
       })}
     </VStack>

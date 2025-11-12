@@ -33,7 +33,10 @@ export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps)
   )
 }
 
-function lagLeveringsmåteTekst({ utleveringsmåte, annenUtleveringsadresse }: Levering, adresseBruker: string): string {
+export function lagLeveringsmåteTekst(
+  { utleveringsmåte, annenUtleveringsadresse }: Levering,
+  adresseBruker: string
+): string {
   switch (utleveringsmåte) {
     case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
       return 'Allerede levert'

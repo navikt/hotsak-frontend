@@ -7,12 +7,10 @@ import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperiment
 
 export const SakKontrollPanel = () => {
   const {
-    venstrePanel,
-    setVenstrePanel,
+    sidePanel,
+    setSidePanel,
     søknadPanel,
     setSøknadPanel,
-    notatPanel,
-    setNotatPanel,
     behandlingPanel,
     setBehandlingPanel,
     brevKolonne,
@@ -21,17 +19,14 @@ export const SakKontrollPanel = () => {
 
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${styles.togglePanel}`} width="100%">
-      <ToggleKnapp checked={venstrePanel} onToggle={() => setVenstrePanel(!venstrePanel)}>
-        Venstrepanel
-      </ToggleKnapp>
       <ToggleKnapp checked={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
         Søknad
       </ToggleKnapp>
       <ToggleKnapp checked={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
-        Behandling
+        Behandle
       </ToggleKnapp>
-      <ToggleKnapp checked={notatPanel} onToggle={() => setNotatPanel(!notatPanel)}>
-        Notater
+      <ToggleKnapp checked={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
+        Utlån, notater og historikk
       </ToggleKnapp>
       <ToggleKnapp checked={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
         Brev

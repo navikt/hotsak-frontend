@@ -1,7 +1,8 @@
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
-import { Bleed, HStack, VStack } from '@navikt/ds-react'
-import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
+import { HStack, Spacer, VStack } from '@navikt/ds-react'
 import { Kopiknapp } from '../../../../../felleskomponenter/Kopiknapp'
+import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
+import { tekstByBytteårsak } from '../../../../../saksbilde/hjelpemidler/Bytter'
 import { Bytte } from '../../../../../types/BehovsmeldingTypes'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   harVarsel?: boolean
 }
 
-const BytteBehandlingEksperiment = ({ bytter, harVarsel = false }: Props) => {
+const BytterEksperiment = ({ bytter, harVarsel = false }: Props) => {
   return (
     <VStack gap="4">
       {bytter.map((bytte, idx) => (
@@ -22,21 +23,31 @@ const BytteBehandlingEksperiment = ({ bytter, harVarsel = false }: Props) => {
           </HStack>
 
           <HStack align={'start'} wrap={false} gap="2">
-            <HStack wrap={false}>
-              <Tekst weight="semibold">{bytte.hmsnr}</Tekst>
-              <Bleed marginBlock="1 0">
-                <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
-              </Bleed>
+            <HStack wrap={false} align="center">
+              <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
+              <Tekst weight="semibold" size="small">
+                {bytte.hmsnr}
+              </Tekst>
             </HStack>
             <VStack gap="2">
               <Tekst>{bytte.hjmNavn}</Tekst>
               {bytte.serienr && <Tekst> Serienr: {bytte.serienr}</Tekst>}
             </VStack>
           </HStack>
+
+          {bytte.årsak && (
+            <>
+              <Spacer />
+              <VStack gap="2">
+                <Etikett>Begrunnelse for bytte</Etikett>
+                <div>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</div>
+              </VStack>
+            </>
+          )}
         </VStack>
       ))}
     </VStack>
   )
 }
 
-export default BytteBehandlingEksperiment
+export default BytterEksperiment

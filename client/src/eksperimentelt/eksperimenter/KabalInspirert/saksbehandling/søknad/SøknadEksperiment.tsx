@@ -1,21 +1,20 @@
-import { Box, Heading, VStack } from '@navikt/ds-react'
+import { Box, Label, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
-import { Strek } from '../../../../../felleskomponenter/Strek'
-import { BrukersFunksjon } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
-import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
-import { Summering } from '../../../../../saksbilde/hjelpemidler/Summering'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
   useProduktLagerInfo,
 } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
-import { useArtiklerForSak } from '../../../../../saksbilde/hjelpemidler/useArtiklerForSak'
 import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter'
-import { GreitÅViteCard } from '../../../../../saksbilde/venstremeny/GreitÅViteCard'
 import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
+import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment'
 import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment'
+import { SummertFrittståendTilbehørEksperiment, SummertHjelpemidlerEksperiment } from './SummeringEksperiment'
 import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment'
+import { HastEksperiment } from './HastEksperiment'
+import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
+import { useArtiklerForSak } from '../../../../../saksbilde/hjelpemidler/useArtiklerForSak'
 
 interface SøknadEksperimentProps {
   sak: Sak
@@ -23,9 +22,6 @@ interface SøknadEksperimentProps {
 }
 
 function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
-  const { artikler } = useArtiklerForSak(sak.sakId)
-
-  const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const { brukersituasjon } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
@@ -47,26 +43,38 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
   const { data: hjelpemiddelprodukter } = useHjelpemiddelprodukter(alleHmsNr)
   const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const { produkter: lagerinfoForProdukter } = useProduktLagerInfo(alleHmsNr)
+  const { artikler } = useArtiklerForSak(sak.sakId)
+  const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
-    <VStack gap="4">
-      {<GreitÅViteCard greitÅViteFakta={sak.greitÅViteFaktum} />}
+    <VStack gap="space-12">
+      {behovsmelding.levering.hast && <HastEksperiment hast={behovsmelding.levering.hast} />}
 
-      <div>
-        <Strek />
-      </div>
-      {hjelpemidler.length > 0 && (
-        <Heading level="2" size="medium">
-          Hjelpemidler
-        </Heading>
-      )}
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
 
+      {funksjonsbeskrivelse && <BrukersFunksjonEksperiment funksjonsbeskrivelse={funksjonsbeskrivelse} />}
+
+      {hjelpemidler.length > 0 && (
+        <VStack paddingBlock="space-20 0">
+          <Label size="small" as="h2" textColor="subtle" spacing={false}>
+            HJELPEMIDLER
+          </Label>
+          <SummertHjelpemidlerEksperiment hjelpemidler={hjelpemidler} />
+        </VStack>
+      )}
+
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4" borderRadius="large">
+        <Box.New
+          key={hjelpemiddel.produkt.hmsArtNr}
+          background="sunken"
+          paddingInline="space-12"
+          //borderColor="neutral"
+          //borderWidth="1"
+          borderRadius="large"
+        >
           <HjelpemiddelEksperiment
             sak={sak}
             hjelpemiddel={hjelpemiddel}
@@ -84,15 +92,15 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
       ))}
       {tilbehør && tilbehør.length > 0 && (
         <>
-          <Heading level="2" size="small">
-            Tilbehør
-          </Heading>
+          <VStack paddingBlock="space-20 0">
+            <Label size="small" as="h2" textColor="subtle" spacing={false}>
+              TILBEHØR
+            </Label>
+            <SummertFrittståendTilbehørEksperiment tilbehør={tilbehør} />
+          </VStack>
           <FrittStåendeTilbehørEksperiment tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
-      <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />
-
-      {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )
 }

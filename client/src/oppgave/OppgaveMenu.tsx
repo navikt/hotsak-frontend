@@ -87,16 +87,15 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
             Overfør til medarbeider
           </ActionMenu.Item>
         )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt &&
-        onSelectEndreOppgave && (
-          <ActionMenu.Item
-            onSelect={() => {
-              onSelectEndreOppgave()
-            }}
-          >
-            Endre oppgave
-          </ActionMenu.Item>
-        )}
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectEndreOppgave && (
+        <ActionMenu.Item
+          onSelect={() => {
+            onSelectEndreOppgave()
+          }}
+        >
+          Endre oppgave
+        </ActionMenu.Item>
+      )}
     </ActionMenu.Group>
   )
 }

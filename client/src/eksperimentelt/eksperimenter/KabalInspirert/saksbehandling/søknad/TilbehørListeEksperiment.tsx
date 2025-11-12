@@ -1,10 +1,12 @@
-import { Box, HStack, Tag, VStack } from '@navikt/ds-react'
+import { PencilIcon } from '@navikt/aksel-icons'
+import { Box, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { Opplysninger } from '../../../../../saksbilde/hjelpemidler/Opplysninger'
-import { Produkt } from '../../../../../saksbilde/hjelpemidler/Produkt'
 import { Varsler } from '../../../../../saksbilde/hjelpemidler/Varsel'
+import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../../../types/types.internal'
+import { ProduktEksperiment } from './ProduktEksperiment'
 
 export function FrittStåendeTilbehørEksperiment({
   tilbehør,
@@ -13,14 +15,15 @@ export function FrittStåendeTilbehørEksperiment({
   tilbehør: Tilbehørtype[]
   produkter: Produkttype[]
 }) {
+  const { kanEndreHmsnr } = useSaksregler()
   return (
     <VStack gap="4">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
         return (
-          <Box.New key={idx} background="neutral-soft" padding="4">
-            <Tilbehør tilbehør={t} produkt={produkt} frittståendeTilbehør={true} />
+          <Box.New key={idx} background="sunken" borderRadius="large" padding="4">
+            <Tilbehør tilbehør={t} produkt={produkt} frittståendeTilbehør={true} kanEndreHmsnr={kanEndreHmsnr} />
           </Box.New>
         )
       })}
@@ -35,11 +38,12 @@ export function TilbehørListeEksperiment({
   tilbehør: Tilbehørtype[]
   produkter: Produkttype[]
 }) {
+  const { kanEndreHmsnr } = useSaksregler()
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
-        return <Tilbehør key={idx} tilbehør={t} produkt={produkt} />
+        return <Tilbehør key={idx} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHmsnr} />
       })}
     </VStack>
   )
@@ -48,37 +52,51 @@ export function TilbehørListeEksperiment({
 export function Tilbehør({
   tilbehør,
   frittståendeTilbehør = false,
+  kanEndreHmsnr,
 }: {
   tilbehør: Tilbehørtype
   produkt?: Produkttype
   frittståendeTilbehør?: boolean
+  kanEndreHmsnr: boolean
 }) {
   const harOpplysninger = tilbehør.opplysninger && tilbehør.opplysninger.length > 0
   const harSaksbehandlingvarsel = tilbehør.saksbehandlingvarsel && tilbehør.saksbehandlingvarsel.length > 0
 
   return (
     <>
-      <TextContainer>
-        <VStack gap="1">
-          <HStack gap="space-16">
-            <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
-            <Tag size="small" variant="neutral">
-              {tilbehør.antall} stk
-            </Tag>
-          </HStack>
-          {harSaksbehandlingvarsel && (
-            <Box paddingInline="4 0">
-              <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
-            </Box>
+      <VStack gap="space-4">
+        <HStack gap="space-12">
+          <ProduktEksperiment hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
+          {kanEndreHmsnr && (
+            <div>
+              <Button
+                variant="tertiary"
+                size="xsmall"
+                icon={<PencilIcon />}
+                onClick={() => {
+                  alert('Endre tilbehør - ikke implementert i eksperiment enda')
+                }}
+              />
+            </div>
           )}
-          {harOpplysninger && (
-            <Box paddingInline="4 0">
-              <Opplysninger opplysninger={tilbehør.opplysninger!} />
-            </Box>
-          )}
-          {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
-        </VStack>
-      </TextContainer>
+        </HStack>
+        <HStack gap="space-12" paddingBlock="0 space-4">
+          <Tag size="small" variant="neutral">
+            {tilbehør.antall} stk
+          </Tag>
+        </HStack>
+        {harSaksbehandlingvarsel && (
+          <Box>
+            <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
+          </Box>
+        )}
+        {harOpplysninger && (
+          <Box>
+            <Opplysninger opplysninger={tilbehør.opplysninger!} />
+          </Box>
+        )}
+        {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
+      </VStack>
     </>
   )
 }
@@ -87,16 +105,18 @@ function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>
       {tilbehør.begrunnelse && (
-        <Box paddingInline="4 0">
-          <Etikett>Begrunnelse</Etikett>
-          <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
-        </Box>
+        <TextContainer>
+          <HStack gap="space-4" align="center">
+            <Etikett>Begrunnelse:</Etikett>
+            <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
+          </HStack>
+        </TextContainer>
       )}
 
       {tilbehør.fritakFraBegrunnelseÅrsak && (
-        <Box paddingInline="4 0">
+        <TextContainer>
           <Brødtekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Brødtekst>
-        </Box>
+        </TextContainer>
       )}
     </>
   )

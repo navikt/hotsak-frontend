@@ -49,7 +49,7 @@ const Bytter = ({ bytter, harVarsel = false }: Props) => {
   )
 }
 
-const tekstByBytteårsak: Record<keyof typeof BytteÅrsak, string> = {
+export const tekstByBytteårsak: Record<keyof typeof BytteÅrsak, string> = {
   [BytteÅrsak.UTSLITT]: 'utslitt',
   [BytteÅrsak.VOKST_FRA]: 'vokst fra',
   [BytteÅrsak.ENDRINGER_I_INNBYGGERS_FUNKSJON]:

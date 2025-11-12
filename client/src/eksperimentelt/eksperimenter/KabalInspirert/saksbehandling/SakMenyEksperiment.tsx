@@ -28,8 +28,8 @@ export function SakMenyEksperiment({ spørreundersøkelseId }: SaksbildeMenuProp
       <ActionMenu>
         <ActionMenu.Trigger>
           <Button
-            variant="tertiary"
-            size="xsmall"
+            variant="secondary-neutral"
+            size="small"
             icon={<ChevronDownIcon title="Saksmeny" />}
             iconPosition="right"
             onClick={(event) => {
@@ -46,13 +46,6 @@ export function SakMenyEksperiment({ spørreundersøkelseId }: SaksbildeMenuProp
             }}
           >
             Sett på vent
-          </ActionMenu.Item>
-          <ActionMenu.Item
-            onSelect={() => {
-              alert('TODO')
-            }}
-          >
-            Henlegg saken
           </ActionMenu.Item>
           <OppgaveMenu
             oppgave={oppgave}

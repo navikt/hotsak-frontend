@@ -7,12 +7,10 @@ import { HøyrekolonneTabs, SøknadPanelTabs, VenstrekolonneTabs } from './Saksb
  *
  */
 const initialState = {
-  venstrePanel: false,
-  setVenstrePanel() {},
+  sidePanel: false,
+  setSidePanel() {},
   søknadPanel: false,
   setSøknadPanel() {},
-  notatPanel: false,
-  setNotatPanel() {},
   behandlingPanel: false,
   setBehandlingPanel() {},
   brevKolonne: false,
@@ -31,7 +29,7 @@ const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperiment
 SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
 
 function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
-  const [venstrePanel, setVenstrePanel] = useState(true)
+  const [sidePanel, setSidePanel] = useState(true)
   /*const [valgtØvreVenstreKolonneTab, setValgtØvreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.BEHOVSMELDINGSINFO
   )*/
@@ -40,7 +38,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   )
   const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
   const [valgtSøknadPanelTab, setValgtSøknadPanelTab] = useState<SøknadPanelTabs>(SøknadPanelTabs.SØKNAD)
-  const [notatPanel, setNotatPanel] = useState(false)
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
@@ -48,12 +45,10 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   return (
     <SaksbehandlingEksperimentContext.Provider
       value={{
-        venstrePanel,
-        setVenstrePanel,
+        sidePanel,
+        setSidePanel,
         søknadPanel,
         setSøknadPanel,
-        notatPanel,
-        setNotatPanel,
         //valgtØvreVenstreKolonneTab,
         //setValgtØvreVenstreKolonneTab,
         valgtNedreVenstreKolonneTab,
@@ -84,13 +79,11 @@ function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContext
 }
 
 type SaksbehandlingEksperimentContextType = {
-  venstrePanel: boolean
-  setVenstrePanel(visible: boolean): void
+  sidePanel: boolean
+  setSidePanel(visible: boolean): void
   søknadPanel: boolean
   setSøknadPanel(visible: boolean): void
   brevKolonne: boolean
-  notatPanel: boolean
-  setNotatPanel(visible: boolean): void
   setBrevKolonne(visible: boolean): void
   behandlingPanel: boolean
   setBehandlingPanel(visible: boolean): void

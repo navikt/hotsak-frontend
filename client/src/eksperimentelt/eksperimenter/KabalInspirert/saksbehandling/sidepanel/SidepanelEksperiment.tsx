@@ -12,7 +12,7 @@ import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimen
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperimentProviderTypes'
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
 
-export function NedreVenstrePanel() {
+export function SidepanelEksperiment() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSaksbehandlingEksperimentContext()
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
@@ -28,6 +28,7 @@ export function NedreVenstrePanel() {
       borderWidth="0 1"
       borderColor="neutral-subtle"
       background="default"
+      height="100%"
       borderRadius="large"
       style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >

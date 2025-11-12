@@ -32,7 +32,7 @@ export function useUmami() {
 
     logUmamiHendelse(UMAMI_TAKSONOMI.CLIENT_INFO, {
       vinduBredde: width,
-      vinduHøyde: height,
+      vinduHoyde: height,
       ...data,
     })
   }

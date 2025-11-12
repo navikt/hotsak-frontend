@@ -221,7 +221,23 @@ const Breveditor = ({
             const constructedState: StateMangement = {
               value: newValue,
               valueAsHtml:
-                `<html><head><style>${versjonertStilarkV1}</style></head>` +
+                `<html>
+                    <head>
+                      <style>
+                        @page {
+                            margin: 64pt 64pt 74pt 64pt;
+                            @bottom-right {
+                                font-family: 'Source Sans 3', sans-serif;
+                                content: 'Side ' counter(page) ' av ' counter(pages);
+                            }
+                            @bottom-left {
+                                font-family: 'Source Sans 3', sans-serif;
+                                content: 'Saksnummer ${metadata.saksnummer}';
+                            }
+                        }
+                      </style>
+                      <style>${versjonertStilarkV1}</style>
+                    </head>` +
                 (headerRef.current?.outerHTML || '') +
                 (await serializeHtml(editor)) +
                 (footerRef.current?.outerHTML || '') +

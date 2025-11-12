@@ -33,9 +33,17 @@ export const Brev = () => {
   }, [brevutkast.data])
 
   if (brevutkast.isLoading) {
-    return <Loader title="Laster inn brevutkast..." />
+    return (
+      <div style={{ textAlign: 'center', padding: '2em' }}>
+        <Loader title="Laster inn brevutkast..." />
+      </div>
+    )
   } else if (brevutkast.error) {
-    return <Alert variant="warning">Brev ikke tilgjengelig.</Alert>
+    return (
+      <div style={{ textAlign: 'center', padding: '2em' }}>
+        <Alert variant="warning">Brev ikke tilgjengelig.</Alert>
+      </div>
+    )
   }
 
   const lagreBrevutkast = async (data: any) => {

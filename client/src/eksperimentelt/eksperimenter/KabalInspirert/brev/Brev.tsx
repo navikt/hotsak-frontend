@@ -52,11 +52,9 @@ export const Brev = () => {
       }),
     }).then((res) => {
       if (brevutkast.data) {
-        const mutBody = {
-          ...brevutkast.data,
-          data: data,
-        }
-        brevutkast.mutate(mutBody)
+        // Ingen lokal mutate her siden et av de mulige resultatene her er at brevet merkes som ferdig og endrer viewet
+        // til en forhåndsvisning av de lagrede dataene som PDF
+        brevutkast.mutate()
       }
       return res
     })
@@ -93,6 +91,7 @@ export const Brev = () => {
                 </div>
                 <div className="right">
                   <Button
+                    loading={brevutkast.isLoading || brevutkast.isValidating}
                     variant="primary"
                     size="small"
                     icon={<CheckmarkIcon aria-hidden />}

@@ -27,5 +27,15 @@ export function useUmami() {
     logUmamiHendelse(UMAMI_TAKSONOMI.MODAL_ÅPNET, data)
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet }
+  const logVinduStørrelse = (data: object) => {
+    const { innerWidth: width, innerHeight: height } = window
+
+    logUmamiHendelse(UMAMI_TAKSONOMI.CLIENT_INFO, {
+      vinduBredde: width,
+      vinduHøyde: height,
+      ...data,
+    })
+  }
+
+  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse }
 }

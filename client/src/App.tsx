@@ -2,7 +2,6 @@ import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, SWRConfiguration } from 'swr'
-
 import { Theme } from '@navikt/ds-react'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
@@ -19,6 +18,7 @@ import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 import { useEksperimenter } from './eksperimentelt/useEksperimenter.ts'
 import { EksperimentellApp } from './eksperimentelt/EksperimentellApp.tsx'
 import { useMiljø } from './utils/useMiljø.ts'
+import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -28,6 +28,7 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
   const [darkmode] = useDarkmode()
+  useLogVinduStørrelse()
 
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>

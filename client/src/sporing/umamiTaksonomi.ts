@@ -3,4 +3,5 @@ export const enum UMAMI_TAKSONOMI {
   SKJEMA_FULLFØRT = 'skjema fullført',
   MODAL_ÅPNET = 'modal åpnet',
   ALTERNATIVE_PRODUKTER_MOTTATT = 'alternative produkter mottatt',
+  CLIENT_INFO = 'client info',
 }

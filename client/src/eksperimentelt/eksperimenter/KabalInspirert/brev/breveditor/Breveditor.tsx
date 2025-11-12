@@ -1,8 +1,9 @@
 import './Breveditor.less'
-import { Plate, PlateContent, PlateContainer, usePlateEditor } from 'platejs/react'
+import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
+import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import { KEYS, serializeHtml, type Value } from 'platejs'
-import { createContext, type RefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   BoldPlugin,
   H1Plugin,
@@ -172,13 +173,8 @@ const Breveditor = ({
     'Nå var du litt rask til å lukke fanen og alle endringene i brevet er ikke lagret enda. Er du sikker?'
   )
 
-  // Debounce/retry av onLagreBrev (inkl. cancel etter dismount av brevkomponenten)
+  // Debounce/retry av onLagreBrev
   const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
-  useEffect(() => {
-    return () => {
-      clearTimeout(debounceLagring.current)
-    }
-  }, [])
   const kallOnLagreBrevMedDebounceOgRetry = (constructedState: StateMangement) => {
     if (onLagreBrev) {
       setEndringsstatus({ ...endringsstatus, erEndret: true }) // Behold evt. error men sett erEndret=true.
@@ -225,9 +221,27 @@ const Breveditor = ({
             const constructedState: StateMangement = {
               value: newValue,
               valueAsHtml:
+                `<html>
+                    <head>
+                      <style>
+                        @page {
+                            margin: 64pt 64pt 74pt 64pt;
+                            @bottom-right {
+                                font-family: 'Source Sans 3', sans-serif;
+                                content: 'Side ' counter(page) ' av ' counter(pages);
+                            }
+                            @bottom-left {
+                                font-family: 'Source Sans 3', sans-serif;
+                                content: 'Saksnummer ${metadata.saksnummer}';
+                            }
+                        }
+                      </style>
+                      <style>${versjonertStilarkV1}</style>
+                    </head>` +
                 (headerRef.current?.outerHTML || '') +
                 (await serializeHtml(editor)) +
-                (footerRef.current?.outerHTML || ''),
+                (footerRef.current?.outerHTML || '') +
+                '</html>',
               history: changedEditor.history,
             }
             if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {

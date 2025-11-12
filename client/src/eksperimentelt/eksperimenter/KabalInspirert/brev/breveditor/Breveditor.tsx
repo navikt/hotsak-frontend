@@ -1,4 +1,5 @@
 import './Breveditor.less'
+import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import { KEYS, serializeHtml, type Value } from 'platejs'
@@ -220,9 +221,11 @@ const Breveditor = ({
             const constructedState: StateMangement = {
               value: newValue,
               valueAsHtml:
+                `<html><head><style>${versjonertStilarkV1}</style></head>` +
                 (headerRef.current?.outerHTML || '') +
                 (await serializeHtml(editor)) +
-                (footerRef.current?.outerHTML || ''),
+                (footerRef.current?.outerHTML || '') +
+                '</html>',
               history: changedEditor.history,
             }
             if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {

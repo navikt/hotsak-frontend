@@ -48,35 +48,28 @@ section p:last-child {
 .header {
   position: relative;
   margin-bottom: 48pt;
-
-  svg {
-    height: 16pt;
-    margin-bottom: 48pt;
-  }
-
-  dl {
-    dd {
-      display: inline;
-      margin: 0;
-
-      &:after {
-        display: block;
-        content: '';
-      }
-    }
-
-    dt {
-      display: inline-block;
-      min-width: 160px;
-    }
-  }
-
-  span {
-    display: block;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
+}
+.header svg {
+  height: 16pt;
+  margin-bottom: 48pt;
+}
+.header dl dd {
+  display: inline;
+  margin: 0;
+}
+.header dl dd:after {
+  display: block;
+  content: '';
+}
+.header dl dt {
+  display: inline-block;
+  min-width: 160px;
+}
+.header span {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 
 section.signatur {
@@ -110,8 +103,7 @@ a, div.slate-a {
   background: #ccc;
   border-radius: 5px;
   padding: 0.3em;
-
-  &:active, &:focus {
+}
+.variabel:active, .variabel:focus {
     background: #000;
-  }
 }

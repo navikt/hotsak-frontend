@@ -128,7 +128,9 @@ export function HjelpemiddelEksperiment({
           <VStack gap="space-8" paddingBlock="space-8 0">
             <Varsler varsler={hjelpemiddel.varsler} />
             <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
-            {hjelpemiddel.varsler || hjelpemiddel.saksbehandlingvarsel ? <Skillelinje /> : null}
+            {hjelpemiddel.varsler.length > 0 || (hjelpemiddel.saksbehandlingvarsel ?? []).length > 0 ? (
+              <Skillelinje />
+            ) : null}
 
             <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 

@@ -13,7 +13,7 @@ export const BehovsmeldingEtikett = ({ variant, label }: { variant: 'alt1' | 'al
 
 const SøknadEtikett = () => (
   <SquareTag variant="alt1" size="xsmall">
-    <BodyShort>S</BodyShort>
+    <Detail>S</Detail>
   </SquareTag>
 )
 

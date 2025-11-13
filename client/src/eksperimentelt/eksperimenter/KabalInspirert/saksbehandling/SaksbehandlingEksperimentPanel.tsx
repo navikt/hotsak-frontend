@@ -1,17 +1,18 @@
-import { Box, Button, HStack } from '@navikt/ds-react'
+import { Alert, Box, Button, HStack } from '@navikt/ds-react'
 import { Panel, PanelGroup } from 'react-resizable-panels'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { useSak } from '../../../../saksbilde/useSak'
+import { OppgaveStatusLabel } from '../../../../types/types.internal'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { PersonlinjeEksperiment } from '../felleskomponenter/personlinje/PersonlinjeEksperiment'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
 import BehandlingEksperimentPanel from './behandling/BehandlingEksperiment'
 import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
-import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
+import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
 
 export function SaksbehandlingEksperiment() {
   const { sak } = useSak()
@@ -41,7 +42,7 @@ export function SaksbehandlingEksperiment() {
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
           {søknadPanel && (
             <>
-              <Panel defaultSize={30} minSize={20} order={1}>
+              <Panel defaultSize={35} minSize={20} order={1}>
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
@@ -53,7 +54,7 @@ export function SaksbehandlingEksperiment() {
           )}
           {behandlingPanel && (
             <>
-              <Panel defaultSize={30} minSize={10} order={2}>
+              <Panel defaultSize={25} minSize={10} order={2}>
                 {sak && behovsmelding ? (
                   <BehandlingEksperimentPanel sak={sak.data} behovsmelding={behovsmelding} />
                 ) : (
@@ -73,7 +74,7 @@ export function SaksbehandlingEksperiment() {
           )}
           {sidePanel && (
             <>
-              <Panel defaultSize={12} minSize={11} order={4}>
+              <Panel defaultSize={20} minSize={11} order={4}>
                 <SidepanelEksperiment />
               </Panel>
             </>
@@ -95,10 +96,13 @@ export function SaksbehandlingEksperiment() {
         className="z-23"
       >
         <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
-          <HStack align="center" justify="space-between" gap="space-16">
+          <HStack align="center" justify="space-between" gap="space-24">
             <Button type="button" variant="primary" size="small">
-              Ferdigstill
+              Ferdigstill oppgave
             </Button>
+            <Alert variant="info" size="small" inline>
+              {OppgaveStatusLabel.get(sak.data.saksstatus)}
+            </Alert>
           </HStack>
         </Box.New>
       </HStack>

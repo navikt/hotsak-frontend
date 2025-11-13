@@ -20,7 +20,7 @@ export function ProduktEksperiment({
       <HStack align="center" wrap={false}>
         {<InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
         {showLink ? (
-          <FinnHjelpemiddelLink hmsnr={hmsnr}>
+          <FinnHjelpemiddelLink variant="neutral" hmsnr={hmsnr}>
             <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
               <Tekst>{hmsnr}</Tekst>
             </div>

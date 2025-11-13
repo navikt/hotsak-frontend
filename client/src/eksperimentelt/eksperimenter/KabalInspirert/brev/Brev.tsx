@@ -47,6 +47,7 @@ export const Brev = () => {
   }
 
   const lagreBrevutkast = async (data: any) => {
+    // console.log('\n' + (data as StateMangement).valueAsHtml)
     return fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
       method: 'post',
       headers: {

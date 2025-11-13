@@ -225,15 +225,21 @@ const Breveditor = ({
                     <head>
                       <style>
                         @page {
-                            margin: 64pt 64pt 74pt 64pt;
-                            @bottom-right {
-                                font-family: 'Source Sans 3', sans-serif;
-                                content: 'Side ' counter(page) ' av ' counter(pages);
-                            }
-                            @bottom-left {
-                                font-family: 'Source Sans 3', sans-serif;
-                                content: 'Saksnummer ${metadata.saksnummer}';
-                            }
+                          margin: 64pt 56pt 74pt 56pt;
+                          @bottom-right {
+                            font-family: 'Source Sans 3', sans-serif;
+                            content: 'Side ' counter(page) ' av ' counter(pages);
+                          }
+                          @bottom-left {
+                            font-family: 'Source Sans 3', sans-serif;
+                            content: 'Saksnummer ${metadata.saksnummer}';
+                          }
+                        }
+                        html, body {
+                          font-size: 11pt;
+                          font-weight: normal;
+                          font-family: 'Source Sans 3', sans-serif;
+                          line-height: 16pt;
                         }
                       </style>
                       <style>${versjonertStilarkV1}</style>

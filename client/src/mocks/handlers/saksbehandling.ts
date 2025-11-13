@@ -149,11 +149,11 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const hjelpemidler = endredeHjelpemidler?.endredeHjelpemidler.map(
       (endretHjelpemiddel: EndretHjelpemiddelRequest) => {
         return {
-          id: endretHjelpemiddel.id,
+          hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
           hmsArtNr: endretHjelpemiddel.hmsArtNr,
           finnesIOebs: false,
           endretHjelpemiddel: {
-            id: endretHjelpemiddel.id,
+            hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
             begrunnelse: endretHjelpemiddel.begrunnelse,
             begrunnelseFritekst: endretHjelpemiddel.begrunnelseFritekst,
           },

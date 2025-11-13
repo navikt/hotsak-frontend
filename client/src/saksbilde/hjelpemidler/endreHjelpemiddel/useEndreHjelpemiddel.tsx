@@ -13,7 +13,7 @@ export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt
   const { mutate } = useSWRConfig()
   const { artikler, mutate: mutateBestilling } = useArtiklerForSak(sakId)
   const { showSuccessToast } = useToast()
-  const { id, hmsArtNr } = endretProdukt
+  const { hjelpemiddelId, hmsArtNr } = endretProdukt
 
   // TODO, sende med navn også
   const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
@@ -28,7 +28,9 @@ export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt
     setVisEndreProdukt(false)
   }
 
-  const endretHjelpemiddel = artikler.find((it) => it.endretHjelpemiddel && it.endretHjelpemiddel.id === id)
+  const endretHjelpemiddel = artikler.find(
+    (it) => it.endretHjelpemiddel && it.endretHjelpemiddel.hjelpemiddelId === hjelpemiddelId
+  )
 
   const { hjelpemiddel: endretHjelpemiddelProdukt } = useHjelpemiddel(
     endretHjelpemiddel ? endretHjelpemiddel.hmsArtNr : undefined

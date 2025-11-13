@@ -51,7 +51,7 @@ export function Hjelpemiddel({
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, {
-    id: hjelpemiddel.hjelpemiddelId,
+    hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
     hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
     navn: hjelpemiddel.produkt.artikkelnavn,
   })

@@ -43,7 +43,11 @@ export class EndreHjelpemiddelStore extends Dexie {
     if (!endringer) return
 
     this.transaction('rw', this.endredeHjelpemidler, () => {
-      if (endringer.endredeHjelpemidler.find((endretHjelpemiddel) => endretHjelpemiddel.id === request.id)) {
+      if (
+        endringer.endredeHjelpemidler.find(
+          (endretHjelpemiddel) => endretHjelpemiddel.hjelpemiddelId === request.hjelpemiddelId
+        )
+      ) {
         const endredeHjelpemidler = endringer.endredeHjelpemidler
           // fixme -> Hent originalt hmsArtNr fra behovsmelding og sjekk om det er likt som det det endres til. I så fall kan listen tømmes.
           // Må få på plass behovsmelding store først.
@@ -53,9 +57,9 @@ export class EndreHjelpemiddelStore extends Dexie {
           })
           */
           .map((endretHjelpemiddel) => {
-            if (endretHjelpemiddel.id === request.id) {
+            if (endretHjelpemiddel.hjelpemiddelId === request.hjelpemiddelId) {
               return {
-                id: request.id,
+                hjelpemiddelId: request.hjelpemiddelId,
                 hmsArtNr: request.hmsArtNr,
                 begrunnelse: request.begrunnelse,
                 begrunnelseFritekst: request.begrunnelseFritekst ? request.begrunnelseFritekst : '',
@@ -70,7 +74,7 @@ export class EndreHjelpemiddelStore extends Dexie {
           endredeHjelpemidler: [
             ...endringer.endredeHjelpemidler,
             {
-              id: request.id,
+              hjelpemiddelId: request.hjelpemiddelId,
               hmsArtNr: request.hmsArtNr,
               begrunnelse: request.begrunnelse,
               begrunnelseFritekst: request.begrunnelseFritekst ? request.begrunnelseFritekst : '',

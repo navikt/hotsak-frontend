@@ -76,14 +76,14 @@ export function Tilbehør({
   const harOpplysninger = tilbehør.opplysninger && tilbehør.opplysninger.length > 0
   const harSaksbehandlingvarsel = tilbehør.saksbehandlingvarsel && tilbehør.saksbehandlingvarsel.length > 0
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
-
+  // TODO endre id til hjelpemiddelId her når backend er klar for det i både dev og prod
   const {
     endreHjelpemiddel,
     nåværendeHmsnr,
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, {
-    id: tilbehør.tilbehørId!,
+    hjelpemiddelId: tilbehør.tilbehørId!,
     hmsArtNr: tilbehør.hmsArtNr || '',
     navn: tilbehør.navn || '',
   })

@@ -48,7 +48,7 @@ export function HjelpemiddelEksperiment({
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sak.sakId, {
-    id: hjelpemiddel.hjelpemiddelId,
+    hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
     hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
     navn: hjelpemiddel.produkt.artikkelnavn,
   })

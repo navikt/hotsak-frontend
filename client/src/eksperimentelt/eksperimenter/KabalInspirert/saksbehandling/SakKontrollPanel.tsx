@@ -1,4 +1,4 @@
-import { HStack, Switch } from '@navikt/ds-react'
+import { Chips, HStack } from '@navikt/ds-react'
 
 import globalStyles from '../../../../styles/shared.module.css'
 import { SakMenyEksperiment } from './SakMenyEksperiment'
@@ -19,33 +19,35 @@ export const SakKontrollPanel = () => {
 
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${styles.togglePanel}`} width="100%">
-      <ToggleKnapp checked={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
-        Søknad
-      </ToggleKnapp>
-      <ToggleKnapp checked={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
-        Behandle
-      </ToggleKnapp>
-      <ToggleKnapp checked={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
-        Utlån, notater og historikk
-      </ToggleKnapp>
-      <ToggleKnapp checked={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
-        Brev
-      </ToggleKnapp>
+      <Chips size="small">
+        <ToggleKnapp selected={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
+          Søknad
+        </ToggleKnapp>
+        <ToggleKnapp selected={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
+          Behandle
+        </ToggleKnapp>
+        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
+          Utlån, notater og historikk
+        </ToggleKnapp>
+        <ToggleKnapp selected={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
+          Brev
+        </ToggleKnapp>
+      </Chips>
       <SakMenyEksperiment spørreundersøkelseId="sak_overført_gosys_v1" />
     </HStack>
   )
 }
 
-const ToggleKnapp = ({ onToggle: onToggle, children, checked }: ToggleKnappProps) => {
+const ToggleKnapp = ({ onToggle: onToggle, children, selected }: ToggleKnappProps) => {
   return (
-    <Switch checked={checked} size="small" onChange={onToggle}>
+    <Chips.Toggle key={children} selected={selected} onClick={onToggle} variant="neutral">
       {children}
-    </Switch>
+    </Chips.Toggle>
   )
 }
 
 interface ToggleKnappProps {
   onToggle: () => void
-  checked: boolean
+  selected: boolean
   children: string
 }

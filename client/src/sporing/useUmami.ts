@@ -1,9 +1,22 @@
+import { useEffect, useState } from 'react'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang'
 import { UMAMI_TAKSONOMI } from './umamiTaksonomi'
 
 export function useUmami() {
+  const [isReady, setIsReady] = useState(false)
   const { gjeldendeEnhet } = useInnloggetAnsatt()
   const enhetsnavn = gjeldendeEnhet.navn
+
+  useEffect(() => {
+    const checkReady = () => {
+      if (typeof window !== 'undefined' && window.umami) {
+        setIsReady(true)
+      } else {
+        setTimeout(checkReady, 200)
+      }
+    }
+    checkReady()
+  }, [])
 
   const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data: object) => {
     if (typeof window !== 'undefined' && window.umami) {
@@ -37,5 +50,5 @@ export function useUmami() {
     })
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse }
+  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, isReady }
 }

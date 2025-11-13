@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useUmami } from './useUmami'
 
 export function useLogVinduStørrelse() {
-  const { logVinduStørrelse } = useUmami()
+  const { logVinduStørrelse, isReady } = useUmami()
 
   useEffect(() => {
-    // Logger størrelse på oppstart
+    // Logger størrelse på oppstart hvis umami er klar 
+    if (!isReady) return
     logVinduStørrelse({
       tekst: 'Størrelse ved oppstart',
     })
@@ -27,5 +28,5 @@ export function useLogVinduStørrelse() {
       window.removeEventListener('resize', handleResize)
       clearTimeout(timeoutId)
     }
-  }, [])
+  }, [isReady])
 }

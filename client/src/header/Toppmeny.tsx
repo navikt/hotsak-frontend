@@ -8,11 +8,11 @@ import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
-import { pushLog } from '../utils/faro.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { useUmami } from '../sporing/useUmami.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -27,6 +27,7 @@ export function Toppmeny() {
   const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
   const [darkmode, setDarkmode] = useDarkmode()
   const [, setEksperimentell] = useEksperimenter()
+  const { logTemaByttet } = useUmami()
 
   return (
     <InternalHeader>
@@ -82,9 +83,17 @@ export function Toppmeny() {
               icon={<ThemeIcon />}
               as="a"
               href="/"
-              onClick={() => {
-                pushLog(`Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`)
+              onClick={async (e) => {
+                e.preventDefault()
+                logTemaByttet({
+                  tekst: 'toppmeny-tema-bytte',
+                  temaByttetTil: darkmodeLabel(!darkmode),
+                })
+
                 setDarkmode(!darkmode)
+                //gi umami litt tid til å sende før reload
+                await new Promise((resolve) => setTimeout(resolve, 150))
+                window.location.href = "/"
               }}
             >
               {`Endre til ${darkmodeLabel(!darkmode)}`}

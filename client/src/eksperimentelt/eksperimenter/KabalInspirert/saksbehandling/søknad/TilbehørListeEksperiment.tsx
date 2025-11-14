@@ -1,13 +1,13 @@
 import { PencilIcon } from '@navikt/aksel-icons'
-import { Box, Button, HStack, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, HStack, VStack } from '@navikt/ds-react'
 import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { Opplysninger } from '../../../../../saksbilde/hjelpemidler/Opplysninger'
 import { Varsler } from '../../../../../saksbilde/hjelpemidler/Varsel'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../../../types/types.internal'
-import { ProduktEksperiment } from './ProduktEksperiment'
 import { AntallTag } from '../../felleskomponenter/AntallTag'
+import { ProduktEksperiment } from './ProduktEksperiment'
 
 export function FrittStåendeTilbehørEksperiment({
   tilbehør,

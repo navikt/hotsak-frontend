@@ -15,7 +15,7 @@ interface BehandlingEksperimentPanelProps {
 
 function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimentPanelProps) {
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
-  const { setBrevKolonne, setBehandlingPanel, vedtaksResultat, setVedtaksResultat, lagretResultat, setLagretResultat } =
+  const { setBrevKolonne, vedtaksResultat, setVedtaksResultat, lagretResultat, setLagretResultat } =
     useSaksbehandlingEksperimentContext()
   const { oppgave } = useOppgave()
 
@@ -93,7 +93,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
             size="small"
             icon={<PlusCircleIcon />}
             onClick={() => {
-              setBehandlingPanel(false)
+              // setBehandlingPanel(false)
               setBrevKolonne(true)
             }}
           >
@@ -106,8 +106,6 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
 }
 
 function underRetteBrukerTest(vedtaksResultat: VedtaksResultat) {
-  console.log('Vedtaksresultat', vedtaksResultat)
-
   switch (vedtaksResultat) {
     case VedtaksResultat.INNVILGET:
       return 'En tekst om at man må ikke sendes brev ved innvilgelse, men man kan velge å gjøre det.'

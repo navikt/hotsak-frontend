@@ -6,6 +6,7 @@ export enum VedtaksResultat {
   INNVILGET = 'INNVILGET',
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
+  HENLAGT = 'HENLAGT',
 }
 
 /**
@@ -32,6 +33,8 @@ const initialState = {
   setVedtaksResultat() {},
   lagretResultat: false,
   setLagretResultat() {},
+  oppgaveFerdigstilt: false,
+  setOppgaveFerdigstilt() {},
 }
 
 const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
@@ -49,6 +52,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [brevKolonne, setBrevKolonne] = useState(false)
   const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat>(VedtaksResultat.IKKE_SATT)
   const [lagretResultat, setLagretResultat] = useState<boolean>(false)
+  const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
 
   return (
     <SaksbehandlingEksperimentContext.Provider
@@ -71,6 +75,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setVedtaksResultat,
         lagretResultat,
         setLagretResultat,
+        oppgaveFerdigstilt,
+        setOppgaveFerdigstilt,
       }}
     >
       {children}
@@ -109,6 +115,8 @@ type SaksbehandlingEksperimentContextType = {
   setVedtaksResultat(vedtaksResultat: VedtaksResultat): void
   lagretResultat: boolean
   setLagretResultat(lagret: boolean): void
+  oppgaveFerdigstilt: boolean
+  setOppgaveFerdigstilt(ferdigstilt: boolean): void
 }
 
 export { SaksbehandlingEksperimentContext, SaksbehandlingEksperimentProvider, useSaksbehandlingEksperimentContext }

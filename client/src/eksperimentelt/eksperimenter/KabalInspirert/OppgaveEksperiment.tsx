@@ -2,6 +2,7 @@ import { Heading } from '@navikt/ds-react'
 import { OppgaveProvider } from '../../../oppgave/OppgaveProvider'
 import { Oppgavetype, OppgaveV2 } from '../../../oppgave/oppgaveTypes'
 import { useOppgave } from '../../../oppgave/useOppgave'
+import { useSak } from '../../../saksbilde/useSak'
 import { SaksbehandlingEksperiment } from './saksbehandling/SaksbehandlingEksperimentPanel'
 import { SaksbehandlingEksperimentProvider } from './saksbehandling/SaksbehandlingEksperimentProvider'
 
@@ -20,6 +21,11 @@ export default function OppgaveEksperiment() {
 }
 
 function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
+  const { sak } = useSak()
+
+  if (!sak) {
+    return null
+  }
   switch (oppgave.oppgavetype) {
     case Oppgavetype.JOURNALFØRING:
       return (
@@ -32,7 +38,7 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
     case Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK:
       return (
         <SaksbehandlingEksperimentProvider>
-          <SaksbehandlingEksperiment />
+          <SaksbehandlingEksperiment sak={sak.data} />
         </SaksbehandlingEksperimentProvider>
       )
     default:

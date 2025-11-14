@@ -68,7 +68,7 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
         <Box.New
           key={hjelpemiddel.produkt.hmsArtNr}
           paddingInline="space-12"
-          background="neutral-soft"
+          background="neutral-softA"
           borderColor="neutral-subtle"
           borderWidth="1"
           borderRadius="large"

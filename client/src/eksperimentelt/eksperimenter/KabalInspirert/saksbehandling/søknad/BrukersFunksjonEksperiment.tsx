@@ -16,7 +16,7 @@ export function BrukersFunksjonEksperiment(props: { funksjonsbeskrivelse: Funksj
         paddingBlock="space-8"
         paddingInline="space-12"
         borderRadius="large"
-        background="neutral-soft"
+        background="neutral-softA"
         borderColor="neutral-subtle"
         borderWidth="1"
       >

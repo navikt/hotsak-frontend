@@ -27,7 +27,7 @@ export function FrittStåendeTilbehørEksperiment({
             key={idx}
             borderRadius="large"
             padding="4"
-            background="neutral-soft"
+            background="neutral-softA"
             borderColor="neutral-subtle"
             borderWidth="1"
           >

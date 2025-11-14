@@ -41,6 +41,7 @@ export function HjelpemiddelEksperiment({
   alternativeProdukter,
 }: HjelpemiddelProps) {
   const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
+
   const { kanEndreHmsnr } = useSaksregler()
   const {
     endreHjelpemiddel,

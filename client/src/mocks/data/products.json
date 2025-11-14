@@ -1620,6 +1620,32 @@
           }
         ],
         "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/014112"
+      },
+      {
+        "id": "ba3e9704-3d13-49d0-92de-99cafa20a165",
+        "articleName": "Minicrosser X1 Kabin 10km/t V2",
+        "hmsArtNr": "331325",
+        "isoCategoryTitleShort": "Elektrisk rullestol med manuell styring",
+        "attributes": {
+          "text": "Elektriske rullestoler manuell styring utebruk"
+        },
+        "agreements": [
+          {
+            "postTitle": "6: Manuell styring for utendørs bruk - 4 hjul - voksne - kabin"
+          }
+        ],
+        "supplier": {
+          "name": "IMedema Norge AS"
+        },
+        "media": [
+          {
+            "uri": "register/ba3e9704-3d13-49d0-92de-99cafa20a165/cedd0aa5-03c1-4a38-bb24-f0ef28ad4f59.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          }
+        ],
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/331325"
       }
     ]
   }

@@ -1,7 +1,8 @@
 import { http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
-import behovsmelding from '../data/behovsmelding_1.json'
+//import behovsmelding from '../data/behovsmelding_1.json'
+import behovsmelding from '../data/behovsmelding_demo1_nye_hotsak.json'
 //import behovsmelding from '../data/behovsmelding_2.json'
 import type { SakParams } from './params'
 import { delay, respondForbidden, respondInternalServerError, respondUnauthorized } from './response'

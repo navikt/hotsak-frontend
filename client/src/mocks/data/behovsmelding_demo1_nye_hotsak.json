@@ -1,0 +1,321 @@
+{
+  "bruker": {
+    "fnr": "13820599335",
+    "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+    "signaturtype": "FULLMAKT",
+    "telefon": "12121212",
+    "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+    "kommunenummer": "4649",
+    "brukernummer": null,
+    "kilde": "PDL",
+    "legacyopplysninger": []
+  },
+  "brukersituasjon": {
+    "vilkår": [
+      {
+        "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+        "tekst": {
+          "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+          "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+        }
+      },
+      {
+        "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+          "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+        }
+      },
+      {
+        "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+          "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+        }
+      }
+    ],
+    "funksjonsnedsettelser": ["BEVEGELSE"],
+    "funksjonsbeskrivelse": {
+      "innbyggersVarigeFunksjonsnedsettelse": "ANNEN_DIAGNOSE",
+      "diagnose": "Prolaps i ryggen",
+      "beskrivelse": "Prolapsen i ryggen har han hatt i mange år. Han er uføretrygdet p.g.a. den. Han kan bare gå korte avstander. Og må da hvile på veien. Det er langt fra der han bor og til sentrum. Nå kommer han seg ikke ned til sentrum på en trygg måte. Han får ikke handlet og treffer lite folk. "
+    }
+  },
+  "hjelpemidler": {
+    "hjelpemidler": [
+      {
+        "hjelpemiddelId": "a3c30007-2368-47fc-87d2-7af327914a1f",
+        "antall": 1,
+        "produkt": {
+          "hmsArtNr": "331325",
+          "artikkelnavn": "Minicrosser X1 Kabin 10km/t V2",
+          "iso8": "12230301",
+          "iso8Tittel": "Elektriske rullestoler manuell styring utebruk",
+          "delkontrakttittel": "6: Manuell styring for utendørs bruk - 4 hjul - voksne - kabin ",
+          "sortimentkategori": "Elektriske rullestoler",
+          "delkontraktId": "HMDB-1253",
+          "rangering": 1
+        },
+        "tilbehør": [
+          {
+            "tilbehørId": "7fe3f12f-b07a-4673-8b2a-cc78dbe83ee8",
+            "hmsArtNr": "018455",
+            "navn": "Krykkeholder ers Minicrosser X dobbel bakmontert",
+            "antall": 1,
+            "begrunnelse": null,
+            "fritakFraBegrunnelseÅrsak": "ER_SELVFORKLARENDE_TILBEHØR",
+            "opplysninger": [],
+            "saksbehandlingvarsel": []
+          },
+          {
+            "tilbehørId": "85079656-65bc-4e7b-b456-2579e573cc5f",
+            "hmsArtNr": "023637",
+            "navn": "Kurv ers Minicrosser X/M stor foran",
+            "antall": 1,
+            "begrunnelse": "Scooter vil bli brukt til å handle. Må kunne frakte varer hjem.",
+            "fritakFraBegrunnelseÅrsak": null,
+            "opplysninger": [],
+            "saksbehandlingvarsel": []
+          }
+        ],
+        "bytter": [],
+        "bruksarenaer": ["EGET_HJEM"],
+        "utlevertinfo": {
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
+          "utleverttype": null,
+          "overførtFraBruker": null,
+          "annenKommentar": null
+        },
+        "opplysninger": [
+          {
+            "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Krav om kurs", "nn": "Krav om kurs" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Formidler har svart at godkjenningskurs elektrisk rullestol er gjennomført",
+                  "nn": "Formidlar har svart at godkjenningskurs elektrisk rullestol er gjennomført"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Behov for kabin", "nn": "Behov for kabin" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen har ikke en varig funksjonsnedsettelse som gir kuldeintoleranse, og som fører til at rullestolen ikke kan benyttes uten kabin",
+                  "nn": "Personen har ikkje ei varig funksjonsnedsetjing som gir kuldeintoleranse, og som fører til at rullestolen ikkje kan nyttast utan kabin"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Grunnen til behovet", "nn": "Grunnen til behovet" },
+            "innhold": [
+              {
+                "fritekst": "Bruker bor langt fra sentrum og strekningen er værutsatt",
+                "forhåndsdefinertTekst": null,
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Betjene styring", "nn": "Betene styring" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen er vurdert til å kunne betjene elektrisk rullestol med manuell styring",
+                  "nn": "Personen er vurdert til å kunna betene elektrisk rullestol med manuell styring"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Trafikk", "nn": "Trafikk" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen er vurdert til å kunne ferdes sikkert i trafikken",
+                  "nn": "Personen er vurdert til å kunna ferdast trygt i trafikken"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Nedsatt gangfunksjon", "nn": "Nedsatt gangfunksjon" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen skal benytte den elektriske rullestolen til å avhjelpe en vesentlig nedsatt gangfunksjon. Den skal ikke brukes til et generelt transportbehov.",
+                  "nn": "Personen skal nytta den elektriske rullestolen til å avhjelpa ein vesentleg nedsett gangfunksjon. Den skal ikkje brukast til eit generelt transportbehov."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Oppbevaring og lading", "nn": "Oppbevaring og lading" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen har egnet sted for oppbevaring og lading",
+                  "nn": "Personen har eigna stad for oppbevaring og lading"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Forsikringsvilkår", "nn": "Forsikringsvilkår" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen er gjort kjent med forsikringsvilkårene",
+                  "nn": "Personen er gjort kjend med forsikringsvilkåra"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Spesialsykkel", "nn": "Spesialsykkel" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen har ikke spesialsykkel fra før",
+                  "nn": "Personen har ikkje spesialsykkel frå før"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Gasshendel", "nn": "Gasshendel" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": { "nb": "Skal plasseres på høyre side", "nn": "Skal plasseres på høgre side" },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": { "nb": "Kroppsmål", "nn": "Kroppsmål" },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Sittebredde: 43 cm, lårlengde: 47 cm, legglengde: 45 cm, høyde: 175 cm, kroppsvekt: 80 kg.",
+                  "nn": "Sitjebreidd: 43 cm, lårlengde: 47 cm, legglengde: 45 cm, høgde: 175 cm, kroppsvekt: 80 kg."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ],
+        "varsler": [],
+        "saksbehandlingvarsel": [
+          {
+            "tekst": {
+              "nb": "Dokumentasjon av gjennomført kurs skal sjekkes i behandling av saken.",
+              "nn": "Dokumentasjon av gjennomført kurs skal sjekkast i behandling av saka."
+            },
+            "type": "WARNING"
+          }
+        ]
+      }
+    ],
+    "tilbehør": [],
+    "totaltAntall": 3
+  },
+  "levering": {
+    "hjelpemiddelformidler": {
+      "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+      "arbeidssted": "Østby Dans og Fysioterapi",
+      "stilling": "CEO",
+      "telefon": "11223344",
+      "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+      "epost": "kvadratisk.faktura@tull.kommune.no",
+      "treffesEnklest": "På telefon fra hjemmekontor.",
+      "kommunenavn": "STAD",
+      "kommunenummer": "4649"
+    },
+    "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+    "annenOppfølgingsansvarlig": null,
+    "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+    "annenUtleveringsadresse": null,
+    "annenUtleveringskommune": null,
+    "annenUtleveringsbydel": null,
+    "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
+    "annenKontaktperson": null,
+    "utleveringMerknad": "",
+    "hast": null,
+    "automatiskUtledetTilleggsinfo": []
+  },
+  "innsender": {
+    "rolle": "FORMIDLER",
+    "erKommunaltAnsatt": true,
+    "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+    "sjekketUtlånsoversiktForKategorier": []
+  },
+  "vedlegg": [],
+  "metadata": {
+    "bestillingsordningsjekk": {
+      "kanVæreBestilling": false,
+      "kriterier": {
+        "alleHovedProdukterPåBestillingsOrdning": false,
+        "alleTilbehørPåBestillingsOrdning": false,
+        "brukerHarHjelpemidlerFraFør": null,
+        "brukerHarInfotrygdVedtakFraFør": null,
+        "brukerHarHotsakVedtakFraFør": true,
+        "leveringTilFolkeregistrertAdresse": true,
+        "brukersAdresseErSatt": true,
+        "brukerBorIkkeIUtlandet": true,
+        "brukerErIkkeSkjermetPerson": true,
+        "inneholderIkkeFritekst": true,
+        "kildeErPdl": true,
+        "harIkkeForMangeOrdrelinjer": true,
+        "ingenProdukterErAlleredeUtlevert": true,
+        "brukerErTilknyttetBydelIOslo": null,
+        "harIngenBytter": true,
+        "brukerHarAdresseIOeBS": false
+      },
+      "metaInfo": {
+        "hovedProdukter": ["331325"],
+        "hovedProdukterIkkePåBestillingsordning": ["331325"],
+        "tilbehør": ["018455", "023637"],
+        "tilbehørIkkePåBestillingsordning": ["018455", "023637"]
+      },
+      "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d"
+    }
+  },
+  "id": "02b6ee2a-59fe-481f-ada5-c583726bfd1b",
+  "type": "SØKNAD",
+  "innsendingsdato": "2025-11-14",
+  "innsendingstidspunkt": "2025-11-14T11:44:22.306290318Z",
+  "skjemaversjon": 2,
+  "hjmBrukersFnr": "13820599335",
+  "prioritet": "NORMAL"
+}

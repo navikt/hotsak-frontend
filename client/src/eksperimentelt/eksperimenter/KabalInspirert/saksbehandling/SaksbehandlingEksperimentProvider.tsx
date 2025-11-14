@@ -2,7 +2,6 @@ import { createContext, ReactNode, useContext, useState } from 'react'
 import { HøyrekolonneTabs, SøknadPanelTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
 
 export enum VedtaksResultat {
-  IKKE_SATT = 'IKKE_SATT',
   INNVILGET = 'INNVILGET',
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
@@ -29,7 +28,7 @@ const initialState = {
   setValgtNedreVenstreKolonneTab() {},
   valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
   setValgtHøyreKolonneTab() {},
-  vedtaksResultat: VedtaksResultat.IKKE_SATT,
+  vedtaksResultat: undefined,
   setVedtaksResultat() {},
   lagretResultat: false,
   setLagretResultat() {},
@@ -50,7 +49,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
-  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat>(VedtaksResultat.IKKE_SATT)
+  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>(undefined)
   const [lagretResultat, setLagretResultat] = useState<boolean>(false)
   const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
 
@@ -111,7 +110,7 @@ type SaksbehandlingEksperimentContextType = {
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
 
   // Verdiene under er midlertidige tilstander for å teste flyt i prototypen før vi lager apiene
-  vedtaksResultat: VedtaksResultat
+  vedtaksResultat?: VedtaksResultat
   setVedtaksResultat(vedtaksResultat: VedtaksResultat): void
   lagretResultat: boolean
   setLagretResultat(lagret: boolean): void

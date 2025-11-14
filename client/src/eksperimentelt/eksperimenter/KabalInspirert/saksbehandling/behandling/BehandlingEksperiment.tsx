@@ -1,6 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, ReadMore, Select, VStack } from '@navikt/ds-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { Brødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
 import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
@@ -17,6 +17,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const { setBrevKolonne, vedtaksResultat, setVedtaksResultat, lagretResultat, setLagretResultat } =
     useSaksbehandlingEksperimentContext()
+  const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
 
   return (
@@ -54,12 +55,18 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         <Select
           size="small"
           label="Resultat"
+          error={visFeilmelding ? 'Du må velge et vedtaksresultat' : undefined}
           readOnly={lagretResultat}
           style={{ width: 'auto' }}
-          value={vedtaksResultat}
-          onChange={(e) => setVedtaksResultat(e.target.value as any)}
+          value={vedtaksResultat ? vedtaksResultat : ''}
+          onChange={(e) => {
+            if (e.target.value !== undefined) {
+              setVisFeilmelding(false)
+            }
+            setVedtaksResultat(e.target.value as any)
+          }}
         >
-          <option value={VedtaksResultat.IKKE_SATT}>Ikke satt</option>
+          <option value={undefined}>-- Velg resultat --</option>
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
@@ -70,7 +77,17 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
               Endre resultat
             </Button>
           ) : (
-            <Button variant="secondary" size="small" onClick={() => setLagretResultat(true)}>
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => {
+                if (!vedtaksResultat) {
+                  setVisFeilmelding(true)
+                } else {
+                  setLagretResultat(true)
+                }
+              }}
+            >
               Lagre resultat
             </Button>
           )}
@@ -105,7 +122,10 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   )
 }
 
-function underRetteBrukerTest(vedtaksResultat: VedtaksResultat) {
+function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
+  if (!vedtaksResultat) {
+    return null
+  }
   switch (vedtaksResultat) {
     case VedtaksResultat.INNVILGET:
       return 'En tekst om at man må ikke sendes brev ved innvilgelse, men man kan velge å gjøre det.'

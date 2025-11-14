@@ -50,5 +50,9 @@ export function useUmami() {
     })
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, isReady }
+  const logTemaByttet = (data: object) => {
+    logUmamiHendelse(UMAMI_TAKSONOMI.TEMA_BYTTET, data)
+  }
+
+  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, logTemaByttet, isReady }
 }

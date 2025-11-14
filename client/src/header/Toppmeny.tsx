@@ -13,6 +13,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { useUmami } from '../sporing/useUmami.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -27,6 +28,7 @@ export function Toppmeny() {
   const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
   const [darkmode, setDarkmode] = useDarkmode()
   const [, setEksperimentell] = useEksperimenter()
+  const { logTemaByttet } = useUmami()
 
   return (
     <InternalHeader>
@@ -83,6 +85,10 @@ export function Toppmeny() {
               as="a"
               href="/"
               onClick={() => {
+                logTemaByttet({
+                  tekst: 'toppmeny-tema-bytte',
+                  temaByttetTil: darkmodeLabel(!darkmode)
+                })
                 pushLog(`Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`)
                 setDarkmode(!darkmode)
               }}

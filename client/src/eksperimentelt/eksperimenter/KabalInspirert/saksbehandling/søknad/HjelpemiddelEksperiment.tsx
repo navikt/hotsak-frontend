@@ -137,21 +137,16 @@ export function HjelpemiddelEksperiment({
                 </div>
               )}
             </HStack>
-            <VStack>
+            <VStack paddingBlock={'space-4 0'}>
               <Etikett>Antall</Etikett>
               <div>
                 <AntallTag antall={hjelpemiddel.antall} />
               </div>
             </VStack>
           </VStack>
-          <Skillelinje />
           <VStack gap="space-8">
             <Varsler varsler={hjelpemiddel.varsler} />
             <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
-            {hjelpemiddel.varsler.length > 0 || (hjelpemiddel.saksbehandlingvarsel ?? []).length > 0 ? (
-              <Skillelinje />
-            ) : null}
-
             <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
             {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (

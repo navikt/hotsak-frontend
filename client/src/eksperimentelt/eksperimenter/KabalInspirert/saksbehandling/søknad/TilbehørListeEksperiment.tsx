@@ -76,7 +76,7 @@ export function Tilbehør({
         <HStack gap="space-12">
           <ProduktEksperiment hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
         </HStack>
-        <VStack>
+        <VStack paddingBlock={'space-8 0'}>
           <Etikett>Antall</Etikett>
           <AntallTag antall={tilbehør.antall} />
         </VStack>

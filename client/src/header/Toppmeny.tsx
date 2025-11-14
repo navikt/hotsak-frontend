@@ -84,13 +84,21 @@ export function Toppmeny() {
               icon={<ThemeIcon />}
               as="a"
               href="/"
-              onClick={() => {
+              onClick={async (e) => {
+                e.preventDefault()
                 logTemaByttet({
                   tekst: 'toppmeny-tema-bytte',
-                  temaByttetTil: darkmodeLabel(!darkmode)
+                  temaByttetTil: darkmodeLabel(!darkmode),
                 })
-                pushLog(`Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`)
+
+                pushLog(
+                  `Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`
+                )
+
                 setDarkmode(!darkmode)
+                //gi umami litt tid til å sende før reload
+                await new Promise((resolve) => setTimeout(resolve, 150))
+                window.location.href = "/"
               }}
             >
               {`Endre til ${darkmodeLabel(!darkmode)}`}

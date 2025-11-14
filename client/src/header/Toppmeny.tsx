@@ -8,7 +8,6 @@ import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
-import { pushLog } from '../utils/faro.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
@@ -90,10 +89,6 @@ export function Toppmeny() {
                   tekst: 'toppmeny-tema-bytte',
                   temaByttetTil: darkmodeLabel(!darkmode),
                 })
-
-                pushLog(
-                  `Dark mode toggle fra ${darkmodeLabel(darkmode)} til ${darkmodeLabel(!darkmode)}`
-                )
 
                 setDarkmode(!darkmode)
                 //gi umami litt tid til å sende før reload

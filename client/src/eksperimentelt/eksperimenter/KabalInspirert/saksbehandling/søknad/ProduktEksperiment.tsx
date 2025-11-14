@@ -1,7 +1,6 @@
 import { HStack } from '@navikt/ds-react'
-import { BrytbarBrødtekst, Tekst } from '../../../../../felleskomponenter/typografi'
-import { InlineKopiknapp } from '../../../../../felleskomponenter/Kopiknapp'
 import { FinnHjelpemiddelLink } from '../../../../../felleskomponenter/FinnHjelpemiddelLink'
+import { BrytbarBrødtekst, Tekst } from '../../../../../felleskomponenter/typografi'
 
 export function ProduktEksperiment({
   gjennomstrek = false,
@@ -16,19 +15,16 @@ export function ProduktEksperiment({
   showLink?: boolean
 }) {
   return (
-    <HStack wrap={false} gap="space-8" align="start">
-      <HStack align="center" wrap={false}>
-        {<InlineKopiknapp tooltip="Kopier hmsnr" copyText={hmsnr} />}
-        {showLink ? (
-          <FinnHjelpemiddelLink variant="neutral" hmsnr={hmsnr}>
-            <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
-              <Tekst>{hmsnr}</Tekst>
-            </div>
-          </FinnHjelpemiddelLink>
-        ) : (
-          <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
-        )}
-      </HStack>
+    <HStack gap="space-8" align="start">
+      {showLink ? (
+        <FinnHjelpemiddelLink variant="neutral" hmsnr={hmsnr}>
+          <div style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
+            <Tekst>{hmsnr}</Tekst>
+          </div>
+        </FinnHjelpemiddelLink>
+      ) : (
+        <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
+      )}
       <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
         {navn}
       </Tekst>

@@ -55,8 +55,6 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
 
-      {funksjonsbeskrivelse && <BrukersFunksjonEksperiment funksjonsbeskrivelse={funksjonsbeskrivelse} />}
-
       {hjelpemidler.length > 0 && (
         <VStack paddingBlock="space-20 0">
           <Label size="small" as="h2" textColor="subtle" spacing={false}>
@@ -69,10 +67,10 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
       {hjelpemidler.map((hjelpemiddel) => (
         <Box.New
           key={hjelpemiddel.produkt.hmsArtNr}
-          background="sunken"
           paddingInline="space-12"
-          //borderColor="neutral"
-          //borderWidth="1"
+          background="neutral-soft"
+          borderColor="neutral-subtle"
+          borderWidth="1"
           borderRadius="large"
         >
           <HjelpemiddelEksperiment
@@ -101,6 +99,7 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
           <FrittStåendeTilbehørEksperiment tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
+      {funksjonsbeskrivelse && <BrukersFunksjonEksperiment funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )
 }

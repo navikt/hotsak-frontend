@@ -3,7 +3,7 @@ import { Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { PencilIcon } from '@navikt/aksel-icons'
 import { useState } from 'react'
 import { Skillelinje } from '../../../../../felleskomponenter/Strek'
-import { BrytbarBrødtekst, Etikett, TextContainer } from '../../../../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { Opplysninger } from '../../../../../saksbilde/hjelpemidler/Opplysninger'
 import { Utlevert } from '../../../../../saksbilde/hjelpemidler/Utlevert'
 import { Varsler } from '../../../../../saksbilde/hjelpemidler/Varsel'
@@ -59,9 +59,9 @@ export function HjelpemiddelEksperiment({
   return (
     <>
       <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
-        <TextContainer>
+        {/*<TextContainer>
           <Etikett size="medium">{produkt?.isotittel}</Etikett>
-        </TextContainer>
+        </TextContainer>*/}
         <VStack gap="1">
           {produkt?.posttitler?.map((posttittel) => (
             <TextContainer key={posttittel}>
@@ -84,18 +84,6 @@ export function HjelpemiddelEksperiment({
                 navn={hjelpemiddel.produkt.artikkelnavn}
                 gjennomstrek={endretHjelpemiddel !== undefined}
               />
-              {kanEndreHmsnr && (
-                <div>
-                  <Button
-                    variant="tertiary"
-                    size="xsmall"
-                    icon={<PencilIcon />}
-                    onClick={() => {
-                      setVisAlternativerModal(true)
-                    }}
-                  />
-                </div>
-              )}
             </HStack>
             {endretHjelpemiddel && (
               <div>
@@ -109,23 +97,55 @@ export function HjelpemiddelEksperiment({
                 </BrytbarBrødtekst>
               </div>
             )}
-            <HStack gap="space-8" paddingBlock="0 space-12">
-              <AntallTag antall={hjelpemiddel.antall} />
-              <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+            <HStack gap="space-4" align={'center'}>
+              {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
+                <Tag size="xsmall" variant="warning-moderate">{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
+              ) : (
+                <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
+              )}
+
               {minmaxStyrt && (
-                <Tag variant="neutral" size="small">
-                  Min/max lagervare
-                </Tag>
+                <>
+                  <div>
+                    <Brødtekst textColor="subtle">|</Brødtekst>
+                  </div>
+                  <Tekst>Min/max lagervare</Tekst>
+                </>
               )}
               {harAlternativeProdukter && (
-                <Tag size="small" variant="neutral">
-                  Alternativer på lager
-                </Tag>
+                <>
+                  <div>
+                    <Brødtekst textColor="subtle">|</Brødtekst>
+                  </div>
+                  <Tag size="xsmall" variant="info-moderate">
+                    Har alternativliste
+                  </Tag>
+                </>
+              )}
+              {kanEndreHmsnr && (
+                <div>
+                  <Button
+                    variant="tertiary"
+                    size="xsmall"
+                    icon={<PencilIcon />}
+                    onClick={() => {
+                      setVisAlternativerModal(true)
+                    }}
+                  >
+                    Endre
+                  </Button>
+                </div>
               )}
             </HStack>
+            <VStack>
+              <Etikett>Antall</Etikett>
+              <div>
+                <AntallTag antall={hjelpemiddel.antall} />
+              </div>
+            </VStack>
           </VStack>
           <Skillelinje />
-          <VStack gap="space-8" paddingBlock="space-8 0">
+          <VStack gap="space-8">
             <Varsler varsler={hjelpemiddel.varsler} />
             <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
             {hjelpemiddel.varsler.length > 0 || (hjelpemiddel.saksbehandlingvarsel ?? []).length > 0 ? (

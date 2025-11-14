@@ -7,6 +7,7 @@ import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../../../types/types.internal'
 import { ProduktEksperiment } from './ProduktEksperiment'
+import { AntallTag } from '../../felleskomponenter/AntallTag'
 
 export function FrittStåendeTilbehørEksperiment({
   tilbehør,
@@ -22,7 +23,14 @@ export function FrittStåendeTilbehørEksperiment({
         const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
 
         return (
-          <Box.New key={idx} background="sunken" borderRadius="large" padding="4">
+          <Box.New
+            key={idx}
+            borderRadius="large"
+            padding="4"
+            background="neutral-soft"
+            borderColor="neutral-subtle"
+            borderWidth="1"
+          >
             <Tilbehør tilbehør={t} produkt={produkt} frittståendeTilbehør={true} kanEndreHmsnr={kanEndreHmsnr} />
           </Box.New>
         )
@@ -67,24 +75,11 @@ export function Tilbehør({
       <VStack gap="space-4">
         <HStack gap="space-12">
           <ProduktEksperiment hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
-          {kanEndreHmsnr && (
-            <div>
-              <Button
-                variant="tertiary"
-                size="xsmall"
-                icon={<PencilIcon />}
-                onClick={() => {
-                  alert('Endre tilbehør - ikke implementert i eksperiment enda')
-                }}
-              />
-            </div>
-          )}
         </HStack>
-        <HStack gap="space-12" paddingBlock="0 space-4">
-          <Tag size="small" variant="neutral">
-            {tilbehør.antall} stk
-          </Tag>
-        </HStack>
+        <VStack>
+          <Etikett>Antall</Etikett>
+          <AntallTag antall={tilbehør.antall} />
+        </VStack>
         {harSaksbehandlingvarsel && (
           <Box>
             <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
@@ -96,6 +91,20 @@ export function Tilbehør({
           </Box>
         )}
         {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
+        {kanEndreHmsnr && (
+          <div>
+            <Button
+              variant="tertiary"
+              size="xsmall"
+              icon={<PencilIcon />}
+              onClick={() => {
+                alert('Endre tilbehør - ikke implementert i eksperiment enda')
+              }}
+            >
+              Endre tilbehør
+            </Button>
+          </div>
+        )}
       </VStack>
     </>
   )

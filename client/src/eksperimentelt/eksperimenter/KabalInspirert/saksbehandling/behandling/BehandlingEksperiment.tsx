@@ -19,7 +19,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     useSaksbehandlingEksperimentContext()
   const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
-
+  // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
   return (
     <Box.New
       background="default"

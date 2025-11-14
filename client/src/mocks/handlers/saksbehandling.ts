@@ -151,7 +151,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
         return {
           hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
           hmsArtNr: endretHjelpemiddel.hmsArtNr,
-          finnesIOebs: false,
+          finnesIOebs: true,
           endretHjelpemiddel: {
             hjelpemiddelId: endretHjelpemiddel.hjelpemiddelId,
             begrunnelse: endretHjelpemiddel.begrunnelse,

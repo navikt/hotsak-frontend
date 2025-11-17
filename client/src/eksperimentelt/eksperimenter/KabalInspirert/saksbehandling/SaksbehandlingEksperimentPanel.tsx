@@ -46,8 +46,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     },
   })
 
-  const fattVedtak = async (data: VedtakFormValues) => {
-    data
+  const fattVedtak = async (/*data: VedtakFormValues*/) => {
     setOppgaveFerdigstilt(true)
     setVisFerdigstillModal(false)
   }
@@ -80,7 +79,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   <SøknadPanelEksperiment sak={sak} behovsmelding={behovsmelding} />
                 )}
               </Panel>
-              {(brevKolonne || behandlingPanel) && <ResizeHandle />}
+              {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}
             </>
           )}
           {behandlingPanel && (
@@ -92,7 +91,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}
               </Panel>
-              {sidePanel && <ResizeHandle />}
+              {(sidePanel || brevKolonne) && <ResizeHandle />}
             </>
           )}
           {brevKolonne && (
@@ -100,7 +99,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
               <Panel defaultSize={40} minSize={10} order={3}>
                 <BrevPanelEksperiment />
               </Panel>
-              <ResizeHandle />
+              {sidePanel && <ResizeHandle />}
             </>
           )}
           {sidePanel && (

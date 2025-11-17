@@ -1,12 +1,12 @@
 import './Brev.less'
-import { ActionMenu, Alert, Button, Loader, Tag } from '@navikt/ds-react'
+import { ActionMenu, Alert, Button, Loader } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useEffect, useMemo, useState } from 'react'
 import { useSak } from '../../../../saksbilde/useSak.ts'
 import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
 import { formaterDatoLang } from '../../../../utils/dato.ts'
-import { CheckmarkIcon, MenuElipsisVerticalCircleIcon, PadlockUnlockedIcon, TrashIcon } from '@navikt/aksel-icons'
+import { ChevronDownIcon } from '@navikt/aksel-icons'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -41,7 +41,7 @@ export const Brev = () => {
   } else if (brevutkast.error) {
     return (
       <div style={{ textAlign: 'center', padding: '2em' }}>
-        <Alert variant="warning">Brev ikke tilgjengelig.</Alert>
+        <Alert variant="warning">Får ikke kontakt med tjeneren, brev ikke tilgjengelig. Prøv igjen senere.</Alert>
       </div>
     )
   }
@@ -94,34 +94,31 @@ export const Brev = () => {
             <>
               <div className="brevtoolbar">
                 <div className="left">
-                  <Tag variant="warning-moderate" size="small">
-                    Delvis innvilget
-                  </Tag>
+                  <ActionMenu>
+                    <ActionMenu.Trigger>
+                      <Button
+                        variant="tertiary"
+                        size="small"
+                        icon={<ChevronDownIcon aria-hidden />}
+                        iconPosition="right"
+                      >
+                        Flere valg
+                      </Button>
+                    </ActionMenu.Trigger>
+                    <ActionMenu.Content>
+                      <ActionMenu.Item onSelect={onSlettBrev}>Slett brevutkast</ActionMenu.Item>
+                    </ActionMenu.Content>
+                  </ActionMenu>
                 </div>
                 <div className="right">
                   <Button
                     loading={brevutkast.isLoading || brevutkast.isValidating}
-                    variant="primary"
+                    variant="secondary"
                     size="small"
-                    icon={<CheckmarkIcon aria-hidden />}
                     onClick={() => makerKlart(true)}
                   >
-                    Marker som ferdig
+                    Ferdigstill utkast
                   </Button>
-                  <ActionMenu>
-                    <ActionMenu.Trigger>
-                      <Button
-                        variant="tertiary-neutral"
-                        size="small"
-                        icon={<MenuElipsisVerticalCircleIcon aria-hidden />}
-                      />
-                    </ActionMenu.Trigger>
-                    <ActionMenu.Content>
-                      <ActionMenu.Item icon={<TrashIcon fontSize="1rem" />} onSelect={onSlettBrev}>
-                        Slett brevutkastet
-                      </ActionMenu.Item>
-                    </ActionMenu.Content>
-                  </ActionMenu>
                 </div>
               </div>
               <Breveditor
@@ -150,22 +147,10 @@ export const Brev = () => {
           {brevutkast.data?.data?.markertKlart && (
             <>
               <div className="brevtoolbar">
-                <div className="left">
-                  <Tag variant="warning-moderate" size="small">
-                    Delvis innvilget
-                  </Tag>
-                  <Tag variant="success-moderate" size="small">
-                    Brev klart
-                  </Tag>
-                </div>
+                <div className="left"></div>
                 <div className="right">
-                  <Button
-                    variant="tertiary"
-                    size="small"
-                    icon={<PadlockUnlockedIcon aria-hidden />}
-                    onClick={() => makerKlart(false)}
-                  >
-                    Åpne for redigering
+                  <Button variant="tertiary" size="small" onClick={() => makerKlart(false)}>
+                    Rediger
                   </Button>
                 </div>
               </div>

@@ -14,8 +14,15 @@ interface BehandlingEksperimentPanelProps {
 
 function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimentPanelProps) {
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
-  const { setBrevKolonne, vedtaksResultat, setVedtaksResultat, lagretResultat, setLagretResultat } =
-    useSaksbehandlingEksperimentContext()
+  const {
+    brevKolonne,
+    setBrevKolonne,
+    vedtaksResultat,
+    setVedtaksResultat,
+    lagretResultat,
+    setLagretResultat,
+    brevEksisterer,
+  } = useSaksbehandlingEksperimentContext()
   const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
   // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
@@ -65,7 +72,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
             setVedtaksResultat(e.target.value as any)
           }}
         >
-          <option value={undefined}>-- Velg resultat --</option>
+          {/*<option value={undefined}>-- Velg resultat --</option>*/}
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
@@ -100,24 +107,28 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
             <TextContainer>
               <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
             </TextContainer>
+            <div>
+              {brevKolonne && (
+                <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
+                  Fullfør brevutkastet i brevpanelet
+                </Alert>
+              )}
+              {!brevKolonne && (
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    // setBehandlingPanel(false)
+                    setBrevKolonne(true)
+                  }}
+                  style={{ margin: '1em 0' }}
+                >
+                  {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
+                </Button>
+              )}
+            </div>
           </Box.New>
         )}
-
-        <div>
-          <Alert variant="info">Fullfør brevutkastet i brevpanelet</Alert>
-          {true && (
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => {
-                // setBehandlingPanel(false)
-                setBrevKolonne(true)
-              }}
-            >
-              Lag vedtaksbrev
-            </Button>
-          )}
-        </div>
       </VStack>
     </Box.New>
   )

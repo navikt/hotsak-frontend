@@ -11,7 +11,7 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { vedtaksResultat, lagretResultat, setBrevKolonne } = useSaksbehandlingEksperimentContext()
+  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer } = useSaksbehandlingEksperimentContext()
 
   const brevutkast = useSWR<
     {
@@ -41,8 +41,11 @@ export const Brev = () => {
 
   useEffect(() => {
     // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
-    if (brevutkast.data?.data?.value) velgMal(undefined)
-  }, [brevutkast.data])
+    if (brevutkast.data?.data?.value) {
+      velgMal(undefined)
+      setBrevEksisterer(true)
+    }
+  }, [brevutkast.data, setBrevEksisterer])
 
   if (brevutkast.isLoading) {
     return (
@@ -88,6 +91,7 @@ export const Brev = () => {
     }).then((res) => {
       if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
     })
+    setBrevEksisterer(false)
     setBrevKolonne(false)
     await brevutkast.mutate()
   }

@@ -34,6 +34,8 @@ const initialState = {
   setLagretResultat() {},
   oppgaveFerdigstilt: false,
   setOppgaveFerdigstilt() {},
+  brevEksisterer: false,
+  setBrevEksisterer() {},
 }
 
 const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
@@ -49,9 +51,10 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
-  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>(undefined)
+  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>('INNVILGET' as VedtaksResultat)
   const [lagretResultat, setLagretResultat] = useState<boolean>(false)
   const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
+  const [brevEksisterer, setBrevEksisterer] = useState<boolean>(false)
 
   return (
     <SaksbehandlingEksperimentContext.Provider
@@ -76,6 +79,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setLagretResultat,
         oppgaveFerdigstilt,
         setOppgaveFerdigstilt,
+        brevEksisterer,
+        setBrevEksisterer,
       }}
     >
       {children}
@@ -116,6 +121,8 @@ type SaksbehandlingEksperimentContextType = {
   setLagretResultat(lagret: boolean): void
   oppgaveFerdigstilt: boolean
   setOppgaveFerdigstilt(ferdigstilt: boolean): void
+  brevEksisterer: boolean
+  setBrevEksisterer(eksisterer: boolean): void
 }
 
 export { SaksbehandlingEksperimentContext, SaksbehandlingEksperimentProvider, useSaksbehandlingEksperimentContext }

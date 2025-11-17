@@ -26,6 +26,7 @@ spec:
       rules:
         - application: hm-grunndata-search
         - application: hm-grunndata-alternativprodukter
+        - application: hm-mocks
   azure:
     application:
       enabled: true
@@ -42,7 +43,7 @@ spec:
     - name: PORT
       value: "3000"
     - name: HOTSAK_API_URL
-      value: http://hm-saksbehandling.teamdigihot.svc.cluster.local
+      value: http://hm-mocks
     - name: HOTSAK_API_SCOPE
       value: api://dev-gcp.teamdigihot.hm-saksbehandling/.default
     - name: GRUNNDATA_API_URL

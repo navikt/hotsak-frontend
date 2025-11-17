@@ -1,8 +1,8 @@
 import { Chips, HStack } from '@navikt/ds-react'
-
+import clsx from 'clsx'
 import globalStyles from '../../../../styles/shared.module.css'
 import { SakMenyEksperiment } from './SakMenyEksperiment'
-import styles from './SaksbehandlingEksperiment.module.css'
+import classes from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 
 export const SakKontrollPanel = () => {
@@ -18,7 +18,7 @@ export const SakKontrollPanel = () => {
   } = useSaksbehandlingEksperimentContext()
 
   return (
-    <HStack gap="space-16" align="center" className={`${globalStyles.container} ${styles.togglePanel}`} width="100%">
+    <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
       <Chips size="small">
         <ToggleKnapp selected={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
           Søknad
@@ -40,7 +40,13 @@ export const SakKontrollPanel = () => {
 
 const ToggleKnapp = ({ onToggle: onToggle, children, selected }: ToggleKnappProps) => {
   return (
-    <Chips.Toggle key={children} selected={selected} onClick={onToggle} variant="neutral">
+    <Chips.Toggle
+      key={children}
+      selected={selected}
+      onClick={onToggle}
+      variant="neutral"
+      className={clsx(selected && classes.extraNeutral)}
+    >
       {children}
     </Chips.Toggle>
   )

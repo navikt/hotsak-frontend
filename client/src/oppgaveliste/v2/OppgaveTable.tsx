@@ -38,8 +38,12 @@ export function OppgaveTable(props: OppgaveTableProps) {
           <Table.HeaderCell textSize="small" style={{ width: 150 }}>
             Oppgavetype
           </Table.HeaderCell>
-          <Table.HeaderCell textSize="small">Gjelder</Table.HeaderCell>
-          <Table.HeaderCell textSize="small">Behandlingstype</Table.HeaderCell>
+          <Table.HeaderCell textSize="small" style={{ width: 250 }}>
+            Gjelder
+          </Table.HeaderCell>
+          <Table.HeaderCell textSize="small" style={{ width: 250 }}>
+            Behandlingstype
+          </Table.HeaderCell>
           <Table.HeaderCell textSize="small">Mappe</Table.HeaderCell>
           <Table.HeaderCell textSize="small" style={{ width: 150 }}>
             Prioritet
@@ -97,8 +101,12 @@ export function OppgaveTable(props: OppgaveTableProps) {
             <Table.DataCell textSize="small" width={150}>
               {OppgavetypeLabel[oppgave.oppgavetype]}
             </Table.DataCell>
-            <Table.DataCell textSize="small">{oppgave.behandlingstema}</Table.DataCell>
-            <Table.DataCell textSize="small">{oppgave.behandlingstype}</Table.DataCell>
+            <Table.DataCell textSize="small" width={250}>
+              {oppgave.behandlingstema}
+            </Table.DataCell>
+            <Table.DataCell textSize="small" width={250}>
+              {oppgave.behandlingstype}
+            </Table.DataCell>
             <Table.DataCell textSize="small">{oppgave.mappenavn}</Table.DataCell>
             <Table.DataCell textSize="small" width={150}>
               {OppgaveprioritetLabel[oppgave.prioritet]}

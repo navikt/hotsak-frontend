@@ -7,12 +7,12 @@ import { useEksperimenter } from '../eksperimentelt/useEksperimenter.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
+import { useUmami } from '../sporing/useUmami.ts'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
-import { useUmami } from '../sporing/useUmami.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -93,7 +93,7 @@ export function Toppmeny() {
                 setDarkmode(!darkmode)
                 //gi umami litt tid til å sende før reload
                 await new Promise((resolve) => setTimeout(resolve, 150))
-                window.location.href = "/"
+                window.location.href = '/'
               }}
             >
               {`Endre til ${darkmodeLabel(!darkmode)}`}

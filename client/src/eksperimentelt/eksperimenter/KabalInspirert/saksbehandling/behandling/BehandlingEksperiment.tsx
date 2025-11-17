@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Heading, HStack, ReadMore, Select, VStack } from '@navikt/ds-react'
+import { Alert, Box, Button, Heading, HStack, Modal, ReadMore, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
@@ -26,6 +26,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   } = useSaksbehandlingEksperimentContext()
   const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
+  const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
   return (
     <Box.New
@@ -80,7 +81,17 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         </Select>
         <div>
           {lagretResultat ? (
-            <Button variant="secondary" size="small" onClick={() => setLagretResultat(false)}>
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => {
+                if (brevEksisterer) {
+                  setVisModalKanIkkeEndre(true)
+                  return
+                }
+                setLagretResultat(false)
+              }}
+            >
               Endre resultat
             </Button>
           ) : (
@@ -137,6 +148,26 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
           </Box.New>
         )}
       </VStack>
+      <Modal
+        open={visModalKanIkkeEndre}
+        onClose={() => setVisModalKanIkkeEndre(false)}
+        aria-label="Du må slette brevutkastet før du kan endre resultatet"
+      >
+        <Modal.Header closeButton>
+          <Heading level="1" size="small">
+            Du må slette brevutkastet før du kan endre resultatet
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
+          under menyen "Flere valg" i brevpanelet.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" size="small" onClick={() => setVisModalKanIkkeEndre(false)}>
+            Lukk
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Box.New>
   )
 }
@@ -147,11 +178,11 @@ function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
   }
   switch (vedtaksResultat) {
     case VedtaksResultat.INNVILGET:
-      return 'En tekst om at man må ikke sendes brev ved innvilgelse, men man kan velge å gjøre det.'
+      return 'Du må selv vurdere om du bør underette bruker om vedtaket med brev.'
     case VedtaksResultat.DELVIS_INNVILGET:
-      return 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du ferdigstiller oppgaven.'
+      return 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du fatter vedtak.'
     case VedtaksResultat.AVSLÅTT:
-      return 'Du må sende vedtaksbrev ved avslag. Brevet blir sendt når du ferdigstiller oppgaven.'
+      return 'Du må sende vedtaksbrev ved avslag. Brevet blir sendt når du fatter vedtak.'
   }
 }
 

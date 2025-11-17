@@ -1,4 +1,4 @@
-import { Alert, Box, Button, HelpText, HStack, TextField } from '@navikt/ds-react'
+import { Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
@@ -8,7 +8,7 @@ import { usePerson } from '../../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseModal'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
-import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
+import { fjernUnderlinje, storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { PersonlinjeEksperiment } from '../felleskomponenter/personlinje/PersonlinjeEksperiment'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
@@ -143,14 +143,25 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   //} else {
                 }}
               >
-                Ferdigstill oppgave
+                Fatt vedtak
               </Button>
             )}
-            <Alert variant="info" size="small" inline>
+            <Tag
+              variant={
+                oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
+                  ? 'success-moderate'
+                  : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
+                    ? 'warning-moderate'
+                    : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
+                      ? 'error-moderate'
+                      : 'neutral-moderate'
+              }
+              size="xsmall"
+            >
               {oppgaveFerdigstilt
-                ? `Ferdigstilt - ${storForbokstavIOrd(vedtaksResultat)}`
+                ? `Ferdigstilt med resultat: ${storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}`
                 : OppgaveStatusLabel.get(sak.saksstatus)}
-            </Alert>
+            </Tag>
           </HStack>
         </Box.New>
       </HStack>

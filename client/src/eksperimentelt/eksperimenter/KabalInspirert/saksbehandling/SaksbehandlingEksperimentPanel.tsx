@@ -146,22 +146,26 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 Fatt vedtak
               </Button>
             )}
-            <Tag
-              variant={
-                oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
-                  ? 'success-moderate'
-                  : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
-                    ? 'warning-moderate'
-                    : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
-                      ? 'error-moderate'
-                      : 'neutral-moderate'
-              }
-              size="xsmall"
-            >
-              {oppgaveFerdigstilt
-                ? `Ferdigstilt med resultat: ${storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}`
-                : OppgaveStatusLabel.get(sak.saksstatus)}
-            </Tag>
+            {oppgaveFerdigstilt && vedtaksResultat && (
+              <Tag
+                variant={
+                  oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
+                    ? 'success'
+                    : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
+                      ? 'warning'
+                      : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
+                        ? 'error'
+                        : 'neutral'
+                }
+              >
+                {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
+              </Tag>
+            )}
+            {!oppgaveFerdigstilt && (
+              <Tag variant="neutral-moderate" size="xsmall">
+                {OppgaveStatusLabel.get(sak.saksstatus)}
+              </Tag>
+            )}
           </HStack>
         </Box.New>
       </HStack>

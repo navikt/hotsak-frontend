@@ -22,6 +22,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     lagretResultat,
     setLagretResultat,
     brevEksisterer,
+    brevFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
   const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
@@ -108,11 +109,6 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
               <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
             </TextContainer>
             <div>
-              {brevKolonne && (
-                <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
-                  Fullfør brevutkastet i brevpanelet
-                </Alert>
-              )}
               {!brevKolonne && (
                 <Button
                   variant="secondary"
@@ -125,6 +121,17 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
                 >
                   {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
                 </Button>
+              )}
+              {(brevKolonne || brevFerdigstilt) && (
+                <Alert
+                  variant={brevFerdigstilt ? 'success' : 'info'}
+                  size="small"
+                  style={{ margin: brevKolonne ? '1em 0' : undefined }}
+                >
+                  {brevFerdigstilt
+                    ? 'Du kan nå fatte vedtak hvis du er fornøyd!'
+                    : 'Ferdigstill utkastet i brevpanelet'}
+                </Alert>
               )}
             </div>
           </Box.New>

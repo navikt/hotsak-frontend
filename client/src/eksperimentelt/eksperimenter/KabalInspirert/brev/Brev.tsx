@@ -11,7 +11,8 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer } = useSaksbehandlingEksperimentContext()
+  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
+    useSaksbehandlingEksperimentContext()
 
   const brevutkast = useSWR<
     {
@@ -99,6 +100,7 @@ export const Brev = () => {
   const makerKlart = (klart: boolean) => {
     if (brevutkast.data?.data?.value) {
       lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
+      setBrevFerdigstilt(klart)
     }
   }
 

@@ -53,7 +53,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
-  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>('INNVILGET' as VedtaksResultat)
+  const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>()
   const [lagretResultat, setLagretResultat] = useState<boolean>(false)
   const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
   const [brevEksisterer, setBrevEksisterer] = useState<boolean>(false)

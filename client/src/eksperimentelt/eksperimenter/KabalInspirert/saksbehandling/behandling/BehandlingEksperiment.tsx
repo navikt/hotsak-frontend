@@ -74,10 +74,10 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
             setVedtaksResultat(e.target.value as any)
           }}
         >
-          {/*<option value={undefined}>-- Velg resultat --</option>*/}
+          <option value={undefined}>-- Velg resultat --</option>
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
-          <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
+          <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
         </Select>
         <div>
           {lagretResultat ? (

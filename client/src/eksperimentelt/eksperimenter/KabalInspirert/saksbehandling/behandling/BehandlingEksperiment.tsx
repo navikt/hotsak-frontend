@@ -1,5 +1,4 @@
-import { PlusCircleIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HStack, ReadMore, Select, VStack } from '@navikt/ds-react'
+import { Alert, Box, Button, Heading, HStack, ReadMore, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
@@ -105,17 +104,19 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         )}
 
         <div>
-          <Button
-            variant="secondary"
-            size="small"
-            icon={<PlusCircleIcon />}
-            onClick={() => {
-              // setBehandlingPanel(false)
-              setBrevKolonne(true)
-            }}
-          >
-            Åpne brepanelet
-          </Button>
+          <Alert variant="info">Fullfør brevutkastet i brevpanelet</Alert>
+          {true && (
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => {
+                // setBehandlingPanel(false)
+                setBrevKolonne(true)
+              }}
+            >
+              Lag vedtaksbrev
+            </Button>
+          )}
         </div>
       </VStack>
     </Box.New>

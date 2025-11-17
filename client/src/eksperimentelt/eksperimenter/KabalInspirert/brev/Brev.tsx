@@ -4,12 +4,14 @@ import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useEffect, useMemo, useState } from 'react'
 import { useSak } from '../../../../saksbilde/useSak.ts'
-import { BrevmalVelger } from './brevmaler/Brevmaler.tsx'
 import { formaterDatoLang } from '../../../../utils/dato.ts'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
+import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
+import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
+  const { vedtaksResultat, lagretResultat, setBrevKolonne } = useSaksbehandlingEksperimentContext()
 
   const brevutkast = useSWR<
     {
@@ -26,6 +28,16 @@ export const Brev = () => {
 
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
+
+  const malKey = errorEr404
+    ? lagretResultat && vedtaksResultat == 'INNVILGET'
+      ? 'innvilgelse'
+      : lagretResultat && vedtaksResultat == 'DELVIS_INNVILGET'
+        ? 'delvis-innvilgelse-bruker-har-ikke-rett'
+        : lagretResultat && vedtaksResultat == 'AVSLÅTT'
+          ? 'avslag-bruker-har-ikke-rett'
+          : undefined
+    : undefined
 
   useEffect(() => {
     // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
@@ -76,6 +88,7 @@ export const Brev = () => {
     }).then((res) => {
       if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
     })
+    setBrevKolonne(false)
     await brevutkast.mutate()
   }
 
@@ -87,7 +100,17 @@ export const Brev = () => {
 
   return (
     <>
-      {errorEr404 && valgtMal === undefined && <BrevmalVelger velgMal={velgMal} />}
+      {errorEr404 && valgtMal === undefined && malKey === undefined && (
+        <div style={{ padding: '1em' }}>
+          <Alert variant="info" size="small">
+            I fremtiden vil man kunne opprette brev underveis i saken her. For nå må du sette et vedtaksresultat i
+            behandlingspanelet og velge om du vil opprette vedtaksbrev der.
+          </Alert>
+        </div>
+      )}
+      {errorEr404 && valgtMal === undefined && malKey !== undefined && (
+        <BrevmalLaster malKey={malKey} velgMal={velgMal} />
+      )}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div className="brev">
           {!brevutkast.data?.data?.markertKlart && (

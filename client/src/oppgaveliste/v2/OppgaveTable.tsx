@@ -1,16 +1,14 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { Button, HStack, Table, Tag } from '@navikt/ds-react'
+import { Button, HStack, Table } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 import { ReactNode, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
-import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveId, OppgaveprioritetLabel, OppgavetypeLabel, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
-import { MappeTag } from './MappeTag.tsx'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
-import { OppgavetypeTag } from './OppgavetypeTag.tsx'
 
 export interface OppgaveTableProps {
   oppgaver: OppgaveV2[]
@@ -36,14 +34,19 @@ export function OppgaveTable(props: OppgaveTableProps) {
     >
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell colSpan={mine ? 3 : 2} />
-          <Table.ColumnHeader style={{ width: 150 }} sortKey="opprettetTidspunkt" sortable>
+          <Table.HeaderCell textSize="small" colSpan={mine ? 2 : 1} />
+          <Table.HeaderCell textSize="small">Oppgavetype</Table.HeaderCell>
+          <Table.HeaderCell textSize="small">Gjelder</Table.HeaderCell>
+          <Table.HeaderCell textSize="small">Behandlingstype</Table.HeaderCell>
+          <Table.HeaderCell textSize="small">Mappe</Table.HeaderCell>
+          <Table.HeaderCell textSize="small">Prioritet</Table.HeaderCell>
+          <Table.ColumnHeader textSize="small" style={{ width: 150 }} sortKey="opprettetTidspunkt" sortable>
             Opprettet
           </Table.ColumnHeader>
-          <Table.ColumnHeader style={{ width: 150 }} sortKey="fristFerdigstillelse" sortable>
+          <Table.ColumnHeader textSize="small" style={{ width: 150 }} sortKey="fristFerdigstillelse" sortable>
             Frist
           </Table.ColumnHeader>
-          <Table.ColumnHeader style={{ width: 150 }} sortKey="fnr" sortable>
+          <Table.ColumnHeader textSize="small" style={{ width: 150 }} sortKey="fnr" sortable>
             Bruker
           </Table.ColumnHeader>
         </Table.Row>
@@ -51,12 +54,12 @@ export function OppgaveTable(props: OppgaveTableProps) {
       <Table.Body>
         {oppgaver.map((oppgave) => (
           <OppgaveRow key={oppgave.oppgaveId} oppgave={oppgave} mine={mine}>
-            <Table.DataCell width={135}>
+            <Table.DataCell textSize="small" width={135}>
               {mine ? (
                 <Button
                   size="xsmall"
                   type="button"
-                  variant="secondary"
+                  variant="tertiary"
                   onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}
                 >
                   Åpne oppgave
@@ -67,7 +70,7 @@ export function OppgaveTable(props: OppgaveTableProps) {
                     <Button
                       size="xsmall"
                       type="button"
-                      variant="secondary"
+                      variant="tertiary"
                       onClick={() => navigate(`/oppgave/${oppgave.oppgaveId}`)}
                     >
                       Åpne oppgave
@@ -75,7 +78,7 @@ export function OppgaveTable(props: OppgaveTableProps) {
                   ) : (
                     <TaOppgaveButton
                       size="xsmall"
-                      variant="secondary"
+                      variant="tertiary"
                       oppgave={oppgave}
                       onOppgavetildeling={(id) => {
                         setValgte({ ...valgte, [id]: true })
@@ -87,26 +90,15 @@ export function OppgaveTable(props: OppgaveTableProps) {
                 </>
               )}
             </Table.DataCell>
-            <Table.DataCell>
-              <HStack gap="2">
-                <OppgavetypeTag oppgavetype={oppgave.oppgavetype} />
-                {oppgave.behandlingstema && (
-                  <Tag size="small" variant="neutral">
-                    {oppgave.behandlingstema}
-                  </Tag>
-                )}
-                {oppgave.behandlingstype && (
-                  <Tag size="small" variant="neutral">
-                    {oppgave.behandlingstype}
-                  </Tag>
-                )}
-                {oppgave.mappenavn && <MappeTag mappenavn={oppgave.mappenavn} />}
-              </HStack>
-            </Table.DataCell>
-            <Table.DataCell width={150}>
+            <Table.DataCell textSize="small">{OppgavetypeLabel[oppgave.oppgavetype]}</Table.DataCell>
+            <Table.DataCell textSize="small">{oppgave.behandlingstema}</Table.DataCell>
+            <Table.DataCell textSize="small">{oppgave.behandlingstype}</Table.DataCell>
+            <Table.DataCell textSize="small">{oppgave.mappenavn}</Table.DataCell>
+            <Table.DataCell textSize="small">{OppgaveprioritetLabel[oppgave.prioritet]}</Table.DataCell>
+            <Table.DataCell textSize="small" width={150}>
               <FormatertDato dato={oppgave.opprettetTidspunkt} />
             </Table.DataCell>
-            <Table.DataCell width={150}>
+            <Table.DataCell textSize="small" width={150}>
               <HStack align="center" gap="2">
                 <FormatertDato dato={oppgave.fristFerdigstillelse} />
                 {oppgave.fristFerdigstillelse && isBefore(oppgave.fristFerdigstillelse, Date.now()) && (
@@ -114,7 +106,9 @@ export function OppgaveTable(props: OppgaveTableProps) {
                 )}
               </HStack>
             </Table.DataCell>
-            <Table.DataCell width={150}>{oppgave.fnr}</Table.DataCell>
+            <Table.DataCell textSize="small" width={150}>
+              {oppgave.fnr}
+            </Table.DataCell>
           </OppgaveRow>
         ))}
       </Table.Body>

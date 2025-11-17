@@ -39,7 +39,7 @@ export class OppgaveStore extends Dexie {
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: InsertOppgave[] = saker.map((sak) => {
-      const mappeId = lagTilfeldigInteger(0, 12).toString();
+      const mappeId = lagTilfeldigInteger(0, 23).toString();
       const sakId = sak.sakId
       return {
         oppgaveId: `E-${sakId}`,

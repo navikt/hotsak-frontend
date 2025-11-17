@@ -35,11 +35,15 @@ export function OppgaveTable(props: OppgaveTableProps) {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell textSize="small" colSpan={mine ? 2 : 1} />
-          <Table.HeaderCell textSize="small">Oppgavetype</Table.HeaderCell>
+          <Table.HeaderCell textSize="small" style={{ width: 150 }}>
+            Oppgavetype
+          </Table.HeaderCell>
           <Table.HeaderCell textSize="small">Gjelder</Table.HeaderCell>
           <Table.HeaderCell textSize="small">Behandlingstype</Table.HeaderCell>
           <Table.HeaderCell textSize="small">Mappe</Table.HeaderCell>
-          <Table.HeaderCell textSize="small">Prioritet</Table.HeaderCell>
+          <Table.HeaderCell textSize="small" style={{ width: 150 }}>
+            Prioritet
+          </Table.HeaderCell>
           <Table.ColumnHeader textSize="small" style={{ width: 150 }} sortKey="opprettetTidspunkt" sortable>
             Opprettet
           </Table.ColumnHeader>
@@ -90,11 +94,15 @@ export function OppgaveTable(props: OppgaveTableProps) {
                 </>
               )}
             </Table.DataCell>
-            <Table.DataCell textSize="small">{OppgavetypeLabel[oppgave.oppgavetype]}</Table.DataCell>
+            <Table.DataCell textSize="small" width={150}>
+              {OppgavetypeLabel[oppgave.oppgavetype]}
+            </Table.DataCell>
             <Table.DataCell textSize="small">{oppgave.behandlingstema}</Table.DataCell>
             <Table.DataCell textSize="small">{oppgave.behandlingstype}</Table.DataCell>
             <Table.DataCell textSize="small">{oppgave.mappenavn}</Table.DataCell>
-            <Table.DataCell textSize="small">{OppgaveprioritetLabel[oppgave.prioritet]}</Table.DataCell>
+            <Table.DataCell textSize="small" width={150}>
+              {OppgaveprioritetLabel[oppgave.prioritet]}
+            </Table.DataCell>
             <Table.DataCell textSize="small" width={150}>
               <FormatertDato dato={oppgave.opprettetTidspunkt} />
             </Table.DataCell>

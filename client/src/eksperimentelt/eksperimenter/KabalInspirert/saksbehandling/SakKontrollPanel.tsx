@@ -26,11 +26,11 @@ export const SakKontrollPanel = () => {
         <ToggleKnapp selected={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
           Behandle
         </ToggleKnapp>
-        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
-          Utlån, notater og historikk
-        </ToggleKnapp>
         <ToggleKnapp selected={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
           Brev
+        </ToggleKnapp>
+        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
+          Utlån, notater og historikk
         </ToggleKnapp>
       </Chips>
       <SakMenyEksperiment spørreundersøkelseId="sak_overført_gosys_v1" />

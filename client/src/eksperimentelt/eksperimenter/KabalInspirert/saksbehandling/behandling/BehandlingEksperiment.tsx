@@ -7,6 +7,7 @@ import { Sak } from '../../../../../types/types.internal'
 import { formaterDato } from '../../../../../utils/dato'
 import { useSaksbehandlingEksperimentContext, VedtaksResultat } from '../SaksbehandlingEksperimentProvider'
 import { PanelTittel } from '../PanelTittel.tsx'
+import { PencilIcon } from '@navikt/aksel-icons'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -87,8 +88,9 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         <div>
           {lagretResultat ? (
             <Button
-              variant="secondary"
+              variant="tertiary"
               size="small"
+              icon={<PencilIcon />}
               onClick={() => {
                 if (brevEksisterer) {
                   setVisModalKanIkkeEndre(true)

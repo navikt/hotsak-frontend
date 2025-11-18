@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Heading, HStack, Modal, ReadMore, Select, VStack } from '@navikt/ds-react'
+import { Alert, Box, Button, Heading, HStack, Link, Modal, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
@@ -7,7 +7,7 @@ import { Sak } from '../../../../../types/types.internal'
 import { formaterDato } from '../../../../../utils/dato'
 import { useSaksbehandlingEksperimentContext, VedtaksResultat } from '../SaksbehandlingEksperimentProvider'
 import { PanelTittel } from '../PanelTittel.tsx'
-import { PencilIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, PencilIcon } from '@navikt/aksel-icons'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -56,15 +56,17 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
           )}
         </HStack>
 
-        <ReadMore size="small" header="Hva skal du vurdere etter fltr. §10-6?">
-          Her skal det stå nye nyttig og informativt
-        </ReadMore>
+        <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
+          Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
+        </Link>
 
         <Heading size="small" level="2">
-          Innstilling
+          Innstilling til vedtak
         </Heading>
         <TextContainer>
-          <Brødtekst>Innstillingen til resultat blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
+          <Brødtekst>
+            Innstilling til vedtaksresultat blir ikke synlig for bruker før du fatter vedtak i saken.
+          </Brødtekst>
         </TextContainer>
 
         <Select

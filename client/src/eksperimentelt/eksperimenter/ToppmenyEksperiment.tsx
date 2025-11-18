@@ -140,7 +140,7 @@ export function ToppmenyEksperiment() {
   )
 }
 
-const NavItem = ({ children, ...props }: NavLinkProps) => {
+/* const NavItem = ({ children, ...props }: NavLinkProps) => {
   return (
     <HStack as="li" align="center" wrap={false}>
       <NavLink {...props} className={({ isActive }) => `${styles.nav} ${isActive ? styles.navActive : ''}`}>
@@ -148,7 +148,7 @@ const NavItem = ({ children, ...props }: NavLinkProps) => {
       </NavLink>
     </HStack>
   )
-}
+} */
 
 function darkmodeLabel(darkmode: boolean) {
   return darkmode ? 'mørkt tema' : 'lyst tema'

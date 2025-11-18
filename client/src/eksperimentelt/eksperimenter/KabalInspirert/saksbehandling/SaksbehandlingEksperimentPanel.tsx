@@ -1,4 +1,4 @@
-import { Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
@@ -211,36 +211,68 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       </InfoModal>
 
       <BekreftelseModal
-        heading="Vil du innvilge søknaden?"
+        heading={
+          'Vil du ' +
+          (vedtaksResultat == 'DELVIS_INNVILGET'
+            ? 'delvis innvilge'
+            : vedtaksResultat == 'AVSLÅTT'
+              ? 'avslå'
+              : 'innvilge') +
+          ' søknaden?'
+        }
         //loading={sakActions.state.loading}
         open={visFerdigstillModal}
         width="700px"
-        bekreftButtonLabel="Innvilg søknaden"
+        bekreftButtonLabel={
+          (vedtaksResultat == 'DELVIS_INNVILGET'
+            ? 'Delvis innvilg'
+            : vedtaksResultat == 'AVSLÅTT'
+              ? 'Avslå'
+              : 'Innvilg') + ' søknaden'
+        }
         onBekreft={form.handleSubmit(fattVedtak)}
         onClose={() => setVisFerdigstillModal(false)}
       >
-        <Brødtekst spacing>
-          Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
-          innlogget side på nav.no
-        </Brødtekst>
-        <FormProvider {...form}>
-          <TextField
-            label={
-              <HStack wrap={false} gap="2" align="center">
-                <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                <HelpText strategy="fixed">
-                  <Brødtekst>
-                    Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                    dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
-                    OeBS som tidligere.
-                  </Brødtekst>
-                </HelpText>
-              </HStack>
-            }
-            size="small"
-            {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
-          />
-        </FormProvider>
+        {vedtaksResultat != 'AVSLÅTT' && (
+          <>
+            <Brødtekst spacing>
+              Når du {vedtaksResultat == 'DELVIS_INNVILGET' ? 'delvis innvilger' : 'innvilger'} søknaden vil det
+              opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
+            </Brødtekst>
+            {vedtaksResultat == 'DELVIS_INNVILGET' && (
+              <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
+                Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
+                oppretter ordre.
+              </Alert>
+            )}
+            <FormProvider {...form}>
+              <TextField
+                label={
+                  <HStack wrap={false} gap="2" align="center">
+                    <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                    <HelpText strategy="fixed">
+                      <Brødtekst>
+                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
+                        i OeBS som tidligere.
+                      </Brødtekst>
+                    </HelpText>
+                  </HStack>
+                }
+                size="small"
+                {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
+              />
+            </FormProvider>
+          </>
+        )}
+        {vedtaksResultat == 'AVSLÅTT' && (
+          <>
+            <Brødtekst spacing>
+              Når du avslår søknaden vil det naturligvis ikke opprettes en serviceforespørsel (SF) i OeBS. Bruker
+              underrettes med brevet du har forfattet. Innbygger kan også se vedtaket på innlogget side på nav.no
+            </Brødtekst>
+          </>
+        )}
       </BekreftelseModal>
     </>
   )

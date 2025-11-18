@@ -71,10 +71,10 @@ export function FlytendeLinkVerktøylinje() {
         floatingLinkUrlInput,
       }}
     >
-      <Box.New ref={floatingLinkInsert.ref} {...floatingLinkInsert.props} {...flytendeBoxProps}>
+      <Box.New ref={floatingLinkInsert.ref} {...(floatingLinkInsert.props as any)} {...flytendeBoxProps}>
         <OpprettEndreLinkPanel />
       </Box.New>
-      <Box.New ref={floatingLinkEdit.ref} {...floatingLinkEdit.props} {...flytendeBoxProps}>
+      <Box.New ref={floatingLinkEdit.ref} {...(floatingLinkEdit.props as any)} {...flytendeBoxProps}>
         <>
           {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
           {!floatingLinkEditState.isEditing && (

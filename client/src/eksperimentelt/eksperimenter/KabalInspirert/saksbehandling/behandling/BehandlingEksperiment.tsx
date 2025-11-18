@@ -54,10 +54,10 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         </ReadMore>
 
         <Heading size="small" level="2">
-          Vedtak
+          Innstilling
         </Heading>
         <TextContainer>
-          <Brødtekst>Vedtaket blir ikke synlig for innbygger før du ferdigstiller oppgaven Behandle sak.</Brødtekst>
+          <Brødtekst>Innstillingen til resultat blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
         </TextContainer>
 
         <Select
@@ -134,11 +134,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
                 </Button>
               )}
               {(brevKolonne || brevFerdigstilt) && (
-                <Alert
-                  variant={brevFerdigstilt ? 'success' : 'info'}
-                  size="small"
-                  style={{ margin: brevKolonne ? '1em 0' : undefined }}
-                >
+                <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
                   {brevFerdigstilt
                     ? 'Du kan nå fatte vedtak hvis du er fornøyd!'
                     : 'Ferdigstill utkastet i brevpanelet'}

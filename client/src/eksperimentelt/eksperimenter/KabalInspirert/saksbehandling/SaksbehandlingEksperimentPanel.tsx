@@ -24,6 +24,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
+  const [visBrevMangler, setVisBrevMangler] = useState(false)
 
   const {
     sidePanel,
@@ -34,6 +35,8 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     setOppgaveFerdigstilt,
     vedtaksResultat,
     lagretResultat,
+    brevEksisterer,
+    brevFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
 
   interface VedtakFormValues {
@@ -135,6 +138,12 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 onClick={() => {
                   if (!lagretResultat) {
                     setVisResultatManglerModal(true)
+                  } else if (
+                    lagretResultat &&
+                    ((vedtaksResultat != 'INNVILGET' && (!brevEksisterer || !brevFerdigstilt)) ||
+                      (vedtaksResultat == 'INNVILGET' && brevEksisterer && !brevFerdigstilt))
+                  ) {
+                    setVisBrevMangler(true)
                   } else {
                     setVisFerdigstillModal(true)
                   }
@@ -179,6 +188,26 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
         <Brødtekst spacing>
           Du må velge et vedtaksresultat under "Behandling" før du kan ferdigstille oppgaven.
         </Brødtekst>
+      </InfoModal>
+
+      <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>
+        {!brevEksisterer && (
+          <>
+            <Brødtekst spacing>
+              Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det
+              krav om at manunderetter brukeren med brev.
+            </Brødtekst>
+            <Brødtekst spacing>
+              Velg "Opprett vedtaksbrev", rediger brevet, og merk så brevet som klart ved å klikke "Ferdigstill utkast".
+              Deretter kan du prøve å fatte vedtaket på nytt.
+            </Brødtekst>
+          </>
+        )}
+        {brevEksisterer && (
+          <>
+            <Brødtekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Brødtekst>
+          </>
+        )}
       </InfoModal>
 
       <BekreftelseModal

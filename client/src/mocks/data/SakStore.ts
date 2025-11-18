@@ -104,6 +104,9 @@ export class SakStore extends Dexie {
           fulltNavn: 'Ola Nordmann',
           fødselsdato: formatISO('1966-05-01', { representation: 'date' }),
         },
+        søknad: {
+          søknadGjelder: 'Søknad om: gangehjelpemidler',
+        },
       }),
       lagHjelpemiddelsak(Sakstype.SØKNAD, {
         bruker: {
@@ -116,6 +119,9 @@ export class SakStore extends Dexie {
           fulltNavn: 'Hege Hansen',
           fødselsdato: formatISO('1941-09-10', { representation: 'date' }),
           kjønn: Kjønn.KVINNE,
+        },
+        søknad: {
+          søknadGjelder: 'Søknad om: gangehjelpemidler',
         },
       }),
       lagHjelpemiddelsak(Sakstype.SØKNAD),

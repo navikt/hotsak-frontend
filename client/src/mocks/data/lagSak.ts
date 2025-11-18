@@ -56,6 +56,7 @@ export function lagHjelpemiddelsak(
   sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD = Sakstype.SØKNAD,
   overstyringer: {
     bruker?: Partial<Bruker>
+    søknad?: Partial<InsertHjelpemiddelsak>
   } = {}
 ): InsertHjelpemiddelsak {
   const bruker = lagBruker(overstyringer.bruker)
@@ -101,6 +102,7 @@ export function lagHjelpemiddelsak(
       }
     })(),
     */
+    ...overstyringer.søknad,
   }
 }
 

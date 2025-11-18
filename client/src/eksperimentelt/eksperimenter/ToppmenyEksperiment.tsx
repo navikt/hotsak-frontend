@@ -1,6 +1,6 @@
 import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, HStack, InternalHeader } from '@navikt/ds-react'
-import { NavLink, NavLinkProps, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { EndringsloggMenu } from '../../header/endringslogg/EndringsloggMenu'
 import { Søk } from '../../header/Søk'

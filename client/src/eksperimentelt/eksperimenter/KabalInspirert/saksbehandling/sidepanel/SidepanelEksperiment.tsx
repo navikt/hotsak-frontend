@@ -1,5 +1,5 @@
-import { ClockDashedIcon, NotePencilIcon, WheelchairIcon } from '@navikt/aksel-icons'
-import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
+import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { søknadslinjeHøyde } from '../../../../../GlobalStyles'
 import { Historikk } from '../../../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useHjelpemiddeloversikt } from '../../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
@@ -13,7 +13,8 @@ import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperim
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
 
 export function SidepanelEksperiment() {
-  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSaksbehandlingEksperimentContext()
+  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
+    useSaksbehandlingEksperimentContext()
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
@@ -30,8 +31,15 @@ export function SidepanelEksperiment() {
       background="default"
       height="100%"
       borderRadius="large"
-      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}
     >
+      <Button
+        variant="tertiary-neutral"
+        size="small"
+        icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
+        onClick={() => setSidePanel(false)}
+        style={{ position: 'absolute', right: '0.5em', top: '0.5rem' }}
+      />
       <Tabs
         size="small"
         value={valgtNedreVenstreKolonneTab.toString()}

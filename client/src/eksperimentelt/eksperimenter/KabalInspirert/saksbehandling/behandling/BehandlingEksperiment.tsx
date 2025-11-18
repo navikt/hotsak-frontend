@@ -6,6 +6,7 @@ import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
 import { formaterDato } from '../../../../../utils/dato'
 import { useSaksbehandlingEksperimentContext, VedtaksResultat } from '../SaksbehandlingEksperimentProvider'
+import { PanelTittel } from '../PanelTittel.tsx'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -17,6 +18,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   const {
     brevKolonne,
     setBrevKolonne,
+    setBehandlingPanel,
     vedtaksResultat,
     setVedtaksResultat,
     lagretResultat,
@@ -37,9 +39,12 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     >
       <VStack gap="space-16">
         {hjelpemidler.length > 0 && (
-          <Heading level="2" size="small">
-            Behandling
-          </Heading>
+          <PanelTittel
+            tittel="Behandle sak"
+            lukkPanel={() => {
+              setBehandlingPanel(false)
+            }}
+          />
         )}
 
         <HStack gap="space-20">

@@ -104,7 +104,6 @@ export function HjelpemiddelEksperiment({
               ) : (
                 <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
               )}
-
               {minmaxStyrt && (
                 <>
                   <div>
@@ -138,6 +137,7 @@ export function HjelpemiddelEksperiment({
                 </div>
               )}
             </HStack>
+            <Skillelinje />
             <VStack paddingBlock={'space-4 0'}>
               <Etikett>Antall</Etikett>
               <div>

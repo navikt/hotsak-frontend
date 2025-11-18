@@ -1,0 +1,101 @@
+import { Table, type TableProps } from '@navikt/ds-react'
+import { type Key, type ReactNode, useState } from 'react'
+
+export interface DataGridColumn<T extends object> {
+  field: string | Exclude<keyof T, symbol>
+
+  header?: string
+  hidden?: boolean
+  sortKey?: Exclude<keyof T, symbol | number>
+  width?: number
+
+  renderHeader?(): ReactNode
+  renderCell?(row: T): ReactNode
+}
+
+export interface DataGridProps<T extends object> extends TableProps {
+  rows: T[]
+  columns: DataGridColumn<T>[]
+  textSize?: 'medium' | 'small'
+
+  keyFactory(row: T): Exclude<Key, bigint>
+  renderContent?(row: T, expanded: boolean): ReactNode
+}
+
+export function DataGrid<T extends object>(props: DataGridProps<T>) {
+  const { rows, columns, textSize, keyFactory, renderContent, ...tableProps } = props
+  const [expanded, setExpanded] = useState<Record<Exclude<Key, bigint>, boolean>>({})
+  return (
+    <Table {...tableProps}>
+      <Table.Header>
+        <Table.Row>
+          {renderContent ? <Table.HeaderCell /> : null}
+          {columns.map((column) => {
+            const key = column.field
+
+            let header: ReactNode
+            if (column.renderHeader) {
+              header = column.renderHeader()
+            } else if (column.header) {
+              header = <>{column.header}</>
+            }
+
+            if (column.sortKey) {
+              return (
+                <Table.ColumnHeader key={key} textSize={textSize} sortKey={column.sortKey} sortable>
+                  {header}
+                </Table.ColumnHeader>
+              )
+            } else {
+              return (
+                <Table.HeaderCell key={key} textSize={textSize}>
+                  {header}
+                </Table.HeaderCell>
+              )
+            }
+          })}
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {rows.map((row) => {
+          const key = keyFactory(row)
+
+          const cells = columns.map((column) => {
+            let value: ReactNode
+            if (column.renderCell) {
+              value = column.renderCell(row)
+            } else if (isKeyOfObject(column.field, row)) {
+              value = <>{row[column.field]}</>
+            }
+
+            return (
+              <Table.DataCell key={column.field} textSize={textSize}>
+                {value}
+              </Table.DataCell>
+            )
+          })
+
+          if (renderContent) {
+            return (
+              <Table.ExpandableRow
+                key={key}
+                content={renderContent(row, expanded[key])}
+                onOpenChange={(value) => {
+                  setExpanded({ ...expanded, [key]: value })
+                }}
+              >
+                {cells}
+              </Table.ExpandableRow>
+            )
+          } else {
+            return <Table.Row key={key}>{cells}</Table.Row>
+          }
+        })}
+      </Table.Body>
+    </Table>
+  )
+}
+
+function isKeyOfObject<T extends object>(key: PropertyKey, obj: T): key is keyof T {
+  return key in obj
+}

@@ -4,9 +4,9 @@ import { useMemo } from 'react'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { compareBy, notEmpty, uniqueBy } from '../../utils/array.ts'
+import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { OppgaveFilter } from './OppgaveFilter.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
-import { OppgaveTable } from './OppgaveTable.tsx'
 import { useMineOppgaver } from './useMineOppgaver.ts'
 
 export function MineOppgaver() {
@@ -39,7 +39,7 @@ export function MineOppgaver() {
           oppgaveprioritet={oppgaveprioritet}
           onSøk={() => {}}
         />
-        <OppgaveTable oppgaver={filtrerteOppgaver} mine />
+        <MineOppgaverTable oppgaver={filtrerteOppgaver} />
       </Box>
     </>
   )

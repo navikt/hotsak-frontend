@@ -2,7 +2,8 @@ import { http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
 //import behovsmelding from '../data/behovsmelding_1.json'
-import behovsmelding from '../data/behovsmelding_demo1_nye_hotsak.json'
+import behovsmeldingEnkel from '../data/behovsmelding_demo1_nye_hotsak_enkel.json'
+import behovsmeldingVanskelig from '../data/behovsmelding_demo1_nye_hotsak_vanskelig.json'
 //import behovsmelding from '../data/behovsmelding_2.json'
 import type { SakParams } from './params'
 import { delay, respondForbidden, respondInternalServerError, respondUnauthorized } from './response'
@@ -22,6 +23,10 @@ export const behovsmeldingHandlers: StoreHandlersFactory = () => [
 
     await delay(500)
 
-    return HttpResponse.json({ ...behovsmelding })
+    if (sakId == '322002') {
+      return HttpResponse.json({ ...behovsmeldingVanskelig })
+    } else {
+      return HttpResponse.json({ ...behovsmeldingEnkel })
+    }
   }),
 ]

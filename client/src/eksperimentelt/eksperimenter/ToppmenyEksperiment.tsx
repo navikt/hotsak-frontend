@@ -30,9 +30,9 @@ export function ToppmenyEksperiment() {
 
       <HStack as="nav" wrap={false} flexGrow="1" overflow="auto">
         <HStack as="ol" gap="space-16" wrap={false} paddingInline="space-16" marginBlock="0">
-          <NavItem to="/">Oppgaver</NavItem>
+          {/*<NavItem to="/">Oppgaver</NavItem>
 
-          <NavItem to="/mine-oppgaver">Mine oppgaver</NavItem>
+          <NavItem to="/mine-oppgaver">Mine oppgaver</NavItem>*/}
         </HStack>
         <div className={styles.søkeContainer}>
           <Søk

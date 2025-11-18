@@ -117,7 +117,11 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
   http.get<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/gjelder`, async ({ params }) => {
     const { oppgaveId } = params
     const result = await oppgaveStore.hentGjelderInfo(oppgaveId)
-    const { behandlingstema, behandlingstype, alternativer } = result ?? { behandlingstema: undefined, behandlingstype: undefined, alternativer: undefined }
+    const { behandlingstema, behandlingstype, alternativer } = result ?? {
+      behandlingstema: undefined,
+      behandlingstype: undefined,
+      alternativer: undefined,
+    }
     await delay(75)
     return HttpResponse.json({
       behandlingstema,

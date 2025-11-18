@@ -1,7 +1,14 @@
 import { addBusinessDays, parseISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
-import { GjelderAlternativerResponse, OppgaveId, Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import {
+  GjelderAlternativerResponse,
+  OppgaveId,
+  Oppgaveprioritet,
+  Oppgavestatus,
+  Oppgavetype,
+  OppgaveV2,
+} from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal'
 import { enheter } from './enheter'
 import { JournalpostStore } from './JournalpostStore'
@@ -39,7 +46,7 @@ export class OppgaveStore extends Dexie {
     const journalføringer = await this.journalpostStore.alle()
 
     const oppgaverFraSak: InsertOppgave[] = saker.map((sak) => {
-      const mappeId = lagTilfeldigInteger(0, 23).toString();
+      const mappeId = lagTilfeldigInteger(0, 23).toString()
       const sakId = sak.sakId
       return {
         oppgaveId: `E-${sakId}`,
@@ -63,13 +70,13 @@ export class OppgaveStore extends Dexie {
         versjon: 1,
         mappeId: mappeId,
         mappenavn: hentMappe(mappeId),
-        behandlingstema: hentRandomBehandlingstema(),
-        behandlingstype: hentRandomBehandlingstype(),
+        // behandlingstema: hentRandomBehandlingstema(),
+        behandlingstype: 'Bevegelseshjelpemidler', // hentRandomBehandlingstype(),
       }
     })
 
     const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map((journalføring) => {
-      const mappeId = lagTilfeldigInteger(0, 12).toString();
+      const mappeId = lagTilfeldigInteger(0, 12).toString()
       const journalpostId = journalføring.journalpostId
       return {
         oppgaveId: `I-${journalpostId}`,
@@ -144,41 +151,45 @@ export class OppgaveStore extends Dexie {
     })
   }
 
-  async hentGjelderInfo(oppgaveId: OppgaveId): Promise<{ behandlingstema: string, behandlingstype: string, alternativer: GjelderAlternativerResponse } | undefined> {
+  async hentGjelderInfo(
+    oppgaveId: OppgaveId
+  ): Promise<
+    { behandlingstema: string; behandlingstype: string; alternativer: GjelderAlternativerResponse } | undefined
+  > {
     console.log(`Henter gjelder-info for oppgaveId: ${oppgaveId}`)
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {
       return
     }
     return {
-      behandlingstema: oppgave.behandlingstema || "",
-      behandlingstype: oppgave.behandlingstype || "",
+      behandlingstema: oppgave.behandlingstema || '',
+      behandlingstype: oppgave.behandlingstype || '',
       alternativer: {
-        behandlingstemaKode: hentBehandlingstemaKode(oppgave.behandlingstema || ""),
-        behandlingstemaTerm: oppgave.behandlingstema || "",
+        behandlingstemaKode: hentBehandlingstemaKode(oppgave.behandlingstema || ''),
+        behandlingstemaTerm: oppgave.behandlingstema || '',
         alternativer: [
           {
-            behandlingstemaKode: "ab0013",
-            behandlingstemaTerm: "Ortopediske hjelpemidler"
+            behandlingstemaKode: 'ab0013',
+            behandlingstemaTerm: 'Ortopediske hjelpemidler',
           },
           {
-            behandlingstemaKode: "ab0253",
-            behandlingstemaTerm: "Tinnitusmaskerer"
+            behandlingstemaKode: 'ab0253',
+            behandlingstemaTerm: 'Tinnitusmaskerer',
           },
           {
-            behandlingstemaKode: "ab0315",
-            behandlingstemaTerm: "Arbeids- og utdanningsreiser"
+            behandlingstemaKode: 'ab0315',
+            behandlingstemaTerm: 'Arbeids- og utdanningsreiser',
           },
           {
-            behandlingstemaKode: "ab0332",
-            behandlingstemaTerm: "Servicehund",
+            behandlingstemaKode: 'ab0332',
+            behandlingstemaTerm: 'Servicehund',
           },
           {
-            behandlingstemaKode: "ab0369",
-            behandlingstemaTerm: "Aktivitetshjelpemidler"
-          }
-        ]
-      }
+            behandlingstemaKode: 'ab0369',
+            behandlingstemaTerm: 'Aktivitetshjelpemidler',
+          },
+        ],
+      },
     }
   }
 

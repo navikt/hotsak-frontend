@@ -1,0 +1,349 @@
+{
+  "bruker": {
+    "fnr": "10096965900",
+    "navn": {
+      "fornavn": "Åge",
+      "mellomnavn": null,
+      "etternavn": "Hansen"
+    },
+    "signaturtype": "FULLMAKT",
+    "telefon": "12121212",
+    "veiadresse": {
+      "adresse": "Fjellvegen 12",
+      "postnummer": "6770",
+      "poststed": "Nordfjordeid"
+    },
+    "kommunenummer": "4649",
+    "brukernummer": null,
+    "kilde": "PDL",
+    "legacyopplysninger": []
+  },
+  "brukersituasjon": {
+    "vilkår": [
+      {
+        "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+          "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+        }
+      },
+      {
+        "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+        "tekst": {
+          "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+          "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+        }
+      },
+      {
+        "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+        "tekst": {
+          "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+          "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+        }
+      }
+    ],
+    "funksjonsnedsettelser": ["BEVEGELSE"],
+    "funksjonsbeskrivelse": {
+      "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE",
+      "diagnose": null,
+      "beskrivelse": "Atrose og leddsmerter i hele kroppen, og i særlig hofter. Gjøre henne stiv og hun har vansker med balanse og koordinasjon ved gange over distanse. Har hatt et fall inne hjemme. Er utrygg på å gå uten rullator nå, låner fra korttidslager.\n\nBruker er svært ustø. Klarer ikke å stå i dusjen.\n\nKlarer ikke å reise seg opp av stol, og faller ned i stol. Må forsøke gjentatte ganger for å komme seg ut av stol.  Faller ned i stol når hun skal sette seg ned i stol, klarer ikke å kontrollere bevegelsene for å komme seg inn og ut av stol pga nedsatt muskelkraft og dårlig balanse."
+    }
+  },
+  "hjelpemidler": {
+    "hjelpemidler": [
+      {
+        "hjelpemiddelId": "e711d271-545f-445b-985d-23c86b2779fd",
+        "antall": 1,
+        "produkt": {
+          "hmsArtNr": "296289",
+          "artikkelnavn": "Active Easyriser Small 60-80 kg",
+          "iso8": "18091501",
+          "iso8Tittel": "Løftestoler med synkron regulering av rygg, benstøtter og oppreisning",
+          "delkontrakttittel": "2: Stol med mekanisk oppreisingsfunksjon",
+          "sortimentkategori": "Stoler med oppreisingsfunksjon",
+          "delkontraktId": "c7736f1d-18e2-4d13-8a57-ddc9304ead59",
+          "rangering": 1
+        },
+        "tilbehør": [],
+        "bytter": [],
+        "bruksarenaer": ["EGET_HJEM"],
+        "utlevertinfo": {
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
+          "utleverttype": null,
+          "overførtFraBruker": null,
+          "annenKommentar": null
+        },
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Bruksarena",
+              "nn": "Bruksarena"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "I eget hjem.",
+                  "nn": "I eigen heim."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Kroppsmål",
+              "nn": "Kroppsmål"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Sittebredde: 45 cm, lårlengde: 35 cm, legglengde: 45 cm, høyde: 160 cm, kroppsvekt: 60 kg.",
+                  "nn": "Sitjebreidd: 45 cm, lårlengde: 35 cm, legglengde: 45 cm, høgde: 160 cm, kroppsvekt: 60 kg."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Funksjon",
+              "nn": "Funksjon"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen kan ikke reise seg selv fra vanlige stoler ved bruk av enklere tiltak som for eksempel forhøyningsklosser, puter, støttestang, støttehåndtak og lignende.",
+                  "nn": "Personen kan ikkje reisa seg sjølv frå vanlege stolar ved bruk av enklare tiltak som til dømes løfteklossar, puter, støttestong, støttehandtak og liknande."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Grunnen til behovet",
+              "nn": "Grunnen til behovet"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen skal reise seg opp og utføre dagliglivets oppgaver.",
+                  "nn": "Personen skal reisa seg opp og utføra oppgåvene til dagleglivet."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Trekk",
+              "nn": "Trekk"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Stol i annet trekk kan benyttes",
+                  "nn": "Stol i anna trekk kan nyttast"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          },
+          {
+            "ledetekst": {
+              "nb": "Behov for setetilt",
+              "nn": "Behov for setetilt"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "Personen har behov for setetilt",
+                  "nn": "Personen har behov for setetilt"
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ],
+        "varsler": [],
+        "saksbehandlingvarsel": []
+      },
+      {
+        "hjelpemiddelId": "a815595c-c02d-4bf0-a8fc-2e4641ac3e0c",
+        "antall": 1,
+        "produkt": {
+          "hmsArtNr": "177946",
+          "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
+          "iso8": "12060602",
+          "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+          "delkontrakttittel": "2. Rullator - innendørs bruk",
+          "sortimentkategori": "Ganghjelpemidler",
+          "delkontraktId": "HMDB-1333",
+          "rangering": 1
+        },
+        "tilbehør": [],
+        "bytter": [],
+        "bruksarenaer": ["EGET_HJEM"],
+        "utlevertinfo": {
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
+          "utleverttype": null,
+          "overførtFraBruker": null,
+          "annenKommentar": null
+        },
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Bruksarena",
+              "nn": "Bruksarena"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "I eget hjem.",
+                  "nn": "I eigen heim."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ],
+        "varsler": [],
+        "saksbehandlingvarsel": []
+      },
+      {
+        "hjelpemiddelId": "3c31a600-01f5-43dc-912d-868bcf49c392",
+        "antall": 1,
+        "produkt": {
+          "hmsArtNr": "297414",
+          "artikkelnavn": "Easy",
+          "iso8": "09330701",
+          "iso8Tittel": "Dusjkrakker",
+          "delkontrakttittel": "8: Dusjkrakker",
+          "sortimentkategori": "Hygienehjelpemidler",
+          "delkontraktId": "f6008a0f-f37f-4f1f-9781-1b0b6125e785",
+          "rangering": 1
+        },
+        "tilbehør": [],
+        "bytter": [],
+        "bruksarenaer": ["EGET_HJEM"],
+        "utlevertinfo": {
+          "alleredeUtlevertFraHjelpemiddelsentralen": false,
+          "utleverttype": null,
+          "overførtFraBruker": null,
+          "annenKommentar": null
+        },
+        "opplysninger": [
+          {
+            "ledetekst": {
+              "nb": "Bruksarena",
+              "nn": "Bruksarena"
+            },
+            "innhold": [
+              {
+                "fritekst": null,
+                "forhåndsdefinertTekst": {
+                  "nb": "I eget hjem.",
+                  "nn": "I eigen heim."
+                },
+                "begrepsforklaring": null
+              }
+            ]
+          }
+        ],
+        "varsler": [],
+        "saksbehandlingvarsel": []
+      }
+    ],
+    "tilbehør": [],
+    "totaltAntall": 3
+  },
+  "levering": {
+    "hjelpemiddelformidler": {
+      "navn": {
+        "fornavn": "Kvadratisk",
+        "mellomnavn": null,
+        "etternavn": "Faktura"
+      },
+      "arbeidssted": "Østby Dans og Fysioterapi",
+      "stilling": "CEO",
+      "telefon": "11223344",
+      "adresse": {
+        "adresse": "Svanseveien 3",
+        "postnummer": "6770",
+        "poststed": "NORDFJORDEID"
+      },
+      "epost": "kvadratisk.faktura@tull.kommune.no",
+      "treffesEnklest": "På telefon fra hjemmekontor.",
+      "kommunenavn": "STAD",
+      "kommunenummer": "4649"
+    },
+    "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+    "annenOppfølgingsansvarlig": null,
+    "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+    "annenUtleveringsadresse": null,
+    "annenUtleveringskommune": null,
+    "annenUtleveringsbydel": null,
+    "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+    "annenKontaktperson": null,
+    "utleveringMerknad": "",
+    "hast": null,
+    "automatiskUtledetTilleggsinfo": []
+  },
+  "innsender": {
+    "rolle": "FORMIDLER",
+    "erKommunaltAnsatt": true,
+    "kurs": [
+      {
+        "id": 4,
+        "title": "Bestilling",
+        "kilde": "kunnskapsbanken"
+      }
+    ],
+    "sjekketUtlånsoversiktForKategorier": []
+  },
+  "vedlegg": [],
+  "metadata": {
+    "bestillingsordningsjekk": {
+      "kanVæreBestilling": false,
+      "kriterier": {
+        "alleHovedProdukterPåBestillingsOrdning": false,
+        "alleTilbehørPåBestillingsOrdning": true,
+        "brukerHarHjelpemidlerFraFør": null,
+        "brukerHarInfotrygdVedtakFraFør": null,
+        "brukerHarHotsakVedtakFraFør": true,
+        "leveringTilFolkeregistrertAdresse": true,
+        "brukersAdresseErSatt": true,
+        "brukerBorIkkeIUtlandet": true,
+        "brukerErIkkeSkjermetPerson": true,
+        "inneholderIkkeFritekst": true,
+        "kildeErPdl": true,
+        "harIkkeForMangeOrdrelinjer": true,
+        "ingenProdukterErAlleredeUtlevert": true,
+        "brukerErTilknyttetBydelIOslo": null,
+        "harIngenBytter": true,
+        "brukerHarAdresseIOeBS": false
+      },
+      "metaInfo": {
+        "hovedProdukter": ["296289", "177946", "297414"],
+        "hovedProdukterIkkePåBestillingsordning": ["296289"],
+        "tilbehør": [],
+        "tilbehørIkkePåBestillingsordning": []
+      },
+      "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d"
+    }
+  },
+  "id": "4802ed92-aa84-48b4-97b2-c89118e25898",
+  "type": "SØKNAD",
+  "innsendingsdato": "2025-11-17",
+  "innsendingstidspunkt": "2025-11-17T12:03:29.497205148Z",
+  "skjemaversjon": 2,
+  "hjmBrukersFnr": "10096965900",
+  "prioritet": "NORMAL"
+}

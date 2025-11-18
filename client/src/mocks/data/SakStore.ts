@@ -52,6 +52,7 @@ import {
 import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { formatISO } from 'date-fns'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -92,23 +93,45 @@ export class SakStore extends Dexie {
     }
 
     return this.lagreAlle([
+      lagHjelpemiddelsak(Sakstype.SØKNAD, {
+        bruker: {
+          fnr: '01056605014',
+          brukernummer: '123',
+          navn: {
+            fornavn: 'Ola',
+            etternavn: 'Nordmann',
+          },
+          fulltNavn: 'Ola Nordmann',
+          fødselsdato: formatISO('1966-05-01', { representation: 'date' }),
+        },
+      }),
+      lagHjelpemiddelsak(Sakstype.SØKNAD, {
+        bruker: {
+          fnr: '10096965900',
+          brukernummer: '321',
+          navn: {
+            fornavn: 'Åge',
+            etternavn: 'Hansen',
+          },
+          fulltNavn: 'Åge Hansen',
+          fødselsdato: formatISO('1969-09-10', { representation: 'date' }),
+        },
+      }),
       lagHjelpemiddelsak(Sakstype.SØKNAD),
-      lagHjelpemiddelsak(Sakstype.SØKNAD),
-      lagHjelpemiddelsak(Sakstype.SØKNAD),
-      lagHjelpemiddelsak(Sakstype.SØKNAD),
-      lagHjelpemiddelsak(Sakstype.SØKNAD),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagHjelpemiddelsak(Sakstype.BESTILLING),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
+      // lagHjelpemiddelsak(Sakstype.SØKNAD),
+      // lagHjelpemiddelsak(Sakstype.SØKNAD),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagHjelpemiddelsak(Sakstype.BESTILLING),
+      // lagBarnebrillesak(),
+      // lagBarnebrillesak(),
+      // lagBarnebrillesak(),
+      // lagBarnebrillesak(),
+      // lagBarnebrillesak(),
     ])
   }
 

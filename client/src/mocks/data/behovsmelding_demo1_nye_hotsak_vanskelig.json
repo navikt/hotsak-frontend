@@ -1,7 +1,7 @@
 {
   "bruker": {
-    "fnr": "13820599335",
-    "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+    "fnr": "01056605014",
+    "navn": { "fornavn": "Ola", "mellomnavn": null, "etternavn": "Nordmann" },
     "signaturtype": "FULLMAKT",
     "telefon": "12121212",
     "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
@@ -316,6 +316,6 @@
   "innsendingsdato": "2025-11-14",
   "innsendingstidspunkt": "2025-11-14T11:44:22.306290318Z",
   "skjemaversjon": 2,
-  "hjmBrukersFnr": "13820599335",
+  "hjmBrukersFnr": "01056605014",
   "prioritet": "NORMAL"
 }

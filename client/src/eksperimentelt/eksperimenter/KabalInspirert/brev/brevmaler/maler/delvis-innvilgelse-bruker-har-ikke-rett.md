@@ -1,26 +1,24 @@
-# Nav har delvis innvilget søknaden din om hjelpemidler
+# Du får låne noen av hjelpemidlene du har søkt om
 
-## Vedtak
+Hei,
 
-Vi har innvilget søknaden din om \[navn på konkret hjelpemiddel\] fordi \[fritekstfelt\].
+Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok [skriv inn dato her]. Søknaden er delvis innvilget. Du får låne [fritekst] av Nav. Du får ikke låne [fritekst] av Nav. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
 
-Vi har avslått søknaden din om [navn på hjelpemidler] fordi [fritekstfelt].
+## Begrunnelse for vedtaket
 
-Vedtaket er gjort etter folketrygdloven § \[10-5\] \[10-6\].
+Vi har innvilget deler av søknaden din fordi [fritekst].
 
-## Praktiske opplysninger
+Vi har avslått deler av søknaden din fordi [fritekst].
 
-Kommunen vil som regel levere hjelpemidlene til den oppgitte adressen. Dersom hjelpemidler må bestilles og tilpasses, får du kanskje ikke alle på samme tidspunkt.
+## Orientering om utlån av hjelpemidler
 
-Har du spørsmål om utleveringen, må du henvende deg til den som har hjulpet deg med søknaden eller til hjelpemiddelsentralen.
+Kommunen vil levere hjelpemidlene til adressen som ble oppgitt i søknaden, om ikke annet er avtalt. Har du spørsmål om utleveringen, må du henvende deg til den som har sendt søknaden for deg, eller til Nav hjelpemiddelsentral.
 
-Du er ansvarlig for å ta vare på og vedlikeholde de hjelpemidlene du har lånt av Nav. Ta kontakt med kommunen dersom hjelpemiddelet må repareres. Vi eier hjelpemidlene, og de skal ikke brukes av andre enn deg selv. Du har ikke lov til å selge eller pantsette hjelpemidlet.
+Du er ansvarlig for å ta vare på og vedlikeholde de hjelpemidlene du har lånt av Nav. Ta kontakt med kommunen dersom hjelpemiddelet må repareres. Nav eier hjelpemidlene, og de skal ikke brukes av andre enn deg selv. Du har ikke lov til å selge eller pantsette hjelpemidlet.
 
-Hvis du flytter utenlands eller får varig opphold i sykehjem eller institusjon må du gi oss beskjed i forkant.
+Hvis du flytter utenlands eller får varig opphold i sykehjem eller institusjon må du gi oss beskjed.
 
-Dersom du ikke bruker hjelpemidlene må du kontakte kommunen, som skal ta i mot eller hente hjelpemidlene.
-
-Du kan lese mer om vilkårene for å få hjelpemidler på [nav.no](https://nav.no).
+Dersom du ikke bruker hjelpemidlene må du kontakte kommunen, som vil ta imot eller hente hjelpemidlene.
 
 ## Du kan klage på vedtaket
 
@@ -42,7 +40,7 @@ Vi har dessverre ikke mulighet til å vise foresatt eller verge saken og tilhør
 
 ## Har du spørsmål?
 
-Du finner mer informasjon på [nav.no/briller-til-barn](https://nav.no/briller-til-barn).
+Du finner mer informasjon på [nav.no/hjelpemidler](https://nav.no/hjelpemidler).
 
 På [nav.no/kontakt](https://nav.no/kontakt) kan du chatte eller skrive til oss.
 

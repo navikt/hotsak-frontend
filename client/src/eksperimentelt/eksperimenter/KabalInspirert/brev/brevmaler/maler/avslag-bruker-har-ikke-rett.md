@@ -1,10 +1,12 @@
-# Nav har avslått søknaden din om hjelpemidler
+# Du får ikke låne hjelpemidler
 
 Hei,
 
-Vi har avslått søknaden din om \[navn på hjelpemidler\] fordi \[fritekstfelt\].
+Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok [skriv inn dato her]. Søknaden er avslått, og du får ikke låne [fritekst]. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
 
-Vedtaket er gjort etter folketrygdloven § 10-6.
+## Begrunnelse for vedtaket
+
+Vi har avslått søknaden din om utlån av [fritekst] fordi [fritekst].
 
 ## Du kan klage på vedtaket
 
@@ -26,7 +28,7 @@ Vi har dessverre ikke mulighet til å vise foresatt eller verge saken og tilhør
 
 ## Har du spørsmål?
 
-Du finner mer informasjon på [nav.no/briller-til-barn](https://nav.no/briller-til-barn).
+Du finner mer informasjon på [nav.no/hjelpemidler](https://nav.no/hjelpemidler).
 
 På [nav.no/kontakt](https://nav.no/kontakt) kan du chatte eller skrive til oss.
 

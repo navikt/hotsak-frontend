@@ -38,7 +38,11 @@ export function SidepanelEksperiment() {
         size="small"
         icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
         onClick={() => setSidePanel(false)}
-        style={{ position: 'absolute', right: '0.5em', top: '0.5rem' }}
+        style={{
+          /* FIXME: Trolig ikke måten vi bør gjøre dette på, men har ikke tid til noe annet */ position: 'absolute',
+          right: '0.5em',
+          top: '0.5rem',
+        }}
       />
       <Tabs
         size="small"

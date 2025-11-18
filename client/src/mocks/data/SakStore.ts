@@ -107,14 +107,14 @@ export class SakStore extends Dexie {
       }),
       lagHjelpemiddelsak(Sakstype.SØKNAD, {
         bruker: {
-          fnr: '10096965900',
+          fnr: '10094165900',
           brukernummer: '321',
           navn: {
             fornavn: 'Åge',
             etternavn: 'Hansen',
           },
           fulltNavn: 'Åge Hansen',
-          fødselsdato: formatISO('1969-09-10', { representation: 'date' }),
+          fødselsdato: formatISO('1941-09-10', { representation: 'date' }),
         },
       }),
       lagHjelpemiddelsak(Sakstype.SØKNAD),

@@ -2,13 +2,13 @@
 
 Hei,
 
-Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok [skriv inn dato her]. Søknaden er delvis innvilget. Du får låne [fritekst] av Nav. Du får ikke låne [fritekst] av Nav. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
+Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok \[skriv inn dato her\]. Søknaden er delvis innvilget. Du får låne \[fritekst\] av Nav. Du får ikke låne \[fritekst\] av Nav. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
 
 ## Begrunnelse for vedtaket
 
-Vi har innvilget deler av søknaden din fordi [fritekst].
+Vi har innvilget deler av søknaden din fordi \[fritekst\].
 
-Vi har avslått deler av søknaden din fordi [fritekst].
+Vi har avslått deler av søknaden din fordi \[fritekst\].
 
 ## Orientering om utlån av hjelpemidler
 

@@ -2,7 +2,7 @@
 
 Hei,
 
-Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok [skriv inn dato her]. Søknaden er innvilget, og du får låne [fritekst]. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
+Vi har behandlet søknaden din om utlån av hjelpemidler, som vi mottok \[skriv inn dato her\]. Søknaden er innvilget, og du får låne \[fritekst\]. Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7, bokstav a, jf. forskrift om stønad til hjelpemidler m.v.
 
 ## Begrunnelse for vedtaket
 

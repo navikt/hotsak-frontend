@@ -13,6 +13,7 @@ export const Brev = () => {
   const { sak } = useSak()
   const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
     useSaksbehandlingEksperimentContext()
+  const { USE_MSW } = window.appSettings
 
   const brevutkast = useSWR<
     {
@@ -184,7 +185,7 @@ export const Brev = () => {
                 </div>
               </div>
               <iframe
-                src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV#navpanes=0&zoom=FitV`}
+                src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV${USE_MSW ? '_' + vedtaksResultat : ''}#navpanes=0&zoom=FitV`}
                 width="100%"
                 height="100%"
                 allow="fullscreen"

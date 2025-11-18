@@ -13,10 +13,23 @@ export function middlewarePlugin({ proxy }: { development?: boolean; proxy: Prox
     name: 'middleware-plugin',
     configureServer(server) {
       server.middlewares.use('/api', (req, res, next) => {
-        const regex = /^\/api\/sak\/\d+\/brev\/BREVEDITOR_VEDTAKSBREV/
+        const regex = /^\/api\/sak\/\d+\/brev\/BREVEDITOR_VEDTAKSBREV(_.+)?/
         let filepath = './src/mocks/data/barnebriller_søknad.pdf'
-        if (regex.test(req.originalUrl || '')) {
-          filepath = './src/mocks/data/breveditor_vedtaksbrev.pdf'
+        const match = (req.originalUrl || '').match(regex)
+        if (match && match.length > 1) {
+          switch (match[1]) {
+            case '_INNVILGET':
+              filepath = './src/mocks/data/breveditor_vedtaksbrev_innvilget.pdf'
+              break
+            case '_DELVIS_INNVILGET':
+              filepath = './src/mocks/data/breveditor_vedtaksbrev_delvis_innvilget.pdf'
+              break
+            case '_AVSL%C3%85TT':
+              filepath = './src/mocks/data/breveditor_vedtaksbrev_avslått.pdf'
+              break
+            default:
+              filepath = './src/mocks/data/breveditor_vedtaksbrev.pdf'
+          }
         }
         fs.stat(filepath, (err, stats) => {
           if (err) {

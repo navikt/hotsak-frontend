@@ -34,6 +34,8 @@ const initialState = {
   setLagretResultat() {},
   oppgaveFerdigstilt: false,
   setOppgaveFerdigstilt() {},
+  opprettBrevKlikket: false,
+  setOpprettBrevKlikket() {},
   brevEksisterer: false,
   setBrevEksisterer() {},
   brevFerdigstilt: false,
@@ -56,6 +58,7 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [vedtaksResultat, setVedtaksResultat] = useState<VedtaksResultat | undefined>()
   const [lagretResultat, setLagretResultat] = useState<boolean>(false)
   const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
+  const [opprettBrevKlikket, setOpprettBrevKlikket] = useState(false)
   const [brevEksisterer, setBrevEksisterer] = useState<boolean>(false)
   const [brevFerdigstilt, setBrevFerdigstilt] = useState<boolean>(false)
 
@@ -82,6 +85,8 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setLagretResultat,
         oppgaveFerdigstilt,
         setOppgaveFerdigstilt,
+        opprettBrevKlikket,
+        setOpprettBrevKlikket,
         brevEksisterer,
         setBrevEksisterer,
         brevFerdigstilt,
@@ -126,6 +131,8 @@ type SaksbehandlingEksperimentContextType = {
   setLagretResultat(lagret: boolean): void
   oppgaveFerdigstilt: boolean
   setOppgaveFerdigstilt(ferdigstilt: boolean): void
+  opprettBrevKlikket: boolean
+  setOpprettBrevKlikket(klikket: boolean): void
   brevEksisterer: boolean
   setBrevEksisterer(eksisterer: boolean): void
   brevFerdigstilt: boolean

@@ -12,8 +12,16 @@ import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt, oppgaveFerdigstilt } =
-    useSaksbehandlingEksperimentContext()
+  const {
+    opprettBrevKlikket,
+    setOpprettBrevKlikket,
+    vedtaksResultat,
+    lagretResultat,
+    setBrevKolonne,
+    setBrevEksisterer,
+    setBrevFerdigstilt,
+    oppgaveFerdigstilt,
+  } = useSaksbehandlingEksperimentContext()
   const { USE_MSW } = window.appSettings
 
   const brevutkast = useSWR<
@@ -32,23 +40,25 @@ export const Brev = () => {
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
 
-  const malKey = errorEr404
-    ? lagretResultat && vedtaksResultat == 'INNVILGET'
-      ? 'innvilgelse'
-      : lagretResultat && vedtaksResultat == 'DELVIS_INNVILGET'
-        ? 'delvis-innvilgelse-bruker-har-ikke-rett'
-        : lagretResultat && vedtaksResultat == 'AVSLÅTT'
-          ? 'avslag-bruker-har-ikke-rett'
-          : undefined
-    : undefined
+  const malKey =
+    errorEr404 && opprettBrevKlikket
+      ? lagretResultat && vedtaksResultat == 'INNVILGET'
+        ? 'innvilgelse'
+        : lagretResultat && vedtaksResultat == 'DELVIS_INNVILGET'
+          ? 'delvis-innvilgelse-bruker-har-ikke-rett'
+          : lagretResultat && vedtaksResultat == 'AVSLÅTT'
+            ? 'avslag-bruker-har-ikke-rett'
+            : undefined
+      : undefined
 
   useEffect(() => {
     // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
     if (brevutkast.data?.data?.value) {
       velgMal(undefined)
       setBrevEksisterer(true)
+      setOpprettBrevKlikket(false)
     }
-  }, [brevutkast.data, setBrevEksisterer])
+  }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket])
 
   if (brevutkast.isLoading) {
     return (

@@ -24,6 +24,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     setVedtaksResultat,
     lagretResultat,
     setLagretResultat,
+    setOpprettBrevKlikket,
     brevEksisterer,
     brevFerdigstilt,
     oppgaveFerdigstilt,
@@ -134,20 +135,21 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
               <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
             </TextContainer>
             <div>
-              {!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer) && (
+              {(!brevEksisterer || (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
                 <Button
                   variant="secondary"
                   size="small"
                   onClick={() => {
                     // setBehandlingPanel(false)
                     setBrevKolonne(true)
+                    if (!brevEksisterer) setOpprettBrevKlikket(true)
                   }}
                   style={{ margin: '1em 0' }}
                 >
                   {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
                 </Button>
               )}
-              {(brevKolonne || brevFerdigstilt) && !oppgaveFerdigstilt && (
+              {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
                 <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
                   {brevFerdigstilt
                     ? 'Du kan nå fatte vedtak hvis du er fornøyd!'

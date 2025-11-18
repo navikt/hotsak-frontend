@@ -18,6 +18,10 @@ import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperiment
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
 import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
+import { useSakActions } from '../../../../saksbilde/useSakActions.ts'
+import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
+import { mutate } from 'swr'
+import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 
 export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { behovsmelding } = useBehovsmelding()
@@ -25,6 +29,17 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
+  const sakActions = useSakActions()
+
+  const { oppgave } = useOppgave()
+
+  const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgave?.oppgaveId}`)
+  const mutateOppgaveOgSak = () => {
+    if (sak.sakId) {
+      return Promise.all([mutateOppgave(), mutateSak(sak.sakId)])
+    }
+    return mutateOppgave()
+  }
 
   const {
     sidePanel,
@@ -49,9 +64,11 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     },
   })
 
-  const fattVedtak = async (/*data: VedtakFormValues*/) => {
+  const fattVedtak = async (data: VedtakFormValues) => {
     setOppgaveFerdigstilt(true)
     setVisFerdigstillModal(false)
+    await sakActions.fattVedtak(data.problemsammendrag)
+    await mutateOppgaveOgSak()
   }
 
   if (!behovsmelding) {
@@ -185,9 +202,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
         width="500px"
         onClose={() => setVisResultatManglerModal(false)}
       >
-        <Brødtekst spacing>
-          Du må velge et vedtaksresultat under "Behandling" før du kan ferdigstille oppgaven.
-        </Brødtekst>
+        <Brødtekst spacing>Du må velge et vedtaksresultat under "Behandle sak" før du kan fatte vedtak.</Brødtekst>
       </InfoModal>
 
       <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>

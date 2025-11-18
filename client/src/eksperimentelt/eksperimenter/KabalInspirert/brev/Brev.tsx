@@ -8,10 +8,11 @@ import { formaterDatoLang } from '../../../../utils/dato.ts'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
+import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
+  const { vedtaksResultat, lagretResultat, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt, oppgaveFerdigstilt } =
     useSaksbehandlingEksperimentContext()
   const { USE_MSW } = window.appSettings
 
@@ -176,14 +177,23 @@ export const Brev = () => {
           )}
           {brevutkast.data?.data?.markertKlart && (
             <>
-              <div className="brevtoolbar">
-                <div className="left"></div>
-                <div className="right">
-                  <Button variant="tertiary" size="small" onClick={() => makerKlart(false)}>
-                    Rediger
-                  </Button>
+              {!oppgaveFerdigstilt && (
+                <>
+                  <div className="brevtoolbar">
+                    <div className="left"></div>
+                    <div className="right">
+                      <Button variant="tertiary" size="small" onClick={() => makerKlart(false)}>
+                        Rediger
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
+              {oppgaveFerdigstilt && (
+                <div style={{ padding: '0.8em 1em' }}>
+                  <PanelTittel tittel="Vedtaksbrev" lukkPanel={() => setBrevKolonne(false)} />
                 </div>
-              </div>
+              )}
               <iframe
                 src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV${USE_MSW ? '_' + vedtaksResultat : ''}#navpanes=0&zoom=FitV`}
                 width="100%"

@@ -26,6 +26,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     setLagretResultat,
     brevEksisterer,
     brevFerdigstilt,
+    oppgaveFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
   const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
@@ -86,35 +87,39 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
         </Select>
         <div>
-          {lagretResultat ? (
-            <Button
-              variant="tertiary"
-              size="small"
-              icon={<PencilIcon />}
-              onClick={() => {
-                if (brevEksisterer) {
-                  setVisModalKanIkkeEndre(true)
-                  return
-                }
-                setLagretResultat(false)
-              }}
-            >
-              Endre resultat
-            </Button>
-          ) : (
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => {
-                if (!vedtaksResultat) {
-                  setVisFeilmelding(true)
-                } else {
-                  setLagretResultat(true)
-                }
-              }}
-            >
-              Lagre resultat
-            </Button>
+          {!oppgaveFerdigstilt && (
+            <>
+              {lagretResultat ? (
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  icon={<PencilIcon />}
+                  onClick={() => {
+                    if (brevEksisterer) {
+                      setVisModalKanIkkeEndre(true)
+                      return
+                    }
+                    setLagretResultat(false)
+                  }}
+                >
+                  Endre resultat
+                </Button>
+              ) : (
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    if (!vedtaksResultat) {
+                      setVisFeilmelding(true)
+                    } else {
+                      setLagretResultat(true)
+                    }
+                  }}
+                >
+                  Lagre resultat
+                </Button>
+              )}
+            </>
           )}
         </div>
 
@@ -127,7 +132,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
               <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
             </TextContainer>
             <div>
-              {!brevKolonne && (
+              {!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer) && (
                 <Button
                   variant="secondary"
                   size="small"
@@ -140,7 +145,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
                   {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
                 </Button>
               )}
-              {(brevKolonne || brevFerdigstilt) && (
+              {(brevKolonne || brevFerdigstilt) && !oppgaveFerdigstilt && (
                 <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
                   {brevFerdigstilt
                     ? 'Du kan nå fatte vedtak hvis du er fornøyd!'

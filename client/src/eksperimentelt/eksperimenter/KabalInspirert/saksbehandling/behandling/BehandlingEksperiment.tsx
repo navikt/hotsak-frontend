@@ -135,7 +135,8 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
               <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
             </TextContainer>
             <div>
-              {(!brevEksisterer || (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
+              {((!oppgaveFerdigstilt && !brevEksisterer) ||
+                (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
                 <Button
                   variant="secondary"
                   size="small"

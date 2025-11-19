@@ -23,7 +23,7 @@ export const behovsmeldingHandlers: StoreHandlersFactory = () => [
 
     await delay(500)
 
-    if (sakId == '322002') {
+    if (sakId == '323002') {
       return HttpResponse.json({ ...behovsmeldingVanskelig })
     } else {
       return HttpResponse.json({ ...behovsmeldingEnkel })

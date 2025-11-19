@@ -42,4 +42,4 @@ Du finner mer informasjon på [nav.no/hjelpemidler](https://nav.no/hjelpemidler)
 
 På [nav.no/kontakt](https://nav.no/kontakt) kan du chatte eller skrive til oss.
 
-Hvis du ikke finner svar på [nav.no](https://nav.no), kan du ringe oss på telefon 55 55 11 11 hverdager 09.00-15.00.
+Hvis du ikke finner svar på [nav.no](https://nav.no), kan du ringe oss på telefon 55 55 11 11 hverdager 09.00-11.15 og 12.15-14.30.

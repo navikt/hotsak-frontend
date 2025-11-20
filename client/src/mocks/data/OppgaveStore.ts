@@ -1,31 +1,25 @@
-import { addBusinessDays, parseISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
 import {
-  GjelderAlternativerResponse,
-  OppgaveId,
-  Oppgaveprioritet,
+  type GjelderAlternativerResponse,
+  type OppgaveId,
   Oppgavestatus,
   Oppgavetype,
-  OppgaveV2,
+  type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
-import { Sakstype } from '../../types/types.internal'
-import { enheter } from './enheter'
+import { Sakstype } from '../../types/types.internal.ts'
+import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { JournalpostStore } from './JournalpostStore'
-import { LagretHjelpemiddelsak } from './lagSak.ts'
+import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
+import { hentBehandlingstemaKode } from './oppgaveGjelder.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { lagTilfeldigInteger } from './felles.ts'
-import { hentMappe } from './mappe.ts'
-import { hentBehandlingstemaKode, hentRandomBehandlingstema, hentRandomBehandlingstype } from './oppgaveGjelder.ts'
-
-type LagretOppgave = OppgaveV2
-type InsertOppgave = LagretOppgave
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
 
   constructor(
+    private readonly behovsmeldingStore: BehovsmeldingStore,
     private readonly saksbehandlerStore: SaksbehandlerStore,
     private readonly sakStore: SakStore,
     private readonly journalpostStore: JournalpostStore
@@ -42,67 +36,37 @@ export class OppgaveStore extends Dexie {
       return []
     }
 
+    const isokategoriseringByKode: any = (await import('./isokategorisering.json')).default // fixme
+
     const saker = await this.sakStore.alle()
+    const oppgaverFraSak: InsertOppgave[] = await Promise.all(
+      saker.map(async (sak) => {
+        let behandlingstema: string = ''
+        let behandlingstype: string = ''
+        if (sak.sakstype === Sakstype.BARNEBRILLER) {
+          behandlingstema = 'Briller til barn'
+          behandlingstype = 'Søknad'
+        } else {
+          const behovsmeldingCase = await this.behovsmeldingStore.hentForSak(sak)
+          if (behovsmeldingCase && behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler.length) {
+            const isoKategoriKode = behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler[0].produkt.iso8
+            const isokategorisering = isokategoriseringByKode[isoKategoriKode]
+            behandlingstema = isokategorisering?.behandlingstema_term ?? ''
+          } else {
+            behandlingstema = ''
+          }
+          behandlingstype = sak.sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Digital søknad'
+        }
+        return lagOppgave(sak, {
+          tema: 'HJE',
+          behandlingstema,
+          behandlingstype,
+          oppgavetype: Oppgavetype.BEHANDLE_SAK,
+        })
+      })
+    )
     const journalføringer = await this.journalpostStore.alle()
-
-    const oppgaverFraSak: InsertOppgave[] = saker.map((sak) => {
-      const mappeId = lagTilfeldigInteger(0, 23).toString()
-      const sakId = sak.sakId
-      return {
-        oppgaveId: `E-${sakId}`,
-        oppgavetype: Oppgavetype.BEHANDLE_SAK,
-        oppgavestatus: Oppgavestatus.OPPRETTET,
-        tema: 'HJE',
-        gjelder: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : 'Bestilling',
-        beskrivelse: `--- 25.11.2024 13:13 (azure-token-generator) ---\nNok en test!\n\n--- 22.11.2024 13:27  (Z994377, 2970) ---\nTest.\nOppgaven er flyttet fra saksbehandler Z994377 til <ingen>\n\n${sak.søknadGjelder || 'Søknad om: terskeleliminator'}`,
-        prioritet: (sak as LagretHjelpemiddelsak)?.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
-        tildeltEnhet: sak.enhet,
-        tildeltSaksbehandler: sak.saksbehandler,
-        sakId: sakId,
-        aktivDato: sak.opprettet,
-        behandlesAvApplikasjon: 'HOTSAK',
-        fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 14).toISOString(),
-        opprettetTidspunkt: sak.opprettet,
-        endretTidspunkt: sak.opprettet,
-        fnr: sak.bruker.fnr,
-        bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
-        versjon: 1,
-        mappeId: mappeId,
-        mappenavn: hentMappe(mappeId),
-        // behandlingstema: hentRandomBehandlingstema(),
-        behandlingstype: 'Bevegelseshjelpemidler', // hentRandomBehandlingstype(),
-      }
-    })
-
-    const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map((journalføring) => {
-      const mappeId = lagTilfeldigInteger(0, 12).toString()
-      const journalpostId = journalføring.journalpostId
-      return {
-        oppgaveId: `I-${journalpostId}`,
-        oppgavetype: Oppgavetype.JOURNALFØRING,
-        oppgavestatus: Oppgavestatus.OPPRETTET,
-        tema: 'HJE',
-        gjelder: 'Briller til barn',
-        beskrivelse: journalføring.tittel,
-        prioritet: Oppgaveprioritet.NORMAL,
-        tildeltEnhet: enheter.agder,
-        // tildeltSaksbehandler: journalføring.saksbehandler,
-        aktivDato: journalføring.journalpostOpprettetTid,
-        opprettetAv: 'hm-saksbehandling',
-        opprettetAvEnhet: enheter.agder,
-        journalpostId: journalpostId,
-        fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 14).toISOString(),
-        opprettetTidspunkt: journalføring.journalpostOpprettetTid,
-        endretTidspunkt: journalføring.journalpostOpprettetTid,
-        fnr: journalføring.bruker!.fnr,
-        bruker: { fnr: journalføring.bruker!.fnr, navn: journalføring.bruker!.navn! },
-        versjon: 1,
-        mappeId: mappeId,
-        mappenavn: hentMappe(mappeId),
-        behandlingstema: hentRandomBehandlingstema(),
-        behandlingstype: hentRandomBehandlingstype(),
-      }
-    })
+    const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map(lagJournalføringsoppgave)
 
     return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraJournalføringer])
   }
@@ -125,9 +89,7 @@ export class OppgaveStore extends Dexie {
 
   async tildel(oppgaveId: OppgaveId) {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-
     console.log(`Tildeler oppgaveId: ${oppgaveId} til saksbehandlerId: ${saksbehandler.id}`)
-
     return this.oppgaver.update(oppgaveId, {
       tildeltSaksbehandler: saksbehandler,
       oppgavestatus: Oppgavestatus.UNDER_BEHANDLING,
@@ -136,7 +98,6 @@ export class OppgaveStore extends Dexie {
 
   async fjernTildeling(oppgaveId: OppgaveId) {
     console.log(`Fjerner tildeling for oppgaveId: ${oppgaveId}`)
-
     return this.oppgaver.update(oppgaveId, {
       tildeltSaksbehandler: undefined,
       oppgavestatus: Oppgavestatus.OPPRETTET,
@@ -155,7 +116,7 @@ export class OppgaveStore extends Dexie {
   ): Promise<
     { behandlingstema: string; behandlingstype: string; alternativer: GjelderAlternativerResponse } | undefined
   > {
-    console.log(`Henter gjelder-info for oppgaveId: ${oppgaveId}`)
+    console.log(`Henter kategorisering for oppgaveId: ${oppgaveId}`)
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {
       return

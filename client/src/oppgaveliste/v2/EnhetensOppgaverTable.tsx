@@ -21,7 +21,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
   const columns: DataGridColumn<OppgaveV2>[] = useMemo(
     () => [
       {
-        field: 'åpneOppgave',
+        field: 'knapp',
         renderCell(row) {
           return (
             <>

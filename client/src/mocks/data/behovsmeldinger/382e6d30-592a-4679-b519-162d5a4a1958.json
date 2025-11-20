@@ -1,0 +1,193 @@
+{
+  "behovsmeldingId": "382e6d30-592a-4679-b519-162d5a4a1958",
+  "beskrivelse": "importert",
+  "behovsmelding": {
+    "id": "382e6d30-592a-4679-b519-162d5a4a1958",
+    "type": "SØKNAD",
+    "bruker": {
+      "fnr": "13820599335",
+      "navn": {
+        "fornavn": "Kvadratisk",
+        "etternavn": "Faktura"
+      },
+      "kilde": "PDL",
+      "telefon": "13820599",
+      "veiadresse": {
+        "adresse": "Fjellvegen 69",
+        "poststed": "Nordfjordeid",
+        "postnummer": "6770"
+      },
+      "signaturtype": "FULLMAKT",
+      "kommunenummer": "4649",
+      "legacyopplysninger": []
+    },
+    "vedlegg": [
+      {
+        "id": "32ee15b1-86b2-4dc3-a5bb-232dd8ab8d45",
+        "navn": "Legeerklæring for varmehjelpemiddel",
+        "type": "LEGEERKLÆRING_FOR_VARMEHJELPEMIDDEL"
+      }
+    ],
+    "levering": {
+      "utleveringsmåte": "HJELPEMIDDELSENTRALEN",
+      "utleveringMerknad": "",
+      "hjelpemiddelformidler": {
+        "navn": {
+          "fornavn": "Kvadratisk",
+          "etternavn": "Faktura"
+        },
+        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "adresse": {
+          "adresse": "Svanseveien 3",
+          "poststed": "NORDFJORDEID",
+          "postnummer": "6770"
+        },
+        "telefon": "11223344",
+        "stilling": "CEO",
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "kommunenavn": "STAD",
+        "kommunenummer": "4649",
+        "treffesEnklest": "På telefon fra hjemmekontor."
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "version": "d13e06cf79b48647c898686b2f3b317d6842c5bb",
+        "metaInfo": {
+          "tilbehør": [],
+          "hovedProdukter": ["252908"],
+          "tilbehørIkkePåBestillingsordning": [],
+          "hovedProdukterIkkePåBestillingsordning": ["252908"]
+        },
+        "kriterier": {
+          "kildeErPdl": true,
+          "harIngenBytter": true,
+          "brukersAdresseErSatt": true,
+          "brukerHarAdresseIOeBS": false,
+          "brukerBorIkkeIUtlandet": true,
+          "inneholderIkkeFritekst": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "brukerHarHotsakVedtakFraFør": true,
+          "ingenProdukterErAlleredeUtlevert": true,
+          "leveringTilFolkeregistrertAdresse": false,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "alleHovedProdukterPåBestillingsOrdning": false
+        },
+        "kanVæreBestilling": false
+      }
+    },
+    "innsender": {
+      "kurs": [
+        {
+          "id": 4,
+          "kilde": "kunnskapsbanken",
+          "title": "Bestilling"
+        }
+      ],
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": true,
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "prioritet": "NORMAL",
+    "hjelpemidler": {
+      "tilbehør": [],
+      "hjelpemidler": [
+        {
+          "antall": 1,
+          "bytter": [],
+          "produkt": {
+            "iso8": "09062101",
+            "hmsArtNr": "252908",
+            "rangering": 1,
+            "iso8Tittel": "Fot-, hæl- og tåbeskyttere",
+            "artikkelnavn": "Mico str 32/35",
+            "delkontraktId": "HMDB-1296",
+            "delkontrakttittel": "12: Varmesokker til barn",
+            "sortimentkategori": "Varmehjelpemidler"
+          },
+          "varsler": [],
+          "tilbehør": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "opplysninger": [
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Legeerklæring kreves.",
+                    "nn": "Legeerklæring krevst."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Opplysninger fra lege",
+                "nn": "Opplysningar frå lege"
+              }
+            }
+          ],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false
+          },
+          "hjelpemiddelId": "88806d18-7cd2-40d7-9d9f-c6e51778f6df",
+          "saksbehandlingvarsel": []
+        }
+      ],
+      "totaltAntall": 1
+    },
+    "hjmBrukersFnr": "13820599335",
+    "skjemaversjon": 2,
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "tekst": {
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          },
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          },
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          },
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1"
+        }
+      ],
+      "funksjonsbeskrivelse": {
+        "beskrivelse": "ny beskrivelse",
+        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
+      },
+      "funksjonsnedsettelser": ["BEVEGELSE"]
+    },
+    "innsendingsdato": "2025-11-04",
+    "innsendingstidspunkt": "2025-11-04T07:49:45.767172108Z"
+  },
+  "behovsmeldingGjelder": "Søknad om: fotbeskytter",
+  "fnrBruker": "13820599335",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2025-11-04T07:49:48.262Z"
+}

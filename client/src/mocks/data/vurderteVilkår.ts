@@ -1,6 +1,7 @@
-import { Brilleseddel, VilkårsResultat, VurderingData } from '../../types/types.internal'
-import type { InsertVilkår } from './lagSak'
 import { isBefore, subMonths } from 'date-fns'
+
+import { type Brilleseddel, VilkårsResultat, type VurderingData } from '../../types/types.internal'
+import { type InsertVilkår } from './lagVilkårsvurdering'
 
 const vilkårSomTrengerBestillingsdato = [
   'UNDER_18_ÅR_PÅ_BESTILLINGSDATO',

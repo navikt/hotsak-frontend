@@ -15,6 +15,13 @@ export function lagTilfeldigFødselsnummer(fødselsdatoEllerAlder: Date | number
 }
 
 export function fødselsdatoFraFødselsnummer(fnr: string): Date {
+  const monthNumber = +fnr.slice(2, 4)
+  if (monthNumber >= 81 && monthNumber <= 92) {
+    return parse(fnr.slice(0, 2) + (+fnr.charAt(2) - 8) + fnr.slice(3, 6), template, new Date())
+  }
+  if (monthNumber >= 41 && monthNumber <= 52) {
+    return parse(fnr.slice(0, 2) + (+fnr.charAt(2) - 4) + fnr.slice(3, 6), template, new Date())
+  }
   return parse(fnr.slice(0, 6), template, new Date())
 }
 

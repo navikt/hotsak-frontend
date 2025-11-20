@@ -1,3 +1,4 @@
+import { formatISO } from 'date-fns'
 import Dexie, { Table } from 'dexie'
 
 import type { Person } from '../../types/types.internal'
@@ -6,7 +7,6 @@ import { enheter } from './enheter'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger, lagTilfeldigTelefonnummer } from './felles'
 import { kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer'
 import { lagTilfeldigNavn } from './navn'
-import { formatISO } from 'date-fns'
 
 type LagretPerson = Person
 
@@ -53,7 +53,8 @@ export class PersonStore extends Dexie {
   }
 
   async lagreAlle(personer: Person[]) {
-    return this.personer.bulkAdd(personer, { allKeys: true })
+    const unikePersoner = [...new Map(personer.map((person) => [person.fnr, person])).values()]
+    return this.personer.bulkAdd(unikePersoner, { allKeys: true })
   }
 
   async hent(fnr: string) {

@@ -42,10 +42,10 @@ export enum Bruksarena {
 
 export type Bytte = {
   hmsnr: string
-  serienr: string | null
+  serienr?: string
   hjmNavn: string
   hjmKategori: string
-  årsak: BytteÅrsak | undefined
+  årsak?: BytteÅrsak
   erTilsvarende: boolean
 }
 
@@ -60,15 +60,15 @@ export enum BytteÅrsak {
 export interface Levering {
   hjelpemiddelformidler: Hjelpemiddelformidler
   oppfølgingsansvarlig: Oppfølgingsansvarlig
-  annenOppfølgingsansvarlig: AnnenOppfølgingsansvarlig | undefined
-  utleveringsmåte: Utleveringsmåte | undefined
+  annenOppfølgingsansvarlig?: AnnenOppfølgingsansvarlig
+  utleveringsmåte?: Utleveringsmåte
   annenUtleveringsadresse: Veiadresse
-  annenUtleveringskommune: Kommune | undefined
-  annenUtleveringsbydel: Bydel | undefined
-  utleveringKontaktperson: Kontaktperson | undefined
-  annenKontaktperson: AnnenKontaktperson | undefined
-  utleveringMerknad: string | undefined
-  hast: Hast | undefined
+  annenUtleveringskommune?: Kommune
+  annenUtleveringsbydel?: Bydel
+  utleveringKontaktperson?: Kontaktperson
+  annenKontaktperson?: AnnenKontaktperson
+  utleveringMerknad?: string
+  hast?: Hast
   automatiskUtledetTilleggsinfo: LeveringTilleggsinfo[]
 }
 
@@ -126,7 +126,7 @@ export interface Veiadresse {
 
 export interface Hast {
   hasteårsaker: Hasteårsak[]
-  hastBegrunnelse: string | null
+  hastBegrunnelse?: string
 }
 
 export enum Hasteårsak {
@@ -144,10 +144,10 @@ export interface Bruker {
   navn: Personnavn
   signaturtype: Signaturtype
   telefon: string
-  veiadresse: Veiadresse | undefined
-  kommunenummer: string | undefined
-  brukernummer: string | undefined
-  kilde: Brukerkilde | undefined
+  veiadresse?: Veiadresse
+  kommunenummer?: string
+  brukernummer?: string
+  kilde?: Brukerkilde
   legacyopplysninger: EnkelOpplysning[]
 }
 
@@ -171,12 +171,12 @@ export interface Brukersituasjon {
   bekreftedeVilkår: BrukersituasjonVilkår[]
   vilkår: Vilkår[]
   funksjonsnedsettelser: Funksjonsnedsettelse[]
-  funksjonsbeskrivelse: Funksjonsbeskrivelse | null
+  funksjonsbeskrivelse?: Funksjonsbeskrivelse
 }
 
 export interface Funksjonsbeskrivelse {
   innbyggersVarigeFunksjonsnedsettelse: InnbyggersVarigeFunksjonsnedsettelse
-  diagnose: string | null
+  diagnose?: string
   beskrivelse: string
 }
 
@@ -235,7 +235,7 @@ export interface HjelpemiddelProdukt {
   artikkelnavn: string
   iso8: string
   iso8Tittel: string
-  rangering: number | undefined
+  rangering?: number
   delkontrakttittel: string
   sortimentkategori: string // fra digithot-sortiment
 }
@@ -246,8 +246,8 @@ export interface Tilbehør {
   navn: string
   antall: number
   opplysninger?: Opplysning[]
-  begrunnelse: string | undefined
-  fritakFraBegrunnelseÅrsak: FritakFraBegrunnelseÅrsak | undefined
+  begrunnelse?: string
+  fritakFraBegrunnelseÅrsak?: FritakFraBegrunnelseÅrsak
   saksbehandlingvarsel?: Varsel[]
 }
 
@@ -259,9 +259,9 @@ export enum FritakFraBegrunnelseÅrsak {
 
 export interface Utlevertinfo {
   alleredeUtlevertFraHjelpemiddelsentralen: boolean
-  utleverttype: UtlevertType | undefined
-  overførtFraBruker: string | undefined
-  annenKommentar: string | undefined
+  utleverttype?: UtlevertType
+  overførtFraBruker?: string
+  annenKommentar?: string
 }
 
 export enum UtlevertType {

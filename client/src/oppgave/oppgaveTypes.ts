@@ -109,7 +109,7 @@ export interface OppgaveBase {
 export interface OppgaveV2 extends OppgaveBase {
   oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
-  tema: string
+  tema: 'HJE' | string
   behandlingstema?: string
   behandlingstype?: string
   gjelder?: string | null

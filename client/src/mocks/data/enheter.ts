@@ -1,22 +1,20 @@
 import type { Enhet } from '../../types/types.internal'
 
-const vikafossen: Enhet = {
-  enhetsnummer: '2103',
-  enhetsnavn: 'Nav Vikafossen',
-}
-
-const oslo: Enhet = {
-  enhetsnummer: '4703',
-  enhetsnavn: 'Nav hjelpemiddelsentral Oslo',
-}
-
-const agder: Enhet = {
-  enhetsnummer: '4710',
-  enhetsnavn: 'Nav hjelpemiddelsentral Agder',
-}
-
 export const enheter = {
-  vikafossen,
-  oslo,
-  agder,
-}
+  itAvdelingen: {
+    enhetsnummer: '2970',
+    enhetsnavn: 'IT-avdelingen',
+  },
+  vikafossen: {
+    enhetsnummer: '2103',
+    enhetsnavn: 'Nav Vikafossen',
+  },
+  oslo: {
+    enhetsnummer: '4703',
+    enhetsnavn: 'Nav hjelpemiddelsentral Oslo',
+  },
+  agder: {
+    enhetsnummer: '4710',
+    enhetsnavn: 'Nav hjelpemiddelsentral Agder',
+  },
+} satisfies Record<string, Enhet>

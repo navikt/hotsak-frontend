@@ -1,34 +1,20 @@
+import { formatISO } from 'date-fns'
+
+import { BehovsmeldingType } from '../../types/BehovsmeldingTypes.ts'
 import {
-  Barnebrillesak,
-  Bruker,
-  GreitÅViteType,
-  Hendelse,
-  Kjønn,
+  type Barnebrillesak,
+  type Hendelse,
   OppgaveStatusType,
-  Sak,
+  type Sak,
   Sakstype,
   StegType,
-  Vilkår,
-  Vilkårsgrunnlag,
-  VilkårsResultat,
-  Vilkårsvurdering,
-  VurderVilkårRequest,
 } from '../../types/types.internal.ts'
-import { beregnSats } from './beregnSats.ts'
-import { vurderteVilkår } from './vurderteVilkår.ts'
-import {
-  lagTilfeldigDato,
-  lagTilfeldigFødselsdato,
-  lagTilfeldigInteger,
-  lagTilfeldigTelefonnummer,
-  nåIso,
-} from './felles.ts'
-import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
-import { lagTilfeldigNavn } from './navn.ts'
-import { formatISO } from 'date-fns'
+import { BehovsmeldingCase } from './BehovsmeldingStore.ts'
 import { lagTilfeldigBosted } from './bosted.ts'
 import { enheter } from './enheter.ts'
-import { formaterNavn } from '../../utils/formater.ts'
+import { lagTilfeldigDato, lagTilfeldigFødselsdato, lagTilfeldigTelefonnummer } from './felles.ts'
+import { fødselsdatoFraFødselsnummer, kjønnFraFødselsnummer, lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
+import { lagTilfeldigNavn } from './navn.ts'
 
 export type LagretSak = LagretHjelpemiddelsak | LagretBarnebrillesak
 export type InsertSak = InsertHjelpemiddelsak | InsertBarnebrillesak
@@ -50,113 +36,63 @@ export function erInsertBarnebrillesak(sak?: InsertSak | null): sak is InsertBar
 }
 
 export type LagretHjelpemiddelsak = Sak
-export type InsertHjelpemiddelsak = Omit<LagretHjelpemiddelsak, 'sakId'>
+export type InsertHjelpemiddelsak = Omit<LagretHjelpemiddelsak, 'sakId'> & { behovsmeldingCasePath: string }
 
-export function lagHjelpemiddelsak(
-  sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD = Sakstype.SØKNAD,
-  overstyringer: {
-    bruker?: Partial<Bruker>
-    søknad?: Partial<InsertHjelpemiddelsak>
-  } = {}
+export function lagHjelpemiddelsakForBehovsmeldingCase(
+  behovsmeldingCasePath: string,
+  behovsmeldingCase: BehovsmeldingCase
 ): InsertHjelpemiddelsak {
-  const bruker = lagBruker(overstyringer.bruker)
-  const opprettet = lagTilfeldigDato(new Date().getFullYear())
-
+  const { behovsmelding, behovsmeldingGjelder, fnrBruker, fnrInnsender, opprettet } = behovsmeldingCase
+  let sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
+  const { type: behovsmeldingstype, bruker } = behovsmelding
+  switch (behovsmeldingstype) {
+    case BehovsmeldingType.BESTILLING:
+      sakstype = Sakstype.BESTILLING
+      break
+    case BehovsmeldingType.SØKNAD:
+      sakstype = Sakstype.SØKNAD
+      break
+    default:
+      throw new Error(`Ukjent behovsmeldingstype: ${behovsmeldingstype}`)
+  }
   return {
-    ...bruker,
-    opprettet: opprettet.toISOString(),
+    behovsmeldingCasePath,
     sakstype,
-    søknadGjelder: 'Søknad om: terskeleliminator, rullator',
-    innsender: {
-      fnr: lagTilfeldigFødselsnummer(32),
-      navn: lagTilfeldigNavn().fulltNavn,
+    saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
+    saksstatusGyldigFra: opprettet,
+    opprettet,
+    søknadGjelder: behovsmeldingGjelder,
+    bruker: {
+      fnr: fnrBruker,
+      navn: bruker.navn,
+      fulltNavn: `Foo Bar`,
+      fødselsdato: fødselsdatoFraFødselsnummer(fnrBruker).toDateString(),
+      kommune: { nummer: bruker.kommunenummer!, navn: 'FIXME' },
+      bydel: undefined,
+      kjønn: kjønnFraFødselsnummer(fnrBruker),
+      telefon: behovsmelding.bruker.telefon,
+      brukernummer: bruker.brukernummer,
+      kontonummer: undefined,
       adressebeskyttelseOgSkjerming: {
         gradering: [],
         skjermet: false,
       },
     },
-    greitÅViteFaktum: [
-      // fixme -> tilby som overstyring
-      /*
-      {
-        beskrivelse:
-          'Bruker bor på institusjon (sykehjem), ifølge formidler. Du må sjekke om vilkårene for institusjon er oppfylt.',
-        type: GreitÅViteType.ADVARSEL,
+    innsender: {
+      fnr: fnrInnsender,
+      navn: { fornavn: 'Frank', etternavn: 'Formidler' },
+      fulltNavn: 'Frank Formidler',
+      adressebeskyttelseOgSkjerming: {
+        gradering: [],
+        skjermet: false,
       },
-      */
-      {
-        beskrivelse: 'Personalia fra Folkeregisteret',
-        type: GreitÅViteType.INFO,
-      },
-    ],
-    saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
-    saksstatusGyldigFra: opprettet.toISOString(),
-    enhet: enheter.oslo,
-
-    // fixme -> tilby som overstyring
-    /*
-    hast: (() => {
-      return {
-        årsaker: [Hasteårsak.ANNET],
-        begrunnelse: 'Det haster veldig!',
-      }
-    })(),
-    */
-    ...overstyringer.søknad,
+    },
+    enhet: enheter.itAvdelingen,
+    saksbehandler: undefined,
+    vedtak: undefined,
+    greitÅViteFaktum: [],
+    hast: undefined,
   }
-}
-
-export type LagretVilkårsgrunnlag = Vilkårsgrunnlag
-
-export function lagVilkårsgrunnlag(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsgrunnlag {
-  return {
-    data: { ...vurderVilkårRequest.data },
-    sakId,
-    sakstype: vurderVilkårRequest.sakstype,
-    målform: vurderVilkårRequest.målform,
-  }
-}
-
-export type LagretVilkårsvurdering = Omit<Vilkårsvurdering, 'vilkår'>
-
-export function lagVilkårsvurdering(sakId: string, vurderVilkårRequest: VurderVilkårRequest): LagretVilkårsvurdering {
-  if (vurderVilkårRequest.data) {
-    const { brillepris, brilleseddel } = vurderVilkårRequest.data
-    const { sats, satsBeløp, satsBeskrivelse, beløp } = beregnSats(brilleseddel, brillepris)
-
-    return {
-      id: sakId,
-      sakId,
-      resultat: VilkårsResultat.JA,
-      data: {
-        sats,
-        satsBeløp,
-        satsBeskrivelse,
-        beløp,
-      },
-      opprettet: nåIso(),
-    }
-  } else {
-    throw new Error('Noe er feil med VurderVilkårRequest-payload i lagVilkårsvurdering()')
-  }
-}
-
-export interface LagretVilkår extends Vilkår {
-  vilkårsvurderingId: string
-}
-export type InsertVilkår = Omit<LagretVilkår, 'id'>
-
-export function lagVilkår(vilkårsvurderingId: string, vurderVilkårRequest: VurderVilkårRequest): InsertVilkår[] {
-  const { bestillingsdato, brilleseddel, bestiltHosOptiker, komplettBrille, kjøptBrille } = vurderVilkårRequest.data!
-
-  return vurderteVilkår(
-    vilkårsvurderingId,
-    brilleseddel!,
-    komplettBrille!,
-    bestiltHosOptiker,
-    kjøptBrille,
-    bestillingsdato
-  )
 }
 
 // START Barnebrillesak
@@ -203,32 +139,6 @@ export function lagBarnebrillesak(): InsertBarnebrillesak {
 }
 
 // END Barnebrillesak
-
-function lagBruker(overstyringer: Partial<Bruker> = {}): Pick<Sak, 'bruker'> {
-  const fødselsdato = lagTilfeldigFødselsdato(lagTilfeldigInteger(65, 95))
-  const fnr = lagTilfeldigFødselsnummer(fødselsdato)
-  const navn = lagTilfeldigNavn()
-  return {
-    bruker: {
-      fnr,
-      navn,
-      fulltNavn: formaterNavn(navn),
-      fødselsdato: formatISO(fødselsdato, { representation: 'date' }),
-      kommune: {
-        nummer: '9999',
-        navn: lagTilfeldigBosted(),
-      },
-      kjønn: Kjønn.MANN,
-      telefon: lagTilfeldigTelefonnummer(),
-      brukernummer: '1',
-      adressebeskyttelseOgSkjerming: {
-        gradering: [],
-        skjermet: false,
-      },
-      ...overstyringer,
-    },
-  }
-}
 
 export interface LagretSakshendelse extends Hendelse {
   sakId: string

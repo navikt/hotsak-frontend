@@ -32,11 +32,11 @@ export function lagTilfeldigTelefonnummer(): string {
 }
 
 export async function lastTilfeldigProduktbilde(): Promise<ArrayBuffer> {
-  const bilder = [
-    await import(`./produktbilder/mrs.png`),
-    await import(`./produktbilder/rullator.png`),
-    await import(`./produktbilder/scooter.png`),
-  ]
+  const bilder = await Promise.all([
+    import(`./produktbilder/mrs.png`),
+    import(`./produktbilder/rullator.png`),
+    import(`./produktbilder/scooter.png`),
+  ])
 
   const valgt = bilder[lagTilfeldigInteger(0, bilder.length - 1)]
   const response = await fetch(valgt.default)

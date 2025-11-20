@@ -1,58 +1,59 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
-import { OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
-import { EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 
+import { type OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
+import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import {
-  Barnebrillesak,
+  type Barnebrillesak,
   Brevkode,
-  BrevTekst,
-  JournalføringRequest,
+  type BrevTekst,
+  type JournalføringRequest,
   Kjønn,
   MålformType,
-  OppdaterVilkårRequest,
+  type OppdaterVilkårRequest,
   OppgaveStatusType,
-  Sak,
-  Saksdokument,
+  type Sak,
+  type Saksdokument,
   SaksdokumentType,
-  Saksoversikt,
+  type Saksoversikt,
   Sakstype,
   StegType,
-  Totrinnskontroll,
-  TotrinnskontrollData,
+  type Totrinnskontroll,
+  type TotrinnskontrollData,
   TotrinnskontrollVurdering,
-  Utbetalingsmottaker,
+  type Utbetalingsmottaker,
   VedtakStatusType,
   VilkårsResultat,
-  VurderVilkårRequest,
+  type VurderVilkårRequest,
 } from '../../types/types.internal'
 import { formaterNavn } from '../../utils/formater'
-import { enheter } from './enheter'
+import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { nåIso } from './felles.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
 import {
   erInsertBarnebrillesak,
   erLagretBarnebrillesak,
-  InsertBarnebrillesak,
-  InsertSak,
-  InsertSakshendelse,
-  InsertVilkår,
+  type InsertBarnebrillesak,
+  type InsertSak,
+  type InsertSakshendelse,
   lagBarnebrillesak,
-  lagHjelpemiddelsak,
-  LagretBarnebrillesak,
-  LagretHjelpemiddelsak,
-  LagretSak,
-  LagretSakshendelse,
-  LagretVilkår,
-  LagretVilkårsgrunnlag,
-  LagretVilkårsvurdering,
+  lagHjelpemiddelsakForBehovsmeldingCase,
+  type LagretBarnebrillesak,
+  type LagretHjelpemiddelsak,
+  type LagretSak,
+  type LagretSakshendelse,
+} from './lagSak.ts'
+import {
+  type InsertVilkår,
+  type LagretVilkår,
+  type LagretVilkårsgrunnlag,
+  type LagretVilkårsvurdering,
   lagVilkår,
   lagVilkårsgrunnlag,
   lagVilkårsvurdering,
-} from './lagSak.ts'
+} from './lagVilkårsvurdering.ts'
 import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { formatISO } from 'date-fns'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -70,6 +71,7 @@ export class SakStore extends Dexie {
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
 
   constructor(
+    private readonly behovsmeldingStore: BehovsmeldingStore,
     private readonly saksbehandlerStore: SaksbehandlerStore,
     private readonly personStore: PersonStore,
     private readonly journalpostStore: JournalpostStore
@@ -92,65 +94,33 @@ export class SakStore extends Dexie {
       return []
     }
 
+    const hjelpemiddelsaker = await Promise.all(
+      Object.entries(this.behovsmeldingStore.alle).map(async ([behovsmeldingCasePath, loader]) => {
+        const behovsmeldingCase = await loader()
+        console.log(`Oppretter sak for behovsmeldingCasePath: ${behovsmeldingCasePath}`)
+        return lagHjelpemiddelsakForBehovsmeldingCase(behovsmeldingCasePath, behovsmeldingCase)
+      })
+    )
+
     return this.lagreAlle([
-      lagHjelpemiddelsak(Sakstype.SØKNAD, {
-        bruker: {
-          fnr: '01056605014',
-          brukernummer: '123',
-          navn: {
-            fornavn: 'Ola',
-            etternavn: 'Nordmann',
-          },
-          fulltNavn: 'Ola Nordmann',
-          fødselsdato: formatISO('1966-05-01', { representation: 'date' }),
-        },
-        søknad: {
-          søknadGjelder: 'Søknad om: gangehjelpemidler',
-        },
-      }),
-      lagHjelpemiddelsak(Sakstype.SØKNAD, {
-        bruker: {
-          fnr: '10094165900',
-          brukernummer: '321',
-          navn: {
-            fornavn: 'Hege',
-            etternavn: 'Hansen',
-          },
-          fulltNavn: 'Hege Hansen',
-          fødselsdato: formatISO('1941-09-10', { representation: 'date' }),
-          kjønn: Kjønn.KVINNE,
-        },
-        søknad: {
-          søknadGjelder: 'Søknad om: gangehjelpemidler',
-        },
-      }),
-      lagHjelpemiddelsak(Sakstype.SØKNAD),
-      // lagHjelpemiddelsak(Sakstype.SØKNAD),
-      // lagHjelpemiddelsak(Sakstype.SØKNAD),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagHjelpemiddelsak(Sakstype.BESTILLING),
-      // lagBarnebrillesak(),
-      // lagBarnebrillesak(),
-      // lagBarnebrillesak(),
-      // lagBarnebrillesak(),
-      // lagBarnebrillesak(),
+      ...hjelpemiddelsaker,
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
+      lagBarnebrillesak(),
     ])
   }
 
   async lagreAlle(saker: InsertSak[]) {
     const journalposter = await this.journalpostStore.alle()
     await this.personStore.lagreAlle(
-      saker.map(({ bruker: { navn, kjønn, ...rest } }) => ({
+      saker.map(({ bruker: { navn, kjønn, ...rest }, enhet }) => ({
         ...navn,
         ...rest,
         navn,
         kjønn: kjønn || Kjønn.UKJENT,
-        enhet: enheter.agder,
+        enhet,
       }))
     )
     return this.saker.bulkAdd(
@@ -474,8 +444,7 @@ export class SakStore extends Dexie {
     return this.brevtekst.where('sakId').equals(sakId).first()
   }
 
-  async hentSaksdokumenter(sakId: string /*, dokumentType: string */) {
-    // fixme -> filterer på dokumenttype også
+  async hentSaksdokumenter(sakId: string) {
     return this.saksdokumenter.where('sakId').equals(sakId).toArray()
   }
 

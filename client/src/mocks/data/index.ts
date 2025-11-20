@@ -1,34 +1,39 @@
 import type { RequestHandler } from 'msw'
 
+import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
+import { EndreHjelpemiddelStore } from './EndreHjelpemiddelStore'
 import { HjelpemiddelStore } from './HjelpemiddelStore'
 import { idGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
-import { PersonStore } from './PersonStore'
-import { SakStore } from './SakStore'
-import { SaksbehandlerStore } from './SaksbehandlerStore'
-import { OppgaveStore } from './OppgaveStore'
-import { EndreHjelpemiddelStore } from './EndreHjelpemiddelStore'
 import { NotatStore } from './NotatStore'
+import { OppgaveStore } from './OppgaveStore'
+import { PersonStore } from './PersonStore'
+import { SaksbehandlerStore } from './SaksbehandlerStore'
+import { SakStore } from './SakStore'
 
 export async function setupStore() {
+  const behovsmeldingStore = new BehovsmeldingStore()
   const hjelpemiddelStore = new HjelpemiddelStore()
-  const saksbehandlerStore = new SaksbehandlerStore()
   const personStore = new PersonStore()
+  const saksbehandlerStore = new SaksbehandlerStore()
   const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore).use(idGenerator)
-  const sakStore = new SakStore(saksbehandlerStore, personStore, journalpostStore).use(idGenerator)
-  const oppgaveStore = new OppgaveStore(saksbehandlerStore, sakStore, journalpostStore).use(idGenerator)
+  const sakStore = new SakStore(behovsmeldingStore, saksbehandlerStore, personStore, journalpostStore).use(idGenerator)
+  const oppgaveStore = new OppgaveStore(behovsmeldingStore, saksbehandlerStore, sakStore, journalpostStore).use(
+    idGenerator
+  )
   const notatStore = new NotatStore(saksbehandlerStore, sakStore).use(idGenerator)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
 
   return {
-    saksbehandlerStore,
-    personStore,
+    behovsmeldingStore,
+    endreHjelpemiddelStore,
     hjelpemiddelStore,
     journalpostStore,
-    sakStore,
-    oppgaveStore,
-    endreHjelpemiddelStore,
     notatStore,
+    oppgaveStore,
+    personStore,
+    sakStore,
+    saksbehandlerStore,
   }
 }
 

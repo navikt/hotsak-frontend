@@ -1,0 +1,1642 @@
+{
+  "12030601": {
+    "iso_kategori_kode": "12030601",
+    "iso_kategori_tittel": "Albuekrykker",
+    "iso_kategori_tittel_kort": "Krykker",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12030901": {
+    "iso_kategori_kode": "12030901",
+    "iso_kategori_tittel": "Underarmkrykker",
+    "iso_kategori_tittel_kort": "Krykker",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12031201": {
+    "iso_kategori_kode": "12031201",
+    "iso_kategori_tittel": "Axillarkrykker",
+    "iso_kategori_tittel_kort": "Krykker",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060601": {
+    "iso_kategori_kode": "12060601",
+    "iso_kategori_tittel": "Rullatorer med 2 hjul",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060602": {
+    "iso_kategori_kode": "12060602",
+    "iso_kategori_tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+    "iso_kategori_tittel_kort": "Rullator",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060603": {
+    "iso_kategori_kode": "12060603",
+    "iso_kategori_tittel": "Rullatorer, 4 hjul utebruk",
+    "iso_kategori_tittel_kort": "Rullator",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060604": {
+    "iso_kategori_kode": "12060604",
+    "iso_kategori_tittel": "Gåvogner for barn",
+    "iso_kategori_tittel_kort": "Rullator",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060605": {
+    "iso_kategori_kode": "12060605",
+    "iso_kategori_tittel": "Rullatorer med 3 hjul",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12060901": {
+    "iso_kategori_kode": "12060901",
+    "iso_kategori_tittel": "Gåstoler",
+    "iso_kategori_tittel_kort": "Gåstol",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12061201": {
+    "iso_kategori_kode": "12061201",
+    "iso_kategori_tittel": "Gåbord med støttebord",
+    "iso_kategori_tittel_kort": "Gåbord",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12061202": {
+    "iso_kategori_kode": "12061202",
+    "iso_kategori_tittel": "Gåbord med underarmstøtte",
+    "iso_kategori_tittel_kort": "Gåbord",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12122103": {
+    "iso_kategori_kode": "12122103",
+    "iso_kategori_tittel": "Rullestolramper i bil",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "12170301": {
+    "iso_kategori_kode": "12170301",
+    "iso_kategori_tittel": "Trappeklatrere",
+    "iso_kategori_tittel_kort": "Trappeklatrer",
+    "behandlingstema_kode": "ab0543",
+    "behandlingstema_term": "Trappeheis og løfteplattform",
+    "delkontrakt_forkortelse": "HEIS"
+  },
+  "12180401": {
+    "iso_kategori_kode": "12180401",
+    "iso_kategori_tittel": "Fotdrevne tohjulssykler",
+    "iso_kategori_tittel_kort": "Tohjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180602": {
+    "iso_kategori_kode": "12180602",
+    "iso_kategori_tittel": "Trehjulsykler med fotpedaler og to forhjul",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180603": {
+    "iso_kategori_kode": "12180603",
+    "iso_kategori_tittel": "Trehjulsykler med hjelpemotor",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180604": {
+    "iso_kategori_kode": "12180604",
+    "iso_kategori_tittel": "Trehjulsykler med pedalbrems",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180607": {
+    "iso_kategori_kode": "12180607",
+    "iso_kategori_tittel": "Trehjulsykler med fast nav",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180608": {
+    "iso_kategori_kode": "12180608",
+    "iso_kategori_tittel": "Trehjulsykler med frinav",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180901": {
+    "iso_kategori_kode": "12180901",
+    "iso_kategori_tittel": "Hånddrevne trehjulsykler",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12180902": {
+    "iso_kategori_kode": "12180902",
+    "iso_kategori_tittel": "Hånddrevne trehjulssykler med hjelpemotor",
+    "iso_kategori_tittel_kort": "Trehjulsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12181201": {
+    "iso_kategori_kode": "12181201",
+    "iso_kategori_tittel": "Hjulsparker",
+    "iso_kategori_tittel_kort": "Hjulspark",
+    "behandlingstema_kode": "ab0550",
+    "behandlingstema_term": "Ganghjelpemiddel",
+    "delkontrakt_forkortelse": "GANG"
+  },
+  "12181202": {
+    "iso_kategori_kode": "12181202",
+    "iso_kategori_tittel": "Sparkesykler",
+    "iso_kategori_tittel_kort": "Sparkesykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12181501": {
+    "iso_kategori_kode": "12181501",
+    "iso_kategori_tittel": "Tandemsykler",
+    "iso_kategori_tittel_kort": "Tandemsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12181503": {
+    "iso_kategori_kode": "12181503",
+    "iso_kategori_tittel": "Tandemsykler med hjelpemotor",
+    "iso_kategori_tittel_kort": "Tandemsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12181504": {
+    "iso_kategori_kode": "12181504",
+    "iso_kategori_tittel": "Parsykler med hjelpemotor",
+    "iso_kategori_tittel_kort": "Parsykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12182101": {
+    "iso_kategori_kode": "12182101",
+    "iso_kategori_tittel": "Bremsesystemer til sykler",
+    "iso_kategori_tittel_kort": "Sykkelutstyr",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12182102": {
+    "iso_kategori_kode": "12182102",
+    "iso_kategori_tittel": "Hjelpemotorer til tohjulssykler",
+    "iso_kategori_tittel_kort": "Hjelpemotor sykkel",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12182103": {
+    "iso_kategori_kode": "12182103",
+    "iso_kategori_tittel": "Støttehjul til sykler",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12182105": {
+    "iso_kategori_kode": "12182105",
+    "iso_kategori_tittel": "Annet tilleggsutstyr til sykler",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12220301": {
+    "iso_kategori_kode": "12220301",
+    "iso_kategori_tittel": "Manuelle rullestoler aktive",
+    "iso_kategori_tittel_kort": "Manuell rullestol",
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220302": {
+    "iso_kategori_kode": "12220302",
+    "iso_kategori_tittel": "Manuelle rullestoler allround",
+    "iso_kategori_tittel_kort": "Manuell rullestol",
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220303": {
+    "iso_kategori_kode": "12220303",
+    "iso_kategori_tittel": "Manuelle rullestoler komfort",
+    "iso_kategori_tittel_kort": "Manuell rullestol",
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220304": {
+    "iso_kategori_kode": "12220304",
+    "iso_kategori_tittel": "Manuelle rullestoler med ståfunksjon",
+    "iso_kategori_tittel_kort": "Manuell rullestol med ståfunksjon",
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220305": {
+    "iso_kategori_kode": "12220305",
+    "iso_kategori_tittel": "Manuelle rullestoler til sport og fritid",
+    "iso_kategori_tittel_kort": "Manuell rullestol",
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220601": {
+    "iso_kategori_kode": "12220601",
+    "iso_kategori_tittel": "Manuelle rullestoler spakdrevne ",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12220901": {
+    "iso_kategori_kode": "12220901",
+    "iso_kategori_tittel": "Manuelle rullestoler enkelsidig framdrift",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12221501": {
+    "iso_kategori_kode": "12221501",
+    "iso_kategori_tittel": "Manuelle rullestoler bendrevne",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12221801": {
+    "iso_kategori_kode": "12221801",
+    "iso_kategori_tittel": "Manuelle ledsagerstyrte rullestoler ",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0545",
+    "behandlingstema_term": "Manuell rullestol",
+    "delkontrakt_forkortelse": "MRS"
+  },
+  "12230301": {
+    "iso_kategori_kode": "12230301",
+    "iso_kategori_tittel": "Elektriske rullestoler manuell styring utebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12230303": {
+    "iso_kategori_kode": "12230303",
+    "iso_kategori_tittel": "Elektriske rullestoler manuell styring begrenset utebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12230304": {
+    "iso_kategori_kode": "12230304",
+    "iso_kategori_tittel": "Elektriske rullestoler manuell styring innebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12230601": {
+    "iso_kategori_kode": "12230601",
+    "iso_kategori_tittel": "Elektriske rullestoler motorisert styring utebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12230602": {
+    "iso_kategori_kode": "12230602",
+    "iso_kategori_tittel": "Elektriske rullestoler motorisert styring begrenset utebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12230603": {
+    "iso_kategori_kode": "12230603",
+    "iso_kategori_tittel": "Elektriske rullestoler motorisert styring innebruk",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12231201": {
+    "iso_kategori_kode": "12231201",
+    "iso_kategori_tittel": "Elektriske rullestoler ledsagerstyrte",
+    "iso_kategori_tittel_kort": "Elektrisk rullestol",
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12241101": {
+    "iso_kategori_kode": "12241101",
+    "iso_kategori_tittel": "Sykkelfronter",
+    "iso_kategori_tittel_kort": "Sykkelfront",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12242401": {
+    "iso_kategori_kode": "12242401",
+    "iso_kategori_tittel": "Batterier til rullestoler",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0539",
+    "behandlingstema_term": "Elektrisk rullestol",
+    "delkontrakt_forkortelse": "ERS"
+  },
+  "12243601": {
+    "iso_kategori_kode": "12243601",
+    "iso_kategori_tittel": "Sykkelfronter",
+    "iso_kategori_tittel_kort": "Sykkelfront",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "12310301": {
+    "iso_kategori_kode": "12310301",
+    "iso_kategori_tittel": "Skli- og vendehjelpemidler i fast materiale",
+    "iso_kategori_tittel_kort": "Skli-/vendehjelpemiddel",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12310302": {
+    "iso_kategori_kode": "12310302",
+    "iso_kategori_tittel": "Skli- og vendehjelpemidler, myke uten polstring",
+    "iso_kategori_tittel_kort": "Skli-/vendehjelpemiddel",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12310303": {
+    "iso_kategori_kode": "12310303",
+    "iso_kategori_tittel": "Skli- og vendehjelpemidler, polstret",
+    "iso_kategori_tittel_kort": "Skli-/vendehjelpemiddel",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12310304": {
+    "iso_kategori_kode": "12310304",
+    "iso_kategori_tittel": "Skli- og vendehjelpemidler, motoriserte",
+    "iso_kategori_tittel_kort": "Skli-/vendehjelpemiddel",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12310601": {
+    "iso_kategori_kode": "12310601",
+    "iso_kategori_tittel": "Dreieskiver",
+    "iso_kategori_tittel_kort": "Dreieskive",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12311201": {
+    "iso_kategori_kode": "12311201",
+    "iso_kategori_tittel": "Taustige og sengebånd",
+    "iso_kategori_tittel_kort": "Sengebånd",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12311501": {
+    "iso_kategori_kode": "12311501",
+    "iso_kategori_tittel": "Oppreisningsbelter og oppreisningsvester",
+    "iso_kategori_tittel_kort": "Oppreisning",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12312101": {
+    "iso_kategori_kode": "12312101",
+    "iso_kategori_tittel": "Overflytningsplattformer",
+    "iso_kategori_tittel_kort": "Overflytningsplattform",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "12312401": {
+    "iso_kategori_kode": "12312401",
+    "iso_kategori_tittel": "Løfteseter og løftemadrasser",
+    "iso_kategori_tittel_kort": "Løftehjelpemiddel",
+    "behandlingstema_kode": "ab0549",
+    "behandlingstema_term": "Stol med oppreisning",
+    "delkontrakt_forkortelse": "STOL"
+  },
+  "12360301": {
+    "iso_kategori_kode": "12360301",
+    "iso_kategori_tittel": "Mobile personløftere med løftefunksjon",
+    "iso_kategori_tittel_kort": "Personløfter",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12360401": {
+    "iso_kategori_kode": "12360401",
+    "iso_kategori_tittel": "Mobile personløftere med ståfunksjon",
+    "iso_kategori_tittel_kort": "Personløfter",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12360601": {
+    "iso_kategori_kode": "12360601",
+    "iso_kategori_tittel": "Mobil personløfter med fast sete",
+    "iso_kategori_tittel_kort": "Personløfter",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12361202": {
+    "iso_kategori_kode": "12361202",
+    "iso_kategori_tittel": "Stasjonære personløftere festet i vegger, gulv og/eller tak ",
+    "iso_kategori_tittel_kort": "Personløfter",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12361501": {
+    "iso_kategori_kode": "12361501",
+    "iso_kategori_tittel": "Badekarmonterte personløftere",
+    "iso_kategori_tittel_kort": "Badekarmontert personløfter",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12361801": {
+    "iso_kategori_kode": "12361801",
+    "iso_kategori_tittel": "Stasjonære frittstående personløftere",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12362101": {
+    "iso_kategori_kode": "12362101",
+    "iso_kategori_tittel": "Seil til personløftere",
+    "iso_kategori_tittel_kort": "Seil",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12362102": {
+    "iso_kategori_kode": "12362102",
+    "iso_kategori_tittel": "Seler til personløftere",
+    "iso_kategori_tittel_kort": "Sele",
+    "behandlingstema_kode": "ab0552",
+    "behandlingstema_term": "Personløfter og løftesete",
+    "delkontrakt_forkortelse": "PLØFT"
+  },
+  "12390301": {
+    "iso_kategori_kode": "12390301",
+    "iso_kategori_tittel": "Stokker for mobility og markering",
+    "iso_kategori_tittel_kort": "Stokk",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "12390901": {
+    "iso_kategori_kode": "12390901",
+    "iso_kategori_tittel": "Akustiske lydsignalsendere",
+    "iso_kategori_tittel_kort": "Lydsignalsender",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "18030601": {
+    "iso_kategori_kode": "18030601",
+    "iso_kategori_tittel": "Arbeidsbord med elektrisk høyderegulering",
+    "iso_kategori_tittel_kort": "Arbeidsbord",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18030602": {
+    "iso_kategori_kode": "18030602",
+    "iso_kategori_tittel": "Arbeidsbord med manuell høyderegulering",
+    "iso_kategori_tittel_kort": "Arbeidsbord",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18031501": {
+    "iso_kategori_kode": "18031501",
+    "iso_kategori_tittel": "Sengebord",
+    "iso_kategori_tittel_kort": "Sengebord",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18060301": {
+    "iso_kategori_kode": "18060301",
+    "iso_kategori_tittel": "Innebelysning",
+    "iso_kategori_tittel_kort": "Belysning",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "18060601": {
+    "iso_kategori_kode": "18060601",
+    "iso_kategori_tittel": "Lese- og arbeidsbelysning",
+    "iso_kategori_tittel_kort": "Belysning",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "18060603": {
+    "iso_kategori_kode": "18060603",
+    "iso_kategori_tittel": "Håndlamper",
+    "iso_kategori_tittel_kort": "Belysning",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "18090301": {
+    "iso_kategori_kode": "18090301",
+    "iso_kategori_tittel": "Arbeidsstoler med elektrisk seteløfter",
+    "iso_kategori_tittel_kort": "Arbeidsstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18090302": {
+    "iso_kategori_kode": "18090302",
+    "iso_kategori_tittel": "Arbeidsstoler med manuell seteløfter",
+    "iso_kategori_tittel_kort": "Arbeidsstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18090303": {
+    "iso_kategori_kode": "18090303",
+    "iso_kategori_tittel": "Kontorstoler høyderegulerbare",
+    "iso_kategori_tittel_kort": "Arbeidsstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18090701": {
+    "iso_kategori_kode": "18090701",
+    "iso_kategori_tittel": "Ståstoler",
+    "iso_kategori_tittel_kort": "Ståstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18090901": {
+    "iso_kategori_kode": "18090901",
+    "iso_kategori_tittel": "Coxitstol med elektrisk seteløfter",
+    "iso_kategori_tittel_kort": "Arbeidsstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18090902": {
+    "iso_kategori_kode": "18090902",
+    "iso_kategori_tittel": "Coxitstol med manuell seteløfter",
+    "iso_kategori_tittel_kort": "Arbeidsstol",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "18091501": {
+    "iso_kategori_kode": "18091501",
+    "iso_kategori_tittel": "Løftestoler med synkron regulering av rygg, benstøtter og oppreisning",
+    "iso_kategori_tittel_kort": "Løftestol",
+    "behandlingstema_kode": "ab0549",
+    "behandlingstema_term": "Stol med oppreisning",
+    "delkontrakt_forkortelse": "STOL"
+  },
+  "18091502": {
+    "iso_kategori_kode": "18091502",
+    "iso_kategori_tittel": "Løftestoler med individuell regulering av rygg, benstøtter og oppreisning",
+    "iso_kategori_tittel_kort": "Løftestol",
+    "behandlingstema_kode": "ab0549",
+    "behandlingstema_term": "Stol med oppreisning",
+    "delkontrakt_forkortelse": "STOL"
+  },
+  "18093901": {
+    "iso_kategori_kode": "18093901",
+    "iso_kategori_tittel": "Sittemoduler",
+    "iso_kategori_tittel_kort": "Sittemodul",
+    "behandlingstema_kode": "ab0544",
+    "behandlingstema_term": "Sittesystem",
+    "delkontrakt_forkortelse": "SITTE"
+  },
+  "18093902": {
+    "iso_kategori_kode": "18093902",
+    "iso_kategori_tittel": "Understell til sittemoduler",
+    "iso_kategori_tittel_kort": "Understell sittemodul",
+    "behandlingstema_kode": "ab0544",
+    "behandlingstema_term": "Sittesystem",
+    "delkontrakt_forkortelse": "SITTE"
+  },
+  "18093903": {
+    "iso_kategori_kode": "18093903",
+    "iso_kategori_tittel": "Sittemoduler og understell kombinasjon",
+    "iso_kategori_tittel_kort": "Sittemodul",
+    "behandlingstema_kode": "ab0544",
+    "behandlingstema_term": "Sittesystem",
+    "delkontrakt_forkortelse": "SITTE"
+  },
+  "18093904": {
+    "iso_kategori_kode": "18093904",
+    "iso_kategori_tittel": "Sittemoduler formstøpte",
+    "iso_kategori_tittel_kort": "Sittemodul",
+    "behandlingstema_kode": "ab0544",
+    "behandlingstema_term": "Sittesystem",
+    "delkontrakt_forkortelse": "SITTE"
+  },
+  "18100601": {
+    "iso_kategori_kode": "18100601",
+    "iso_kategori_tittel": "Sitteputer for komfort",
+    "iso_kategori_tittel_kort": "Sittepute",
+    "behandlingstema_kode": "ab0555",
+    "behandlingstema_term": "Sittepute",
+    "delkontrakt_forkortelse": "PUTE"
+  },
+  "18120401": {
+    "iso_kategori_kode": "18120401",
+    "iso_kategori_tittel": "Senger uten reguleringsmuligheter",
+    "iso_kategori_tittel_kort": "Seng",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18121001": {
+    "iso_kategori_kode": "18121001",
+    "iso_kategori_tittel": "Senger med elektrisk regulering av liggeflaten",
+    "iso_kategori_tittel_kort": "Seng",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18121002": {
+    "iso_kategori_kode": "18121002",
+    "iso_kategori_tittel": "Sengebunner med elektrisk regulering av liggeflaten",
+    "iso_kategori_tittel_kort": "Sengebunn",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18121003": {
+    "iso_kategori_kode": "18121003",
+    "iso_kategori_tittel": "Senger med ståfunksjon",
+    "iso_kategori_tittel_kort": "Seng",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18121801": {
+    "iso_kategori_kode": "18121801",
+    "iso_kategori_tittel": "Madrasser skumbaserte",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121802": {
+    "iso_kategori_kode": "18121802",
+    "iso_kategori_tittel": "Madrasser dynamiske",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121803": {
+    "iso_kategori_kode": "18121803",
+    "iso_kategori_tittel": "Madrasser statiske",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121804": {
+    "iso_kategori_kode": "18121804",
+    "iso_kategori_tittel": "Madrasser vendefunksjon",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121807": {
+    "iso_kategori_kode": "18121807",
+    "iso_kategori_tittel": "Overmadrasser skumbaserte",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121808": {
+    "iso_kategori_kode": "18121808",
+    "iso_kategori_tittel": "Overmadrasser dynamiske",
+    "iso_kategori_tittel_kort": "Madrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18121809": {
+    "iso_kategori_kode": "18121809",
+    "iso_kategori_tittel": "Overmadrasser statiske",
+    "iso_kategori_tittel_kort": "Overmadrass",
+    "behandlingstema_kode": "ab0547",
+    "behandlingstema_term": "Madrasser trykksårforebyggende",
+    "delkontrakt_forkortelse": "MADRASS"
+  },
+  "18122401": {
+    "iso_kategori_kode": "18122401",
+    "iso_kategori_tittel": "Regulerbare rygger til senger, universelle",
+    "iso_kategori_tittel_kort": "Hjertebrett",
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18123001": {
+    "iso_kategori_kode": "18123001",
+    "iso_kategori_tittel": "Sengeforkortere, universelle",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18123301": {
+    "iso_kategori_kode": "18123301",
+    "iso_kategori_tittel": "Sengeforlengere, universelle",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18123302": {
+    "iso_kategori_kode": "18123302",
+    "iso_kategori_tittel": "Breddeutvidere til senger, universelle",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0548",
+    "behandlingstema_term": "Seng",
+    "delkontrakt_forkortelse": "SENG"
+  },
+  "18180601": {
+    "iso_kategori_kode": "18180601",
+    "iso_kategori_tittel": "Støttehåndtak fastmonterte",
+    "iso_kategori_tittel_kort": "Støttehåndtak",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "18181002": {
+    "iso_kategori_kode": "18181002",
+    "iso_kategori_tittel": "Støttehåndtak flyttbare",
+    "iso_kategori_tittel_kort": "Støttestang",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "18210301": {
+    "iso_kategori_kode": "18210301",
+    "iso_kategori_tittel": "Åpnere og lukkere til dører",
+    "iso_kategori_tittel_kort": "Døråpner",
+    "behandlingstema_kode": "ab0374",
+    "behandlingstema_term": "Bolig",
+    "delkontrakt_forkortelse": null
+  },
+  "18301002": {
+    "iso_kategori_kode": "18301002",
+    "iso_kategori_tittel": "Trappeheiser med sete",
+    "iso_kategori_tittel_kort": "Trappeheis",
+    "behandlingstema_kode": "ab0543",
+    "behandlingstema_term": "Trappeheis og løfteplattform",
+    "delkontrakt_forkortelse": "HEIS"
+  },
+  "18301101": {
+    "iso_kategori_kode": "18301101",
+    "iso_kategori_tittel": "Trappeheiser med plattform",
+    "iso_kategori_tittel_kort": "Trappeheis",
+    "behandlingstema_kode": "ab0543",
+    "behandlingstema_term": "Trappeheis og løfteplattform",
+    "delkontrakt_forkortelse": "HEIS"
+  },
+  "18301502": {
+    "iso_kategori_kode": "18301502",
+    "iso_kategori_tittel": "Foldbare kjøreskinner og kjøreramper",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301505": {
+    "iso_kategori_kode": "18301505",
+    "iso_kategori_tittel": "Terskeleliminatorer",
+    "iso_kategori_tittel_kort": "Terskeleliminator",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301801": {
+    "iso_kategori_kode": "18301801",
+    "iso_kategori_tittel": "Kjørebaner, rampemodul",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301802": {
+    "iso_kategori_kode": "18301802",
+    "iso_kategori_tittel": "Rekkverk, rampemodul",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301804": {
+    "iso_kategori_kode": "18301804",
+    "iso_kategori_tittel": "Repos, rampemodul",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301805": {
+    "iso_kategori_kode": "18301805",
+    "iso_kategori_tittel": "Påkjøringsbrett, rampemodul",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18301806": {
+    "iso_kategori_kode": "18301806",
+    "iso_kategori_tittel": "Trapper, rampemodul",
+    "iso_kategori_tittel_kort": "Rampe",
+    "behandlingstema_kode": "ab0542",
+    "behandlingstema_term": "Kjørerampe",
+    "delkontrakt_forkortelse": "RAMPE"
+  },
+  "18302401": {
+    "iso_kategori_kode": "18302401",
+    "iso_kategori_tittel": "Støttesystem ved trappegang uten sete og plattform",
+    "iso_kategori_tittel_kort": "Trappehjelpemiddel",
+    "behandlingstema_kode": "ab0543",
+    "behandlingstema_term": "Trappeheis og løfteplattform",
+    "delkontrakt_forkortelse": "HEIS"
+  },
+  "18331001": {
+    "iso_kategori_kode": "18331001",
+    "iso_kategori_tittel": "Komfyr- og elvakter",
+    "iso_kategori_tittel_kort": "Komfyrvakt",
+    "behandlingstema_kode": "ab0370",
+    "behandlingstema_term": "Varsling og alarm",
+    "delkontrakt_forkortelse": "VARSLING"
+  },
+  "22030601": {
+    "iso_kategori_kode": "22030601",
+    "iso_kategori_tittel": "Briller",
+    "iso_kategori_tittel_kort": "Brille",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22030603": {
+    "iso_kategori_kode": "22030603",
+    "iso_kategori_tittel": "Elektroniske briller",
+    "iso_kategori_tittel_kort": "Elektronisk brille",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22030901": {
+    "iso_kategori_kode": "22030901",
+    "iso_kategori_tittel": "Luper for forstørrelse",
+    "iso_kategori_tittel_kort": "Lupe",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22030902": {
+    "iso_kategori_kode": "22030902",
+    "iso_kategori_tittel": "Lupebriller",
+    "iso_kategori_tittel_kort": "Lupebrille",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22030903": {
+    "iso_kategori_kode": "22030903",
+    "iso_kategori_tittel": "Linser og digitale luper",
+    "iso_kategori_tittel_kort": "Linse/lupe",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031202": {
+    "iso_kategori_kode": "22031202",
+    "iso_kategori_tittel": "Kikkertbriller",
+    "iso_kategori_tittel_kort": "Kikkertbrille",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031501": {
+    "iso_kategori_kode": "22031501",
+    "iso_kategori_tittel": "Synsfeltutvidere",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031801": {
+    "iso_kategori_kode": "22031801",
+    "iso_kategori_tittel": "Lese-TV med skjerm, stasjonære",
+    "iso_kategori_tittel_kort": "Lese-TV",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031802": {
+    "iso_kategori_kode": "22031802",
+    "iso_kategori_tittel": "Lese-TV uten skjerm, stasjonære",
+    "iso_kategori_tittel_kort": "Lese-TV",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031803": {
+    "iso_kategori_kode": "22031803",
+    "iso_kategori_tittel": "Lese-TV med skjerm, bærbare",
+    "iso_kategori_tittel_kort": "Lese-TV",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22031804": {
+    "iso_kategori_kode": "22031804",
+    "iso_kategori_tittel": "Lese-TV uten skjerm, bærbare",
+    "iso_kategori_tittel_kort": "Lese-TV",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22061201": {
+    "iso_kategori_kode": "22061201",
+    "iso_kategori_tittel": "Alt-i-øre apparater",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0243",
+    "behandlingstema_term": "Høreapparat",
+    "delkontrakt_forkortelse": "HØREAPPARAT"
+  },
+  "22061501": {
+    "iso_kategori_kode": "22061501",
+    "iso_kategori_tittel": "Bak-øre-apparater",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0243",
+    "behandlingstema_term": "Høreapparat",
+    "delkontrakt_forkortelse": "HØREAPPARAT"
+  },
+  "22062101": {
+    "iso_kategori_kode": "22062101",
+    "iso_kategori_tittel": "Høreapparater som brukes sammen med implantater",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0243",
+    "behandlingstema_term": "Høreapparat",
+    "delkontrakt_forkortelse": "HØREAPPARAT"
+  },
+  "22062701": {
+    "iso_kategori_kode": "22062701",
+    "iso_kategori_tittel": "Tilleggsutstyr til hørselshjelpemidler",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22090301": {
+    "iso_kategori_kode": "22090301",
+    "iso_kategori_tittel": "Stemmegeneratorer",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22090601": {
+    "iso_kategori_kode": "22090601",
+    "iso_kategori_tittel": "Stemmeforsterkere",
+    "iso_kategori_tittel_kort": "Talehjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22121201": {
+    "iso_kategori_kode": "22121201",
+    "iso_kategori_tittel": "Manuelt punktskriveutstyr",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22121501": {
+    "iso_kategori_kode": "22121501",
+    "iso_kategori_tittel": "Skrivemaskiner",
+    "iso_kategori_tittel_kort": "Skrivemaskin",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22122101": {
+    "iso_kategori_kode": "22122101",
+    "iso_kategori_tittel": "Bærbart noteringsutstyr til punktskrift",
+    "iso_kategori_tittel_kort": "Noteringsutstyr punktskrift",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22180301": {
+    "iso_kategori_kode": "22180301",
+    "iso_kategori_tittel": "Utstyr for opptak og avspilling av lyd",
+    "iso_kategori_tittel_kort": "Lydbokavspiller",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22182402": {
+    "iso_kategori_kode": "22182402",
+    "iso_kategori_tittel": "FM mottakere",
+    "iso_kategori_tittel_kort": "Lytte- og samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22182403": {
+    "iso_kategori_kode": "22182403",
+    "iso_kategori_tittel": "FM sendere",
+    "iso_kategori_tittel_kort": "Lytte- og samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22183001": {
+    "iso_kategori_kode": "22183001",
+    "iso_kategori_tittel": "Teleslyngeforsterkere",
+    "iso_kategori_tittel_kort": "Lyttehjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22183601": {
+    "iso_kategori_kode": "22183601",
+    "iso_kategori_tittel": "Høyttalere",
+    "iso_kategori_tittel_kort": "Lyttehjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22210301": {
+    "iso_kategori_kode": "22210301",
+    "iso_kategori_tittel": "Bokstav- og symbolsett",
+    "iso_kategori_tittel_kort": "Bokstav-/symbolhjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22210302": {
+    "iso_kategori_kode": "22210302",
+    "iso_kategori_tittel": "Bokstav- og symboltavler",
+    "iso_kategori_tittel_kort": "Bokstav-/ symbolhjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22210601": {
+    "iso_kategori_kode": "22210601",
+    "iso_kategori_tittel": "Samtaleforsterkere",
+    "iso_kategori_tittel_kort": "Samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22210901": {
+    "iso_kategori_kode": "22210901",
+    "iso_kategori_tittel": "Samtalehjelpemidler med dynamisk display",
+    "iso_kategori_tittel_kort": "Samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22210902": {
+    "iso_kategori_kode": "22210902",
+    "iso_kategori_tittel": "Samtalehjelpemidler ett nivå",
+    "iso_kategori_tittel_kort": "Samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22210903": {
+    "iso_kategori_kode": "22210903",
+    "iso_kategori_tittel": "Samtalehjelpemidler flere nivå",
+    "iso_kategori_tittel_kort": "Samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22210904": {
+    "iso_kategori_kode": "22210904",
+    "iso_kategori_tittel": "Samtalehjelpemidler fritekst",
+    "iso_kategori_tittel_kort": "Samtalehjelpemiddel",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22240901": {
+    "iso_kategori_kode": "22240901",
+    "iso_kategori_tittel": "Teksttelefoner",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22242102": {
+    "iso_kategori_kode": "22242102",
+    "iso_kategori_tittel": "Forsterkede telefoner",
+    "iso_kategori_tittel_kort": "Telefoni",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22242103": {
+    "iso_kategori_kode": "22242103",
+    "iso_kategori_tittel": "Telefonforsterkere",
+    "iso_kategori_tittel_kort": "Telefoni",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22270401": {
+    "iso_kategori_kode": "22270401",
+    "iso_kategori_tittel": "Indikatorer med lyssignaler",
+    "iso_kategori_tittel_kort": "Varslingshjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22270402": {
+    "iso_kategori_kode": "22270402",
+    "iso_kategori_tittel": "Indikatorer med lydsignaler",
+    "iso_kategori_tittel_kort": "Varslingshjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22270404": {
+    "iso_kategori_kode": "22270404",
+    "iso_kategori_tittel": "Indikatorer med mekanisk varsling",
+    "iso_kategori_tittel_kort": "Varslingshjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22271201": {
+    "iso_kategori_kode": "22271201",
+    "iso_kategori_tittel": "Klokker og tidsmålere",
+    "iso_kategori_tittel_kort": "Klokke/tidsmåler",
+    "behandlingstema_kode": "ab0372",
+    "behandlingstema_term": "Kognisjon",
+    "delkontrakt_forkortelse": "KOGN"
+  },
+  "22271501": {
+    "iso_kategori_kode": "22271501",
+    "iso_kategori_tittel": "Elektroniske kalender- og minnesystemer",
+    "iso_kategori_tittel_kort": "Kalender-/minnesystem",
+    "behandlingstema_kode": "ab0372",
+    "behandlingstema_term": "Kognisjon",
+    "delkontrakt_forkortelse": "KOGN"
+  },
+  "22271801": {
+    "iso_kategori_kode": "22271801",
+    "iso_kategori_tittel": "Trygghetsalarmer",
+    "iso_kategori_tittel_kort": "Trygghetsalarm",
+    "behandlingstema_kode": "ab0370",
+    "behandlingstema_term": "Varsling og alarm",
+    "delkontrakt_forkortelse": "VARSLING"
+  },
+  "22271802": {
+    "iso_kategori_kode": "22271802",
+    "iso_kategori_tittel": "Anfallsalarmer",
+    "iso_kategori_tittel_kort": "Anfallsalarm",
+    "behandlingstema_kode": "ab0370",
+    "behandlingstema_term": "Varsling og alarm",
+    "delkontrakt_forkortelse": "VARSLING"
+  },
+  "22272101": {
+    "iso_kategori_kode": "22272101",
+    "iso_kategori_tittel": "Brann- og røykvarslere",
+    "iso_kategori_tittel_kort": "Varslingshjelpemiddel",
+    "behandlingstema_kode": "ab0376",
+    "behandlingstema_term": "Hørsel",
+    "delkontrakt_forkortelse": "HØRSEL"
+  },
+  "22272102": {
+    "iso_kategori_kode": "22272102",
+    "iso_kategori_tittel": "Komfyr- og elvakter",
+    "iso_kategori_tittel_kort": "Komfyr- og elvakter",
+    "behandlingstema_kode": "ab0370",
+    "behandlingstema_term": "Varsling og alarm",
+    "delkontrakt_forkortelse": "VARSLING"
+  },
+  "22272401": {
+    "iso_kategori_kode": "22272401",
+    "iso_kategori_tittel": "Overvåkingssystemer",
+    "iso_kategori_tittel_kort": "Overvåkingssystem",
+    "behandlingstema_kode": "ab0370",
+    "behandlingstema_term": "Varsling og alarm",
+    "delkontrakt_forkortelse": "VARSLING"
+  },
+  "22302101": {
+    "iso_kategori_kode": "22302101",
+    "iso_kategori_tittel": "Lesemaskiner",
+    "iso_kategori_tittel_kort": "Lesemaskin",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22302401": {
+    "iso_kategori_kode": "22302401",
+    "iso_kategori_tittel": "Punktskriftbøker- og matriell",
+    "iso_kategori_tittel_kort": null,
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22362101": {
+    "iso_kategori_kode": "22362101",
+    "iso_kategori_tittel": "Datamus",
+    "iso_kategori_tittel_kort": "Datamus",
+    "behandlingstema_kode": "ab0464",
+    "behandlingstema_term": "Kommunikasjon",
+    "delkontrakt_forkortelse": "KOMM"
+  },
+  "22390502": {
+    "iso_kategori_kode": "22390502",
+    "iso_kategori_tittel": "Leselister",
+    "iso_kategori_tittel_kort": "Leselist",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "22390601": {
+    "iso_kategori_kode": "22390601",
+    "iso_kategori_tittel": "Skrivere",
+    "iso_kategori_tittel_kort": "Skriver",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "24091802": {
+    "iso_kategori_kode": "24091802",
+    "iso_kategori_tittel": "Brytere",
+    "iso_kategori_tittel_kort": "Bryter",
+    "behandlingstema_kode": "ab0372",
+    "behandlingstema_term": "Kognisjon",
+    "delkontrakt_forkortelse": "KOGN"
+  },
+  "24091803": {
+    "iso_kategori_kode": "24091803",
+    "iso_kategori_tittel": "Bryterbokser",
+    "iso_kategori_tittel_kort": "Bryter",
+    "behandlingstema_kode": "ab0372",
+    "behandlingstema_term": "Kognisjon",
+    "delkontrakt_forkortelse": "KOGN"
+  },
+  "24093001": {
+    "iso_kategori_kode": "24093001",
+    "iso_kategori_tittel": "Tidsur",
+    "iso_kategori_tittel_kort": "Elvakt",
+    "behandlingstema_kode": "ab0372",
+    "behandlingstema_term": "Kognisjon",
+    "delkontrakt_forkortelse": "KOGN"
+  },
+  "24361201": {
+    "iso_kategori_kode": "24361201",
+    "iso_kategori_tittel": "Traller og trillebord",
+    "iso_kategori_tittel_kort": "Trillebord",
+    "behandlingstema_kode": "ab0537",
+    "behandlingstema_term": "Arbeidsstoler, sittemøbler og bord",
+    "delkontrakt_forkortelse": "ARBSTOL"
+  },
+  "24361501": {
+    "iso_kategori_kode": "24361501",
+    "iso_kategori_tittel": "Tilhengere for sykkel",
+    "iso_kategori_tittel_kort": "Sykkeltilhenger",
+    "behandlingstema_kode": "ab0556",
+    "behandlingstema_term": "Sykkel",
+    "delkontrakt_forkortelse": "SYKKEL"
+  },
+  "27062401": {
+    "iso_kategori_kode": "27062401",
+    "iso_kategori_tittel": "Fargemålere",
+    "iso_kategori_tittel_kort": "Fargemåler",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "30098901": {
+    "iso_kategori_kode": "30098901",
+    "iso_kategori_tittel": "Hjelpemidler for sportsaktiviteter på barmark",
+    "iso_kategori_tittel_kort": "Barmarkshjelpemidler",
+    "behandlingstema_kode": "ab0369",
+    "behandlingstema_term": "Aktivitetshjelpemidler",
+    "delkontrakt_forkortelse": null
+  },
+  "04481501": {
+    "iso_kategori_kode": "04481501",
+    "iso_kategori_tittel": "Andre arm-, kropps- og bentreningsutstyr",
+    "iso_kategori_tittel_kort": "Treningsutstyr",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "04481504": {
+    "iso_kategori_kode": "04481504",
+    "iso_kategori_tittel": "Arm,- kropps- og bentreningsutstyr motoriserte",
+    "iso_kategori_tittel_kort": "Treningshjelpemiddel",
+    "behandlingstema_kode": "ab0551",
+    "behandlingstema_term": "Ståstativ",
+    "delkontrakt_forkortelse": "STÅGÅ"
+  },
+  "04482701": {
+    "iso_kategori_kode": "04482701",
+    "iso_kategori_tittel": "Utstyr for posisjonering ",
+    "iso_kategori_tittel_kort": "Posisjoneringsutstyr",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "05061501": {
+    "iso_kategori_kode": "05061501",
+    "iso_kategori_tittel": "Treningshjelpemidler for punktskrift (Braille)",
+    "iso_kategori_tittel_kort": "Punktskrifthefte",
+    "behandlingstema_kode": "ab0377",
+    "behandlingstema_term": "Syn",
+    "delkontrakt_forkortelse": "SYN"
+  },
+  "05360301": {
+    "iso_kategori_kode": "05360301",
+    "iso_kategori_tittel": "Ståstativer",
+    "iso_kategori_tittel_kort": "Ståstativ",
+    "behandlingstema_kode": "ab0551",
+    "behandlingstema_term": "Ståstativ",
+    "delkontrakt_forkortelse": "STÅGÅ"
+  },
+  "09030501": {
+    "iso_kategori_kode": "09030501",
+    "iso_kategori_tittel": "Kjøreposer",
+    "iso_kategori_tittel_kort": "Kjørepose",
+    "behandlingstema_kode": "ab0541",
+    "behandlingstema_term": "Kjørepose og regncape",
+    "delkontrakt_forkortelse": "KJØREPOSE"
+  },
+  "09030502": {
+    "iso_kategori_kode": "09030502",
+    "iso_kategori_tittel": "Regntøy",
+    "iso_kategori_tittel_kort": "Regntøy",
+    "behandlingstema_kode": "ab0541",
+    "behandlingstema_term": "Kjørepose og regncape",
+    "delkontrakt_forkortelse": "KJØREPOSE"
+  },
+  "09061501": {
+    "iso_kategori_kode": "09061501",
+    "iso_kategori_tittel": "Håndbeskyttere",
+    "iso_kategori_tittel_kort": "Håndbeskytter",
+    "behandlingstema_kode": "ab0553",
+    "behandlingstema_term": "Varmehjelpemiddel",
+    "delkontrakt_forkortelse": "VARME"
+  },
+  "09062101": {
+    "iso_kategori_kode": "09062101",
+    "iso_kategori_tittel": "Fot-, hæl- og tåbeskyttere",
+    "iso_kategori_tittel_kort": "Fotbeskytter",
+    "behandlingstema_kode": "ab0553",
+    "behandlingstema_term": "Varmehjelpemiddel",
+    "delkontrakt_forkortelse": "VARME"
+  },
+  "09070601": {
+    "iso_kategori_kode": "09070601",
+    "iso_kategori_tittel": "Posisjoneringsputer og -systemer",
+    "iso_kategori_tittel_kort": "Posisjoneringsputer",
+    "behandlingstema_kode": "ab0540",
+    "behandlingstema_term": "Overflytting, vending og posisjonering",
+    "delkontrakt_forkortelse": "OVERFLYTTING"
+  },
+  "09120301": {
+    "iso_kategori_kode": "09120301",
+    "iso_kategori_tittel": "Kombinerte dusj- og toalettstoler",
+    "iso_kategori_tittel_kort": "Dusj-/toalettstol",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09120302": {
+    "iso_kategori_kode": "09120302",
+    "iso_kategori_tittel": "Flyttbare toalettstoler",
+    "iso_kategori_tittel_kort": "Toalettstol",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09120901": {
+    "iso_kategori_kode": "09120901",
+    "iso_kategori_tittel": "Toalettseter",
+    "iso_kategori_tittel_kort": "Toalettsete",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09121201": {
+    "iso_kategori_kode": "09121201",
+    "iso_kategori_tittel": "Frittstående toalettforhøyere",
+    "iso_kategori_tittel_kort": "Toalettforhøyer",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09121801": {
+    "iso_kategori_kode": "09121801",
+    "iso_kategori_tittel": "Faste toalettforhøyere",
+    "iso_kategori_tittel_kort": "Toalettforhøyer",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09122101": {
+    "iso_kategori_kode": "09122101",
+    "iso_kategori_tittel": "Toalettløftere",
+    "iso_kategori_tittel_kort": "Toalettløfter",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09122401": {
+    "iso_kategori_kode": "09122401",
+    "iso_kategori_tittel": "Toalettmonterte armlener og støttehåndtak",
+    "iso_kategori_tittel_kort": "Toalettarmstøtte",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09122501": {
+    "iso_kategori_kode": "09122501",
+    "iso_kategori_tittel": "Armlener til toalett - ikke toalettmonterte",
+    "iso_kategori_tittel_kort": "Toalettarmstøtte",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09122502": {
+    "iso_kategori_kode": "09122502",
+    "iso_kategori_tittel": "Støttehåndtak til toalett - ikke toalettmonterte",
+    "iso_kategori_tittel_kort": "Toalettarmstøtte",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330402": {
+    "iso_kategori_kode": "09330402",
+    "iso_kategori_tittel": "Badekarbrett",
+    "iso_kategori_tittel_kort": "Badekarbrett",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330501": {
+    "iso_kategori_kode": "09330501",
+    "iso_kategori_tittel": "Badekarseter",
+    "iso_kategori_tittel_kort": "Badekarsete",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330701": {
+    "iso_kategori_kode": "09330701",
+    "iso_kategori_tittel": "Dusjkrakker",
+    "iso_kategori_tittel_kort": "Dusjkrakk",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330702": {
+    "iso_kategori_kode": "09330702",
+    "iso_kategori_tittel": "Dusjkrakker veggmonterte",
+    "iso_kategori_tittel_kort": "Dusjkrakk",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330703": {
+    "iso_kategori_kode": "09330703",
+    "iso_kategori_tittel": "Dusjstoler",
+    "iso_kategori_tittel_kort": "Dusjstol",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09330704": {
+    "iso_kategori_kode": "09330704",
+    "iso_kategori_tittel": "Bade- og dusjstoler for barn",
+    "iso_kategori_tittel_kort": "Dusjstol",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09331201": {
+    "iso_kategori_kode": "09331201",
+    "iso_kategori_tittel": "Stellebord frittstående",
+    "iso_kategori_tittel_kort": "Stellebord",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09331202": {
+    "iso_kategori_kode": "09331202",
+    "iso_kategori_tittel": "Stellebord veggmonterte",
+    "iso_kategori_tittel_kort": "Stellebord",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09331203": {
+    "iso_kategori_kode": "09331203",
+    "iso_kategori_tittel": "Dusjvogner",
+    "iso_kategori_tittel_kort": "Dusjvogn",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09332101": {
+    "iso_kategori_kode": "09332101",
+    "iso_kategori_tittel": "Badekar",
+    "iso_kategori_tittel_kort": "Badekar",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09333601": {
+    "iso_kategori_kode": "09333601",
+    "iso_kategori_tittel": "Hjelpemidler for å tørke seg",
+    "iso_kategori_tittel_kort": "Tørkehjelpemiddel",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09420301": {
+    "iso_kategori_kode": "09420301",
+    "iso_kategori_tittel": "Tannbørster, manuelle",
+    "iso_kategori_tittel_kort": "Tannbørste",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  },
+  "09420601": {
+    "iso_kategori_kode": "09420601",
+    "iso_kategori_tittel": "Elektriske tannbørster",
+    "iso_kategori_tittel_kort": "Tannbørste",
+    "behandlingstema_kode": "ab0562",
+    "behandlingstema_term": "Hygiene",
+    "delkontrakt_forkortelse": "HYGIENE"
+  }
+}

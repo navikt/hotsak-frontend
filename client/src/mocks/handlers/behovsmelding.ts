@@ -1,14 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
 import type { StoreHandlersFactory } from '../data'
-//import behovsmelding from '../data/behovsmelding_1.json'
-import behovsmeldingEnkel from '../data/behovsmelding_demo1_nye_hotsak_enkel.json'
-import behovsmeldingVanskelig from '../data/behovsmelding_demo1_nye_hotsak_vanskelig.json'
-//import behovsmelding from '../data/behovsmelding_2.json'
 import type { SakParams } from './params'
-import { delay, respondForbidden, respondInternalServerError, respondUnauthorized } from './response'
+import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondUnauthorized } from './response'
 
-export const behovsmeldingHandlers: StoreHandlersFactory = () => [
+export const behovsmeldingHandlers: StoreHandlersFactory = ({ sakStore, behovsmeldingStore }) => [
   http.get<SakParams>(`/api/sak/:sakId/behovsmelding`, async ({ params }) => {
     const { sakId } = params
     if (sakId === '401') {
@@ -23,10 +19,14 @@ export const behovsmeldingHandlers: StoreHandlersFactory = () => [
 
     await delay(500)
 
-    if (sakId == '323002') {
-      return HttpResponse.json({ ...behovsmeldingVanskelig })
-    } else {
-      return HttpResponse.json({ ...behovsmeldingEnkel })
+    const sak = await sakStore.hent(sakId)
+    if (!sak) {
+      return respondNotFound()
     }
+    const behovsmeldingCase = await behovsmeldingStore.hentForSak(sak)
+    if (!behovsmeldingCase) {
+      return respondNotFound()
+    }
+    return HttpResponse.json(behovsmeldingCase.behovsmelding)
   }),
 ]

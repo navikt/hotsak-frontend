@@ -1,0 +1,171 @@
+{
+  "behovsmeldingId": "cc5c0ec1-b1a0-4642-8ae1-88af7042694c",
+  "beskrivelse": "importert",
+  "behovsmelding": {
+    "id": "cc5c0ec1-b1a0-4642-8ae1-88af7042694c",
+    "type": "BESTILLING",
+    "bruker": {
+      "fnr": "26848497710",
+      "navn": {
+        "fornavn": "Berømt",
+        "etternavn": "Aktivitet"
+      },
+      "kilde": "PDL",
+      "telefon": "35235343",
+      "veiadresse": {
+        "adresse": "Kirkeveien 7",
+        "poststed": "Hasvik",
+        "postnummer": "9590"
+      },
+      "brukernummer": "4497226",
+      "signaturtype": "FULLMAKT",
+      "kommunenummer": "5616",
+      "legacyopplysninger": []
+    },
+    "vedlegg": [],
+    "levering": {
+      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "utleveringMerknad": "",
+      "hjelpemiddelformidler": {
+        "navn": {
+          "fornavn": "Berømt",
+          "etternavn": "Aktivitet"
+        },
+        "epost": "some@some.com",
+        "adresse": {
+          "adresse": "4ewvd 33",
+          "poststed": "OSLO",
+          "postnummer": "0188"
+        },
+        "telefon": "36436466",
+        "stilling": "3tef",
+        "arbeidssted": "4wegdv",
+        "kommunenavn": "OSLO",
+        "kommunenummer": "0301",
+        "treffesEnklest": "edd"
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "version": "3797d2980947054d9a469232157f54258ebd212d",
+        "metaInfo": {
+          "tilbehør": [],
+          "hovedProdukter": ["014112"],
+          "tilbehørIkkePåBestillingsordning": [],
+          "hovedProdukterIkkePåBestillingsordning": []
+        },
+        "kriterier": {
+          "kildeErPdl": true,
+          "harIngenBytter": true,
+          "brukersAdresseErSatt": true,
+          "brukerHarAdresseIOeBS": true,
+          "brukerBorIkkeIUtlandet": true,
+          "inneholderIkkeFritekst": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "brukerHarHotsakVedtakFraFør": true,
+          "ingenProdukterErAlleredeUtlevert": true,
+          "leveringTilFolkeregistrertAdresse": true,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "alleHovedProdukterPåBestillingsOrdning": true
+        },
+        "kanVæreBestilling": true
+      }
+    },
+    "innsender": {
+      "kurs": [],
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": false,
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "prioritet": "NORMAL",
+    "hjelpemidler": {
+      "tilbehør": [],
+      "hjelpemidler": [
+        {
+          "antall": 1,
+          "bytter": [],
+          "produkt": {
+            "iso8": "18301505",
+            "hmsArtNr": "014112",
+            "rangering": 1,
+            "iso8Tittel": "Terskeleliminatorer",
+            "artikkelnavn": "Topro terskeleliminator b70 h2.3-3.8",
+            "delkontraktId": "HMDB-1196",
+            "delkontrakttittel": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk",
+            "sortimentkategori": "Terskeleliminatorer og ramper"
+          },
+          "varsler": [],
+          "tilbehør": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "opplysninger": [
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
+              }
+            }
+          ],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false
+          },
+          "hjelpemiddelId": "bc6990f0-e964-479b-96b2-37de3ece0312",
+          "saksbehandlingvarsel": []
+        }
+      ],
+      "totaltAntall": 1
+    },
+    "hjmBrukersFnr": "26848497710",
+    "skjemaversjon": 2,
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "tekst": {
+            "nb": "Berømt Aktivitet vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Berømt Aktivitet vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          },
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Berømt Aktivitet sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Berømt Aktivitet behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          },
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          },
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Berømt Aktivitet har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Berømt Aktivitet har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+          },
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+        }
+      ],
+      "funksjonsnedsettelser": ["BEVEGELSE"]
+    },
+    "innsendingsdato": "2025-11-18",
+    "innsendingstidspunkt": "2025-11-18T15:28:26.582616188Z"
+  },
+  "behovsmeldingGjelder": "Bestilling av: terskeleliminator",
+  "fnrBruker": "26848497710",
+  "fnrInnsender": "26848497710",
+  "opprettet": "2025-11-18T15:28:27.349Z"
+}

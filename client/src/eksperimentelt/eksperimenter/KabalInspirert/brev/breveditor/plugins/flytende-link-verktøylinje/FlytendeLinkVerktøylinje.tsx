@@ -63,6 +63,9 @@ export function FlytendeLinkVerktøylinje() {
 
   if (floatingLinkInsert.hidden) return null
 
+  const { ref: insertRef, props: insertProps } = floatingLinkInsert
+  const { ref: editRef, props: editProps } = floatingLinkEdit
+
   return (
     <FlytendeLinkVerktøylinjeContext
       value={{
@@ -71,10 +74,10 @@ export function FlytendeLinkVerktøylinje() {
         floatingLinkUrlInput,
       }}
     >
-      <Box.New ref={floatingLinkInsert.ref} {...floatingLinkInsert.props} {...flytendeBoxProps}>
+      <Box.New ref={insertRef} {...(insertProps as any)} {...flytendeBoxProps}>
         <OpprettEndreLinkPanel />
       </Box.New>
-      <Box.New ref={floatingLinkEdit.ref} {...floatingLinkEdit.props} {...flytendeBoxProps}>
+      <Box.New ref={editRef} {...(editProps as any)} {...flytendeBoxProps}>
         <>
           {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
           {!floatingLinkEditState.isEditing && (

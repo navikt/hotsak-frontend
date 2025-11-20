@@ -17,7 +17,7 @@ type LagretNotat = Notat
 type InsertNotat = Omit<LagretNotat, 'id'>
 
 export class NotatStore extends Dexie {
-  private readonly notater!: Table<LagretNotat, string, InsertNotat>
+  private readonly notater!: Table<LagretNotat, number, InsertNotat>
 
   constructor(
     private readonly saksbehandlerStore: SaksbehandlerStore,
@@ -25,7 +25,7 @@ export class NotatStore extends Dexie {
   ) {
     super('NotatStore')
     this.version(1).stores({
-      notater: 'id,sakId',
+      notater: '++id,sakId',
     })
   }
 
@@ -66,7 +66,8 @@ export class NotatStore extends Dexie {
     }
   }
 
-  async ferdigstillNotat(notatId: string, payload: FerdigstillNotatRequest) {
+  async ferdigstillNotat(notatId: string | number, payload: FerdigstillNotatRequest) {
+    notatId = Number(notatId)
     const notat = await this.notater.get(notatId)
     if (!notat) {
       throw new Error(`Notat med id: ${notatId} finnes ikke`)
@@ -94,7 +95,8 @@ export class NotatStore extends Dexie {
     }
   }
 
-  async oppdaterUtkast(sakId: string, notatId: string, utkast: NotatUtkast) {
+  async oppdaterUtkast(sakId: string, notatId: string | number, utkast: NotatUtkast) {
+    notatId = Number(notatId)
     const notat = await this.notater.where({ sakId, id: notatId }).first()
     this.notater.update(notatId, {
       ...notat,
@@ -105,7 +107,8 @@ export class NotatStore extends Dexie {
     })
   }
 
-  async slettNotat(notatId: string) {
+  async slettNotat(notatId: string | number) {
+    notatId = Number(notatId)
     return this.notater.delete(notatId)
   }
 

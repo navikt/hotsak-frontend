@@ -9,11 +9,12 @@ export interface BehovsmeldingCase {
   fnrBruker: string
   fnrInnsender: string
   opprettet: string
+  sakId: string
 }
 
 export class BehovsmeldingStore {
   alle: Record<string, () => Promise<BehovsmeldingCase>> = import.meta.glob<BehovsmeldingCase>(
-    './behovsmeldinger/*.json',
+    './behovsmeldinger/**/*.json',
     { eager: false, import: 'default' }
   )
 

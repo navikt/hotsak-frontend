@@ -97,18 +97,20 @@ export class SakStore extends Dexie {
     const hjelpemiddelsaker = await Promise.all(
       Object.entries(this.behovsmeldingStore.alle).map(async ([behovsmeldingCasePath, loader]) => {
         const behovsmeldingCase = await loader()
-        console.log(`Oppretter sak for behovsmeldingCasePath: ${behovsmeldingCasePath}`)
+        console.log(
+          `Oppretter sak for behovsmeldingCasePath: ${behovsmeldingCasePath}, sakId: ${behovsmeldingCase.sakId}`
+        )
         return lagHjelpemiddelsakForBehovsmeldingCase(behovsmeldingCasePath, behovsmeldingCase)
       })
     )
 
     return this.lagreAlle([
       ...hjelpemiddelsaker,
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
-      lagBarnebrillesak(),
+      lagBarnebrillesak('1001'),
+      lagBarnebrillesak('1002'),
+      lagBarnebrillesak('1003'),
+      lagBarnebrillesak('1004'),
+      lagBarnebrillesak('1005'),
     ])
   }
 
@@ -128,7 +130,7 @@ export class SakStore extends Dexie {
         if (erInsertBarnebrillesak(sak)) {
           return {
             ...sak,
-            journalposter: [journalposter[0].journalpostId],
+            journalposter: journalposter.map((it) => it.journalpostId),
           }
         }
         return sak
@@ -409,7 +411,7 @@ export class SakStore extends Dexie {
   }
 
   async opprettSak(journalføring: JournalføringRequest) {
-    const sak = lagBarnebrillesak()
+    const sak = lagBarnebrillesak('') // fixme
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)

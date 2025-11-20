@@ -1,8 +1,8 @@
 {
-  "behovsmeldingId": "e345551d-0c6a-47e6-83a8-3853f2710951",
+  "behovsmeldingId": "4802ed92-aa84-48b4-97b2-c89118e25898",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "e345551d-0c6a-47e6-83a8-3853f2710951",
+    "id": "4802ed92-aa84-48b4-97b2-c89118e25898",
     "type": "SØKNAD",
     "bruker": {
       "fnr": "13820599335",
@@ -11,7 +11,7 @@
         "etternavn": "Faktura"
       },
       "kilde": "PDL",
-      "telefon": "13820599",
+      "telefon": "12121212",
       "veiadresse": {
         "adresse": "Fjellvegen 69",
         "poststed": "Nordfjordeid",
@@ -49,12 +49,12 @@
     },
     "metadata": {
       "bestillingsordningsjekk": {
-        "version": "3797d2980947054d9a469232157f54258ebd212d",
+        "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["321207"],
+          "hovedProdukter": ["296289", "177946", "297414"],
           "tilbehørIkkePåBestillingsordning": [],
-          "hovedProdukterIkkePåBestillingsordning": ["321207"]
+          "hovedProdukterIkkePåBestillingsordning": ["296289"]
         },
         "kriterier": {
           "kildeErPdl": true,
@@ -94,145 +94,188 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "12240901",
-            "hmsArtNr": "321207",
+            "iso8": "18091501",
+            "hmsArtNr": "296289",
             "rangering": 1,
-            "iso8Tittel": "Drivhjul og drivaggregat med motorisert styring",
-            "artikkelnavn": "e-fix E35 - 22",
-            "delkontraktId": "HMDB-1392",
-            "delkontrakttittel": "17. Drivaggregat med elektrisk motor i drivhjulene og med motorisert styring (joystick)",
-            "sortimentkategori": "Manuelle rullestoler og drivaggregat"
+            "iso8Tittel": "Løftestoler med synkron regulering av rygg, benstøtter og oppreisning",
+            "artikkelnavn": "Active Easyriser Small 60-80 kg",
+            "delkontraktId": "c7736f1d-18e2-4d13-8a57-ddc9304ead59",
+            "delkontrakttittel": "2: Stol med mekanisk oppreisingsfunksjon",
+            "sortimentkategori": "Stoler med oppreisingsfunksjon"
           },
           "varsler": [],
           "tilbehør": [],
-          "bruksarenaer": [],
+          "bruksarenaer": ["EGET_HJEM"],
           "opplysninger": [
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Formidler har svart at godkjenningskurs elektrisk rullestol er gjennomført",
-                    "nn": "Formidlar har svart at godkjenningskurs elektrisk rullestol er gjennomført"
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Krav om kurs",
-                "nn": "Krav om kurs"
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Ja",
-                    "nn": "Ja"
+                    "nb": "Sittebredde: 45 cm, lårlengde: 35 cm, legglengde: 45 cm, høyde: 160 cm, kroppsvekt: 60 kg.",
+                    "nn": "Sitjebreidd: 45 cm, lårlengde: 35 cm, legglengde: 45 cm, høgde: 160 cm, kroppsvekt: 60 kg."
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Kan personen ferdes sikkert i omgivelsene hjelpemidlet skal brukes?",
-                "nn": "Kan personen ferdast trygt i omgivnadane hjelpemiddelet skal brukast?"
+                "nb": "Kroppsmål",
+                "nn": "Kroppsmål"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "En annen rullestol som ikke vises i innbyggers utlånsversikt",
-                    "nn": "Ein annan rullestol som ikkje blir vist i personen si utlånsversikt"
+                    "nb": "Personen kan ikke reise seg selv fra vanlige stoler ved bruk av enklere tiltak som for eksempel forhøyningsklosser, puter, støttestang, støttehåndtak og lignende.",
+                    "nn": "Personen kan ikkje reisa seg sjølv frå vanlege stolar ved bruk av enklare tiltak som til dømes løfteklossar, puter, støttestong, støttehandtak og liknande."
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Hvilken rullestol skal drivaggregatet brukes med?",
-                "nn": "Kva rullestol skal drivaggregatet brukast med?"
-              }
-            },
-            {
-              "innhold": [
-                {
-                  "fritekst": "en annen stol"
-                }
-              ],
-              "ledetekst": {
-                "nb": "Oppgi hvilken rullestol drivaggregatet skal brukes med.",
-                "nn": "Oppgi kva rullestol drivaggregatet skal brukast med."
+                "nb": "Funksjon",
+                "nn": "Funksjon"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Ja",
-                    "nn": "Ja"
+                    "nb": "Personen skal reise seg opp og utføre dagliglivets oppgaver.",
+                    "nn": "Personen skal reisa seg opp og utføra oppgåvene til dagleglivet."
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Skal drivaggregatet transporteres i bil?",
-                "nn": "Skal drivaggregatet transporterast i bil?"
+                "nb": "Grunnen til behovet",
+                "nn": "Grunnen til behovet"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Ja",
-                    "nn": "Ja"
+                    "nb": "Stol i annet trekk kan benyttes",
+                    "nn": "Stol i anna trekk kan nyttast"
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Kan personen selv eller ledsager demontere og montere drivhjulene og løfte det inn og ut av bil?",
-                "nn": "Kan personen sjølv eller følgjeperson demontera og montera drivhjula og løfta det inn og ut av bil?"
+                "nb": "Trekk",
+                "nn": "Trekk"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Ja",
-                    "nn": "Ja"
+                    "nb": "Personen har behov for setetilt",
+                    "nn": "Personen har behov for setetilt"
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Kan personen kjøre selvstendig med motorisert styring (joystick)?",
-                "nn": "Kan personen køyre sjølvstendig med motorisert styring (joystick)?"
-              }
-            },
-            {
-              "innhold": [
-                {
-                  "forhåndsdefinertTekst": {
-                    "nb": "Høyre side",
-                    "nn": "Høgre side"
-                  }
-                }
-              ],
-              "ledetekst": {
-                "nb": "Hvor ønsker personen plassering av joystick?",
-                "nn": "Kvar ønskjer personen plassering av joystick?"
+                "nb": "Behov for setetilt",
+                "nn": "Behov for setetilt"
               }
             }
           ],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "b3d9aa43-f6aa-478d-95b5-e6941419fec9",
-          "saksbehandlingvarsel": [
+          "hjelpemiddelId": "e711d271-545f-445b-985d-23c86b2779fd",
+          "saksbehandlingvarsel": []
+        },
+        {
+          "antall": 1,
+          "bytter": [],
+          "produkt": {
+            "iso8": "12060602",
+            "hmsArtNr": "177946",
+            "rangering": 1,
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
+            "delkontraktId": "HMDB-1333",
+            "delkontrakttittel": "2. Rullator - innendørs bruk",
+            "sortimentkategori": "Ganghjelpemidler"
+          },
+          "varsler": [],
+          "tilbehør": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "opplysninger": [
             {
-              "type": "WARNING",
-              "tekst": {
-                "nb": "Dokumentasjon av gjennomført kurs skal sjekkes i behandling av saken.",
-                "nn": "Dokumentasjon av gjennomført kurs skal sjekkast i behandling av saka."
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
               }
             }
-          ]
+          ],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false
+          },
+          "hjelpemiddelId": "a815595c-c02d-4bf0-a8fc-2e4641ac3e0c",
+          "saksbehandlingvarsel": []
+        },
+        {
+          "antall": 1,
+          "bytter": [],
+          "produkt": {
+            "iso8": "09330701",
+            "hmsArtNr": "297414",
+            "rangering": 1,
+            "iso8Tittel": "Dusjkrakker",
+            "artikkelnavn": "Easy",
+            "delkontraktId": "f6008a0f-f37f-4f1f-9781-1b0b6125e785",
+            "delkontrakttittel": "8: Dusjkrakker",
+            "sortimentkategori": "Hygienehjelpemidler"
+          },
+          "varsler": [],
+          "tilbehør": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "opplysninger": [
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
+              }
+            }
+          ],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false
+          },
+          "hjelpemiddelId": "3c31a600-01f5-43dc-912d-868bcf49c392",
+          "saksbehandlingvarsel": []
         }
       ],
-      "totaltAntall": 1
+      "totaltAntall": 3
     },
     "hjmBrukersFnr": "13820599335",
     "skjemaversjon": 2,
@@ -261,16 +304,17 @@
         }
       ],
       "funksjonsbeskrivelse": {
-        "beskrivelse": "assdf",
+        "beskrivelse": "Atrose og leddsmerter i hele kroppen, og i særlig hofter. Gjøre henne stiv og hun har vansker med balanse og koordinasjon ved gange over distanse. Har hatt et fall inne hjemme. Er utrygg på å gå uten rullator nå, låner fra korttidslager.\n\nBruker er svært ustø. Klarer ikke å stå i dusjen.\n\nKlarer ikke å reise seg opp av stol, og faller ned i stol. Må forsøke gjentatte ganger for å komme seg ut av stol.  Faller ned i stol når hun skal sette seg ned i stol, klarer ikke å kontrollere bevegelsene for å komme seg inn og ut av stol pga nedsatt muskelkraft og dårlig balanse.",
         "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
       },
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-18",
-    "innsendingstidspunkt": "2025-11-18T08:10:35.265071883Z"
+    "innsendingsdato": "2025-11-17",
+    "innsendingstidspunkt": "2025-11-17T12:03:29.497205148Z"
   },
-  "behovsmeldingGjelder": "Søknad om: hjelpemotor",
+  "behovsmeldingGjelder": "Søknad om: dusjkrakk, løftestol, rullator",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-18T08:10:38.184Z"
+  "opprettet": "2025-11-17T12:03:31.197Z",
+  "sakId": "9002"
 }

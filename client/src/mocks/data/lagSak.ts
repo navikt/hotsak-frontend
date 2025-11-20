@@ -36,7 +36,7 @@ export function erInsertBarnebrillesak(sak?: InsertSak | null): sak is InsertBar
 }
 
 export type LagretHjelpemiddelsak = Sak
-export type InsertHjelpemiddelsak = Omit<LagretHjelpemiddelsak, 'sakId'> & { behovsmeldingCasePath: string }
+export type InsertHjelpemiddelsak = LagretHjelpemiddelsak & { behovsmeldingCasePath: string }
 
 export function lagHjelpemiddelsakForBehovsmeldingCase(
   behovsmeldingCasePath: string,
@@ -57,6 +57,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
   }
   return {
     behovsmeldingCasePath,
+    sakId: behovsmeldingCase.sakId,
     sakstype,
     saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     saksstatusGyldigFra: opprettet,
@@ -65,9 +66,9 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
     bruker: {
       fnr: fnrBruker,
       navn: bruker.navn,
-      fulltNavn: `Foo Bar`,
+      fulltNavn: `${bruker.navn.fornavn} ${bruker.navn.etternavn}`,
       fødselsdato: fødselsdatoFraFødselsnummer(fnrBruker).toDateString(),
-      kommune: { nummer: bruker.kommunenummer!, navn: 'FIXME' },
+      kommune: { nummer: bruker.kommunenummer!, navn: bruker.kommunenummer! },
       bydel: undefined,
       kjønn: kjønnFraFødselsnummer(fnrBruker),
       telefon: behovsmelding.bruker.telefon,
@@ -98,12 +99,13 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
 // START Barnebrillesak
 
 export type LagretBarnebrillesak = Omit<Barnebrillesak, 'vilkårsgrunnlag' | 'vilkårsvurdering'>
-export type InsertBarnebrillesak = Omit<LagretBarnebrillesak, 'sakId'>
+export type InsertBarnebrillesak = LagretBarnebrillesak
 
-export function lagBarnebrillesak(): InsertBarnebrillesak {
+export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
   const fødselsdatoBruker = lagTilfeldigFødselsdato(10)
   const opprettet = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   return {
+    sakId,
     sakstype: Sakstype.BARNEBRILLER,
     saksstatus: OppgaveStatusType.AVVENTER_SAKSBEHANDLER,
     saksstatusGyldigFra: opprettet,

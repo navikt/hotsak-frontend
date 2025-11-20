@@ -38,7 +38,7 @@ export class JournalpostStore extends Dexie {
     if (count !== 0) {
       return []
     }
-    return this.lagreAlle([lagJournalpost(), lagJournalpost(), lagJournalpost()])
+    return this.lagreAlle([lagJournalpost('9001'), lagJournalpost('9002'), lagJournalpost('9003')])
   }
 
   async lagreAlle(journalposter: InsertJournalpost[]) {

@@ -325,8 +325,9 @@
     "hjmBrukersFnr": "13820599335",
     "prioritet": "NORMAL"
   },
-  "behovsmeldingGjelder": "Søknad om: FIXME",
+  "behovsmeldingGjelder": "Søknad om hjelpemidler",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-04T12:03:23.053Z"
+  "opprettet": "2025-11-04T12:03:23.053Z",
+  "sakId": "3"
 }

@@ -1,24 +1,25 @@
 {
-  "behovsmeldingId": "87d7736e-3e40-4e8b-a7b9-c003beca44e8",
+  "behovsmeldingId": "cc5c0ec1-b1a0-4642-8ae1-88af7042694c",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "87d7736e-3e40-4e8b-a7b9-c003beca44e8",
+    "id": "cc5c0ec1-b1a0-4642-8ae1-88af7042694c",
     "type": "BESTILLING",
     "bruker": {
-      "fnr": "13820599335",
+      "fnr": "26848497710",
       "navn": {
-        "fornavn": "Kvadratisk",
-        "etternavn": "Faktura"
+        "fornavn": "Berømt",
+        "etternavn": "Aktivitet"
       },
       "kilde": "PDL",
-      "telefon": "33445566",
+      "telefon": "35235343",
       "veiadresse": {
-        "adresse": "Fjellvegen 69",
-        "poststed": "Nordfjordeid",
-        "postnummer": "6770"
+        "adresse": "Kirkeveien 7",
+        "poststed": "Hasvik",
+        "postnummer": "9590"
       },
+      "brukernummer": "4497226",
       "signaturtype": "FULLMAKT",
-      "kommunenummer": "4649",
+      "kommunenummer": "5616",
       "legacyopplysninger": []
     },
     "vedlegg": [],
@@ -27,21 +28,21 @@
       "utleveringMerknad": "",
       "hjelpemiddelformidler": {
         "navn": {
-          "fornavn": "Kvadratisk",
-          "etternavn": "Faktura"
+          "fornavn": "Berømt",
+          "etternavn": "Aktivitet"
         },
-        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "epost": "some@some.com",
         "adresse": {
-          "adresse": "Svanseveien 3",
-          "poststed": "NORDFJORDEID",
-          "postnummer": "6770"
+          "adresse": "4ewvd 33",
+          "poststed": "OSLO",
+          "postnummer": "0188"
         },
-        "telefon": "11223344",
-        "stilling": "CEO",
-        "arbeidssted": "Østby Dans og Fysioterapi",
-        "kommunenavn": "STAD",
-        "kommunenummer": "4649",
-        "treffesEnklest": "På telefon fra hjemmekontor."
+        "telefon": "36436466",
+        "stilling": "3tef",
+        "arbeidssted": "4wegdv",
+        "kommunenavn": "OSLO",
+        "kommunenummer": "0301",
+        "treffesEnklest": "edd"
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
       "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
@@ -49,10 +50,10 @@
     },
     "metadata": {
       "bestillingsordningsjekk": {
-        "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
+        "version": "3797d2980947054d9a469232157f54258ebd212d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["177946"],
+          "hovedProdukter": ["014112"],
           "tilbehørIkkePåBestillingsordning": [],
           "hovedProdukterIkkePåBestillingsordning": []
         },
@@ -60,13 +61,12 @@
           "kildeErPdl": true,
           "harIngenBytter": true,
           "brukersAdresseErSatt": true,
-          "brukerHarAdresseIOeBS": false,
+          "brukerHarAdresseIOeBS": true,
           "brukerBorIkkeIUtlandet": true,
           "inneholderIkkeFritekst": true,
           "brukerErIkkeSkjermetPerson": true,
           "harIkkeForMangeOrdrelinjer": true,
           "brukerHarHotsakVedtakFraFør": true,
-          "brukerHarInfotrygdVedtakFraFør": false,
           "ingenProdukterErAlleredeUtlevert": true,
           "leveringTilFolkeregistrertAdresse": true,
           "alleTilbehørPåBestillingsOrdning": true,
@@ -76,15 +76,9 @@
       }
     },
     "innsender": {
-      "kurs": [
-        {
-          "id": 4,
-          "kilde": "kunnskapsbanken",
-          "title": "Bestilling"
-        }
-      ],
+      "kurs": [],
       "rolle": "FORMIDLER",
-      "erKommunaltAnsatt": true,
+      "erKommunaltAnsatt": false,
       "sjekketUtlånsoversiktForKategorier": []
     },
     "prioritet": "NORMAL",
@@ -95,14 +89,14 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "12060602",
-            "hmsArtNr": "177946",
+            "iso8": "18301505",
+            "hmsArtNr": "014112",
             "rangering": 1,
-            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
-            "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
-            "delkontraktId": "HMDB-1333",
-            "delkontrakttittel": "2. Rullator - innendørs bruk",
-            "sortimentkategori": "Ganghjelpemidler"
+            "iso8Tittel": "Terskeleliminatorer",
+            "artikkelnavn": "Topro terskeleliminator b70 h2.3-3.8",
+            "delkontraktId": "HMDB-1196",
+            "delkontrakttittel": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk",
+            "sortimentkategori": "Terskeleliminatorer og ramper"
           },
           "varsler": [],
           "tilbehør": [],
@@ -126,20 +120,27 @@
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "f49632fa-a1aa-4a92-8a38-88a7e429672b",
+          "hjelpemiddelId": "bc6990f0-e964-479b-96b2-37de3ece0312",
           "saksbehandlingvarsel": []
         }
       ],
       "totaltAntall": 1
     },
-    "hjmBrukersFnr": "13820599335",
+    "hjmBrukersFnr": "26848497710",
     "skjemaversjon": 2,
     "brukersituasjon": {
       "vilkår": [
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
-            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+            "nb": "Berømt Aktivitet vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Berømt Aktivitet vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          },
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Berømt Aktivitet sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Berømt Aktivitet behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
           },
           "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
         },
@@ -152,26 +153,20 @@
         },
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
-            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+            "nb": "Berømt Aktivitet har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Berømt Aktivitet har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
           },
           "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
-        },
-        {
-          "tekst": {
-            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
-            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
-          },
-          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
         }
       ],
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-04",
-    "innsendingstidspunkt": "2025-11-04T12:59:15.518324264Z"
+    "innsendingsdato": "2025-11-18",
+    "innsendingstidspunkt": "2025-11-18T15:28:26.582616188Z"
   },
-  "behovsmeldingGjelder": "Bestilling av: rullator",
-  "fnrBruker": "13820599335",
-  "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-04T12:59:16.056Z"
+  "behovsmeldingGjelder": "Bestilling av: terskeleliminator",
+  "fnrBruker": "26848497710",
+  "fnrInnsender": "26848497710",
+  "opprettet": "2025-11-18T15:28:27.349Z",
+  "sakId": "9000"
 }

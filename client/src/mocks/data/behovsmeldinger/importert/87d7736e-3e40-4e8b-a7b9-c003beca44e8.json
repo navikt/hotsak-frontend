@@ -1,9 +1,9 @@
 {
-  "behovsmeldingId": "cc32e266-5bb6-46fb-bf87-ef532b369171",
+  "behovsmeldingId": "87d7736e-3e40-4e8b-a7b9-c003beca44e8",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "cc32e266-5bb6-46fb-bf87-ef532b369171",
-    "type": "SØKNAD",
+    "id": "87d7736e-3e40-4e8b-a7b9-c003beca44e8",
+    "type": "BESTILLING",
     "bruker": {
       "fnr": "13820599335",
       "navn": {
@@ -11,7 +11,7 @@
         "etternavn": "Faktura"
       },
       "kilde": "PDL",
-      "telefon": "13820599",
+      "telefon": "33445566",
       "veiadresse": {
         "adresse": "Fjellvegen 69",
         "poststed": "Nordfjordeid",
@@ -23,12 +23,8 @@
     },
     "vedlegg": [],
     "levering": {
-      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "utleveringMerknad": "",
-      "annenUtleveringsbydel": {
-        "navn": "Bjerke",
-        "nummer": "030109"
-      },
       "hjelpemiddelformidler": {
         "navn": {
           "fornavn": "Kvadratisk",
@@ -48,15 +44,6 @@
         "treffesEnklest": "På telefon fra hjemmekontor."
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
-      "annenUtleveringsadresse": {
-        "adresse": "bydelsveien 7",
-        "poststed": "OSLO",
-        "postnummer": "0304"
-      },
-      "annenUtleveringskommune": {
-        "navn": "OSLO",
-        "nummer": "0301"
-      },
       "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
       "automatiskUtledetTilleggsinfo": []
     },
@@ -65,7 +52,7 @@
         "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["267912"],
+          "hovedProdukter": ["177946"],
           "tilbehørIkkePåBestillingsordning": [],
           "hovedProdukterIkkePåBestillingsordning": []
         },
@@ -79,12 +66,13 @@
           "brukerErIkkeSkjermetPerson": true,
           "harIkkeForMangeOrdrelinjer": true,
           "brukerHarHotsakVedtakFraFør": true,
+          "brukerHarInfotrygdVedtakFraFør": false,
           "ingenProdukterErAlleredeUtlevert": true,
-          "leveringTilFolkeregistrertAdresse": false,
+          "leveringTilFolkeregistrertAdresse": true,
           "alleTilbehørPåBestillingsOrdning": true,
           "alleHovedProdukterPåBestillingsOrdning": true
         },
-        "kanVæreBestilling": false
+        "kanVæreBestilling": true
       }
     },
     "innsender": {
@@ -107,13 +95,13 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "12030601",
-            "hmsArtNr": "267912",
+            "iso8": "12060602",
+            "hmsArtNr": "177946",
             "rangering": 1,
-            "iso8Tittel": "Albuekrykker",
-            "artikkelnavn": "Classic Soft",
-            "delkontraktId": "HMDB-1348",
-            "delkontrakttittel": "17. Krykker til voksne enkel",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
+            "delkontraktId": "HMDB-1333",
+            "delkontrakttittel": "2. Rullator - innendørs bruk",
             "sortimentkategori": "Ganghjelpemidler"
           },
           "varsler": [],
@@ -138,7 +126,7 @@
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "4a0c82fa-9ceb-47f1-a7f8-cb81e5758cfb",
+          "hjelpemiddelId": "f49632fa-a1aa-4a92-8a38-88a7e429672b",
           "saksbehandlingvarsel": []
         }
       ],
@@ -150,10 +138,10 @@
       "vilkår": [
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
-            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
           },
-          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
         },
         {
           "tekst": {
@@ -164,10 +152,10 @@
         },
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
-            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
           },
-          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
         },
         {
           "tekst": {
@@ -179,11 +167,12 @@
       ],
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-07",
-    "innsendingstidspunkt": "2025-11-07T14:02:21.272916881Z"
+    "innsendingsdato": "2025-11-04",
+    "innsendingstidspunkt": "2025-11-04T12:59:15.518324264Z"
   },
-  "behovsmeldingGjelder": "Søknad om: krykker",
+  "behovsmeldingGjelder": "Bestilling av: rullator",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-07T14:02:21.961Z"
+  "opprettet": "2025-11-04T12:59:16.056Z",
+  "sakId": "9008"
 }

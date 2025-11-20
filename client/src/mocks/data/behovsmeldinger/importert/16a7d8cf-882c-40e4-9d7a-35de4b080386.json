@@ -1,9 +1,9 @@
 {
-  "behovsmeldingId": "4c862479-0486-4c66-a2e3-dcd38f7a568a",
+  "behovsmeldingId": "16a7d8cf-882c-40e4-9d7a-35de4b080386",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "4c862479-0486-4c66-a2e3-dcd38f7a568a",
-    "type": "SØKNAD",
+    "id": "16a7d8cf-882c-40e4-9d7a-35de4b080386",
+    "type": "BESTILLING",
     "bruker": {
       "fnr": "13820599335",
       "navn": {
@@ -11,7 +11,7 @@
         "etternavn": "Faktura"
       },
       "kilde": "PDL",
-      "telefon": "22334455",
+      "telefon": "13820599",
       "veiadresse": {
         "adresse": "Fjellvegen 69",
         "poststed": "Nordfjordeid",
@@ -52,9 +52,9 @@
         "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["252782"],
+          "hovedProdukter": ["267912"],
           "tilbehørIkkePåBestillingsordning": [],
-          "hovedProdukterIkkePåBestillingsordning": ["252782"]
+          "hovedProdukterIkkePåBestillingsordning": []
         },
         "kriterier": {
           "kildeErPdl": true,
@@ -69,9 +69,9 @@
           "ingenProdukterErAlleredeUtlevert": true,
           "leveringTilFolkeregistrertAdresse": true,
           "alleTilbehørPåBestillingsOrdning": true,
-          "alleHovedProdukterPåBestillingsOrdning": false
+          "alleHovedProdukterPåBestillingsOrdning": true
         },
-        "kanVæreBestilling": false
+        "kanVæreBestilling": true
       }
     },
     "innsender": {
@@ -94,14 +94,14 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "09061501",
-            "hmsArtNr": "252782",
+            "iso8": "12030601",
+            "hmsArtNr": "267912",
             "rangering": 1,
-            "iso8Tittel": "Håndbeskyttere",
-            "artikkelnavn": "Multishell str 8",
-            "delkontraktId": "HMDB-1285",
-            "delkontrakttittel": "1: Varmevotter til voksne",
-            "sortimentkategori": "Varmehjelpemidler"
+            "iso8Tittel": "Albuekrykker",
+            "artikkelnavn": "Classic Soft",
+            "delkontraktId": "HMDB-1348",
+            "delkontrakttittel": "17. Krykker til voksne enkel",
+            "sortimentkategori": "Ganghjelpemidler"
           },
           "varsler": [],
           "tilbehør": [],
@@ -120,26 +120,12 @@
                 "nb": "Bruksarena",
                 "nn": "Bruksarena"
               }
-            },
-            {
-              "innhold": [
-                {
-                  "forhåndsdefinertTekst": {
-                    "nb": "Det er automatisk sjekket at Nav har opplysninger fra lege fra før. Det er derfor ikke nødvendig å sende inn legeerklæring.",
-                    "nn": "Det er automatisk sjekka at Nav har opplysningar frå lege frå før. Det er derfor ikkje nødvendig å senda inn legeerklæring."
-                  }
-                }
-              ],
-              "ledetekst": {
-                "nb": "Opplysninger fra lege",
-                "nn": "Opplysningar frå lege"
-              }
             }
           ],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "a0e90aac-8369-44d9-9b50-6991104b739b",
+          "hjelpemiddelId": "656bab54-df2d-43e0-b9dc-7158c5695e9f",
           "saksbehandlingvarsel": []
         }
       ],
@@ -165,23 +151,27 @@
         },
         {
           "tekst": {
+            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+          },
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+        },
+        {
+          "tekst": {
             "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
             "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
           },
           "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
         }
       ],
-      "funksjonsbeskrivelse": {
-        "beskrivelse": "Test.",
-        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
-      },
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-04",
-    "innsendingstidspunkt": "2025-11-04T12:27:35.409049266Z"
+    "innsendingsdato": "2025-11-05",
+    "innsendingstidspunkt": "2025-11-05T12:34:17.032036872Z"
   },
-  "behovsmeldingGjelder": "Søknad om: håndbeskytter",
+  "behovsmeldingGjelder": "Bestilling av: krykker",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-04T12:27:36.399Z"
+  "opprettet": "2025-11-05T12:34:18.306Z",
+  "sakId": "9007"
 }

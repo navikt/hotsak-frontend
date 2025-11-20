@@ -1,8 +1,8 @@
 {
-  "behovsmeldingId": "382e6d30-592a-4679-b519-162d5a4a1958",
+  "behovsmeldingId": "cc32e266-5bb6-46fb-bf87-ef532b369171",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "382e6d30-592a-4679-b519-162d5a4a1958",
+    "id": "cc32e266-5bb6-46fb-bf87-ef532b369171",
     "type": "SØKNAD",
     "bruker": {
       "fnr": "13820599335",
@@ -21,16 +21,14 @@
       "kommunenummer": "4649",
       "legacyopplysninger": []
     },
-    "vedlegg": [
-      {
-        "id": "32ee15b1-86b2-4dc3-a5bb-232dd8ab8d45",
-        "navn": "Legeerklæring for varmehjelpemiddel",
-        "type": "LEGEERKLÆRING_FOR_VARMEHJELPEMIDDEL"
-      }
-    ],
+    "vedlegg": [],
     "levering": {
-      "utleveringsmåte": "HJELPEMIDDELSENTRALEN",
+      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
       "utleveringMerknad": "",
+      "annenUtleveringsbydel": {
+        "navn": "Bjerke",
+        "nummer": "030109"
+      },
       "hjelpemiddelformidler": {
         "navn": {
           "fornavn": "Kvadratisk",
@@ -50,17 +48,26 @@
         "treffesEnklest": "På telefon fra hjemmekontor."
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
-      "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
+      "annenUtleveringsadresse": {
+        "adresse": "bydelsveien 7",
+        "poststed": "OSLO",
+        "postnummer": "0304"
+      },
+      "annenUtleveringskommune": {
+        "navn": "OSLO",
+        "nummer": "0301"
+      },
+      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
       "automatiskUtledetTilleggsinfo": []
     },
     "metadata": {
       "bestillingsordningsjekk": {
-        "version": "d13e06cf79b48647c898686b2f3b317d6842c5bb",
+        "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["252908"],
+          "hovedProdukter": ["267912"],
           "tilbehørIkkePåBestillingsordning": [],
-          "hovedProdukterIkkePåBestillingsordning": ["252908"]
+          "hovedProdukterIkkePåBestillingsordning": []
         },
         "kriterier": {
           "kildeErPdl": true,
@@ -75,7 +82,7 @@
           "ingenProdukterErAlleredeUtlevert": true,
           "leveringTilFolkeregistrertAdresse": false,
           "alleTilbehørPåBestillingsOrdning": true,
-          "alleHovedProdukterPåBestillingsOrdning": false
+          "alleHovedProdukterPåBestillingsOrdning": true
         },
         "kanVæreBestilling": false
       }
@@ -100,14 +107,14 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "09062101",
-            "hmsArtNr": "252908",
+            "iso8": "12030601",
+            "hmsArtNr": "267912",
             "rangering": 1,
-            "iso8Tittel": "Fot-, hæl- og tåbeskyttere",
-            "artikkelnavn": "Mico str 32/35",
-            "delkontraktId": "HMDB-1296",
-            "delkontrakttittel": "12: Varmesokker til barn",
-            "sortimentkategori": "Varmehjelpemidler"
+            "iso8Tittel": "Albuekrykker",
+            "artikkelnavn": "Classic Soft",
+            "delkontraktId": "HMDB-1348",
+            "delkontrakttittel": "17. Krykker til voksne enkel",
+            "sortimentkategori": "Ganghjelpemidler"
           },
           "varsler": [],
           "tilbehør": [],
@@ -126,26 +133,12 @@
                 "nb": "Bruksarena",
                 "nn": "Bruksarena"
               }
-            },
-            {
-              "innhold": [
-                {
-                  "forhåndsdefinertTekst": {
-                    "nb": "Legeerklæring kreves.",
-                    "nn": "Legeerklæring krevst."
-                  }
-                }
-              ],
-              "ledetekst": {
-                "nb": "Opplysninger fra lege",
-                "nn": "Opplysningar frå lege"
-              }
             }
           ],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "88806d18-7cd2-40d7-9d9f-c6e51778f6df",
+          "hjelpemiddelId": "4a0c82fa-9ceb-47f1-a7f8-cb81e5758cfb",
           "saksbehandlingvarsel": []
         }
       ],
@@ -155,6 +148,20 @@
     "skjemaversjon": 2,
     "brukersituasjon": {
       "vilkår": [
+        {
+          "tekst": {
+            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+          },
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+        },
+        {
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          },
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1"
+        },
         {
           "tekst": {
             "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
@@ -168,26 +175,16 @@
             "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
           },
           "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
-        },
-        {
-          "tekst": {
-            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
-            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
-          },
-          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1"
         }
       ],
-      "funksjonsbeskrivelse": {
-        "beskrivelse": "ny beskrivelse",
-        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
-      },
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-04",
-    "innsendingstidspunkt": "2025-11-04T07:49:45.767172108Z"
+    "innsendingsdato": "2025-11-07",
+    "innsendingstidspunkt": "2025-11-07T14:02:21.272916881Z"
   },
-  "behovsmeldingGjelder": "Søknad om: fotbeskytter",
+  "behovsmeldingGjelder": "Søknad om: krykker",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-04T07:49:48.262Z"
+  "opprettet": "2025-11-07T14:02:21.961Z",
+  "sakId": "9004"
 }

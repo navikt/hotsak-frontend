@@ -1,8 +1,8 @@
 {
-  "behovsmeldingId": "83e63cdc-c28e-4eeb-9190-e881e88b4ead",
+  "behovsmeldingId": "e345551d-0c6a-47e6-83a8-3853f2710951",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "83e63cdc-c28e-4eeb-9190-e881e88b4ead",
+    "id": "e345551d-0c6a-47e6-83a8-3853f2710951",
     "type": "SØKNAD",
     "bruker": {
       "fnr": "13820599335",
@@ -49,12 +49,12 @@
     },
     "metadata": {
       "bestillingsordningsjekk": {
-        "version": "2b4e45e23e844d43baa41487d8d34610924b5108",
+        "version": "3797d2980947054d9a469232157f54258ebd212d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["252781"],
+          "hovedProdukter": ["321207"],
           "tilbehørIkkePåBestillingsordning": [],
-          "hovedProdukterIkkePåBestillingsordning": ["252781"]
+          "hovedProdukterIkkePåBestillingsordning": ["321207"]
         },
         "kriterier": {
           "kildeErPdl": true,
@@ -94,53 +94,142 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "09061501",
-            "hmsArtNr": "252781",
+            "iso8": "12240901",
+            "hmsArtNr": "321207",
             "rangering": 1,
-            "iso8Tittel": "Håndbeskyttere",
-            "artikkelnavn": "Multishell str 7",
-            "delkontraktId": "HMDB-1285",
-            "delkontrakttittel": "1: Varmevotter til voksne",
-            "sortimentkategori": "Varmehjelpemidler"
+            "iso8Tittel": "Drivhjul og drivaggregat med motorisert styring",
+            "artikkelnavn": "e-fix E35 - 22",
+            "delkontraktId": "HMDB-1392",
+            "delkontrakttittel": "17. Drivaggregat med elektrisk motor i drivhjulene og med motorisert styring (joystick)",
+            "sortimentkategori": "Manuelle rullestoler og drivaggregat"
           },
           "varsler": [],
           "tilbehør": [],
-          "bruksarenaer": ["EGET_HJEM"],
+          "bruksarenaer": [],
           "opplysninger": [
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "I eget hjem.",
-                    "nn": "I eigen heim."
+                    "nb": "Formidler har svart at godkjenningskurs elektrisk rullestol er gjennomført",
+                    "nn": "Formidlar har svart at godkjenningskurs elektrisk rullestol er gjennomført"
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Bruksarena",
-                "nn": "Bruksarena"
+                "nb": "Krav om kurs",
+                "nn": "Krav om kurs"
               }
             },
             {
               "innhold": [
                 {
                   "forhåndsdefinertTekst": {
-                    "nb": "Det er automatisk sjekket at Nav har opplysninger fra lege fra før. Det er derfor ikke nødvendig å sende inn legeerklæring.",
-                    "nn": "Det er automatisk sjekka at Nav har opplysningar frå lege frå før. Det er derfor ikkje nødvendig å senda inn legeerklæring."
+                    "nb": "Ja",
+                    "nn": "Ja"
                   }
                 }
               ],
               "ledetekst": {
-                "nb": "Opplysninger fra lege",
-                "nn": "Opplysningar frå lege"
+                "nb": "Kan personen ferdes sikkert i omgivelsene hjelpemidlet skal brukes?",
+                "nn": "Kan personen ferdast trygt i omgivnadane hjelpemiddelet skal brukast?"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "En annen rullestol som ikke vises i innbyggers utlånsversikt",
+                    "nn": "Ein annan rullestol som ikkje blir vist i personen si utlånsversikt"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Hvilken rullestol skal drivaggregatet brukes med?",
+                "nn": "Kva rullestol skal drivaggregatet brukast med?"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "fritekst": "en annen stol"
+                }
+              ],
+              "ledetekst": {
+                "nb": "Oppgi hvilken rullestol drivaggregatet skal brukes med.",
+                "nn": "Oppgi kva rullestol drivaggregatet skal brukast med."
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Ja",
+                    "nn": "Ja"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Skal drivaggregatet transporteres i bil?",
+                "nn": "Skal drivaggregatet transporterast i bil?"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Ja",
+                    "nn": "Ja"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Kan personen selv eller ledsager demontere og montere drivhjulene og løfte det inn og ut av bil?",
+                "nn": "Kan personen sjølv eller følgjeperson demontera og montera drivhjula og løfta det inn og ut av bil?"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Ja",
+                    "nn": "Ja"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Kan personen kjøre selvstendig med motorisert styring (joystick)?",
+                "nn": "Kan personen køyre sjølvstendig med motorisert styring (joystick)?"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Høyre side",
+                    "nn": "Høgre side"
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Hvor ønsker personen plassering av joystick?",
+                "nn": "Kvar ønskjer personen plassering av joystick?"
               }
             }
           ],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "bd55ba59-87d7-44d9-a7e4-e107f8c8e755",
-          "saksbehandlingvarsel": []
+          "hjelpemiddelId": "b3d9aa43-f6aa-478d-95b5-e6941419fec9",
+          "saksbehandlingvarsel": [
+            {
+              "type": "WARNING",
+              "tekst": {
+                "nb": "Dokumentasjon av gjennomført kurs skal sjekkes i behandling av saken.",
+                "nn": "Dokumentasjon av gjennomført kurs skal sjekkast i behandling av saka."
+              }
+            }
+          ]
         }
       ],
       "totaltAntall": 1
@@ -172,16 +261,17 @@
         }
       ],
       "funksjonsbeskrivelse": {
-        "beskrivelse": "sdfsdf",
+        "beskrivelse": "assdf",
         "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
       },
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-03",
-    "innsendingstidspunkt": "2025-11-03T06:34:58.449843934Z"
+    "innsendingsdato": "2025-11-18",
+    "innsendingstidspunkt": "2025-11-18T08:10:35.265071883Z"
   },
-  "behovsmeldingGjelder": "Søknad om: håndbeskytter",
+  "behovsmeldingGjelder": "Søknad om: hjelpemotor",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-03T06:34:59.171Z"
+  "opprettet": "2025-11-18T08:10:38.184Z",
+  "sakId": "9001"
 }

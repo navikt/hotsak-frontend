@@ -1,6 +1,5 @@
 import type { RequestHandler } from 'msw'
 import { logDebug } from '../utvikling/logDebug'
-import { oppgaveIdUtenPrefix } from '../oppgave/oppgaveTypes.ts'
 
 export async function initMsw(): Promise<unknown> {
   const { USE_MSW, USE_MSW_GRUNNDATA, USE_MSW_ALTERNATIVPRODUKTER } = window.appSettings
@@ -18,30 +17,25 @@ export async function initMsw(): Promise<unknown> {
 
   const store = await setupStore()
   const {
-    saksbehandlerStore,
-    personStore,
-    hjelpemiddelStore,
-    sakStore,
-    oppgaveStore,
-    notatStore,
     endreHjelpemiddelStore,
+    hjelpemiddelStore,
+    journalpostStore,
+    notatStore,
+    oppgaveStore,
+    personStore,
+    sakStore,
+    saksbehandlerStore,
   } = store
 
   try {
     await saksbehandlerStore.populer()
     await personStore.populer()
     await hjelpemiddelStore.populer()
-    // await journalpostStore.populer()
+    await journalpostStore.populer()
     await sakStore.populer()
     await oppgaveStore.populer()
     await notatStore.populer()
     await endreHjelpemiddelStore.populer()
-
-    const oppgr = await oppgaveStore.alle()
-    oppgaveStore.tildel(oppgr[0].oppgaveId)
-    await sakStore.tildel(oppgaveIdUtenPrefix(oppgr[0].oppgaveId))
-    oppgaveStore.tildel(oppgr[1].oppgaveId)
-    await sakStore.tildel(oppgaveIdUtenPrefix(oppgr[1].oppgaveId))
   } catch (err: unknown) {
     console.warn(err)
   }

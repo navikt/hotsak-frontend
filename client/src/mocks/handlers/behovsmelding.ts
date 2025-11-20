@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { Sakstype } from '../../types/types.internal.ts'
 
 import type { StoreHandlersFactory } from '../data'
 import type { SakParams } from './params'
@@ -22,6 +23,9 @@ export const behovsmeldingHandlers: StoreHandlersFactory = ({ sakStore, behovsme
     const sak = await sakStore.hent(sakId)
     if (!sak) {
       return respondNotFound()
+    }
+    if (sak.sakstype === Sakstype.BARNEBRILLER) {
+      return HttpResponse.json({})
     }
     const behovsmeldingCase = await behovsmeldingStore.hentForSak(sak)
     if (!behovsmeldingCase) {

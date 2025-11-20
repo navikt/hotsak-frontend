@@ -1,8 +1,8 @@
 {
-  "behovsmeldingId": "86b464a7-3684-46a4-8240-d14ab5c7be7d",
+  "behovsmeldingId": "fd7b7002-9662-450a-98df-05ba234bcbf4",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "86b464a7-3684-46a4-8240-d14ab5c7be7d",
+    "id": "fd7b7002-9662-450a-98df-05ba234bcbf4",
     "type": "SØKNAD",
     "bruker": {
       "fnr": "13820599335",
@@ -21,9 +21,15 @@
       "kommunenummer": "4649",
       "legacyopplysninger": []
     },
-    "vedlegg": [],
+    "vedlegg": [
+      {
+        "id": "dd8b463c-4598-4196-8040-3b52891fbef6",
+        "navn": "Legeerklæring for varmehjelpemiddel",
+        "type": "LEGEERKLÆRING_FOR_VARMEHJELPEMIDDEL"
+      }
+    ],
     "levering": {
-      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
+      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "utleveringMerknad": "",
       "hjelpemiddelformidler": {
         "navn": {
@@ -44,15 +50,6 @@
         "treffesEnklest": "På telefon fra hjemmekontor."
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
-      "annenUtleveringsadresse": {
-        "adresse": "testveien 2 ",
-        "poststed": "BRANDASUND",
-        "postnummer": "5423"
-      },
-      "annenUtleveringskommune": {
-        "navn": "BØMLO",
-        "nummer": "4613"
-      },
       "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
       "automatiskUtledetTilleggsinfo": []
     },
@@ -61,9 +58,9 @@
         "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["014112"],
+          "hovedProdukter": ["252782", "252756"],
           "tilbehørIkkePåBestillingsordning": [],
-          "hovedProdukterIkkePåBestillingsordning": []
+          "hovedProdukterIkkePåBestillingsordning": ["252782", "252756"]
         },
         "kriterier": {
           "kildeErPdl": true,
@@ -74,11 +71,12 @@
           "inneholderIkkeFritekst": true,
           "brukerErIkkeSkjermetPerson": true,
           "harIkkeForMangeOrdrelinjer": true,
+          "brukerHarHjelpemidlerFraFør": false,
           "brukerHarHotsakVedtakFraFør": true,
           "ingenProdukterErAlleredeUtlevert": true,
-          "leveringTilFolkeregistrertAdresse": false,
+          "leveringTilFolkeregistrertAdresse": true,
           "alleTilbehørPåBestillingsOrdning": true,
-          "alleHovedProdukterPåBestillingsOrdning": true
+          "alleHovedProdukterPåBestillingsOrdning": false
         },
         "kanVæreBestilling": false
       }
@@ -103,14 +101,14 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "18301505",
-            "hmsArtNr": "014112",
+            "iso8": "09061501",
+            "hmsArtNr": "252782",
             "rangering": 1,
-            "iso8Tittel": "Terskeleliminatorer",
-            "artikkelnavn": "Topro terskeleliminator b70 h2.3-3.8",
-            "delkontraktId": "HMDB-1196",
-            "delkontrakttittel": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk",
-            "sortimentkategori": "Terskeleliminatorer og ramper"
+            "iso8Tittel": "Håndbeskyttere",
+            "artikkelnavn": "Multishell str 8",
+            "delkontraktId": "HMDB-1285",
+            "delkontrakttittel": "1: Varmevotter til voksne",
+            "sortimentkategori": "Varmehjelpemidler"
           },
           "varsler": [],
           "tilbehør": [],
@@ -129,16 +127,82 @@
                 "nb": "Bruksarena",
                 "nn": "Bruksarena"
               }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Det er automatisk sjekket at Nav har opplysninger fra lege fra før. Det er derfor ikke nødvendig å sende inn legeerklæring.",
+                    "nn": "Det er automatisk sjekka at Nav har opplysningar frå lege frå før. Det er derfor ikkje nødvendig å senda inn legeerklæring."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Opplysninger fra lege",
+                "nn": "Opplysningar frå lege"
+              }
             }
           ],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "c5225717-97c1-445e-b24e-eae424773106",
+          "hjelpemiddelId": "5a168cc6-318b-4131-8631-0eee3ad9521d",
+          "saksbehandlingvarsel": []
+        },
+        {
+          "antall": 1,
+          "bytter": [],
+          "produkt": {
+            "iso8": "09062101",
+            "hmsArtNr": "252756",
+            "rangering": 1,
+            "iso8Tittel": "Fot-, hæl- og tåbeskyttere",
+            "artikkelnavn": "Cypromed Ulvang Spesial str 40/42",
+            "delkontraktId": "HMDB-1295",
+            "delkontrakttittel": "11: Varmesokker til voksne og større barn",
+            "sortimentkategori": "Varmehjelpemidler"
+          },
+          "varsler": [],
+          "tilbehør": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "opplysninger": [
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "I eget hjem.",
+                    "nn": "I eigen heim."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Bruksarena",
+                "nn": "Bruksarena"
+              }
+            },
+            {
+              "innhold": [
+                {
+                  "forhåndsdefinertTekst": {
+                    "nb": "Legeerklæring kreves.",
+                    "nn": "Legeerklæring krevst."
+                  }
+                }
+              ],
+              "ledetekst": {
+                "nb": "Opplysninger fra lege",
+                "nn": "Opplysningar frå lege"
+              }
+            }
+          ],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false
+          },
+          "hjelpemiddelId": "57dec185-4df9-422a-82c5-9d59b4c0af20",
           "saksbehandlingvarsel": []
         }
       ],
-      "totaltAntall": 1
+      "totaltAntall": 2
     },
     "hjmBrukersFnr": "13820599335",
     "skjemaversjon": 2,
@@ -146,10 +210,10 @@
       "vilkår": [
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
-            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
           },
-          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
         },
         {
           "tekst": {
@@ -160,26 +224,24 @@
         },
         {
           "tekst": {
-            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
-            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
-          },
-          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
-        },
-        {
-          "tekst": {
             "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
             "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
           },
           "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
         }
       ],
+      "funksjonsbeskrivelse": {
+        "beskrivelse": "ddfgdfg",
+        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE"
+      },
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-07",
-    "innsendingstidspunkt": "2025-11-07T14:00:39.236413906Z"
+    "innsendingsdato": "2025-11-04",
+    "innsendingstidspunkt": "2025-11-04T12:33:20.898312830Z"
   },
-  "behovsmeldingGjelder": "Søknad om: terskeleliminator",
+  "behovsmeldingGjelder": "Søknad om: fotbeskytter, håndbeskytter",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-07T14:00:40.011Z"
+  "opprettet": "2025-11-04T12:33:21.559Z",
+  "sakId": "9009"
 }

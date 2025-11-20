@@ -6,7 +6,7 @@ import { enheter } from './enheter.ts'
 import { Oppgaveprioritet, Oppgavestatus, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
 
 export type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
-export type InsertJournalpost = Omit<LagretJournalpost, 'journalpostId'>
+export type InsertJournalpost = LagretJournalpost
 
 export interface LagretDokument extends Dokument {
   journalpostId: string
@@ -18,15 +18,15 @@ export interface LagretHendelse extends Hendelse {
 }
 export type InsertHendelse = Omit<LagretHendelse, 'id'>
 
-export function lagJournalpost(): InsertJournalpost {
+export function lagJournalpost(journalpostId: string): InsertJournalpost {
   const fnrInnsender = lagTilfeldigFødselsnummer(lagTilfeldigInteger(30, 50))
   const journalpostOpprettetTid = lagTilfeldigDato(new Date().getFullYear()).toISOString()
   return {
+    journalpostId,
     journalstatus: JournalpostStatusType.MOTTATT,
     journalpostOpprettetTid,
     fnrInnsender,
     tittel: 'Tilskudd ved kjøp av briller til barn',
-    // enhet: enheter.agder,
     bruker: {
       fnr: fnrInnsender,
       navn: lagTilfeldigNavn(),
@@ -37,7 +37,7 @@ export function lagJournalpost(): InsertJournalpost {
     },
     oppgave: {
       tema: 'HJE',
-      oppgaveId: 'I-1234', // `I-${journalpostId}`, fixme
+      oppgaveId: `I-${journalpostId}`,
       oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
       prioritet: Oppgaveprioritet.NORMAL,

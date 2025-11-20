@@ -39,7 +39,7 @@ export class OppgaveStore extends Dexie {
     const isokategoriseringByKode: any = (await import('./isokategorisering.json')).default // fixme
 
     const saker = await this.sakStore.alle()
-    const oppgaverFraSak: InsertOppgave[] = await Promise.all(
+    const oppgaverForSaker: InsertOppgave[] = await Promise.all(
       saker.map(async (sak) => {
         let behandlingstema: string = ''
         let behandlingstype: string = ''
@@ -65,10 +65,10 @@ export class OppgaveStore extends Dexie {
         })
       })
     )
-    const journalføringer = await this.journalpostStore.alle()
-    const oppgaverFraJournalføringer: InsertOppgave[] = journalføringer.map(lagJournalføringsoppgave)
+    const journalposter = await this.journalpostStore.alle()
+    const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
 
-    return this.lagreAlle([...oppgaverFraSak, ...oppgaverFraJournalføringer])
+    return this.lagreAlle([...oppgaverForSaker, ...oppgaverForJournalposter])
   }
 
   async lagreAlle(oppgaver: InsertOppgave[]) {
@@ -127,28 +127,7 @@ export class OppgaveStore extends Dexie {
       alternativer: {
         behandlingstemaKode: hentBehandlingstemaKode(oppgave.behandlingstema || ''),
         behandlingstemaTerm: oppgave.behandlingstema || '',
-        alternativer: [
-          {
-            behandlingstemaKode: 'ab0013',
-            behandlingstemaTerm: 'Ortopediske hjelpemidler',
-          },
-          {
-            behandlingstemaKode: 'ab0253',
-            behandlingstemaTerm: 'Tinnitusmaskerer',
-          },
-          {
-            behandlingstemaKode: 'ab0315',
-            behandlingstemaTerm: 'Arbeids- og utdanningsreiser',
-          },
-          {
-            behandlingstemaKode: 'ab0332',
-            behandlingstemaTerm: 'Servicehund',
-          },
-          {
-            behandlingstemaKode: 'ab0369',
-            behandlingstemaTerm: 'Aktivitetshjelpemidler',
-          },
-        ],
+        alternativer: [],
       },
     }
   }

@@ -3,7 +3,6 @@ import type { RequestHandler } from 'msw'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { EndreHjelpemiddelStore } from './EndreHjelpemiddelStore'
 import { HjelpemiddelStore } from './HjelpemiddelStore'
-import { idGenerator } from './IdGenerator'
 import { JournalpostStore } from './JournalpostStore'
 import { NotatStore } from './NotatStore'
 import { OppgaveStore } from './OppgaveStore'
@@ -16,12 +15,10 @@ export async function setupStore() {
   const hjelpemiddelStore = new HjelpemiddelStore()
   const personStore = new PersonStore()
   const saksbehandlerStore = new SaksbehandlerStore()
-  const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore).use(idGenerator)
-  const sakStore = new SakStore(behovsmeldingStore, saksbehandlerStore, personStore, journalpostStore).use(idGenerator)
-  const oppgaveStore = new OppgaveStore(behovsmeldingStore, saksbehandlerStore, sakStore, journalpostStore).use(
-    idGenerator
-  )
-  const notatStore = new NotatStore(saksbehandlerStore, sakStore).use(idGenerator)
+  const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore)
+  const sakStore = new SakStore(behovsmeldingStore, saksbehandlerStore, personStore, journalpostStore)
+  const oppgaveStore = new OppgaveStore(behovsmeldingStore, saksbehandlerStore, sakStore, journalpostStore)
+  const notatStore = new NotatStore(saksbehandlerStore, sakStore)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
 
   return {

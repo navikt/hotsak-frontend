@@ -1,21 +1,21 @@
 {
-  "behovsmeldingId": "e2dbc9bb-542a-4712-abb1-e375f5e31774",
+  "behovsmeldingId": "86b464a7-3684-46a4-8240-d14ab5c7be7d",
   "beskrivelse": "importert",
   "behovsmelding": {
-    "id": "e2dbc9bb-542a-4712-abb1-e375f5e31774",
-    "type": "BESTILLING",
+    "id": "86b464a7-3684-46a4-8240-d14ab5c7be7d",
+    "type": "SØKNAD",
     "bruker": {
-      "fnr": "01495520931",
+      "fnr": "13820599335",
       "navn": {
-        "fornavn": "Oversiktlig",
-        "etternavn": "Torsk"
+        "fornavn": "Kvadratisk",
+        "etternavn": "Faktura"
       },
       "kilde": "PDL",
-      "telefon": "11223344",
+      "telefon": "13820599",
       "veiadresse": {
-        "adresse": "Heggjabygda 1927",
+        "adresse": "Fjellvegen 69",
         "poststed": "Nordfjordeid",
-        "postnummer": "6774"
+        "postnummer": "6770"
       },
       "signaturtype": "FULLMAKT",
       "kommunenummer": "4649",
@@ -23,7 +23,7 @@
     },
     "vedlegg": [],
     "levering": {
-      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
       "utleveringMerknad": "",
       "hjelpemiddelformidler": {
         "navn": {
@@ -44,15 +44,24 @@
         "treffesEnklest": "På telefon fra hjemmekontor."
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "annenUtleveringsadresse": {
+        "adresse": "testveien 2 ",
+        "poststed": "BRANDASUND",
+        "postnummer": "5423"
+      },
+      "annenUtleveringskommune": {
+        "navn": "BØMLO",
+        "nummer": "4613"
+      },
       "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
       "automatiskUtledetTilleggsinfo": []
     },
     "metadata": {
       "bestillingsordningsjekk": {
-        "version": "3f2da711cd4ec4035610ada939ad7d44dc9eee24",
+        "version": "c9c68e3d7fae39f16cf08b77694e46aa9e82d69d",
         "metaInfo": {
           "tilbehør": [],
-          "hovedProdukter": ["177947"],
+          "hovedProdukter": ["014112"],
           "tilbehørIkkePåBestillingsordning": [],
           "hovedProdukterIkkePåBestillingsordning": []
         },
@@ -65,15 +74,13 @@
           "inneholderIkkeFritekst": true,
           "brukerErIkkeSkjermetPerson": true,
           "harIkkeForMangeOrdrelinjer": true,
-          "brukerHarHjelpemidlerFraFør": false,
-          "brukerHarHotsakVedtakFraFør": false,
-          "brukerHarInfotrygdVedtakFraFør": false,
+          "brukerHarHotsakVedtakFraFør": true,
           "ingenProdukterErAlleredeUtlevert": true,
-          "leveringTilFolkeregistrertAdresse": true,
+          "leveringTilFolkeregistrertAdresse": false,
           "alleTilbehørPåBestillingsOrdning": true,
           "alleHovedProdukterPåBestillingsOrdning": true
         },
-        "kanVæreBestilling": true
+        "kanVæreBestilling": false
       }
     },
     "innsender": {
@@ -96,14 +103,14 @@
           "antall": 1,
           "bytter": [],
           "produkt": {
-            "iso8": "12060602",
-            "hmsArtNr": "177947",
+            "iso8": "18301505",
+            "hmsArtNr": "014112",
             "rangering": 1,
-            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
-            "artikkelnavn": "Gemino 20S, personhøyde 125 - 165 cm",
-            "delkontraktId": "HMDB-1333",
-            "delkontrakttittel": "2. Rullator - innendørs bruk",
-            "sortimentkategori": "Ganghjelpemidler"
+            "iso8Tittel": "Terskeleliminatorer",
+            "artikkelnavn": "Topro terskeleliminator b70 h2.3-3.8",
+            "delkontraktId": "HMDB-1196",
+            "delkontrakttittel": "1: Terskeleliminator - påkjøring fra en side, for innendørs og begrenset utendørs bruk",
+            "sortimentkategori": "Terskeleliminatorer og ramper"
           },
           "varsler": [],
           "tilbehør": [],
@@ -127,16 +134,23 @@
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false
           },
-          "hjelpemiddelId": "a0b62fec-032b-4495-b848-019dcf97dcaa",
+          "hjelpemiddelId": "c5225717-97c1-445e-b24e-eae424773106",
           "saksbehandlingvarsel": []
         }
       ],
       "totaltAntall": 1
     },
-    "hjmBrukersFnr": "01495520931",
+    "hjmBrukersFnr": "13820599335",
     "skjemaversjon": 2,
     "brukersituasjon": {
       "vilkår": [
+        {
+          "tekst": {
+            "nb": "Kvadratisk Faktura har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
+            "nn": "Kvadratisk Faktura har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
+          },
+          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
+        },
         {
           "tekst": {
             "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
@@ -146,33 +160,27 @@
         },
         {
           "tekst": {
-            "nb": "Oversiktlig Torsk sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
-            "nn": "Oversiktlig Torsk behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
           },
           "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1"
         },
         {
           "tekst": {
-            "nb": "Oversiktlig Torsk har vesentlig og varig nedsatt funksjonsevne som følge av sykdom, skade eller lyte. Med varig menes 2 år eller livet ut. Hjelpemiddelet skal ikke brukes til korttidsutlån eller til andre formål.",
-            "nn": "Oversiktlig Torsk har vesentleg og varig nedsett funksjonsevne som følgje av sjukdom, skade eller lyte. Med varig siktar ein til 2 år eller livet ut. Hjelpemiddelet skal ikkje brukast til korttidsutlån eller til andre formål."
-          },
-          "vilkårtype": "VESENTLIG_OG_VARIG_NEDSATT_FUNKSJONSEVNE_V1"
-        },
-        {
-          "tekst": {
-            "nb": "Oversiktlig Torsk vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
-            "nn": "Oversiktlig Torsk vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
           },
           "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1"
         }
       ],
       "funksjonsnedsettelser": ["BEVEGELSE"]
     },
-    "innsendingsdato": "2025-11-03",
-    "innsendingstidspunkt": "2025-11-03T11:08:52.797862644Z"
+    "innsendingsdato": "2025-11-07",
+    "innsendingstidspunkt": "2025-11-07T14:00:39.236413906Z"
   },
-  "behovsmeldingGjelder": "Bestilling av: rullator",
-  "fnrBruker": "01495520931",
+  "behovsmeldingGjelder": "Søknad om: terskeleliminator",
+  "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-11-03T11:08:53.890Z"
+  "opprettet": "2025-11-07T14:00:40.011Z",
+  "sakId": "9005"
 }

@@ -35,11 +35,12 @@ export interface BehovsmeldingCase {
   fnrBruker: string
   fnrInnsender: string
   opprettet: string
+  sakId: string
 }
 
-await finnBehovsmeldinger(30)
+await finnBehovsmeldinger(10)
   .then((behovsmeldinger) => {
-    const cases: BehovsmeldingCase[] = behovsmeldinger.map((it) => {
+    const cases: BehovsmeldingCase[] = behovsmeldinger.map((it, index) => {
       return {
         behovsmeldingId: it.soknads_id,
         beskrivelse: 'importert',
@@ -48,12 +49,13 @@ await finnBehovsmeldinger(30)
         fnrBruker: it.fnr_bruker,
         fnrInnsender: it.fnr_innsender,
         opprettet: it.created,
+        sakId: '9' + index.toString().padStart(3, '0'),
       }
     })
     return Promise.all(
       cases.map((it) => {
         return Bun.write(
-          `../client/src/mocks/data/behovsmeldinger/${it.behovsmeldingId}.json`,
+          `../client/src/mocks/data/behovsmeldinger/importert/${it.behovsmeldingId}.json`,
           JSON.stringify(it, null, 2)
         )
       })

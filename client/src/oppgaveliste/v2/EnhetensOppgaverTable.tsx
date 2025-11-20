@@ -22,6 +22,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
     () => [
       {
         field: 'knapp',
+        width: 150,
         renderCell(row) {
           return (
             <>
@@ -53,6 +54,8 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       oppgaveColumns.oppgavetype,
       oppgaveColumns.behandlingstema,
       oppgaveColumns.behandlingstype,
+      oppgaveColumns.beskrivelse,
+      oppgaveColumns.kommune,
       oppgaveColumns.mappenavn,
       oppgaveColumns.prioritet,
       oppgaveColumns.opprettetTidspunkt,
@@ -61,6 +64,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
         field: 'fnr',
         header: 'Bruker',
         sortKey: 'fnr',
+        width: 150,
       },
     ],
     [navigate, valgte]

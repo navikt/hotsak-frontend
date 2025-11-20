@@ -21,6 +21,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
     () => [
       {
         field: 'knapp',
+        width: 150,
         renderCell(row) {
           return (
             <Button
@@ -37,6 +38,8 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       oppgaveColumns.oppgavetype,
       oppgaveColumns.behandlingstema,
       oppgaveColumns.behandlingstype,
+      oppgaveColumns.beskrivelse,
+      oppgaveColumns.kommune,
       oppgaveColumns.mappenavn,
       oppgaveColumns.prioritet,
       oppgaveColumns.opprettetTidspunkt,
@@ -46,6 +49,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
         header: 'Bruker',
         accessor: 'fnr',
         sortKey: 'fnr',
+        width: 150,
       },
     ],
     [navigate]

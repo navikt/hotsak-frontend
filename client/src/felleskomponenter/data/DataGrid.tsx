@@ -42,13 +42,19 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
 
             if (column.sortKey) {
               return (
-                <Table.ColumnHeader key={key} textSize={textSize} sortKey={column.sortKey} sortable>
+                <Table.ColumnHeader
+                  key={key}
+                  textSize={textSize}
+                  sortKey={column.sortKey}
+                  style={{ width: column.width }}
+                  sortable
+                >
                   {header}
                 </Table.ColumnHeader>
               )
             } else {
               return (
-                <Table.HeaderCell key={key} textSize={textSize}>
+                <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width }}>
                   {header}
                 </Table.HeaderCell>
               )
@@ -69,7 +75,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             }
 
             return (
-              <Table.DataCell key={column.field} textSize={textSize}>
+              <Table.DataCell key={column.field} textSize={textSize} width={column.width}>
                 {value}
               </Table.DataCell>
             )

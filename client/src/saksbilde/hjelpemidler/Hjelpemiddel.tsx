@@ -57,6 +57,8 @@ export function Hjelpemiddel({
   })
 
   const endretHjelpemiddel = endretHjelpemiddelResponse?.endretArtikkel
+  const harEndretHjelpemiddel =
+    endretHjelpemiddel && hjelpemiddel.produkt.hmsArtNr !== endretHjelpemiddelResponse.hmsArtNr
   const harAlternativeProdukter = alternativeProdukter.length > 0
 
   return (
@@ -74,7 +76,7 @@ export function Hjelpemiddel({
       <HjelpemiddelGrid>
         <TextContainer>
           <VStack justify="start" gap="2">
-            {endretHjelpemiddel && (
+            {harEndretHjelpemiddel && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
                 navn={endretHjelpemiddelProdukt?.navn || '-'}
@@ -85,7 +87,7 @@ export function Hjelpemiddel({
             <Produkt
               hmsnr={hjelpemiddel.produkt.hmsArtNr}
               navn={hjelpemiddel.produkt.artikkelnavn}
-              gjennomstrek={endretHjelpemiddel !== undefined}
+              gjennomstrek={harEndretHjelpemiddel}
             />
             <HStack gap="2">
               <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
@@ -105,7 +107,7 @@ export function Hjelpemiddel({
           </VStack>
           {/* TODO fjerne VStack her */}
           <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
-            {endretHjelpemiddel && (
+            {harEndretHjelpemiddel && (
               <div>
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>

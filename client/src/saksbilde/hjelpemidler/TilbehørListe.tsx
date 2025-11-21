@@ -87,29 +87,26 @@ export function Tilbehør({
     navn: tilbehør.navn || '',
   })
   const endretTilbehør = endretHjelpemiddelResponse?.endretArtikkel
+  const harEndretTilbehør = endretTilbehør && tilbehør.hmsArtNr !== endretHjelpemiddelResponse.hmsArtNr
   return (
     <>
       <HjelpemiddelGrid>
         <TextContainer>
           <VStack gap="1">
-            {endretTilbehør && (
+            {harEndretTilbehør && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
                 navn={endretHjelpemiddelProdukt?.navn || '-'}
                 showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}
-            <Produkt
-              hmsnr={tilbehør.hmsArtNr || '-'}
-              navn={tilbehør.navn || '-'}
-              gjennomstrek={endretTilbehør !== undefined}
-            />
+            <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} gjennomstrek={harEndretTilbehør} />
             {harSaksbehandlingvarsel && (
               <Box paddingInline="4 0">
                 <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
               </Box>
             )}
-            {endretTilbehør && (
+            {harEndretTilbehør && (
               <Box.New paddingInline="4 0">
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>

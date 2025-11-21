@@ -165,7 +165,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return respondNotFound()
     }
 
-    return HttpResponse.json({ hjelpemidler })
+    return HttpResponse.json(hjelpemidler)
   }),
 
   http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {

@@ -51,12 +51,12 @@ export function Hjelpemiddel({
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sakId, {
-    hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
+    id: hjelpemiddel.hjelpemiddelId,
     hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
     navn: hjelpemiddel.produkt.artikkelnavn,
   })
 
-  const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
+  const endretHjelpemiddel = endretHjelpemiddelResponse?.endretArtikkel
   const harAlternativeProdukter = alternativeProdukter.length > 0
 
   return (
@@ -150,7 +150,7 @@ export function Hjelpemiddel({
                     tekst: 'alterrnative-produkter-modal',
                     alternativerTilgjengelig: alternativeProdukter.length,
                     alternativer: alternativeProdukter.map((p) => {
-                      return p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor
+                      return (p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor)
                     }),
                   })
                   setVisAlternativerModal(true)

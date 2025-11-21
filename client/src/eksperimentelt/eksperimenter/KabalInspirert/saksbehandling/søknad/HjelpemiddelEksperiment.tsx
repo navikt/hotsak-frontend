@@ -49,11 +49,11 @@ export function HjelpemiddelEksperiment({
     endretHjelpemiddelProdukt,
     endretHjelpemiddel: endretHjelpemiddelResponse,
   } = useEndreHjelpemiddel(sak.sakId, {
-    hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
+    id: hjelpemiddel.hjelpemiddelId,
     hmsArtNr: hjelpemiddel.produkt.hmsArtNr,
     navn: hjelpemiddel.produkt.artikkelnavn,
   })
-  const endretHjelpemiddel = endretHjelpemiddelResponse?.endretHjelpemiddel
+  const endretHjelpemiddel = endretHjelpemiddelResponse?.endretArtikkel
   const harAlternativeProdukter = alternativeProdukter.length > 0
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
 

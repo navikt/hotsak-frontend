@@ -99,7 +99,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           ? data.endreBegrunnelseFritekst
           : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
       await onLagre({
-        hjelpemiddelId: hjelpemiddel.hjelpemiddelId,
+        id: hjelpemiddel.hjelpemiddelId,
         hmsArtNr: data.endretProdukt ?? '',
         begrunnelse,
         begrunnelseFritekst,

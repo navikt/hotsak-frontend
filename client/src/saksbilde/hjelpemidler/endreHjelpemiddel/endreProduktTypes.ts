@@ -1,5 +1,5 @@
 export interface EndretProdukt {
-  hjelpemiddelId: string
+  id: string
   hmsArtNr: string
   navn: string
 }
@@ -10,12 +10,12 @@ export interface HjelpemiddelEndring {
   hmsArtNr: string
   artikkelnavn: string
   antall: number
-  endretHjelpemiddel?: EndretHjelpemiddel
+  endretArtikkel?: EndretHjelpemiddel
   finnesIOebs: boolean
 }
 
 export interface EndretHjelpemiddel {
-  hjelpemiddelId: string
+  id: string
   begrunnelse: EndretHjelpemiddelBegrunnelse
   begrunnelseFritekst?: string
   artikkelnavn?: string

@@ -78,7 +78,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       )}
       {oppgaveErUnderBehandlingAvInnloggetAnsatt &&
         onSelectOverførOppgaveTilMedarbeider &&
-        oppgave.gjelder !== 'BARNEBRILLER' && (
+        oppgave.sak?.sakstype !== 'BARNEBRILLER' && (
           <ActionMenu.Item
             onSelect={() => {
               onSelectOverførOppgaveTilMedarbeider()

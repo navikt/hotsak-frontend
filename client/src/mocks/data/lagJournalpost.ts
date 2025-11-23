@@ -1,9 +1,9 @@
-import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
-import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
-import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
-import { lagTilfeldigNavn } from './navn.ts'
-import { enheter } from './enheter.ts'
 import { Oppgaveprioritet, Oppgavestatus, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
+import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
+import { enheter } from './enheter.ts'
+import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
+import { lagTilfeldigFødselsnummer } from './fødselsnummer.ts'
+import { lagTilfeldigNavn } from './navn.ts'
 
 export type LagretJournalpost = Omit<Journalpost, 'dokumenter'>
 export type InsertJournalpost = LagretJournalpost
@@ -36,9 +36,11 @@ export function lagJournalpost(journalpostId: string): InsertJournalpost {
       navn: lagTilfeldigNavn(),
     },
     oppgave: {
-      tema: 'HJE',
+      kategorisering: {
+        oppgavetype: Oppgavetype.JOURNALFØRING,
+        tema: 'HJE',
+      },
       oppgaveId: `I-${journalpostId}`,
-      oppgavetype: Oppgavetype.JOURNALFØRING,
       oppgavestatus: Oppgavestatus.OPPRETTET,
       prioritet: Oppgaveprioritet.NORMAL,
       tildeltEnhet: enheter.agder,

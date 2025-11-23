@@ -10,18 +10,16 @@ export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
   return {
     oppgaveId: oppgave.oppgaveId,
     versjon: oppgave.versjon,
-    sakId: oppgave.sakId,
-    sakstype: oppgave.sakstype,
-    oppgavetype: utledOppgavetypeForOppgave(oppgave),
     oppgavestatus: oppgavestatusByOppgaveStatusType[oppgave.status],
-    tema: 'HJE',
-    gjelder: oppgave.sakstype,
-    beskrivelse: oppgave.beskrivelse,
     prioritet: oppgave.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
+    kategorisering: {
+      oppgavetype: utledOppgavetypeForOppgave(oppgave),
+      tema: 'HJE',
+    },
+    beskrivelse: oppgave.beskrivelse,
     tildeltEnhet: oppgave.enhet,
     tildeltSaksbehandler: oppgave.saksbehandler,
     aktivDato: oppgave.mottatt,
-    behandlesAvApplikasjon: 'HOTSAK',
     opprettetTidspunkt: oppgave.mottatt,
     endretTidspunkt: oppgave.statusEndret,
     fnr: oppgave.bruker.fnr,
@@ -32,7 +30,16 @@ export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
         mellomnavn: oppgave.bruker.mellomnavn,
         etternavn: oppgave.bruker.etternavn,
       },
+      fulltNavn: '',
     },
+    sakId: oppgave.sakId,
+    sak: {
+      sakId: oppgave.sakId,
+      sakstype: oppgave.sakstype,
+      søknadId: '',
+      søknadGjelder: oppgave.beskrivelse,
+    },
+    behandlesAvApplikasjon: 'HOTSAK',
   }
 }
 

@@ -22,7 +22,7 @@ export function TaOppgaveIOppgavelisteButton({ oppgave, kanTildeles }: { oppgave
       size="xsmall"
       variant="tertiary"
       onOppgavetildeling={(oppgaveId) => {
-        if (oppgave.sakstype === Sakstype.TILSKUDD) {
+        if (oppgave.sak?.sakstype === Sakstype.BARNEBRILLER || oppgave.sak?.sakstype === Sakstype.TILSKUDD) {
           navigate(`/oppgave/${oppgaveId}`)
         } else {
           navigate(`/oppgave/${oppgaveId}/hjelpemidler`)

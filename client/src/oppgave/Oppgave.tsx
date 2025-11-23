@@ -29,7 +29,7 @@ export default function Oppgave() {
 }
 
 function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
-  switch (oppgave.oppgavetype) {
+  switch (oppgave.kategorisering.oppgavetype) {
     case Oppgavetype.JOURNALFØRING:
       return (
         <DokumentProvider>

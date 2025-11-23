@@ -15,7 +15,7 @@ export const oppgaveColumns = {
     renderCell(row) {
       return (
         <Tag size="small" variant="alt2">
-          {OppgavetypeLabel[row.oppgavetype]}
+          {OppgavetypeLabel[row.kategorisering.oppgavetype]}
         </Tag>
       )
     },
@@ -25,12 +25,13 @@ export const oppgaveColumns = {
     header: 'Gjelder',
     width: 250,
     renderCell(row) {
-      if (!row.behandlingstema) {
+      const behandlingstema = row.kategorisering.behandlingstema
+      if (!behandlingstema || !behandlingstema.term) {
         return null
       }
       return (
         <Tag size="small" variant="alt3">
-          {row.behandlingstema}
+          {behandlingstema.term}
         </Tag>
       )
     },
@@ -40,12 +41,13 @@ export const oppgaveColumns = {
     header: 'Behandlingstype',
     width: 200,
     renderCell(row) {
-      if (!row.behandlingstype) {
+      const behandlingstype = row.kategorisering.behandlingstype
+      if (!behandlingstype || !behandlingstype.term) {
         return null
       }
       return (
         <Tag size="small" variant="alt3">
-          {row.behandlingstype}
+          {behandlingstype.term}
         </Tag>
       )
     },
@@ -54,16 +56,28 @@ export const oppgaveColumns = {
     field: 'beskrivelse',
     header: 'Beskrivelse',
     renderCell(row) {
-      if (!row.beskrivelse) {
+      const søknadGjelder = row.sak?.søknadGjelder
+      if (!søknadGjelder) {
         return null
       }
-      const beskrivelse = row.beskrivelse.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+      const beskrivelse = søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
       return <>{storForbokstavIOrd(beskrivelse)}</>
     },
   },
-  kommune: {
-    field: 'kommune',
-    header: 'Kommune',
+  bosted: {
+    field: 'bosted',
+    header: 'Bosted',
+    renderCell(row) {
+      const bydel = row.bruker?.bydel
+      if (bydel) {
+        return <>{bydel.navn}</>
+      }
+      const kommune = row.bruker?.kommune
+      if (kommune) {
+        return <>{kommune.navn}</>
+      }
+      return null
+    },
   },
   mappenavn: {
     field: 'mappenavn',
@@ -100,6 +114,19 @@ export const oppgaveColumns = {
           )}
         </HStack>
       )
+    },
+  },
+  bruker: {
+    field: 'bruker',
+    header: 'Bruker',
+    sortKey: 'fnr',
+    width: 250,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker) {
+        return null
+      }
+      return <>{`${bruker.fnr} ${bruker.fulltNavn}`}</>
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>

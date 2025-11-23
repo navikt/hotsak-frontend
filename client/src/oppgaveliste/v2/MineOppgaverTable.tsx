@@ -39,18 +39,12 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       oppgaveColumns.behandlingstema,
       oppgaveColumns.behandlingstype,
       oppgaveColumns.beskrivelse,
-      oppgaveColumns.kommune,
+      oppgaveColumns.bosted,
       oppgaveColumns.mappenavn,
       oppgaveColumns.prioritet,
       oppgaveColumns.opprettetTidspunkt,
       oppgaveColumns.fristFerdigstillelse,
-      {
-        field: 'fnr',
-        header: 'Bruker',
-        accessor: 'fnr',
-        sortKey: 'fnr',
-        width: 150,
-      },
+      oppgaveColumns.bruker,
     ],
     [navigate]
   )

@@ -1,4 +1,5 @@
 import { Heading } from '@navikt/ds-react'
+
 import { OppgaveProvider } from '../../../oppgave/OppgaveProvider'
 import { Oppgavetype, OppgaveV2 } from '../../../oppgave/oppgaveTypes'
 import { useOppgave } from '../../../oppgave/useOppgave'
@@ -26,7 +27,7 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
   if (!sak) {
     return null
   }
-  switch (oppgave.oppgavetype) {
+  switch (oppgave.kategorisering.oppgavetype) {
     case Oppgavetype.JOURNALFØRING:
       return (
         <Heading level="1" size="large">

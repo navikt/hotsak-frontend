@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie'
 import {
   type GjelderAlternativerResponse,
   type OppgaveId,
+  type OppgaveKodeverk,
   Oppgavestatus,
   Oppgavetype,
   type OppgaveV2,
@@ -11,7 +12,6 @@ import { Sakstype } from '../../types/types.internal.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { JournalpostStore } from './JournalpostStore'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
-import { hentBehandlingstemaKode } from './oppgaveGjelder.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
 
@@ -41,27 +41,31 @@ export class OppgaveStore extends Dexie {
     const saker = await this.sakStore.alle()
     const oppgaverForSaker: InsertOppgave[] = await Promise.all(
       saker.map(async (sak) => {
-        let behandlingstema: string = ''
-        let behandlingstype: string = ''
+        let behandlingstema: OppgaveKodeverk
+        let behandlingstype: OppgaveKodeverk
         if (sak.sakstype === Sakstype.BARNEBRILLER) {
-          behandlingstema = 'Briller til barn'
-          behandlingstype = 'Søknad'
+          behandlingstema = { kode: '', term: 'Briller til barn' }
+          behandlingstype = { kode: '', term: 'Søknad' }
         } else {
           const behovsmeldingCase = await this.behovsmeldingStore.hentForSak(sak)
           if (behovsmeldingCase && behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler.length) {
             const isoKategoriKode = behovsmeldingCase.behovsmelding.hjelpemidler.hjelpemidler[0].produkt.iso8
             const isokategorisering = isokategoriseringByKode[isoKategoriKode]
-            behandlingstema = isokategorisering?.behandlingstema_term ?? ''
+            const { behandlingstema_kode: kode, behandlingstema_term: term } = isokategorisering ?? {
+              behandlingstema_kode: '',
+              behandlingstema_term: '',
+            }
+            behandlingstema = { kode, term }
           } else {
-            behandlingstema = ''
+            behandlingstema = { kode: '', term: '' }
           }
-          behandlingstype = sak.sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Digital søknad'
+          behandlingstype = { kode: '', term: sak.sakstype === Sakstype.BESTILLING ? 'Bestilling' : 'Digital søknad' }
         }
         return lagOppgave(sak, {
-          tema: 'HJE',
+          oppgavetype: Oppgavetype.BEHANDLE_SAK,
           behandlingstema,
           behandlingstype,
-          oppgavetype: Oppgavetype.BEHANDLE_SAK,
+          tema: 'HJE',
         })
       })
     )
@@ -105,9 +109,9 @@ export class OppgaveStore extends Dexie {
   }
 
   async oppdaterKategorisering(oppgaveId: OppgaveId, behandlingstema: string) {
-    console.log(`Oppdaterer behandlingstema for oppgaveId: ${oppgaveId}`)
+    console.log(`Oppdaterer behandlingstema for oppgaveId: ${oppgaveId}, behandlingstema: ${behandlingstema}`)
     return this.oppgaver.update(oppgaveId, {
-      behandlingstema,
+      // kategorisering: { behandlingstema: { kode: '', term: behandlingstema } }, fixme
     })
   }
 
@@ -121,6 +125,7 @@ export class OppgaveStore extends Dexie {
     if (!oppgave) {
       return
     }
+    /*
     return {
       behandlingstema: oppgave.behandlingstema || '',
       behandlingstype: oppgave.behandlingstype || '',
@@ -130,6 +135,7 @@ export class OppgaveStore extends Dexie {
         alternativer: [],
       },
     }
+    */
   }
 
   async alle() {

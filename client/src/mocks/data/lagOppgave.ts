@@ -1,7 +1,13 @@
 import { addBusinessDays, parseISO } from 'date-fns'
 
-import { Oppgaveprioritet, Oppgavestatus, Oppgavetype, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { Sakstype } from '../../types/types.internal.ts'
+import {
+  type Oppgavekategorisering,
+  Oppgaveprioritet,
+  Oppgavestatus,
+  Oppgavetype,
+  type OppgaveV2,
+} from '../../oppgave/oppgaveTypes.ts'
+import { formaterNavn } from '../../utils/formater.ts'
 import { enheter } from './enheter.ts'
 import { LagretJournalpost } from './lagJournalpost.ts'
 import { type LagretHjelpemiddelsak, type LagretSak } from './lagSak.ts'
@@ -9,34 +15,26 @@ import { type LagretHjelpemiddelsak, type LagretSak } from './lagSak.ts'
 export type LagretOppgave = OppgaveV2
 export type InsertOppgave = LagretOppgave
 
-export interface OppgaveKategorisering {
-  tema: 'HJE'
-  oppgavetype: Oppgavetype
-  behandlingstema: string
-  behandlingstype: string
-}
-
-export function lagOppgave(sak: LagretSak, kategorisering: OppgaveKategorisering): InsertOppgave {
+export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering): InsertOppgave {
   const sakId = sak.sakId
   return {
-    ...kategorisering,
     oppgaveId: `E-${sakId}`,
     versjon: 1,
-    sakId,
-    sakstype: sak.sakstype,
     oppgavestatus: Oppgavestatus.OPPRETTET,
-    gjelder: sak.sakstype === Sakstype.SØKNAD ? 'Digital søknad' : 'Bestilling', // fixme
-    beskrivelse: sak.søknadGjelder,
     prioritet: (sak as LagretHjelpemiddelsak)?.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
+    kategorisering,
+    beskrivelse: sak.søknadGjelder,
     tildeltEnhet: sak.enhet,
     tildeltSaksbehandler: sak.saksbehandler,
     aktivDato: sak.opprettet,
-    behandlesAvApplikasjon: 'HOTSAK',
     fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 60).toISOString(),
     opprettetTidspunkt: sak.opprettet,
     endretTidspunkt: sak.opprettet,
     fnr: sak.bruker.fnr,
-    bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn },
+    bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn, fulltNavn: formaterNavn(sak.bruker.navn) },
+    sakId,
+    sak: { sakId: sak.sakId, sakstype: sak.sakstype, søknadId: '', søknadGjelder: sak.søknadGjelder },
+    behandlesAvApplikasjon: 'HOTSAK',
     mappeId: undefined, // fixme
     mappenavn: undefined, // fixme
   }
@@ -47,23 +45,28 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
   return {
     oppgaveId: `I-${journalpostId}`,
     versjon: 1,
-    oppgavetype: Oppgavetype.JOURNALFØRING,
     oppgavestatus: Oppgavestatus.OPPRETTET,
-    tema: 'HJE',
-    behandlingstema: 'Briller til barn',
-    behandlingstype: 'Søknad',
-    gjelder: 'Briller til barn',
-    beskrivelse: journalføring.tittel,
     prioritet: Oppgaveprioritet.NORMAL,
+    kategorisering: {
+      oppgavetype: Oppgavetype.JOURNALFØRING,
+      behandlingstema: { kode: '', term: 'Briller til barn' },
+      behandlingstype: { kode: '', term: 'Søknad' },
+      tema: 'HJE',
+    },
+    beskrivelse: journalføring.tittel,
     tildeltEnhet: enheter.agder,
     tildeltSaksbehandler: undefined,
     aktivDato: journalføring.journalpostOpprettetTid,
-    journalpostId: journalpostId,
     fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 5).toISOString(),
     opprettetTidspunkt: journalføring.journalpostOpprettetTid,
     endretTidspunkt: journalføring.journalpostOpprettetTid,
     fnr: journalføring.bruker!.fnr,
-    bruker: { fnr: journalføring.bruker!.fnr, navn: journalføring.bruker!.navn! },
+    bruker: {
+      fnr: journalføring.bruker!.fnr,
+      navn: journalføring.bruker!.navn!,
+      fulltNavn: formaterNavn(journalføring.bruker!.navn),
+    },
+    journalpostId: journalpostId,
     mappeId: undefined, // fixme
     mappenavn: undefined, // fixme
   }

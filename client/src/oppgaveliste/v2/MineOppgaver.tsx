@@ -20,14 +20,28 @@ export function MineOppgaver() {
   )
   const filtrerteOppgaver = useMemo(() => {
     return alleOppgaver
-      .filter(oneOf(oppgavetypeFilter, 'oppgavetype'))
-      .filter(oneOf(gjelderFilter, 'behandlingstema'))
+      .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
+      .filter(oneOf(gjelderFilter, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen'))
       .filter(oneOf(oppgaveprioritetFilter, 'prioritet'))
       .toSorted(compareBy(sort.orderBy as any, sort.direction)) // fixme
   }, [alleOppgaver, oppgavetypeFilter, gjelderFilter, oppgaveprioritetFilter, sort])
 
-  const oppgavetyper = useMemo(() => uniqueBy(alleOppgaver, 'oppgavetype'), [alleOppgaver])
-  const gjelder = useMemo(() => uniqueBy(alleOppgaver, 'behandlingstema').filter(notEmpty), [alleOppgaver])
+  const oppgavetyper = useMemo(
+    () =>
+      uniqueBy(
+        alleOppgaver.map((it) => it.kategorisering),
+        'oppgavetype'
+      ),
+    [alleOppgaver]
+  )
+  const gjelder = useMemo(
+    () =>
+      uniqueBy(
+        alleOppgaver.map((it) => it.kategorisering.behandlingstema ?? { kode: '', term: 'Ingen' }),
+        'term'
+      ).filter(notEmpty),
+    [alleOppgaver]
+  )
   const oppgaveprioritet = useMemo(() => uniqueBy(alleOppgaver, 'prioritet'), [alleOppgaver])
 
   return (
@@ -45,8 +59,14 @@ export function MineOppgaver() {
   )
 }
 
-function oneOf<T, K extends keyof T>(filterValues: T[K][], accessor: K): (value: T) => boolean {
-  return (it) => !filterValues.length || filterValues.includes(it[accessor])
+function oneOf<T, K extends keyof T>(filterValues: T[K][], accessor: K): (value: T) => boolean
+function oneOf<T, R>(filterValues: R[], accessor: (element: T) => R): (value: T) => boolean
+function oneOf<T, K extends keyof T, R>(filterValues: any, accessor: K | ((element: T) => R)): (value: T) => boolean {
+  return (it) => {
+    if (!filterValues) return true
+    const value = typeof accessor === 'function' ? accessor(it) : it[accessor]
+    return !filterValues.length || filterValues.includes(value)
+  }
 }
 
 const ingenJournalføringsoppgaver: OppgaveV2[] = []

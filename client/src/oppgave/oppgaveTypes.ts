@@ -1,7 +1,16 @@
 import type { SortState } from '@navikt/ds-react'
 
 import type { PageResponse } from '../felleskomponenter/Page.ts'
-import type { Enhet, Hast, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
+import type {
+  Bydel,
+  Enhet,
+  Hast,
+  Kommune,
+  Navn,
+  OppgaveStatusType,
+  Saksbehandler,
+  Sakstype,
+} from '../types/types.internal'
 
 /**
  * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
@@ -103,36 +112,69 @@ export interface OppgaveBase {
    * NB! Journalføringsoppgaver har ikke `sakId`.
    */
   sakId?: string | number
-  sakstype?: Sakstype
 }
 
 export interface OppgaveV2 extends OppgaveBase {
-  oppgavetype: Oppgavetype
   oppgavestatus: Oppgavestatus
-  tema: 'HJE' | string
-  behandlingstema?: string
-  behandlingstype?: string
-  gjelder?: string | null
-  beskrivelse?: string
   prioritet: Oppgaveprioritet
+  kategorisering: Oppgavekategorisering
+  beskrivelse?: string
+
+  // tildeling
   tildeltEnhet: Enhet
   tildeltSaksbehandler?: Saksbehandler
+
+  // tilgang
   opprettetAv?: string
   opprettetAvEnhet?: Enhet
   endretAv?: string
   endretAvEnhet?: Enhet
+
+  // tidspunkter
   aktivDato: string
-  journalpostId?: string
-  behandlesAvApplikasjon?: string
   fristFerdigstillelse?: string
   opprettetTidspunkt?: string
   endretTidspunkt?: string
   ferdigstiltTidspunkt?: string
-  fnr?: string
-  bruker?: OppgaveBrukerV2
   isPåVent?: boolean
+
+  // tilknytning
+  fnr?: string
+  bruker?: OppgaveBruker
+  journalpostId?: string
+  sak?: OppgaveSak
+  behandlesAvApplikasjon?: string
+
   mappeId?: string
   mappenavn?: string
+}
+
+export interface OppgaveKodeverk {
+  kode: string
+  term: string
+}
+
+export interface Oppgavekategorisering {
+  oppgavetype: Oppgavetype
+  behandlingstema?: OppgaveKodeverk
+  behandlingstype?: OppgaveKodeverk
+  tema: 'HJE' | string
+}
+
+export interface OppgaveBruker {
+  fnr: string
+  navn: Navn
+  fulltNavn: string
+  kommune?: Kommune
+  bydel?: Bydel
+  brukernummer?: string
+}
+
+export interface OppgaveSak {
+  sakId: string
+  sakstype: Sakstype
+  søknadId: string
+  søknadGjelder: string
 }
 
 export interface GjelderAlternativerResponse {
@@ -142,11 +184,6 @@ export interface GjelderAlternativerResponse {
     behandlingstemaKode: string
     behandlingstemaTerm: string
   }>
-}
-
-export interface OppgaveBrukerV2 {
-  fnr: string
-  navn?: Navn
 }
 
 export interface FinnOppgaverResponse extends PageResponse {

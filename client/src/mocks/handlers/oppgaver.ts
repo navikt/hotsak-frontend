@@ -31,7 +31,9 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     await delay(200)
     const alleOppgaver = await oppgaveStore.alle()
     if (oppgavetype === 'JOURNALFØRING') {
-      const journalføringsoppgaver = alleOppgaver.filter((oppgave) => oppgave.oppgavetype === Oppgavetype.JOURNALFØRING)
+      const journalføringsoppgaver = alleOppgaver.filter(
+        (oppgave) => oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
+      )
       const totalElements = journalføringsoppgaver.length
       const pagedOppgaver: FinnOppgaverResponse = {
         oppgaver: journalføringsoppgaver.slice(offset, offset + pageSize),

@@ -6,6 +6,7 @@ export enum VedtaksResultat {
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
   HENLAGT = 'HENLAGT',
+  IKKE_VALGT = 'IKKE_VALGT',
 }
 
 /**

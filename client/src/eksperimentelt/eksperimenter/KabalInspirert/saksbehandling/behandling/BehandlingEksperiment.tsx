@@ -29,7 +29,6 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
     brevFerdigstilt,
     oppgaveFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
-  const [visFeilmelding, setVisFeilmelding] = useState(false)
   const { oppgave } = useOppgave()
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
@@ -62,29 +61,28 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         </Link>
 
         <Heading size="small" level="2">
-          Innstilling til vedtak
+          Vurderingen din
         </Heading>
         <TextContainer>
-          <Brødtekst>
-            Innstilling til vedtaksresultat blir ikke synlig for bruker før du fatter vedtak i saken.
-          </Brødtekst>
+          <Brødtekst>Vedtaksresultatet blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
         </TextContainer>
 
         <Select
           size="small"
           label="Resultat"
-          error={visFeilmelding ? 'Du må velge et vedtaksresultat' : undefined}
-          readOnly={lagretResultat}
+          readOnly={brevEksisterer && !brevFerdigstilt}
           style={{ width: 'auto' }}
           value={vedtaksResultat ? vedtaksResultat : ''}
           onChange={(e) => {
-            if (e.target.value !== undefined) {
-              setVisFeilmelding(false)
+            if (e.target.value !== VedtaksResultat.IKKE_VALGT) {
+              setLagretResultat(true)
+            } else {
+              setLagretResultat(false)
             }
             setVedtaksResultat(e.target.value as any)
           }}
         >
-          <option value={undefined}>-- Velg resultat --</option>
+          <option value={VedtaksResultat.IKKE_VALGT}>-- Velg resultat --</option>
           <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
@@ -92,7 +90,7 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
         <div>
           {!oppgaveFerdigstilt && (
             <>
-              {lagretResultat ? (
+              {brevEksisterer && !brevFerdigstilt && (
                 <Button
                   variant="tertiary"
                   size="small"
@@ -106,20 +104,6 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
                   }}
                 >
                   Endre resultat
-                </Button>
-              ) : (
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={() => {
-                    if (!vedtaksResultat) {
-                      setVisFeilmelding(true)
-                    } else {
-                      setLagretResultat(true)
-                    }
-                  }}
-                >
-                  Lagre resultat
                 </Button>
               )}
             </>

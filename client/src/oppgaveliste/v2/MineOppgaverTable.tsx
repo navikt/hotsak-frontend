@@ -39,12 +39,12 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       oppgaveColumns.behandlingstema,
       oppgaveColumns.behandlingstype,
       oppgaveColumns.beskrivelse,
-      oppgaveColumns.bosted,
       oppgaveColumns.mappenavn,
       oppgaveColumns.prioritet,
       oppgaveColumns.opprettetTidspunkt,
       oppgaveColumns.fristFerdigstillelse,
       oppgaveColumns.bruker,
+      oppgaveColumns.kommune,
     ],
     [navigate]
   )

@@ -17,6 +17,7 @@ export type InsertOppgave = LagretOppgave
 
 export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering): InsertOppgave {
   const sakId = sak.sakId
+  const bruker = sak.bruker
   return {
     oppgaveId: `E-${sakId}`,
     versjon: 1,
@@ -30,8 +31,14 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 60).toISOString(),
     opprettetTidspunkt: sak.opprettet,
     endretTidspunkt: sak.opprettet,
-    fnr: sak.bruker.fnr,
-    bruker: { fnr: sak.bruker.fnr, navn: sak.bruker.navn, fulltNavn: formaterNavn(sak.bruker.navn) },
+    fnr: bruker.fnr,
+    bruker: {
+      fnr: bruker.fnr,
+      navn: bruker.navn,
+      fulltNavn: formaterNavn(bruker.navn),
+      kommune: bruker.kommune,
+      bydel: bruker.bydel,
+    },
     sakId,
     sak: { sakId: sak.sakId, sakstype: sak.sakstype, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',

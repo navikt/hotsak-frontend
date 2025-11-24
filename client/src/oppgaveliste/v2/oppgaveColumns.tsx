@@ -64,9 +64,9 @@ export const oppgaveColumns = {
       return <>{storForbokstavIOrd(beskrivelse)}</>
     },
   },
-  bosted: {
-    field: 'bosted',
-    header: 'Bosted',
+  kommune: {
+    field: 'kommune',
+    header: 'Kommune',
     renderCell(row) {
       const bydel = row.bruker?.bydel
       if (bydel) {
@@ -126,7 +126,7 @@ export const oppgaveColumns = {
       if (!bruker) {
         return null
       }
-      return <>{`${bruker.fnr} ${bruker.fulltNavn}`}</>
+      return <>{`${bruker.fnr} | ${bruker.fulltNavn}`}</>
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>

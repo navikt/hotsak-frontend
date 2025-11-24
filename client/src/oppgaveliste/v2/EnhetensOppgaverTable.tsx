@@ -55,12 +55,12 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       oppgaveColumns.behandlingstema,
       oppgaveColumns.behandlingstype,
       oppgaveColumns.beskrivelse,
-      oppgaveColumns.bosted,
       oppgaveColumns.mappenavn,
       oppgaveColumns.prioritet,
       oppgaveColumns.opprettetTidspunkt,
       oppgaveColumns.fristFerdigstillelse,
       oppgaveColumns.bruker,
+      oppgaveColumns.kommune,
     ],
     [navigate, valgte]
   )

@@ -94,13 +94,16 @@ export class SakStore extends Dexie {
       return []
     }
 
+    const { default: kommuner } = await import('./kommuner.json')
+    // const { default: bydeler } = await import('./bydeler.json')
+
     const hjelpemiddelsaker = await Promise.all(
       Object.entries(this.behovsmeldingStore.alle).map(async ([behovsmeldingCasePath, loader]) => {
         const behovsmeldingCase = await loader()
         console.log(
           `Oppretter sak for behovsmeldingCasePath: ${behovsmeldingCasePath}, sakId: ${behovsmeldingCase.sakId}`
         )
-        return lagHjelpemiddelsakForBehovsmeldingCase(behovsmeldingCasePath, behovsmeldingCase)
+        return lagHjelpemiddelsakForBehovsmeldingCase(behovsmeldingCasePath, behovsmeldingCase, kommuner)
       })
     )
 
@@ -166,7 +169,7 @@ export class SakStore extends Dexie {
         bruker: {
           fnr: bruker.fnr,
           funksjonsnedsettelser,
-          bosted: bruker.kommune.navn,
+          bosted: bruker.kommune?.navn ?? '',
           ...bruker.navn,
         },
         enhet: sak.enhet,

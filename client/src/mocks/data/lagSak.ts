@@ -40,7 +40,8 @@ export type InsertHjelpemiddelsak = LagretHjelpemiddelsak & { behovsmeldingCaseP
 
 export function lagHjelpemiddelsakForBehovsmeldingCase(
   behovsmeldingCasePath: string,
-  behovsmeldingCase: BehovsmeldingCase
+  behovsmeldingCase: BehovsmeldingCase,
+  kommuner: Record<string, string> = {}
 ): InsertHjelpemiddelsak {
   const { behovsmelding, behovsmeldingGjelder, fnrBruker, fnrInnsender, opprettet } = behovsmeldingCase
   let sakstype: Sakstype.BESTILLING | Sakstype.SØKNAD
@@ -68,7 +69,9 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       navn: bruker.navn,
       fulltNavn: `${bruker.navn.fornavn} ${bruker.navn.etternavn}`,
       fødselsdato: fødselsdatoFraFødselsnummer(fnrBruker).toDateString(),
-      kommune: { nummer: bruker.kommunenummer!, navn: bruker.kommunenummer! },
+      kommune: bruker.kommunenummer
+        ? { nummer: bruker.kommunenummer, navn: kommuner[bruker.kommunenummer] }
+        : undefined,
       bydel: undefined,
       kjønn: kjønnFraFødselsnummer(fnrBruker),
       telefon: behovsmelding.bruker.telefon,

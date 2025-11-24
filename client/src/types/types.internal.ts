@@ -286,7 +286,7 @@ export interface Bruker extends HarNavn {
   fnr: string
   fulltNavn?: string
   fødselsdato: string
-  kommune: Kommune
+  kommune?: Kommune
   bydel?: Bydel
   kjønn?: Kjønn
   telefon?: string
@@ -689,7 +689,7 @@ export interface Person extends Navn, HarNavn {
   brukernummer?: string
   kjønn: Kjønn
   enhet: Enhet
-  kommune: Kommune
+  kommune?: Kommune
   bydel?: Bydel
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
   dødsdato?: string

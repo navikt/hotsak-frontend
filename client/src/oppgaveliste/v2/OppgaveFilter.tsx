@@ -10,6 +10,8 @@ import {
   OppgavetypeLabel,
 } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { OppgaveFilterMenu } from './OppgaveFilterMenu.tsx'
+import { OppgaveTableColumnMenu } from './OppgaveTableColumnMenu.tsx'
 
 export interface OppgaveFilterProps {
   oppgavetyper?: Oppgavetype[]
@@ -31,9 +33,15 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
   return (
     <>
       {onSøk && (
-        <HStack as="form" role="search" gap="2" align="center" marginBlock="5" onSubmit={(e) => e.preventDefault()}>
+        <HStack as="form" role="search" gap="5" align="center" marginBlock="5" onSubmit={(e) => e.preventDefault()}>
           <div>
             <Search label="Søk" size="small" variant="secondary" name="søkeord" />
+          </div>
+          <div>
+            <OppgaveFilterMenu filters={[]} />
+          </div>
+          <div>
+            <OppgaveTableColumnMenu columns={[]} />
           </div>
         </HStack>
       )}

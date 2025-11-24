@@ -120,7 +120,7 @@ export const oppgaveColumns = {
     field: 'bruker',
     header: 'Bruker',
     sortKey: 'fnr',
-    width: 250,
+    width: 300,
     renderCell(row) {
       const bruker = row.bruker
       if (!bruker) {

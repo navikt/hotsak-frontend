@@ -1,4 +1,4 @@
-import { Box } from '@navikt/ds-react'
+import { Box, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
@@ -47,13 +47,15 @@ export function MineOppgaver() {
   return (
     <>
       <Box margin="5">
-        <OppgaveFilter
-          oppgavetyper={oppgavetyper}
-          gjelder={gjelder}
-          oppgaveprioritet={oppgaveprioritet}
-          onSøk={() => {}}
-        />
-        <MineOppgaverTable oppgaver={filtrerteOppgaver} />
+        <VStack gap="2">
+          <OppgaveFilter
+            oppgavetyper={oppgavetyper}
+            gjelder={gjelder}
+            oppgaveprioritet={oppgaveprioritet}
+            onSøk={() => {}}
+          />
+          <MineOppgaverTable oppgaver={filtrerteOppgaver} />
+        </VStack>
       </Box>
     </>
   )
@@ -61,11 +63,11 @@ export function MineOppgaver() {
 
 function oneOf<T, K extends keyof T>(filterValues: T[K][], accessor: K): (value: T) => boolean
 function oneOf<T, R>(filterValues: R[], accessor: (element: T) => R): (value: T) => boolean
-function oneOf<T, K extends keyof T, R>(filterValues: any, accessor: K | ((element: T) => R)): (value: T) => boolean {
-  return (it) => {
-    if (!filterValues) return true
-    const value = typeof accessor === 'function' ? accessor(it) : it[accessor]
-    return !filterValues.length || filterValues.includes(value)
+function oneOf<T, K extends keyof T, R>(filterValues: any, accessor: K | ((value: T) => R)): (value: T) => boolean {
+  return (value) => {
+    if (!filterValues.length) return true
+    const filterValue = typeof accessor === 'function' ? accessor(value) : value[accessor]
+    return !filterValues.length || filterValues.includes(filterValue)
   }
 }
 

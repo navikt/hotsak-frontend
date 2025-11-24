@@ -108,7 +108,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   <SøknadPanelEksperiment sak={sak} behovsmelding={behovsmelding} />
                 )}
               </Panel>
-              {(brevKolonne || behandlingPanel) && <ResizeHandle />}
+              {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}
             </>
           )}
           {behandlingPanel && (
@@ -120,7 +120,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}
               </Panel>
-              {(sidePanel || brevKolonne || søknadPanel) && <ResizeHandle />}
+              {brevKolonne && <ResizeHandle />}
             </>
           )}
           {brevKolonne && (

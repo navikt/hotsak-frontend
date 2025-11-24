@@ -3,14 +3,14 @@ import { XMarkIcon } from '@navikt/aksel-icons'
 
 export const PanelTittel = ({ tittel, lukkPanel }: { tittel: string; lukkPanel: () => void }) => {
   return (
-    <HStack justify="space-between">
+    <HStack justify="space-between" paddingBlock={'space-8'} paddingInline={'space-16'}>
       <Heading level="1" size="small" spacing={false}>
         {tittel}
       </Heading>
       <Button
         variant="tertiary-neutral"
         size="small"
-        icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
+        icon={<XMarkIcon title={`Lukk ${tittel}`} fontSize="1.5rem" />}
         onClick={lukkPanel}
       />
     </HStack>

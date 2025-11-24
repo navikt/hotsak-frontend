@@ -14,16 +14,16 @@ import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimen
 export function SøknadPanelEksperiment({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSaksbehandlingEksperimentContext()
   return (
-    <VStack gap="space-16" style={{ overflowY: 'auto', height: '100%' }}>
-      <Box.New background="default" paddingBlock="0 space-48" borderRadius="large">
+    <Box.New background="default" paddingBlock="0 space-48" borderRadius="large" style={{ height: '100%' }}>
+      <PanelTittel
+        tittel="Søknad om hjelpemidler"
+        lukkPanel={() => {
+          setSøknadPanel(false)
+        }}
+      />
+      <div style={{ height: '100%', overflowY: 'auto' }}>
         <VStack gap="space-8">
           <VStack paddingBlock={'space-8 0'} paddingInline={'space-16'} gap="space-2">
-            <PanelTittel
-              tittel="Søknad om hjelpemidler"
-              lukkPanel={() => {
-                setSøknadPanel(false)
-              }}
-            />
             <HStack gap="space-20">
               <Brødtekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Brødtekst>
               <Brødtekst textColor="subtle">
@@ -47,7 +47,7 @@ export function SøknadPanelEksperiment({ sak, behovsmelding }: { sak: Sak; beho
           />
           <FormidlerEksperiment levering={behovsmelding.levering} />
         </section>
-      </Box.New>
-    </VStack>
+      </div>
+    </Box.New>
   )
 }

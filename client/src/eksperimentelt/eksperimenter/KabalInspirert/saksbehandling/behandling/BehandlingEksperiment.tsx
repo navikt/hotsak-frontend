@@ -14,8 +14,7 @@ interface BehandlingEksperimentPanelProps {
   behovsmelding: Innsenderbehovsmelding
 }
 
-function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimentPanelProps) {
-  const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
+function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   const {
     brevKolonne,
     setBrevKolonne,
@@ -33,118 +32,112 @@ function BehandlingEksperimentPanel({ sak, behovsmelding }: BehandlingEksperimen
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
   return (
-    <Box.New
-      background="default"
-      borderRadius="large"
-      padding={'space-16'}
-      style={{ height: '100%', overflowY: 'auto' }}
-    >
-      <VStack gap="space-16">
-        {hjelpemidler.length > 0 && (
-          <PanelTittel
-            tittel="Behandle sak"
-            lukkPanel={() => {
-              setBehandlingPanel(false)
+    <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
+      <PanelTittel
+        tittel="Behandle sak"
+        lukkPanel={() => {
+          setBehandlingPanel(false)
+        }}
+      />
+      <div style={{ height: '100%', overflowY: 'auto' }}>
+        <VStack gap="space-16" paddingInline="space-16">
+          <HStack gap="space-20">
+            <Brødtekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Brødtekst>
+            {oppgave?.fristFerdigstillelse && (
+              <Brødtekst textColor="subtle">Frist: {formaterDato(oppgave.fristFerdigstillelse)}</Brødtekst>
+            )}
+          </HStack>
+
+          <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
+            Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
+          </Link>
+
+          <Heading size="small" level="2">
+            Vurderingen din
+          </Heading>
+          <TextContainer>
+            <Brødtekst>Vedtaksresultatet blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
+          </TextContainer>
+
+          <Select
+            size="small"
+            label="Resultat"
+            readOnly={brevEksisterer && !brevFerdigstilt}
+            style={{ width: 'auto' }}
+            value={vedtaksResultat ? vedtaksResultat : ''}
+            onChange={(e) => {
+              if (e.target.value !== VedtaksResultat.IKKE_VALGT) {
+                setLagretResultat(true)
+              } else {
+                setLagretResultat(false)
+              }
+              setVedtaksResultat(e.target.value as any)
             }}
-          />
-        )}
+          >
+            <option value={VedtaksResultat.IKKE_VALGT}>-- Velg resultat --</option>
+            <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
+            <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
+            <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
+          </Select>
+          <div>
+            {!oppgaveFerdigstilt && (
+              <>
+                {brevEksisterer && !brevFerdigstilt && (
+                  <Button
+                    variant="tertiary"
+                    size="small"
+                    icon={<PencilIcon />}
+                    onClick={() => {
+                      if (brevEksisterer) {
+                        setVisModalKanIkkeEndre(true)
+                        return
+                      }
+                      setLagretResultat(false)
+                    }}
+                  >
+                    Endre resultat
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
 
-        <HStack gap="space-20">
-          <Brødtekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Brødtekst>
-          {oppgave?.fristFerdigstillelse && (
-            <Brødtekst textColor="subtle">Frist: {formaterDato(oppgave.fristFerdigstillelse)}</Brødtekst>
+          {lagretResultat && (
+            <Box.New>
+              <Heading level="2" size="small">
+                Underrette bruker
+              </Heading>
+              <TextContainer>
+                <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
+              </TextContainer>
+              <div>
+                {((!oppgaveFerdigstilt && !brevEksisterer) ||
+                  (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={() => {
+                      // setBehandlingPanel(false)
+                      setBrevKolonne(true)
+                      if (!brevEksisterer) setOpprettBrevKlikket(true)
+                    }}
+                    style={{ margin: '1em 0' }}
+                  >
+                    {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
+                  </Button>
+                )}
+                {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
+                  <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
+                    {brevFerdigstilt
+                      ? 'Du kan nå fatte vedtak hvis du er fornøyd!'
+                      : 'Ferdigstill utkastet i brevpanelet'}
+                  </Alert>
+                )}
+              </div>
+            </Box.New>
           )}
-        </HStack>
-
-        <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
-          Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
-        </Link>
-
-        <Heading size="small" level="2">
-          Vurderingen din
-        </Heading>
-        <TextContainer>
-          <Brødtekst>Vedtaksresultatet blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
-        </TextContainer>
-
-        <Select
-          size="small"
-          label="Resultat"
-          readOnly={brevEksisterer && !brevFerdigstilt}
-          style={{ width: 'auto' }}
-          value={vedtaksResultat ? vedtaksResultat : ''}
-          onChange={(e) => {
-            if (e.target.value !== VedtaksResultat.IKKE_VALGT) {
-              setLagretResultat(true)
-            } else {
-              setLagretResultat(false)
-            }
-            setVedtaksResultat(e.target.value as any)
-          }}
-        >
-          <option value={VedtaksResultat.IKKE_VALGT}>-- Velg resultat --</option>
-          <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
-          <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
-          <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-        </Select>
-        <div>
-          {!oppgaveFerdigstilt && (
-            <>
-              {brevEksisterer && !brevFerdigstilt && (
-                <Button
-                  variant="tertiary"
-                  size="small"
-                  icon={<PencilIcon />}
-                  onClick={() => {
-                    if (brevEksisterer) {
-                      setVisModalKanIkkeEndre(true)
-                      return
-                    }
-                    setLagretResultat(false)
-                  }}
-                >
-                  Endre resultat
-                </Button>
-              )}
-            </>
-          )}
-        </div>
-
-        {lagretResultat && (
-          <Box.New>
-            <Heading level="2" size="small">
-              Underrette bruker
-            </Heading>
-            <TextContainer>
-              <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
-            </TextContainer>
-            <div>
-              {((!oppgaveFerdigstilt && !brevEksisterer) ||
-                (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={() => {
-                    // setBehandlingPanel(false)
-                    setBrevKolonne(true)
-                    if (!brevEksisterer) setOpprettBrevKlikket(true)
-                  }}
-                  style={{ margin: '1em 0' }}
-                >
-                  {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
-                </Button>
-              )}
-              {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
-                <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
-                  {brevFerdigstilt
-                    ? 'Du kan nå fatte vedtak hvis du er fornøyd!'
-                    : 'Ferdigstill utkastet i brevpanelet'}
-                </Alert>
-              )}
-            </div>
-          </Box.New>
-        )}
-      </VStack>
+        </VStack>
+      </div>
       <Modal
         open={visModalKanIkkeEndre}
         onClose={() => setVisModalKanIkkeEndre(false)}

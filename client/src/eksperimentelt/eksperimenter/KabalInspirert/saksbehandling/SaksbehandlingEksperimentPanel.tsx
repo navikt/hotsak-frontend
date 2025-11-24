@@ -85,47 +85,48 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       <Box.New
         style={{
           minHeight: 0,
+          height: '100%',
           marginTop: 'var(--ax-space-4)',
           marginInline: 'var(--ax-space-12)',
         }}
       >
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
+          {sidePanel && (
+            <>
+              <Panel defaultSize={20} minSize={11} order={1}>
+                <SidepanelEksperiment />
+              </Panel>
+              {(brevKolonne || søknadPanel || behandlingPanel) && <ResizeHandle />}
+            </>
+          )}
           {søknadPanel && (
             <>
-              <Panel defaultSize={35} minSize={20} order={1}>
+              <Panel defaultSize={35} minSize={20} order={2}>
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
                   <SøknadPanelEksperiment sak={sak} behovsmelding={behovsmelding} />
                 )}
               </Panel>
-              {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}
+              {(brevKolonne || behandlingPanel) && <ResizeHandle />}
             </>
           )}
           {behandlingPanel && (
             <>
-              <Panel defaultSize={25} minSize={10} order={2}>
+              <Panel defaultSize={25} minSize={10} order={3}>
                 {sak && behovsmelding ? (
                   <BehandlingEksperimentPanel sak={sak} behovsmelding={behovsmelding} />
                 ) : (
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}
               </Panel>
-              {(sidePanel || brevKolonne) && <ResizeHandle />}
+              {(sidePanel || brevKolonne || søknadPanel) && <ResizeHandle />}
             </>
           )}
           {brevKolonne && (
             <>
-              <Panel defaultSize={40} minSize={10} order={3}>
+              <Panel defaultSize={40} minSize={10} order={4}>
                 <BrevPanelEksperiment />
-              </Panel>
-              {sidePanel && <ResizeHandle />}
-            </>
-          )}
-          {sidePanel && (
-            <>
-              <Panel defaultSize={20} minSize={11} order={4}>
-                <SidepanelEksperiment />
               </Panel>
             </>
           )}

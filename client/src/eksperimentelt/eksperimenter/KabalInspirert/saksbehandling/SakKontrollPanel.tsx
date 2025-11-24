@@ -20,6 +20,9 @@ export const SakKontrollPanel = () => {
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
       <Chips size="small">
+        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
+          Utlån, notater og historikk
+        </ToggleKnapp>
         <ToggleKnapp selected={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
           Søknad
         </ToggleKnapp>
@@ -28,9 +31,6 @@ export const SakKontrollPanel = () => {
         </ToggleKnapp>
         <ToggleKnapp selected={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
           Brev
-        </ToggleKnapp>
-        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
-          Utlån, notater og historikk
         </ToggleKnapp>
       </Chips>
       <SakMenyEksperiment spørreundersøkelseId="sak_overført_gosys_v1" />

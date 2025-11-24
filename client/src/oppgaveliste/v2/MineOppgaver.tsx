@@ -45,19 +45,17 @@ export function MineOppgaver() {
   const oppgaveprioritet = useMemo(() => uniqueBy(alleOppgaver, 'prioritet'), [alleOppgaver])
 
   return (
-    <>
-      <Box margin="5">
-        <VStack gap="2">
-          <OppgaveFilter
-            oppgavetyper={oppgavetyper}
-            gjelder={gjelder}
-            oppgaveprioritet={oppgaveprioritet}
-            onSøk={() => {}}
-          />
-          <MineOppgaverTable oppgaver={filtrerteOppgaver} />
-        </VStack>
-      </Box>
-    </>
+    <Box margin="5">
+      <VStack gap="5">
+        <OppgaveFilter
+          oppgavetyper={oppgavetyper}
+          gjelder={gjelder}
+          oppgaveprioritet={oppgaveprioritet}
+          onSøk={() => {}}
+        />
+        <MineOppgaverTable oppgaver={filtrerteOppgaver} />
+      </VStack>
+    </Box>
   )
 }
 

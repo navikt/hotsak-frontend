@@ -33,7 +33,7 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
   return (
     <>
       {onSøk && (
-        <HStack as="form" role="search" gap="5" align="center" marginBlock="5" onSubmit={(e) => e.preventDefault()}>
+        <HStack as="form" role="search" gap="5" align="center" onSubmit={(e) => e.preventDefault()}>
           <div>
             <Search label="Søk" size="small" variant="secondary" name="søkeord" />
           </div>

@@ -11,6 +11,7 @@ import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperimentProviderTypes'
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
+import { useNotater } from '../../../../../saksbilde/høyrekolonne/notat/useNotater'
 
 export function SidepanelEksperiment() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
@@ -21,7 +22,7 @@ export function SidepanelEksperiment() {
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const { kanBehandleSak } = useSaksregler()
-
+  const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
@@ -62,7 +63,10 @@ export function SidepanelEksperiment() {
                 <>
                   <WheelchairIcon title="Utlånsoversikt" />
                   {!isLoading && !error && (
-                    <Tag variant="neutral-moderate" size="xsmall">
+                    <Tag
+                      variant={`${antallUtlånteHjelpemidler > 0 ? 'info-moderate' : 'neutral-moderate'}`}
+                      size="xsmall"
+                    >
                       {antallUtlånteHjelpemidler}
                     </Tag>
                   )}
@@ -76,14 +80,17 @@ export function SidepanelEksperiment() {
               icon={
                 <>
                   <NotePencilIcon title="Notat" />
-                  <Tag
-                    variant="neutral-moderate"
-                    size="xsmall"
-                    style={{ position: 'relative' }}
-                    data-testid="notatteller"
-                  >
-                    2{true && <NotificationBadge data-testid="utkast-badge" />}
-                  </Tag>
+                  {!henterNotater && (
+                    <Tag
+                      variant={`${antallNotater > 0 ? 'info-moderate' : 'neutral-moderate'}`}
+                      size="xsmall"
+                      style={{ position: 'relative' }}
+                      data-testid="notatteller"
+                    >
+                      {antallNotater}
+                      {harUtkast && <NotificationBadge data-testid="utkast-badge" />}
+                    </Tag>
+                  )}
                 </>
               }
             />

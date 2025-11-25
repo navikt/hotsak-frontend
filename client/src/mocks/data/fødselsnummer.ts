@@ -1,7 +1,6 @@
-import { log } from 'console'
+import { format, parse } from 'date-fns'
 import { Kjønn } from '../../types/types.internal'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger } from './felles'
-import { format, parse } from 'date-fns'
 
 const template = 'ddMMyy'
 

@@ -60,16 +60,17 @@ export function HjelpemiddelEksperiment({
   return (
     <>
       <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
-        {/*<TextContainer>
+        <TextContainer>
           <Etikett size="medium">{produkt?.isotittel}</Etikett>
-        </TextContainer>*/}
-        <VStack gap="1">
-          {produkt?.posttitler?.map((posttittel) => (
-            <TextContainer key={posttittel}>
-              <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
-            </TextContainer>
-          ))}
-        </VStack>
+          <VStack gap="1">
+            {produkt?.posttitler?.map((posttittel) => (
+              <TextContainer key={posttittel}>
+                <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
+              </TextContainer>
+            ))}
+          </VStack>
+        </TextContainer>
+
         <>
           <VStack justify="start" gap="2">
             {endretHjelpemiddel && (
@@ -104,6 +105,10 @@ export function HjelpemiddelEksperiment({
               ) : (
                 <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
               )}
+              <div>
+                <Brødtekst textColor="subtle">|</Brødtekst>
+              </div>
+              <AntallTag antall={hjelpemiddel.antall} />
               {minmaxStyrt && (
                 <>
                   <div>
@@ -138,12 +143,6 @@ export function HjelpemiddelEksperiment({
               )}
             </HStack>
             <Skillelinje />
-            <VStack paddingBlock={'space-4 0'}>
-              <Etikett>Antall</Etikett>
-              <div>
-                <AntallTag antall={hjelpemiddel.antall} />
-              </div>
-            </VStack>
           </VStack>
           <VStack gap="space-8">
             <Varsler varsler={hjelpemiddel.varsler} />

@@ -78,7 +78,9 @@ export function Tilbehør({
         </HStack>
         <VStack paddingBlock={'space-8 0'}>
           <Etikett>Antall</Etikett>
-          <AntallTag antall={tilbehør.antall} />
+          <div>
+            <AntallTag antall={tilbehør.antall} />
+          </div>
         </VStack>
         {harSaksbehandlingvarsel && (
           <Box>

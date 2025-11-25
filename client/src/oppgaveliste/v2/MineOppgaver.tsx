@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { compareBy, notEmpty, uniqueBy } from '../../utils/array.ts'
+import { compareBy, natural, notEmpty, uniqueBy } from '../../utils/array.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { OppgaveFilter } from './OppgaveFilter.tsx'
 import { useOppgaveFilterContext, type OppgaveFilter as OppgaveFilterType } from './OppgaveFilterContext.tsx'
@@ -53,40 +53,36 @@ export function MineOppgaver() {
       uniqueBy(
         alleOppgaver.map((it) => it.kategorisering),
         'oppgavetype'
-      ),
+      ).sort(natural),
     [alleOppgaver]
   )
   const behandlingstemaer = useMemo(
     () =>
-      uniqueBy(
-        alleOppgaver.map((it) => it.kategorisering.behandlingstema ?? { kode: '', term: 'Ingen' }),
-        'term'
-      ).filter(notEmpty),
+      uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
     [alleOppgaver]
   )
   const behandlingstyper = useMemo(
     () =>
-      uniqueBy(
-        alleOppgaver.map((it) => it.kategorisering.behandlingstype ?? { kode: '', term: 'Ingen' }),
-        'term'
-      ).filter(notEmpty),
+      uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
     [alleOppgaver]
   )
   const mapper = useMemo(
     () =>
-      uniqueBy(
-        alleOppgaver.map((it) => ({ mappenavn: it.mappenavn ?? 'Ingen' })),
-        'mappenavn'
-      ),
+      uniqueBy(alleOppgaver, (it) => it.mappenavn ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
     [alleOppgaver]
   )
-  const prioriteter = useMemo(() => uniqueBy(alleOppgaver, 'prioritet'), [alleOppgaver])
+  const prioriteter = useMemo(() => uniqueBy(alleOppgaver, 'prioritet').sort(natural), [alleOppgaver])
   const kommuner = useMemo(
     () =>
-      uniqueBy(
-        alleOppgaver.map((it) => ({ kommune: it.bruker?.kommune?.navn ?? 'Ingen' })),
-        'kommune'
-      ),
+      uniqueBy(alleOppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
     [alleOppgaver]
   )
 

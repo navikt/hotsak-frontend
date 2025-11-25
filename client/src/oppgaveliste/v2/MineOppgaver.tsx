@@ -48,43 +48,27 @@ export function MineOppgaver() {
     sort,
   ])
 
-  const oppgavetyper = useMemo(
-    () =>
-      uniqueBy(
+  const { oppgavetyper, behandlingstemaer, behandlingstyper, mapper, prioriteter, kommuner } = useMemo(() => {
+    return {
+      oppgavetyper: uniqueBy(
         alleOppgaver.map((it) => it.kategorisering),
         'oppgavetype'
       ).sort(natural),
-    [alleOppgaver]
-  )
-  const behandlingstemaer = useMemo(
-    () =>
-      uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
+      behandlingstemaer: uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-    [alleOppgaver]
-  )
-  const behandlingstyper = useMemo(
-    () =>
-      uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
+      behandlingstyper: uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-    [alleOppgaver]
-  )
-  const mapper = useMemo(
-    () =>
-      uniqueBy(alleOppgaver, (it) => it.mappenavn ?? 'Ingen')
+      mapper: uniqueBy(alleOppgaver, (it) => it.mappenavn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-    [alleOppgaver]
-  )
-  const prioriteter = useMemo(() => uniqueBy(alleOppgaver, 'prioritet').sort(natural), [alleOppgaver])
-  const kommuner = useMemo(
-    () =>
-      uniqueBy(alleOppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
+      prioriteter: uniqueBy(alleOppgaver, 'prioritet').sort(natural),
+      kommuner: uniqueBy(alleOppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-    [alleOppgaver]
-  )
+    }
+  }, [alleOppgaver])
 
   return (
     <Box margin="5">

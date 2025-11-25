@@ -2,12 +2,19 @@ import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
+import { mutate } from 'swr'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { useToast } from '../../../../felleskomponenter/toast/ToastContext.tsx'
+import { Brødtekst, Etikett, Tekst } from '../../../../felleskomponenter/typografi'
+import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseModal'
+import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
+import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
+import { useSakActions } from '../../../../saksbilde/useSakActions.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
+import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { PersonlinjeEksperiment } from '../felleskomponenter/personlinje/PersonlinjeEksperiment'
@@ -17,11 +24,6 @@ import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
-import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
-import { useSakActions } from '../../../../saksbilde/useSakActions.ts'
-import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
-import { mutate } from 'swr'
-import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 
 export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { behovsmelding } = useBehovsmelding()
@@ -53,6 +55,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     brevEksisterer,
     brevFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
+  const { showSuccessToast } = useToast()
 
   interface VedtakFormValues {
     problemsammendrag: string
@@ -67,6 +70,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const fattVedtak = async (data: VedtakFormValues) => {
     setOppgaveFerdigstilt(true)
     setVisFerdigstillModal(false)
+    showSuccessToast('Vedtak fattet')
     await sakActions.fattVedtak(data.problemsammendrag)
     await mutateOppgaveOgSak()
   }
@@ -174,22 +178,25 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
               </Button>
             )}
             {oppgaveFerdigstilt && vedtaksResultat && (
-              <Tag
-                variant={
-                  oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
-                    ? 'success'
-                    : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
-                      ? 'warning'
-                      : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
-                        ? 'error'
-                        : 'neutral'
-                }
-              >
-                {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
-              </Tag>
+              <HStack gap="space-12" align="center">
+                <Tag
+                  variant={
+                    oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
+                      ? 'success-moderate'
+                      : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
+                        ? 'warning-moderate'
+                        : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
+                          ? 'error-moderate'
+                          : 'neutral-moderate'
+                  }
+                >
+                  {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
+                </Tag>
+                <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterTidsstempelLesevennlig(sak?.vedtak?.vedtaksdato)}`}</Tekst>
+              </HStack>
             )}
             {!oppgaveFerdigstilt && (
-              <Tag variant="neutral-moderate" size="xsmall">
+              <Tag variant="neutral-moderate" size="small">
                 {OppgaveStatusLabel.get(sak.saksstatus)}
               </Tag>
             )}

@@ -50,7 +50,6 @@ export function SidepanelEksperiment() {
         value={valgtNedreVenstreKolonneTab.toString()}
         onChange={(value) => setValgtNedreVenstreKolonneTab(value as VenstrekolonneTabs)}
         loop
-        style={{ display: 'flex', height: '100%', flexDirection: 'column' }}
       >
         <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
           <Tooltip content="Historikk">

@@ -24,7 +24,7 @@
     "vedlegg": [],
     "levering": {
       "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
-      "utleveringMerknad": "",
+      "utleveringMerknad": "Dette er en merknad om utlevering fra formidler som skal med på 5.17",
       "hjelpemiddelformidler": {
         "navn": {
           "fornavn": "Hege",

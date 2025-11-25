@@ -1,6 +1,6 @@
-import { Alert, Box, Button, Heading, HStack, Link, Modal, Select, VStack } from '@navikt/ds-react'
+import { Alert, Box, Button, Heading, HStack, Link, Modal, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
-import { Brødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
+import { Brødtekst, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
 import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
@@ -8,6 +8,10 @@ import { formaterDato } from '../../../../../utils/dato'
 import { useSaksbehandlingEksperimentContext, VedtaksResultat } from '../SaksbehandlingEksperimentProvider'
 import { PanelTittel } from '../PanelTittel.tsx'
 import { ExternalLinkIcon, PencilIcon } from '@navikt/aksel-icons'
+import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
+import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
+import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
+import { storForbokstavIOrd } from '../../../../../utils/formater.ts'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -20,9 +24,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
     setBrevKolonne,
     setBehandlingPanel,
     vedtaksResultat,
-    setVedtaksResultat,
     lagretResultat,
-    setLagretResultat,
     setOpprettBrevKlikket,
     brevEksisterer,
     brevFerdigstilt,
@@ -31,7 +33,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
 
   const { oppgave } = useOppgave()
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
-  // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
+  const { varsler, harVarsler } = useSøknadsVarsler()
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
       <PanelTittel
@@ -49,93 +51,69 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
             )}
           </HStack>
 
-          <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
-            Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
-          </Link>
+          <Tekst>
+            <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
+              Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
+            </Link>
+          </Tekst>
 
-          <Heading size="small" level="2">
-            Vurderingen din
-          </Heading>
-          <TextContainer>
-            <Brødtekst>Vedtaksresultatet blir ikke synlig for bruker før du fatter vedtak i saken.</Brødtekst>
-          </TextContainer>
-
-          <Select
-            size="small"
-            label="Resultat"
-            readOnly={(brevEksisterer && !brevFerdigstilt) || oppgaveFerdigstilt}
-            style={{ width: 'auto' }}
-            value={vedtaksResultat ? vedtaksResultat : ''}
-            onChange={(e) => {
-              if (e.target.value !== VedtaksResultat.IKKE_VALGT) {
-                setLagretResultat(true)
-              } else {
-                setLagretResultat(false)
-              }
-              setVedtaksResultat(e.target.value as any)
-            }}
-          >
-            <option value={VedtaksResultat.IKKE_VALGT}>-- Velg resultat --</option>
-            <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
-            <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
-            <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-          </Select>
-          <div>
-            {!oppgaveFerdigstilt && (
-              <>
-                {brevEksisterer && !brevFerdigstilt && (
-                  <Button
-                    variant="tertiary"
-                    size="small"
-                    icon={<PencilIcon />}
-                    onClick={() => {
-                      if (brevEksisterer) {
-                        setVisModalKanIkkeEndre(true)
-                        return
-                      }
-                      setLagretResultat(false)
-                    }}
-                  >
-                    Endre resultat
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
+          {!oppgaveFerdigstilt ? (
+            <VedtaksResultatVelger setVisModalKanIkkeEndre={setVisModalKanIkkeEndre} />
+          ) : (
+            <VedtaksResultatVisning oppgaveFerdigstilt={oppgaveFerdigstilt} vedtaksResultat={vedtaksResultat!} />
+          )}
 
           {lagretResultat && (
             <Box.New>
-              <Heading level="2" size="small">
-                Underrette bruker
+              <Heading level="2" size="small" spacing>
+                Vedtaksbrev
               </Heading>
-              <TextContainer>
-                <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
-              </TextContainer>
-              <div>
-                {((!oppgaveFerdigstilt && !brevEksisterer) ||
-                  (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={() => {
-                      // setBehandlingPanel(false)
-                      setBrevKolonne(true)
-                      if (!brevEksisterer) setOpprettBrevKlikket(true)
-                    }}
-                    style={{ margin: '1em 0' }}
-                  >
-                    {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
-                  </Button>
-                )}
-                {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
-                  <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
-                    {brevFerdigstilt
-                      ? 'Du kan nå fatte vedtak hvis du er fornøyd!'
-                      : 'Ferdigstill utkastet i brevpanelet'}
+              <VStack gap="space-12">
+                {brevFerdigstilt && oppgaveFerdigstilt && (
+                  <Alert size="small" variant="info">
+                    Brev lagt til utsending - sendes neste virkedag
                   </Alert>
                 )}
-              </div>
+                <TextContainer>
+                  <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
+                </TextContainer>
+                {((!oppgaveFerdigstilt && !brevEksisterer) ||
+                  (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={() => {
+                        setBrevKolonne(true)
+                        if (!brevEksisterer) setOpprettBrevKlikket(true)
+                      }}
+                    >
+                      {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
+                    </Button>
+                  </div>
+                )}
+                {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
+                  <TextContainer>
+                    <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
+                      {brevFerdigstilt
+                        ? 'Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.'
+                        : 'Ferdigstill utkastet i brevpanelet'}
+                    </Alert>
+                  </TextContainer>
+                )}
+              </VStack>
             </Box.New>
+          )}
+          {oppgaveFerdigstilt && harVarsler && (
+            <>
+              <Heading level="2" size="small">
+                Videre behandling i OeBS
+              </Heading>
+              <Tekst>Saken kan nå tas videre i OeBS</Tekst>
+              <div style={{ maxWidth: `${textcontainerBredde}` }}>
+                <Saksvarsler varsler={varsler} />
+              </div>
+            </>
           )}
         </VStack>
       </div>
@@ -169,7 +147,7 @@ function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
   }
   switch (vedtaksResultat) {
     case VedtaksResultat.INNVILGET:
-      return 'Du må selv vurdere om du bør underette bruker om vedtaket med brev.'
+      return 'Du må selv vurdere om det er behov for å sende vedtaksbrev.'
     case VedtaksResultat.DELVIS_INNVILGET:
       return 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du fatter vedtak.'
     case VedtaksResultat.AVSLÅTT:
@@ -178,3 +156,101 @@ function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
 }
 
 export default memo(BehandlingEksperimentPanel)
+
+function VedtaksResultatVisning({
+  oppgaveFerdigstilt,
+  vedtaksResultat,
+}: {
+  oppgaveFerdigstilt: boolean
+  vedtaksResultat: VedtaksResultat
+}) {
+  return (
+    <VStack gap="space-8">
+      <Heading size="small" level="2" spacing={false}>
+        Vedtaksresultat
+      </Heading>
+      <TextContainer>
+        <Tag
+          variant={
+            oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
+              ? 'success-moderate'
+              : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
+                ? 'warning-moderate'
+                : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
+                  ? 'error-moderate'
+                  : 'neutral-moderate'
+          }
+        >
+          {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
+        </Tag>
+      </TextContainer>
+    </VStack>
+  )
+}
+
+function VedtaksResultatVelger({ setVisModalKanIkkeEndre }: { setVisModalKanIkkeEndre: (åpen: boolean) => void }) {
+  const {
+    vedtaksResultat,
+    setVedtaksResultat,
+    setLagretResultat,
+    brevEksisterer,
+    brevFerdigstilt,
+    oppgaveFerdigstilt,
+  } = useSaksbehandlingEksperimentContext()
+
+  return (
+    <>
+      <VStack>
+        <Heading size="small" level="2" spacing={false}>
+          Vurderingen din
+        </Heading>
+        <TextContainer>
+          <Brødtekst>Vurderingen din blir ikke synlig for bruker før du har fattet vedtak i saken.</Brødtekst>
+        </TextContainer>
+      </VStack>
+
+      <Select
+        size="small"
+        label="Resultat"
+        readOnly={brevEksisterer || oppgaveFerdigstilt}
+        style={{ width: 'auto' }}
+        value={vedtaksResultat ? vedtaksResultat : ''}
+        onChange={(e) => {
+          if (e.target.value !== VedtaksResultat.IKKE_VALGT) {
+            setLagretResultat(true)
+          } else {
+            setLagretResultat(false)
+          }
+          setVedtaksResultat(e.target.value as any)
+        }}
+      >
+        <option value={VedtaksResultat.IKKE_VALGT}>-- Velg resultat --</option>
+        <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
+        <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
+        <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
+      </Select>
+      <div>
+        {!oppgaveFerdigstilt && (
+          <>
+            {brevEksisterer && !brevFerdigstilt && (
+              <Button
+                variant="tertiary"
+                size="small"
+                icon={<PencilIcon />}
+                onClick={() => {
+                  if (brevEksisterer) {
+                    setVisModalKanIkkeEndre(true)
+                    return
+                  }
+                  setLagretResultat(false)
+                }}
+              >
+                Endre resultat
+              </Button>
+            )}
+          </>
+        )}
+      </div>
+    </>
+  )
+}

@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { Kjønn } from '../../types/types.internal'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger } from './felles'
 import { format, parse } from 'date-fns'
@@ -22,7 +23,16 @@ export function fødselsdatoFraFødselsnummer(fnr: string): Date {
   if (monthNumber >= 41 && monthNumber <= 52) {
     return parse(fnr.slice(0, 2) + (+fnr.charAt(2) - 4) + fnr.slice(3, 6), template, new Date())
   }
-  return parse(fnr.slice(0, 6), template, new Date())
+
+  const dag = fnr.slice(0, 2)
+  const måned = fnr.slice(2, 4)
+  const år = fnr.slice(4, 6)
+  const årTall = parseInt(år)
+
+  const fullYear = årTall > 25 ? 1900 + årTall : 2000 + årTall
+
+  return parse(`${dag}${måned}${fullYear}`, 'ddMMyyyy', new Date())
+  //return parse(fnr.slice(0, 6), template, new Date())
 }
 
 export function kjønnFraFødselsnummer(fnr: string): Kjønn {

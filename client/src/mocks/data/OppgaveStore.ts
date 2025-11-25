@@ -10,8 +10,8 @@ import {
 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
-import { JournalpostStore } from './JournalpostStore'
-import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
+//import { JournalpostStore } from './JournalpostStore'
+import { type InsertOppgave /*, lagJournalføringsoppgave,*/, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
 
@@ -21,8 +21,8 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly behovsmeldingStore: BehovsmeldingStore,
     private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore,
-    private readonly journalpostStore: JournalpostStore
+    private readonly sakStore: SakStore
+    // private readonly journalpostStore: JournalpostStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
@@ -69,10 +69,11 @@ export class OppgaveStore extends Dexie {
         })
       })
     )
-    const journalposter = await this.journalpostStore.alle()
-    const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
+    /* FIXME Kommentert ut midlertidig for å unngå forrvirring under demo*/
+    //const journalposter = await this.journalpostStore.alle()
+    //const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
 
-    return this.lagreAlle([...oppgaverForSaker, ...oppgaverForJournalposter])
+    return this.lagreAlle([...oppgaverForSaker /*, ...oppgaverForJournalposter*/])
   }
 
   async lagreAlle(oppgaver: InsertOppgave[]) {

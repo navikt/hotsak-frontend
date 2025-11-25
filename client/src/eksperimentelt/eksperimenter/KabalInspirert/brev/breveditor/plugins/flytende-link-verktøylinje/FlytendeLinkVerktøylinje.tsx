@@ -12,7 +12,7 @@ import { Box, BoxNewProps, Button, HStack } from '@navikt/ds-react'
 import { DocPencilIcon, LinkBrokenIcon } from '@navikt/aksel-icons'
 import { OpprettEndreLinkPanel } from './OpprettEndreLinkPanel.tsx'
 import { OpenLinkButton } from './OpenLinkButton.tsx'
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 
 export interface FlytendeLinkVerktøylinjeContextType {
   floatingLinkInsert: ReturnType<typeof useFloatingLinkInsert>
@@ -32,20 +32,23 @@ export const useFlytendeLinkVerktøylinjeContext = () => {
 }
 
 export function FlytendeLinkVerktøylinje() {
-  const state: LinkFloatingToolbarState = {
-    floatingOptions: {
-      middleware: [
-        offset(8),
-        flip({
-          fallbackPlacements: ['bottom-end', 'top-start', 'top-end'],
-          padding: 12,
-        }),
-      ],
-      placement: 'bottom-start',
-    },
-  }
+  const state: LinkFloatingToolbarState = useMemo(() => {
+    return {
+      floatingOptions: {
+        middleware: [
+          offset(8),
+          flip({
+            fallbackPlacements: ['bottom-end', 'top-start', 'top-end'],
+            padding: 12,
+          }),
+        ],
+        placement: 'bottom-start',
+      },
+    }
+  }, [])
 
-  const floatingLinkInsert = useFloatingLinkInsert(useFloatingLinkInsertState(state))
+  const floatingLinkInsertState = useFloatingLinkInsertState(state)
+  const floatingLinkInsert = useFloatingLinkInsert(floatingLinkInsertState)
 
   const floatingLinkEditState = useFloatingLinkEditState(state)
   const floatingLinkEdit = useFloatingLinkEdit(floatingLinkEditState)
@@ -65,6 +68,7 @@ export function FlytendeLinkVerktøylinje() {
 
   const { ref: insertRef, props: insertProps } = floatingLinkInsert
   const { ref: editRef, props: editProps } = floatingLinkEdit
+  const { editButtonProps, unlinkButtonProps } = floatingLinkEdit
 
   return (
     <FlytendeLinkVerktøylinjeContext
@@ -79,25 +83,23 @@ export function FlytendeLinkVerktøylinje() {
       </Box.New>
       <Box.New ref={editRef} {...(editProps as any)} {...flytendeBoxProps}>
         <>
-          {floatingLinkEditState.isEditing && <OpprettEndreLinkPanel />}
-          {!floatingLinkEditState.isEditing && (
+          {floatingLinkEditState.isEditing ? (
+            <>
+              <OpprettEndreLinkPanel />
+            </>
+          ) : (
             <HStack gap="1" wrap={false}>
               <Button
                 icon={<DocPencilIcon />}
                 variant="tertiary"
                 size="small"
-                {...floatingLinkEdit.editButtonProps}
+                {...editButtonProps}
                 style={{ textWrap: 'nowrap' }}
               >
                 Endre link
               </Button>
               <OpenLinkButton />
-              <Button
-                icon={<LinkBrokenIcon />}
-                variant="tertiary"
-                size="small"
-                {...floatingLinkEdit.unlinkButtonProps}
-              />
+              <Button icon={<LinkBrokenIcon />} variant="tertiary" size="small" {...unlinkButtonProps} />
             </HStack>
           )}
         </>

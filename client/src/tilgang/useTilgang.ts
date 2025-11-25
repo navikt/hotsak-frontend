@@ -54,7 +54,10 @@ const piloter = {
     Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
     Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
   ],
-}
+  oppgaveintegrasjon: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL],
+} satisfies Record<string, string[]>
+
+export type PilotName = keyof typeof piloter
 
 export function useVisOppgavelisteTabs(): boolean {
   const { erMedlemAvEnAvGrupper, erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
@@ -67,4 +70,9 @@ export function useVisOppgavelisteTabs(): boolean {
 export function useErKunTilbehørPilot(): boolean {
   const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
   return erGjeldendeEnhetEnAv(...piloter.kunTilbehør)
+}
+
+export function useErPilot(name: PilotName): boolean {
+  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
+  return erGjeldendeEnhetEnAv(...piloter[name])
 }

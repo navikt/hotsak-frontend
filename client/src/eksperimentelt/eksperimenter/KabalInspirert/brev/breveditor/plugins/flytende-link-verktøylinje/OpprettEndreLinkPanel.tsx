@@ -7,7 +7,12 @@ import { useFlytendeLinkVerktøylinjeContext } from './FlytendeLinkVerktøylinje
 import { urlTransform } from './urlTransform.ts'
 
 export function OpprettEndreLinkPanel() {
-  const ctx = useFlytendeLinkVerktøylinjeContext()
+  const {
+    floatingLinkEdit: {
+      unlinkButtonProps: { onClick },
+    },
+    floatingLinkUrlInput: { ref, props },
+  } = useFlytendeLinkVerktøylinjeContext()
 
   const editor = useEditorRef()
   const { getOptions, setOptions } = useEditorPlugin(LinkPlugin)
@@ -50,9 +55,9 @@ export function OpprettEndreLinkPanel() {
         placeholder="https://"
         size="small"
         error={harUrlError ? 'Ugyldig adresse' : undefined}
-        ref={ctx.floatingLinkUrlInput.ref}
+        ref={ref}
         defaultValue={getOptions().url}
-        {...omit(ctx.floatingLinkUrlInput.props, ['defaultValue'])}
+        {...omit(props, ['defaultValue'])}
         style={{
           /* Fikser bredden (100% på insiden av yttre padding) */ boxSizing: 'border-box',
         }}
@@ -66,7 +71,7 @@ export function OpprettEndreLinkPanel() {
         variant="tertiary-neutral"
         size="small"
         onClick={() => {
-          ctx.floatingLinkEdit.unlinkButtonProps.onClick()
+          onClick()
         }}
       >
         Fjern link

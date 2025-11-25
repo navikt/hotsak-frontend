@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { useEksperimenter } from '../eksperimentelt/useEksperimenter.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { Pilot } from '../felleskomponenter/Pilot.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useUmami } from '../sporing/useUmami.ts'
@@ -63,7 +64,7 @@ export function Toppmeny() {
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>
-          <Eksperiment>
+          <Pilot name="oppgaveintegrasjon">
             <ActionMenu.Divider />
             <ActionMenu.Group label="Oppgaveintegrasjon">
               <ActionMenu.Item
@@ -76,7 +77,7 @@ export function Toppmeny() {
                 {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
               </ActionMenu.Item>
             </ActionMenu.Group>
-          </Eksperiment>
+          </Pilot>
           <ActionMenu.Divider />
           <ActionMenu.Group label="Utseende">
             <ActionMenu.Item

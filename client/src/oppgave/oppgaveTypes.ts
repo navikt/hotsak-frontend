@@ -191,18 +191,6 @@ export interface FinnOppgaverResponse extends PageResponse {
   totalPages: number
 }
 
-export enum OppgaveGjelderFilter {
-  BESTILLING = 'BESTILLING',
-  DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
-  HASTESØKNAD = 'HASTESØKNAD',
-}
-
-export const OppgaveGjelderFilterLabel: Record<OppgaveGjelderFilter, string> = {
-  BESTILLING: 'Bestilling',
-  DIGITAL_SØKNAD: 'Digital søknad',
-  HASTESØKNAD: 'Digital hastesøknad',
-}
-
 export enum OppgaveTildeltFilter {
   ALLE = 'ALLE',
   INGEN = 'INGEN',

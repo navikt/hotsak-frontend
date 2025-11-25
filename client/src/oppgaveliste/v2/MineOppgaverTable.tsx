@@ -57,6 +57,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       renderContent={(oppgave, visible) => <OppgaveDetails oppgave={oppgave} visible={visible} />}
       size="medium"
       textSize="small"
+      emptyMessage="Ingen oppgaver funnet"
       sort={sort}
       onSortChange={(sortKey) => {
         setSort({

@@ -7,6 +7,8 @@ import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
 import { OppgaveprioritetLabel, OppgavetypeLabel, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 
+import classes from './oppgaveColumns.module.css'
+
 export const oppgaveColumns = {
   oppgavetype: {
     field: 'oppgavetype',
@@ -14,7 +16,7 @@ export const oppgaveColumns = {
     width: 200,
     renderCell(row) {
       return (
-        <Tag size="small" variant="alt2">
+        <Tag size="small" variant="alt2" className={classes.tag}>
           {OppgavetypeLabel[row.kategorisering.oppgavetype]}
         </Tag>
       )
@@ -30,7 +32,7 @@ export const oppgaveColumns = {
         return null
       }
       return (
-        <Tag size="small" variant="alt3">
+        <Tag size="small" variant="alt3" className={classes.tag}>
           {behandlingstema.term}
         </Tag>
       )
@@ -46,7 +48,7 @@ export const oppgaveColumns = {
         return null
       }
       return (
-        <Tag size="small" variant="alt3">
+        <Tag size="small" variant="alt3" className={classes.tag}>
           {behandlingstype.term}
         </Tag>
       )
@@ -66,7 +68,7 @@ export const oppgaveColumns = {
   },
   kommune: {
     field: 'kommune',
-    header: 'Kommune',
+    header: 'Kommune / bydel',
     renderCell(row) {
       const bydel = row.bruker?.bydel
       if (bydel) {
@@ -130,3 +132,5 @@ export const oppgaveColumns = {
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>
+
+export type OppgaveColumnKeyType = keyof typeof oppgaveColumns

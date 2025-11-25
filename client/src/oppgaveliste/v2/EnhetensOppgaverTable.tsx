@@ -72,6 +72,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       keyFactory={(oppgave) => oppgave.oppgaveId}
       size="medium"
       textSize="small"
+      emptyMessage="Ingen oppgaver funnet"
       sort={sort}
       onSortChange={(sortKey) => {
         setSort({

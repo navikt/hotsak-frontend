@@ -14,7 +14,10 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
 }
 
 export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
-  const { sort, oppgavetypeFilter, gjelderFilter } = useOppgaveFilterContext()
+  const {
+    filters: { oppgavetypeFilter, behandlingstemaFilter },
+    sort,
+  } = useOppgaveFilterContext()
   const { data, error, mutate, isLoading, isValidating, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
     (index, previousPageData) => {
       if (previousPageData && !previousPageData.oppgaver.length) return null
@@ -40,8 +43,8 @@ export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverRespon
       return createUrl('/api/oppgaver-v2', {
         tildelt: OppgaveTildeltFilter.INGEN,
         statuskategori: Statuskategori.ÅPEN,
-        oppgavetype: oppgavetypeFilter,
-        gjelder: gjelderFilter,
+        oppgavetype: oppgavetypeFilter.values,
+        gjelder: behandlingstemaFilter.values,
         sorteringsfelt,
         sorteringsrekkefølge,
         page,

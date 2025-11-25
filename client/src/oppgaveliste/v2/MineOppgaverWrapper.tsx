@@ -3,7 +3,7 @@ import { OppgaveFilterProvider } from './OppgaveFilterProvider.tsx'
 
 export default function MineOppgaverWrapper() {
   return (
-    <OppgaveFilterProvider prefix="mine">
+    <OppgaveFilterProvider suffix="Mine">
       <MineOppgaver />
     </OppgaveFilterProvider>
   )

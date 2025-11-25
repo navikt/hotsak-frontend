@@ -1,5 +1,5 @@
 import './Brev.less'
-import { ActionMenu, Alert, Button, Loader } from '@navikt/ds-react'
+import { ActionMenu, Alert, Button, HStack, Loader } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useEffect, useMemo, useState } from 'react'
@@ -9,6 +9,9 @@ import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
+import { useBrev } from '../../../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
+import { Brevtype, RessursStatus } from '../../../../types/types.internal.ts'
+import { Etikett } from '../../../../felleskomponenter/typografi.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -22,8 +25,6 @@ export const Brev = () => {
     setBrevFerdigstilt,
     oppgaveFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
-  const { USE_MSW } = window.appSettings
-
   const brevutkast = useSWR<
     {
       error?: string
@@ -59,6 +60,20 @@ export const Brev = () => {
       setOpprettBrevKlikket(false)
     }
   }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket])
+
+  const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
+
+  useEffect(() => {
+    if (brevutkast.data?.data?.markertKlart) {
+      if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.IKKE_HENTET) {
+        if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
+      }
+    } else {
+      if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status != RessursStatus.IKKE_HENTET) {
+        nullstillForhåndsvisning(Brevtype.BREVEDITOR_VEDTAKSBREV)
+      }
+    }
+  }, [brevutkast.data?.data?.markertKlart, hentedeBrev, sak?.data.sakId, hentForhåndsvisning, nullstillForhåndsvisning])
 
   if (brevutkast.isLoading) {
     return (
@@ -113,6 +128,9 @@ export const Brev = () => {
     if (brevutkast.data?.data?.value) {
       lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
       setBrevFerdigstilt(klart)
+      if (klart) {
+        if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
+      }
     }
   }
 
@@ -204,13 +222,21 @@ export const Brev = () => {
                   <PanelTittel tittel="Vedtaksbrev" lukkPanel={() => setBrevKolonne(false)} />
                 </div>
               )}
-              <iframe
-                src={`/api/sak/${sak?.data.sakId}/brev/BREVEDITOR_VEDTAKSBREV${USE_MSW ? '_' + vedtaksResultat : ''}#navpanes=0&zoom=FitV`}
-                width="100%"
-                height="100%"
-                allow="fullscreen"
-                style={{ border: 'none' }}
-              />
+              {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (
+                <HStack justify="center" gap="4" marginBlock="4">
+                  <Loader size="medium" title="Henter brev..." />
+                  <Etikett>Genererer forhåndsvisning av brev...</Etikett>
+                </HStack>
+              )}
+              {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.SUKSESS && (
+                <iframe
+                  src={hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.data}
+                  width="100%"
+                  height="100%"
+                  allow="fullscreen"
+                  style={{ border: 'none' }}
+                />
+              )}
             </>
           )}
         </div>

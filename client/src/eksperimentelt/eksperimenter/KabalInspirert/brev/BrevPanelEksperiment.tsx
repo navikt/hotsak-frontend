@@ -1,6 +1,7 @@
 import { Alert, Box } from '@navikt/ds-react'
 import { Brev } from './Brev.tsx'
 import { useRefSize } from './breveditor/hooks.ts'
+import { DokumentProvider } from '../../../../dokument/DokumentContext.tsx'
 
 export function BrevPanelEksperiment() {
   // Vis alert hvis panelet blir for tynt for å vise editoren med en brukbar verktøylinje
@@ -16,7 +17,11 @@ export function BrevPanelEksperiment() {
           </Alert>
         </div>
       )}
-      {!erPanelForSmalt && <Brev />}
+      {!erPanelForSmalt && (
+        <DokumentProvider>
+          <Brev />
+        </DokumentProvider>
+      )}
     </Box.New>
   )
 }

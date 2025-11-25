@@ -404,7 +404,7 @@ export interface NotatTeller {
 export interface BrevTekst {
   sakId: string
   målform: MålformType
-  data: { dokumenttittel?: string; brevtekst?: string }
+  data: { dokumenttittel?: string; brevtekst?: string; value?: [{ children?: [{ text?: string }] }] }
   brevtype: string
 }
 
@@ -675,6 +675,7 @@ export enum Brevtype {
   BARNEBRILLER_VEDTAK = 'BARNEBRILLER_VEDTAK',
   BARNEBRILLER_INNHENTE_OPPLYSNINGER = 'BARNEBRILLER_INNHENTE_OPPLYSNINGER',
   JOURNALFØRT_NOTAT = 'JOURNALFØRT_NOTAT',
+  BREVEDITOR_VEDTAKSBREV = 'BREVEDITOR_VEDTAKSBREV',
 }
 
 export interface AvvisBestilling {

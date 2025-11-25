@@ -1,5 +1,7 @@
 import { useLocalState } from '../state/useLocalState.ts'
+import { useErPilot } from '../tilgang/useTilgang.ts'
 
 export function useNyOppgaveliste() {
-  return useLocalState('nyOppgaveliste', false)
+  const erPilot = useErPilot('oppgaveintegrasjon')
+  return useLocalState('nyOppgaveliste', erPilot)
 }

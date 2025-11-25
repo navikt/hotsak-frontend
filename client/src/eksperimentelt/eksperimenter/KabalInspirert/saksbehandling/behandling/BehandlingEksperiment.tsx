@@ -74,9 +74,11 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
                     Brev lagt til utsending - sendes neste virkedag
                   </Alert>
                 )}
-                <TextContainer>
-                  <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
-                </TextContainer>
+                {!oppgaveFerdigstilt && (
+                  <TextContainer>
+                    <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
+                  </TextContainer>
+                )}
                 {((!oppgaveFerdigstilt && !brevEksisterer) ||
                   (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
                   <div>

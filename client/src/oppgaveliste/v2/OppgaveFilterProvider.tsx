@@ -1,27 +1,24 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
 
 import { type OppgaveSortState } from '../../oppgave/oppgaveTypes.ts'
 import { useLocalState } from '../../state/useLocalState.ts'
-import { initialState, OppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { initialState, type OppgaveFilter, OppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export function OppgaveFilterProvider({ prefix, children }: { prefix: 'mine' | 'kø'; children: ReactNode }) {
   const key = (key: string) => prefix + key
-  const [oppgavetypeFilter, setOppgavetypeFilter] = useLocalState(
-    key('OppgavetypeFilter'),
-    initialState.oppgavetypeFilter
-  )
-  const [gjelderFilter, setGjelderFilter] = useLocalState(key('OppgaveGjelderFilter'), initialState.gjelderFilter)
-  const [oppgaveprioritetFilter, setOppgaveprioritetFilter] = useLocalState(
-    key('OppgaveprioritetFilter'),
-    initialState.oppgaveprioritetFilter
-  )
+
+  const filters = initialState.filters
+  const oppgavetypeFilter = useOppgaveFilterState(key('OppgavetypeFilter'), filters.oppgavetypeFilter)
+  const behandlingstypeFilter = useOppgaveFilterState(key('BehandlingstypeFilter'), filters.behandlingstypeFilter)
+  const mappeFilter = useOppgaveFilterState(key('MappeFilter'), filters.mappeFilter)
+  const gjelderFilter = useOppgaveFilterState(key('GjelderFilter'), filters.behandlingstemaFilter)
+  const prioritetFilter = useOppgaveFilterState(key('PrioritetFilter'), filters.prioritetFilter)
+  const kommuneFilter = useOppgaveFilterState(key('KommuneFilter'), filters.kommuneFilter)
+
   const [currentPage, setCurrentPage] = useLocalState(key('OppgaveCurrentPage'), initialState.currentPage)
   const [sort, setSort] = useLocalState<OppgaveSortState>(key('OppgaveSort'), initialState.sort)
 
-  function clearFilters() {
-    setOppgavetypeFilter([])
-    setGjelderFilter([])
-    setOppgaveprioritetFilter([])
+  function clear() {
     setCurrentPage(1)
     setSort(initialState.sort)
   }
@@ -29,20 +26,40 @@ export function OppgaveFilterProvider({ prefix, children }: { prefix: 'mine' | '
   return (
     <OppgaveFilterContext.Provider
       value={{
-        oppgavetypeFilter,
-        gjelderFilter,
-        oppgaveprioritetFilter,
+        filters: {
+          oppgavetypeFilter,
+          behandlingstemaFilter: gjelderFilter,
+          behandlingstypeFilter,
+          mappeFilter,
+          prioritetFilter,
+          kommuneFilter,
+
+          clear,
+        },
         currentPage,
-        sort,
-        setOppgavetypeFilter,
-        setGjelderFilter,
-        setOppgaveprioritetFilter,
         setCurrentPage,
+        sort,
         setSort,
-        clearFilters,
       }}
     >
       {children}
     </OppgaveFilterContext.Provider>
   )
+}
+
+function useOppgaveFilterState<T>(key: string, filter: OppgaveFilter<T>): OppgaveFilter<T> {
+  const [state, setState] = useLocalState(key, { values: filter.values, enabled: filter.enabled })
+  return useMemo(() => {
+    return {
+      ...filter,
+      values: state.values,
+      setValues(values: T[]) {
+        setState((current) => ({ ...current, values }))
+      },
+      enabled: state.enabled,
+      setEnabled(enabled: boolean) {
+        setState((current) => ({ ...current, enabled }))
+      },
+    }
+  }, [filter, state, setState])
 }

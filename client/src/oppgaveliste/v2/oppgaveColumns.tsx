@@ -130,3 +130,5 @@ export const oppgaveColumns = {
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>
+
+export type OppgaveColumnKeyType = keyof typeof oppgaveColumns

@@ -1,8 +1,10 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
+import { type OppgaveFilter } from './OppgaveFilterContext.tsx'
+
 export interface OppgaveFilterMenuProps {
-  filters: string[]
+  filters: OppgaveFilter[]
 }
 
 export function OppgaveFilterMenu(props: OppgaveFilterMenuProps) {
@@ -18,13 +20,11 @@ export function OppgaveFilterMenu(props: OppgaveFilterMenuProps) {
         <ActionMenu.Group label="Vis filter for">
           {filters.map((filter) => (
             <ActionMenu.CheckboxItem
-              key={filter}
-              checked={false}
-              onCheckedChange={(checked) => {
-                console.log(filter, checked)
-              }}
+              key={filter.displayName}
+              checked={filter.enabled}
+              onCheckedChange={filter.setEnabled}
             >
-              {filter}
+              {filter.displayName}
             </ActionMenu.CheckboxItem>
           ))}
         </ActionMenu.Group>

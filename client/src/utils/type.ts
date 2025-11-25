@@ -21,3 +21,7 @@ export function isNavn(value: unknown): value is Navn {
 export function isNotBlank(value: unknown): value is string {
   return isString(value) && value.trim().length > 0
 }
+
+export function isKeyOfObject<T extends object>(key: PropertyKey, obj: T): key is keyof T {
+  return key in obj
+}

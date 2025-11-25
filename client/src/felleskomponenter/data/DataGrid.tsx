@@ -1,6 +1,8 @@
 import { Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useState } from 'react'
 
+import { isKeyOfObject } from '../../utils/type.ts'
+
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol>
 
@@ -17,13 +19,22 @@ export interface DataGridProps<T extends object> extends TableProps {
   rows: T[]
   columns: DataGridColumn<T>[]
   textSize?: 'medium' | 'small'
+  emptyMessage?: string
 
   keyFactory(row: T): Exclude<Key, bigint>
   renderContent?(row: T, expanded: boolean): ReactNode
 }
 
 export function DataGrid<T extends object>(props: DataGridProps<T>) {
-  const { rows, columns, textSize, keyFactory, renderContent, ...tableProps } = props
+  const {
+    rows,
+    columns,
+    textSize,
+    emptyMessage = 'Ingen data funnet',
+    keyFactory,
+    renderContent,
+    ...tableProps
+  } = props
   const [expanded, setExpanded] = useState<Record<Exclude<Key, bigint>, boolean>>({})
   return (
     <Table {...tableProps}>
@@ -63,6 +74,17 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         </Table.Row>
       </Table.Header>
       <Table.Body>
+        {rows.length == 0 && (
+          <Table.Row>
+            <Table.DataCell
+              colSpan={renderContent ? columns.length + 1 : columns.length}
+              style={{ textAlign: 'center' }}
+              textSize={textSize}
+            >
+              {emptyMessage}
+            </Table.DataCell>
+          </Table.Row>
+        )}
         {rows.map((row) => {
           const key = keyFactory(row)
 
@@ -100,8 +122,4 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
       </Table.Body>
     </Table>
   )
-}
-
-function isKeyOfObject<T extends object>(key: PropertyKey, obj: T): key is keyof T {
-  return key in obj
 }

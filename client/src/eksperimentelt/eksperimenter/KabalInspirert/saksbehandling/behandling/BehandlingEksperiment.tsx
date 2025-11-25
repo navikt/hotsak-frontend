@@ -28,6 +28,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
     brevFerdigstilt,
     oppgaveFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
+
   const { oppgave } = useOppgave()
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   // Husk å se på plassering av OeBS varsler.  Skal det vises hele tiden eller kun etter at vedtak er fattet?
@@ -62,7 +63,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
           <Select
             size="small"
             label="Resultat"
-            readOnly={brevEksisterer && !brevFerdigstilt}
+            readOnly={(brevEksisterer && !brevFerdigstilt) || oppgaveFerdigstilt}
             style={{ width: 'auto' }}
             value={vedtaksResultat ? vedtaksResultat : ''}
             onChange={(e) => {

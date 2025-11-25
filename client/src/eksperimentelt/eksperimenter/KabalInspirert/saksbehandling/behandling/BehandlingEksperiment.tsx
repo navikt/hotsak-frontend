@@ -74,6 +74,11 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
                     Brev lagt til utsending - sendes neste virkedag
                   </Alert>
                 )}
+                {!brevEksisterer && oppgaveFerdigstilt && vedtaksResultat === VedtaksResultat.INNVILGET && (
+                  <Alert size="small" variant="info">
+                    Saken er innvilget uten å sende brev
+                  </Alert>
+                )}
                 {!oppgaveFerdigstilt && (
                   <TextContainer>
                     <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
@@ -106,17 +111,19 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
               </VStack>
             </Box.New>
           )}
-          {oppgaveFerdigstilt && harVarsler && (
-            <>
-              <Heading level="2" size="small">
-                Videre behandling i OeBS
-              </Heading>
-              <Tekst>Saken kan nå tas videre i OeBS</Tekst>
-              <div style={{ maxWidth: `${textcontainerBredde}` }}>
-                <Saksvarsler varsler={varsler} />
-              </div>
-            </>
-          )}
+          {oppgaveFerdigstilt &&
+            (vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) &&
+            harVarsler && (
+              <>
+                <Heading level="2" size="small">
+                  Videre behandling i OeBS
+                </Heading>
+                <Tekst>Saken kan nå tas videre i OeBS</Tekst>
+                <div style={{ maxWidth: `${textcontainerBredde}` }}>
+                  <Saksvarsler varsler={varsler} />
+                </div>
+              </>
+            )}
         </VStack>
       </div>
       <Modal

@@ -115,7 +115,7 @@ function oneOf<T, K extends keyof T, R>(
   accessor: K | ((value: T) => R)
 ): (value: T) => boolean {
   return (value) => {
-    if (!(filter.enabled && filter.values.length)) return true
+    if (!filter.enabled || filter.values.length === 0) return true
     const filterValue = typeof accessor === 'function' ? accessor(value) : value[accessor]
     return filter.values.includes(filterValue)
   }

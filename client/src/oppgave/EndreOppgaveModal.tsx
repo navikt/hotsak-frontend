@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { GjelderAlternativerResponse, OppgaveId, OppgaveV2 } from "./oppgaveTypes";
+import { useState } from "react";
+import { OppgaveId, OppgaveV2 } from "./oppgaveTypes";
 import { Button, Heading, Modal, Select, Skeleton } from "@navikt/ds-react";
 import { http } from "../io/HttpClient";
 
 export function EndreOppgaveModal(props: { oppgave: OppgaveV2; open: boolean; onClose(): void }) {
   const { oppgave, open, onClose } = props;
   const [behandlingstema, setBehandlingstema] = useState<string>(oppgave.kategorisering.behandlingstema?.kode ? oppgave.kategorisering.behandlingstema?.kode : "");
-  const [behandlingstype, setBehandlingstype] = useState<string>("");
-  const [alternativer, setAlternativer] = useState<GjelderAlternativerResponse>();
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [behandlingstype, setBehandlingstype] = useState<string>("");
+  // const [alternativer, setAlternativer] = useState<GjelderAlternativerResponse>();
+  const [loading] = useState<boolean>(false);
 
   // useEffect(() => {
   // TODO: Hent gjelder info fra backend når API er klart

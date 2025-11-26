@@ -14,6 +14,7 @@ import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { type InsertOppgave /*, lagJournalføringsoppgave,*/, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
+import { behandlingstemaer } from '../../oppgave/EndreOppgaveModal'
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
@@ -111,8 +112,14 @@ export class OppgaveStore extends Dexie {
 
   async oppdaterKategorisering(oppgaveId: OppgaveId, behandlingstema: string) {
     console.log(`Oppdaterer behandlingstema for oppgaveId: ${oppgaveId}, behandlingstema: ${behandlingstema}`)
+    const oppgave = await this.oppgaver.get(oppgaveId)
     return this.oppgaver.update(oppgaveId, {
-      // kategorisering: { behandlingstema: { kode: '', term: behandlingstema } }, fixme
+      kategorisering: {
+        oppgavetype: oppgave?.kategorisering.oppgavetype || Oppgavetype.BEHANDLE_SAK,
+        tema: 'HJE',
+        behandlingstema: { kode: behandlingstema, term: behandlingstemaer.find((bt) => bt.kode === behandlingstema)?.term || '' },
+        behandlingstype: oppgave?.kategorisering.behandlingstype,
+      }
     })
   }
 

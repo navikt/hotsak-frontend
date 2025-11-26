@@ -2,40 +2,19 @@ import { HStack } from '@navikt/ds-react'
 import { type FormEventHandler, useMemo } from 'react'
 
 import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
-import { Oppgaveprioritet, OppgaveprioritetLabel, Oppgavetype, OppgavetypeLabel } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveprioritetLabel, OppgavetypeLabel } from '../../oppgave/oppgaveTypes.ts'
 import { type OppgaveFilter, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { OppgaveFilterMenu } from './OppgaveFilterMenu.tsx'
 import { OppgaveTableColumnMenu } from './OppgaveTableColumnMenu.tsx'
+import { type UniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
 
-export interface OppgaveFilterProps {
-  oppgavetyper?: Oppgavetype[]
-  behandlingstemaer?: string[]
-  behandlingstyper?: string[]
-  mapper?: string[]
-  prioriteter?: Oppgaveprioritet[]
-  kommuner?: string[]
+export interface OppgaveFilterProps extends UniqueOppgaveValues {
   onSøk?: FormEventHandler
 }
 
 export function OppgaveFilter(props: OppgaveFilterProps) {
+  const { onSøk, ...rest } = props
   const { filters } = useOppgaveFilterContext()
-  const {
-    oppgavetypeFilter,
-    behandlingstemaFilter,
-    behandlingstypeFilter,
-    mappeFilter,
-    prioritetFilter,
-    kommuneFilter,
-  } = filters
-  const {
-    oppgavetyper = [],
-    behandlingstemaer = [],
-    behandlingstyper = [],
-    mapper = [],
-    prioriteter = [],
-    kommuner = [],
-    onSøk,
-  } = props
   const allFilters = useMemo(
     () =>
       Object.entries(filters)
@@ -61,81 +40,29 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
         </HStack>
       )}
       <HStack gap="5">
-        {oppgavetypeFilter.enabled && (
-          <div>
-            <FilterChips
-              options={oppgavetyper}
-              labels={OppgavetypeLabel}
-              selected={oppgavetypeFilter.values}
-              handleChange={oppgavetypeFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
-        {behandlingstemaFilter.enabled && (
-          <div>
-            <FilterChips
-              options={behandlingstemaer}
-              selected={behandlingstemaFilter.values}
-              handleChange={behandlingstemaFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
-        {behandlingstypeFilter.enabled && (
-          <div>
-            <FilterChips
-              options={behandlingstyper}
-              selected={behandlingstypeFilter.values}
-              handleChange={behandlingstypeFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
-        {mappeFilter.enabled && (
-          <div>
-            <FilterChips
-              options={mapper}
-              selected={mappeFilter.values}
-              handleChange={mappeFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
-        {prioritetFilter.enabled && (
-          <div>
-            <FilterChips
-              options={prioriteter}
-              labels={OppgaveprioritetLabel}
-              selected={prioritetFilter.values}
-              handleChange={prioritetFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
-        {kommuneFilter.enabled && (
-          <div>
-            <FilterChips
-              options={kommuner}
-              selected={kommuneFilter.values}
-              handleChange={kommuneFilter.setValues}
-              size="small"
-              checkmark
-              multiple
-            />
-          </div>
-        )}
+        {allFilters
+          .filter((filter) => filter.enabled)
+          .map((filter) => (
+            <div key={filter.key}>
+              <FilterChips
+                labels={labels[filter.key]}
+                options={rest[filter.key] ?? noOptions}
+                selected={filter.values}
+                handleChange={filter.setValues}
+                size="small"
+                checkmark
+                multiple
+              />
+            </div>
+          ))}
       </HStack>
     </>
   )
+}
+
+const noOptions: string[] = []
+
+const labels: Partial<Record<keyof UniqueOppgaveValues, Record<string, string>>> = {
+  oppgavetyper: OppgavetypeLabel,
+  prioriteter: OppgaveprioritetLabel,
 }

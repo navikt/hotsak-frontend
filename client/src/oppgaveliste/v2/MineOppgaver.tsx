@@ -3,11 +3,12 @@ import { useMemo } from 'react'
 
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildeltFilter, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { compareBy, natural, notEmpty, uniqueBy } from '../../utils/array.ts'
+import { compareBy } from '../../utils/array.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { OppgaveFilter } from './OppgaveFilter.tsx'
-import { useOppgaveFilterContext, type OppgaveFilter as OppgaveFilterType } from './OppgaveFilterContext.tsx'
+import { type OppgaveFilter as OppgaveFilterType, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { useMineOppgaver } from './useMineOppgaver.ts'
+import { useUniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
 
 export function MineOppgaver() {
   const {
@@ -48,40 +49,12 @@ export function MineOppgaver() {
     sort,
   ])
 
-  const { oppgavetyper, behandlingstemaer, behandlingstyper, mapper, prioriteter, kommuner } = useMemo(() => {
-    return {
-      oppgavetyper: uniqueBy(
-        alleOppgaver.map((it) => it.kategorisering),
-        'oppgavetype'
-      ).sort(natural),
-      behandlingstemaer: uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
-        .filter(notEmpty)
-        .sort(natural),
-      behandlingstyper: uniqueBy(alleOppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
-        .filter(notEmpty)
-        .sort(natural),
-      mapper: uniqueBy(alleOppgaver, (it) => it.mappenavn ?? 'Ingen')
-        .filter(notEmpty)
-        .sort(natural),
-      prioriteter: uniqueBy(alleOppgaver, 'prioritet').sort(natural),
-      kommuner: uniqueBy(alleOppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
-        .filter(notEmpty)
-        .sort(natural),
-    }
-  }, [alleOppgaver])
+  const uniqueOppgaveValues = useUniqueOppgaveValues(alleOppgaver)
 
   return (
     <Box margin="5">
       <VStack gap="5">
-        <OppgaveFilter
-          oppgavetyper={oppgavetyper}
-          behandlingstemaer={behandlingstemaer}
-          behandlingstyper={behandlingstyper}
-          mapper={mapper}
-          prioriteter={prioriteter}
-          kommuner={kommuner}
-          onSøk={() => {}}
-        />
+        <OppgaveFilter {...uniqueOppgaveValues} onSøk={() => {}} />
         <MineOppgaverTable oppgaver={filtrerteOppgaver} />
       </VStack>
     </Box>

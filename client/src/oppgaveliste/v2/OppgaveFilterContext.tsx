@@ -2,8 +2,10 @@ import { type SortState } from '@navikt/ds-react'
 import { createContext, useContext } from 'react'
 
 import { Oppgaveprioritet, type OppgaveSortState, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
+import { type UniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
 
 export interface OppgaveFilter<T = string> {
+  key: keyof UniqueOppgaveValues
   displayName: string
   values: T[]
   setValues(values: T[]): void
@@ -38,6 +40,7 @@ const initialSortState: OppgaveSortState = {
 export const initialState: OppgaveFilterContextType = {
   filters: {
     oppgavetypeFilter: {
+      key: 'oppgavetyper',
       displayName: 'Oppgavetype',
       values: [],
       enabled: false,
@@ -45,6 +48,7 @@ export const initialState: OppgaveFilterContextType = {
       setEnabled() {},
     },
     behandlingstemaFilter: {
+      key: 'behandlingstemaer',
       displayName: 'Gjelder',
       values: [],
       enabled: false,
@@ -52,6 +56,7 @@ export const initialState: OppgaveFilterContextType = {
       setEnabled() {},
     },
     behandlingstypeFilter: {
+      key: 'behandlingstyper',
       displayName: 'Behandlingstype',
       values: [],
       enabled: false,
@@ -59,6 +64,7 @@ export const initialState: OppgaveFilterContextType = {
       setEnabled() {},
     },
     mappeFilter: {
+      key: 'mapper',
       displayName: 'Mappe',
       values: [],
       enabled: false,
@@ -66,6 +72,7 @@ export const initialState: OppgaveFilterContextType = {
       setEnabled() {},
     },
     prioritetFilter: {
+      key: 'prioriteter',
       displayName: 'Prioritet',
       values: [],
       enabled: false,
@@ -73,6 +80,7 @@ export const initialState: OppgaveFilterContextType = {
       setEnabled() {},
     },
     kommuneFilter: {
+      key: 'kommuner',
       displayName: 'Kommune',
       values: [],
       enabled: false,

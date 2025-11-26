@@ -43,14 +43,14 @@ const imageProxyUrl = window.appSettings.IMAGE_PROXY_URL
 const HMSNR_LENGDE = 6
 
 interface ProduktResponse {
-  data: Produkt | undefined
-  error: Error | undefined
+  data?: Produkt
+  error?: Error
   isLoading: boolean
 }
 
 interface ProdukterResponse {
   data: Produkt[]
-  error: Error | undefined
+  error?: Error
   isLoading: boolean
 }
 

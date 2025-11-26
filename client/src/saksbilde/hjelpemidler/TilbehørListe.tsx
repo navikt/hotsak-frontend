@@ -1,16 +1,14 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
+
 import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
+import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler'
-import { Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
-import { Produkt as Produkttype } from '../../types/types.internal'
+import { type Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
+import { type Produkt as Produkttype } from '../../types/types.internal'
 import { storForbokstavIOrd } from '../../utils/formater'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-} from './endreHjelpemiddel/endreProduktTypes'
 import { EndreTilbehørModal } from './endreHjelpemiddel/EndreTilbehørModal'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
@@ -18,7 +16,7 @@ import { Opplysninger } from './Opplysninger'
 import { Produkt } from './Produkt'
 import { Varsler } from './Varsel'
 
-export function FrittStåendeTilbehør({
+export function FrittståendeTilbehør({
   sakId,
   tilbehør,
   produkter,
@@ -110,10 +108,10 @@ export function Tilbehør({
               <Box.New paddingInline="4 0">
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>
-                  {endretTilbehør?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-                  endretTilbehør?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                  {endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+                  endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretTilbehør.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endretTilbehør?.begrunnelse) ||
+                    : EndretArtikkelBegrunnelse[endretTilbehør?.begrunnelse] ||
                       `${storForbokstavIOrd(endretTilbehør?.begrunnelse)}`}
                 </BrytbarBrødtekst>
               </Box.New>

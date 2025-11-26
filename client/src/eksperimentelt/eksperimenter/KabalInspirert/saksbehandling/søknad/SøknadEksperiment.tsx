@@ -1,15 +1,16 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
 import { memo, useMemo, useState } from 'react'
+
+import { useArtiklerForSak } from '../../../../../sak/useArtiklerForSak.ts'
 import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
   useProduktLagerInfo,
 } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
-import { useArtiklerForSak } from '../../../../../saksbilde/hjelpemidler/useArtiklerForSak'
 import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter'
-import { BehovsmeldingType, Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
+import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
 import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment'
 import { HastEksperiment } from './HastEksperiment'

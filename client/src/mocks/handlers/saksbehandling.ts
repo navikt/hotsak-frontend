@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
+import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 import { OppgaveStatusType, StegType, TilgangResultat, TilgangType, VedtakPayload } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
@@ -13,7 +14,6 @@ import {
   respondNotFound,
   respondUnauthorized,
 } from './response'
-import { EndretHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   sakStore,
@@ -147,7 +147,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const endredeHjelpemidler = await endreHjelpemiddelStore.hent(params.sakId)
 
     const hjelpemidler = endredeHjelpemidler?.endredeHjelpemidler.map(
-      (endretHjelpemiddel: EndretHjelpemiddelRequest) => {
+      (endretHjelpemiddel: EndreHjelpemiddelRequest) => {
         return {
           id: endretHjelpemiddel.id,
           hmsArtNr: endretHjelpemiddel.hmsArtNr,
@@ -168,7 +168,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return HttpResponse.json(hjelpemidler)
   }),
 
-  http.put<SakParams, EndretHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
+  http.put<SakParams, EndreHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
   }),

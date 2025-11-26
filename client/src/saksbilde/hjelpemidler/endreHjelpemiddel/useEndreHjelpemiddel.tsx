@@ -3,9 +3,8 @@ import { useSWRConfig } from 'swr'
 
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { http } from '../../../io/HttpClient.ts'
-import { useArtiklerForSak } from '../useArtiklerForSak'
-import { EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
-import { EndretProdukt } from './endreProduktTypes.ts'
+import { useArtiklerForSak } from '../../../sak/useArtiklerForSak.ts'
+import { type EndreHjelpemiddelRequest, type EndretProdukt } from './endreHjelpemiddelTypes.ts'
 import { useHjelpemiddel } from './useHjelpemiddel'
 
 export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt) {
@@ -16,7 +15,7 @@ export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt
   const { id: hjelpemiddelId, hmsArtNr } = endretProdukt
 
   // TODO, sende med navn også
-  const endreHjelpemiddel = async (endreHjelpemiddel: EndretHjelpemiddelRequest) => {
+  const endreHjelpemiddel = async (endreHjelpemiddel: EndreHjelpemiddelRequest) => {
     await http
       .put(`/api/sak/${sakId}/hjelpemidler`, endreHjelpemiddel)
       .catch(() => console.error('error endre hjelpemiddel'))

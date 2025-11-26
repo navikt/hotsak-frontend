@@ -1,21 +1,21 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
-import { BehovsmeldingType, Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
-import { Sak } from '../../types/types.internal.ts'
+import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
+import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
+import { type Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 import { OebsAlert } from './OebsAlert.tsx'
 import { Summering } from './Summering.tsx'
-import { FrittStåendeTilbehør } from './TilbehørListe.tsx'
+import { FrittståendeTilbehør } from './TilbehørListe.tsx'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
   useProduktLagerInfo,
 } from './useAlternativeProdukter.ts'
-import { useArtiklerForSak } from './useArtiklerForSak.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
 
 interface HjelpemiddelListeProps {
@@ -87,7 +87,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <Heading level="2" size="small">
             Tilbehør
           </Heading>
-          <FrittStåendeTilbehør sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
+          <FrittståendeTilbehør sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
       <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />

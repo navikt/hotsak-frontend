@@ -1,9 +1,9 @@
-import { EndretHjelpemiddel, EndretHjelpemiddelBegrunnelse } from './endreProduktTypes'
+import { type EndretArtikkel, type EndretArtikkelBegrunnelse } from '../../../sak/sakTypes.ts'
 
 export interface EndreArtikkelData {
   endretProdukt: string
   produktMangler: boolean
-  endreBegrunnelse: EndretHjelpemiddelBegrunnelse | ''
+  endreBegrunnelse: EndretArtikkelBegrunnelse | ''
   endreBegrunnelseFritekst: string | ''
 }
 
@@ -12,7 +12,13 @@ export enum EndreHjelpemiddelType {
   ALTERNATIVT_PRODUKT = 'ALTERNATIVT_PRODUKT',
 }
 
-export interface EndretHjelpemiddelRequest extends EndretHjelpemiddel {
+export interface EndreHjelpemiddelRequest extends EndretArtikkel {
   hmsArtNr: string
-  navn?: string
+  artikkelnavn?: string
+}
+
+export interface EndretProdukt {
+  id: string
+  hmsArtNr: string
+  navn: string
 }

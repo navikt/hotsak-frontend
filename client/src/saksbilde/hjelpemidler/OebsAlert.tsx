@@ -1,8 +1,9 @@
 import { Alert, List } from '@navikt/ds-react'
-import { TextContainer } from '../../felleskomponenter/typografi.tsx'
-import { HjelpemiddelEndring } from './endreHjelpemiddel/endreProduktTypes.ts'
 
-export function OebsAlert(props: { hjelpemidler: HjelpemiddelEndring[] }) {
+import { TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
+
+export function OebsAlert(props: { hjelpemidler: ArtikkellinjeSak[] }) {
   const { hjelpemidler } = props
 
   return (

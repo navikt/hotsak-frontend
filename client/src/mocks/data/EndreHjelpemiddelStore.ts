@@ -1,12 +1,12 @@
 import Dexie, { Table } from 'dexie'
 
+import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes'
 import { Sakstype } from '../../types/types.internal'
 import { SakStore } from './SakStore'
-import { EndretHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes'
 
 export interface EndretHjelpemiddelEntitet {
   sakId: string
-  endredeHjelpemidler: EndretHjelpemiddelRequest[]
+  endredeHjelpemidler: EndreHjelpemiddelRequest[]
 }
 
 export class EndreHjelpemiddelStore extends Dexie {
@@ -38,7 +38,7 @@ export class EndreHjelpemiddelStore extends Dexie {
     return endringer
   }
 
-  async endreHjelpemiddel(sakId: string, request: EndretHjelpemiddelRequest) {
+  async endreHjelpemiddel(sakId: string, request: EndreHjelpemiddelRequest) {
     const endringer = await this.hent(sakId)
     if (!endringer) return
 

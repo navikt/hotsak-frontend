@@ -1,12 +1,13 @@
+import { PencilIcon } from '@navikt/aksel-icons'
 import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { PencilIcon } from '@navikt/aksel-icons'
 import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
+import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
-import { Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
-import { Produkt as ProduktType, Sak } from '../../types/types.internal.ts'
+import { type Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
+import { type Produkt as ProduktType, Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
@@ -18,10 +19,6 @@ import { TilbehørListe } from './TilbehørListe.tsx'
 import { type AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-} from './endreHjelpemiddel/endreProduktTypes.ts'
 
 interface HjelpemiddelProps {
   sak: Sak
@@ -111,10 +108,10 @@ export function Hjelpemiddel({
               <div>
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>
-                  {endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-                  endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                  {endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+                  endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse) ||
+                    : EndretArtikkelBegrunnelse[endretHjelpemiddel?.begrunnelse] ||
                       `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
                 </BrytbarBrødtekst>
               </div>

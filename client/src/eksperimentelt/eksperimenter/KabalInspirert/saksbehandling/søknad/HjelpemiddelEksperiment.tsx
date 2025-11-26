@@ -1,22 +1,19 @@
+import { PencilIcon } from '@navikt/aksel-icons'
 import { Button, HStack, Tag, VStack } from '@navikt/ds-react'
 
-import { PencilIcon } from '@navikt/aksel-icons'
 import { useState } from 'react'
 import { Skillelinje } from '../../../../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
+import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../../../../sak/sakTypes.ts'
+import { EndreHjelpemiddelModal } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreHjelpemiddelModal'
+import { useEndreHjelpemiddel } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
 import { Opplysninger } from '../../../../../saksbilde/hjelpemidler/Opplysninger'
+import { type AlternativeProduct } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
 import { Utlevert } from '../../../../../saksbilde/hjelpemidler/Utlevert'
 import { Varsler } from '../../../../../saksbilde/hjelpemidler/Varsel'
-import { EndreHjelpemiddelModal } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreHjelpemiddelModal'
-import {
-  EndretHjelpemiddelBegrunnelse,
-  EndretHjelpemiddelBegrunnelseLabel,
-} from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/endreProduktTypes'
-import { useEndreHjelpemiddel } from '../../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
-import { type AlternativeProduct } from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
-import { Hjelpemiddel as HjelpemiddelType } from '../../../../../types/BehovsmeldingTypes'
-import { Produkt as ProduktType, Sak } from '../../../../../types/types.internal'
+import { type Hjelpemiddel as HjelpemiddelType } from '../../../../../types/BehovsmeldingTypes'
+import { type Produkt as ProduktType, Sak } from '../../../../../types/types.internal'
 import { storForbokstavIOrd } from '../../../../../utils/formater'
 import { AntallTag } from '../../felleskomponenter/AntallTag'
 import BytterEksperiment from './BytterEksperiment'
@@ -91,10 +88,10 @@ export function HjelpemiddelEksperiment({
               <div>
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <BrytbarBrødtekst>
-                  {endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-                  endretHjelpemiddel?.begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                  {endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+                  endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretHjelpemiddelBegrunnelseLabel.get(endretHjelpemiddel?.begrunnelse) ||
+                    : EndretArtikkelBegrunnelseLabel[endretHjelpemiddel?.begrunnelse] ||
                       `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
                 </BrytbarBrødtekst>
               </div>

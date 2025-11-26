@@ -1,21 +1,21 @@
 import { Box, Button, Modal } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-
 import { FormProvider, useForm } from 'react-hook-form'
+
+import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../../sak/sakTypes.ts'
 import { useUmami } from '../../../sporing/useUmami.ts'
-import { Tilbehør } from '../../../types/BehovsmeldingTypes.ts'
-import { Produkt } from '../../../types/types.internal.ts'
-import { EndreArtikkelData, EndretHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
+import { type Tilbehør } from '../../../types/BehovsmeldingTypes.ts'
+import { type Produkt } from '../../../types/types.internal.ts'
+import { type EndreArtikkelData, type EndreHjelpemiddelRequest } from './endreHjelpemiddelTypes.ts'
 import { ManueltSøkPanel } from './endreHmsNr/ManueltSøkTabPanel.tsx'
 import { OriginaltHjelpemiddel } from './OriginaltHjelpemiddel.tsx'
-import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from './endreProduktTypes.ts'
 
 interface AlternativProduktModalProps {
   åpen: boolean
   tilbehør: Tilbehør
   nåværendeHmsnr: string
   grunndataProdukt: Produkt | undefined
-  onLagre(endreHjelpemiddel: EndretHjelpemiddelRequest): void | Promise<void>
+  onLagre(endreHjelpemiddel: EndreHjelpemiddelRequest): void | Promise<void>
   onLukk(): void
 }
 
@@ -61,12 +61,12 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
   const handleSubmit = async (data: EndreArtikkelData) => {
     try {
       setSubmitting(true)
-      const begrunnelse = data.endreBegrunnelse as EndretHjelpemiddelBegrunnelse
+      const begrunnelse = data.endreBegrunnelse as EndretArtikkelBegrunnelse
       const begrunnelseFritekst =
-        begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-        begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+        begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+        begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
           ? data.endreBegrunnelseFritekst
-          : EndretHjelpemiddelBegrunnelseLabel.get(begrunnelse)
+          : EndretArtikkelBegrunnelseLabel[begrunnelse]
       await onLagre({
         id: tilbehør.tilbehørId!,
         hmsArtNr: data.endretProdukt ?? '',

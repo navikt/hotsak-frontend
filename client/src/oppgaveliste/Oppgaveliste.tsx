@@ -1,3 +1,4 @@
+import { Box } from '@navikt/ds-react'
 import { lazy } from 'react'
 import { Route, Routes } from 'react-router'
 
@@ -19,6 +20,7 @@ export default function Oppgaveliste() {
           <Route path="/" element={<MineOppgaverWrapper />} />
           <Route path="/mine" element={<MineOppgaverWrapper />} />
           <Route path="/ko" element={<EnhetensOppgaverWrapper />} />
+          <Route path="/medarbeiders" element={<Box margin="5">TODO</Box>} />
         </Routes>
       </>
     )

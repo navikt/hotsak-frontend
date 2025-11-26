@@ -1,7 +1,8 @@
-import { useFormContext, Controller } from 'react-hook-form'
-import { RadioGroup, Radio, Textarea, VStack } from '@navikt/ds-react'
+import { Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react'
+import { Controller, useFormContext } from 'react-hook-form'
+
+import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../../sak/sakTypes.ts'
 import { EndreHjelpemiddelType } from './endreHjelpemiddelTypes'
-import { EndretHjelpemiddelBegrunnelse, EndretHjelpemiddelBegrunnelseLabel } from './endreProduktTypes'
 
 const MAX_TEGN_BEGRUNNELSE_FRITEKST = 150
 
@@ -11,12 +12,12 @@ export function BegrunnelseForBytte({ type }: { type: EndreHjelpemiddelType }) {
 
   const lagerVareType =
     type === EndreHjelpemiddelType.ENDRE_HMS_NUMMER
-      ? EndretHjelpemiddelBegrunnelse.LAGERVARE
-      : EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE
+      ? EndretArtikkelBegrunnelse.LAGERVARE
+      : EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_LAGERVARE
   const annetType =
     type === EndreHjelpemiddelType.ENDRE_HMS_NUMMER
-      ? EndretHjelpemiddelBegrunnelse.ANNET
-      : EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+      ? EndretArtikkelBegrunnelse.ANNET
+      : EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
 
   return (
     <VStack gap="3" paddingBlock="4 0">
@@ -31,16 +32,16 @@ export function BegrunnelseForBytte({ type }: { type: EndreHjelpemiddelType }) {
             {...field}
             error={fieldState.error?.message}
           >
-            <Radio value={lagerVareType}>{EndretHjelpemiddelBegrunnelseLabel.get(lagerVareType)}</Radio>
+            <Radio value={lagerVareType}>{EndretArtikkelBegrunnelseLabel[lagerVareType]}</Radio>
             <Radio value={annetType}>
-              {EndretHjelpemiddelBegrunnelseLabel.get(annetType)}
+              {EndretArtikkelBegrunnelseLabel[annetType]}
               (begrunn)
             </Radio>
           </RadioGroup>
         )}
       />
-      {(begrunnelse === EndretHjelpemiddelBegrunnelse.ANNET ||
-        begrunnelse === EndretHjelpemiddelBegrunnelse.ALTERNATIV_PRODUKT_ANNET) && (
+      {(begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+        begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET) && (
         <Controller
           name="endreBegrunnelseFritekst"
           control={control}

@@ -2,6 +2,7 @@ import Dexie, { Table, UpdateSpec } from 'dexie'
 
 import { type OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
+import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import {
   type Barnebrillesak,
   Brevkode,
@@ -510,6 +511,13 @@ export class SakStore extends Dexie {
       })),
       barnebrilleSaker: [],
     }
+  }
+
+  async hentBehovsmelding(sakId: string): Promise<Innsenderbehovsmelding | undefined> {
+    const sak = await this.hent(sakId)
+    if (!sak) return
+    const behovsmeldingCase = await this.behovsmeldingStore.hentForSak(sak)
+    return behovsmeldingCase?.behovsmelding
   }
 
   private beregnSamletVurdering(vilkår: InsertVilkår[]) {

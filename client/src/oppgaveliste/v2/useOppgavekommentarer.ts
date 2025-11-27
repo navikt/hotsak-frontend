@@ -11,6 +11,6 @@ export interface OppgaveKommentar {
   legacy: boolean
 }
 
-export function useOppgavekommentarer(oppgaveId: OppgaveId | null) {
+export function useOppgavekommentarer(oppgaveId?: Nullable<OppgaveId>) {
   return useSWR<OppgaveKommentar[], HttpError>(oppgaveId ? `/api/oppgaver-v2/${oppgaveId}/kommentarer` : null)
 }

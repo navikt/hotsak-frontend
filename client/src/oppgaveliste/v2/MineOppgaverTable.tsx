@@ -10,10 +10,11 @@ import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export interface MineOppgaverTableProps {
   oppgaver: OppgaveV2[]
+  loading?: boolean
 }
 
 export function MineOppgaverTable(props: MineOppgaverTableProps) {
-  const { oppgaver } = props
+  const { oppgaver, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
   const navigate = useNavigate()
 
@@ -58,6 +59,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       size="medium"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
+      loading={loading}
       sort={sort}
       onSortChange={(sortKey) => {
         setSort({

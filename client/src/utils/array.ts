@@ -2,10 +2,25 @@ export function unique<T>(values: T[]): T[] {
   return [...new Set(values)]
 }
 
-export function uniqueBy<T, K extends keyof T>(values: T[], key: K): T[K][]
-export function uniqueBy<T, R>(values: T[], key: (value: T) => R): R[]
-export function uniqueBy<T, K extends keyof T, R>(values: T[], key: K | ((value: T) => R)): (T[K] | R)[] {
-  return unique(values.map((value) => (typeof key === 'function' ? key(value) : value[key])))
+export function uniqueBy<T, K extends keyof T>(items: T[], keySelector: K): T[K][]
+export function uniqueBy<T, R>(items: T[], keySelector: (value: T) => R): R[]
+export function uniqueBy<T, K extends keyof T, R>(items: T[], keySelector: K | ((value: T) => R)): (T[K] | R)[] {
+  return unique(items.map((value) => (typeof keySelector === 'function' ? keySelector(value) : value[keySelector])))
+}
+
+export function groupBy<K extends PropertyKey, T>(
+  items: Iterable<T>,
+  keySelector: (item: T, index: number) => K
+): Partial<Record<K, T[]>> {
+  return Object.groupBy(items, keySelector)
+}
+
+export function associateBy<K extends PropertyKey, T>(
+  items: Iterable<T>,
+  keySelector: (item: T, index: number) => K
+): Partial<Record<K, T>> {
+  const entries = Array.from(Map.groupBy(items, keySelector).entries()).map(([key, values]) => [key, values[0]])
+  return Object.fromEntries(entries)
 }
 
 export function notEmpty<T>(value: T | null | undefined): value is T {

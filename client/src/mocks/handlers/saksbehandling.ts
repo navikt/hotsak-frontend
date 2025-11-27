@@ -1,11 +1,19 @@
 import { http, HttpResponse } from 'msw'
 
+import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { OppgaveStatusType, StegType, TilgangResultat, TilgangType, VedtakPayload } from '../../types/types.internal'
-import type { StoreHandlersFactory } from '../data'
+import {
+  OppgaveStatusType,
+  StegType,
+  TilgangResultat,
+  TilgangType,
+  type VedtakPayload,
+} from '../../types/types.internal'
+import { associateBy } from '../../utils/array.ts'
+import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
 import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
-import type { SakParams } from './params'
+import { type SakParams } from './params'
 import {
   delay,
   respondForbidden,
@@ -16,10 +24,10 @@ import {
 } from './response'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
-  sakStore,
-  journalpostStore,
-  saksbehandlerStore,
   endreHjelpemiddelStore,
+  journalpostStore,
+  sakStore,
+  saksbehandlerStore,
 }) => [
   http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
     const { sakId } = params
@@ -143,27 +151,53 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return respondNoContent()
   }),
 
-  http.get<SakParams>('/api/sak/:sakId/hjelpemidler', async ({ params }) => {
-    const endredeHjelpemidler = await endreHjelpemiddelStore.hent(params.sakId)
-
-    const hjelpemidler = endredeHjelpemidler?.endredeHjelpemidler.map(
-      (endretHjelpemiddel: EndreHjelpemiddelRequest) => {
-        return {
-          id: endretHjelpemiddel.id,
-          hmsArtNr: endretHjelpemiddel.hmsArtNr,
-          finnesIOebs: true,
-          endretArtikkel: {
-            id: endretHjelpemiddel.id,
-            begrunnelse: endretHjelpemiddel.begrunnelse,
-            begrunnelseFritekst: endretHjelpemiddel.begrunnelseFritekst,
-          },
-        }
-      }
-    )
-
-    if (!endredeHjelpemidler) {
+  http.get<SakParams, never, ArtikkellinjeSak[]>('/api/sak/:sakId/hjelpemidler', async ({ params }) => {
+    const behovsmelding = await sakStore.hentBehovsmelding(params.sakId)
+    if (!behovsmelding) {
       return respondNotFound()
     }
+
+    const { endredeHjelpemidler } = await endreHjelpemiddelStore.hent(params.sakId)
+    const endredeHjelpemidlerById = associateBy(endredeHjelpemidler, (it) => it.id)
+    const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler.flatMap((hjelpemiddel): ArtikkellinjeSak[] => {
+      const endretHjelpemiddel = endredeHjelpemidlerById[hjelpemiddel.hjelpemiddelId]
+      return [
+        {
+          id: hjelpemiddel.hjelpemiddelId,
+          hmsArtNr: endretHjelpemiddel?.hmsArtNr ?? hjelpemiddel.produkt.hmsArtNr,
+          artikkelnavn: endretHjelpemiddel?.artikkelnavn ?? hjelpemiddel.produkt.artikkelnavn,
+          antall: hjelpemiddel.antall,
+          finnesIOebs: true,
+          endretArtikkel: endretHjelpemiddel
+            ? {
+                id: endretHjelpemiddel.id,
+                begrunnelse: endretHjelpemiddel.begrunnelse,
+                begrunnelseFritekst: endretHjelpemiddel.begrunnelseFritekst,
+              }
+            : undefined,
+          type: 'HJELPEMIDDEL',
+        },
+        ...hjelpemiddel.tilbehør.map((tilbehør): ArtikkellinjeSak => {
+          const id = tilbehør.tilbehørId ?? ''
+          const endretTilbehør = endredeHjelpemidlerById[id]
+          return {
+            id: tilbehør.tilbehørId ?? '',
+            hmsArtNr: endretTilbehør?.hmsArtNr ?? tilbehør.hmsArtNr,
+            artikkelnavn: endretTilbehør?.artikkelnavn ?? tilbehør.navn,
+            antall: tilbehør.antall,
+            finnesIOebs: true,
+            endretArtikkel: endretTilbehør
+              ? {
+                  id: endretTilbehør.id,
+                  begrunnelse: endretTilbehør.begrunnelse,
+                  begrunnelseFritekst: endretTilbehør.begrunnelseFritekst,
+                }
+              : undefined,
+            type: 'TILBEHØR',
+          }
+        }),
+      ]
+    })
 
     return HttpResponse.json(hjelpemidler)
   }),

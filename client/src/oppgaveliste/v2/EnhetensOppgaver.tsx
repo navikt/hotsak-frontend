@@ -4,10 +4,10 @@ import { EnhetensOppgaverTable } from './EnhetensOppgaverTable.tsx'
 import { useEnhetensOppgaver } from './useEnhetensOppgaver.ts'
 
 export function EnhetensOppgaver() {
-  const { oppgaver, totalElements, isLoading, isValidating, lastInnFlere } = useEnhetensOppgaver(30)
+  const { oppgaver, totalElements, isLoading, isValidating, lastInnFlere } = useEnhetensOppgaver(1_000)
   return (
     <Box margin="5">
-      <EnhetensOppgaverTable oppgaver={oppgaver} />
+      <EnhetensOppgaverTable oppgaver={oppgaver} loading={isLoading} />
       <HStack align="center" gap="3" justify="center" marginBlock="5">
         {oppgaver.length < totalElements && (
           <Button

@@ -11,10 +11,11 @@ export interface UseMineOppgaverResponse extends FinnOppgaverResponse {
   error?: HttpError
   mutate: KeyedMutator<FinnOppgaverResponse>
   isLoading: boolean
+  isValidating: boolean
 }
 
 export function useMineOppgaver(): UseMineOppgaverResponse {
-  const { data, error, mutate, isLoading } = useSwr<FinnOppgaverResponse>(
+  const { data, error, mutate, isLoading, isValidating } = useSwr<FinnOppgaverResponse>(
     () =>
       createUrl('/api/oppgaver-v2', {
         tildelt: OppgaveTildeltFilter.MEG,
@@ -37,6 +38,7 @@ export function useMineOppgaver(): UseMineOppgaverResponse {
       error,
       mutate,
       isLoading,
+      isValidating,
     }
   }
 
@@ -45,5 +47,6 @@ export function useMineOppgaver(): UseMineOppgaverResponse {
     error,
     mutate,
     isLoading,
+    isValidating,
   }
 }

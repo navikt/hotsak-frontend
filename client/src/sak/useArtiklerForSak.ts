@@ -13,8 +13,8 @@ export interface UseHjelpemidlerForSakResponse extends Omit<SWRResponse<Artikkel
  *
  * @param sakId
  */
-export function useArtiklerForSak(sakId: string): UseHjelpemidlerForSakResponse {
-  const { data, ...rest } = useSWR<ArtikkellinjeSak[], HttpError>(`/api/sak/${sakId}/hjelpemidler`)
+export function useArtiklerForSak(sakId?: Nullable<ID>): UseHjelpemidlerForSakResponse {
+  const { data, ...rest } = useSWR<ArtikkellinjeSak[], HttpError>(sakId ? `/api/sak/${sakId}/hjelpemidler` : null)
   return {
     artikler: data ?? ingenArtikler,
     ...rest,

@@ -1,4 +1,4 @@
-import { Table, type TableProps } from '@navikt/ds-react'
+import { Loader, Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
@@ -20,6 +20,7 @@ export interface DataGridProps<T extends object> extends TableProps {
   columns: DataGridColumn<T>[]
   textSize?: 'medium' | 'small'
   emptyMessage?: string
+  loading?: boolean
 
   keyFactory(row: T): Exclude<Key, bigint>
   renderContent?(row: T, expanded: boolean): ReactNode
@@ -31,11 +32,13 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     columns,
     textSize,
     emptyMessage = 'Ingen data funnet',
+    loading,
     keyFactory,
     renderContent,
     ...tableProps
   } = props
   const [expanded, setExpanded] = useState<Record<Exclude<Key, bigint>, boolean>>({})
+  const colSpan = renderContent ? columns.length + 1 : columns.length
   return (
     <Table {...tableProps}>
       <Table.Header>
@@ -74,14 +77,17 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {rows.length == 0 && (
+        {rows.length === 0 && !loading && (
           <Table.Row>
-            <Table.DataCell
-              colSpan={renderContent ? columns.length + 1 : columns.length}
-              style={{ textAlign: 'center' }}
-              textSize={textSize}
-            >
+            <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
               {emptyMessage}
+            </Table.DataCell>
+          </Table.Row>
+        )}
+        {rows.length === 0 && loading && (
+          <Table.Row>
+            <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
+              <Loader />
             </Table.DataCell>
           </Table.Row>
         )}

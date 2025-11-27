@@ -22,7 +22,7 @@ export function MineOppgaver() {
     },
     sort,
   } = useOppgaveFilterContext()
-  const { oppgaver: eksterneOppgaver } = useMineOppgaver()
+  const { oppgaver: eksterneOppgaver, isLoading } = useMineOppgaver()
   const journalføringsoppgaver =
     useJournalføringsoppgaver(OppgaveTildeltFilter.MEG)?.data?.oppgaver ?? ingenJournalføringsoppgaver
   const alleOppgaver = useMemo(
@@ -55,7 +55,7 @@ export function MineOppgaver() {
     <Box margin="5">
       <VStack gap="5">
         <OppgaveFilter {...uniqueOppgaveValues} onSøk={() => {}} />
-        <MineOppgaverTable oppgaver={filtrerteOppgaver} />
+        <MineOppgaverTable oppgaver={filtrerteOppgaver} loading={isLoading} />
       </VStack>
     </Box>
   )

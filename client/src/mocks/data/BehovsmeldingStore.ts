@@ -14,7 +14,7 @@ export interface BehovsmeldingCase {
 
 export class BehovsmeldingStore {
   alle: Record<string, () => Promise<BehovsmeldingCase>> = import.meta.glob<BehovsmeldingCase>(
-    './behovsmeldinger/demo/*.json',
+    './behovsmeldinger/*/*.json',
     { eager: false, import: 'default' }
   )
 

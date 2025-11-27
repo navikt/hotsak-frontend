@@ -10,11 +10,11 @@ import {
 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
-//import { JournalpostStore } from './JournalpostStore'
-import { type InsertOppgave /*, lagJournalføringsoppgave,*/, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
+import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
 import { behandlingstemaer } from '../../oppgave/EndreOppgaveModal'
+import { JournalpostStore } from './JournalpostStore.ts'
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
@@ -22,8 +22,8 @@ export class OppgaveStore extends Dexie {
   constructor(
     private readonly behovsmeldingStore: BehovsmeldingStore,
     private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore
-    // private readonly journalpostStore: JournalpostStore
+    private readonly sakStore: SakStore,
+    private readonly journalpostStore: JournalpostStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
@@ -70,11 +70,10 @@ export class OppgaveStore extends Dexie {
         })
       })
     )
-    /* FIXME Kommentert ut midlertidig for å unngå forrvirring under demo*/
-    //const journalposter = await this.journalpostStore.alle()
-    //const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
+    const journalposter = await this.journalpostStore.alle()
+    const oppgaverForJournalposter: InsertOppgave[] = journalposter.map(lagJournalføringsoppgave)
 
-    return this.lagreAlle([...oppgaverForSaker /*, ...oppgaverForJournalposter*/])
+    return this.lagreAlle([...oppgaverForSaker, ...oppgaverForJournalposter])
   }
 
   async lagreAlle(oppgaver: InsertOppgave[]) {
@@ -117,9 +116,12 @@ export class OppgaveStore extends Dexie {
       kategorisering: {
         oppgavetype: oppgave?.kategorisering.oppgavetype || Oppgavetype.BEHANDLE_SAK,
         tema: 'HJE',
-        behandlingstema: { kode: behandlingstema, term: behandlingstemaer.find((bt) => bt.kode === behandlingstema)?.term || '' },
+        behandlingstema: {
+          kode: behandlingstema,
+          term: behandlingstemaer.find((bt) => bt.kode === behandlingstema)?.term || '',
+        },
         behandlingstype: oppgave?.kategorisering.behandlingstype,
-      }
+      },
     })
   }
 

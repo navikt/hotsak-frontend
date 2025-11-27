@@ -110,12 +110,11 @@ export class SakStore extends Dexie {
 
     return this.lagreAlle([
       ...hjelpemiddelsaker,
-      /* FIXME Kommentert ut midlertidig for å unngå forrvirring under demo*/
-      /*  lagBarnebrillesak('1001'),
+      lagBarnebrillesak('1001'),
       lagBarnebrillesak('1002'),
       lagBarnebrillesak('1003'),
       lagBarnebrillesak('1004'),
-      lagBarnebrillesak('1005'), */
+      lagBarnebrillesak('1005'),
     ])
   }
 

@@ -17,7 +17,7 @@ export async function setupStore() {
   const saksbehandlerStore = new SaksbehandlerStore()
   const journalpostStore = new JournalpostStore(saksbehandlerStore, personStore)
   const sakStore = new SakStore(behovsmeldingStore, saksbehandlerStore, personStore, journalpostStore)
-  const oppgaveStore = new OppgaveStore(behovsmeldingStore, saksbehandlerStore, sakStore /*, journalpostStore*/)
+  const oppgaveStore = new OppgaveStore(behovsmeldingStore, saksbehandlerStore, sakStore, journalpostStore)
   const notatStore = new NotatStore(saksbehandlerStore, sakStore)
   const endreHjelpemiddelStore = new EndreHjelpemiddelStore(sakStore)
 

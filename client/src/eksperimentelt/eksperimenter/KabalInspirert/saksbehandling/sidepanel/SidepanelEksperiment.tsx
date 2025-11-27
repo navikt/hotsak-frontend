@@ -6,12 +6,12 @@ import { useHjelpemiddeloversikt } from '../../../../../saksbilde/høyrekolonne/
 import { HøyrekolonnePanel } from '../../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
 import { Notater } from '../../../../../saksbilde/høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../../../../../saksbilde/høyrekolonne/notat/NotificationBadge'
+import { useNotater } from '../../../../../saksbilde/høyrekolonne/notat/useNotater'
 import { useSak } from '../../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperimentProviderTypes'
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
-import { useNotater } from '../../../../../saksbilde/høyrekolonne/notat/useNotater'
 
 export function SidepanelEksperiment() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
@@ -46,6 +46,7 @@ export function SidepanelEksperiment() {
         }}
       />
       <Tabs
+        style={{ height: '100%' }}
         size="small"
         value={valgtNedreVenstreKolonneTab.toString()}
         onChange={(value) => setValgtNedreVenstreKolonneTab(value as VenstrekolonneTabs)}
@@ -95,7 +96,7 @@ export function SidepanelEksperiment() {
             />
           </Tooltip>
         </Tabs.List>
-        <div style={{ overflow: 'auto' }}>
+        <div style={{ overflowY: 'auto', scrollbarGutter: 'stable both-edges', height: '100%' }}>
           <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
             <Historikk />
           </Tabs.Panel>

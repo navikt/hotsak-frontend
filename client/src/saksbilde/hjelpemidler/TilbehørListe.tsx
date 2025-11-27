@@ -28,7 +28,7 @@ export function FrittståendeTilbehør({
   return (
     <VStack gap="4">
       {tilbehør.map((t, idx) => {
-        const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+        const produkt = produkter.find((it) => it.hmsArtNr === t.hmsArtNr)
 
         return (
           <Box.New key={idx} background="neutral-soft" padding="4">
@@ -52,7 +52,7 @@ export function TilbehørListe({
   return (
     <VStack gap="4">
       {tilbehør.map((t, idx) => {
-        const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+        const produkt = produkter.find((it) => it.hmsArtNr === t.hmsArtNr)
         return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} />
       })}
     </VStack>
@@ -94,7 +94,7 @@ export function Tilbehør({
             {harEndretTilbehør && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-                navn={endretHjelpemiddelProdukt?.navn || '-'}
+                navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
                 showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}

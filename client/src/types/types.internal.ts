@@ -604,14 +604,18 @@ export enum Kjønn {
 }
 
 export interface Produkt {
-  isotittel: string
-  produkturl: string
-  posttitler?: string[]
-  produktinfoFraRammeavtale?: string
+  hmsArtNr: string
   artikkelnavn: string
+  isotittel: string
   leverandør?: string
+  produktUrl: string
   produktbildeUri?: string
-  hmsnr: string
+  delkontrakter: Delkontrakt[]
+}
+
+export interface Delkontrakt {
+  rangering: number
+  posttittel?: string
 }
 
 export enum Filter {

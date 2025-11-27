@@ -41,7 +41,7 @@ export function Hjelpemiddel({
   const { kanEndreHmsnr } = useSaksregler()
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
   const { logModalÅpnet } = useUmami()
-  const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
+  const produkt = produkter.find((it) => it.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
   const {
     endreHjelpemiddel,
     nåværendeHmsnr,
@@ -64,7 +64,7 @@ export function Hjelpemiddel({
         <Etikett size="medium">{produkt?.isotittel}</Etikett>
       </TextContainer>
       <VStack gap="1">
-        {produkt?.posttitler?.map((posttittel) => (
+        {produkt?.delkontrakter?.map(({ posttittel }) => (
           <TextContainer key={posttittel}>
             <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
           </TextContainer>
@@ -76,7 +76,7 @@ export function Hjelpemiddel({
             {harEndretHjelpemiddel && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-                navn={endretHjelpemiddelProdukt?.navn || '-'}
+                navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
                 showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}

@@ -16,7 +16,7 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
     >
       <VStack>
         <Etikett size="small" spacing>
-          {hjelpemiddel.navn}
+          {hjelpemiddel.artikkelnavn}
         </Etikett>
         <HGrid columns={hjelpemiddel.kilde === 'FinnHjelpemiddel' ? '1fr 1fr' : '1fr'} gap="space-16">
           {hjelpemiddel.produktbildeUri && (
@@ -31,11 +31,11 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
           )}
           <VStack>
             {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (
-              <FinnHjelpemiddelLink hmsnr={hjelpemiddel.hmsnr}>
-                <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
+              <FinnHjelpemiddelLink hmsnr={hjelpemiddel.hmsArtNr}>
+                <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Brødtekst>
               </FinnHjelpemiddelLink>
             ) : (
-              <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsnr}`}</Brødtekst>
+              <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Brødtekst>
             )}
 
             <Undertittel>Kilde: {hjelpemiddel.kilde}</Undertittel>

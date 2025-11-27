@@ -37,7 +37,7 @@ export function HjelpemiddelEksperiment({
   harOppdatertLagerstatus,
   alternativeProdukter,
 }: HjelpemiddelProps) {
-  const produkt = produkter.find((p) => p.hmsnr === hjelpemiddel.produkt.hmsArtNr)
+  const produkt = produkter.find((p) => p.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
 
   const { kanEndreHmsnr } = useSaksregler()
   const {
@@ -60,7 +60,7 @@ export function HjelpemiddelEksperiment({
         <TextContainer>
           <Etikett size="medium">{produkt?.isotittel}</Etikett>
           <VStack gap="1">
-            {produkt?.posttitler?.map((posttittel) => (
+            {produkt?.delkontrakter?.map(({ posttittel }) => (
               <TextContainer key={posttittel}>
                 <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
               </TextContainer>
@@ -73,7 +73,7 @@ export function HjelpemiddelEksperiment({
             {endretHjelpemiddel && (
               <ProduktEksperiment
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-                navn={endretHjelpemiddelProdukt?.navn || '-'}
+                navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
                 showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}

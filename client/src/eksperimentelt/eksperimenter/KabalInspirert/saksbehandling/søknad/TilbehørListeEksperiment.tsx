@@ -20,7 +20,7 @@ export function FrittStåendeTilbehørEksperiment({
   return (
     <VStack gap="4">
       {tilbehør.map((t, idx) => {
-        const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+        const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
 
         return (
           <Box.New
@@ -50,7 +50,7 @@ export function TilbehørListeEksperiment({
   return (
     <VStack gap="space-16">
       {tilbehør.map((t, idx) => {
-        const produkt = produkter.find((p) => p.hmsnr === t.hmsArtNr)
+        const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
         return <Tilbehør key={idx} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHmsnr} />
       })}
     </VStack>

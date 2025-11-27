@@ -12,8 +12,8 @@ interface UseHjelpemiddelResponse {
 }
 
 export interface HjelpemiddelData {
-  hmsnr: string
-  navn: string
+  hmsArtNr: string
+  artikkelnavn: string
   kilde: 'FinnHjelpemiddel' | 'OeBS'
   produktbildeUri?: string
   leverandør?: string
@@ -33,8 +33,8 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
   const hjelpemiddel = useMemo((): HjelpemiddelData | undefined => {
     if (grunndataProdukt) {
       return {
-        hmsnr: grunndataProdukt.hmsnr,
-        navn: grunndataProdukt.artikkelnavn,
+        hmsArtNr: grunndataProdukt.hmsArtNr,
+        artikkelnavn: grunndataProdukt.artikkelnavn,
         kilde: 'FinnHjelpemiddel',
         produktbildeUri: grunndataProdukt.produktbildeUri,
         leverandør: grunndataProdukt.leverandør,
@@ -43,8 +43,8 @@ export function useHjelpemiddel(hmsnr?: string): UseHjelpemiddelResponse {
 
     if (oebsProdukt) {
       return {
-        hmsnr: oebsProdukt.hmsnr,
-        navn: oebsProdukt.navn,
+        hmsArtNr: oebsProdukt.hmsnr,
+        artikkelnavn: oebsProdukt.navn,
         kilde: 'OeBS',
       }
     }

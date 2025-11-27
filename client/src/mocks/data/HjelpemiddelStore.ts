@@ -1,12 +1,12 @@
 import Dexie, { Table } from 'dexie'
 
 import {
+  type HMDBFinnHjelpemiddelprodukterQuery,
   HMDBMediaSourceType,
   HMDBMediaType,
-  type HMDBFinnHjelpemiddelprodukterQuery,
 } from '../../generated/grunndata.ts'
-import products from './products.json'
 import { lagTilfeldigHmsArtNr, lagUUID } from './felles.ts'
+import products from './products.json'
 
 type LagretHjelpemiddel = HMDBFinnHjelpemiddelprodukterQuery['products'][0]
 
@@ -51,20 +51,13 @@ export class HjelpemiddelStore extends Dexie {
 function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelpemiddel {
   return {
     id: lagUUID(),
-    articleName: 'Dummyartikkel for ' + hmsArtNr,
     hmsArtNr,
-    isoCategoryTitleShort: 'isoCategoryTitleShort',
-    attributes: {
-      text: 'Beskrivelse av hjelpemidler på denne rammeavtalen. <p>Kan også bestå av flere paragrafer</p> ',
-    },
+    articleName: 'articleName for ' + hmsArtNr,
+    isoCategoryTitleShort: 'isoCategoryTitleShort for ' + hmsArtNr,
     supplier: {
       name: 'Leverandøren AS',
     },
-    agreements: [
-      {
-        postTitle: 'postTitle',
-      },
-    ],
+    productVariantURL: 'https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/' + hmsArtNr,
     media: [
       {
         uri: 'orig/60048.jpg',
@@ -73,6 +66,11 @@ function lagHjelpemiddel(hmsArtNr: string = lagTilfeldigHmsArtNr()): LagretHjelp
         priority: 1,
       },
     ],
-    productVariantURL: 'https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/' + hmsArtNr,
+    agreements: [
+      {
+        rank: 1,
+        postTitle: 'postTitle',
+      },
+    ],
   }
 }

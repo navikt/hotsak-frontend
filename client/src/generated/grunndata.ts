@@ -194,12 +194,10 @@ export type HMDBFinnHjelpemiddelprodukterQuery = {
   products: Array<{
     __typename?: 'Product'
     id: string
-    articleName: string
     hmsArtNr?: string | null
+    articleName: string
     isoCategoryTitleShort?: string | null
     productVariantURL: string
-    attributes: { __typename?: 'AttributesDoc'; text?: string | null }
-    agreements: Array<{ __typename?: 'AgreementInfoDoc'; postTitle?: string | null }>
     supplier: { __typename?: 'ProductSupplier'; name: string }
     media: Array<{
       __typename?: 'MediaDoc'
@@ -208,5 +206,6 @@ export type HMDBFinnHjelpemiddelprodukterQuery = {
       source: HMDBMediaSourceType
       priority: number
     }>
+    agreements: Array<{ __typename?: 'AgreementInfoDoc'; rank: number; postTitle?: string | null }>
   }>
 }

@@ -15,25 +15,23 @@ const finnHjelpemiddelprodukterQuery = gql`
   query FinnHjelpemiddelprodukter($hmsnrs: [String!]!) {
     products(hmsnrs: $hmsnrs) {
       id
-      articleName
       hmsArtNr
+      articleName
       isoCategoryTitleShort
-      attributes {
-        text
-      }
-      agreements {
-        postTitle
-      }
       supplier {
         name
       }
+      productVariantURL
       media {
         uri
         type
         source
         priority
       }
-      productVariantURL
+      agreements {
+        rank
+        postTitle
+      }
     }
   }
 `
@@ -89,14 +87,16 @@ export function useHjelpemiddelprodukter(hmsnrs: string[]): ProdukterResponse {
     if (data) {
       return {
         data: data.products.map((produkt) => ({
-          isotittel: produkt.isoCategoryTitleShort || '',
-          posttitler: produkt.agreements?.map((agreement) => agreement?.postTitle || '') || [],
-          produkturl: produkt.productVariantURL || '',
-          produktinfoFraRammeavtale: produkt.attributes?.text ?? undefined,
+          hmsArtNr: produkt.hmsArtNr ?? '',
           artikkelnavn: produkt.articleName,
+          isotittel: produkt.isoCategoryTitleShort ?? '',
           leverandør: produkt.supplier.name,
-          produktbildeUri: produktbilde(produkt.media || []),
-          hmsnr: produkt.hmsArtNr || '',
+          produktUrl: produkt.productVariantURL ?? '',
+          produktbildeUri: produktbilde(produkt.media ?? []),
+          delkontrakter: produkt.agreements.map((agreement) => ({
+            rangering: agreement.rank,
+            posttittel: agreement.postTitle ?? undefined,
+          })),
         })),
         isLoading,
         error,

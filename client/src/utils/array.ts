@@ -27,7 +27,7 @@ export function notEmpty<T>(value: T | null | undefined): value is T {
   return value != null
 }
 
-export function natural(a: string | number, b: string | number): number {
+export function natural(a?: string | number, b?: string | number): number {
   if (a == null) {
     a = ''
   }
@@ -35,6 +35,27 @@ export function natural(a: string | number, b: string | number): number {
     b = ''
   }
   return a.toString().localeCompare(b.toString(), 'nb', { numeric: true })
+}
+
+export type Comparator<T> = (a: T, b: T) => number
+
+export function naturalBy<T, K extends keyof T>(valueSelector: K): Comparator<T>
+export function naturalBy<T>(valueSelector: (item: T) => Maybe<string | number>): Comparator<T>
+export function naturalBy<T, K extends keyof T>(
+  valueSelector: K | ((item: T) => Maybe<string | number>)
+): Comparator<T> {
+  return (a, b) => {
+    let aValue: Maybe<string | number>
+    let bValue: Maybe<string | number>
+    if (typeof valueSelector === 'function') {
+      aValue = valueSelector(a)
+      bValue = valueSelector(b)
+    } else {
+      aValue = a[valueSelector]?.toString()
+      bValue = b[valueSelector]?.toString()
+    }
+    return natural(aValue, bValue)
+  }
 }
 
 export function compareBy<T, K extends keyof T>(

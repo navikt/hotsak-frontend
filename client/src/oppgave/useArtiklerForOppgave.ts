@@ -1,11 +1,12 @@
 import { type ArtikkellinjeSak } from '../sak/sakTypes.ts'
 import { useArtiklerForSak } from '../sak/useArtiklerForSak.ts'
 import { useHjelpemiddelprodukter } from '../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
+import { type Delkontrakt } from '../types/types.internal.ts'
 import { associateBy } from '../utils/array.ts'
 
 export interface ArtikkellinjeOppgave extends ArtikkellinjeSak {
   url?: string
-  delkontrakter: string[]
+  delkontrakter: Delkontrakt[]
 }
 
 export interface UseArtiklerForOppgaveResponse {
@@ -21,15 +22,15 @@ export function useArtiklerForOppgave(sakId?: Nullable<ID>): UseArtiklerForOppga
     isLoading: produkterIsLoading,
     error: produkterError,
   } = useHjelpemiddelprodukter(artikler.map((it) => it.hmsArtNr))
-  const produkterByHmsArtNr = associateBy(produkter, (it) => it.hmsnr)
+  const produkterByHmsArtNr = associateBy(produkter, (it) => it.hmsArtNr)
   return {
     artikler: artikler.map((it) => {
       const produkt = produkterByHmsArtNr[it.hmsArtNr]
       return {
         ...it,
         artikkelnavn: produkt?.artikkelnavn ?? it.artikkelnavn,
-        url: produkt?.produkturl,
-        delkontrakter: produkt?.posttitler ?? [],
+        url: produkt?.produktUrl,
+        delkontrakter: produkt?.delkontrakter ?? [],
       }
     }),
     isLoading: artiklerIsLoading || produkterIsLoading,

@@ -1,7 +1,6 @@
 import { ChevronDownIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 import { useState } from 'react'
-
 import { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OverførOppgaveTilMedarbeiderModal } from '../oppgave/OverførOppgaveTilMedarbeiderModal.tsx'

@@ -70,7 +70,7 @@ export function SakMenyEksperiment({ spørreundersøkelseId }: SaksbildeMenuProp
         </ActionMenu.Content>
       </ActionMenu>
       <OverførOppgaveTilMedarbeiderModal
-        sakId={oppgave.sakId?.toString() ?? ''}
+        oppgave={oppgave}
         open={visOverførMedarbeider}
         onClose={() => {
           setVisOverførMedarbeider(false)

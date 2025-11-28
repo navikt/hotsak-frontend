@@ -5,4 +5,5 @@ export const enum UMAMI_TAKSONOMI {
   ALTERNATIVE_PRODUKTER_MOTTATT = 'alternative produkter mottatt',
   CLIENT_INFO = 'client info',
   TEMA_BYTTET = 'tema byttet',
+  OVERFØRING_MEDARBEIDER = 'overføring til annen medarbeider',
 }

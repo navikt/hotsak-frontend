@@ -1,7 +1,6 @@
 import { ErrorSummary, Select, Skeleton, Textarea, VStack } from '@navikt/ds-react'
 import { ErrorSummaryItem } from '@navikt/ds-react/ErrorSummary'
 import { useEffect } from 'react'
-
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { useNotater } from '../saksbilde/høyrekolonne/notat/useNotater.tsx'
@@ -14,13 +13,14 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useSak } from '../saksbilde/useSak.ts'
+import { OppgaveV2 } from './oppgaveTypes.ts'
 
-export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
-  const { sakId, open, onClose } = props
+export function OverførOppgaveTilMedarbeiderModal(props: { oppgave: OppgaveV2; open: boolean; onClose(): void }) {
+  const { oppgave, open, onClose } = props
+  const sakId = oppgave.sakId?.toString() ?? ''
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { harUtkast } = useNotater(sakId)
-  const [state, formAction] = useOverførOppgaveTilMedarbeiderActionState(sakId)
+  const [state, formAction] = useOverførOppgaveTilMedarbeiderActionState(sakId, oppgave)
   const { gjeldendeEnhet } = useInnloggetAnsatt()
 
   useEffect(() => {
@@ -88,11 +88,10 @@ export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open:
   )
 }
 
-function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
+function useOverførOppgaveTilMedarbeiderActionState(sakId: string, oppgave: OppgaveV2) {
   const { endreOppgavetildeling } = useOppgaveActions()
   const { showSuccessToast } = useToast()
   const { logOverføringMedarbeider } = useUmami()
-  const { sak } = useSak()
 
   return useFormActionState<
     {
@@ -113,7 +112,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
       })
       await mutateSak(sakId)
       logOverføringMedarbeider({
-        overforingEnhetsnavn: sak?.data.enhet.enhetsnavn || 'ukjent',
+        overforingEnhetsnavn: oppgave.tildeltEnhet.enhetsnavn || 'ukjent',
       })
       showSuccessToast(`Saken er overført`)
       return { success: true }

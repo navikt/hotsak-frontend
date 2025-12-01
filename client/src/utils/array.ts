@@ -2,10 +2,8 @@ export function unique<T>(values: T[]): T[] {
   return [...new Set(values)]
 }
 
-export function uniqueBy<T, K extends keyof T>(items: T[], keySelector: K): T[K][]
-export function uniqueBy<T, R>(items: T[], keySelector: (value: T) => R): R[]
-export function uniqueBy<T, K extends keyof T, R>(items: T[], keySelector: K | ((value: T) => R)): (T[K] | R)[] {
-  return unique(items.map((value) => (typeof keySelector === 'function' ? keySelector(value) : value[keySelector])))
+export function uniqueBy<T, R>(items: T[], selector: (item: T) => R) {
+  return unique(items.map(selector))
 }
 
 export function groupBy<K extends PropertyKey, T>(
@@ -37,24 +35,9 @@ export function natural(a?: string | number, b?: string | number): number {
   return a.toString().localeCompare(b.toString(), 'nb', { numeric: true })
 }
 
-export type Comparator<T> = (a: T, b: T) => number
-
-export function naturalBy<T, K extends keyof T>(valueSelector: K): Comparator<T>
-export function naturalBy<T>(valueSelector: (item: T) => Maybe<string | number>): Comparator<T>
-export function naturalBy<T, K extends keyof T>(
-  valueSelector: K | ((item: T) => Maybe<string | number>)
-): Comparator<T> {
+export function naturalBy<T>(selector: (item: T) => string | number | undefined): (a: T, b: T) => number {
   return (a, b) => {
-    let aValue: Maybe<string | number>
-    let bValue: Maybe<string | number>
-    if (typeof valueSelector === 'function') {
-      aValue = valueSelector(a)
-      bValue = valueSelector(b)
-    } else {
-      aValue = a[valueSelector]?.toString()
-      bValue = b[valueSelector]?.toString()
-    }
-    return natural(aValue, bValue)
+    return natural(selector(a), selector(b))
   }
 }
 

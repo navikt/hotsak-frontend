@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Oppgaveprioritet, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 
 import { natural, notEmpty, uniqueBy } from '../../utils/array.ts'
+import { select } from '../../utils/select.ts'
 
 export interface UniqueOppgaveValues {
   oppgavetyper: Oppgavetype[]
@@ -25,7 +26,7 @@ export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValu
       mapper: uniqueBy(oppgaver, (it) => it.mappenavn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-      prioriteter: uniqueBy(oppgaver, 'prioritet').sort(natural),
+      prioriteter: uniqueBy(oppgaver, select('prioritet')).sort(natural),
       kommuner: uniqueBy(oppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),

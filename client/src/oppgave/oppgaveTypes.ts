@@ -191,9 +191,9 @@ export interface FinnOppgaverResponse extends PageResponse {
   totalPages: number
 }
 
-export enum OppgaveTildeltFilter {
-  ALLE = 'ALLE',
+export enum OppgaveTildelt {
   INGEN = 'INGEN',
+  MEDARBEIDER = 'MEDARBEIDER',
   MEG = 'MEG',
 }
 

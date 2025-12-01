@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 
 import { useArtiklerForOppgave } from '../../oppgave/useArtiklerForOppgave.ts'
 import { naturalBy } from '../../utils/array.ts'
+import { select } from '../../utils/select.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 
 import classes from './OppgaveHjelpemidler.module.css'
@@ -36,7 +37,7 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
               </BodyShort>
               <BodyShort size="small" className={classes.text}>{`${artikkel.antall} stk`}</BodyShort>
               <ul className={classes.delkontrakter}>
-                {artikkel.delkontrakter.toSorted(naturalBy('posttittel')).map((delkontrakt, index) => (
+                {artikkel.delkontrakter.toSorted(naturalBy(select('posttittel'))).map((delkontrakt, index) => (
                   <BodyShort as="li" size="small" key={index}>
                     {`Delkontrakt ${delkontrakt.posttittel} | Rangering: ${delkontrakt.rangering}`}
                   </BodyShort>

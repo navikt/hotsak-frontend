@@ -14,7 +14,7 @@ import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
-import { useOppgave } from './useOppgave.ts'
+import { useSak } from '../saksbilde/useSak.ts'
 
 export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
   const { sakId, open, onClose } = props
@@ -92,7 +92,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
   const { endreOppgavetildeling } = useOppgaveActions()
   const { showSuccessToast } = useToast()
   const { logOverføringMedarbeider } = useUmami()
-  const { oppgave } = useOppgave()
+  const { sak } = useSak()
 
   return useFormActionState<
     {
@@ -113,7 +113,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
       })
       await mutateSak(sakId)
       logOverføringMedarbeider({
-        enhetsnavn: oppgave?.tildeltEnhet.enhetsnavn || '',
+        enhetsnavn: sak?.data.enhet.enhetsnavn || '',
       })
       showSuccessToast(`Saken er overført`)
       return { success: true }

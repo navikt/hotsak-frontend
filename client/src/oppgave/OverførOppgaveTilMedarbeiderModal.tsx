@@ -111,7 +111,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string, enhet: strin
       })
       await mutateSak(sakId)
       logOverføringMedarbeider({
-        enhetsnavn: enhet,
+        tildeltenhetNavn: enhet,
       })
       showSuccessToast(`Saken er overført`)
       return { success: true }

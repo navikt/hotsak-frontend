@@ -37,9 +37,18 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
               </BodyShort>
               <BodyShort size="small" className={classes.text}>{`${artikkel.antall} stk`}</BodyShort>
               <ul className={classes.delkontrakter}>
+                {artikkel.delkontrakter.length === 0 && (
+                  <BodyShort as="li" size="small">
+                    Ikke på avtale
+                  </BodyShort>
+                )}
                 {artikkel.delkontrakter.toSorted(naturalBy(select('posttittel'))).map((delkontrakt, index) => (
                   <BodyShort as="li" size="small" key={index}>
-                    {`Delkontrakt ${delkontrakt.posttittel} | Rangering: ${delkontrakt.rangering}`}
+                    {delkontrakt.rangering === 99 ? (
+                      <>{`Delkontrakt ${delkontrakt.posttittel} | Ingen rangering.`}</>
+                    ) : (
+                      <>{`Delkontrakt ${delkontrakt.posttittel} | Rangering: ${delkontrakt.rangering}`}</>
+                    )}
                   </BodyShort>
                 ))}
               </ul>

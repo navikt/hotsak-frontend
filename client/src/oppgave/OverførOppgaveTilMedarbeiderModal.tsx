@@ -15,11 +15,11 @@ import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
 import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { useUmami } from '../sporing/useUmami.ts'
 
-export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; enhet: string; open: boolean; onClose(): void }) {
-  const { sakId, enhet, open, onClose } = props
+export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open: boolean; onClose(): void }) {
+  const { sakId, open, onClose } = props
   const { behandlere, mutate: mutateBehandlere, isValidating: behandlereIsValidating } = useOppgavebehandlere()
   const { harUtkast } = useNotater(sakId)
-  const [state, formAction] = useOverførOppgaveTilMedarbeiderActionState(sakId, enhet)
+  const [state, formAction] = useOverførOppgaveTilMedarbeiderActionState(sakId)
   const { gjeldendeEnhet } = useInnloggetAnsatt()
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; enhet
   )
 }
 
-function useOverførOppgaveTilMedarbeiderActionState(sakId: string, enhet: string) {
+function useOverførOppgaveTilMedarbeiderActionState(sakId: string) {
   const { endreOppgavetildeling } = useOppgaveActions()
   const { showSuccessToast } = useToast()
   const { logOverføringMedarbeider } = useUmami()
@@ -110,9 +110,7 @@ function useOverførOppgaveTilMedarbeiderActionState(sakId: string, enhet: strin
         overtaHvisTildelt: true,
       })
       await mutateSak(sakId)
-      logOverføringMedarbeider({
-        tildeltenhetNavn: enhet,
-      })
+      logOverføringMedarbeider()
       showSuccessToast(`Saken er overført`)
       return { success: true }
     }

@@ -70,7 +70,6 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
       </ActionMenu>
       <OverførOppgaveTilMedarbeiderModal
         sakId={oppgave.sakId?.toString() ?? ''}
-        enhet={oppgave.tildeltEnhet.enhetsnavn}
         open={visOverførMedarbeider}
         onClose={() => {
           setVisOverførMedarbeider(false)

@@ -20,7 +20,7 @@ export function OppgaveHjelpemidler(props: OppgaveHjelpemidlerProps) {
       {isLoading ? (
         <Loader />
       ) : (
-        <HGrid gap="4" columns="min-content min-content min-content max-content">
+        <HGrid gap="7" columns="min-content min-content min-content max-content">
           {artikler.map((artikkel) => (
             <Fragment key={artikkel.id ?? artikkel.hmsArtNr}>
               <BodyShort size="small">

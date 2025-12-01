@@ -71,6 +71,7 @@ export function SakMenyEksperiment({ spørreundersøkelseId }: SaksbildeMenuProp
       </ActionMenu>
       <OverførOppgaveTilMedarbeiderModal
         sakId={oppgave.sakId?.toString() ?? ''}
+        enhet={oppgave.tildeltEnhet.enhetsnavn}
         open={visOverførMedarbeider}
         onClose={() => {
           setVisOverførMedarbeider(false)

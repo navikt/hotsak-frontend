@@ -165,6 +165,7 @@ export interface OppgaveBruker {
   fnr: string
   navn: Navn
   fulltNavn: string
+  fødselsdato?: string
   kommune?: Kommune
   bydel?: Bydel
   brukernummer?: string

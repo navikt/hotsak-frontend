@@ -36,6 +36,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
       fnr: bruker.fnr,
       navn: bruker.navn,
       fulltNavn: formaterNavn(bruker.navn),
+      fødselsdato: bruker.fødselsdato,
       kommune: bruker.kommune,
       bydel: bruker.bydel,
     },

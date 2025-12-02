@@ -37,10 +37,10 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
   const eksterneOppgaver = useOppgaver({
     tildelt,
     statuskategori: Statuskategori.ÅPEN,
-    page: pageNumber,
-    limit: pageSize,
     sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
     sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
+    page: pageNumber,
+    limit: pageSize,
   })
 
   const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)

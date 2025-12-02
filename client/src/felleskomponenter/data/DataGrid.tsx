@@ -23,7 +23,7 @@ export interface DataGridProps<T extends object> extends TableProps {
   loading?: boolean
 
   keyFactory(row: T): Exclude<Key, bigint>
-  renderContent?(row: T, expanded: boolean): ReactNode
+  renderContent?(row: T, visible: boolean): ReactNode
 }
 
 export function DataGrid<T extends object>(props: DataGridProps<T>) {
@@ -37,7 +37,6 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     renderContent,
     ...tableProps
   } = props
-  const [expanded, setExpanded] = useState<Record<Exclude<Key, bigint>, boolean>>({})
   const colSpan = renderContent ? columns.length + 1 : columns.length
   return (
     <Table {...tableProps}>
@@ -111,15 +110,9 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
 
           if (renderContent) {
             return (
-              <Table.ExpandableRow
-                key={key}
-                content={renderContent(row, expanded[key])}
-                onOpenChange={(value) => {
-                  setExpanded({ ...expanded, [key]: value })
-                }}
-              >
+              <ExpandableRow key={key} renderContent={renderContent} row={row}>
                 {cells}
-              </Table.ExpandableRow>
+              </ExpandableRow>
             )
           } else {
             return <Table.Row key={key}>{cells}</Table.Row>
@@ -127,5 +120,22 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         })}
       </Table.Body>
     </Table>
+  )
+}
+
+function ExpandableRow<T extends object>({
+  renderContent,
+  row,
+  children,
+}: {
+  renderContent: NonNullable<DataGridProps<T>['renderContent']>
+  row: T
+  children: ReactNode
+}) {
+  const [visible, setVisible] = useState<boolean>(false)
+  return (
+    <Table.ExpandableRow content={renderContent(row, visible)} open={visible} onOpenChange={setVisible}>
+      {children}
+    </Table.ExpandableRow>
   )
 }

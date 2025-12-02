@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { HttpError } from '../../io/HttpError.ts'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { useOppgaver, type UseOppgaverRequest } from '../../oppgave/useOppgaver.ts'
+import { useOppgaver } from '../../oppgave/useOppgaver.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
 import { OppgaveFilter as OppgaveFilterType, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
@@ -34,32 +34,13 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     sort,
   } = useOppgaveFilterContext()
 
-  let sorteringsfelt: UseOppgaverRequest['sorteringsfelt']
-  switch (sort.orderBy) {
-    case 'fristFerdigstillelse':
-      sorteringsfelt = 'FRIST'
-      break
-    case 'opprettetTidspunkt':
-      sorteringsfelt = 'OPPRETTET_TIDSPUNKT'
-      break
-  }
-  let sorteringsrekkefølge: UseOppgaverRequest['sorteringsrekkefølge']
-  switch (sort.direction) {
-    case 'ascending':
-      sorteringsrekkefølge = 'ASC'
-      break
-    case 'descending':
-      sorteringsrekkefølge = 'DESC'
-      break
-  }
-
   const eksterneOppgaver = useOppgaver({
     tildelt,
     statuskategori: Statuskategori.ÅPEN,
     page: pageNumber,
     limit: pageSize,
-    sorteringsfelt,
-    sorteringsrekkefølge,
+    sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
+    sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
   })
 
   const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)

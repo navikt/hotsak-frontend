@@ -13,7 +13,7 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
   lastInnFlere(): Promise<FinnOppgaverResponse[] | undefined>
 }
 
-export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
+export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
   const {
     filters: { oppgavetypeFilter, behandlingstemaFilter },
     sort,

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { HttpError } from '../../io/HttpError.ts'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { useOppgaver } from '../../oppgave/useOppgaver.ts'
+import { useOppgaver, type UseOppgaverRequest } from '../../oppgave/useOppgaver.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
 import { OppgaveFilter as OppgaveFilterType, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
@@ -22,15 +22,6 @@ export interface UseClientSideOppgaverResponse {
 }
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
-  const eksterneOppgaver = useOppgaver({
-    tildelt,
-    statuskategori: Statuskategori.ÅPEN,
-    page: pageNumber,
-    limit: pageSize,
-  })
-
-  const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)
-
   const {
     filters: {
       oppgavetypeFilter,
@@ -43,6 +34,36 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     sort,
   } = useOppgaveFilterContext()
 
+  let sorteringsfelt: UseOppgaverRequest['sorteringsfelt']
+  switch (sort.orderBy) {
+    case 'fristFerdigstillelse':
+      sorteringsfelt = 'FRIST'
+      break
+    case 'opprettetTidspunkt':
+      sorteringsfelt = 'OPPRETTET_TIDSPUNKT'
+      break
+  }
+  let sorteringsrekkefølge: UseOppgaverRequest['sorteringsrekkefølge']
+  switch (sort.direction) {
+    case 'ascending':
+      sorteringsrekkefølge = 'ASC'
+      break
+    case 'descending':
+      sorteringsrekkefølge = 'DESC'
+      break
+  }
+
+  const eksterneOppgaver = useOppgaver({
+    tildelt,
+    statuskategori: Statuskategori.ÅPEN,
+    page: pageNumber,
+    limit: pageSize,
+    sorteringsfelt,
+    sorteringsrekkefølge,
+  })
+
+  const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)
+
   const alleOppgaver = useMemo(() => {
     return (eksterneOppgaver.data?.oppgaver ?? []).concat(journalføringsoppgaver.data?.oppgaver ?? [])
   }, [eksterneOppgaver.data?.oppgaver, journalføringsoppgaver.data?.oppgaver])
@@ -50,12 +71,12 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
   const filtrerteOppgaver = useMemo(() => {
     return alleOppgaver
       .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
-      .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen'))
-      .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen'))
-      .filter(oneOf(mappeFilter, (it) => it.mappenavn ?? 'Ingen'))
+      .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term || 'Ingen'))
+      .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term || 'Ingen'))
+      .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
       .filter(oneOf(prioritetFilter, select('prioritet')))
-      .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn ?? 'Ingen'))
-      .toSorted(compareBy(sort.orderBy as any, sort.direction)) // fixme
+      .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
+      .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
   }, [
     alleOppgaver,
     oppgavetypeFilter,

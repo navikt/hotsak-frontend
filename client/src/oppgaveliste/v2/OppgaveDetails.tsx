@@ -3,6 +3,7 @@ import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
 import { oppgaveIdUtenPrefix, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { Sakstype } from '../../types/types.internal.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
@@ -28,7 +29,9 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
           </OppgaveDetailsItem>
         )}
         {oppgave.sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={oppgave.sak?.søknadGjelder} />}
-        <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />
+        {oppgave.sak?.sakstype !== Sakstype.BARNEBRILLER && (
+          <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />
+        )}
         <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
       </VStack>
       <Eksperiment>

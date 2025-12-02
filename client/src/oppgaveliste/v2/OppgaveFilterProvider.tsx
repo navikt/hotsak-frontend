@@ -4,7 +4,13 @@ import { type OppgaveSortState } from '../../oppgave/oppgaveTypes.ts'
 import { useLocalState } from '../../state/useLocalState.ts'
 import { initialState, type OppgaveFilter, OppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
-export function OppgaveFilterProvider({ suffix, children }: { suffix: 'Mine' | 'Kø'; children: ReactNode }) {
+export function OppgaveFilterProvider({
+  suffix,
+  children,
+}: {
+  suffix: 'Mine' | 'Kø' | 'Medarbeiders'
+  children: ReactNode
+}) {
   const key = (key: string) => key + suffix
 
   const filters = initialState.filters

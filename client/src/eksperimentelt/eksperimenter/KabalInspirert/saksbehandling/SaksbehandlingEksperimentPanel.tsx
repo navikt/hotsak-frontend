@@ -24,6 +24,12 @@ import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
+import { useBehandling } from './behandling/useBehandling.ts'
+import { UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
+
+interface VedtakFormValues {
+  problemsammendrag: string
+}
 
 export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { behovsmelding } = useBehovsmelding()
@@ -50,16 +56,13 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     behandlingPanel,
     oppgaveFerdigstilt,
     setOppgaveFerdigstilt,
-    vedtaksResultat,
-    lagretResultat,
     brevEksisterer,
     brevFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
   const { showSuccessToast } = useToast()
 
-  interface VedtakFormValues {
-    problemsammendrag: string
-  }
+  const { gjeldendeBehandling } = useBehandling()
+  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -158,17 +161,19 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 variant="primary"
                 size="small"
                 onClick={() => {
-                  if (!lagretResultat) {
+                  if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
                   } else if (
-                    lagretResultat &&
-                    ((vedtaksResultat != 'INNVILGET' && (!brevEksisterer || !brevFerdigstilt)) ||
-                      (vedtaksResultat == 'INNVILGET' && brevEksisterer && !brevFerdigstilt))
+                    // TODO, mer typesikkert ved å sjekke uttall.type
+                    (vedtaksResultat !== VedtaksResultat.INNVILGET && (!brevEksisterer || !brevFerdigstilt)) ||
+                    (vedtaksResultat === VedtaksResultat.INNVILGET && brevEksisterer && !brevFerdigstilt)
                   ) {
                     setVisBrevMangler(true)
                   } else {
                     setVisFerdigstillModal(true)
                   }
+
+                  // TODO: Hva med notatutkast? Skal vi legge inn det som en gjenstående greie også?
                   //if (harNotatUtkast) {
                   //setSubmitAttempt(true)
                   //} else {
@@ -177,20 +182,20 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 Fatt vedtak
               </Button>
             )}
-            {oppgaveFerdigstilt && vedtaksResultat && (
+            {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst === UtfallLåst.FERDIGSTILT && (
               <HStack gap="space-12" align="center">
                 <Tag
                   variant={
-                    oppgaveFerdigstilt && vedtaksResultat == 'INNVILGET'
+                    oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.INNVILGET
                       ? 'success-moderate'
-                      : oppgaveFerdigstilt && vedtaksResultat == 'DELVIS_INNVILGET'
+                      : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.DELVIS_INNVILGET
                         ? 'warning-moderate'
-                        : oppgaveFerdigstilt && vedtaksResultat == 'AVSLÅTT'
+                        : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.AVSLÅTT
                           ? 'error-moderate'
                           : 'neutral-moderate'
                   }
                 >
-                  {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
+                  {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
                 </Tag>
                 <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterTidsstempelLesevennlig(sak?.vedtak?.vedtaksdato)}`}</Tekst>
               </HStack>
@@ -218,7 +223,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
           <>
             <Brødtekst spacing>
               Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det
-              krav om at manunderetter brukeren med brev.
+              krav om at man underetter brukeren med brev.
             </Brødtekst>
             <Brødtekst spacing>
               Velg "Opprett vedtaksbrev", rediger brevet, og merk så brevet som klart ved å klikke "Ferdigstill utkast".
@@ -236,9 +241,9 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       <BekreftelseModal
         heading={
           'Vil du ' +
-          (vedtaksResultat == 'DELVIS_INNVILGET'
+          (vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET
             ? 'delvis innvilge'
-            : vedtaksResultat == 'AVSLÅTT'
+            : vedtaksResultat == VedtaksResultat.AVSLÅTT
               ? 'avslå'
               : 'innvilge') +
           ' søknaden?'
@@ -247,22 +252,22 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
         open={visFerdigstillModal}
         width="700px"
         bekreftButtonLabel={
-          (vedtaksResultat == 'DELVIS_INNVILGET'
+          (vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
             ? 'Delvis innvilg'
-            : vedtaksResultat == 'AVSLÅTT'
+            : vedtaksResultat === VedtaksResultat.AVSLÅTT
               ? 'Avslå'
               : 'Innvilg') + ' søknaden'
         }
         onBekreft={form.handleSubmit(fattVedtak)}
         onClose={() => setVisFerdigstillModal(false)}
       >
-        {vedtaksResultat != 'AVSLÅTT' && (
+        {vedtaksResultat !== VedtaksResultat.AVSLÅTT && (
           <>
             <Brødtekst spacing>
-              Når du {vedtaksResultat == 'DELVIS_INNVILGET' ? 'delvis innvilger' : 'innvilger'} søknaden vil det
-              opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
+              Når du {vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET ? 'delvis innvilger' : 'innvilger'} søknaden
+              vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
             </Brødtekst>
-            {vedtaksResultat == 'DELVIS_INNVILGET' && (
+            {vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET && (
               <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
                 Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
                 oppretter ordre.
@@ -288,7 +293,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
             </FormProvider>
           </>
         )}
-        {vedtaksResultat == 'AVSLÅTT' && (
+        {vedtaksResultat == VedtaksResultat.AVSLÅTT && (
           <>
             <Brødtekst spacing>
               Når du avslår søknaden vil det naturligvis ikke opprettes en serviceforespørsel (SF) i OeBS. Bruker

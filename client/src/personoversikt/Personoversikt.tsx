@@ -11,7 +11,6 @@ import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
-import { formaterNavn } from '../utils/formater.ts'
 import { HjelpemiddeloversiktTabell } from './HjelpemiddeloversiktTabell'
 import { usePersonContext } from './PersonContext'
 import { Saksoversikt } from './Saksoversikt'
@@ -46,7 +45,7 @@ function PersonoversiktContent() {
 
   return (
     <>
-      <title>{`Hotsak - Personoversikt ${formaterNavn(personInfo)}`}</title>
+      <title>{`Hotsak - Personoversikt`}</title>
       <Skjermlesertittel>Personoversikt</Skjermlesertittel>
       {personInfoLoading ? (
         <LasterPersonoversikt />

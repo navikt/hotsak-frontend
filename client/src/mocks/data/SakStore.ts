@@ -55,10 +55,22 @@ import {
 import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
+import {
+  Behandling,
+  Gjenstående,
+  LagreBehandlingRequest,
+  UtfallLåst,
+  VedtaksResultat,
+} from '../../types/behandlingTyper.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
   id: string
+}
+
+type InsertBehandling = Omit<LagretBehandling, 'behandlingId'>
+interface LagretBehandling extends Behandling {
+  sakId: string
 }
 type InsertSaksdokument = Omit<LagretSaksdokument, 'id'>
 
@@ -70,6 +82,7 @@ export class SakStore extends Dexie {
   private readonly vilkår!: Table<LagretVilkår, number, InsertVilkår>
   private readonly vilkårsgrunnlag!: Table<LagretVilkårsgrunnlag, string>
   private readonly vilkårsvurderinger!: Table<LagretVilkårsvurdering, string>
+  private readonly behandlinger!: Table<LagretBehandling, number, InsertBehandling>
 
   constructor(
     private readonly behovsmeldingStore: BehovsmeldingStore,
@@ -83,6 +96,7 @@ export class SakStore extends Dexie {
       hendelser: '++id,sakId',
       saker: 'sakId,bruker.fnr',
       saksdokumenter: '++id,sakId',
+      behandlinger: '++behandlingId,sakId',
       vilkår: '++id,vilkårsvurderingId',
       vilkårsgrunnlag: 'sakId',
       vilkårsvurderinger: 'id,sakId',
@@ -210,6 +224,50 @@ export class SakStore extends Dexie {
     return sak
   }
 
+  async opprettBehandling(sakId: string, request: LagreBehandlingRequest) {
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
+
+    const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
+
+    const behandlingId = await this.behandlinger.put({
+      oppgaveId: '',
+      gjenstående: gjenstående,
+      utførtAv: saksbehandler,
+      utfall: request.utfall,
+      sakId,
+    })
+
+    return behandlingId
+  }
+
+  async lagreBehandling(behandlingId: string | number, request: LagreBehandlingRequest) {
+    behandlingId = Number(behandlingId)
+
+    const behandling = await this.behandlinger.get(behandlingId)
+    const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
+
+    this.behandlinger.update(behandlingId, {
+      ...behandling,
+      utfall: request.utfall,
+      gjenstående: request.utfall ? gjenstående : [Gjenstående.UTFALL_MANGLER],
+    })
+
+    return behandlingId
+  }
+
+  async ferdigstillBehandling(sakId: string) {
+    const behandlinger = await this.hentBehandlinger(sakId)
+
+    if (behandlinger.length > 0) {
+      const gjeldendeBehandling = behandlinger[0]
+      this.behandlinger.update(gjeldendeBehandling.behandlingId, {
+        ...gjeldendeBehandling,
+        utfallLåst: UtfallLåst.FERDIGSTILT,
+        ferdigstiltTidspunkt: nåIso(),
+      })
+    }
+  }
+
   async lagreHendelse(sakId: string, hendelse: string, detaljer?: string) {
     const { navn: bruker } = await this.saksbehandlerStore.innloggetSaksbehandler()
     return this.hendelser.put({
@@ -219,6 +277,10 @@ export class SakStore extends Dexie {
       detaljer,
       bruker,
     })
+  }
+
+  async hentBehandlinger(sakId: string) {
+    return this.behandlinger.where('sakId').equals(sakId).toArray()
   }
 
   async hentHendelser(sakId: string) {

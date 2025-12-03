@@ -13,7 +13,7 @@ import { associateBy } from '../../utils/array.ts'
 import { type StoreHandlersFactory } from '../data'
 import { hentJournalførteNotater } from '../data/journalførteNotater'
 import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.ts'
-import { type SakParams } from './params'
+import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
   respondForbidden,
@@ -22,6 +22,7 @@ import {
   respondNotFound,
   respondUnauthorized,
 } from './response'
+import { BehandlingerResponse, LagreBehandlingRequest } from '../../types/behandlingTyper.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   endreHjelpemiddelStore,
@@ -124,6 +125,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ params }) => {
     const sakId = params.sakId
     await sakStore.fattVedtak(sakId)
+    await sakStore.ferdigstillBehandling(sakId)
     return respondNoContent()
   }),
 
@@ -205,5 +207,18 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   http.put<SakParams, EndreHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {
     await endreHjelpemiddelStore.endreHjelpemiddel(params.sakId, await request.json())
     return respondNoContent()
+  }),
+  http.post<SakParams, LagreBehandlingRequest>('/api/sak/:sakId/behandling', async ({ params, request }) => {
+    await sakStore.opprettBehandling(params.sakId, await request.json())
+  }),
+  http.put<BehandlingParams, LagreBehandlingRequest>(
+    '/api/sak/:sakId/behandling/:behandlingId',
+    async ({ params, request }) => {
+      await sakStore.lagreBehandling(params.behandlingId, await request.json())
+    }
+  ),
+  http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+    return HttpResponse.json({ behandlinger })
   }),
 ]

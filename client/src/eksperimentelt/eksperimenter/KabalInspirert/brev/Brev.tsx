@@ -1,5 +1,5 @@
 import './Brev.less'
-import { ActionMenu, Alert, Button, HStack, Loader } from '@navikt/ds-react'
+import { ActionMenu, Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
 import useSWR from 'swr'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { useEffect, useMemo, useState } from 'react'
@@ -11,20 +11,24 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
 import { useBrev } from '../../../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { Brevtype, RessursStatus } from '../../../../types/types.internal.ts'
-import { Etikett } from '../../../../felleskomponenter/typografi.tsx'
+import { Etikett, Tekst, TextContainer } from '../../../../felleskomponenter/typografi.tsx'
+import { useBehandling } from '../saksbehandling/behandling/useBehandling.ts'
+import { VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
   const {
     opprettBrevKlikket,
     setOpprettBrevKlikket,
-    vedtaksResultat,
-    lagretResultat,
     setBrevKolonne,
     setBrevEksisterer,
     setBrevFerdigstilt,
     oppgaveFerdigstilt,
   } = useSaksbehandlingEksperimentContext()
+
+  const { gjeldendeBehandling } = useBehandling()
+  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
+
   const brevutkast = useSWR<
     {
       error?: string
@@ -43,11 +47,11 @@ export const Brev = () => {
 
   const malKey =
     errorEr404 && opprettBrevKlikket
-      ? lagretResultat && vedtaksResultat == 'INNVILGET'
+      ? vedtaksResultat === VedtaksResultat.INNVILGET
         ? 'innvilgelse'
-        : lagretResultat && vedtaksResultat == 'DELVIS_INNVILGET'
+        : vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
           ? 'delvis-innvilgelse-bruker-har-ikke-rett'
-          : lagretResultat && vedtaksResultat == 'AVSLÅTT'
+          : vedtaksResultat === VedtaksResultat.AVSLÅTT
             ? 'avslag-bruker-har-ikke-rett'
             : undefined
       : undefined
@@ -84,7 +88,12 @@ export const Brev = () => {
   } else if (brevutkast.error) {
     return (
       <div style={{ textAlign: 'center', padding: '2em' }}>
-        <Alert variant="warning">Får ikke kontakt med tjeneren, brev ikke tilgjengelig. Prøv igjen senere.</Alert>
+        <LocalAlert status="warning">
+          <LocalAlert.Title>Feil med lagring av utkast</LocalAlert.Title>
+          <LocalAlert.Content>
+            Får ikke kontakt med tjeneren, brev ikke tilgjengelig. Prøv igjen senere.
+          </LocalAlert.Content>
+        </LocalAlert>
       </div>
     )
   }
@@ -138,10 +147,19 @@ export const Brev = () => {
     <>
       {errorEr404 && valgtMal === undefined && malKey === undefined && (
         <div style={{ padding: '1em' }}>
-          <Alert variant="info" size="small">
-            I fremtiden vil man kunne opprette brev underveis i saken her. For nå må du sette et vedtaksresultat i
-            behandlingspanelet og velge om du vil opprette vedtaksbrev der.
-          </Alert>
+          <TextContainer>
+            <InfoCard data-color="info" size="small">
+              <InfoCard.Header>
+                <InfoCard.Title>Ingen mal valgt for brevutkast</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <Tekst>
+                  I fremtiden vil man kunne opprette brev underveis i saken her. For nå må du sette et vedtaksresultat i
+                  behandlingspanelet og velge om du vil opprette vedtaksbrev der.
+                </Tekst>
+              </InfoCard.Content>
+            </InfoCard>
+          </TextContainer>
         </div>
       )}
       {errorEr404 && valgtMal === undefined && malKey !== undefined && (

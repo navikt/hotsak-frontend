@@ -1,56 +1,28 @@
-import { Button } from '@navikt/ds-react'
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useMemo } from 'react'
 
 import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
+import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { oppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
-export interface EnhetensOppgaverTableProps {
+export interface MedarbeidersOppgaverTableProps {
   oppgaver: OppgaveV2[]
   loading?: boolean
 }
 
-export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
+export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps) {
   const { oppgaver, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
-  const navigate = useNavigate()
-  const [valgte, setValgte] = useState<Record<OppgaveId, boolean>>({})
 
   const columns: DataGridColumn<OppgaveV2>[] = useMemo(
     () => [
       {
-        field: 'knapp',
+        field: 'saksbehandler',
+        header: 'Saksbehandler',
         width: 150,
-        renderCell(row) {
-          return (
-            <>
-              {valgte[row.oppgaveId] ? (
-                <Button
-                  size="xsmall"
-                  type="button"
-                  variant="tertiary"
-                  onClick={() => navigate(`/oppgave/${row.oppgaveId}`)}
-                >
-                  Åpne oppgave
-                </Button>
-              ) : (
-                <TaOppgaveButton
-                  size="xsmall"
-                  variant="tertiary"
-                  oppgave={row}
-                  onOppgavetildeling={(id) => {
-                    setValgte({ ...valgte, [id]: true })
-                  }}
-                >
-                  Tildel meg
-                </TaOppgaveButton>
-              )}
-            </>
-          )
+        renderCell(row: OppgaveV2) {
+          return <>{row.tildeltSaksbehandler?.navn ?? 'Ukjent'}</>
         },
       },
       oppgaveColumns.oppgavetype,
@@ -64,7 +36,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       oppgaveColumns.bruker,
       oppgaveColumns.kommune,
     ],
-    [navigate, valgte]
+    []
   )
 
   return (

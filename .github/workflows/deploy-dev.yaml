@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - hotbff
+      - umamiLogging
 
 jobs:
   test:

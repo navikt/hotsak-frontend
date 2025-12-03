@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns'
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
 import { OppgaveprioritetLabel, OppgavetypeLabel, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { storForbokstavIOrd } from '../../utils/formater.ts'
+import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 
 import classes from './oppgaveColumns.module.css'
 
@@ -128,7 +128,7 @@ export const oppgaveColumns = {
       if (!bruker) {
         return null
       }
-      return <>{`${bruker.fnr} | ${bruker.fulltNavn}`}</>
+      return <>{`${formaterFødselsnummer(bruker.fnr)} | ${bruker.fulltNavn}`}</>
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>

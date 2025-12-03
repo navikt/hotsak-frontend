@@ -18,7 +18,7 @@ export function useUmami() {
     checkReady()
   }, [])
 
-  const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data: object) => {
+  const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data?: object) => {
     if (typeof window !== 'undefined' && window.umami) {
       window.umami.track(navn, {
         appnavn: 'hotsak',
@@ -54,5 +54,9 @@ export function useUmami() {
     logUmamiHendelse(UMAMI_TAKSONOMI.TEMA_BYTTET, data)
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, logTemaByttet, isReady }
+  const logOverføringMedarbeider = () => {
+    logUmamiHendelse(UMAMI_TAKSONOMI.OVERFØRING_MEDARBEIDER)
+  }
+
+  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, logTemaByttet, logOverføringMedarbeider, isReady }
 }

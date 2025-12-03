@@ -2,7 +2,7 @@ import useSWRInfinite, { type SWRInfiniteKeyedMutator } from 'swr/infinite'
 
 import { createUrl } from '../../io/HttpClient.ts'
 import type { HttpError } from '../../io/HttpError.ts'
-import { FinnOppgaverResponse, OppgaveTildeltFilter, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { FinnOppgaverResponse, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
@@ -13,7 +13,7 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
   lastInnFlere(): Promise<FinnOppgaverResponse[] | undefined>
 }
 
-export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
+export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
   const {
     filters: { oppgavetypeFilter, behandlingstemaFilter },
     sort,
@@ -41,7 +41,7 @@ export function useEnhetensOppgaver(pageSize: number): UseEnhetensOppgaverRespon
           break
       }
       return createUrl('/api/oppgaver-v2', {
-        tildelt: OppgaveTildeltFilter.INGEN,
+        tildelt: OppgaveTildelt.INGEN,
         statuskategori: Statuskategori.ÅPEN,
         oppgavetype: oppgavetypeFilter.values,
         gjelder: behandlingstemaFilter.values,

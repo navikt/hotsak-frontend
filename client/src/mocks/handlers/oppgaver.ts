@@ -51,6 +51,8 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
         oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler?.id === meg.id)
       } else if (tildelt === 'INGEN') {
         oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler == null)
+      } else if (tildelt === 'MEDARBEIDER') {
+        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler != null)
       }
       const totalElements = oppgaver.length
       const pagedOppgaver: FinnOppgaverResponse = {

@@ -165,6 +165,7 @@ export interface OppgaveBruker {
   fnr: string
   navn: Navn
   fulltNavn: string
+  fødselsdato?: string
   kommune?: Kommune
   bydel?: Bydel
   brukernummer?: string
@@ -191,9 +192,9 @@ export interface FinnOppgaverResponse extends PageResponse {
   totalPages: number
 }
 
-export enum OppgaveTildeltFilter {
-  ALLE = 'ALLE',
+export enum OppgaveTildelt {
   INGEN = 'INGEN',
+  MEDARBEIDER = 'MEDARBEIDER',
   MEG = 'MEG',
 }
 

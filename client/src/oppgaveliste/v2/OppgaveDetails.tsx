@@ -3,7 +3,8 @@ import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
 import { oppgaveIdUtenPrefix, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { formaterNavn } from '../../utils/formater.ts'
+import { Sakstype } from '../../types/types.internal.ts'
+import { formaterFødselsnummer, formaterNavn } from '../../utils/formater.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
@@ -22,13 +23,15 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
           <OppgaveDetailsItem label="Bruker">
             <HStack gap="3">
               <BodyShort size="small">{formaterNavn(oppgave.bruker.navn)}</BodyShort>
-              <BodyShort size="small">{oppgave.bruker.fnr}</BodyShort>
+              <BodyShort size="small">{formaterFødselsnummer(oppgave.bruker.fnr)}</BodyShort>
               {oppgave.bruker.brukernummer && <BodyShort size="small">{oppgave.bruker.brukernummer}</BodyShort>}
             </HStack>
           </OppgaveDetailsItem>
         )}
         {oppgave.sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={oppgave.sak?.søknadGjelder} />}
-        <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />
+        {oppgave.sak?.sakstype !== Sakstype.BARNEBRILLER && (
+          <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />
+        )}
         <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
       </VStack>
       <Eksperiment>

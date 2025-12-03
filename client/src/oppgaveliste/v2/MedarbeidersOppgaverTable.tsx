@@ -1,3 +1,4 @@
+import { BodyShort } from '@navikt/ds-react'
 import { useMemo } from 'react'
 
 import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
@@ -5,6 +6,8 @@ import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { oppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+
+import classes from './MedarbeidersOppgaverTable.module.css'
 
 export interface MedarbeidersOppgaverTableProps {
   oppgaver: OppgaveV2[]
@@ -22,7 +25,11 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
         header: 'Saksbehandler',
         width: 150,
         renderCell(row: OppgaveV2) {
-          return <>{row.tildeltSaksbehandler?.navn ?? 'Ukjent'}</>
+          return (
+            <BodyShort as="span" size="small" className={classes.saksbehandler}>
+              {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
+            </BodyShort>
+          )
         },
       },
       oppgaveColumns.oppgavetype,

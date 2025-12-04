@@ -6,15 +6,12 @@ WORKDIR /app
 COPY server ./
 RUN go test -v ./... && go build .
 
-# npm setup
-FROM node:lts-alpine AS node
+# build client
+FROM node:lts-alpine AS client-builder
+ENV HUSKY=0
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
 RUN npm config set @navikt:registry=https://npm.pkg.github.com
-
-# build client
-FROM node AS client-builder
-ENV HUSKY=0
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 RUN npm ci

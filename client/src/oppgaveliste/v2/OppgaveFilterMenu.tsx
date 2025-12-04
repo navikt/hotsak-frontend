@@ -19,11 +19,7 @@ export function OppgaveFilterMenu(props: OppgaveFilterMenuProps) {
       <ActionMenu.Content>
         <ActionMenu.Group label="Vis filter for">
           {filters.map((filter) => (
-            <ActionMenu.CheckboxItem
-              key={filter.displayName}
-              checked={filter.enabled}
-              onCheckedChange={filter.setEnabled}
-            >
+            <ActionMenu.CheckboxItem key={filter.key} checked={filter.enabled} onCheckedChange={filter.setEnabled}>
               {filter.displayName}
             </ActionMenu.CheckboxItem>
           ))}

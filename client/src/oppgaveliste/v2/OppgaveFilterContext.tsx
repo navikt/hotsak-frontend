@@ -21,6 +21,7 @@ interface OppgaveFilterContextType {
     mappeFilter: OppgaveFilter
     prioritetFilter: OppgaveFilter<Oppgaveprioritet>
     kommuneFilter: OppgaveFilter
+    saksbehandlerFilter: OppgaveFilter
 
     clear(): void
   }
@@ -82,6 +83,14 @@ export const initialState: OppgaveFilterContextType = {
     kommuneFilter: {
       key: 'kommuner',
       displayName: 'Kommune',
+      values: [],
+      enabled: false,
+      setValues() {},
+      setEnabled() {},
+    },
+    saksbehandlerFilter: {
+      key: 'saksbehandlere',
+      displayName: 'Saksbehandler',
       values: [],
       enabled: false,
       setValues() {},

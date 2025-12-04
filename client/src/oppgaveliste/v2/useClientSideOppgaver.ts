@@ -30,6 +30,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
       mappeFilter,
       prioritetFilter,
       kommuneFilter,
+      saksbehandlerFilter,
     },
     sort,
   } = useOppgaveFilterContext()
@@ -57,6 +58,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
       .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
       .filter(oneOf(prioritetFilter, select('prioritet')))
       .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
+      .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
       .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
   }, [
     alleOppgaver,
@@ -66,6 +68,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     mappeFilter,
     prioritetFilter,
     kommuneFilter,
+    saksbehandlerFilter,
     sort,
   ])
 

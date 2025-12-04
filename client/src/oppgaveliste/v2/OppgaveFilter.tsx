@@ -1,4 +1,4 @@
-import { HStack } from '@navikt/ds-react'
+import { BodyShort, HStack, VStack } from '@navikt/ds-react'
 import { type FormEventHandler, useMemo } from 'react'
 
 import { FilterChips } from '../../felleskomponenter/filter/FilterChips.tsx'
@@ -39,11 +39,12 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
           )}
         </HStack>
       )}
-      <HStack gap="5">
+      <VStack gap="3">
         {allFilters
           .filter((filter) => filter.enabled)
           .map((filter) => (
-            <div key={filter.key}>
+            <HStack key={filter.key} gap="3" align="center">
+              <BodyShort size="small">{filter.displayName}:</BodyShort>
               <FilterChips
                 labels={labels[filter.key]}
                 options={rest[filter.key] ?? noOptions}
@@ -53,9 +54,9 @@ export function OppgaveFilter(props: OppgaveFilterProps) {
                 checkmark
                 multiple
               />
-            </div>
+            </HStack>
           ))}
-      </HStack>
+      </VStack>
     </>
   )
 }

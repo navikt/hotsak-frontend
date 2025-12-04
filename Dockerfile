@@ -1,3 +1,5 @@
+ARG CACHE_BUST=1
+
 FROM node:lts-alpine AS node
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)

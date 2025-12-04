@@ -20,6 +20,7 @@ export function OppgaveFilterProvider({
   const mappeFilter = useOppgaveFilterState(key('mappeFilter'), filters.mappeFilter)
   const prioritetFilter = useOppgaveFilterState(key('prioritetFilter'), filters.prioritetFilter)
   const kommuneFilter = useOppgaveFilterState(key('kommuneFilter'), filters.kommuneFilter)
+  const saksbehandlerFilter = useOppgaveFilterState(key('saksbehandlerFilter'), filters.saksbehandlerFilter)
 
   const [currentPage, setCurrentPage] = useLocalState(key('OppgaveCurrentPage'), initialState.currentPage)
   const [sort, setSort] = useLocalState<OppgaveSortState>(key('OppgaveSort'), initialState.sort)
@@ -38,6 +39,7 @@ export function OppgaveFilterProvider({
         mappeFilter,
         prioritetFilter,
         kommuneFilter,
+        saksbehandlerFilter,
 
         clear,
       },
@@ -53,6 +55,7 @@ export function OppgaveFilterProvider({
     mappeFilter,
     prioritetFilter,
     kommuneFilter,
+    saksbehandlerFilter,
     clear,
     currentPage,
     setCurrentPage,

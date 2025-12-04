@@ -11,6 +11,7 @@ export interface UniqueOppgaveValues {
   mapper: string[]
   prioriteter: Oppgaveprioritet[]
   kommuner: string[]
+  saksbehandlere: string[]
 }
 
 export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValues {
@@ -28,6 +29,9 @@ export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValu
         .sort(natural),
       prioriteter: uniqueBy(oppgaver, select('prioritet')).sort(natural),
       kommuner: uniqueBy(oppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
+      saksbehandlere: uniqueBy(oppgaver, (it) => it.tildeltSaksbehandler?.navn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
     }

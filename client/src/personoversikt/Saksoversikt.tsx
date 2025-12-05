@@ -104,6 +104,10 @@ export function Saksoversikt(props: SaksoversiktProps) {
         field: 'sakEllerKravId',
         header: 'Saksnummer',
         width: 80,
+        renderCell(row) {
+          if (erSaksoversiktBarnebrillekrav(row)) return row.kravId
+          return row.sakId
+        },
       },
     ]
   }, [])

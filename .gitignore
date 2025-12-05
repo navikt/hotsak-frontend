@@ -33,3 +33,6 @@ client/cypress/fixtures/example.json
 server/secure.log
 
 *.tsbuildinfo
+
+package-lock.json
+yarn.lock

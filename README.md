@@ -9,7 +9,7 @@ For installere alle avhengigheter i prosjektet kan du kjøre:
 
 ```bash
 cd client
-npm install
+pnpm install
 ```
 
 ### Server
@@ -28,7 +28,7 @@ For å kjøre lokalt kan du kjøre:
 
 ```bash
 cd client
-npm run dev
+pnpm run dev
 ```
 
 MSW brukes da for å interecepte request-er til API-et.
@@ -37,8 +37,8 @@ MSW brukes da for å interecepte request-er til API-et.
 
 Vi bruker Cypress sammen med MSW for å kjøre testene våre:
 
-- Kjør cypress-tester i nettleser: start appen med `npm run dev`, deretter `npm run cypress:open` i en annen terminal.
-- Kjør cypress-tester i headless nettleser: start appen med `npm run dev`, deretter `npm run cypress:run` i en annen
+- Kjør cypress-tester i nettleser: start appen med `pnpm run dev`, deretter `pnpm run cypress:open` i en annen terminal.
+- Kjør cypress-tester i headless nettleser: start appen med `pnpm run dev`, deretter `pnpm run cypress:run` i en annen
   terminal.
 
 Tester kjøres også automatisk i GitHub Actions ved push.

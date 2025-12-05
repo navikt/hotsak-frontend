@@ -8,13 +8,13 @@ RUN go test -v ./... && go build .
 FROM node:lts-alpine AS client-builder
 ENV HUSKY=0
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
-RUN npm config set @navikt:registry=https://npm.pkg.github.com
+    pnpm config set //pnpm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
+RUN pnpm config set @navikt:registry=https://pnpm.pkg.github.com
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
-RUN npm ci
+RUN pnpm ci
 COPY client .
-RUN npm run test:ci && npm run build
+RUN pnpm run test:ci && pnpm run build
 
 # runtime
 FROM gcr.io/distroless/static-debian12 AS runtime

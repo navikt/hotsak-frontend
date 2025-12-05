@@ -32,6 +32,8 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
+            with: 
+                build_args: CACHE_BUST=${{ inputs.cachekey }}
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:
@@ -76,7 +78,6 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: ${{ env.VERSION_TAG }}
           build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
-          build_args: CACHE_BUST=${{ inputs.cachekey }}
 
       - name: Definer release tag
         id: version-tag

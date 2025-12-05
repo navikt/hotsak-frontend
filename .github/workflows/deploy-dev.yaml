@@ -9,7 +9,6 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - umamiLogging
 
 jobs:
   test:

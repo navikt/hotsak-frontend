@@ -1,5 +1,3 @@
-ARG CACHE_BUST=1
-
 # build server
 FROM golang:1.25.1-alpine AS server-builder
 WORKDIR /app

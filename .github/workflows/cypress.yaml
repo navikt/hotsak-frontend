@@ -12,8 +12,8 @@ jobs:
 
       - name: Autentiser med GitHub PNPM registry
         run: |
-          echo "//pnpm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.pnpmrc
-          echo "@navikt:registry=https://pnpm.pkg.github.com" >> ~/.pnpmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.pnpmrc
+          echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.pnpmrc
 
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6

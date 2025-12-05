@@ -1,13 +1,6 @@
 name: Bygg, deploy til dev-gcp og lag release
 
 on:
-  workflow_dispatch:
-   inputs:
-      cachekey:
-        required: false
-        default: 'nope'
-        type: string
-        description: 'Force cache miss'
   push:
     paths-ignore:
       - '**.md'
@@ -17,7 +10,6 @@ on:
     branches:
       - main
       - umamiLogging
-
 
 jobs:
   test:
@@ -32,8 +24,6 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
-            with: 
-                build_args: CACHE_BUST=${{ inputs.cachekey }}
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:

@@ -700,34 +700,6 @@ export interface Person extends Navn, HarNavn {
   dødsdato?: string
 }
 
-export interface Saksoversikt {
-  hotsakSaker: Saksoversikt_Sak[]
-  barnebrilleSaker?: Saksoversikt_Barnebrille_Sak[]
-}
-
-export interface Saksoversikt_Sak {
-  sakId: string
-  sakstype?: Sakstype
-  mottattDato: string
-  status: OppgaveStatusType
-  statusEndretDato: string
-  søknadGjelder: string
-  saksbehandler?: string
-  område: string[]
-  fagsystem: string
-}
-
-export interface Saksoversikt_Barnebrille_Sak {
-  sak: Saksoversikt_Sak
-  journalpostId?: string
-  dokumentId?: string
-}
-
-export interface Saksoversikt_Sak_Felles_Type {
-  sak: Saksoversikt_Sak
-  barnebrilleSak?: Saksoversikt_Barnebrille_Sak
-}
-
 export interface HjelpemiddelProdukt {
   hmsnr: string
   navn: string

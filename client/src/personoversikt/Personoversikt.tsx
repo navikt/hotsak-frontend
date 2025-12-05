@@ -1,5 +1,5 @@
 import { Box } from '@navikt/ds-react'
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route } from 'react-router'
 import { Routes } from 'react-router-dom'
@@ -10,8 +10,10 @@ import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { useHjelpemiddeloversikt } from '../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
 import { LasterPersonlinje, Personlinje } from '../saksbilde/Personlinje'
+import { naturalBy } from '../utils/array.ts'
 import { sorterKronologiskStigende } from '../utils/dato.ts'
-import { HjelpemiddeloversiktTabell } from './HjelpemiddeloversiktTabell'
+import { select } from '../utils/select.ts'
+import { HjelpemiddeloversiktTable } from './HjelpemiddeloversiktTable.tsx'
 import { usePersonContext } from './PersonContext'
 import { Saksoversikt } from './Saksoversikt'
 import { SaksoversiktLinje } from './SaksoversiktLinje'
@@ -28,15 +30,15 @@ function PersonoversiktContent() {
     isLoading: hjelpemiddeloversiktLoading,
   } = useHjelpemiddeloversikt(fodselsnummer)
 
+  const sakerOgBarnebrillekrav = useMemo(() => {
+    if (!saksoversikt) return []
+    return [...saksoversikt.saker, ...saksoversikt.barnebrillekrav].sort(naturalBy(select('mottattTidspunkt')))
+  }, [saksoversikt])
+
   if (personInfoError) {
     return <PersonFeilmelding personError={personInfoError} />
   }
 
-  const hotsakSaker =
-    saksoversikt?.hotsakSaker.sort((a, b) => sorterKronologiskStigende(a.mottattDato, b.mottattDato)) || []
-  const barnebrilleSaker = saksoversikt?.barnebrilleSaker?.sort((a, b) =>
-    sorterKronologiskStigende(a.sak.mottattDato, b.sak.mottattDato)
-  )
   const hjelpemidler =
     hjelpemiddelArtikler?.sort((a, b) => sorterKronologiskStigende(a.datoUtsendelse, b.datoUtsendelse)) || []
   const antallUtlånteHjelpemidler = hjelpemidler?.reduce((antall, artikkel) => {
@@ -52,11 +54,8 @@ function PersonoversiktContent() {
       ) : (
         <>
           <Personlinje loading={personInfoLoading} person={personInfo} />
-          <SaksoversiktLinje
-            sakerCount={hotsakSaker.length + (barnebrilleSaker?.length || 0)}
-            hjelpemidlerCount={antallUtlånteHjelpemidler}
-          />
-          <Box paddingBlock="4 0" paddingInline="8 1">
+          <SaksoversiktLinje sakerCount={sakerOgBarnebrillekrav.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
+          <Box paddingBlock="4" paddingInline="8">
             <Routes>
               <Route
                 path="/saker"
@@ -65,9 +64,9 @@ function PersonoversiktContent() {
                     <Feilmelding>Teknisk feil ved henting av saksoversikt</Feilmelding>
                   ) : (
                     <Saksoversikt
-                      hotsakSaker={hotsakSaker}
-                      barnebrilleSaker={barnebrilleSaker}
-                      henterSaker={isLoading}
+                      sakerOgBarnebrillekrav={sakerOgBarnebrillekrav}
+                      barnebrillekravHentet={saksoversikt?.barnebrillekravHentet}
+                      loading={isLoading}
                     />
                   )
                 }
@@ -78,10 +77,7 @@ function PersonoversiktContent() {
                   hjelpemiddeloversiktError ? (
                     <Feilmelding>Teknisk feil ved henting av utlånsoversikt</Feilmelding>
                   ) : (
-                    <HjelpemiddeloversiktTabell
-                      artikler={hjelpemidler}
-                      henterHjelpemiddeloversikt={hjelpemiddeloversiktLoading}
-                    />
+                    <HjelpemiddeloversiktTable artikler={hjelpemidler} loading={hjelpemiddeloversiktLoading} />
                   )
                 }
               />
@@ -94,14 +90,10 @@ function PersonoversiktContent() {
 }
 
 function LasterPersonoversikt() {
-  return (
-    <>
-      <LasterPersonlinje />
-    </>
-  )
+  return <LasterPersonlinje />
 }
 
-function Personoversikt() {
+export default function Personoversikt() {
   return (
     <ErrorBoundary FallbackComponent={AlertError}>
       <Suspense fallback={<LasterPersonlinje />}>
@@ -110,5 +102,3 @@ function Personoversikt() {
     </ErrorBoundary>
   )
 }
-
-export default Personoversikt

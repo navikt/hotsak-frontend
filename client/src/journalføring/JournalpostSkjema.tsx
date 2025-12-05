@@ -122,9 +122,9 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
           </Box>
 
           <Dokumenter dokumenter={journalpost?.dokumenter || []} />
-          {saksoversikt?.hotsakSaker && saksoversikt.hotsakSaker.length > 0 && (
+          {saksoversikt?.saker && saksoversikt.saker.length > 0 && (
             <KnyttTilEksisterendeSak
-              åpneSaker={saksoversikt?.hotsakSaker || []}
+              åpneSaker={saksoversikt?.saker || []}
               valgtEksisterendeSakId={valgtEksisterendeSakId}
               onChange={setValgtEksisterendeSakId}
             />

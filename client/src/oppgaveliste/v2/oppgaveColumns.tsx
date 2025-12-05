@@ -3,7 +3,7 @@ import { HStack, Tag } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
+import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import { OppgaveprioritetLabel, OppgavetypeLabel, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 
@@ -98,9 +98,7 @@ export const oppgaveColumns = {
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
     width: 150,
-    renderCell(row) {
-      return <FormatertDato dato={row.opprettetTidspunkt} />
-    },
+    formatDate: true,
   },
   fristFerdigstillelse: {
     field: 'fristFerdigstillelse',
@@ -110,7 +108,7 @@ export const oppgaveColumns = {
     renderCell(row) {
       return (
         <HStack align="center" gap="2">
-          <FormatertDato dato={row.fristFerdigstillelse} />
+          <FormatDate date={row.fristFerdigstillelse} />
           {row.fristFerdigstillelse && isBefore(row.fristFerdigstillelse, Date.now()) && (
             <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" />
           )}

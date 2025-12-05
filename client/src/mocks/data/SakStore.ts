@@ -2,6 +2,14 @@ import Dexie, { Table, UpdateSpec } from 'dexie'
 
 import { type OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
+import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
+import {
+  Behandling,
+  Gjenstående,
+  LagreBehandlingRequest,
+  UtfallLåst,
+  VedtaksResultat,
+} from '../../types/behandlingTyper.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import {
   type Barnebrillesak,
@@ -15,7 +23,6 @@ import {
   type Sak,
   type Saksdokument,
   SaksdokumentType,
-  type Saksoversikt,
   Sakstype,
   StegType,
   type Totrinnskontroll,
@@ -55,13 +62,6 @@ import {
 import { lagTilfeldigNavn } from './navn.ts'
 import { PersonStore } from './PersonStore'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
-import {
-  Behandling,
-  Gjenstående,
-  LagreBehandlingRequest,
-  UtfallLåst,
-  VedtaksResultat,
-} from '../../types/behandlingTyper.ts'
 
 type LagretBrevtekst = BrevTekst
 interface LagretSaksdokument extends Saksdokument {
@@ -559,18 +559,21 @@ export class SakStore extends Dexie {
   async saksoversikt(fnr: string): Promise<Saksoversikt> {
     const saker = await this.saker.where('bruker.fnr').equals(fnr).toArray()
     return {
-      hotsakSaker: saker.map((sak) => ({
+      saker: saker.map((sak) => ({
         sakId: sak.sakId,
-        sakstype: sak.sakstype === Sakstype.BARNEBRILLER ? Sakstype.TILSKUDD : sak.sakstype,
-        mottattDato: sak.opprettet,
-        status: sak.saksstatus,
-        statusEndretDato: sak.saksstatusGyldigFra,
-        søknadGjelder: sak.søknadGjelder,
-        saksbehandler: sak.saksbehandler?.navn,
+        sakstype: sak.sakstype,
+        saksstatus: sak.saksstatus,
+        saksstatusGyldigFra: sak.saksstatusGyldigFra,
         område: [],
-        fagsystem: 'HOTSAK',
+        mottattTidspunkt: sak.opprettet,
+        gjelder: sak.søknadGjelder,
+        behandletAv: sak.saksbehandler?.navn,
+        behandlingsutfall: sak.vedtak?.status, // fixme
+        behandlingsutfallTidspunkt: sak.vedtak?.vedtaksdato, // fixme
+        fagsaksystem: 'HOTSAK',
       })),
-      barnebrilleSaker: [],
+      barnebrillekrav: [],
+      barnebrillekravHentet: true,
     }
   }
 

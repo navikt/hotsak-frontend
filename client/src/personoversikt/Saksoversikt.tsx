@@ -1,196 +1,145 @@
 import { FileIcon } from '@navikt/aksel-icons'
-import { Alert, Table } from '@navikt/ds-react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import { Alert, Link } from '@navikt/ds-react'
+import { useMemo } from 'react'
 
-import { IngentingFunnet } from '../felleskomponenter/IngentingFunnet.tsx'
+import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
-import { DataCelle, EllipsisCell, TekstCell } from '../felleskomponenter/table/Celle'
-import { KolonneHeader } from '../felleskomponenter/table/KolonneHeader'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
-import { Brødtekst, Skjermlesertittel } from '../felleskomponenter/typografi'
+import { Skjermlesertittel } from '../felleskomponenter/typografi'
+import { OmrådeFilterLabel, OppgaveStatusLabel, Sakstype } from '../types/types.internal'
+import { select } from '../utils/select.ts'
 import {
-  OppgaveStatusLabel,
-  OppgaveStatusType,
-  Saksoversikt_Barnebrille_Sak,
-  Saksoversikt_Sak,
-  Saksoversikt_Sak_Felles_Type,
-  Sakstype,
-} from '../types/types.internal'
-import { formaterDato, sorterKronologiskStigende } from '../utils/dato'
-import { storForbokstavIAlleOrd } from '../utils/formater'
+  erSaksoversiktBarnebrillekrav,
+  type SaksoversiktBarnebrillekrav,
+  type SaksoversiktSak,
+} from './saksoversiktTypes.ts'
 
-const Container = styled.div`
-  min-height: 300px;
-  height: calc(100% - 50px);
-  width: 100%;
-  overflow: auto;
-`
-
-interface SaksoversiktProps {
-  hotsakSaker: Saksoversikt_Sak[]
-  barnebrilleSaker?: Saksoversikt_Barnebrille_Sak[]
-  henterSaker: boolean
+export interface SaksoversiktProps {
+  sakerOgBarnebrillekrav: Array<SaksoversiktSak | SaksoversiktBarnebrillekrav>
+  barnebrillekravHentet?: boolean
+  loading: boolean
 }
 
-export function Saksoversikt({ hotsakSaker, barnebrilleSaker, henterSaker }: SaksoversiktProps) {
-  const kolonner = [
-    {
-      key: 'MOTTATT',
-      name: 'Mottatt dato',
-      width: 110,
-      render: (sak: Saksoversikt_Sak) => <TekstCell value={formaterDato(sak.mottattDato)} />,
-    },
-    {
-      key: 'OMRÅDE',
-      name: 'Område',
-      width: 152,
-      render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell value={storForbokstavIAlleOrd(sak.område.join(', '))} minLength={18} />
-      ),
-    },
-    {
-      key: 'SØKNAD_OM',
-      name: 'Beskrivelse',
-      width: 192,
-      render: (sak: Saksoversikt_Sak) => (
-        <EllipsisCell
-          value={storForbokstavIAlleOrd(
-            sak.søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
-          )}
-          minLength={20}
-        />
-      ),
-    },
-    {
-      key: 'SAKSTYPE',
-      name: 'Sakstype',
-      width: 100,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => (
-        <Oppgaveetikett
-          type={sak.sakstype ? sak.sakstype : Sakstype.SØKNAD}
-          showLabel={true}
-          labelLinkTo={
-            barnebrilleSak
-              ? undefined
-              : sak.sakstype === Sakstype.TILSKUDD
-                ? `/oppgave/S-${sak.sakId}`
-                : `/oppgave/S-${sak.sakId}/hjelpemidler`
-          }
-        />
-      ),
-    },
-    {
-      key: 'STATUS',
-      name: 'Status',
-      width: 140,
-      render: (sak: Saksoversikt_Sak, barnebrilleSak?: Saksoversikt_Barnebrille_Sak) => {
-        const tittel = OppgaveStatusLabel.get(sak.status) || 'Ikke vurdert'
-        const tittelWithIcon = (
-          <Brødtekst>
-            <FileIcon title="a11y-title" fontSize="1.2rem" style={{ marginRight: '0.2rem', marginBottom: '-0.2rem' }} />
-            {tittel}
-          </Brødtekst>
-        )
-        return barnebrilleSak && !!barnebrilleSak.journalpostId && !!barnebrilleSak.dokumentId ? (
-          <Link to={`/api/journalpost/${barnebrilleSak.journalpostId}/${barnebrilleSak.dokumentId}`} target={'_blank'}>
-            {tittelWithIcon}
-          </Link>
-        ) : (
-          <TekstCell value={tittel} />
-        )
+export function Saksoversikt(props: SaksoversiktProps) {
+  const { sakerOgBarnebrillekrav, barnebrillekravHentet, loading } = props
+
+  const columns: DataGridColumn<SaksoversiktSak | SaksoversiktBarnebrillekrav>[] = useMemo(() => {
+    return [
+      {
+        field: 'mottattTidspunkt',
+        header: 'Mottatt dato',
+        width: 150,
+        formatDate: true,
       },
-    },
-    {
-      key: 'BEHANDLET_DATO',
-      name: 'Behandlet dato',
-      width: 130,
-      render: (sak: Saksoversikt_Sak) => (
-        <TekstCell
-          value={
-            sak.status === OppgaveStatusType.FERDIGSTILT ||
-            sak.status === OppgaveStatusType.AVVIST ||
-            sak.status === OppgaveStatusType.VEDTAK_FATTET ||
-            sak.status === OppgaveStatusType.INNVILGET ||
-            sak.status === OppgaveStatusType.HENLAGT
-              ? formaterDato(sak.statusEndretDato)
-              : ''
+      {
+        field: 'område',
+        header: 'Område',
+        renderCell(row) {
+          if (erSaksoversiktBarnebrillekrav(row)) {
+            return 'Syn'
           }
-        />
-      ),
-    },
-    {
-      key: 'SAKSBEHANDLER',
-      name: 'Saksbehandler',
-      width: 170,
-      render: (sak: Saksoversikt_Sak) => <EllipsisCell value={sak.saksbehandler || ''} minLength={20} />,
-    },
-    {
-      key: 'FAGSYSTEM',
-      name: 'Fagsystem',
-      width: 120,
-      render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.fagsystem} />,
-    },
-    { key: 'SAKSID', name: 'Saksid', width: 100, render: (sak: Saksoversikt_Sak) => <TekstCell value={sak.sakId} /> },
-  ]
-
-  const saker: Saksoversikt_Sak_Felles_Type[] =
-    hotsakSaker
-      .map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a, barnebrilleSak: undefined }))
-      .concat(barnebrilleSaker?.map((a): Saksoversikt_Sak_Felles_Type => ({ sak: a.sak, barnebrilleSak: a })) || [])
-      .sort((a, b) => sorterKronologiskStigende(a.sak.mottattDato, b.sak.mottattDato)) || []
-
-  const hasData = saker && saker.length > 0
+          return row.område
+            .map((it) => OmrådeFilterLabel.get(it))
+            .filter((it) => Boolean(it))
+            .join(', ')
+        },
+      },
+      {
+        field: 'gjelder',
+        header: 'Gjelder',
+      },
+      {
+        field: 'sakstype',
+        header: 'Sakstype',
+        renderCell(row) {
+          if (erSaksoversiktBarnebrillekrav(row)) {
+            return <Oppgaveetikett type={Sakstype.TILSKUDD} />
+          }
+          return (
+            <Oppgaveetikett
+              type={row.sakstype ?? Sakstype.SØKNAD}
+              labelLinkTo={
+                row.sakstype === Sakstype.BARNEBRILLER
+                  ? `/oppgave/S-${row.sakId}`
+                  : `/oppgave/S-${row.sakId}/hjelpemidler`
+              }
+              showLabel
+            />
+          )
+        },
+      },
+      {
+        field: 'saksstatus',
+        header: 'Saksstatus',
+        renderCell(row) {
+          if (erSaksoversiktBarnebrillekrav(row)) {
+            const behandlingsutfall = row.behandlingsutfall || 'Ikke vurdert'
+            if (row.journalpostId && row.dokumentId) {
+              return (
+                <Link href={`/api/journalpost/${row.journalpostId}/${row.dokumentId}`} target={'_blank'}>
+                  {behandlingsutfall}
+                  <FileIcon title="Åpne journalpost i nye fane" />
+                </Link>
+              )
+            }
+            return behandlingsutfall
+          }
+          return OppgaveStatusLabel.get(row.saksstatus) || 'Ikke vurdert'
+        },
+      },
+      {
+        field: 'behandletAv',
+        header: 'Saksbehandler',
+      },
+      {
+        field: 'behandlingsutfallTidspunkt',
+        header: 'Behandlet dato',
+        width: 130,
+        formatDate: true,
+      },
+      {
+        field: 'fagsaksystem',
+        header: 'Fagsystem',
+        width: 80,
+      },
+      {
+        field: 'sakEllerKravId',
+        header: 'Saksnummer',
+        width: 80,
+      },
+    ]
+  }, [])
 
   return (
     <>
       <Skjermlesertittel level="2">Saker</Skjermlesertittel>
-      {henterSaker ? (
+      {loading ? (
         <Toast>Henter saksoversikt</Toast>
       ) : (
-        <Container>
-          {!barnebrilleSaker && (
+        <>
+          {barnebrillekravHentet === false && (
             <Alert size="small" variant="warning" style={{ margin: '0.2rem 0 1rem 0', width: 'fit-content' }}>
               Vi kan for øyeblikket ikke vise barnebrillesaker fra direkteoppgjørsløsningen for optikere.
             </Alert>
           )}
           <div>
-            <Alert size="small" variant="info" inline={true} style={{ margin: '0 0 1rem 0' }}>
+            <Alert size="small" variant="info" style={{ margin: '0 0 1rem 0' }} inline>
               Her ser du saker for brukeren i HOTSAK. Vi kan foreløpig ikke vise saker fra Infotrygd.
             </Alert>
           </div>
-          {hasData ? (
-            <>
-              <Table style={{ width: 'initial' }} zebraStripes size="small">
-                <Table.Header>
-                  <Table.Row>
-                    {kolonner.map(({ key, name, width }) => (
-                      <KolonneHeader key={key} sortable={false} sortKey={key} width={width}>
-                        {name}
-                      </KolonneHeader>
-                    ))}
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                  {saker.map((sak) => {
-                    return (
-                      <Table.Row key={sak.sak.sakId}>
-                        {kolonner.map(({ render, width, key }) => (
-                          <DataCelle key={key} width={width}>
-                            {render(sak.sak, sak.barnebrilleSak)}
-                          </DataCelle>
-                        ))}
-                      </Table.Row>
-                    )
-                  })}
-                </Table.Body>
-              </Table>
-            </>
-          ) : (
-            <IngentingFunnet>Fant ingen HOTSAK saker på bruker</IngentingFunnet>
-          )}
-        </Container>
+          <DataGrid
+            rows={sakerOgBarnebrillekrav}
+            columns={columns}
+            keyFactory={keyFactory}
+            size="small"
+            textSize="small"
+            emptyMessage="Fant ingen Hotsak-saker for bruker"
+            zebraStripes
+          />
+        </>
       )}
     </>
   )
 }
+
+const keyFactory = select<SaksoversiktSak, 'sakId'>('sakId')

@@ -2,7 +2,8 @@ import useSwr, { SWRResponse } from 'swr'
 
 import { http } from '../io/HttpClient.ts'
 import type { HttpError } from '../io/HttpError.ts'
-import { BehandlingstatusType, Saksoversikt, Sakstype } from '../types/types.internal.ts'
+import { type BehandlingstatusType, type Sakstype } from '../types/types.internal.ts'
+import { type Saksoversikt } from './saksoversiktTypes.ts'
 
 export interface HentSaksoversiktRequest {
   fnr: string

@@ -3,12 +3,11 @@ import { Bleed, Button, HStack, Tag, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
-import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
+import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { type Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import { type Produkt as ProduktType, Sak } from '../../types/types.internal.ts'
-import { storForbokstavIOrd } from '../../utils/formater.ts'
 import Bytter from './Bytter.tsx'
 import { EndreHjelpemiddelModal } from './endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.tsx'
@@ -111,8 +110,7 @@ export function Hjelpemiddel({
                   {endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
                   endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretArtikkelBegrunnelse[endretHjelpemiddel?.begrunnelse] ||
-                      `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
+                    : EndretArtikkelBegrunnelseLabel[endretHjelpemiddel?.begrunnelse]}
                 </BrytbarBrødtekst>
               </div>
             )}

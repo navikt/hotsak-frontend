@@ -64,7 +64,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                   key={key}
                   textSize={textSize}
                   sortKey={column.sortKey}
-                  style={{ width: column.width }}
+                  style={{ width: column.width, whiteSpace: 'nowrap' }}
                   sortable
                 >
                   {header}
@@ -72,7 +72,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
               )
             } else {
               return (
-                <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width }}>
+                <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
                   {header}
                 </Table.HeaderCell>
               )

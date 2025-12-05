@@ -7,6 +7,7 @@ import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OmrådeFilterLabel, OppgaveStatusLabel, Sakstype } from '../types/types.internal'
+import { storForbokstavIOrd } from '../utils/formater.ts'
 import { select } from '../utils/select.ts'
 import {
   erSaksoversiktBarnebrillekrav,
@@ -53,16 +54,13 @@ export function Saksoversikt(props: SaksoversiktProps) {
         header: 'Sakstype',
         renderCell(row) {
           if (erSaksoversiktBarnebrillekrav(row)) {
-            return <Oppgaveetikett type={Sakstype.TILSKUDD} />
+            return <Oppgaveetikett type={Sakstype.TILSKUDD} showLabel />
           }
+          const erBarnebriller = row.sakstype === Sakstype.BARNEBRILLER
           return (
             <Oppgaveetikett
-              type={row.sakstype ?? Sakstype.SØKNAD}
-              labelLinkTo={
-                row.sakstype === Sakstype.BARNEBRILLER
-                  ? `/oppgave/S-${row.sakId}`
-                  : `/oppgave/S-${row.sakId}/hjelpemidler`
-              }
+              type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
+              labelLinkTo={erBarnebriller ? `/oppgave/S-${row.sakId}` : `/oppgave/S-${row.sakId}/hjelpemidler`}
               showLabel
             />
           )
@@ -73,7 +71,7 @@ export function Saksoversikt(props: SaksoversiktProps) {
         header: 'Saksstatus',
         renderCell(row) {
           if (erSaksoversiktBarnebrillekrav(row)) {
-            const behandlingsutfall = row.behandlingsutfall || 'Ikke vurdert'
+            const behandlingsutfall = storForbokstavIOrd(row.behandlingsutfall)
             if (row.journalpostId && row.dokumentId) {
               return (
                 <Link href={`/api/journalpost/${row.journalpostId}/${row.dokumentId}`} target={'_blank'}>

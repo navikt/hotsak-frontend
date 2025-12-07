@@ -8,7 +8,6 @@ import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Skjermlesertittel } from '../felleskomponenter/typografi'
 import { OmrådeFilterLabel, OppgaveStatusLabel, Sakstype } from '../types/types.internal'
 import { storForbokstavIOrd } from '../utils/formater.ts'
-import { select } from '../utils/select.ts'
 import {
   erSaksoversiktBarnebrillekrav,
   type SaksoversiktBarnebrillekrav,
@@ -46,8 +45,12 @@ export function Saksoversikt(props: SaksoversiktProps) {
         },
       },
       {
-        field: 'gjelder',
-        header: 'Gjelder',
+        field: 'beskrivelse',
+        header: 'Beskrivelse',
+        renderCell(row) {
+          const beskrivelse = row.gjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+          return storForbokstavIOrd(beskrivelse)
+        },
       },
       {
         field: 'sakstype',
@@ -144,4 +147,6 @@ export function Saksoversikt(props: SaksoversiktProps) {
   )
 }
 
-const keyFactory = select<SaksoversiktSak, 'sakId'>('sakId')
+function keyFactory(row: SaksoversiktSak): string {
+  return row.sakId
+}

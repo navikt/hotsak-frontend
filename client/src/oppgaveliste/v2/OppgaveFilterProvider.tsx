@@ -8,7 +8,7 @@ export function OppgaveFilterProvider({
   suffix,
   children,
 }: {
-  suffix: 'Mine' | 'Kø' | 'Medarbeiders'
+  suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
   children: ReactNode
 }) {
   const key = (key: string) => key + suffix
@@ -22,8 +22,8 @@ export function OppgaveFilterProvider({
   const kommuneFilter = useOppgaveFilterState(key('kommuneFilter'), filters.kommuneFilter)
   const saksbehandlerFilter = useOppgaveFilterState(key('saksbehandlerFilter'), filters.saksbehandlerFilter)
 
-  const [currentPage, setCurrentPage] = useLocalState(key('OppgaveCurrentPage'), initialState.currentPage)
-  const [sort, setSort] = useLocalState<OppgaveSortState>(key('OppgaveSort'), initialState.sort)
+  const [currentPage, setCurrentPage] = useLocalState(key('oppgaveCurrentPage'), initialState.currentPage)
+  const [sort, setSort] = useLocalState<OppgaveSortState>(key('oppgaveSort'), initialState.sort)
 
   const clear = useCallback(() => {
     setCurrentPage(1)

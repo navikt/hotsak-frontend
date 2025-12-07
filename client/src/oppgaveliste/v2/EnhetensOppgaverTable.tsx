@@ -46,7 +46,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
                     setValgte({ ...valgte, [id]: true })
                   }}
                 >
-                  Tildel meg
+                  Ta oppgave
                 </TaOppgaveButton>
               )}
             </>

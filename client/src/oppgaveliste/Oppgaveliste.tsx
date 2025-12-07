@@ -19,7 +19,7 @@ export default function Oppgaveliste() {
         <Routes>
           <Route path="/" element={<MineOppgaverWrapper />} />
           <Route path="/mine" element={<MineOppgaverWrapper />} />
-          <Route path="/ko" element={<EnhetensOppgaverWrapper />} />
+          <Route path="/enhetens" element={<EnhetensOppgaverWrapper />} />
           <Route path="/medarbeiders" element={<MedarbeidersOppgaverWrapper />} />
         </Routes>
       </>

@@ -3,7 +3,7 @@ import { OppgaveFilterProvider } from './OppgaveFilterProvider.tsx'
 
 export default function EnhetensOppgaverWrapper() {
   return (
-    <OppgaveFilterProvider suffix="Kø">
+    <OppgaveFilterProvider suffix="Enhetens">
       <EnhetensOppgaver />
     </OppgaveFilterProvider>
   )

@@ -55,7 +55,7 @@ function Label({ labelLinkTo, children }: LabelProps) {
 
 function LabelTag({ labelLinkTo, type, children }: { labelLinkTo?: string; type: Sakstype; children?: ReactNode }) {
   return (
-    <HStack gap="space-8">
+    <HStack gap="space-8" wrap={false}>
       {children}
       <Label labelLinkTo={labelLinkTo}>{storForbokstavIAlleOrd(type)}</Label>
     </HStack>

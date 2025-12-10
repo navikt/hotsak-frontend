@@ -21,13 +21,6 @@ export const oppgaveColumns = {
     width: 150,
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
-      /*
-      return (
-        <Tag size="small" variant="alt2" className={classes.tag}>
-          {OppgavetypeLabel[row.kategorisering.oppgavetype]}
-        </Tag>
-      )
-      */
     },
   },
   behandlingstema: {
@@ -40,13 +33,6 @@ export const oppgaveColumns = {
         return null
       }
       return behandlingstema.term
-      /*
-      return (
-        <Tag size="small" variant="alt3" className={classes.tag}>
-          {behandlingstema.term}
-        </Tag>
-      )
-      */
     },
   },
   behandlingstype: {
@@ -59,13 +45,6 @@ export const oppgaveColumns = {
         return null
       }
       return behandlingstype.term
-      /*
-      return (
-        <Tag size="small" variant="alt3" className={classes.tag}>
-          {behandlingstype.term}
-        </Tag>
-      )
-      */
     },
   },
   beskrivelse: {
@@ -153,4 +132,14 @@ export const oppgaveColumns = {
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>
 
+export interface OppgaveColumn {
+  key: OppgaveColumnKeyType
+  checked: boolean
+  order: number
+}
+
 export type OppgaveColumnKeyType = keyof typeof oppgaveColumns
+
+export function headerForColumn(key: OppgaveColumnKeyType): string {
+  return oppgaveColumns[key]?.header ?? ''
+}

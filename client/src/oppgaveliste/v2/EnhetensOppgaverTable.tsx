@@ -1,13 +1,12 @@
-import { Button } from '@navikt/ds-react'
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router'
 
+import { LinkButton } from '../../felleskomponenter/button/LinkButton.tsx'
 import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
-import { oppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgaveColumns } from './useOppgaveColumns.ts'
 
 export interface EnhetensOppgaverTableProps {
   oppgaver: OppgaveV2[]
@@ -17,10 +16,9 @@ export interface EnhetensOppgaverTableProps {
 export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
   const { oppgaver, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
-  const navigate = useNavigate()
-  const [valgte, setValgte] = useState<Record<OppgaveId, boolean>>({})
+  const [valgte, setValgte] = useState<Set<OppgaveId>>(new Set())
 
-  const columns: DataGridColumn<OppgaveV2>[] = useMemo(
+  const extraColumns: DataGridColumn<OppgaveV2>[] = useMemo(
     () => [
       {
         field: 'knapp',
@@ -28,22 +26,17 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
         renderCell(row) {
           return (
             <>
-              {valgte[row.oppgaveId] ? (
-                <Button
-                  size="xsmall"
-                  type="button"
-                  variant="tertiary"
-                  onClick={() => navigate(`/oppgave/${row.oppgaveId}`)}
-                >
+              {valgte.has(row.oppgaveId) ? (
+                <LinkButton size="xsmall" type="button" variant="tertiary" to={`/oppgave/${row.oppgaveId}`}>
                   Åpne oppgave
-                </Button>
+                </LinkButton>
               ) : (
                 <TaOppgaveButton
                   size="xsmall"
                   variant="tertiary"
                   oppgave={row}
                   onOppgavetildeling={(id) => {
-                    setValgte({ ...valgte, [id]: true })
+                    setValgte((previous) => new Set([...previous, id]))
                   }}
                 >
                   Ta oppgave
@@ -53,19 +46,11 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
           )
         },
       },
-      oppgaveColumns.oppgavetype,
-      oppgaveColumns.behandlingstema,
-      oppgaveColumns.behandlingstype,
-      oppgaveColumns.beskrivelse,
-      oppgaveColumns.mappenavn,
-      oppgaveColumns.prioritet,
-      oppgaveColumns.opprettetTidspunkt,
-      oppgaveColumns.fristFerdigstillelse,
-      oppgaveColumns.bruker,
-      oppgaveColumns.kommune,
     ],
-    [navigate, valgte]
+    [valgte]
   )
+
+  const columns = useOppgaveColumns(extraColumns)
 
   return (
     <DataGrid

@@ -14,6 +14,35 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.pnpmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.pnpmrc
+      
+      - name: Sett opp Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'         
+
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4   
+        with:
+          run_install: false
+
+      - name: Hent pnpm cache-mappe
+        id: pnpm-cache
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Installer avhengigheter
+        run: pnpm install --frozen-lockfile
+        working-directory: client
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6

@@ -2,7 +2,6 @@ import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { Eksperiment } from '../../felleskomponenter/Eksperiment'
 import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
 import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler'
@@ -125,22 +124,20 @@ export function Tilbehør({
           </VStack>
         </TextContainer>
         <Brødtekst>{tilbehør.antall} stk</Brødtekst>
-        <Eksperiment>
-          {kanEndreHmsnr && tilbehør.tilbehørId && (
-            <div>
-              <Button
-                variant="tertiary"
-                size="xsmall"
-                icon={<PencilIcon />}
-                onClick={() => {
-                  setVisAlternativerModal(true)
-                }}
-              >
-                Endre
-              </Button>
-            </div>
-          )}
-        </Eksperiment>
+        {kanEndreHmsnr && tilbehør.tilbehørId && (
+          <div>
+            <Button
+              variant="tertiary"
+              size="xsmall"
+              icon={<PencilIcon />}
+              onClick={() => {
+                setVisAlternativerModal(true)
+              }}
+            >
+              Endre
+            </Button>
+          </div>
+        )}
       </HjelpemiddelGrid>
       <EndreTilbehørModal
         åpen={visAlternativerModal}

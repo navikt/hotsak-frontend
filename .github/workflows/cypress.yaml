@@ -18,12 +18,11 @@ jobs:
       - name: Sett opp Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'         
+          node-version: '20'     
+          cache: 'pnpm'    
 
       - name: Installer pnpm
         uses: pnpm/action-setup@v4   
-        with:
-          run_install: false
 
       - name: Hent pnpm cache-mappe
         id: pnpm-cache
@@ -47,9 +46,10 @@ jobs:
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:
+          install-command: pnpm install --frozen-lockfile
           start: pnpm run dev
           wait-on: 'http://localhost:3001'
           working-directory: client
           config-file: cypress.config.js
           record: false
-          parallel: true
+          parallel: true  

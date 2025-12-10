@@ -12,6 +12,14 @@ cd client
 pnpm install
 ```
 
+### Client
+
+Hvis pnpm ikke er installert fra før må du kjøre (krever Node 18+):
+
+```
+corepack enable
+```
+
 ### Server
 
 Installer Go:

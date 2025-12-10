@@ -14,7 +14,20 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
-
+      - name: Sett opp Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0 
+          run_install: false
+      - name: Installer avhengigheter
+        run: pnpm install --frozen-lockfile
+        working-directory: client
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:

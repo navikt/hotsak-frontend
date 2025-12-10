@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react'
+import { createContext, type ReactNode, useContext, useState } from 'react'
 
 interface PersonContextType {
   fodselsnummer: string
@@ -7,7 +7,6 @@ interface PersonContextType {
 
 const initialState = {
   fodselsnummer: '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setFodselsnummer() {},
 }
 
@@ -16,17 +15,14 @@ PersonContext.displayName = 'Person'
 
 function PersonProvider({ children }: { children: ReactNode }) {
   const [fodselsnummer, setFodselsnummer] = useState(initialState.fodselsnummer)
-
-  return <PersonContext.Provider value={{ fodselsnummer, setFodselsnummer }}>{children}</PersonContext.Provider>
+  return <PersonContext value={{ fodselsnummer, setFodselsnummer }}>{children}</PersonContext>
 }
 
 function usePersonContext(): PersonContextType {
   const context = useContext(PersonContext)
-
   if (!context) {
     throw new Error('usePersonContext must be used within a PersonProvider')
   }
-
   return context
 }
 

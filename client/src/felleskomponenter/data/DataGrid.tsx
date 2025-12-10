@@ -2,6 +2,8 @@ import { Loader, Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
+import { FormatDate } from '../format/FormatDate.tsx'
+import { FormatDateTime } from '../format/FormatDateTime.tsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol>
@@ -10,6 +12,9 @@ export interface DataGridColumn<T extends object> {
   hidden?: boolean
   sortKey?: Exclude<keyof T, symbol | number>
   width?: number
+
+  formatDate?: boolean
+  formatDateTime?: boolean
 
   renderHeader?(): ReactNode
   renderCell?(row: T): ReactNode
@@ -50,7 +55,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             if (column.renderHeader) {
               header = column.renderHeader()
             } else if (column.header) {
-              header = <>{column.header}</>
+              header = column.header
             }
 
             if (column.sortKey) {
@@ -59,7 +64,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                   key={key}
                   textSize={textSize}
                   sortKey={column.sortKey}
-                  style={{ width: column.width }}
+                  style={{ width: column.width, whiteSpace: 'nowrap' }}
                   sortable
                 >
                   {header}
@@ -67,7 +72,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
               )
             } else {
               return (
-                <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width }}>
+                <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
                   {header}
                 </Table.HeaderCell>
               )
@@ -76,19 +81,15 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {rows.length === 0 && !loading && (
-          <Table.Row>
-            <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
-              {emptyMessage}
-            </Table.DataCell>
-          </Table.Row>
-        )}
         {rows.length === 0 && loading && (
-          <Table.Row>
-            <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
-              <Loader />
-            </Table.DataCell>
-          </Table.Row>
+          <PlaceholderRow colSpan={colSpan} textSize={textSize}>
+            <Loader />
+          </PlaceholderRow>
+        )}
+        {rows.length === 0 && !loading && (
+          <PlaceholderRow colSpan={colSpan} textSize={textSize}>
+            {emptyMessage}
+          </PlaceholderRow>
         )}
         {rows.map((row) => {
           const key = keyFactory(row)
@@ -98,7 +99,13 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             if (column.renderCell) {
               value = column.renderCell(row)
             } else if (isKeyOfObject(column.field, row)) {
-              value = <>{row[column.field]}</>
+              if (column.formatDate) {
+                value = <FormatDate date={row[column.field] as string} />
+              } else if (column.formatDateTime) {
+                value = <FormatDateTime dateTime={row[column.field] as string} />
+              } else {
+                value = <>{row[column.field]}</>
+              }
             }
 
             return (
@@ -120,6 +127,24 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         })}
       </Table.Body>
     </Table>
+  )
+}
+
+function PlaceholderRow({
+  colSpan,
+  textSize,
+  children,
+}: {
+  colSpan: number
+  textSize?: 'medium' | 'small'
+  children: ReactNode
+}) {
+  return (
+    <Table.Row>
+      <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
+        {children}
+      </Table.DataCell>
+    </Table.Row>
   )
 }
 

@@ -56,7 +56,7 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
       columns={columns}
       keyFactory={(oppgave) => oppgave.oppgaveId}
       renderContent={(oppgave, visible) => <OppgaveDetails oppgave={oppgave} visible={visible} />}
-      size="medium"
+      size="small"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}

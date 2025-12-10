@@ -3,11 +3,12 @@ import { Alert, Box, Button, HStack, Radio, RadioGroup, Table } from '@navikt/ds
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
 import { SakstypeEtikett } from '../felleskomponenter/SakstypeEtikett.tsx'
 import { Brødtekst } from '../felleskomponenter/typografi'
-import { OppgaveStatusLabel, Saksoversikt_Sak } from '../types/types.internal'
+import { type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
+import { OppgaveStatusLabel } from '../types/types.internal'
 import { formaterDato } from '../utils/dato'
 
 export interface KnyttTilEksisterendeSakProps {
-  åpneSaker: Saksoversikt_Sak[]
+  åpneSaker: SaksoversiktSak[]
   valgtEksisterendeSakId: string
   onChange: (...args: any[]) => any
 }
@@ -45,20 +46,20 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {åpneSaker.map((s) => (
-                  <Table.Row key={s.sakId}>
+                {åpneSaker.map((sak) => (
+                  <Table.Row key={sak.sakId}>
                     <Table.DataCell style={{ verticalAlign: 'middle', width: '50px' }}>
-                      <Radio value={s.sakId}>{''}</Radio>
+                      <Radio value={sak.sakId}>{''}</Radio>
                     </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>{s.sakId}</Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>{sak.sakId}</Table.DataCell>
                     <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {s.sakstype && <SakstypeEtikett sakstype={s.sakstype} />}
-                    </Table.DataCell>
-                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {OppgaveStatusLabel.get(s.status)}
+                      {sak.sakstype && <SakstypeEtikett sakstype={sak.sakstype} />}
                     </Table.DataCell>
                     <Table.DataCell style={{ verticalAlign: 'middle' }}>
-                      {formaterDato(s.statusEndretDato)}
+                      {OppgaveStatusLabel.get(sak.saksstatus)}
+                    </Table.DataCell>
+                    <Table.DataCell style={{ verticalAlign: 'middle' }}>
+                      {formaterDato(sak.saksstatusGyldigFra)}
                     </Table.DataCell>
                   </Table.Row>
                 ))}

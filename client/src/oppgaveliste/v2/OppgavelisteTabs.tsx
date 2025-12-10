@@ -19,7 +19,7 @@ export function OppgavelisteTabs() {
       >
         <Tabs.List>
           <Tabs.Tab value="mine" label="Mine oppgaver" />
-          <Tabs.Tab value="ko" label="Enhetens oppgaver" />
+          <Tabs.Tab value="enhetens" label="Enhetens oppgaver" />
           <Tabs.Tab value="medarbeiders" label="Medarbeiders oppgaver" />
         </Tabs.List>
       </Tabs>

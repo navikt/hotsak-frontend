@@ -1,7 +1,7 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, HStack, Loader, VStack } from '@navikt/ds-react'
 
-import { FormatertTidspunkt } from '../../felleskomponenter/format/FormatertTidspunkt.tsx'
+import { FormatDateTime } from '../../felleskomponenter/format/FormatDateTime.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
 import { type OppgaveId } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
@@ -31,7 +31,7 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
                   <Detail>{sisteKommentar.registrertAvEnhetsnummer}</Detail>
                   <Detail>|</Detail>
                   <Detail>
-                    <FormatertTidspunkt dato={sisteKommentar.registrertTidspunkt} />
+                    <FormatDateTime dateTime={sisteKommentar.registrertTidspunkt} />
                   </Detail>
                 </HStack>
                 <BodyShort size="small">{sisteKommentar.tekst}</BodyShort>

@@ -97,7 +97,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
 
 function oneOf<T, R>(filter: OppgaveFilterType<R>, selector: (item: T) => R): (value: T) => boolean {
   return (value) => {
-    if (!filter.enabled || filter.values.length === 0) return true
+    if (filter.values.length === 0) return true
     return filter.values.includes(selector(value))
   }
 }

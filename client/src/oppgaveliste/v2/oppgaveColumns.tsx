@@ -3,8 +3,13 @@ import { HStack, Tag } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { FormatertDato } from '../../felleskomponenter/format/FormatertDato.tsx'
-import { OppgaveprioritetLabel, OppgavetypeLabel, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
+import {
+  Oppgaveprioritet,
+  OppgaveprioritetLabel,
+  OppgavetypeLabel,
+  type OppgaveV2,
+} from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 
 import classes from './oppgaveColumns.module.css'
@@ -13,13 +18,16 @@ export const oppgaveColumns = {
   oppgavetype: {
     field: 'oppgavetype',
     header: 'Oppgavetype',
-    width: 200,
+    width: 150,
     renderCell(row) {
+      return OppgavetypeLabel[row.kategorisering.oppgavetype]
+      /*
       return (
         <Tag size="small" variant="alt2" className={classes.tag}>
           {OppgavetypeLabel[row.kategorisering.oppgavetype]}
         </Tag>
       )
+      */
     },
   },
   behandlingstema: {
@@ -31,27 +39,33 @@ export const oppgaveColumns = {
       if (!behandlingstema || !behandlingstema.term) {
         return null
       }
+      return behandlingstema.term
+      /*
       return (
         <Tag size="small" variant="alt3" className={classes.tag}>
           {behandlingstema.term}
         </Tag>
       )
+      */
     },
   },
   behandlingstype: {
     field: 'behandlingstype',
     header: 'Behandlingstype',
-    width: 200,
+    width: 150,
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
       if (!behandlingstype || !behandlingstype.term) {
         return null
       }
+      return behandlingstype.term
+      /*
       return (
         <Tag size="small" variant="alt3" className={classes.tag}>
           {behandlingstype.term}
         </Tag>
       )
+      */
     },
   },
   beskrivelse: {
@@ -63,7 +77,7 @@ export const oppgaveColumns = {
         return null
       }
       const beskrivelse = søknadGjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
-      return <>{storForbokstavIOrd(beskrivelse)}</>
+      return storForbokstavIOrd(beskrivelse)
     },
   },
   kommune: {
@@ -72,11 +86,11 @@ export const oppgaveColumns = {
     renderCell(row) {
       const bydel = row.bruker?.bydel
       if (bydel) {
-        return <>{bydel.navn}</>
+        return bydel.navn
       }
       const kommune = row.bruker?.kommune
       if (kommune) {
-        return <>{kommune.navn}</>
+        return kommune.navn
       }
       return null
     },
@@ -88,29 +102,35 @@ export const oppgaveColumns = {
   prioritet: {
     field: 'prioritet',
     header: 'Prioritet',
-    width: 200,
+    width: 100,
     renderCell(row) {
-      return <>{OppgaveprioritetLabel[row.prioritet]}</>
+      const prioritet = OppgaveprioritetLabel[row.prioritet]
+      if (row.prioritet === Oppgaveprioritet.HØY) {
+        return (
+          <Tag size="small" variant="warning" className={classes.tag}>
+            {prioritet}
+          </Tag>
+        )
+      }
+      return prioritet
     },
   },
   opprettetTidspunkt: {
     field: 'opprettetTidspunkt',
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
-    width: 150,
-    renderCell(row) {
-      return <FormatertDato dato={row.opprettetTidspunkt} />
-    },
+    width: 125,
+    formatDate: true,
   },
   fristFerdigstillelse: {
     field: 'fristFerdigstillelse',
     header: 'Frist',
     sortKey: 'fristFerdigstillelse',
-    width: 150,
+    width: 125,
     renderCell(row) {
       return (
         <HStack align="center" gap="2">
-          <FormatertDato dato={row.fristFerdigstillelse} />
+          <FormatDate date={row.fristFerdigstillelse} />
           {row.fristFerdigstillelse && isBefore(row.fristFerdigstillelse, Date.now()) && (
             <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" />
           )}
@@ -128,7 +148,7 @@ export const oppgaveColumns = {
       if (!bruker) {
         return null
       }
-      return <>{`${formaterFødselsnummer(bruker.fnr)} | ${bruker.fulltNavn}`}</>
+      return `${formaterFødselsnummer(bruker.fnr)} | ${bruker.fulltNavn}`
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>

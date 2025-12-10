@@ -109,8 +109,8 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             {notater.length === 0 && <Tekst>Ingen notater er knyttet til saken</Tekst>}
             {notater.length > 0 && (
               <FilterChips
-                selected={filter}
                 options={filterOptions}
+                selected={filter}
                 handleChange={(filterValue) => {
                   setFilter(filterValue)
                 }}

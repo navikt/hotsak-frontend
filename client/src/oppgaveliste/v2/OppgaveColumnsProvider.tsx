@@ -1,5 +1,6 @@
-import { type ReactNode, useReducer } from 'react'
+import { type ReactNode } from 'react'
 
+import { useLocalStateReducer } from '../../state/useLocalStateReducer.ts'
 import { type OppgaveColumn } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
@@ -14,7 +15,7 @@ export interface OppgaveColumnsProviderProps {
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   const { defaultColumns, children } = props
-  const [columns, dispatch] = useReducer(reducer, defaultColumns)
+  const [columns, dispatch] = useLocalStateReducer('oppgaveColumns', reducer, defaultColumns)
   return (
     <OppgaveColumnsContext value={columns}>
       <OppgaveColumnsDispatchContext value={dispatch}>{children}</OppgaveColumnsDispatchContext>

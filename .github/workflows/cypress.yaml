@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Echo test
+        run: echo "Hello from workflow"
       - name: Sjekk ut koden
         uses: actions/checkout@v4
 
@@ -27,24 +29,21 @@ jobs:
           version: 10
           run_install: false
 
-      - name: Hent pnpm cache-mappe
-        id: pnpm-cache
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
-
-      - name: Cache pnpm store
+      - name: Cypress binary cache
         uses: actions/cache@v4
+        id: cypress-cache
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Installer avhengigheter
         run: pnpm install --frozen-lockfile
         working-directory: client
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Install cypress binary
+        if: steps.cypress-cache.outputs.cache-hit != 'true'
+        run: pnpm exec cypress install
 
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6

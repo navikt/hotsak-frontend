@@ -4,12 +4,12 @@ import type { ISvar } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { AvvisBestilling, OppgaveStatusType, TotrinnskontrollData } from '../types/types.internal.ts'
-import { useMiljø } from '../utils/useMiljø.ts'
 import { mutateSak } from './mutateSak.ts'
 
 export interface SakActions extends Actions {
   overførSakTilGosys(tilbakemelding: ISvar[]): Promise<void>
   fattVedtak(problemsammendrag: string): Promise<void>
+  ferdigstillSakOgBehandling(problemsammendrag: string): Promise<void>
   godkjennBestilling(beskjed?: string): Promise<void>
   avvisBestilling(tilbakemelding: AvvisBestilling): Promise<void>
   opprettTotrinnskontroll(): Promise<void>
@@ -23,7 +23,6 @@ export interface SakActions extends Actions {
 
 export function useSakActions(): SakActions {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
-  const { erIkkeProd } = useMiljø()
   const { mutate: mutateBehandling } = useBehandling()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { execute, state } = useActionState()
@@ -39,13 +38,17 @@ export function useSakActions(): SakActions {
     },
 
     async fattVedtak(problemsammendrag) {
-      // TODO: egen action for dette / endepunkt for ferdigstilling av sak og behandling fra "nye" hotsak
       return execute(async () => {
         await http.put(`/api/sak/${sakId}/vedtak`, { oppgaveId, problemsammendrag }, { versjon })
         await mutateOppgaveOgSak()
-        if (erIkkeProd) {
-          await mutateBehandling()
-        }
+      })
+    },
+
+    async ferdigstillSakOgBehandling(problemsammendrag: string) {
+      return execute(async () => {
+        await http.put(`/api/sak/${sakId}/ferdigstilling`, { oppgaveId, problemsammendrag }, { versjon })
+        await mutateOppgaveOgSak()
+        await mutateBehandling()
       })
     },
 

@@ -225,14 +225,11 @@ export class SakStore extends Dexie {
   }
 
   async opprettBehandling(sakId: string, request: LagreBehandlingRequest) {
-    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
-
     const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
 
     const behandlingId = await this.behandlinger.put({
-      oppgaveId: '',
+      oppgaveId: request.oppgaveId,
       gjenstående: gjenstående,
-      utførtAv: saksbehandler,
       utfall: request.utfall,
       sakId,
     })
@@ -255,8 +252,9 @@ export class SakStore extends Dexie {
     return behandlingId
   }
 
-  async ferdigstillBehandling(sakId: string) {
+  async ferdigstillBehandlingForSak(sakId: string) {
     const behandlinger = await this.hentBehandlinger(sakId)
+    const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
 
     if (behandlinger.length > 0) {
       const gjeldendeBehandling = behandlinger[0]
@@ -264,6 +262,7 @@ export class SakStore extends Dexie {
         ...gjeldendeBehandling,
         utfallLåst: UtfallLåst.FERDIGSTILT,
         ferdigstiltTidspunkt: nåIso(),
+        utførtAv: saksbehandler,
       })
     }
   }
@@ -531,10 +530,31 @@ export class SakStore extends Dexie {
     })
   }
 
-  async fattVedtak(sakId: string, status: OppgaveStatusType = OppgaveStatusType.VEDTAK_FATTET) {
+  async fattVedtak(
+    sakId: string,
+    status: OppgaveStatusType = OppgaveStatusType.VEDTAK_FATTET,
+    vedtaksResultat?: VedtaksResultat
+  ) {
     const sak = await this.hent(sakId)
     if (!sak) {
       return false
+    }
+
+    // TODO Sannsynligvis unødvendig med denne mappingen, kan bare slå sammen typene
+    let vedtakStatus
+    switch (vedtaksResultat) {
+      case VedtaksResultat.INNVILGET:
+        vedtakStatus = VedtakStatusType.INNVILGET
+        break
+      case VedtaksResultat.AVSLÅTT:
+        vedtakStatus = VedtakStatusType.AVSLÅTT
+        break
+      case VedtaksResultat.DELVIS_INNVILGET:
+        vedtakStatus = VedtakStatusType.DELVIS_INNVILGET
+        break
+      default:
+        vedtakStatus = VedtakStatusType.INNVILGET
+        break
     }
 
     if (sak.saksstatus === status) {
@@ -545,7 +565,7 @@ export class SakStore extends Dexie {
           saksstatus: status,
           vedtak: {
             vedtaksdato: nåIso(),
-            status: VedtakStatusType.INNVILGET,
+            status: vedtakStatus || VedtakStatusType.INNVILGET,
             saksbehandlerNavn: sak.saksbehandler?.navn || '',
             saksbehandlerRef: sak.saksbehandler?.id || '',
             soknadUuid: '',

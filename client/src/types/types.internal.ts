@@ -590,11 +590,13 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
 export enum VedtakStatusType {
   INNVILGET = 'INNVILGET',
   AVSLÅTT = 'AVSLÅTT',
+  DELVIS_INNVILGET = 'DELVIS_INNVILGET',
 }
 
 export const VedtakStatusLabel = new Map<VedtakStatusType, string>([
   [VedtakStatusType.INNVILGET, 'Innvilget'],
   [VedtakStatusType.AVSLÅTT, 'Avslått'],
+  [VedtakStatusType.DELVIS_INNVILGET, 'Delvis innvilget'],
 ])
 
 export enum Kjønn {

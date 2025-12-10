@@ -13,6 +13,10 @@ export function respondNoContent(): Response {
   return new Response(null, { status: 204 })
 }
 
+export function respondBadRequest(): Response {
+  return new Response(null, { status: 400 })
+}
+
 export function respondUnauthorized(): Response {
   return new Response(null, { status: 401 })
 }

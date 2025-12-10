@@ -5,13 +5,12 @@ export interface Behandling {
   gjenstående: Gjenstående[]
   utfallLåst?: UtfallLåst
   utfall?: Behandlingsutfall
-  // SkaL behandlinger kunne opprettes uten saksbehandler?
   utførtAv?: Saksbehandler
   oppgaveId: string
   ferdigstiltTidspunkt?: string
 }
-
 export interface LagreBehandlingRequest {
+  oppgaveId: string
   utfall?: Behandlingsutfall
 }
 

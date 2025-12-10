@@ -16,13 +16,14 @@ import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.
 import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
+  respondBadRequest,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
   respondNotFound,
   respondUnauthorized,
 } from './response'
-import { BehandlingerResponse, LagreBehandlingRequest } from '../../types/behandlingTyper.ts'
+import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   endreHjelpemiddelStore,
@@ -122,10 +123,27 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     }
   }),
 
+  // TODO, denne kan fjeres når nye Hotsak er i bruk overalt
   http.put<SakParams, VedtakPayload>('/api/sak/:sakId/vedtak', async ({ params }) => {
     const sakId = params.sakId
     await sakStore.fattVedtak(sakId)
-    await sakStore.ferdigstillBehandling(sakId)
+    return respondNoContent()
+  }),
+
+  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/ferdigstilling', async ({ params }) => {
+    const sakId = params.sakId
+    const behandling = await sakStore.hentBehandlinger(sakId)
+    if (!behandling || behandling.length === 0) {
+      return respondBadRequest()
+    }
+
+    // TODO: Wip. Fortsett på dette
+    //const gjeldendeBehandling = behandling[0]
+
+    //const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
+
+    await sakStore.fattVedtak(sakId)
+    await sakStore.ferdigstillBehandlingForSak(sakId)
     return respondNoContent()
   }),
 

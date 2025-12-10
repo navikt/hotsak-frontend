@@ -8,8 +8,8 @@ RUN go test -v ./... && go build .
 FROM node:lts-alpine AS client-builder
 ENV HUSKY=0
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    pnpm config set //pnpm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
-RUN pnpm config set @navikt:registry=https://pnpm.pkg.github.com
+    pnpm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
+RUN pnpm config set @navikt:registry=https://npm.pkg.github.com
 WORKDIR /app
 COPY client/package.json client/pnpm-lock.yaml ./
 RUN pnpm ci

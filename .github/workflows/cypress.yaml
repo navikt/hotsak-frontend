@@ -10,7 +10,7 @@ jobs:
       - name: Sjekk ut koden
         uses: actions/checkout@v4
 
-      - name: Autentiser med GitHub PNPM registry
+      - name: Autentiser med GitHub NPM registry
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.pnpmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.pnpmrc
@@ -22,7 +22,10 @@ jobs:
           cache: 'pnpm'    
 
       - name: Installer pnpm
-        uses: pnpm/action-setup@v4   
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
 
       - name: Hent pnpm cache-mappe
         id: pnpm-cache

@@ -20,10 +20,10 @@ jobs:
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v4
-      - name: Autentiser med GitHub PpNPM registry
+      - name: Autentiser med GitHub NPM registry
         run: |
-          echo "//pnpm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.pnpmrc
-          echo "@navikt:registry=https://pnpm.pkg.github.com" >> ~/.pnpmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
+          echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - name: Kjør Cypress
         uses: cypress-io/github-action@v6
         with:

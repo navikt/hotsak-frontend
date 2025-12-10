@@ -23,7 +23,7 @@ import {
   respondNotFound,
   respondUnauthorized,
 } from './response'
-import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
+import { BehandlingerResponse, LagreBehandlingRequest } from '../../types/behandlingTyper.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   endreHjelpemiddelStore,

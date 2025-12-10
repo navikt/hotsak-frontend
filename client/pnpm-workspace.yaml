@@ -1,0 +1,11 @@
+onlyBuiltDependencies:
+  - '@swc/core'
+  - cypress
+  - es5-ext
+  - esbuild
+  - msw
+  - protobufjs
+
+minimumReleaseAge: 10080 # 7 døgn i minutter
+minimumReleaseAgeExclude:
+  - '@navikt/*'

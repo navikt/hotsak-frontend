@@ -7,14 +7,17 @@ RUN go test -v ./... && go build .
 # build client
 FROM node:lts-alpine AS client-builder
 ENV HUSKY=0
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@10 --activate
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
-RUN npm config set @navikt:registry=https://npm.pkg.github.com
+    pnpm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
+RUN pnpm config set @navikt:registry=https://npm.pkg.github.com
 WORKDIR /app
-COPY client/package.json client/package-lock.json ./
-RUN npm ci
+COPY client/package.json client/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY client .
-RUN npm run test:ci && npm run build
+RUN pnpm run test:ci && pnpm run build
 
 # runtime
 FROM gcr.io/distroless/static-debian12 AS runtime

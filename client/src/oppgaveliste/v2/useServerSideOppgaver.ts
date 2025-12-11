@@ -1,8 +1,8 @@
 import useSWRInfinite, { type SWRInfiniteKeyedMutator } from 'swr/infinite'
 
 import { createUrl } from '../../io/HttpClient.ts'
-import type { HttpError } from '../../io/HttpError.ts'
-import { FinnOppgaverResponse, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { type HttpError } from '../../io/HttpError.ts'
+import { type FinnOppgaverResponse, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 
 export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
@@ -15,7 +15,7 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
 
 export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
   const {
-    filters: { oppgavetypeFilter, behandlingstemaFilter },
+    filters: { /* oppgavetypeFilter , */ behandlingstemaFilter },
     sort,
   } = useOppgaveFilterContext()
   const { data, error, mutate, isLoading, isValidating, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
@@ -43,7 +43,7 @@ export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResp
       return createUrl('/api/oppgaver-v2', {
         tildelt: OppgaveTildelt.INGEN,
         statuskategori: Statuskategori.ÅPEN,
-        oppgavetype: oppgavetypeFilter.values,
+        // oppgavetype: oppgavetypeFilter.values,
         gjelder: behandlingstemaFilter.values,
         sorteringsfelt,
         sorteringsrekkefølge,

@@ -1,12 +1,9 @@
-import { Button } from '@navikt/ds-react'
-import { useMemo } from 'react'
-import { useNavigate } from 'react-router'
-
+import { LinkButton } from '../../felleskomponenter/button/LinkButton.tsx'
 import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { oppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgaveColumns } from './useOppgaveColumns.ts'
 
 export interface MineOppgaverTableProps {
   oppgaver: OppgaveV2[]
@@ -16,39 +13,8 @@ export interface MineOppgaverTableProps {
 export function MineOppgaverTable(props: MineOppgaverTableProps) {
   const { oppgaver, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
-  const navigate = useNavigate()
 
-  const columns: DataGridColumn<OppgaveV2>[] = useMemo(
-    () => [
-      {
-        field: 'knapp',
-        width: 150,
-        renderCell(row) {
-          return (
-            <Button
-              size="xsmall"
-              type="button"
-              variant="tertiary"
-              onClick={() => navigate(`/oppgave/${row.oppgaveId}`)}
-            >
-              Åpne oppgave
-            </Button>
-          )
-        },
-      },
-      oppgaveColumns.oppgavetype,
-      oppgaveColumns.behandlingstema,
-      oppgaveColumns.behandlingstype,
-      oppgaveColumns.beskrivelse,
-      oppgaveColumns.mappenavn,
-      oppgaveColumns.prioritet,
-      oppgaveColumns.opprettetTidspunkt,
-      oppgaveColumns.fristFerdigstillelse,
-      oppgaveColumns.bruker,
-      oppgaveColumns.kommune,
-    ],
-    [navigate]
-  )
+  const columns = useOppgaveColumns(extraColumns)
 
   return (
     <DataGrid
@@ -71,3 +37,17 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
     />
   )
 }
+
+const extraColumns: DataGridColumn<OppgaveV2>[] = [
+  {
+    field: 'knapp',
+    width: 150,
+    renderCell(row) {
+      return (
+        <LinkButton size="xsmall" type="button" variant="tertiary" to={`/oppgave/${row.oppgaveId}`}>
+          Åpne oppgave
+        </LinkButton>
+      )
+    },
+  },
+]

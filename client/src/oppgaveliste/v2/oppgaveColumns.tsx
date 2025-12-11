@@ -7,6 +7,7 @@ import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
   OppgaveprioritetLabel,
+  Oppgavetype,
   OppgavetypeLabel,
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
@@ -19,15 +20,21 @@ export const oppgaveColumns = {
     field: 'oppgavetype',
     header: 'Oppgavetype',
     width: 150,
+    filter: {
+      columnKey: 'oppgavetype',
+      displayName: 'Oppgavetype',
+      options: [
+        { value: Oppgavetype.JOURNALFØRING, label: OppgavetypeLabel[Oppgavetype.JOURNALFØRING] },
+        { value: Oppgavetype.BEHANDLE_SAK, label: OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK] },
+        { value: Oppgavetype.GODKJENNE_VEDTAK, label: OppgavetypeLabel[Oppgavetype.GODKJENNE_VEDTAK] },
+        {
+          value: Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK,
+          label: OppgavetypeLabel[Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK],
+        },
+      ],
+    },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
-      /*
-      return (
-        <Tag size="small" variant="alt2" className={classes.tag}>
-          {OppgavetypeLabel[row.kategorisering.oppgavetype]}
-        </Tag>
-      )
-      */
     },
   },
   behandlingstema: {
@@ -40,32 +47,28 @@ export const oppgaveColumns = {
         return null
       }
       return behandlingstema.term
-      /*
-      return (
-        <Tag size="small" variant="alt3" className={classes.tag}>
-          {behandlingstema.term}
-        </Tag>
-      )
-      */
     },
   },
   behandlingstype: {
     field: 'behandlingstype',
     header: 'Behandlingstype',
     width: 150,
+    filter: {
+      columnKey: 'behandlingstype',
+      displayName: 'Behandlingstype',
+      options: [
+        { value: 'ae0281', label: 'Bestilling' },
+        { value: 'ae0227', label: 'Digital søknad' },
+        { value: 'ae0282', label: 'Hastebestilling' },
+        { value: 'ae0286', label: 'Hastesøknad' },
+      ],
+    },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
       if (!behandlingstype || !behandlingstype.term) {
         return null
       }
       return behandlingstype.term
-      /*
-      return (
-        <Tag size="small" variant="alt3" className={classes.tag}>
-          {behandlingstype.term}
-        </Tag>
-      )
-      */
     },
   },
   beskrivelse: {
@@ -103,6 +106,15 @@ export const oppgaveColumns = {
     field: 'prioritet',
     header: 'Prioritet',
     width: 100,
+    filter: {
+      columnKey: 'prioritet',
+      displayName: 'Prioritet',
+      options: [
+        { value: Oppgaveprioritet.LAV, label: OppgaveprioritetLabel[Oppgaveprioritet.LAV] },
+        { value: Oppgaveprioritet.NORMAL, label: OppgaveprioritetLabel[Oppgaveprioritet.NORMAL] },
+        { value: Oppgaveprioritet.HØY, label: OppgaveprioritetLabel[Oppgaveprioritet.HØY] },
+      ],
+    },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
       if (row.prioritet === Oppgaveprioritet.HØY) {
@@ -138,19 +150,41 @@ export const oppgaveColumns = {
       )
     },
   },
-  bruker: {
-    field: 'bruker',
-    header: 'Bruker',
+  brukerFnr: {
+    field: 'brukerFnr',
+    header: 'Fødselsnummer',
     sortKey: 'fnr',
-    width: 300,
+    width: 100,
     renderCell(row) {
       const bruker = row.bruker
       if (!bruker) {
         return null
       }
-      return `${formaterFødselsnummer(bruker.fnr)} | ${bruker.fulltNavn}`
+      return formaterFødselsnummer(bruker.fnr)
+    },
+  },
+  brukerNavn: {
+    field: 'brukerNavn',
+    header: 'Navn',
+    width: 150,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker) {
+        return null
+      }
+      return bruker.fulltNavn
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>
 
+export interface OppgaveColumn {
+  key: OppgaveColumnKeyType
+  checked: boolean
+  order: number
+}
+
 export type OppgaveColumnKeyType = keyof typeof oppgaveColumns
+
+export function headerForColumn(key: OppgaveColumnKeyType): string {
+  return oppgaveColumns[key]?.header ?? ''
+}

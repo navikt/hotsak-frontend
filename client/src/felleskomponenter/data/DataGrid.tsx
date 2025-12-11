@@ -1,9 +1,10 @@
-import { Loader, Table, type TableProps } from '@navikt/ds-react'
+import { HStack, Loader, Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
+import { type DataGridFilter, DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol>
@@ -12,6 +13,9 @@ export interface DataGridColumn<T extends object> {
   hidden?: boolean
   sortKey?: Exclude<keyof T, symbol | number>
   width?: number
+  order?: number
+
+  filter?: DataGridFilter
 
   formatDate?: boolean
   formatDateTime?: boolean
@@ -48,7 +52,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
       <Table.Header>
         <Table.Row>
           {renderContent ? <Table.HeaderCell /> : null}
-          {columns.map((column) => {
+          {columns.filter(notHidden).map((column) => {
             const key = column.field
 
             let header: ReactNode
@@ -73,7 +77,10 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             } else {
               return (
                 <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
-                  {header}
+                  <HStack align="center" gap="3" wrap={false}>
+                    <div>{header}</div>
+                    {column.filter ? <DataGridFilterMenu {...column.filter} /> : null}
+                  </HStack>
                 </Table.HeaderCell>
               )
             }
@@ -94,7 +101,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
         {rows.map((row) => {
           const key = keyFactory(row)
 
-          const cells = columns.map((column) => {
+          const cells = columns.filter(notHidden).map((column) => {
             let value: ReactNode
             if (column.renderCell) {
               value = column.renderCell(row)
@@ -128,6 +135,10 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
       </Table.Body>
     </Table>
   )
+}
+
+function notHidden<T extends object>(column: DataGridColumn<T>): boolean {
+  return !column.hidden
 }
 
 function PlaceholderRow({

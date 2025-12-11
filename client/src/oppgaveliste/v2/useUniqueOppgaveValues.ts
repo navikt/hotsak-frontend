@@ -1,23 +1,25 @@
 import { useMemo } from 'react'
-import { Oppgaveprioritet, Oppgavetype, OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 
+import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { natural, notEmpty, uniqueBy } from '../../utils/array.ts'
-import { select } from '../../utils/select.ts'
 
 export interface UniqueOppgaveValues {
-  oppgavetyper: Oppgavetype[]
+  saksbehandlere: string[]
+  // oppgavetyper: Oppgavetype[]
   behandlingstemaer: string[]
   behandlingstyper: string[]
   mapper: string[]
-  prioriteter: Oppgaveprioritet[]
+  // prioriteter: Oppgaveprioritet[]
   kommuner: string[]
-  saksbehandlere: string[]
 }
 
 export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValues {
   return useMemo(() => {
     return {
-      oppgavetyper: uniqueBy(oppgaver, (it) => it.kategorisering.oppgavetype).sort(natural),
+      saksbehandlere: uniqueBy(oppgaver, (it) => it.tildeltSaksbehandler?.navn ?? 'Ingen')
+        .filter(notEmpty)
+        .sort(natural),
+      // oppgavetyper: uniqueBy(oppgaver, (it) => it.kategorisering.oppgavetype).sort(natural),
       behandlingstemaer: uniqueBy(oppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
@@ -27,11 +29,8 @@ export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValu
       mapper: uniqueBy(oppgaver, (it) => it.mappenavn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-      prioriteter: uniqueBy(oppgaver, select('prioritet')).sort(natural),
+      // prioriteter: uniqueBy(oppgaver, select('prioritet')).sort(natural),
       kommuner: uniqueBy(oppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen')
-        .filter(notEmpty)
-        .sort(natural),
-      saksbehandlere: uniqueBy(oppgaver, (it) => it.tildeltSaksbehandler?.navn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
     }

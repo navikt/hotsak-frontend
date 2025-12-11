@@ -1,7 +1,7 @@
 import { type SortState } from '@navikt/ds-react'
 import { createContext, useContext } from 'react'
 
-import { Oppgaveprioritet, type OppgaveSortState, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveSortState } from '../../oppgave/oppgaveTypes.ts'
 import { type UniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
 
 export interface OppgaveFilter<T = string> {
@@ -15,13 +15,13 @@ export interface OppgaveFilter<T = string> {
 
 interface OppgaveFilterContextType {
   filters: {
-    oppgavetypeFilter: OppgaveFilter<Oppgavetype>
+    saksbehandlerFilter: OppgaveFilter
+    // oppgavetypeFilter: OppgaveFilter<Oppgavetype>
     behandlingstemaFilter: OppgaveFilter
     behandlingstypeFilter: OppgaveFilter
     mappeFilter: OppgaveFilter
-    prioritetFilter: OppgaveFilter<Oppgaveprioritet>
+    // prioritetFilter: OppgaveFilter<Oppgaveprioritet>
     kommuneFilter: OppgaveFilter
-    saksbehandlerFilter: OppgaveFilter
 
     clear(): void
   }
@@ -40,6 +40,15 @@ const initialSortState: OppgaveSortState = {
 
 export const initialState: OppgaveFilterContextType = {
   filters: {
+    saksbehandlerFilter: {
+      key: 'saksbehandlere',
+      displayName: 'Saksbehandler',
+      values: [],
+      enabled: false,
+      setValues() {},
+      setEnabled() {},
+    },
+    /*
     oppgavetypeFilter: {
       key: 'oppgavetyper',
       displayName: 'Oppgavetype',
@@ -48,6 +57,7 @@ export const initialState: OppgaveFilterContextType = {
       setValues() {},
       setEnabled() {},
     },
+    */
     behandlingstemaFilter: {
       key: 'behandlingstemaer',
       displayName: 'Gjelder',
@@ -72,6 +82,7 @@ export const initialState: OppgaveFilterContextType = {
       setValues() {},
       setEnabled() {},
     },
+    /*
     prioritetFilter: {
       key: 'prioriteter',
       displayName: 'Prioritet',
@@ -80,17 +91,10 @@ export const initialState: OppgaveFilterContextType = {
       setValues() {},
       setEnabled() {},
     },
+    */
     kommuneFilter: {
       key: 'kommuner',
       displayName: 'Kommune',
-      values: [],
-      enabled: false,
-      setValues() {},
-      setEnabled() {},
-    },
-    saksbehandlerFilter: {
-      key: 'saksbehandlere',
-      displayName: 'Saksbehandler',
       values: [],
       enabled: false,
       setValues() {},

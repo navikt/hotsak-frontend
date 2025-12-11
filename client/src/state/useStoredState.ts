@@ -22,7 +22,7 @@ export function useStoredState<S = unknown>(
 
   useEffect(() => {
     storage.setItem(key, serialize(state))
-  }, [storage, serialize, key, state])
+  }, [key, storage, serialize, state])
 
   return [state, setState]
 }

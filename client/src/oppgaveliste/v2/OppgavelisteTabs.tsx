@@ -10,6 +10,7 @@ export function OppgavelisteTabs() {
   return (
     <>
       <Tabs
+        size="medium"
         value={valgtFane}
         defaultValue="mine"
         onChange={(value) => {

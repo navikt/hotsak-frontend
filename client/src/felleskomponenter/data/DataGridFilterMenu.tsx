@@ -28,10 +28,12 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
     <ActionMenu>
       <ActionMenu.Trigger>
         <Button
-          variant="tertiary-neutral"
+          variant={enabled ? 'tertiary' : 'tertiary-neutral'}
           icon={enabled ? <FunnelFillIcon title="Kolonnen er filtrert" /> : <FunnelIcon title="Filtrer kolonne" />}
           size="xsmall"
-        />
+        >
+          {enabled && <Indicator count={current.values.length} />}
+        </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label={displayName}>
@@ -82,4 +84,8 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
 
 function isDataGridFilterOption(value: unknown): value is DataGridFilterOption {
   return value != null && (value as DataGridFilterOption).value != null && (value as DataGridFilterOption).label != null
+}
+
+function Indicator({ count }: { count: number }) {
+  return <span>{`(${count})`}</span>
 }

@@ -7,7 +7,7 @@ export interface UniqueOppgaveValues {
   saksbehandlere: string[]
   // oppgavetyper: Oppgavetype[]
   behandlingstemaer: string[]
-  behandlingstyper: string[]
+  // behandlingstyper: string[]
   mapper: string[]
   // prioriteter: Oppgaveprioritet[]
   kommuner: string[]
@@ -23,9 +23,9 @@ export function useUniqueOppgaveValues(oppgaver: OppgaveV2[]): UniqueOppgaveValu
       behandlingstemaer: uniqueBy(oppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),
-      behandlingstyper: uniqueBy(oppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
+      /* behandlingstyper: uniqueBy(oppgaver, (it) => it.kategorisering.behandlingstype?.term ?? 'Ingen')
         .filter(notEmpty)
-        .sort(natural),
+        .sort(natural), */
       mapper: uniqueBy(oppgaver, (it) => it.mappenavn ?? 'Ingen')
         .filter(notEmpty)
         .sort(natural),

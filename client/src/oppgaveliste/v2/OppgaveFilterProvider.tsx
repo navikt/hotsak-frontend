@@ -16,7 +16,7 @@ export function OppgaveFilterProvider({
   const filters = initialState.filters
   // const oppgavetypeFilter = useOppgaveFilterState(key('oppgavetypeFilter'), filters.oppgavetypeFilter)
   const behandlingstemaFilter = useOppgaveFilterState(key('behandlingstemaFilter'), filters.behandlingstemaFilter)
-  const behandlingstypeFilter = useOppgaveFilterState(key('behandlingstypeFilter'), filters.behandlingstypeFilter)
+  // const behandlingstypeFilter = useOppgaveFilterState(key('behandlingstypeFilter'), filters.behandlingstypeFilter)
   const mappeFilter = useOppgaveFilterState(key('mappeFilter'), filters.mappeFilter)
   // const prioritetFilter = useOppgaveFilterState(key('prioritetFilter'), filters.prioritetFilter)
   const kommuneFilter = useOppgaveFilterState(key('kommuneFilter'), filters.kommuneFilter)
@@ -36,7 +36,7 @@ export function OppgaveFilterProvider({
         saksbehandlerFilter,
         // oppgavetypeFilter,
         behandlingstemaFilter,
-        behandlingstypeFilter,
+        // behandlingstypeFilter,
         mappeFilter,
         // prioritetFilter,
         kommuneFilter,
@@ -52,7 +52,7 @@ export function OppgaveFilterProvider({
     saksbehandlerFilter,
     // oppgavetypeFilter,
     behandlingstemaFilter,
-    behandlingstypeFilter,
+    // behandlingstypeFilter,
     mappeFilter,
     // prioritetFilter,
     kommuneFilter,

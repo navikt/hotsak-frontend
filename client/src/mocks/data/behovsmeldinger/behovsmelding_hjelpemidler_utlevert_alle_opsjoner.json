@@ -1,0 +1,388 @@
+{
+  "behovsmeldingId": "cde6615e-be9f-449f-b39d-eff7ea1909df",
+  "beskrivelse": "behovsmelding_4",
+  "behovsmelding": {
+    "bruker": {
+      "fnr": "13820599335",
+      "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+      "signaturtype": "FULLMAKT",
+      "telefon": "13820599",
+      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "kommunenummer": "4649",
+      "brukernummer": "1670299",
+      "kilde": "PDL",
+      "legacyopplysninger": []
+    },
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          }
+        },
+        {
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          }
+        },
+        {
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          }
+        }
+      ],
+      "funksjonsnedsettelser": ["BEVEGELSE"],
+      "funksjonsbeskrivelse": {
+        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE",
+        "diagnose": null,
+        "beskrivelse": "gammal"
+      }
+    },
+    "hjelpemidler": {
+      "hjelpemidler": [
+        {
+          "hjelpemiddelId": "88c17a00-d0e2-4df5-a3ce-3fc35bf167f3",
+          "antall": 4,
+          "produkt": {
+            "hmsArtNr": "177946",
+            "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
+            "iso8": "12060602",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "delkontrakttittel": "2. Rullator - innendørs bruk",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1333",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "utleverttype": "FREMSKUTT_LAGER",
+            "overførtFraBruker": null,
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Utlevert", "nn": "Utlevert" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Utlevert fra fremskutt lager",
+                    "nn": "Utlevert frå framskote lager"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Begrunnelse for antall", "nn": "Grunngiving for tal" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "Behov i flere etasjer", "nn": "Behov i fleire etasjar" },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "hjelpemiddelId": "6008fcfa-30b8-4f2f-80e8-d19cd2ccc35b",
+          "antall": 3,
+          "produkt": {
+            "hmsArtNr": "177948",
+            "artikkelnavn": "Gemino 20M, personhøyde 135 - 170 cm",
+            "iso8": "12060602",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "delkontrakttittel": "2. Rullator - innendørs bruk",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1333",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "utleverttype": "KORTTIDSLÅN",
+            "overførtFraBruker": null,
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Utlevert", "nn": "Utlevert" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "Utprøvingslån", "nn": "Utprøvingslån" },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Begrunnelse for antall", "nn": "Grunngiving for tal" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "Behov i flere etasjer", "nn": "Behov i fleire etasjar" },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "hjelpemiddelId": "d6dc4fad-b63c-4173-9188-e41e2f69d6ff",
+          "antall": 2,
+          "produkt": {
+            "hmsArtNr": "177947",
+            "artikkelnavn": "Gemino 20S, personhøyde 125 - 165 cm",
+            "iso8": "12060602",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "delkontrakttittel": "2. Rullator - innendørs bruk",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1333",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "utleverttype": "OVERFØRT",
+            "overførtFraBruker": "4497226",
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Utlevert", "nn": "Utlevert" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Overført fra annen person. Brukernummer: 4497226",
+                    "nn": "Overført frå ein annan person. Brukarnummer: 4497226"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Begrunnelse for antall", "nn": "Grunngiving for tal" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "Behov i flere etasjer", "nn": "Behov i fleire etasjar" },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "hjelpemiddelId": "06e4b57f-46e3-49ff-a56c-8284a29b3a97",
+          "antall": 1,
+          "produkt": {
+            "hmsArtNr": "214812",
+            "artikkelnavn": "Gemino 60M Walker",
+            "iso8": "12061202",
+            "iso8Tittel": "Gåbord med underarmstøtte",
+            "delkontrakttittel": "8. Gåbord - underarmsstøtter til utendørs bruk",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1339",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "utleverttype": "ANNET",
+            "overførtFraBruker": null,
+            "annenKommentar": "Utlevert på annnen måte tekst"
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Utlevert", "nn": "Utlevert" },
+              "innhold": [
+                {
+                  "fritekst": "Utlevert på annnen måte tekst",
+                  "forhåndsdefinertTekst": null,
+                  "begrepsforklaring": null
+                }
+              ]
+            },
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "hjelpemiddelId": "c770fb9f-0640-4e42-9c28-91fd35ba3561",
+          "antall": 1,
+          "produkt": {
+            "hmsArtNr": "313181",
+            "artikkelnavn": "Gemino 30 Comfort Parkinson",
+            "iso8": "12060602",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "delkontrakttittel": "6. Rullator - brukere med akinesi",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1337",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false,
+            "utleverttype": null,
+            "overførtFraBruker": null,
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        }
+      ],
+      "tilbehør": [],
+      "totaltAntall": 11
+    },
+    "levering": {
+      "hjelpemiddelformidler": {
+        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "stilling": "CEO",
+        "telefon": "11223344",
+        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "treffesEnklest": "På telefon fra hjemmekontor.",
+        "kommunenavn": "STAD",
+        "kommunenummer": "4649"
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "annenOppfølgingsansvarlig": null,
+      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
+      "annenUtleveringsadresse": null,
+      "annenUtleveringskommune": null,
+      "annenUtleveringsbydel": null,
+      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+      "annenKontaktperson": null,
+      "utleveringMerknad": "",
+      "hast": null,
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "innsender": {
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": true,
+      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "vedlegg": [],
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "kanVæreBestilling": false,
+        "kriterier": {
+          "alleHovedProdukterPåBestillingsOrdning": false,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "brukerHarHjelpemidlerFraFør": null,
+          "brukerHarInfotrygdVedtakFraFør": null,
+          "brukerHarHotsakVedtakFraFør": true,
+          "leveringTilFolkeregistrertAdresse": true,
+          "brukersAdresseErSatt": true,
+          "brukerBorIkkeIUtlandet": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "inneholderIkkeFritekst": false,
+          "kildeErPdl": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "ingenProdukterErAlleredeUtlevert": false,
+          "brukerErTilknyttetBydelIOslo": null,
+          "harIngenBytter": true,
+          "brukerHarAdresseIOeBS": true
+        },
+        "metaInfo": {
+          "hovedProdukter": ["177946", "177948", "177947", "214812", "313181"],
+          "hovedProdukterIkkePåBestillingsordning": ["214812", "313181"],
+          "tilbehør": [],
+          "tilbehørIkkePåBestillingsordning": []
+        },
+        "version": "ce94cda3e1e9fe14f46db5d2f7f5846384f779bd"
+      }
+    },
+    "id": "cde6615e-be9f-449f-b39d-eff7ea1909df",
+    "type": "SØKNAD",
+    "innsendingsdato": "2025-12-10",
+    "innsendingstidspunkt": "2025-12-10T22:08:57.668016969Z",
+    "skjemaversjon": 2,
+    "hjmBrukersFnr": "13820599335",
+    "prioritet": "NORMAL"
+  },
+  "behovsmeldingGjelder": "Søknad om: gåbord, rullator",
+  "fnrBruker": "13820599335",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2025-12-10T12:03:23.053Z",
+  "sakId": "4"
+}

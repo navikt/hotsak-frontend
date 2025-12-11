@@ -19,7 +19,7 @@ export function Summering({ hjelpemidler, tilbehør }: { hjelpemidler: Hjelpemid
         <Skillelinje />
         <Etikett>{`Totalt ${totaltAntallHjelpemidler + totaltAntallFrittståendeTilbehør} stk. inkl. tilbehør`}</Etikett>
         {hjelpemidlerAlleredeUtlevert.length > 0 && (
-          <div>Totalt. {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</div>
+          <Etikett>Totalt {summerAntall(hjelpemidlerAlleredeUtlevert)} stk. allerede utlevert</Etikett>
         )}
         <Skillelinje />
       </VStack>

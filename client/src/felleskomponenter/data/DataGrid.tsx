@@ -1,10 +1,10 @@
-import { FunnelIcon } from '@navikt/aksel-icons'
 import { HStack, Loader, Table, type TableProps } from '@navikt/ds-react'
 import { type Key, type ReactNode, useState } from 'react'
 
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
+import { type DataGridFilter, DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol>
@@ -15,7 +15,7 @@ export interface DataGridColumn<T extends object> {
   width?: number
   order?: number
 
-  filterable?: boolean
+  filter?: DataGridFilter
 
   formatDate?: boolean
   formatDateTime?: boolean
@@ -79,7 +79,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                 <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
                   <HStack align="center" gap="3" wrap={false}>
                     <div>{header}</div>
-                    {!column.renderHeader && header ? <FunnelIcon /> : null}
+                    {column.filter ? <DataGridFilterMenu {...column.filter} /> : null}
                   </HStack>
                 </Table.HeaderCell>
               )

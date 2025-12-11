@@ -7,6 +7,7 @@ import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
   OppgaveprioritetLabel,
+  Oppgavetype,
   OppgavetypeLabel,
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
@@ -19,6 +20,19 @@ export const oppgaveColumns = {
     field: 'oppgavetype',
     header: 'Oppgavetype',
     width: 150,
+    filter: {
+      columnKey: 'oppgavetype',
+      displayName: 'Oppgavetype',
+      options: [
+        { value: Oppgavetype.JOURNALFØRING, label: OppgavetypeLabel[Oppgavetype.JOURNALFØRING] },
+        { value: Oppgavetype.BEHANDLE_SAK, label: OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK] },
+        { value: Oppgavetype.GODKJENNE_VEDTAK, label: OppgavetypeLabel[Oppgavetype.GODKJENNE_VEDTAK] },
+        {
+          value: Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK,
+          label: OppgavetypeLabel[Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK],
+        },
+      ],
+    },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
     },
@@ -82,6 +96,15 @@ export const oppgaveColumns = {
     field: 'prioritet',
     header: 'Prioritet',
     width: 100,
+    filter: {
+      columnKey: 'prioritet',
+      displayName: 'Prioritet',
+      options: [
+        { value: Oppgaveprioritet.LAV, label: OppgaveprioritetLabel[Oppgaveprioritet.LAV] },
+        { value: Oppgaveprioritet.NORMAL, label: OppgaveprioritetLabel[Oppgaveprioritet.NORMAL] },
+        { value: Oppgaveprioritet.HØY, label: OppgaveprioritetLabel[Oppgaveprioritet.HØY] },
+      ],
+    },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
       if (row.prioritet === Oppgaveprioritet.HØY) {

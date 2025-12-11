@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { HttpError } from '../../io/HttpError.ts'
+import { type HttpError } from '../../io/HttpError.ts'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaver } from '../../oppgave/useOppgaver.ts'
@@ -8,6 +8,7 @@ import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
 import { OppgaveFilter as OppgaveFilterType, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { type UniqueOppgaveValues, useUniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
+import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 
 const pageNumber = 1
 const pageSize = 1_000
@@ -23,17 +24,17 @@ export interface UseClientSideOppgaverResponse {
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
   const {
-    filters: {
-      oppgavetypeFilter,
-      behandlingstemaFilter,
-      behandlingstypeFilter,
-      mappeFilter,
-      prioritetFilter,
-      kommuneFilter,
-      saksbehandlerFilter,
-    },
+    filters: { behandlingstemaFilter, behandlingstypeFilter, mappeFilter, kommuneFilter, saksbehandlerFilter },
     sort,
   } = useOppgaveFilterContext()
+
+  const state = useDataGridFilterContext()
+  const { oppgavetypeFilter, prioritetFilter } = useMemo(() => {
+    return {
+      oppgavetypeFilter: (state['oppgavetype'] ?? { values: [] }) as OppgaveFilterType,
+      prioritetFilter: (state['prioritet'] ?? { values: [] }) as OppgaveFilterType,
+    }
+  }, [state])
 
   const eksterneOppgaver = useOppgaver({
     tildelt,

@@ -14,11 +14,11 @@ export function OppgaveFilterProvider({
   const key = (key: string) => key + suffix
 
   const filters = initialState.filters
-  const oppgavetypeFilter = useOppgaveFilterState(key('oppgavetypeFilter'), filters.oppgavetypeFilter)
+  // const oppgavetypeFilter = useOppgaveFilterState(key('oppgavetypeFilter'), filters.oppgavetypeFilter)
   const behandlingstemaFilter = useOppgaveFilterState(key('behandlingstemaFilter'), filters.behandlingstemaFilter)
   const behandlingstypeFilter = useOppgaveFilterState(key('behandlingstypeFilter'), filters.behandlingstypeFilter)
   const mappeFilter = useOppgaveFilterState(key('mappeFilter'), filters.mappeFilter)
-  const prioritetFilter = useOppgaveFilterState(key('prioritetFilter'), filters.prioritetFilter)
+  // const prioritetFilter = useOppgaveFilterState(key('prioritetFilter'), filters.prioritetFilter)
   const kommuneFilter = useOppgaveFilterState(key('kommuneFilter'), filters.kommuneFilter)
   const saksbehandlerFilter = useOppgaveFilterState(key('saksbehandlerFilter'), filters.saksbehandlerFilter)
 
@@ -33,13 +33,13 @@ export function OppgaveFilterProvider({
   const value = useMemo(() => {
     return {
       filters: {
-        oppgavetypeFilter,
+        saksbehandlerFilter,
+        // oppgavetypeFilter,
         behandlingstemaFilter,
         behandlingstypeFilter,
         mappeFilter,
-        prioritetFilter,
+        // prioritetFilter,
         kommuneFilter,
-        saksbehandlerFilter,
 
         clear,
       },
@@ -49,13 +49,13 @@ export function OppgaveFilterProvider({
       setSort,
     }
   }, [
-    oppgavetypeFilter,
+    saksbehandlerFilter,
+    // oppgavetypeFilter,
     behandlingstemaFilter,
     behandlingstypeFilter,
     mappeFilter,
-    prioritetFilter,
+    // prioritetFilter,
     kommuneFilter,
-    saksbehandlerFilter,
     clear,
     currentPage,
     setCurrentPage,

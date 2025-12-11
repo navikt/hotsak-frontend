@@ -140,17 +140,29 @@ export const oppgaveColumns = {
       )
     },
   },
-  bruker: {
-    field: 'bruker',
-    header: 'Bruker',
+  brukerFnr: {
+    field: 'brukerFnr',
+    header: 'Fødselsnummer',
     sortKey: 'fnr',
-    width: 300,
+    width: 100,
     renderCell(row) {
       const bruker = row.bruker
       if (!bruker) {
         return null
       }
-      return `${formaterFødselsnummer(bruker.fnr)} | ${bruker.fulltNavn}`
+      return formaterFødselsnummer(bruker.fnr)
+    },
+  },
+  brukerNavn: {
+    field: 'brukerNavn',
+    header: 'Navn',
+    width: 150,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker) {
+        return null
+      }
+      return bruker.fulltNavn
     },
   },
 } satisfies Record<string, DataGridColumn<OppgaveV2>>

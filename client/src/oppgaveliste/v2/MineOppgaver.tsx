@@ -61,13 +61,18 @@ const defaultColumns: OppgaveColumn[] = [
     order: 7,
   },
   {
-    key: 'bruker',
+    key: 'brukerFnr',
     checked: true,
     order: 8,
   },
   {
-    key: 'kommune',
+    key: 'brukerNavn',
     checked: true,
     order: 9,
+  },
+  {
+    key: 'kommune',
+    checked: true,
+    order: 10,
   },
 ]

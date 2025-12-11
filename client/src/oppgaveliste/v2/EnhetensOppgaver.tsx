@@ -2,7 +2,7 @@ import { Box } from '@navikt/ds-react'
 
 import { OppgaveTildelt } from '../../oppgave/oppgaveTypes.ts'
 import { EnhetensOppgaverTable } from './EnhetensOppgaverTable.tsx'
-import type { OppgaveColumn } from './oppgaveColumns.tsx'
+import { type OppgaveColumn } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
 import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
@@ -61,13 +61,18 @@ const defaultColumns: OppgaveColumn[] = [
     order: 7,
   },
   {
-    key: 'bruker',
+    key: 'brukerFnr',
     checked: true,
     order: 8,
   },
   {
-    key: 'kommune',
+    key: 'brukerNavn',
     checked: true,
     order: 9,
+  },
+  {
+    key: 'kommune',
+    checked: true,
+    order: 10,
   },
 ]

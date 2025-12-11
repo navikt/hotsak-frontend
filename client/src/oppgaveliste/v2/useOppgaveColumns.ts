@@ -10,7 +10,10 @@ export function useOppgaveColumns(extraColumns: DataGridColumn<OppgaveV2>[]): Da
   return useMemo(() => {
     return [
       ...extraColumns,
-      ...contextColumns.filter((column) => column.checked).map((column) => oppgaveColumns[column.key]),
+      ...contextColumns
+        .filter((column) => (column.key as any) !== 'bruker')
+        .filter((column) => column.checked)
+        .map((column) => oppgaveColumns[column.key]),
     ]
   }, [extraColumns, contextColumns])
 }

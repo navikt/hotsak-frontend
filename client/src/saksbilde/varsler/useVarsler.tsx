@@ -50,7 +50,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
   if (harAlleredeUtleveteHjelpemidler) {
     varslerFor.push(VarselFor.ALLEREDE_UTLEVERT)
     beskrivelser.push(
-      'Minst ett hjelpemiddel i saken allerede er utlevert. Gjør nødvendige endringer knyttet til utlevering i OeBS.'
+      'Minst ett hjelpemiddel i saken er allerede utlevert. Gjør nødvendige endringer knyttet til utlevering i OeBS.'
     )
   }
 

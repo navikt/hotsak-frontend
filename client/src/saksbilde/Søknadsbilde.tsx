@@ -63,8 +63,9 @@ const SaksbildeContent = memo(() => {
             )}
           </Venstremeny>
           <section>
-            {harVarsler && <Saksvarsler varsler={varsler} />}
             <ScrollContainer>
+              {harVarsler && <Saksvarsler varsler={varsler} />}
+
               <Container>
                 <Routes>
                   <Route

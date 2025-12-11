@@ -1,7 +1,6 @@
 import { HStack, UNSAFE_Combobox } from '@navikt/ds-react'
 import { type FormEventHandler, useMemo } from 'react'
 
-import { OppgaveprioritetLabel, OppgavetypeLabel } from '../../oppgave/oppgaveTypes.ts'
 import { type OppgaveFilter, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { type UniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
 
@@ -60,8 +59,8 @@ function OppgaveFilterCombobox({ filter, ...rest }: { filter: OppgaveFilter; opt
 const noOptions: string[] = []
 
 const labels: Partial<Record<keyof UniqueOppgaveValues, Record<string, string>>> = {
-  oppgavetyper: OppgavetypeLabel,
-  prioriteter: OppgaveprioritetLabel,
+  // oppgavetyper: OppgavetypeLabel,
+  // prioriteter: OppgaveprioritetLabel,
 }
 
 function toOptionFor(key: keyof UniqueOppgaveValues): (value: string) => { label: string; value: string } {

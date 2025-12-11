@@ -8,11 +8,11 @@ import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 
 export function MineOppgaver() {
-  const { oppgaver, isLoading } = useClientSideOppgaver(OppgaveTildelt.MEG)
+  const { oppgaver, isLoading, totalElements } = useClientSideOppgaver(OppgaveTildelt.MEG)
   return (
     <Box.New marginInline="5">
       <OppgaveColumnsProvider defaultColumns={defaultColumns}>
-        <OppgaveToolbar />
+        <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
         <MineOppgaverTable oppgaver={oppgaver} loading={isLoading} />
       </OppgaveColumnsProvider>
     </Box.New>

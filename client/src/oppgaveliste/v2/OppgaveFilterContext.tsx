@@ -18,7 +18,7 @@ interface OppgaveFilterContextType {
     saksbehandlerFilter: OppgaveFilter
     // oppgavetypeFilter: OppgaveFilter<Oppgavetype>
     behandlingstemaFilter: OppgaveFilter
-    behandlingstypeFilter: OppgaveFilter
+    // behandlingstypeFilter: OppgaveFilter
     mappeFilter: OppgaveFilter
     // prioritetFilter: OppgaveFilter<Oppgaveprioritet>
     kommuneFilter: OppgaveFilter
@@ -66,6 +66,7 @@ export const initialState: OppgaveFilterContextType = {
       setValues() {},
       setEnabled() {},
     },
+    /*
     behandlingstypeFilter: {
       key: 'behandlingstyper',
       displayName: 'Behandlingstype',
@@ -74,6 +75,7 @@ export const initialState: OppgaveFilterContextType = {
       setValues() {},
       setEnabled() {},
     },
+    */
     mappeFilter: {
       key: 'mapper',
       displayName: 'Mappe',

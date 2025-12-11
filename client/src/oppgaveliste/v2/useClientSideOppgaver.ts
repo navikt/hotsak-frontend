@@ -24,14 +24,15 @@ export interface UseClientSideOppgaverResponse {
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
   const {
-    filters: { behandlingstemaFilter, behandlingstypeFilter, mappeFilter, kommuneFilter, saksbehandlerFilter },
+    filters: { behandlingstemaFilter, mappeFilter, kommuneFilter, saksbehandlerFilter },
     sort,
   } = useOppgaveFilterContext()
 
   const state = useDataGridFilterContext()
-  const { oppgavetypeFilter, prioritetFilter } = useMemo(() => {
+  const { oppgavetypeFilter, behandlingstypeFilter, prioritetFilter } = useMemo(() => {
     return {
       oppgavetypeFilter: (state['oppgavetype'] ?? { values: [] }) as OppgaveFilterType,
+      behandlingstypeFilter: (state['behandlingstype'] ?? { values: [] }) as OppgaveFilterType,
       prioritetFilter: (state['prioritet'] ?? { values: [] }) as OppgaveFilterType,
     }
   }, [state])

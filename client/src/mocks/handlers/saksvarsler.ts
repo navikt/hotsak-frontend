@@ -24,7 +24,6 @@ export const saksvarslerHandlers: StoreHandlersFactory = ({ sakStore }) => [
         /*
         {
           tittel: 'Du må fullføre bestillingen i OeBS. Følgende må gjøres:',
-          varslerFor: ['ANNEN_ADRESSE', 'TILBAKELEVERING', 'ALLEREDE_UTLEVERT'],
           beskrivelse: [
             // 'Det er levering til en annen leveringsadresse. Denne må registreres.',
             'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på ordren i OeBS.',

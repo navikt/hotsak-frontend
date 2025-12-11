@@ -92,8 +92,6 @@ export function lagLeveringsmåteTekst(
   const annenAdresse = formaterAdresse(annenUtleveringsadresse)
 
   switch (utleveringsmåte) {
-    case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
-      return { label: 'Allerede levert' }
     case Utleveringsmåte.ANNEN_BRUKSADRESSE:
       return {
         label: `Til annen adresse`,

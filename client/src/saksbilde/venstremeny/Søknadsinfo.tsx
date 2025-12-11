@@ -9,6 +9,7 @@ import { FormidlerCard } from '../venstremeny/FormidlerCard'
 import { GreitÅViteCard } from '../venstremeny/GreitÅViteCard'
 import { LeveringCard } from '../venstremeny/LeveringCard'
 import { SøknadCard } from '../venstremeny/SøknadCard'
+import { LeveringTilleggsinfo } from '../../types/BehovsmeldingTypes'
 
 export const Søknadsinfo = memo(() => {
   const { sak, isLoading: isSakLoading } = useSak()
@@ -42,10 +43,12 @@ export const Søknadsinfo = memo(() => {
         formidlerTelefon={formidler.telefon}
         kommune={formidler.adresse.poststed}
       />
-      <LeveringCard
-        levering={behovsmelding.levering}
-        adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
-      />
+      {!levering.automatiskUtledetTilleggsinfo.includes(LeveringTilleggsinfo.ALLE_HJELPEMIDLER_ER_UTLEVERT) && (
+        <LeveringCard
+          levering={behovsmelding.levering}
+          adresseBruker={formaterAdresse(behovsmelding.bruker.veiadresse)}
+        />
+      )}
       <GreitÅViteCard greitÅViteFakta={sak.data.greitÅViteFaktum} />
     </>
   )

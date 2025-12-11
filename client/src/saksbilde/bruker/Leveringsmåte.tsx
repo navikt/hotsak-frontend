@@ -38,8 +38,6 @@ export function lagLeveringsmåteTekst(
   adresseBruker: string
 ): string {
   switch (utleveringsmåte) {
-    case Utleveringsmåte.ALLEREDE_UTLEVERT_AV_NAV:
-      return 'Allerede levert'
     case Utleveringsmåte.ANNEN_BRUKSADRESSE:
       return `${formaterAdresse(annenUtleveringsadresse)} (Annen adresse)`
     case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:

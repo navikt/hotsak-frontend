@@ -122,9 +122,6 @@ export class SakStore extends Dexie {
       })
     )
 
-    console.log('HJ')
-    console.log(hjelpemiddelsaker)
-
     return this.lagreAlle([
       ...hjelpemiddelsaker,
       lagBarnebrillesak('1001'),

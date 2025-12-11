@@ -3,3 +3,8 @@
   border-bottom: 1px solid var(--ax-border-neutral-subtle);
   color: var(--ax-text-neutral);
 }
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}

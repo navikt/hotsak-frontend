@@ -15,6 +15,7 @@ interface VarslerDataResponse {
 export function useSøknadsVarsler(): VarslerDataResponse {
   const { behovsmelding } = useBehovsmelding()
 
+  // TODO:Varsel for brukes ikke lenger og kan kanskje fjernes??
   const varslerFor: VarselFor[] = []
   const beskrivelser: string[] = []
 
@@ -23,6 +24,11 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     erSøknad && behovsmelding?.levering.utleveringsmåte === Utleveringsmåte.ANNEN_BRUKSADRESSE
   const harBeskjedTilKommune = erSøknad && !!behovsmelding?.levering.utleveringMerknad
   const harAnnenKontaktperson = erSøknad && !!behovsmelding?.levering.annenKontaktperson
+  const harAlleredeUtleveteHjelpemidler =
+    erSøknad &&
+    behovsmelding?.hjelpemidler.hjelpemidler.some(
+      (hjelpemiddel) => hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen
+    )
 
   if (harAnnenLeveringsadresse) {
     varslerFor.push(VarselFor.ANNEN_ADRESSE)
@@ -38,6 +44,13 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     varslerFor.push(VarselFor.BESKJED_TIL_KOMMUNE)
     beskrivelser.push(
       'Det er en beskjed til kommunen. Du må sjekke at beskjeden ikke inneholder personopplysninger eller annen sensitiv informasjon, og legge den inn på SF i OeBS.'
+    )
+  }
+
+  if (harAlleredeUtleveteHjelpemidler) {
+    varslerFor.push(VarselFor.ALLEREDE_UTLEVERT)
+    beskrivelser.push(
+      'Minst ett hjelpemiddel i saken allerede er utlevert. Gjør nødvendige endringer knyttet til utlevering i OeBS.'
     )
   }
 

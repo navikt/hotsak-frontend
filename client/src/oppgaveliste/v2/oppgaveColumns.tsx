@@ -53,6 +53,16 @@ export const oppgaveColumns = {
     field: 'behandlingstype',
     header: 'Behandlingstype',
     width: 150,
+    filter: {
+      columnKey: 'behandlingstype',
+      displayName: 'Behandlingstype',
+      options: [
+        { value: 'ae0281', label: 'Bestilling' },
+        { value: 'ae0227', label: 'Digital søknad' },
+        { value: 'ae0282', label: 'Hastebestilling' },
+        { value: 'ae0286', label: 'Hastesøknad' },
+      ],
+    },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
       if (!behandlingstype || !behandlingstype.term) {

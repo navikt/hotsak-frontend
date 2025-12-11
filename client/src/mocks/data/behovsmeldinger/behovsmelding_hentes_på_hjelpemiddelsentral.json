@@ -1,0 +1,164 @@
+{
+  "behovsmeldingId": "5a734ee0-84b4-44ee-897b-570c7842b85d",
+  "beskrivelse": "behovsmelding_5",
+  "behovsmelding": {
+    "bruker": {
+      "fnr": "13820599335",
+      "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+      "signaturtype": "FULLMAKT",
+      "telefon": "13820599",
+      "veiadresse": { "adresse": "Fjellvegen 69", "postnummer": "6770", "poststed": "Nordfjordeid" },
+      "kommunenummer": "4649",
+      "brukernummer": "1670299",
+      "kilde": "PDL",
+      "legacyopplysninger": []
+    },
+    "brukersituasjon": {
+      "vilkår": [
+        {
+          "vilkårtype": "KAN_IKKE_LØSES_MED_ENKLERE_HJELPEMIDLER_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura sitt behov kan ikke løses med enklere og rimeligere hjelpemidler, eller ved andre tiltak som ikke dekkes av Nav.",
+            "nn": "Kvadratisk Faktura behovet sitt kan ikkje løysast med enklare og rimelegare hjelpemiddel, eller ved andre tiltak som ikkje blir dekt av Nav."
+          }
+        },
+        {
+          "vilkårtype": "PRAKTISKE_PROBLEMER_I_DAGLIGLIVET_V1",
+          "tekst": {
+            "nb": "Hjelpemiddelet er nødvendig for å avhjelpe praktiske problemer i dagliglivet, eller for å bli pleid i hjemmet.",
+            "nn": "Hjelpemiddelet er nødvendig for å avhjelpa praktiske problem i dagleglivet, eller for å bli pleidd i heimen."
+          }
+        },
+        {
+          "vilkårtype": "I_STAND_TIL_Å_BRUKE_HJELPEMIDLENE_V1",
+          "tekst": {
+            "nb": "Kvadratisk Faktura vil være i stand til å bruke hjelpemidlene. Jeg har ansvaret for at hjelpemidlene blir levert, og at nødvendig opplæring, tilpasning og montering blir gjort.",
+            "nn": "Kvadratisk Faktura vil vera i stand til å bruka hjelpemidla. Eg har ansvaret for at hjelpemidla blir leverte, og at nødvendig opplæring, tilpassing og montering blir gjort."
+          }
+        }
+      ],
+      "funksjonsnedsettelser": ["BEVEGELSE"],
+      "funksjonsbeskrivelse": {
+        "innbyggersVarigeFunksjonsnedsettelse": "ALDERDOMSSVEKKELSE",
+        "diagnose": null,
+        "beskrivelse": "gammal"
+      }
+    },
+    "hjelpemidler": {
+      "hjelpemidler": [
+        {
+          "hjelpemiddelId": "c770fb9f-0640-4e42-9c28-91fd35ba3561",
+          "antall": 1,
+          "produkt": {
+            "hmsArtNr": "313181",
+            "artikkelnavn": "Gemino 30 Comfort Parkinson",
+            "iso8": "12060602",
+            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
+            "delkontrakttittel": "6. Rullator - brukere med akinesi",
+            "sortimentkategori": "Ganghjelpemidler",
+            "delkontraktId": "HMDB-1337",
+            "rangering": 1
+          },
+          "tilbehør": [],
+          "bytter": [],
+          "bruksarenaer": ["EGET_HJEM"],
+          "utlevertinfo": {
+            "alleredeUtlevertFraHjelpemiddelsentralen": false,
+            "utleverttype": null,
+            "overførtFraBruker": null,
+            "annenKommentar": null
+          },
+          "opplysninger": [
+            {
+              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "varsler": [],
+          "saksbehandlingvarsel": []
+        }
+      ],
+      "tilbehør": [],
+      "totaltAntall": 1
+    },
+    "levering": {
+      "hjelpemiddelformidler": {
+        "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },
+        "arbeidssted": "Østby Dans og Fysioterapi",
+        "stilling": "CEO",
+        "telefon": "11223344",
+        "adresse": { "adresse": "Svanseveien 3", "postnummer": "6770", "poststed": "NORDFJORDEID" },
+        "epost": "kvadratisk.faktura@tull.kommune.no",
+        "treffesEnklest": "På telefon fra hjemmekontor.",
+        "kommunenavn": "STAD",
+        "kommunenummer": "4649"
+      },
+      "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
+      "annenOppfølgingsansvarlig": null,
+      "utleveringsmåte": "HJELPEMIDDELSENTRALEN",
+      "annenUtleveringsadresse": null,
+      "annenUtleveringskommune": null,
+      "annenUtleveringsbydel": null,
+      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+      "annenKontaktperson": null,
+      "utleveringMerknad": "",
+      "hast": null,
+      "automatiskUtledetTilleggsinfo": []
+    },
+    "innsender": {
+      "rolle": "FORMIDLER",
+      "erKommunaltAnsatt": true,
+      "kurs": [{ "id": 4, "title": "Bestilling", "kilde": "kunnskapsbanken" }],
+      "sjekketUtlånsoversiktForKategorier": []
+    },
+    "vedlegg": [],
+    "metadata": {
+      "bestillingsordningsjekk": {
+        "kanVæreBestilling": false,
+        "kriterier": {
+          "alleHovedProdukterPåBestillingsOrdning": false,
+          "alleTilbehørPåBestillingsOrdning": true,
+          "brukerHarHjelpemidlerFraFør": null,
+          "brukerHarInfotrygdVedtakFraFør": null,
+          "brukerHarHotsakVedtakFraFør": true,
+          "leveringTilFolkeregistrertAdresse": true,
+          "brukersAdresseErSatt": true,
+          "brukerBorIkkeIUtlandet": true,
+          "brukerErIkkeSkjermetPerson": true,
+          "inneholderIkkeFritekst": false,
+          "kildeErPdl": true,
+          "harIkkeForMangeOrdrelinjer": true,
+          "ingenProdukterErAlleredeUtlevert": false,
+          "brukerErTilknyttetBydelIOslo": null,
+          "harIngenBytter": true,
+          "brukerHarAdresseIOeBS": true
+        },
+        "metaInfo": {
+          "hovedProdukter": ["177946", "177948", "177947", "214812", "313181"],
+          "hovedProdukterIkkePåBestillingsordning": ["214812", "313181"],
+          "tilbehør": [],
+          "tilbehørIkkePåBestillingsordning": []
+        },
+        "version": "ce94cda3e1e9fe14f46db5d2f7f5846384f779bd"
+      }
+    },
+    "id": "5a734ee0-84b4-44ee-897b-570c7842b85d",
+    "type": "SØKNAD",
+    "innsendingsdato": "2025-12-10",
+    "innsendingstidspunkt": "2025-12-10T22:08:57.668016969Z",
+    "skjemaversjon": 2,
+    "hjmBrukersFnr": "13820599335",
+    "prioritet": "NORMAL"
+  },
+  "behovsmeldingGjelder": "Hentes på hjelpemiddelsentral",
+  "fnrBruker": "13820599335",
+  "fnrInnsender": "13820599335",
+  "opprettet": "2025-12-11T12:03:23.053Z",
+  "sakId": "5"
+}

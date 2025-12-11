@@ -1,6 +1,6 @@
 {
-  "behovsmeldingId": "cde6615e-be9f-449f-b39d-eff7ea1909df",
-  "beskrivelse": "behovsmelding_4",
+  "behovsmeldingId": "d6dfceb6-9ea0-4871-9b09-707b52e4d2d9",
+  "beskrivelse": "behovsmelding_6",
   "behovsmelding": {
     "bruker": {
       "fnr": "13820599335",
@@ -48,7 +48,7 @@
       "hjelpemidler": [
         {
           "hjelpemiddelId": "88c17a00-d0e2-4df5-a3ce-3fc35bf167f3",
-          "antall": 4,
+          "antall": 1,
           "produkt": {
             "hmsArtNr": "177946",
             "artikkelnavn": "Gemino 20, personhøyde 150 - 200 cm",
@@ -91,16 +91,6 @@
                   "begrepsforklaring": null
                 }
               ]
-            },
-            {
-              "ledetekst": { "nb": "Begrunnelse for antall", "nn": "Grunngiving for tal" },
-              "innhold": [
-                {
-                  "fritekst": null,
-                  "forhåndsdefinertTekst": { "nb": "Behov i flere etasjer", "nn": "Behov i fleire etasjar" },
-                  "begrepsforklaring": null
-                }
-              ]
             }
           ],
           "varsler": [],
@@ -108,7 +98,7 @@
         },
         {
           "hjelpemiddelId": "6008fcfa-30b8-4f2f-80e8-d19cd2ccc35b",
-          "antall": 3,
+          "antall": 1,
           "produkt": {
             "hmsArtNr": "177948",
             "artikkelnavn": "Gemino 20M, personhøyde 135 - 170 cm",
@@ -145,16 +135,6 @@
                 {
                   "fritekst": null,
                   "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
-                  "begrepsforklaring": null
-                }
-              ]
-            },
-            {
-              "ledetekst": { "nb": "Begrunnelse for antall", "nn": "Grunngiving for tal" },
-              "innhold": [
-                {
-                  "fritekst": null,
-                  "forhåndsdefinertTekst": { "nb": "Behov i flere etasjer", "nn": "Behov i fleire etasjar" },
                   "begrepsforklaring": null
                 }
               ]
@@ -222,94 +202,10 @@
           ],
           "varsler": [],
           "saksbehandlingvarsel": []
-        },
-        {
-          "hjelpemiddelId": "06e4b57f-46e3-49ff-a56c-8284a29b3a97",
-          "antall": 1,
-          "produkt": {
-            "hmsArtNr": "214812",
-            "artikkelnavn": "Gemino 60M Walker",
-            "iso8": "12061202",
-            "iso8Tittel": "Gåbord med underarmstøtte",
-            "delkontrakttittel": "8. Gåbord - underarmsstøtter til utendørs bruk",
-            "sortimentkategori": "Ganghjelpemidler",
-            "delkontraktId": "HMDB-1339",
-            "rangering": 1
-          },
-          "tilbehør": [],
-          "bytter": [],
-          "bruksarenaer": ["EGET_HJEM"],
-          "utlevertinfo": {
-            "alleredeUtlevertFraHjelpemiddelsentralen": true,
-            "utleverttype": "ANNET",
-            "overførtFraBruker": null,
-            "annenKommentar": "Utlevert på annnen måte tekst"
-          },
-          "opplysninger": [
-            {
-              "ledetekst": { "nb": "Utlevert", "nn": "Utlevert" },
-              "innhold": [
-                {
-                  "fritekst": "Utlevert på annnen måte tekst",
-                  "forhåndsdefinertTekst": null,
-                  "begrepsforklaring": null
-                }
-              ]
-            },
-            {
-              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
-              "innhold": [
-                {
-                  "fritekst": null,
-                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
-                  "begrepsforklaring": null
-                }
-              ]
-            }
-          ],
-          "varsler": [],
-          "saksbehandlingvarsel": []
-        },
-        {
-          "hjelpemiddelId": "c770fb9f-0640-4e42-9c28-91fd35ba3561",
-          "antall": 1,
-          "produkt": {
-            "hmsArtNr": "313181",
-            "artikkelnavn": "Gemino 30 Comfort Parkinson",
-            "iso8": "12060602",
-            "iso8Tittel": "Rullatorer, 4 hjul innendørsbruk, begrenset utebruk",
-            "delkontrakttittel": "6. Rullator - brukere med akinesi",
-            "sortimentkategori": "Ganghjelpemidler",
-            "delkontraktId": "HMDB-1337",
-            "rangering": 1
-          },
-          "tilbehør": [],
-          "bytter": [],
-          "bruksarenaer": ["EGET_HJEM"],
-          "utlevertinfo": {
-            "alleredeUtlevertFraHjelpemiddelsentralen": false,
-            "utleverttype": null,
-            "overførtFraBruker": null,
-            "annenKommentar": null
-          },
-          "opplysninger": [
-            {
-              "ledetekst": { "nb": "Bruksarena", "nn": "Bruksarena" },
-              "innhold": [
-                {
-                  "fritekst": null,
-                  "forhåndsdefinertTekst": { "nb": "I eget hjem.", "nn": "I eigen heim." },
-                  "begrepsforklaring": null
-                }
-              ]
-            }
-          ],
-          "varsler": [],
-          "saksbehandlingvarsel": []
         }
       ],
       "tilbehør": [],
-      "totaltAntall": 11
+      "totaltAntall": 2
     },
     "levering": {
       "hjelpemiddelformidler": {
@@ -325,22 +221,15 @@
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
       "annenOppfølgingsansvarlig": null,
-      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
-      "annenUtleveringsadresse": {
-        "adresse": "Andre veien 7",
-        "postnummer": "6770",
-        "poststed": "Nordfjordeid"
-      },
-      "annenUtleveringskommune": {
-        "navn": "Stad",
-        "nummer": "4649"
-      },
+      "utleveringsmåte": null,
+      "annenUtleveringsadresse": null,
+      "annenUtleveringskommune": null,
       "annenUtleveringsbydel": null,
-      "utleveringKontaktperson": "HJELPEMIDDELBRUKER",
+      "utleveringKontaktperson": null,
       "annenKontaktperson": null,
       "utleveringMerknad": "",
       "hast": null,
-      "automatiskUtledetTilleggsinfo": []
+      "automatiskUtledetTilleggsinfo": ["ALLE_HJELPEMIDLER_ER_UTLEVERT"]
     },
     "innsender": {
       "rolle": "FORMIDLER",
@@ -379,7 +268,7 @@
         "version": "ce94cda3e1e9fe14f46db5d2f7f5846384f779bd"
       }
     },
-    "id": "cde6615e-be9f-449f-b39d-eff7ea1909df",
+    "id": "d6dfceb6-9ea0-4871-9b09-707b52e4d2d9",
     "type": "SØKNAD",
     "innsendingsdato": "2025-12-10",
     "innsendingstidspunkt": "2025-12-10T22:08:57.668016969Z",
@@ -387,9 +276,9 @@
     "hjmBrukersFnr": "13820599335",
     "prioritet": "NORMAL"
   },
-  "behovsmeldingGjelder": "Noen hjelpemidler utlevert",
+  "behovsmeldingGjelder": "Alt utlevert",
   "fnrBruker": "13820599335",
   "fnrInnsender": "13820599335",
-  "opprettet": "2025-12-10T12:03:23.053Z",
-  "sakId": "4"
+  "opprettet": "2025-12-11T12:03:23.053Z",
+  "sakId": "6"
 }

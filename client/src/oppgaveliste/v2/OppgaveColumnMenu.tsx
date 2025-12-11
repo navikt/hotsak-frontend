@@ -10,7 +10,9 @@ export function OppgaveColumnMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <Button variant="tertiary-neutral" icon={<CogIcon aria-label="TODO" />} size="xsmall" />
+        <Button variant="tertiary-neutral" icon={<CogIcon aria-label="Tilpass tabell" />} size="xsmall">
+          Tilpass tabell
+        </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Kolonner">

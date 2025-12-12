@@ -24,7 +24,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
                 Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
                 innbygger i dagliglivet:
               </Etikett>
-              <Brødtekst>{beskrivelse}</Brødtekst>
+              <Brødtekst style={{ whiteSpace: 'pre-line' }}>{beskrivelse}</Brødtekst>
             </Box>
           )}
         </VStack>

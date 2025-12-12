@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - bytt_fra_npm_til_pnpm
+      - linjeskift-funksjonsbeskrivelse
 
 jobs:
   test:

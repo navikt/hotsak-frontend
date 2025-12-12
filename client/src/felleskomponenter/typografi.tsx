@@ -28,15 +28,17 @@ export function Brødtekst({
   spacing,
   textColor = 'default',
   weight = 'regular',
+  style,
   children,
 }: {
   spacing?: boolean
   textColor?: 'subtle' | 'default'
   weight?: 'regular' | 'semibold'
+  style?: React.CSSProperties
   children: ReactNode
 }) {
   return (
-    <FlytendeTekst textColor={textColor} size="small" weight={weight} spacing={spacing}>
+    <FlytendeTekst textColor={textColor} size="small" weight={weight} spacing={spacing} style={style}>
       {children}
     </FlytendeTekst>
   )

@@ -152,7 +152,7 @@ function PlaceholderRow({
 }) {
   return (
     <Table.Row>
-      <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
+      <Table.DataCell colSpan={colSpan} textSize={textSize} align="center" style={{ padding: 'var(--ax-space-8)' }}>
         {children}
       </Table.DataCell>
     </Table.Row>

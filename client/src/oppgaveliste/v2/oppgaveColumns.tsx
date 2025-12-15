@@ -12,6 +12,7 @@ import {
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
+import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
 
 import classes from './oppgaveColumns.module.css'
 
@@ -21,17 +22,13 @@ export const oppgaveColumns = {
     header: 'Oppgavetype',
     width: 150,
     filter: {
-      columnKey: 'oppgavetype',
-      displayName: 'Oppgavetype',
-      options: [
-        { value: Oppgavetype.JOURNALFØRING, label: OppgavetypeLabel[Oppgavetype.JOURNALFØRING] },
-        { value: Oppgavetype.BEHANDLE_SAK, label: OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK] },
-        { value: Oppgavetype.GODKJENNE_VEDTAK, label: OppgavetypeLabel[Oppgavetype.GODKJENNE_VEDTAK] },
-        {
-          value: Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK,
-          label: OppgavetypeLabel[Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK],
-        },
-      ],
+      options: toDataGridFilterOptions(
+        OppgavetypeLabel,
+        Oppgavetype.JOURNALFØRING,
+        Oppgavetype.BEHANDLE_SAK,
+        Oppgavetype.GODKJENNE_VEDTAK,
+        Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+      ),
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
@@ -54,9 +51,12 @@ export const oppgaveColumns = {
     header: 'Behandlingstype',
     width: 150,
     filter: {
-      columnKey: 'behandlingstype',
-      displayName: 'Behandlingstype',
-      options: ['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad'],
+      options: new Map([
+        ['Bestilling', 'Bestilling'],
+        ['Digital søknad', 'Digital søknad'],
+        ['Hastebestilling', 'Hastebestilling'],
+        ['Hastesøknad', 'Hastesøknad'],
+      ]),
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
@@ -102,13 +102,12 @@ export const oppgaveColumns = {
     header: 'Prioritet',
     width: 100,
     filter: {
-      columnKey: 'prioritet',
-      displayName: 'Prioritet',
-      options: [
-        { value: Oppgaveprioritet.LAV, label: OppgaveprioritetLabel[Oppgaveprioritet.LAV] },
-        { value: Oppgaveprioritet.NORMAL, label: OppgaveprioritetLabel[Oppgaveprioritet.NORMAL] },
-        { value: Oppgaveprioritet.HØY, label: OppgaveprioritetLabel[Oppgaveprioritet.HØY] },
-      ],
+      options: toDataGridFilterOptions(
+        OppgaveprioritetLabel,
+        Oppgaveprioritet.LAV,
+        Oppgaveprioritet.NORMAL,
+        Oppgaveprioritet.HØY
+      ),
     },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]

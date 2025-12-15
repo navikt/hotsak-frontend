@@ -14,10 +14,7 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
 }
 
 export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
-  const {
-    filters: { /* oppgavetypeFilter , */ behandlingstemaFilter },
-    sort,
-  } = useOppgaveFilterContext()
+  const { sort } = useOppgaveFilterContext()
   const { data, error, mutate, isLoading, isValidating, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
     (index, previousPageData) => {
       if (previousPageData && !previousPageData.oppgaver.length) return null
@@ -44,7 +41,7 @@ export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResp
         tildelt: OppgaveTildelt.INGEN,
         statuskategori: Statuskategori.ÅPEN,
         // oppgavetype: oppgavetypeFilter.values,
-        gjelder: behandlingstemaFilter.values,
+        // gjelder: behandlingstemaFilter.values,
         sorteringsfelt,
         sorteringsrekkefølge,
         page,

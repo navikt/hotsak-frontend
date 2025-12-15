@@ -21,25 +21,25 @@ export function DataGridFilterProvider(props: DataGridFilterProviderProps) {
   )
 }
 
-function reducer(state: DataGridFilterState, action: DataGridFilterAction) {
-  let current = state[action.columnKey]
+function reducer(state: DataGridFilterState, action: DataGridFilterAction): DataGridFilterState {
+  let current = state[action.field]
   switch (action.type) {
     case 'checked':
       if (!current) {
-        current = { values: [action.value] }
+        current = { values: new Set([action.value]) }
       } else {
-        current = { values: [...current.values, action.value] }
+        current = { values: new Set([...current.values, action.value]) }
       }
-      return { ...state, [action.columnKey]: current }
+      return { ...state, [action.field]: current }
     case 'unchecked':
       if (!current) {
-        current = { values: [] }
+        current = { values: new Set() }
       } else {
-        current = { values: current.values.filter((value) => value !== action.value) }
+        current = { values: new Set([...current.values].filter((value) => value !== action.value)) }
       }
-      return { ...state, [action.columnKey]: current }
+      return { ...state, [action.field]: current }
     case 'clear':
-      return { ...state, [action.columnKey]: { values: [] } }
+      return { ...state, [action.field]: { values: new Set() } }
     default:
       return state
   }

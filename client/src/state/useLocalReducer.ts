@@ -1,20 +1,12 @@
 import { type Dispatch, type Reducer, useEffect, useReducer } from 'react'
 
-type StorageAPI = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
+import { replacer } from './serde.ts'
 
-export function useLocalStateReducer<S, A>(
+export function useLocalReducer<S, A>(
   key: string,
   reducer: Reducer<S, A>,
   initialState: S | (() => S),
-  {
-    storage = window.localStorage,
-    serialize = JSON.stringify,
-    deserialize = JSON.parse,
-  }: {
-    storage?: StorageAPI
-    serialize?: (value: S) => string
-    deserialize?: (text: string) => S
-  } = {}
+  { storage = window.localStorage, serialize = JSON.stringify, deserialize = JSON.parse } = {}
 ): [S, Dispatch<A>] {
   const [state, dispatch] = useReducer(reducer, null, (): S => {
     try {
@@ -31,7 +23,7 @@ export function useLocalStateReducer<S, A>(
 
   useEffect(() => {
     try {
-      storage.setItem(key, serialize(state))
+      storage.setItem(key, serialize(state, replacer))
     } catch (err: unknown) {
       console.warn('Error serializing reducer state:', err)
     }

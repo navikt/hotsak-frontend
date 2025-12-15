@@ -2,27 +2,19 @@ import { FunnelFillIcon, FunnelIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
 import { useDataGridFilterContext, useDataGridFilterDispatch } from './DataGridFilterContext.ts'
+import { type DataGridFilter, emptyDataGridFilterValues } from './DataGridFilter.ts'
 
-export interface DataGridFilterOption {
-  value: string
-  label: string
-}
-
-export interface DataGridFilter<K = string> {
-  columnKey: K
-  displayName: string
-  options: string[] | DataGridFilterOption[]
-}
-
-export interface DataGridFilterMenuProps extends DataGridFilter {
-  test?: string
+export interface DataGridFilterMenuProps {
+  field: string
+  filter: DataGridFilter
 }
 
 export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
-  const { columnKey, displayName, options } = props
+  const { field, filter } = props
+  const { options } = filter
   const state = useDataGridFilterContext()
-  const current = state[columnKey] ?? { values: [] }
-  const enabled = current.values.length > 0
+  const current = state[field] ?? emptyDataGridFilterValues
+  const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
   return (
     <ActionMenu>
@@ -32,28 +24,21 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
           icon={enabled ? <FunnelFillIcon title="Kolonnen er filtrert" /> : <FunnelIcon title="Filtrer kolonne" />}
           size="xsmall"
         >
-          {enabled && <Indicator count={current.values.length} />}
+          {enabled ? <span>{`(${current.values.size})`}</span> : null}
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <ActionMenu.Group label={displayName}>
-          {options.map((option) => {
-            let value, label: string
-            if (isDataGridFilterOption(option)) {
-              value = option.value
-              label = option.label
-            } else {
-              value = option
-              label = option
-            }
+        <ActionMenu.Group label="Velg">
+          {[...options].map((option) => {
+            const [value, label] = option
             return (
               <ActionMenu.CheckboxItem
                 key={value}
-                checked={current.values.includes(value)}
+                checked={current.values.has(value)}
                 onCheckedChange={(checked) => {
                   dispatch({
                     type: checked ? 'checked' : 'unchecked',
-                    columnKey,
+                    field,
                     value,
                   })
                 }}
@@ -69,7 +54,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
               onSelect={() => {
                 dispatch({
                   type: 'clear',
-                  columnKey,
+                  field,
                 })
               }}
             >
@@ -80,12 +65,4 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
       </ActionMenu.Content>
     </ActionMenu>
   )
-}
-
-function isDataGridFilterOption(value: unknown): value is DataGridFilterOption {
-  return value != null && (value as DataGridFilterOption).value != null && (value as DataGridFilterOption).label != null
-}
-
-function Indicator({ count }: { count: number }) {
-  return <span>{`(${count})`}</span>
 }

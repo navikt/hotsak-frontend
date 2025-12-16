@@ -1,0 +1,5 @@
+.root {
+  background: var(--ax-bg-default);
+  min-height: 100vh;
+  min-width: 90vw;
+}

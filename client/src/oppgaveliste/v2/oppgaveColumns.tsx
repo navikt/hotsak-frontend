@@ -1,8 +1,7 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { HStack, Tag } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
-import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
@@ -12,26 +11,59 @@ import {
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
+import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
+import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
+import { ÅpneOppgave } from './ÅpneOppgave.tsx'
+import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 
 import classes from './oppgaveColumns.module.css'
 
+type OppgaveColumns = {
+  [K in string]: DataGridColumn<OppgaveV2> & { field: K }
+}
+
 export const oppgaveColumns = {
+  åpneOppgave: {
+    field: 'åpneOppgave',
+    width: 150,
+    renderCell(row) {
+      return <ÅpneOppgave oppgave={row} />
+    },
+  },
+  taOppgave: {
+    field: 'åpneOppgave',
+    width: 150,
+    renderCell(row) {
+      return <TaEllerÅpneOppgave oppgave={row} />
+    },
+  },
+  saksbehandler: {
+    field: 'saksbehandler',
+    header: 'Saksbehandler',
+    width: 250,
+    filter: {
+      options: new Set(),
+    },
+    renderCell(row: OppgaveV2) {
+      return (
+        <BodyShort as="span" size="small" className={classes.saksbehandler}>
+          {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
+        </BodyShort>
+      )
+    },
+  },
   oppgavetype: {
     field: 'oppgavetype',
     header: 'Oppgavetype',
     width: 150,
     filter: {
-      columnKey: 'oppgavetype',
-      displayName: 'Oppgavetype',
-      options: [
-        { value: Oppgavetype.JOURNALFØRING, label: OppgavetypeLabel[Oppgavetype.JOURNALFØRING] },
-        { value: Oppgavetype.BEHANDLE_SAK, label: OppgavetypeLabel[Oppgavetype.BEHANDLE_SAK] },
-        { value: Oppgavetype.GODKJENNE_VEDTAK, label: OppgavetypeLabel[Oppgavetype.GODKJENNE_VEDTAK] },
-        {
-          value: Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK,
-          label: OppgavetypeLabel[Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK],
-        },
-      ],
+      options: toDataGridFilterOptions(
+        OppgavetypeLabel,
+        // Oppgavetype.JOURNALFØRING,
+        Oppgavetype.BEHANDLE_SAK
+        // Oppgavetype.GODKJENNE_VEDTAK,
+        // Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+      ),
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]
@@ -41,6 +73,9 @@ export const oppgaveColumns = {
     field: 'behandlingstema',
     header: 'Gjelder',
     width: 250,
+    filter: {
+      options: new Set(),
+    },
     renderCell(row) {
       const behandlingstema = row.kategorisering.behandlingstema
       if (!behandlingstema || !behandlingstema.term) {
@@ -54,9 +89,7 @@ export const oppgaveColumns = {
     header: 'Behandlingstype',
     width: 150,
     filter: {
-      columnKey: 'behandlingstype',
-      displayName: 'Behandlingstype',
-      options: ['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad'],
+      options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad']),
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
@@ -81,6 +114,9 @@ export const oppgaveColumns = {
   kommune: {
     field: 'kommune',
     header: 'Kommune / bydel',
+    filter: {
+      options: new Set(),
+    },
     renderCell(row) {
       const bydel = row.bruker?.bydel
       if (bydel) {
@@ -96,19 +132,21 @@ export const oppgaveColumns = {
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',
+    filter: {
+      options: new Set(),
+    },
   },
   prioritet: {
     field: 'prioritet',
     header: 'Prioritet',
     width: 100,
     filter: {
-      columnKey: 'prioritet',
-      displayName: 'Prioritet',
-      options: [
-        { value: Oppgaveprioritet.LAV, label: OppgaveprioritetLabel[Oppgaveprioritet.LAV] },
-        { value: Oppgaveprioritet.NORMAL, label: OppgaveprioritetLabel[Oppgaveprioritet.NORMAL] },
-        { value: Oppgaveprioritet.HØY, label: OppgaveprioritetLabel[Oppgaveprioritet.HØY] },
-      ],
+      options: toDataGridFilterOptions(
+        OppgaveprioritetLabel,
+        Oppgaveprioritet.LAV,
+        Oppgaveprioritet.NORMAL,
+        Oppgaveprioritet.HØY
+      ),
     },
     renderCell(row) {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
@@ -170,16 +208,20 @@ export const oppgaveColumns = {
       return bruker.fulltNavn
     },
   },
-} satisfies Record<string, DataGridColumn<OppgaveV2>>
+} satisfies OppgaveColumns
 
-export interface OppgaveColumn {
-  key: OppgaveColumnKeyType
-  checked: boolean
-  order: number
+export type OppgaveColumnField = keyof typeof oppgaveColumns
+
+export function getOppgaveColumn(field: OppgaveColumnField): DataGridColumn<OppgaveV2> {
+  const column = oppgaveColumns[field]
+  if (column == null) {
+    throw new Error(`Fant ikke kolonne: ${field}`)
+  }
+  return column
 }
 
-export type OppgaveColumnKeyType = keyof typeof oppgaveColumns
-
-export function headerForColumn(key: OppgaveColumnKeyType): string {
-  return oppgaveColumns[key]?.header ?? ''
+export interface OppgaveColumnState {
+  field: OppgaveColumnField
+  order: number
+  checked: boolean
 }

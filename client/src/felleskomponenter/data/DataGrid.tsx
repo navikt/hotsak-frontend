@@ -4,10 +4,11 @@ import { type Key, type ReactNode, useState } from 'react'
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
-import { type DataGridFilter, DataGridFilterMenu } from './DataGridFilterMenu.tsx'
+import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
+import { type DataGridFilter } from './DataGridFilter.ts'
 
 export interface DataGridColumn<T extends object> {
-  field: string | Exclude<keyof T, symbol>
+  field: string | Exclude<keyof T, symbol | number>
 
   header?: string
   hidden?: boolean
@@ -79,7 +80,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
                 <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
                   <HStack align="center" gap="1" wrap={false}>
                     <div>{header}</div>
-                    {column.filter ? <DataGridFilterMenu {...column.filter} /> : null}
+                    {column.filter ? <DataGridFilterMenu field={column.field} filter={column.filter} /> : null}
                   </HStack>
                 </Table.HeaderCell>
               )
@@ -152,7 +153,7 @@ function PlaceholderRow({
 }) {
   return (
     <Table.Row>
-      <Table.DataCell colSpan={colSpan} style={{ textAlign: 'center' }} textSize={textSize}>
+      <Table.DataCell colSpan={colSpan} textSize={textSize} align="center" style={{ padding: 10 }}>
         {children}
       </Table.DataCell>
     </Table.Row>

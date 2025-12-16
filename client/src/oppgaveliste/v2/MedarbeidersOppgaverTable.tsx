@@ -1,56 +1,42 @@
-import { BodyShort } from '@navikt/ds-react'
-
-import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import classes from './MedarbeidersOppgaverTable.module.css'
+import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
+import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useHandleSortChange, useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
+import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
 export interface MedarbeidersOppgaverTableProps {
   oppgaver: OppgaveV2[]
+  filterOptions: OppgaveFilterOptions
   loading?: boolean
 }
 
 export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps) {
-  const { oppgaver, loading } = props
-  const { sort, setSort } = useOppgaveFilterContext()
-
-  const columns = useOppgaveColumns(extraColumns)
-
+  const { oppgaver, filterOptions, loading } = props
+  const columns = useOppgaveColumns(filterOptions)
+  const { sort } = useOppgavePaginationContext()
+  const handleSortChange = useHandleSortChange()
   return (
     <DataGrid
       rows={oppgaver}
       columns={columns}
-      keyFactory={(oppgave) => oppgave.oppgaveId}
-      renderContent={(oppgave, visible) => <OppgaveDetails oppgave={oppgave} visible={visible} />}
+      keyFactory={keyFactory}
+      renderContent={renderContent}
       size="small"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}
       sort={sort}
-      onSortChange={(sortKey) => {
-        setSort({
-          orderBy: sortKey || 'fristFerdigstillelse',
-          direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
-        })
-      }}
+      onSortChange={handleSortChange}
       zebraStripes
     />
   )
 }
 
-const extraColumns: DataGridColumn<OppgaveV2>[] = [
-  {
-    field: 'saksbehandler',
-    header: 'Saksbehandler',
-    width: 150,
-    renderCell(row: OppgaveV2) {
-      return (
-        <BodyShort as="span" size="small" className={classes.saksbehandler}>
-          {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
-        </BodyShort>
-      )
-    },
-  },
-]
+function keyFactory(oppgave: OppgaveV2): OppgaveId {
+  return oppgave.oppgaveId
+}
+
+function renderContent(oppgave: OppgaveV2, visible: boolean) {
+  return <OppgaveDetails oppgave={oppgave} visible={visible} />
+}

@@ -1,3 +1,5 @@
+import { type SortState } from '@navikt/ds-react'
+
 export function unique<T>(values: T[]): T[] {
   return [...new Set(values)]
 }
@@ -41,12 +43,10 @@ export function naturalBy<T>(selector: (item: T) => string | number | undefined)
   }
 }
 
-export function compareBy<T, K extends keyof T>(
-  key: K,
-  direction: 'ascending' | 'descending' | 'none'
-): (a: T, b: T) => number {
+export type Direction = SortState['direction'] | 'ASC' | 'DESC'
+export function compareBy<T, K extends keyof T>(key: K, direction: Direction = 'none'): (a: T, b: T) => number {
   if (direction === 'none') {
-    return () => 0
+    return none
   }
   const fn: (a: T, b: T) => number = (a, b) => {
     const x = a[key]
@@ -56,9 +56,13 @@ export function compareBy<T, K extends keyof T>(
     if (y == null) return 1
     return x.toString().localeCompare(y.toString())
   }
-  if (direction === 'ascending') {
+  if (direction === 'ascending' || direction === 'ASC') {
     return fn
   } else {
     return (a, b) => -fn(a, b)
   }
+}
+
+function none() {
+  return 0
 }

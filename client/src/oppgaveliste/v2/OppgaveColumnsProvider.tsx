@@ -1,40 +1,52 @@
 import { type ReactNode } from 'react'
 
-import { useLocalStateReducer } from '../../state/useLocalStateReducer.ts'
-import { type OppgaveColumn } from './oppgaveColumns.tsx'
+import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
   OppgaveColumnsContext,
   OppgaveColumnsDispatchContext,
+  type OppgaveColumnsState,
 } from './OppgaveColumnsContext.ts'
+import { useLocalReducer } from '../../state/useLocalReducer.ts'
 
 export interface OppgaveColumnsProviderProps {
-  defaultColumns: OppgaveColumn[]
+  suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
+  defaultColumns: ReadonlyArray<OppgaveColumnField>
   children: ReactNode
 }
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
-  const { defaultColumns, children } = props
-  const [columns, dispatch] = useLocalStateReducer('oppgaveColumns', reducer, defaultColumns)
+  const { suffix, defaultColumns, children } = props
+  const [state, dispatch] = useLocalReducer(
+    'oppgaveColumns' + suffix,
+    reducer,
+    (): OppgaveColumnsState =>
+      defaultColumns.map((field, order) => ({
+        field,
+        order,
+        checked: true,
+      }))
+  )
   return (
-    <OppgaveColumnsContext value={columns}>
+    <OppgaveColumnsContext value={state}>
       <OppgaveColumnsDispatchContext value={dispatch}>{children}</OppgaveColumnsDispatchContext>
     </OppgaveColumnsContext>
   )
 }
 
-function reducer(columns: OppgaveColumn[], action: OppgaveColumnsAction) {
-  return columns.map((column) => {
-    if (action.key !== column.key) {
-      return column
-    }
-    switch (action.type) {
-      case 'checked':
-        return { ...column, checked: true }
-      case 'unchecked':
-        return { ...column, checked: false }
-      default:
-        return column
-    }
-  })
+function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
+  switch (action.type) {
+    case 'checked':
+      return state.map((column) => {
+        return action.field === column.field ? { ...column, checked: true } : column
+      })
+    case 'unchecked':
+      return state.map((column) => {
+        return action.field === column.field ? { ...column, checked: false } : column
+      })
+    case 'reset':
+      return state.map((column) => ({ ...column, checked: true }))
+    default:
+      return state
+  }
 }

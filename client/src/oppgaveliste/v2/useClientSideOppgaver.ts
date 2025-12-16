@@ -6,12 +6,15 @@ import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/op
 import { useOppgaver } from '../../oppgave/useOppgaver.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
-import { OppgaveFilter as OppgaveFilterType, useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
-import { type UniqueOppgaveValues, useUniqueOppgaveValues } from './useUniqueOppgaveValues.ts'
+import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
+import { type DataGridFilterValues, emptyDataGridFilterValues } from '../../felleskomponenter/data/DataGridFilter.ts'
+import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
+import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 
 const pageNumber = 1
 const pageSize = 1_000
+const ingenOppgaver: OppgaveV2[] = []
 
 export interface UseClientSideOppgaverResponse {
   oppgaver: OppgaveV2[]
@@ -19,21 +22,30 @@ export interface UseClientSideOppgaverResponse {
   error?: HttpError
   isLoading: boolean
   isValidating: boolean
-  uniqueOppgaveValues: UniqueOppgaveValues
+  filterOptions: OppgaveFilterOptions
 }
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
-  const {
-    filters: { behandlingstemaFilter, mappeFilter, kommuneFilter, saksbehandlerFilter },
-    sort,
-  } = useOppgaveFilterContext()
+  const { sort } = useOppgavePaginationContext()
 
-  const state = useDataGridFilterContext()
-  const { oppgavetypeFilter, behandlingstypeFilter, prioritetFilter } = useMemo(() => {
+  const state = useDataGridFilterContext<OppgaveColumnField>()
+  const {
+    saksbehandlerFilter,
+    oppgavetypeFilter,
+    behandlingstemaFilter,
+    behandlingstypeFilter,
+    mappeFilter,
+    prioritetFilter,
+    kommuneFilter,
+  } = useMemo(() => {
     return {
-      oppgavetypeFilter: (state['oppgavetype'] ?? { values: [] }) as OppgaveFilterType,
-      behandlingstypeFilter: (state['behandlingstype'] ?? { values: [] }) as OppgaveFilterType,
-      prioritetFilter: (state['prioritet'] ?? { values: [] }) as OppgaveFilterType,
+      saksbehandlerFilter: state['saksbehandler'] ?? emptyDataGridFilterValues,
+      oppgavetypeFilter: state['oppgavetype'] ?? emptyDataGridFilterValues,
+      behandlingstemaFilter: state['behandlingstema'] ?? emptyDataGridFilterValues,
+      behandlingstypeFilter: state['behandlingstype'] ?? emptyDataGridFilterValues,
+      mappeFilter: state['mappenavn'] ?? emptyDataGridFilterValues,
+      prioritetFilter: state['prioritet'] ?? emptyDataGridFilterValues,
+      kommuneFilter: state['kommune'] ?? emptyDataGridFilterValues,
     }
   }, [state])
 
@@ -52,29 +64,29 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     return (eksterneOppgaver.data?.oppgaver ?? []).concat(journalføringsoppgaver.data?.oppgaver ?? [])
   }, [eksterneOppgaver.data?.oppgaver, journalføringsoppgaver.data?.oppgaver])
 
+  const filterOptions = useOppgaveFilterOptions(alleOppgaver)
+
   const filtrerteOppgaver = useMemo(() => {
     return alleOppgaver
+      .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
       .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
       .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term || 'Ingen'))
       .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term || 'Ingen'))
       .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
       .filter(oneOf(prioritetFilter, select('prioritet')))
       .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
-      .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
       .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
   }, [
     alleOppgaver,
+    saksbehandlerFilter,
     oppgavetypeFilter,
     behandlingstemaFilter,
     behandlingstypeFilter,
     mappeFilter,
     prioritetFilter,
     kommuneFilter,
-    saksbehandlerFilter,
     sort,
   ])
-
-  const uniqueOppgaveValues = useUniqueOppgaveValues(alleOppgaver)
 
   if (!eksterneOppgaver.data || !journalføringsoppgaver.data) {
     return {
@@ -83,7 +95,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
       error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
       isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
       isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
-      uniqueOppgaveValues,
+      filterOptions,
     }
   }
 
@@ -93,15 +105,13 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
     isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
     isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
-    uniqueOppgaveValues,
+    filterOptions,
   }
 }
 
-function oneOf<T, R>(filter: OppgaveFilterType<R>, selector: (item: T) => R): (value: T) => boolean {
+function oneOf<T, R extends string>(filter: DataGridFilterValues<R>, selector: (item: T) => R): (value: T) => boolean {
   return (value) => {
-    if (filter.values.length === 0) return true
-    return filter.values.includes(selector(value))
+    if (filter.values.size === 0) return true
+    return filter.values.has(selector(value))
   }
 }
-
-const ingenOppgaver: OppgaveV2[] = []

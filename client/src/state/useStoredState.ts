@@ -1,5 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+
 import { logDebug } from '../utvikling/logDebug.ts'
+import { replacer } from './serde.ts'
 
 export function useStoredState<S = unknown>(
   key: string,
@@ -21,7 +23,7 @@ export function useStoredState<S = unknown>(
   })
 
   useEffect(() => {
-    storage.setItem(key, serialize(state))
+    storage.setItem(key, serialize(state, replacer))
   }, [key, storage, serialize, state])
 
   return [state, setState]

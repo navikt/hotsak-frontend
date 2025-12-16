@@ -1,13 +1,13 @@
 import { EnhetensOppgaver } from './EnhetensOppgaver.tsx'
-import { OppgaveFilterProvider } from './OppgaveFilterProvider.tsx'
+import { OppgavePaginationProvider } from './OppgavePaginationProvider.tsx'
 import { DataGridFilterProvider } from '../../felleskomponenter/data/DataGridFilterProvider.tsx'
 
 export default function EnhetensOppgaverWrapper() {
   return (
-    <OppgaveFilterProvider suffix="Enhetens">
+    <OppgavePaginationProvider suffix="Enhetens">
       <DataGridFilterProvider>
         <EnhetensOppgaver />
       </DataGridFilterProvider>
-    </OppgaveFilterProvider>
+    </OppgavePaginationProvider>
   )
 }

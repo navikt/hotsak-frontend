@@ -1,21 +1,23 @@
 import { createContext, type Dispatch, useContext } from 'react'
 
-export type DataGridFilterState = Record<string, { values: string[] }>
+import { type DataGridFilterValues } from './DataGridFilter.ts'
+
+export type DataGridFilterState<K extends string = string> = Record<K, DataGridFilterValues>
 
 export const DataGridFilterContext = createContext<DataGridFilterState>({})
 export const DataGridFilterDispatch = createContext<Dispatch<DataGridFilterAction>>((state) => state)
 
-export function useDataGridFilterContext() {
+export function useDataGridFilterContext<K extends string = string>(): DataGridFilterState<K> {
   return useContext(DataGridFilterContext)
 }
 
-export function useDataGridFilterDispatch() {
+export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
 interface DataGridFilterBaseAction {
   type: 'checked' | 'unchecked' | 'clear'
-  columnKey: string
+  field: string
 }
 
 export interface DataGridFilterCheckedAction extends DataGridFilterBaseAction {

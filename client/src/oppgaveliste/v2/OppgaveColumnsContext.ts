@@ -1,31 +1,61 @@
-import { createContext, type Dispatch, useContext } from 'react'
+import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
-import { type OppgaveColumn, type OppgaveColumnKeyType } from './oppgaveColumns.tsx'
+import { type OppgaveColumnField, type OppgaveColumnState } from './oppgaveColumns.tsx'
 
-const initialState: OppgaveColumn[] = []
+export type OppgaveColumnsState = ReadonlyArray<OppgaveColumnState>
 
-export const OppgaveColumnsContext = createContext(initialState)
+export const OppgaveColumnsContext = createContext<OppgaveColumnsState>([])
 export const OppgaveColumnsDispatchContext = createContext<Dispatch<OppgaveColumnsAction>>((state) => state)
 
-export function useOppgaveColumnsContext() {
+export function useOppgaveColumnsContext(): OppgaveColumnsState {
   return useContext(OppgaveColumnsContext)
 }
 
-export function useOppgaveColumnsDispatchContext() {
+export function useOppgaveColumnsDispatch(): Dispatch<OppgaveColumnsAction> {
   return useContext(OppgaveColumnsDispatchContext)
 }
 
-export interface OppgaveColumnsBaseAction {
-  type: 'checked' | 'unchecked'
-  key: OppgaveColumnKeyType
+export function useOppgaveColumnChange(field: OppgaveColumnField): (checked: boolean) => void {
+  const dispatch = useOppgaveColumnsDispatch()
+  return useCallback(
+    (checked) => {
+      dispatch({
+        type: checked ? 'checked' : 'unchecked',
+        field,
+      })
+    },
+    [dispatch, field]
+  )
+}
+
+export function useOppgaveColumnsReset(): (event: Event) => void {
+  const dispatch = useOppgaveColumnsDispatch()
+  return useCallback(() => {
+    dispatch({
+      type: 'reset',
+    })
+  }, [dispatch])
+}
+
+interface OppgaveColumnsBaseAction {
+  type: 'checked' | 'unchecked' | 'reset'
 }
 
 export interface OppgaveColumnsCheckedAction extends OppgaveColumnsBaseAction {
   type: 'checked'
+  field: OppgaveColumnField
 }
 
 export interface OppgaveColumnsUncheckedAction extends OppgaveColumnsBaseAction {
   type: 'unchecked'
+  field: OppgaveColumnField
 }
 
-export type OppgaveColumnsAction = OppgaveColumnsCheckedAction | OppgaveColumnsUncheckedAction
+export interface OppgaveColumnsResetAction extends OppgaveColumnsBaseAction {
+  type: 'reset'
+}
+
+export type OppgaveColumnsAction =
+  | OppgaveColumnsCheckedAction
+  | OppgaveColumnsUncheckedAction
+  | OppgaveColumnsResetAction

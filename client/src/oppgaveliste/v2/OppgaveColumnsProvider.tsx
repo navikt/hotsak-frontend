@@ -33,17 +33,18 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
 }
 
 function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
-  return state.map((column) => {
-    if (action.field !== column.field) {
-      return column
-    }
-    switch (action.type) {
-      case 'checked':
-        return { ...column, checked: true }
-      case 'unchecked':
-        return { ...column, checked: false }
-      default:
-        return column
-    }
-  })
+  switch (action.type) {
+    case 'checked':
+      return state.map((column) => {
+        return action.field === column.field ? { ...column, checked: true } : column
+      })
+    case 'unchecked':
+      return state.map((column) => {
+        return action.field === column.field ? { ...column, checked: false } : column
+      })
+    case 'reset':
+      return state.map((column) => ({ ...column, checked: true }))
+    default:
+      return state
+  }
 }

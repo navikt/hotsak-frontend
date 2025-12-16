@@ -34,7 +34,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <ActionMenu.Group label="Velg">
+        <ActionMenu.Group label="Inkluder følgende">
           {options.map(([value, label]) => (
             <ActionMenu.CheckboxItem
               key={value}

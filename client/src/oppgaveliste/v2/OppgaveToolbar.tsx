@@ -1,7 +1,6 @@
-import { BodyShort, Box, Button, HGrid, HStack } from '@navikt/ds-react'
+import { BodyShort, Box, HGrid, HStack } from '@navikt/ds-react'
 
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
-import { TrashIcon } from '@navikt/aksel-icons'
 
 export interface OppgaveToolbarProps {
   text: string
@@ -16,9 +15,6 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
         <BodyShort align="center">{text}</BodyShort>
         <HStack gap="2" justify="end">
           <OppgaveColumnMenu />
-          <Button variant="tertiary-neutral" icon={<TrashIcon />} size="xsmall">
-            Nullstill tabell
-          </Button>
         </HStack>
       </HGrid>
     </Box.New>

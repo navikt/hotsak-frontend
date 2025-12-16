@@ -7,9 +7,9 @@ import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
 export function useOppgaveColumns(filterOptions: OppgaveFilterOptions): DataGridColumn<OppgaveV2>[] {
-  const columnStates = useOppgaveColumnsContext()
+  const columnsState = useOppgaveColumnsContext()
   return useMemo(() => {
-    return columnStates.map(({ field, checked }): DataGridColumn<OppgaveV2> => {
+    return columnsState.map(({ field, checked }): DataGridColumn<OppgaveV2> => {
       const options = filterOptions[field]
       const column = getOppgaveColumn(field)
       return {
@@ -18,5 +18,5 @@ export function useOppgaveColumns(filterOptions: OppgaveFilterOptions): DataGrid
         hidden: !checked,
       }
     })
-  }, [columnStates, filterOptions])
+  }, [columnsState, filterOptions])
 }

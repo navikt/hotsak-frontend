@@ -11,7 +11,7 @@ export function useDataGridFilterContext<K extends string = string>(): DataGridF
   return useContext(DataGridFilterContext)
 }
 
-export function useDataGridFilterDispatch() {
+export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 

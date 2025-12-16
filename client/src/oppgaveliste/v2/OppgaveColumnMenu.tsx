@@ -17,7 +17,7 @@ export function OppgaveColumnMenu() {
       <ActionMenu.Content>
         <ActionMenu.Group label="Kolonner">
           {columns.map((column) => (
-            <OppgaveColumnMenuItem key={column.key} column={column} />
+            <OppgaveColumnMenuItem key={column.field} column={column} />
           ))}
         </ActionMenu.Group>
       </ActionMenu.Content>
@@ -31,15 +31,15 @@ function OppgaveColumnMenuItem({ column }: { column: OppgaveColumn }) {
     (checked: boolean) => {
       dispatch({
         type: checked ? 'checked' : 'unchecked',
-        key: column.key,
+        field: column.field,
       })
     },
-    [column.key, dispatch]
+    [column.field, dispatch]
   )
   return (
     <ActionMenu.CheckboxItem checked={column.checked} onCheckedChange={handleCheckedChange}>
       <HStack gap="3" align="center" justify="space-between" width="100%">
-        <div>{headerForColumn(column.key)}</div>
+        <div>{headerForColumn(column.field)}</div>
         <DragVerticalIcon />
       </HStack>
     </ActionMenu.CheckboxItem>

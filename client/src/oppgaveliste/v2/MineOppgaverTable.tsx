@@ -1,21 +1,20 @@
-import { LinkButton } from '../../felleskomponenter/button/LinkButton.tsx'
-import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
+import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
 import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
+import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
 export interface MineOppgaverTableProps {
   oppgaver: OppgaveV2[]
+  filterOptions: OppgaveFilterOptions
   loading?: boolean
 }
 
 export function MineOppgaverTable(props: MineOppgaverTableProps) {
-  const { oppgaver, loading } = props
+  const { oppgaver, filterOptions, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
-
-  const columns = useOppgaveColumns(extraColumns)
-
+  const columns = useOppgaveColumns(filterOptions)
   return (
     <DataGrid
       rows={oppgaver}
@@ -37,17 +36,3 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
     />
   )
 }
-
-const extraColumns: DataGridColumn<OppgaveV2>[] = [
-  {
-    field: 'knapp',
-    width: 150,
-    renderCell(row) {
-      return (
-        <LinkButton size="xsmall" type="button" variant="tertiary" to={`/oppgave/${row.oppgaveId}`}>
-          Åpne oppgave
-        </LinkButton>
-      )
-    },
-  },
-]

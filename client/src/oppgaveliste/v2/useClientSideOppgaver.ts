@@ -9,6 +9,8 @@ import { select } from '../../utils/select.ts'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type DataGridFilterValues, emptyDataGridFilterValues } from '../../felleskomponenter/data/DataGridFilter.ts'
+import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
+import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 
 const pageNumber = 1
 const pageSize = 1_000
@@ -20,17 +22,30 @@ export interface UseClientSideOppgaverResponse {
   error?: HttpError
   isLoading: boolean
   isValidating: boolean
+  filterOptions: OppgaveFilterOptions
 }
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
   const { sort } = useOppgaveFilterContext()
 
-  const state = useDataGridFilterContext()
-  const { oppgavetypeFilter, behandlingstypeFilter, prioritetFilter } = useMemo(() => {
+  const state = useDataGridFilterContext<OppgaveColumnField>()
+  const {
+    saksbehandlerFilter,
+    oppgavetypeFilter,
+    behandlingstemaFilter,
+    behandlingstypeFilter,
+    mappeFilter,
+    prioritetFilter,
+    kommuneFilter,
+  } = useMemo(() => {
     return {
+      saksbehandlerFilter: state['saksbehandler'] ?? emptyDataGridFilterValues,
       oppgavetypeFilter: state['oppgavetype'] ?? emptyDataGridFilterValues,
+      behandlingstemaFilter: state['behandlingstema'] ?? emptyDataGridFilterValues,
       behandlingstypeFilter: state['behandlingstype'] ?? emptyDataGridFilterValues,
+      mappeFilter: state['mappenavn'] ?? emptyDataGridFilterValues,
       prioritetFilter: state['prioritet'] ?? emptyDataGridFilterValues,
+      kommuneFilter: state['kommune'] ?? emptyDataGridFilterValues,
     }
   }, [state])
 
@@ -49,19 +64,29 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     return (eksterneOppgaver.data?.oppgaver ?? []).concat(journalføringsoppgaver.data?.oppgaver ?? [])
   }, [eksterneOppgaver.data?.oppgaver, journalføringsoppgaver.data?.oppgaver])
 
+  const filterOptions = useOppgaveFilterOptions(alleOppgaver)
+
   const filtrerteOppgaver = useMemo(() => {
-    return (
-      alleOppgaver
-        // .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
-        .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
-        // .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term || 'Ingen'))
-        .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term || 'Ingen'))
-        // .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
-        .filter(oneOf(prioritetFilter, select('prioritet')))
-        // .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
-        .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
-    )
-  }, [alleOppgaver, oppgavetypeFilter, behandlingstypeFilter, prioritetFilter, sort])
+    return alleOppgaver
+      .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
+      .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
+      .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term || 'Ingen'))
+      .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term || 'Ingen'))
+      .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
+      .filter(oneOf(prioritetFilter, select('prioritet')))
+      .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
+      .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
+  }, [
+    alleOppgaver,
+    saksbehandlerFilter,
+    oppgavetypeFilter,
+    behandlingstemaFilter,
+    behandlingstypeFilter,
+    mappeFilter,
+    prioritetFilter,
+    kommuneFilter,
+    sort,
+  ])
 
   if (!eksterneOppgaver.data || !journalføringsoppgaver.data) {
     return {
@@ -70,6 +95,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
       error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
       isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
       isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
+      filterOptions,
     }
   }
 
@@ -79,6 +105,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
     error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
     isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
     isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
+    filterOptions,
   }
 }
 

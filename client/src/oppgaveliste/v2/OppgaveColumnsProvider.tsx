@@ -1,7 +1,6 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useReducer } from 'react'
 
-import { useLocalReducer } from '../../state/useLocalReducer.ts'
-import { type OppgaveColumn } from './oppgaveColumns.tsx'
+import { type OppgaveColumn, type OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
   OppgaveColumnsContext,
@@ -9,13 +8,21 @@ import {
 } from './OppgaveColumnsContext.ts'
 
 export interface OppgaveColumnsProviderProps {
-  defaultColumns: OppgaveColumn[]
+  defaultColumns: ReadonlyArray<OppgaveColumnField>
   children: ReactNode
 }
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   const { defaultColumns, children } = props
-  const [columns, dispatch] = useLocalReducer('oppgaveColumns', reducer, defaultColumns)
+  const [columns, dispatch] = useReducer(reducer, null, (): OppgaveColumn[] =>
+    defaultColumns.map(
+      (field, order): OppgaveColumn => ({
+        field,
+        order,
+        checked: true,
+      })
+    )
+  )
   return (
     <OppgaveColumnsContext value={columns}>
       <OppgaveColumnsDispatchContext value={dispatch}>{children}</OppgaveColumnsDispatchContext>
@@ -25,7 +32,7 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
 
 function reducer(columns: OppgaveColumn[], action: OppgaveColumnsAction) {
   return columns.map((column) => {
-    if (action.key !== column.key) {
+    if (action.field !== column.field) {
       return column
     }
     switch (action.type) {

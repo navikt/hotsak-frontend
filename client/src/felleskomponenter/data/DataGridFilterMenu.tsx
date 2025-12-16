@@ -1,8 +1,9 @@
+import { useMemo } from 'react'
 import { FunnelFillIcon, FunnelIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
 import { useDataGridFilterContext, useDataGridFilterDispatch } from './DataGridFilterContext.ts'
-import { type DataGridFilter, emptyDataGridFilterValues } from './DataGridFilter.ts'
+import { type DataGridFilter, type DataGridFilterOption, emptyDataGridFilterValues } from './DataGridFilter.ts'
 
 export interface DataGridFilterMenuProps {
   field: string
@@ -11,7 +12,11 @@ export interface DataGridFilterMenuProps {
 
 export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
   const { field, filter } = props
-  const { options } = filter
+  const options = useMemo(() => {
+    return [...filter.options]
+      .map((option): DataGridFilterOption => (Array.isArray(option) ? option : [option, option]))
+      .sort(sortOptions)
+  }, [filter.options])
   const state = useDataGridFilterContext()
   const current = state[field] ?? emptyDataGridFilterValues
   const enabled = current.values.size > 0
@@ -29,24 +34,21 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Velg">
-          {[...options].map((option) => {
-            const [value, label] = option
-            return (
-              <ActionMenu.CheckboxItem
-                key={value}
-                checked={current.values.has(value)}
-                onCheckedChange={(checked) => {
-                  dispatch({
-                    type: checked ? 'checked' : 'unchecked',
-                    field,
-                    value,
-                  })
-                }}
-              >
-                {label}
-              </ActionMenu.CheckboxItem>
-            )
-          })}
+          {options.map(([value, label]) => (
+            <ActionMenu.CheckboxItem
+              key={value}
+              checked={current.values.has(value)}
+              onCheckedChange={(checked) => {
+                dispatch({
+                  type: checked ? 'checked' : 'unchecked',
+                  field,
+                  value,
+                })
+              }}
+            >
+              {label}
+            </ActionMenu.CheckboxItem>
+          ))}
           {enabled && (
             <ActionMenu.Item
               variant="danger"
@@ -65,4 +67,10 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
       </ActionMenu.Content>
     </ActionMenu>
   )
+}
+
+function sortOptions(a: DataGridFilterOption, b: DataGridFilterOption): number {
+  const [, aV] = a
+  const [, bV] = b
+  return aV.localeCompare(bV)
 }

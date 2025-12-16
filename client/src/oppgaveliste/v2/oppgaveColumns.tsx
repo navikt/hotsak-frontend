@@ -1,8 +1,7 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { HStack, Tag } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
-import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
@@ -13,10 +12,46 @@ import {
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
+import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
+import { ÅpneOppgave } from './ÅpneOppgave.tsx'
+import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 
 import classes from './oppgaveColumns.module.css'
 
+type OppgaveColumns = {
+  [K in string]: DataGridColumn<OppgaveV2> & { field: K }
+}
+
 export const oppgaveColumns = {
+  åpneOppgave: {
+    field: 'åpneOppgave',
+    width: 150,
+    renderCell(row) {
+      return <ÅpneOppgave oppgave={row} />
+    },
+  },
+  taOppgave: {
+    field: 'åpneOppgave',
+    width: 150,
+    renderCell(row) {
+      return <TaEllerÅpneOppgave oppgave={row} />
+    },
+  },
+  saksbehandler: {
+    field: 'saksbehandler',
+    header: 'Saksbehandler',
+    width: 150,
+    filter: {
+      options: new Set(),
+    },
+    renderCell(row: OppgaveV2) {
+      return (
+        <BodyShort as="span" size="small" className={classes.saksbehandler}>
+          {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
+        </BodyShort>
+      )
+    },
+  },
   oppgavetype: {
     field: 'oppgavetype',
     header: 'Oppgavetype',
@@ -38,6 +73,9 @@ export const oppgaveColumns = {
     field: 'behandlingstema',
     header: 'Gjelder',
     width: 250,
+    filter: {
+      options: new Set(),
+    },
     renderCell(row) {
       const behandlingstema = row.kategorisering.behandlingstema
       if (!behandlingstema || !behandlingstema.term) {
@@ -51,12 +89,7 @@ export const oppgaveColumns = {
     header: 'Behandlingstype',
     width: 150,
     filter: {
-      options: new Map([
-        ['Bestilling', 'Bestilling'],
-        ['Digital søknad', 'Digital søknad'],
-        ['Hastebestilling', 'Hastebestilling'],
-        ['Hastesøknad', 'Hastesøknad'],
-      ]),
+      options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad']),
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype
@@ -81,6 +114,9 @@ export const oppgaveColumns = {
   kommune: {
     field: 'kommune',
     header: 'Kommune / bydel',
+    filter: {
+      options: new Set(),
+    },
     renderCell(row) {
       const bydel = row.bruker?.bydel
       if (bydel) {
@@ -96,6 +132,9 @@ export const oppgaveColumns = {
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',
+    filter: {
+      options: new Set(),
+    },
   },
   prioritet: {
     field: 'prioritet',
@@ -169,16 +208,17 @@ export const oppgaveColumns = {
       return bruker.fulltNavn
     },
   },
-} satisfies Record<string, DataGridColumn<OppgaveV2>>
+} satisfies OppgaveColumns
 
 export interface OppgaveColumn {
-  key: OppgaveColumnKeyType
-  checked: boolean
+  field: OppgaveColumnField
   order: number
+  checked: boolean
 }
 
-export type OppgaveColumnKeyType = keyof typeof oppgaveColumns
+export type OppgaveColumnField = keyof typeof oppgaveColumns
 
-export function headerForColumn(key: OppgaveColumnKeyType): string {
-  return oppgaveColumns[key]?.header ?? ''
+export function headerForColumn(field: OppgaveColumnField): string {
+  const oppgaveColumn: DataGridColumn<OppgaveV2> = oppgaveColumns[field]
+  return oppgaveColumn?.header ?? ''
 }

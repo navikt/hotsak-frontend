@@ -7,7 +7,7 @@ export type DataGridFilterState<K extends string = string> = Record<K, DataGridF
 export const DataGridFilterContext = createContext<DataGridFilterState>({})
 export const DataGridFilterDispatch = createContext<Dispatch<DataGridFilterAction>>((state) => state)
 
-export function useDataGridFilterContext() {
+export function useDataGridFilterContext<K extends string = string>(): DataGridFilterState<K> {
   return useContext(DataGridFilterContext)
 }
 

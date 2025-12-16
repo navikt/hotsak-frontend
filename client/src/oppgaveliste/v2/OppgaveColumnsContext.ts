@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, useContext } from 'react'
 
-import { type OppgaveColumn, type OppgaveColumnKeyType } from './oppgaveColumns.tsx'
+import { type OppgaveColumn, type OppgaveColumnField } from './oppgaveColumns.tsx'
 
 const initialState: OppgaveColumn[] = []
 
@@ -17,7 +17,7 @@ export function useOppgaveColumnsDispatchContext() {
 
 export interface OppgaveColumnsBaseAction {
   type: 'checked' | 'unchecked'
-  key: OppgaveColumnKeyType
+  field: OppgaveColumnField
 }
 
 export interface OppgaveColumnsCheckedAction extends OppgaveColumnsBaseAction {

@@ -1,57 +1,20 @@
-import { useMemo, useState } from 'react'
-
-import { LinkButton } from '../../felleskomponenter/button/LinkButton.tsx'
-import { DataGrid, type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
+import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
+import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
 import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
+import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
 export interface EnhetensOppgaverTableProps {
   oppgaver: OppgaveV2[]
+  filterOptions: OppgaveFilterOptions
   loading?: boolean
 }
 
 export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
-  const { oppgaver, loading } = props
+  const { oppgaver, filterOptions, loading } = props
   const { sort, setSort } = useOppgaveFilterContext()
-  const [valgte, setValgte] = useState<Set<OppgaveId>>(new Set())
-
-  const extraColumns: DataGridColumn<OppgaveV2>[] = useMemo(
-    () => [
-      {
-        field: 'knapp',
-        width: 150,
-        renderCell(row) {
-          return (
-            <>
-              {valgte.has(row.oppgaveId) ? (
-                <LinkButton size="xsmall" type="button" variant="tertiary" to={`/oppgave/${row.oppgaveId}`}>
-                  Åpne oppgave
-                </LinkButton>
-              ) : (
-                <TaOppgaveButton
-                  size="xsmall"
-                  variant="tertiary"
-                  oppgave={row}
-                  onOppgavetildeling={(id) => {
-                    setValgte((previous) => new Set([...previous, id]))
-                  }}
-                >
-                  Ta oppgave
-                </TaOppgaveButton>
-              )}
-            </>
-          )
-        },
-      },
-    ],
-    [valgte]
-  )
-
-  const columns = useOppgaveColumns(extraColumns)
-
+  const columns = useOppgaveColumns(filterOptions)
   return (
     <DataGrid
       rows={oppgaver}

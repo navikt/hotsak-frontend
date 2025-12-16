@@ -59,10 +59,10 @@ export const oppgaveColumns = {
     filter: {
       options: toDataGridFilterOptions(
         OppgavetypeLabel,
-        Oppgavetype.JOURNALFØRING,
-        Oppgavetype.BEHANDLE_SAK,
-        Oppgavetype.GODKJENNE_VEDTAK,
-        Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
+        // Oppgavetype.JOURNALFØRING,
+        Oppgavetype.BEHANDLE_SAK
+        // Oppgavetype.GODKJENNE_VEDTAK,
+        // Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
       ),
     },
     renderCell(row) {

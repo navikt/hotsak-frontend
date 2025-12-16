@@ -11,7 +11,7 @@ export function MedarbeidersOppgaver() {
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.MEDARBEIDER)
   return (
     <Box.New marginInline="5">
-      <OppgaveColumnsProvider defaultColumns={defaultColumns}>
+      <OppgaveColumnsProvider suffix="Medarbeiders" defaultColumns={defaultColumns}>
         <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
         <MedarbeidersOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
       </OppgaveColumnsProvider>

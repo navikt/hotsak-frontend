@@ -11,7 +11,7 @@ export function MineOppgaver() {
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.MEG)
   return (
     <Box.New marginInline="5">
-      <OppgaveColumnsProvider defaultColumns={defaultColumns}>
+      <OppgaveColumnsProvider suffix="Mine" defaultColumns={defaultColumns}>
         <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
         <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
       </OppgaveColumnsProvider>

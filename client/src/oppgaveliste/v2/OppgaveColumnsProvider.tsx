@@ -1,4 +1,4 @@
-import { type ReactNode, useReducer } from 'react'
+import { type ReactNode } from 'react'
 
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
@@ -7,17 +7,19 @@ import {
   OppgaveColumnsDispatchContext,
   type OppgaveColumnsState,
 } from './OppgaveColumnsContext.ts'
+import { useLocalReducer } from '../../state/useLocalReducer.ts'
 
 export interface OppgaveColumnsProviderProps {
+  suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
   defaultColumns: ReadonlyArray<OppgaveColumnField>
   children: ReactNode
 }
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
-  const { defaultColumns, children } = props
-  const [state, dispatch] = useReducer(
+  const { suffix, defaultColumns, children } = props
+  const [state, dispatch] = useLocalReducer(
+    'oppgaveColumns' + suffix,
     reducer,
-    null,
     (): OppgaveColumnsState =>
       defaultColumns.map((field, order) => ({
         field,

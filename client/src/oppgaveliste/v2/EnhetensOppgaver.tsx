@@ -11,7 +11,7 @@ export function EnhetensOppgaver() {
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.INGEN)
   return (
     <Box.New marginInline="5">
-      <OppgaveColumnsProvider defaultColumns={defaultColumns}>
+      <OppgaveColumnsProvider suffix="Enhetens" defaultColumns={defaultColumns}>
         <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
         <EnhetensOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
       </OppgaveColumnsProvider>

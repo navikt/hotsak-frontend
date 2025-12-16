@@ -1,8 +1,9 @@
-import { ComponentType, lazy, ReactNode, Suspense } from 'react'
+import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { SWRConfig, SWRConfiguration } from 'swr'
+import { SWRConfig, type SWRConfiguration } from 'swr'
 import { Theme } from '@navikt/ds-react'
+
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
@@ -20,6 +21,8 @@ import { EksperimentellApp } from './eksperimentelt/EksperimentellApp.tsx'
 import { useMiljø } from './utils/useMiljø.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 
+import classes from './App.module.css'
+
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
@@ -32,15 +35,7 @@ function App() {
 
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <div
-        style={{
-          minHeight: '100vh',
-          background: 'var(--ax-bg-default)',
-          minWidth: '90vw',
-          overflowX: 'auto',
-          //width: hotsakMaxWidth,
-        }}
-      >
+      <div className={classes.root}>
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>
@@ -129,7 +124,6 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
 function AppVelger() {
   const [eksperimentell] = useEksperimenter()
   const { erProd } = useMiljø()
-
   if (erProd) {
     return <App />
   }

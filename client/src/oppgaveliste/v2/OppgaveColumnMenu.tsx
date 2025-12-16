@@ -12,12 +12,12 @@ export function OppgaveColumnMenu() {
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
-        <Button variant="tertiary-neutral" icon={<CogIcon aria-label="Tilpass tabell" />} size="xsmall">
+        <Button variant="tertiary-neutral" icon={<CogIcon />} size="xsmall">
           Tilpass tabell
         </Button>
       </ActionMenu.Trigger>
       <ActionMenu.Content>
-        <ActionMenu.Group label="Kolonner">
+        <ActionMenu.Group label="Velg kolonner">
           {columnsState.map((columnState) => (
             <OppgaveColumnMenuItem key={columnState.field} columnState={columnState} />
           ))}

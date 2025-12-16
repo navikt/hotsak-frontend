@@ -40,7 +40,7 @@ export const oppgaveColumns = {
   saksbehandler: {
     field: 'saksbehandler',
     header: 'Saksbehandler',
-    width: 150,
+    width: 250,
     filter: {
       options: new Set(),
     },

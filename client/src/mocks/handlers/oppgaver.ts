@@ -3,18 +3,18 @@ import { http, HttpResponse } from 'msw'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import {
   erInternOppgaveId,
-  FinnOppgaverResponse,
-  OppgaveId,
+  type OppgaveId,
   oppgaveIdUtenPrefix,
   Oppgavetype,
-  OppgaveV1,
+  type OppgaveV1,
   OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
-import type { Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
-import type { OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
+import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
+import { type OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
 import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
-import type { StoreHandlersFactory } from '../data'
+import { type StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
+import { compareBy, type Direction } from '../../utils/array.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -23,47 +23,58 @@ export interface OppgaveParams {
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get(`/api/oppgaver-v2`, async ({ request }) => {
     const url = new URL(request.url)
-    const oppgavetype = url.searchParams.get('oppgavetype')
-    const pageNumber = +(url.searchParams.get('page') ?? 1)
-    const pageSize = +(url.searchParams.get('limit') ?? 10)
-    const offset = calculateOffset({ pageNumber, pageSize })
 
     await delay(200)
+
+    const meg = await saksbehandlerStore.innloggetSaksbehandler()
     const alleOppgaver = await oppgaveStore.alle()
-    if (oppgavetype === 'JOURNALFØRING') {
-      const journalføringsoppgaver = alleOppgaver.filter(
-        (oppgave) => oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
-      )
-      const totalElements = journalføringsoppgaver.length
-      const pagedOppgaver: FinnOppgaverResponse = {
-        oppgaver: journalføringsoppgaver.slice(offset, offset + pageSize),
-        pageNumber,
-        pageSize,
-        totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
-        totalElements,
-      }
-      return HttpResponse.json(pagedOppgaver)
-    } else {
-      const tildelt = url.searchParams.get('tildelt')
-      let oppgaver: OppgaveV2[] = alleOppgaver
-      if (tildelt === 'MEG') {
-        const meg = await saksbehandlerStore.innloggetSaksbehandler()
-        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler?.id === meg.id)
-      } else if (tildelt === 'INGEN') {
-        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler == null)
-      } else if (tildelt === 'MEDARBEIDER') {
-        oppgaver = alleOppgaver.filter((it) => it.tildeltSaksbehandler != null)
-      }
-      const totalElements = oppgaver.length
-      const pagedOppgaver: FinnOppgaverResponse = {
-        oppgaver: oppgaver.slice(offset, offset + pageSize),
-        pageNumber,
-        pageSize,
-        totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
-        totalElements,
-      }
-      return HttpResponse.json(pagedOppgaver)
-    }
+    const filtrerteOppgaver = alleOppgaver
+      .filter((oppgave) => {
+        const oppgavetype = url.searchParams.get('oppgavetype')
+        if (oppgavetype === Oppgavetype.JOURNALFØRING) {
+          return oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
+        } else {
+          return oppgave.kategorisering.oppgavetype !== Oppgavetype.JOURNALFØRING
+        }
+      })
+      .filter((oppgave) => {
+        switch (url.searchParams.get('tildelt')) {
+          case 'MEG':
+            return oppgave.tildeltSaksbehandler?.id === meg.id
+          case 'INGEN':
+            return oppgave.tildeltSaksbehandler == null
+          case 'MEDARBEIDER':
+            return oppgave.tildeltSaksbehandler != null
+          default:
+            return true
+        }
+      })
+      .sort((a, b) => {
+        let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'
+        switch (url.searchParams.get('sorteringsfelt')) {
+          case 'FRIST':
+            key = 'fristFerdigstillelse'
+            break
+          case 'OPPRETTET_TIDSPUNKT':
+            key = 'opprettetTidspunkt'
+            break
+        }
+        const direction = (url.searchParams.get('sorteringsrekkefølge') ?? 'none') as Direction
+        const comparator = compareBy<OppgaveV2, 'fristFerdigstillelse' | 'opprettetTidspunkt'>(key, direction)
+        return comparator(a, b)
+      })
+
+    const pageNumber = +(url.searchParams.get('page') ?? 1)
+    const pageSize = +(url.searchParams.get('limit') ?? 1_000)
+    const offset = calculateOffset({ pageNumber, pageSize })
+    const totalElements = filtrerteOppgaver.length
+    return HttpResponse.json({
+      oppgaver: filtrerteOppgaver.slice(offset, offset + pageSize),
+      pageNumber,
+      pageSize,
+      totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
+      totalElements,
+    })
   }),
 
   http.get<OppgaveParams>('/api/oppgaver-v2/:oppgaveId', async ({ params }) => {

@@ -2,10 +2,12 @@ import { createContext, type Dispatch, useContext } from 'react'
 
 import { type OppgaveColumnField, type OppgaveColumnState } from './oppgaveColumns.tsx'
 
-export const OppgaveColumnsContext = createContext<OppgaveColumnState[]>([])
+export type OppgaveColumnsState = ReadonlyArray<OppgaveColumnState>
+
+export const OppgaveColumnsContext = createContext<OppgaveColumnsState>([])
 export const OppgaveColumnsDispatchContext = createContext<Dispatch<OppgaveColumnsAction>>((state) => state)
 
-export function useOppgaveColumnsContext(): OppgaveColumnState[] {
+export function useOppgaveColumnsContext(): OppgaveColumnsState {
   return useContext(OppgaveColumnsContext)
 }
 
@@ -13,7 +15,7 @@ export function useOppgaveColumnsDispatchContext(): Dispatch<OppgaveColumnsActio
   return useContext(OppgaveColumnsDispatchContext)
 }
 
-export interface OppgaveColumnsBaseAction {
+interface OppgaveColumnsBaseAction {
   type: 'checked' | 'unchecked'
   field: OppgaveColumnField
 }

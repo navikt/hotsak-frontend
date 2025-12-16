@@ -1,13 +1,13 @@
 import { MedarbeidersOppgaver } from './MedarbeidersOppgaver.tsx'
-import { OppgaveFilterProvider } from './OppgaveFilterProvider.tsx'
+import { OppgavePaginationProvider } from './OppgavePaginationProvider.tsx'
 import { DataGridFilterProvider } from '../../felleskomponenter/data/DataGridFilterProvider.tsx'
 
 export default function MineOppgaverWrapper() {
   return (
-    <OppgaveFilterProvider suffix="Medarbeiders">
+    <OppgavePaginationProvider suffix="Medarbeiders">
       <DataGridFilterProvider>
         <MedarbeidersOppgaver />
       </DataGridFilterProvider>
-    </OppgaveFilterProvider>
+    </OppgavePaginationProvider>
   )
 }

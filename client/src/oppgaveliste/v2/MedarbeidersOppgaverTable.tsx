@@ -1,7 +1,7 @@
 import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveId, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useHandleSortChange, useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
@@ -13,26 +13,30 @@ export interface MedarbeidersOppgaverTableProps {
 
 export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps) {
   const { oppgaver, filterOptions, loading } = props
-  const { sort, setSort } = useOppgaveFilterContext()
   const columns = useOppgaveColumns(filterOptions)
+  const { sort } = useOppgavePaginationContext()
+  const handleSortChange = useHandleSortChange()
   return (
     <DataGrid
       rows={oppgaver}
       columns={columns}
-      keyFactory={(oppgave) => oppgave.oppgaveId}
-      renderContent={(oppgave, visible) => <OppgaveDetails oppgave={oppgave} visible={visible} />}
+      keyFactory={keyFactory}
+      renderContent={renderContent}
       size="small"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}
       sort={sort}
-      onSortChange={(sortKey) => {
-        setSort({
-          orderBy: sortKey || 'fristFerdigstillelse',
-          direction: sort?.direction === 'ascending' ? 'descending' : 'ascending',
-        })
-      }}
+      onSortChange={handleSortChange}
       zebraStripes
     />
   )
+}
+
+function keyFactory(oppgave: OppgaveV2): OppgaveId {
+  return oppgave.oppgaveId
+}
+
+function renderContent(oppgave: OppgaveV2, visible: boolean) {
+  return <OppgaveDetails oppgave={oppgave} visible={visible} />
 }

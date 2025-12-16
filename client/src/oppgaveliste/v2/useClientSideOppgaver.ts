@@ -6,7 +6,7 @@ import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/op
 import { useOppgaver } from '../../oppgave/useOppgaver.ts'
 import { compareBy } from '../../utils/array.ts'
 import { select } from '../../utils/select.ts'
-import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type DataGridFilterValues, emptyDataGridFilterValues } from '../../felleskomponenter/data/DataGridFilter.ts'
 import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
@@ -26,7 +26,7 @@ export interface UseClientSideOppgaverResponse {
 }
 
 export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
-  const { sort } = useOppgaveFilterContext()
+  const { sort } = useOppgavePaginationContext()
 
   const state = useDataGridFilterContext<OppgaveColumnField>()
   const {

@@ -3,7 +3,7 @@ import useSWRInfinite, { type SWRInfiniteKeyedMutator } from 'swr/infinite'
 import { createUrl } from '../../io/HttpClient.ts'
 import { type HttpError } from '../../io/HttpError.ts'
 import { type FinnOppgaverResponse, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { useOppgaveFilterContext } from './OppgaveFilterContext.tsx'
+import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 
 export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
   error?: HttpError
@@ -14,7 +14,7 @@ export interface UseEnhetensOppgaverResponse extends FinnOppgaverResponse {
 }
 
 export function useServerSideOppgaver(pageSize: number): UseEnhetensOppgaverResponse {
-  const { sort } = useOppgaveFilterContext()
+  const { sort } = useOppgavePaginationContext()
   const { data, error, mutate, isLoading, isValidating, size, setSize } = useSWRInfinite<FinnOppgaverResponse>(
     (index, previousPageData) => {
       if (previousPageData && !previousPageData.oppgaver.length) return null

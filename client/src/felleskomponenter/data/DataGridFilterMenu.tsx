@@ -15,6 +15,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
   const options = useMemo(() => {
     return [...filter.options]
       .map((option): DataGridFilterOption => (Array.isArray(option) ? option : [option, option]))
+      .filter(([value, label]) => Boolean(value) && Boolean(label))
       .sort(sortOptions)
   }, [filter.options])
   const state = useDataGridFilterContext()

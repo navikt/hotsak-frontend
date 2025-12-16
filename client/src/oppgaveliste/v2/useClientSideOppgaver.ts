@@ -5,12 +5,20 @@ import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJou
 import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaver } from '../../oppgave/useOppgaver.ts'
 import { compareBy } from '../../utils/array.ts'
-import { select } from '../../utils/select.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type DataGridFilterValues, emptyDataGridFilterValues } from '../../felleskomponenter/data/DataGridFilter.ts'
 import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
+import {
+  selectBehandlingstemaTerm,
+  selectBehandlingstypeTerm,
+  selectBrukerKommuneNavn,
+  selectMappenavn,
+  selectOppgavetype,
+  selectPrioritet,
+  selectTildeltSaksbehandlerNavn,
+} from './oppgaveSelectors.ts'
 
 const pageNumber = 1
 const pageSize = 1_000
@@ -68,13 +76,13 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
 
   const filtrerteOppgaver = useMemo(() => {
     return alleOppgaver
-      .filter(oneOf(saksbehandlerFilter, (it) => it.tildeltSaksbehandler?.navn || 'Ingen'))
-      .filter(oneOf(oppgavetypeFilter, (it) => it.kategorisering.oppgavetype))
-      .filter(oneOf(behandlingstemaFilter, (it) => it.kategorisering.behandlingstema?.term || 'Ingen'))
-      .filter(oneOf(behandlingstypeFilter, (it) => it.kategorisering.behandlingstype?.term || 'Ingen'))
-      .filter(oneOf(mappeFilter, (it) => it.mappenavn || 'Ingen'))
-      .filter(oneOf(prioritetFilter, select('prioritet')))
-      .filter(oneOf(kommuneFilter, (it) => it.bruker?.kommune?.navn || 'Ingen'))
+      .filter(oneOf(saksbehandlerFilter, selectTildeltSaksbehandlerNavn))
+      .filter(oneOf(oppgavetypeFilter, selectOppgavetype))
+      .filter(oneOf(behandlingstemaFilter, selectBehandlingstemaTerm))
+      .filter(oneOf(behandlingstypeFilter, selectBehandlingstypeTerm))
+      .filter(oneOf(mappeFilter, selectMappenavn))
+      .filter(oneOf(prioritetFilter, selectPrioritet))
+      .filter(oneOf(kommuneFilter, selectBrukerKommuneNavn))
       .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
   }, [
     alleOppgaver,
@@ -110,8 +118,10 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
 }
 
 function oneOf<T, R extends string>(filter: DataGridFilterValues<R>, selector: (item: T) => R): (value: T) => boolean {
-  return (value) => {
-    if (filter.values.size === 0) return true
-    return filter.values.has(selector(value))
-  }
+  if (filter.values.size === 0) return noFilter
+  return (value) => filter.values.has(selector(value))
+}
+
+function noFilter(): true {
+  return true
 }

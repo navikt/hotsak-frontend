@@ -15,6 +15,7 @@ import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFi
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
+import { beregnAlder } from '../../utils/dato.ts'
 
 import classes from './oppgaveColumns.module.css'
 
@@ -206,6 +207,21 @@ export const oppgaveColumns = {
         return null
       }
       return bruker.fulltNavn
+    },
+  },
+  brukerAlder: {
+    field: 'brukerAlder',
+    header: 'Alder',
+    width: 150,
+    filter: {
+      options: new Set(['Under 18 år', 'Over 18 år']),
+    },
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker || !bruker.fødselsdato) {
+        return null
+      }
+      return `${beregnAlder(bruker.fødselsdato)} år`
     },
   },
 } satisfies OppgaveColumns

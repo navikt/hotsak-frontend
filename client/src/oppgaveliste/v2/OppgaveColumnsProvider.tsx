@@ -1,6 +1,6 @@
 import { type ReactNode, useReducer } from 'react'
 
-import { type OppgaveColumn, type OppgaveColumnField } from './oppgaveColumns.tsx'
+import { type OppgaveColumnField, type OppgaveColumnState } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
   OppgaveColumnsContext,
@@ -14,9 +14,9 @@ export interface OppgaveColumnsProviderProps {
 
 export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   const { defaultColumns, children } = props
-  const [columns, dispatch] = useReducer(reducer, null, (): OppgaveColumn[] =>
+  const [columns, dispatch] = useReducer(reducer, null, (): OppgaveColumnState[] =>
     defaultColumns.map(
-      (field, order): OppgaveColumn => ({
+      (field, order): OppgaveColumnState => ({
         field,
         order,
         checked: true,
@@ -30,8 +30,8 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   )
 }
 
-function reducer(columns: OppgaveColumn[], action: OppgaveColumnsAction) {
-  return columns.map((column) => {
+function reducer(state: ReadonlyArray<OppgaveColumnState>, action: OppgaveColumnsAction) {
+  return state.map((column) => {
     if (action.field !== column.field) {
       return column
     }

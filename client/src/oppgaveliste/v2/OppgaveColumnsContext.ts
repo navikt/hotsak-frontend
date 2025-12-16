@@ -1,17 +1,15 @@
 import { createContext, type Dispatch, useContext } from 'react'
 
-import { type OppgaveColumn, type OppgaveColumnField } from './oppgaveColumns.tsx'
+import { type OppgaveColumnField, type OppgaveColumnState } from './oppgaveColumns.tsx'
 
-const initialState: OppgaveColumn[] = []
-
-export const OppgaveColumnsContext = createContext(initialState)
+export const OppgaveColumnsContext = createContext<OppgaveColumnState[]>([])
 export const OppgaveColumnsDispatchContext = createContext<Dispatch<OppgaveColumnsAction>>((state) => state)
 
-export function useOppgaveColumnsContext() {
+export function useOppgaveColumnsContext(): OppgaveColumnState[] {
   return useContext(OppgaveColumnsContext)
 }
 
-export function useOppgaveColumnsDispatchContext() {
+export function useOppgaveColumnsDispatchContext(): Dispatch<OppgaveColumnsAction> {
   return useContext(OppgaveColumnsDispatchContext)
 }
 

@@ -210,15 +210,18 @@ export const oppgaveColumns = {
   },
 } satisfies OppgaveColumns
 
-export interface OppgaveColumn {
+export type OppgaveColumnField = keyof typeof oppgaveColumns
+
+export function getOppgaveColumn(field: OppgaveColumnField): DataGridColumn<OppgaveV2> {
+  const column = oppgaveColumns[field]
+  if (column == null) {
+    throw new Error(`Fant ikke kolonne: ${field}`)
+  }
+  return column
+}
+
+export interface OppgaveColumnState {
   field: OppgaveColumnField
   order: number
   checked: boolean
-}
-
-export type OppgaveColumnField = keyof typeof oppgaveColumns
-
-export function headerForColumn(field: OppgaveColumnField): string {
-  const oppgaveColumn: DataGridColumn<OppgaveV2> = oppgaveColumns[field]
-  return oppgaveColumn?.header ?? ''
 }

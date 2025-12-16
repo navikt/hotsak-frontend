@@ -2,11 +2,11 @@ import { CogIcon, DragVerticalIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 import { useCallback } from 'react'
 
-import { headerForColumn, type OppgaveColumn } from './oppgaveColumns.tsx'
+import { getOppgaveColumn, type OppgaveColumnState } from './oppgaveColumns.tsx'
 import { useOppgaveColumnsContext, useOppgaveColumnsDispatchContext } from './OppgaveColumnsContext.ts'
 
 export function OppgaveColumnMenu() {
-  const columns = useOppgaveColumnsContext()
+  const columnStates = useOppgaveColumnsContext()
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -16,8 +16,8 @@ export function OppgaveColumnMenu() {
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Kolonner">
-          {columns.map((column) => (
-            <OppgaveColumnMenuItem key={column.field} column={column} />
+          {columnStates.map((columnState) => (
+            <OppgaveColumnMenuItem key={columnState.field} columnState={columnState} />
           ))}
         </ActionMenu.Group>
       </ActionMenu.Content>
@@ -25,21 +25,25 @@ export function OppgaveColumnMenu() {
   )
 }
 
-function OppgaveColumnMenuItem({ column }: { column: OppgaveColumn }) {
+function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnState }) {
   const dispatch = useOppgaveColumnsDispatchContext()
   const handleCheckedChange = useCallback(
     (checked: boolean) => {
       dispatch({
         type: checked ? 'checked' : 'unchecked',
-        field: column.field,
+        field: columnState.field,
       })
     },
-    [column.field, dispatch]
+    [columnState.field, dispatch]
   )
+  const header = getOppgaveColumn(columnState.field).header
+  if (!header) {
+    return null
+  }
   return (
-    <ActionMenu.CheckboxItem checked={column.checked} onCheckedChange={handleCheckedChange}>
+    <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleCheckedChange}>
       <HStack gap="3" align="center" justify="space-between" width="100%">
-        <div>{headerForColumn(column.field)}</div>
+        <div>{header}</div>
         <DragVerticalIcon />
       </HStack>
     </ActionMenu.CheckboxItem>

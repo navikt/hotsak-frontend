@@ -48,7 +48,7 @@ function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
   return (
     <VStack gap="2">
       {artikler.map((artikkel) => {
-        const artikkelBeskrivelse = storForbokstavIAlleOrd(artikkel.grunndataProduktNavn || artikkel.beskrivelse)
+        const artikkelBeskrivelse = artikkel.grunndataProduktNavn || artikkel.beskrivelse
         return (
           <HGrid
             key={`${artikkel.hmsnr}_${artikkel.datoUtsendelse}`}

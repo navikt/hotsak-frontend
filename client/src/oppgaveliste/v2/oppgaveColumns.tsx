@@ -56,7 +56,7 @@ export const oppgaveColumns = {
   oppgavetype: {
     field: 'oppgavetype',
     header: 'Oppgavetype',
-    width: 150,
+    width: 175,
     filter: {
       options: toDataGridFilterOptions(
         OppgavetypeLabel,
@@ -88,7 +88,7 @@ export const oppgaveColumns = {
   behandlingstype: {
     field: 'behandlingstype',
     header: 'Behandlingstype',
-    width: 150,
+    width: 195,
     filter: {
       options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad']),
     },
@@ -115,6 +115,7 @@ export const oppgaveColumns = {
   kommune: {
     field: 'kommune',
     header: 'Kommune / bydel',
+    width: 200,
     filter: {
       options: new Set(),
     },
@@ -133,6 +134,7 @@ export const oppgaveColumns = {
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',
+    width: 200,
     filter: {
       options: new Set(),
     },
@@ -140,7 +142,7 @@ export const oppgaveColumns = {
   prioritet: {
     field: 'prioritet',
     header: 'Prioritet',
-    width: 100,
+    width: 135,
     filter: {
       options: toDataGridFilterOptions(
         OppgaveprioritetLabel,

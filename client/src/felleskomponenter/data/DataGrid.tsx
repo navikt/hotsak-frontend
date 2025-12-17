@@ -52,7 +52,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     <Table {...tableProps}>
       <Table.Header>
         <Table.Row>
-          {renderContent ? <Table.HeaderCell /> : null}
+          {renderContent ? <Table.HeaderCell style={{ width: 48 }} /> : null}
           {columns.filter(notHidden).map((column) => {
             const key = column.field
 

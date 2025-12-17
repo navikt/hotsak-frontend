@@ -6,6 +6,7 @@ import {
   DataGridFilterDispatch,
   type DataGridFilterState,
 } from './DataGridFilterContext.ts'
+import type { DataGridFilterValues } from './DataGridFilter.ts'
 
 export interface DataGridFilterProviderProps {
   children: ReactNode
@@ -26,21 +27,29 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
   switch (action.type) {
     case 'checked':
       if (!current) {
-        current = { values: new Set([action.value]) }
+        current = filterValuesOf([action.value])
       } else {
-        current = { values: new Set([...current.values, action.value]) }
+        current = filterValuesOf([...current.values, action.value])
       }
       return { ...state, [action.field]: current }
     case 'unchecked':
       if (!current) {
-        current = { values: new Set() }
+        current = emptyFilterValues()
       } else {
-        current = { values: new Set([...current.values].filter((value) => value !== action.value)) }
+        current = filterValuesOf([...current.values].filter((value) => value !== action.value))
       }
       return { ...state, [action.field]: current }
     case 'reset':
-      return { ...state, [action.field]: { values: new Set() } }
+      return { ...state, [action.field]: emptyFilterValues() }
     default:
       return state
   }
+}
+
+function emptyFilterValues<T extends string = string>(): DataGridFilterValues<T> {
+  return { values: new Set() }
+}
+
+function filterValuesOf<T extends string = string>(values: Iterable<T>): DataGridFilterValues<T> {
+  return { values: new Set([...values]) }
 }

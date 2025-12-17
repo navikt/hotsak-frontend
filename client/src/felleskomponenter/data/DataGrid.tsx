@@ -26,8 +26,8 @@ export interface DataGridColumn<T extends object> {
 }
 
 export interface DataGridProps<T extends object> extends TableProps {
-  rows: T[]
-  columns: DataGridColumn<T>[]
+  rows: ReadonlyArray<T>
+  columns: ReadonlyArray<DataGridColumn<T>>
   textSize?: 'medium' | 'small'
   emptyMessage?: string
   loading?: boolean

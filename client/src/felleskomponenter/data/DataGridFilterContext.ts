@@ -25,22 +25,22 @@ export function useDataGridFilterReset(field: string): (event: Event) => void {
   }, [dispatch, field])
 }
 
-interface DataGridFilterBaseAction {
+interface DataGridFilterBaseAction<K extends string = string> {
   type: 'checked' | 'unchecked' | 'reset'
-  field: string
+  field: K
 }
 
-export interface DataGridFilterCheckedAction extends DataGridFilterBaseAction {
+export interface DataGridFilterCheckedAction<K extends string = string> extends DataGridFilterBaseAction<K> {
   type: 'checked'
   value: string
 }
 
-export interface DataGridFilterUncheckedAction extends DataGridFilterBaseAction {
+export interface DataGridFilterUncheckedAction<K extends string = string> extends DataGridFilterBaseAction<K> {
   type: 'unchecked'
   value: string
 }
 
-export interface DataGridFilterResetAction extends DataGridFilterBaseAction {
+export interface DataGridFilterResetAction<K extends string = string> extends DataGridFilterBaseAction<K> {
   type: 'reset'
 }
 

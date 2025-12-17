@@ -7,7 +7,7 @@ import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 import { selectOppgaveId } from './oppgaveSelectors.ts'
 
 export interface EnhetensOppgaverTableProps {
-  oppgaver: OppgaveV2[]
+  oppgaver: ReadonlyArray<OppgaveV2>
   filterOptions: OppgaveFilterOptions
   loading?: boolean
 }

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { FunnelFillIcon, FunnelIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
 
-import { useDataGridFilterContext, useDataGridFilterDispatch } from './DataGridFilterContext.ts'
+import { useDataGridFilterContext, useDataGridFilterDispatch, useDataGridFilterReset } from './DataGridFilterContext.ts'
 import { type DataGridFilter, type DataGridFilterOption, emptyDataGridFilterValues } from './DataGridFilter.ts'
 
 export interface DataGridFilterMenuProps {
@@ -22,6 +22,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
   const current = state[field] ?? emptyDataGridFilterValues
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
+  const handleReset = useDataGridFilterReset(field)
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -51,16 +52,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
             </ActionMenu.CheckboxItem>
           ))}
           {enabled && (
-            <ActionMenu.Item
-              variant="danger"
-              icon={<TrashIcon />}
-              onSelect={() => {
-                dispatch({
-                  type: 'clear',
-                  field,
-                })
-              }}
-            >
+            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
               Fjern filter
             </ActionMenu.Item>
           )}

@@ -1,4 +1,4 @@
-import { createContext, type Dispatch, useContext } from 'react'
+import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 import { type DataGridFilterValues } from './DataGridFilter.ts'
 
@@ -15,8 +15,18 @@ export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
+export function useDataGridFilterReset(field: string): (event: Event) => void {
+  const dispatch = useDataGridFilterDispatch()
+  return useCallback(() => {
+    dispatch({
+      type: 'reset',
+      field,
+    })
+  }, [dispatch, field])
+}
+
 interface DataGridFilterBaseAction {
-  type: 'checked' | 'unchecked' | 'clear'
+  type: 'checked' | 'unchecked' | 'reset'
   field: string
 }
 
@@ -30,11 +40,11 @@ export interface DataGridFilterUncheckedAction extends DataGridFilterBaseAction 
   value: string
 }
 
-export interface DataGridFilterClearAction extends DataGridFilterBaseAction {
-  type: 'clear'
+export interface DataGridFilterResetAction extends DataGridFilterBaseAction {
+  type: 'reset'
 }
 
 export type DataGridFilterAction =
   | DataGridFilterCheckedAction
   | DataGridFilterUncheckedAction
-  | DataGridFilterClearAction
+  | DataGridFilterResetAction

@@ -38,7 +38,7 @@ function reducer(state: DataGridFilterState, action: DataGridFilterAction): Data
         current = { values: new Set([...current.values].filter((value) => value !== action.value)) }
       }
       return { ...state, [action.field]: current }
-    case 'clear':
+    case 'reset':
       return { ...state, [action.field]: { values: new Set() } }
     default:
       return state

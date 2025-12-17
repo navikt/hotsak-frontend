@@ -5,11 +5,14 @@ import { initUmami } from './sporing/umami'
 import '@navikt/ds-css/darkside'
 import './styles/global.css'
 import App from './App'
+import { cleanupStorage } from './state/storage.ts'
 
 async function main(): Promise<void> {
   await initMsw()
   await initFaro()
   await initUmami()
+
+  cleanupStorage()
 
   const container = document.getElementById('root')!
   createRoot(container).render(<App />)

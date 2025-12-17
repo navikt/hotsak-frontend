@@ -2,7 +2,11 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
 import { logDebug } from '../utvikling/logDebug.ts'
 import { replacer } from './serde.ts'
+import { isFunction } from '../utils/type.ts'
 
+/**
+ * NB! Pass på at {@link key} ligger i {@link storageKeys}.
+ */
 export function useStoredState<S = unknown>(
   key: string,
   defaultValue?: S | (() => S),
@@ -27,8 +31,4 @@ export function useStoredState<S = unknown>(
   }, [key, storage, serialize, state])
 
   return [state, setState]
-}
-
-function isFunction<S>(value: unknown): value is () => S {
-  return typeof value === 'function'
 }

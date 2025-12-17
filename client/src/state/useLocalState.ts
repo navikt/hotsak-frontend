@@ -2,6 +2,9 @@ import type { Dispatch, SetStateAction } from 'react'
 
 import { useStoredState } from './useStoredState.ts'
 
+/**
+ * NB! Pass på at {@link key} ligger i {@link storageKeys}.
+ */
 export function useLocalState<S = unknown>(
   key: string,
   defaultValue?: S | (() => S)

@@ -12,7 +12,7 @@ import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseM
 import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
-import { useSakActions } from '../../../../saksbilde/useSakActions.ts'
+import { UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
 import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
@@ -20,12 +20,12 @@ import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { PersonlinjeEksperiment } from '../felleskomponenter/personlinje/PersonlinjeEksperiment'
 import { ResizeHandle } from '../felleskomponenter/ResizeHandle'
 import BehandlingEksperimentPanel from './behandling/BehandlingEksperiment'
+import { useBehandling } from './behandling/useBehandling.ts'
+import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
 import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
-import { useBehandling } from './behandling/useBehandling.ts'
-import { UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -34,10 +34,10 @@ interface VedtakFormValues {
 export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
+  const [vedtakLoader, setVedtakLoader] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
   const [visBrevMangler, setVisBrevMangler] = useState(false)
-  const sakActions = useSakActions()
 
   const { oppgave } = useOppgave()
 
@@ -62,6 +62,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { showSuccessToast } = useToast()
 
   const { gjeldendeBehandling } = useBehandling()
+  const { ferdigstillBehandling } = useBehandlingActions()
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
   const form = useForm<VedtakFormValues>({
@@ -71,11 +72,13 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   })
 
   const fattVedtak = async (data: VedtakFormValues) => {
+    setVedtakLoader(true)
     setOppgaveFerdigstilt(true)
     setVisFerdigstillModal(false)
-    showSuccessToast('Vedtak fattet')
-    await sakActions.fattVedtak(data.problemsammendrag)
+    await ferdigstillBehandling(data.problemsammendrag)
     await mutateOppgaveOgSak()
+    setVedtakLoader(false)
+    showSuccessToast('Vedtak fattet')
   }
 
   if (!behovsmelding) {
@@ -160,11 +163,11 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 type="button"
                 variant="primary"
                 size="small"
+                loading={vedtakLoader}
                 onClick={() => {
                   if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
                   } else if (
-                    // TODO, mer typesikkert ved å sjekke uttall.type
                     (vedtaksResultat !== VedtaksResultat.INNVILGET && (!brevEksisterer || !brevFerdigstilt)) ||
                     (vedtaksResultat === VedtaksResultat.INNVILGET && brevEksisterer && !brevFerdigstilt)
                   ) {

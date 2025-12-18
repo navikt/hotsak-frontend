@@ -507,13 +507,13 @@ export class SakStore extends Dexie {
     })
   }
 
-  async lagreBrevtekst(sakId: string, brevtype: string, data: any, klargjort?: string) {
-    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, klargjort: klargjort, sakId }, sakId)
+  async lagreBrevtekst(sakId: string, brevtype: string, data: any) {
+    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
   }
 
-  async lagreBrevstatus(sakId: string, klargjort: boolean) {
-    this.brevtekst.update(sakId, { klargjort: klargjort ? nåIso() : undefined })
-  }
+  /*async lagreBrevstatus(sakId: string, klargjort: boolean) {
+    this.brevtekst.update(sakId)
+  }*/
 
   async fjernBrevtekst(sakId: string) {
     this.brevtekst.delete(sakId)

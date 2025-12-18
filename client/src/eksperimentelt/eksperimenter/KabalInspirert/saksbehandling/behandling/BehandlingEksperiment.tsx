@@ -230,15 +230,15 @@ function VedtaksResultatVelger({
         readOnly={brevEksisterer || oppgaveFerdigstilt}
         style={{ width: 'auto' }}
         value={utfall ? utfall : ''}
-        onChange={(e) => {
+        onChange={async (e) => {
           if (utfall === (e.target.value as VedtaksResultat)) {
             console.log('Samme utfall valgt, ingen endring')
             return
           }
           if (e.target.value !== '') {
-            lagreBehandling({ utfall: e.target.value as VedtaksResultat, type: 'VEDTAK' })
+            await lagreBehandling({ utfall: e.target.value as VedtaksResultat, type: 'VEDTAK' })
           } else {
-            lagreBehandling(undefined)
+            await lagreBehandling(undefined)
           }
         }}
       >

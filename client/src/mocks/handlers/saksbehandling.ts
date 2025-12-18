@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
+import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
 import {
   OppgaveStatusType,
   StegType,
@@ -16,14 +17,12 @@ import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.
 import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
-  respondBadRequest,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
   respondNotFound,
   respondUnauthorized,
 } from './response'
-import { BehandlingerResponse, LagreBehandlingRequest } from '../../types/behandlingTyper.ts'
 
 export const saksbehandlingHandlers: StoreHandlersFactory = ({
   endreHjelpemiddelStore,
@@ -130,23 +129,6 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     return respondNoContent()
   }),
 
-  http.put<SakParams, VedtakPayload>('/api/sak/:sakId/ferdigstilling', async ({ params }) => {
-    const sakId = params.sakId
-    const behandling = await sakStore.hentBehandlinger(sakId)
-    if (!behandling || behandling.length === 0) {
-      return respondBadRequest()
-    }
-
-    // TODO: Wip. Fortsett på dette
-    //const gjeldendeBehandling = behandling[0]
-
-    //const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
-
-    await sakStore.fattVedtak(sakId)
-    await sakStore.ferdigstillBehandlingForSak(sakId)
-    return respondNoContent()
-  }),
-
   http.put<SakParams>('/api/sak/:sakId/tilbakeforing', async ({ params }) => {
     const sakId = params.sakId
     await sakStore.oppdaterStatus(sakId, OppgaveStatusType.SENDT_GOSYS)
@@ -233,6 +215,21 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     '/api/sak/:sakId/behandling/:behandlingId',
     async ({ params, request }) => {
       await sakStore.lagreBehandling(params.behandlingId, await request.json())
+    }
+  ),
+  http.put<BehandlingParams, VedtakPayload>(
+    '/api/sak/:sakId/behandling/:behandlingId/ferdigstilling',
+    async ({ params }) => {
+      const sakId = params.sakId
+
+      const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
+      const gjeldendeBehandling = behandlingerForSak[0]
+
+      const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
+
+      await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
+      await sakStore.ferdigstillBehandlingForSak(sakId)
+      return respondNoContent()
     }
   ),
   http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {

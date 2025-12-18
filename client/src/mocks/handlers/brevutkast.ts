@@ -15,9 +15,16 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
   http.post<SakParams, NyBrevtekst>(`/api/sak/:sakId/brevutkast`, async ({ request, params }) => {
     const { brevtype, data } = await request.json()
     await sakStore.lagreBrevtekst(params.sakId, brevtype, data)
+
     await delay(1000)
     return respondNoContent()
   }),
+
+  // TODO avventer dette til vi vet hvordan vi vil ha api for brevutkast
+  /*http.put<SakParams, { klargjort: boolean }>(`/api/sak/:sakId/brevutkast/klargjoring`, async ({ request, params }) => {
+    const { klargjort } = await request.json()
+    await sakStore.lagreBrevstatus(params.sakId, klargjort)
+  }),*/
 
   http.delete<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
     await sakStore.fjernBrevtekst(params.sakId)

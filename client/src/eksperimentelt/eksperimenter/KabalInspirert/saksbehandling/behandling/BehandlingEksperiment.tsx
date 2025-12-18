@@ -38,6 +38,9 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   const { varsler, harVarsler } = useSøknadsVarsler()
 
   const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
+  //const gjenstående = gjeldendeBehandling?.gjenstående || []
+
+  //const brevIkkeFerdigstilt = gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>

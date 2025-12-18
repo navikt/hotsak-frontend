@@ -241,7 +241,15 @@ export class SakStore extends Dexie {
     behandlingId = Number(behandlingId)
 
     const behandling = await this.behandlinger.get(behandlingId)
-    const gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
+    let gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
+
+    // TODO avventer dette til vi har på plass api for brevutkast som lagrer dette
+    /*if (behandling?.sakId) {
+      const brevtekst = await this.hentBrevtekst(behandling?.sakId)
+      if (brevtekst) {
+        gjenstående.push(Gjenstående.BREV_IKKE_FERDIGSTILT)
+      }
+    }*/
 
     this.behandlinger.update(behandlingId, {
       ...behandling,
@@ -499,8 +507,12 @@ export class SakStore extends Dexie {
     })
   }
 
-  async lagreBrevtekst(sakId: string, brevtype: string, data: any) {
-    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
+  async lagreBrevtekst(sakId: string, brevtype: string, data: any, klargjort?: string) {
+    this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, klargjort: klargjort, sakId }, sakId)
+  }
+
+  async lagreBrevstatus(sakId: string, klargjort: boolean) {
+    this.brevtekst.update(sakId, { klargjort: klargjort ? nåIso() : undefined })
   }
 
   async fjernBrevtekst(sakId: string) {

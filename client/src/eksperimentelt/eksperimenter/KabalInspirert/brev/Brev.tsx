@@ -1,19 +1,19 @@
-import './Brev.less'
-import { ActionMenu, Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
-import useSWR from 'swr'
-import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
-import { useEffect, useMemo, useState } from 'react'
-import { useSak } from '../../../../saksbilde/useSak.ts'
-import { formaterDatoLang } from '../../../../utils/dato.ts'
 import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
-import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
-import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
-import { useBrev } from '../../../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
-import { Brevtype, RessursStatus } from '../../../../types/types.internal.ts'
+import { ActionMenu, Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
+import { useEffect, useMemo, useState } from 'react'
+import useSWR from 'swr'
 import { Etikett, Tekst, TextContainer } from '../../../../felleskomponenter/typografi.tsx'
-import { useBehandling } from '../saksbehandling/behandling/useBehandling.ts'
+import { useBrev } from '../../../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
+import { useSak } from '../../../../saksbilde/useSak.ts'
 import { VedtaksResultat } from '../../../../types/behandlingTyper.ts'
+import { Brevtype, RessursStatus } from '../../../../types/types.internal.ts'
+import { formaterDatoLang } from '../../../../utils/dato.ts'
+import { useBehandling } from '../saksbehandling/behandling/useBehandling.ts'
+import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
+import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
+import './Brev.less'
+import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
+import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -99,7 +99,6 @@ export const Brev = () => {
   }
 
   const lagreBrevutkast = async (data: any) => {
-    // console.log('\n' + (data as StateMangement).valueAsHtml)
     return fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
       method: 'post',
       headers: {
@@ -133,8 +132,12 @@ export const Brev = () => {
     await brevutkast.mutate()
   }
 
-  const makerKlart = (klart: boolean) => {
+  const makerKlart = async (klart: boolean) => {
     if (brevutkast.data?.data?.value) {
+      // TODO avventer dette til vi har synket hvordan vi vil ha brevutkast apiet
+      //await http.put(`/api/sak/${sak!.data.sakId}/brevutkast/klargjoring`, { klargjort: klart })
+      brevutkast.mutate()
+
       lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
       setBrevFerdigstilt(klart)
       if (klart) {

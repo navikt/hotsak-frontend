@@ -169,7 +169,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
               setVisVedtakModal(true)
             }
             if (!erProd) {
-              http.get<any>(`/api/sak/${sak.sakId}/serviceforespørsel`)
+              http.get<any>(`/api/sak/${sak.sakId}/serviceforesporsel`)
             }
           }}
         >

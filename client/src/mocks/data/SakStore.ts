@@ -552,22 +552,7 @@ export class SakStore extends Dexie {
       return false
     }
 
-    // TODO Sannsynligvis unødvendig med denne mappingen, kan bare slå sammen typene
-    let vedtakStatus
-    switch (vedtaksResultat) {
-      case VedtaksResultat.INNVILGET:
-        vedtakStatus = VedtakStatusType.INNVILGET
-        break
-      case VedtaksResultat.AVSLÅTT:
-        vedtakStatus = VedtakStatusType.AVSLÅTT
-        break
-      case VedtaksResultat.DELVIS_INNVILGET:
-        vedtakStatus = VedtakStatusType.DELVIS_INNVILGET
-        break
-      default:
-        vedtakStatus = VedtakStatusType.INNVILGET
-        break
-    }
+    const vedtakStatus = utledVedtakStatus(vedtaksResultat)
 
     if (sak.saksstatus === status) {
       return false
@@ -640,5 +625,18 @@ export class SakStore extends Dexie {
 
   private oppdaterSak<T extends InsertSak = InsertSak>(sakId: string, oppdatering: UpdateSpec<T>) {
     return this.saker.update(sakId, oppdatering)
+  }
+}
+
+function utledVedtakStatus(vedtaksResultat?: VedtaksResultat): VedtakStatusType {
+  switch (vedtaksResultat) {
+    case VedtaksResultat.INNVILGET:
+      return VedtakStatusType.INNVILGET
+    case VedtaksResultat.AVSLÅTT:
+      return VedtakStatusType.AVSLÅTT
+    case VedtaksResultat.DELVIS_INNVILGET:
+      return VedtakStatusType.DELVIS_INNVILGET
+    default:
+      return VedtakStatusType.INNVILGET
   }
 }

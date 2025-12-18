@@ -19,6 +19,8 @@ import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { useMiljø } from '../../utils/useMiljø.ts'
+import { http } from '../../io/HttpClient.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -41,6 +43,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
   const oppgaveActions = useOppgaveActions()
   const sakActions = useSakActions()
+  const { erProd } = useMiljø()
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -164,6 +167,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
               setSubmitAttempt(true)
             } else {
               setVisVedtakModal(true)
+            }
+            if (!erProd) {
+              http.get<any>(`/api/sak/${sak.sakId}/serviceforespørsel`)
             }
           }}
         >

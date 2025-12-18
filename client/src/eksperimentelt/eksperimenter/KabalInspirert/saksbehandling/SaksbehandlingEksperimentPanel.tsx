@@ -6,12 +6,14 @@ import { mutate } from 'swr'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { useToast } from '../../../../felleskomponenter/toast/ToastContext.tsx'
 import { Brødtekst, Etikett, Tekst } from '../../../../felleskomponenter/typografi'
+import { Oppgavestatus } from '../../../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 import { usePerson } from '../../../../personoversikt/usePerson'
 import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseModal'
 import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
+import { useSaksregler } from '../../../../saksregler/useSaksregler.ts'
 import { UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
 import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
@@ -37,9 +39,12 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
-  const [visBrevMangler, setVisBrevMangler] = useState(false)
 
+  const { kanBehandleSak } = useSaksregler()
+  const [visBrevMangler, setVisBrevMangler] = useState(false)
+  // TODO trenger vi tilsvarende regler for oppgave? Oppgave i stedet for sak eller begge deler?
   const { oppgave } = useOppgave()
+  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgave?.oppgaveId}`)
   const mutateOppgaveOgSak = () => {
@@ -49,16 +54,8 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     return mutateOppgave()
   }
 
-  const {
-    sidePanel,
-    søknadPanel,
-    brevKolonne,
-    behandlingPanel,
-    oppgaveFerdigstilt,
-    setOppgaveFerdigstilt,
-    brevEksisterer,
-    brevFerdigstilt,
-  } = useSaksbehandlingEksperimentContext()
+  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel, brevEksisterer, brevFerdigstilt } =
+    useSaksbehandlingEksperimentContext()
   const { showSuccessToast } = useToast()
 
   const { gjeldendeBehandling } = useBehandling()
@@ -73,7 +70,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
-    setOppgaveFerdigstilt(true)
     setVisFerdigstillModal(false)
     await ferdigstillBehandling(data.problemsammendrag)
     await mutateOppgaveOgSak()
@@ -158,7 +154,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       >
         <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
           <HStack align="center" justify="space-between" gap="space-24">
-            {!oppgaveFerdigstilt && (
+            {kanBehandleSak && (
               <Button
                 type="button"
                 variant="primary"

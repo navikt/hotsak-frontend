@@ -92,6 +92,12 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.filter((oppgave) => oppgave.journalpostId === journalpostId).first()
   }
 
+  async ferdigstillOppgave(oppgaveId: OppgaveId) {
+    return this.oppgaver.update(oppgaveId, {
+      oppgavestatus: Oppgavestatus.FERDIGSTILT,
+    })
+  }
+
   async tildel(oppgaveId: OppgaveId) {
     const saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     console.log(`Tildeler oppgaveId: ${oppgaveId} til saksbehandlerId: ${saksbehandler.id}`)

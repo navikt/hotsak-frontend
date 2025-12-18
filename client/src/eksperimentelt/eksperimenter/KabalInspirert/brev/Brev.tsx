@@ -14,19 +14,18 @@ import { useSaksbehandlingEksperimentContext } from '../saksbehandling/Saksbehan
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
+import { Oppgavestatus } from '../../../../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const {
-    opprettBrevKlikket,
-    setOpprettBrevKlikket,
-    setBrevKolonne,
-    setBrevEksisterer,
-    setBrevFerdigstilt,
-    oppgaveFerdigstilt,
-  } = useSaksbehandlingEksperimentContext()
+  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
+    useSaksbehandlingEksperimentContext()
 
   const { gjeldendeBehandling } = useBehandling()
+  const { oppgave } = useOppgave()
+  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
   const brevutkast = useSWR<

@@ -21,8 +21,6 @@ const initialState = {
   setValgtNedreVenstreKolonneTab() {},
   valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
   setValgtHøyreKolonneTab() {},
-  oppgaveFerdigstilt: false,
-  setOppgaveFerdigstilt() {},
   opprettBrevKlikket: false,
   setOpprettBrevKlikket() {},
   brevEksisterer: false,
@@ -44,7 +42,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
-  const [oppgaveFerdigstilt, setOppgaveFerdigstilt] = useState<boolean>(false)
   const [opprettBrevKlikket, setOpprettBrevKlikket] = useState(false)
   const [brevEksisterer, setBrevEksisterer] = useState<boolean>(false)
   const [brevFerdigstilt, setBrevFerdigstilt] = useState<boolean>(false)
@@ -66,8 +63,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setBrevKolonne,
         valgtHøyreKolonneTab,
         setValgtHøyreKolonneTab,
-        oppgaveFerdigstilt,
-        setOppgaveFerdigstilt,
         opprettBrevKlikket,
         setOpprettBrevKlikket,
         brevEksisterer,
@@ -108,8 +103,6 @@ type SaksbehandlingEksperimentContextType = {
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
 
   // Verdiene under er midlertidige tilstander for å teste flyt i prototypen før vi lager apiene
-  oppgaveFerdigstilt: boolean
-  setOppgaveFerdigstilt(ferdigstilt: boolean): void
   opprettBrevKlikket: boolean
   setOpprettBrevKlikket(klikket: boolean): void
   brevEksisterer: boolean

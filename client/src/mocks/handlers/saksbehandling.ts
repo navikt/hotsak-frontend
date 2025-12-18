@@ -29,6 +29,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   journalpostStore,
   sakStore,
   saksbehandlerStore,
+  oppgaveStore,
 }) => [
   http.get<SakParams>(`/api/sak/:sakId`, async ({ params }) => {
     const { sakId } = params
@@ -219,14 +220,15 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   ),
   http.put<BehandlingParams, VedtakPayload>(
     '/api/sak/:sakId/behandling/:behandlingId/ferdigstilling',
-    async ({ params }) => {
+    async ({ params, request }) => {
       const sakId = params.sakId
+      const { oppagaveId } = await request.json()
 
       const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
       const gjeldendeBehandling = behandlingerForSak[0]
 
       const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
-
+      await oppgaveStore.ferdigstillOppgave(oppagaveId!)
       await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
       await sakStore.ferdigstillBehandlingForSak(sakId)
       return respondNoContent()

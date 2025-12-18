@@ -15,6 +15,7 @@ import { useBehandlingActions } from './useBehandlingActions.ts'
 import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
 import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
 import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
+import { Oppgavestatus } from '../../../../../oppgave/oppgaveTypes.ts'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -22,17 +23,11 @@ interface BehandlingEksperimentPanelProps {
 }
 
 function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
-  const {
-    brevKolonne,
-    setBrevKolonne,
-    setBehandlingPanel,
-    setOpprettBrevKlikket,
-    brevEksisterer,
-    brevFerdigstilt,
-    oppgaveFerdigstilt,
-  } = useSaksbehandlingEksperimentContext()
+  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket, brevEksisterer, brevFerdigstilt } =
+    useSaksbehandlingEksperimentContext()
 
   const { oppgave } = useOppgave()
+  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
   const { gjeldendeBehandling } = useBehandling()
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   const { varsler, harVarsler } = useSøknadsVarsler()
@@ -209,7 +204,9 @@ function VedtaksResultatVelger({
   setVisModalKanIkkeEndre: (åpen: boolean) => void
   utfall: VedtaksResultat | null
 }) {
-  const { brevEksisterer, oppgaveFerdigstilt } = useSaksbehandlingEksperimentContext()
+  const { brevEksisterer } = useSaksbehandlingEksperimentContext()
+  const { oppgave } = useOppgave()
+  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const { lagreBehandling } = useBehandlingActions()
 

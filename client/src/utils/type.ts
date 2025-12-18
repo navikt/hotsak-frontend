@@ -8,6 +8,10 @@ export function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String
 }
 
+export function isFunction(value: unknown): value is (...args: any[]) => unknown {
+  return typeof value === 'function'
+}
+
 export function isError(value: unknown): value is Error {
   return (
     value instanceof Error || (value != null && isString((value as Error).name) && isString((value as Error).message))

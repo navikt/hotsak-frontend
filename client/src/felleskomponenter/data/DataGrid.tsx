@@ -26,8 +26,8 @@ export interface DataGridColumn<T extends object> {
 }
 
 export interface DataGridProps<T extends object> extends TableProps {
-  rows: T[]
-  columns: DataGridColumn<T>[]
+  rows: ReadonlyArray<T>
+  columns: ReadonlyArray<DataGridColumn<T>>
   textSize?: 'medium' | 'small'
   emptyMessage?: string
   loading?: boolean
@@ -52,7 +52,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
     <Table {...tableProps}>
       <Table.Header>
         <Table.Row>
-          {renderContent ? <Table.HeaderCell /> : null}
+          {renderContent ? <Table.HeaderCell style={{ width: 48 }} /> : null}
           {columns.filter(notHidden).map((column) => {
             const key = column.field
 

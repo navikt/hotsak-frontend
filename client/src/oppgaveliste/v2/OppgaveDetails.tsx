@@ -7,6 +7,7 @@ import { formaterFødselsnummer, formaterNavn } from '../../utils/formater.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
+import { useMiljø } from '../../utils/useMiljø.ts'
 
 export interface OppgaveDetailsProps {
   oppgave: OppgaveV2
@@ -17,6 +18,7 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
   const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
   const bruker = oppgave.bruker
   const sak = oppgave.sak
+  const oppgaveUrl = useOppgaveUrl(oppgaveId)
   return (
     <VStack gap="5">
       <VStack gap="3">
@@ -34,18 +36,22 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
         <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
         <div>
           <Strek />
-          <BodyShort
-            as={Link}
-            href={`https://gosys-q2.dev.intern.nav.no/gosys/oppgavebehandling/oppgave/${oppgaveId}`}
-            size="small"
-            target="_blank"
-            variant="subtle"
-            spacing
-          >
+          <BodyShort as={Link} href={oppgaveUrl} size="small" target="_blank" variant="subtle" spacing>
             Åpne i Gosys
           </BodyShort>
         </div>
       </VStack>
     </VStack>
   )
+}
+
+function useOppgaveUrl(oppgaveId: string) {
+  const { erProd } = useMiljø()
+  let host: string
+  if (erProd) {
+    host = 'gosys.intern.nav.no'
+  } else {
+    host = 'gosys-q2.dev.intern.nav.no'
+  }
+  return `https://${host}/gosys/oppgavebehandling/oppgave/${oppgaveId}`
 }

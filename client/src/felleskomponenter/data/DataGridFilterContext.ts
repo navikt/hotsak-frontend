@@ -1,4 +1,4 @@
-import { createContext, type Dispatch, useContext } from 'react'
+import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 import { type DataGridFilterValues } from './DataGridFilter.ts'
 
@@ -15,26 +15,36 @@ export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
-interface DataGridFilterBaseAction {
-  type: 'checked' | 'unchecked' | 'clear'
-  field: string
+export function useDataGridFilterReset(field: string): (event: Event) => void {
+  const dispatch = useDataGridFilterDispatch()
+  return useCallback(() => {
+    dispatch({
+      type: 'reset',
+      field,
+    })
+  }, [dispatch, field])
 }
 
-export interface DataGridFilterCheckedAction extends DataGridFilterBaseAction {
+interface DataGridFilterBaseAction<K extends string = string> {
+  type: 'checked' | 'unchecked' | 'reset'
+  field: K
+}
+
+export interface DataGridFilterCheckedAction<K extends string = string> extends DataGridFilterBaseAction<K> {
   type: 'checked'
   value: string
 }
 
-export interface DataGridFilterUncheckedAction extends DataGridFilterBaseAction {
+export interface DataGridFilterUncheckedAction<K extends string = string> extends DataGridFilterBaseAction<K> {
   type: 'unchecked'
   value: string
 }
 
-export interface DataGridFilterClearAction extends DataGridFilterBaseAction {
-  type: 'clear'
+export interface DataGridFilterResetAction<K extends string = string> extends DataGridFilterBaseAction<K> {
+  type: 'reset'
 }
 
 export type DataGridFilterAction =
   | DataGridFilterCheckedAction
   | DataGridFilterUncheckedAction
-  | DataGridFilterClearAction
+  | DataGridFilterResetAction

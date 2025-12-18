@@ -15,6 +15,7 @@ import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFi
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
+import { beregnAlder } from '../../utils/dato.ts'
 
 import classes from './oppgaveColumns.module.css'
 
@@ -55,7 +56,7 @@ export const oppgaveColumns = {
   oppgavetype: {
     field: 'oppgavetype',
     header: 'Oppgavetype',
-    width: 150,
+    width: 175,
     filter: {
       options: toDataGridFilterOptions(
         OppgavetypeLabel,
@@ -87,7 +88,7 @@ export const oppgaveColumns = {
   behandlingstype: {
     field: 'behandlingstype',
     header: 'Behandlingstype',
-    width: 150,
+    width: 195,
     filter: {
       options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad']),
     },
@@ -114,6 +115,7 @@ export const oppgaveColumns = {
   kommune: {
     field: 'kommune',
     header: 'Kommune / bydel',
+    width: 200,
     filter: {
       options: new Set(),
     },
@@ -132,6 +134,7 @@ export const oppgaveColumns = {
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',
+    width: 200,
     filter: {
       options: new Set(),
     },
@@ -139,7 +142,7 @@ export const oppgaveColumns = {
   prioritet: {
     field: 'prioritet',
     header: 'Prioritet',
-    width: 100,
+    width: 135,
     filter: {
       options: toDataGridFilterOptions(
         OppgaveprioritetLabel,
@@ -206,6 +209,21 @@ export const oppgaveColumns = {
         return null
       }
       return bruker.fulltNavn
+    },
+  },
+  brukerAlder: {
+    field: 'brukerAlder',
+    header: 'Alder',
+    width: 150,
+    filter: {
+      options: new Set(['Under 18 år', 'Over 18 år']),
+    },
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker || !bruker.fødselsdato) {
+        return null
+      }
+      return `${beregnAlder(bruker.fødselsdato)} år`
     },
   },
 } satisfies OppgaveColumns

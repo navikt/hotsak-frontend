@@ -93,6 +93,8 @@ export class OppgaveStore extends Dexie {
   }
 
   async ferdigstillOppgave(oppgaveId: OppgaveId) {
+    console.log(`Ferdigstiller oppgaveId: ${oppgaveId}`)
+
     return this.oppgaver.update(oppgaveId, {
       oppgavestatus: Oppgavestatus.FERDIGSTILT,
     })

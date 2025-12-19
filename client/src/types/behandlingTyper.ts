@@ -1,3 +1,4 @@
+import { OppgaveId } from '../oppgave/oppgaveTypes'
 import { Saksbehandler } from './types.internal'
 
 export interface Behandling {
@@ -56,4 +57,9 @@ export enum Gjenstående {
 export enum UtfallLåst {
   FERDIGSTILT = 'FERDIGSTILT',
   BREV_PÅBEGYNT = 'BREV_PÅBEGYNT',
+}
+
+export interface FerdigstillBehandling {
+  sakId: string
+  oppgaveId: OppgaveId
 }

@@ -5,6 +5,7 @@ import {
   erInternOppgaveId,
   type OppgaveId,
   oppgaveIdUtenPrefix,
+  Oppgavestatus,
   Oppgavetype,
   type OppgaveV1,
   OppgaveV2,
@@ -29,6 +30,9 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     const meg = await saksbehandlerStore.innloggetSaksbehandler()
     const alleOppgaver = await oppgaveStore.alle()
     const filtrerteOppgaver = alleOppgaver
+      .filter((oppgave) => {
+        return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
+      })
       .filter((oppgave) => {
         const oppgavetype = url.searchParams.get('oppgavetype')
         if (oppgavetype === Oppgavetype.JOURNALFØRING) {

@@ -325,7 +325,6 @@ export enum VedtaksgrunnlagType {
 export interface VedtakPayload {
   sakId: string
   //status: VedtakStatusType
-  oppagaveId?: OppgaveId
 }
 
 export interface Vedtaksgrunnlag {

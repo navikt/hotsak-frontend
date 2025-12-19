@@ -2,7 +2,12 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
+import {
+  BehandlingerResponse,
+  FerdigstillBehandling,
+  LagreBehandlingRequest,
+  VedtaksResultat,
+} from '../../types/behandlingTyper.ts'
 import {
   OppgaveStatusType,
   StegType,
@@ -218,17 +223,17 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       await sakStore.lagreBehandling(params.behandlingId, await request.json())
     }
   ),
-  http.put<BehandlingParams, VedtakPayload>(
+  http.put<BehandlingParams, FerdigstillBehandling>(
     '/api/sak/:sakId/behandling/:behandlingId/ferdigstilling',
     async ({ params, request }) => {
       const sakId = params.sakId
-      const { oppagaveId } = await request.json()
+      const { oppgaveId } = await request.json()
 
       const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
       const gjeldendeBehandling = behandlingerForSak[0]
 
       const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
-      await oppgaveStore.ferdigstillOppgave(oppagaveId!)
+      await oppgaveStore.ferdigstillOppgave(oppgaveId)
       await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
       await sakStore.ferdigstillBehandlingForSak(sakId)
       return respondNoContent()

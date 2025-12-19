@@ -184,6 +184,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
             {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst === UtfallLåst.FERDIGSTILT && (
               <HStack gap="space-12" align="center">
                 <Tag
+                  size="small"
                   variant={
                     oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.INNVILGET
                       ? 'success-moderate'

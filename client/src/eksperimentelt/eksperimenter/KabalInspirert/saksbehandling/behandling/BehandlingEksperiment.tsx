@@ -181,6 +181,7 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat: VedtaksR
       </Heading>
       <TextContainer>
         <Tag
+          size="small"
           variant={
             vedtaksResultat == VedtaksResultat.INNVILGET
               ? 'success-moderate'

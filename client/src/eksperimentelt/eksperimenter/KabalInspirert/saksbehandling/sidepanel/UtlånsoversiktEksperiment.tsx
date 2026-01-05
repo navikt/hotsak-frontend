@@ -55,7 +55,7 @@ function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
   return (
     <>
       {artikler.map((artikkel) => {
-        const artikkelBeskrivelse = storForbokstavIAlleOrd(artikkel.grunndataProduktNavn || artikkel.beskrivelse)
+        const artikkelBeskrivelse = artikkel.grunndataProduktNavn || artikkel.beskrivelse
         return (
           <VStack key={`${artikkel.hmsnr}_${artikkel.datoUtsendelse}`}>
             <HStack gap="space-8">

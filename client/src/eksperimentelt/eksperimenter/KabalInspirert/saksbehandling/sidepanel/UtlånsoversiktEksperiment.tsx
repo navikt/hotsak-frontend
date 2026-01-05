@@ -7,7 +7,6 @@ import { HøyrekolonnePanel } from '../../../../../saksbilde/høyrekolonne/Høyr
 import { useSak } from '../../../../../saksbilde/useSak'
 import { HjelpemiddelArtikkel } from '../../../../../types/types.internal'
 import { formaterDato } from '../../../../../utils/dato'
-import { storForbokstavIAlleOrd } from '../../../../../utils/formater'
 
 export function UtlånsoversiktEksperiment() {
   const { sak } = useSak()

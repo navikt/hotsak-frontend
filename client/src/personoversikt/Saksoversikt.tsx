@@ -1,6 +1,5 @@
 import { FileIcon } from '@navikt/aksel-icons'
 import { Alert, Link } from '@navikt/ds-react'
-import { useMemo } from 'react'
 
 import { DataGrid, type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { Oppgaveetikett } from '../felleskomponenter/Oppgaveetikett'
@@ -22,99 +21,6 @@ export interface SaksoversiktProps {
 
 export function Saksoversikt(props: SaksoversiktProps) {
   const { sakerOgBarnebrillekrav, barnebrillekravHentet, loading } = props
-
-  const columns: DataGridColumn<SaksoversiktSak | SaksoversiktBarnebrillekrav>[] = useMemo(() => {
-    return [
-      {
-        field: 'mottattTidspunkt',
-        header: 'Mottatt dato',
-        width: 150,
-        formatDate: true,
-      },
-      {
-        field: 'område',
-        header: 'Område',
-        renderCell(row) {
-          if (erSaksoversiktBarnebrillekrav(row)) {
-            return 'Syn'
-          }
-          return row.område
-            .map((it) => OmrådeFilterLabel.get(it))
-            .filter((it) => Boolean(it))
-            .join(', ')
-        },
-      },
-      {
-        field: 'beskrivelse',
-        header: 'Beskrivelse',
-        renderCell(row) {
-          const beskrivelse = row.gjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
-          return storForbokstavIOrd(beskrivelse)
-        },
-      },
-      {
-        field: 'sakstype',
-        header: 'Sakstype',
-        renderCell(row) {
-          if (erSaksoversiktBarnebrillekrav(row)) {
-            return <Oppgaveetikett type={Sakstype.TILSKUDD} showLabel />
-          }
-          const erBarnebriller = row.sakstype === Sakstype.BARNEBRILLER
-          return (
-            <Oppgaveetikett
-              type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
-              labelLinkTo={erBarnebriller ? `/oppgave/S-${row.sakId}` : `/oppgave/S-${row.sakId}/hjelpemidler`}
-              showLabel
-            />
-          )
-        },
-      },
-      {
-        field: 'saksstatus',
-        header: 'Saksstatus',
-        renderCell(row) {
-          if (erSaksoversiktBarnebrillekrav(row)) {
-            const behandlingsutfall = storForbokstavIOrd(row.behandlingsutfall)
-            if (row.journalpostId && row.dokumentId) {
-              return (
-                <Link href={`/api/journalpost/${row.journalpostId}/${row.dokumentId}`} target={'_blank'}>
-                  {behandlingsutfall}
-                  <FileIcon title="Åpne journalpost i nye fane" />
-                </Link>
-              )
-            }
-            return behandlingsutfall
-          }
-          return OppgaveStatusLabel.get(row.saksstatus) || 'Ikke vurdert'
-        },
-      },
-      {
-        field: 'behandletAv',
-        header: 'Saksbehandler',
-      },
-      {
-        field: 'behandlingsutfallTidspunkt',
-        header: 'Behandlet dato',
-        width: 130,
-        formatDate: true,
-      },
-      {
-        field: 'fagsaksystem',
-        header: 'Fagsystem',
-        width: 80,
-      },
-      {
-        field: 'sakEllerKravId',
-        header: 'Saksnummer',
-        width: 80,
-        renderCell(row) {
-          if (erSaksoversiktBarnebrillekrav(row)) return row.kravId
-          return row.sakId
-        },
-      },
-    ]
-  }, [])
-
   return (
     <>
       <Skjermlesertittel level="2">Saker</Skjermlesertittel>
@@ -150,3 +56,93 @@ export function Saksoversikt(props: SaksoversiktProps) {
 function keyFactory(row: SaksoversiktSak): string {
   return row.sakId
 }
+
+const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarnebrillekrav>> = [
+  {
+    field: 'mottattTidspunkt',
+    header: 'Mottatt dato',
+    width: 150,
+    formatDate: true,
+  },
+  {
+    field: 'område',
+    header: 'Område',
+    renderCell(row) {
+      if (erSaksoversiktBarnebrillekrav(row)) {
+        return 'Syn'
+      }
+      return row.område
+        .map((it) => OmrådeFilterLabel.get(it))
+        .filter((it) => Boolean(it))
+        .join(', ')
+    },
+  },
+  {
+    field: 'beskrivelse',
+    header: 'Beskrivelse',
+    renderCell(row) {
+      const beskrivelse = row.gjelder.replace('Søknad om:', '').replace('Bestilling av:', '').trim()
+      return storForbokstavIOrd(beskrivelse)
+    },
+  },
+  {
+    field: 'sakstype',
+    header: 'Sakstype',
+    renderCell(row) {
+      if (erSaksoversiktBarnebrillekrav(row)) {
+        return <Oppgaveetikett type={Sakstype.TILSKUDD} showLabel />
+      }
+      const erBarnebriller = row.sakstype === Sakstype.BARNEBRILLER
+      return (
+        <Oppgaveetikett
+          type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
+          labelLinkTo={erBarnebriller ? `/oppgave/S-${row.sakId}` : `/oppgave/S-${row.sakId}/hjelpemidler`}
+          showLabel
+        />
+      )
+    },
+  },
+  {
+    field: 'saksstatus',
+    header: 'Saksstatus',
+    renderCell(row) {
+      if (erSaksoversiktBarnebrillekrav(row)) {
+        const behandlingsutfall = storForbokstavIOrd(row.behandlingsutfall)
+        if (row.journalpostId && row.dokumentId) {
+          return (
+            <Link href={`/api/journalpost/${row.journalpostId}/${row.dokumentId}`} target={'_blank'}>
+              {behandlingsutfall}
+              <FileIcon title="Åpne journalpost i nye fane" />
+            </Link>
+          )
+        }
+        return behandlingsutfall
+      }
+      return OppgaveStatusLabel.get(row.saksstatus) || 'Ikke vurdert'
+    },
+  },
+  {
+    field: 'behandletAv',
+    header: 'Saksbehandler',
+  },
+  {
+    field: 'behandlingsutfallTidspunkt',
+    header: 'Behandlet dato',
+    width: 130,
+    formatDate: true,
+  },
+  {
+    field: 'fagsaksystem',
+    header: 'Fagsystem',
+    width: 80,
+  },
+  {
+    field: 'sakEllerKravId',
+    header: 'Saksnummer',
+    width: 80,
+    renderCell(row) {
+      if (erSaksoversiktBarnebrillekrav(row)) return row.kravId
+      return row.sakId
+    },
+  },
+]

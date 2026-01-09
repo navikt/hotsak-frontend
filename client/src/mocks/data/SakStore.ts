@@ -240,12 +240,7 @@ export class SakStore extends Dexie {
   async lagreBehandling(behandlingId: string | number, request: LagreBehandlingRequest) {
     behandlingId = Number(behandlingId)
 
-    console.log('Mock behandling Behandling id', behandlingId)
-
     const behandling = await this.behandlinger.get(behandlingId)
-
-    console.log('Behandling', behandling)
-
     let gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
 
     // TODO avventer dette til vi har på plass api for brevutkast som lagrer dette
@@ -256,13 +251,11 @@ export class SakStore extends Dexie {
       }
     }*/
 
-    const u = this.behandlinger.update(behandlingId, {
+    this.behandlinger.update(behandlingId, {
       ...behandling,
       utfall: request.utfall,
       gjenstående: request.utfall ? gjenstående : [Gjenstående.UTFALL_MANGLER],
     })
-
-    console.log('Update behandling', u)
 
     return behandlingId
   }

@@ -26,38 +26,42 @@ export function useUtkastEndret(
     const utkastId = aktivtUtkast?.id
     if (!utkastId && (tittel !== '' || tekst !== '')) {
       setOppretterNyttUtkast(true)
+      setLagrerUtkast(true)
       try {
         await http.post(`/api/sak/${sakId}/notater`, { tittel, tekst, klassifisering, type })
         await mutateNotater()
+        await delay(500) // Ikke vis "Lagrer..." kortere enn tid brukt + 500 millisekunder
       } finally {
         setOppretterNyttUtkast(false)
+        setLagrerUtkast(false)
       }
       return
     }
 
     if (debounceTimer) clearTimeout(debounceTimer)
     setDebounceTimer(
-      setTimeout(
-        () =>
-          http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
+      setTimeout(async () => {
+        setLagrerUtkast(true)
+        try {
+          await http.put(`/api/sak/${sakId}/notater/${utkastId}`, {
             id: utkastId,
             tittel,
             tekst,
             klassifisering,
             type,
-          }),
-        500
-      )
+          })
+          await delay(500)
+        } finally {
+          setLagrerUtkast(false)
+        }
+      }, 500)
     )
   }
 
   useEffect(() => {
     if (oppretterNyttUtkast) return // Nytt notat er under opprettelse, ikke gjør noe
     if (tittel !== '' || tekst !== '' || klassifisering) {
-      setLagrerUtkast(true)
       utkastEndret(tittel, tekst, klassifisering)
-        .then(() => delay(500)) // Ikke vis "Lagrer..." kortere enn tid brukt + 500 millisekunder
-        .finally(() => setLagrerUtkast(false))
     }
   }, [tittel, tekst, klassifisering, oppretterNyttUtkast])
 

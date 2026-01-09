@@ -22,6 +22,7 @@ import { erLagretBarnebrillesak, erLagretHjelpemiddelsak } from '../data/lagSak.
 import { BehandlingParams, type SakParams } from './params'
 import {
   delay,
+  respondCreated,
   respondForbidden,
   respondInternalServerError,
   respondNoContent,
@@ -216,11 +217,13 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   }),
   http.post<SakParams, LagreBehandlingRequest>('/api/sak/:sakId/behandling', async ({ params, request }) => {
     await sakStore.opprettBehandling(params.sakId, await request.json())
+    return respondCreated()
   }),
   http.put<BehandlingParams, LagreBehandlingRequest>(
     '/api/sak/:sakId/behandling/:behandlingId',
     async ({ params, request }) => {
       await sakStore.lagreBehandling(params.behandlingId, await request.json())
+      return respondNoContent()
     }
   ),
   http.put<BehandlingParams, FerdigstillBehandling>(

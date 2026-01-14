@@ -3,11 +3,12 @@ import type { ISvar } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { AvvisBestilling, OppgaveStatusType, TotrinnskontrollData } from '../types/types.internal.ts'
+import { useMiljø } from '../utils/useMiljø.ts'
 import { mutateSak } from './mutateSak.ts'
 
 export interface SakActions extends Actions {
   overførSakTilGosys(tilbakemelding: ISvar[]): Promise<void>
-  fattVedtak(problemsammendrag: string): Promise<void>
+  fattVedtak(problemsammendrag: string, postbegrunnelse?: string): Promise<void>
   godkjennBestilling(beskjed?: string): Promise<void>
   avvisBestilling(tilbakemelding: AvvisBestilling): Promise<void>
   opprettTotrinnskontroll(): Promise<void>
@@ -23,6 +24,7 @@ export function useSakActions(): SakActions {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { execute, state } = useActionState()
+  const { erProd } = useMiljø()
 
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
 
@@ -34,9 +36,15 @@ export function useSakActions(): SakActions {
       })
     },
 
-    async fattVedtak(problemsammendrag) {
+    async fattVedtak(problemsammendrag, postbegrunnelse) {
       return execute(async () => {
-        await http.put(`/api/sak/${sakId}/vedtak`, { oppgaveId, problemsammendrag }, { versjon })
+        // Sender foreløpig kun med postbegrunnelse i dev for å teste
+        if (!erProd) {
+          await http.put(`/api/sak/${sakId}/vedtak`, { oppgaveId, problemsammendrag, postbegrunnelse }, { versjon })
+        } else {
+          await http.put(`/api/sak/${sakId}/vedtak`, { oppgaveId, problemsammendrag }, { versjon })
+        }
+
         await mutateOppgaveOgSak()
       })
     },

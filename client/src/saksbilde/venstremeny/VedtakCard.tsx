@@ -1,5 +1,5 @@
-import { Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
-import { useState } from 'react'
+import { Button, HelpText, HStack, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
+import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -21,6 +21,8 @@ import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { useMiljø } from '../../utils/useMiljø.ts'
 import { http } from '../../io/HttpClient.ts'
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
+import { useBehovsmelding } from '../useBehovsmelding.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -30,6 +32,7 @@ export interface VedtakCardProps {
 
 interface VedtakFormValues {
   problemsammendrag: string
+  postbegrunnelse?: string
 }
 
 export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
@@ -42,8 +45,17 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
   const oppgaveActions = useOppgaveActions()
+  const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
   const { erProd } = useMiljø()
+
+  const harLavereRangerte = useMemo(
+    () =>
+      behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.some(
+        (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
+      ) ?? false,
+    [behovsmelding]
+  )
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -52,7 +64,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   })
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    await sakActions.fattVedtak(data.problemsammendrag)
+    await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
     setVisVedtakModal(false)
   }
 
@@ -203,22 +215,43 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           innlogget side på nav.no
         </Brødtekst>
         <FormProvider {...form}>
-          <TextField
-            label={
-              <HStack wrap={false} gap="2" align="center">
-                <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                <HelpText strategy="fixed">
-                  <Brødtekst>
-                    Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                    dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
-                    OeBS som tidligere.
-                  </Brødtekst>
-                </HelpText>
-              </HStack>
-            }
-            size="small"
-            {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
-          />
+          <VStack gap="space-16">
+            <TextField
+              label={
+                <HStack wrap={false} gap="2" align="center">
+                  <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                  <HelpText strategy="fixed">
+                    <Brødtekst>
+                      Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
+                      dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
+                      OeBS som tidligere.
+                    </Brødtekst>
+                  </HelpText>
+                </HStack>
+              }
+              size="small"
+              {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
+            />
+            <Eksperiment>
+              {harLavereRangerte && (
+                <Textarea
+                  label={
+                    <HStack wrap={false} gap="2" align="center">
+                      <Etikett>Postbegrunnelse</Etikett>
+                      <HelpText strategy="fixed">
+                        <Brødtekst>
+                          Skriv begrunnelse for hvorfor et lavere rangert hjelpemiddel velges. Teksten overføres til
+                          dagbok notat på SF i OeBS.
+                        </Brødtekst>
+                      </HelpText>
+                    </HStack>
+                  }
+                  size="small"
+                  {...form.register('postbegrunnelse')}
+                ></Textarea>
+              )}
+            </Eksperiment>
+          </VStack>
         </FormProvider>
       </BekreftelseModal>
       <OverførSakTilGosysModal

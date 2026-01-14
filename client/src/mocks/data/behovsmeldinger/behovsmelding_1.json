@@ -70,32 +70,10 @@
             "iso8Tittel": "Albuekrykker",
             "delkontrakttittel": "17. Krykker til voksne enkel",
             "sortimentkategori": "Ganghjelpemidler",
-            "rangering": 1
+            "rangering": 3
           },
-          "tilbehør": [
-            {
-              "hmsArtNr": "014113",
-              "tilbehørId": "2bd9e3f1-38c2-4e9d-9f85-585f3d5f021c",
-              "navn": "Armlene mrs Cross 6/Cross 5XL Prio aktiv/Prio komfort teleskop l38 høyre",
-              "antall": 1,
-              "fritakFraBegrunnelseÅrsak": "ER_PÅ_BESTILLINGSORDNING"
-            },
-            {
-              "hmsArtNr": "014124",
-              "tilbehørId": "db4f38bf-6a34-4bf5-bb86-3054a25adc0a",
-              "navn": "Polstring integrert sengegrind seng Opus 90EW/120EW +20cm",
-              "antall": 1,
-              "begrunnelse": "Her er en begrunnelse fra formidler"
-            }
-          ],
-          "bytter": [
-            {
-              "erTilsvarende": true,
-              "hmsnr": "123456",
-              "hjmNavn": "Hjelpemiddelnavn",
-              "serienr": "987654321"
-            }
-          ],
+          "tilbehør": [],
+          "bytter": [],
           "bruksarenaer": ["EGET_HJEM"],
           "utlevertinfo": {
             "alleredeUtlevertFraHjelpemiddelsentralen": false,
@@ -119,68 +97,26 @@
                   "begrepsforklaring": null
                 }
               ]
-            }
-          ],
-          "varsler": [
-            {
-              "tekst": {
-                "nb": "Kommunal formidler har svart at godkjenningskurs personløfter og seil er gjennomført. Dokumentasjon av kurs sjekkes i behandling av saken.",
-                "nn": "Kommunal formidlar har svart at godkjenningskurs personløfter og seil er gjennomført. Dokumentasjon av kurs blir sjekka i behandling av saka."
-              },
-              "type": "WARNING"
-            },
-            {
-              "tekst": {
-                "nb": "Standard glidelaken og trekklaken byttes av Nav til å passe 120 cm bredde.",
-                "nn": "Standard glidelaken og trekklaken blir bytt av Nav til å passa 120 cm breidd."
-              },
-              "type": "INFO"
-            }
-          ]
-        }
-      ],
-      "totaltAntall": 1,
-      "tilbehør": [
-        {
-          "hmsArtNr": "014112",
-          "tilbehørId": "e3a4f092-0f50-4236-b1ac-18846595849b",
-          "navn": "Topro terskeleliminator",
-          "antall": 1
-        },
-        {
-          "hmsArtNr": "176090",
-          "tilbehørId": "9119612e-5044-47a0-a414-8fb40d74fb0e",
-          "navn": "Antisklimatte serveringsbrett rullator 4hjul Topro Troja Original M/S/Topro Olympos ATR M",
-          "antall": 1,
-          "opplysninger": [
-            {
-              "ledetekst": {
-                "nb": "Fritekst opplysning",
-                "nn": "Fritekst opplysning"
-              },
-              "innhold": [
-                {
-                  "fritekst": "Fritekstopplysning for tilbehør",
-                  "begrepsforklaring": null
-                }
-              ]
             },
             {
               "ledetekst": {
-                "nb": "Begrunnelse for tilbehøret",
-                "nn": "Grunngiving for tilbehøyret"
+                "nb": "Begrunnelse for lavere rangering",
+                "nn": "Grunngjeving for lågare rangering"
               },
               "innhold": [
                 {
-                  "fritekst": "Fordi derfor",
+                  "fritekst": "Behov for rullestol med lavest mulig brukervekt og mest mulig lukket vinkel i kne.",
                   "forhåndsdefinertTekst": null,
                   "begrepsforklaring": null
                 }
               ]
             }
-          ]
+          ],
+          "varsler": []
         }
-      ]
+      ],
+      "totaltAntall": 1,
+      "tilbehør": []
     },
 
     "levering": {
@@ -204,17 +140,14 @@
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
       "annenOppfølgingsansvarlig": null,
-      "utleveringsmåte": "ANNEN_BRUKSADRESSE",
-      "annenUtleveringsadresse": { "adresse": "Andre veien 1", "postnummer": "2222", "poststed": "Stedet" },
+      "utleveringsmåte": "FOLKEREGISTERT_ADRESSE",
+      "annenUtleveringsadresse": null,
       "annenUtleveringskommune": { "navn": "OSLO", "nummer": "0301" },
       "annenUtleveringsbydel": { "navn": "Alna", "nummer": "030112" },
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
-      "utleveringMerknad": "Dette er en merknad om utlevering fra formidler som skal med på 5.17",
-      "hast": {
-        "hasteårsaker": ["UTVIKLING_AV_TRYKKSÅR"],
-        "hastBegrunnelse": "En begrunnelse fra formidler om hvorfor det haster med denne saken."
-      },
+      "utleveringMerknad": null,
+      "hast": null,
       "automatiskUtledetTilleggsinfo": []
     },
     "innsender": {

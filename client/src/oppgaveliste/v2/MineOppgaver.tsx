@@ -31,5 +31,7 @@ const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
   'fristFerdigstillelse',
   'brukerFnr',
   'brukerNavn',
+  'brukerAlder',
+  'innsenderNavn',
   'kommune',
 ]

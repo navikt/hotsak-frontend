@@ -40,6 +40,11 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
       kommune: bruker.kommune,
       bydel: bruker.bydel,
     },
+    innsender: {
+      fnr: sak.innsender.fnr,
+      navn: sak.innsender.navn,
+      fulltNavn: formaterNavn(sak.innsender.navn),
+    },
     sakId,
     sak: { sakId: sak.sakId, sakstype: sak.sakstype, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',

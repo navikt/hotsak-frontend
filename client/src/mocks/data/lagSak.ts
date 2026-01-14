@@ -131,7 +131,7 @@ export function lagBarnebrillesak(sakId: string): InsertBarnebrillesak {
     },
     innsender: {
       fnr: lagTilfeldigFødselsnummer(42),
-      navn: lagTilfeldigNavn().fulltNavn,
+      navn: lagTilfeldigNavn(),
       adressebeskyttelseOgSkjerming: {
         gradering: [],
         skjermet: false,

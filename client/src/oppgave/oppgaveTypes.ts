@@ -141,6 +141,7 @@ export interface OppgaveV2 extends OppgaveBase {
   // tilknytning
   fnr?: string
   bruker?: OppgaveBruker
+  innsender?: OppgaveInnsender
   journalpostId?: string
   sak?: OppgaveSak
   behandlesAvApplikasjon?: string
@@ -171,6 +172,12 @@ export interface OppgaveBruker {
   brukernummer?: string
 }
 
+export interface OppgaveInnsender {
+  fnr: string
+  navn: Navn
+  fulltNavn: string
+}
+
 export interface OppgaveSak {
   sakId: string
   sakstype: Sakstype
@@ -185,6 +192,10 @@ export interface GjelderAlternativerResponse {
     behandlingstemaKode: string
     behandlingstemaTerm: string
   }>
+}
+
+export interface FinnOppgaverRequest {
+  fnr?: string
 }
 
 export interface FinnOppgaverResponse extends PageResponse {

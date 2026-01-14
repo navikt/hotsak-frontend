@@ -8,6 +8,7 @@ import {
   type OppgaveColumnsState,
 } from './OppgaveColumnsContext.ts'
 import { useLocalReducer } from '../../state/useLocalReducer.ts'
+import { associateBy } from '../../utils/array.ts'
 
 export interface OppgaveColumnsProviderProps {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
@@ -20,12 +21,14 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
   const [state, dispatch] = useLocalReducer(
     'oppgaveColumns' + suffix,
     reducer,
-    (): OppgaveColumnsState =>
-      defaultColumns.map((field, order) => ({
+    (storedState = []): OppgaveColumnsState => {
+      const columnByField = associateBy(storedState, (it) => it.field)
+      return defaultColumns.map((field, order) => ({
         field,
         order,
-        checked: true,
+        checked: columnByField[field]?.checked ?? true,
       }))
+    }
   )
   return (
     <OppgaveColumnsContext value={state}>

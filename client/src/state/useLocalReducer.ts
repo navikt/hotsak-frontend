@@ -9,20 +9,21 @@ import { isFunction } from '../utils/type.ts'
 export function useLocalReducer<S, A>(
   key: string,
   reducer: Reducer<S, A>,
-  initialState: S | (() => S),
+  initialState: S | ((storedState?: S) => S),
   { storage = window.localStorage, serialize = JSON.stringify, deserialize = JSON.parse } = {}
 ): [S, Dispatch<A>] {
   const [state, dispatch] = useReducer(reducer, null, (): S => {
+    let storedState: S | null = null
     try {
       const stored = storage.getItem(key)
       if (stored != null) {
-        return deserialize(stored)
+        storedState = deserialize(stored)
       }
     } catch (err: unknown) {
       console.warn('Error deserializing stored reducer state:', err)
       storage.removeItem(key)
     }
-    return isFunction(initialState) ? initialState() : initialState
+    return isFunction(initialState) ? initialState(storedState ?? undefined) : initialState
   })
 
   useEffect(() => {

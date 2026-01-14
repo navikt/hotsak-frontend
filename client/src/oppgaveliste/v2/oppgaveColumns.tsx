@@ -214,16 +214,31 @@ export const oppgaveColumns = {
   brukerAlder: {
     field: 'brukerAlder',
     header: 'Alder',
+    // sortKey: 'alder',
     width: 150,
+    /*
     filter: {
       options: new Set(['Under 18 år', 'Over 18 år']),
     },
+    */
     renderCell(row) {
       const bruker = row.bruker
       if (!bruker || !bruker.fødselsdato) {
         return null
       }
       return `${beregnAlder(bruker.fødselsdato)} år`
+    },
+  },
+  innsenderNavn: {
+    field: 'innsenderNavn',
+    header: 'Innsender',
+    width: 150,
+    renderCell(row) {
+      const innsender = row.innsender
+      if (!innsender) {
+        return null
+      }
+      return innsender.fulltNavn
     },
   },
 } satisfies OppgaveColumns

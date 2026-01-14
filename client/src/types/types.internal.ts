@@ -277,7 +277,7 @@ export interface AdressebeskyttelseOgSkjerming {
 
 export interface Innsender {
   fnr: string
-  navn: string | Navn
+  navn: Navn
   fulltNavn?: string
   adressebeskyttelseOgSkjerming: AdressebeskyttelseOgSkjerming
 }

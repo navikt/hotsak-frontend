@@ -10,6 +10,7 @@ export interface Innsenderbehovsmelding {
   brukersituasjon: Brukersituasjon
   hjelpemidler: Hjelpemidler
   levering: Levering
+  saksbehandlingvarsel: Varsel[]
 }
 
 export enum BehovsmeldingType {

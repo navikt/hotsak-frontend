@@ -17,6 +17,7 @@ import {
   useProduktLagerInfo,
 } from './useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
+import { Varsler } from './Varsel.tsx'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -27,7 +28,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
 
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
-  const { brukersituasjon, levering } = behovsmelding
+  const { brukersituasjon, levering, saksbehandlingvarsel } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
 
@@ -55,6 +56,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
       <Heading level="1" size="small" visuallyHidden={true}>
         {storForbokstavIOrd(sak.sakstype)}
       </Heading>
+      {saksbehandlingvarsel.length > 0 && <Varsler varsler={saksbehandlingvarsel} />}
       {levering.hast && <Hast hast={levering.hast} />}
 
       {hjelpemidler.length > 0 && (

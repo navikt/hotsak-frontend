@@ -36,7 +36,7 @@ export function useBehandlingActions(): BehandlingActions {
       return execute(async () => {
         await http.put(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { oppgaveId, problemsammendrag },
+          { problemsammendrag },
           { versjon }
         )
         await mutateBehandling()

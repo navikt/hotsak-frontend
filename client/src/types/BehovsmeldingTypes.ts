@@ -271,9 +271,19 @@ export enum UtlevertType {
   ANNET = 'ANNET',
 }
 
+export enum OpplysningId {
+  LAVERE_RANGERING_BEGRUNNELSE = 'LAVERE_RANGERING_BEGRUNNELSE',
+}
+
 export interface Opplysning {
   ledetekst: LokalisertTekst
   innhold: Tekst[]
+  key?: OpplysningKey
+}
+
+export interface OpplysningKey {
+  id: OpplysningId | string
+  versjon: number
 }
 
 export interface EnkelOpplysning {

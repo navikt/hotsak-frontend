@@ -3,8 +3,10 @@ import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { http } from '../../io/HttpClient.ts'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
@@ -12,17 +14,16 @@ import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { useMiljø } from '../../utils/useMiljø.ts'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
+import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { useMiljø } from '../../utils/useMiljø.ts'
-import { http } from '../../io/HttpClient.ts'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
-import { useBehovsmelding } from '../useBehovsmelding.ts'
+import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -57,9 +58,18 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     [behovsmelding]
   )
 
+  const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
+    (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
+  )
+
+  const lavereRangertBegrunnelse = lavereRangertHjelpemiddel?.opplysninger
+    .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
+    ?.innhold.at(0)?.fritekst
+
   const form = useForm<VedtakFormValues>({
     defaultValues: {
       problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
+      postbegrunnelse: lavereRangertBegrunnelse,
     },
   })
 
@@ -233,23 +243,32 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
               {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
             />
             <Eksperiment>
-              {harLavereRangerte && (
-                <Textarea
-                  label={
-                    <HStack wrap={false} gap="2" align="center">
-                      <Etikett>Postbegrunnelse</Etikett>
-                      <HelpText strategy="fixed">
-                        <Brødtekst>
-                          Skriv begrunnelse for hvorfor et lavere rangert hjelpemiddel velges. Teksten overføres til
-                          dagbok notat på SF i OeBS.
-                        </Brødtekst>
-                      </HelpText>
-                    </HStack>
-                  }
-                  size="small"
-                  {...form.register('postbegrunnelse')}
-                ></Textarea>
-              )}
+              <VStack gap="space-8">
+                {harLavereRangerte && (
+                  <>
+                    <Textarea
+                      label={
+                        <HStack wrap={false} gap="2" align="center">
+                          <Etikett>Postbegrunnelse</Etikett>
+                          <HelpText strategy="fixed">
+                            <Brødtekst>
+                              Skriv begrunnelse for hvorfor et lavere rangert hjelpemiddel velges. Teksten overføres til
+                              dagbok notat på SF i OeBS.
+                            </Brødtekst>
+                          </HelpText>
+                        </HStack>
+                      }
+                      size="small"
+                      {...form.register('postbegrunnelse')}
+                    ></Textarea>
+                    {/* <HStack justify="end">
+                      <Button variant="secondary" size="small">
+                        Lagre begrunnelse
+                      </Button>
+                    </HStack>*/}
+                  </>
+                )}
+              </VStack>
             </Eksperiment>
           </VStack>
         </FormProvider>

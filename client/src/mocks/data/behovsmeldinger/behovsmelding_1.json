@@ -108,6 +108,10 @@
               ]
             },
             {
+              "key": {
+                "id": "LAVERE_RANGERING_BEGRUNNELSE",
+                "versjon": 1
+              },
               "ledetekst": {
                 "nb": "Begrunnelse for lavere rangering",
                 "nn": "Grunngjeving for lågare rangering"

@@ -2,6 +2,7 @@
   "behovsmeldingId": "02b6ee2a-59fe-481f-ada5-c583726bfd1b",
   "beskrivelse": "behovsmelding_3",
   "behovsmelding": {
+    "saksbehandlingvarsel": [],
     "bruker": {
       "fnr": "01056605014",
       "navn": { "fornavn": "Ola", "mellomnavn": null, "etternavn": "Nordmann" },

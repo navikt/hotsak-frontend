@@ -2,6 +2,7 @@
   "behovsmeldingId": "5a734ee0-84b4-44ee-897b-570c7842b85d",
   "beskrivelse": "behovsmelding_5",
   "behovsmelding": {
+    "saksbehandlingvarsel": [],
     "bruker": {
       "fnr": "13820599335",
       "navn": { "fornavn": "Kvadratisk", "mellomnavn": null, "etternavn": "Faktura" },

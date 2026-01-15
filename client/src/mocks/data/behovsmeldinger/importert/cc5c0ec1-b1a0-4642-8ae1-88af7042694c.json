@@ -3,6 +3,7 @@
   "beskrivelse": "importert",
   "behovsmelding": {
     "id": "cc5c0ec1-b1a0-4642-8ae1-88af7042694c",
+    "saksbehandlingvarsel": [],
     "type": "BESTILLING",
     "bruker": {
       "fnr": "26848497710",

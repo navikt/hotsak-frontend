@@ -28,7 +28,7 @@ export function useBehandlingActions(): BehandlingActions {
         })
       }
       return execute(async () => {
-        await http.post(`/api/sak/${sakId}/behandling`, { utfall })
+        await http.post(`/api/sak/${sakId}/behandling`, { utfall, oppgaveId })
         await mutateBehandling()
       })
     },

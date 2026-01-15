@@ -15,12 +15,12 @@ export function useLocalReducer<S, A>(
   const [state, dispatch] = useReducer(reducer, null, (): S => {
     let storedState: S | null = null
     try {
-      const stored = storage.getItem(key)
-      if (stored != null) {
-        storedState = deserialize(stored)
+      const storedValue = storage.getItem(key)
+      if (storedValue != null) {
+        storedState = deserialize(storedValue)
       }
     } catch (err: unknown) {
-      console.warn('Error deserializing stored reducer state:', err)
+      console.warn('Error deserializing stored state:', err)
       storage.removeItem(key)
     }
     return isFunction(initialState) ? initialState(storedState ?? undefined) : initialState
@@ -30,7 +30,7 @@ export function useLocalReducer<S, A>(
     try {
       storage.setItem(key, serialize(state, replacer))
     } catch (err: unknown) {
-      console.warn('Error serializing reducer state:', err)
+      console.warn('Error serializing state:', err)
     }
   }, [key, storage, serialize, state])
 

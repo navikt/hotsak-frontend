@@ -1,6 +1,5 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
-import { logDebug } from '../utvikling/logDebug.ts'
 import { replacer } from './serde.ts'
 import { isFunction } from '../utils/type.ts'
 
@@ -18,7 +17,7 @@ export function useStoredState<S = unknown>(
       try {
         return deserialize(storedValue)
       } catch (err: unknown) {
-        logDebug(err)
+        console.warn('Error deserializing stored state:', err)
         storage.removeItem(key)
       }
     }
@@ -27,7 +26,11 @@ export function useStoredState<S = unknown>(
   })
 
   useEffect(() => {
-    storage.setItem(key, serialize(state, replacer))
+    try {
+      storage.setItem(key, serialize(state, replacer))
+    } catch (err: unknown) {
+      console.warn('Error serializing state:', err)
+    }
   }, [key, storage, serialize, state])
 
   return [state, setState]

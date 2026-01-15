@@ -1,37 +1,26 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
-import { replacer } from './serde.ts'
 import { isFunction } from '../utils/type.ts'
+import { type JSONStorage } from './storage.ts'
 
 /**
  * NB! Pass på at {@link key} ligger i {@link storageKeys}.
  */
 export function useStoredState<S = unknown>(
   key: string,
-  defaultValue?: S | (() => S),
-  { storage = window.localStorage, serialize = JSON.stringify, deserialize = JSON.parse } = {}
+  initialState: S | ((storedState?: S) => S),
+  storage: JSONStorage
 ): [S, Dispatch<SetStateAction<S>>] {
   const [state, setState] = useState<S>(() => {
-    const storedValue = storage.getItem(key)
-    if (storedValue) {
-      try {
-        return deserialize(storedValue)
-      } catch (err: unknown) {
-        console.warn('Error deserializing stored state:', err)
-        storage.removeItem(key)
-      }
+    const storedState = storage.get<S>(key)
+    if (isFunction(initialState)) {
+      return initialState(storedState)
+    } else if (storedState == null) {
+      return initialState
+    } else {
+      return storedState
     }
-
-    return isFunction(defaultValue) ? defaultValue() : defaultValue
   })
-
-  useEffect(() => {
-    try {
-      storage.setItem(key, serialize(state, replacer))
-    } catch (err: unknown) {
-      console.warn('Error serializing state:', err)
-    }
-  }, [key, storage, serialize, state])
-
+  useEffect(() => storage.set(key, state), [storage, key, state])
   return [state, setState]
 }

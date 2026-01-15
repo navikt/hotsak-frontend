@@ -2,6 +2,15 @@
   "behovsmeldingId": "1e3f5513-a394-4f59-9020-07a35cb4c7e8",
   "beskrivelse": "behovsmelding_1",
   "behovsmelding": {
+    "saksbehandlingvarsel": [
+      {
+        "tekst": {
+          "nb": "Denne søknaden ble meldt inn sammen med et bytte, men ble automatisk delt opp i to saker. Sakene kan inneholde hjelpemidler som bør behandles samlet. Byttesaken inneholder følgende hjelpemidler: 326540 Cross 6 sb35 sd42-55 lang",
+          "nn": "Denne søknaden ble meldt inn sammen med et bytte, men ble automatisk delt opp i to saker. Sakene kan inneholde hjelpemidler som bør behandles samlet. Byttesaken inneholder følgende hjelpemidler: 326540 Cross 6 sb35 sd42-55 lang"
+        },
+        "type": "WARNING"
+      }
+    ],
     "bruker": {
       "fnr": "13820599335",
       "navn": {

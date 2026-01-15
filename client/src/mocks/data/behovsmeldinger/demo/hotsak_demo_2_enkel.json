@@ -2,6 +2,7 @@
   "behovsmeldingId": "4802ed92-aa84-48b4-97b2-c89118e25898",
   "beskrivelse": "importert",
   "behovsmelding": {
+    "saksbehandlingvarsel": [],
     "id": "4802ed92-aa84-48b4-97b2-c89118e25898",
     "type": "SØKNAD",
     "bruker": {

@@ -22,7 +22,7 @@ export const Brev = () => {
   const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
     useSaksbehandlingEksperimentContext()
 
-  const { gjeldendeBehandling } = useBehandling()
+  const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
@@ -131,17 +131,18 @@ export const Brev = () => {
     await brevutkast.mutate()
   }
 
-  const makerKlart = async (klart: boolean) => {
-    if (brevutkast.data?.data?.value) {
-      // TODO avventer dette til vi har synket hvordan vi vil ha brevutkast apiet
-      //await http.put(`/api/sak/${sak!.data.sakId}/brevutkast/klargjoring`, { klargjort: klart })
-      brevutkast.mutate()
+  const markerKlart = async (klart: boolean) => {
+    await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
+      method: klart ? 'post' : 'delete',
+    })
+    // TODO: inkluder informasjon i brevutkast om status
+    brevutkast.mutate()
 
-      lagreBrevutkast({ ...brevutkast.data.data, markertKlart: klart })
-      setBrevFerdigstilt(klart)
-      if (klart) {
-        if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
-      }
+    // TODO: skal erstattes av gjenstående fra behandling, muter behandlinger-endepunktet her
+    await mutateGjeldendeBehandling()
+    setBrevFerdigstilt(klart)
+    if (klart) {
+      if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
     }
   }
 
@@ -194,7 +195,7 @@ export const Brev = () => {
                     loading={brevutkast.isLoading || brevutkast.isValidating}
                     variant="secondary"
                     size="small"
-                    onClick={() => makerKlart(true)}
+                    onClick={() => markerKlart(true)}
                   >
                     Ferdigstill utkast
                   </Button>
@@ -230,7 +231,7 @@ export const Brev = () => {
                   <div className="brevtoolbar">
                     <div className="left"></div>
                     <div className="right">
-                      <Button variant="tertiary" size="small" onClick={() => makerKlart(false)}>
+                      <Button variant="tertiary" size="small" onClick={() => markerKlart(false)}>
                         Rediger
                       </Button>
                     </div>

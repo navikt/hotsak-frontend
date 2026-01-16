@@ -90,7 +90,7 @@ export function createQueryString(queryParameters: QueryParameters): string {
 export function createUrl(path: string, queryParameters: QueryParameters = {}): string {
   const url = new URL(path, window.location.href)
   populateQueryParameters(url.searchParams, queryParameters)
-  return url.toString()
+  return url.pathname + url.search
 }
 function populateQueryParameters(destination: URLSearchParams, queryParameters: QueryParameters) {
   Object.entries(queryParameters).forEach(([name, valueOrValues]) => {

@@ -16,6 +16,8 @@ import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
 import { beregnAlder } from '../../utils/dato.ts'
+import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
+import { MedarbeidersOppgaverMenu } from './MedarbeidersOppgaverMenu.tsx'
 
 import classes from './oppgaveColumns.module.css'
 
@@ -45,7 +47,7 @@ export const oppgaveColumns = {
     filter: {
       options: new Set(),
     },
-    renderCell(row: OppgaveV2) {
+    renderCell(row) {
       return (
         <BodyShort as="span" size="small" className={classes.saksbehandler}>
           {row.tildeltSaksbehandler?.navn ?? 'Ukjent'}
@@ -239,6 +241,20 @@ export const oppgaveColumns = {
         return null
       }
       return innsender.fulltNavn
+    },
+  },
+  mineOppgaverMenu: {
+    field: 'mineOppgaverMenu',
+    width: 50,
+    renderCell(row) {
+      return <MineOppgaverMenu oppgave={row} />
+    },
+  },
+  medarbeidersOppgaverMenu: {
+    field: 'medarbeidersOppgaverMenu',
+    width: 50,
+    renderCell(row) {
+      return <MedarbeidersOppgaverMenu oppgave={row} />
     },
   },
 } satisfies OppgaveColumns

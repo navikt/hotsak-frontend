@@ -24,6 +24,7 @@ export function OppgavelisteMenu(props: OppgavelisteMenuProps) {
         <Button
           variant="tertiary-neutral"
           size="xsmall"
+          type="button"
           icon={<MenuElipsisVerticalIcon title="Oppgavemeny" />}
           onClick={(event) => {
             event.stopPropagation()

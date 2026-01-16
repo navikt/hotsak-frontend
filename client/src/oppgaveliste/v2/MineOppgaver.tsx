@@ -34,4 +34,5 @@ const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
   'brukerAlder',
   'innsenderNavn',
   'kommune',
+  'mineOppgaverMenu',
 ]

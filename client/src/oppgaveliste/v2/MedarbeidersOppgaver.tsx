@@ -20,6 +20,7 @@ export function MedarbeidersOppgaver() {
 }
 
 const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
+  'overtaOppgave',
   'saksbehandler',
   'oppgavetype',
   'behandlingstema',
@@ -34,5 +35,4 @@ const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
   'brukerAlder',
   'innsenderNavn',
   'kommune',
-  'medarbeidersOppgaverMenu',
 ]

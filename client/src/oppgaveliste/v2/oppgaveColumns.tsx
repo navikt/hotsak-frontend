@@ -34,10 +34,17 @@ export const oppgaveColumns = {
     },
   },
   taOppgave: {
-    field: 'åpneOppgave',
+    field: 'taOppgave',
     width: 150,
     renderCell(row) {
       return <TaEllerÅpneOppgave oppgave={row} />
+    },
+  },
+  overtaOppgave: {
+    field: 'overtaOppgave',
+    width: 150,
+    renderCell(row) {
+      return <TaEllerÅpneOppgave oppgave={row} overta />
     },
   },
   saksbehandler: {

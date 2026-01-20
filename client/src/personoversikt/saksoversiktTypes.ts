@@ -1,4 +1,5 @@
 import { type OppgaveStatusType, type Sakstype } from '../types/types.internal.ts'
+import { OppgaveId } from '../oppgave/oppgaveTypes.ts'
 
 export interface Saksoversikt {
   saker: SaksoversiktSak[]
@@ -21,6 +22,7 @@ export interface SaksoversiktSak extends SaksoversiktBase {
   saksstatus: OppgaveStatusType
   saksstatusGyldigFra: string
   område: string[]
+  oppgaveId?: OppgaveId
   fagsaksystem: 'HOTSAK'
 }
 

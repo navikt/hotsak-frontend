@@ -8,17 +8,18 @@ export interface TaOppgaveButtonProps {
   oppgave: OppgaveV2
   variant?: ButtonProps['variant']
   size?: ButtonProps['size']
+  overta?: boolean
   children?: string
   onOppgavetildeling?(oppgaveId: OppgaveId): void | Promise<void>
 }
 
 export function TaOppgaveButton(props: TaOppgaveButtonProps) {
-  const { oppgave, size = 'small', variant = 'secondary', children = 'Ta oppgave', onOppgavetildeling } = props
+  const { oppgave, variant = 'secondary', size = 'small', overta, children = 'Ta oppgave', onOppgavetildeling } = props
   const { endreOppgavetildeling, state } = useOppgaveActions(oppgave)
 
   const onClick: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation()
-    await endreOppgavetildeling({})
+    await endreOppgavetildeling({ overtaHvisTildelt: overta })
     if (onOppgavetildeling) {
       return onOppgavetildeling(oppgave.oppgaveId)
     }
@@ -26,13 +27,13 @@ export function TaOppgaveButton(props: TaOppgaveButtonProps) {
 
   return (
     <Button
+      type="button"
+      name={children}
+      variant={variant}
+      size={size}
       disabled={state.loading}
       loading={state.loading}
-      name={children}
       onClick={onClick}
-      size={size}
-      type="button"
-      variant={variant}
     >
       {children}
     </Button>

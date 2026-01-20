@@ -93,6 +93,17 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
         return <Oppgaveetikett type={Sakstype.TILSKUDD} showLabel />
       }
       const erBarnebriller = row.sakstype === Sakstype.BARNEBRILLER
+
+      if ((row as SaksoversiktSak).oppgaveId) {
+        return (
+          <Oppgaveetikett
+            type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
+            labelLinkTo={`/oppgave/${row.oppgaveId}`}
+            showLabel
+          />
+        )
+      }
+
       return (
         <Oppgaveetikett
           type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}

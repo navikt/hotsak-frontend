@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react'
+import { type CSSProperties, forwardRef, type ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
@@ -34,11 +34,11 @@ export function Brødtekst({
   spacing?: boolean
   textColor?: 'subtle' | 'default'
   weight?: 'regular' | 'semibold'
-  style?: React.CSSProperties
+  style?: CSSProperties
   children: ReactNode
 }) {
   return (
-    <FlytendeTekst textColor={textColor} size="small" weight={weight} spacing={spacing} style={style}>
+    <FlytendeTekst as="p" textColor={textColor} size="small" weight={weight} spacing={spacing} style={style}>
       {children}
     </FlytendeTekst>
   )

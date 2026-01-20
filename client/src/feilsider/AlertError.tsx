@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 
 import { Alert } from '@navikt/ds-react'
+import { toError } from '../utils/error.ts'
 
 export interface AlertErrorProps {
-  error: Error
+  error: unknown
 }
 
 export function AlertError(props: AlertErrorProps) {
-  const { error } = props
+  const error = toError(props.error)
   const error_: any = error
 
   if (Object.prototype.hasOwnProperty.call(error_, 'statusCode')) {

@@ -1,11 +1,13 @@
 import { Feilside } from './Feilside'
 import { HttpError } from '../io/HttpError.ts'
+import { toError } from '../utils/error.ts'
 
 export interface GlobalFeilsideProps {
-  error: Error
+  error: unknown
 }
 
-export function GlobalFeilside({ error }: GlobalFeilsideProps) {
+export function GlobalFeilside(props: GlobalFeilsideProps) {
+  const error = toError(props.error)
   return (
     <>
       {HttpError.isHttpError(error) ? (

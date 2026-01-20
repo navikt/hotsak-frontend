@@ -68,9 +68,20 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     ?.innhold.at(0)?.fritekst
 
   const form = useForm<VedtakFormValues>({
-    defaultValues: {
-      problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
-      postbegrunnelse: lavereRangertBegrunnelse,
+    defaultValues: async () => {
+      if (erProd) {
+        return {
+          problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
+          postbegrunnelse: lavereRangertBegrunnelse,
+        }
+      }
+
+      const response = await http.get<{ problemsammendrag: string }>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+
+      return {
+        problemsammendrag: response.problemsammendrag,
+        postbegrunnelse: lavereRangertBegrunnelse,
+      }
     },
   })
 

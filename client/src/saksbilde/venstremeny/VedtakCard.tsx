@@ -44,6 +44,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
+  const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
   const oppgaveActions = useOppgaveActions()
   const behovsmelding = useBehovsmelding()
@@ -74,8 +75,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   })
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
-    setVisVedtakModal(false)
+    if (harLavereRangerte && !harLagretPostbegrunnelse) {
+    } else {
+      await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
+      setVisVedtakModal(false)
+    }
   }
 
   const overtaSak = async () => {
@@ -247,6 +251,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                 {harLavereRangerte && (
                   <>
                     <Textarea
+                      readOnly={harLagretPostbegrunnelse}
                       label={
                         <HStack wrap={false} gap="2" align="center">
                           <Etikett>Postbegrunnelse</Etikett>
@@ -259,13 +264,38 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                         </HStack>
                       }
                       size="small"
-                      {...form.register('postbegrunnelse')}
+                      error={form.formState.errors.postbegrunnelse?.message}
+                      {...form.register('postbegrunnelse', {
+                        validate: (value) => {
+                          if (!harLagretPostbegrunnelse) {
+                            return 'Du må lagre begrunnelsen før du kan innvilge søknaden'
+                          }
+                          if (!value || value.trim() === '') {
+                            return 'Postbegrunnelse er påkrevd når det er søkt om lavere rangerte hjelpemidler'
+                          }
+                          return true
+                        },
+                      })}
                     ></Textarea>
-                    {/* <HStack justify="end">
-                      <Button variant="secondary" size="small">
-                        Lagre begrunnelse
-                      </Button>
-                    </HStack>*/}
+                    <HStack justify="end">
+                      {harLagretPostbegrunnelse ? (
+                        // TODO Håndtere clear error her
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          onClick={() => {
+                            form.clearErrors('postbegrunnelse')
+                            setHarLagretPostbegrunnelse(false)
+                          }}
+                        >
+                          Endre begrunnelse
+                        </Button>
+                      ) : (
+                        <Button variant="secondary" size="small" onClick={() => setHarLagretPostbegrunnelse(true)}>
+                          Lagre begrunnelse
+                        </Button>
+                      )}
+                    </HStack>
                   </>
                 )}
               </VStack>

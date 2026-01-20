@@ -76,10 +76,10 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         }
       }
 
-      const response = await http.get<{ problemsammendrag: string }>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+      const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
 
       return {
-        problemsammendrag: response.problemsammendrag,
+        problemsammendrag: response,
         postbegrunnelse: lavereRangertBegrunnelse,
       }
     },

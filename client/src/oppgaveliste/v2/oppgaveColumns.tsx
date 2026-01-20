@@ -2,6 +2,8 @@ import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Tag } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
+import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
+import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
 import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
@@ -11,15 +13,10 @@ import {
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
-import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
+import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
+import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
-import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { beregnAlder } from '../../utils/dato.ts'
-import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
-import { MedarbeidersOppgaverMenu } from './MedarbeidersOppgaverMenu.tsx'
-
-import classes from './oppgaveColumns.module.css'
 
 type OppgaveColumns = {
   [K in string]: DataGridColumn<OppgaveV2> & { field: K }
@@ -223,19 +220,14 @@ export const oppgaveColumns = {
   brukerAlder: {
     field: 'brukerAlder',
     header: 'Alder',
-    // sortKey: 'alder',
+    sortKey: 'alder',
     width: 150,
-    /*
-    filter: {
-      options: new Set(['Under 18 år', 'Over 18 år']),
-    },
-    */
     renderCell(row) {
       const bruker = row.bruker
-      if (!bruker || !bruker.fødselsdato) {
+      if (!bruker || bruker.alder == null) {
         return null
       }
-      return `${beregnAlder(bruker.fødselsdato)} år`
+      return `${bruker.alder} år`
     },
   },
   innsenderNavn: {
@@ -255,13 +247,6 @@ export const oppgaveColumns = {
     width: 50,
     renderCell(row) {
       return <MineOppgaverMenu oppgave={row} />
-    },
-  },
-  medarbeidersOppgaverMenu: {
-    field: 'medarbeidersOppgaverMenu',
-    width: 50,
-    renderCell(row) {
-      return <MedarbeidersOppgaverMenu oppgave={row} />
     },
   },
 } satisfies OppgaveColumns

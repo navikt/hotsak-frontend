@@ -3,6 +3,8 @@ import { http, HttpResponse } from 'msw'
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import {
   erInternOppgaveId,
+  type FinnOppgaverRequest,
+  type FinnOppgaverResponse,
   type OppgaveId,
   oppgaveIdUtenPrefix,
   Oppgavestatus,
@@ -13,9 +15,10 @@ import {
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
 import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
+import { compareBy, type Direction } from '../../utils/array.ts'
+import { select } from '../../utils/select.ts'
 import { type StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
-import { compareBy, type Direction } from '../../utils/array.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -64,7 +67,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
             break
         }
         const direction = (url.searchParams.get('sorteringsrekkefølge') ?? 'none') as Direction
-        const comparator = compareBy<OppgaveV2, 'fristFerdigstillelse' | 'opprettetTidspunkt'>(key, direction)
+        const comparator = compareBy<OppgaveV2>(select(key), direction)
         return comparator(a, b)
       })
 

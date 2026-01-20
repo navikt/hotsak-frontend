@@ -25,7 +25,7 @@ export interface OppgaveParams {
 }
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
-  http.get(`/api/oppgaver-v2`, async ({ request }) => {
+  http.get<never, never, FinnOppgaverResponse>(`/api/oppgaver-v2`, async ({ request }) => {
     const url = new URL(request.url)
 
     await delay(200)
@@ -73,6 +73,27 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
 
     const pageNumber = +(url.searchParams.get('page') ?? 1)
     const pageSize = +(url.searchParams.get('limit') ?? 1_000)
+    const offset = calculateOffset({ pageNumber, pageSize })
+    const totalElements = filtrerteOppgaver.length
+    return HttpResponse.json({
+      oppgaver: filtrerteOppgaver.slice(offset, offset + pageSize),
+      pageNumber,
+      pageSize,
+      totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
+      totalElements,
+    })
+  }),
+
+  http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver-v2/sok`, async ({ request }) => {
+    const { fnr } = await request.json()
+
+    await delay(200)
+
+    const alleOppgaver = await oppgaveStore.alle()
+    const filtrerteOppgaver = alleOppgaver.filter((oppgave) => oppgave.fnr === fnr)
+
+    const pageNumber = 1
+    const pageSize = 1_000
     const offset = calculateOffset({ pageNumber, pageSize })
     const totalElements = filtrerteOppgaver.length
     return HttpResponse.json({

@@ -4,15 +4,15 @@ import { type Key, type ReactNode, useState } from 'react'
 import { isKeyOfObject } from '../../utils/type.ts'
 import { FormatDate } from '../format/FormatDate.tsx'
 import { FormatDateTime } from '../format/FormatDateTime.tsx'
-import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 import { type DataGridFilter } from './DataGridFilter.ts'
+import { DataGridFilterMenu } from './DataGridFilterMenu.tsx'
 
 export interface DataGridColumn<T extends object> {
   field: string | Exclude<keyof T, symbol | number>
 
   header?: string
   hidden?: boolean
-  sortKey?: Exclude<keyof T, symbol | number>
+  sortKey?: Exclude<keyof T, symbol | number> | string
   width?: number
   order?: number
 

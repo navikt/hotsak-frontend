@@ -1,4 +1,6 @@
-import { type ReactNode, useReducer } from 'react'
+import { type ReactNode } from 'react'
+
+import { useLocalReducer } from '../../state/useLocalReducer.ts'
 
 import {
   initialState,
@@ -9,13 +11,13 @@ import {
 } from './OppgavePaginationContext.tsx'
 
 export function OppgavePaginationProvider({
-  // suffix,
+  suffix,
   children,
 }: {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
   children: ReactNode
 }) {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useLocalReducer('oppgavePagination' + suffix, reducer, initialState)
   return (
     <OppgavePaginationContext value={state}>
       <OppgavePaginationDispatch value={dispatch}>{children}</OppgavePaginationDispatch>

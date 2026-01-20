@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
 
+import { DataGridCollection } from '../../felleskomponenter/data/DataGridCollection.ts'
+import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../../io/HttpError.ts'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaver } from '../../oppgave/useOppgaver.ts'
-import { compareBy } from '../../utils/array.ts'
-import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
-import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
-import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
+import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {
   selectBehandlingstemaTerm,
   selectBehandlingstypeTerm,
@@ -18,7 +17,8 @@ import {
   selectPrioritet,
   selectTildeltSaksbehandlerNavn,
 } from './oppgaveSelectors.ts'
-import { DataGridCollection } from '../../felleskomponenter/data/DataGridCollection.ts'
+import { useOppgaveComparator } from './useOppgaveComparator.ts'
+import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
 
 const pageNumber = 1
 const pageSize = 1_000
@@ -49,6 +49,7 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
   }, [eksterneOppgaver.data?.oppgaver, journalføringsoppgaver.data?.oppgaver])
 
   const filterState = useDataGridFilterContext<OppgaveColumnField>()
+  const comparator = useOppgaveComparator()
   const filtrerteOppgaver = useMemo(() => {
     return DataGridCollection.from(alleOppgaver)
       .filterBy(selectTildeltSaksbehandlerNavn, filterState.saksbehandler)
@@ -58,9 +59,9 @@ export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOpp
       .filterBy(selectMappenavn, filterState.mappenavn)
       .filterBy(selectPrioritet, filterState.prioritet)
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
-      .toSorted(sort.orderBy === 'fnr' ? compareBy(sort.orderBy, sort.direction) : undefined)
+      .toSorted(comparator)
       .toArray()
-  }, [alleOppgaver, filterState, sort])
+  }, [alleOppgaver, filterState, comparator])
 
   const filterOptions = useOppgaveFilterOptions(alleOppgaver)
 

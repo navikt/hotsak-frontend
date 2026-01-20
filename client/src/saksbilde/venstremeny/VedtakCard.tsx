@@ -1,5 +1,5 @@
 import { Button, HelpText, HStack, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -73,6 +73,27 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       postbegrunnelse: lavereRangertBegrunnelse,
     },
   })
+
+  useEffect(() => {
+    async function lastProblemsammendrag() {
+      if (erProd) {
+        form.reset({
+          problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
+          postbegrunnelse: lavereRangertBegrunnelse,
+        })
+        return
+      }
+
+      const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+
+      form.reset({
+        problemsammendrag: response,
+        postbegrunnelse: lavereRangertBegrunnelse,
+      })
+    }
+
+    lastProblemsammendrag()
+  }, [erProd, sak.sakId])
 
   const fattVedtak = async (data: VedtakFormValues) => {
     if (harLavereRangerte && !harLagretPostbegrunnelse) {

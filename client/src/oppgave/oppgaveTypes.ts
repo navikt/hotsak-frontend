@@ -167,6 +167,7 @@ export interface OppgaveBruker {
   navn: Navn
   fulltNavn: string
   fødselsdato?: string
+  alder?: number
   kommune?: Kommune
   bydel?: Bydel
   brukernummer?: string
@@ -210,7 +211,7 @@ export enum OppgaveTildelt {
 }
 
 export interface OppgaveSortState extends SortState {
-  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | string
+  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'alder' | string
 }
 
 /**

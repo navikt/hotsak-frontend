@@ -7,6 +7,7 @@ import {
   Oppgavetype,
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
+import { beregnAlder } from '../../utils/dato.ts'
 import { formaterNavn } from '../../utils/formater.ts'
 import { enheter } from './enheter.ts'
 import { LagretJournalpost } from './lagJournalpost.ts'
@@ -37,6 +38,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
       navn: bruker.navn,
       fulltNavn: formaterNavn(bruker.navn),
       fødselsdato: bruker.fødselsdato,
+      alder: beregnAlder(bruker.fødselsdato),
       kommune: bruker.kommune,
       bydel: bruker.bydel,
     },

@@ -10,6 +10,9 @@ export const storageKeys = new Set([
   'oppgaveColumnsEnhetens',
   'oppgaveColumnsMedarbeiders',
   'oppgaveColumnsMine',
+  'oppgavePaginationEnhetens',
+  'oppgavePaginationMedarbeiders',
+  'oppgavePaginationMine',
   'sortState',
 ])
 

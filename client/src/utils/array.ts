@@ -1,10 +1,12 @@
 import { type SortState } from '@navikt/ds-react'
 
-export function unique<T>(values: T[]): T[] {
-  return [...new Set(values)]
+export type Comparator<T> = (a: T, b: T) => number
+
+export function unique<T>(items: T[]): T[] {
+  return [...new Set(items)]
 }
 
-export function uniqueBy<T, R>(items: T[], selector: (item: T) => R) {
+export function uniqueBy<T, R>(items: T[], selector: (item: T) => R): R[] {
   return unique(items.map(selector))
 }
 
@@ -37,24 +39,28 @@ export function natural(a?: string | number, b?: string | number): number {
   return a.toString().localeCompare(b.toString(), 'nb', { numeric: true })
 }
 
-export function naturalBy<T>(selector: (item: T) => string | number | undefined): (a: T, b: T) => number {
+export function naturalBy<T>(selector: (item: T) => string | number | undefined): Comparator<T> {
   return (a, b) => {
     return natural(selector(a), selector(b))
   }
 }
 
 export type Direction = SortState['direction'] | 'ASC' | 'DESC'
-export function compareBy<T, K extends keyof T>(key: K, direction: Direction = 'none'): (a: T, b: T) => number {
+
+export function compareBy<T>(
+  selector: (item: T) => string | number | undefined,
+  direction: Direction = 'none'
+): Comparator<T> {
   if (direction === 'none') {
     return none
   }
-  const fn: (a: T, b: T) => number = (a, b) => {
-    const x = a[key]
-    const y = b[key]
+  const fn: Comparator<T> = (a, b) => {
+    const x = selector(a)
+    const y = selector(b)
     if (x == null && y == null) return 0
     if (x == null) return -1
     if (y == null) return 1
-    return x.toString().localeCompare(y.toString())
+    return x.toString().localeCompare(y.toString(), 'nb', { numeric: true })
   }
   if (direction === 'ascending' || direction === 'ASC') {
     return fn
@@ -63,6 +69,4 @@ export function compareBy<T, K extends keyof T>(key: K, direction: Direction = '
   }
 }
 
-function none() {
-  return 0
-}
+const none: Comparator<unknown> = () => 0

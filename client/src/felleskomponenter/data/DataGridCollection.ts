@@ -1,3 +1,4 @@
+import { type Comparator } from '../../utils/array.ts'
 import { type DataGridFilterValues } from './DataGridFilter.ts'
 
 export class DataGridCollection<T extends object> {
@@ -12,7 +13,7 @@ export class DataGridCollection<T extends object> {
     return new DataGridCollection(this.items.filter((item) => filter.values.has(selector(item))))
   }
 
-  toSorted(comparator?: (a: T, b: T) => number): DataGridCollection<T> {
+  toSorted(comparator?: Comparator<T>): DataGridCollection<T> {
     if (!comparator) return this
     return new DataGridCollection(this.items.toSorted(comparator))
   }

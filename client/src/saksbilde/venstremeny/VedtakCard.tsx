@@ -106,7 +106,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [visVedtakModal])
 
   const fattVedtak = async (data: VedtakFormValues) => {
     if (harLavereRangerte && !harLagretPostbegrunnelse) {

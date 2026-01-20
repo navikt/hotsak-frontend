@@ -3,6 +3,8 @@ import { ActionMenu, Button, HStack, InfoCard, Loader, LocalAlert } from '@navik
 import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { Etikett, Tekst, TextContainer } from '../../../../felleskomponenter/typografi.tsx'
+import { Oppgavestatus } from '../../../../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 import { useBrev } from '../../../../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../../../../saksbilde/useSak.ts'
 import { VedtaksResultat } from '../../../../types/behandlingTyper.ts'
@@ -14,8 +16,6 @@ import { useSaksbehandlingEksperimentContext } from '../saksbehandling/Saksbehan
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
-import { Oppgavestatus } from '../../../../oppgave/oppgaveTypes.ts'
-import { useOppgave } from '../../../../oppgave/useOppgave.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -61,6 +61,7 @@ export const Brev = () => {
       velgMal(undefined)
       setBrevEksisterer(true)
       setOpprettBrevKlikket(false)
+      mutateGjeldendeBehandling()
     }
   }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket])
 

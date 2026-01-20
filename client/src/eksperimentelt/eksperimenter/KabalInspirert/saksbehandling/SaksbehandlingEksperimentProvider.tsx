@@ -101,10 +101,11 @@ type SaksbehandlingEksperimentContextType = {
   setValgtSøknadPanelTab(tab: SøknadPanelTabs): void
   valgtHøyreKolonneTab: HøyrekolonneTabs
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
-
-  // Verdiene under er midlertidige tilstander for å teste flyt i prototypen før vi lager apiene
   opprettBrevKlikket: boolean
   setOpprettBrevKlikket(klikket: boolean): void
+
+  // Verdiene under er midlertidige tilstander for å teste flyt i prototypen før vi lager apiene
+
   brevEksisterer: boolean
   setBrevEksisterer(eksisterer: boolean): void
   brevFerdigstilt: boolean

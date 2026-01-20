@@ -24,6 +24,7 @@ import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
+import { Controller } from 'react-hook-form'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -67,33 +68,45 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
     ?.innhold.at(0)?.fritekst
 
+  const lagProblemsammendrag = () =>
+    `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
+
   const form = useForm<VedtakFormValues>({
     defaultValues: {
-      problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
+      problemsammendrag: '',
       postbegrunnelse: lavereRangertBegrunnelse,
     },
   })
 
   useEffect(() => {
-    async function lastProblemsammendrag() {
-      if (erProd) {
-        form.reset({
-          problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`,
-          postbegrunnelse: lavereRangertBegrunnelse,
-        })
-        return
+    let isMounted = true
+
+    async function lastInn() {
+      let nyVerdi = lagProblemsammendrag()
+      if (!erProd) {
+        try {
+          const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+          if (response) nyVerdi = response
+        } catch (e) {
+          console.error('Feilet med å hente problemsammendrag', e)
+        }
       }
 
-      const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+      if (!isMounted) return
 
-      form.reset({
-        problemsammendrag: response,
-        postbegrunnelse: lavereRangertBegrunnelse,
-      })
+      if (form.getValues('problemsammendrag') !== nyVerdi) {
+        form.reset({
+          problemsammendrag: nyVerdi,
+          postbegrunnelse: lavereRangertBegrunnelse,
+        })
+      }
     }
 
-    lastProblemsammendrag()
-  }, [erProd, sak.sakId])
+    lastInn()
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   const fattVedtak = async (data: VedtakFormValues) => {
     if (harLavereRangerte && !harLagretPostbegrunnelse) {
@@ -251,21 +264,29 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         </Brødtekst>
         <FormProvider {...form}>
           <VStack gap="space-16">
-            <TextField
-              label={
-                <HStack wrap={false} gap="2" align="center">
-                  <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                  <HelpText strategy="fixed">
-                    <Brødtekst>
-                      Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                      dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF i
-                      OeBS som tidligere.
-                    </Brødtekst>
-                  </HelpText>
-                </HStack>
-              }
-              size="small"
-              {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
+            <Controller
+              name="problemsammendrag"
+              control={form.control}
+              rules={{ required: 'Feltet er påkrevd' }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  label={
+                    <HStack wrap={false} gap="2" align="center">
+                      <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                      <HelpText strategy="fixed">
+                        <Brødtekst>
+                          Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
+                          problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
+                          innvilges eller inne på SF i OeBS som tidligere.
+                        </Brødtekst>
+                      </HelpText>
+                    </HStack>
+                  }
+                  size="small"
+                  {...field}
+                  error={fieldState.error?.message}
+                />
+              )}
             />
             <Eksperiment>
               <VStack gap="space-8">

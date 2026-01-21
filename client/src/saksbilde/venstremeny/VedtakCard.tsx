@@ -90,6 +90,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         try {
           const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
           console.log('API /serviceforesporsel response =', response)
+          const raw = await fetch(`/api/sak/${sak.sakId}/serviceforesporsel`).then((r) => r.text())
+          console.log('RAW FETCH RESPONSE:', raw)
+
           if (response) nyVerdi = response
         } catch (e) {
           console.error('Feilet med å hente problemsammendrag', e)

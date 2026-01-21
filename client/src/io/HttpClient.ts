@@ -1,6 +1,6 @@
 import { toWeakETag } from './etag.ts'
 import { HttpError } from './HttpError.ts'
-import { contentTypeIsJson, contentTypeIsPdf } from './response.ts'
+import { contentTypeIsJson, contentTypeIsPdf, contentTypeIsText } from './response.ts'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -33,6 +33,9 @@ async function request<ResponseBody = unknown>(
       }
       if (contentTypeIsPdf(response)) {
         return (await response.blob()) as ResponseBody
+      }
+      if (contentTypeIsText(response)) {
+        return (await response.text()) as ResponseBody
       }
       return undefined as ResponseBody
     }

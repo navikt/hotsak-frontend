@@ -80,17 +80,15 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
 
   useEffect(() => {
     let isMounted = true
-    console.log('VedtakCard useEffect fired, visVedtakModal =', visVedtakModal, 'erProd =', erProd)
 
     async function lastInn() {
       let nyVerdi = lagProblemsammendrag()
-      console.log('lagProblemsammendrag() =', nyVerdi)
 
       if (!erProd) {
         try {
           const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
           console.log('API /serviceforesporsel response =', response)
-          const raw = await fetch(`/api/sak/${sak.sakId}/serviceforesporsel`).then((r) => r.text())
+          const raw = await fetch(`/api/sak/${sak.sakId}/serviceforesporsel`)
           console.log('RAW FETCH RESPONSE:', raw)
 
           if (response) nyVerdi = response
@@ -100,21 +98,16 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       }
 
       if (!isMounted) {
-        console.log('lastInn aborted because component unmounted')
         return
       }
 
       const current = form.getValues('problemsammendrag')
-      console.log('Current form problemsammendrag =', current, 'nyVerdi =', nyVerdi)
 
       if (current !== nyVerdi) {
-        console.log('Resetter vedtak form med problemsammendrag:', nyVerdi)
         form.reset({
           problemsammendrag: nyVerdi,
           postbegrunnelse: lavereRangertBegrunnelse,
         })
-      } else {
-        console.log('Skipper reset, value already same')
       }
     }
 
@@ -122,7 +115,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return () => {
       isMounted = false
     }
-  }, [visVedtakModal, erProd, sak.sakId, lagProblemsammendrag, lavereRangertBegrunnelse, form])
+  }, [visVedtakModal])
 
   const fattVedtak = async (data: VedtakFormValues) => {
     if (harLavereRangerte && !harLagretPostbegrunnelse) {

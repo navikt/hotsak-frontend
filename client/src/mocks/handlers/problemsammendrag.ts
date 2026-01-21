@@ -19,11 +19,14 @@ export const problemsammendragHandlers: StoreHandlersFactory = ({ sakStore, beho
       return HttpResponse.json({})
     }
     const behovsmelding = await behovsmeldingStore.hentForSak(sak)
-    const lavere = behovsmelding?.behovsmelding.hjelpemidler.hjelpemidler.find(
-      (hjelpemiddel) => hjelpemiddel.produkt.rangering! > 1
-    )
+    let lavere = false
+    behovsmelding?.behovsmelding.hjelpemidler.hjelpemidler.map((hjelpemiddel) => {
+      if (hjelpemiddel.produkt.rangering! > 1) {
+        lavere = true
+      }
+    })
     await delay(100)
-    if (!lavere) {
+    if (lavere) {
       return HttpResponse.json(`POST MRS P9 R2 Manuell rullestol, Terskeleliminator; ${sakId}`)
     }
     return HttpResponse.json(`Manuell rullestol, Terskeleliminator; ${sakId}`)

@@ -181,7 +181,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 Fatt vedtak
               </Button>
             )}
-            {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst === UtfallLåst.FERDIGSTILT && (
+            {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
               <HStack gap="space-12" align="center">
                 <Tag
                   size="small"

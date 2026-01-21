@@ -244,6 +244,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
   ),
   http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
     return HttpResponse.json({ behandlinger })
   }),
 ]

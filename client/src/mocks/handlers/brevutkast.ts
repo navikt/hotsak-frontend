@@ -4,6 +4,7 @@ import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { delay, respondNoContent } from './response'
 import type { SakParams } from './params'
+import { Gjenstående } from '../../types/behandlingTyper'
 
 type NyBrevtekst = Pick<BrevTekst, 'brevtype' | 'data'>
 
@@ -16,6 +17,11 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const { brevtype, data } = await request.json()
     await sakStore.lagreBrevtekst(params.sakId, brevtype, data)
 
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+    if (behandlinger.length > 0) {
+      sakStore.oppdaterBehandling(behandlinger[0].behandlingId, [Gjenstående.BREV_IKKE_FERDIGSTILT])
+    }
     await delay(1000)
     return respondNoContent()
   }),

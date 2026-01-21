@@ -243,14 +243,6 @@ export class SakStore extends Dexie {
     const behandling = await this.behandlinger.get(behandlingId)
     let gjenstående = request.utfall?.utfall === VedtaksResultat.INNVILGET ? [] : [Gjenstående.BREV_MANGLER]
 
-    // TODO avventer dette til vi har på plass api for brevutkast som lagrer dette
-    /*if (behandling?.sakId) {
-      const brevtekst = await this.hentBrevtekst(behandling?.sakId)
-      if (brevtekst) {
-        gjenstående.push(Gjenstående.BREV_IKKE_FERDIGSTILT)
-      }
-    }*/
-
     this.behandlinger.update(behandlingId, {
       ...behandling,
       utfall: request.utfall,
@@ -258,6 +250,23 @@ export class SakStore extends Dexie {
     })
 
     return behandlingId
+  }
+
+  async oppdaterBehandling(behandlingId: number, gjenstående: Gjenstående[]) {
+    let behandling = await this.behandlinger.get(behandlingId)
+
+    console.log('Oppdaterer behandling', behandlingId, gjenstående)
+
+    await this.behandlinger.update(behandlingId, {
+      ...behandling,
+      gjenstående: gjenstående,
+    })
+
+    behandling = await this.behandlinger.get(behandlingId)
+
+    if (gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)) {
+      this.behandlinger.update(behandlingId, { ...behandling, utfallLåst: [UtfallLåst.BREV_PÅBEGYNT] })
+    }
   }
 
   async ferdigstillBehandlingForSak(sakId: string) {
@@ -268,7 +277,7 @@ export class SakStore extends Dexie {
       const gjeldendeBehandling = behandlinger[0]
       this.behandlinger.update(gjeldendeBehandling.behandlingId, {
         ...gjeldendeBehandling,
-        utfallLåst: UtfallLåst.FERDIGSTILT,
+        utfallLåst: [UtfallLåst.FERDIGSTILT],
         ferdigstiltTidspunkt: nåIso(),
         utførtAv: saksbehandler,
       })

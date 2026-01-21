@@ -63,7 +63,7 @@ export const Brev = () => {
       setOpprettBrevKlikket(false)
       mutateGjeldendeBehandling()
     }
-  }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket])
+  }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket, mutateGjeldendeBehandling])
 
   const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
 

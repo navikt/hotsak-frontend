@@ -2,7 +2,11 @@ import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Alert, Box, Button, Heading, HStack, Link, Modal, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brødtekst, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
+import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
+import { Oppgavestatus } from '../../../../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
+import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
+import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
 import { UtfallLåst, VedtaksResultat } from '../../../../../types/behandlingTyper.ts'
 import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
@@ -12,10 +16,6 @@ import { PanelTittel } from '../PanelTittel.tsx'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
-import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
-import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
-import { Oppgavestatus } from '../../../../../oppgave/oppgaveTypes.ts'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -36,6 +36,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   //const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   //const brevIkkeFerdigstilt = gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
+  //const brevPåbegynt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.BREV_PÅBEGYNT)
 
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
@@ -64,9 +65,11 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
             <VedtaksResultatVelger utfall={vedtaksResultat} setVisModalKanIkkeEndre={setVisModalKanIkkeEndre} />
           )}
 
-          {oppgaveFerdigstilt && vedtaksResultat && gjeldendeBehandling?.utfallLåst === UtfallLåst.FERDIGSTILT && (
-            <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
-          )}
+          {oppgaveFerdigstilt &&
+            vedtaksResultat &&
+            gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
+              <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
+            )}
 
           {vedtaksResultat && (
             <TextContainer>

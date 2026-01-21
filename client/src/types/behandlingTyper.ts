@@ -4,7 +4,7 @@ import { Saksbehandler } from './types.internal'
 export interface Behandling {
   behandlingId: number
   gjenstående: Gjenstående[]
-  utfallLåst?: UtfallLåst
+  utfallLåst?: UtfallLåst[]
   utfall?: Behandlingsutfall
   utførtAv?: Saksbehandler
   oppgaveId: string

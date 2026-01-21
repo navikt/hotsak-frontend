@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - linjeskift-funksjonsbeskrivelse
+      - problemsammendrag-troubleshooting
 
 jobs:
   test:

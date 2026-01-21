@@ -86,7 +86,11 @@ export function Hjelpemiddel({
               gjennomstrek={harEndretHjelpemiddel}
             />
             <HStack gap="2">
-              <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
+                <Tag size="xsmall" variant="warning">{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
+              ) : (
+                <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+              )}
               {minmaxStyrt && (
                 <Tag variant="neutral" size="small">
                   Min/max lagervare

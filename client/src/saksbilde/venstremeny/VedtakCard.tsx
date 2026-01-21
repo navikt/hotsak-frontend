@@ -64,9 +64,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
   )
 
-  const lavereRangertBegrunnelse = lavereRangertHjelpemiddel?.opplysninger
-    .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
-    ?.innhold.at(0)?.fritekst
+  const lavereRangertBegrunnelse =
+    'POST ' +
+    lavereRangertHjelpemiddel?.opplysninger
+      .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
+      ?.innhold.at(0)?.fritekst
 
   const lagProblemsammendrag = () =>
     `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
@@ -95,6 +97,16 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
 
     lastInn()
   }, [visVedtakModal])
+
+  const validerPostbegrunnelse = (value: string | undefined) => {
+    if (!value || value.trim() === '' || value.trim() === 'POST') {
+      return 'Begrunnelse er påkrevd når det er søkt om lavere rangerte hjelpemidler'
+    }
+    if (!value.trim().startsWith('POST ')) {
+      return 'Begrunnelsen må starte med "POST"'
+    }
+    return true
+  }
 
   const fattVedtak = async (data: VedtakFormValues) => {
     if (harLavereRangerte && !harLagretPostbegrunnelse) {
@@ -241,6 +253,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         heading="Vil du innvilge søknaden?"
         loading={sakActions.state.loading}
         open={visVedtakModal}
+        buttonSize="medium"
         width="700px"
         bekreftButtonLabel="Innvilg søknaden"
         onBekreft={form.handleSubmit(fattVedtak)}
@@ -248,7 +261,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       >
         <Brødtekst spacing>
           Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
-          innlogget side på nav.no
+          innlogget side på nav.no neste virkedag.
         </Brødtekst>
         <FormProvider {...form}>
           <VStack gap="space-16">
@@ -260,7 +273,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                 <TextField
                   label={
                     <HStack wrap={false} gap="2" align="center">
-                      <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
+                      <Etikett>Problemsammendrag til OeBS </Etikett>
                       <HelpText strategy="fixed">
                         <Brødtekst>
                           Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
@@ -285,32 +298,31 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                       readOnly={harLagretPostbegrunnelse}
                       label={
                         <HStack wrap={false} gap="2" align="center">
-                          <Etikett>Postbegrunnelse</Etikett>
+                          <Etikett>Begrunnelse for lavere rangering</Etikett>
                           <HelpText strategy="fixed">
                             <Brødtekst>
-                              Skriv begrunnelse for hvorfor et lavere rangert hjelpemiddel velges. Teksten overføres til
-                              dagbok notat på SF i OeBS.
+                              Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
+                              ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
+                              hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
+                              rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
                             </Brødtekst>
                           </HelpText>
                         </HStack>
                       }
+                      description="Se over begrunnelsen og fjern sensitive opplysninger"
                       size="small"
                       error={form.formState.errors.postbegrunnelse?.message}
                       {...form.register('postbegrunnelse', {
                         validate: (value) => {
                           if (!harLagretPostbegrunnelse) {
-                            return 'Du må lagre begrunnelsen før du kan innvilge søknaden'
+                            return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
                           }
-                          if (!value || value.trim() === '') {
-                            return 'Postbegrunnelse er påkrevd når det er søkt om lavere rangerte hjelpemidler'
-                          }
-                          return true
+                          return validerPostbegrunnelse(value)
                         },
                       })}
                     ></Textarea>
-                    <HStack justify="end">
+                    <HStack>
                       {harLagretPostbegrunnelse ? (
-                        // TODO Håndtere clear error her
                         <Button
                           variant="secondary"
                           size="small"
@@ -322,8 +334,21 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                           Endre begrunnelse
                         </Button>
                       ) : (
-                        <Button variant="secondary" size="small" onClick={() => setHarLagretPostbegrunnelse(true)}>
-                          Lagre begrunnelse
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          onClick={() => {
+                            const value = form.getValues('postbegrunnelse')
+                            const valideringResultat = validerPostbegrunnelse(value)
+                            if (valideringResultat !== true) {
+                              form.setError('postbegrunnelse', { message: valideringResultat })
+                            } else {
+                              form.clearErrors('postbegrunnelse')
+                              setHarLagretPostbegrunnelse(true)
+                            }
+                          }}
+                        >
+                          Godkjenn begrunnelse
                         </Button>
                       )}
                     </HStack>

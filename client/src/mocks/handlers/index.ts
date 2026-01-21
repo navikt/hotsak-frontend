@@ -16,6 +16,7 @@ import { hjelpemiddeloversiktHandlers } from './hjelpemiddeloversikt.ts'
 import { notatHandlers } from './notat.ts'
 import { oppgaveHandlers } from './oppgaver.ts'
 import { personHandlers } from './person.ts'
+import { problemsammendragHandlers } from './problemsammendrag.ts'
 import { saksbehandlingHandlers } from './saksbehandling.ts'
 import { saksoversiktHandlers } from './saksoversikt.ts'
 import { saksvarslerHandlers } from './saksvarsler.ts'
@@ -44,6 +45,7 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...vilkårsvurderingHandlers(store),
+  ...problemsammendragHandlers(store),
 ]
 
 export const setupGrunndataHandlers: StoreHandlersFactory = (store) => grunndataHandlers(store)

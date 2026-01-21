@@ -101,8 +101,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         })
       }
     }
-
-    lastInn()
+    setTimeout(() => {
+      lastInn()
+    }, 0)
     return () => {
       isMounted = false
     }
@@ -284,6 +285,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                   }
                   size="small"
                   {...field}
+                  value={field.value ?? ''}
                   error={fieldState.error?.message}
                 />
               )}

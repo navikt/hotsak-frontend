@@ -31,9 +31,8 @@ export const Brev = () => {
   const brevutkast = useSWR<
     {
       error?: string
-      data?: StateMangement & {
-        markertKlart: boolean
-      }
+      data?: StateMangement
+      ferdigstilt: boolean
       opprettet: string
     },
     Error
@@ -68,7 +67,7 @@ export const Brev = () => {
   const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
 
   useEffect(() => {
-    if (brevutkast.data?.data?.markertKlart) {
+    if (brevutkast.data?.ferdigstilt) {
       if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.IKKE_HENTET) {
         if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
       }
@@ -77,7 +76,7 @@ export const Brev = () => {
         nullstillForhåndsvisning(Brevtype.BREVEDITOR_VEDTAKSBREV)
       }
     }
-  }, [brevutkast.data?.data?.markertKlart, hentedeBrev, sak?.data.sakId, hentForhåndsvisning, nullstillForhåndsvisning])
+  }, [brevutkast.data?.ferdigstilt, hentedeBrev, sak?.data.sakId, hentForhåndsvisning, nullstillForhåndsvisning])
 
   if (brevutkast.isLoading) {
     return (
@@ -136,12 +135,11 @@ export const Brev = () => {
     await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
       method: klart ? 'post' : 'delete',
     })
-    // TODO: inkluder informasjon i brevutkast om status
     brevutkast.mutate()
 
-    // TODO: skal erstattes av gjenstående fra behandling, muter behandlinger-endepunktet her
-    await mutateGjeldendeBehandling()
+    // TODO: setBrevFerdigstilt skal erstattes av gjenstående fra behandling, muterer derfor behandlinger-endepunktet her
     setBrevFerdigstilt(klart)
+    await mutateGjeldendeBehandling()
     if (klart) {
       if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
     }
@@ -171,7 +169,7 @@ export const Brev = () => {
       )}
       {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
         <div className="brev">
-          {!brevutkast.data?.data?.markertKlart && (
+          {!brevutkast.data?.ferdigstilt && (
             <>
               <div className="brevtoolbar">
                 <div className="left">
@@ -225,7 +223,7 @@ export const Brev = () => {
               />
             </>
           )}
-          {brevutkast.data?.data?.markertKlart && (
+          {brevutkast.data?.ferdigstilt && (
             <>
               {!oppgaveFerdigstilt && (
                 <>

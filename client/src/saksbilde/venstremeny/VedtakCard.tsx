@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { Controller } from 'react-hook-form'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
@@ -11,6 +12,7 @@ import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKon
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
@@ -23,8 +25,6 @@ import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
-import { Controller } from 'react-hook-form'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -79,42 +79,21 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   })
 
   useEffect(() => {
-    let isMounted = true
+    if (!visVedtakModal) return
 
     async function lastInn() {
-      let nyVerdi = lagProblemsammendrag()
-
+      let ny = lagProblemsammendrag()
       if (!erProd) {
-        try {
-          const response = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
-          console.log('API /serviceforesporsel response =', response)
-          const raw = await fetch(`/api/sak/${sak.sakId}/serviceforesporsel`)
-          console.log('RAW FETCH RESPONSE:', raw)
-
-          if (response) nyVerdi = response
-        } catch (e) {
-          console.error('Feilet med å hente problemsammendrag', e)
-        }
+        const respons = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
+        if (respons) ny = respons
       }
-
-      if (!isMounted) {
-        return
-      }
-
-      const current = form.getValues('problemsammendrag')
-
-      if (current !== nyVerdi) {
-        form.reset({
-          problemsammendrag: nyVerdi,
-          postbegrunnelse: lavereRangertBegrunnelse,
-        })
-      }
+      form.reset({
+        problemsammendrag: ny,
+        postbegrunnelse: lavereRangertBegrunnelse,
+      })
     }
 
-    void lastInn()
-    return () => {
-      isMounted = false
-    }
+    lastInn()
   }, [visVedtakModal])
 
   const fattVedtak = async (data: VedtakFormValues) => {

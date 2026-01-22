@@ -228,9 +228,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
             } else {
               setVisVedtakModal(true)
             }
-            if (!erProd) {
-              http.get<any>(`/api/sak/${sak.sakId}/serviceforesporsel`)
-            }
           }}
         >
           Innvilg søknaden

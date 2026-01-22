@@ -120,15 +120,12 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
                   )}
 
                   {!lesevisning && brevutkastFerdigstilt && (
-                    <InfoCard data-color="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
-                      <InfoCard.Header>Brev ferdigstilt</InfoCard.Header>
-                      <InfoCardContent>
-                        Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.
-                      </InfoCardContent>
-                    </InfoCard>
+                    <InlineMessage status="info">
+                      Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.
+                    </InlineMessage>
                   )}
 
-                  {!lesevisning && harBrevutkast && brevutkastFerdigstilt && (
+                  {!lesevisning && harBrevutkast && !brevutkastFerdigstilt && (
                     <InlineMessage status="info">Ferdigstill utkastet i brevpanelet.</InlineMessage>
                   )}
                 </VStack>

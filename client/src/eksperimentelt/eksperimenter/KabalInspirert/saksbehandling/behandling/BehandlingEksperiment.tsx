@@ -1,6 +1,5 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HStack, InfoCard, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
-import { InfoCardContent } from '@navikt/ds-react/InfoCard'
+import { Box, Button, Heading, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo } from 'react'
 import { Brødtekst, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'

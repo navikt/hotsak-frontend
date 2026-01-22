@@ -36,7 +36,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   //const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   //const brevIkkeFerdigstilt = gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
-  //const brevPåbegynt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.BREV_PÅBEGYNT)
+  //const brevHarVedtaksbrev = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
 
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>

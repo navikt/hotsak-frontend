@@ -265,7 +265,7 @@ export class SakStore extends Dexie {
     behandling = await this.behandlinger.get(behandlingId)
 
     if (gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)) {
-      this.behandlinger.update(behandlingId, { ...behandling, utfallLåst: [UtfallLåst.BREV_PÅBEGYNT] })
+      this.behandlinger.update(behandlingId, { ...behandling, utfallLåst: [UtfallLåst.HAR_VEDTAKSBREV] })
     }
   }
 

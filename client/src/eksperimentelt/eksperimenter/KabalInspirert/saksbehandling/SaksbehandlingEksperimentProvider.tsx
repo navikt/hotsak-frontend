@@ -23,10 +23,6 @@ const initialState = {
   setValgtHøyreKolonneTab() {},
   opprettBrevKlikket: false,
   setOpprettBrevKlikket() {},
-  brevEksisterer: false,
-  setBrevEksisterer() {},
-  brevFerdigstilt: false,
-  setBrevFerdigstilt() {},
 }
 
 const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
@@ -43,8 +39,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
   const [opprettBrevKlikket, setOpprettBrevKlikket] = useState(false)
-  const [brevEksisterer, setBrevEksisterer] = useState<boolean>(false)
-  const [brevFerdigstilt, setBrevFerdigstilt] = useState<boolean>(false)
 
   return (
     <SaksbehandlingEksperimentContext.Provider
@@ -65,10 +59,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setValgtHøyreKolonneTab,
         opprettBrevKlikket,
         setOpprettBrevKlikket,
-        brevEksisterer,
-        setBrevEksisterer,
-        brevFerdigstilt,
-        setBrevFerdigstilt,
       }}
     >
       {children}
@@ -103,13 +93,6 @@ type SaksbehandlingEksperimentContextType = {
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
   opprettBrevKlikket: boolean
   setOpprettBrevKlikket(klikket: boolean): void
-
-  // Verdiene under er midlertidige tilstander for å teste flyt i prototypen før vi lager apiene
-
-  brevEksisterer: boolean
-  setBrevEksisterer(eksisterer: boolean): void
-  brevFerdigstilt: boolean
-  setBrevFerdigstilt(ferdigstilt: boolean): void
 }
 
 export { SaksbehandlingEksperimentContext, SaksbehandlingEksperimentProvider, useSaksbehandlingEksperimentContext }

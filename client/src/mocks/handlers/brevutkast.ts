@@ -1,10 +1,10 @@
 import { http, HttpResponse } from 'msw'
 
+import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../types/behandlingTyper'
 import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { delay, respondNoContent } from './response'
 import type { SakParams } from './params'
-import { Gjenstående } from '../../types/behandlingTyper'
+import { delay, respondNoContent } from './response'
 
 type NyBrevtekst = Pick<BrevTekst, 'brevtype' | 'data'>
 
@@ -20,20 +20,83 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
 
     if (behandlinger.length > 0) {
-      sakStore.oppdaterBehandling(behandlinger[0].behandlingId, [Gjenstående.BREV_IKKE_FERDIGSTILT])
+      const gjeldendeBehandling = behandlinger[0]
+      if (
+        !gjeldendeBehandling.gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) &&
+        !gjeldendeBehandling.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
+      ) {
+        console.log('Første gang, setter gjenstående og utfallLåst')
+
+        await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+          ...gjeldendeBehandling,
+          gjenstående: [Gjenstående.BREV_IKKE_FERDIGSTILT],
+          utfallLåst: [UtfallLåst.HAR_VEDTAKSBREV],
+        })
+      }
     }
     await delay(1000)
     return respondNoContent()
   }),
 
-  // TODO avventer dette til vi vet hvordan vi vil ha api for brevutkast
-  /*http.put<SakParams, { klargjort: boolean }>(`/api/sak/:sakId/brevutkast/klargjoring`, async ({ request, params }) => {
-    const { klargjort } = await request.json()
-    await sakStore.lagreBrevstatus(params.sakId, klargjort)
-  }),*/
+  // TODO refaktorer og slå sammen litt her
+  http.post<SakParams>(`/api/sak/:sakId/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, async ({ params }) => {
+    console.log('Markerer brevutkast som ferdigstilt for sakId', params.sakId)
+    await sakStore.lagreBrevstatus(params.sakId, { ferdigstilt: true })
+
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+    if (behandlinger.length > 0) {
+      const gjeldendeBehandling = behandlinger[0]
+
+      await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+        ...gjeldendeBehandling,
+        gjenstående: [],
+      })
+    }
+
+    return respondNoContent()
+  }),
+  http.delete<SakParams>(`/api/sak/:sakId/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, async ({ params }) => {
+    console.log('Fjerner ferdigstilling på brevutkast for sakId', params.sakId)
+    await sakStore.lagreBrevstatus(params.sakId, { ferdigstilt: false })
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+    if (behandlinger.length > 0) {
+      const gjeldendeBehandling = behandlinger[0]
+
+      await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+        ...gjeldendeBehandling,
+        gjenstående: [Gjenstående.BREV_IKKE_FERDIGSTILT],
+      })
+    }
+    return respondNoContent()
+  }),
 
   http.delete<BrevutkastParams>(`/api/sak/:sakId/brevutkast/:brevtype`, async ({ params }) => {
     await sakStore.fjernBrevtekst(params.sakId)
+
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+    if (behandlinger && behandlinger.length > 0) {
+      const gjeldendeBehandling = behandlinger[0]
+
+      if (gjeldendeBehandling.utfall?.utfall === VedtaksResultat.INNVILGET) {
+        console.log('Fjerner brevutkast på utfall innvilget')
+
+        await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+          ...gjeldendeBehandling,
+          gjenstående: [],
+          utfallLåst: [],
+        })
+      } else {
+        await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+          ...gjeldendeBehandling,
+          gjenstående: [Gjenstående.BREV_MANGLER],
+          utfallLåst: [],
+        })
+      }
+    }
+
     await delay(500)
     return respondNoContent()
   }),

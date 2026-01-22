@@ -19,8 +19,7 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne, setBrevEksisterer, setBrevFerdigstilt } =
-    useSaksbehandlingEksperimentContext()
+  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne } = useSaksbehandlingEksperimentContext()
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
@@ -58,11 +57,10 @@ export const Brev = () => {
     // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
     if (brevutkast.data?.data?.value) {
       velgMal(undefined)
-      setBrevEksisterer(true)
       setOpprettBrevKlikket(false)
       mutateGjeldendeBehandling()
     }
-  }, [brevutkast.data, setBrevEksisterer, setOpprettBrevKlikket, mutateGjeldendeBehandling])
+  }, [brevutkast.data, setOpprettBrevKlikket, mutateGjeldendeBehandling])
 
   const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
 
@@ -126,9 +124,9 @@ export const Brev = () => {
     }).then((res) => {
       if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
     })
-    setBrevEksisterer(false)
     setBrevKolonne(false)
     await brevutkast.mutate()
+    mutateGjeldendeBehandling()
   }
 
   const markerKlart = async (klart: boolean) => {
@@ -137,8 +135,6 @@ export const Brev = () => {
     })
     brevutkast.mutate()
 
-    // TODO: setBrevFerdigstilt skal erstattes av gjenstående fra behandling, muterer derfor behandlinger-endepunktet her
-    setBrevFerdigstilt(klart)
     await mutateGjeldendeBehandling()
     if (klart) {
       if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)

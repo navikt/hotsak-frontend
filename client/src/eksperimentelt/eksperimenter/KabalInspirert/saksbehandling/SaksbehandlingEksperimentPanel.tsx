@@ -14,7 +14,7 @@ import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { useSaksregler } from '../../../../saksregler/useSaksregler.ts'
-import { UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
 import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
@@ -54,13 +54,16 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     return mutateOppgave()
   }
 
-  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel, brevEksisterer, brevFerdigstilt } =
-    useSaksbehandlingEksperimentContext()
+  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSaksbehandlingEksperimentContext()
   const { showSuccessToast } = useToast()
 
   const { gjeldendeBehandling } = useBehandling()
   const { ferdigstillBehandling } = useBehandlingActions()
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
+
+  const gjenstående = gjeldendeBehandling?.gjenstående || []
+  const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
+  const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -161,12 +164,10 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 size="small"
                 loading={vedtakLoader}
                 onClick={() => {
+                  /* TODO Validere på alle typer gjenstående som kan finnes  */
                   if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
-                  } else if (
-                    (vedtaksResultat !== VedtaksResultat.INNVILGET && (!brevEksisterer || !brevFerdigstilt)) ||
-                    (vedtaksResultat === VedtaksResultat.INNVILGET && brevEksisterer && !brevFerdigstilt)
-                  ) {
+                  } else if (vedtaksResultat !== VedtaksResultat.INNVILGET && !brevutkastFerdigstilt) {
                     setVisBrevMangler(true)
                   } else {
                     setVisFerdigstillModal(true)
@@ -219,7 +220,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       </InfoModal>
 
       <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>
-        {!brevEksisterer && (
+        {gjenstående.includes(Gjenstående.BREV_MANGLER) && (
           <>
             <Brødtekst spacing>
               Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det
@@ -231,10 +232,8 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
             </Brødtekst>
           </>
         )}
-        {brevEksisterer && (
-          <>
-            <Brødtekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Brødtekst>
-          </>
+        {gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) && (
+          <Brødtekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Brødtekst>
         )}
       </InfoModal>
 

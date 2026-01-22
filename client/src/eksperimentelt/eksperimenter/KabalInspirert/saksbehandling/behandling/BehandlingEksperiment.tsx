@@ -1,13 +1,14 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Alert, Box, Button, Heading, HStack, Link, Modal, Select, Tag, VStack } from '@navikt/ds-react'
-import { memo, useState } from 'react'
+import { Box, Button, Heading, HStack, InfoCard, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
+import { InfoCardContent } from '@navikt/ds-react/InfoCard'
+import { memo } from 'react'
 import { Brødtekst, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
 import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
 import { Oppgavestatus } from '../../../../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../../../../oppgave/useOppgave'
 import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
 import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
-import { UtfallLåst, VedtaksResultat } from '../../../../../types/behandlingTyper.ts'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../../types/behandlingTyper.ts'
 import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
 import { formaterDato } from '../../../../../utils/dato'
@@ -23,21 +24,20 @@ interface BehandlingEksperimentPanelProps {
 }
 
 function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
-  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket, brevEksisterer, brevFerdigstilt } =
+  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket } =
     useSaksbehandlingEksperimentContext()
 
   const { oppgave } = useOppgave()
-  //const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
   const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING
   const { gjeldendeBehandling } = useBehandling()
-  const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   const { varsler, harVarsler } = useSøknadsVarsler()
 
   const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
-  //const gjenstående = gjeldendeBehandling?.gjenstående || []
+  const gjenstående = gjeldendeBehandling?.gjenstående || []
 
-  //const brevIkkeFerdigstilt = gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
-  const harBrevutkast = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.BREV_PÅBEGYNT)
+  const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
+  const kanOppretteBrev = !lesevisning && !harBrevutkast
+  const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
@@ -65,66 +65,77 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
           {lesevisning ? (
             <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
           ) : (
-            <VedtaksResultatVelger utfall={vedtaksResultat} />
+            <VedtaksResultatVelger utfall={vedtaksResultat} harBrevutkast={harBrevutkast} />
           )}
-
-          {oppgaveFerdigstilt &&
-            vedtaksResultat &&
-            gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
-              <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
-            )}
 
           {vedtaksResultat && (
             <TextContainer>
               <Box.New>
-                <Heading level="2" size="small" spacing>
+                <Heading level="2" size="small">
                   Vedtaksbrev
                 </Heading>
                 <VStack gap="space-12">
-                  {brevFerdigstilt && oppgaveFerdigstilt && (
+                  {/*TODO: Dette klarer vi ikke å finne ut av med APIene vi har nå? */
+                  /* brevFerdigstilt && lesevisning && (
                     <Alert size="small" variant="info">
                       Brev lagt til utsending - sendes neste virkedag
                     </Alert>
-                  )}
-                  {!brevEksisterer && oppgaveFerdigstilt && vedtaksResultat === VedtaksResultat.INNVILGET && (
+                  )*/}
+
+                  {/*TODO: Dette klarer vi ikke å finne ut av med APIene vi har nå? */
+                  /*!brevEksisterer && lesevisning && vedtaksResultat === VedtaksResultat.INNVILGET && (
                     <Alert size="small" variant="info">
                       Saken er innvilget uten å sende brev
                     </Alert>
-                  )}
-                  {!oppgaveFerdigstilt && (
-                    <TextContainer>
-                      <Brødtekst textColor="subtle">{underRetteBrukerTest(vedtaksResultat)}</Brødtekst>
-                    </TextContainer>
-                  )}
-                  {((!oppgaveFerdigstilt && !brevEksisterer) ||
-                    (!brevKolonne && (!oppgaveFerdigstilt || brevEksisterer))) && (
+                  )*/}
+                  {!lesevisning && <UnderrettBruker vedtaksResultat={vedtaksResultat} />}
+
+                  {kanOppretteBrev && (
                     <div>
                       <Button
                         variant="secondary"
                         size="small"
                         onClick={() => {
                           setBrevKolonne(true)
-                          if (!brevEksisterer) setOpprettBrevKlikket(true)
+                          setOpprettBrevKlikket(true)
                         }}
                       >
-                        {brevEksisterer ? 'Vis vedtaksbrev' : 'Opprett vedtaksbrev'}
+                        Opprett vedtaksbrev
                       </Button>
                     </div>
                   )}
-                  {(brevKolonne || brevFerdigstilt) && brevEksisterer && !oppgaveFerdigstilt && (
-                    <TextContainer>
-                      <Alert variant="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
-                        {brevFerdigstilt
-                          ? 'Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.'
-                          : 'Ferdigstill utkastet i brevpanelet'}
-                      </Alert>
-                    </TextContainer>
+
+                  {!kanOppretteBrev && !brevKolonne && (
+                    <div>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => {
+                          setBrevKolonne(true)
+                        }}
+                      >
+                        Vis vedtaksbrev
+                      </Button>
+                    </div>
+                  )}
+
+                  {!lesevisning && brevutkastFerdigstilt && (
+                    <InfoCard data-color="info" size="small" style={{ margin: brevKolonne ? '1em 0' : undefined }}>
+                      <InfoCard.Header>Brev ferdigstilt</InfoCard.Header>
+                      <InfoCardContent>
+                        Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.
+                      </InfoCardContent>
+                    </InfoCard>
+                  )}
+
+                  {!lesevisning && harBrevutkast && brevutkastFerdigstilt && (
+                    <InlineMessage status="info">Ferdigstill utkastet i brevpanelet.</InlineMessage>
                   )}
                 </VStack>
               </Box.New>
             </TextContainer>
           )}
-          {oppgaveFerdigstilt &&
+          {lesevisning &&
             (vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) &&
             harVarsler && (
               <>
@@ -139,47 +150,43 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
             )}
         </VStack>
       </div>
-      <Modal
-        open={visModalKanIkkeEndre}
-        onClose={() => setVisModalKanIkkeEndre(false)}
-        aria-label="Du må slette brevutkastet før du kan endre resultatet"
-      >
-        <Modal.Header closeButton>
-          <Heading level="1" size="small">
-            Du må slette brevutkastet før du kan endre resultatet
-          </Heading>
-        </Modal.Header>
-        <Modal.Body>
-          Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
-          under menyen "Flere valg" i brevpanelet.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" size="small" onClick={() => setVisModalKanIkkeEndre(false)}>
-            Lukk
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Box.New>
   )
 }
 
-function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
+function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
   if (!vedtaksResultat) {
     return null
   }
+
+  let tekst: string
   switch (vedtaksResultat) {
     case VedtaksResultat.INNVILGET:
-      return 'Du må selv vurdere om det er behov for å sende vedtaksbrev.'
+      tekst = 'Du må selv vurdere om det er behov for å sende vedtaksbrev.'
+      break
     case VedtaksResultat.DELVIS_INNVILGET:
-      return 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du fatter vedtak.'
+      tekst = 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du fatter vedtak.'
+      break
     case VedtaksResultat.AVSLÅTT:
-      return 'Du må sende vedtaksbrev ved avslag. Brevet blir sendt når du fatter vedtak.'
+      tekst = 'Du må sende vedtaksbrev ved avslag. Brevet blir sendt når du fatter vedtak.'
+      break
+    default:
+      return null
   }
+
+  return (
+    <TextContainer>
+      <Brødtekst textColor="subtle">{tekst}</Brødtekst>
+    </TextContainer>
+  )
 }
 
 export default memo(BehandlingEksperimentPanel)
 
 function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
+  if (!vedtaksResultat) {
+    return null
+  }
   return (
     <VStack gap="space-8">
       <Heading size="small" level="2" spacing={false}>
@@ -205,11 +212,7 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: Vedtaks
   )
 }
 
-function VedtaksResultatVelger({ utfall }: { utfall: VedtaksResultat | null }) {
-  const { brevEksisterer } = useSaksbehandlingEksperimentContext()
-  const { oppgave } = useOppgave()
-  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
-
+function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResultat | null; harBrevutkast: boolean }) {
   const { lagreBehandling } = useBehandlingActions()
 
   return (
@@ -226,12 +229,11 @@ function VedtaksResultatVelger({ utfall }: { utfall: VedtaksResultat | null }) {
       <Select
         size="small"
         label="Resultat"
-        readOnly={brevEksisterer || oppgaveFerdigstilt}
+        readOnly={harBrevutkast}
         style={{ width: 'auto' }}
         value={utfall ? utfall : ''}
         onChange={async (e) => {
           if (utfall === (e.target.value as VedtaksResultat)) {
-            console.log('Samme utfall valgt, ingen endring')
             return
           }
           if (e.target.value !== '') {
@@ -246,12 +248,14 @@ function VedtaksResultatVelger({ utfall }: { utfall: VedtaksResultat | null }) {
         <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
         <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
       </Select>
-      <TextContainer>
-        <Brødtekst>
-          Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
-          under menyen "Flere valg" i brevpanelet.
-        </Brødtekst>
-      </TextContainer>
+      {harBrevutkast && (
+        <TextContainer>
+          <Brødtekst>
+            Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
+            under menyen "Flere valg" i brevpanelet.
+          </Brødtekst>
+        </TextContainer>
+      )}
     </>
   )
 }

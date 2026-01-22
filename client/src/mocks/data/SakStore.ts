@@ -252,21 +252,10 @@ export class SakStore extends Dexie {
     return behandlingId
   }
 
-  async oppdaterBehandling(behandlingId: number, gjenstående: Gjenstående[]) {
-    let behandling = await this.behandlinger.get(behandlingId)
+  async oppdaterBehandling(behandlingId: number, oppdatertBehandling: Behandling) {
+    console.log('Oppdaterer behandling', behandlingId, oppdatertBehandling)
 
-    console.log('Oppdaterer behandling', behandlingId, gjenstående)
-
-    await this.behandlinger.update(behandlingId, {
-      ...behandling,
-      gjenstående: gjenstående,
-    })
-
-    behandling = await this.behandlinger.get(behandlingId)
-
-    if (gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)) {
-      this.behandlinger.update(behandlingId, { ...behandling, utfallLåst: [UtfallLåst.BREV_PÅBEGYNT] })
-    }
+    await this.behandlinger.update(behandlingId, { ...oppdatertBehandling })
   }
 
   async ferdigstillBehandlingForSak(sakId: string) {
@@ -520,9 +509,9 @@ export class SakStore extends Dexie {
     this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
   }
 
-  /*async lagreBrevstatus(sakId: string, klargjort: boolean) {
-    this.brevtekst.update(sakId)
-  }*/
+  async lagreBrevstatus(sakId: string, { ferdigstilt }: { ferdigstilt: boolean }) {
+    this.brevtekst.update(sakId, { ferdigstilt })
+  }
 
   async fjernBrevtekst(sakId: string) {
     this.brevtekst.delete(sakId)

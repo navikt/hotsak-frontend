@@ -56,7 +56,7 @@ export enum Gjenstående {
 
 export enum UtfallLåst {
   FERDIGSTILT = 'FERDIGSTILT',
-  BREV_PÅBEGYNT = 'BREV_PÅBEGYNT',
+  HAR_VEDTAKSBREV = 'HAR_VEDTAKSBREV',
 }
 
 export interface FerdigstillBehandling {

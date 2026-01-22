@@ -397,8 +397,7 @@ export interface BrevTekst {
   målform: MålformType
   data: { dokumenttittel?: string; brevtekst?: string; value?: [{ children?: [{ text?: string }] }] }
   brevtype: string
-  //klargjort?: string
-  //ferdigstilt?: string
+  ferdigstilt?: boolean
 }
 
 export interface HjelpemiddelArtikkel {

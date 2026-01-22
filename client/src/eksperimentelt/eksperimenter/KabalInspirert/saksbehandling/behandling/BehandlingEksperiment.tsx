@@ -27,7 +27,8 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
     useSaksbehandlingEksperimentContext()
 
   const { oppgave } = useOppgave()
-  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+  //const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+  const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING
   const { gjeldendeBehandling } = useBehandling()
   const [visModalKanIkkeEndre, setVisModalKanIkkeEndre] = useState(false)
   const { varsler, harVarsler } = useSøknadsVarsler()
@@ -36,7 +37,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   //const gjenstående = gjeldendeBehandling?.gjenstående || []
 
   //const brevIkkeFerdigstilt = gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
-  //const brevPåbegynt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.BREV_PÅBEGYNT)
+  const harBrevutkast = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.BREV_PÅBEGYNT)
 
   return (
     <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
@@ -61,8 +62,10 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
             </Link>
           </Tekst>
 
-          {!oppgaveFerdigstilt && (
-            <VedtaksResultatVelger utfall={vedtaksResultat} setVisModalKanIkkeEndre={setVisModalKanIkkeEndre} />
+          {lesevisning ? (
+            <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
+          ) : (
+            <VedtaksResultatVelger utfall={vedtaksResultat} />
           )}
 
           {oppgaveFerdigstilt &&
@@ -176,7 +179,7 @@ function underRetteBrukerTest(vedtaksResultat?: VedtaksResultat) {
 
 export default memo(BehandlingEksperimentPanel)
 
-function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat: VedtaksResultat }) {
+function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
   return (
     <VStack gap="space-8">
       <Heading size="small" level="2" spacing={false}>
@@ -202,12 +205,7 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat: VedtaksR
   )
 }
 
-function VedtaksResultatVelger({
-  utfall,
-}: {
-  setVisModalKanIkkeEndre: (åpen: boolean) => void
-  utfall: VedtaksResultat | null
-}) {
+function VedtaksResultatVelger({ utfall }: { utfall: VedtaksResultat | null }) {
   const { brevEksisterer } = useSaksbehandlingEksperimentContext()
   const { oppgave } = useOppgave()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
@@ -248,6 +246,12 @@ function VedtaksResultatVelger({
         <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
         <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
       </Select>
+      <TextContainer>
+        <Brødtekst>
+          Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
+          under menyen "Flere valg" i brevpanelet.
+        </Brødtekst>
+      </TextContainer>
     </>
   )
 }

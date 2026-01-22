@@ -101,5 +101,11 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "pnpm": {
+    "overrides": {
+      "lodash": ">=4.17.23",
+      "lodash-es": ">=4.17.23"
+    }
   }
 }

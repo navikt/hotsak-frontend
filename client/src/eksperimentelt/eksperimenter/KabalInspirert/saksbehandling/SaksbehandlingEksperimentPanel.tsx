@@ -13,7 +13,6 @@ import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseM
 import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { mutateSak } from '../../../../saksbilde/mutateSak.ts'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
-import { useSaksregler } from '../../../../saksregler/useSaksregler.ts'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
 import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
@@ -28,6 +27,7 @@ import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
+import { useOppgaveregler } from '../../../../oppgave/useOppgaveregler.ts'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -40,10 +40,10 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
 
-  const { kanBehandleSak } = useSaksregler()
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   // TODO trenger vi tilsvarende regler for oppgave? Oppgave i stedet for sak eller begge deler?
   const { oppgave } = useOppgave()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgave?.oppgaveId}`)
@@ -84,6 +84,9 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     // TODO skeleton eller loader her?
     return <div>Fant ikke behovsmelding</div>
   }
+
+  //TODO Se på bug med fatt vedtak når innvilget med brev ikke er ferdigstilt
+  // TODO Må mutere noe når vedtak fattes
 
   return (
     <>
@@ -141,7 +144,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
           )}
         </PanelGroup>
       </Box.New>
-
       <HStack
         asChild
         position="sticky"
@@ -157,7 +159,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       >
         <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
           <HStack align="center" justify="space-between" gap="space-24">
-            {kanBehandleSak && (
+            {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
               <Button
                 type="button"
                 variant="primary"
@@ -209,7 +211,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
           </HStack>
         </Box.New>
       </HStack>
-
       <InfoModal
         heading="Mangler resultat"
         open={visResultatManglerModal}
@@ -218,7 +219,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
       >
         <Brødtekst spacing>Du må velge et vedtaksresultat under "Behandle sak" før du kan fatte vedtak.</Brødtekst>
       </InfoModal>
-
       <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>
         {gjenstående.includes(Gjenstående.BREV_MANGLER) && (
           <>

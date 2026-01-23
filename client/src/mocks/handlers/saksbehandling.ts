@@ -2,12 +2,7 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import {
-  BehandlingerResponse,
-  FerdigstillBehandling,
-  LagreBehandlingRequest,
-  VedtaksResultat,
-} from '../../types/behandlingTyper.ts'
+import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
 import {
   OppgaveStatusType,
   StegType,
@@ -226,22 +221,18 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return respondNoContent()
     }
   ),
-  http.put<BehandlingParams, FerdigstillBehandling>(
-    '/api/sak/:sakId/behandling/:behandlingId/ferdigstilling',
-    async ({ params, request }) => {
-      const sakId = params.sakId
-      const { oppgaveId } = await request.json()
+  http.put<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/ferdigstilling', async ({ params }) => {
+    const sakId = params.sakId
 
-      const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
-      const gjeldendeBehandling = behandlingerForSak[0]
+    const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
+    const gjeldendeBehandling = behandlingerForSak[0]!!
 
-      const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
-      await oppgaveStore.ferdigstillOppgave(oppgaveId)
-      await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
-      await sakStore.ferdigstillBehandlingForSak(sakId)
-      return respondNoContent()
-    }
-  ),
+    const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
+    await oppgaveStore.ferdigstillOppgave(gjeldendeBehandling!.oppgaveId)
+    await sakStore.fattVedtak(sakId, OppgaveStatusType.VEDTAK_FATTET, vedtaksResultat)
+    await sakStore.ferdigstillBehandlingForSak(sakId)
+    return respondNoContent()
+  }),
   http.get<SakParams, never, BehandlingerResponse>('/api/sak/:sakId/behandling', async ({ params }) => {
     const behandlinger = await sakStore.hentBehandlinger(params.sakId)
 

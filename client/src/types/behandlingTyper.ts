@@ -7,11 +7,11 @@ export interface Behandling {
   utfallLåst?: UtfallLåst[]
   utfall?: Behandlingsutfall
   utførtAv?: Saksbehandler
-  oppgaveId: string
+  oppgaveId: OppgaveId
   ferdigstiltTidspunkt?: string
 }
 export interface LagreBehandlingRequest {
-  oppgaveId: string
+  oppgaveId: OppgaveId
   utfall?: Behandlingsutfall
 }
 
@@ -57,9 +57,4 @@ export enum Gjenstående {
 export enum UtfallLåst {
   FERDIGSTILT = 'FERDIGSTILT',
   HAR_VEDTAKSBREV = 'HAR_VEDTAKSBREV',
-}
-
-export interface FerdigstillBehandling {
-  sakId: string
-  oppgaveId: OppgaveId
 }

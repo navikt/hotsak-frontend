@@ -1,5 +1,5 @@
 import { Button, HelpText, HStack, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -7,7 +7,6 @@ import { Controller } from 'react-hook-form'
 import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
-import { http } from '../../io/HttpClient.ts'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
@@ -16,7 +15,6 @@ import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
-import { useMiljø } from '../../utils/useMiljø.ts'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
@@ -24,6 +22,7 @@ import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
+import { useProblemsammendrag } from './useProblemsammendrag.ts'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
@@ -50,7 +49,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const oppgaveActions = useOppgaveActions()
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
-  const { erProd } = useMiljø()
+  const problemsammendrag = useProblemsammendrag()
 
   const harLavereRangerte = useMemo(
     () =>
@@ -74,29 +73,17 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
 
   const form = useForm<VedtakFormValues>({
-    defaultValues: {
-      problemsammendrag: '',
+    values: {
+      problemsammendrag:
+        problemsammendrag.problemsammendrag == 'Søknad om hjelpemidler; '
+          ? lagProblemsammendrag()
+          : (problemsammendrag.problemsammendrag ?? lagProblemsammendrag()),
       postbegrunnelse: lavereRangertBegrunnelse,
     },
+    resetOptions: {
+      keepDirtyValues: true,
+    },
   })
-
-  useEffect(() => {
-    if (!visVedtakModal) return
-
-    async function lastInn() {
-      let ny = lagProblemsammendrag()
-      if (!erProd) {
-        const respons = await http.get<string>(`/api/sak/${sak.sakId}/serviceforesporsel`)
-        if (respons) ny = respons
-      }
-      form.reset({
-        problemsammendrag: ny,
-        postbegrunnelse: lavereRangertBegrunnelse,
-      })
-    }
-
-    lastInn()
-  }, [visVedtakModal])
 
   const validerPostbegrunnelse = (value: string | undefined) => {
     if (!value || value.trim() === '' || value.trim() === 'POST') {

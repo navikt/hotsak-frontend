@@ -80,9 +80,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           : (problemsammendrag.problemsammendrag ?? lagProblemsammendrag()),
       postbegrunnelse: lavereRangertBegrunnelse,
     },
-    resetOptions: {
-      keepDirtyValues: true,
-    },
   })
 
   const validerPostbegrunnelse = (value: string | undefined) => {

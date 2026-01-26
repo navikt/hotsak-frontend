@@ -221,7 +221,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       return respondNoContent()
     }
   ),
-  http.put<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/ferdigstilling', async ({ params }) => {
+  http.post<BehandlingParams>('/api/sak/:sakId/behandling/:behandlingId/ferdigstilling', async ({ params }) => {
     const sakId = params.sakId
 
     const behandlingerForSak = await sakStore.hentBehandlinger(sakId)

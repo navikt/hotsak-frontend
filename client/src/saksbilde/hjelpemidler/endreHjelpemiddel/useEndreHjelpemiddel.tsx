@@ -22,7 +22,6 @@ export function useEndreHjelpemiddel(sakId: string, endretProdukt: EndretProdukt
       .then(() => {
         mutateBestilling()
         mutate(`/api/sak/${sakId}/historikk`)
-        mutate(`/api/sak/${sakId}/serviceforesporsel`)
         showSuccessToast(`Endret hjelpemiddel til ${endreHjelpemiddel.hmsArtNr}`)
       })
     setVisEndreProdukt(false)

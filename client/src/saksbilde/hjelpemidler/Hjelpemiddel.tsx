@@ -63,11 +63,9 @@ export function Hjelpemiddel({
         <Etikett size="medium">{produkt?.isotittel}</Etikett>
       </TextContainer>
       <VStack gap="1">
-        {produkt?.delkontrakter?.map(({ posttittel }) => (
-          <TextContainer key={posttittel}>
-            <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
-          </TextContainer>
-        ))}
+        <TextContainer>
+          <BrytbarBrødtekst>Delkontrakt {hjelpemiddel.produkt.delkontrakttittel}</BrytbarBrødtekst>
+        </TextContainer>
       </VStack>
       <HjelpemiddelGrid>
         <TextContainer>

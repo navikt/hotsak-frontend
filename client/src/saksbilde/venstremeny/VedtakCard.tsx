@@ -24,6 +24,7 @@ import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { useProblemsammendrag } from './useProblemsammendrag.ts'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
+import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -50,14 +51,17 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
   const problemsammendrag = useProblemsammendrag()
+  const { artikler } = useArtiklerForSak(sakId)
 
-  const harLavereRangerte = useMemo(
-    () =>
-      behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.some(
-        (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
-      ) ?? false,
-    [behovsmelding]
-  )
+  const skalHaNyttProblemsammendrag = useMemo(() => {
+    const hjelpemidler = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler ?? []
+    if (problemsammendrag.problemsammendrag === 'Søknad om hjelpemidler') return false
+    return hjelpemidler.some((hjelpemiddel) => {
+      if ((hjelpemiddel.produkt.rangering ?? 0) <= 1) return false
+
+      return !artikler.some((artikkel) => artikkel.endretArtikkel?.id === hjelpemiddel.hjelpemiddelId)
+    })
+  }, [behovsmelding, artikler, problemsammendrag.problemsammendrag])
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
@@ -69,15 +73,14 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
       ?.innhold.at(0)?.fritekst
 
-  const lagProblemsammendrag = () =>
+  const lagGammeltProblemsammendrag = () =>
     `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
 
   const form = useForm<VedtakFormValues>({
     values: {
-      problemsammendrag:
-        problemsammendrag.problemsammendrag == 'Søknad om hjelpemidler; '
-          ? lagProblemsammendrag()
-          : (problemsammendrag.problemsammendrag ?? lagProblemsammendrag()),
+      problemsammendrag: skalHaNyttProblemsammendrag
+        ? (problemsammendrag.problemsammendrag ?? lagGammeltProblemsammendrag())
+        : lagGammeltProblemsammendrag(),
       postbegrunnelse: lavereRangertBegrunnelse,
     },
   })
@@ -93,7 +96,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   }
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    if (harLavereRangerte && !harLagretPostbegrunnelse) {
+    if (skalHaNyttProblemsammendrag && !harLagretPostbegrunnelse) {
     } else {
       await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
       setVisVedtakModal(false)
@@ -273,7 +276,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
             />
             <Eksperiment>
               <VStack gap="space-8">
-                {harLavereRangerte && (
+                {skalHaNyttProblemsammendrag && (
                   <>
                     <Textarea
                       readOnly={harLagretPostbegrunnelse}

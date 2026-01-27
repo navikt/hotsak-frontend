@@ -46,14 +46,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
-  const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgave?.oppgaveId}`)
-  const mutateOppgaveOgSak = () => {
-    if (sak.sakId) {
-      return Promise.all([mutateOppgave(), mutateSak(sak.sakId)])
-    }
-    return mutateOppgave()
-  }
-
   const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSaksbehandlingEksperimentContext()
   const { showSuccessToast } = useToast()
 
@@ -72,10 +64,12 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   })
 
   const fattVedtak = async (data: VedtakFormValues) => {
+    console.log('Fatter vedtak')
+
     setVedtakLoader(true)
     setVisFerdigstillModal(false)
     await ferdigstillBehandling(data.problemsammendrag)
-    await mutateOppgaveOgSak()
+    //await mutateOppgaveOgSak()
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
   }

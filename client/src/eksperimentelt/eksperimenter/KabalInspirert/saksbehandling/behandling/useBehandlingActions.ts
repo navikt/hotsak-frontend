@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { Actions, useActionState } from '../../../../../action/Actions.ts'
 import { http } from '../../../../../io/HttpClient.ts'
 import { useOppgave } from '../../../../../oppgave/useOppgave.ts'
@@ -33,6 +34,7 @@ export function useBehandlingActions(): BehandlingActions {
       })
     },
     async ferdigstillBehandling(problemsammendrag: string) {
+      log('Ferdigstiller behandling for sakId', sakId, 'og behandlingId', gjeldendeBehandling?.behandlingId)
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
@@ -40,7 +42,11 @@ export function useBehandlingActions(): BehandlingActions {
           { versjon }
         )
         await mutateBehandling()
+        console.log('Har mutert behandling', gjeldendeBehandling)
+
         await mutateOppgaveOgSak()
+
+        console.log('Har mutert oppgave og sak', oppgave)
       })
     },
     state,

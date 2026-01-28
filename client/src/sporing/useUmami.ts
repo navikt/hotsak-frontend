@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
 import { useInnloggetAnsatt } from '../tilgang/useTilgang'
-import { UMAMI_TAKSONOMI } from './umamiTaksonomi'
+import { logDebug } from '../utvikling/logDebug.ts'
+import { UmamiTaksonomi } from './UmamiTaksonomi.ts'
+
+type Logger<T = Record<string, any>> = (data?: T) => void
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
@@ -18,45 +22,77 @@ export function useUmami() {
     checkReady()
   }, [])
 
-  const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data?: object) => {
-    if (typeof window !== 'undefined' && window.umami) {
-      window.umami.track(navn, {
-        appnavn: 'hotsak',
-        enhetsnavn,
-        ...data,
-      })
-    }
+  const logUmamiHendelse = useCallback(
+    (navn: UmamiTaksonomi, data?: Record<string, any>) => {
+      if (typeof window !== 'undefined' && window.umami) {
+        window.umami.track(navn, {
+          appnavn: 'hotsak',
+          enhetsnavn,
+          ...data,
+        })
+      } else {
+        logDebug(navn, enhetsnavn, data)
+      }
+    },
+    [enhetsnavn]
+  )
+
+  const logKnappKlikket: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.KNAPP_KLIKKET, data)
   }
 
-  const logKnappKlikket = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, data)
+  const logSkjemaFullført: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.SKJEMA_FULLFØRT, data)
   }
 
-  const logSkjemaFullført = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.SKJEMA_FULLFØRT, data)
+  const logModalÅpnet: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.MODAL_ÅPNET, data)
   }
 
-  const logModalÅpnet = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.MODAL_ÅPNET, data)
-  }
-
-  const logVinduStørrelse = (data: object) => {
+  const logVinduStørrelse: Logger = (data) => {
     const { innerWidth: width, innerHeight: height } = window
 
-    logUmamiHendelse(UMAMI_TAKSONOMI.CLIENT_INFO, {
+    logUmamiHendelse(UmamiTaksonomi.CLIENT_INFO, {
       vinduBredde: width,
       vinduHoyde: height,
       ...data,
     })
   }
 
-  const logTemaByttet = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.TEMA_BYTTET, data)
+  const logTemaByttet: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.TEMA_BYTTET, data)
   }
 
-  const logOverføringMedarbeider = () => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.OVERFØRING_MEDARBEIDER)
+  const logOverføringMedarbeider: Logger = () => {
+    logUmamiHendelse(UmamiTaksonomi.OVERFØRING_MEDARBEIDER)
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, logTemaByttet, logOverføringMedarbeider, isReady }
+  const logNyOppgavelisteValgt: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.NY_OPPGAVELISTE_VALGT, data)
+  }
+
+  const logGammelOppgavelisteValgt: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.GAMMEL_OPPGAVELISTE_VALGT, data)
+  }
+
+  const logOppgavelisteFiltrert: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_FILTRERT, data)
+  }
+
+  return {
+    logUmamiHendelse,
+    logKnappKlikket,
+    logSkjemaFullført,
+    logModalÅpnet,
+    logVinduStørrelse,
+    logTemaByttet,
+    logOverføringMedarbeider,
+
+    // oppgaveliste
+    logNyOppgavelisteValgt,
+    logGammelOppgavelisteValgt,
+    logOppgavelisteFiltrert,
+
+    isReady,
+  }
 }

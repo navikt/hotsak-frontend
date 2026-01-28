@@ -174,7 +174,7 @@ export const oppgaveColumns = {
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
     width: 125,
-    formatDate: true,
+    formatDateTime: true,
   },
   fristFerdigstillelse: {
     field: 'fristFerdigstillelse',
@@ -183,10 +183,10 @@ export const oppgaveColumns = {
     width: 125,
     renderCell(row) {
       return (
-        <HStack align="center" gap="2">
+        <HStack align="center" gap="2" wrap={false}>
           <FormatDate date={row.fristFerdigstillelse} />
           {row.fristFerdigstillelse && isBefore(row.fristFerdigstillelse, Date.now()) && (
-            <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" />
+            <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
           )}
         </HStack>
       )

@@ -12,7 +12,9 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
     <Box.New borderColor="neutral-subtleA" borderWidth="0 0 2 0" padding="2">
       <HGrid columns="1fr 1fr 1fr">
         <div />
-        <BodyShort align="center">{text}</BodyShort>
+        <BodyShort align="center" size="small">
+          {text}
+        </BodyShort>
         <HStack gap="2" justify="end">
           <OppgaveColumnMenu />
         </HStack>

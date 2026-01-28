@@ -39,6 +39,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
 
   const [visBrevMangler, setVisBrevMangler] = useState(false)
+  const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
   const { oppgave } = useOppgave()
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
@@ -53,6 +54,8 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const gjenstående = gjeldendeBehandling?.gjenstående || []
   const brevutkastIkkeFerdigstilt =
     gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
+
+  const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -151,19 +154,16 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 size="small"
                 loading={vedtakLoader}
                 onClick={() => {
-                  /* TODO Validere på alle typer gjenstående som kan finnes  */
+                  /* TODO Lage en mer generell validering. Skal vi vise alle valideringsfeil samlet? Lage mock funksjonalitet for notat ikke ferdigstilt i gjenstående */
                   if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
                   } else if (brevutkastIkkeFerdigstilt) {
                     setVisBrevMangler(true)
+                  } else if (notaterIkkeFerdigstilt) {
+                    setVisNotatIkkeFerdigstilt(true)
                   } else {
                     setVisFerdigstillModal(true)
                   }
-
-                  // TODO: Hva med notatutkast? Skal vi legge inn det som en gjenstående greie også?
-                  //if (harNotatUtkast) {
-                  //setSubmitAttempt(true)
-                  //} else {
                 }}
               >
                 Fatt vedtak
@@ -220,6 +220,15 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
         {gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) && (
           <Brødtekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Brødtekst>
         )}
+      </InfoModal>
+
+      <InfoModal
+        heading="Notat ikke ferdigstilt"
+        open={visNotatIkkeFerdigstilt}
+        width="500px"
+        onClose={() => setVisNotatIkkeFerdigstilt(false)}
+      >
+        <Brødtekst spacing>Du har et utkast til notat som må ferdigstilles eller slettes.</Brødtekst>
       </InfoModal>
 
       <BekreftelseModal

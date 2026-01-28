@@ -14,7 +14,7 @@ import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
 import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
-import { formaterTidsstempelLesevennlig } from '../../../../utils/dato.ts'
+import { formaterDato } from '../../../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
 import { PersonlinjeEksperiment } from '../felleskomponenter/personlinje/PersonlinjeEksperiment'
@@ -192,7 +192,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 >
                   {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
                 </Tag>
-                <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterTidsstempelLesevennlig(sak?.vedtak?.vedtaksdato)}`}</Tekst>
+                <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak?.vedtak?.vedtaksdato)}`}</Tekst>
               </HStack>
             )}
             {!oppgaveFerdigstilt && (

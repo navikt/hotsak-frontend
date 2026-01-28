@@ -4,7 +4,8 @@ import { HttpError } from '../../io/HttpError.ts'
 import { useSakId } from '../useSak.ts'
 
 interface UseProblemsammendragResponse extends Omit<SWRResponse<string, HttpError>, 'data'> {
-  problemsammendrag?: string
+  sammendragMedLavere: boolean
+  problemsammendrag: string
 }
 
 export function useProblemsammendrag(): UseProblemsammendragResponse {
@@ -13,7 +14,8 @@ export function useProblemsammendrag(): UseProblemsammendragResponse {
     sakId ? `/api/sak/${sakId}/serviceforesporsel` : null
   )
   return {
-    problemsammendrag,
+    sammendragMedLavere: problemsammendrag?.startsWith('POST ') ?? false,
+    problemsammendrag: problemsammendrag ?? '',
     ...rest,
   }
 }

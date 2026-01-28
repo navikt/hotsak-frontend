@@ -1,5 +1,5 @@
 import { Button, HelpText, HStack, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -14,7 +14,7 @@ import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
-import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater'
+import { formaterNavn } from '../../utils/formater'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
@@ -24,7 +24,6 @@ import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { useProblemsammendrag } from './useProblemsammendrag.ts'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
-import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
 
 export interface VedtakCardProps {
   sak: Sak
@@ -38,8 +37,6 @@ interface VedtakFormValues {
 }
 
 export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
-  const { sakId } = sak
-
   const innloggetAnsatt = useInnloggetAnsatt()
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
@@ -50,18 +47,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const oppgaveActions = useOppgaveActions()
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
-  const problemsammendrag = useProblemsammendrag()
-  const { artikler } = useArtiklerForSak(sakId)
-
-  const skalHaNyttProblemsammendrag = useMemo(() => {
-    const hjelpemidler = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler ?? []
-    if (problemsammendrag.problemsammendrag === 'Søknad om hjelpemidler') return false
-    return hjelpemidler.some((hjelpemiddel) => {
-      if ((hjelpemiddel.produkt.rangering ?? 0) <= 1) return false
-
-      return !artikler.some((artikkel) => artikkel.endretArtikkel?.id === hjelpemiddel.hjelpemiddelId)
-    })
-  }, [behovsmelding, artikler, problemsammendrag.problemsammendrag])
+  const { sammendragMedLavere, problemsammendrag } = useProblemsammendrag()
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
@@ -73,14 +59,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
       ?.innhold.at(0)?.fritekst
 
-  const lagGammeltProblemsammendrag = () =>
-    `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sakId}`
-
   const form = useForm<VedtakFormValues>({
     values: {
-      problemsammendrag: skalHaNyttProblemsammendrag
-        ? (problemsammendrag.problemsammendrag ?? lagGammeltProblemsammendrag())
-        : lagGammeltProblemsammendrag(),
+      problemsammendrag: problemsammendrag,
       postbegrunnelse: lavereRangertBegrunnelse,
     },
   })
@@ -96,7 +77,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   }
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    if (skalHaNyttProblemsammendrag && !harLagretPostbegrunnelse) {
+    if (sammendragMedLavere && !harLagretPostbegrunnelse) {
     } else {
       await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
       setVisVedtakModal(false)
@@ -276,7 +257,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
             />
             <Eksperiment>
               <VStack gap="space-8">
-                {skalHaNyttProblemsammendrag && (
+                {sammendragMedLavere && (
                   <>
                     <Textarea
                       readOnly={harLagretPostbegrunnelse}

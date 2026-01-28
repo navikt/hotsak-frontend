@@ -39,7 +39,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
 
   const [visBrevMangler, setVisBrevMangler] = useState(false)
-  // TODO trenger vi tilsvarende regler for oppgave? Oppgave i stedet for sak eller begge deler?
   const { oppgave } = useOppgave()
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
@@ -62,12 +61,9 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   })
 
   const fattVedtak = async (data: VedtakFormValues) => {
-    console.log('Fatter vedtak')
-
     setVedtakLoader(true)
     setVisFerdigstillModal(false)
     await ferdigstillBehandling(data.problemsammendrag)
-    //await mutateOppgaveOgSak()
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
   }
@@ -76,9 +72,6 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
     // TODO skeleton eller loader her?
     return <div>Fant ikke behovsmelding</div>
   }
-
-  //TODO Se på bug med fatt vedtak når innvilget med brev ikke er ferdigstilt
-  // TODO Må mutere noe når vedtak fattes
 
   return (
     <>
@@ -161,7 +154,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   /* TODO Validere på alle typer gjenstående som kan finnes  */
                   if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
-                  } else if (vedtaksResultat !== VedtaksResultat.INNVILGET && !brevutkastFerdigstilt) {
+                  } else if (harBrevutkast && !brevutkastFerdigstilt) {
                     setVisBrevMangler(true)
                   } else {
                     setVisFerdigstillModal(true)

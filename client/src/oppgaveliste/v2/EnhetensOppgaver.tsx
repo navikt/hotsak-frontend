@@ -6,8 +6,10 @@ import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
 import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
+import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
 export function EnhetensOppgaver() {
+  useOppgavemetrikker()
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.INGEN)
   return (
     <Box.New marginInline="5">

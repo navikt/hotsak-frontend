@@ -51,8 +51,8 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
-  const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
-  const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
+  const brevutkastIkkeFerdigstilt =
+    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
@@ -154,7 +154,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                   /* TODO Validere på alle typer gjenstående som kan finnes  */
                   if (!gjeldendeBehandling || !vedtaksResultat) {
                     setVisResultatManglerModal(true)
-                  } else if (harBrevutkast && !brevutkastFerdigstilt) {
+                  } else if (brevutkastIkkeFerdigstilt) {
                     setVisBrevMangler(true)
                   } else {
                     setVisFerdigstillModal(true)

@@ -174,7 +174,7 @@ export const oppgaveColumns = {
     header: 'Opprettet',
     sortKey: 'opprettetTidspunkt',
     width: 125,
-    formatDate: true,
+    formatDateTime: true,
   },
   fristFerdigstillelse: {
     field: 'fristFerdigstillelse',

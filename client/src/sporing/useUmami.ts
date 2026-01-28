@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+
 import { useInnloggetAnsatt } from '../tilgang/useTilgang'
-import { UMAMI_TAKSONOMI } from './umamiTaksonomi'
+import { UmamiTaksonomi } from './UmamiTaksonomi.ts'
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
@@ -18,7 +19,7 @@ export function useUmami() {
     checkReady()
   }, [])
 
-  const logUmamiHendelse = (navn: UMAMI_TAKSONOMI, data?: object) => {
+  const logUmamiHendelse = (navn: UmamiTaksonomi, data?: object) => {
     if (typeof window !== 'undefined' && window.umami) {
       window.umami.track(navn, {
         appnavn: 'hotsak',
@@ -29,21 +30,21 @@ export function useUmami() {
   }
 
   const logKnappKlikket = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.KNAPP_KLIKKET, data)
+    logUmamiHendelse(UmamiTaksonomi.KNAPP_KLIKKET, data)
   }
 
   const logSkjemaFullført = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.SKJEMA_FULLFØRT, data)
+    logUmamiHendelse(UmamiTaksonomi.SKJEMA_FULLFØRT, data)
   }
 
   const logModalÅpnet = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.MODAL_ÅPNET, data)
+    logUmamiHendelse(UmamiTaksonomi.MODAL_ÅPNET, data)
   }
 
   const logVinduStørrelse = (data: object) => {
     const { innerWidth: width, innerHeight: height } = window
 
-    logUmamiHendelse(UMAMI_TAKSONOMI.CLIENT_INFO, {
+    logUmamiHendelse(UmamiTaksonomi.CLIENT_INFO, {
       vinduBredde: width,
       vinduHoyde: height,
       ...data,
@@ -51,12 +52,21 @@ export function useUmami() {
   }
 
   const logTemaByttet = (data: object) => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.TEMA_BYTTET, data)
+    logUmamiHendelse(UmamiTaksonomi.TEMA_BYTTET, data)
   }
 
   const logOverføringMedarbeider = () => {
-    logUmamiHendelse(UMAMI_TAKSONOMI.OVERFØRING_MEDARBEIDER)
+    logUmamiHendelse(UmamiTaksonomi.OVERFØRING_MEDARBEIDER)
   }
 
-  return { logUmamiHendelse, logKnappKlikket, logSkjemaFullført, logModalÅpnet, logVinduStørrelse, logTemaByttet, logOverføringMedarbeider, isReady }
+  return {
+    logUmamiHendelse,
+    logKnappKlikket,
+    logSkjemaFullført,
+    logModalÅpnet,
+    logVinduStørrelse,
+    logTemaByttet,
+    logOverføringMedarbeider,
+    isReady,
+  }
 }

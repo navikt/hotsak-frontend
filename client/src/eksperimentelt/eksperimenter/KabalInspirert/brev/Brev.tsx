@@ -61,6 +61,7 @@ export const Brev = () => {
       velgMal(undefined)
       setOpprettBrevKlikket(false)
       mutateGjeldendeBehandling()
+      mutateBrevMetadata()
     }
   }, [brevutkast.data, setOpprettBrevKlikket, mutateGjeldendeBehandling])
 

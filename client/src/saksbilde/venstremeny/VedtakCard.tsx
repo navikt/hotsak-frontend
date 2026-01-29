@@ -1,4 +1,4 @@
-import { Button, HelpText, HStack, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
+import { Button, HelpText, HStack, InlineMessage, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
@@ -286,18 +286,23 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                         },
                       })}
                     ></Textarea>
-                    <HStack>
+                    <HStack align="center" gap="space-8">
                       {harLagretPostbegrunnelse ? (
-                        <Button
-                          variant="secondary"
-                          size="small"
-                          onClick={() => {
-                            form.clearErrors('postbegrunnelse')
-                            setHarLagretPostbegrunnelse(false)
-                          }}
-                        >
-                          Endre begrunnelse
-                        </Button>
+                        <>
+                          <InlineMessage status="success" size="small">
+                            Du har godkjent begrunnelsen
+                          </InlineMessage>
+                          <Button
+                            variant="tertiary"
+                            size="small"
+                            onClick={() => {
+                              form.clearErrors('postbegrunnelse')
+                              setHarLagretPostbegrunnelse(false)
+                            }}
+                          >
+                            Angre
+                          </Button>
+                        </>
                       ) : (
                         <Button
                           variant="secondary"

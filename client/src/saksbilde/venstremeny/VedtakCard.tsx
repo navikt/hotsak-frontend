@@ -52,11 +52,13 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
   )
 
-  const lavereRangertBegrunnelse =
-    'POST ' +
-    lavereRangertHjelpemiddel?.opplysninger
-      .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
-      ?.innhold.at(0)?.fritekst
+  const begrunnelseForLavereRangeringFritekst = lavereRangertHjelpemiddel?.opplysninger
+    .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
+    ?.innhold.at(0)?.fritekst
+
+  const lavereRangertBegrunnelse = begrunnelseForLavereRangeringFritekst
+    ? `POST ${begrunnelseForLavereRangeringFritekst}`
+    : undefined
 
   const form = useForm<VedtakFormValues>({
     values: {

@@ -1,10 +1,12 @@
-import { http } from 'msw'
+import { http, HttpResponse } from 'msw'
 
+import { Brevstatus } from '../../eksperimentelt/eksperimenter/KabalInspirert/brev/brevTyper'
+import { UtfallLåst } from '../../types/behandlingTyper'
 import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
-import { delay, respondNoContent, respondPdf } from './response'
+import { lastDokument, lastDokumentBarnebriller, nåIso } from '../data/felles'
 import type { SakParams } from './params'
-import { lastDokument, lastDokumentBarnebriller } from '../data/felles'
+import { delay, respondNoContent, respondPdf } from './response'
 
 interface BrevParams extends SakParams {
   brevtype: string
@@ -47,5 +49,38 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     await sakStore.fjernBrevtekst(sakId)
     await delay(500)
     return respondNoContent()
+  }),
+  http.get<SakParams>('/api/sak/:sakId/brev', async ({ params }) => {
+    const { sakId } = params
+
+    const brev = await sakStore.hentBrevtekst(sakId)
+
+    if (!brev) {
+      return HttpResponse.json({ brev: [] })
+    }
+
+    const behandlinger = await sakStore.hentBehandlinger(sakId)
+    const gjeldendeBehandling = behandlinger.length > 0 ? behandlinger[0] : null
+
+    const behandlingFerdigstilt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT)
+
+    const brevStatus = (() => {
+      if (behandlingFerdigstilt) return Brevstatus.UTBOKS
+      if (brev?.ferdigstilt) return Brevstatus.FERDIGSTILT
+      return Brevstatus.UTKAST
+    })()
+
+    return HttpResponse.json({
+      brev: [
+        {
+          id: '1',
+          type: brev?.brevtype,
+          status: brevStatus,
+          oppdatert: nåIso(),
+          opprettet: nåIso(),
+          behandlingId: gjeldendeBehandling?.behandlingId,
+        },
+      ],
+    })
   }),
 ]

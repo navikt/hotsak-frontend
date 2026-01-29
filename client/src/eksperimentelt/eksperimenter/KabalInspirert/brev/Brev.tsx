@@ -16,6 +16,7 @@ import { useSaksbehandlingEksperimentContext } from '../saksbehandling/Saksbehan
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
+import { useBrevMetadata } from './useBrevMetadata.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -23,6 +24,7 @@ export const Brev = () => {
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
+  const { mutate: mutateBrevMetadata } = useBrevMetadata()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
@@ -136,6 +138,7 @@ export const Brev = () => {
     brevutkast.mutate()
 
     await mutateGjeldendeBehandling()
+    await mutateBrevMetadata()
     if (klart) {
       if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
     }

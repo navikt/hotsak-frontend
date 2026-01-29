@@ -11,9 +11,8 @@ export async function initMsw(): Promise<unknown> {
 
   const { setupWorker } = await import('msw/browser')
   const { setupStore } = await import('./data')
-  const { setupHotsakApiHandlers, setupGrunndataHandlers, setupAlternativprodukterHandlers } = await import(
-    './handlers'
-  )
+  const { setupHotsakApiHandlers, setupGrunndataHandlers, setupAlternativprodukterHandlers } =
+    await import('./handlers')
 
   const store = await setupStore()
   const {

@@ -10,12 +10,14 @@ import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.
 import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../../types/behandlingTyper.ts'
 import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
 import { Sak } from '../../../../../types/types.internal'
-import { formaterDato } from '../../../../../utils/dato'
+import { formaterDato, formaterTidsstempelLesevennlig } from '../../../../../utils/dato'
 import { storForbokstavIOrd } from '../../../../../utils/formater.ts'
+import { useBrevMetadata } from '../../brev/useBrevMetadata.ts'
 import { PanelTittel } from '../PanelTittel.tsx'
 import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
+import { Brevstatus } from '../../brev/brevTyper.ts'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak
@@ -29,6 +31,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
   const { oppgave } = useOppgave()
   const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING
   const { gjeldendeBehandling } = useBehandling()
+  const { gjeldendeBrev: brevMetadata, harBrevISak } = useBrevMetadata()
   const { varsler, harVarsler } = useSøknadsVarsler()
 
   const vedtaksResultat = (gjeldendeBehandling?.utfall?.utfall as VedtaksResultat) || null
@@ -74,19 +77,23 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
                   Vedtaksbrev
                 </Heading>
                 <VStack gap="space-12">
-                  {/*TODO: Dette klarer vi ikke å finne ut av med APIene vi har nå? */
-                  /* brevFerdigstilt && lesevisning && (
-                    <Alert size="small" variant="info">
+                  {lesevisning && brevMetadata?.status === Brevstatus.UTBOKS && (
+                    <InlineMessage status="info" size="small">
                       Brev lagt til utsending - sendes neste virkedag
-                    </Alert>
-                  )*/}
+                    </InlineMessage>
+                  )}
 
-                  {/*TODO: Dette klarer vi ikke å finne ut av med APIene vi har nå? */
-                  /*!brevEksisterer && lesevisning && vedtaksResultat === VedtaksResultat.INNVILGET && (
-                    <Alert size="small" variant="info">
+                  {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
+                    <InlineMessage status="info" size="small">
+                      Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLesevennlig(brevMetadata?.sendt!)}
+                    </InlineMessage>
+                  )}
+
+                  {lesevisning && !harBrevISak && (
+                    <InlineMessage status="info" size="small">
                       Saken er innvilget uten å sende brev
-                    </Alert>
-                  )*/}
+                    </InlineMessage>
+                  )}
                   {!lesevisning && <UnderrettBruker vedtaksResultat={vedtaksResultat} />}
 
                   {kanOppretteBrev && (
@@ -104,7 +111,7 @@ function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
                     </div>
                   )}
 
-                  {!kanOppretteBrev && !brevKolonne && (
+                  {!brevKolonne && harBrevISak && (
                     <div>
                       <Button
                         variant="secondary"

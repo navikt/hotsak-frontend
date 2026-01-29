@@ -3,6 +3,7 @@ import { http } from '../../../../../io/HttpClient.ts'
 import { useOppgave } from '../../../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../../../saksbilde/mutateSak.ts'
 import { Behandlingsutfall } from '../../../../../types/behandlingTyper.ts'
+import { useBrevMetadata } from '../../brev/useBrevMetadata.ts'
 import { useBehandling } from './useBehandling.ts'
 
 export interface BehandlingActions extends Actions {
@@ -14,6 +15,7 @@ export function useBehandlingActions(): BehandlingActions {
   const { oppgave, mutate: mutateOppgave } = useOppgave()
   const { oppgaveId, versjon, sakId } = oppgave ?? {}
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
+  const { mutate: muteBrevMetadata } = useBrevMetadata()
   const { execute, state } = useActionState()
 
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
@@ -44,6 +46,7 @@ export function useBehandlingActions(): BehandlingActions {
         console.log('Har mutert behandling', gjeldendeBehandling)
 
         await mutateOppgaveOgSak()
+        await muteBrevMetadata()
 
         console.log('Har mutert oppgave og sak', oppgave)
       })

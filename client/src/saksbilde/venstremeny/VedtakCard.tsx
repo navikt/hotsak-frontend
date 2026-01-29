@@ -4,7 +4,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 import { Controller } from 'react-hook-form'
-import { Eksperiment } from '../../felleskomponenter/Eksperiment.tsx'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
@@ -255,77 +254,75 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                 />
               )}
             />
-            <Eksperiment>
-              <VStack gap="space-8">
-                {sammendragMedLavere && (
-                  <>
-                    <Textarea
-                      readOnly={harLagretPostbegrunnelse}
-                      label={
-                        <HStack wrap={false} gap="2" align="center">
-                          <Etikett>Begrunnelse for lavere rangering</Etikett>
-                          <HelpText strategy="fixed">
-                            <Brødtekst>
-                              Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
-                              ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
-                              hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
-                              rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
-                            </Brødtekst>
-                          </HelpText>
-                        </HStack>
-                      }
-                      description="Se over begrunnelsen og fjern sensitive opplysninger"
-                      size="small"
-                      error={form.formState.errors.postbegrunnelse?.message}
-                      {...form.register('postbegrunnelse', {
-                        validate: (value) => {
-                          if (!harLagretPostbegrunnelse) {
-                            return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
-                          }
-                          return validerPostbegrunnelse(value)
-                        },
-                      })}
-                    ></Textarea>
-                    <HStack align="center" gap="space-8">
-                      {harLagretPostbegrunnelse ? (
-                        <>
-                          <InlineMessage status="success" size="small">
-                            Du har godkjent begrunnelsen
-                          </InlineMessage>
-                          <Button
-                            variant="tertiary"
-                            size="small"
-                            onClick={() => {
-                              form.clearErrors('postbegrunnelse')
-                              setHarLagretPostbegrunnelse(false)
-                            }}
-                          >
-                            Angre
-                          </Button>
-                        </>
-                      ) : (
+            <VStack gap="space-8">
+              {sammendragMedLavere && (
+                <>
+                  <Textarea
+                    readOnly={harLagretPostbegrunnelse}
+                    label={
+                      <HStack wrap={false} gap="2" align="center">
+                        <Etikett>Begrunnelse for lavere rangering</Etikett>
+                        <HelpText strategy="fixed">
+                          <Brødtekst>
+                            Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
+                            ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
+                            hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
+                            rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
+                          </Brødtekst>
+                        </HelpText>
+                      </HStack>
+                    }
+                    description="Se over begrunnelsen og fjern sensitive opplysninger"
+                    size="small"
+                    error={form.formState.errors.postbegrunnelse?.message}
+                    {...form.register('postbegrunnelse', {
+                      validate: (value) => {
+                        if (!harLagretPostbegrunnelse) {
+                          return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
+                        }
+                        return validerPostbegrunnelse(value)
+                      },
+                    })}
+                  ></Textarea>
+                  <HStack align="center" gap="space-8">
+                    {harLagretPostbegrunnelse ? (
+                      <>
+                        <InlineMessage status="success" size="small">
+                          Du har godkjent begrunnelsen
+                        </InlineMessage>
                         <Button
-                          variant="secondary"
+                          variant="tertiary"
                           size="small"
                           onClick={() => {
-                            const value = form.getValues('postbegrunnelse')
-                            const valideringResultat = validerPostbegrunnelse(value)
-                            if (valideringResultat !== true) {
-                              form.setError('postbegrunnelse', { message: valideringResultat })
-                            } else {
-                              form.clearErrors('postbegrunnelse')
-                              setHarLagretPostbegrunnelse(true)
-                            }
+                            form.clearErrors('postbegrunnelse')
+                            setHarLagretPostbegrunnelse(false)
                           }}
                         >
-                          Godkjenn begrunnelse
+                          Angre
                         </Button>
-                      )}
-                    </HStack>
-                  </>
-                )}
-              </VStack>
-            </Eksperiment>
+                      </>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        onClick={() => {
+                          const value = form.getValues('postbegrunnelse')
+                          const valideringResultat = validerPostbegrunnelse(value)
+                          if (valideringResultat !== true) {
+                            form.setError('postbegrunnelse', { message: valideringResultat })
+                          } else {
+                            form.clearErrors('postbegrunnelse')
+                            setHarLagretPostbegrunnelse(true)
+                          }
+                        }}
+                      >
+                        Godkjenn begrunnelse
+                      </Button>
+                    )}
+                  </HStack>
+                </>
+              )}
+            </VStack>
           </VStack>
         </FormProvider>
       </BekreftelseModal>

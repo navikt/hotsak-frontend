@@ -6,7 +6,7 @@ import { type FinnOppgaverRequest, type FinnOppgaverResponse } from './oppgaveTy
 
 export type UseOpppgavesøkResponse = SWRResponse<FinnOppgaverResponse, HttpError>
 
-export function useOpppgavesøk({ fnr }: { fnr?: string }): UseOpppgavesøkResponse {
+export function useOpppgavesøk(request?: FinnOppgaverRequest): UseOpppgavesøkResponse {
   return useSWR(
     () => (request ? ['/api/oppgaver-v2/sok', request] : null),
     (request) => {

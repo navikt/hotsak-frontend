@@ -11,6 +11,7 @@ import type {
   Saksbehandler,
   Sakstype,
 } from '../types/types.internal'
+import { type IntervalString } from '../utils/dato.ts'
 
 /**
  * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
@@ -208,10 +209,10 @@ export interface FinnOppgaverRequest {
   tildelt?: OppgaveTildelt
 
   // tidspunkter
-  opprettetIntervall?: Interval
-  aktivIntervall?: Interval
-  fristIntervall?: Interval
-  ferdigstiltIntervall?: Interval
+  opprettetIntervall?: IntervalString
+  aktivIntervall?: IntervalString
+  fristIntervall?: IntervalString
+  ferdigstiltIntervall?: IntervalString
 
   // sortering
   sorteringsfelt?: 'FRIST' | 'OPPRETTET_TIDSPUNKT'

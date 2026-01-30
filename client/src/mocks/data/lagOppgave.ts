@@ -6,6 +6,7 @@ import {
   Oppgavestatus,
   Oppgavetype,
   type OppgaveV2,
+  Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
 import { beregnAlder } from '../../utils/dato.ts'
 import { formaterNavn } from '../../utils/formater.ts'
@@ -22,6 +23,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
   return {
     oppgaveId: `E-${sakId}`,
     versjon: 1,
+    statuskategori: Statuskategori.ÅPEN,
     oppgavestatus: Oppgavestatus.OPPRETTET,
     prioritet: (sak as LagretHjelpemiddelsak)?.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
     kategorisering,
@@ -60,6 +62,7 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
   return {
     oppgaveId: `I-${journalpostId}`,
     versjon: 1,
+    statuskategori: Statuskategori.ÅPEN,
     oppgavestatus: Oppgavestatus.OPPRETTET,
     prioritet: Oppgaveprioritet.NORMAL,
     kategorisering: {

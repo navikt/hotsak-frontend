@@ -1,4 +1,4 @@
-import { Oppgaveprioritet, Oppgavestatus, Oppgavetype } from '../../oppgave/oppgaveTypes.ts'
+import { Oppgaveprioritet, Oppgavestatus, Oppgavetype, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { Dokument, Hendelse, Journalpost, JournalpostStatusType } from '../../types/types.internal.ts'
 import { enheter } from './enheter.ts'
 import { lagTilfeldigDato, lagTilfeldigInteger } from './felles.ts'
@@ -36,16 +36,17 @@ export function lagJournalpost(journalpostId: string): InsertJournalpost {
       navn: lagTilfeldigNavn(),
     },
     oppgave: {
+      oppgaveId: `I-${journalpostId}`,
+      versjon: 1,
+      statuskategori: Statuskategori.ÅPEN,
+      oppgavestatus: Oppgavestatus.OPPRETTET,
+      prioritet: Oppgaveprioritet.NORMAL,
       kategorisering: {
         oppgavetype: Oppgavetype.JOURNALFØRING,
         tema: 'HJE',
       },
-      oppgaveId: `I-${journalpostId}`,
-      oppgavestatus: Oppgavestatus.OPPRETTET,
-      prioritet: Oppgaveprioritet.NORMAL,
       tildeltEnhet: enheter.agder,
       aktivDato: journalpostOpprettetTid,
-      versjon: 1,
     },
   }
 }

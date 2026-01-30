@@ -1,7 +1,8 @@
 import { Box, Switch } from '@navikt/ds-react'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { intervalString } from '../../utils/dato.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
@@ -9,12 +10,16 @@ import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
+const ANTALL_DAGER_FERDIGSTILTE = 10
+
 export function MineOppgaver() {
   useOppgavemetrikker()
   const [visFerdigstilte, setVisFerdigstilte] = useState(false)
+  const iDag = useMemo(() => new Date(), [])
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
     statuskategori: visFerdigstilte ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEG,
+    ferdigstiltIntervall: visFerdigstilte ? intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag) : undefined,
   })
   return (
     <Box.New marginInline="5">
@@ -27,7 +32,7 @@ export function MineOppgaver() {
             }}
             size="small"
           >
-            Ferdigstilte
+            {`Vis ferdigstilte siste ${ANTALL_DAGER_FERDIGSTILTE} dager`}
           </Switch>
         </OppgaveToolbar>
         <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />

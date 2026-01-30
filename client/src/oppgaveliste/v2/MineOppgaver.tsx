@@ -10,7 +10,7 @@ import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
-const ANTALL_DAGER_FERDIGSTILTE = 30
+const ANTALL_DAGER_FERDIGSTILTE = 10
 
 export function MineOppgaver() {
   useOppgavemetrikker()

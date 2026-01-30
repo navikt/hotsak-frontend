@@ -12,12 +12,12 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const { text, children } = props
   return (
     <Box.New borderColor="neutral-subtleA" borderWidth="0 0 2 0" padding="2">
-      <HGrid columns="1fr 1fr 1fr">
+      <HGrid columns="1fr 1fr 1fr" align="center">
         <div />
         <BodyShort align="center" size="small">
           {text}
         </BodyShort>
-        <HStack gap="2" justify="end">
+        <HStack gap="2" justify="end" align="center">
           {children}
           <OppgaveColumnMenu />
         </HStack>

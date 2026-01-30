@@ -1,7 +1,7 @@
 import { Box, Switch } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { Oppgavestatus, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
@@ -13,8 +13,7 @@ export function MineOppgaver() {
   useOppgavemetrikker()
   const [visFerdigstilte, setVisFerdigstilte] = useState(false)
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
-    statuskategori: !visFerdigstilte ? Statuskategori.ÅPEN : undefined,
-    oppgavestatus: visFerdigstilte ? [Oppgavestatus.FERDIGSTILT] : undefined,
+    statuskategori: visFerdigstilte ? Statuskategori.AVSLUTTET : Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEG,
   })
   return (

@@ -22,7 +22,6 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     await delay(200)
     const url = new URL(request.url)
     const response = await oppgaveStore.finn({
-      oppgavestatus: getUrlParams(url, 'oppgavestatus'),
       oppgavetype: getUrlParams(url, 'oppgavetype'),
       tildelt: getUrlParam(url, 'tildelt'),
       sorteringsfelt: getUrlParam(url, 'sorteringsfelt'),

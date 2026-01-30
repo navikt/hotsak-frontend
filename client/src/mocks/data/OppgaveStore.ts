@@ -13,6 +13,7 @@ import {
   OppgaveTildelt,
   Oppgavetype,
   type OppgaveV2,
+  Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal.ts'
 import { compareBy } from '../../utils/array.ts'
@@ -172,7 +173,11 @@ export class OppgaveStore extends Dexie {
     const alleOppgaver = await this.alle()
     const filtrerteOppgaver = alleOppgaver
       .filter((oppgave) => {
-        return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
+        if (request.statuskategori === Statuskategori.AVSLUTTET) {
+          return oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT
+        } else {
+          return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
+        }
       })
       .filter((oppgave) => {
         const oppgavetype = request.oppgavetype?.[0]

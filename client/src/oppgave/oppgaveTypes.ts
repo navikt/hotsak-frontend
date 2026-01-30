@@ -197,7 +197,6 @@ export interface GjelderAlternativerResponse {
 
 export interface FinnOppgaverRequest {
   statuskategori?: Statuskategori
-  oppgavestatus?: Oppgavestatus[]
   oppgavetype?: Oppgavetype[]
 
   // tildeling

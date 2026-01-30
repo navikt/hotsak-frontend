@@ -8,6 +8,7 @@ import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
   OppgaveprioritetLabel,
+  Oppgavestatus,
   Oppgavetype,
   OppgavetypeLabel,
   type OppgaveV2,
@@ -246,6 +247,9 @@ export const oppgaveColumns = {
     field: 'mineOppgaverMenu',
     width: 50,
     renderCell(row) {
+      if (row.oppgavestatus == Oppgavestatus.FERDIGSTILT || row.oppgavestatus == Oppgavestatus.FEILREGISTRERT) {
+        return null
+      }
       return <MineOppgaverMenu oppgave={row} />
     },
   },

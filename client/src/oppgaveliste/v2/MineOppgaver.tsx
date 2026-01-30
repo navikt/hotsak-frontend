@@ -13,7 +13,6 @@ import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 const ANTALL_DAGER_FERDIGSTILTE = 10
 
 export function MineOppgaver() {
-  useOppgavemetrikker()
   const [visFerdigstilte, setVisFerdigstilte] = useState(false)
   const iDag = useMemo(() => new Date(), [])
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
@@ -21,6 +20,7 @@ export function MineOppgaver() {
     tildelt: OppgaveTildelt.MEG,
     ferdigstiltIntervall: visFerdigstilte ? intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag) : undefined,
   })
+  useOppgavemetrikker(oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveColumnsProvider suffix="Mine" defaultColumns={defaultColumns}>
@@ -51,6 +51,7 @@ const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
   'prioritet',
   'opprettetTidspunkt',
   'fristFerdigstillelse',
+  'ferdigstiltTidspunkt',
   'brukerFnr',
   'brukerNavn',
   'brukerAlder',

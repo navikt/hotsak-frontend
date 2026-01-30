@@ -9,11 +9,11 @@ import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
 export function MedarbeidersOppgaver() {
-  useOppgavemetrikker()
   const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEDARBEIDER,
   })
+  useOppgavemetrikker(oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveColumnsProvider suffix="Medarbeiders" defaultColumns={defaultColumns}>

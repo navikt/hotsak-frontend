@@ -194,6 +194,13 @@ export const oppgaveColumns = {
       )
     },
   },
+  ferdigstiltTidspunkt: {
+    field: 'ferdigstiltTidspunkt',
+    header: 'Ferdigstilt',
+    sortKey: 'ferdigstiltTidspunkt',
+    width: 125,
+    formatDateTime: true,
+  },
   brukerFnr: {
     field: 'brukerFnr',
     header: 'Fødselsnummer',

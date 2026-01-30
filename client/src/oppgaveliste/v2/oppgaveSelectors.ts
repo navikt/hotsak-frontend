@@ -39,3 +39,7 @@ export function selectBrukerAlder(it: OppgaveV2): number | undefined {
 export function selectBrukerKommuneNavn(it: OppgaveV2): string {
   return it.bruker?.kommune?.navn || 'Ingen'
 }
+
+export function selectFerdigstiltTidspunkt(it: OppgaveV2): string | undefined {
+  return it.ferdigstiltTidspunkt
+}

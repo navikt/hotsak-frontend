@@ -1,6 +1,7 @@
-import { Box } from '@navikt/ds-react'
+import { Box, Switch } from '@navikt/ds-react'
+import { useState } from 'react'
 
-import { OppgaveTildelt } from '../../oppgave/oppgaveTypes.ts'
+import { Oppgavestatus, OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
@@ -10,11 +11,26 @@ import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
 export function MineOppgaver() {
   useOppgavemetrikker()
-  const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.MEG)
+  const [visFerdigstilte, setVisFerdigstilte] = useState(false)
+  const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
+    statuskategori: !visFerdigstilte ? Statuskategori.ÅPEN : undefined,
+    oppgavestatus: visFerdigstilte ? [Oppgavestatus.FERDIGSTILT] : undefined,
+    tildelt: OppgaveTildelt.MEG,
+  })
   return (
     <Box.New marginInline="5">
       <OppgaveColumnsProvider suffix="Mine" defaultColumns={defaultColumns}>
-        <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
+        <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`}>
+          <Switch
+            checked={visFerdigstilte}
+            onChange={(event) => {
+              setVisFerdigstilte(event.target.checked)
+            }}
+            size="small"
+          >
+            Ferdigstilte
+          </Switch>
+        </OppgaveToolbar>
         <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
       </OppgaveColumnsProvider>
     </Box.New>

@@ -1,20 +1,27 @@
 import Dexie, { Table } from 'dexie'
 
+import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
+import { behandlingstemaer } from '../../oppgave/EndreOppgaveModal'
+
 import {
+  type FinnOppgaverRequest,
+  type FinnOppgaverResponse,
   type GjelderAlternativerResponse,
   type OppgaveId,
   type OppgaveKodeverk,
   Oppgavestatus,
+  OppgaveTildelt,
   Oppgavetype,
   type OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal.ts'
+import { compareBy } from '../../utils/array.ts'
+import { select } from '../../utils/select.ts'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
+import { JournalpostStore } from './JournalpostStore.ts'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
-import { behandlingstemaer } from '../../oppgave/EndreOppgaveModal'
-import { JournalpostStore } from './JournalpostStore.ts'
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
@@ -158,5 +165,60 @@ export class OppgaveStore extends Dexie {
 
   async alle() {
     return this.oppgaver.toArray()
+  }
+
+  async finn(request: FinnOppgaverRequest): Promise<FinnOppgaverResponse> {
+    const meg = await this.saksbehandlerStore.innloggetSaksbehandler()
+    const alleOppgaver = await this.alle()
+    const filtrerteOppgaver = alleOppgaver
+      .filter((oppgave) => {
+        return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
+      })
+      .filter((oppgave) => {
+        const oppgavetype = request.oppgavetype?.[0]
+        if (oppgavetype === Oppgavetype.JOURNALFØRING) {
+          return oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
+        } else {
+          return oppgave.kategorisering.oppgavetype !== Oppgavetype.JOURNALFØRING
+        }
+      })
+      .filter((oppgave) => {
+        switch (request.tildelt) {
+          case OppgaveTildelt.MEG:
+            return oppgave.tildeltSaksbehandler?.id === meg.id
+          case OppgaveTildelt.INGEN:
+            return oppgave.tildeltSaksbehandler == null
+          case OppgaveTildelt.MEDARBEIDER:
+            return oppgave.tildeltSaksbehandler?.id !== meg.id && oppgave.tildeltSaksbehandler != null
+          default:
+            return true
+        }
+      })
+      .sort((a, b) => {
+        let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'
+        switch (request.sorteringsfelt) {
+          case 'FRIST':
+            key = 'fristFerdigstillelse'
+            break
+          case 'OPPRETTET_TIDSPUNKT':
+            key = 'opprettetTidspunkt'
+            break
+        }
+        const direction = request.sorteringsrekkefølge ?? 'none'
+        const comparator = compareBy<OppgaveV2>(select(key), direction)
+        return comparator(a, b)
+      })
+
+    const pageNumber = request.pageNumber ?? 1
+    const pageSize = request.pageSize ?? 1_000
+    const offset = calculateOffset({ pageNumber, pageSize })
+    const totalElements = filtrerteOppgaver.length
+    return {
+      oppgaver: filtrerteOppgaver.slice(offset, offset + pageSize),
+      pageNumber,
+      pageSize,
+      totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
+      totalElements,
+    }
   }
 }

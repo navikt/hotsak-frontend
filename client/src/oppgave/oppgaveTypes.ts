@@ -196,7 +196,29 @@ export interface GjelderAlternativerResponse {
 }
 
 export interface FinnOppgaverRequest {
-  fnr?: string
+  statuskategori?: Statuskategori
+  oppgavestatus?: Oppgavestatus[]
+  oppgavetype?: Oppgavetype[]
+
+  // tildeling
+  brukerId?: string
+  journalpostId?: string[]
+  sakId?: string[]
+
+  tildelt?: OppgaveTildelt
+
+  // tidspunkter
+  opprettetIntervall?: Interval
+  aktivIntervall?: Interval
+  fristIntervall?: Interval
+  ferdigstiltIntervall?: Interval
+
+  // sortering
+  sorteringsfelt?: 'FRIST' | 'OPPRETTET_TIDSPUNKT'
+  sorteringsrekkefølge?: 'ASC' | 'DESC'
+
+  pageNumber?: number
+  pageSize?: number
 }
 
 export interface FinnOppgaverResponse extends PageResponse {

@@ -115,6 +115,7 @@ export interface OppgaveBase {
 }
 
 export interface OppgaveV2 extends OppgaveBase {
+  statuskategori: Statuskategori
   oppgavestatus: Oppgavestatus
   prioritet: Oppgaveprioritet
   kategorisering: Oppgavekategorisering

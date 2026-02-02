@@ -3,9 +3,10 @@ import { useEffect } from 'react'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { getOppgaveColumn, OppgaveColumnField } from './oppgaveColumns.tsx'
+import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 
 export function useOppgavemetrikker(antallOppgaver: number = 0, totaltAntallOppgaver: number = 0) {
-  const { logOppgavelisteFiltrert } = useUmami()
+  const { logOppgavelisteFiltrert, logOppgavelisteSortert } = useUmami()
   const filterState = useDataGridFilterContext<OppgaveColumnField>()
   useEffect(() => {
     const entries = Object.entries(filterState).filter(([, { values }]) => values.size > 0)
@@ -21,4 +22,13 @@ export function useOppgavemetrikker(antallOppgaver: number = 0, totaltAntallOppg
     )
     logOppgavelisteFiltrert(data)
   }, [filterState])
+  const { sort } = useOppgavePaginationContext()
+  useEffect(() => {
+    logOppgavelisteSortert({
+      antallOppgaver,
+      totaltAntallOppgaver,
+      sorteringsfelt: sort.orderBy,
+      sorteringsrekkefølge: sort.direction,
+    })
+  }, [sort])
 }

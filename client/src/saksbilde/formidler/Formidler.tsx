@@ -3,11 +3,11 @@ import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
 import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
 
 import { PersonIcon } from '@navikt/aksel-icons'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { MerknadBox } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
-import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 
 export interface FormidlerProps {
   levering: Levering
@@ -29,7 +29,7 @@ export function Formidler({ levering }: FormidlerProps) {
         <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</BrytbarBrødtekst>
         <Etikett>Telefon</Etikett>
         <HStack align="center" wrap={false}>
-          <Brødtekst>{formaterTelefonnummer(formidler.telefon)}</Brødtekst>
+          <BrytbarBrødtekst>{formaterTelefonnummer(formidler.telefon)}</BrytbarBrødtekst>
           <Kopiknapp tooltip="Kopier telefon" copyText={formidler.telefon} placement="bottom" />
         </HStack>
         <Etikett>Treffest enklest</Etikett>

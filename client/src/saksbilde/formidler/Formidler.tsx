@@ -7,6 +7,7 @@ import { MerknadBox } from '../../felleskomponenter/Merknad'
 import { Strek } from '../../felleskomponenter/Strek'
 import { BrytbarBrødtekst, Brødtekst, Etikett } from '../../felleskomponenter/typografi'
 import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 
 export interface FormidlerProps {
   levering: Levering
@@ -17,21 +18,27 @@ export function Formidler({ levering }: FormidlerProps) {
 
   const InfoFormidler = () => {
     return (
-      <HGrid {...hGridProps}>
+      <HGrid {...hGridProps} align="center">
         <Etikett>Navn</Etikett>
-        <Brødtekst>{formaterNavn(formidler.navn)}</Brødtekst>
+        <BrytbarBrødtekst>{formaterNavn(formidler.navn)}</BrytbarBrødtekst>
         <Etikett>Arbeidssted</Etikett>
-        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.arbeidssted)}`}</Brødtekst>
+        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.arbeidssted)}`}</BrytbarBrødtekst>
         <Etikett>Stilling</Etikett>
-        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</Brødtekst>
+        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</BrytbarBrødtekst>
         <Etikett>Postadresse</Etikett>
-        <Brødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</Brødtekst>
+        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</BrytbarBrødtekst>
         <Etikett>Telefon</Etikett>
-        <Brødtekst>{formaterTelefonnummer(formidler.telefon)}</Brødtekst>
+        <HStack align="center" wrap={false}>
+          <Brødtekst>{formaterTelefonnummer(formidler.telefon)}</Brødtekst>
+          <Kopiknapp tooltip="Kopier telefon" copyText={formidler.telefon} placement="bottom" />
+        </HStack>
         <Etikett>Treffest enklest</Etikett>
-        <Brødtekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</Brødtekst>
+        <BrytbarBrødtekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</BrytbarBrødtekst>
         <Etikett>E-postadresse</Etikett>
-        <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
+        <HStack align="center" wrap={false}>
+          <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
+          <Kopiknapp tooltip="Kopier epost" copyText={formidler.epost} placement="bottom" />
+        </HStack>
       </HGrid>
     )
   }
@@ -56,17 +63,17 @@ export function Formidler({ levering }: FormidlerProps) {
 
     return (
       <MerknadBox>
-        <HGrid {...hGridProps}>
+        <HGrid {...hGridProps} align="center">
           <Etikett>Navn</Etikett>
-          <Brødtekst>{formaterNavn(oppfølging.navn)}</Brødtekst>
+          <BrytbarBrødtekst>{formaterNavn(oppfølging.navn)}</BrytbarBrødtekst>
           <Etikett>Arbeidssted</Etikett>
-          <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</Brødtekst>
+          <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</BrytbarBrødtekst>
           <Etikett>Stilling</Etikett>
-          <Brødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Brødtekst>
+          <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</BrytbarBrødtekst>
           <Etikett>Telefon</Etikett>
-          <Brødtekst>{formaterTelefonnummer(oppfølging.telefon)}</Brødtekst>
+          <BrytbarBrødtekst>{formaterTelefonnummer(oppfølging.telefon)}</BrytbarBrødtekst>
           <Etikett>Ansvar</Etikett>
-          <Brødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Brødtekst>
+          <BrytbarBrødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</BrytbarBrødtekst>
         </HGrid>
       </MerknadBox>
     )
@@ -84,9 +91,7 @@ export function Formidler({ levering }: FormidlerProps) {
         <Heading level="1" size="small" spacing={false}>
           Hjelpemiddelformidler
         </Heading>
-        <Box paddingBlock="4 0">
-          <InfoFormidler />
-        </Box>
+        <InfoFormidler />
         {oppfølgingsansvarlig && (
           <>
             <Strek />
@@ -104,6 +109,6 @@ export function Formidler({ levering }: FormidlerProps) {
 }
 
 const hGridProps: Pick<HGridProps, 'columns' | 'gap'> = {
-  columns: 'minmax(min-content, 12rem) auto',
-  gap: '05',
+  columns: 'max-content auto',
+  gap: 'space-0 space-16',
 }

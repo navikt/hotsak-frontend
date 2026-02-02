@@ -1,24 +1,17 @@
 import { http, HttpResponse } from 'msw'
-
-import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
 import {
   erInternOppgaveId,
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
   type OppgaveId,
   oppgaveIdUtenPrefix,
-  Oppgavestatus,
-  Oppgavetype,
   type OppgaveV1,
-  OppgaveV2,
 } from '../../oppgave/oppgaveTypes.ts'
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type OppgavelisteResponse } from '../../oppgaveliste/v1/useOppgavelisteV1.ts'
 import { OppgaveStatusType, SakerFilter } from '../../types/types.internal.ts'
-import { compareBy, type Direction } from '../../utils/array.ts'
-import { select } from '../../utils/select.ts'
 import { type StoreHandlersFactory } from '../data'
-import { delay, respondNoContent, respondNotFound } from './response.ts'
+import { delay, getUrlParam, getUrlParams, respondNoContent, respondNotFound } from './response.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -26,83 +19,23 @@ export interface OppgaveParams {
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
   http.get<never, never, FinnOppgaverResponse>(`/api/oppgaver-v2`, async ({ request }) => {
-    const url = new URL(request.url)
-
     await delay(200)
-
-    const meg = await saksbehandlerStore.innloggetSaksbehandler()
-    const alleOppgaver = await oppgaveStore.alle()
-    const filtrerteOppgaver = alleOppgaver
-      .filter((oppgave) => {
-        return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
-      })
-      .filter((oppgave) => {
-        const oppgavetype = url.searchParams.get('oppgavetype')
-        if (oppgavetype === Oppgavetype.JOURNALFØRING) {
-          return oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
-        } else {
-          return oppgave.kategorisering.oppgavetype !== Oppgavetype.JOURNALFØRING
-        }
-      })
-      .filter((oppgave) => {
-        switch (url.searchParams.get('tildelt')) {
-          case 'MEG':
-            return oppgave.tildeltSaksbehandler?.id === meg.id
-          case 'INGEN':
-            return oppgave.tildeltSaksbehandler == null
-          case 'MEDARBEIDER':
-            return oppgave.tildeltSaksbehandler != null
-          default:
-            return true
-        }
-      })
-      .sort((a, b) => {
-        let key: 'fristFerdigstillelse' | 'opprettetTidspunkt' = 'fristFerdigstillelse'
-        switch (url.searchParams.get('sorteringsfelt')) {
-          case 'FRIST':
-            key = 'fristFerdigstillelse'
-            break
-          case 'OPPRETTET_TIDSPUNKT':
-            key = 'opprettetTidspunkt'
-            break
-        }
-        const direction = (url.searchParams.get('sorteringsrekkefølge') ?? 'none') as Direction
-        const comparator = compareBy<OppgaveV2>(select(key), direction)
-        return comparator(a, b)
-      })
-
-    const pageNumber = +(url.searchParams.get('page') ?? 1)
-    const pageSize = +(url.searchParams.get('limit') ?? 1_000)
-    const offset = calculateOffset({ pageNumber, pageSize })
-    const totalElements = filtrerteOppgaver.length
-    return HttpResponse.json({
-      oppgaver: filtrerteOppgaver.slice(offset, offset + pageSize),
-      pageNumber,
-      pageSize,
-      totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
-      totalElements,
+    const url = new URL(request.url)
+    const response = await oppgaveStore.finn({
+      oppgavetype: getUrlParams(url, 'oppgavetype'),
+      tildelt: getUrlParam(url, 'tildelt'),
+      sorteringsfelt: getUrlParam(url, 'sorteringsfelt'),
+      sorteringsrekkefølge: getUrlParam(url, 'sorteringsrekkefølge'),
+      pageNumber: +(url.searchParams.get('page') ?? 1),
+      pageSize: +(url.searchParams.get('limit') ?? 1_000),
     })
+    return HttpResponse.json(response)
   }),
 
   http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver-v2/sok`, async ({ request }) => {
-    const { fnr } = await request.json()
-
     await delay(200)
-
-    const alleOppgaver = await oppgaveStore.alle()
-    const filtrerteOppgaver = alleOppgaver.filter((oppgave) => oppgave.fnr === fnr)
-
-    const pageNumber = 1
-    const pageSize = 1_000
-    const offset = calculateOffset({ pageNumber, pageSize })
-    const totalElements = filtrerteOppgaver.length
-    return HttpResponse.json({
-      oppgaver: filtrerteOppgaver.slice(offset, offset + pageSize),
-      pageNumber,
-      pageSize,
-      totalPages: calculateTotalPages({ pageNumber, pageSize, totalElements }),
-      totalElements,
-    })
+    const response = await oppgaveStore.finn(await request.json())
+    return HttpResponse.json(response)
   }),
 
   http.get<OppgaveParams>('/api/oppgaver-v2/:oppgaveId', async ({ params }) => {

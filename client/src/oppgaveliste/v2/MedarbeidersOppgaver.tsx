@@ -1,6 +1,6 @@
 import { Box } from '@navikt/ds-react'
 
-import { OppgaveTildelt } from '../../oppgave/oppgaveTypes.ts'
+import { OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { MedarbeidersOppgaverTable } from './MedarbeidersOppgaverTable.tsx'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
@@ -9,8 +9,11 @@ import { useClientSideOppgaver } from './useClientSideOppgaver.ts'
 import { useOppgavemetrikker } from './useOppgavemetrikker.ts'
 
 export function MedarbeidersOppgaver() {
-  useOppgavemetrikker()
-  const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver(OppgaveTildelt.MEDARBEIDER)
+  const { oppgaver, isLoading, totalElements, filterOptions } = useClientSideOppgaver({
+    statuskategori: Statuskategori.ÅPEN,
+    tildelt: OppgaveTildelt.MEDARBEIDER,
+  })
+  useOppgavemetrikker(oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveColumnsProvider suffix="Medarbeiders" defaultColumns={defaultColumns}>

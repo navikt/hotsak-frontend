@@ -1,21 +1,25 @@
-import useSwr, { SWRResponse } from 'swr'
+import useSwr from 'swr'
 
 import { HttpError } from '../../io/HttpError.ts'
 import { useSakId } from '../useSak.ts'
 
-interface UseProblemsammendragResponse extends Omit<SWRResponse<string, HttpError>, 'data'> {
+interface UseProblemsammendragResponse {
   sammendragMedLavere: boolean
+  problemsammendrag: string
+}
+
+interface ProblemsammendragResponse {
   problemsammendrag: string
 }
 
 export function useProblemsammendrag(): UseProblemsammendragResponse {
   const sakId = useSakId()
-  const { data: problemsammendrag, ...rest } = useSwr<string, HttpError>(
+  const { data, ...rest } = useSwr<ProblemsammendragResponse, HttpError>(
     sakId ? `/api/sak/${sakId}/serviceforesporsel` : null
   )
   return {
-    sammendragMedLavere: problemsammendrag?.startsWith('POST ') ?? false,
-    problemsammendrag: problemsammendrag ?? '',
+    sammendragMedLavere: data?.problemsammendrag?.startsWith('POST ') ?? false,
+    problemsammendrag: data?.problemsammendrag ?? '',
     ...rest,
   }
 }

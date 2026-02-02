@@ -9,6 +9,7 @@ import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
+import { useUmami } from '../../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
@@ -47,6 +48,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
   const { sammendragMedLavere, problemsammendrag } = useProblemsammendrag()
+  const { logUtfallLavereRangert, logPostbegrunnelseEndret } = useUmami()
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
@@ -77,10 +79,19 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return true
   }
 
+  const harEndretPostbegrunnelse = () => {
+    const currentValue = form.getValues('postbegrunnelse')
+    return currentValue !== lavereRangertBegrunnelse
+  }
+
   const fattVedtak = async (data: VedtakFormValues) => {
     if (sammendragMedLavere && !harLagretPostbegrunnelse) {
     } else {
       await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
+      if (lavereRangertHjelpemiddel) {
+        logUtfallLavereRangert({ utfall: 'innvilget' })
+        if (harEndretPostbegrunnelse()) logPostbegrunnelseEndret()
+      }
       setVisVedtakModal(false)
     }
   }
@@ -331,6 +342,10 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       <OverførSakTilGosysModal
         {...overførGosys}
         onBekreft={async (tilbakemelding) => {
+          if (lavereRangertHjelpemiddel) {
+            logUtfallLavereRangert({ utfall: 'overført_gosys' })
+            if (harEndretPostbegrunnelse()) logPostbegrunnelseEndret()
+          }
           await overførGosys.onBekreft(tilbakemelding)
         }}
       />

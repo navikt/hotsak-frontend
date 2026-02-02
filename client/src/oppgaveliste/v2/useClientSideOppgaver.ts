@@ -4,8 +4,8 @@ import { DataGridCollection } from '../../felleskomponenter/data/DataGridCollect
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../../io/HttpError.ts'
 import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
-import { OppgaveTildelt, type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { useOppgaver } from '../../oppgave/useOppgaver.ts'
+import { type FinnOppgaverRequest, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { useOpppgavesøk } from '../../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {
@@ -33,15 +33,16 @@ export interface UseClientSideOppgaverResponse {
   filterOptions: OppgaveFilterOptions
 }
 
-export function useClientSideOppgaver(tildelt: OppgaveTildelt): UseClientSideOppgaverResponse {
+export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}): UseClientSideOppgaverResponse {
   const { sort } = useOppgavePaginationContext()
-  const eksterneOppgaver = useOppgaver({
+  const { tildelt, ...rest } = request
+  const eksterneOppgaver = useOpppgavesøk({
     tildelt,
-    statuskategori: Statuskategori.ÅPEN,
     sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
     sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
-    page: pageNumber,
-    limit: pageSize,
+    pageNumber,
+    pageSize,
+    ...rest,
   })
   const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)
   const alleOppgaver = useMemo(() => {

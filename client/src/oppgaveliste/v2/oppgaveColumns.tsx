@@ -1,5 +1,5 @@
 import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
-import { BodyShort, HStack, Tag } from '@navikt/ds-react'
+import { BodyShort, HStack, Tag, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
 import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
@@ -186,11 +186,20 @@ export const oppgaveColumns = {
         <HStack align="center" gap="2" wrap={false}>
           <FormatDate date={row.fristFerdigstillelse} />
           {row.fristFerdigstillelse && isBefore(row.fristFerdigstillelse, Date.now()) && (
-            <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
+            <Tooltip content="Fristen har gått ut">
+              <HourglassBottomFilledIcon color="var(--ax-text-danger-decoration)" width={20} height={20} />
+            </Tooltip>
           )}
         </HStack>
       )
     },
+  },
+  ferdigstiltTidspunkt: {
+    field: 'ferdigstiltTidspunkt',
+    header: 'Ferdigstilt',
+    sortKey: 'ferdigstiltTidspunkt',
+    width: 125,
+    formatDateTime: true,
   },
   brukerFnr: {
     field: 'brukerFnr',

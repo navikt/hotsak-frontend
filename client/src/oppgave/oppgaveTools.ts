@@ -1,5 +1,5 @@
 import { OppgaveStatusType } from '../types/types.internal.ts'
-import { Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV1, OppgaveV2 } from './oppgaveTypes.ts'
+import { Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV1, OppgaveV2, Statuskategori } from './oppgaveTypes.ts'
 
 /**
  * Konverter oppgave til ny modell.
@@ -7,10 +7,15 @@ import { Oppgaveprioritet, Oppgavestatus, Oppgavetype, OppgaveV1, OppgaveV2 } fr
  * @param oppgave
  */
 export function oppgaveV1ToV2(oppgave: OppgaveV1): OppgaveV2 {
+  const oppgavestatus = oppgavestatusByOppgaveStatusType[oppgave.status]
   return {
     oppgaveId: oppgave.oppgaveId,
     versjon: oppgave.versjon,
-    oppgavestatus: oppgavestatusByOppgaveStatusType[oppgave.status],
+    statuskategori:
+      oppgavestatus == Oppgavestatus.FERDIGSTILT || oppgavestatus == Oppgavestatus.FEILREGISTRERT
+        ? Statuskategori.AVSLUTTET
+        : Statuskategori.ÅPEN,
+    oppgavestatus,
     prioritet: oppgave.hast ? Oppgaveprioritet.HØY : Oppgaveprioritet.NORMAL,
     kategorisering: {
       oppgavetype: utledOppgavetypeForOppgave(oppgave),

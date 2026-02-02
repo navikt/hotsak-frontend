@@ -11,6 +11,7 @@ import type {
   Saksbehandler,
   Sakstype,
 } from '../types/types.internal'
+import { type IntervalString } from '../utils/dato.ts'
 
 /**
  * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
@@ -115,6 +116,7 @@ export interface OppgaveBase {
 }
 
 export interface OppgaveV2 extends OppgaveBase {
+  statuskategori: Statuskategori
   oppgavestatus: Oppgavestatus
   prioritet: Oppgaveprioritet
   kategorisering: Oppgavekategorisering
@@ -196,7 +198,28 @@ export interface GjelderAlternativerResponse {
 }
 
 export interface FinnOppgaverRequest {
-  fnr?: string
+  statuskategori?: Statuskategori
+  oppgavetype?: Oppgavetype[]
+
+  // tildeling
+  brukerId?: string
+  journalpostId?: string[]
+  sakId?: string[]
+
+  tildelt?: OppgaveTildelt
+
+  // tidspunkter
+  opprettetIntervall?: IntervalString
+  aktivIntervall?: IntervalString
+  fristIntervall?: IntervalString
+  ferdigstiltIntervall?: IntervalString
+
+  // sortering
+  sorteringsfelt?: 'FRIST' | 'OPPRETTET_TIDSPUNKT'
+  sorteringsrekkefølge?: 'ASC' | 'DESC'
+
+  pageNumber?: number
+  pageSize?: number
 }
 
 export interface FinnOppgaverResponse extends PageResponse {

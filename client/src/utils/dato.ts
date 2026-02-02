@@ -2,14 +2,20 @@ import {
   compareAsc,
   compareDesc,
   differenceInYears,
+  type Duration,
   format,
   formatDistance,
+  formatISODuration,
+  isDate,
   isToday,
   parseISO,
   setDefaultOptions,
   toDate,
 } from 'date-fns'
+
 import { nb } from 'date-fns/locale'
+
+import { isNumber } from './type.ts'
 
 setDefaultOptions({ locale: nb })
 
@@ -25,13 +31,11 @@ export function formaterDatoLang(dato?: string): string {
 
 export function formaterTidsstempel(dato?: string): string {
   if (!dato) return ''
-
   return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
 }
 
 export function formaterTidsstempelLesevennlig(dato?: string): string {
   if (!dato) return ''
-
   return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM.yyyy 'kl.' HH.mm")
 }
 
@@ -49,7 +53,6 @@ export function formaterRelativTid(dato?: string): string {
 
 export function formaterTidsstempelKort(dato?: string): string {
   if (!dato) return ''
-
   return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM 'kl.' HH.mm")
 }
 
@@ -68,4 +71,34 @@ export function sorterKronologiskSynkende(a: string, b: string): number {
 
 export function beregnAlder(fødselsdato: Date | number | string) {
   return differenceInYears(new Date(), fødselsdato)
+}
+
+export type IntervalString = `${string}/${string}`
+export function intervalString(fra: Date | Duration | string, til: Date | Duration | string): IntervalString {
+  if (isDate(fra)) {
+    fra = fra.toISOString()
+  } else if (isDuration(fra)) {
+    fra = formatISODuration(fra)
+  }
+  if (isDate(til)) {
+    til = til.toISOString()
+  } else if (isDuration(til)) {
+    til = formatISODuration(til)
+  }
+  return `${fra}/${til}`
+}
+
+function isDuration(value: unknown): value is Duration {
+  if (value == null) return false
+  if (isDate(value)) return false
+  const duration = value as Duration
+  return (
+    isNumber(duration.years) ||
+    isNumber(duration.months) ||
+    isNumber(duration.weeks) ||
+    isNumber(duration.days) ||
+    isNumber(duration.hours) ||
+    isNumber(duration.minutes) ||
+    isNumber(duration.seconds)
+  )
 }

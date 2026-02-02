@@ -1,5 +1,13 @@
 import { delay as mswDelay, DelayMode, HttpResponse } from 'msw'
 
+export function getUrlParam<T>(url: URL, name: string): T | undefined {
+  return (url.searchParams.get(name) ?? undefined) as T | undefined
+}
+
+export function getUrlParams<T>(url: URL, name: string): T[] | undefined {
+  return (url.searchParams.getAll(name) ?? undefined) as T[] | undefined
+}
+
 export function respondCreated(location?: string): Response {
   return new Response(null, {
     status: 201,

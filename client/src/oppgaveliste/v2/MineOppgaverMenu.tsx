@@ -1,6 +1,6 @@
 import { ActionMenu } from '@navikt/ds-react'
 
-import type { OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveV2, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { OppgaveMenu } from './OppgaveMenu.tsx'
 import { useMutateOppgaver } from './useMutateOppgaver.ts'
@@ -16,6 +16,7 @@ export function MineOppgaverMenu(props: MineOppgaverMenuProps) {
   return (
     <OppgaveMenu>
       <ActionMenu.Item
+        disabled={oppgave.statuskategori == Statuskategori.AVSLUTTET}
         onSelect={async () => {
           await fjernOppgavetildeling()
           await mutateOppgaver()

@@ -12,4 +12,7 @@ export const enum UmamiTaksonomi {
   OPPGAVELISTE_FILTRERT = 'oppgaveliste filtrert',
   OPPGAVELISTE_SORTERT = 'oppgaveliste sortert',
   OPPGAVELISTE_TILPASSET = 'oppgaveliste tilpasset',
+
+  UTFALL_LAVERE_RANGERT = 'utfall lavere rangert',
+  POSTBEGRUNNELSE_ENDRET = 'postbegrunnelse endret',
 }

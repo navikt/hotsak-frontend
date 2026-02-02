@@ -20,9 +20,6 @@ declare global {
       GIT_COMMIT?: string
     }
     faro?: Faro
-    umami?: {
-      track: (event: string, data: object) => void
-    }
     store: {
       saksbehandlere(): Promise<InnloggetAnsatt[]>
       byttInnloggetSaksbehandler(id: string): void

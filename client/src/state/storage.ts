@@ -14,6 +14,7 @@ export const storageKeys = new Set([
   'oppgavePaginationMedarbeiders',
   'oppgavePaginationMine',
   'sortState',
+  'userTrackingId',
 ])
 
 /**

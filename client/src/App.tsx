@@ -19,8 +19,10 @@ import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
 import classes from './App.module.css'
-import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
 import { TextContainer } from './felleskomponenter/typografi.tsx'
+import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
+
+import { useLogBruker } from './sporing/useLogBruker.ts'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -32,6 +34,7 @@ function App() {
   const [darkmode] = useDarkmode()
   const [nyttSaksbilde] = useNyttSaksbilde()
 
+  useLogBruker()
   useLogVinduStørrelse()
 
   return (

@@ -43,7 +43,8 @@
     "stacktrace-js": "2.0.2",
     "styled-components": "6.3.8",
     "swr": "2.3.8",
-    "uuid": "13.0.0"
+    "uuid": "13.0.0",
+    "whatwg-fetch": "3.6.20"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

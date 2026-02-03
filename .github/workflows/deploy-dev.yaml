@@ -9,7 +9,6 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - problemsammendrag-troubleshooting
 
 jobs:
   test:

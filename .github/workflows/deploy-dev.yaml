@@ -119,7 +119,7 @@ jobs:
 
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2

@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: NAIS-login
         uses: nais/login@v0

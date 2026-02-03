@@ -8,16 +8,16 @@ jobs:
 
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Autentiser med GitHub NPM registry
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READER_TOKEN }}" >> ~/.npmrc
           echo "@navikt:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - name: Sett opp Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Installer pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -35,4 +35,4 @@ jobs:
           working-directory: client
           config-file: cypress.config.js
           record: false
-          parallel: true  
+          parallel: true

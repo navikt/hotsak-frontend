@@ -20,3 +20,9 @@ export async function initUmami(): Promise<void> {
 
   console.debug('Umami er initialisert med website ID:', window.appSettings.UMAMI_WEBSITE_ID)
 }
+
+export async function setIdentifier(ident: string): Promise<void> {
+  if (typeof window !== 'undefined' && window.umami) {
+    await window.umami.identify(ident)
+  }
+}

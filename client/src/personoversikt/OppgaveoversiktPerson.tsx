@@ -13,7 +13,7 @@ export function OppgaveoversiktPerson(props: OppgaveoversiktPersonProps) {
   if (!data) {
     return null
   }
-  return <DataGrid rows={data.oppgaver} columns={columns} keyFactory={selectOppgaveId} />
+  return <DataGrid rows={data.oppgaver} columns={columns} keyFactory={selectOppgaveId} size="small" />
 }
 
 const columns = [

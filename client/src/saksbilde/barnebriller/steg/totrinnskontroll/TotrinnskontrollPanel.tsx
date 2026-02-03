@@ -11,9 +11,9 @@ import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 export function TotrinnskontrollPanel() {
   const saksbehandler = useInnloggetAnsatt()
 
-  const { sak, isError } = useBarnebrillesak()
+  const { sak, error } = useBarnebrillesak()
 
-  if (isError || !sak) {
+  if (error || !sak) {
     return (
       <HøyrekolonnePanel tittel="Totrinnskontroll">
         <Tekst>Feil ved henting av sak..</Tekst>

@@ -15,7 +15,7 @@ import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
 
 const RegistrerSøknadContent = memo(() => {
-  const { sak, isLoading, isError } = useBarnebrillesak()
+  const { sak, isLoading, error } = useBarnebrillesak()
   const { dokumenter } = useJournalposter()
   const { setValgtDokument } = useDokumentContext()
   const { showBoundary } = useErrorBoundary()
@@ -32,8 +32,8 @@ const RegistrerSøknadContent = memo(() => {
 
   if (isLoading) return <LasterRegistrerSøknadBilde />
 
-  if (isError) {
-    showBoundary(isError)
+  if (error) {
+    showBoundary(error)
   }
 
   if (sak?.data.sakstype !== Sakstype.BARNEBRILLER) {

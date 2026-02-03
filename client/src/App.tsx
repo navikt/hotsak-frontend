@@ -1,8 +1,8 @@
+import { Box, LocalAlert, Theme } from '@navikt/ds-react'
 import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, type SWRConfiguration } from 'swr'
-import { Theme } from '@navikt/ds-react'
 
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
@@ -14,14 +14,13 @@ import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
 import { SakTitle } from './SakTitle.tsx'
+import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
-import { useEksperimenter } from './eksperimentelt/useEksperimenter.ts'
-import { EksperimentellApp } from './eksperimentelt/EksperimentellApp.tsx'
-import { useMiljø } from './utils/useMiljø.ts'
-import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 
 import classes from './App.module.css'
+import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
+import { TextContainer } from './felleskomponenter/typografi.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -31,6 +30,8 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
   const [darkmode] = useDarkmode()
+  const [nyttSaksbilde] = useNyttSaksbilde()
+
   useLogVinduStørrelse()
 
   return (
@@ -68,7 +69,23 @@ function App() {
                         element={
                           <RequireAuth>
                             <SakTitle />
-                            <Saksbilde />
+                            {nyttSaksbilde ? (
+                              <Box padding="space-20">
+                                <TextContainer>
+                                  <LocalAlert status="warning">
+                                    <LocalAlert.Header>
+                                      <LocalAlert.Title>TODO </LocalAlert.Title>
+                                    </LocalAlert.Header>
+                                    <LocalAlert.Content>
+                                      TODO: Hvordan skal vi vise en Hotsak1.5 sak når vi ikke er i context av en
+                                      oppgave?
+                                    </LocalAlert.Content>
+                                  </LocalAlert>
+                                </TextContainer>
+                              </Box>
+                            ) : (
+                              <Saksbilde />
+                            )}
                           </RequireAuth>
                         }
                       />
@@ -121,13 +138,4 @@ function withRoutingAndState(Component: ComponentType): () => ReactNode {
   )
 }
 
-function AppVelger() {
-  const [eksperimentell] = useEksperimenter()
-  const { erProd } = useMiljø()
-  if (erProd) {
-    return <App />
-  }
-  return eksperimentell ? <EksperimentellApp /> : <App />
-}
-
-export default withRoutingAndState(AppVelger)
+export default withRoutingAndState(App)

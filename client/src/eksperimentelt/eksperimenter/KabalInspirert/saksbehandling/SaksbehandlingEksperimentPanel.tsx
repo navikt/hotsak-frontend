@@ -13,7 +13,7 @@ import { BekreftelseModal } from '../../../../saksbilde/komponenter/BekreftelseM
 import { InfoModal } from '../../../../saksbilde/komponenter/InfoModal'
 import { useBehovsmelding } from '../../../../saksbilde/useBehovsmelding'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../types/behandlingTyper.ts'
-import { OppgaveStatusLabel, Sak } from '../../../../types/types.internal'
+import { OppgaveStatusLabel } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../../../utils/formater'
 import { BrevPanelEksperiment } from '../brev/BrevPanelEksperiment'
@@ -26,16 +26,18 @@ import { SakKontrollPanel } from './SakKontrollPanel'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 import { SidepanelEksperiment } from './sidepanel/SidepanelEksperiment'
 import { SøknadPanelEksperiment } from './søknad/SøknadPanelEksperiment'
+import { useSak } from '../../../../saksbilde/useSak.ts'
 
 interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
+export function SaksbehandlingEksperiment() {
+  const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
   const [vedtakLoader, setVedtakLoader] = useState(false)
-  const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.bruker.fnr)
+  const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
 
   const [visBrevMangler, setVisBrevMangler] = useState(false)
@@ -59,7 +61,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
 
   const form = useForm<VedtakFormValues>({
     defaultValues: {
-      problemsammendrag: `${storForbokstavIAlleOrd(sak.søknadGjelder.replace('Søknad om:', '').trim())}; ${sak.sakId}`,
+      problemsammendrag: `${storForbokstavIAlleOrd(sak?.data.søknadGjelder.replace('Søknad om:', '').trim())}; ${sak?.data.sakId}`,
     },
   })
 
@@ -74,6 +76,11 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
   if (!behovsmelding) {
     // TODO skeleton eller loader her?
     return <div>Fant ikke behovsmelding</div>
+  }
+
+  if (!sak) {
+    // TODO skeleton eller loader her?
+    return <div>Fant ikke sak</div>
   }
 
   return (
@@ -105,7 +112,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
-                  <SøknadPanelEksperiment sak={sak} behovsmelding={behovsmelding} />
+                  <SøknadPanelEksperiment sak={sak.data} behovsmelding={behovsmelding} />
                 )}
               </Panel>
               {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}
@@ -115,7 +122,7 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
             <>
               <Panel defaultSize={25} minSize={10} order={3}>
                 {sak && behovsmelding ? (
-                  <BehandlingEksperimentPanel sak={sak} behovsmelding={behovsmelding} />
+                  <BehandlingEksperimentPanel sak={sak.data} behovsmelding={behovsmelding} />
                 ) : (
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}
@@ -185,12 +192,12 @@ export function SaksbehandlingEksperiment({ sak }: { sak: Sak }) {
                 >
                   {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
                 </Tag>
-                <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak?.vedtak?.vedtaksdato)}`}</Tekst>
+                <Tekst>{`av: ${sak.data.saksbehandler?.navn} ${formaterDato(sak.data.vedtak?.vedtaksdato)}`}</Tekst>
               </HStack>
             )}
             {!oppgaveFerdigstilt && (
               <Tag variant="neutral-moderate" size="small">
-                {OppgaveStatusLabel.get(sak.saksstatus)}
+                {OppgaveStatusLabel.get(sak.data.saksstatus)}
               </Tag>
             )}
           </HStack>

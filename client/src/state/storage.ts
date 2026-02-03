@@ -3,7 +3,7 @@ import { replacer } from './serde.ts'
 export const storageKeys = new Set([
   'darkmode',
   'debug',
-  'eksperimentell',
+  'nyttSaksbilde',
   'filterState',
   'innloggetSaksbehandlerId',
   'nyOppgaveliste',

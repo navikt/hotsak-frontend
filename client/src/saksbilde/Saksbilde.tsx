@@ -12,9 +12,15 @@ import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
+import { SaksbehandlingEksperimentProvider } from '../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SaksbehandlingEksperimentProvider'
+import { SaksbehandlingEksperiment } from '../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SaksbehandlingEksperimentPanel'
+import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
+import { useMiljø } from '../utils/useMiljø'
 
 const SaksbildeContent = memo(() => {
-  const { sak, isLoading, isError } = useSak()
+  const [nyttSaksbilde] = useNyttSaksbilde()
+  const { erIkkeProd } = useMiljø()
+  const { sak, isLoading, error } = useSak()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const { showBoundary } = useErrorBoundary()
   const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
@@ -25,15 +31,23 @@ const SaksbildeContent = memo(() => {
     return <PersonFeilmelding personError={personInfoError} />
   }
 
-  if (isError) {
-    showBoundary(isError)
+  if (error) {
+    showBoundary(error)
   }
 
   if (behovsmeldingError) {
     showBoundary(behovsmeldingError)
   }
 
-  if (!sak?.data) return <div>Fant ikke sak</div>
+  if (!sak) return <div>Fant ikke sak</div>
+
+  if (erIkkeProd && nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD) {
+    return (
+      <SaksbehandlingEksperimentProvider>
+        <SaksbehandlingEksperiment />
+      </SaksbehandlingEksperimentProvider>
+    )
+  }
 
   return (
     <>

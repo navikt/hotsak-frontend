@@ -3,7 +3,6 @@ import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { useEksperimenter } from '../eksperimentelt/useEksperimenter.ts'
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { Pilot } from '../felleskomponenter/Pilot.tsx'
 import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
@@ -14,6 +13,7 @@ import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
+import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -27,13 +27,13 @@ export function Toppmeny() {
   const navigate = useNavigate()
   const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
   const [darkmode, setDarkmode] = useDarkmode()
-  const [, setEksperimentell] = useEksperimenter()
+  const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
 
   return (
     <InternalHeader>
       <InternalHeader.Title as="a" href="/">
-        HOTSAK
+        {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
       </InternalHeader.Title>
 
       <SøkeContainer>
@@ -108,11 +108,10 @@ export function Toppmeny() {
                 as="a"
                 href="/"
                 onClick={() => {
-                  setEksperimentell(true)
-                  setNyOppgaveliste(true)
+                  setNyttSaksbilde(!nyttSaksbilde)
                 }}
               >
-                Hotsak 1.5
+                {nyttSaksbilde ? 'Gammelt saksbilde' : 'Hotsak 1.5 - saksbehandling'}
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>

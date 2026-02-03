@@ -36,15 +36,15 @@ const Header = styled(HStack)`
 `
 
 const BarnebrillesakContent = memo(() => {
-  const { sak, isError } = useBarnebrillesak()
+  const { sak, error } = useBarnebrillesak()
   const { step } = useManuellSaksbehandlingContext()
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const { showBoundary } = useErrorBoundary()
   const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
-  if (isError) {
-    showBoundary(isError)
+  if (error) {
+    showBoundary(error)
   }
 
   if (sak?.data.sakstype !== Sakstype.BARNEBRILLER) {

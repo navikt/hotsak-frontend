@@ -84,6 +84,10 @@ export function useUmami() {
     logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_SORTERT, data)
   }
 
+  const logOppgavelisteTilpasset: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.OPPGAVELISTE_TILPASSET, data)
+  }
+
   const logUtfallLavereRangert: Logger = (data) => {
     logUmamiHendelse(UmamiTaksonomi.UTFALL_LAVERE_RANGERT, data)
   }
@@ -106,6 +110,7 @@ export function useUmami() {
     logGammelOppgavelisteValgt,
     logOppgavelisteFiltrert,
     logOppgavelisteSortert,
+    logOppgavelisteTilpasset,
 
     logUtfallLavereRangert,
     logPostbegrunnelseEndret,

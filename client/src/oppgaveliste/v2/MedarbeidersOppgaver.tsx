@@ -11,7 +11,7 @@ export function MedarbeidersOppgaver() {
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.MEDARBEIDER,
   })
-  useOppgavemetrikker(oppgaver.length, totalElements)
+  useOppgavemetrikker('Medarbeiders', oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />

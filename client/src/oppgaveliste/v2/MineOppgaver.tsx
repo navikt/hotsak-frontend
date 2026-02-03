@@ -18,7 +18,7 @@ export function MineOppgaver() {
     tildelt: OppgaveTildelt.MEG,
     ferdigstiltIntervall: visFerdigstilte ? intervalString({ days: ANTALL_DAGER_FERDIGSTILTE }, iDag) : undefined,
   })
-  useOppgavemetrikker(oppgaver.length, totalElements)
+  useOppgavemetrikker('Mine', oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`}>

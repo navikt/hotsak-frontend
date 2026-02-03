@@ -11,7 +11,7 @@ export function EnhetensOppgaver() {
     statuskategori: Statuskategori.ÅPEN,
     tildelt: OppgaveTildelt.INGEN,
   })
-  useOppgavemetrikker(oppgaver.length, totalElements)
+  useOppgavemetrikker('Enhetens', oppgaver.length, totalElements)
   return (
     <Box.New marginInline="5">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />

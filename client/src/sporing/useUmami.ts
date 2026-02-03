@@ -8,8 +8,6 @@ type Logger<T = Record<string, any>> = (data?: T) => void
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
-  const { gjeldendeEnhet } = useInnloggetAnsatt()
-  const enhetsnavn = gjeldendeEnhet.navn
 
   useEffect(() => {
     const checkReady = () => {
@@ -22,11 +20,14 @@ export function useUmami() {
     checkReady()
   }, [])
 
+  const { gjeldendeEnhet } = useInnloggetAnsatt()
   const logUmamiHendelse = useCallback(
     (navn: UmamiTaksonomi, data?: Record<string, any>) => {
+      const { nummer: enhetsnummer, navn: enhetsnavn } = gjeldendeEnhet
       if (typeof window !== 'undefined' && window.umami) {
         window.umami.track(navn, {
           appnavn: 'hotsak',
+          enhetsnummer,
           enhetsnavn,
           ...data,
         })
@@ -34,7 +35,7 @@ export function useUmami() {
         logDebug(navn, enhetsnavn, data)
       }
     },
-    [enhetsnavn]
+    [gjeldendeEnhet]
   )
 
   const logKnappKlikket: Logger = (data) => {

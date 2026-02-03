@@ -16,9 +16,10 @@ import { select } from '../utils/select.ts'
 import { HjelpemiddeloversiktTable } from './HjelpemiddeloversiktTable.tsx'
 import { usePersonContext } from './PersonContext'
 import { Saksoversikt } from './Saksoversikt'
-import { SaksoversiktLinje } from './SaksoversiktLinje'
+import { PersonoversiktTabs } from './PersonoversiktTabs.tsx'
 import { usePerson } from './usePerson'
 import { useSaksoversikt } from './useSaksoversikt.ts'
+import { OppgaveoversiktPerson } from './OppgaveoversiktPerson.tsx'
 
 function PersonoversiktContent() {
   const { fodselsnummer } = usePersonContext()
@@ -54,9 +55,13 @@ function PersonoversiktContent() {
       ) : (
         <>
           <Personlinje loading={personInfoLoading} person={personInfo} />
-          <SaksoversiktLinje sakerCount={sakerOgBarnebrillekrav.length} hjelpemidlerCount={antallUtlånteHjelpemidler} />
+          <PersonoversiktTabs
+            sakerCount={sakerOgBarnebrillekrav.length}
+            hjelpemidlerCount={antallUtlånteHjelpemidler}
+          />
           <Box paddingBlock="4" paddingInline="8">
             <Routes>
+              <Route path="/oppgaver" element={<OppgaveoversiktPerson fnr={fodselsnummer} />} />
               <Route
                 path="/saker"
                 element={

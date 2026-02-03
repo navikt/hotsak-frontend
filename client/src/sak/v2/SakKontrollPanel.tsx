@@ -1,7 +1,7 @@
 import { Chips, HStack } from '@navikt/ds-react'
 import clsx from 'clsx'
-import globalStyles from '../../../../styles/shared.module.css'
-import { SakMenyEksperiment } from './SakMenyEksperiment'
+import globalStyles from '../../styles/shared.module.css'
+import { SakMenyEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SakMenyEksperiment'
 import classes from './SaksbehandlingEksperiment.module.css'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider'
 

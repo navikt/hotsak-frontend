@@ -9,9 +9,9 @@ import { NotificationBadge } from '../../../../../saksbilde/høyrekolonne/notat/
 import { useNotater } from '../../../../../saksbilde/høyrekolonne/notat/useNotater'
 import { useSak } from '../../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
-import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SaksbehandlingEksperimentProviderTypes'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../../../../sak/v2/SaksbehandlingEksperimentProviderTypes'
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
+import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SaksbehandlingEksperimentProvider'
 
 export function SidepanelEksperiment() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =

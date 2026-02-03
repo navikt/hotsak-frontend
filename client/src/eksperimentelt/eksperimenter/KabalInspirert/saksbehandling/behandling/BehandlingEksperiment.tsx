@@ -14,10 +14,10 @@ import { formaterDato, formaterTidsstempelLesevennlig } from '../../../../../uti
 import { storForbokstavIOrd } from '../../../../../utils/formater.ts'
 import { useBrevMetadata } from '../../brev/useBrevMetadata.ts'
 import { PanelTittel } from '../PanelTittel.tsx'
-import { useSaksbehandlingEksperimentContext } from '../SaksbehandlingEksperimentProvider'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { Brevstatus } from '../../brev/brevTyper.ts'
+import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SaksbehandlingEksperimentProvider.tsx'
 
 interface BehandlingEksperimentPanelProps {
   sak: Sak

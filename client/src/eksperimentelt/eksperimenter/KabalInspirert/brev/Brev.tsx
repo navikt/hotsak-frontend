@@ -12,11 +12,11 @@ import { Brevtype, RessursStatus } from '../../../../types/types.internal.ts'
 import { formaterDatoLang } from '../../../../utils/dato.ts'
 import { useBehandling } from '../saksbehandling/behandling/useBehandling.ts'
 import { PanelTittel } from '../saksbehandling/PanelTittel.tsx'
-import { useSaksbehandlingEksperimentContext } from '../saksbehandling/SaksbehandlingEksperimentProvider.tsx'
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
+import { useSaksbehandlingEksperimentContext } from '../../../../sak/v2/SaksbehandlingEksperimentProvider.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()

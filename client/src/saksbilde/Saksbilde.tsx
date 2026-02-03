@@ -12,10 +12,10 @@ import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { SaksbehandlingEksperimentProvider } from '../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SaksbehandlingEksperimentProvider'
-import { SaksbehandlingEksperiment } from '../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SaksbehandlingEksperimentPanel'
+import { SaksbehandlingEksperiment } from '../sak/v2/SaksbehandlingEksperimentPanel'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
 import { useMiljø } from '../utils/useMiljø'
+import { SaksbehandlingEksperimentProvider } from '../sak/v2/SaksbehandlingEksperimentProvider'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()

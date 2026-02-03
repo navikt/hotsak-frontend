@@ -5,29 +5,16 @@ export async function initFaro(): Promise<void> {
     return
   }
 
-  const {
-    ConsoleInstrumentation,
-    ErrorsInstrumentation,
-    LogLevel,
-    SessionInstrumentation,
-    getWebInstrumentations,
-    initializeFaro,
-  } = await import('@grafana/faro-web-sdk')
-
+  const { initializeFaro } = await import('@grafana/faro-web-sdk')
   initializeFaro({
     url: window.appSettings.FARO_URL,
     app: {
       name: 'hotsak-frontend',
       version: window.appSettings.GIT_COMMIT,
     },
-    instrumentations: [
-      new ErrorsInstrumentation(),
-      ...getWebInstrumentations({ captureConsole: true }),
-      new ConsoleInstrumentation({
-        disabledLevels: [LogLevel.TRACE], // console.log will be captured
-      }),
-      new SessionInstrumentation(),
-    ],
+    consoleInstrumentation: {
+      disabledLevels: [LogLevel.TRACE], // console.log will be captured
+    },
   })
 }
 

@@ -1,20 +1,29 @@
-import { type ReactNode, useReducer } from 'react'
+import { type ReactNode } from 'react'
 
+import { useLocalReducer } from '../../state/useLocalReducer.ts'
+import { type DataGridFilterValues } from './DataGridFilter.ts'
 import {
   type DataGridFilterAction,
   DataGridFilterContext,
   DataGridFilterDispatch,
   type DataGridFilterState,
 } from './DataGridFilterContext.ts'
-import type { DataGridFilterValues } from './DataGridFilter.ts'
 
 export interface DataGridFilterProviderProps {
+  suffix: string
   children: ReactNode
 }
 
 export function DataGridFilterProvider(props: DataGridFilterProviderProps) {
-  const { children } = props
-  const [state, dispatch] = useReducer(reducer, {})
+  const { suffix, children } = props
+  const [state, dispatch] = useLocalReducer('dataGridFilter' + suffix, reducer, (storedState) => {
+    const initialState: DataGridFilterState = {}
+    if (storedState == null) return initialState
+    return Object.entries(storedState).reduce((state, [field, values]) => {
+      state[field] = { values: new Set(values.values) }
+      return state
+    }, initialState)
+  })
   return (
     <DataGridFilterContext value={state}>
       <DataGridFilterDispatch value={dispatch}>{children}</DataGridFilterDispatch>
@@ -23,6 +32,9 @@ export function DataGridFilterProvider(props: DataGridFilterProviderProps) {
 }
 
 function reducer(state: DataGridFilterState, action: DataGridFilterAction): DataGridFilterState {
+  if (action.type === 'resetAll') {
+    return {}
+  }
   let current = state[action.field]
   switch (action.type) {
     case 'checked':

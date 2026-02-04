@@ -2,11 +2,14 @@ import { replacer } from './serde.ts'
 
 export const storageKeys = new Set([
   'darkmode',
+  'dataGridFilterEnhetens',
+  'dataGridFilterMedarbeiders',
+  'dataGridFilterMine',
   'debug',
-  'nyttSaksbilde',
   'filterState',
   'innloggetSaksbehandlerId',
   'nyOppgaveliste',
+  'nyttSaksbilde',
   'oppgaveColumnsEnhetens',
   'oppgaveColumnsMedarbeiders',
   'oppgaveColumnsMine',

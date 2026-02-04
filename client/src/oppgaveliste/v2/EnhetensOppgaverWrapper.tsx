@@ -10,7 +10,7 @@ export default function EnhetensOppgaverWrapper() {
   return (
     <OppgaveColumnsProvider suffix={SUFFIX} defaultColumns={defaultColumns}>
       <OppgavePaginationProvider suffix={SUFFIX}>
-        <DataGridFilterProvider>
+        <DataGridFilterProvider suffix={SUFFIX}>
           <EnhetensOppgaver />
         </DataGridFilterProvider>
       </OppgavePaginationProvider>

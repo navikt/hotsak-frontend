@@ -6,7 +6,7 @@ import { Varsler } from '../../../../../saksbilde/hjelpemidler/Varsel'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../../../types/types.internal'
-import { AntallTag } from '../../felleskomponenter/AntallTag'
+import { AntallTag } from '../../../../../sak/v2/AntallTag'
 import { ProduktEksperiment } from './ProduktEksperiment'
 
 export function FrittStåendeTilbehørEksperiment({

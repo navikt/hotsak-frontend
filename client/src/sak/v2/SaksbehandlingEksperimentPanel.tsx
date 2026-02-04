@@ -27,6 +27,7 @@ import { SidepanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalIn
 import { SøknadPanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/søknad/SøknadPanelEksperiment.tsx'
 import { useSak } from '../../saksbilde/useSak.ts'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider.tsx'
+import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -86,7 +87,7 @@ export function SaksbehandlingEksperiment() {
   return (
     <>
       <HStack width="100%" wrap={false}>
-        <PersonlinjeEksperiment loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
+        <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
       <Box.New

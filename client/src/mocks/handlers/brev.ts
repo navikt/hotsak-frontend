@@ -1,12 +1,12 @@
 import { http, HttpResponse } from 'msw'
 
-import { Brevstatus } from '../../eksperimentelt/eksperimenter/KabalInspirert/brev/brevTyper'
 import { UtfallLåst } from '../../types/behandlingTyper'
 import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument, lastDokumentBarnebriller, nåIso } from '../data/felles'
 import type { SakParams } from './params'
 import { delay, respondNoContent, respondPdf } from './response'
+import { Brevstatus } from '../../brev/brevTyper'
 
 interface BrevParams extends SakParams {
   brevtype: string

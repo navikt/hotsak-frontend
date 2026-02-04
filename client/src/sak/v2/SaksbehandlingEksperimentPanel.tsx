@@ -2,7 +2,6 @@ import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
-import { BrevPanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/brev/BrevPanelEksperiment.tsx'
 import BehandlingEksperimentPanel from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/BehandlingEksperiment.tsx'
 import { useBehandling } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandling.ts'
 import { useBehandlingActions } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandlingActions.ts'
@@ -27,6 +26,7 @@ import { formaterDato } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider.tsx'
+import { BrevPanelEksperiment } from '../../brev/BrevPanelEksperiment.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string

@@ -1,9 +1,9 @@
 import { Actions, useActionState } from '../../../../../action/Actions.ts'
+import { useBrevMetadata } from '../../../../../brev/useBrevMetadata.ts'
 import { http } from '../../../../../io/HttpClient.ts'
 import { useOppgave } from '../../../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../../../saksbilde/mutateSak.ts'
 import { Behandlingsutfall } from '../../../../../types/behandlingTyper.ts'
-import { useBrevMetadata } from '../../brev/useBrevMetadata.ts'
 import { useBehandling } from './useBehandling.ts'
 
 export interface BehandlingActions extends Actions {

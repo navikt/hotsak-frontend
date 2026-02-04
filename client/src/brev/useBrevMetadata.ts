@@ -1,6 +1,6 @@
 import useSwr, { KeyedMutator } from 'swr'
 import { BrevMetadata } from './brevTyper'
-import { useSakId } from '../../../../saksbilde/useSak.ts'
+import { useSakId } from '../saksbilde/useSak'
 
 export interface DataResponse {
   brev: BrevMetadata[]

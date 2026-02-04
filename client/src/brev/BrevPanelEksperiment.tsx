@@ -1,7 +1,7 @@
 import { Box, InfoCard } from '@navikt/ds-react'
-import { DokumentProvider } from '../../../../dokument/DokumentContext.tsx'
 import { Brev } from './Brev.tsx'
 import { useRefSize } from './breveditor/hooks.ts'
+import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 
 export function BrevPanelEksperiment() {
   // Vis alert hvis panelet blir for tynt for å vise editoren med en brukbar verktøylinje

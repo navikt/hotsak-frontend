@@ -1,4 +1,4 @@
-import { Brevtype } from '../../../../types/types.internal'
+import { Brevtype } from '../types/types.internal'
 
 export interface BrevMetadata {
   id: string

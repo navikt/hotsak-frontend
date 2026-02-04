@@ -150,7 +150,7 @@ importers:
         version: 5.0.7(graphql@16.12.0)
       '@testing-library/cypress':
         specifier: 10.1.0
-        version: 10.1.0(cypress@15.9.0)
+        version: 10.1.0(cypress@15.10.0)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -162,7 +162,7 @@ importers:
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@this-dot/cypress-indexeddb':
         specifier: 2.0.1
-        version: 2.0.1(cypress@15.9.0)
+        version: 2.0.1(cypress@15.10.0)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(prettier@3.8.1)
@@ -194,8 +194,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       cypress:
-        specifier: ^15.9.0
-        version: 15.9.0
+        specifier: ^15.10.0
+        version: 15.10.0
       dexie:
         specifier: 4.3.0
         version: 4.3.0
@@ -221,8 +221,8 @@ importers:
         specifier: ^4.5.1
         version: 4.5.1
       msw:
-        specifier: ^2.12.7
-        version: 2.12.7(@types/node@24.10.10)(typescript@5.9.3)
+        specifier: ^2.12.8
+        version: 2.12.8(@types/node@24.10.10)(typescript@5.9.3)
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
@@ -246,7 +246,7 @@ importers:
         version: 6.0.5(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.10)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(msw@2.12.7(@types/node@24.10.10)(typescript@5.9.3))(yaml@2.8.2)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.10)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(msw@2.12.8(@types/node@24.10.10)(typescript@5.9.3))(yaml@2.8.2)
 
 packages:
 
@@ -1392,8 +1392,8 @@ packages:
       react: '>= 18 || >= 19'
       react-dom: '>= 18 || >= 19'
 
-  '@mswjs/interceptors@0.40.0':
-    resolution: {integrity: sha512-EFd6cVbHsgLa6wa4RljGj6Wk75qoHxUSyc5asLyyPSyuhIcdS2Q3Phw6ImS1q+CkALthJRShiYfKANcQMuMqsQ==}
+  '@mswjs/interceptors@0.41.0':
+    resolution: {integrity: sha512-edAo9bW53BLYeSK+UPRr2Iz1Fj9DeGMjytvVM0HXRoo750ElWUgPsZPAOTQa12EUiwgDErH2PsFNTLvk1jBxjQ==}
     engines: {node: '>=18'}
 
   '@navikt/aksel-icons@7.35.0':
@@ -2924,8 +2924,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  cypress@15.9.0:
-    resolution: {integrity: sha512-Ks6Bdilz3TtkLZtTQyqYaqtL/WT3X3APKaSLhTV96TmTyudzSjc6EJsJCHmBb7DxO+3R12q3Jkbjgm/iPgmwfg==}
+  cypress@15.10.0:
+    resolution: {integrity: sha512-OtUh7OMrfEjKoXydlAD1CfG2BvKxIqgWGY4/RMjrqQ3BKGBo5JFKoYNH+Tpcj4xKxWH4XK0Xri+9y8WkxhYbqQ==}
     engines: {node: ^20.1.0 || ^22.0.0 || >=24.0.0}
     hasBin: true
 
@@ -4155,8 +4155,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  msw@2.12.7:
-    resolution: {integrity: sha512-retd5i3xCZDVWMYjHEVuKTmhqY8lSsxujjVrZiGbbdoxxIBg5S7rCuYy/YQpfrTYIxpd/o0Kyb/3H+1udBMoYg==}
+  msw@2.12.8:
+    resolution: {integrity: sha512-KOriJUhjefCO+liF7Ie1KlSXcBAQEzuLhPZ4EKuEUSEmAR4YhuuzT9YuGxTipjqDrg6eWQ6oMoGVhvEnqukFGg==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -4636,8 +4636,8 @@ packages:
     resolution: {integrity: sha512-oMA2dcrw6u0YfxJQXm342bFKX/E4sG9rbTzO9ptUcR/e8A33cHuvStiYOwH7fszkZlZ1z/ta9AAoPk2F4qIOHA==}
     engines: {node: '>=18'}
 
-  rettime@0.7.0:
-    resolution: {integrity: sha512-LPRKoHnLKd/r3dVxcwO7vhCW+orkOGj9ViueosEBK6ie89CijnfRlhaDhHq/3Hxu4CkWQtxwlBG0mzTQY6uQjw==}
+  rettime@0.10.1:
+    resolution: {integrity: sha512-uyDrIlUEH37cinabq0AX4QbgV4HbFZ/gqoiunWQ1UqBtRvTTytwhNYjE++pO/MjPTZL5KQCf2bEoJ/BJNVQ5Kw==}
 
   reusify@1.1.0:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
@@ -7221,7 +7221,7 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@mswjs/interceptors@0.40.0':
+  '@mswjs/interceptors@0.41.0':
     dependencies:
       '@open-draft/deferred-promise': 2.2.0
       '@open-draft/logger': 0.3.0
@@ -8033,11 +8033,11 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@testing-library/cypress@10.1.0(cypress@15.9.0)':
+  '@testing-library/cypress@10.1.0(cypress@15.10.0)':
     dependencies:
       '@babel/runtime': 7.28.6
       '@testing-library/dom': 10.4.1
-      cypress: 15.9.0
+      cypress: 15.10.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -8083,9 +8083,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@this-dot/cypress-indexeddb@2.0.1(cypress@15.9.0)':
+  '@this-dot/cypress-indexeddb@2.0.1(cypress@15.10.0)':
     dependencies:
-      cypress: 15.9.0
+      cypress: 15.10.0
       rxjs: 7.5.7
 
   '@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.1)':
@@ -8310,13 +8310,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.18(msw@2.12.7(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.18(msw@2.12.8(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.18
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      msw: 2.12.7(@types/node@24.10.10)(typescript@5.9.3)
+      msw: 2.12.8(@types/node@24.10.10)(typescript@5.9.3)
       vite: 7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2)
 
   '@vitest/pretty-format@4.0.18':
@@ -8756,7 +8756,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  cypress@15.9.0:
+  cypress@15.10.0:
     dependencies:
       '@cypress/request': 3.0.10
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
@@ -10310,10 +10310,10 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.12.7(@types/node@24.10.10)(typescript@5.9.3):
+  msw@2.12.8(@types/node@24.10.10)(typescript@5.9.3):
     dependencies:
       '@inquirer/confirm': 5.1.21(@types/node@24.10.10)
-      '@mswjs/interceptors': 0.40.0
+      '@mswjs/interceptors': 0.41.0
       '@open-draft/deferred-promise': 2.2.0
       '@types/statuses': 2.0.6
       cookie: 1.1.1
@@ -10323,7 +10323,7 @@ snapshots:
       outvariant: 1.4.3
       path-to-regexp: 6.3.0
       picocolors: 1.1.1
-      rettime: 0.7.0
+      rettime: 0.10.1
       statuses: 2.0.2
       strict-event-emitter: 0.5.1
       tough-cookie: 6.0.0
@@ -10814,7 +10814,7 @@ snapshots:
       onetime: 7.0.0
       signal-exit: 4.1.0
 
-  rettime@0.7.0: {}
+  rettime@0.10.1: {}
 
   reusify@1.1.0: {}
 
@@ -11464,10 +11464,10 @@ snapshots:
       less: 4.5.1
       yaml: 2.8.2
 
-  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.10)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(msw@2.12.7(@types/node@24.10.10)(typescript@5.9.3))(yaml@2.8.2):
+  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.10)(jiti@2.6.1)(jsdom@28.0.0)(less@4.5.1)(msw@2.12.8(@types/node@24.10.10)(typescript@5.9.3))(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(msw@2.12.7(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(msw@2.12.8(@types/node@24.10.10)(typescript@5.9.3))(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(less@4.5.1)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18

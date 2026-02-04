@@ -1,5 +1,7 @@
-import { BodyShort, Box, HGrid, HStack } from '@navikt/ds-react'
+import { TrashIcon } from '@navikt/aksel-icons'
+import { BodyShort, Box, Button, HGrid, HStack } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
+import { useDataGridFilterResetAll, useIsDataGridFiltered } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 
@@ -12,6 +14,8 @@ export interface OppgaveToolbarProps {
 
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const { text, children } = props
+  const isDataGridFiltered = useIsDataGridFiltered()
+  const handleFilterResetAll = useDataGridFilterResetAll()
   return (
     <Box.New borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="2">
       <HGrid columns="1fr 1fr 1fr" align="center" className={classes.grid}>
@@ -21,6 +25,17 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
         </BodyShort>
         <HStack gap="2" justify="end" align="center">
           {children}
+          <Button
+            type="button"
+            size="xsmall"
+            variant="tertiary-neutral"
+            icon={<TrashIcon />}
+            onClick={handleFilterResetAll}
+            disabled={!isDataGridFiltered}
+            title={isDataGridFiltered ? undefined : 'Ingen filtre valgt'}
+          >
+            Fjern alle filtre
+          </Button>
           <OppgaveColumnMenu />
         </HStack>
       </HGrid>

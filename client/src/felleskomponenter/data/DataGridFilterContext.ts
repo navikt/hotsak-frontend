@@ -1,4 +1,4 @@
-import { createContext, type Dispatch, useCallback, useContext } from 'react'
+import { createContext, type Dispatch, type EventHandler, useCallback, useContext, useMemo } from 'react'
 
 import { type DataGridFilterValues } from './DataGridFilter.ts'
 
@@ -15,7 +15,7 @@ export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
-export function useDataGridFilterReset(field: string): (event: Event) => void {
+export function useDataGridFilterReset(field: string): EventHandler<any> {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
@@ -25,13 +25,21 @@ export function useDataGridFilterReset(field: string): (event: Event) => void {
   }, [dispatch, field])
 }
 
-export function useDataGridFilterResetAll(): (event: Event) => void {
+export function useDataGridFilterResetAll(): EventHandler<any> {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
       type: 'resetAll',
     })
   }, [dispatch])
+}
+
+export function useIsDataGridFiltered(): boolean {
+  const filterState = useDataGridFilterContext()
+  return useMemo(() => {
+    const entries = Object.values(filterState).filter(({ values }) => values.size > 0)
+    return entries.length > 0
+  }, [filterState])
 }
 
 interface DataGridFilterBaseAction {

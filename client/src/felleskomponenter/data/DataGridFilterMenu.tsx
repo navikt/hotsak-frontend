@@ -26,7 +26,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
   }, [filter.options, current.values])
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
-  const handleReset = useDataGridFilterReset(field)
+  const handleFilterReset = useDataGridFilterReset(field)
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -56,7 +56,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
             </ActionMenu.CheckboxItem>
           ))}
           {enabled && (
-            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
+            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleFilterReset}>
               Fjern filter
             </ActionMenu.Item>
           )}

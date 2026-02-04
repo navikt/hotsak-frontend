@@ -3,7 +3,7 @@ import { Brev } from './Brev.tsx'
 import { useRefSize } from './breveditor/hooks.ts'
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 
-export function BrevPanelEksperiment() {
+export function BrevPanel() {
   // Vis alert hvis panelet blir for tynt for å vise editoren med en brukbar verktøylinje
   const { size, ref: elmRef } = useRefSize()
   const erPanelForSmalt = size && size.width < 320

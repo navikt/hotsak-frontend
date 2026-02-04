@@ -26,7 +26,7 @@ import { formaterDato } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider.tsx'
-import { BrevPanelEksperiment } from '../../brev/BrevPanelEksperiment.tsx'
+import { BrevPanel } from '../../brev/BrevPanel.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -133,7 +133,7 @@ export function SaksbehandlingEksperiment() {
           {brevKolonne && (
             <>
               <Panel defaultSize={40} minSize={10} order={4}>
-                <BrevPanelEksperiment />
+                <BrevPanel />
               </Panel>
             </>
           )}

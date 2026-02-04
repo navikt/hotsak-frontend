@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
-import { getOppgaveColumn, OppgaveColumnField } from './oppgaveColumns.tsx'
+import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 
@@ -17,10 +17,8 @@ export function useOppgavemetrikker(
     const entries = Object.entries(filterState).filter(([, { values }]) => values.size > 0)
     if (entries.length === 0) return
     const data = entries.reduce<Record<string, any>>(
-      (result, [field, { values }], index) => {
-        const column = getOppgaveColumn(field as OppgaveColumnField)
-        result[`kolonne_${index}`] = column.header
-        result[`verdier_${index}`] = [...values].sort().join(' ELLER ')
+      (result, [field, { values }]) => {
+        result[field] = [...values].sort().join(' ELLER ')
         return result
       },
       { oppgaveliste, antallOppgaver, totaltAntallOppgaver }

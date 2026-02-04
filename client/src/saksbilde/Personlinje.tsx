@@ -1,13 +1,12 @@
-import { FigureCombinationIcon, FigureInwardIcon, FigureOutwardIcon } from '@navikt/aksel-icons'
 import { HStack, Label, Link, Skeleton, Tag } from '@navikt/ds-react'
-import { Children, ReactNode, SVGProps } from 'react'
+import { Children, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Kopiknapp } from '../felleskomponenter/Kopiknapp.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { søknadslinjeHøyde } from '../GlobalStyles'
 import { usePersonContext } from '../personoversikt/PersonContext'
-import { Adressebeskyttelse, AdressebeskyttelseAlert, Kjønn, Person } from '../types/types.internal'
+import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/types.internal'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
 import styles from './personlinje.module.css'
@@ -25,7 +24,7 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   if (loading) return <LasterPersonlinje />
   if (!person) return <Container />
 
-  const { kjønn, fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
+  const { fødselsdato, fnr, brukernummer, telefon, dødsdato, adressebeskyttelseOgSkjerming } = person
   const [adressebeskyttelse] = (adressebeskyttelseOgSkjerming?.gradering || []).filter(
     (gradering) => gradering !== Adressebeskyttelse.UGRADERT
   )
@@ -33,7 +32,6 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
   return (
     <Container>
       <Element>
-        <Kjønnsikon kjønn={kjønn} />
         <Label
           as={Link}
           size="small"
@@ -91,7 +89,6 @@ export function LasterPersonlinje() {
   return (
     <Container>
       <Element>
-        <Kjønnsikon />
         <Skeleton width={175} height={32} />
       </Element>
       {Array.from({ length: 3 }, (_, key) => (
@@ -109,20 +106,6 @@ function Element({ children }: { children: ReactNode }) {
   )
 }
 
-function Kjønnsikon({ kjønn }: { kjønn?: Kjønn }) {
-  const iconProps: SVGProps<SVGSVGElement> = {
-    fontSize: 'var(--ax-font-size-heading-large)',
-  }
-  switch (kjønn) {
-    case Kjønn.KVINNE:
-      return <FigureOutwardIcon {...iconProps} />
-    case Kjønn.MANN:
-      return <FigureInwardIcon {...iconProps} />
-    default:
-      return <FigureCombinationIcon {...iconProps} />
-  }
-}
-
 function Container({ children }: { children?: ReactNode }) {
   return (
     <HStack
@@ -131,7 +114,7 @@ function Container({ children }: { children?: ReactNode }) {
       //minWidth={hotsakTotalMinWidth}
       height={søknadslinjeHøyde}
       gap="4"
-      paddingInline="space-8"
+      paddingInline="space-12"
       className={styles.container}
     >
       {Children.map(children, (child, index) => (

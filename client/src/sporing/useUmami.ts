@@ -96,6 +96,10 @@ export function useUmami() {
     logUmamiHendelse(UmamiTaksonomi.POSTBEGRUNNELSE_ENDRET, data)
   }
 
+  const logProblemsammendragEndret: Logger = (data) => {
+    logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)
+  }
+
   return {
     logUmamiHendelse,
     logKnappKlikket,
@@ -114,6 +118,7 @@ export function useUmami() {
 
     logUtfallLavereRangert,
     logPostbegrunnelseEndret,
+    logProblemsammendragEndret,
 
     isReady,
   }

@@ -25,14 +25,14 @@ import { OppgaveStatusLabel } from '../../types/types.internal.ts'
 import { formaterDato } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { useSaksbehandlingEksperimentContext } from './SaksbehandlingEksperimentProvider.tsx'
+import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string
 }
 
-export function SaksbehandlingEksperiment() {
+export function SakV2() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
@@ -94,7 +94,7 @@ export function SaksbehandlingEksperiment() {
           minHeight: 0,
           height: '100%',
           marginTop: 'var(--ax-space-4)',
-          marginInline: 'var(--ax-space-12)',
+          marginInline: '0 var(--ax-space-12)',
         }}
       >
         <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">

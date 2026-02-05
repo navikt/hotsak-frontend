@@ -36,8 +36,8 @@ export const problemsammendragHandlers: StoreHandlersFactory = ({
     await delay(100)
 
     if (harUendretLavereRangert) {
-      return HttpResponse.json(`POST MRS P9 R2 Manuell rullestol, Terskeleliminator; ${sakId}`)
+      return HttpResponse.json({ problemsammendrag: `POST MRS P9 R2 Manuell rullestol, Terskeleliminator; ${sakId}` })
     }
-    return HttpResponse.json(`Manuell rullestol, Terskeleliminator; ${sakId}`)
+    return HttpResponse.json({ problemsammendrag: `Manuell rullestol, Terskeleliminator; ${sakId}` })
   }),
 ]

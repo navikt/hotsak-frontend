@@ -12,10 +12,10 @@ import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { SaksbehandlingEksperiment } from '../sak/v2/SaksbehandlingEksperimentPanel'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
 import { useMiljø } from '../utils/useMiljø'
-import { SaksbehandlingEksperimentProvider } from '../sak/v2/SaksbehandlingEksperimentProvider'
+import { SakV2 } from '../sak/v2/SakV2'
+import { SakProvider } from '../sak/v2/SakProvider'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
@@ -43,9 +43,9 @@ const SaksbildeContent = memo(() => {
 
   if (erIkkeProd && nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD) {
     return (
-      <SaksbehandlingEksperimentProvider>
-        <SaksbehandlingEksperiment />
-      </SaksbehandlingEksperimentProvider>
+      <SakProvider>
+        <SakV2 />
+      </SakProvider>
     )
   }
 

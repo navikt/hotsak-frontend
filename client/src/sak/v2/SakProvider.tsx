@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { HøyrekolonneTabs, SøknadPanelTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
 
 /**
  * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
@@ -15,8 +15,6 @@ const initialState = {
   setBehandlingPanel() {},
   brevKolonne: false,
   setBrevKolonne() {},
-  valgtSøknadPanelTab: SøknadPanelTabs.SØKNAD,
-  setValgtSøknadPanelTab() {},
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
   setValgtNedreVenstreKolonneTab() {},
   valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
@@ -25,23 +23,22 @@ const initialState = {
   setOpprettBrevKlikket() {},
 }
 
-const SaksbehandlingEksperimentContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
-SaksbehandlingEksperimentContext.displayName = 'SaksbehandlingEksperiment'
+const SakContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
+SakContext.displayName = 'SaksbehandlingEksperiment'
 
-function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }) {
+function SakProvider({ children }: { children: ReactNode }) {
   const [sidePanel, setSidePanel] = useState(true)
   const [valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
   )
   const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
-  const [valgtSøknadPanelTab, setValgtSøknadPanelTab] = useState<SøknadPanelTabs>(SøknadPanelTabs.SØKNAD)
   const [søknadPanel, setSøknadPanel] = useState(true)
   const [behandlingPanel, setBehandlingPanel] = useState(true)
   const [brevKolonne, setBrevKolonne] = useState(false)
   const [opprettBrevKlikket, setOpprettBrevKlikket] = useState(false)
 
   return (
-    <SaksbehandlingEksperimentContext.Provider
+    <SakContext.Provider
       value={{
         sidePanel,
         setSidePanel,
@@ -49,8 +46,6 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
         setSøknadPanel,
         valgtNedreVenstreKolonneTab,
         setValgtNedreVenstreKolonneTab,
-        valgtSøknadPanelTab,
-        setValgtSøknadPanelTab,
         behandlingPanel,
         setBehandlingPanel,
         brevKolonne,
@@ -62,12 +57,12 @@ function SaksbehandlingEksperimentProvider({ children }: { children: ReactNode }
       }}
     >
       {children}
-    </SaksbehandlingEksperimentContext.Provider>
+    </SakContext.Provider>
   )
 }
 
 function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContextType {
-  const context = useContext(SaksbehandlingEksperimentContext)
+  const context = useContext(SakContext)
 
   if (!context) {
     throw new Error('useSaksbehandlingEksperimentContext must be used within a SaksbehandlingEksperimentProvider')
@@ -87,12 +82,10 @@ type SaksbehandlingEksperimentContextType = {
   setBehandlingPanel(visible: boolean): void
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
-  valgtSøknadPanelTab: SøknadPanelTabs
-  setValgtSøknadPanelTab(tab: SøknadPanelTabs): void
   valgtHøyreKolonneTab: HøyrekolonneTabs
   setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
   opprettBrevKlikket: boolean
   setOpprettBrevKlikket(klikket: boolean): void
 }
 
-export { SaksbehandlingEksperimentContext, SaksbehandlingEksperimentProvider, useSaksbehandlingEksperimentContext }
+export { SakContext, SakProvider, useSaksbehandlingEksperimentContext }

@@ -11,7 +11,7 @@ import { useSak } from '../../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../../saksregler/useSaksregler'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../../../../sak/v2/SaksbehandlingEksperimentProviderTypes'
 import { UtlånsoversiktEksperiment } from './UtlånsoversiktEksperiment'
-import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SaksbehandlingEksperimentProvider'
+import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SakProvider'
 
 export function SidepanelEksperiment() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
@@ -31,8 +31,12 @@ export function SidepanelEksperiment() {
       borderColor="neutral-subtle"
       background="default"
       height="100%"
-      borderRadius="large"
-      style={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative' }}
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+      }}
     >
       <Button
         variant="tertiary-neutral"

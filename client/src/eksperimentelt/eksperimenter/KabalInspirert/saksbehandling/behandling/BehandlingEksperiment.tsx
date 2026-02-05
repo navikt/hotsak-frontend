@@ -15,7 +15,7 @@ import { storForbokstavIOrd } from '../../../../../utils/formater.ts'
 import { PanelTittel } from '../PanelTittel.tsx'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SaksbehandlingEksperimentProvider.tsx'
+import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SakProvider.tsx'
 import { useBrevMetadata } from '../../../../../brev/useBrevMetadata.ts'
 import { Brevstatus } from '../../../../../brev/brevTyper.ts'
 

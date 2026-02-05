@@ -1,4 +1,4 @@
-import { Box, LocalAlert, Theme } from '@navikt/ds-react'
+import { Box, LocalAlert, Theme, VStack } from '@navikt/ds-react'
 import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -18,7 +18,6 @@ import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
-import classes from './App.module.css'
 import { TextContainer } from './felleskomponenter/typografi.tsx'
 import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
 
@@ -39,7 +38,7 @@ function App() {
 
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <div className={classes.root}>
+      <VStack width="100%" gap="0" style={{ height: '100vh' }}>
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>
@@ -47,7 +46,8 @@ function App() {
               <Utviklingsverktøy />
               <ErrorBoundary FallbackComponent={GlobalFeilside}>
                 <Suspense fallback={<div />}>
-                  <main>
+                  {/* TODO Se på denne i forbindelse med at vi bare vil ha scoll i hvert panel og ikke global scroll for hele siden */}
+                  <main style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
                     <Routes>
                       <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
                       <Route
@@ -118,7 +118,7 @@ function App() {
             </ToastProvider>
           </PersonProvider>
         </ErrorBoundary>
-      </div>
+      </VStack>
     </Theme>
   )
 }

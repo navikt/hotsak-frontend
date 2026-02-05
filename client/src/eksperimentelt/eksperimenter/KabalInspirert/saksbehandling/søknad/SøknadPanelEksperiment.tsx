@@ -8,7 +8,7 @@ import { BrukerEksperiment } from './BrukerEksperiment'
 import { FormidlerEksperiment } from './FormidlerEksperiment'
 import SøknadEksperiment from './SøknadEksperiment'
 import styles from './SøknadPanelEksperiment.module.css'
-import { PanelTittel } from '../PanelTittel.tsx'
+import { PanelTittel } from '../../../../../felleskomponenter/panel/PanelTittel.tsx'
 import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SakProvider.tsx'
 
 export function SøknadPanelEksperiment({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {

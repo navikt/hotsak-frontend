@@ -16,7 +16,7 @@ import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { formaterDatoLang } from '../utils/dato.ts'
-import { PanelTittel } from '../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/PanelTittel.tsx'
+import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()

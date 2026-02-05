@@ -48,7 +48,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
   const { sammendragMedLavere, problemsammendrag } = useProblemsammendrag()
-  const { logUtfallLavereRangert, logPostbegrunnelseEndret } = useUmami()
+  const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
@@ -84,6 +84,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return currentValue !== lavereRangertBegrunnelse
   }
 
+  const harEndretProblemsammendrag = () => {
+    const currentValue = form.getValues('problemsammendrag')
+    return currentValue !== problemsammendrag
+  }
+
   const fattVedtak = async (data: VedtakFormValues) => {
     if (sammendragMedLavere && !harLagretPostbegrunnelse) {
     } else {
@@ -91,6 +96,8 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
       if (lavereRangertHjelpemiddel) {
         logUtfallLavereRangert({ utfall: 'innvilget' })
         if (harEndretPostbegrunnelse()) logPostbegrunnelseEndret()
+        if (harEndretProblemsammendrag())
+          logProblemsammendragEndret({ originalt: problemsammendrag, nytt: form.getValues('problemsammendrag') })
       }
       setVisVedtakModal(false)
     }

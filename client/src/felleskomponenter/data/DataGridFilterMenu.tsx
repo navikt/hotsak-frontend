@@ -1,9 +1,9 @@
-import { useMemo } from 'react'
 import { FunnelFillIcon, FunnelIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button } from '@navikt/ds-react'
+import { useMemo } from 'react'
 
-import { useDataGridFilterContext, useDataGridFilterDispatch, useDataGridFilterReset } from './DataGridFilterContext.ts'
 import { type DataGridFilter, type DataGridFilterOption, emptyDataGridFilterValues } from './DataGridFilter.ts'
+import { useDataGridFilterContext, useDataGridFilterDispatch, useDataGridFilterReset } from './DataGridFilterContext.ts'
 
 export interface DataGridFilterMenuProps {
   field: string
@@ -12,17 +12,21 @@ export interface DataGridFilterMenuProps {
 
 export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
   const { field, filter } = props
-  const options = useMemo(() => {
-    return [...filter.options]
-      .map((option): DataGridFilterOption => (Array.isArray(option) ? option : [option, option]))
-      .filter(([value, label]) => Boolean(value) && Boolean(label))
-      .sort(sortOptions)
-  }, [filter.options])
   const state = useDataGridFilterContext()
   const current = state[field] ?? emptyDataGridFilterValues
+  const options = useMemo(() => {
+    const result = mapOf(filter.options)
+    // legg til lagrede filterverdier som ikke lenger ligger i filter.options
+    current.values.forEach((value) => {
+      if (!result.has(value)) {
+        result.set(value, value)
+      }
+    })
+    return [...result.entries()].sort(sortOptions)
+  }, [filter.options, current.values])
   const enabled = current.values.size > 0
   const dispatch = useDataGridFilterDispatch()
-  const handleReset = useDataGridFilterReset(field)
+  const handleFilterReset = useDataGridFilterReset(field)
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -52,7 +56,7 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
             </ActionMenu.CheckboxItem>
           ))}
           {enabled && (
-            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
+            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleFilterReset}>
               Fjern filter
             </ActionMenu.Item>
           )}
@@ -60,6 +64,17 @@ export function DataGridFilterMenu(props: DataGridFilterMenuProps) {
       </ActionMenu.Content>
     </ActionMenu>
   )
+}
+
+function mapOf(options: DataGridFilter['options']): Map<string, string> {
+  const result = new Map<string, string>()
+  for (const option of options) {
+    const [value, label] = Array.isArray(option) ? option : [option, option]
+    if (value && label) {
+      result.set(value, label)
+    }
+  }
+  return result
 }
 
 function sortOptions(a: DataGridFilterOption, b: DataGridFilterOption): number {

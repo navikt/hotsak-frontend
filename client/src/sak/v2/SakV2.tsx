@@ -5,7 +5,7 @@ import { Panel, PanelGroup } from 'react-resizable-panels'
 import BehandlingEksperimentPanel from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/BehandlingEksperiment.tsx'
 import { useBehandling } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandling.ts'
 import { useBehandlingActions } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandlingActions.ts'
-import { SidepanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/sidepanel/SidepanelEksperiment.tsx'
+import { VenstreSidebar } from './VenstreSidebar.tsx'
 import { SøknadPanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/søknad/SøknadPanelEksperiment.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
@@ -101,7 +101,7 @@ export function SakV2() {
           {sidePanel && (
             <>
               <Panel defaultSize={20} minSize={11} order={1}>
-                <SidepanelEksperiment />
+                <VenstreSidebar />
               </Panel>
               {(brevKolonne || søknadPanel || behandlingPanel) && <ResizeHandle />}
             </>

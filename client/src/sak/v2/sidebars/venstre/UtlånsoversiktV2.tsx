@@ -1,14 +1,14 @@
 import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
-import { Skillelinje } from '../../../../../felleskomponenter/Strek'
-import { Tekst } from '../../../../../felleskomponenter/typografi'
-import { useHjelpemiddeloversikt } from '../../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { HøyrekolonnePanel } from '../../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
-import { useSak } from '../../../../../saksbilde/useSak'
-import { HjelpemiddelArtikkel } from '../../../../../types/types.internal'
-import { formaterDato } from '../../../../../utils/dato'
+import { Skillelinje } from '../../../../felleskomponenter/Strek'
+import { Tekst } from '../../../../felleskomponenter/typografi'
+import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { HøyrekolonnePanel } from '../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
+import { useSak } from '../../../../saksbilde/useSak'
+import { HjelpemiddelArtikkel } from '../../../../types/types.internal'
+import { formaterDato } from '../../../../utils/dato'
 
-export function UtlånsoversiktEksperiment() {
+export function UtlånsoversiktV2() {
   const { sak } = useSak()
   const {
     hjelpemiddelArtikler: artikler,

@@ -111,7 +111,7 @@ export function Toppmeny() {
                   setNyttSaksbilde(!nyttSaksbilde)
                 }}
               >
-                {nyttSaksbilde ? 'Gammelt saksbilde' : 'Hotsak 1.5 - saksbehandling'}
+                {nyttSaksbilde ? 'Gamle Hotsak' : 'Hotsak 1.5'}
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Eksperiment>

@@ -1,17 +1,17 @@
 import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
-import { søknadslinjeHøyde } from '../../GlobalStyles'
-import { Historikk } from '../../saksbilde/høyrekolonne/historikk/Historikk'
-import { useHjelpemiddeloversikt } from '../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { HøyrekolonnePanel } from '../../saksbilde/høyrekolonne/HøyrekolonnePanel'
-import { Notater } from '../../saksbilde/høyrekolonne/notat/Notater'
-import { NotificationBadge } from '../../saksbilde/høyrekolonne/notat/NotificationBadge'
-import { useNotater } from '../../saksbilde/høyrekolonne/notat/useNotater'
-import { useSak } from '../../saksbilde/useSak'
-import { useSaksregler } from '../../saksregler/useSaksregler'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
-import { UtlånsoversiktEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/sidepanel/UtlånsoversiktEksperiment'
-import { useSaksbehandlingEksperimentContext } from './SakProvider'
+import { søknadslinjeHøyde } from '../../../../GlobalStyles'
+import { Historikk } from '../../../../saksbilde/høyrekolonne/historikk/Historikk'
+import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { HøyrekolonnePanel } from '../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
+import { Notater } from '../../../../saksbilde/høyrekolonne/notat/Notater'
+import { NotificationBadge } from '../../../../saksbilde/høyrekolonne/notat/NotificationBadge'
+import { useNotater } from '../../../../saksbilde/høyrekolonne/notat/useNotater'
+import { useSak } from '../../../../saksbilde/useSak'
+import { useSaksregler } from '../../../../saksregler/useSaksregler'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SaksbehandlingEksperimentProviderTypes'
+import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
+import { useSaksbehandlingEksperimentContext } from '../../SakProvider'
 
 export function VenstreSidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
@@ -105,7 +105,7 @@ export function VenstreSidebar() {
             <Historikk />
           </Tabs.Panel>
           <Tabs.Panel value={VenstrekolonneTabs.HJELPEMIDDELOVERSIKT.toString()}>
-            <UtlånsoversiktEksperiment />
+            <UtlånsoversiktV2 />
           </Tabs.Panel>
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>

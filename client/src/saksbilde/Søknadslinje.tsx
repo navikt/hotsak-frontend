@@ -9,10 +9,9 @@ import { TabLink } from './TabLink'
 
 export interface SøknadslinjeProps {
   id: number | string
-  skjulSaksmeny?: boolean
 }
 
-export function Søknadslinje({ id, skjulSaksmeny = false }: SøknadslinjeProps) {
+export function Søknadslinje({ id }: SøknadslinjeProps) {
   const location = useLocation()
 
   const { oppgaveId, isOppgaveContext } = useOppgaveContext()
@@ -27,7 +26,7 @@ export function Søknadslinje({ id, skjulSaksmeny = false }: SøknadslinjeProps)
           </TabLink>
           <TabLink to={`${basePath}/bruker`}>Bruker</TabLink>
           <TabLink to={`${basePath}/formidler`}>Formidler</TabLink>
-          {isOppgaveContext && !skjulSaksmeny && (
+          {isOppgaveContext && (
             <div style={{ alignSelf: 'center', margin: '0 var(--ax-space-12) 0 auto' }}>
               <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />
             </div>

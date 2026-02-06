@@ -1,7 +1,8 @@
 import { Chips, HStack } from '@navikt/ds-react'
 import clsx from 'clsx'
+import { useOppgaveContext } from '../../oppgave/OppgaveContext'
+import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import globalStyles from '../../styles/shared.module.css'
-import { SakMenyEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/SakMenyEksperiment'
 import classes from './SakKontrollPanel.module.css'
 import { useSaksbehandlingEksperimentContext } from './SakProvider'
 
@@ -16,6 +17,7 @@ export const SakKontrollPanel = () => {
     brevKolonne,
     setBrevKolonne,
   } = useSaksbehandlingEksperimentContext()
+  const { isOppgaveContext } = useOppgaveContext()
 
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
@@ -33,7 +35,7 @@ export const SakKontrollPanel = () => {
           Brev
         </ToggleKnapp>
       </Chips>
-      <SakMenyEksperiment spørreundersøkelseId="sak_overført_gosys_v1" />
+      {isOppgaveContext && <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />}
     </HStack>
   )
 }

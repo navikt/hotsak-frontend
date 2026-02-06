@@ -1,14 +1,9 @@
 import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
-import { Skillelinje } from '../../../../../felleskomponenter/Strek'
-import { Brødtekst, Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
-import { FormidlerProps } from '../../../../../saksbilde/formidler/Formidler'
-import { Oppfølgingsansvarlig } from '../../../../../types/BehovsmeldingTypes'
-import {
-  formaterAdresse,
-  formaterNavn,
-  formaterTelefonnummer,
-  storForbokstavIAlleOrd,
-} from '../../../../../utils/formater'
+import { Skillelinje } from '../../../felleskomponenter/Strek'
+import { Brødtekst, Etikett, Tekst } from '../../../felleskomponenter/typografi'
+import { FormidlerProps } from '../../../saksbilde/formidler/Formidler'
+import { Oppfølgingsansvarlig } from '../../../types/BehovsmeldingTypes'
+import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../../utils/formater'
 
 export function FormidlerEksperiment({ levering }: FormidlerProps) {
   const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering

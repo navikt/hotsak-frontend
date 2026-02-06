@@ -1,8 +1,8 @@
 import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
-import { tekstByFunksjonsnedsettelse } from '../../../../../saksbilde/hjelpemidler/BrukersFunksjon'
-import { Funksjonsbeskrivelse } from '../../../../../types/BehovsmeldingTypes'
-import { textcontainerBredde } from '../../../../../GlobalStyles'
+import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
+import { tekstByFunksjonsnedsettelse } from '../../../saksbilde/hjelpemidler/BrukersFunksjon'
+import { Funksjonsbeskrivelse } from '../../../types/BehovsmeldingTypes'
+import { textcontainerBredde } from '../../../GlobalStyles'
 import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 

@@ -1,9 +1,9 @@
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
 import { HStack, Spacer, VStack } from '@navikt/ds-react'
-import { Kopiknapp } from '../../../../../felleskomponenter/Kopiknapp'
-import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
-import { tekstByBytteårsak } from '../../../../../saksbilde/hjelpemidler/Bytter'
-import { Bytte } from '../../../../../types/BehovsmeldingTypes'
+import { Kopiknapp } from '../../../felleskomponenter/Kopiknapp'
+import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
+import { tekstByBytteårsak } from '../../../saksbilde/hjelpemidler/Bytter'
+import { Bytte } from '../../../types/BehovsmeldingTypes'
 
 interface Props {
   bytter: Bytte[]

@@ -1,8 +1,8 @@
 import { HStack, VStack } from '@navikt/ds-react'
-import { lagLeveringsmåteTekst } from '../../../../../saksbilde/bruker/Leveringsmåte'
-import { Levering } from '../../../../../types/BehovsmeldingTypes'
-import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
-import { storForbokstavIAlleOrd } from '../../../../../utils/formater'
+import { lagLeveringsmåteTekst } from '../../../saksbilde/bruker/Leveringsmåte'
+import { Levering } from '../../../types/BehovsmeldingTypes'
+import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
+import { storForbokstavIAlleOrd } from '../../../utils/formater'
 
 export interface LeveringsmåteProps {
   levering: Levering

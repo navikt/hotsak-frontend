@@ -1,7 +1,7 @@
 import { Heading, List } from '@navikt/ds-react'
-import { TextContainer } from '../../../../../../felleskomponenter/typografi'
+import { TextContainer } from '../../../../felleskomponenter/typografi'
 
-export function IkkkeInnhentetFordiKunTilbehørV3Eksperiment() {
+export function IkkkeInnhentetFordiKunTilbehørV2Eksperiment() {
   return (
     <TextContainer>
       <Heading level="2" size="small" spacing={true}>
@@ -13,8 +13,8 @@ export function IkkkeInnhentetFordiKunTilbehørV3Eksperiment() {
           da det ble meldt behov om hjelpemiddelet tilbehøret skal brukes sammen med.
         </List.Item>
         <List.Item>
-          Formidler bekrefter at innbygger har vært involvert og er enig i at formidler melder behov for tilbehøret.
-          Innbygger er kjent med hvilket tilbehør formidler søker om.
+          Formidler bekrefter at innbygger ønsker at hen melder behov for tilbehøret. Innbygger er kjent med hvilket
+          tilbehør formidler melder behov om.
         </List.Item>
       </List>
     </TextContainer>

@@ -1,18 +1,18 @@
 import { Box, Heading, HStack, List, VStack } from '@navikt/ds-react'
-import { Skillelinje } from '../../../../../felleskomponenter/Strek'
-import { Etikett, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
-import { BrukerProps } from '../../../../../saksbilde/bruker/Bruker'
-import { Brukerkilde } from '../../../../../types/BehovsmeldingTypes'
+import { Skillelinje } from '../../../felleskomponenter/Strek'
+import { Etikett, Tekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { BrukerProps } from '../../../saksbilde/bruker/Bruker'
+import { Brukerkilde } from '../../../types/BehovsmeldingTypes'
 import {
   formaterAdresse,
   formaterFødselsnummer,
   formaterNavn,
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
-} from '../../../../../utils/formater'
-import { KontaktpersonEksperiment } from './KontaktpersonEksperiment'
+} from '../../../utils/formater'
 import { LeveringsmåteEksperiment } from './LeveringsmåteEksperiment'
 import { SignaturEksperiment } from './signatur/Signatur'
+import { KontaktpersonEksperiment } from './KontaktpersonEksperiment'
 
 export function BrukerEksperiment({ bruker, behovsmeldingsbruker, brukerSituasjon, levering, vilkår }: BrukerProps) {
   const { utleveringMerknad } = levering

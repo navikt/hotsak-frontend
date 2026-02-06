@@ -1,5 +1,5 @@
 import { Heading, List } from '@navikt/ds-react'
-import { TextContainer } from '../../../../../../felleskomponenter/typografi'
+import { TextContainer } from '../../../../felleskomponenter/typografi'
 
 interface FullmaktEksperimentProps {
   navn: string

@@ -1,6 +1,6 @@
 import { HStack } from '@navikt/ds-react'
-import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
-import { KontaktpersonProps, lagKontaktpersonTekst } from '../../../../../saksbilde/bruker/Kontaktperson'
+import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
+import { KontaktpersonProps, lagKontaktpersonTekst } from '../../../saksbilde/bruker/Kontaktperson'
 
 export function KontaktpersonEksperiment({ levering }: KontaktpersonProps) {
   if (!levering.utleveringKontaktperson) return null

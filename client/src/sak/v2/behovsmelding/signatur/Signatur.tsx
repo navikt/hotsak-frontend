@@ -1,4 +1,4 @@
-import { Signaturtype } from '../../../../../../types/BehovsmeldingTypes'
+import { Signaturtype } from '../../../../types/BehovsmeldingTypes'
 import { BrukerBekreftetEksperiment } from './BrukerBekreftetEksperiment'
 import { FullmaktEksperiment } from './FullmaktEksperiment'
 import { FullmaktFritakEksperiment } from './FullmaktFritakEksperiment'

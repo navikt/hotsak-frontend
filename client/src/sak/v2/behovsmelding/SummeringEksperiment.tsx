@@ -1,5 +1,5 @@
 import { Detail } from '@navikt/ds-react'
-import { Hjelpemiddel, Tilbehør } from '../../../../../types/BehovsmeldingTypes'
+import { Hjelpemiddel, Tilbehør } from '../../../types/BehovsmeldingTypes'
 
 export function SummertHjelpemidlerEksperiment({ hjelpemidler }: { hjelpemidler: Hjelpemiddel[] }) {
   const totaltAntallHjelpemidler = summerAntallHjelpemidler(hjelpemidler)

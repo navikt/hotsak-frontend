@@ -1,7 +1,7 @@
 import { Alert, List } from '@navikt/ds-react'
-import { BrytbarBrødtekst, TextContainer } from '../../../../../felleskomponenter/typografi'
-import { Hast } from '../../../../../types/BehovsmeldingTypes'
-import { Hasteårsak } from '../../../../../types/types.internal'
+import { BrytbarBrødtekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { Hast } from '../../../types/BehovsmeldingTypes'
+import { Hasteårsak } from '../../../types/types.internal'
 
 export function HastEksperiment(props: { hast?: Hast }) {
   const { hast } = props

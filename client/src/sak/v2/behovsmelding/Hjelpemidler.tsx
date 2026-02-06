@@ -2,28 +2,28 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
 import { memo, useMemo, useState } from 'react'
 
-import { useArtiklerForSak } from '../../../../../sak/useArtiklerForSak.ts'
-import { OebsAlert } from '../../../../../saksbilde/hjelpemidler/OebsAlert'
+import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
+import { OebsAlert } from '../../../saksbilde/hjelpemidler/OebsAlert.tsx'
 import {
   ingenAlternativeProdukterForHmsArtNr,
   useAlternativeProdukter,
   useProduktLagerInfo,
-} from '../../../../../saksbilde/hjelpemidler/useAlternativeProdukter'
-import { useHjelpemiddelprodukter } from '../../../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter'
-import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
-import { Sak } from '../../../../../types/types.internal'
-import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment'
-import { HastEksperiment } from './HastEksperiment'
-import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment'
-import { SummertFrittståendTilbehørEksperiment, SummertHjelpemidlerEksperiment } from './SummeringEksperiment'
-import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment'
+} from '../../../saksbilde/hjelpemidler/useAlternativeProdukter.ts'
+import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
+import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
+import { Sak } from '../../../types/types.internal.ts'
+import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment.tsx'
+import { HastEksperiment } from './HastEksperiment.tsx'
+import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment.tsx'
+import { SummertFrittståendTilbehørEksperiment, SummertHjelpemidlerEksperiment } from './SummeringEksperiment.tsx'
+import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment.tsx'
 
-interface SøknadEksperimentProps {
+interface HjelpemidlerProps {
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
+function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
   const { brukersituasjon } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
@@ -128,4 +128,4 @@ function SøknadEksperiment({ sak, behovsmelding }: SøknadEksperimentProps) {
   )
 }
 
-export default memo(SøknadEksperiment)
+export default memo(Hjelpemidler)

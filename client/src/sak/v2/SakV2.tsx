@@ -6,7 +6,7 @@ import BehandlingPanel from './behandling/BehandlingPanel.tsx'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
 import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
-import { SøknadPanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/søknad/SøknadPanelEksperiment.tsx'
+import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { useToast } from '../../felleskomponenter/toast/ToastContext.tsx'
@@ -112,7 +112,7 @@ export function SakV2() {
                 {!sak || !behovsmelding ? (
                   'Fant ikke sak'
                 ) : (
-                  <SøknadPanelEksperiment sak={sak.data} behovsmelding={behovsmelding} />
+                  <BehovsmeldingsPanel sak={sak.data} behovsmelding={behovsmelding} />
                 )}
               </Panel>
               {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}

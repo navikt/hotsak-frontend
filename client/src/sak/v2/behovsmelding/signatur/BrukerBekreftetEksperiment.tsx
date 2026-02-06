@@ -1,5 +1,5 @@
 import { Heading } from '@navikt/ds-react'
-import { Brødtekst, TextContainer } from '../../../../../../felleskomponenter/typografi'
+import { Brødtekst, TextContainer } from '../../../../felleskomponenter/typografi'
 
 interface BrukerBekreftetEksperimentProps {
   navn: string

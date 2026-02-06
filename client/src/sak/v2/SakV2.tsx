@@ -2,9 +2,9 @@ import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
-import BehandlingEksperimentPanel from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/BehandlingEksperiment.tsx'
-import { useBehandling } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandling.ts'
-import { useBehandlingActions } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/behandling/useBehandlingActions.ts'
+import BehandlingPanel from './behandling/BehandlingPanel.tsx'
+import { useBehandling } from './behandling/useBehandling.ts'
+import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
 import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 import { SøknadPanelEksperiment } from '../../eksperimentelt/eksperimenter/KabalInspirert/saksbehandling/søknad/SøknadPanelEksperiment.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
@@ -122,7 +122,7 @@ export function SakV2() {
             <>
               <Panel defaultSize={25} minSize={10} order={3}>
                 {sak && behovsmelding ? (
-                  <BehandlingEksperimentPanel sak={sak.data} behovsmelding={behovsmelding} />
+                  <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
                 ) : (
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}

@@ -1,7 +1,7 @@
 import useSwr, { KeyedMutator } from 'swr'
 
-import { useSakId } from '../../../../../saksbilde/useSak.ts'
-import { BehandlingerForSak } from '../../../../../types/behandlingTyper.ts'
+import { useSakId } from '../../../saksbilde/useSak.ts'
+import { BehandlingerForSak } from '../../../types/behandlingTyper.ts'
 
 export interface DataResponse extends BehandlingerForSak {
   error: any

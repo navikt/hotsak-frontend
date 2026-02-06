@@ -1,30 +1,30 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo } from 'react'
-import { Brødtekst, Tekst, TextContainer } from '../../../../../felleskomponenter/typografi'
-import { textcontainerBredde } from '../../../../../GlobalStyles.tsx'
-import { Oppgavestatus } from '../../../../../oppgave/oppgaveTypes.ts'
-import { useOppgave } from '../../../../../oppgave/useOppgave'
-import { Saksvarsler } from '../../../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
-import { useSøknadsVarsler } from '../../../../../saksbilde/varsler/useVarsler.tsx'
-import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../../../types/behandlingTyper.ts'
-import { Innsenderbehovsmelding } from '../../../../../types/BehovsmeldingTypes'
-import { Sak } from '../../../../../types/types.internal'
-import { formaterDato, formaterTidsstempelLesevennlig } from '../../../../../utils/dato'
-import { storForbokstavIOrd } from '../../../../../utils/formater.ts'
-import { PanelTittel } from '../../../../../felleskomponenter/panel/PanelTittel.tsx'
+import { Brødtekst, Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import { textcontainerBredde } from '../../../GlobalStyles.tsx'
+import { Oppgavestatus } from '../../../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../../../oppgave/useOppgave.ts'
+import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
+import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../../types/behandlingTyper.ts'
+import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
+import { Sak } from '../../../types/types.internal.ts'
+import { formaterDato, formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
+import { storForbokstavIOrd } from '../../../utils/formater.ts'
+import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSaksbehandlingEksperimentContext } from '../../../../../sak/v2/SakProvider.tsx'
-import { useBrevMetadata } from '../../../../../brev/useBrevMetadata.ts'
-import { Brevstatus } from '../../../../../brev/brevTyper.ts'
+import { useSaksbehandlingEksperimentContext } from '../SakProvider.tsx'
+import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { Brevstatus } from '../../../brev/brevTyper.ts'
 
-interface BehandlingEksperimentPanelProps {
+interface BehandlingProps {
   sak: Sak
   behovsmelding: Innsenderbehovsmelding
 }
 
-function BehandlingEksperimentPanel({ sak }: BehandlingEksperimentPanelProps) {
+function BehandlingPanel({ sak }: BehandlingProps) {
   const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket } =
     useSaksbehandlingEksperimentContext()
 
@@ -184,7 +184,7 @@ function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResulta
   )
 }
 
-export default memo(BehandlingEksperimentPanel)
+export default memo(BehandlingPanel)
 
 function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {
   if (!vedtaksResultat) {

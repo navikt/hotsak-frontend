@@ -38,8 +38,8 @@ export function useOppgavemetrikker(
   const columns = useOppgaveColumnsContext()
   useEffect(() => {
     const data = columns.reduce<Record<string, any>>(
-      (result, columnState) => {
-        result[columnState.field] = columnState.checked
+      (result, column) => {
+        result[column.id] = column.checked
         return result
       },
       { oppgaveliste, antallOppgaver, totaltAntallOppgaver }

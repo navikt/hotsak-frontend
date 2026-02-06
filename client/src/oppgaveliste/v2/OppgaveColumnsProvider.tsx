@@ -9,6 +9,7 @@ import {
   OppgaveColumnsContext,
   OppgaveColumnsDispatchContext,
   type OppgaveColumnsState,
+  OppgaveColumnState,
 } from './OppgaveColumnsContext.ts'
 
 export interface OppgaveColumnsProviderProps {
@@ -23,18 +24,18 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
     'oppgaveColumns' + suffix,
     reducer,
     (storedState = []): OppgaveColumnsState => {
-      const columnsByField = associateBy(storedState, (it) => it.field)
+      const columnsById = associateBy(storedState, (it) => it.id)
       return defaultColumns
-        .map((field, order) => {
-          const column = columnsByField[field]
+        .map((id, defaultOrder) => {
+          const column = columnsById[id]
           return {
-            id: field,
-            field,
-            order: column?.order ?? order,
+            id,
             checked: column?.checked ?? true,
+            order: column?.order ?? defaultOrder,
+            defaultOrder,
           }
         })
-        .sort((a, b) => a.order - b.order)
+        .sort(byOrder)
     }
   )
   return (
@@ -48,14 +49,14 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
   switch (action.type) {
     case 'checked':
       return state.map((column) => {
-        return action.field === column.field ? { ...column, checked: true } : column
+        return action.id === column.id ? { ...column, checked: true } : column
       })
     case 'unchecked':
       return state.map((column) => {
-        return action.field === column.field ? { ...column, checked: false } : column
+        return action.id === column.id ? { ...column, checked: false } : column
       })
     case 'reset':
-      return state.map((column) => ({ ...column, checked: true }))
+      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
     case 'dragged': {
       const oldIndex = state.findIndex(({ id }) => id == action.activeId)
       const newIndex = state.findIndex(({ id }) => id == action.overId)
@@ -67,4 +68,8 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
     default:
       return state
   }
+}
+
+function byOrder(a: OppgaveColumnState, b: OppgaveColumnState): number {
+  return a.order - b.order
 }

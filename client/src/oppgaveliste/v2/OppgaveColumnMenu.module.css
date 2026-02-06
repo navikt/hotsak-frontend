@@ -1,0 +1,14 @@
+.root {
+}
+
+.draggableHeader {
+  white-space: nowrap;
+}
+
+.isDragging {
+  cursor: grabbing;
+}
+
+.isNotDragging {
+  cursor: grab;
+}

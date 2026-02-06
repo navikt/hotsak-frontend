@@ -265,17 +265,10 @@ export const oppgaveColumns = {
 
 export type OppgaveColumnField = keyof typeof oppgaveColumns
 
-export function getOppgaveColumn(field: OppgaveColumnField): DataGridColumn<OppgaveV2> {
-  const column = oppgaveColumns[field]
+export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<OppgaveV2> {
+  const column = oppgaveColumns[id]
   if (column == null) {
-    throw new Error(`Fant ikke kolonne: ${field}`)
+    throw new Error(`Fant ikke kolonne: ${id}`)
   }
   return column
-}
-
-export interface OppgaveColumnState {
-  id: OppgaveColumnField
-  field: OppgaveColumnField
-  order: number
-  checked: boolean
 }

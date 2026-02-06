@@ -1,3 +1,4 @@
+import { type DragEndEvent, type UniqueIdentifier } from '@dnd-kit/core'
 import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
 import { type OppgaveColumnField, type OppgaveColumnState } from './oppgaveColumns.tsx'
@@ -28,6 +29,23 @@ export function useOppgaveColumnChange(field: OppgaveColumnField): (checked: boo
   )
 }
 
+export function useOppgaveColumnDragged(): (event: DragEndEvent) => void {
+  const dispatch = useOppgaveColumnsDispatch()
+  return useCallback(
+    (event) => {
+      const { active, over } = event
+      if (over && active.id !== over.id) {
+        dispatch({
+          type: 'dragged',
+          activeId: active.id,
+          overId: over.id,
+        })
+      }
+    },
+    [dispatch]
+  )
+}
+
 export function useOppgaveColumnsReset(): (event: Event) => void {
   const dispatch = useOppgaveColumnsDispatch()
   return useCallback(() => {
@@ -38,7 +56,7 @@ export function useOppgaveColumnsReset(): (event: Event) => void {
 }
 
 interface OppgaveColumnsBaseAction {
-  type: 'checked' | 'unchecked' | 'reset'
+  type: 'checked' | 'unchecked' | 'dragged' | 'reset'
 }
 
 export interface OppgaveColumnsCheckedAction extends OppgaveColumnsBaseAction {
@@ -55,7 +73,14 @@ export interface OppgaveColumnsResetAction extends OppgaveColumnsBaseAction {
   type: 'reset'
 }
 
+export interface OppgaveColumnsDraggedAction extends OppgaveColumnsBaseAction {
+  type: 'dragged'
+  activeId: OppgaveColumnField | UniqueIdentifier
+  overId: OppgaveColumnField | UniqueIdentifier
+}
+
 export type OppgaveColumnsAction =
   | OppgaveColumnsCheckedAction
   | OppgaveColumnsUncheckedAction
   | OppgaveColumnsResetAction
+  | OppgaveColumnsDraggedAction

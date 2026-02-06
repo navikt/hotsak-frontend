@@ -1,14 +1,38 @@
+import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack } from '@navikt/ds-react'
+import { useMemo } from 'react'
 
 import { getOppgaveColumn, type OppgaveColumnState } from './oppgaveColumns.tsx'
-import { useOppgaveColumnChange, useOppgaveColumnsContext, useOppgaveColumnsReset } from './OppgaveColumnsContext.ts'
-import { useMemo } from 'react'
+import {
+  useOppgaveColumnChange,
+  useOppgaveColumnDragged,
+  useOppgaveColumnsContext,
+  useOppgaveColumnsReset,
+} from './OppgaveColumnsContext.ts'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgaveColumnsContext()
   const handleReset = useOppgaveColumnsReset()
   const resetEnabled = useMemo(() => !columnsState.every((columnState) => columnState.checked), [columnsState])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = useOppgaveColumnDragged()
+
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -18,9 +42,20 @@ export function OppgaveColumnMenu() {
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Velg kolonner">
-          {columnsState.map((columnState) => (
-            <OppgaveColumnMenuItem key={columnState.field} columnState={columnState} />
-          ))}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+            onDragEnd={handleDragEnd}
+          >
+            <div>
+              <SortableContext items={columnsState as any} strategy={verticalListSortingStrategy}>
+                {columnsState.map((columnState) => (
+                  <OppgaveColumnMenuItem key={columnState.id} columnState={columnState} />
+                ))}
+              </SortableContext>
+            </div>
+          </DndContext>
           {resetEnabled && (
             <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
               Nullstill tabell
@@ -35,15 +70,28 @@ export function OppgaveColumnMenu() {
 function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnState }) {
   const handleChange = useOppgaveColumnChange(columnState.field)
   const header = getOppgaveColumn(columnState.field).header
+
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: columnState.id })
+
   if (!header) {
     return null
   }
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
   return (
-    <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleChange}>
-      <HStack gap="3" align="center" justify="space-between" width="100%">
-        <div>{header}</div>
-        <DragVerticalIcon />
-      </HStack>
-    </ActionMenu.CheckboxItem>
+    <div ref={setNodeRef} style={style}>
+      <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleChange}>
+        <HStack gap="3" align="center" justify="space-between" width="100%" wrap={false}>
+          <div style={{ whiteSpace: 'nowrap' }}>{header}</div>
+          <div {...attributes} {...listeners}>
+            <DragVerticalIcon />
+          </div>
+        </HStack>
+      </ActionMenu.CheckboxItem>
+    </div>
   )
 }

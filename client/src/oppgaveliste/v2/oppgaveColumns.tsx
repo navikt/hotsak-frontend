@@ -14,6 +14,7 @@ import {
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
+
 import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
@@ -273,6 +274,7 @@ export function getOppgaveColumn(field: OppgaveColumnField): DataGridColumn<Oppg
 }
 
 export interface OppgaveColumnState {
+  id: OppgaveColumnField
   field: OppgaveColumnField
   order: number
   checked: boolean

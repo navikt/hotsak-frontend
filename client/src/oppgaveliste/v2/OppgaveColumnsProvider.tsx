@@ -1,5 +1,8 @@
+import { arrayMove } from '@dnd-kit/sortable'
 import { type ReactNode } from 'react'
 
+import { useLocalReducer } from '../../state/useLocalReducer.ts'
+import { associateBy } from '../../utils/array.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
@@ -7,8 +10,6 @@ import {
   OppgaveColumnsDispatchContext,
   type OppgaveColumnsState,
 } from './OppgaveColumnsContext.ts'
-import { useLocalReducer } from '../../state/useLocalReducer.ts'
-import { associateBy } from '../../utils/array.ts'
 
 export interface OppgaveColumnsProviderProps {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
@@ -22,12 +23,18 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
     'oppgaveColumns' + suffix,
     reducer,
     (storedState = []): OppgaveColumnsState => {
-      const columnByField = associateBy(storedState, (it) => it.field)
-      return defaultColumns.map((field, order) => ({
-        field,
-        order,
-        checked: columnByField[field]?.checked ?? true,
-      }))
+      const columnsByField = associateBy(storedState, (it) => it.field)
+      return defaultColumns
+        .map((field, order) => {
+          const column = columnsByField[field]
+          return {
+            id: field,
+            field,
+            order: column?.order ?? order,
+            checked: column?.checked ?? true,
+          }
+        })
+        .sort((a, b) => a.order - b.order)
     }
   )
   return (
@@ -49,6 +56,14 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
       })
     case 'reset':
       return state.map((column) => ({ ...column, checked: true }))
+    case 'dragged': {
+      const oldIndex = state.findIndex(({ id }) => id == action.activeId)
+      const newIndex = state.findIndex(({ id }) => id == action.overId)
+      return arrayMove([...state], oldIndex, newIndex).map((column, order) => ({
+        ...column,
+        order,
+      }))
+    }
     default:
       return state
   }

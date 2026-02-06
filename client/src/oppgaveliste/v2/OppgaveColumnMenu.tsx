@@ -1,14 +1,40 @@
+import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
-import { ActionMenu, Button, HStack } from '@navikt/ds-react'
+import { ActionMenu, Button, HStack, VStack } from '@navikt/ds-react'
 
-import { getOppgaveColumn, type OppgaveColumnState } from './oppgaveColumns.tsx'
-import { useOppgaveColumnChange, useOppgaveColumnsContext, useOppgaveColumnsReset } from './OppgaveColumnsContext.ts'
-import { useMemo } from 'react'
+import classes from './OppgaveColumnMenu.module.css'
+import { getOppgaveColumn } from './oppgaveColumns.tsx'
+import {
+  type OppgaveColumnState,
+  useIsTableCustomized,
+  useOppgaveColumnChange,
+  useOppgaveColumnDragged,
+  useOppgaveColumnsContext,
+  useOppgaveColumnsReset,
+} from './OppgaveColumnsContext.ts'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgaveColumnsContext()
   const handleReset = useOppgaveColumnsReset()
-  const resetEnabled = useMemo(() => !columnsState.every((columnState) => columnState.checked), [columnsState])
+  const isTableCustomized = useIsTableCustomized()
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = useOppgaveColumnDragged()
+
   return (
     <ActionMenu>
       <ActionMenu.Trigger>
@@ -18,12 +44,23 @@ export function OppgaveColumnMenu() {
       </ActionMenu.Trigger>
       <ActionMenu.Content>
         <ActionMenu.Group label="Velg kolonner">
-          {columnsState.map((columnState) => (
-            <OppgaveColumnMenuItem key={columnState.field} columnState={columnState} />
-          ))}
-          {resetEnabled && (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+            onDragEnd={handleDragEnd}
+          >
+            <div>
+              <SortableContext items={columnsState as any} strategy={verticalListSortingStrategy}>
+                {columnsState.map((columnState) => (
+                  <OppgaveColumnMenuItem key={columnState.id} columnState={columnState} />
+                ))}
+              </SortableContext>
+            </div>
+          </DndContext>
+          {isTableCustomized && (
             <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
-              Nullstill tabell
+              Tilbakestill tabell
             </ActionMenu.Item>
           )}
         </ActionMenu.Group>
@@ -33,17 +70,30 @@ export function OppgaveColumnMenu() {
 }
 
 function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnState }) {
-  const handleChange = useOppgaveColumnChange(columnState.field)
-  const header = getOppgaveColumn(columnState.field).header
+  const handleChange = useOppgaveColumnChange(columnState.id)
+  const header = getOppgaveColumn(columnState.id).header
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: columnState.id })
+
   if (!header) {
     return null
   }
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
+
   return (
-    <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleChange}>
-      <HStack gap="3" align="center" justify="space-between" width="100%">
-        <div>{header}</div>
-        <DragVerticalIcon />
-      </HStack>
-    </ActionMenu.CheckboxItem>
+    <div ref={setNodeRef} style={style}>
+      <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleChange}>
+        <HStack gap="3" align="center" justify="space-between" width="100%" wrap={false}>
+          <div className={classes.draggableHeader}>{header}</div>
+          <VStack className={isDragging ? classes.isDragging : classes.isNotDragging} {...attributes} {...listeners}>
+            <DragVerticalIcon width={20} height={20} />
+          </VStack>
+        </HStack>
+      </ActionMenu.CheckboxItem>
+    </div>
   )
 }

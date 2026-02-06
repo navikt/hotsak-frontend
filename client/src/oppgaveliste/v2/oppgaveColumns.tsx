@@ -14,6 +14,7 @@ import {
 } from '../../oppgave/oppgaveTypes.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
+
 import classes from './oppgaveColumns.module.css'
 import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
@@ -264,16 +265,10 @@ export const oppgaveColumns = {
 
 export type OppgaveColumnField = keyof typeof oppgaveColumns
 
-export function getOppgaveColumn(field: OppgaveColumnField): DataGridColumn<OppgaveV2> {
-  const column = oppgaveColumns[field]
+export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<OppgaveV2> {
+  const column = oppgaveColumns[id]
   if (column == null) {
-    throw new Error(`Fant ikke kolonne: ${field}`)
+    throw new Error(`Fant ikke kolonne: ${id}`)
   }
   return column
-}
-
-export interface OppgaveColumnState {
-  field: OppgaveColumnField
-  order: number
-  checked: boolean
 }

@@ -39,7 +39,9 @@ export function useOppgavemetrikker(
   useEffect(() => {
     const data = columns.reduce<Record<string, any>>(
       (result, column) => {
-        result[column.id] = column.checked
+        result[`${column.id}_checked`] = column.checked
+        result[`${column.id}_order`] = column.order
+        result[`${column.id}_defaultOrder`] = column.defaultOrder
         return result
       },
       { oppgaveliste, antallOppgaver, totaltAntallOppgaver }

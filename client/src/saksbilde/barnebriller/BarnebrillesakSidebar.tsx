@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { HøyrekolonneTabs, StegType } from '../../types/types.internal'
 import { SendBrevPanel } from '../høyrekolonne/brevutsending/SendBrevPanel'
-import { HøyrekolonnePanel } from '../høyrekolonne/HøyrekolonnePanel'
+import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel'
 import { Notater } from '../høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../høyrekolonne/notat/NotificationBadge'
 import { useNotater } from '../høyrekolonne/notat/useNotater'
@@ -83,9 +83,9 @@ export function BarnebrillesakSidebar() {
         <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
       </Tabs.Panel>
       <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
-        <HøyrekolonnePanel tittel="Notater">
+        <SidebarPanel tittel="Notater">
           <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-        </HøyrekolonnePanel>
+        </SidebarPanel>
       </Tabs.Panel>
     </Sidebar>
   )

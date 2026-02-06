@@ -3,14 +3,14 @@ import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
+import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/venstre/UtlånsoversiktV2.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
 import { useValgtFane } from '../useValgtFane.ts'
 import { Historikk } from './historikk/Historikk'
-import { Hjelpemiddeloversikt } from './hjelpemiddeloversikt/Hjelpemiddeloversikt'
 import { useHjelpemiddeloversikt } from './hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { HøyrekolonnePanel } from './HøyrekolonnePanel.tsx'
+import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
@@ -84,13 +84,15 @@ export function Høyrekolonne() {
             <Historikk />
           </Tabs.Panel>
           <Tabs.Panel value={HøyrekolonneTabs.HJELPEMIDDELOVERSIKT}>
-            <Hjelpemiddeloversikt />
+            <Box paddingInline="space-16 space-16">
+              <UtlånsoversiktV2 />
+            </Box>
           </Tabs.Panel>
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
-              <HøyrekolonnePanel tittel="Notater">
+              <SidebarPanel tittel="Notater">
                 <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
-              </HøyrekolonnePanel>
+              </SidebarPanel>
             </Tabs.Panel>
           )}
         </ScrollContainer>

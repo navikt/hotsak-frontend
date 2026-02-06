@@ -1,14 +1,14 @@
 import { VStack } from '@navikt/ds-react'
 import { ListeUtenPunkt } from '../../../felleskomponenter/Liste.tsx'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
-import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
+import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { HistorikkHendelse } from './HistorikkHendelse'
 import { useSakshistorikk } from './useSakshistorikk.ts'
 
 export function Historikk() {
   const { hendelser, error, isLoading } = useSakshistorikk()
   return (
-    <HøyrekolonnePanel
+    <SidebarPanel
       tittel="Historikk"
       error={error && 'Feil ved henting av historikk.'}
       loading={isLoading && 'Henter historikk...'}
@@ -22,6 +22,6 @@ export function Historikk() {
       ) : (
         <Tekst>Ingen hendelser.</Tekst>
       )}
-    </HøyrekolonnePanel>
+    </SidebarPanel>
   )
 }

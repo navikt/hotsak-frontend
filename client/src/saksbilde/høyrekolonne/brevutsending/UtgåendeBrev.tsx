@@ -4,7 +4,7 @@ import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { Brevkode } from '../../../types/types.internal'
 import { useSortering } from '../../../utils/useSortering.ts'
 import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
-import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
+import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { BrevKort } from './BrevKort'
 import { sorterKronologiskStigende } from '../../../utils/dato.ts'
 
@@ -21,7 +21,7 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
     sorterKronologiskStigende
   )
   return (
-    <HøyrekolonnePanel
+    <SidebarPanel
       tittel="Utgående brev"
       error={error && 'Feil ved henting av brev'}
       loading={isLoading && 'Henter brev...'}
@@ -31,6 +31,6 @@ export const UtgåendeBrev = memo((props: UtgåendeBrevProps) => {
       ) : (
         <Tekst>Ingen brev sendt.</Tekst>
       )}
-    </HøyrekolonnePanel>
+    </SidebarPanel>
   )
 })

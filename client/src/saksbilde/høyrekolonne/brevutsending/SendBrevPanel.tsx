@@ -12,7 +12,7 @@ import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { useBrevActions } from '../../useBrevActions.ts'
-import { HøyrekolonnePanel } from '../HøyrekolonnePanel.tsx'
+import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
@@ -80,7 +80,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
 
   if (!data) {
     return (
-      <HøyrekolonnePanel tittel="Send brev">
+      <SidebarPanel tittel="Send brev">
         <Heading level="2" as={Skeleton} size="small" spacing>
           Placeholder
         </Heading>
@@ -88,7 +88,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
           <Skeleton variant="rectangle" width="80%" height={30} />
           <Skeleton variant="rectangle" width="80%" height={90} />
         </VStack>
-      </HøyrekolonnePanel>
+      </SidebarPanel>
     )
   }
 
@@ -134,7 +134,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
   return (
     <>
       <>
-        <HøyrekolonnePanel tittel="Send brev">
+        <SidebarPanel tittel="Send brev">
           {lesevisning ? (
             <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
           ) : (
@@ -200,7 +200,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
               </HStack>
             </form>
           )}
-        </HøyrekolonnePanel>
+        </SidebarPanel>
         <UtgåendeBrev sakId={sakId} />
       </>
       <ForhåndsvisningsModal

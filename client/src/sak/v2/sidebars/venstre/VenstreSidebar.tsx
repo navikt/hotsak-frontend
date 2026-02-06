@@ -3,7 +3,7 @@ import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 import { søknadslinjeHøyde } from '../../../../GlobalStyles'
 import { Historikk } from '../../../../saksbilde/høyrekolonne/historikk/Historikk'
 import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { HøyrekolonnePanel } from '../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
+import { SidebarPanel } from '../SidebarPanel'
 import { Notater } from '../../../../saksbilde/høyrekolonne/notat/Notater'
 import { NotificationBadge } from '../../../../saksbilde/høyrekolonne/notat/NotificationBadge'
 import { useNotater } from '../../../../saksbilde/høyrekolonne/notat/useNotater'
@@ -109,9 +109,9 @@ export function VenstreSidebar() {
           </Tabs.Panel>
           {sak != null && (
             <Tabs.Panel value={HøyrekolonneTabs.NOTATER.toString()}>
-              <HøyrekolonnePanel tittel="Notater">
+              <SidebarPanel tittel="Notater">
                 <Notater sakId={sak.data.sakId} lesevisning={!kanBehandleSak} />
-              </HøyrekolonnePanel>
+              </SidebarPanel>
             </Tabs.Panel>
           )}
         </div>

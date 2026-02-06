@@ -1,9 +1,9 @@
 import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
 import { Skillelinje } from '../../../../felleskomponenter/Strek'
-import { Tekst } from '../../../../felleskomponenter/typografi'
+import { Tekst, TextContainer } from '../../../../felleskomponenter/typografi'
 import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { HøyrekolonnePanel } from '../../../../saksbilde/høyrekolonne/HøyrekolonnePanel'
+import { SidebarPanel } from '../SidebarPanel'
 import { useSak } from '../../../../saksbilde/useSak'
 import { HjelpemiddelArtikkel } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
@@ -21,10 +21,11 @@ export function UtlånsoversiktV2() {
   const totaltAntall = useMemo(() => artikler.reduce((sum, artikkel) => sum + artikkel.antall, 0), [artikler])
 
   return (
-    <HøyrekolonnePanel
+    <SidebarPanel
       tittel="Utlånsoversikt"
       error={error && 'Feil ved henting av brukers hjelpemiddeloversikt.'}
       loading={isLoading && 'Henter brukers hjelpemiddeloversikt...'}
+      paddingInline="0 space-16"
       spacing={false}
     >
       {isFromVedtak && <Tekst>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</Tekst>}
@@ -46,7 +47,7 @@ export function UtlånsoversiktV2() {
       ) : (
         <Tekst>Bruker har ingen hjelpemidler fra før.</Tekst>
       )}
-    </HøyrekolonnePanel>
+    </SidebarPanel>
   )
 }
 
@@ -58,7 +59,9 @@ function Artikler({ artikler }: { artikler: HjelpemiddelArtikkel[] }) {
         return (
           <VStack key={`${artikkel.hmsnr}_${artikkel.datoUtsendelse}`}>
             <HStack gap="space-8">
-              <BodyLong size="small">{`${artikkel.hmsnr} ${artikkelBeskrivelse}`}</BodyLong>
+              <TextContainer>
+                <BodyLong size="small">{`${artikkel.hmsnr} ${artikkelBeskrivelse}`}</BodyLong>
+              </TextContainer>
             </HStack>
             <HStack>
               <Detail color="subtle">{`${artikkel.antall} ${artikkel.antallEnhet.toLowerCase()} - utlånt ${formaterDato(artikkel.datoUtsendelse)}`}</Detail>

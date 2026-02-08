@@ -20,7 +20,7 @@ export function useOppgavemetrikker(
     const data = entries.reduce<Record<string, any>>(
       (result, [field, { values }]) => {
         if (field === 'saksbehandler') {
-          result[field] = ''
+          result[field] = true
         } else {
           result[field] = [...values].sort().join(' ELLER ')
         }

@@ -18,7 +18,11 @@ export function useOppgavemetrikker(
     if (entries.length === 0) return
     const data = entries.reduce<Record<string, any>>(
       (result, [field, { values }]) => {
-        result[field] = [...values].sort().join(' ELLER ')
+        if (field === 'saksbehandler') {
+          result[field] = ''
+        } else {
+          result[field] = [...values].sort().join(' ELLER ')
+        }
         return result
       },
       { oppgaveliste, antallOppgaver, totaltAntallOppgaver }

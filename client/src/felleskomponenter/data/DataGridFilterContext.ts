@@ -15,7 +15,7 @@ export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
-export function useDataGridFilterReset(field: string): EventHandler<any> {
+export function useDataGridFilterResetHandler(field: string): EventHandler<any> {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
@@ -25,7 +25,7 @@ export function useDataGridFilterReset(field: string): EventHandler<any> {
   }, [dispatch, field])
 }
 
-export function useDataGridFilterResetAll(): EventHandler<any> {
+export function useDataGridFilterResetAllHandler(): EventHandler<any> {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
@@ -43,20 +43,20 @@ export function useIsDataGridFiltered(): boolean {
 }
 
 interface DataGridFilterBaseAction {
-  type: 'checked' | 'unchecked' | 'reset' | 'resetAll'
+  type: 'addValue' | 'removeValue' | 'reset' | 'resetAll'
 }
 
 interface DataGridFilterFieldAction<K extends string = string> extends DataGridFilterBaseAction {
   field: K
 }
 
-export interface DataGridFilterCheckedAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'checked'
+export interface DataGridFilterAddValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'addValue'
   value: string
 }
 
-export interface DataGridFilterUncheckedAction<K extends string = string> extends DataGridFilterFieldAction<K> {
-  type: 'unchecked'
+export interface DataGridFilterRemoveValueAction<K extends string = string> extends DataGridFilterFieldAction<K> {
+  type: 'removeValue'
   value: string
 }
 
@@ -69,7 +69,7 @@ export interface DataGridFilterResetAllAction extends DataGridFilterBaseAction {
 }
 
 export type DataGridFilterAction =
-  | DataGridFilterCheckedAction
-  | DataGridFilterUncheckedAction
+  | DataGridFilterAddValueAction
+  | DataGridFilterRemoveValueAction
   | DataGridFilterResetAction
   | DataGridFilterResetAllAction

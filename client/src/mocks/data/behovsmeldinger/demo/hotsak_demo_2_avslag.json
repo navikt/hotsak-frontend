@@ -254,7 +254,80 @@
           ]
         }
       ],
-      "tilbehør": [],
+      "tilbehør": [
+        {
+          "tilbehørId": "676caf3b-2901-4c6a-be07-5d68566be4a9",
+          "hmsArtNr": "203051",
+          "navn": "Presenning ers Elite2",
+          "iso6": "122393",
+          "antall": 3,
+          "begrunnelse": null,
+          "fritakFraBegrunnelseÅrsak": "ER_SELVFORKLARENDE_TILBEHØR",
+          "opplysninger": [
+            {
+              "key": {
+                "id": "TILBEHØR_SKAL_BRUKES_MED",
+                "versjon": 1
+              },
+              "ledetekst": {
+                "nb": "Skal brukes med",
+                "nn": "Skal brukast med"
+              },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Et allerede utlånt hjelpemiddel",
+                    "nn": "Eit allereie utlånt hjelpemiddel"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "saksbehandlingvarsel": []
+        },
+        {
+          "tilbehørId": "d409dbae-6c48-46a5-839a-31f10970ba12",
+          "hmsArtNr": "267913",
+          "navn": "Ispigg krykke albue Classic/Classic støtdemper krone oppfell",
+          "iso6": "120390",
+          "antall": 7,
+          "begrunnelse": null,
+          "fritakFraBegrunnelseÅrsak": "ER_PÅ_BESTILLINGSORDNING",
+          "opplysninger": [
+            {
+              "key": {
+                "id": "TILBEHØR_SKAL_BRUKES_MED",
+                "versjon": 1
+              },
+              "ledetekst": {
+                "nb": "Skal brukes med",
+                "nn": "Skal brukast med"
+              },
+              "innhold": [
+                {
+                  "fritekst": null,
+                  "forhåndsdefinertTekst": {
+                    "nb": "Et allerede utlånt hjelpemiddel",
+                    "nn": "Eit allereie utlånt hjelpemiddel"
+                  },
+                  "begrepsforklaring": null
+                }
+              ]
+            }
+          ],
+          "saksbehandlingvarsel": [
+            {
+              "tekst": {
+                "nb": "Tilbehøret er ikke på avtale med Nav. Saksbehandler skal vurdere om det er behov for mer informasjon.",
+                "nn": "Tilbehøyret er ikkje på avtale med Nav. Saksbehandlar skal vurdera om det er behov for meir informasjon."
+              },
+              "type": "INFO"
+            }
+          ]
+        }
+      ],
       "totaltAntall": 3
     },
     "levering": {

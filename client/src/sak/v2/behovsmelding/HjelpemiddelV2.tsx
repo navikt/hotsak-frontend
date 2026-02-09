@@ -16,11 +16,11 @@ import { type Hjelpemiddel as HjelpemiddelType } from '../../../types/Behovsmeld
 import { type Produkt as ProduktType, Sak } from '../../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { AntallTag } from '../AntallTag.tsx'
-import BytterEksperiment from './BytterEksperiment'
-import { ProduktEksperiment } from './ProduktEksperiment'
-import { TilbehørListeEksperiment } from './TilbehørListeEksperiment'
+import BytterEksperiment from './BytterEksperiment.tsx'
+import { ProduktEksperiment } from './ProduktEksperiment.tsx'
+import { TilbehørListeEksperiment } from './TilbehørListeEksperiment.tsx'
 
-interface HjelpemiddelProps {
+interface HjelpemiddelV2Props {
   sak: Sak
   hjelpemiddel: HjelpemiddelType
   produkter: ProduktType[]
@@ -29,14 +29,14 @@ interface HjelpemiddelProps {
   minmaxStyrt: boolean
 }
 
-export function HjelpemiddelEksperiment({
+export function HjelpemiddelV2({
   hjelpemiddel,
   produkter,
   sak,
   minmaxStyrt,
   harOppdatertLagerstatus,
   alternativeProdukter,
-}: HjelpemiddelProps) {
+}: HjelpemiddelV2Props) {
   const produkt = produkter.find((p) => p.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
 
   const { kanEndreHmsnr } = useSaksregler()

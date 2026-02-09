@@ -2,7 +2,7 @@ import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { BrytbarBrødtekst, Brødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
+import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { type Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
@@ -123,7 +123,9 @@ export function Tilbehør({
             {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
           </VStack>
         </TextContainer>
-        <Brødtekst>{tilbehør.antall} stk</Brødtekst>
+        <div style={{ alignSelf: 'start' }}>
+          <Tekst>{tilbehør.antall} stk</Tekst>
+        </div>
         {kanEndreHmsnr && tilbehør.tilbehørId && (
           <div>
             <Button

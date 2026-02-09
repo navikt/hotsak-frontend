@@ -14,9 +14,9 @@ import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/B
 import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
 import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment.tsx'
-import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment.tsx'
 import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment.tsx'
 import { useSummering } from './summering/useSummering.ts'
+import { HjelpemiddelV2 } from './HjelpemiddelV2.tsx'
 
 interface HjelpemidlerProps {
   sak: Sak
@@ -93,7 +93,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
             borderWidth="1"
             borderRadius="large"
           >
-            <HjelpemiddelEksperiment
+            <HjelpemiddelV2
               sak={sak}
               hjelpemiddel={hjelpemiddel}
               produkter={hjelpemiddelprodukter}

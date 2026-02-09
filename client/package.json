@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.1",
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/modifiers": "^9.0.0",
@@ -110,7 +110,8 @@
   "pnpm": {
     "overrides": {
       "lodash": ">=4.17.23",
-      "lodash-es": ">=4.17.23"
+      "lodash-es": ">=4.17.23",
+      "@isaacs/brace-expansion": ">=5.0.1"
     }
   }
 }

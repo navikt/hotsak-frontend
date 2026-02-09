@@ -1,8 +1,11 @@
 import { TrashIcon } from '@navikt/aksel-icons'
 import { BodyShort, Box, Button, HGrid, HStack } from '@navikt/ds-react'
 import { type ReactNode } from 'react'
-import { useDataGridFilterResetAll, useIsDataGridFiltered } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 
+import {
+  useDataGridFilterResetAllHandler,
+  useIsDataGridFiltered,
+} from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 
 import classes from './OppgaveToolbar.module.css'
@@ -15,7 +18,7 @@ export interface OppgaveToolbarProps {
 export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const { text, children } = props
   const isDataGridFiltered = useIsDataGridFiltered()
-  const handleFilterResetAll = useDataGridFilterResetAll()
+  const handleFilterResetAll = useDataGridFilterResetAllHandler()
   return (
     <Box.New borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="2">
       <HGrid columns="1fr 1fr 1fr" align="center" className={classes.grid}>

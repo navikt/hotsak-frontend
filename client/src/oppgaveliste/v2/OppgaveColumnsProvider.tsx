@@ -1,3 +1,4 @@
+import { type UniqueIdentifier } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { type ReactNode } from 'react'
 
@@ -47,24 +48,24 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
 
 function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
   switch (action.type) {
-    case 'checked':
+    case 'addColumn':
       return state.map((column) => {
         return action.id === column.id ? { ...column, checked: true } : column
       })
-    case 'unchecked':
+    case 'removeColumn':
       return state.map((column) => {
         return action.id === column.id ? { ...column, checked: false } : column
       })
-    case 'reset':
-      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
-    case 'dragged': {
-      const oldIndex = state.findIndex(({ id }) => id == action.activeId)
-      const newIndex = state.findIndex(({ id }) => id == action.overId)
+    case 'moveColumn': {
+      const oldIndex = findColumnIndex(state, action.activeId)
+      const newIndex = findColumnIndex(state, action.overId)
       return arrayMove([...state], oldIndex, newIndex).map((column, order) => ({
         ...column,
         order,
       }))
     }
+    case 'resetAll':
+      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
     default:
       return state
   }
@@ -72,4 +73,8 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
 
 function byOrder(a: OppgaveColumnState, b: OppgaveColumnState): number {
   return a.order - b.order
+}
+
+function findColumnIndex(state: OppgaveColumnsState, id: UniqueIdentifier): number {
+  return state.findIndex((column) => column.id === id)
 }

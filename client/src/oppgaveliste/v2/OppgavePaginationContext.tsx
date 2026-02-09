@@ -29,7 +29,7 @@ export function useOppgavePaginationDispatch(): Dispatch<OppgavePaginationAction
   return useContext(OppgavePaginationDispatch)
 }
 
-export function useHandleSortChange(): (sortKey: string) => void {
+export function useOppgavePaginationSortChangeHandler(): (sortKey: string) => void {
   const dispatch = useOppgavePaginationDispatch()
   return useCallback(
     (sortKey) => {

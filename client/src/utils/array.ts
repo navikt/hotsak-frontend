@@ -25,6 +25,10 @@ export function associateBy<K extends PropertyKey, T>(
   return Object.fromEntries(entries)
 }
 
+export function entriesOf<T extends Record<string, unknown>>(obj: T): Array<[keyof T & string, T[keyof T & string]]> {
+  return Object.entries(obj) as Array<[keyof T & string, T[keyof T & string]]>
+}
+
 export function notEmpty<T>(value: T | null | undefined): value is T {
   return value != null
 }

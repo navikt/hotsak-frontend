@@ -11,20 +11,21 @@ import { CogIcon, DragVerticalIcon, TrashIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, HStack, VStack } from '@navikt/ds-react'
 
 import classes from './OppgaveColumnMenu.module.css'
+
 import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnState,
   useIsTableCustomized,
-  useOppgaveColumnChange,
-  useOppgaveColumnDragged,
   useOppgaveColumnsContext,
-  useOppgaveColumnsReset,
+  useOppgaveColumnsMoveColumnHandler,
+  useOppgaveColumnsResetAllHandler,
+  useOppgaveColumnToggleColumnHandler,
 } from './OppgaveColumnsContext.ts'
 
 export function OppgaveColumnMenu() {
   const columnsState = useOppgaveColumnsContext()
-  const handleReset = useOppgaveColumnsReset()
   const isTableCustomized = useIsTableCustomized()
+  const handleResetAll = useOppgaveColumnsResetAllHandler()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -33,7 +34,7 @@ export function OppgaveColumnMenu() {
     })
   )
 
-  const handleDragEnd = useOppgaveColumnDragged()
+  const handleMoveColumn = useOppgaveColumnsMoveColumnHandler()
 
   return (
     <ActionMenu>
@@ -48,7 +49,7 @@ export function OppgaveColumnMenu() {
             sensors={sensors}
             collisionDetection={closestCenter}
             modifiers={[restrictToVerticalAxis, restrictToParentElement]}
-            onDragEnd={handleDragEnd}
+            onDragEnd={handleMoveColumn}
           >
             <div>
               <SortableContext items={columnsState as any} strategy={verticalListSortingStrategy}>
@@ -59,7 +60,7 @@ export function OppgaveColumnMenu() {
             </div>
           </DndContext>
           {isTableCustomized && (
-            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleReset}>
+            <ActionMenu.Item variant="danger" icon={<TrashIcon />} onSelect={handleResetAll}>
               Tilbakestill tabell
             </ActionMenu.Item>
           )}
@@ -70,7 +71,7 @@ export function OppgaveColumnMenu() {
 }
 
 function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnState }) {
-  const handleChange = useOppgaveColumnChange(columnState.id)
+  const handleToggleColumn = useOppgaveColumnToggleColumnHandler(columnState.id)
   const header = getOppgaveColumn(columnState.id).header
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: columnState.id })
@@ -86,7 +87,7 @@ function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnStat
 
   return (
     <div ref={setNodeRef} style={style}>
-      <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleChange}>
+      <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleToggleColumn}>
         <HStack gap="3" align="center" justify="space-between" width="100%" wrap={false}>
           <div className={classes.draggableHeader}>{header}</div>
           <VStack className={isDragging ? classes.isDragging : classes.isNotDragging} {...attributes} {...listeners}>

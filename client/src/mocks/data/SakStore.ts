@@ -9,7 +9,7 @@ import {
   LagreBehandlingRequest,
   UtfallLåst,
   VedtaksResultat,
-} from '../../types/behandlingTyper.ts'
+} from '../../sak/v2/behandling/behandlingTyper.ts'
 import { type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import {
   type Barnebrillesak,

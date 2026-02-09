@@ -2,7 +2,11 @@ import { http, HttpResponse } from 'msw'
 
 import { type ArtikkellinjeSak } from '../../sak/sakTypes.ts'
 import { type EndreHjelpemiddelRequest } from '../../saksbilde/hjelpemidler/endreHjelpemiddel/endreHjelpemiddelTypes.ts'
-import { BehandlingerResponse, LagreBehandlingRequest, VedtaksResultat } from '../../types/behandlingTyper.ts'
+import {
+  BehandlingerResponse,
+  LagreBehandlingRequest,
+  VedtaksResultat,
+} from '../../sak/v2/behandling/behandlingTyper.ts'
 import {
   OppgaveStatusType,
   StegType,

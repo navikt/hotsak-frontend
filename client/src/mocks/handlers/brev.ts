@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { UtfallLåst } from '../../types/behandlingTyper'
+import { UtfallLåst } from '../../sak/v2/behandling/behandlingTyper'
 import { Brevtype, OppgaveStatusType } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument, lastDokumentBarnebriller, nåIso } from '../data/felles'

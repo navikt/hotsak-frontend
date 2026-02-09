@@ -9,7 +9,7 @@ import { NotificationBadge } from '../../../../saksbilde/høyrekolonne/notat/Not
 import { useNotater } from '../../../../saksbilde/høyrekolonne/notat/useNotater'
 import { useSak } from '../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../saksregler/useSaksregler'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SaksbehandlingEksperimentProviderTypes'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SakPanelTabTypes'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
 import { useSaksbehandlingEksperimentContext } from '../../SakProvider'
 

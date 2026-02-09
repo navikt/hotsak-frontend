@@ -1,5 +1,5 @@
-import { OppgaveId } from '../oppgave/oppgaveTypes'
-import { Saksbehandler } from './types.internal'
+import { OppgaveId } from '../../../oppgave/oppgaveTypes'
+import { Saksbehandler } from '../../../types/types.internal'
 
 export interface Behandling {
   behandlingId: number

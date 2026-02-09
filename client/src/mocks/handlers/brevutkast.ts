@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../types/behandlingTyper'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../sak/v2/behandling/behandlingTyper'
 import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import type { SakParams } from './params'

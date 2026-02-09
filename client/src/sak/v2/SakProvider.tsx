@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from './SaksbehandlingEksperimentProviderTypes'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from './SakPanelTabTypes'
 
 /**
  * Holder på instillinger og state for det som skjer i saksbehandlingsbildet i nye Hotsak. Ligger som en egen provider for ikke å blande det
@@ -23,8 +23,8 @@ const initialState = {
   setOpprettBrevKlikket() {},
 }
 
-const SakContext = createContext<SaksbehandlingEksperimentContextType>(initialState)
-SakContext.displayName = 'SaksbehandlingEksperiment'
+const SakContext = createContext<SakV2ContextType>(initialState)
+SakContext.displayName = 'SakV2'
 
 function SakProvider({ children }: { children: ReactNode }) {
   const [sidePanel, setSidePanel] = useState(true)
@@ -61,7 +61,7 @@ function SakProvider({ children }: { children: ReactNode }) {
   )
 }
 
-function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContextType {
+function useSaksbehandlingEksperimentContext(): SakV2ContextType {
   const context = useContext(SakContext)
 
   if (!context) {
@@ -71,7 +71,7 @@ function useSaksbehandlingEksperimentContext(): SaksbehandlingEksperimentContext
   return context
 }
 
-type SaksbehandlingEksperimentContextType = {
+type SakV2ContextType = {
   sidePanel: boolean
   setSidePanel(visible: boolean): void
   søknadPanel: boolean

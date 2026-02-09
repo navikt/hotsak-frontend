@@ -160,7 +160,18 @@
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
       "utleveringMerknad": null,
-      "hast": null,
+      "hast": {
+        "hasteårsaker": [
+          "UTVIKLING_AV_TRYKKSÅR",
+          "TERMINALPLEIE",
+          "UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES",
+          "UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES_V2",
+          "UTSKRIVING_FRA_SYKEHUS_SOM_IKKE_KAN_PLANLEGGES_V3",
+          "RASK_FORVERRING_AV_ALVORLIG_DIAGNOSE",
+          "ANNET"
+        ],
+        "hastBegrunnelse": "Fritekst hasteårsak"
+      },
       "automatiskUtledetTilleggsinfo": []
     },
     "innsender": {

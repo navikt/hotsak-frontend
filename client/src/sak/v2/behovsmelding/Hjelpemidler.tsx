@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
 import { memo, useMemo, useState } from 'react'
 
-import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
+import { Hast } from '../../../saksbilde/hjelpemidler/Hast.tsx'
 import { OebsAlert } from '../../../saksbilde/hjelpemidler/OebsAlert.tsx'
 import {
   ingenAlternativeProdukterForHmsArtNr,
@@ -12,8 +12,8 @@ import {
 import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
+import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
 import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment.tsx'
-import { HastEksperiment } from './HastEksperiment.tsx'
 import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment.tsx'
 import { SummertFrittståendTilbehørEksperiment, SummertHjelpemidlerEksperiment } from './SummeringEksperiment.tsx'
 import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment.tsx'
@@ -53,7 +53,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
 
   return (
     <VStack gap="space-12">
-      {behovsmelding.levering.hast && <HastEksperiment hast={behovsmelding.levering.hast} />}
+      {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
 
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />

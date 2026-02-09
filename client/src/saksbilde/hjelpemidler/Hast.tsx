@@ -1,5 +1,4 @@
-import { Alert, Box, Heading, List, VStack } from '@navikt/ds-react'
-import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
+import { InfoCard, List } from '@navikt/ds-react'
 import { BrytbarBrødtekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { Hasteårsak, Hast as HastType } from '../../types/BehovsmeldingTypes.ts'
 
@@ -8,31 +7,26 @@ export function Hast(props: { hast?: HastType }) {
   if (!hast) return null
   const { hasteårsaker, hastBegrunnelse } = hast
   return (
-    <>
-      <TextContainer>
-        <VStack gap="2">
-          <Alert variant="warning" size="small" inline>
-            Hast: Formidler har markert saken som hast.
-          </Alert>
-          <Box paddingInline="8 0">
-            <Heading level="3" size="xsmall" spacing>
-              Årsak til at det haster
-            </Heading>
-            <List size="small">
-              {hasteårsaker.map((årsak) => (
-                <List.Item key={årsak}>
-                  <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
-                  {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
-                    <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
-                  )}
-                </List.Item>
-              ))}
-            </List>
-          </Box>
-        </VStack>
-      </TextContainer>
-      <Skillelinje />
-    </>
+    <InfoCard title="Haster" size="small" data-color="warning">
+      <InfoCard.Header>
+        <InfoCard.Title>Haster</InfoCard.Title>
+      </InfoCard.Header>
+
+      <InfoCard.Content>
+        <TextContainer>
+          <List size="small">
+            {hasteårsaker.map((årsak) => (
+              <List.Item key={årsak}>
+                <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
+                {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
+                  <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
+                )}
+              </List.Item>
+            ))}
+          </List>
+        </TextContainer>
+      </InfoCard.Content>
+    </InfoCard>
   )
 }
 

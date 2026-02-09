@@ -17,7 +17,7 @@ import { type Produkt as ProduktType, Sak } from '../../../types/types.internal.
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { AntallTag } from '../AntallTag.tsx'
 import BytterEksperiment from './BytterEksperiment.tsx'
-import { ProduktEksperiment } from './ProduktEksperiment.tsx'
+import { ProduktV2 } from './ProduktV2.tsx'
 import { TilbehørListeEksperiment } from './TilbehørListeEksperiment.tsx'
 
 interface HjelpemiddelV2Props {
@@ -71,14 +71,14 @@ export function HjelpemiddelV2({
         <>
           <VStack justify="start" gap="2">
             {endretHjelpemiddel && (
-              <ProduktEksperiment
+              <ProduktV2
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
                 navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
                 showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
               />
             )}
             <HStack gap="space-8">
-              <ProduktEksperiment
+              <ProduktV2
                 hmsnr={hjelpemiddel.produkt.hmsArtNr}
                 navn={hjelpemiddel.produkt.artikkelnavn}
                 gjennomstrek={endretHjelpemiddel !== undefined}
@@ -103,22 +103,18 @@ export function HjelpemiddelV2({
                 <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
               )}
               <div>
-                <Brødtekst textColor="subtle">|</Brødtekst>
+                <Tekst textColor="subtle">|</Tekst>
               </div>
               <AntallTag antall={hjelpemiddel.antall} />
               {minmaxStyrt && (
                 <>
-                  <div>
-                    <Brødtekst textColor="subtle">|</Brødtekst>
-                  </div>
+                  <Tekst textColor="subtle">|</Tekst>
                   <Tekst>Min/max lagervare</Tekst>
                 </>
               )}
               {harAlternativeProdukter && (
                 <>
-                  <div>
-                    <Brødtekst textColor="subtle">|</Brødtekst>
-                  </div>
+                  <Tekst textColor="subtle">|</Tekst>
                   <Tag size="xsmall" variant="info-moderate">
                     Har alternativliste
                   </Tag>

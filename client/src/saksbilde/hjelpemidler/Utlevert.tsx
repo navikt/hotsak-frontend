@@ -1,5 +1,4 @@
-import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons'
-import { HStack, VStack } from '@navikt/ds-react'
+import { HStack, InlineMessage } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Utlevertinfo, UtlevertType } from '../../types/BehovsmeldingTypes'
 
@@ -9,7 +8,7 @@ interface UtlevertProps {
   harVarsel?: boolean
 }
 
-export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel = false }: UtlevertProps) {
+export function Utlevert({ alleredeUtlevert, utlevertInfo }: UtlevertProps) {
   if (!alleredeUtlevert) return null
 
   let utlevertTekst
@@ -29,12 +28,11 @@ export function Utlevert({ alleredeUtlevert, utlevertInfo, harVarsel = false }: 
   }
 
   return (
-    <HStack>
-      {harVarsel && <ExclamationmarkTriangleFillIcon color="var(--ax-text-warning-decoration)" fontSize="1.25rem" />}
-      <VStack>
-        <Etikett>Utlevert</Etikett>
+    <InlineMessage status={'warning'} size="small">
+      <HStack gap="space-4">
+        <Etikett>Utlevert: </Etikett>
         <Tekst>{utlevertTekst}</Tekst>
-      </VStack>
-    </HStack>
+      </HStack>
+    </InlineMessage>
   )
 }

@@ -2,7 +2,7 @@ import { HStack } from '@navikt/ds-react'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { BrytbarBrødtekst, Tekst } from '../../../felleskomponenter/typografi'
 
-export function ProduktEksperiment({
+export function ProduktV2({
   gjennomstrek = false,
   hmsnr,
   navn,

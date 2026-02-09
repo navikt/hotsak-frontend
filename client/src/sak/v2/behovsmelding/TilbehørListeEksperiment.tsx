@@ -7,7 +7,7 @@ import { useSaksregler } from '../../../saksregler/useSaksregler'
 import { Tilbehør as Tilbehørtype } from '../../../types/BehovsmeldingTypes'
 import { Produkt as Produkttype } from '../../../types/types.internal'
 import { AntallTag } from '../AntallTag'
-import { ProduktEksperiment } from './ProduktEksperiment'
+import { ProduktV2 } from './ProduktV2'
 
 export function FrittStåendeTilbehørEksperiment({
   tilbehør,
@@ -74,7 +74,7 @@ export function Tilbehør({
     <>
       <VStack gap="space-4">
         <HStack gap="space-12">
-          <ProduktEksperiment hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
+          <ProduktV2 hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
         </HStack>
         <VStack paddingBlock={'space-8 0'}>
           <Etikett>Antall</Etikett>

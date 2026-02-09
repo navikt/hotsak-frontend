@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
-import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
+import { Box, Button, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { memo, useMemo, useState } from 'react'
 
 import { Hast } from '../../../saksbilde/hjelpemidler/Hast.tsx'
@@ -15,8 +15,8 @@ import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
 import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment.tsx'
 import { HjelpemiddelEksperiment } from './HjelpemiddelEksperiment.tsx'
-import { SummertFrittståendTilbehørEksperiment, SummertHjelpemidlerEksperiment } from './SummeringEksperiment.tsx'
 import { FrittStåendeTilbehørEksperiment } from './TilbehørListeEksperiment.tsx'
+import { useSummering } from './summering/useSummering.ts'
 
 interface HjelpemidlerProps {
   sak: Sak
@@ -50,6 +50,12 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
   const { artikler } = useArtiklerForSak(sak.sakId)
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
+  const {
+    antallHjelpemidler,
+    antallTilbehørTilknyttetHjelpemidler,
+    harTilknyttedeTilbehør,
+    antallFrittståendeTilbehør,
+  } = useSummering(hjelpemidler, tilbehør)
 
   return (
     <VStack gap="space-12">
@@ -73,7 +79,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
             </Label>
           </HStack>
 
-          <SummertHjelpemidlerEksperiment hjelpemidler={hjelpemidler} />
+          <Detail>{`Totalt ${antallHjelpemidler} stk${harTilknyttedeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler} stk tilbehør` : ''}`}</Detail>
         </VStack>
       )}
 
@@ -116,7 +122,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
                 TILBEHØR
               </Label>
             </HStack>
-            <SummertFrittståendTilbehørEksperiment tilbehør={tilbehør} />
+            <Detail>{`Totalt ${antallFrittståendeTilbehør} stk`}</Detail>
           </VStack>
           {!skjulteTilbehør && (
             <FrittStåendeTilbehørEksperiment tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />

@@ -9,7 +9,6 @@ import { BrukersFunksjon } from './BrukersFunksjon.tsx'
 import { Hast } from './Hast.tsx'
 import { Hjelpemiddel } from './Hjelpemiddel.tsx'
 import { OebsAlert } from './OebsAlert.tsx'
-import { Summering } from './Summering.tsx'
 import { FrittståendeTilbehør } from './TilbehørListe.tsx'
 import {
   ingenAlternativeProdukterForHmsArtNr,
@@ -18,6 +17,9 @@ import {
 } from './useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
 import { Varsler } from './Varsel.tsx'
+import { useSummering } from '../../sak/v2/behovsmelding/summering/useSummering.ts'
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
+import { Etikett } from '../../felleskomponenter/typografi.tsx'
 
 interface HjelpemiddelListeProps {
   sak: Sak
@@ -31,6 +33,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const { brukersituasjon, levering, saksbehandlingvarsel } = behovsmelding
   const hjelpemidler = behovsmelding.hjelpemidler.hjelpemidler
   const tilbehør = behovsmelding.hjelpemidler.tilbehør
+  const { totaltAntall } = useSummering(hjelpemidler, tilbehør)
 
   const alleHmsNr = useMemo(() => {
     return [
@@ -92,7 +95,11 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <FrittståendeTilbehør sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
-      <Summering hjelpemidler={hjelpemidler} tilbehør={tilbehør} />
+      <VStack gap="1">
+        <Skillelinje />
+        <Etikett>{`Totalt ${totaltAntall} stk. inkl. tilbehør`}</Etikett>
+        <Skillelinje />
+      </VStack>
 
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>

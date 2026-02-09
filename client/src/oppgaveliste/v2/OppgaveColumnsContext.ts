@@ -23,12 +23,12 @@ export function useOppgaveColumnsDispatch(): Dispatch<OppgaveColumnsAction> {
   return useContext(OppgaveColumnsDispatchContext)
 }
 
-export function useOppgaveColumnChange(id: OppgaveColumnField): (checked: boolean) => void {
+export function useOppgaveColumnToggleColumnHandler(id: OppgaveColumnField): (checked: boolean) => void {
   const dispatch = useOppgaveColumnsDispatch()
   return useCallback(
     (checked) => {
       dispatch({
-        type: checked ? 'checked' : 'unchecked',
+        type: checked ? 'addColumn' : 'removeColumn',
         id,
       })
     },
@@ -36,14 +36,14 @@ export function useOppgaveColumnChange(id: OppgaveColumnField): (checked: boolea
   )
 }
 
-export function useOppgaveColumnDragged(): (event: DragEndEvent) => void {
+export function useOppgaveColumnsMoveColumnHandler(): (event: DragEndEvent) => void {
   const dispatch = useOppgaveColumnsDispatch()
   return useCallback(
     (event) => {
       const { active, over } = event
       if (over && active.id !== over.id) {
         dispatch({
-          type: 'dragged',
+          type: 'moveColumn',
           activeId: active.id,
           overId: over.id,
         })
@@ -53,11 +53,11 @@ export function useOppgaveColumnDragged(): (event: DragEndEvent) => void {
   )
 }
 
-export function useOppgaveColumnsReset(): (event: Event) => void {
+export function useOppgaveColumnsResetAllHandler(): () => void {
   const dispatch = useOppgaveColumnsDispatch()
   return useCallback(() => {
     dispatch({
-      type: 'reset',
+      type: 'resetAll',
     })
   }, [dispatch])
 }
@@ -71,31 +71,31 @@ export function useIsTableCustomized() {
 }
 
 interface OppgaveColumnsBaseAction {
-  type: 'checked' | 'unchecked' | 'dragged' | 'reset'
+  type: 'addColumn' | 'removeColumn' | 'moveColumn' | 'resetAll'
 }
 
-export interface OppgaveColumnsCheckedAction extends OppgaveColumnsBaseAction {
-  type: 'checked'
+export interface OppgaveColumnsAddColumnAction extends OppgaveColumnsBaseAction {
+  type: 'addColumn'
   id: OppgaveColumnField
 }
 
-export interface OppgaveColumnsUncheckedAction extends OppgaveColumnsBaseAction {
-  type: 'unchecked'
+export interface OppgaveColumnsRemoveColumnAction extends OppgaveColumnsBaseAction {
+  type: 'removeColumn'
   id: OppgaveColumnField
 }
 
-export interface OppgaveColumnsResetAction extends OppgaveColumnsBaseAction {
-  type: 'reset'
-}
-
-export interface OppgaveColumnsDraggedAction extends OppgaveColumnsBaseAction {
-  type: 'dragged'
+export interface OppgaveColumnsMoveColumnAction extends OppgaveColumnsBaseAction {
+  type: 'moveColumn'
   activeId: OppgaveColumnField | UniqueIdentifier
   overId: OppgaveColumnField | UniqueIdentifier
 }
 
+export interface OppgaveColumnsResetAllAction extends OppgaveColumnsBaseAction {
+  type: 'resetAll'
+}
+
 export type OppgaveColumnsAction =
-  | OppgaveColumnsCheckedAction
-  | OppgaveColumnsUncheckedAction
-  | OppgaveColumnsResetAction
-  | OppgaveColumnsDraggedAction
+  | OppgaveColumnsAddColumnAction
+  | OppgaveColumnsRemoveColumnAction
+  | OppgaveColumnsMoveColumnAction
+  | OppgaveColumnsResetAllAction

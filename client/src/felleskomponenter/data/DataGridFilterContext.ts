@@ -1,4 +1,4 @@
-import { createContext, type Dispatch, type EventHandler, useCallback, useContext, useMemo } from 'react'
+import { createContext, type Dispatch, useCallback, useContext, useMemo } from 'react'
 
 import { type DataGridFilterValues } from './DataGridFilter.ts'
 
@@ -15,7 +15,7 @@ export function useDataGridFilterDispatch(): Dispatch<DataGridFilterAction> {
   return useContext(DataGridFilterDispatch)
 }
 
-export function useDataGridFilterResetHandler(field: string): EventHandler<any> {
+export function useDataGridFilterResetHandler(field: string): () => void {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({
@@ -25,7 +25,7 @@ export function useDataGridFilterResetHandler(field: string): EventHandler<any> 
   }, [dispatch, field])
 }
 
-export function useDataGridFilterResetAllHandler(): EventHandler<any> {
+export function useDataGridFilterResetAllHandler(): () => void {
   const dispatch = useDataGridFilterDispatch()
   return useCallback(() => {
     dispatch({

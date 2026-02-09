@@ -48,17 +48,15 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
 
 function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
   switch (action.type) {
-    case 'checked':
+    case 'addColumn':
       return state.map((column) => {
         return action.id === column.id ? { ...column, checked: true } : column
       })
-    case 'unchecked':
+    case 'removeColumn':
       return state.map((column) => {
         return action.id === column.id ? { ...column, checked: false } : column
       })
-    case 'reset':
-      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
-    case 'dragged': {
+    case 'moveColumn': {
       const oldIndex = findColumnIndex(state, action.activeId)
       const newIndex = findColumnIndex(state, action.overId)
       return arrayMove([...state], oldIndex, newIndex).map((column, order) => ({
@@ -66,6 +64,8 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
         order,
       }))
     }
+    case 'resetAll':
+      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
     default:
       return state
   }

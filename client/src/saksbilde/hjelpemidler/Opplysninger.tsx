@@ -1,5 +1,5 @@
 import { VStack } from '@navikt/ds-react'
-import { BrytbarBrødtekst, Etikett, TextContainer } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import { Opplysning } from '../../types/BehovsmeldingTypes'
 import { storForbokstavIOrd } from '../../utils/formater'
 
@@ -11,18 +11,16 @@ export function Opplysninger({ opplysninger }: { opplysninger: Opplysning[] }) {
           <TextContainer key={opplysning.ledetekst.nb}>
             <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
             {opplysning.innhold.length === 1 ? (
-              <BrytbarBrødtekst>
+              <Tekst>
                 {opplysning.innhold[0].forhåndsdefinertTekst
                   ? opplysning.innhold[0].forhåndsdefinertTekst.nb
                   : opplysning.innhold[0].fritekst}
-              </BrytbarBrødtekst>
+              </Tekst>
             ) : (
               <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
                 {opplysning.innhold.map((element, idx) => (
                   <li key={idx}>
-                    <BrytbarBrødtekst>
-                      {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                    </BrytbarBrødtekst>
+                    <Tekst>{element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}</Tekst>
                   </li>
                 ))}
               </ul>

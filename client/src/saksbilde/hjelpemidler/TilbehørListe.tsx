@@ -106,13 +106,13 @@ export function Tilbehør({
             {harEndretTilbehør && (
               <Box.New paddingInline="4 0">
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-                <BrytbarBrødtekst>
+                <Tekst>
                   {endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
                   endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
                     ? endretTilbehør.begrunnelseFritekst
                     : EndretArtikkelBegrunnelse[endretTilbehør?.begrunnelse] ||
                       `${storForbokstavIOrd(endretTilbehør?.begrunnelse)}`}
-                </BrytbarBrødtekst>
+                </Tekst>
               </Box.New>
             )}
             {harOpplysninger && (
@@ -159,13 +159,13 @@ function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
       {tilbehør.begrunnelse && (
         <Box paddingInline="4 0">
           <Etikett>Begrunnelse</Etikett>
-          <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
+          <Tekst>{tilbehør.begrunnelse}</Tekst>
         </Box>
       )}
 
       {tilbehør.fritakFraBegrunnelseÅrsak && (
         <Box paddingInline="4 0">
-          <Brødtekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Brødtekst>
+          <Tekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Tekst>
         </Box>
       )}
     </>

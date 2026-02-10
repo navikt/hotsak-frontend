@@ -82,11 +82,20 @@
               "saksbehandlingvarsel": []
             }
           ],
-          "bytter": [],
+          "bytter": [
+            {
+              "hmsnr": "123123",
+              "serienr": "90210",
+              "hjmNavn": "Navn på hjelpemiddel som skal byttes inn",
+              "hjmKategori": "Ka te gåri",
+              "årsak": "ENDRINGER_I_INNBYGGERS_FUNKSJON",
+              "erTilsvarende": true
+            }
+          ],
           "bruksarenaer": ["EGET_HJEM"],
           "utlevertinfo": {
-            "alleredeUtlevertFraHjelpemiddelsentralen": false,
-            "utleverttype": null,
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "utleverttype": "FREMSKUTT_LAGER",
             "overførtFraBruker": null,
             "annenKommentar": null
           },

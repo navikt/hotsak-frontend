@@ -207,7 +207,27 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
       ]
     })
 
-    return HttpResponse.json(hjelpemidler)
+    const frittståendeTilbehør = behovsmelding.hjelpemidler.tilbehør.map((tilbehør): ArtikkellinjeSak => {
+      const id = tilbehør.tilbehørId ?? ''
+      const endretTilbehør = endredeHjelpemidlerById[id]
+      return {
+        id: tilbehør.tilbehørId ?? '',
+        hmsArtNr: endretTilbehør?.hmsArtNr ?? tilbehør.hmsArtNr,
+        artikkelnavn: endretTilbehør?.artikkelnavn ?? tilbehør.navn,
+        antall: tilbehør.antall,
+        finnesIOebs: true,
+        endretArtikkel: endretTilbehør
+          ? {
+              id: endretTilbehør.id,
+              begrunnelse: endretTilbehør.begrunnelse,
+              begrunnelseFritekst: endretTilbehør.begrunnelseFritekst,
+            }
+          : undefined,
+        type: 'TILBEHØR',
+      }
+    })
+
+    return HttpResponse.json([...hjelpemidler, ...frittståendeTilbehør])
   }),
 
   http.put<SakParams, EndreHjelpemiddelRequest>('/api/sak/:sakId/hjelpemidler', async ({ request, params }) => {

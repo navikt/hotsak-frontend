@@ -1,9 +1,9 @@
-import { PersonIcon } from '@navikt/aksel-icons'
-import { Box, CopyButton, Heading, HGrid, HGridProps, HStack, List, Tooltip } from '@navikt/ds-react'
+import { Heading, HStack, List, VStack } from '@navikt/ds-react'
 
-import { MerknadBox } from '../../felleskomponenter/Merknad'
-import { Strek } from '../../felleskomponenter/Strek'
-import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Skillelinje } from '../../felleskomponenter/Strek'
+import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
+import { KontaktpersonEksperiment } from '../../sak/v2/behovsmelding/KontaktpersonEksperiment'
+import { SignaturEksperiment } from '../../sak/v2/behovsmelding/signatur/Signatur'
 import {
   Bruker as Behovsmeldingsbruker,
   Brukerkilde,
@@ -19,9 +19,7 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater'
-import { Kontaktperson } from './Kontaktperson'
 import { Leveringsmåte } from './Leveringsmåte'
-import { Signatur } from './Signatur'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -40,72 +38,60 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
 
   return (
     <>
-      <Heading level="1" size="medium">
-        <HStack align="center" gap="1">
-          <PersonIcon />
-          Hjelpemiddelbruker
-        </HStack>
+      <Heading level="2" size="small">
+        Hjelpemiddelbruker
       </Heading>
-      <Box paddingBlock="4 8">
-        <HGrid {...hGridProps}>
-          <Etikett>Navn</Etikett>
+      <VStack paddingBlock="space-16 0" gap="space-4">
+        <HStack gap="space-6">
+          <Etikett>Navn:</Etikett>
           <Tekst>{formatertNavn}</Tekst>
-          <Etikett>Fødselsnummer</Etikett>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Fødselsnummer:</Etikett>
           <Tekst>{formatertFnr}</Tekst>
-          <Etikett>{behovsmeldingsbruker.kilde === Brukerkilde.PDL ? 'Folkeregistert adresse' : 'Adresse'}</Etikett>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett> {behovsmeldingsbruker.kilde === Brukerkilde.PDL ? 'Folkeregistert adresse:' : 'Adresse:'}</Etikett>
           <Tekst>{adresseBruker}</Tekst>
-          <Etikett>Telefon</Etikett>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Telefon:</Etikett>
           <Tekst>{formatertTlf}</Tekst>
-
-          <Etikett>Funksjonsnedsettelse</Etikett>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Funksjonsnedsettelse:</Etikett>
           <Tekst>{storForbokstavIAlleOrd(brukerSituasjon.funksjonsnedsettelser.join(', '))}</Tekst>
-        </HGrid>
-      </Box>
-
-      <Strek />
-
-      <Heading level="1" size="medium" spacing={true}>
+        </HStack>
+      </VStack>
+      <Skillelinje />
+      <Heading level="2" size="small" spacing={true}>
         Levering
       </Heading>
-      <Box paddingBlock="4 8">
-        <HGrid {...hGridProps}>
-          <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
-          <Kontaktperson levering={levering} />
-          {utleveringMerknad && (
-            <>
-              <MerknadBox>
-                <Etikett>Merknad til utlevering</Etikett>
-              </MerknadBox>
-              <HStack align="center">
-                <Brødtekst>{utleveringMerknad}</Brødtekst>
-                <Tooltip content="Kopier merknad til utlevering" placement="right">
-                  <CopyButton size="small" copyText={utleveringMerknad} />
-                </Tooltip>
-              </HStack>
-            </>
-          )}
-        </HGrid>
-      </Box>
+      <VStack gap="space-4">
+        <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
+        <KontaktpersonEksperiment levering={levering} />
+        {utleveringMerknad && (
+          <HStack gap="space-6" paddingBlock="0 space-12" align="center">
+            <Etikett>Merknad til utlevering:</Etikett>
+            <Tekst>{utleveringMerknad}</Tekst>
+          </HStack>
+        )}
+      </VStack>
 
-      <Strek />
-      <Signatur signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
-      <Strek />
-
-      <Box paddingBlock="4" paddingInline={{ xs: '0 4', md: '0 16' }}>
-        <Heading level="2" size="small" spacing>
-          Formidlers vurdering
-        </Heading>
+      <Skillelinje />
+      <SignaturEksperiment signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
+      <Skillelinje />
+      <Heading level="2" size="small" spacing>
+        Formidlers vurdering
+      </Heading>
+      <TextContainer>
         <List as="ul" size="small">
           {vilkår.map((vilkårItem) => (
             <List.Item key={vilkårItem.vilkårtype}>{vilkårItem.tekst.nb}</List.Item>
           ))}
         </List>
-      </Box>
+      </TextContainer>
+      <Skillelinje />
     </>
   )
-}
-
-const hGridProps: Pick<HGridProps, 'columns' | 'gap'> = {
-  columns: 'minmax(min-content, 12rem) auto',
-  gap: '05',
 }

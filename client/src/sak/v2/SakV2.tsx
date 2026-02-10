@@ -2,15 +2,11 @@ import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
-import BehandlingPanel from './behandling/BehandlingPanel.tsx'
-import { useBehandling } from './behandling/useBehandling.ts'
-import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
-import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
-import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
+import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { useToast } from '../../felleskomponenter/toast/ToastContext.tsx'
-import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
 import { Oppgavestatus } from '../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
@@ -20,13 +16,17 @@ import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
-import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper.ts'
 import { OppgaveStatusLabel } from '../../types/types.internal.ts'
 import { formaterDato } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
+import BehandlingPanel from './behandling/BehandlingPanel.tsx'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper.ts'
+import { useBehandling } from './behandling/useBehandling.ts'
+import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
+import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
-import { BrevPanel } from '../../brev/BrevPanel.tsx'
+import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -209,23 +209,23 @@ export function SakV2() {
         width="500px"
         onClose={() => setVisResultatManglerModal(false)}
       >
-        <Brødtekst spacing>Du må velge et vedtaksresultat under "Behandle sak" før du kan fatte vedtak.</Brødtekst>
+        <Tekst spacing>Du må velge et vedtaksresultat under "Behandle sak" før du kan fatte vedtak.</Tekst>
       </InfoModal>
       <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>
         {gjenstående.includes(Gjenstående.BREV_MANGLER) && (
           <>
-            <Brødtekst spacing>
+            <Tekst spacing>
               Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det
               krav om at man underetter brukeren med brev.
-            </Brødtekst>
-            <Brødtekst spacing>
+            </Tekst>
+            <Tekst spacing>
               Velg "Opprett vedtaksbrev", rediger brevet, og merk så brevet som klart ved å klikke "Ferdigstill utkast".
               Deretter kan du prøve å fatte vedtaket på nytt.
-            </Brødtekst>
+            </Tekst>
           </>
         )}
         {gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) && (
-          <Brødtekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Brødtekst>
+          <Tekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Tekst>
         )}
       </InfoModal>
 
@@ -235,7 +235,7 @@ export function SakV2() {
         width="500px"
         onClose={() => setVisNotatIkkeFerdigstilt(false)}
       >
-        <Brødtekst spacing>Du har et utkast til notat som må ferdigstilles eller slettes.</Brødtekst>
+        <Tekst spacing>Du har et utkast til notat som må ferdigstilles eller slettes.</Tekst>
       </InfoModal>
 
       <BekreftelseModal
@@ -263,10 +263,10 @@ export function SakV2() {
       >
         {vedtaksResultat !== VedtaksResultat.AVSLÅTT && (
           <>
-            <Brødtekst spacing>
+            <Tekst spacing>
               Når du {vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET ? 'delvis innvilger' : 'innvilger'} søknaden
               vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
-            </Brødtekst>
+            </Tekst>
             {vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET && (
               <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
                 Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
@@ -279,11 +279,11 @@ export function SakV2() {
                   <HStack wrap={false} gap="2" align="center">
                     <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
                     <HelpText strategy="fixed">
-                      <Brødtekst>
+                      <Tekst>
                         Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
                         dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
                         i OeBS som tidligere.
-                      </Brødtekst>
+                      </Tekst>
                     </HelpText>
                   </HStack>
                 }
@@ -295,10 +295,10 @@ export function SakV2() {
         )}
         {vedtaksResultat == VedtaksResultat.AVSLÅTT && (
           <>
-            <Brødtekst spacing>
+            <Tekst spacing>
               Når du avslår søknaden vil det naturligvis ikke opprettes en serviceforespørsel (SF) i OeBS. Bruker
               underrettes med brevet du har forfattet. Innbygger kan også se vedtaket på innlogget side på nav.no
-            </Brødtekst>
+            </Tekst>
           </>
         )}
       </BekreftelseModal>

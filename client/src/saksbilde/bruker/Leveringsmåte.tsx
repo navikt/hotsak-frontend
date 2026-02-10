@@ -1,3 +1,4 @@
+import { HStack, VStack } from '@navikt/ds-react'
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { formaterAdresse, storForbokstavIAlleOrd } from '../../utils/formater'
@@ -10,26 +11,28 @@ export interface LeveringsmåteProps {
 export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
   return (
-    <>
-      <Etikett>Leveringsadresse</Etikett>
-      <Tekst>{leveringsmåteTekst}</Tekst>
+    <VStack gap="space-4">
+      <HStack gap="space-6">
+        <Etikett>Leveringsadresse:</Etikett>
+        <Tekst>{leveringsmåteTekst}</Tekst>
+      </HStack>
       {levering.annenUtleveringskommune && (
-        <>
-          <Etikett>Kommune</Etikett>
+        <HStack gap="space-6">
+          <Etikett>Kommune:</Etikett>
           <Tekst>
             {storForbokstavIAlleOrd(levering.annenUtleveringskommune.navn)} ({levering.annenUtleveringskommune.nummer})
           </Tekst>
-        </>
+        </HStack>
       )}
       {levering.annenUtleveringsbydel && (
-        <>
-          <Etikett>Bydel</Etikett>
+        <HStack gap="space-6">
+          <Etikett>Bydel:</Etikett>
           <Tekst>
             {levering.annenUtleveringsbydel.navn} ({levering.annenUtleveringsbydel.nummer})
           </Tekst>
-        </>
+        </HStack>
       )}
-    </>
+    </VStack>
   )
 }
 

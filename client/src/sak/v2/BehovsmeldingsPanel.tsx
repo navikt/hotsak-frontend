@@ -4,12 +4,12 @@ import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
-import { BrukerEksperiment } from './behovsmelding/BrukerEksperiment.tsx'
 import { FormidlerEksperiment } from './behovsmelding/FormidlerEksperiment.tsx'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import styles from './BehovsmeldingsPanel.module.css'
 import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
 import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
+import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSaksbehandlingEksperimentContext()
@@ -38,13 +38,15 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />
         </section>
         <section>
-          <BrukerEksperiment
-            bruker={sak.bruker}
-            behovsmeldingsbruker={behovsmelding.bruker}
-            brukerSituasjon={behovsmelding.brukersituasjon}
-            levering={behovsmelding.levering}
-            vilkår={behovsmelding.brukersituasjon.vilkår}
-          />
+          <Box.New paddingBlock="space-24 0" paddingInline="space-28 0">
+            <Bruker
+              bruker={sak.bruker}
+              behovsmeldingsbruker={behovsmelding.bruker}
+              brukerSituasjon={behovsmelding.brukersituasjon}
+              levering={behovsmelding.levering}
+              vilkår={behovsmelding.brukersituasjon.vilkår}
+            />
+          </Box.New>
           <FormidlerEksperiment levering={behovsmelding.levering} />
         </section>
       </div>

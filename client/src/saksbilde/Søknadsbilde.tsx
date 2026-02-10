@@ -1,4 +1,4 @@
-import { HGrid } from '@navikt/ds-react'
+import { Box, HGrid } from '@navikt/ds-react'
 import { memo } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Navigate } from 'react-router'
@@ -75,13 +75,15 @@ const SaksbildeContent = memo(() => {
                   <Route
                     path="/bruker"
                     element={
-                      <Bruker
-                        bruker={sak.data.bruker}
-                        behovsmeldingsbruker={behovsmelding.bruker}
-                        brukerSituasjon={behovsmelding.brukersituasjon}
-                        levering={behovsmelding.levering}
-                        vilkår={behovsmelding.brukersituasjon.vilkår}
-                      />
+                      <Box.New>
+                        <Bruker
+                          bruker={sak.data.bruker}
+                          behovsmeldingsbruker={behovsmelding.bruker}
+                          brukerSituasjon={behovsmelding.brukersituasjon}
+                          levering={behovsmelding.levering}
+                          vilkår={behovsmelding.brukersituasjon.vilkår}
+                        />
+                      </Box.New>
                     }
                   />
                   <Route path="/formidler" element={<Formidler levering={levering} />} />

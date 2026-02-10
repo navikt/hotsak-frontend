@@ -3,8 +3,8 @@ import { Button, HStack, Tag, VStack } from '@navikt/ds-react'
 
 import { useState } from 'react'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
-import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
-import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../sakTypes.ts'
+import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import Bytter from '../../../saksbilde/hjelpemidler/Bytter.tsx'
 import { EndreHjelpemiddelModal } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel.tsx'
 import { Opplysninger } from '../../../saksbilde/hjelpemidler/Opplysninger.tsx'
@@ -15,10 +15,10 @@ import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import { type Hjelpemiddel as HjelpemiddelType } from '../../../types/BehovsmeldingTypes.ts'
 import { type Produkt as ProduktType, Sak } from '../../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
+import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../sakTypes.ts'
 import { AntallTag } from '../AntallTag.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
-import { TilbehørListeEksperiment } from './TilbehørListeEksperiment.tsx'
-import Bytter from '../../../saksbilde/hjelpemidler/Bytter.tsx'
+import { TilbehørlisteV2 } from './tilbehør/TilbehørlisteV2.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak
@@ -158,7 +158,7 @@ export function HjelpemiddelV2({
               <Skillelinje />
               <VStack gap="space-12">
                 <Etikett size="small">Tilbehør</Etikett>
-                <TilbehørListeEksperiment tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
+                <TilbehørlisteV2 sakId={sak.sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
               </VStack>
             </>
           )}

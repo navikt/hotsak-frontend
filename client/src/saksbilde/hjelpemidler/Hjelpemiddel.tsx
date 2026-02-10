@@ -14,7 +14,7 @@ import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel.t
 import { HjelpemiddelGrid } from './HjelpemiddelGrid.tsx'
 import { Opplysninger } from './Opplysninger.tsx'
 import { Produkt } from './Produkt.tsx'
-import { TilbehørListe } from './TilbehørListe.tsx'
+import { Tilbehørliste } from './TilbehørListe.tsx'
 import { type AlternativeProduct } from './useAlternativeProdukter.ts'
 import { Utlevert } from './Utlevert.tsx'
 import { Varsler } from './Varsel.tsx'
@@ -177,7 +177,7 @@ export function Hjelpemiddel({
         {hjelpemiddel.tilbehør.length > 0 && (
           <VStack gap="3">
             <Etikett size="medium">Tilbehør</Etikett>
-            <TilbehørListe sakId={sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
+            <Tilbehørliste sakId={sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
           </VStack>
         )}
       </>

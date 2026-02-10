@@ -2,12 +2,11 @@ import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
 
-import { BrytbarBrødtekst, Brødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
-import { EndretArtikkelBegrunnelse } from '../../sak/sakTypes.ts'
+import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
+import { EndretTilbehørBegrunnelse } from '../../sak/v2/behovsmelding/tilbehør/EndretTilbehørBegrunnelse.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { type Tilbehør as Tilbehørtype } from '../../types/BehovsmeldingTypes'
 import { type Produkt as Produkttype } from '../../types/types.internal'
-import { storForbokstavIOrd } from '../../utils/formater'
 import { EndreTilbehørModal } from './endreHjelpemiddel/EndreTilbehørModal'
 import { useEndreHjelpemiddel } from './endreHjelpemiddel/useEndreHjelpemiddel'
 import { HjelpemiddelGrid } from './HjelpemiddelGrid'
@@ -39,7 +38,7 @@ export function FrittståendeTilbehør({
   )
 }
 
-export function TilbehørListe({
+export function Tilbehørliste({
   sakId,
   tilbehør,
   produkter,
@@ -58,7 +57,7 @@ export function TilbehørListe({
   )
 }
 
-export function Tilbehør({
+function Tilbehør({
   sakId,
   tilbehør,
   produkt,
@@ -85,6 +84,7 @@ export function Tilbehør({
   })
   const endretTilbehør = endretHjelpemiddelResponse?.endretArtikkel
   const harEndretTilbehør = endretTilbehør && tilbehør.hmsArtNr !== endretHjelpemiddelResponse.hmsArtNr
+
   return (
     <>
       <HjelpemiddelGrid>
@@ -106,13 +106,7 @@ export function Tilbehør({
             {harEndretTilbehør && (
               <Box.New paddingInline="4 0">
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-                <Tekst>
-                  {endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
-                  endretTilbehør?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
-                    ? endretTilbehør.begrunnelseFritekst
-                    : EndretArtikkelBegrunnelse[endretTilbehør?.begrunnelse] ||
-                      `${storForbokstavIOrd(endretTilbehør?.begrunnelse)}`}
-                </Tekst>
+                <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
               </Box.New>
             )}
             {harOpplysninger && (
@@ -159,7 +153,7 @@ function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
       {tilbehør.begrunnelse && (
         <Box paddingInline="4 0">
           <Etikett>Begrunnelse</Etikett>
-          <Tekst>{tilbehør.begrunnelse}</Tekst>
+          <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
         </Box>
       )}
 

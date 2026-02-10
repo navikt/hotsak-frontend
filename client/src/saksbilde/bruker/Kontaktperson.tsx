@@ -11,15 +11,15 @@ export function Kontaktperson({ levering }: KontaktpersonProps) {
   if (!levering.utleveringKontaktperson) return null
   const kontaktpersonTekst = lagKontaktpersonTekst(levering)
   return (
-    <>
-      <Etikett>Kontaktperson</Etikett>
-      <HStack align="center">
+    <HStack gap="space-6">
+      <Etikett>Kontaktperson:</Etikett>
+      <HStack>
         <Tekst>{kontaktpersonTekst}</Tekst>
         <Tooltip content="Kopier kontaktperson" placement="right">
-          <CopyButton size="small" copyText={kontaktpersonTekst} />
+          <CopyButton size="xsmall" copyText={kontaktpersonTekst} />
         </Tooltip>
       </HStack>
-    </>
+    </HStack>
   )
 }
 

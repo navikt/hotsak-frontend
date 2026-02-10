@@ -2,7 +2,6 @@ import { Heading, HStack, List, VStack } from '@navikt/ds-react'
 
 import { Skillelinje } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
-import { KontaktpersonEksperiment } from '../../sak/v2/behovsmelding/KontaktpersonEksperiment'
 import { SignaturEksperiment } from '../../sak/v2/behovsmelding/signatur/Signatur'
 import {
   Bruker as Behovsmeldingsbruker,
@@ -20,6 +19,7 @@ import {
   storForbokstavIAlleOrd,
 } from '../../utils/formater'
 import { Leveringsmåte } from './Leveringsmåte'
+import { Kontaktperson } from './Kontaktperson'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -69,7 +69,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
       </Heading>
       <VStack gap="space-4">
         <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
-        <KontaktpersonEksperiment levering={levering} />
+        <Kontaktperson levering={levering} />
         {utleveringMerknad && (
           <HStack gap="space-6" paddingBlock="0 space-12" align="center">
             <Etikett>Merknad til utlevering:</Etikett>

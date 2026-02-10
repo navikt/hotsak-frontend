@@ -13,10 +13,10 @@ import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHje
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
-import { BrukersFunksjonEksperiment } from './BrukersFunksjonEksperiment.tsx'
 import { useSummering } from './summering/useSummering.ts'
 import { HjelpemiddelV2 } from './HjelpemiddelV2.tsx'
 import { FrittStåendeTilbehørV2 } from './tilbehør/TilbehørlisteV2.tsx'
+import { BrukersFunksjon } from '../../../saksbilde/hjelpemidler/BrukersFunksjon.tsx'
 
 interface HjelpemidlerProps {
   sak: Sak
@@ -129,7 +129,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
           )}
         </>
       )}
-      {funksjonsbeskrivelse && <BrukersFunksjonEksperiment funksjonsbeskrivelse={funksjonsbeskrivelse} />}
+      {funksjonsbeskrivelse && <BrukersFunksjon collapsible={true} funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )
 }

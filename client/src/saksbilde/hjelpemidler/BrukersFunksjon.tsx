@@ -1,35 +1,58 @@
-import { Box, Heading, VStack } from '@navikt/ds-react'
-import { Brødtekst, Etikett } from '../../felleskomponenter/typografi.tsx'
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
+import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { textcontainerBredde } from '../../GlobalStyles.tsx'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
-export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse }) {
-  const { funksjonsbeskrivelse } = props
+export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrivelse; collapsible?: boolean }) {
+  const { funksjonsbeskrivelse, collapsible = false } = props
   const { beskrivelse } = funksjonsbeskrivelse
+  const [skjultFunksjonsbeskrivelse, setSkjultFunksjonsbeskrivelse] = useState(false)
   return (
-    <Box paddingBlock="0 20" paddingInline={{ xs: '0 4', sm: '0 4' }}>
-      <Heading level="1" size="small" spacing>
-        Funksjonsvurdering
-      </Heading>
-      <div style={{ maxWidth: '34rem' }}>
-        <VStack gap="6">
-          <Box>
-            <Etikett>
-              Innbyggers sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne:
-            </Etikett>
-            <Brødtekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Brødtekst>
-          </Box>
-          {beskrivelse && (
+    <Box.New paddingInline={'space-0 space-8'} paddingBlock="space-8">
+      <HStack align="center">
+        {collapsible && (
+          <Button
+            variant="tertiary"
+            size="small"
+            icon={skjultFunksjonsbeskrivelse ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            onClick={() => setSkjultFunksjonsbeskrivelse(!skjultFunksjonsbeskrivelse)}
+          />
+        )}
+        <Label size="small" as="h2" textColor="subtle" spacing={!collapsible}>
+          FUNKSJONSBESKRIVELSE
+        </Label>
+      </HStack>
+      {!skjultFunksjonsbeskrivelse && (
+        <Box.New
+          paddingBlock="space-8"
+          paddingInline="space-12"
+          borderRadius="large"
+          background="neutral-softA"
+          borderColor="neutral-subtle"
+          borderWidth="1"
+        >
+          <VStack gap="space-24" style={{ maxWidth: `${textcontainerBredde}` }}>
             <Box>
               <Etikett>
-                Funksjonsvurdering av innbygger, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
-                innbygger i dagliglivet:
+                Innbyggers sykdom, skade eller lyte som har ført til varig og vesentlig nedsatt funksjonsevne:
               </Etikett>
-              <Brødtekst style={{ whiteSpace: 'pre-line' }}>{beskrivelse}</Brødtekst>
+              <Tekst>{tekstByFunksjonsnedsettelse(funksjonsbeskrivelse)}</Tekst>
             </Box>
-          )}
-        </VStack>
-      </div>
-    </Box>
+            {beskrivelse && (
+              <Box>
+                <Etikett>
+                  Funksjonsbeskrivelse av bruker, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
+                  bruker i dagliglivet:
+                </Etikett>
+                <Tekst>{beskrivelse}</Tekst>
+              </Box>
+            )}
+          </VStack>
+        </Box.New>
+      )}
+    </Box.New>
   )
 }
 

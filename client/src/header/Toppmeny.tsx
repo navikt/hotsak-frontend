@@ -5,15 +5,15 @@ import styled from 'styled-components'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { Pilot } from '../felleskomponenter/Pilot.tsx'
-import { useNyOppgaveliste } from '../oppgaveliste/useNyOppgaveliste.ts'
+import { useGammelOppgaveliste } from '../oppgaveliste/useGammelOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
+import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 import { useUmami } from '../sporing/useUmami.ts'
 import { useTilgangContext } from '../tilgang/useTilgang.ts'
 import { fjernMellomrom } from '../utils/formater.ts'
 import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
-import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 
 const SøkeContainer = styled.div`
   padding-top: 0.5rem;
@@ -25,7 +25,7 @@ export function Toppmeny() {
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const [nyOppgaveliste, setNyOppgaveliste] = useNyOppgaveliste()
+  const [gammelOppgaveliste, setGammelOppgaveliste] = useGammelOppgaveliste()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
@@ -71,10 +71,10 @@ export function Toppmeny() {
                 as="a"
                 href="/"
                 onClick={() => {
-                  setNyOppgaveliste(!nyOppgaveliste)
+                  setGammelOppgaveliste(!gammelOppgaveliste)
                 }}
               >
-                {nyOppgaveliste ? 'Bruk gammel oppgaveliste' : 'Bruk ny oppgaveliste'}
+                {gammelOppgaveliste ? 'Bruk ny oppgaveliste' : 'Bruk gammel oppgaveliste'}
               </ActionMenu.Item>
             </ActionMenu.Group>
           </Pilot>

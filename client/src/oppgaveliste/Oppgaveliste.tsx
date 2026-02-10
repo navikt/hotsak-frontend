@@ -1,7 +1,6 @@
 import { lazy } from 'react'
 import { Route, Routes } from 'react-router'
-
-import { useNyOppgaveliste } from './useNyOppgaveliste.ts'
+import { useGammelOppgaveliste } from './useGammelOppgaveliste.ts'
 import { OppgavelisteTabs } from './v2/OppgavelisteTabs.tsx'
 
 const OppgavelisteV1 = lazy(() => import('./v1/OppgavelisteV1.tsx'))
@@ -10,25 +9,24 @@ const EnhetensOppgaverWrapper = lazy(() => import('./v2/EnhetensOppgaverWrapper.
 const MedarbeidersOppgaverWrapper = lazy(() => import('./v2/MedarbeidersOppgaverWrapper.tsx'))
 
 export default function Oppgaveliste() {
-  const [nyOppgaveliste] = useNyOppgaveliste()
-
-  if (nyOppgaveliste) {
+  const [gammelOppgaveliste] = useGammelOppgaveliste()
+  if (gammelOppgaveliste) {
     return (
       <>
-        <OppgavelisteTabs />
-        <Routes>
-          <Route path="/" element={<MineOppgaverWrapper />} />
-          <Route path="/mine" element={<MineOppgaverWrapper />} />
-          <Route path="/enhetens" element={<EnhetensOppgaverWrapper />} />
-          <Route path="/medarbeiders" element={<MedarbeidersOppgaverWrapper />} />
-        </Routes>
+        <OppgavelisteV1 />
       </>
     )
   }
 
   return (
     <>
-      <OppgavelisteV1 />
+      <OppgavelisteTabs />
+      <Routes>
+        <Route path="/" element={<MineOppgaverWrapper />} />
+        <Route path="/mine" element={<MineOppgaverWrapper />} />
+        <Route path="/enhetens" element={<EnhetensOppgaverWrapper />} />
+        <Route path="/medarbeiders" element={<MedarbeidersOppgaverWrapper />} />
+      </Routes>
     </>
   )
 }

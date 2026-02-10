@@ -16,9 +16,9 @@ import { type Hjelpemiddel as HjelpemiddelType } from '../../../types/Behovsmeld
 import { type Produkt as ProduktType, Sak } from '../../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { AntallTag } from '../AntallTag.tsx'
-import BytterEksperiment from './BytterEksperiment.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
 import { TilbehørListeEksperiment } from './TilbehørListeEksperiment.tsx'
+import Bytter from '../../../saksbilde/hjelpemidler/Bytter.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak
@@ -148,9 +148,7 @@ export function HjelpemiddelV2({
                 utlevertInfo={hjelpemiddel.utlevertinfo}
               />
             )}
-            {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && (
-              <BytterEksperiment bytter={hjelpemiddel.bytter} />
-            )}
+            {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
           </VStack>
         </>
 

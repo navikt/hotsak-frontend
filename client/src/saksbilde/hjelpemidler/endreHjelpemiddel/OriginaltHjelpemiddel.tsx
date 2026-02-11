@@ -1,6 +1,6 @@
 import { Box, Heading, HGrid, VStack } from '@navikt/ds-react'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
-import { Brødtekst, Etikett } from '../../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../../felleskomponenter/typografi'
 import { Opplysning } from '../../../types/BehovsmeldingTypes'
 import { Produkt } from '../../../types/types.internal'
 import { storForbokstavIOrd } from '../../../utils/formater'
@@ -41,9 +41,9 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
               <VStack gap="space-4">
                 <Etikett size="small">{navn}</Etikett>
                 <FinnHjelpemiddelLink hmsnr={hmsnr}>
-                  <Brødtekst>{`Hmsnr: ${hmsnr}`}</Brødtekst>
+                  <Tekst>{`Hmsnr: ${hmsnr}`}</Tekst>
                 </FinnHjelpemiddelLink>
-                {grunndataProdukt && <Brødtekst>{grunndataProdukt?.leverandør}</Brødtekst>}
+                {grunndataProdukt && <Tekst>{grunndataProdukt?.leverandør}</Tekst>}
               </VStack>
             </HGrid>
           </div>
@@ -58,18 +58,18 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
                   <Box key={opplysning.ledetekst.nb}>
                     <Etikett>{`${storForbokstavIOrd(opplysning.ledetekst.nb)}`}</Etikett>
                     {opplysning.innhold.length === 1 ? (
-                      <Brødtekst>
+                      <Tekst>
                         {opplysning.innhold[0].forhåndsdefinertTekst
                           ? opplysning.innhold[0].forhåndsdefinertTekst.nb
                           : opplysning.innhold[0].fritekst}
-                      </Brødtekst>
+                      </Tekst>
                     ) : (
                       <ul key={opplysning.ledetekst.nb} style={{ margin: '0' }}>
                         {opplysning.innhold.map((element, idx) => (
                           <li key={idx}>
-                            <Brødtekst>
+                            <Tekst>
                               {element.forhåndsdefinertTekst ? element.forhåndsdefinertTekst.nb : element.fritekst}
-                            </Brødtekst>
+                            </Tekst>
                           </li>
                         ))}
                       </ul>

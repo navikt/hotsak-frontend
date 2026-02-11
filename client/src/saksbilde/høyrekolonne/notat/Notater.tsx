@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { FilterChips } from '../../../felleskomponenter/filter/FilterChips.tsx'
 import type { FilterOption } from '../../../felleskomponenter/filter/filterTypes.ts'
-import { Brødtekst, Etikett, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
+import { Etikett, Mellomtittel, Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { NotatType } from '../../../types/types.internal.ts'
 import { ForvaltningsnotatForm } from './ForvaltningsnotatForm.tsx'
 import { InterntNotatForm } from './InterntNotatForm.tsx'
@@ -44,30 +44,30 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
       <VStack gap="2">
         <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
           <Etikett>Internt arbeidsnotat</Etikett>
-          <Brødtekst spacing>
+          <Tekst spacing>
             Brukes for egne notater, for eksempel huskelapper til deg selv. Disse journalføres ikke. Merk at brukere kan
             få innsyn i interne notater hvis de ber om det.
-          </Brødtekst>
+          </Tekst>
           <Etikett>Forvaltningsnotat</Etikett>
-          <Brødtekst>
+          <Tekst>
             Brukes hvis du skal dokumentere opplysninger som kan ha betydning for utfallet av en sak. Disse notatene
             blir journalført. Vi har to typer forvaltningsnotat:
-          </Brødtekst>
+          </Tekst>
           <List size="small" as="ul">
             <List.Item>
               <Etikett>Interne saksopplysninger:</Etikett>
-              <Brødtekst>
+              <Tekst>
                 Opplysninger som kan ha betydning for saken som for eksempel gjengir innholdet i en iakttakelse, et
                 møte, en befaring eller en uttalelse fra intern fagperson. Notatet vil ikke være synlig på brukers side
                 på nav.no, men bruker vil kunne be om innsyn i det.
-              </Brødtekst>
+              </Tekst>
             </List.Item>
             <List.Item>
               <Etikett>Eksterne saksopplysninger: </Etikett>
-              <Brødtekst>
+              <Tekst>
                 Opplysninger som gjengir innholdet i en henvendelse eller dialog med tredjepart. Bruker vil få innsyn i
                 notatet på innlogget side på nav.no fra første virkedag etter at det er ferdigstilt.
-              </Brødtekst>
+              </Tekst>
             </List.Item>
           </List>
         </ReadMore>

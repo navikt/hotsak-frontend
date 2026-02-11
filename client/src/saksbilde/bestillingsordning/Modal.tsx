@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Heading, HStack, Textarea, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Brødtekst } from '../../felleskomponenter/typografi'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { BekreftelseModal } from '../komponenter/BekreftelseModal'
 
 export interface OrdreModalProps {
@@ -49,10 +49,10 @@ export function BekreftAutomatiskOrdre({
             error={error}
           />
         )}
-        <Brødtekst>
+        <Tekst>
           Når du godkjenner bestillingen blir det automatisk opprettet og klargjort en ordre i OeBS. Du trenger ikke
           gjøre noe mer med saken.
-        </Brødtekst>
+        </Tekst>
       </VStack>
     </BekreftelseModal>
   )
@@ -153,10 +153,10 @@ export function BekreftManuellOrdre({ open, onBekreft, loading, onClose }: Ordre
       loading={loading}
       onClose={onClose}
     >
-      <Brødtekst spacing>
+      <Tekst spacing>
         Når du oppretter ordre i OeBS må du etterpå gå til OeBS for å fullføre den. Husk å utføre de nødvendige
         oppgavene i OeBS før du klargjør ordren. Ordrenummeret vil vises under Historikk i løpet av kort tid.
-      </Brødtekst>
+      </Tekst>
     </BekreftelseModal>
   )
 }

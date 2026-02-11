@@ -3,7 +3,7 @@ import '@mdxeditor/editor/style.css'
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Spacer, Tag, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
-import { Brødtekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
+import { Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
 import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
@@ -43,7 +43,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             </Heading>
           </HStack>
           <VStack>
-            <Brødtekst>{formaterTidsstempelLesevennlig(notat.ferdigstilt)}</Brødtekst>
+            <Tekst>{formaterTidsstempelLesevennlig(notat.ferdigstilt)}</Tekst>
             <Undertittel>{notat.saksbehandler.navn}</Undertittel>
           </VStack>
         </VStack>
@@ -89,7 +89,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
         {!notat.tekst && (
           <Box paddingBlock={'3 0'}>
-            <Brødtekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Brødtekst>
+            <Tekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Tekst>
           </Box>
         )}
       </Box.New>

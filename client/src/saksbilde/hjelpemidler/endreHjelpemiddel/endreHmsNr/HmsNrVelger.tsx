@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { Alert, Box, HStack, Loader, TextField } from '@navikt/ds-react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi.tsx'
+import { Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import { useHjelpemiddel } from '../useHjelpemiddel.ts'
 import { ProduktCard } from './ProduktCard.tsx'
 
@@ -61,13 +61,13 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
             {isLoading && !error && (
               <HStack gap="3" align={'center'} marginBlock={'0 space-4'}>
                 <Loader size="medium" title="Søker etter hjelpemiddel..." />
-                <Brødtekst>Søker etter hjelpemiddel...</Brødtekst>
+                <Tekst>Søker etter hjelpemiddel...</Tekst>
               </HStack>
             )}
             {!hjelpemiddel && error && (
               <Box marginBlock={'0 space-4'}>
                 <Alert variant="error" inline title="Fant ikke hjelpemiddel" size="small">
-                  <Brødtekst>HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS</Brødtekst>
+                  <Tekst>HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS</Tekst>
                 </Alert>
               </Box>
             )}

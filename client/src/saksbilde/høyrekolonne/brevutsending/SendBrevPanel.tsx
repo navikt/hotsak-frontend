@@ -4,7 +4,9 @@ import { memo, useCallback, useEffect, useState } from 'react'
 
 import { Fritekst } from '../../../felleskomponenter/brev/Fritekst'
 import { useDebounce } from '../../../felleskomponenter/brev/useDebounce.ts'
-import { Brødtekst } from '../../../felleskomponenter/typografi'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { Tekst } from '../../../felleskomponenter/typografi'
+import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { BrevTekst, Brevtype, MålformType } from '../../../types/types.internal'
 import { useBrevtekst } from '../../barnebriller/brevutkast/useBrevtekst'
 import { useBrev } from '../../barnebriller/steg/vedtak/brev/useBrev'
@@ -12,10 +14,8 @@ import { useSaksdokumenter } from '../../barnebriller/useSaksdokumenter'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal'
 import { useBarnebrillesak } from '../../useBarnebrillesak'
 import { useBrevActions } from '../../useBrevActions.ts'
-import { SidebarPanel } from '../../../sak/v2/sidebars/SidebarPanel.tsx'
 import { ForhåndsvisningsModal } from './ForhåndsvisningModal'
 import { UtgåendeBrev } from './UtgåendeBrev'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 
 export interface SendBrevProps {
   sakId: string
@@ -136,7 +136,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
       <>
         <SidebarPanel tittel="Send brev">
           {lesevisning ? (
-            <Brødtekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Brødtekst>
+            <Tekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Tekst>
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
               <VStack gap="4">
@@ -221,7 +221,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
           return sendBrev()
         }}
       >
-        <Brødtekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Brødtekst>
+        <Tekst>Brevet sendes til adressen til barnet, og saken settes på vent.</Tekst>
       </BekreftelseModal>
       <BekreftelseModal
         heading="Vil du slette utkastet?"

@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, Label, VStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { BrytbarBrødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
 import { textcontainerBredde } from '../../GlobalStyles.tsx'
 import { Funksjonsbeskrivelse, InnbyggersVarigeFunksjonsnedsettelse } from '../../types/BehovsmeldingTypes.ts'
 
@@ -46,7 +46,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
                   Funksjonsbeskrivelse av bruker, med beskrivelse av konsekvensene den nedsatte funksjonsevnen har for
                   bruker i dagliglivet:
                 </Etikett>
-                <Tekst>{beskrivelse}</Tekst>
+                <BrytbarBrødtekst>{beskrivelse}</BrytbarBrødtekst>
               </Box>
             )}
           </VStack>

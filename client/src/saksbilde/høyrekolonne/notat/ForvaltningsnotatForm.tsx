@@ -3,7 +3,7 @@ import { Alert, Button, Checkbox, CheckboxGroup, HStack, Radio, RadioGroup, VSta
 import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import {
   Brevtype,
   FerdigstillNotatRequest,
@@ -220,11 +220,11 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
                 error={errors.bekreftSynlighet?.message}
               >
                 <Checkbox value="bekreft" size="small" onChange={(e) => field.onChange(e.target.checked)}>
-                  <Brødtekst>
+                  <Tekst>
                     Jeg er klar over at notatet blir synlig for
                     {sak?.data.bruker.fulltNavn ? <strong>{` ${sak?.data.bruker.fulltNavn} `}</strong> : 'bruker'}
                     på nav.no neste virkedag
-                  </Brødtekst>
+                  </Tekst>
                 </Checkbox>
               </CheckboxGroup>
             )}
@@ -232,7 +232,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
         </BekreftelseModal>
 
         <InfoModal heading="Ingen utkast" open={visUtkastManglerModal} onClose={() => setVisUtkastManglerModal(false)}>
-          <Brødtekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Brødtekst>
+          <Tekst>Notatet kan ikke forhåndsvises før det er opprettet et utkast</Tekst>
         </InfoModal>
         <ForhåndsvisningsModal
           open={visForhåndsvisningsmodal}

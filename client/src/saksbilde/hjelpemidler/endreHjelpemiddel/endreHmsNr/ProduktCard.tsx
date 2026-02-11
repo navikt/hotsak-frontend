@@ -1,6 +1,6 @@
 import { Box, HGrid, VStack } from '@navikt/ds-react'
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink'
-import { Brødtekst, Etikett, Undertittel } from '../../../../felleskomponenter/typografi'
+import { Etikett, Tekst, Undertittel } from '../../../../felleskomponenter/typografi'
 import { HjelpemiddelData } from '../useHjelpemiddel'
 
 export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }) {
@@ -32,14 +32,14 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
           <VStack>
             {hjelpemiddel.kilde === 'FinnHjelpemiddel' ? (
               <FinnHjelpemiddelLink hmsnr={hjelpemiddel.hmsArtNr}>
-                <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Brødtekst>
+                <Tekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Tekst>
               </FinnHjelpemiddelLink>
             ) : (
-              <Brødtekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Brødtekst>
+              <Tekst>{`Hmsnr: ${hjelpemiddel.hmsArtNr}`}</Tekst>
             )}
 
             <Undertittel>Kilde: {hjelpemiddel.kilde}</Undertittel>
-            <Brødtekst>{hjelpemiddel.leverandør}</Brødtekst>
+            <Tekst>{hjelpemiddel.leverandør}</Tekst>
           </VStack>
         </HGrid>
       </VStack>

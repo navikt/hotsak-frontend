@@ -5,12 +5,12 @@ import { useState } from 'react'
 import { useSWRConfig } from 'swr'
 
 import { useActionState } from '../../../action/Actions.ts'
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
+import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { http } from '../../../io/HttpClient.ts'
 import { Notat } from '../../../types/types.internal.ts'
-import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
-import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { useMiljø } from '../../../utils/useMiljø.ts'
+import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 
 export interface NotaterProps {
   sakId: string
@@ -73,7 +73,7 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
         onClose={() => setVisSlettUtkastModal(false)}
         onBekreft={slettUtkast}
       >
-        <Brødtekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Brødtekst>
+        <Tekst>Utkastet til notat vil forsvinne, og kan ikke gjenopprettes.</Tekst>
       </BekreftelseModal>
     </>
   )

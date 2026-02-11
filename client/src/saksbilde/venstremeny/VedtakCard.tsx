@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import { Controller } from 'react-hook-form'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Brødtekst, Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
@@ -243,10 +243,10 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
         onBekreft={form.handleSubmit(fattVedtak)}
         onClose={() => setVisVedtakModal(false)}
       >
-        <Brødtekst spacing>
+        <Tekst spacing>
           Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
           innlogget side på nav.no neste virkedag.
-        </Brødtekst>
+        </Tekst>
         <FormProvider {...form}>
           <VStack gap="space-16">
             <Controller
@@ -259,11 +259,11 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                     <HStack wrap={false} gap="2" align="center">
                       <Etikett>Problemsammendrag til OeBS </Etikett>
                       <HelpText strategy="fixed">
-                        <Brødtekst>
+                        <Tekst>
                           Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
                           problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
                           innvilges eller inne på SF i OeBS som tidligere.
-                        </Brødtekst>
+                        </Tekst>
                       </HelpText>
                     </HStack>
                   }
@@ -283,12 +283,12 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
                       <HStack wrap={false} gap="2" align="center">
                         <Etikett>Begrunnelse for lavere rangering</Etikett>
                         <HelpText strategy="fixed">
-                          <Brødtekst>
+                          <Tekst>
                             Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
                             ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
                             hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
                             rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
-                          </Brødtekst>
+                          </Tekst>
                         </HelpText>
                       </HStack>
                     }

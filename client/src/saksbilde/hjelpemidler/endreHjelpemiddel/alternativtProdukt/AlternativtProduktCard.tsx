@@ -2,7 +2,7 @@ import { Box, Checkbox, HGrid, HStack, Tag, VStack } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 import { FinnHjelpemiddelLink } from '../../../../felleskomponenter/FinnHjelpemiddelLink.tsx'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi.tsx'
+import { Etikett, Tekst } from '../../../../felleskomponenter/typografi.tsx'
 import type { AlternativeProduct } from '../../useAlternativeProdukter.ts'
 import { LagerstatusUtregning } from './LagerstatusUtregning.tsx'
 
@@ -42,10 +42,10 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
         <HGrid columns="1fr 1fr">
           <VStack gap="space-4">
             <FinnHjelpemiddelLink hmsnr={alternativtProdukt.hmsArtNr}>
-              <Brødtekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Brødtekst>
+              <Tekst>{`Hmsnr: ${alternativtProdukt.hmsArtNr}`}</Tekst>
             </FinnHjelpemiddelLink>
             <VStack paddingBlock="space-12" gap="space-8">
-              <Brødtekst>{alternativtProdukt.supplier.name}</Brødtekst>
+              <Tekst>{alternativtProdukt.supplier.name}</Tekst>
               {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
                 <Box.New key={lagerstatus?.location}>
                   <Etikett>{lagerstatus?.location}: </Etikett>

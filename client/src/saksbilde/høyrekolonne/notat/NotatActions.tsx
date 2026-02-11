@@ -3,7 +3,7 @@ import '@mdxeditor/editor/style.css'
 import { ExternalLinkIcon, MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons'
 import { ActionMenu, Button, Tooltip } from '@navikt/ds-react'
 
-import { Brødtekst } from '../../../felleskomponenter/typografi.tsx'
+import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { SpørreundersøkelseModal } from '../../../innsikt/SpørreundersøkelseModal.tsx'
 import { useSaksregler } from '../../../saksregler/useSaksregler.ts'
 import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
@@ -96,17 +96,15 @@ function FeilregistrerNotatModal({
       onBesvar={onBekreft}
       onClose={onClose}
     >
-      {notat.type === NotatType.INTERNT && <Brødtekst>Notatet fjernes fra saken. Dette kan ikke angres.</Brødtekst>}
+      {notat.type === NotatType.INTERNT && <Tekst>Notatet fjernes fra saken. Dette kan ikke angres.</Tekst>}
       {notat.type === NotatType.JOURNALFØRT &&
         notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
-          <Brødtekst>
-            Forvaltningsnotatet feilregistreres på saken og blir ikke synlig for bruker på nav.no lenger.
-          </Brødtekst>
+          <Tekst>Forvaltningsnotatet feilregistreres på saken og blir ikke synlig for bruker på nav.no lenger.</Tekst>
         )}
 
       {notat.type === NotatType.JOURNALFØRT &&
         notat.klassifisering === NotatKlassifisering.INTERNE_SAKSOPPLYSNINGER && (
-          <Brødtekst>Forvaltningsnotatet feilregistreres på saken.</Brødtekst>
+          <Tekst>Forvaltningsnotatet feilregistreres på saken.</Tekst>
         )}
     </SpørreundersøkelseModal>
   )

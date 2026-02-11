@@ -1,4 +1,4 @@
-import { Brødtekst } from '../../../../../felleskomponenter/typografi'
+import { Tekst } from '../../../../../felleskomponenter/typografi'
 import { VilkårsResultat } from '../../../../../types/types.internal'
 
 export const VurdertAv = ({
@@ -9,12 +9,10 @@ export const VurdertAv = ({
   resultatSaksbehandler?: VilkårsResultat
 }) => {
   if (!vilkårOppfylt) {
-    return <Brødtekst>Ikke grunnlag for vurdering</Brødtekst>
+    return <Tekst>Ikke grunnlag for vurdering</Tekst>
   } else if (vilkårOppfylt === VilkårsResultat.OPPLYSNINGER_MANGLER) {
-    return <Brødtekst>-</Brødtekst>
+    return <Tekst>-</Tekst>
   } else {
-    return (
-      <Brødtekst>{resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk - basert på saksbehandlers input'}</Brødtekst>
-    )
+    return <Tekst>{resultatSaksbehandler ? 'Saksbehandler' : 'Automatisk - basert på saksbehandlers input'}</Tekst>
   }
 }

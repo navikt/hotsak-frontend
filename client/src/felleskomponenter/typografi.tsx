@@ -1,4 +1,4 @@
-import { type CSSProperties, forwardRef, type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import styled from 'styled-components'
 
 import { BodyLong, BodyShort, BodyShortProps, Detail, Heading, Label } from '@navikt/ds-react'
@@ -23,26 +23,6 @@ export const TekstMedEllipsis = forwardRef<HTMLParagraphElement, { children: Rea
     </BodyShort>
   )
 )
-
-export function Brødtekst({
-  spacing,
-  textColor = 'default',
-  weight = 'regular',
-  style,
-  children,
-}: {
-  spacing?: boolean
-  textColor?: 'subtle' | 'default'
-  weight?: 'regular' | 'semibold'
-  style?: CSSProperties
-  children: ReactNode
-}) {
-  return (
-    <FlytendeTekst as="p" textColor={textColor} size="small" weight={weight} spacing={spacing} style={style}>
-      {children}
-    </FlytendeTekst>
-  )
-}
 
 export function BrytbarBrødtekst({ spacing, children }: { spacing?: boolean; children: ReactNode }) {
   return (
@@ -93,11 +73,6 @@ export function Skjermlesertittel({
     </Heading>
   )
 }
-
-const FlytendeTekst = styled(BodyLong)`
-  white-space: normal;
-  overflow-wrap: break-word;
-`
 
 const FlytendeBrytbarTekst = styled(BodyLong)`
   white-space: normal;

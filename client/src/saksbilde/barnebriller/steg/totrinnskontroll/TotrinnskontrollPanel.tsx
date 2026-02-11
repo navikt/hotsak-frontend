@@ -1,12 +1,12 @@
 import { VStack } from '@navikt/ds-react'
 
-import { Brødtekst, Tekst } from '../../../../felleskomponenter/typografi'
-import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
+import { Tekst } from '../../../../felleskomponenter/typografi'
 import { SidebarPanel } from '../../../../sak/v2/sidebars/SidebarPanel.tsx'
+import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
+import { OppgaveStatusType, StegType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { TotrinnskontrollForm } from './TotrinnskontrollForm'
 import { TotrinnskontrollLesevisning } from './TotrinnskontrollLesevisning'
-import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 
 export function TotrinnskontrollPanel() {
   const saksbehandler = useInnloggetAnsatt()
@@ -24,7 +24,7 @@ export function TotrinnskontrollPanel() {
   if (!sak.data.saksbehandler || sak.data.saksbehandler.id === '') {
     return (
       <SidebarPanel tittel="Totrinnskontroll">
-        <Brødtekst>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Brødtekst>
+        <Tekst>{'Ingen saksbehandler har tatt saken enda. Velg "Ta saken" fra oppgavelisten.'}</Tekst>
       </SidebarPanel>
     )
   }
@@ -57,7 +57,7 @@ export function TotrinnskontrollPanel() {
   return (
     <SidebarPanel tittel="Totrinnskontroll">
       <VStack gap="5">
-        <Brødtekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Brødtekst>
+        <Tekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Tekst>
         {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
       </VStack>
     </SidebarPanel>

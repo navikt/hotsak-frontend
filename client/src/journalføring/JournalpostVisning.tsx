@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Dokumenter } from '../dokument/Dokumenter'
 import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
-import { Brødtekst } from '../felleskomponenter/typografi'
+import { Tekst } from '../felleskomponenter/typografi'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
 import { useOppgave } from '../oppgave/useOppgave.ts'
@@ -44,7 +44,7 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
           <Heading size="xsmall" level="2">
             Bruker
           </Heading>
-          <Brødtekst>{`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}</Brødtekst>
+          <Tekst>{`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}</Tekst>
         </VStack>
         <VStack marginInline="0 3">
           <Heading size="xsmall" level="2" spacing>
@@ -69,9 +69,7 @@ function Status({ lesevisning, onOppgavetildeling }: { lesevisning: boolean; onO
   }
 
   if (oppgaveErUnderBehandlingAvAnnenAnsatt) {
-    return (
-      <Brødtekst>{`Oppgaven er tildelt saksbehandler ${formaterNavn(oppgave.tildeltSaksbehandler?.navn)}`}</Brødtekst>
-    )
+    return <Tekst>{`Oppgaven er tildelt saksbehandler ${formaterNavn(oppgave.tildeltSaksbehandler?.navn)}`}</Tekst>
   }
 
   if (oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT) {

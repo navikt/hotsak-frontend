@@ -1,23 +1,23 @@
 import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo } from 'react'
-import { Brødtekst, Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import { Brevstatus } from '../../../brev/brevTyper.ts'
+import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
+import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { textcontainerBredde } from '../../../GlobalStyles.tsx'
 import { Oppgavestatus } from '../../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
 import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
-import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDato, formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
-import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
+import { useSaksbehandlingEksperimentContext } from '../SakProvider.tsx'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSaksbehandlingEksperimentContext } from '../SakProvider.tsx'
-import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
-import { Brevstatus } from '../../../brev/brevTyper.ts'
 
 interface BehandlingProps {
   sak: Sak
@@ -52,9 +52,9 @@ function BehandlingPanel({ sak }: BehandlingProps) {
       <div style={{ height: '100%', overflowY: 'auto' }}>
         <VStack gap="space-16" paddingInline="space-16">
           <HStack gap="space-20">
-            <Brødtekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Brødtekst>
+            <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
             {oppgave?.fristFerdigstillelse && (
-              <Brødtekst textColor="subtle">Frist: {formaterDato(oppgave.fristFerdigstillelse)}</Brødtekst>
+              <Tekst textColor="subtle">Frist: {formaterDato(oppgave.fristFerdigstillelse)}</Tekst>
             )}
           </HStack>
 
@@ -179,7 +179,7 @@ function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResulta
 
   return (
     <TextContainer>
-      <Brødtekst textColor="subtle">{tekst}</Brødtekst>
+      <Tekst textColor="subtle">{tekst}</Tekst>
     </TextContainer>
   )
 }
@@ -225,7 +225,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           Vurderingen din
         </Heading>
         <TextContainer>
-          <Brødtekst>Vurderingen din blir ikke synlig for bruker før du har fattet vedtak i saken.</Brødtekst>
+          <Tekst>Vurderingen din blir ikke synlig for bruker før du har fattet vedtak i saken.</Tekst>
         </TextContainer>
       </VStack>
 
@@ -253,10 +253,10 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
       </Select>
       {harBrevutkast && (
         <TextContainer>
-          <Brødtekst>
+          <Tekst>
             Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
             under menyen "Flere valg" i brevpanelet.
-          </Brødtekst>
+          </Tekst>
         </TextContainer>
       )}
     </>

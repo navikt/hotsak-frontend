@@ -1,6 +1,6 @@
 import { Alert, BodyLong, Box, VStack } from '@navikt/ds-react'
 
-import { Brødtekst, Etikett } from '../../../../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../../../../felleskomponenter/typografi'
 import { SatsType } from '../../../../../types/types.internal'
 import { formaterBeløp } from '../../../../../utils/formater'
 import { useBeregning } from '../useBeregning'
@@ -25,9 +25,9 @@ export function BrillestyrkeForm() {
           ) : (
             <Alert variant="info" role="alert">
               <Etikett>{`Brillestøtte på opp til ${formaterBeløp(beregning.satsBeløp)} kroner`}</Etikett>
-              <Brødtekst>
+              <Tekst>
                 {`Barnet kan få tilskudd fra sats ${beregning.sats.replace('SATS_', '')}: ${beregning.satsBeskrivelse}`}
-              </Brødtekst>
+              </Tekst>
             </Alert>
           )}
         </Box>

@@ -1,8 +1,8 @@
 import { Alert } from '@navikt/ds-react'
 
+import { Tekst } from '../../../../../felleskomponenter/typografi'
 import { VilkårsResultat } from '../../../../../types/types.internal'
 import { alertVariant, vilkårStatusTekst } from '../oppsummertStatus'
-import { Brødtekst } from '../../../../../felleskomponenter/typografi'
 
 export const Resultat = ({
   vilkårOppfylt,
@@ -15,7 +15,7 @@ export const Resultat = ({
   } else {
     return (
       <Alert data-testid="alert-vilkårstatus" variant={`${alertVariant(vilkårOppfylt)}`} size="small" inline>
-        <Brødtekst>{vilkårStatusTekst(vilkårOppfylt)}</Brødtekst>
+        <Tekst>{vilkårStatusTekst(vilkårOppfylt)}</Tekst>
       </Alert>
     )
   }

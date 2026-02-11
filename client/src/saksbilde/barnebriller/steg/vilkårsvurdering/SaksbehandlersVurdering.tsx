@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { BodyShort, Box, Detail, Heading, Label, Link, VStack } from '@navikt/ds-react'
 
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { StepType, Vilkår } from '../../../../types/types.internal'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { SaksbehandlersVurderingForm } from './SaksbehandlersVurderingForm'
@@ -32,7 +32,7 @@ export function SaksbehandlersVurdering({
             {`${vilkår.lovReferanse}`}
           </Link>
         </Heading>
-        <Brødtekst>{metadataFor(vilkår.vilkårId)?.beskrivelse}</Brødtekst>
+        <Tekst>{metadataFor(vilkår.vilkårId)?.beskrivelse}</Tekst>
         <Box paddingBlock="4 2">
           <Detail>VURDERINGEN ER BASERT PÅ:</Detail>
         </Box>

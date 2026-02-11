@@ -1,6 +1,9 @@
 import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, HStack, VStack } from '@navikt/ds-react'
+import { useState } from 'react'
 import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../../../felleskomponenter/typografi'
+import { EndreTilbehørModal } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreTilbehørModal'
+import { useEndreHjelpemiddel } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
 import { Opplysninger } from '../../../../saksbilde/hjelpemidler/Opplysninger'
 import { Varsler } from '../../../../saksbilde/hjelpemidler/Varsel'
 import { useSaksregler } from '../../../../saksregler/useSaksregler'
@@ -8,11 +11,6 @@ import { Tilbehør as Tilbehørtype } from '../../../../types/BehovsmeldingTypes
 import { Produkt as Produkttype } from '../../../../types/types.internal'
 import { AntallTag } from '../../AntallTag'
 import { ProduktV2 } from '../ProduktV2'
-import { EndreTilbehørModal } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreTilbehørModal'
-import { useState } from 'react'
-import { useEndreHjelpemiddel } from '../../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel'
-import { EndretArtikkelBegrunnelse } from '../../../sakTypes'
-import { storForbokstavIOrd } from '../../../../utils/formater'
 import { EndretTilbehørBegrunnelse } from './EndretTilbehørBegrunnelse'
 
 export function FrittStåendeTilbehørV2({

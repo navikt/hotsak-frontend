@@ -2,7 +2,7 @@ import { Alert, Box, Button, HStack, Radio, RadioGroup, Table } from '@navikt/ds
 
 import { HeadingMedHjelpetekst } from '../felleskomponenter/HeadingMedHjelpetekst'
 import { SakstypeEtikett } from '../felleskomponenter/SakstypeEtikett.tsx'
-import { Brødtekst } from '../felleskomponenter/typografi'
+import { Tekst } from '../felleskomponenter/typografi'
 import { type SaksoversiktSak } from '../personoversikt/saksoversiktTypes.ts'
 import { OppgaveStatusLabel } from '../types/types.internal'
 import { formaterDato } from '../utils/dato'
@@ -69,7 +69,7 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
         )}
         {valgtEksisterendeSakId !== '' && (
           <Alert variant="info" size="small">
-            <Brødtekst>Dokumentene du journalfører vil knyttes til saken du har valgt i liste over.</Brødtekst>
+            <Tekst>Dokumentene du journalfører vil knyttes til saken du har valgt i liste over.</Tekst>
             <Button variant="tertiary" size="small" onClick={() => onChange('')}>
               Fjern knytning til sak
             </Button>

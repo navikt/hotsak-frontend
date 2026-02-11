@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 
 import { SkjemaAlert } from '../../../../felleskomponenter/SkjemaAlert'
-import { Brødtekst } from '../../../../felleskomponenter/typografi'
+import { Tekst } from '../../../../felleskomponenter/typografi'
 import { useInnloggetAnsatt } from '../../../../tilgang/useTilgang.ts'
 import { StegType, TotrinnskontrollData, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { BekreftelseModal } from '../../../komponenter/BekreftelseModal'
@@ -100,7 +100,7 @@ export function TotrinnskontrollForm() {
           setVisGodkjenningModal(false)
         }}
       >
-        <Brødtekst>Vedtaket blir fattet og brevet sendes til adressen til barnet.</Brødtekst>
+        <Tekst>Vedtaket blir fattet og brevet sendes til adressen til barnet.</Tekst>
       </BekreftelseModal>
     </>
   )

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
 import { Knappepanel } from '../../../../felleskomponenter/Knappepanel'
-import { Brødtekst } from '../../../../felleskomponenter/typografi'
+import { Tekst } from '../../../../felleskomponenter/typografi'
 import { http } from '../../../../io/HttpClient.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { StegType, StepType, Vilkår, VilkårsResultat } from '../../../../types/types.internal'
@@ -149,12 +149,10 @@ export function VurderVilkår() {
                       <Resultat vilkårOppfylt={vilkårOppfylt} />
                     </Table.DataCell>
                     <Table.DataCell scope="row" style={{ width: '500px' }}>
-                      <Brødtekst>{beskrivelse}</Brødtekst>
+                      <Tekst>{beskrivelse}</Tekst>
                     </Table.DataCell>
                     <Table.DataCell scope="row" style={{ width: '300px' }}>
-                      {vilkårMetadata?.basertPå.map((metadata) => (
-                        <Brødtekst key={`${metadata}`}>{metadata}</Brødtekst>
-                      )) || '-'}
+                      {vilkårMetadata?.basertPå.map((metadata) => <Tekst key={`${metadata}`}>{metadata}</Tekst>) || '-'}
                     </Table.DataCell>
                     <Table.DataCell scope="row" style={{ width: '250px' }}>
                       <VurdertAv
@@ -163,10 +161,10 @@ export function VurderVilkår() {
                       />
                     </Table.DataCell>
                     <Table.DataCell scope="row" style={{ width: '250px' }}>
-                      <Brødtekst>{manuellVurdering?.begrunnelse || '-'}</Brødtekst>
+                      <Tekst>{manuellVurdering?.begrunnelse || '-'}</Tekst>
                     </Table.DataCell>
                     <Table.DataCell scope="row" style={{ width: '150px' }}>
-                      <Brødtekst>{lovReferanse}</Brødtekst>
+                      <Tekst>{lovReferanse}</Tekst>
                     </Table.DataCell>
                   </Table.ExpandableRow>
                 )

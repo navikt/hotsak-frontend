@@ -1,6 +1,6 @@
 import { Box, HStack, VStack } from '@navikt/ds-react'
 import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
-import { Brødtekst, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
 import { Formidler } from '../../saksbilde/formidler/Formidler.tsx'
 import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'

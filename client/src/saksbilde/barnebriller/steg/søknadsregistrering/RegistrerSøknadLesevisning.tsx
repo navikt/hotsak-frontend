@@ -2,15 +2,15 @@ import { Alert, Button, HelpText, HGrid, HGridProps, HStack, HStackProps, Loader
 
 import { Dokumenter } from '../../../../dokument/Dokumenter'
 import { Feilmelding } from '../../../../felleskomponenter/feil/Feilmelding'
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { SatsType, StegType, StepType, VilkårsResultat } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { formaterBeløp, storForbokstavIAlleOrd } from '../../../../utils/formater'
 import { useBarnebrillesak } from '../../../useBarnebrillesak'
 import { useJournalposter } from '../../../useJournalposter'
+import { useSakId } from '../../../useSak.ts'
 import { useManuellSaksbehandlingContext } from '../../ManuellSaksbehandlingTabContext'
 import { FormatertStyrke } from './FormatertStyrke'
-import { useSakId } from '../../../useSak.ts'
 
 export function RegistrerSøknadLesevisning() {
   const sakId = useSakId()
@@ -44,49 +44,49 @@ export function RegistrerSøknadLesevisning() {
       </div>
       <div>
         <Etikett>Målform</Etikett>
-        <Brødtekst>{storForbokstavIAlleOrd(vilkårsgrunnlag?.målform)}</Brødtekst>
+        <Tekst>{storForbokstavIAlleOrd(vilkårsgrunnlag?.målform)}</Tekst>
       </div>
       <HGrid {...hGridProps}>
         <Etikett>Høyre sfære (SPH)</Etikett>
         <Etikett>Høyre sylinder (CYL)</Etikett>
-        <Brødtekst>
+        <Tekst>
           <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.høyreSfære} />
-        </Brødtekst>
-        <Brødtekst>
+        </Tekst>
+        <Tekst>
           <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.høyreSylinder} />
-        </Brødtekst>
+        </Tekst>
       </HGrid>
       <HGrid {...hGridProps}>
         <Etikett>Venstre sfære (SPH)</Etikett>
         <Etikett>Venstre sylinder (CYL)</Etikett>
-        <Brødtekst>
+        <Tekst>
           <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.venstreSfære} />
-        </Brødtekst>
-        <Brødtekst>
+        </Tekst>
+        <Tekst>
           <FormatertStyrke verdi={vilkårsgrunnlag?.data?.brilleseddel?.venstreSylinder} />
-        </Brødtekst>
+        </Tekst>
       </HGrid>
       {vilkårsvurdering && vilkårsgrunnlag?.data.brilleseddel && (
         <Alert variant="info" role="alert">
-          <Brødtekst>
+          <Tekst>
             {vilkårsvurdering?.data?.sats === SatsType.INGEN
               ? 'Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt'
               : `Brillestyrke gir sats ${vilkårsvurdering?.data?.sats.replace(
                   'SATS_',
                   ''
                 )} - inntil ${formaterBeløp(vilkårsvurdering?.data?.satsBeløp)} kroner. `}
-          </Brødtekst>
+          </Tekst>
           {Number(vilkårsvurdering?.data?.beløp) < Number(vilkårsvurdering?.data?.satsBeløp) && (
-            <Brødtekst>
+            <Tekst>
               {`Basert på brilleprisen, kan barnet få `}
               <strong>{`${formaterBeløp(vilkårsvurdering?.data?.beløp)} kr i støtte`}</strong>{' '}
-            </Brødtekst>
+            </Tekst>
           )}
         </Alert>
       )}
       <div>
         <Etikett>Brillens bestillingsdato</Etikett>
-        <Brødtekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Brødtekst>
+        <Tekst>{formaterDato(vilkårsgrunnlag?.data?.bestillingsdato?.toString() || '')}</Tekst>
       </div>
       <div>
         <HStack {...hStackProps}>
@@ -95,9 +95,7 @@ export function RegistrerSøknadLesevisning() {
             Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
           </HelpText>
         </HStack>
-        <Brødtekst>
-          {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.kjøptBrille?.vilkårOppfylt).replace('_', ' ')}
-        </Brødtekst>
+        <Tekst>{storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.kjøptBrille?.vilkårOppfylt).replace('_', ' ')}</Tekst>
       </div>
       <div>
         <HStack {...hStackProps}>
@@ -107,18 +105,16 @@ export function RegistrerSøknadLesevisning() {
             synsundersøkelse skal ikke inkluderes i prisen.
           </HelpText>
         </HStack>
-        <Brødtekst>{formaterBeløp(vilkårsgrunnlag?.data?.brillepris) || '-'}</Brødtekst>
+        <Tekst>{formaterBeløp(vilkårsgrunnlag?.data?.brillepris) || '-'}</Tekst>
       </div>
       <div>
         <HStack {...hStackProps}>
           <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
           <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
         </HStack>
-        <Brødtekst>
-          {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}
-        </Brødtekst>
+        <Tekst>{storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt).replace('_', ' ')}</Tekst>
         {vilkårsgrunnlag?.data?.komplettBrille.vilkårOppfylt === VilkårsResultat.NEI && (
-          <Brødtekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Brødtekst>
+          <Tekst>{vilkårsgrunnlag?.data?.komplettBrille.begrunnelse}</Tekst>
         )}
       </div>
       <div>
@@ -128,11 +124,11 @@ export function RegistrerSøknadLesevisning() {
             For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).
           </HelpText>
         </HStack>
-        <Brødtekst>
+        <Tekst>
           {storForbokstavIAlleOrd(vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt).replace('_', ' ')}
-        </Brødtekst>
+        </Tekst>
         {vilkårsgrunnlag?.data?.bestiltHosOptiker.vilkårOppfylt === VilkårsResultat.NEI && (
-          <Brødtekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Brødtekst>
+          <Tekst>{vilkårsgrunnlag?.data?.bestiltHosOptiker.begrunnelse}</Tekst>
         )}
       </div>
       {sak.data.steg !== StegType.INNHENTE_FAKTA && (

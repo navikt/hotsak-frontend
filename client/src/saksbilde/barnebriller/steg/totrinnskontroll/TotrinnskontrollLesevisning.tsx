@@ -1,6 +1,6 @@
 import { Alert, VStack } from '@navikt/ds-react'
 
-import { Brødtekst, Etikett } from '../../../../felleskomponenter/typografi'
+import { Etikett, Tekst } from '../../../../felleskomponenter/typografi'
 import { OppgaveStatusType, TotrinnskontrollVurdering } from '../../../../types/types.internal'
 import { formaterDato } from '../../../../utils/dato'
 import { storForbokstavIAlleOrd } from '../../../../utils/formater'
@@ -13,12 +13,12 @@ export function TotrinnskontrollLesevisning() {
     <VStack gap="3">
       <div>
         <Etikett>Vurdering</Etikett>
-        <Brødtekst>{storForbokstavIAlleOrd(sak?.data.totrinnskontroll?.resultat)}</Brødtekst>
+        <Tekst>{storForbokstavIAlleOrd(sak?.data.totrinnskontroll?.resultat)}</Tekst>
       </div>
       {sak?.data.totrinnskontroll?.begrunnelse && (
         <div>
           <Etikett>Begrunn vurderingen din</Etikett>
-          <Brødtekst>{sak.data.totrinnskontroll.begrunnelse}</Brødtekst>
+          <Tekst>{sak.data.totrinnskontroll.begrunnelse}</Tekst>
         </div>
       )}
       {sak?.data.totrinnskontroll?.resultat === TotrinnskontrollVurdering.RETURNERT && (

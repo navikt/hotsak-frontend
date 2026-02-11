@@ -119,25 +119,6 @@ export const oppgaveColumns = {
       return storForbokstavIOrd(beskrivelse)
     },
   },
-  kommune: {
-    field: 'kommune',
-    header: 'Kommune / bydel',
-    width: 200,
-    filter: {
-      options: new Set(),
-    },
-    renderCell(row) {
-      const bydel = row.bruker?.bydel
-      if (bydel) {
-        return bydel.navn
-      }
-      const kommune = row.bruker?.kommune
-      if (kommune) {
-        return kommune.navn
-      }
-      return null
-    },
-  },
   mappenavn: {
     field: 'mappenavn',
     header: 'Mappe',
@@ -168,6 +149,91 @@ export const oppgaveColumns = {
         )
       }
       return prioritet
+    },
+  },
+  innsenderNavn: {
+    field: 'innsenderNavn',
+    header: 'Innsender',
+    width: 150,
+    filter: {
+      options: new Set(),
+    },
+    renderCell(row) {
+      const innsender = row.innsender
+      if (!innsender) {
+        return null
+      }
+      return innsender.fulltNavn
+    },
+  },
+  brukerFnr: {
+    field: 'brukerFnr',
+    header: 'Fødselsnummer',
+    sortKey: 'fnr',
+    width: 100,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker) {
+        return null
+      }
+      return formaterFødselsnummer(bruker.fnr)
+    },
+  },
+  brukerNavn: {
+    field: 'brukerNavn',
+    header: 'Navn',
+    width: 150,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker) {
+        return null
+      }
+      return bruker.fulltNavn
+    },
+  },
+  brukerFødselsdato: {
+    field: 'brukerFødselsdato',
+    header: 'Fødselsdato',
+    sortKey: 'fødselsdato',
+    width: 150,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker || bruker.fødselsdato == null) {
+        return null
+      }
+      return <FormatDate date={bruker.fødselsdato} />
+    },
+  },
+  brukerAlder: {
+    field: 'brukerAlder',
+    header: 'Alder',
+    sortKey: 'alder',
+    width: 150,
+    renderCell(row) {
+      const bruker = row.bruker
+      if (!bruker || bruker.alder == null) {
+        return null
+      }
+      return `${bruker.alder} år`
+    },
+  },
+  kommune: {
+    field: 'kommune',
+    header: 'Kommune / bydel',
+    width: 200,
+    filter: {
+      options: new Set(),
+    },
+    renderCell(row) {
+      const bydel = row.bruker?.bydel
+      if (bydel) {
+        return bydel.navn
+      }
+      const kommune = row.bruker?.kommune
+      if (kommune) {
+        return kommune.navn
+      }
+      return null
     },
   },
   opprettetTidspunkt: {
@@ -204,56 +270,6 @@ export const oppgaveColumns = {
     width: 125,
     formatDateTime: true,
   },
-  brukerFnr: {
-    field: 'brukerFnr',
-    header: 'Fødselsnummer',
-    sortKey: 'fnr',
-    width: 100,
-    renderCell(row) {
-      const bruker = row.bruker
-      if (!bruker) {
-        return null
-      }
-      return formaterFødselsnummer(bruker.fnr)
-    },
-  },
-  brukerNavn: {
-    field: 'brukerNavn',
-    header: 'Navn',
-    width: 150,
-    renderCell(row) {
-      const bruker = row.bruker
-      if (!bruker) {
-        return null
-      }
-      return bruker.fulltNavn
-    },
-  },
-  brukerAlder: {
-    field: 'brukerAlder',
-    header: 'Alder',
-    sortKey: 'alder',
-    width: 150,
-    renderCell(row) {
-      const bruker = row.bruker
-      if (!bruker || bruker.alder == null) {
-        return null
-      }
-      return `${bruker.alder} år`
-    },
-  },
-  innsenderNavn: {
-    field: 'innsenderNavn',
-    header: 'Innsender',
-    width: 150,
-    renderCell(row) {
-      const innsender = row.innsender
-      if (!innsender) {
-        return null
-      }
-      return innsender.fulltNavn
-    },
-  },
   mineOppgaverMenu: {
     field: 'mineOppgaverMenu',
     width: 50,
@@ -272,3 +288,5 @@ export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<Oppgave
   }
   return column
 }
+
+export type DefaultOppgaveColumns = ReadonlyArray<OppgaveColumnField | [OppgaveColumnField, boolean]>

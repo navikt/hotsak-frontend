@@ -28,8 +28,16 @@ export function selectPrioritet(it: OppgaveV2): Oppgaveprioritet {
   return it.prioritet
 }
 
+export function selectInnsenderNavn(it: OppgaveV2): string {
+  return it.innsender?.fulltNavn ?? 'Ingen'
+}
+
 export function selectBrukerFødselsnummer(it: OppgaveV2): string | undefined {
   return it.bruker?.fnr
+}
+
+export function selectBrukerFødselsdato(it: OppgaveV2): string | undefined {
+  return it.bruker?.fødselsdato
 }
 
 export function selectBrukerAlder(it: OppgaveV2): number | undefined {

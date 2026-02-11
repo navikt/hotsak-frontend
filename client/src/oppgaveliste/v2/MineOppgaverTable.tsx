@@ -35,5 +35,5 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
 }
 
 function renderContent(oppgave: OppgaveV2, visible: boolean) {
-  return <OppgaveDetails oppgave={oppgave} visible={visible} />
+  return <OppgaveDetails oppgave={oppgave} visible={visible} visBruker />
 }

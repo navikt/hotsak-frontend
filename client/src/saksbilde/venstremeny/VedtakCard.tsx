@@ -9,6 +9,7 @@ import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
+import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
@@ -47,6 +48,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   const oppgaveActions = useOppgaveActions()
   const behovsmelding = useBehovsmelding()
   const sakActions = useSakActions()
+  const artikler = useArtiklerForSak(sak.sakId)
   const { sammendragMedLavere, problemsammendrag } = useProblemsammendrag()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
 
@@ -54,13 +56,18 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
   )
 
+  const harEndretLavereRangertHjelpemiddel = artikler.artikler.some(
+    (artikkel) => artikkel.id === lavereRangertHjelpemiddel?.hjelpemiddelId && artikkel.endretArtikkel
+  )
+
   const begrunnelseForLavereRangeringFritekst = lavereRangertHjelpemiddel?.opplysninger
     .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
     ?.innhold.at(0)?.fritekst
 
-  const lavereRangertBegrunnelse = begrunnelseForLavereRangeringFritekst
-    ? `POST ${begrunnelseForLavereRangeringFritekst}`
-    : undefined
+  const lavereRangertBegrunnelse =
+    begrunnelseForLavereRangeringFritekst && !harEndretLavereRangertHjelpemiddel
+      ? `POST ${begrunnelseForLavereRangeringFritekst}`
+      : undefined
 
   const form = useForm<VedtakFormValues>({
     values: {

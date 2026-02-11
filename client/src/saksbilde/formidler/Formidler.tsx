@@ -1,45 +1,60 @@
-import { Box, Heading, HGrid, HGridProps, HStack } from '@navikt/ds-react'
-
-import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
-
-import { PersonIcon } from '@navikt/aksel-icons'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
-import { MerknadBox } from '../../felleskomponenter/Merknad'
-import { Strek } from '../../felleskomponenter/Strek'
-import { BrytbarBrødtekst, Etikett } from '../../felleskomponenter/typografi'
+import { Box, Heading, HStack, VStack } from '@navikt/ds-react'
 import { Levering, Oppfølgingsansvarlig } from '../../types/BehovsmeldingTypes'
+import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
+import { formaterAdresse, formaterNavn, formaterTelefonnummer, storForbokstavIAlleOrd } from '../../utils/formater'
+import { Skillelinje } from '../../felleskomponenter/Strek'
+import { useNyttSaksbilde } from '../../sak/v2/useNyttSaksbilde'
 
-export interface FormidlerProps {
+interface FormidlerProps {
   levering: Levering
 }
 
 export function Formidler({ levering }: FormidlerProps) {
   const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering
+  const nyttSaksbilde = useNyttSaksbilde()
 
   const InfoFormidler = () => {
     return (
-      <HGrid {...hGridProps} align="center">
-        <Etikett>Navn</Etikett>
-        <BrytbarBrødtekst>{formaterNavn(formidler.navn)}</BrytbarBrødtekst>
-        <Etikett>Arbeidssted</Etikett>
-        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.arbeidssted)}`}</BrytbarBrødtekst>
-        <Etikett>Stilling</Etikett>
-        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</BrytbarBrødtekst>
-        <Etikett>Postadresse</Etikett>
-        <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</BrytbarBrødtekst>
-        <Etikett>Telefon</Etikett>
-        <HStack align="center" wrap={false}>
-          <BrytbarBrødtekst>{formaterTelefonnummer(formidler.telefon)}</BrytbarBrødtekst>
-          <Kopiknapp tooltip="Kopier telefon" copyText={formidler.telefon} placement="bottom" />
+      <VStack gap="space-4">
+        <HStack gap="space-6">
+          <Etikett>Navn:</Etikett>
+          <HStack align="center" wrap={false}>
+            <Tekst>{formaterNavn(formidler.navn)}</Tekst>
+            <Kopiknapp tooltip="Kopier navn" copyText={formaterNavn(formidler.navn)} placement="bottom" />
+          </HStack>
         </HStack>
-        <Etikett>Treffest enklest</Etikett>
-        <BrytbarBrødtekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</BrytbarBrødtekst>
-        <Etikett>E-postadresse</Etikett>
-        <HStack align="center" wrap={false}>
-          <BrytbarBrødtekst>{formidler.epost}</BrytbarBrødtekst>
-          <Kopiknapp tooltip="Kopier epost" copyText={formidler.epost} placement="bottom" />
+        <HStack gap="space-6">
+          <Etikett>Arbeidssted:</Etikett>
+          <Tekst>{`${storForbokstavIAlleOrd(formidler.arbeidssted)}`}</Tekst>
         </HStack>
-      </HGrid>
+        <HStack gap="space-6">
+          <Etikett>Stilling:</Etikett>
+          <Tekst>{`${storForbokstavIAlleOrd(formidler.stilling)}`}</Tekst>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Postadresse:</Etikett>
+          <Tekst>{`${storForbokstavIAlleOrd(formidler.adresse.poststed)}`}</Tekst>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Telefon:</Etikett>
+          <HStack align="center" wrap={false}>
+            <Tekst>{formaterTelefonnummer(formidler.telefon)}</Tekst>
+            <Kopiknapp tooltip="Kopier telefon" copyText={formidler.telefon} placement="bottom" />
+          </HStack>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>Treffest enklest:</Etikett>
+          <Tekst>{storForbokstavIAlleOrd(formaterAdresse(formidler.adresse))}</Tekst>
+        </HStack>
+        <HStack gap="space-6">
+          <Etikett>E-postadresse:</Etikett>
+          <HStack align="center" wrap={false}>
+            <Tekst>{formidler.epost}</Tekst>
+            <Kopiknapp tooltip="Kopier e-post" copyText={formidler.epost} placement="bottom" />
+          </HStack>
+        </HStack>
+      </VStack>
     )
   }
 
@@ -62,53 +77,60 @@ export function Formidler({ levering }: FormidlerProps) {
           }
 
     return (
-      <MerknadBox>
-        <HGrid {...hGridProps} align="center">
+      <VStack gap="space-4">
+        <HStack gap="space-6" align="center">
           <Etikett>Navn</Etikett>
-          <BrytbarBrødtekst>{formaterNavn(oppfølging.navn)}</BrytbarBrødtekst>
+          <HStack align="center" wrap={false}>
+            <Tekst>{formaterNavn(oppfølging.navn)}</Tekst>
+            <Kopiknapp tooltip="Kopier navn" copyText={formaterNavn(oppfølging.navn)} placement="bottom" />
+          </HStack>
+        </HStack>
+        <HStack gap="space-6">
           <Etikett>Arbeidssted</Etikett>
-          <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</BrytbarBrødtekst>
+          <Tekst>{`${storForbokstavIAlleOrd(oppfølging.arbeidssted)}`}</Tekst>
+        </HStack>
+        <HStack gap="space-6">
           <Etikett>Stilling</Etikett>
-          <BrytbarBrødtekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</BrytbarBrødtekst>
+          <Tekst>{`${storForbokstavIAlleOrd(oppfølging.stilling)}`}</Tekst>
+        </HStack>
+        <HStack gap="space-6">
           <Etikett>Telefon</Etikett>
-          <BrytbarBrødtekst>{formaterTelefonnummer(oppfølging.telefon)}</BrytbarBrødtekst>
+          <HStack align="center" wrap={false}>
+            <Tekst>{formaterTelefonnummer(oppfølging.telefon)}</Tekst>
+            <Kopiknapp tooltip="Kopier telefon" copyText={oppfølging.telefon} placement="bottom" />
+          </HStack>
+        </HStack>
+        <HStack gap="space-6">
           <Etikett>Ansvar</Etikett>
-          <BrytbarBrødtekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</BrytbarBrødtekst>
-        </HGrid>
-      </MerknadBox>
+          <Tekst>{storForbokstavIAlleOrd(oppfølging.ansvarFor)}</Tekst>
+        </HStack>
+      </VStack>
     )
   }
 
   return (
-    <>
-      <Heading level="1" size="medium" spacing={false}>
-        <HStack align="center" gap="1">
-          <PersonIcon />
-          Formidler og opplæringsansvarlig
-        </HStack>
-      </Heading>
-      <Box paddingBlock="4 0">
-        <Heading level="1" size="small" spacing={false}>
+    <div style={{ paddingBlock: '0 var(--ax-space-64)' }}>
+      <Box.New paddingBlock="space-12 0" paddingInline="space-32 0">
+        <Heading level="2" size="small" spacing={!nyttSaksbilde}>
           Hjelpemiddelformidler
         </Heading>
-        <InfoFormidler />
-        {oppfølgingsansvarlig && (
+        <Box paddingBlock="space-16 0">
+          <InfoFormidler />
+        </Box>
+      </Box.New>
+      {oppfølgingsansvarlig && (
+        <Box.New paddingBlock="space-12 0" paddingInline="space-32 0">
           <>
-            <Strek />
-            <Box paddingBlock="4 0">
-              <Heading level="1" size="small" spacing>
-                Oppfølgings- og opplæringsansvarlig
-              </Heading>
+            <Skillelinje />
+            <Heading level="2" size="small" spacing={!nyttSaksbilde}>
+              Oppfølgings- og opplæringsansvarlig
+            </Heading>
+            <Box paddingBlock="space-16 0">
               <InfoOppfølgingsansvarlig />
             </Box>
           </>
-        )}
-      </Box>
-    </>
+        </Box.New>
+      )}
+    </div>
   )
-}
-
-const hGridProps: Pick<HGridProps, 'columns' | 'gap'> = {
-  columns: 'max-content auto',
-  gap: 'space-0 space-16',
 }

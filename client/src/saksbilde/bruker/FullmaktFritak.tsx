@@ -1,37 +1,23 @@
-import styled from 'styled-components'
+import { Heading, List } from '@navikt/ds-react'
+import { TextContainer } from '../../felleskomponenter/typografi'
+import { HeadingProps } from './Signatur'
 
-import { Heading } from '@navikt/ds-react'
-
-import { Liste } from '../../felleskomponenter/Liste'
-import { Brødtekst } from '../../felleskomponenter/typografi'
-
-interface FullmaktFritakProps {
+interface FullmaktFritakProps extends HeadingProps {
   navn: string
 }
 
-export function FullmaktFritak({ navn }: FullmaktFritakProps) {
+export function FullmaktFritak({ navn, headingLevel }: FullmaktFritakProps) {
   return (
-    <>
-      <Heading level="1" size="medium" spacing={true}>
+    <TextContainer>
+      <Heading level={headingLevel} size="small" spacing={true}>
         Fullmakt med fritak for signatur
       </Heading>
-      <Container>
-        <Liste>
-          <li>
-            <Brødtekst>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</Brødtekst>
-          </li>
-          <li>
-            <Brødtekst>
-              {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at Nav kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
-            </Brødtekst>{' '}
-          </li>
-        </Liste>
-      </Container>
-    </>
+      <List as="ul" size="small">
+        <List.Item>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</List.Item>
+        <List.Item>
+          {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at Nav kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
+        </List.Item>
+      </List>
+    </TextContainer>
   )
 }
-
-const Container = styled.div`
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-`

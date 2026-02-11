@@ -2,7 +2,6 @@ import { Heading, HStack, List, VStack } from '@navikt/ds-react'
 
 import { Skillelinje } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
-import { SignaturEksperiment } from '../../sak/v2/behovsmelding/signatur/Signatur'
 import {
   Bruker as Behovsmeldingsbruker,
   Brukerkilde,
@@ -20,6 +19,7 @@ import {
 } from '../../utils/formater'
 import { Leveringsmåte } from './Leveringsmåte'
 import { Kontaktperson } from './Kontaktperson'
+import { Signatur } from './Signatur'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -79,7 +79,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
       </VStack>
 
       <Skillelinje />
-      <SignaturEksperiment signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
+      <Signatur signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
       <Skillelinje />
       <Heading level="2" size="small" spacing>
         Formidlers vurdering

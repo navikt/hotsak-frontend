@@ -1,27 +1,19 @@
-import styled from 'styled-components'
-
 import { Heading } from '@navikt/ds-react'
 
-import { Brødtekst } from '../../felleskomponenter/typografi'
+import { Brødtekst, TextContainer } from '../../felleskomponenter/typografi'
+import { HeadingProps } from './Signatur'
 
-interface BrukerBekreftetProps {
+interface BrukerBekreftetProps extends HeadingProps {
   navn: string
 }
 
-const Container = styled.div`
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-`
-
-export function BrukerBekreftet({ navn }: BrukerBekreftetProps) {
+export function BrukerBekreftet({ navn, headingLevel }: BrukerBekreftetProps) {
   return (
-    <>
-      <Heading level="1" size="medium" spacing={true}>
+    <TextContainer>
+      <Heading level={headingLevel} size="small" spacing={true}>
         Bruker har godkjent søknaden
       </Heading>
-      <Container>
-        <Brødtekst>{`${navn} har godkjent søknaden selv på nav.no`}</Brødtekst>
-      </Container>
-    </>
+      <Brødtekst>{`${navn} har godkjent søknaden selv på nav.no`}</Brødtekst>
+    </TextContainer>
   )
 }

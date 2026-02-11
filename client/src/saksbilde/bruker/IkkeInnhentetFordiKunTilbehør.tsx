@@ -1,31 +1,19 @@
-import styled from 'styled-components'
+import { Heading, List } from '@navikt/ds-react'
+import { TextContainer } from '../../felleskomponenter/typografi'
+import { HeadingProps } from './Signatur'
 
-import { Heading } from '@navikt/ds-react'
-
-import { Liste } from '../../felleskomponenter/Liste'
-import { Brødtekst } from '../../felleskomponenter/typografi'
-
-export function IkkkeInnhentetFordiKunTilbehør() {
+export function IkkkeInnhentetFordiKunTilbehør({ headingLevel }: HeadingProps) {
   return (
-    <>
-      <Heading level="1" size="medium" spacing={true}>
+    <TextContainer>
+      <Heading level={headingLevel} size="small" spacing={true}>
         Fullmakt
       </Heading>
-      <Container>
-        <Liste>
-          <li>
-            <Brødtekst>
-              Det er ikke innhentet fullmakt i denne saken, da Nav i en tidsbegrenset periode ønsker mer kunnskap om
-              hvorfor det meldes behov for tilbehør i etterkant av en søknad/vedtak om hjelpemiddel.
-            </Brødtekst>
-          </li>
-        </Liste>
-      </Container>
-    </>
+      <List as="ul" size="small">
+        <List.Item>
+          Det er ikke innhentet fullmakt i denne saken, da Nav i en tidsbegrenset periode ønsker mer kunnskap om hvorfor
+          det meldes behov for tilbehør i etterkant av en søknad/vedtak om hjelpemiddel.
+        </List.Item>
+      </List>
+    </TextContainer>
   )
 }
-
-const Container = styled.div`
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-`

@@ -7,7 +7,6 @@ import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 import { useSak } from '../saksbilde/useSak.ts'
-import { useSaksbehandlingEksperimentContext } from '../sak/v2/SakProvider.tsx'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
@@ -17,10 +16,11 @@ import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { formaterDatoLang } from '../utils/dato.ts'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
+import { useSakContext } from '../sak/v2/SakProvider.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne } = useSaksbehandlingEksperimentContext()
+  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne } = useSakContext()
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()

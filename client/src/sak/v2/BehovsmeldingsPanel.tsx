@@ -9,10 +9,10 @@ import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import styles from './BehovsmeldingsPanel.module.css'
-import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
+import { useSakContext } from './SakProvider.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
-  const { setSøknadPanel } = useSaksbehandlingEksperimentContext()
+  const { setSøknadPanel } = useSakContext()
   return (
     <Box.New background="default" paddingBlock="0 space-48" borderRadius="large" style={{ height: '100%' }}>
       <PanelTittel

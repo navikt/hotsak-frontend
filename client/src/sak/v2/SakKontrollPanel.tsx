@@ -4,7 +4,7 @@ import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import globalStyles from '../../styles/shared.module.css'
 import classes from './SakKontrollPanel.module.css'
-import { useSaksbehandlingEksperimentContext } from './SakProvider'
+import { useSakContext } from './SakProvider'
 
 export const SakKontrollPanel = () => {
   const {
@@ -16,7 +16,7 @@ export const SakKontrollPanel = () => {
     setBehandlingPanel,
     brevKolonne,
     setBrevKolonne,
-  } = useSaksbehandlingEksperimentContext()
+  } = useSakContext()
   const { isOppgaveContext } = useOppgaveContext()
 
   return (

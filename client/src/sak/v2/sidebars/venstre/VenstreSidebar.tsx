@@ -11,11 +11,10 @@ import { useSak } from '../../../../saksbilde/useSak'
 import { useSaksregler } from '../../../../saksregler/useSaksregler'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SakPanelTabTypes'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { useSaksbehandlingEksperimentContext } from '../../SakProvider'
+import { useSakContext } from '../../SakProvider'
 
 export function VenstreSidebar() {
-  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } =
-    useSaksbehandlingEksperimentContext()
+  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } = useSakContext()
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,

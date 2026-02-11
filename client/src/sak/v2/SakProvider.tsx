@@ -61,11 +61,11 @@ function SakProvider({ children }: { children: ReactNode }) {
   )
 }
 
-function useSaksbehandlingEksperimentContext(): SakV2ContextType {
+function useSakContext(): SakV2ContextType {
   const context = useContext(SakContext)
 
   if (!context) {
-    throw new Error('useSaksbehandlingEksperimentContext must be used within a SaksbehandlingEksperimentProvider')
+    throw new Error('useSakContext must be used within a SakProvider')
   }
 
   return context
@@ -88,4 +88,4 @@ type SakV2ContextType = {
   setOpprettBrevKlikket(klikket: boolean): void
 }
 
-export { SakContext, SakProvider, useSaksbehandlingEksperimentContext }
+export { SakContext, SakProvider, useSakContext }

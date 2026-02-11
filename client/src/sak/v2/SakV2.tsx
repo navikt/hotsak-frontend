@@ -25,8 +25,8 @@ import { useBehandling } from './behandling/useBehandling.ts'
 import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
 import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
+import { useSakContext } from './SakProvider.tsx'
 
 interface VedtakFormValues {
   problemsammendrag: string
@@ -46,7 +46,7 @@ export function SakV2() {
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
-  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSaksbehandlingEksperimentContext()
+  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSakContext()
   const { showSuccessToast } = useToast()
 
   const { gjeldendeBehandling } = useBehandling()

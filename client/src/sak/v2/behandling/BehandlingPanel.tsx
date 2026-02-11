@@ -14,10 +14,10 @@ import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDato, formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
-import { useSaksbehandlingEksperimentContext } from '../SakProvider.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
+import { useSakContext } from '../SakProvider.tsx'
 
 interface BehandlingProps {
   sak: Sak
@@ -25,8 +25,7 @@ interface BehandlingProps {
 }
 
 function BehandlingPanel({ sak }: BehandlingProps) {
-  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket } =
-    useSaksbehandlingEksperimentContext()
+  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket } = useSakContext()
 
   const { oppgave } = useOppgave()
   const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING

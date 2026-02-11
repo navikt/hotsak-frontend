@@ -195,7 +195,7 @@ export const oppgaveColumns = {
     field: 'brukerFødselsdato',
     header: 'Fødselsdato',
     sortKey: 'fødselsdato',
-    width: 150,
+    width: 125,
     renderCell(row) {
       const bruker = row.bruker
       if (!bruker || bruker.fødselsdato == null) {

@@ -20,6 +20,8 @@ import type { History } from '@platejs/slate'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import { ListPlugin } from '@platejs/list-classic/react'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
+import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
+import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin.tsx'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -55,6 +57,31 @@ export interface Metadata {
   saksbehandlerNavn: string
   attestantsNavn?: string
   hjelpemiddelsentral: string
+}
+
+const transformerPlaceholders = (nodes: Value): Value => {
+  return nodes.map((node) => {
+    // hvis det er en tekstnode med placeholder-syntaks
+    if ('text' in node && typeof node.text === 'string' && node.text.includes('[')) {
+      const parsed = parseTekstMedPlaceholders(node.text)
+      // Hvis parsing fant placeholders, returner arrayet med noder
+      // Ellers returner den originale noden
+      if (parsed.length > 1 || (parsed.length === 1 && parsed[0].type)) {
+        return parsed
+      }
+      return node
+    }
+
+    // Hvis node har children, transformer dem rekursivt
+    if ('children' in node && Array.isArray(node.children)) {
+      const transformedChildren = transformerPlaceholders(node.children as Value)
+      // Flat ut arrayet med barnenoder
+      const flattenedChildren = transformedChildren.flat()
+      return { ...node, children: flattenedChildren }
+    }
+
+    return node
+  }) as Value
 }
 
 const Breveditor = ({
@@ -107,12 +134,14 @@ const Breveditor = ({
                 brevId,
               },
             }),
+            PlaceholderPlugin,
           ],
         ],
       ],
       value: (editor) => {
         if (templateMarkdown) {
-          return editor.getApi(MarkdownPlugin).markdown.deserialize(templateMarkdown)
+          const deserialized = editor.getApi(MarkdownPlugin).markdown.deserialize(templateMarkdown)
+          return transformerPlaceholders(deserialized)
         } else if (initialState?.value != undefined) {
           editor.history = initialState.history
           return initialState.value

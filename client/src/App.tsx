@@ -7,21 +7,22 @@ import { SWRConfig, type SWRConfiguration } from 'swr'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
+
+import { TextContainer } from './felleskomponenter/typografi.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkmode } from './header/useDarkmode.ts'
 import { http } from './io/HttpClient.ts'
 import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
-import { SakTitle } from './SakTitle.tsx'
-import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
-import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
-import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
-
-import { TextContainer } from './felleskomponenter/typografi.tsx'
 import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
+import { SakTitle } from './SakTitle.tsx'
 
 import { useLogBruker } from './sporing/useLogBruker.ts'
+import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
+import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
+import { useInnloggetAnsatt } from './tilgang/useTilgang.ts'
+import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
 const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
@@ -35,6 +36,11 @@ function App() {
 
   useLogBruker()
   useLogVinduStørrelse()
+
+  const { id } = useInnloggetAnsatt()
+  if (!id) {
+    return null
+  }
 
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>

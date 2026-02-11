@@ -66,7 +66,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
       )}
 
       {hjelpemidler.length > 0 && (
-        <VStack paddingBlock="space-20 0">
+        <VStack>
           <HStack align="center">
             <Button
               variant="tertiary"

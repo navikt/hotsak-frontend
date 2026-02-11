@@ -1,15 +1,15 @@
 import { Box, HStack, VStack } from '@navikt/ds-react'
-import { Brødtekst } from '../../felleskomponenter/typografi.tsx'
+import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
+import { Brødtekst, Tekst } from '../../felleskomponenter/typografi.tsx'
+import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
+import { Formidler } from '../../saksbilde/formidler/Formidler.tsx'
 import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
-import { FormidlerEksperiment } from './behovsmelding/FormidlerEksperiment.tsx'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import styles from './BehovsmeldingsPanel.module.css'
-import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
 import { useSaksbehandlingEksperimentContext } from './SakProvider.tsx'
-import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSaksbehandlingEksperimentContext()
@@ -22,16 +22,14 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
         }}
       />
       <div style={{ height: '100%', overflowY: 'auto' }}>
-        <VStack gap="space-8">
-          <VStack paddingBlock={'space-8 0'} paddingInline={'space-16'} gap="space-2">
-            <HStack gap="space-20">
-              <Brødtekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Brødtekst>
-              <Brødtekst textColor="subtle">
-                Område:
-                {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
-              </Brødtekst>
-            </HStack>
-          </VStack>
+        <VStack paddingBlock={'space-8 0'} paddingInline={'space-16'} gap="space-2">
+          <HStack gap="space-20">
+            <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
+            <Tekst textColor="subtle">
+              Område:
+              {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
+            </Tekst>
+          </HStack>
         </VStack>
 
         <section className={styles.søknadContainer}>
@@ -47,7 +45,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
               vilkår={behovsmelding.brukersituasjon.vilkår}
             />
           </Box.New>
-          <FormidlerEksperiment levering={behovsmelding.levering} />
+          <Formidler levering={behovsmelding.levering} />
         </section>
       </div>
     </Box.New>

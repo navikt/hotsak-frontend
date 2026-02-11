@@ -234,7 +234,7 @@ export enum OppgaveTildelt {
 }
 
 export interface OppgaveSortState extends SortState {
-  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'alder' | string
+  orderBy: 'fristFerdigstillelse' | 'opprettetTidspunkt' | 'fnr' | 'fødselsdato' | 'alder' | string
 }
 
 /**

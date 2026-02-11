@@ -12,9 +12,10 @@ import { useMiljø } from '../../utils/useMiljø.ts'
 export interface OppgaveDetailsProps {
   oppgave: OppgaveV2
   visible?: boolean
+  visBruker?: boolean
 }
 
-export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
+export function OppgaveDetails({ oppgave, visible, visBruker }: OppgaveDetailsProps) {
   const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
   const bruker = oppgave.bruker
   const sak = oppgave.sak
@@ -22,7 +23,7 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
   return (
     <VStack gap="5">
       <VStack gap="3">
-        {bruker && (
+        {visBruker && bruker && (
           <OppgaveDetailsItem label="Bruker">
             <HStack gap="3">
               <BodyShort size="small">{formaterNavn(bruker.navn)}</BodyShort>

@@ -4,7 +4,7 @@ import { type ReactNode } from 'react'
 
 import { useLocalReducer } from '../../state/useLocalReducer.ts'
 import { associateBy } from '../../utils/array.ts'
-import { type OppgaveColumnField } from './oppgaveColumns.tsx'
+import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,
   OppgaveColumnsContext,
@@ -15,7 +15,7 @@ import {
 
 export interface OppgaveColumnsProviderProps {
   suffix: 'Mine' | 'Enhetens' | 'Medarbeiders'
-  defaultColumns: ReadonlyArray<OppgaveColumnField>
+  defaultColumns: DefaultOppgaveColumns
   children: ReactNode
 }
 
@@ -27,12 +27,14 @@ export function OppgaveColumnsProvider(props: OppgaveColumnsProviderProps) {
     (storedState = []): OppgaveColumnsState => {
       const columnsById = associateBy(storedState, (it) => it.id)
       return defaultColumns
-        .map((id, defaultOrder) => {
-          const column = columnsById[id]
+        .map((column, defaultOrder) => {
+          const [id, defaultChecked] = Array.isArray(column) ? column : [column, true]
+          const columnState = columnsById[id]
           return {
             id,
-            checked: column?.checked ?? true,
-            order: column?.order ?? defaultOrder,
+            checked: columnState?.checked ?? defaultChecked,
+            defaultChecked,
+            order: columnState?.order ?? defaultOrder,
             defaultOrder,
           }
         })
@@ -65,7 +67,9 @@ function reducer(state: OppgaveColumnsState, action: OppgaveColumnsAction) {
       }))
     }
     case 'resetAll':
-      return state.map((column) => ({ ...column, checked: true, order: column.defaultOrder })).sort(byOrder)
+      return state
+        .map((column) => ({ ...column, checked: column.defaultChecked, order: column.defaultOrder }))
+        .sort(byOrder)
     default:
       return state
   }

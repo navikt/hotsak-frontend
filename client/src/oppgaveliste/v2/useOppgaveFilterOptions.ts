@@ -11,6 +11,7 @@ export function useOppgaveFilterOptions(oppgaver: OppgaveV2[]): OppgaveFilterOpt
       saksbehandler: toSet(oppgaver, (it) => it.tildeltSaksbehandler?.navn ?? 'Ingen'),
       behandlingstema: toSet(oppgaver, (it) => it.kategorisering.behandlingstema?.term ?? 'Ingen'),
       mappenavn: toSet(oppgaver, (it) => it.mappenavn ?? 'Ingen'),
+      innsenderNavn: toSet(oppgaver, (it) => it.innsender?.fulltNavn ?? 'Ingen'),
       kommune: toSet(oppgaver, (it) => it.bruker?.kommune?.navn ?? 'Ingen'),
     }
   }, [oppgaver])

@@ -6,6 +6,7 @@ import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 export interface OppgaveColumnState {
   id: OppgaveColumnField
   checked: boolean
+  defaultChecked: boolean
   order: number
   defaultOrder: number
 }
@@ -65,7 +66,7 @@ export function useOppgaveColumnsResetAllHandler(): () => void {
 export function useIsTableCustomized() {
   const state = useOppgaveColumnsContext()
   return useMemo(
-    () => !state.every((column) => column.checked) || state.some((column) => column.order !== column.defaultOrder),
+    () => state.some((column) => column.checked !== column.defaultChecked || column.order !== column.defaultOrder),
     [state]
   )
 }

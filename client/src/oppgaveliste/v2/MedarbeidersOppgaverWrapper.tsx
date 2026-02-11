@@ -1,6 +1,6 @@
 import { DataGridFilterProvider } from '../../felleskomponenter/data/DataGridFilterProvider.tsx'
 import { MedarbeidersOppgaver } from './MedarbeidersOppgaver.tsx'
-import { type OppgaveColumnField } from './oppgaveColumns.tsx'
+import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'
 import { OppgavePaginationProvider } from './OppgavePaginationProvider.tsx'
 
@@ -18,7 +18,7 @@ export default function MineOppgaverWrapper() {
   )
 }
 
-const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
+const defaultColumns: DefaultOppgaveColumns = [
   'overtaOppgave',
   'saksbehandler',
   'oppgavetype',
@@ -27,11 +27,10 @@ const defaultColumns: ReadonlyArray<OppgaveColumnField> = [
   'beskrivelse',
   'mappenavn',
   'prioritet',
+  'innsenderNavn',
+  'brukerFødselsdato',
+  'brukerAlder',
+  'kommune',
   'opprettetTidspunkt',
   'fristFerdigstillelse',
-  'brukerFnr',
-  'brukerNavn',
-  'brukerAlder',
-  'innsenderNavn',
-  'kommune',
 ]

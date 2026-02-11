@@ -12,6 +12,7 @@ import {
   selectBehandlingstemaTerm,
   selectBehandlingstypeTerm,
   selectBrukerKommuneNavn,
+  selectInnsenderNavn,
   selectMappenavn,
   selectOppgavetype,
   selectPrioritet,
@@ -59,6 +60,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
       .filterBy(selectBehandlingstypeTerm, filterState.behandlingstype)
       .filterBy(selectMappenavn, filterState.mappenavn)
       .filterBy(selectPrioritet, filterState.prioritet)
+      .filterBy(selectInnsenderNavn, filterState.innsenderNavn)
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
       .toSorted(comparator)
       .toArray()

@@ -68,7 +68,7 @@ export function lagHjelpemiddelsakForBehovsmeldingCase(
       fnr: fnrBruker,
       navn: bruker.navn,
       fulltNavn: `${bruker.navn.fornavn} ${bruker.navn.etternavn}`,
-      fødselsdato: fødselsdatoFraFødselsnummer(fnrBruker).toDateString(),
+      fødselsdato: fødselsdatoFraFødselsnummer(fnrBruker).toISOString(),
       kommune: bruker.kommunenummer
         ? { nummer: bruker.kommunenummer, navn: kommuner[bruker.kommunenummer] }
         : undefined,

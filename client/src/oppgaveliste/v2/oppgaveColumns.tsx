@@ -111,6 +111,9 @@ export const oppgaveColumns = {
     field: 'beskrivelse',
     header: 'Beskrivelse',
     renderCell(row) {
+      if (row.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING) {
+        return row.beskrivelse
+      }
       const søknadGjelder = row.sak?.søknadGjelder
       if (!søknadGjelder) {
         return null

@@ -7,72 +7,67 @@ import { ELEMENT_PLACEHOLDER, PlaceholderElement } from './PlaceholderElement'
 import './Placeholder.css'
 
 const EMPTY_CHAR = '\uFEFF'
+const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
 
-const getHarIkkeSynligTekst = (text: string) => text.replace(new RegExp(EMPTY_CHAR, 'g'), '').length === 0
-const getInneholderTomChar = (text: string) => text.includes(EMPTY_CHAR)
-const getHarIngenChars = (text: string) => text.length === 0
+const hentSynligTekst = (text: string) => text.replace(EMPTY_CHAR_REGEX, '')
 
 export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
   const { children, element, editor } = props
-  const text: string = useMemo(() => element.children.map((c: { text: string }) => c.text).join(''), [element.children])
-  const harIkkeSynligTekst = useMemo(() => getHarIkkeSynligTekst(text), [text])
-  const harSynligTekst = !harIkkeSynligTekst
   const readOnly = useEditorReadOnly()
-  const inneholderTomChar = getInneholderTomChar(text)
 
-  const onClick = useCallback(
-    (e: React.MouseEvent) => {
-      const path = editor.api.findPath(element)
+  const text = useMemo(() => element.children.map((c: { text: string }) => c.text).join(''), [element.children])
 
-      if (!harIkkeSynligTekst || path === undefined) {
-        return
-      }
+  const synligTekst = useMemo(() => hentSynligTekst(text), [text])
+  const erTom = synligTekst.length === 0
+  const visSøppelbøtte = !readOnly && erTom && element.deletable !== false
 
-      e.preventDefault()
-      editor.tf.select({ path: [...path, 0], offset: inneholderTomChar ? 1 : 0 })
-    },
-    [inneholderTomChar, editor, element, harIkkeSynligTekst]
-  )
-
+  // passe på at placeholder alltid har usynlig karakter for posisjonering av musepeker
   useEffect(() => {
+    if (text.length > 0) return
+
     const path = editor.api.findPath(element)
-    if (path === undefined) return
+    if (!path) return
 
-    const at = [...path, 0]
-    if (!editor.api.hasPath(at)) return
+    const textPath = [...path, 0]
+    if (!editor.api.hasPath(textPath)) return
 
-    if (getHarIngenChars(text)) {
-      editor.tf.insertText(EMPTY_CHAR, { at: { path: at, offset: 0 } })
-    }
+    editor.tf.insertText(EMPTY_CHAR, { at: { path: textPath, offset: 0 } })
   }, [editor, element, text])
 
-  const deletePlaceholder = useCallback(
-    (event: React.MouseEvent) => {
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (!erTom) return
+
       const path = editor.api.findPath(element)
-      if (path === undefined) return
+      if (!path) return
 
-      event.stopPropagation()
+      e.preventDefault()
+      const offset = text.includes(EMPTY_CHAR) ? 1 : 0
+      editor.tf.select({ path: [...path, 0], offset })
+    },
+    [editor, element, erTom, text]
+  )
 
+  const handleDelete = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+
+      const path = editor.api.findPath(element)
+      if (!path) return
+
+      // Move cursor to previous element before deleting
       const previousPath = PathApi.previous(path)
-
-      if (editor.selection === null && previousPath !== undefined) {
-        if (!editor.api.isFocused()) {
-          editor.tf.focus()
-        }
-        const previousPoint = editor.api.end(previousPath)
-        editor.tf.setSelection({ focus: previousPoint, anchor: previousPoint })
+      if (!editor.selection && previousPath) {
+        editor.tf.focus()
+        const point = editor.api.end(previousPath)
+        editor.tf.setSelection({ focus: point, anchor: point })
       }
 
       editor.tf.delete({ at: path })
-
-      if (!editor.api.isFocused()) {
-        editor.tf.focus()
-      }
+      editor.tf.focus()
     },
     [editor, element]
   )
-
-  const hideDeleteButton = readOnly || harSynligTekst || element.deletable === false
 
   return (
     <PlateElement
@@ -86,18 +81,18 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     >
       <Tooltip content={element.placeholder}>
         <span
-          className={`placeholder-element ${harIkkeSynligTekst ? 'placeholder-empty' : 'placeholder-filled'}`}
+          className={`placeholder-element ${erTom ? 'placeholder-empty' : 'placeholder-filled'}`}
           data-node-type={ELEMENT_PLACEHOLDER}
-          data-placeholder={harIkkeSynligTekst ? element.placeholder : undefined}
-          onClick={onClick}
+          data-placeholder={erTom ? element.placeholder : undefined}
+          onClick={handleClick}
         >
-          {!hideDeleteButton && (
+          {visSøppelbøtte && (
             <Button
               size="xsmall"
               className="placeholder-delete-btn"
               title="Slett innfyllingsfelt"
               contentEditable={false}
-              onClick={deletePlaceholder}
+              onClick={handleDelete}
               icon={<TrashIcon aria-hidden />}
             />
           )}

@@ -35,7 +35,6 @@ export function useBehandlingActions(): BehandlingActions {
       })
     },
     async ferdigstillBehandling(problemsammendrag: string) {
-      console.log('Ferdigstiller behandling for sakId', sakId, 'og behandlingId', gjeldendeBehandling?.behandlingId)
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
@@ -43,12 +42,8 @@ export function useBehandlingActions(): BehandlingActions {
           { versjon }
         )
         await mutateBehandling()
-        console.log('Har mutert behandling', gjeldendeBehandling)
-
         await mutateOppgaveOgSak()
         await muteBrevMetadata()
-
-        console.log('Har mutert oppgave og sak', oppgave)
       })
     },
     state,

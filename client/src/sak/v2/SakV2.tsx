@@ -1,77 +1,45 @@
-import { Alert, Box, Button, HelpText, HStack, Tag, TextField } from '@navikt/ds-react'
+import { Box, HStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 import { Panel, PanelGroup } from 'react-resizable-panels'
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
-import { useToast } from '../../felleskomponenter/toast/ToastContext.tsx'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi.tsx'
-import { Oppgavestatus } from '../../oppgave/oppgaveTypes.ts'
-import { useOppgave } from '../../oppgave/useOppgave.ts'
-import { useOppgaveregler } from '../../oppgave/useOppgaveregler.ts'
 import { usePerson } from '../../personoversikt/usePerson.ts'
-import { BekreftelseModal } from '../../saksbilde/komponenter/BekreftelseModal.tsx'
-import { InfoModal } from '../../saksbilde/komponenter/InfoModal.tsx'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
 import { useBehovsmelding } from '../../saksbilde/useBehovsmelding.ts'
 import { useSak } from '../../saksbilde/useSak.ts'
-import { OppgaveStatusLabel } from '../../types/types.internal.ts'
-import { formaterDato } from '../../utils/dato.ts'
-import { storForbokstavIAlleOrd, storForbokstavIOrd } from '../../utils/formater.ts'
 import BehandlingPanel from './behandling/BehandlingPanel.tsx'
-import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper.ts'
+import { Gjenstående, VedtaksResultat } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
-import { useBehandlingActions } from './behandling/useBehandlingActions.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
+import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
+import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
+import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
+import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
-import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 import { useSakContext } from './SakProvider.tsx'
-
-interface VedtakFormValues {
-  problemsammendrag: string
-}
+import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
+import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 
 export function SakV2() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
   const [visFerdigstillModal, setVisFerdigstillModal] = useState(false)
-  const [vedtakLoader, setVedtakLoader] = useState(false)
   const { personInfo, isLoading: personInfoLoading } = usePerson(sak?.data.bruker.fnr)
   const [visResultatManglerModal, setVisResultatManglerModal] = useState(false)
-
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
-  const { oppgave } = useOppgave()
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSakContext()
-  const { showSuccessToast } = useToast()
 
   const { gjeldendeBehandling } = useBehandling()
-  const { ferdigstillBehandling } = useBehandlingActions()
-  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
+  const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall as VedtaksResultat | undefined
 
   const gjenstående = gjeldendeBehandling?.gjenstående || []
-  const brevutkastIkkeFerdigstilt =
-    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
 
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
-
-  const form = useForm<VedtakFormValues>({
-    defaultValues: {
-      problemsammendrag: `${storForbokstavIAlleOrd(sak?.data.søknadGjelder.replace('Søknad om:', '').trim())}; ${sak?.data.sakId}`,
-    },
-  })
-
-  const fattVedtak = async (data: VedtakFormValues) => {
-    setVedtakLoader(true)
-    setVisFerdigstillModal(false)
-    await ferdigstillBehandling(data.problemsammendrag)
-    setVedtakLoader(false)
-    showSuccessToast('Vedtak fattet')
-  }
+  const brevutkastIkkeFerdigstilt =
+    gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
 
   if (!behovsmelding) {
     // TODO skeleton eller loader her?
@@ -139,169 +107,33 @@ export function SakV2() {
           )}
         </PanelGroup>
       </Box.New>
-      <HStack
-        asChild
-        position="sticky"
-        left="0"
-        bottom="0"
-        align="center"
-        justify="space-between"
-        gap="4"
-        paddingInline="4"
-        paddingBlock="2"
-        width="100%"
-        className="z-23"
-      >
-        <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
-          <HStack align="center" justify="space-between" gap="space-24">
-            {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-              <Button
-                type="button"
-                variant="primary"
-                size="small"
-                loading={vedtakLoader}
-                onClick={() => {
-                  /* TODO Lage en mer generell validering. Skal vi vise alle valideringsfeil samlet? Lage mock funksjonalitet for notat ikke ferdigstilt i gjenstående */
-                  if (!gjeldendeBehandling || !vedtaksResultat) {
-                    setVisResultatManglerModal(true)
-                  } else if (brevutkastIkkeFerdigstilt) {
-                    setVisBrevMangler(true)
-                  } else if (notaterIkkeFerdigstilt) {
-                    setVisNotatIkkeFerdigstilt(true)
-                  } else {
-                    setVisFerdigstillModal(true)
-                  }
-                }}
-              >
-                Fatt vedtak
-              </Button>
-            )}
-            {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
-              <HStack gap="space-12" align="center">
-                <Tag
-                  size="small"
-                  variant={
-                    oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.INNVILGET
-                      ? 'success-moderate'
-                      : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.DELVIS_INNVILGET
-                        ? 'warning-moderate'
-                        : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.AVSLÅTT
-                          ? 'error-moderate'
-                          : 'neutral-moderate'
-                  }
-                >
-                  {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
-                </Tag>
-                <Tekst>{`av: ${sak.data.saksbehandler?.navn} ${formaterDato(sak.data.vedtak?.vedtaksdato)}`}</Tekst>
-              </HStack>
-            )}
-            {!oppgaveFerdigstilt && (
-              <Tag variant="neutral-moderate" size="small">
-                {OppgaveStatusLabel.get(sak.data.saksstatus)}
-              </Tag>
-            )}
-          </HStack>
-        </Box.New>
-      </HStack>
-      <InfoModal
-        heading="Mangler resultat"
-        open={visResultatManglerModal}
-        width="500px"
-        onClose={() => setVisResultatManglerModal(false)}
-      >
-        <Tekst spacing>Du må velge et vedtaksresultat under "Behandle sak" før du kan fatte vedtak.</Tekst>
-      </InfoModal>
-      <InfoModal heading="Mangler brev" open={visBrevMangler} width="500px" onClose={() => setVisBrevMangler(false)}>
-        {gjenstående.includes(Gjenstående.BREV_MANGLER) && (
-          <>
-            <Tekst spacing>
-              Når du fatter et vedtak med resultat "{storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}" er det
-              krav om at man underetter brukeren med brev.
-            </Tekst>
-            <Tekst spacing>
-              Velg "Opprett vedtaksbrev", rediger brevet, og merk så brevet som klart ved å klikke "Ferdigstill utkast".
-              Deretter kan du prøve å fatte vedtaket på nytt.
-            </Tekst>
-          </>
-        )}
-        {gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) && (
-          <Tekst spacing>Før du kan fatte vedtaket må du ferdigstille brevet du har påstartet.</Tekst>
-        )}
-      </InfoModal>
-
-      <InfoModal
-        heading="Notat ikke ferdigstilt"
-        open={visNotatIkkeFerdigstilt}
-        width="500px"
-        onClose={() => setVisNotatIkkeFerdigstilt(false)}
-      >
-        <Tekst spacing>Du har et utkast til notat som må ferdigstilles eller slettes.</Tekst>
-      </InfoModal>
-
-      <BekreftelseModal
-        heading={
-          'Vil du ' +
-          (vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET
-            ? 'delvis innvilge'
-            : vedtaksResultat == VedtaksResultat.AVSLÅTT
-              ? 'avslå'
-              : 'innvilge') +
-          ' søknaden?'
-        }
-        //loading={sakActions.state.loading}
+      <StickyBunnlinje sak={sak.data} onClick={() => modalVelger()} />
+      <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
+      <BrevManglerModal
+        open={visBrevMangler}
+        onClose={() => setVisBrevMangler(false)}
+        gjenstående={gjenstående}
+        vedtaksResultat={vedtaksResultat}
+      />
+      <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
+      <FattVedtakModal
         open={visFerdigstillModal}
-        width="700px"
-        bekreftButtonLabel={
-          (vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
-            ? 'Delvis innvilg'
-            : vedtaksResultat === VedtaksResultat.AVSLÅTT
-              ? 'Avslå'
-              : 'Innvilg') + ' søknaden'
-        }
-        onBekreft={form.handleSubmit(fattVedtak)}
         onClose={() => setVisFerdigstillModal(false)}
-      >
-        {vedtaksResultat !== VedtaksResultat.AVSLÅTT && (
-          <>
-            <Tekst spacing>
-              Når du {vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET ? 'delvis innvilger' : 'innvilger'} søknaden
-              vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
-            </Tekst>
-            {vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET && (
-              <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
-                Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
-                oppretter ordre.
-              </Alert>
-            )}
-            <FormProvider {...form}>
-              <TextField
-                label={
-                  <HStack wrap={false} gap="2" align="center">
-                    <Etikett>Tekst til problemsammendrag i SF i OeBS</Etikett>
-                    <HelpText strategy="fixed">
-                      <Tekst>
-                        Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i problemsammendraget
-                        dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken innvilges eller inne på SF
-                        i OeBS som tidligere.
-                      </Tekst>
-                    </HelpText>
-                  </HStack>
-                }
-                size="small"
-                {...form.register('problemsammendrag', { required: 'Feltet er påkrevd' })}
-              />
-            </FormProvider>
-          </>
-        )}
-        {vedtaksResultat == VedtaksResultat.AVSLÅTT && (
-          <>
-            <Tekst spacing>
-              Når du avslår søknaden vil det naturligvis ikke opprettes en serviceforespørsel (SF) i OeBS. Bruker
-              underrettes med brevet du har forfattet. Innbygger kan også se vedtaket på innlogget side på nav.no
-            </Tekst>
-          </>
-        )}
-      </BekreftelseModal>
+        sak={sak.data}
+        vedtaksResultat={vedtaksResultat}
+      />
     </>
   )
+
+  function modalVelger() {
+    if (!gjeldendeBehandling || !vedtaksResultat) {
+      setVisResultatManglerModal(true)
+    } else if (brevutkastIkkeFerdigstilt) {
+      setVisBrevMangler(true)
+    } else if (notaterIkkeFerdigstilt) {
+      setVisNotatIkkeFerdigstilt(true)
+    } else {
+      setVisFerdigstillModal(true)
+    }
+  }
 }

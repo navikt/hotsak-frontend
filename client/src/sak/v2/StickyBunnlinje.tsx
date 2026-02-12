@@ -1,0 +1,67 @@
+import { Box, Button, HStack, Tag } from '@navikt/ds-react'
+import { Tekst } from '../../felleskomponenter/typografi'
+import { Oppgavestatus } from '../../oppgave/oppgaveTypes'
+import { useOppgave } from '../../oppgave/useOppgave'
+import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
+import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
+import { formaterDato } from '../../utils/dato'
+import { storForbokstavIOrd } from '../../utils/formater'
+import { UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper'
+import { useBehandling } from './behandling/useBehandling'
+
+export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => void }) {
+  const { oppgave } = useOppgave()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+  const { gjeldendeBehandling } = useBehandling()
+
+  return (
+    <HStack
+      asChild
+      position="sticky"
+      left="0"
+      bottom="0"
+      align="center"
+      justify="space-between"
+      gap="4"
+      paddingInline="4"
+      paddingBlock="2"
+      width="100%"
+      className="z-23"
+    >
+      <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
+        <HStack align="center" justify="space-between" gap="space-24">
+          {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
+            <Button type="button" variant="primary" size="small" onClick={() => onClick()}>
+              Fatt vedtak
+            </Button>
+          )}
+          {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
+            <HStack gap="space-12" align="center">
+              <Tag
+                size="small"
+                variant={
+                  oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.INNVILGET
+                    ? 'success-moderate'
+                    : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.DELVIS_INNVILGET
+                      ? 'warning-moderate'
+                      : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.AVSLÅTT
+                        ? 'error-moderate'
+                        : 'neutral-moderate'
+                }
+              >
+                {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
+              </Tag>
+              <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak.vedtak?.vedtaksdato)}`}</Tekst>
+            </HStack>
+          )}
+          {!oppgaveFerdigstilt && (
+            <Tag variant="neutral-moderate" size="small">
+              {OppgaveStatusLabel.get(sak.saksstatus)}
+            </Tag>
+          )}
+        </HStack>
+      </Box.New>
+    </HStack>
+  )
+}

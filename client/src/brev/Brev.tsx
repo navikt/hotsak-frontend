@@ -1,22 +1,21 @@
-import { ChevronDownIcon } from '@navikt/aksel-icons'
-import { ActionMenu, Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
+import { Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
+import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
+import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../oppgave/useOppgave.ts'
+import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { useSakContext } from '../sak/v2/SakProvider.tsx'
+import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
+import { useSak } from '../saksbilde/useSak.ts'
+import { Brevtype, RessursStatus } from '../types/types.internal.ts'
+import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-import { useSak } from '../saksbilde/useSak.ts'
-import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { useOppgave } from '../oppgave/useOppgave.ts'
-import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
-import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
-import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
-import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
-import { formaterDatoLang } from '../utils/dato.ts'
-import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
-import { useSakContext } from '../sak/v2/SakProvider.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -173,21 +172,9 @@ export const Brev = () => {
             <>
               <div className="brevtoolbar">
                 <div className="left">
-                  <ActionMenu>
-                    <ActionMenu.Trigger>
-                      <Button
-                        variant="tertiary"
-                        size="small"
-                        icon={<ChevronDownIcon aria-hidden />}
-                        iconPosition="right"
-                      >
-                        Flere valg
-                      </Button>
-                    </ActionMenu.Trigger>
-                    <ActionMenu.Content>
-                      <ActionMenu.Item onSelect={onSlettBrev}>Slett brevutkast</ActionMenu.Item>
-                    </ActionMenu.Content>
-                  </ActionMenu>
+                  <Button variant="tertiary" size="small" onClick={() => onSlettBrev()}>
+                    Slett utkast
+                  </Button>
                 </div>
                 <div className="right">
                   <Button

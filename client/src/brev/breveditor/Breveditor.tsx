@@ -21,7 +21,7 @@ import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import { ListPlugin } from '@platejs/list-classic/react'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
 import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
-import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin.tsx'
+import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean

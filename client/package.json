@@ -23,7 +23,6 @@
     "@platejs/selection": "52.0.1",
     "@platejs/slate": "52.0.1",
     "@styled-icons/bootstrap": "10.47.0",
-    "@udecode/plate": "^49.0.0",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
     "debug": "4.4.3",

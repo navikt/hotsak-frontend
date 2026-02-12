@@ -2,7 +2,7 @@ import { PlateElement, PlateElementProps, useEditorReadOnly } from 'platejs/reac
 import { useCallback, useEffect, useMemo } from 'react'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, Tooltip } from '@navikt/ds-react'
-import { PathApi } from '@udecode/plate'
+import { PathApi } from 'platejs'
 import { ELEMENT_PLACEHOLDER, PlaceholderElement } from './PlaceholderElement'
 import './Placeholder.css'
 

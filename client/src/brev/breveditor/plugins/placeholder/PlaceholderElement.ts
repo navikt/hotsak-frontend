@@ -1,4 +1,4 @@
-import { TElement } from '@udecode/plate'
+import { TElement } from 'platejs'
 
 export const ELEMENT_PLACEHOLDER = 'placeholder'
 

@@ -254,7 +254,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
         <TextContainer>
           <Tekst>
             Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
-            under menyen "Flere valg" i brevpanelet.
+            i toppmenyen over brevet.
           </Tekst>
         </TextContainer>
       )}

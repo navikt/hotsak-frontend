@@ -55,7 +55,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
       const path = editor.api.findPath(element)
       if (!path) return
 
-      // Move cursor to previous element before deleting
+      // flytte musepeker til forrige element før sletting
       const previousPath = PathApi.previous(path)
       if (!editor.selection && previousPath) {
         editor.tf.focus()

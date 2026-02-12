@@ -1,8 +1,8 @@
-import { Actions, useActionState } from '../action/Actions.ts'
+import { type Actions, useActionState } from '../action/Actions.ts'
 import type { ISvar } from '../innsikt/Besvarelse.ts'
 import { http } from '../io/HttpClient.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
-import { AvvisBestilling, OppgaveStatusType, TotrinnskontrollData } from '../types/types.internal.ts'
+import { type AvvisBestilling, OppgaveStatusType, type TotrinnskontrollData } from '../types/types.internal.ts'
 import { mutateSak } from './mutateSak.ts'
 
 export interface SakActions extends Actions {
@@ -56,14 +56,14 @@ export function useSakActions(): SakActions {
 
     async opprettTotrinnskontroll(): Promise<void> {
       return execute(async () => {
-        await http.post(`/api/sak/${sakId}/kontroll`, {})
+        await http.post(`/api/sak/${sakId}/kontroll`, { oppgaveId }, { versjon }) // totrinnskontroll
         await mutateOppgaveOgSak()
       })
     },
 
     async fullførTotrinnskontroll(data: TotrinnskontrollData): Promise<void> {
       return execute(async () => {
-        await http.put(`/api/sak/${sakId}/kontroll`, data)
+        await http.put(`/api/sak/${sakId}/kontroll`, { oppgaveId, ...data }, { versjon }) // totrinnskontroll
         await mutateOppgaveOgSak()
       })
     },

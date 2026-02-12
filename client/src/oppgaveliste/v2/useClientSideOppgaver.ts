@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { DataGridCollection } from '../../felleskomponenter/data/DataGridCollection.ts'
 import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../../io/HttpError.ts'
-import { useJournalføringsoppgaver } from '../../journalføringsoppgaver/useJournalføringsoppgaver.ts'
 import { type FinnOppgaverRequest, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { useOpppgavesøk } from '../../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
@@ -37,7 +36,8 @@ export interface UseClientSideOppgaverResponse {
 export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}): UseClientSideOppgaverResponse {
   const { sort } = useOppgavePaginationContext()
   const { tildelt, ...rest } = request
-  const eksterneOppgaver = useOpppgavesøk({
+
+  const response = useOpppgavesøk({
     tildelt,
     sorteringsfelt: sort.orderBy === 'opprettetTidspunkt' ? 'OPPRETTET_TIDSPUNKT' : 'FRIST',
     sorteringsrekkefølge: sort.direction === 'descending' ? 'DESC' : 'ASC',
@@ -45,10 +45,9 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
     pageSize,
     ...rest,
   })
-  const journalføringsoppgaver = useJournalføringsoppgaver(tildelt)
   const alleOppgaver = useMemo(() => {
-    return (eksterneOppgaver.data?.oppgaver ?? []).concat(journalføringsoppgaver.data?.oppgaver ?? [])
-  }, [eksterneOppgaver.data?.oppgaver, journalføringsoppgaver.data?.oppgaver])
+    return response.data?.oppgaver ?? ingenOppgaver
+  }, [response.data?.oppgaver])
 
   const filterState = useDataGridFilterContext<OppgaveColumnField>()
   const comparator = useOppgaveComparator()
@@ -67,24 +66,12 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
   }, [alleOppgaver, filterState, comparator])
 
   const filterOptions = useOppgaveFilterOptions(alleOppgaver)
-
-  if (!eksterneOppgaver.data || !journalføringsoppgaver.data) {
-    return {
-      oppgaver: ingenOppgaver,
-      totalElements: 0,
-      error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
-      isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
-      isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
-      filterOptions,
-    }
-  }
-
   return {
     oppgaver: filtrerteOppgaver,
-    totalElements: eksterneOppgaver.data.totalElements + journalføringsoppgaver.data.totalElements,
-    error: eksterneOppgaver.error ?? journalføringsoppgaver.error,
-    isLoading: eksterneOppgaver.isLoading || journalføringsoppgaver.isLoading,
-    isValidating: eksterneOppgaver.isValidating || journalføringsoppgaver.isValidating,
+    totalElements: response.data ? response.data.totalElements : 0,
+    error: response.error,
+    isLoading: response.isLoading,
+    isValidating: response.isValidating,
     filterOptions,
   }
 }

@@ -2,6 +2,7 @@ import { Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
+import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
@@ -13,9 +14,9 @@ import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
+import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -25,6 +26,8 @@ export const Brev = () => {
   const { oppgave } = useOppgave()
   const { mutate: mutateBrevMetadata } = useBrevMetadata()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+
+  const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
@@ -132,6 +135,15 @@ export const Brev = () => {
   }
 
   const markerKlart = async (klart: boolean) => {
+    const currentBrev = brevutkast.data?.data?.value
+    if (!currentBrev) return
+
+    const feil = validerPlaceholders(currentBrev)
+    if (feil.length > 0) {
+      setPlaceholderFeil(feil)
+      return
+    }
+    setPlaceholderFeil([])
     await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
       method: klart ? 'post' : 'delete',
     })
@@ -207,6 +219,7 @@ export const Brev = () => {
                   })
                 }}
                 onSlettBrev={onSlettBrev}
+                placeholderFeil={placeholderFeil}
               />
             </>
           )}

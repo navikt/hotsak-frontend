@@ -25,8 +25,8 @@ export function formaterKontonummer(kontonummer?: string): string {
   return `${kontonummer.slice(0, 4)}.${kontonummer.slice(4, 6)}.${kontonummer.slice(6)}`
 }
 
-export function formaterFødselsnummer(fødselsnummer: string): string {
-  if (!fødselsnummer) return ''
+export function formaterFødselsnummer(fødselsnummer?: string): string {
+  if (fødselsnummer?.length !== 11) return ''
   return `${fødselsnummer.slice(0, 6)} ${fødselsnummer.slice(6)}`
 }
 

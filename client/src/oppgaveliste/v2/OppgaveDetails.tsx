@@ -1,37 +1,43 @@
 import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react'
 
+import { FormatFødselsnummer } from '../../felleskomponenter/format/FormatFødselsnummer.tsx'
+import { FormatPersonnavn } from '../../felleskomponenter/format/FormatPersonnavn.tsx'
 import { Strek } from '../../felleskomponenter/Strek.tsx'
-import { oppgaveIdUtenPrefix, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveBruker, oppgaveIdUtenPrefix, Oppgavetype, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { Sakstype } from '../../types/types.internal.ts'
-import { formaterFødselsnummer, formaterNavn } from '../../utils/formater.ts'
+import { useMiljø } from '../../utils/useMiljø.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
-import { useMiljø } from '../../utils/useMiljø.ts'
 
 export interface OppgaveDetailsProps {
   oppgave: OppgaveV2
   visible?: boolean
-  visBruker?: boolean
 }
 
-export function OppgaveDetails({ oppgave, visible, visBruker }: OppgaveDetailsProps) {
+export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
   const oppgaveId = oppgaveIdUtenPrefix(oppgave.oppgaveId)
-  const bruker = oppgave.bruker
-  const sak = oppgave.sak
+  const { kategorisering, bruker, sak } = oppgave
   const oppgaveUrl = useOppgaveUrl(oppgaveId)
+  const { id: saksbehandlerId } = useInnloggetAnsatt()
+  const isTildeltSaksbehandler = oppgave.tildeltSaksbehandler?.id === saksbehandlerId
+
+  if (kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING) {
+    return (
+      <VStack gap="5">
+        <VStack gap="3">
+          {isTildeltSaksbehandler && <OppgaveDetailsBruker bruker={bruker} />}
+          <OppgaveDetailsItem label="Beskrivelse" value={oppgave.beskrivelse} />
+        </VStack>
+      </VStack>
+    )
+  }
+
   return (
     <VStack gap="5">
       <VStack gap="3">
-        {visBruker && bruker && (
-          <OppgaveDetailsItem label="Bruker">
-            <HStack gap="3">
-              <BodyShort size="small">{formaterNavn(bruker.navn)}</BodyShort>
-              <BodyShort size="small">{formaterFødselsnummer(bruker.fnr)}</BodyShort>
-              {bruker.brukernummer && <BodyShort size="small">{bruker.brukernummer}</BodyShort>}
-            </HStack>
-          </OppgaveDetailsItem>
-        )}
+        {isTildeltSaksbehandler && <OppgaveDetailsBruker bruker={bruker} />}
         {sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={sak?.søknadGjelder} />}
         {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />}
         <OppgaveSisteKommentar oppgaveId={visible ? oppgave.oppgaveId : null} />
@@ -43,6 +49,19 @@ export function OppgaveDetails({ oppgave, visible, visBruker }: OppgaveDetailsPr
         </div>
       </VStack>
     </VStack>
+  )
+}
+
+function OppgaveDetailsBruker({ bruker }: { bruker?: OppgaveBruker }) {
+  if (!bruker) return null
+  return (
+    <OppgaveDetailsItem label="Bruker">
+      <HStack gap="3">
+        <FormatPersonnavn size="small" value={bruker.navn} />
+        <FormatFødselsnummer size="small" value={bruker.fnr} />
+        {bruker.brukernummer && <BodyShort size="small">{bruker.brukernummer}</BodyShort>}
+      </HStack>
+    </OppgaveDetailsItem>
   )
 }
 

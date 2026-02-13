@@ -148,6 +148,10 @@ export interface OppgaveV2 extends OppgaveBase {
   sak?: OppgaveSak
   behandlesAvApplikasjon?: string
 
+  // totrinnskontroll
+  totrinnskontroll?: OppgaveTotrinnskontroll
+
+  // mappe
   mappeId?: string
   mappenavn?: string
 }
@@ -186,6 +190,11 @@ export interface OppgaveSak {
   sakstype: Sakstype
   søknadId: string
   søknadGjelder: string
+}
+
+export interface OppgaveTotrinnskontroll {
+  saksbehandlerId: string
+  godkjennerId?: string
 }
 
 export interface GjelderAlternativerResponse {

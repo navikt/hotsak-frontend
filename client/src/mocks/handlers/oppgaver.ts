@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+
 import {
   erInternOppgaveId,
   type FinnOppgaverRequest,
@@ -18,6 +19,7 @@ export interface OppgaveParams {
 }
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
+  // slettes
   http.get<never, never, FinnOppgaverResponse>(`/api/oppgaver-v2`, async ({ request }) => {
     await delay(200)
     const url = new URL(request.url)

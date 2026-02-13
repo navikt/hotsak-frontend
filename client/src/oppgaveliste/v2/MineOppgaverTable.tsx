@@ -1,10 +1,10 @@
 import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
 import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgavePaginationSortChangeHandler, useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
+import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } from './OppgavePaginationContext.tsx'
+import { selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
-import { selectOppgaveId } from './oppgaveSelectors.ts'
 
 export interface MineOppgaverTableProps {
   oppgaver: ReadonlyArray<OppgaveV2>
@@ -35,5 +35,5 @@ export function MineOppgaverTable(props: MineOppgaverTableProps) {
 }
 
 function renderContent(oppgave: OppgaveV2, visible: boolean) {
-  return <OppgaveDetails oppgave={oppgave} visible={visible} visBruker />
+  return <OppgaveDetails oppgave={oppgave} visible={visible} />
 }

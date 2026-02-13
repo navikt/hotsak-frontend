@@ -97,7 +97,7 @@ export const oppgaveColumns = {
     header: 'Behandlingstype',
     width: 195,
     filter: {
-      options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad']),
+      options: new Set(['Bestilling', 'Digital søknad', 'Hastebestilling', 'Hastesøknad', 'Søknad']), // fixme -> kun agder
     },
     renderCell(row) {
       const behandlingstype = row.kategorisering.behandlingstype

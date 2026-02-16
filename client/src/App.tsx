@@ -1,13 +1,13 @@
-import { Box, LocalAlert, Theme, VStack } from '@navikt/ds-react'
+import { Box, LocalAlert, Theme } from '@navikt/ds-react'
 import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { SWRConfig, type SWRConfiguration } from 'swr'
 
+import classes from './App.module.css'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
-
 import { TextContainer } from './felleskomponenter/typografi.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkmode } from './header/useDarkmode.ts'
@@ -17,7 +17,6 @@ import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
 import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
 import { SakTitle } from './SakTitle.tsx'
-
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
 import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
@@ -44,7 +43,7 @@ function App() {
 
   return (
     <Theme theme={darkmode ? 'dark' : 'light'}>
-      <VStack width="100%" gap="0" style={{ height: '100vh' }}>
+      <div className={classes.root}>
         <ErrorBoundary FallbackComponent={GlobalFeilside}>
           <PersonProvider>
             <ToastProvider>
@@ -52,8 +51,8 @@ function App() {
               <Utviklingsverktøy />
               <ErrorBoundary FallbackComponent={GlobalFeilside}>
                 <Suspense fallback={<div />}>
-                  {/* TODO Se på denne i forbindelse med at vi bare vil ha scoll i hvert panel og ikke global scroll for hele siden */}
-                  <main style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                  {/* TODO Se på denne i forbindelse med at vi bare vil ha scroll i hvert panel og ikke global scroll for hele siden */}
+                  <main>
                     <Routes>
                       <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
                       <Route
@@ -124,7 +123,7 @@ function App() {
             </ToastProvider>
           </PersonProvider>
         </ErrorBoundary>
-      </VStack>
+      </div>
     </Theme>
   )
 }

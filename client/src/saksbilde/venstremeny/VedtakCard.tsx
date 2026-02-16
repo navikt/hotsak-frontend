@@ -86,6 +86,21 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return true
   }
 
+  const validerProblemsammendrag = (value: string | undefined) => {
+    if (!value || value.trim() === '') {
+      return 'Feltet er påkrevd'
+    }
+    if (!value.trim().startsWith('POST ')) {
+      return 'Begrunnelsen må starte med "POST"'
+    }
+    const brackets = [...value.matchAll(/\[([^\]]+)\]/g)]
+    if (brackets.length > 0) {
+      const placeholders = brackets.map((match) => `"${match[1]}"`).join(', ')
+      return `Du må fylle ut følgende i problemsammendraget: ${placeholders}`
+    }
+    return true
+  }
+
   const harEndretPostbegrunnelse = () => {
     const currentValue = form.getValues('postbegrunnelse')
     return currentValue !== lavereRangertBegrunnelse
@@ -259,7 +274,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
             <Controller
               name="problemsammendrag"
               control={form.control}
-              rules={{ required: 'Feltet er påkrevd' }}
+              rules={{
+                validate: validerProblemsammendrag,
+              }}
               render={({ field, fieldState }) => (
                 <TextField
                   label={

@@ -55,7 +55,7 @@ const FormateringMeny = () => {
             <ActionMenu.Item
               disabled={gjentaKnapp.disabled}
               icon={<ArrowRedoIcon fontSize="1rem" />}
-              shortcut={erMac ? '⌘ + Shit + Z' : 'Ctrl + Y'}
+              shortcut={erMac ? '⌘ + Shift + Z' : 'Ctrl + Y'}
               onSelect={gjentaKnapp.redo}
             >
               Gjenta

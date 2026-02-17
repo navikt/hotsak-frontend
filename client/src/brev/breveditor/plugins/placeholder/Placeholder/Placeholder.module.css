@@ -1,0 +1,29 @@
+.placeholderElement {
+  border-radius: 4px;
+  padding: 0 4px;
+  background-color: var(--ax-border-neutral-subtle);
+  align-items: center;
+  display: inline-flex;
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
+
+.placeholderElement.placeholderEmpty::after {
+  content: attr(data-placeholder);
+  color: var(--ax-text-subtle);
+  cursor: text;
+  user-select: none;
+}
+
+.placeholderElement:focus-within {
+  background-color: var(--ax-surface-action-subtle);
+}
+
+.deleteButton {
+  margin-inline: 0.2em;
+  padding-block: 0;
+  width: 1em;
+  cursor: pointer;
+  background: transparent;
+  color: red;
+}

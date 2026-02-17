@@ -23,7 +23,7 @@ import { useBeforeUnload, useRefSize } from './hooks.ts'
 import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 import { PlaceholderFeil } from './plugins/placeholder/PlaceholderFeil.ts'
-import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary.tsx'
+import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -239,6 +239,14 @@ const Breveditor = ({
     (path: number[]) => {
       editor.tf.focus()
       editor.tf.select({ path: [...path, 0], offset: 0 })
+      setTimeout(() => {
+        const selection = window.getSelection()
+        if (selection && selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          const element = range.startContainer.parentElement
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      }, 0)
     },
     [editor]
   )

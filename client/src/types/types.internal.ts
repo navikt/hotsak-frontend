@@ -3,7 +3,6 @@ import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
   data: T
-  kanTildeles: boolean
   tilganger: Tilgang
 }
 
@@ -393,6 +392,7 @@ export interface NotatTeller {
   antallNotater: number
   harUtkast: boolean
 }
+
 export interface BrevTekst {
   sakId: string
   målform: MålformType
@@ -557,10 +557,15 @@ export enum OppgaveStatusType {
   HENLAGT = 'HENLAGT',
 }
 
+/**
+ * NB! Heter Statuskategori i backend.
+ *
+ * todo -> rename til StatuskategoriSak el.
+ */
 export enum BehandlingstatusType {
-  ÅPEN = 'ÅPEN',
-  SAKSBEHANDLING_AVSLUTTET = 'SAKSBEHANDLING_AVSLUTTET',
   PÅ_VENT = 'PÅ_VENT',
+  ÅPEN = 'ÅPEN',
+  LUKKET = 'LUKKET',
 }
 
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
@@ -613,18 +618,6 @@ export interface Delkontrakt {
   posttittel?: string
 }
 
-export enum Filter {
-  SAKER,
-  STATUS,
-  OMRÅDE,
-}
-
-export enum SakerFilter {
-  ALLE = 'ALLE',
-  UFORDELTE = 'UFORDELTE',
-  MINE = 'MINE',
-}
-
 export enum OmrådeFilter {
   ALLE = 'ALLE',
   BEVEGELSE = 'BEVEGELSE',
@@ -633,26 +626,6 @@ export enum OmrådeFilter {
   SYN = 'SYN',
   KOMMUNIKASJON = 'KOMMUNIKASJON',
 }
-
-export enum SakstypeFilter {
-  ALLE = 'ALLE',
-  SØKNAD = 'SØKNAD',
-  BESTILLING = 'BESTILLING',
-  TILSKUDD = 'TILSKUDD',
-}
-
-export const SakerFilterLabel = new Map<string, string>([
-  [SakerFilter.ALLE, 'Alle'],
-  [SakerFilter.MINE, 'Mine saker'],
-  [SakerFilter.UFORDELTE, 'Ufordelte'],
-])
-
-export const SakstypeFilterLabel = new Map<string, string>([
-  [SakstypeFilter.ALLE, 'Alle'],
-  [SakstypeFilter.BESTILLING, 'Bestilling'],
-  [SakstypeFilter.SØKNAD, 'Søknad'],
-  [SakstypeFilter.TILSKUDD, 'Tilskudd'],
-])
 
 export const OmrådeFilterLabel = new Map<string, string>([
   [OmrådeFilter.ALLE, 'Alle'],

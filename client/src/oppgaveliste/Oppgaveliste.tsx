@@ -1,23 +1,13 @@
 import { lazy } from 'react'
 import { Route, Routes } from 'react-router'
-import { useGammelOppgaveliste } from './useGammelOppgaveliste.ts'
-import { OppgavelisteTabs } from './v2/OppgavelisteTabs.tsx'
 
-const OppgavelisteV1 = lazy(() => import('./v1/OppgavelisteV1.tsx'))
-const MineOppgaverWrapper = lazy(() => import('./v2/MineOppgaverWrapper.tsx'))
-const EnhetensOppgaverWrapper = lazy(() => import('./v2/EnhetensOppgaverWrapper.tsx'))
-const MedarbeidersOppgaverWrapper = lazy(() => import('./v2/MedarbeidersOppgaverWrapper.tsx'))
+import { OppgavelisteTabs } from './OppgavelisteTabs.tsx'
+
+const MineOppgaverWrapper = lazy(() => import('./MineOppgaverWrapper.tsx'))
+const EnhetensOppgaverWrapper = lazy(() => import('./EnhetensOppgaverWrapper.tsx'))
+const MedarbeidersOppgaverWrapper = lazy(() => import('./MedarbeidersOppgaverWrapper.tsx'))
 
 export default function Oppgaveliste() {
-  const [gammelOppgaveliste] = useGammelOppgaveliste()
-  if (gammelOppgaveliste) {
-    return (
-      <>
-        <OppgavelisteV1 />
-      </>
-    )
-  }
-
   return (
     <>
       <OppgavelisteTabs />

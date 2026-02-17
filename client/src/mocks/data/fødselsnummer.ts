@@ -1,4 +1,5 @@
 import { format, parse } from 'date-fns'
+
 import { Kjønn } from '../../types/types.internal'
 import { lagTilfeldigFødselsdato, lagTilfeldigInteger } from './felles'
 
@@ -31,9 +32,23 @@ export function fødselsdatoFraFødselsnummer(fnr: string): Date {
   const fullYear = årTall > 25 ? 1900 + årTall : 2000 + årTall
 
   return parse(`${dag}${måned}${fullYear}`, 'ddMMyyyy', new Date())
-  //return parse(fnr.slice(0, 6), template, new Date())
 }
 
 export function kjønnFraFødselsnummer(fnr: string): Kjønn {
   return Number(fnr[8]) % 2 === 0 ? Kjønn.KVINNE : Kjønn.MANN
+}
+
+export class Fødselsnummer {
+  private readonly value: string
+  constructor(value: string | number) {
+    if (typeof value === 'string') {
+      this.value = value
+    } else {
+      this.value = ''
+    }
+  }
+
+  fødselsdato() {
+    return this.value
+  }
 }

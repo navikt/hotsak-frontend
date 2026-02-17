@@ -4,6 +4,10 @@ export function isNumber(value: unknown): value is number {
   return Number.isFinite(value)
 }
 
+export function isInteger(value: unknown): value is number {
+  return value != null && value !== '' && Number.isInteger(Number(value))
+}
+
 export function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String
 }

@@ -1,6 +1,6 @@
 import { createPlatePlugin } from 'platejs/react'
 import { ELEMENT_PLACEHOLDER } from './PlaceholderElement'
-import { Placeholder } from './Placeholder'
+import { Placeholder } from './Placeholder/Placeholder'
 
 export const PlaceholderPlugin = createPlatePlugin({
   key: ELEMENT_PLACEHOLDER,

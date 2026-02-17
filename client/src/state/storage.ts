@@ -7,7 +7,6 @@ export const storageKeys = new Set([
   'dataGridFilterMine',
   'debug',
   'filterState',
-  'gammelOppgaveliste',
   'innloggetSaksbehandlerId',
   'nyttSaksbilde',
   'oppgaveColumnsEnhetens',

@@ -23,7 +23,6 @@ import { TilgangProvider } from './tilgang/TilgangProvider.tsx'
 import { useInnloggetAnsatt } from './tilgang/useTilgang.ts'
 import { Utviklingsverktøy } from './utvikling/Utviklingsverktøy.tsx'
 
-const Journalføringsoppgaver = lazy(() => import('./journalføringsoppgaver/Journalføringsoppgaver.tsx'))
 const Oppgave = lazy(() => import('./oppgave/Oppgave.tsx'))
 const Oppgaveliste = lazy(() => import('./oppgaveliste/Oppgaveliste.tsx'))
 const Personoversikt = lazy(() => import('./personoversikt/Personoversikt.tsx'))
@@ -60,15 +59,6 @@ function App() {
                         element={
                           <RequireAuth>
                             <Oppgaveliste />
-                          </RequireAuth>
-                        }
-                      />
-                      <Route
-                        path="/journalforing"
-                        element={
-                          <RequireAuth>
-                            <title>Hotsak - Journalføringsoppgaver</title>
-                            <Journalføringsoppgaver />
                           </RequireAuth>
                         }
                       />

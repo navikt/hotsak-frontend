@@ -107,7 +107,7 @@ const columns: ReadonlyArray<DataGridColumn<SaksoversiktSak | SaksoversiktBarneb
       return (
         <Oppgaveetikett
           type={erBarnebriller ? Sakstype.TILSKUDD : row.sakstype}
-          labelLinkTo={erBarnebriller ? `/oppgave/S-${row.sakId}` : `/oppgave/S-${row.sakId}/hjelpemidler`}
+          labelLinkTo={erBarnebriller ? `/sak/${row.sakId}` : `/sak/${row.sakId}/hjelpemidler`}
           showLabel
         />
       )

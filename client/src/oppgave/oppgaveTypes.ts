@@ -24,14 +24,9 @@ type InternOppgaveId = `I-${string | number}`
 type EksternOppgaveId = `E-${string | number}`
 
 /**
- * Vi har kun en sak. Siffer etter `S-` er `sakId`.
- */
-type SakOppgaveId = `S-${string | number}`
-
-/**
  * Vi har tre ulike typer `OppgaveId`. Typen forteller oss hvor oppgaven er lagret.
  */
-export type OppgaveId = InternOppgaveId | EksternOppgaveId | SakOppgaveId
+export type OppgaveId = InternOppgaveId | EksternOppgaveId
 
 function harPrefix(prefix: string, value: unknown): value is string {
   if (!(value && typeof value === 'string')) return false
@@ -46,12 +41,8 @@ export function erEksternOppgaveId(value: unknown): value is EksternOppgaveId {
   return harPrefix('E-', value)
 }
 
-export function erSakOppgaveId(value: unknown): value is SakOppgaveId {
-  return harPrefix('S-', value)
-}
-
 export function erOppgaveId(value: unknown): value is OppgaveId {
-  return erInternOppgaveId(value) || erEksternOppgaveId(value) || erSakOppgaveId(value)
+  return erInternOppgaveId(value) || erEksternOppgaveId(value)
 }
 export function erOppgaveIdNull(value: unknown): value is 'I-0' {
   return value === 'I-0'

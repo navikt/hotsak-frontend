@@ -87,14 +87,14 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   }
 
   const validerProblemsammendrag = (value: string | undefined) => {
-    if(!sammendragMedLavere) {
+    if (!sammendragMedLavere) {
       return true
     }
     if (!value || value.trim() === '') {
-      return 'Feltet er påkrevd'
+      return 'Problemsammendrag er påkrevd når det er søkt om lavere rangerte hjelpemidler'
     }
     if (!value.trim().startsWith('POST ')) {
-      return 'Begrunnelsen må starte med "POST"'
+      return 'Problemsammendraget må starte med "POST"'
     }
     const brackets = [...value.matchAll(/\[([^\]]+)\]/g)]
     if (brackets.length > 0) {

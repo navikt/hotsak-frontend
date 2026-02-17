@@ -1,4 +1,4 @@
-.placeholder-element {
+.placeholderElement {
   border-radius: 4px;
   padding: 0 4px;
   background-color: var(--ax-border-neutral-subtle);
@@ -8,18 +8,18 @@
   transform: translateY(-1px);
 }
 
-.placeholder-element.placeholder-empty::after {
+.placeholderElement.placeholderEmpty::after {
   content: attr(data-placeholder);
   color: var(--ax-text-subtle);
   cursor: text;
   user-select: none;
 }
 
-.placeholder-element:focus-within {
+.placeholderElement:focus-within {
   background-color: var(--ax-surface-action-subtle);
 }
 
-.placeholder-delete-btn {
+.deleteButton {
   margin-inline: 0.2em;
   padding-block: 0;
   width: 1em;

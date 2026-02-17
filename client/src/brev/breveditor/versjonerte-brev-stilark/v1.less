@@ -31,7 +31,8 @@ h4 {
   page-break-after: avoid;
 }
 
-p, div.slate-p {
+p,
+div.slate-p {
   display: block;
   margin: 0 0 16pt 0;
 }
@@ -49,22 +50,27 @@ section p:last-child {
   position: relative;
   margin-bottom: 48pt;
 }
+
 .header svg {
   height: 16pt;
   margin-bottom: 48pt;
 }
+
 .header dl dd {
   display: inline;
   margin: 0;
 }
+
 .header dl dd:after {
   display: block;
   content: '';
 }
+
 .header dl dt {
   display: inline-block;
   min-width: 160px;
 }
+
 .header span {
   display: block;
   position: absolute;
@@ -77,13 +83,15 @@ section.signatur {
   page-break-inside: avoid;
 }
 
-ul, ol {
+ul,
+ol {
   padding-inline-start: 1.3em;
   margin: 0 0 16pt 0;
 }
 
-a, div.slate-a {
-  color: #000000;
+a,
+div.slate-a {
+  color: inherit;
   white-space: nowrap;
   display: inline-block;
   text-decoration: underline;
@@ -104,6 +112,8 @@ a, div.slate-a {
   border-radius: 5px;
   padding: 0.3em;
 }
-.variabel:active, .variabel:focus {
-    background: #000;
+
+.variabel:active,
+.variabel:focus {
+  background: #000;
 }

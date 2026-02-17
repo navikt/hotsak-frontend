@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { TrashIcon } from '@navikt/aksel-icons'
 import { Button, Tooltip } from '@navikt/ds-react'
 import { PathApi } from 'platejs'
-import { ELEMENT_PLACEHOLDER, PlaceholderElement } from './PlaceholderElement'
-import './Placeholder.css'
+import styles from './Placeholder.module.css'
+import { ELEMENT_PLACEHOLDER, PlaceholderElement } from '../PlaceholderElement'
 
 const EMPTY_CHAR = '\uFEFF'
 const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
@@ -81,7 +81,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     >
       <Tooltip content={element.placeholder}>
         <span
-          className={`placeholder-element ${erTom ? 'placeholder-empty' : 'placeholder-filled'}`}
+          className={`${styles.placeholderElement} ${erTom ? styles.placeholderEmpty : styles.placeholderFilled}`}
           data-node-type={ELEMENT_PLACEHOLDER}
           data-placeholder={erTom ? element.placeholder : undefined}
           onClick={handleClick}
@@ -89,7 +89,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
           {visSøppelbøtte && (
             <Button
               size="xsmall"
-              className="placeholder-delete-btn"
+              className={styles.deleteButton}
               title="Slett innfyllingsfelt"
               contentEditable={false}
               onClick={handleDelete}

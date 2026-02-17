@@ -23,7 +23,7 @@ import { useBeforeUnload, useRefSize } from './hooks.ts'
 import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 import { PlaceholderFeil } from './plugins/placeholder/PlaceholderFeil.ts'
-import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary.tsx'
+import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean

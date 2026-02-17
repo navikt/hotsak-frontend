@@ -87,6 +87,9 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   }
 
   const validerProblemsammendrag = (value: string | undefined) => {
+    if(!sammendragMedLavere) {
+      return true
+    }
     if (!value || value.trim() === '') {
       return 'Feltet er påkrevd'
     }

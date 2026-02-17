@@ -5,7 +5,6 @@ import { OppgaveV2 } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
-import { Pilot } from '../felleskomponenter/Pilot.tsx'
 
 export interface OppgaveMenuProps {
   oppgave?: OppgaveV2
@@ -88,17 +87,15 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
             Overfør til medarbeider
           </ActionMenu.Item>
         )}
-      <Pilot name="oppgaveintegrasjon">
-        {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectEndreOppgave && (
-          <ActionMenu.Item
-            onSelect={() => {
-              onSelectEndreOppgave()
-            }}
-          >
-            Endre oppgave
-          </ActionMenu.Item>
-        )}
-      </Pilot>
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectEndreOppgave && (
+        <ActionMenu.Item
+          onSelect={() => {
+            onSelectEndreOppgave()
+          }}
+        >
+          Endre oppgave
+        </ActionMenu.Item>
+      )}
     </ActionMenu.Group>
   )
 }

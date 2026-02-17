@@ -47,24 +47,16 @@ export function useInnloggetAnsatt(): ExtendedInnloggetAnsatt {
   }
 }
 
+export function useIsSaksbehandlerBarnebriller(): boolean {
+  const { erMedlemAvEnAvGrupper } = useInnloggetAnsatt()
+  return erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE)
+}
+
 const piloter = {
-  kunTilbehør: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_ROGALAND],
-  ombrukPilot: [
-    Enhet.IT_AVDELINGEN,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
-  ],
+  test: [Enhet.IT_AVDELINGEN],
 } satisfies Record<string, string[]>
 
 export type PilotName = keyof typeof piloter
-
-export function useVisOppgavelisteTabs(): boolean {
-  const { erMedlemAvEnAvGrupper, erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
-  return (
-    erGjeldendeEnhetEnAv(Enhet.IT_AVDELINGEN, Enhet.NAV_VIKAFOSSEN) ||
-    erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE, AnsattGruppe.TEAMDIGIHOT)
-  )
-}
 
 export function useErPilot(name: PilotName): boolean {
   const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()

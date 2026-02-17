@@ -65,13 +65,7 @@ export const oppgaveColumns = {
     header: 'Oppgavetype',
     width: 175,
     filter: {
-      options: toDataGridFilterOptions(
-        OppgavetypeLabel,
-        // Oppgavetype.JOURNALFØRING,
-        Oppgavetype.BEHANDLE_SAK
-        // Oppgavetype.GODKJENNE_VEDTAK,
-        // Oppgavetype.BEHANDLE_UNDERKJENT_VEDTAK
-      ),
+      options: new Set(),
     },
     renderCell(row) {
       return OppgavetypeLabel[row.kategorisering.oppgavetype]

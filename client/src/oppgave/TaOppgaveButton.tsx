@@ -2,6 +2,7 @@ import { Button, ButtonProps } from '@navikt/ds-react'
 import { MouseEventHandler } from 'react'
 
 import { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
+import classes from './TaOppgaveButton.module.css'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
 export interface TaOppgaveButtonProps {
@@ -27,6 +28,7 @@ export function TaOppgaveButton(props: TaOppgaveButtonProps) {
 
   return (
     <Button
+      className={classes.root}
       type="button"
       name={children}
       variant={variant}

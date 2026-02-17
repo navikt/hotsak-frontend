@@ -9,7 +9,7 @@ import { usePersonContext } from '../personoversikt/PersonContext'
 import { Adressebeskyttelse, AdressebeskyttelseAlert, Person } from '../types/types.internal'
 import { beregnAlder, formaterDato } from '../utils/dato'
 import { formaterFødselsnummer, formaterNavn, formaterTelefonnummer } from '../utils/formater'
-import styles from './personlinje.module.css'
+import classes from './personlinje.module.css'
 
 export interface PersonlinjeProps {
   person?: Person
@@ -115,7 +115,7 @@ function Container({ children }: { children?: ReactNode }) {
       height={søknadslinjeHøyde}
       gap="4"
       paddingInline="space-12"
-      className={styles.container}
+      className={classes.container}
     >
       {Children.map(children, (child, index) => (
         <>

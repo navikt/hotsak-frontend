@@ -12,44 +12,43 @@ import type {
   Sakstype,
 } from '../types/types.internal'
 import { type IntervalString } from '../utils/dato.ts'
-
-/**
- * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
- */
-type InternOppgaveId = `I-${string | number}`
+import { isInteger, isString } from '../utils/type.ts'
 
 /**
  * Oppgaven er opprettet i felles oppgaveløsning.
  */
-type EksternOppgaveId = `E-${string | number}`
+type EksternOppgaveId = string
 
 /**
- * Vi har tre ulike typer `OppgaveId`. Typen forteller oss hvor oppgaven er lagret.
+ * Oppgaven er kun opprettet i Hotsak-tabellen `oppgave_v1`.
  */
-export type OppgaveId = InternOppgaveId | EksternOppgaveId
+type InternOppgaveId = `I-${number}`
 
-function harPrefix(prefix: string, value: unknown): value is string {
-  if (!(value && typeof value === 'string')) return false
-  return value.substring(0, 2) === prefix
+/**
+ * Vi har to ulike typer `OppgaveId`. Typen forteller oss hvor oppgaven er lagret.
+ */
+export type OppgaveId = EksternOppgaveId | InternOppgaveId
+
+export function erEksternOppgaveId(value: unknown): value is EksternOppgaveId {
+  return isInteger(value)
 }
 
 export function erInternOppgaveId(value: unknown): value is InternOppgaveId {
-  return harPrefix('I-', value)
-}
-
-export function erEksternOppgaveId(value: unknown): value is EksternOppgaveId {
-  return harPrefix('E-', value)
+  return isString(value) && value.substring(0, 2) === 'I-'
 }
 
 export function erOppgaveId(value: unknown): value is OppgaveId {
   return erInternOppgaveId(value) || erEksternOppgaveId(value)
 }
-export function erOppgaveIdNull(value: unknown): value is 'I-0' {
-  return value === 'I-0'
+export function erOppgaveIdNull(value: unknown): value is 'E-0' {
+  return value === 'E-0'
 }
 
 export function oppgaveIdUtenPrefix(oppgaveId: OppgaveId): string {
-  return oppgaveId.substring(2)
+  if (isString(oppgaveId) && oppgaveId.charAt(1) == '-') {
+    return oppgaveId.substring(2)
+  }
+  return oppgaveId.toString()
 }
 
 export enum Oppgavetype {

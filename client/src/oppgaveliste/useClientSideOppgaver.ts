@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import { DataGridCollection } from '../../felleskomponenter/data/DataGridCollection.ts'
-import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
-import { type HttpError } from '../../io/HttpError.ts'
-import { type FinnOppgaverRequest, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { useOpppgavesøk } from '../../oppgave/useOppgavesøk.ts'
+import { DataGridCollection } from '../felleskomponenter/data/DataGridCollection.ts'
+import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { type FinnOppgaverRequest, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {

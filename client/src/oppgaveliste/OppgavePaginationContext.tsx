@@ -1,6 +1,6 @@
 import { createContext, type Dispatch, useCallback, useContext } from 'react'
 
-import { type OppgaveSortState } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveSortState } from '../oppgave/oppgaveTypes.ts'
 
 export interface OppgavePaginationState {
   currentPage: number

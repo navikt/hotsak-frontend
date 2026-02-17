@@ -1,7 +1,7 @@
 import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
 import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
-import { oppgaveColumns } from '../oppgaveliste/v2/oppgaveColumns.tsx'
-import { selectOppgaveId } from '../oppgaveliste/v2/oppgaveSelectors.ts'
+import { oppgaveColumns } from '../oppgaveliste/oppgaveColumns.tsx'
+import { selectOppgaveId } from '../oppgaveliste/oppgaveSelectors.ts'
 
 export interface OppgaveoversiktPersonProps {
   fnr: string

@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import { HttpError } from '../../io/HttpError.ts'
-import { OppgaveId } from '../../oppgave/oppgaveTypes.ts'
+import { type HttpError } from '../io/HttpError.ts'
+import { type OppgaveId } from '../oppgave/oppgaveTypes.ts'
 
 export interface OppgaveKommentar {
   tekst: string

@@ -1,5 +1,5 @@
-import { LinkButton } from '../../felleskomponenter/button/LinkButton.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { LinkButton } from '../felleskomponenter/button/LinkButton.tsx'
+import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 
 import classes from './ÅpneOppgave.module.css'
 

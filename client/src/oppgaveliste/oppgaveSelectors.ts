@@ -1,4 +1,4 @@
-import { type OppgaveId, type Oppgaveprioritet, type Oppgavetype, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveId, type Oppgaveprioritet, type Oppgavetype, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { OPPGAVE_FILTER_OPTION_TOMME } from './useOppgaveFilterOptions.ts'
 
 export function selectOppgaveId(it: OppgaveV2): OppgaveId {

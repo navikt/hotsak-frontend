@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react'
-import { ActionMenu, Button } from '@navikt/ds-react'
 import { MenuElipsisVerticalIcon } from '@navikt/aksel-icons'
+import { ActionMenu, Button } from '@navikt/ds-react'
+import { type ReactNode } from 'react'
 
 export interface OppgaveMenuProps {
   children: ReactNode

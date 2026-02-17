@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { type Comparator, compareBy } from '../../utils/array.ts'
+import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type Comparator, compareBy } from '../utils/array.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {
   selectBrukerAlder,

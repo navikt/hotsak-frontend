@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 
 export const OPPGAVE_FILTER_OPTION_TOMME = '(Tomme)'

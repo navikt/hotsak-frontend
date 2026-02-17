@@ -1,57 +1,29 @@
-import { FileTextIcon, TasklistIcon } from '@navikt/aksel-icons'
 import { Tabs } from '@navikt/ds-react'
 import { useLocation, useNavigate } from 'react-router'
-import styled from 'styled-components'
-
-import { useVisOppgavelisteTabs } from '../tilgang/useTilgang.ts'
-
-const TabContainer = styled.div`
-  padding-top: var(--ax-space-16);
-`
 
 export function OppgavelisteTabs() {
   const location = useLocation()
   const navigate = useNavigate()
-  const visOppgavelisteTabs = useVisOppgavelisteTabs()
 
-  const valgtFane = location.pathname.split('/').pop() || 'oppgaveliste'
-
-  function navigateToPath(nyTab?: string) {
-    switch (nyTab) {
-      case 'journalforing':
-        return '/journalforing'
-      default:
-        return '/'
-    }
-  }
-
-  if (!visOppgavelisteTabs) {
-    return null
-  }
+  const valgtFane = location.pathname.split('/').pop() || 'mine'
 
   return (
-    <TabContainer>
+    <>
       <Tabs
+        size="medium"
         value={valgtFane}
-        defaultValue="oppgaveliste"
+        defaultValue="mine"
         onChange={(value) => {
-          navigate(navigateToPath(value))
+          navigate(`/${value}`)
         }}
         loop
       >
         <Tabs.List>
-          <Tabs.Tab
-            value="oppgaveliste"
-            label="Oppgaveliste"
-            icon={<TasklistIcon focusable="false" aria-hidden="true" role="img" title="oppgaveliste" />}
-          />
-          <Tabs.Tab
-            value="journalforing"
-            label="Journalføring"
-            icon={<FileTextIcon focusable="false" aria-hidden="true" role="img" title="dokumenter" />}
-          />
+          <Tabs.Tab value="mine" label="Mine oppgaver" />
+          <Tabs.Tab value="enhetens" label="Enhetens oppgaver" />
+          <Tabs.Tab value="medarbeiders" label="Medarbeiders oppgaver" />
         </Tabs.List>
       </Tabs>
-    </TabContainer>
+    </>
   )
 }

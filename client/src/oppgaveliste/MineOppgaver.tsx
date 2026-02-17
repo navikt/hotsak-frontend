@@ -1,8 +1,8 @@
 import { Box, Switch } from '@navikt/ds-react'
 import { useMemo, useState } from 'react'
 
-import { OppgaveTildelt, Statuskategori } from '../../oppgave/oppgaveTypes.ts'
-import { intervalString } from '../../utils/dato.ts'
+import { OppgaveTildelt, Statuskategori } from '../oppgave/oppgaveTypes.ts'
+import { intervalString } from '../utils/dato.ts'
 import { MineOppgaverTable } from './MineOppgaverTable.tsx'
 import { OppgaveToolbar } from './OppgaveToolbar.tsx'
 import { useClientSideOppgaver } from './useClientSideOppgaver.ts'

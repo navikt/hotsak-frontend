@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-import { useDataGridFilterContext } from '../../felleskomponenter/data/DataGridFilterContext.ts'
-import { useUmami } from '../../sporing/useUmami.ts'
-import { entriesOf } from '../../utils/array.ts'
+import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
+import { useUmami } from '../sporing/useUmami.ts'
+import { entriesOf } from '../utils/array.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'

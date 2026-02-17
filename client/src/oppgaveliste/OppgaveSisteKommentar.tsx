@@ -1,9 +1,9 @@
 import { InformationSquareIcon } from '@navikt/aksel-icons'
 import { BodyShort, Detail, HStack, Loader, VStack } from '@navikt/ds-react'
 
-import { FormatDateTime } from '../../felleskomponenter/format/FormatDateTime.tsx'
-import { Strek } from '../../felleskomponenter/Strek.tsx'
-import { type OppgaveId } from '../../oppgave/oppgaveTypes.ts'
+import { FormatDateTime } from '../felleskomponenter/format/FormatDateTime.tsx'
+import { Strek } from '../felleskomponenter/Strek.tsx'
+import { type OppgaveId } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 import { useOppgavekommentarer } from './useOppgavekommentarer.ts'
 

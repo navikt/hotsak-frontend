@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 
-import { useLocalReducer } from '../../state/useLocalReducer.ts'
+import { useLocalReducer } from '../state/useLocalReducer.ts'
 
 import {
   initialState,

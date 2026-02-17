@@ -2,8 +2,8 @@ import { type UniqueIdentifier } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { type ReactNode } from 'react'
 
-import { useLocalReducer } from '../../state/useLocalReducer.ts'
-import { associateBy } from '../../utils/array.ts'
+import { useLocalReducer } from '../state/useLocalReducer.ts'
+import { associateBy } from '../utils/array.ts'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import {
   type OppgaveColumnsAction,

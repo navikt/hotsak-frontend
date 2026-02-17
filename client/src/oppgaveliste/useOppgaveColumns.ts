@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
+import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { getOppgaveColumn } from './oppgaveColumns.tsx'
 import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'

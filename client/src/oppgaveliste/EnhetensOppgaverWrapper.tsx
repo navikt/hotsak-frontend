@@ -1,4 +1,4 @@
-import { DataGridFilterProvider } from '../../felleskomponenter/data/DataGridFilterProvider.tsx'
+import { DataGridFilterProvider } from '../felleskomponenter/data/DataGridFilterProvider.tsx'
 import { EnhetensOppgaver } from './EnhetensOppgaver.tsx'
 import { type DefaultOppgaveColumns } from './oppgaveColumns.tsx'
 import { OppgaveColumnsProvider } from './OppgaveColumnsProvider.tsx'

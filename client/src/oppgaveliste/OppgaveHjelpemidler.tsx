@@ -1,9 +1,9 @@
 import { BodyShort, HGrid, Link, Loader } from '@navikt/ds-react'
 import { Fragment } from 'react'
 
-import { useArtiklerForOppgave } from '../../oppgave/useArtiklerForOppgave.ts'
-import { naturalBy } from '../../utils/array.ts'
-import { select } from '../../utils/select.ts'
+import { useArtiklerForOppgave } from '../oppgave/useArtiklerForOppgave.ts'
+import { naturalBy } from '../utils/array.ts'
+import { select } from '../utils/select.ts'
 import { OppgaveDetailsItem } from './OppgaveDetailsItem.tsx'
 
 import classes from './OppgaveHjelpemidler.module.css'

@@ -5,7 +5,7 @@ import { type ReactNode } from 'react'
 import {
   useDataGridFilterResetAllHandler,
   useIsDataGridFiltered,
-} from '../../felleskomponenter/data/DataGridFilterContext.ts'
+} from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { OppgaveColumnMenu } from './OppgaveColumnMenu.tsx'
 
 import classes from './OppgaveToolbar.module.css'

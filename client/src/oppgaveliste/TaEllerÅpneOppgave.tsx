@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 
-import { Oppgavetype, type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../../oppgave/TaOppgaveButton.tsx'
-import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
+import { Oppgavetype, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
+import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 
 export interface TaEllerÅpneOppgaveProps {

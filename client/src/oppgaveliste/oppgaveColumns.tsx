@@ -2,17 +2,17 @@ import { HourglassBottomFilledIcon } from '@navikt/aksel-icons'
 import { BodyShort, HStack, Tag, Tooltip } from '@navikt/ds-react'
 import { isBefore } from 'date-fns'
 
-import { type DataGridColumn } from '../../felleskomponenter/data/DataGrid.tsx'
-import { toDataGridFilterOptions } from '../../felleskomponenter/data/DataGridFilter.ts'
-import { FormatDate } from '../../felleskomponenter/format/FormatDate.tsx'
+import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
+import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
+import { FormatDate } from '../felleskomponenter/format/FormatDate.tsx'
 import {
   Oppgaveprioritet,
   OppgaveprioritetLabel,
   Oppgavetype,
   OppgavetypeLabel,
   type OppgaveV2,
-} from '../../oppgave/oppgaveTypes.ts'
-import { formaterFødselsnummer, storForbokstavIOrd } from '../../utils/formater.ts'
+} from '../oppgave/oppgaveTypes.ts'
+import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 
 import classes from './oppgaveColumns.module.css'

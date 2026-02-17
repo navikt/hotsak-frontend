@@ -1,18 +1,18 @@
-import { DataGrid } from '../../felleskomponenter/data/DataGrid.tsx'
-import { type OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { DataGrid } from '../felleskomponenter/data/DataGrid.tsx'
+import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { OppgaveDetails } from './OppgaveDetails.tsx'
-import { useOppgavePaginationSortChangeHandler, useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
+import { useOppgavePaginationContext, useOppgavePaginationSortChangeHandler } from './OppgavePaginationContext.tsx'
+import { selectOppgaveId } from './oppgaveSelectors.ts'
 import { useOppgaveColumns } from './useOppgaveColumns.ts'
 import { type OppgaveFilterOptions } from './useOppgaveFilterOptions.ts'
-import { selectOppgaveId } from './oppgaveSelectors.ts'
 
-export interface MedarbeidersOppgaverTableProps {
+export interface EnhetensOppgaverTableProps {
   oppgaver: ReadonlyArray<OppgaveV2>
   filterOptions: OppgaveFilterOptions
   loading?: boolean
 }
 
-export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps) {
+export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
   const { oppgaver, filterOptions, loading } = props
   const columns = useOppgaveColumns(filterOptions)
   const { sort } = useOppgavePaginationContext()

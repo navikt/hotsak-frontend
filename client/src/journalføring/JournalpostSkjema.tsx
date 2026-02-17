@@ -30,7 +30,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
-  const { saksoversikt } = useSaksoversikt(fodselsnummer, Sakstype.BARNEBRILLER, BehandlingstatusType.ÅPEN)
+  const { saksoversikt } = useSaksoversikt(fodselsnummer, BehandlingstatusType.ÅPEN, Sakstype.BARNEBRILLER)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
 
   const journalfør = () => {

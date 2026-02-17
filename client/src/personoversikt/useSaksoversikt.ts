@@ -7,11 +7,11 @@ import { type Saksoversikt } from './saksoversiktTypes.ts'
 
 export interface HentSaksoversiktRequest {
   fnr: string
+  statuskategori?: BehandlingstatusType
   sakstype?: Sakstype
-  behandlingsstatus?: BehandlingstatusType
 }
 
-type UseSaksoversiktKey = [string, string, Sakstype | undefined, BehandlingstatusType | undefined] | null
+type UseSaksoversiktKey = [string, string, BehandlingstatusType | undefined, Sakstype | undefined] | null
 
 export interface UseSaksoversiktResponse extends Omit<SWRResponse<Saksoversikt, HttpError>, 'data'> {
   saksoversikt?: Saksoversikt
@@ -19,13 +19,13 @@ export interface UseSaksoversiktResponse extends Omit<SWRResponse<Saksoversikt, 
 
 export function useSaksoversikt(
   fnr?: string,
-  sakstype?: Sakstype,
-  behandlingsstatus?: BehandlingstatusType
+  statuskategori?: BehandlingstatusType,
+  sakstype?: Sakstype
 ): UseSaksoversiktResponse {
   const { data: saksoversikt, ...rest } = useSwr<Saksoversikt, HttpError, UseSaksoversiktKey>(
-    fnr ? ['/api/saksoversikt', fnr, sakstype, behandlingsstatus] : null,
-    ([url, fnr, sakstype, behandlingsstatus]) =>
-      http.post<HentSaksoversiktRequest, Saksoversikt>(url, { fnr, sakstype, behandlingsstatus })
+    fnr ? ['/api/saksoversikt', fnr, statuskategori, sakstype] : null,
+    ([url, fnr, statuskategori, sakstype]) =>
+      http.post<HentSaksoversiktRequest, Saksoversikt>(url, { fnr, statuskategori, sakstype })
   )
   return {
     saksoversikt,

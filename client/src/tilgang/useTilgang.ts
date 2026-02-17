@@ -54,20 +54,6 @@ const piloter = {
     Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
     Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
   ],
-  oppgaveintegrasjon: [
-    Enhet.IT_AVDELINGEN,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_AKERSHUS,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_INNLANDET_ELVERUM,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_INNLANDET_GJØVIK,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_MØRE_OG_ROMSDAL,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_NORDLAND,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_OSLO,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_TROMS_OG_FINNMARK,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_TRØNDELAG,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_VESTFOLD_OG_TELEMARK,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_VEST_VIKEN,
-    Enhet.NAV_HJELPEMIDDELSENTRAL_ØST_VIKEN,
-  ],
 } satisfies Record<string, string[]>
 
 export type PilotName = keyof typeof piloter
@@ -78,11 +64,6 @@ export function useVisOppgavelisteTabs(): boolean {
     erGjeldendeEnhetEnAv(Enhet.IT_AVDELINGEN, Enhet.NAV_VIKAFOSSEN) ||
     erMedlemAvEnAvGrupper(AnsattGruppe.BRILLEADMIN_BRUKERE, AnsattGruppe.TEAMDIGIHOT)
   )
-}
-
-export function useErKunTilbehørPilot(): boolean {
-  const { erGjeldendeEnhetEnAv } = useInnloggetAnsatt()
-  return erGjeldendeEnhetEnAv(...piloter.kunTilbehør)
 }
 
 export function useErPilot(name: PilotName): boolean {

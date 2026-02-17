@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
-import { Pilot } from '../felleskomponenter/Pilot.tsx'
-import { useGammelOppgaveliste } from '../oppgaveliste/useGammelOppgaveliste.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde.ts'
 import { useUmami } from '../sporing/useUmami.ts'
@@ -25,7 +23,6 @@ export function Toppmeny() {
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
   const { setFodselsnummer } = usePersonContext()
   const navigate = useNavigate()
-  const [gammelOppgaveliste, setGammelOppgaveliste] = useGammelOppgaveliste()
   const [darkmode, setDarkmode] = useDarkmode()
   const [nyttSaksbilde, setNyttSaksbilde] = useNyttSaksbilde()
   const { logTemaByttet } = useUmami()
@@ -64,20 +61,6 @@ export function Toppmeny() {
               Modia
             </ActionMenu.Item>
           </ActionMenu.Group>
-          <Pilot name="oppgaveintegrasjon">
-            <ActionMenu.Divider />
-            <ActionMenu.Group label="Oppgaveintegrasjon">
-              <ActionMenu.Item
-                as="a"
-                href="/"
-                onClick={() => {
-                  setGammelOppgaveliste(!gammelOppgaveliste)
-                }}
-              >
-                {gammelOppgaveliste ? 'Bruk ny oppgaveliste' : 'Bruk gammel oppgaveliste'}
-              </ActionMenu.Item>
-            </ActionMenu.Group>
-          </Pilot>
           <ActionMenu.Divider />
           <ActionMenu.Group label="Utseende">
             <ActionMenu.Item

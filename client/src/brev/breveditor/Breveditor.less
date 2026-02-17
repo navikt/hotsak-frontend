@@ -7,10 +7,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(2, 20, 49, 0.49);
+    border-bottom: 1px solid var(--ax-border-neutral-subtle);
     padding: 0.8em 1em;
 
-    .left-items, .right-items {
+    .left-items,
+    .right-items {
       display: flex;
       gap: 3px;
 
@@ -18,7 +19,7 @@
         width: 1px;
         height: 100%;
         margin: 4px;
-        border-left: 1px solid rgba(35, 38, 42, 0.3);
+        border-left: 1px solid var(--ax-border-neutral-subtle);
       }
     }
   }
@@ -40,7 +41,8 @@
             all: unset;
 
             .brev-stilark {
-              width: 794px; /* 595pt converted to px */
+              width: 794px;
+              /* 595pt converted to px */
               padding: 64pt 64pt 74pt 64pt;
               font-size: 11pt;
               font-weight: normal;
@@ -49,7 +51,8 @@
               position: relative;
 
               &.zoomed {
-                width: 650px; /* 595pt - 108pt ((64-10)*2=108) */
+                width: 650px;
+                /* 595pt - 108pt ((64-10)*2=108) */
                 padding: 30pt 10pt 10pt 10pt !important;
               }
 

@@ -132,6 +132,7 @@ export const Brev = () => {
     setBrevKolonne(false)
     await brevutkast.mutate()
     mutateGjeldendeBehandling()
+    mutateBrevMetadata()
   }
 
   const markerKlart = async (klart: boolean) => {

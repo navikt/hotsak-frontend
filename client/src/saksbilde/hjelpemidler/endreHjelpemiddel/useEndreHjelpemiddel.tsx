@@ -3,7 +3,7 @@ import { useSWRConfig } from 'swr'
 
 import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { http } from '../../../io/HttpClient.ts'
-import { useArtiklerForSak } from '../../../sak/useArtiklerForSak.ts'
+import { useArtiklerForSak } from '../../../sak/felles/useArtiklerForSak.ts'
 import { type EndreHjelpemiddelRequest, type EndretProdukt } from './endreHjelpemiddelTypes.ts'
 import { useHjelpemiddel } from './useHjelpemiddel'
 

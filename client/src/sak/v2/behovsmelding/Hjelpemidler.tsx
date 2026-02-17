@@ -12,7 +12,7 @@ import {
 import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
-import { useArtiklerForSak } from '../../useArtiklerForSak.ts'
+import { useArtiklerForSak } from '../../felles/useArtiklerForSak.ts'
 import { useSummering } from './summering/useSummering.ts'
 import { HjelpemiddelV2 } from './HjelpemiddelV2.tsx'
 import { FrittStåendeTilbehørV2 } from './tilbehør/TilbehørlisteV2.tsx'

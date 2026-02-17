@@ -29,3 +29,7 @@ export function isNotBlank(value: unknown): value is string {
 export function isKeyOfObject<T extends object>(key: PropertyKey, obj: T): key is keyof T {
   return key in obj
 }
+
+export function assertNever(value: never): never {
+  throw new Error(`Uhåndtert verdi: ${value}`)
+}

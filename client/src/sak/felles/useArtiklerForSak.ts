@@ -1,7 +1,7 @@
 import useSWR, { SWRResponse } from 'swr'
 
-import { type HttpError } from '../io/HttpError.ts'
-import { type ArtikkellinjeSak } from './sakTypes.ts'
+import { type HttpError } from '../../io/HttpError.ts'
+import { type ArtikkellinjeSak } from '../sakTypes.ts'
 
 export interface UseHjelpemidlerForSakResponse extends Omit<SWRResponse<ArtikkellinjeSak[], HttpError>, 'data'> {
   artikler: ArtikkellinjeSak[]

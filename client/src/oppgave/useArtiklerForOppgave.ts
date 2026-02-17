@@ -1,5 +1,5 @@
 import { type ArtikkellinjeSak } from '../sak/sakTypes.ts'
-import { useArtiklerForSak } from '../sak/useArtiklerForSak.ts'
+import { useArtiklerForSak } from '../sak/felles/useArtiklerForSak.ts'
 import { useHjelpemiddelprodukter } from '../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
 import { type Delkontrakt } from '../types/types.internal.ts'
 import { associateBy } from '../utils/array.ts'

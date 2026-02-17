@@ -1,29 +1,23 @@
-import { Button, HelpText, HStack, InlineMessage, Tag, Textarea, TextField, VStack } from '@navikt/ds-react'
+import { Button, Tag } from '@navikt/ds-react'
 import { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import { Controller } from 'react-hook-form'
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
-import { Etikett, Tekst } from '../../felleskomponenter/typografi'
+import { Tekst } from '../../felleskomponenter/typografi'
 import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
 import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
-import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
+import { useVedtak } from '../../sak/felles/useVedtak.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
-import { OpplysningId } from '../../types/BehovsmeldingTypes.ts'
 import { OppgaveStatusType, Sak, VedtakStatusType } from '../../types/types.internal'
 import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
-import { BekreftelseModal } from '../komponenter/BekreftelseModal'
+import { FattVedtakModal } from '../modaler/FattVedtakModal.tsx'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
 import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
-import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
-import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
-import { useProblemsammendrag } from './useProblemsammendrag.ts'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 
 export interface VedtakCardProps {
@@ -32,83 +26,17 @@ export interface VedtakCardProps {
   lesevisning: boolean
 }
 
-interface VedtakFormValues {
-  problemsammendrag: string
-  postbegrunnelse?: string
-}
-
 export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
   const innloggetAnsatt = useInnloggetAnsatt()
   const [visVedtakModal, setVisVedtakModal] = useState(false)
   const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
-  const [harLagretPostbegrunnelse, setHarLagretPostbegrunnelse] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
   const oppgaveActions = useOppgaveActions()
-  const behovsmelding = useBehovsmelding()
-  const sakActions = useSakActions()
-  const artikler = useArtiklerForSak(sak.sakId)
-  const { sammendragMedLavere, problemsammendrag } = useProblemsammendrag()
-  const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
+  const { logUtfallLavereRangert, logPostbegrunnelseEndret } = useUmami()
 
-  const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
-    (hjelpemiddel) => (hjelpemiddel.produkt.rangering ?? 0) > 1
-  )
-
-  const harEndretLavereRangertHjelpemiddel = artikler.artikler.some(
-    (artikkel) => artikkel.id === lavereRangertHjelpemiddel?.hjelpemiddelId && artikkel.endretArtikkel
-  )
-
-  const begrunnelseForLavereRangeringFritekst = lavereRangertHjelpemiddel?.opplysninger
-    .find((opplysning) => opplysning.key?.id === OpplysningId.LAVERE_RANGERING_BEGRUNNELSE)
-    ?.innhold.at(0)?.fritekst
-
-  const lavereRangertBegrunnelse =
-    begrunnelseForLavereRangeringFritekst && !harEndretLavereRangertHjelpemiddel
-      ? `POST ${begrunnelseForLavereRangeringFritekst}`
-      : undefined
-
-  const form = useForm<VedtakFormValues>({
-    values: {
-      problemsammendrag: problemsammendrag,
-      postbegrunnelse: lavereRangertBegrunnelse,
-    },
-  })
-
-  const validerPostbegrunnelse = (value: string | undefined) => {
-    if (!value || value.trim() === '' || value.trim() === 'POST') {
-      return 'Begrunnelse er påkrevd når det er søkt om lavere rangerte hjelpemidler'
-    }
-    if (!value.trim().startsWith('POST ')) {
-      return 'Begrunnelsen må starte med "POST"'
-    }
-    return true
-  }
-
-  const harEndretPostbegrunnelse = () => {
-    const currentValue = form.getValues('postbegrunnelse')
-    return currentValue !== lavereRangertBegrunnelse
-  }
-
-  const harEndretProblemsammendrag = () => {
-    const currentValue = form.getValues('problemsammendrag')
-    return currentValue !== problemsammendrag
-  }
-
-  const fattVedtak = async (data: VedtakFormValues) => {
-    if (sammendragMedLavere && !harLagretPostbegrunnelse) {
-    } else {
-      await sakActions.fattVedtak(data.problemsammendrag, data.postbegrunnelse)
-      if (lavereRangertHjelpemiddel) {
-        logUtfallLavereRangert({ utfall: 'innvilget' })
-        if (harEndretPostbegrunnelse()) logPostbegrunnelseEndret()
-        if (harEndretProblemsammendrag())
-          logProblemsammendragEndret({ originalt: problemsammendrag, nytt: form.getValues('problemsammendrag') })
-      }
-      setVisVedtakModal(false)
-    }
-  }
+  const { lavereRangertHjelpemiddel, harEndretPostbegrunnelse } = useVedtak(sak)
 
   const overtaSak = async () => {
     await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
@@ -240,119 +168,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
           Overfør til Gosys
         </Knapp>
       </Knappepanel>
-      <BekreftelseModal
-        heading="Vil du innvilge søknaden?"
-        loading={sakActions.state.loading}
-        open={visVedtakModal}
-        buttonSize="medium"
-        width="700px"
-        bekreftButtonLabel="Innvilg søknaden"
-        onBekreft={form.handleSubmit(fattVedtak)}
-        onClose={() => setVisVedtakModal(false)}
-      >
-        <Tekst spacing>
-          Når du innvilger søknaden vil det opprettes en serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på
-          innlogget side på nav.no neste virkedag.
-        </Tekst>
-        <FormProvider {...form}>
-          <VStack gap="space-16">
-            <Controller
-              name="problemsammendrag"
-              control={form.control}
-              rules={{ required: 'Feltet er påkrevd' }}
-              render={({ field, fieldState }) => (
-                <TextField
-                  label={
-                    <HStack wrap={false} gap="2" align="center">
-                      <Etikett>Problemsammendrag til OeBS </Etikett>
-                      <HelpText strategy="fixed">
-                        <Tekst>
-                          Foreslått tekst oppfyller registreringsinstruksen. Du kan redigere teksten i
-                          problemsammendraget dersom det er nødvendig. Det kan du gjøre i feltet nedenfor før saken
-                          innvilges eller inne på SF i OeBS som tidligere.
-                        </Tekst>
-                      </HelpText>
-                    </HStack>
-                  }
-                  size="small"
-                  {...field}
-                  value={field.value ?? ''}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-            <VStack gap="space-8">
-              {sammendragMedLavere && (
-                <>
-                  <Textarea
-                    readOnly={harLagretPostbegrunnelse}
-                    label={
-                      <HStack wrap={false} gap="2" align="center">
-                        <Etikett>Begrunnelse for lavere rangering</Etikett>
-                        <HelpText strategy="fixed">
-                          <Tekst>
-                            Faglig begrunnelse for hvorfor det velges et hjelpemiddel med lavere rangering
-                            ("postbegrunnelse"). En faglig begrunnelse skal skrives slik at utenforstående forstår
-                            hvorfor produktet er valgt. Det er ikke nødvendig å begrunne hvorfor produktet som er
-                            rangert som nr. 1 ikke velges. Teksten overføres til OeBS.
-                          </Tekst>
-                        </HelpText>
-                      </HStack>
-                    }
-                    description="Se over begrunnelsen og fjern sensitive opplysninger"
-                    size="small"
-                    error={form.formState.errors.postbegrunnelse?.message}
-                    {...form.register('postbegrunnelse', {
-                      validate: (value) => {
-                        if (!harLagretPostbegrunnelse) {
-                          return 'Du må godkjenne begrunnelsen før søknaden kan innvilges'
-                        }
-                        return validerPostbegrunnelse(value)
-                      },
-                    })}
-                  ></Textarea>
-                  <HStack align="center" gap="space-8">
-                    {harLagretPostbegrunnelse ? (
-                      <>
-                        <InlineMessage status="success" size="small">
-                          Du har godkjent begrunnelsen
-                        </InlineMessage>
-                        <Button
-                          variant="tertiary"
-                          size="small"
-                          onClick={() => {
-                            form.clearErrors('postbegrunnelse')
-                            setHarLagretPostbegrunnelse(false)
-                          }}
-                        >
-                          Angre
-                        </Button>
-                      </>
-                    ) : (
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        onClick={() => {
-                          const value = form.getValues('postbegrunnelse')
-                          const valideringResultat = validerPostbegrunnelse(value)
-                          if (valideringResultat !== true) {
-                            form.setError('postbegrunnelse', { message: valideringResultat })
-                          } else {
-                            form.clearErrors('postbegrunnelse')
-                            setHarLagretPostbegrunnelse(true)
-                          }
-                        }}
-                      >
-                        Godkjenn begrunnelse
-                      </Button>
-                    )}
-                  </HStack>
-                </>
-              )}
-            </VStack>
-          </VStack>
-        </FormProvider>
-      </BekreftelseModal>
+      <FattVedtakModal sak={sak} open={visVedtakModal} onClose={() => setVisVedtakModal(false)} />
       <OverførSakTilGosysModal
         {...overførGosys}
         onBekreft={async (tilbakemelding) => {

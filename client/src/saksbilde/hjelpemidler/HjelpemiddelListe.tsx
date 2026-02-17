@@ -1,7 +1,7 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
-import { useArtiklerForSak } from '../../sak/useArtiklerForSak.ts'
+import { useArtiklerForSak } from '../../sak/felles/useArtiklerForSak.ts'
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'

@@ -8,7 +8,13 @@ import { useBehandling } from './useBehandling.ts'
 
 export interface BehandlingActions extends Actions {
   lagreBehandling(utfall?: Behandlingsutfall): Promise<void>
-  ferdigstillBehandling(problemsammendrag: string): Promise<void>
+  ferdigstillBehandling({
+    problemsammendrag,
+    postbegrunnelse,
+  }: {
+    problemsammendrag?: string
+    postbegrunnelse?: string
+  }): Promise<void>
 }
 
 export function useBehandlingActions(): BehandlingActions {
@@ -34,11 +40,17 @@ export function useBehandlingActions(): BehandlingActions {
         await mutateBehandling()
       })
     },
-    async ferdigstillBehandling(problemsammendrag: string) {
+    async ferdigstillBehandling({
+      problemsammendrag,
+      postbegrunnelse,
+    }: {
+      problemsammendrag?: string
+      postbegrunnelse?: string
+    }) {
       return execute(async () => {
         await http.post(
           `/api/sak/${sakId}/behandling/${gjeldendeBehandling?.behandlingId}/ferdigstilling`,
-          { problemsammendrag },
+          { problemsammendrag, postbegrunnelse },
           { versjon }
         )
         await mutateBehandling()

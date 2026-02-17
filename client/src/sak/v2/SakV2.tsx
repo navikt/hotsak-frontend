@@ -13,13 +13,13 @@ import { Gjenstående, VedtaksResultat } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
-import { FattVedtakModal } from './modaler/FattVedtakModal.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
 import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
+import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 
 export function SakV2() {
   const { sak } = useSak()
@@ -116,12 +116,14 @@ export function SakV2() {
         vedtaksResultat={vedtaksResultat}
       />
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
-      <FattVedtakModal
-        open={visFerdigstillModal}
-        onClose={() => setVisFerdigstillModal(false)}
-        sak={sak.data}
-        vedtaksResultat={vedtaksResultat}
-      />
+      {vedtaksResultat && (
+        <FattVedtakModalV2
+          open={visFerdigstillModal}
+          onClose={() => setVisFerdigstillModal(false)}
+          sak={sak.data}
+          vedtaksResultat={vedtaksResultat}
+        />
+      )}
     </>
   )
 

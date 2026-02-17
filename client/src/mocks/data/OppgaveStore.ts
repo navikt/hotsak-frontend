@@ -172,29 +172,26 @@ export class OppgaveStore extends Dexie {
     const meg = await this.saksbehandlerStore.innloggetSaksbehandler()
     const alleOppgaver = await this.alle()
     const filtrerteOppgaver = alleOppgaver
-      .filter((oppgave) => {
+      .filter(({ oppgavestatus }) => {
         if (request.statuskategori === Statuskategori.AVSLUTTET) {
-          return oppgave.oppgavestatus === Oppgavestatus.FERDIGSTILT
+          return oppgavestatus === Oppgavestatus.FERDIGSTILT
         } else {
-          return oppgave.oppgavestatus !== Oppgavestatus.FERDIGSTILT
+          return oppgavestatus !== Oppgavestatus.FERDIGSTILT
         }
       })
-      .filter((oppgave) => {
-        const oppgavetype = request.oppgavetype?.[0]
-        if (oppgavetype === Oppgavetype.JOURNALFØRING) {
-          return oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
-        } else {
-          return oppgave.kategorisering.oppgavetype !== Oppgavetype.JOURNALFØRING
-        }
+      .filter(({ kategorisering }) => {
+        const oppgavetype = request.oppgavetype ?? []
+        if (oppgavetype.length === 0) return true
+        return oppgavetype.includes(kategorisering.oppgavetype)
       })
-      .filter((oppgave) => {
+      .filter(({ tildeltSaksbehandler }) => {
         switch (request.tildelt) {
           case OppgaveTildelt.MEG:
-            return oppgave.tildeltSaksbehandler?.id === meg.id
+            return tildeltSaksbehandler?.id === meg.id
           case OppgaveTildelt.INGEN:
-            return oppgave.tildeltSaksbehandler == null
+            return tildeltSaksbehandler == null
           case OppgaveTildelt.MEDARBEIDER:
-            return oppgave.tildeltSaksbehandler?.id !== meg.id && oppgave.tildeltSaksbehandler != null
+            return tildeltSaksbehandler?.id !== meg.id && tildeltSaksbehandler != null
           default:
             return true
         }

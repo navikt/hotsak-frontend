@@ -22,6 +22,8 @@ import { ListPlugin } from '@platejs/list-classic/react'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
 import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
+import { PlaceholderFeil } from './plugins/placeholder/PlaceholderFeil.ts'
+import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary.tsx'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -33,6 +35,7 @@ export interface BreveditorContextType {
   settVisMarger: (visMarger: boolean) => void
   onSlettBrev?: () => void
   endringsstatus: { lagrerNå: boolean; erEndret: boolean; error?: string }
+  focusPath: (path: number[]) => void
 }
 
 export const BreveditorContext = createContext<BreveditorContextType | undefined>(undefined)
@@ -93,6 +96,7 @@ const Breveditor = ({
   onLagreBrev,
   onSlettBrev,
   placeholder,
+  placeholderFeil = [],
 }: {
   brevId?: string
   metadata: Metadata
@@ -102,6 +106,7 @@ const Breveditor = ({
   onLagreBrev?: (newState: StateMangement) => Promise<void>
   onSlettBrev?: () => void
   placeholder?: string
+  placeholderFeil?: PlaceholderFeil[]
 }) => {
   const editor = usePlateEditor(
     {
@@ -230,6 +235,14 @@ const Breveditor = ({
     }
   }
 
+  const focusPath = useCallback(
+    (path: number[]) => {
+      editor.tf.focus()
+      editor.tf.select({ path: [...path, 0], offset: 0 })
+    },
+    [editor]
+  )
+
   return (
     <BreveditorContext
       value={{
@@ -242,6 +255,7 @@ const Breveditor = ({
         settVisMarger: settVisMarger,
         onSlettBrev: onSlettBrev,
         endringsstatus: endringsstatus,
+        focusPath: focusPath,
       }}
     >
       <Plate
@@ -337,6 +351,7 @@ const Breveditor = ({
               </div>
             </div>
           </div>
+          <PlaceholderErrorSummary feil={placeholderFeil}></PlaceholderErrorSummary>
         </div>
       </Plate>
     </BreveditorContext>

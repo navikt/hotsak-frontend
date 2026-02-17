@@ -53,6 +53,9 @@ export function erSakOppgaveId(value: unknown): value is SakOppgaveId {
 export function erOppgaveId(value: unknown): value is OppgaveId {
   return erInternOppgaveId(value) || erEksternOppgaveId(value) || erSakOppgaveId(value)
 }
+export function erOppgaveIdNull(value: unknown): value is 'I-0' {
+  return value === 'I-0'
+}
 
 export function oppgaveIdUtenPrefix(oppgaveId: OppgaveId): string {
   return oppgaveId.substring(2)
@@ -148,6 +151,10 @@ export interface OppgaveV2 extends OppgaveBase {
   sak?: OppgaveSak
   behandlesAvApplikasjon?: string
 
+  // totrinnskontroll
+  totrinnskontroll?: OppgaveTotrinnskontroll
+
+  // mappe
   mappeId?: string
   mappenavn?: string
 }
@@ -186,6 +193,11 @@ export interface OppgaveSak {
   sakstype: Sakstype
   søknadId: string
   søknadGjelder: string
+}
+
+export interface OppgaveTotrinnskontroll {
+  saksbehandlerId: string
+  godkjennerId?: string
 }
 
 export interface GjelderAlternativerResponse {

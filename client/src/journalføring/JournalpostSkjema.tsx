@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
+import { Toast } from '../felleskomponenter/toast/Toast.tsx'
+import { erOppgaveIdNull } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
@@ -15,7 +17,6 @@ import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
 import { useJournalføringActions } from './useJournalføringActions.ts'
-import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 
 export interface JournalpostSkjemaProps {
   journalpostId: string
@@ -42,7 +43,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
     }
     journalføringActions.journalfør(journalføringRequest).then((response) => {
       // todo -> dette blir det eneste caset på sikt, men backend (og mock) er ikke klar ennå
-      if (response?.oppgaveId) {
+      if (response?.oppgaveId && !erOppgaveIdNull(response.oppgaveId)) {
         return navigate(`/oppgave/${response.oppgaveId}`)
       }
       if (response?.sakId) {

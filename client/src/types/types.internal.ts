@@ -260,6 +260,7 @@ export enum SatsType {
   INGEN = 'INGEN',
 }
 
+// todo -> rename to Personnavn, samme type som i behovsmelding, fra hotlibs/core
 export interface Navn {
   fornavn: string
   mellomnavn?: string

@@ -21,6 +21,24 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
 
     const { form, sammendragMedLavere, logTilUmami } = useVedtak(sak)
 
+    const validerProblemsammendrag = (value: string | undefined) => {
+      if (!sammendragMedLavere) {
+        return true
+      }
+      if (!value || value.trim() === '') {
+        return 'Problemsammendrag er påkrevd når det er søkt om lavere rangerte hjelpemidler'
+      }
+      if (!value.trim().startsWith('POST ')) {
+        return 'Problemsammendraget må starte med "POST"'
+      }
+      const brackets = [...value.matchAll(/\[([^\]]+)\]/g)]
+      if (brackets.length > 0) {
+        const placeholders = brackets.map((match) => `"${match[1]}"`).join(', ')
+        return `Du må fylle ut følgende i problemsammendraget: ${placeholders}`
+      }
+      return true
+    }
+
     const validerPostbegrunnelse = (value: string | undefined) => {
       if (!value || value.trim() === '' || value.trim() === 'POST') {
         console.log('Mangler begrunnelse')
@@ -50,7 +68,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
             <Controller
               name="problemsammendrag"
               control={form.control}
-              rules={{ required: 'Feltet er påkrevd' }}
+              rules={{
+                validate: validerProblemsammendrag,
+              }}
               render={({ field, fieldState }) => (
                 <TextField
                   label={

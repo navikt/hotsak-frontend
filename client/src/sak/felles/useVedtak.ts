@@ -25,7 +25,7 @@ export interface UseVedtakReturn {
 export function useVedtak(sak: Sak) {
   const behovsmelding = useBehovsmelding()
   const artikler = useArtiklerForSak(sak.sakId)
-  const { problemsammendrag } = useProblemsammendrag()
+  const { problemsammendrag, sammendragMedLavere } = useProblemsammendrag()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret, logProblemsammendragEndret } = useUmami()
 
   const lavereRangertHjelpemiddel = behovsmelding.behovsmelding?.hjelpemidler.hjelpemidler.find(
@@ -44,8 +44,6 @@ export function useVedtak(sak: Sak) {
     begrunnelseForLavereRangeringFritekst && !harEndretLavereRangertHjelpemiddel
       ? `POST ${begrunnelseForLavereRangeringFritekst}`
       : undefined
-
-  const sammendragMedLavere = !!lavereRangertHjelpemiddel
 
   const form = useForm<VedtakFormValues>({
     values: {

@@ -1,5 +1,6 @@
-import { Box, HStack, VStack } from '@navikt/ds-react'
+import { Box, HStack } from '@navikt/ds-react'
 import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
+import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
 import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
 import { Formidler } from '../../saksbilde/formidler/Formidler.tsx'
@@ -10,7 +11,6 @@ import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useSakContext } from './SakProvider.tsx'
-import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSakContext()

@@ -8,31 +8,30 @@ import { Sak } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
-import styles from './BehovsmeldingsPanel.module.css'
+import classes from './BehovsmeldingsPanel.module.css'
 import { useSakContext } from './SakProvider.tsx'
+import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSakContext()
   return (
-    <Box.New background="default" paddingBlock="0 space-48" borderRadius="large" style={{ height: '100%' }}>
+    <Box.New background="default" paddingBlock="0 space-48" style={{ height: '100%' }}>
       <PanelTittel
         tittel="Søknad om hjelpemidler"
         lukkPanel={() => {
           setSøknadPanel(false)
         }}
       />
-      <div style={{ height: '100%', overflowY: 'auto' }}>
-        <VStack paddingBlock={'space-8 0'} paddingInline={'space-16'} gap="space-2">
-          <HStack gap="space-20">
-            <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
-            <Tekst textColor="subtle">
-              Område:
-              {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
-            </Tekst>
-          </HStack>
-        </VStack>
+      <ScrollablePanel paddingInline={'space-16'}>
+        <HStack gap="space-20">
+          <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
+          <Tekst textColor="subtle">
+            Område:
+            {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
+          </Tekst>
+        </HStack>
 
-        <section className={styles.søknadContainer}>
+        <section className={classes.søknadContainer}>
           <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />
         </section>
         <section>
@@ -47,7 +46,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           </Box.New>
           <Formidler levering={behovsmelding.levering} />
         </section>
-      </div>
+      </ScrollablePanel>
     </Box.New>
   )
 }

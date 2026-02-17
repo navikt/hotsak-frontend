@@ -12,6 +12,7 @@ import { useSaksregler } from '../../../../saksregler/useSaksregler'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SakPanelTabTypes'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
 import { useSakContext } from '../../SakProvider'
+import { ScrollablePanel } from '../../../../felleskomponenter/ScrollablePanel'
 
 export function VenstreSidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } = useSakContext()
@@ -99,7 +100,7 @@ export function VenstreSidebar() {
             />
           </Tooltip>
         </Tabs.List>
-        <div style={{ overflowY: 'auto', scrollbarGutter: 'stable both-edges', height: '100%' }}>
+        <ScrollablePanel>
           <Tabs.Panel value={VenstrekolonneTabs.SAKSHISTORIKK.toString()}>
             <Historikk />
           </Tabs.Panel>
@@ -113,7 +114,7 @@ export function VenstreSidebar() {
               </SidebarPanel>
             </Tabs.Panel>
           )}
-        </div>
+        </ScrollablePanel>
       </Tabs>
     </Box.New>
   )

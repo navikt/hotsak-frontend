@@ -25,7 +25,7 @@ export function UtlånsoversiktV2() {
       tittel="Utlånsoversikt"
       error={error && 'Feil ved henting av brukers hjelpemiddeloversikt.'}
       loading={isLoading && 'Henter brukers hjelpemiddeloversikt...'}
-      paddingInline="0 space-16"
+      paddingInline="space-12 space-16"
       spacing={false}
     >
       {isFromVedtak && <Tekst>Per {formaterDato(sak?.data.vedtak?.vedtaksdato)}, da vedtaket ble gjort</Tekst>}

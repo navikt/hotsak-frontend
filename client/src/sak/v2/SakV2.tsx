@@ -20,6 +20,7 @@ import { useSakContext } from './SakProvider.tsx'
 import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
+import { headerHøyde } from '../../GlobalStyles.tsx'
 
 export function SakV2() {
   const { sak } = useSak()
@@ -51,8 +52,9 @@ export function SakV2() {
     return <div>Fant ikke sak</div>
   }
 
+  // TODO bruke css modules vars
   return (
-    <>
+    <Box.New style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
@@ -124,7 +126,7 @@ export function SakV2() {
           vedtaksResultat={vedtaksResultat}
         />
       )}
-    </>
+    </Box.New>
   )
 
   function modalVelger() {

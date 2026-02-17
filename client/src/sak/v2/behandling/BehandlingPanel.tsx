@@ -18,6 +18,7 @@ import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
 import { useSakContext } from '../SakProvider.tsx'
+import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 
 interface BehandlingProps {
   sak: Sak
@@ -48,7 +49,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
           setBehandlingPanel(false)
         }}
       />
-      <div style={{ height: '100%', overflowY: 'auto' }}>
+      <ScrollablePanel>
         <VStack gap="space-16" paddingInline="space-16">
           <HStack gap="space-20">
             <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
@@ -151,7 +152,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
               </>
             )}
         </VStack>
-      </div>
+      </ScrollablePanel>
     </Box.New>
   )
 }

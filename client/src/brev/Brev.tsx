@@ -205,7 +205,7 @@ export const Brev = () => {
                   brukersNavn: sak?.data.bruker.fulltNavn || '',
                   brukersFødselsnummer: sak?.data.bruker.fnr || '',
                   saksnummer: Number(sak!.data.sakId),
-                  brevOpprettet: formaterDatoLang(brevutkast.data?.opprettet),
+                  brevOpprettet: formaterDatoLang(brevutkast.data?.opprettet), // TODO: Skal brev opprettet settes til utsendelsesdato? Eller dagen brevet ble skrevet og ferdigstilt?
                   saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
                   attestantsNavn: undefined,
                   hjelpemiddelsentral: sak?.data.enhet.enhetsnavn || 'Nav hjelpemiddelsentral',

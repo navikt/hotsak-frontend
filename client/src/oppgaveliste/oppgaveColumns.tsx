@@ -12,6 +12,7 @@ import {
   OppgavetypeLabel,
   type OppgaveV2,
 } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveStatusLabel } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 
@@ -231,6 +232,18 @@ export const oppgaveColumns = {
         return kommune.navn
       }
       return null
+    },
+  },
+  saksstatus: {
+    field: 'saksstatus',
+    header: 'Saksstatus',
+    width: 200,
+    renderCell(row) {
+      const sak = row.sak
+      if (!sak) {
+        return null
+      }
+      return OppgaveStatusLabel.get(sak.saksstatus)
     },
   },
   opprettetTidspunkt: {

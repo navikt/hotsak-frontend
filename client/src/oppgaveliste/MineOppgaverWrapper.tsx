@@ -32,6 +32,7 @@ const defaultColumns: DefaultOppgaveColumns = [
   ['brukerFødselsdato', false],
   'brukerAlder',
   'kommune',
+  ['saksstatus', false],
   'opprettetTidspunkt',
   'fristFerdigstillelse',
   ['ferdigstiltTidspunkt', false],

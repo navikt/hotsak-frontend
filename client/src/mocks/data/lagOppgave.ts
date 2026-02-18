@@ -50,7 +50,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
       fulltNavn: formaterNavn(sak.innsender.navn),
     },
     sakId,
-    sak: { sakId, sakstype: sak.sakstype, søknadId: '', søknadGjelder: sak.søknadGjelder },
+    sak: { sakId, sakstype: sak.sakstype, saksstatus: sak.saksstatus, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',
     mappeId: undefined, // fixme
     mappenavn: undefined, // fixme

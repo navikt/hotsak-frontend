@@ -83,7 +83,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     )
   }
 
-  if (sak.saksstatus === OppgaveStatusType.AVVENTER_JOURNALFØRING) {
+  if (sak.saksstatus === OppgaveStatusType.AVVENTER_JOURNALFORING) {
     return (
       <VenstremenyCard heading="Avventer journalføring">
         <Tekst>Prøv igjen senere.</Tekst>

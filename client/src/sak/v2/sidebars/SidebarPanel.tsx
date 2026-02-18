@@ -22,7 +22,7 @@ export function SidebarPanel(props: SidebarPanelProps) {
     loading,
     error,
     spacing = true,
-    paddingInline = 'space-16',
+    paddingInline = 'space-8 space-16',
     paddingBlock = 'space-16',
     children,
   } = props

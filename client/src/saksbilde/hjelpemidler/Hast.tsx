@@ -1,4 +1,4 @@
-import { InfoCard, List } from '@navikt/ds-react'
+import { InfoCard, List, Box } from '@navikt/ds-react'
 import { BrytbarBrødtekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { Hasteårsak, Hast as HastType } from '../../types/BehovsmeldingTypes.ts'
 
@@ -11,19 +11,20 @@ export function Hast(props: { hast?: HastType }) {
       <InfoCard.Header>
         <InfoCard.Title>Haster</InfoCard.Title>
       </InfoCard.Header>
-
       <InfoCard.Content>
         <TextContainer>
-          <List size="small">
-            {hasteårsaker.map((årsak) => (
-              <List.Item key={årsak}>
-                <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
-                {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
-                  <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
-                )}
-              </List.Item>
-            ))}
-          </List>
+          <Box marginBlock="space-12" asChild>
+            <List data-aksel-migrated-v8 size="small">
+              {hasteårsaker.map((årsak) => (
+                <List.Item key={årsak}>
+                  <BrytbarBrødtekst>{tekstByHasteårsak[årsak]}</BrytbarBrødtekst>
+                  {årsak === Hasteårsak.ANNET && hastBegrunnelse && (
+                    <BrytbarBrødtekst>{hastBegrunnelse}</BrytbarBrødtekst>
+                  )}
+                </List.Item>
+              ))}
+            </List>
+          </Box>
         </TextContainer>
       </InfoCard.Content>
     </InfoCard>

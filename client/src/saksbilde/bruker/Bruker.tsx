@@ -1,4 +1,4 @@
-import { Heading, HStack, List, VStack } from '@navikt/ds-react'
+import { Heading, HStack, List, VStack, Box } from '@navikt/ds-react'
 
 import { Skillelinje } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
@@ -77,7 +77,6 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           </HStack>
         )}
       </VStack>
-
       <Skillelinje />
       <Signatur signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
       <Skillelinje />
@@ -85,11 +84,13 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
         Formidlers vurdering
       </Heading>
       <TextContainer>
-        <List as="ul" size="small">
-          {vilkår.map((vilkårItem) => (
-            <List.Item key={vilkårItem.vilkårtype}>{vilkårItem.tekst.nb}</List.Item>
-          ))}
-        </List>
+        <Box marginBlock="space-12" asChild>
+          <List data-aksel-migrated-v8 as="ul" size="small">
+            {vilkår.map((vilkårItem) => (
+              <List.Item key={vilkårItem.vilkårtype}>{vilkårItem.tekst.nb}</List.Item>
+            ))}
+          </List>
+        </Box>
       </TextContainer>
       <Skillelinje />
     </>

@@ -53,23 +53,25 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             Brukes hvis du skal dokumentere opplysninger som kan ha betydning for utfallet av en sak. Disse notatene
             blir journalført. Vi har to typer forvaltningsnotat:
           </Tekst>
-          <List size="small" as="ul">
-            <List.Item>
-              <Etikett>Interne saksopplysninger:</Etikett>
-              <Tekst>
-                Opplysninger som kan ha betydning for saken som for eksempel gjengir innholdet i en iakttakelse, et
-                møte, en befaring eller en uttalelse fra intern fagperson. Notatet vil ikke være synlig på brukers side
-                på nav.no, men bruker vil kunne be om innsyn i det.
-              </Tekst>
-            </List.Item>
-            <List.Item>
-              <Etikett>Eksterne saksopplysninger: </Etikett>
-              <Tekst>
-                Opplysninger som gjengir innholdet i en henvendelse eller dialog med tredjepart. Bruker vil få innsyn i
-                notatet på innlogget side på nav.no fra første virkedag etter at det er ferdigstilt.
-              </Tekst>
-            </List.Item>
-          </List>
+          <Box marginBlock="space-12" asChild>
+            <List data-aksel-migrated-v8 size="small" as="ul">
+              <List.Item>
+                <Etikett>Interne saksopplysninger:</Etikett>
+                <Tekst>
+                  Opplysninger som kan ha betydning for saken som for eksempel gjengir innholdet i en iakttakelse, et
+                  møte, en befaring eller en uttalelse fra intern fagperson. Notatet vil ikke være synlig på brukers
+                  side på nav.no, men bruker vil kunne be om innsyn i det.
+                </Tekst>
+              </List.Item>
+              <List.Item>
+                <Etikett>Eksterne saksopplysninger: </Etikett>
+                <Tekst>
+                  Opplysninger som gjengir innholdet i en henvendelse eller dialog med tredjepart. Bruker vil få innsyn
+                  i notatet på innlogget side på nav.no fra første virkedag etter at det er ferdigstilt.
+                </Tekst>
+              </List.Item>
+            </List>
+          </Box>
         </ReadMore>
         <Box paddingBlock="6 0">
           <ToggleGroup

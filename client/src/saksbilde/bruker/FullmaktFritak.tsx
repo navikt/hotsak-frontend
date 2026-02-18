@@ -1,4 +1,4 @@
-import { Heading, List } from '@navikt/ds-react'
+import { Heading, List, Box } from '@navikt/ds-react'
 import { TextContainer } from '../../felleskomponenter/typografi'
 import { HeadingProps } from './Signatur'
 
@@ -12,12 +12,14 @@ export function FullmaktFritak({ navn, headingLevel }: FullmaktFritakProps) {
       <Heading level={headingLevel} size="small" spacing={true}>
         Fullmakt med fritak for signatur
       </Heading>
-      <List as="ul" size="small">
-        <List.Item>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</List.Item>
-        <List.Item>
-          {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at Nav kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
-        </List.Item>
-      </List>
+      <Box marginBlock="space-12" asChild>
+        <List data-aksel-migrated-v8 as="ul" size="small">
+          <List.Item>Fullmakt på papir er ikke innhentet på grunn av korona-situasjonen</List.Item>
+          <List.Item>
+            {`${navn} er kjent med hvilke hjelpemidler det søkes om, er informert om sine rettigheter og plikter, og om at Nav kan innhente nødvendige opplysninger for å behandle søknaden.`}{' '}
+          </List.Item>
+        </List>
+      </Box>
     </TextContainer>
   )
 }

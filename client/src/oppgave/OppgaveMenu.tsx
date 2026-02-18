@@ -65,7 +65,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           Overta oppgave
         </ActionMenu.Item>
       )}
-      {oppgaveErPåVent && (
+      {oppgaveErUnderBehandlingAvInnloggetAnsatt && oppgaveErPåVent && (
         <ActionMenu.Item
           onSelect={async (event) => {
             event.stopPropagation()

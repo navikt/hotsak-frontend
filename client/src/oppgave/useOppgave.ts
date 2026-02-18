@@ -23,7 +23,7 @@ export interface UseOppgaveResponse extends Omit<SWRResponse<OppgaveV2, HttpErro
 
 export function useOppgave(): UseOppgaveResponse {
   const oppgaveId = useOppgaveId()
-  const { data: oppgave, ...rest } = useSwr<OppgaveV2>(oppgaveId ? `/api/oppgaver-v2/${oppgaveId}` : null)
+  const { data: oppgave, ...rest } = useSwr<OppgaveV2>(oppgaveId ? `/api/oppgaver/${oppgaveId}` : null)
   return {
     oppgave,
     ...rest,

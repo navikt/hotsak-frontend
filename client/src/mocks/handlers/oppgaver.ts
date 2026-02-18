@@ -16,13 +16,13 @@ export interface OppgaveParams {
 }
 
 export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, saksbehandlerStore }) => [
-  http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver-v2/sok`, async ({ request }) => {
+  http.post<never, FinnOppgaverRequest, FinnOppgaverResponse>(`/api/oppgaver/sok`, async ({ request }) => {
     await delay(200)
     const response = await oppgaveStore.finn(await request.json())
     return HttpResponse.json(response)
   }),
 
-  http.get<OppgaveParams>('/api/oppgaver-v2/:oppgaveId', async ({ params }) => {
+  http.get<OppgaveParams>('/api/oppgaver/:oppgaveId', async ({ params }) => {
     const { oppgaveId } = params
     const oppgave = await oppgaveStore.hent(oppgaveId)
     await delay(75)
@@ -32,18 +32,18 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return HttpResponse.json(oppgave)
   }),
 
-  http.get<never, never, Oppgavebehandlere>('/api/oppgaver-v2/:oppgaveId/behandlere', async () => {
+  http.get<never, never, Oppgavebehandlere>('/api/oppgaver/:oppgaveId/behandlere', async () => {
     const behandlere = await saksbehandlerStore.alle()
     await delay(75)
     return HttpResponse.json({ behandlere })
   }),
 
-  http.get<never, never, any[]>('/api/oppgaver-v2/:oppgaveId/kommentarer', async () => {
+  http.get<never, never, any[]>('/api/oppgaver/:oppgaveId/kommentarer', async () => {
     await delay(75)
     return HttpResponse.json([])
   }),
 
-  http.post<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.post<OppgaveParams>(`/api/oppgaver/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
     await oppgaveStore.tildel(oppgaveId)
     if (!erInternOppgaveId(oppgaveId)) {
@@ -53,7 +53,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
-  http.delete<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/tildeling`, async ({ params }) => {
+  http.delete<OppgaveParams>(`/api/oppgaver/:oppgaveId/tildeling`, async ({ params }) => {
     const { oppgaveId } = params
     await oppgaveStore.fjernTildeling(oppgaveId)
     if (!erInternOppgaveId(oppgaveId)) {
@@ -63,7 +63,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
-  http.put<OppgaveParams, { behandlingstema?: string }>(`/api/oppgaver-v2/:oppgaveId`, async ({ request, params }) => {
+  http.put<OppgaveParams, { behandlingstema?: string }>(`/api/oppgaver/:oppgaveId`, async ({ request, params }) => {
     const { behandlingstema } = await request.json()
     const { oppgaveId } = params
     if (!behandlingstema) {
@@ -74,7 +74,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
-  http.get<OppgaveParams>(`/api/oppgaver-v2/:oppgaveId/gjelder`, async ({ params }) => {
+  http.get<OppgaveParams>(`/api/oppgaver/:oppgaveId/gjelder`, async ({ params }) => {
     const { oppgaveId } = params
     const result = await oppgaveStore.hentGjelderInfo(oppgaveId)
     const { behandlingstema, behandlingstype, alternativer } = result ?? {

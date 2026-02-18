@@ -51,7 +51,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
 
   const { execute, state } = useActionState()
 
-  const mutateOppgave = () => mutate(`/api/oppgaver-v2/${oppgaveId}`)
+  const mutateOppgave = () => mutate(`/api/oppgaver/${oppgaveId}`)
   const mutateOppgaveOgSak = () => {
     if (sakId) {
       return Promise.all([mutateOppgave(), mutateSak(sakId)])
@@ -62,7 +62,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
   return {
     async endreOppgavetildeling(request) {
       return execute(async () => {
-        await http.post(`/api/oppgaver-v2/${oppgaveId}/tildeling`, request, {
+        await http.post(`/api/oppgaver/${oppgaveId}/tildeling`, request, {
           versjon,
         })
         if (isOppgaveContext) {
@@ -73,7 +73,7 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
 
     async fjernOppgavetildeling() {
       return execute(async () => {
-        await http.delete(`/api/oppgaver-v2/${oppgaveId}/tildeling`, {
+        await http.delete(`/api/oppgaver/${oppgaveId}/tildeling`, {
           versjon,
         })
         if (isOppgaveContext) {

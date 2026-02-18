@@ -8,7 +8,7 @@ export type UseOpppgavesøkResponse = SWRResponse<FinnOppgaverResponse, HttpErro
 
 export function useOpppgavesøk(request?: FinnOppgaverRequest): UseOpppgavesøkResponse {
   return useSWR(
-    () => (request ? ['/api/oppgaver-v2/sok', request] : null),
+    () => (request ? ['/api/oppgaver/sok', request] : null),
     (request) => {
       const [url, body] = request
       return http.post<FinnOppgaverRequest, FinnOppgaverResponse>(url, body)

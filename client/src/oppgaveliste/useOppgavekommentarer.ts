@@ -12,5 +12,5 @@ export interface OppgaveKommentar {
 }
 
 export function useOppgavekommentarer(oppgaveId?: Nullable<OppgaveId>) {
-  return useSWR<OppgaveKommentar[], HttpError>(oppgaveId ? `/api/oppgaver-v2/${oppgaveId}/kommentarer` : null)
+  return useSWR<OppgaveKommentar[], HttpError>(oppgaveId ? `/api/oppgaver/${oppgaveId}/kommentarer` : null)
 }

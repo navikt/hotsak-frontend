@@ -13,7 +13,7 @@ export function useOppgavebehandlere(): Oppgavebehandlere & {
 } {
   const { oppgaveId } = useOppgave().oppgave ?? {}
   const { data, error, mutate, isValidating } = useSwr<Oppgavebehandlere>(
-    oppgaveId ? `/api/oppgaver-v2/${oppgaveId}/behandlere` : null
+    oppgaveId ? `/api/oppgaver/${oppgaveId}/behandlere` : null
   )
   if (error) {
     return { behandlere: [], mutate, isValidating }

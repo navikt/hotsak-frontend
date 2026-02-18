@@ -98,7 +98,11 @@ export function HjelpemiddelV2({
             )}
             <HStack gap="space-4" align={'center'}>
               {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
-                <Tag size="xsmall" variant="warning-moderate">{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
+                <Tag
+                  data-color="warning"
+                  size="xsmall"
+                  variant="moderate"
+                >{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
               ) : (
                 <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
               )}
@@ -115,7 +119,7 @@ export function HjelpemiddelV2({
               {harAlternativeProdukter && (
                 <>
                   <Tekst textColor="subtle">|</Tekst>
-                  <Tag size="xsmall" variant="info-moderate">
+                  <Tag data-color="info" size="xsmall" variant="moderate">
                     Har alternativliste
                   </Tag>
                 </>

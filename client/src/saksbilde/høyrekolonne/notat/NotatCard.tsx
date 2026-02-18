@@ -30,7 +30,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             </Tag>
 
             {notat.klassifisering === NotatKlassifisering.EKSTERNE_SAKSOPPLYSNINGER && (
-              <Tag variant="success-moderate" size="small">
+              <Tag data-color="success" variant="moderate" size="small">
                 Synlig for bruker
               </Tag>
             )}

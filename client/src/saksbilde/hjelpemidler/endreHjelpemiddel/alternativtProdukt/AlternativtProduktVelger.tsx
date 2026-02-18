@@ -18,7 +18,11 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
     <>
       <Box paddingBlock={'space-0 space-16'}>
         {lagerStatusOppdatert && (
-          <Tag size="small" variant="neutral-moderate">{`Oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Tag>
+          <Tag
+            data-color="neutral"
+            size="small"
+            variant="moderate"
+          >{`Oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Tag>
         )}
       </Box>
       <Controller

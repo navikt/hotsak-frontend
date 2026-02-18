@@ -85,17 +85,25 @@ export function Hjelpemiddel({
             />
             <HStack gap="space-8">
               {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
-                <Tag size="xsmall" variant="warning">{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
+                <Tag
+                  data-color="warning"
+                  size="xsmall"
+                  variant="outline"
+                >{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
               ) : (
-                <Tag size="small" variant="neutral">{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
+                <Tag
+                  data-color="neutral"
+                  size="small"
+                  variant="outline"
+                >{`Rangering: ${hjelpemiddel.produkt.rangering}`}</Tag>
               )}
               {minmaxStyrt && (
-                <Tag variant="neutral" size="small">
+                <Tag data-color="neutral" variant="outline" size="small">
                   Min/max lagervare
                 </Tag>
               )}
               {harAlternativeProdukter && (
-                <Tag size="small" variant="info">
+                <Tag data-color="info" size="small" variant="outline">
                   {harOppdatertLagerstatus
                     ? `${alternativeProdukter.length} alternativer på lager`
                     : 'Har alternativliste'}

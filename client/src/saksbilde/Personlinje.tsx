@@ -67,17 +67,17 @@ export function Personlinje({ person, loading, skjulTelefonnummer = false }: Per
         </Element>
       )}
       {dødsdato && (
-        <Tag size="small" variant="warning">
+        <Tag data-color="warning" size="small" variant="outline">
           Død {formaterDato(dødsdato)}
         </Tag>
       )}
       {adressebeskyttelse && (
-        <Tag size="small" variant="error">
+        <Tag data-color="danger" size="small" variant="outline">
           {AdressebeskyttelseAlert[adressebeskyttelse]}
         </Tag>
       )}
       {adressebeskyttelseOgSkjerming?.skjermet && (
-        <Tag size="small" variant="error">
+        <Tag data-color="danger" size="small" variant="outline">
           Skjermet
         </Tag>
       )}

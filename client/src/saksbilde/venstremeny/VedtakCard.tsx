@@ -46,7 +46,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   if (sak.saksstatus === OppgaveStatusType.HENLAGT) {
     return (
       <VenstremenyCard heading="Henlagt">
-        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+        <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
@@ -59,7 +59,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   if (sak.vedtak && sak.vedtak.status === VedtakStatusType.INNVILGET) {
     return (
       <VenstremenyCard heading="Vedtak">
-        <Tag data-cy="tag-soknad-status" variant="success" size="small">
+        <Tag variant="outline" data-color="success" data-cy="tag-soknad-status" size="small">
           Innvilget
         </Tag>
         <StatusTekst>
@@ -72,7 +72,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   if (sak.saksstatus === OppgaveStatusType.SENDT_GOSYS) {
     return (
       <VenstremenyCard heading="Overført">
-        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+        <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Overført til Gosys
         </Tag>
         <StatusTekst>

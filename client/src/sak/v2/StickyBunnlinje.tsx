@@ -56,7 +56,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
             </HStack>
           )}
           {!oppgaveFerdigstilt && (
-            <Tag variant="neutral-moderate" size="small">
+            <Tag data-color="neutral" variant="moderate" size="small">
               {OppgaveStatusLabel.get(sak.saksstatus)}
             </Tag>
           )}

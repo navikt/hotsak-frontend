@@ -140,7 +140,7 @@ export const oppgaveColumns = {
       const prioritet = OppgaveprioritetLabel[row.prioritet]
       if (row.prioritet === Oppgaveprioritet.HØY) {
         return (
-          <Tag size="small" variant="warning" className={classes.tag}>
+          <Tag data-color="warning" size="small" variant="warning-moderate" className={classes.tag}>
             {prioritet}
           </Tag>
         )

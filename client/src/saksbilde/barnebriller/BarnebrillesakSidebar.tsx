@@ -63,7 +63,7 @@ export function BarnebrillesakSidebar() {
               <>
                 <NotePencilIcon title="Notat" />
                 {!henterNotater && (
-                  <Tag variant="neutral-moderate" size="xsmall" style={{ position: 'relative' }}>
+                  <Tag data-color="neutral" variant="moderate" size="xsmall" style={{ position: 'relative' }}>
                     {antallNotater}
                     {harUtkast && <NotificationBadge />}
                   </Tag>

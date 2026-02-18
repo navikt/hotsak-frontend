@@ -53,14 +53,14 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                     {lagerstatus ? (
                       <HStack gap="space-4">
                         <>
-                          <Tag variant="success-moderate" size="small">
+                          <Tag data-color="success" variant="moderate" size="small">
                             {lagerstatus.amountInStock} stk på lager
                           </Tag>
                           <LagerstatusUtregning lagerstatus={lagerstatus} />
                         </>
                       </HStack>
                     ) : (
-                      <Tag variant="success-moderate" size="small">
+                      <Tag data-color="success" variant="moderate" size="small">
                         Ukjent
                       </Tag>
                     )}

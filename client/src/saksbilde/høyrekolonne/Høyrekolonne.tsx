@@ -47,7 +47,7 @@ export function Høyrekolonne() {
                 <>
                   <WheelchairIcon title="Utlånsoversikt" />
                   {!isLoading && !error && (
-                    <Tag variant="neutral-moderate" size="xsmall">
+                    <Tag data-color="neutral" variant="moderate" size="xsmall">
                       {antallUtlånteHjelpemidler}
                     </Tag>
                   )}
@@ -64,7 +64,8 @@ export function Høyrekolonne() {
                     <NotePencilIcon title="Notat" />
                     {!henterNotater && (
                       <Tag
-                        variant="neutral-moderate"
+                        data-color="neutral"
+                        variant="moderate"
                         size="xsmall"
                         style={{ position: 'relative' }}
                         data-testid="notatteller"

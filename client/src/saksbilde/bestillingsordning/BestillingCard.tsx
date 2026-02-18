@@ -63,7 +63,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   if (bestilling.saksstatus === OppgaveStatusType.HENLAGT) {
     return (
       <VenstremenyCard heading="Henlagt">
-        <Tag data-cy="tag-soknad-status" variant="info" size="small">
+        <Tag data-color="info" data-cy="tag-soknad-status" variant="outline" size="small">
           Henlagt
         </Tag>
         <StatusTekst>
@@ -76,7 +76,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   if (bestilling.saksstatus === OppgaveStatusType.FERDIGSTILT) {
     return (
       <VenstremenyCard>
-        <Tag data-cy="tag-soknad-status" variant="success" size="small">
+        <Tag data-color="success" data-cy="tag-soknad-status" variant="outline" size="small">
           Ferdigstilt
         </Tag>
         <StatusTekst>
@@ -89,7 +89,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   if (bestilling.saksstatus === OppgaveStatusType.AVVIST) {
     return (
       <VenstremenyCard>
-        <Tag data-cy="tag-soknad-status" variant="error" size="small">
+        <Tag data-color="danger" data-cy="tag-soknad-status" variant="outline" size="small">
           Avvist
         </Tag>
         <StatusTekst>

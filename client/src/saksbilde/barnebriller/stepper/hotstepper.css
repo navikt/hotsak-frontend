@@ -19,8 +19,6 @@
 
 .hot-stepper__item {
   display: grid;
-  /* grid-template-rows: [line-1] auto [step-start] var(--navds-stepper-circle-size); */
-  /* grid-template-columns: var(--navds-stepper-circle-size) auto;  */
   justify-items: flex-start;
   gap: 0.6rem;
 }
@@ -108,7 +106,6 @@ button.hot-stepper__step {
   flex: 1 1 100%;
   grid-template-columns: [line-1-start] 2fr [step-start] auto [line-1-end] 2.5rem;
   /* [line-2-start] auto [step-end] 1fr [line-2-end]; */
-  /* grid-template-rows: var(--navds-stepper-circle-size) auto; */
 }
 
 :where(.hot-stepper--horizontal) .hot-stepper__line {
@@ -137,7 +134,6 @@ button.hot-stepper__step {
   grid-row: 1 / -1;
   grid-column: step;
   display: grid;
-  /* grid-template-rows: [circle] var(--navds-stepper-circle-size); */
   grid-template-columns: [content-start] auto;
   /* [content-end] auto; */
   justify-items: center;

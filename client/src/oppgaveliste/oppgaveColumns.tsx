@@ -6,12 +6,13 @@ import { type DataGridColumn } from '../felleskomponenter/data/DataGrid.tsx'
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
 import { FormatDate } from '../felleskomponenter/format/FormatDate.tsx'
 import {
+  type Oppgave,
   Oppgaveprioritet,
   OppgaveprioritetLabel,
   Oppgavetype,
   OppgavetypeLabel,
-  type OppgaveV2,
 } from '../oppgave/oppgaveTypes.ts'
+import { OppgaveStatusLabel } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 
@@ -20,7 +21,7 @@ import { TaEllerÅpneOppgave } from './TaEllerÅpneOppgave.tsx'
 import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 
 type OppgaveColumns = {
-  [K in string]: DataGridColumn<OppgaveV2> & { field: K }
+  [K in string]: DataGridColumn<Oppgave> & { field: K }
 }
 
 export const oppgaveColumns = {
@@ -233,6 +234,18 @@ export const oppgaveColumns = {
       return null
     },
   },
+  saksstatus: {
+    field: 'saksstatus',
+    header: 'Saksstatus',
+    width: 200,
+    renderCell(row) {
+      const sak = row.sak
+      if (!sak) {
+        return null
+      }
+      return OppgaveStatusLabel.get(sak.saksstatus)
+    },
+  },
   opprettetTidspunkt: {
     field: 'opprettetTidspunkt',
     header: 'Opprettet',
@@ -278,7 +291,7 @@ export const oppgaveColumns = {
 
 export type OppgaveColumnField = keyof typeof oppgaveColumns
 
-export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<OppgaveV2> {
+export function getOppgaveColumn(id: OppgaveColumnField): DataGridColumn<Oppgave> {
   const column = oppgaveColumns[id]
   if (column == null) {
     throw new Error(`Fant ikke kolonne: ${id}`)

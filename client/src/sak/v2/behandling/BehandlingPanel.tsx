@@ -12,7 +12,7 @@ import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.t
 import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
-import { formaterDato, formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
+import { formaterDato, formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
@@ -85,7 +85,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
 
                   {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
                     <InlineMessage status="info" size="small">
-                      Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLesevennlig(brevMetadata?.sendt!)}
+                      Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLang(brevMetadata?.sendt!)}
                     </InlineMessage>
                   )}
 

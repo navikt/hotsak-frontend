@@ -1,11 +1,11 @@
 import { addBusinessDays, parseISO } from 'date-fns'
 
 import {
+  type Oppgave,
   type Oppgavekategorisering,
   Oppgaveprioritet,
   Oppgavestatus,
   Oppgavetype,
-  type OppgaveV2,
   Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
 import { beregnAlder } from '../../utils/dato.ts'
@@ -14,7 +14,7 @@ import { enheter } from './enheter.ts'
 import { LagretJournalpost } from './lagJournalpost.ts'
 import { type LagretHjelpemiddelsak, type LagretSak } from './lagSak.ts'
 
-export type LagretOppgave = OppgaveV2
+export type LagretOppgave = Oppgave
 export type InsertOppgave = LagretOppgave
 
 export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering): InsertOppgave {
@@ -50,7 +50,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
       fulltNavn: formaterNavn(sak.innsender.navn),
     },
     sakId,
-    sak: { sakId, sakstype: sak.sakstype, søknadId: '', søknadGjelder: sak.søknadGjelder },
+    sak: { sakId, sakstype: sak.sakstype, saksstatus: sak.saksstatus, søknadId: '', søknadGjelder: sak.søknadGjelder },
     behandlesAvApplikasjon: 'HOTSAK',
     mappeId: undefined, // fixme
     mappenavn: undefined, // fixme

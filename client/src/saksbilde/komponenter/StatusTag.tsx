@@ -1,6 +1,5 @@
-import styled from 'styled-components'
-
 import { Tag } from '@navikt/ds-react'
+import styled from 'styled-components'
 
 import { OppgaveStatusLabel, OppgaveStatusType, VedtakStatusLabel, VedtakStatusType } from '../../types/types.internal'
 
@@ -31,7 +30,6 @@ const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) 
       if (vedtakStatus && vedtakStatus === VedtakStatusType.AVSLÅTT) return 'error'
       else return 'info'
     case OppgaveStatusType.AVVIST:
-    case OppgaveStatusType.RETURNERT:
       return 'error'
     default:
       return 'info'
@@ -40,6 +38,4 @@ const tagVariant = (status: OppgaveStatusType, vedtakStatus?: VedtakStatusType) 
 
 const TagWrapper = styled.div`
   white-space: nowrap;
-  //margin: auto;
-  //padding-right: var(--ax-space-16);
 `

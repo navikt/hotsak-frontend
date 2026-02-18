@@ -1,12 +1,12 @@
 import { Button, ButtonProps } from '@navikt/ds-react'
 import { MouseEventHandler } from 'react'
 
-import { OppgaveId, OppgaveV2 } from './oppgaveTypes.ts'
+import { Oppgave, OppgaveId } from './oppgaveTypes.ts'
 import classes from './TaOppgaveButton.module.css'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 
 export interface TaOppgaveButtonProps {
-  oppgave: OppgaveV2
+  oppgave: Oppgave
   variant?: ButtonProps['variant']
   size?: ButtonProps['size']
   overta?: boolean

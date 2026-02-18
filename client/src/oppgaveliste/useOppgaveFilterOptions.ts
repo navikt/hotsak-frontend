@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilter.ts'
-import { Oppgavetype, OppgavetypeLabel, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave, Oppgavetype, OppgavetypeLabel } from '../oppgave/oppgaveTypes.ts'
 import { useIsSaksbehandlerBarnebriller } from '../tilgang/useTilgang.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 
@@ -11,7 +11,7 @@ export type OppgaveFilterOptions = Partial<
   Record<OppgaveColumnField, ReadonlySet<string> | ReadonlyMap<string, string>>
 >
 
-export function useOppgaveFilterOptions(oppgaver: OppgaveV2[]): OppgaveFilterOptions {
+export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptions {
   const isSaksbehandlerBarnebriller = useIsSaksbehandlerBarnebriller()
   return useMemo(() => {
     return {

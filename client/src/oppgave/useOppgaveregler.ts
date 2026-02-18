@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { type OppgaveV2, Statuskategori } from './oppgaveTypes.ts'
+import { type Oppgave, Statuskategori } from './oppgaveTypes.ts'
 
 export interface UseOppgavereglerResponse {
   /**
@@ -41,7 +41,7 @@ const initialResponse: UseOppgavereglerResponse = {
   oppgaveErPåVent: false,
 }
 
-export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse {
+export function useOppgaveregler(oppgave?: Oppgave): UseOppgavereglerResponse {
   const { id: ansattId } = useInnloggetAnsatt()
   return useMemo(() => {
     if (!oppgave) return initialResponse

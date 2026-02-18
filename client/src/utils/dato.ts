@@ -34,26 +34,24 @@ export function formaterTidsstempel(dato?: string): string {
   return format(dato.endsWith('Z') ? dato : dato + 'Z', 'Pp')
 }
 
-export function formaterTidsstempelLesevennlig(dato?: string): string {
+export function formaterTidsstempelLang(dato?: string): string {
   if (!dato) return ''
   return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM.yyyy 'kl.' HH.mm")
-}
-
-export function formaterRelativTid(dato?: string): string {
-  if (!dato) return ''
-
-  const parsedDate = dato.endsWith('Z') ? parseISO(dato) : parseISO(dato + 'Z')
-  if (isToday(dato)) {
-    return `I dag kl ${format(dato, 'HH:mm')}`
-  }
-
-  const now = new Date()
-  return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }).replace('omtrent', '')
 }
 
 export function formaterTidsstempelKort(dato?: string): string {
   if (!dato) return ''
   return format(dato.endsWith('Z') ? dato : dato + 'Z', "dd.MM 'kl.' HH.mm")
+}
+
+export function formaterRelativTid(dato?: string): string {
+  if (!dato) return ''
+  const parsedDate = dato.endsWith('Z') ? parseISO(dato) : parseISO(dato + 'Z')
+  if (isToday(dato)) {
+    return `I dag kl ${format(dato, 'HH:mm')}`
+  }
+  const now = new Date()
+  return formatDistance(parsedDate, now, { addSuffix: true, locale: nb }).replace('omtrent', '')
 }
 
 export function tilDato(verdi?: Date | number | string): Date | undefined {

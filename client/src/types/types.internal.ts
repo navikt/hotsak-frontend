@@ -1,4 +1,4 @@
-import type { OppgaveId, OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import type { Oppgave } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
@@ -19,11 +19,6 @@ export enum TilgangType {
 export enum TilgangResultat {
   TILLAT = 'TILLAT',
   NEKT = 'NEKT',
-}
-
-export interface OppgaveVersjon {
-  oppgaveId?: OppgaveId
-  versjon?: number
 }
 
 export interface SakBase {
@@ -464,7 +459,7 @@ export interface Journalpost {
   fnrInnsender: string
   journalstatus: JournalpostStatusType
   dokumenter: Dokument[]
-  oppgave: OppgaveV2
+  oppgave: Oppgave
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
 }
@@ -538,29 +533,37 @@ export enum JournalpostStatusType {
 
 /**
  * Kombinert saks- og oppgavetype.
+ *
+ * todo -> rename til `Sakstype`
  */
 export enum OppgaveStatusType {
-  AVVENTER_JOURNALFØRING = 'AVVENTER_JOURNALFORING',
+  AVVENTER_JOURNALFORING = 'AVVENTER_JOURNALFORING',
+
   AVVENTER_SAKSBEHANDLER = 'AVVENTER_SAKSBEHANDLER',
   TILDELT_SAKSBEHANDLER = 'TILDELT_SAKSBEHANDLER',
-  TILDELT_GODKJENNER = 'TILDELT_GODKJENNER',
-  RETURNERT = 'RETURNERT',
-  SENDT_GOSYS = 'SENDT_GOSYS',
-  AVVIST = 'AVVIST',
-  AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
+
   AVVENTER_DOKUMENTASJON = 'AVVENTER_DOKUMENTASJON',
+
+  // Totrinnskontroll
+  AVVENTER_GODKJENNER = 'AVVENTER_GODKJENNER',
+  TILDELT_GODKJENNER = 'TILDELT_GODKJENNER',
+
+  // Kun for søknad
+  SENDT_GOSYS = 'SENDT_GOSYS', // OVERFØRT_GOSYS
   VEDTAK_FATTET = 'VEDTAK_FATTET',
-  INNVILGET = 'INNVILGET',
-  AVSLÅTT = 'AVSLÅTT',
-  FERDIGSTILT = 'FERDIGSTILT',
-  ALLE = 'ALLE',
+
+  // Kun for bestilling
+  FERDIGSTILT = 'FERDIGSTILT', // BESTILLING_GODKJENT
+  AVVIST = 'AVVIST', // BESTILLING_AVVIST
+
   HENLAGT = 'HENLAGT',
+  ANNULERT = 'ANNULERT',
 }
 
 /**
  * NB! Heter Statuskategori i backend.
  *
- * todo -> rename til StatuskategoriSak el.
+ * todo -> rename til `StatuskategoriSak` el.
  */
 export enum BehandlingstatusType {
   PÅ_VENT = 'PÅ_VENT',
@@ -568,21 +571,22 @@ export enum BehandlingstatusType {
   LUKKET = 'LUKKET',
 }
 
+/**
+ * todo -> rename til `SakstypeLabel`
+ */
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
-  [OppgaveStatusType.ALLE, 'Alle'],
-  [OppgaveStatusType.INNVILGET, 'Innvilget'],
-  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
-  [OppgaveStatusType.AVSLÅTT, 'Avslått'],
+  [OppgaveStatusType.AVVENTER_JOURNALFORING, 'Ikke journalført'],
   [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
-  [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
-  [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
   [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+  [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
+  [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
   [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
+  [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
+  [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],
-  [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
-  [OppgaveStatusType.RETURNERT, 'Returnert'],
   [OppgaveStatusType.HENLAGT, 'Henlagt'],
+  [OppgaveStatusType.ANNULERT, 'Annulert'],
 ])
 
 export enum VedtakStatusType {

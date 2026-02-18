@@ -7,12 +7,12 @@ import {
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
   type GjelderAlternativerResponse,
+  type Oppgave,
   type OppgaveId,
   type OppgaveKodeverk,
   Oppgavestatus,
   OppgaveTildelt,
   Oppgavetype,
-  type OppgaveV2,
   Statuskategori,
 } from '../../oppgave/oppgaveTypes.ts'
 import { Sakstype } from '../../types/types.internal.ts'
@@ -88,7 +88,7 @@ export class OppgaveStore extends Dexie {
     return this.oppgaver.bulkAdd(oppgaver, { allKeys: true })
   }
 
-  async hent(oppgaveId: OppgaveId): Promise<OppgaveV2 | undefined> {
+  async hent(oppgaveId: OppgaveId): Promise<Oppgave | undefined> {
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {
       return
@@ -96,7 +96,7 @@ export class OppgaveStore extends Dexie {
     return oppgave
   }
 
-  async finnOppgaveForJournalpostId(journalpostId: string): Promise<OppgaveV2 | undefined> {
+  async finnOppgaveForJournalpostId(journalpostId: string): Promise<Oppgave | undefined> {
     return this.oppgaver.filter((oppgave) => oppgave.journalpostId === journalpostId).first()
   }
 
@@ -207,7 +207,7 @@ export class OppgaveStore extends Dexie {
             break
         }
         const direction = request.sorteringsrekkefølge ?? 'none'
-        const comparator = compareBy<OppgaveV2>(select(key), direction)
+        const comparator = compareBy<Oppgave>(direction, select(key))
         return comparator(a, b)
       })
 

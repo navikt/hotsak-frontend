@@ -2,7 +2,7 @@ import { lazy } from 'react'
 
 import { DokumentProvider } from '../dokument/DokumentContext.tsx'
 import { OppgaveProvider } from './OppgaveProvider.tsx'
-import { Oppgavetype, type OppgaveV2 } from './oppgaveTypes.ts'
+import { type Oppgave, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgave } from './useOppgave.ts'
 
 const Journalføring = lazy(() => import('../journalføring/Journalføring.tsx'))
@@ -20,7 +20,7 @@ export default function Oppgave() {
   )
 }
 
-function OppgavetypeSwitch({ oppgave }: { oppgave: OppgaveV2 }) {
+function OppgavetypeSwitch({ oppgave }: { oppgave: Oppgave }) {
   switch (oppgave.kategorisering.oppgavetype) {
     case Oppgavetype.JOURNALFØRING:
       return (

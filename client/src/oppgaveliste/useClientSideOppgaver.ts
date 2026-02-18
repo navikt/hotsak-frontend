@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { DataGridCollection } from '../felleskomponenter/data/DataGridCollection.ts'
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
 import { type HttpError } from '../io/HttpError.ts'
-import { type FinnOppgaverRequest, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type FinnOppgaverRequest, type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { useOpppgavesøk } from '../oppgave/useOppgavesøk.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
@@ -22,10 +22,10 @@ import { type OppgaveFilterOptions, useOppgaveFilterOptions } from './useOppgave
 
 const pageNumber = 1
 const pageSize = 1_000
-const ingenOppgaver: OppgaveV2[] = []
+const ingenOppgaver: Oppgave[] = []
 
 export interface UseClientSideOppgaverResponse {
-  oppgaver: ReadonlyArray<OppgaveV2>
+  oppgaver: ReadonlyArray<Oppgave>
   totalElements: number
   error?: HttpError
   isLoading: boolean

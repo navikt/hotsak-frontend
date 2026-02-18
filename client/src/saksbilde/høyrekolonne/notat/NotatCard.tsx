@@ -5,7 +5,7 @@ import { Box, Button, Heading, HStack, Spacer, Tag, VStack } from '@navikt/ds-re
 import { useRef, useState } from 'react'
 import { Tekst, Undertittel } from '../../../felleskomponenter/typografi.tsx'
 import { Notat, NotatKlassifisering, NotatType } from '../../../types/types.internal.ts'
-import { formaterTidsstempelLesevennlig } from '../../../utils/dato.ts'
+import { formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { useIsClamped } from '../../../utils/useIsClamped.ts'
 import { MardownEditorPreviewStyling } from './markdown/MarkdownEditor.tsx'
 import { NotatActions } from './NotatActions.tsx'
@@ -43,7 +43,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             </Heading>
           </HStack>
           <VStack>
-            <Tekst>{formaterTidsstempelLesevennlig(notat.ferdigstilt)}</Tekst>
+            <Tekst>{formaterTidsstempelLang(notat.ferdigstilt)}</Tekst>
             <Undertittel>{notat.saksbehandler.navn}</Undertittel>
           </VStack>
         </VStack>

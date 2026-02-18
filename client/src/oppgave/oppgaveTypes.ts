@@ -1,7 +1,7 @@
 import type { SortState } from '@navikt/ds-react'
 
 import type { PageResponse } from '../felleskomponenter/Page.ts'
-import type { Bydel, Enhet, Kommune, Navn, Saksbehandler, Sakstype } from '../types/types.internal'
+import type { Bydel, Enhet, Kommune, Navn, OppgaveStatusType, Saksbehandler, Sakstype } from '../types/types.internal'
 import { type IntervalString } from '../utils/dato.ts'
 import { isInteger, isString } from '../utils/type.ts'
 
@@ -100,7 +100,7 @@ export interface OppgaveBase {
   sakId?: string | number
 }
 
-export interface OppgaveV2 extends OppgaveBase {
+export interface Oppgave extends OppgaveBase {
   statuskategori: Statuskategori
   oppgavestatus: Oppgavestatus
   prioritet: Oppgaveprioritet
@@ -173,6 +173,7 @@ export interface OppgaveInnsender {
 export interface OppgaveSak {
   sakId: string
   sakstype: Sakstype
+  saksstatus: OppgaveStatusType
   søknadId: string
   søknadGjelder: string
 }
@@ -217,7 +218,7 @@ export interface FinnOppgaverRequest {
 }
 
 export interface FinnOppgaverResponse extends PageResponse {
-  oppgaver: OppgaveV2[]
+  oppgaver: Oppgave[]
   totalPages: number
 }
 

@@ -21,7 +21,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
   const sakId = sak.sakId
   const bruker = sak.bruker
   return {
-    oppgaveId: `E-${sakId}`,
+    oppgaveId: sakId,
     versjon: 1,
     statuskategori: Statuskategori.ÅPEN,
     oppgavestatus: Oppgavestatus.OPPRETTET,

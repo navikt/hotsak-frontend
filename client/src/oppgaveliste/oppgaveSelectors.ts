@@ -1,3 +1,5 @@
+import { parseISO } from 'date-fns'
+
 import { type OppgaveId, type Oppgaveprioritet, type Oppgavetype, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
 import { OPPGAVE_FILTER_OPTION_TOMME } from './useOppgaveFilterOptions.ts'
 
@@ -37,8 +39,10 @@ export function selectBrukerFødselsnummer(it: OppgaveV2): string | undefined {
   return it.bruker?.fnr
 }
 
-export function selectBrukerFødselsdato(it: OppgaveV2): string | undefined {
-  return it.bruker?.fødselsdato
+export function selectBrukerFødselsdato(it: OppgaveV2): Date | undefined {
+  if (it.bruker?.fødselsdato) {
+    return parseISO(it.bruker.fødselsdato)
+  }
 }
 
 export function selectBrukerAlder(it: OppgaveV2): number | undefined {

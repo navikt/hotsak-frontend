@@ -207,7 +207,7 @@ export class OppgaveStore extends Dexie {
             break
         }
         const direction = request.sorteringsrekkefølge ?? 'none'
-        const comparator = compareBy<OppgaveV2>(select(key), direction)
+        const comparator = compareBy<OppgaveV2>(direction, select(key))
         return comparator(a, b)
       })
 

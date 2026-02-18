@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
-import { type Comparator, compareBy } from '../utils/array.ts'
+import { comparator, type Comparator, compareBy } from '../utils/array.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {
   selectBrukerAlder,
@@ -17,15 +17,19 @@ export function useOppgaveComparator(): Comparator<OppgaveV2> | undefined {
   return useMemo(() => {
     switch (orderBy) {
       case 'fnr':
-        return compareBy(selectBrukerFødselsnummer, direction)
+        return compareBy(direction, selectBrukerFødselsnummer)
       case 'fødselsdato':
-        return compareBy(selectBrukerFødselsdato, direction)
+        return comparator(direction, selectBrukerFødselsdato, dayMonthYear)
       case 'alder':
-        return compareBy(selectBrukerAlder, direction)
+        return compareBy(direction, selectBrukerAlder)
       case 'ferdigstiltTidspunkt':
-        return compareBy(selectFerdigstiltTidspunkt, direction)
+        return compareBy(direction, selectFerdigstiltTidspunkt)
       default:
         return
     }
   }, [orderBy, direction])
+}
+
+function dayMonthYear(a: Date, b: Date) {
+  return a.getDate() - b.getDate() || a.getMonth() - b.getMonth() || a.getFullYear() - b.getFullYear()
 }

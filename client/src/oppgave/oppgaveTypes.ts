@@ -1,16 +1,7 @@
 import type { SortState } from '@navikt/ds-react'
 
 import type { PageResponse } from '../felleskomponenter/Page.ts'
-import type {
-  Bydel,
-  Enhet,
-  Hast,
-  Kommune,
-  Navn,
-  OppgaveStatusType,
-  Saksbehandler,
-  Sakstype,
-} from '../types/types.internal'
+import type { Bydel, Enhet, Kommune, Navn, Saksbehandler, Sakstype } from '../types/types.internal'
 import { type IntervalString } from '../utils/dato.ts'
 import { isInteger, isString } from '../utils/type.ts'
 
@@ -40,8 +31,9 @@ export function erInternOppgaveId(value: unknown): value is InternOppgaveId {
 export function erOppgaveId(value: unknown): value is OppgaveId {
   return erInternOppgaveId(value) || erEksternOppgaveId(value)
 }
-export function erOppgaveIdNull(value: unknown): value is 'E-0' {
-  return value === 'E-0'
+
+export function erOppgaveIdNull(value: unknown): value is '0' {
+  return value === '0'
 }
 
 export function oppgaveIdUtenPrefix(oppgaveId: OppgaveId): string {
@@ -250,31 +242,4 @@ export interface Oppgavetilknytning {
   ferdigstilt?: string
   feilregistrert?: string
   statuskategori: Statuskategori
-}
-
-/**
- * @deprecated Skal erstattes med `OppgaveV2`.
- */
-export interface OppgaveV1 extends OppgaveBase {
-  sakId: string
-  sakstype: Sakstype
-  status: OppgaveStatusType
-  statusEndret: string
-  beskrivelse: string
-  mottatt: string
-  innsender: string
-  bruker: OppgaveBrukerV1
-  enhet: Enhet
-  saksbehandler?: Saksbehandler
-  kanTildeles: boolean
-  hast?: Hast
-}
-
-/**
- * @deprecated Skal erstattes med `OppgaveBrukerV2`.
- */
-export interface OppgaveBrukerV1 extends Navn {
-  fnr: string
-  funksjonsnedsettelser: string[]
-  bosted: string
 }

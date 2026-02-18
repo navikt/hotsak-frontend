@@ -1,7 +1,10 @@
 import { Box, Heading, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
+import { Etikett } from '../../felleskomponenter/typografi.tsx'
 import { useArtiklerForSak } from '../../sak/felles/useArtiklerForSak.ts'
+import { useSummering } from '../../sak/v2/behovsmelding/summering/useSummering.ts'
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { type Sak } from '../../types/types.internal.ts'
 import { storForbokstavIOrd } from '../../utils/formater.ts'
@@ -17,9 +20,6 @@ import {
 } from './useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from './useHjelpemiddelprodukter.ts'
 import { Varsler } from './Varsel.tsx'
-import { useSummering } from '../../sak/v2/behovsmelding/summering/useSummering.ts'
-import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
-import { Etikett } from '../../felleskomponenter/typografi.tsx'
 
 interface HjelpemiddelListeProps {
   sak: Sak

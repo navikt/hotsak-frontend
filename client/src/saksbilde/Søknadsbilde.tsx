@@ -64,9 +64,8 @@ const SaksbildeContent = memo(() => {
           </Venstremeny>
           <section>
             <ScrollContainer>
-              {harVarsler && <Saksvarsler varsler={varsler} />}
-
               <Container>
+                {harVarsler && <Saksvarsler varsler={varsler} />}
                 <Routes>
                   <Route
                     path="/hjelpemidler"

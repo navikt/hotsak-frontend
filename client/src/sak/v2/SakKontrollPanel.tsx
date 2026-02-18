@@ -43,10 +43,10 @@ export const SakKontrollPanel = () => {
 const ToggleKnapp = ({ onToggle: onToggle, children, selected }: ToggleKnappProps) => {
   return (
     <Chips.Toggle
+      data-color="neutral"
       key={children}
       selected={selected}
       onClick={onToggle}
-      variant="neutral"
       className={clsx(selected && classes.extraNeutral)}
     >
       {children}

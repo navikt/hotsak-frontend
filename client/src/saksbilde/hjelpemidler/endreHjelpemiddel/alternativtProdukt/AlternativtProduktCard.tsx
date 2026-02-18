@@ -30,7 +30,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
       height="100%"
       borderWidth="1"
       borderColor="neutral-subtle"
-      borderRadius="large"
+      borderRadius="8"
       paddingBlock="space-16 space-8"
       paddingInline="space-16"
       selected={endretProdukt === alternativtProdukt.hmsArtNr}

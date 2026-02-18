@@ -17,7 +17,7 @@ export function Feilside({ statusCode, error }: FeilsideProps) {
       marginBlock="space-36"
       marginInline="space-64"
       padding="space-16"
-      borderRadius="large"
+      borderRadius="8"
     >
       <Heading size="large" spacing>
         {overskrift[statusCode] || 'Teknisk feil'} | <Feilkode>Feilkode {statusCode}</Feilkode>

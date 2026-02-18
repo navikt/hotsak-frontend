@@ -16,7 +16,7 @@ export function Loading({ count }: { count: number }) {
 function LoadingCard() {
   return (
     <VStack gap="space-12">
-      <Box borderWidth="1" borderColor="neutral-subtle" borderRadius="large" padding="space-16">
+      <Box borderWidth="1" borderColor="neutral-subtle" borderRadius="8" padding="space-16">
         <VStack gap="space-12">
           <Skeleton variant="rectangle" width="100%" height={185} />
           <Skeleton variant="rectangle" width="90%" height={64} />

@@ -9,7 +9,7 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
       borderWidth="1"
       borderColor="neutral-subtle"
       background="raised"
-      borderRadius="large"
+      borderRadius="8"
       marginBlock="space-28 space-0"
       padding="space-16"
       maxWidth="350px"

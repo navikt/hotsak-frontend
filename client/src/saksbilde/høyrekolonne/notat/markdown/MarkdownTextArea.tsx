@@ -19,7 +19,7 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
       <MarkdownEditorStyling>
         <Box
           marginBlock="space-0 space-0"
-          borderRadius="large"
+          borderRadius="8"
           borderColor="neutral"
           borderWidth="1"
           className="mdxEditorBox"

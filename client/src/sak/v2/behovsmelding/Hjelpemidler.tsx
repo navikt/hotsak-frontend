@@ -88,7 +88,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
             background="neutral-softA"
             borderColor="neutral-subtle"
             borderWidth="1"
-            borderRadius="large"
+            borderRadius="8"
           >
             <HjelpemiddelV2
               sak={sak}

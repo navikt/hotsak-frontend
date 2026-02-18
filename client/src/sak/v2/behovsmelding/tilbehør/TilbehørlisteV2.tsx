@@ -31,7 +31,7 @@ export function FrittStåendeTilbehørV2({
         return (
           <Box
             key={idx}
-            borderRadius="large"
+            borderRadius="8"
             padding="space-16"
             background="neutral-softA"
             borderColor="neutral-subtle"

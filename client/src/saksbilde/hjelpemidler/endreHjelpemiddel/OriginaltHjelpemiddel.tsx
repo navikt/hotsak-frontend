@@ -17,7 +17,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
 
   return (
     <>
-      <Box borderRadius="large">
+      <Box borderRadius="8">
         <HGrid columns="1fr 1fr" gap="space-16">
           <div>
             <Heading level="2" size="xsmall" spacing>

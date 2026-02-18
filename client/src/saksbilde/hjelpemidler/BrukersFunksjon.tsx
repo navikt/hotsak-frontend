@@ -28,7 +28,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
         <Box
           paddingBlock="space-8"
           paddingInline="space-12"
-          borderRadius="large"
+          borderRadius="8"
           background="neutral-softA"
           borderColor="neutral-subtle"
           borderWidth="1"

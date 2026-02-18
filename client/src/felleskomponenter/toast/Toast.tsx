@@ -14,7 +14,7 @@ export function Toast({ children }: { children: ReactNode }) {
       borderColor="brand-blue-subtle"
       borderWidth="1"
       marginInline="space-20 space-0"
-      borderRadius="large"
+      borderRadius="8"
       shadow="dialog"
       style={{ width: 'max-content', position: 'fixed', top: '14rem' }}
     >

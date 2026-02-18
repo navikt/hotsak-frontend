@@ -58,7 +58,7 @@ export function FlytendeLinkVerktøylinje() {
   const flytendeBoxProps: BoxNewProps = {
     background: 'default',
     padding: 'space-8',
-    borderRadius: 'xlarge',
+    borderRadius: '12',
     borderColor: 'neutral-subtle',
     borderWidth: '1',
     shadow: 'dialog',

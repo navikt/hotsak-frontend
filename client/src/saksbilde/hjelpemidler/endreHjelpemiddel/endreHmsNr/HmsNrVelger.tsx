@@ -26,7 +26,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
       <Box paddingBlock="space-0 space-16">
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
-      <Box padding="space-0" borderRadius="large">
+      <Box padding="space-0" borderRadius="8">
         <HStack align="start" gap="space-32" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">

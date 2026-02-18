@@ -28,7 +28,7 @@ export function LeveringCard(props: UtleveringCardProps) {
   return (
     <VenstremenyCard heading="Levering">
       <VenstremenyCardRow
-        paddingBlock={'0 2'}
+        paddingBlock={'space-0 space-8'}
         icon={lagLeveringsIkon()}
         copyText={leveringsmåte.copyText}
         title={leveringsmåte.label}
@@ -37,13 +37,13 @@ export function LeveringCard(props: UtleveringCardProps) {
       </VenstremenyCardRow>
 
       {!leveringsmåte.bydel && leveringsmåte.kommune && (
-        <VenstremenyCardRow paddingBlock={'0 2'} copyText={leveringsmåte.kommune.nummer} title="Kommune">
+        <VenstremenyCardRow paddingBlock={'space-0 space-8'} copyText={leveringsmåte.kommune.nummer} title="Kommune">
           {storForbokstavIAlleOrd(leveringsmåte.kommune.navn)} {leveringsmåte.kommune.nummer}
         </VenstremenyCardRow>
       )}
 
       {leveringsmåte.bydel && (
-        <VenstremenyCardRow paddingBlock={'0 2'} copyText={leveringsmåte.bydel.nummer} title="Bydel">
+        <VenstremenyCardRow paddingBlock={'space-0 space-8'} copyText={leveringsmåte.bydel.nummer} title="Bydel">
           {leveringsmåte.bydel.navn} {leveringsmåte.bydel.nummer}
         </VenstremenyCardRow>
       )}
@@ -51,7 +51,7 @@ export function LeveringCard(props: UtleveringCardProps) {
       {utleveringMerknad && (
         <VenstremenyCardRow
           icon={lagMerknadIkon()}
-          paddingBlock={'0 2'}
+          paddingBlock={'space-0 space-8'}
           title="Beskjed til kommunen"
           copyText={utleveringMerknad}
           skjulKopiknapp={skjulKopiknapp}

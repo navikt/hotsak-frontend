@@ -7,9 +7,9 @@ export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspør
   const { spørsmål, navn, nivå = 0, size } = props
   return (
     <Box
-      padding={nivå > 1 ? '0' : 'space-12'}
+      padding={nivå > 1 ? 'space-0' : 'space-12'}
       style={{
-        marginTop: nivå > 1 ? 'var(--ax-space-12)' : 0,
+        marginTop: nivå > 1 ? 'var(--ax-space-12)' : 'space-0',
       }}
     >
       <VStack gap="space-20">

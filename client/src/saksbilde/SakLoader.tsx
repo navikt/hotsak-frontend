@@ -4,7 +4,7 @@ import { hotsakHistorikkMinWidth, hotsakVenstremenyWidth } from '../GlobalStyles
 import { LasterPersonlinje } from './Personlinje'
 
 export function SakLoader() {
-  const spacing = '4'
+  const spacing = 'space-16'
   return (
     <>
       <LasterPersonlinje />

@@ -11,7 +11,7 @@ export function Knappepanel({
   marginBlock?: StackProps['marginBlock']
 }) {
   return (
-    <HStack gap={gap ? gap : 'space-16'} marginBlock={marginBlock ? marginBlock : 'space-24 0'}>
+    <HStack gap={gap ? gap : 'space-16'} marginBlock={marginBlock ? marginBlock : 'space-24 space-0'}>
       {children}
     </HStack>
   )

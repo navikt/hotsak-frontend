@@ -23,7 +23,7 @@ export function UtbetalingsmottakerAlert(props: UtbetalingsmottakerAlertProps) {
         <Etikett>Mangler utbetalingsmottaker</Etikett>
         <Detail>
           Ingen utbetalingsmottaker er registert. Dette må legges til under{' '}
-          <Link href="#" variant="action" inlineText onClick={() => setStep(StepType.REGISTRER)}>
+          <Link data-color="accent" href="#" inlineText onClick={() => setStep(StepType.REGISTRER)}>
             Registrer søknad
           </Link>
           .

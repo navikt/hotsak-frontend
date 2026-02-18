@@ -1,6 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
-import { OppgaveId, type OppgaveV1 } from '../../oppgave/oppgaveTypes.ts'
+import { type OppgaveId } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
 import {
@@ -23,7 +23,6 @@ import {
   type Sak,
   type Saksdokument,
   SaksdokumentType,
-  Sakstype,
   StegType,
   type Totrinnskontroll,
   type TotrinnskontrollData,
@@ -33,7 +32,6 @@ import {
   VilkårsResultat,
   type VurderVilkårRequest,
 } from '../../types/types.internal'
-import { formaterNavn } from '../../utils/formater'
 import { BehovsmeldingStore } from './BehovsmeldingStore.ts'
 import { nåIso } from './felles.ts'
 import { JournalpostStore } from './JournalpostStore.ts'
@@ -46,7 +44,6 @@ import {
   lagBarnebrillesak,
   lagHjelpemiddelsakForBehovsmeldingCase,
   type LagretBarnebrillesak,
-  type LagretHjelpemiddelsak,
   type LagretSak,
   type LagretSakshendelse,
 } from './lagSak.ts'
@@ -159,40 +156,6 @@ export class SakStore extends Dexie {
 
   async alle(): Promise<LagretSak[]> {
     return this.saker.toArray()
-  }
-
-  async oppgaver(): Promise<OppgaveV1[]> {
-    const saker = await this.alle()
-    return saker.map<OppgaveV1>(({ bruker, ...sak }) => {
-      let sakstype = sak.sakstype
-      let funksjonsnedsettelser = ['bevegelse']
-      if (sakstype === Sakstype.BARNEBRILLER) {
-        sakstype = Sakstype.TILSKUDD
-        funksjonsnedsettelser = ['syn']
-      }
-      const sakId = sak.sakId
-      return {
-        oppgaveId: `E-${sakId}`,
-        versjon: 1,
-        sakId,
-        sakstype,
-        status: sak.saksstatus,
-        statusEndret: sak.saksstatusGyldigFra,
-        beskrivelse: sak.søknadGjelder,
-        mottatt: sak.opprettet,
-        innsender: formaterNavn(sak.innsender.navn),
-        bruker: {
-          fnr: bruker.fnr,
-          funksjonsnedsettelser,
-          bosted: bruker.kommune?.navn ?? '',
-          ...bruker.navn,
-        },
-        enhet: sak.enhet,
-        saksbehandler: sak.saksbehandler,
-        kanTildeles: true,
-        hast: (sak as LagretHjelpemiddelsak)?.hast,
-      }
-    })
   }
 
   async hent(sakId: string): Promise<Sak | Barnebrillesak | undefined> {

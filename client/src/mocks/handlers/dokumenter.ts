@@ -82,7 +82,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)
 
-        return HttpResponse.json({ sakId: sakId.toString(), oppgaveId: `E-${sakId}` })
+        return HttpResponse.json({ sakId: sakId.toString(), oppgaveId: sakId })
       }
     }
   ),

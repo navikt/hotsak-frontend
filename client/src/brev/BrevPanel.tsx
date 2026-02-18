@@ -9,7 +9,7 @@ export function BrevPanel() {
   const erPanelForSmalt = size && size.width < 320
 
   return (
-    <Box.New ref={elmRef} style={{ height: '100%' }} background="default" borderRadius="large large 0 0">
+    <Box ref={elmRef} style={{ height: '100%' }} background="default" borderRadius="large large 0 0">
       {erPanelForSmalt && (
         <div style={{ paddingBlock: 'var(--ax-space-12)', paddingInline: 'var(--ax-space-8)' }}>
           <InfoCard size="small" data-color="info">
@@ -27,6 +27,6 @@ export function BrevPanel() {
           <Brev />
         </DokumentProvider>
       )}
-    </Box.New>
+    </Box>
   )
 }

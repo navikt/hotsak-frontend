@@ -26,7 +26,7 @@ export function VenstreSidebar() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <Box.New borderWidth="0 1" borderColor="neutral-subtle" background="default" height="100%">
+    <Box borderWidth="0 1" borderColor="neutral-subtle" background="default" height="100%">
       <Button
         variant="tertiary-neutral"
         size="small"
@@ -105,6 +105,6 @@ export function VenstreSidebar() {
           )}
         </ScrollablePanel>
       </Tabs>
-    </Box.New>
+    </Box>
   )
 }

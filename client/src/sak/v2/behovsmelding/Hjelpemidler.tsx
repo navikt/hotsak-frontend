@@ -60,11 +60,9 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
   return (
     <VStack gap="space-12">
       {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
-
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
-
       {hjelpemidler.length > 0 && (
         <VStack>
           <HStack align="center">
@@ -82,10 +80,9 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
           <Detail>{`Totalt ${antallHjelpemidler} stk${harTilknyttedeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler} stk tilbehør` : ''}`}</Detail>
         </VStack>
       )}
-
       {!skjulteHjelpemidler &&
         hjelpemidler.map((hjelpemiddel) => (
-          <Box.New
+          <Box
             key={hjelpemiddel.produkt.hmsArtNr}
             paddingInline="space-12"
             background="neutral-softA"
@@ -106,7 +103,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
               }
               harOppdatertLagerstatus={harOppdatertLagerstatus}
             />
-          </Box.New>
+          </Box>
         ))}
       {tilbehør && tilbehør.length > 0 && (
         <>

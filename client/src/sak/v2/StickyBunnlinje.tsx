@@ -29,7 +29,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
       width="100%"
       className="z-23"
     >
-      <Box.New background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
+      <Box background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
         <HStack align="center" justify="space-between" gap="space-24">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant="primary" size="small" onClick={() => onClick()}>
@@ -61,7 +61,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
             </Tag>
           )}
         </HStack>
-      </Box.New>
+      </Box>
     </HStack>
   )
 }

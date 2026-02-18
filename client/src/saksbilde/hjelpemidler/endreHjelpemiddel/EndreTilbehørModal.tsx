@@ -98,7 +98,7 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
           aria-label={'Endre tilbehør'}
         >
           <Modal.Body style={{ scrollbarGutter: 'stable both-edges' }}>
-            <Box.New paddingBlock="space-24 0" paddingInline="space-16">
+            <Box paddingBlock="space-24 0" paddingInline="space-16">
               <OriginaltHjelpemiddel
                 navn={tilbehør.navn}
                 hmsnr={tilbehør.hmsArtNr}
@@ -111,7 +111,7 @@ export function EndreTilbehørModal(props: AlternativProduktModalProps) {
                 nåværendeHmsnr={nåværendeHmsnr}
                 produktValgt={produktValgt}
               />
-            </Box.New>
+            </Box>
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="primary" size="small" loading={submitting}>

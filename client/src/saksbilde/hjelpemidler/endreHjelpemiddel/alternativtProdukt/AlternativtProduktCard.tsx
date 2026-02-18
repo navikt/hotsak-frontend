@@ -47,7 +47,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
             <VStack paddingBlock="space-12" gap="space-8">
               <Tekst>{alternativtProdukt.supplier.name}</Tekst>
               {alternativtProdukt.wareHouseStock?.map((lagerstatus) => (
-                <Box.New key={lagerstatus?.location}>
+                <Box key={lagerstatus?.location}>
                   <Etikett>{lagerstatus?.location}: </Etikett>
                   <div>
                     {lagerstatus ? (
@@ -65,7 +65,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
                       </Tag>
                     )}
                   </div>
-                </Box.New>
+                </Box>
               ))}
             </VStack>
           </VStack>
@@ -83,9 +83,9 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           )}
         </HGrid>
       </VStack>
-      <Box.New background="accent-soft" padding="space-8" borderRadius="xlarge">
+      <Box background="accent-soft" padding="space-8" borderRadius="xlarge">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
-      </Box.New>
+      </Box>
     </ProduktCard>
   )
 }

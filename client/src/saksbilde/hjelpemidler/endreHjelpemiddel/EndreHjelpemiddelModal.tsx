@@ -146,7 +146,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
           aria-label={'Endre hjelpemiddel'}
         >
           <Modal.Body style={{ scrollbarGutter: 'stable both-edges' }}>
-            <Box.New paddingBlock="space-24 0" paddingInline="space-16">
+            <Box paddingBlock="space-24 0" paddingInline="space-16">
               <OriginaltHjelpemiddel
                 navn={hjelpemiddel.produkt.artikkelnavn}
                 hmsnr={hjelpemiddel.produkt.hmsArtNr}
@@ -155,7 +155,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
               />
 
               {harAlternativeProdukter ? (
-                <Box.New paddingBlock="space-24 0">
+                <Box paddingBlock="space-24 0">
                   <Tabs value={activeTab} onChange={handleTabChange}>
                     <Tabs.List>
                       <Tabs.Tab value="alternativer" label="Alternativer på lager" />
@@ -183,7 +183,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                       />
                     </Tabs.Panel>
                   </Tabs>
-                </Box.New>
+                </Box>
               ) : (
                 <ManueltSøkPanel
                   hjelpemiddelId={hjelpemiddel.hjelpemiddelId}
@@ -192,7 +192,7 @@ export function EndreHjelpemiddelModal(props: AlternativProduktModalProps) {
                   produktValgt={produktValgt}
                 />
               )}
-            </Box.New>
+            </Box>
           </Modal.Body>
           <Modal.Footer>
             <Button type="submit" variant="primary" size="small" loading={submitting}>

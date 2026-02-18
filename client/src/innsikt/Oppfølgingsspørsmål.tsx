@@ -6,7 +6,7 @@ import { Spørsmål, SpørsmålProps } from './Spørsmål'
 export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspørsmål>) {
   const { spørsmål, navn, nivå = 0, size } = props
   return (
-    <Box.New
+    <Box
       padding={nivå > 1 ? '0' : 'space-12'}
       style={{
         marginTop: nivå > 1 ? 'var(--ax-space-12)' : 0,
@@ -35,6 +35,6 @@ export function Oppfølgingsspørsmål(props: SpørsmålProps<IOppfølgingsspør
           <Spørsmål key={spørsmål.tekst} spørsmål={spørsmål} navn={navn} nivå={nivå} size={size} />
         ))}
       </VStack>
-    </Box.New>
+    </Box>
   )
 }

@@ -22,7 +22,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
   return (
     <>
-      <Box.New key={notat.id} background="neutral-soft" padding="3" borderRadius="xlarge" data-testid="notat-card">
+      <Box key={notat.id} background="neutral-soft" padding="3" borderRadius="xlarge" data-testid="notat-card">
         <VStack gap="3">
           <HStack gap="2" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
@@ -92,7 +92,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             <Tekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Tekst>
           </Box>
         )}
-      </Box.New>
+      </Box>
     </>
   )
 }

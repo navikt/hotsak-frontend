@@ -54,12 +54,12 @@ export function SakV2() {
 
   // TODO bruke css modules vars
   return (
-    <Box.New style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
+    <Box style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
-      <Box.New
+      <Box
         style={{
           minHeight: 0,
           height: '100%',
@@ -108,7 +108,7 @@ export function SakV2() {
             </>
           )}
         </PanelGroup>
-      </Box.New>
+      </Box>
       <StickyBunnlinje sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />
       <BrevManglerModal
@@ -126,7 +126,7 @@ export function SakV2() {
           vedtaksResultat={vedtaksResultat}
         />
       )}
-    </Box.New>
+    </Box>
   )
 
   function modalVelger() {

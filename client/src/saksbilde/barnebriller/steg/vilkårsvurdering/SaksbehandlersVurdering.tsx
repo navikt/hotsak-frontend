@@ -25,7 +25,7 @@ export function SaksbehandlersVurdering({
   const grunnlag = vilkår.grunnlag
 
   return (
-    <Box.New padding="space-16" borderColor="info" borderWidth="0 0 0 4" background="neutral-moderate">
+    <Box padding="space-16" borderColor="info" borderWidth="0 0 0 4" background="neutral-moderate">
       <Container>
         <Heading level="2" size="xsmall" spacing>
           <Link href={vilkår.lovdataLenke} target="_blank">
@@ -77,7 +77,7 @@ export function SaksbehandlersVurdering({
           <SaksbehandlersVurderingForm sakId={sakId} vilkår={vilkår} onSaved={onSaved} onCanceled={onCanceled} />
         )}
       </Container>
-    </Box.New>
+    </Box>
   )
 }
 

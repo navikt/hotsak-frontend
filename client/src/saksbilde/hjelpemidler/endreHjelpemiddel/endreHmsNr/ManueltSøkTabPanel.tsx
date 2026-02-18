@@ -13,7 +13,7 @@ export function ManueltSøkPanel({
   produktValgt: boolean
 }) {
   return (
-    <Box.New paddingBlock="space-24 0">
+    <Box paddingBlock="space-24 0">
       {!produktValgt ? (
         <>
           <Heading level="1" size="small">
@@ -29,6 +29,6 @@ export function ManueltSøkPanel({
           <BegrunnelseForBytte type={EndreHjelpemiddelType.ENDRE_HMS_NUMMER} />
         </>
       )}
-    </Box.New>
+    </Box>
   )
 }

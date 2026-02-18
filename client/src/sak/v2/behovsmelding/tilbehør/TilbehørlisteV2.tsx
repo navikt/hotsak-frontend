@@ -29,7 +29,7 @@ export function FrittStåendeTilbehørV2({
         const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
 
         return (
-          <Box.New
+          <Box
             key={idx}
             borderRadius="large"
             padding="4"
@@ -44,7 +44,7 @@ export function FrittStåendeTilbehørV2({
               frittståendeTilbehør={true}
               kanEndreHmsnr={kanEndreHmsnr}
             />
-          </Box.New>
+          </Box>
         )
       })}
     </VStack>
@@ -121,10 +121,10 @@ function Tilbehør({
           </div>
         </VStack>
         {harEndretTilbehør && (
-          <Box.New paddingInline="4 0">
+          <Box paddingInline="4 0">
             <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
             <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
-          </Box.New>
+          </Box>
         )}
         {harSaksbehandlingvarsel && (
           <Box>

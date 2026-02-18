@@ -15,7 +15,7 @@ import { useSakContext } from './SakProvider.tsx'
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const { setSøknadPanel } = useSakContext()
   return (
-    <Box.New background="default" paddingBlock="0 space-48" style={{ height: '100%' }}>
+    <Box background="default" paddingBlock="0 space-48" style={{ height: '100%' }}>
       <PanelTittel
         tittel="Søknad om hjelpemidler"
         lukkPanel={() => {
@@ -35,7 +35,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />
         </section>
         <section>
-          <Box.New paddingBlock="space-24 0" paddingInline="space-28 0">
+          <Box paddingBlock="space-24 0" paddingInline="space-28 0">
             <Bruker
               bruker={sak.bruker}
               behovsmeldingsbruker={behovsmelding.bruker}
@@ -43,10 +43,10 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
               levering={behovsmelding.levering}
               vilkår={behovsmelding.brukersituasjon.vilkår}
             />
-          </Box.New>
+          </Box>
           <Formidler levering={behovsmelding.levering} />
         </section>
       </ScrollablePanel>
-    </Box.New>
+    </Box>
   )
 }

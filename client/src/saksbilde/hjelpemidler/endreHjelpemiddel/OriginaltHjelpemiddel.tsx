@@ -17,7 +17,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
 
   return (
     <>
-      <Box.New borderRadius="large">
+      <Box borderRadius="large">
         <HGrid columns="1fr 1fr" gap="space-16">
           <div>
             <Heading level="2" size="xsmall" spacing>
@@ -80,7 +80,7 @@ export function OriginaltHjelpemiddel(props: OriginaltHjelpemiddelProps) {
             </VStack>
           )}
         </HGrid>
-      </Box.New>
+      </Box>
     </>
   )
 }

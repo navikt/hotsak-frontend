@@ -8,7 +8,7 @@ import { BrytbarBrødtekst, Tekst } from '../typografi'
 // TODO: Flytte denne og rename. Dette er ikke en Toast med en loding indikator
 export function Toast({ children }: { children: ReactNode }) {
   return (
-    <Box.New
+    <Box
       background="brand-blue-softA"
       padding="space-12"
       borderColor="brand-blue-subtle"
@@ -22,7 +22,7 @@ export function Toast({ children }: { children: ReactNode }) {
         <Tekst>{children}</Tekst>
         <Loader variant="inverted" title="Systemet laster" size="xsmall" />
       </HStack>
-    </Box.New>
+    </Box>
   )
 }
 

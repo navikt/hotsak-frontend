@@ -16,11 +16,11 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
 
   return (
     <>
-      <Box.New paddingBlock={'0 space-16'}>
+      <Box paddingBlock={'0 space-16'}>
         {lagerStatusOppdatert && (
           <Tag size="small" variant="neutral-moderate">{`Oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Tag>
         )}
-      </Box.New>
+      </Box>
       <Controller
         name="endretProdukt"
         control={control}

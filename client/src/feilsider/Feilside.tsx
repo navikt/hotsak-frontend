@@ -11,7 +11,7 @@ export interface FeilsideProps {
 export function Feilside({ statusCode, error }: FeilsideProps) {
   const stackTrace = useStackTrace(error)
   return (
-    <Box.New
+    <Box
       background="neutral-moderate"
       borderColor="neutral-subtle"
       marginBlock="space-36"
@@ -43,7 +43,7 @@ export function Feilside({ statusCode, error }: FeilsideProps) {
           </Accordion.Item>
         </Accordion>
       )}
-    </Box.New>
+    </Box>
   )
 }
 

@@ -13,9 +13,9 @@ export function MedarbeidersOppgaver() {
   })
   useOppgavemetrikker('Medarbeiders', oppgaver.length, totalElements)
   return (
-    <Box.New marginInline="5">
+    <Box marginInline="5">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
       <MedarbeidersOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
-    </Box.New>
+    </Box>
   )
 }

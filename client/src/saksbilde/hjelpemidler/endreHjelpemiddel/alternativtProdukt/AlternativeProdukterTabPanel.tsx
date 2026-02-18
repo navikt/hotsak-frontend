@@ -27,13 +27,12 @@ export function AlternativeProdukterTabPanel({
   onPageChange: (page: number) => void
 }) {
   return (
-    <Box.New paddingBlock="space-24 0">
+    <Box paddingBlock="space-24 0">
       {produktValgt && (
         <Heading level="1" size="small">
           Velg begrunnelse for å bytte hjelpemiddel
         </Heading>
       )}
-
       {!produktValgt ? (
         <>
           {isLoading ? (
@@ -56,6 +55,6 @@ export function AlternativeProdukterTabPanel({
       ) : (
         <BegrunnelseForBytte type={EndreHjelpemiddelType.ALTERNATIVT_PRODUKT} />
       )}
-    </Box.New>
+    </Box>
   )
 }

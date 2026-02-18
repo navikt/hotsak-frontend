@@ -17,9 +17,9 @@ export function MarkdownTextArea(props: MarkdownTextAreaProps) {
     <VStack gap="2">
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
-        <Box.New marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
+        <Box marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
-        </Box.New>
+        </Box>
       </MarkdownEditorStyling>
       {valideringsfeil && (
         <ErrorMessage showIcon size="small">

@@ -75,7 +75,7 @@ const SaksbildeContent = memo(() => {
                   <Route
                     path="/bruker"
                     element={
-                      <Box.New>
+                      <Box>
                         <Bruker
                           bruker={sak.data.bruker}
                           behovsmeldingsbruker={behovsmelding.bruker}
@@ -83,7 +83,7 @@ const SaksbildeContent = memo(() => {
                           levering={behovsmelding.levering}
                           vilkår={behovsmelding.brukersituasjon.vilkår}
                         />
-                      </Box.New>
+                      </Box>
                     }
                   />
                   <Route path="/formidler" element={<Formidler levering={levering} />} />

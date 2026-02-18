@@ -20,7 +20,7 @@ export function MineOppgaver() {
   })
   useOppgavemetrikker('Mine', oppgaver.length, totalElements)
   return (
-    <Box.New marginInline="5">
+    <Box marginInline="5">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`}>
         <Switch
           checked={visFerdigstilte}
@@ -33,6 +33,6 @@ export function MineOppgaver() {
         </Switch>
       </OppgaveToolbar>
       <MineOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
-    </Box.New>
+    </Box>
   )
 }

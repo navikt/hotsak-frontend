@@ -5,7 +5,7 @@ import { HjelpemiddelData } from '../useHjelpemiddel'
 
 export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }) {
   return (
-    <Box.New
+    <Box
       borderWidth="1"
       borderColor="neutral-subtle"
       background="raised"
@@ -43,6 +43,6 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
           </VStack>
         </HGrid>
       </VStack>
-    </Box.New>
+    </Box>
   )
 }

@@ -10,7 +10,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
   const { beskrivelse } = funksjonsbeskrivelse
   const [skjultFunksjonsbeskrivelse, setSkjultFunksjonsbeskrivelse] = useState(false)
   return (
-    <Box.New paddingInline={'space-0 space-8'} paddingBlock="space-8">
+    <Box paddingInline={'space-0 space-8'} paddingBlock="space-8">
       <HStack align="center">
         {collapsible && (
           <Button
@@ -25,7 +25,7 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
         </Label>
       </HStack>
       {!skjultFunksjonsbeskrivelse && (
-        <Box.New
+        <Box
           paddingBlock="space-8"
           paddingInline="space-12"
           borderRadius="large"
@@ -50,9 +50,9 @@ export function BrukersFunksjon(props: { funksjonsbeskrivelse: Funksjonsbeskrive
               </Box>
             )}
           </VStack>
-        </Box.New>
+        </Box>
       )}
-    </Box.New>
+    </Box>
   )
 }
 

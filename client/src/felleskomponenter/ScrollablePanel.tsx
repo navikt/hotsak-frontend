@@ -10,8 +10,8 @@ interface ScrollablePanelProps {
 
 export function ScrollablePanel({ children, paddingBlock = '0', paddingInline = '0' }: ScrollablePanelProps) {
   return (
-    <Box.New className={classes.root} paddingBlock={paddingBlock} paddingInline={paddingInline}>
+    <Box className={classes.root} paddingBlock={paddingBlock} paddingInline={paddingInline}>
       {children}
-    </Box.New>
+    </Box>
   )
 }

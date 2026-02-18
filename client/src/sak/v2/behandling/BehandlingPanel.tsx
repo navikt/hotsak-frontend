@@ -42,7 +42,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
-    <Box.New background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
+    <Box background="default" borderRadius="large" paddingBlock="0 space-48" style={{ height: '100%' }}>
       <PanelTittel
         tittel="Behandle sak"
         lukkPanel={() => {
@@ -72,7 +72,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
 
           {vedtaksResultat && (
             <TextContainer>
-              <Box.New>
+              <Box>
                 <Heading level="2" size="small">
                   Vedtaksbrev
                 </Heading>
@@ -135,7 +135,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                     <InlineMessage status="info">Ferdigstill utkastet i brevpanelet.</InlineMessage>
                   )}
                 </VStack>
-              </Box.New>
+              </Box>
             </TextContainer>
           )}
           {lesevisning &&
@@ -153,7 +153,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
             )}
         </VStack>
       </ScrollablePanel>
-    </Box.New>
+    </Box>
   )
 }
 

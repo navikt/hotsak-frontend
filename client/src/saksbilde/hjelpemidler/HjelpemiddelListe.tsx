@@ -61,7 +61,6 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
       </Heading>
       {saksbehandlingvarsel.length > 0 && <Varsler varsler={saksbehandlingvarsel} />}
       {levering.hast && <Hast hast={levering.hast} />}
-
       {hjelpemidler.length > 0 && (
         <Heading level="2" size="medium">
           Hjelpemidler
@@ -71,7 +70,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box.New key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
+        <Box key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
           <Hjelpemiddel
             sak={sak}
             hjelpemiddel={hjelpemiddel}
@@ -85,7 +84,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
             }
             harOppdatertLagerstatus={harOppdatertLagerstatus}
           />
-        </Box.New>
+        </Box>
       ))}
       {tilbehør && tilbehør.length > 0 && (
         <>
@@ -100,7 +99,6 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
         <Etikett>{`Totalt ${totaltAntall} stk. inkl. tilbehør`}</Etikett>
         <Skillelinje />
       </VStack>
-
       {funksjonsbeskrivelse && <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} />}
     </VStack>
   )

@@ -28,7 +28,7 @@ export function Høyrekolonne() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <Box.New borderWidth="0 1" borderColor="neutral-subtle">
+    <Box borderWidth="0 1" borderColor="neutral-subtle">
       <Tabs
         size="small"
         value={valgtFane}
@@ -97,6 +97,6 @@ export function Høyrekolonne() {
           )}
         </ScrollContainer>
       </Tabs>
-    </Box.New>
+    </Box>
   )
 }

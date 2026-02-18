@@ -20,7 +20,7 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
   const isDataGridFiltered = useIsDataGridFiltered()
   const handleFilterResetAll = useDataGridFilterResetAllHandler()
   return (
-    <Box.New borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="2">
+    <Box borderColor="neutral-subtleA" borderWidth="0 0 2 0" className={classes.root} padding="2">
       <HGrid columns="1fr 1fr 1fr" align="center" className={classes.grid}>
         <div />
         <BodyShort align="center" size="small">
@@ -42,6 +42,6 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
           <OppgaveColumnMenu />
         </HStack>
       </HGrid>
-    </Box.New>
+    </Box>
   )
 }

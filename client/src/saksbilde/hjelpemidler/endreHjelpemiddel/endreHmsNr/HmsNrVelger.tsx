@@ -26,7 +26,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
       <Box paddingBlock="0 4">
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
-      <Box.New padding="0" borderRadius="large">
+      <Box padding="0" borderRadius="large">
         <HStack align="start" gap="space-32" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
@@ -74,7 +74,7 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
           </HStack>
           {hjelpemiddel && <ProduktCard hjelpemiddel={hjelpemiddel} />}
         </HStack>
-      </Box.New>
+      </Box>
     </>
   )
 }

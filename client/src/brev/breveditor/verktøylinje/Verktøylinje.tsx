@@ -27,7 +27,7 @@ const Verktøylinje = () => {
   })()
 
   return (
-    <Box.New
+    <Box
       ref={toolbarRef}
       className="toolbar"
       onMouseDown={(e) => {
@@ -110,7 +110,7 @@ const Verktøylinje = () => {
         </div>
         {/*<SlettBrevutkastKnapp />*/}
       </div>
-    </Box.New>
+    </Box>
   )
 }
 

@@ -78,10 +78,10 @@ export function FlytendeLinkVerktøylinje() {
         floatingLinkUrlInput,
       }}
     >
-      <Box.New ref={insertRef} {...(insertProps as any)} {...flytendeBoxProps}>
+      <Box ref={insertRef} {...(insertProps as any)} {...flytendeBoxProps}>
         <OpprettEndreLinkPanel />
-      </Box.New>
-      <Box.New ref={editRef} {...(editProps as any)} {...flytendeBoxProps}>
+      </Box>
+      <Box ref={editRef} {...(editProps as any)} {...flytendeBoxProps}>
         <>
           {floatingLinkEditState.isEditing ? (
             <>
@@ -103,7 +103,7 @@ export function FlytendeLinkVerktøylinje() {
             </HStack>
           )}
         </>
-      </Box.New>
+      </Box>
     </FlytendeLinkVerktøylinjeContext>
   )
 }

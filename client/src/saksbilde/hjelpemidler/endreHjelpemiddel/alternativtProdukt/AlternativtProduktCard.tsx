@@ -83,7 +83,7 @@ export function AlternativtProduktCard({ alternativtProdukt, endretProdukt }: Al
           )}
         </HGrid>
       </VStack>
-      <Box background="accent-soft" padding="space-8" borderRadius="xlarge">
+      <Box background="accent-soft" padding="space-8" borderRadius="12">
         <Checkbox value={alternativtProdukt.hmsArtNr}>Bytt til denne</Checkbox>
       </Box>
     </ProduktCard>

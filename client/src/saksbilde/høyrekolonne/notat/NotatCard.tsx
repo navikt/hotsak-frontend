@@ -22,7 +22,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
   return (
     <>
-      <Box key={notat.id} background="neutral-soft" padding="space-12" borderRadius="xlarge" data-testid="notat-card">
+      <Box key={notat.id} background="neutral-soft" padding="space-12" borderRadius="12" data-testid="notat-card">
         <VStack gap="space-12">
           <HStack gap="space-8" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">

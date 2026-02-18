@@ -140,7 +140,7 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
   return (
     <VenstremenyCard>
       {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
-      <Knappepanel gap="0">
+      <Knappepanel gap="space-0">
         <Knapp
           variant="primary"
           size="small"

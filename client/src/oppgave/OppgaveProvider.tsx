@@ -1,10 +1,10 @@
 import { ReactNode, useMemo } from 'react'
 
 import { OppgaveContext, OppgaveContextType } from './OppgaveContext.ts'
-import type { OppgaveV2 } from './oppgaveTypes.ts'
+import type { Oppgave } from './oppgaveTypes.ts'
 
 export interface OppgaveProviderProps {
-  oppgave: OppgaveV2
+  oppgave: Oppgave
   children: ReactNode
 }
 

@@ -1,4 +1,4 @@
-import type { OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import type { Oppgave } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
@@ -459,7 +459,7 @@ export interface Journalpost {
   fnrInnsender: string
   journalstatus: JournalpostStatusType
   dokumenter: Dokument[]
-  oppgave: OppgaveV2
+  oppgave: Oppgave
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
 }

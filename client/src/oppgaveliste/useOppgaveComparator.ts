@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 import { comparator, type Comparator, compareBy } from '../utils/array.ts'
 import { useOppgavePaginationContext } from './OppgavePaginationContext.tsx'
 import {
@@ -10,7 +10,7 @@ import {
   selectFerdigstiltTidspunkt,
 } from './oppgaveSelectors.ts'
 
-export function useOppgaveComparator(): Comparator<OppgaveV2> | undefined {
+export function useOppgaveComparator(): Comparator<Oppgave> | undefined {
   const {
     sort: { orderBy, direction },
   } = useOppgavePaginationContext()

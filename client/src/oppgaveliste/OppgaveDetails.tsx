@@ -3,7 +3,7 @@ import { BodyShort, HStack, Link, VStack } from '@navikt/ds-react'
 import { FormatFødselsnummer } from '../felleskomponenter/format/FormatFødselsnummer.tsx'
 import { FormatPersonnavn } from '../felleskomponenter/format/FormatPersonnavn.tsx'
 import { Strek } from '../felleskomponenter/Strek.tsx'
-import { type OppgaveBruker, oppgaveIdUtenPrefix, Oppgavetype, type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave, type OppgaveBruker, oppgaveIdUtenPrefix, Oppgavetype } from '../oppgave/oppgaveTypes.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { Sakstype } from '../types/types.internal.ts'
 import { useMiljø } from '../utils/useMiljø.ts'
@@ -12,7 +12,7 @@ import { OppgaveHjelpemidler } from './OppgaveHjelpemidler.tsx'
 import { OppgaveSisteKommentar } from './OppgaveSisteKommentar.tsx'
 
 export interface OppgaveDetailsProps {
-  oppgave: OppgaveV2
+  oppgave: Oppgave
   visible?: boolean
 }
 

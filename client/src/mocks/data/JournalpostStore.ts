@@ -1,9 +1,8 @@
 import Dexie, { Table } from 'dexie'
 
-import { OppgaveV2 } from '../../oppgave/oppgaveTypes.ts'
+import { Oppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Journalpost } from '../../types/types.internal.ts'
-import { lagPerson, PersonStore } from './PersonStore.ts'
-import { SaksbehandlerStore } from './SaksbehandlerStore.ts'
+import { nåIso } from './felles.ts'
 import {
   InsertDokument,
   InsertHendelse,
@@ -14,7 +13,8 @@ import {
   LagretHendelse,
   LagretJournalpost,
 } from './lagJournalpost.ts'
-import { nåIso } from './felles.ts'
+import { lagPerson, PersonStore } from './PersonStore.ts'
+import { SaksbehandlerStore } from './SaksbehandlerStore.ts'
 
 export class JournalpostStore extends Dexie {
   private readonly journalposter!: Table<LagretJournalpost, string, InsertJournalpost>
@@ -97,7 +97,7 @@ export class JournalpostStore extends Dexie {
 
     return this.journalposter.update(journalpostId, {
       tittel,
-      oppgave: {} as OppgaveV2,
+      oppgave: {} as Oppgave,
     })
   }
 }

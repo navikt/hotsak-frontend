@@ -2,9 +2,9 @@ import { Button, Heading, Modal, Select, Skeleton } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { http } from '../io/HttpClient'
-import type { OppgaveId, OppgaveV2 } from './oppgaveTypes'
+import type { Oppgave, OppgaveId } from './oppgaveTypes'
 
-export function EndreOppgaveModal(props: { oppgave: OppgaveV2; open: boolean; onClose(): void }) {
+export function EndreOppgaveModal(props: { oppgave: Oppgave; open: boolean; onClose(): void }) {
   const { oppgave, open, onClose } = props
   const [behandlingstema, setBehandlingstema] = useState<string>(
     oppgave.kategorisering.behandlingstema?.kode ? oppgave.kategorisering.behandlingstema?.kode : ''

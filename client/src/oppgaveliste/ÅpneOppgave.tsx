@@ -1,10 +1,10 @@
 import { LinkButton } from '../felleskomponenter/button/LinkButton.tsx'
-import { type OppgaveV2 } from '../oppgave/oppgaveTypes.ts'
+import { type Oppgave } from '../oppgave/oppgaveTypes.ts'
 
 import classes from './ÅpneOppgave.module.css'
 
 export interface ÅpneOppgaveProps {
-  oppgave: OppgaveV2
+  oppgave: Oppgave
 }
 
 export function ÅpneOppgave(props: ÅpneOppgaveProps) {

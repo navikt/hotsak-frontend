@@ -100,7 +100,7 @@ export interface OppgaveBase {
   sakId?: string | number
 }
 
-export interface OppgaveV2 extends OppgaveBase {
+export interface Oppgave extends OppgaveBase {
   statuskategori: Statuskategori
   oppgavestatus: Oppgavestatus
   prioritet: Oppgaveprioritet
@@ -218,7 +218,7 @@ export interface FinnOppgaverRequest {
 }
 
 export interface FinnOppgaverResponse extends PageResponse {
-  oppgaver: OppgaveV2[]
+  oppgaver: Oppgave[]
   totalPages: number
 }
 

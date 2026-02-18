@@ -1,13 +1,13 @@
 import { ActionMenu } from '@navikt/ds-react'
 
 import { useSakActions } from '../saksbilde/useSakActions.ts'
-import { OppgaveV2 } from './oppgaveTypes.ts'
+import { Oppgave } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
 import { useOppgavetilgang } from './useOppgavetilgang.ts'
 
 export interface OppgaveMenuProps {
-  oppgave?: OppgaveV2
+  oppgave?: Oppgave
   onAction?(): void | Promise<void>
   onSelectOverførOppgaveTilMedarbeider?(): void | Promise<void>
   onSelectEndreOppgave?(): void | Promise<void>

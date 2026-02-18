@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
-import { Oppgavestatus, OppgaveV2, Statuskategori } from './oppgaveTypes.ts'
+import { type OppgaveV2, Statuskategori } from './oppgaveTypes.ts'
 
 export interface UseOppgavereglerResponse {
   /**
@@ -46,7 +46,7 @@ export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse 
   return useMemo(() => {
     if (!oppgave) return initialResponse
     const { tildeltSaksbehandler } = oppgave
-    const statuskategori = statuskategoriForOppgave(oppgave)
+    const statuskategori = oppgave.statuskategori
     const oppgaveErÅpen = statuskategori === Statuskategori.ÅPEN
     const oppgaveErAvsluttet = statuskategori === Statuskategori.AVSLUTTET
     const oppgaveErKlarTilBehandling = oppgaveErÅpen && tildeltSaksbehandler == null
@@ -64,16 +64,4 @@ export function useOppgaveregler(oppgave?: OppgaveV2): UseOppgavereglerResponse 
       oppgaveErPåVent,
     }
   }, [ansattId, oppgave])
-}
-
-function statuskategoriForOppgave(oppgave: OppgaveV2): Statuskategori {
-  switch (oppgave.oppgavestatus) {
-    case Oppgavestatus.OPPRETTET:
-    case Oppgavestatus.ÅPNET:
-    case Oppgavestatus.UNDER_BEHANDLING:
-      return Statuskategori.ÅPEN
-    case Oppgavestatus.FERDIGSTILT:
-    case Oppgavestatus.FEILREGISTRERT:
-      return Statuskategori.AVSLUTTET
-  }
 }

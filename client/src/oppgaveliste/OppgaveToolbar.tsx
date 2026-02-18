@@ -29,9 +29,10 @@ export function OppgaveToolbar(props: OppgaveToolbarProps) {
         <HStack gap="space-8" justify="end" align="center">
           {children}
           <Button
+            data-color="neutral"
             type="button"
             size="xsmall"
-            variant="tertiary-neutral"
+            variant="tertiary"
             icon={<TrashIcon />}
             onClick={handleFilterResetAll}
             disabled={!isDataGridFiltered}

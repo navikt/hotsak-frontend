@@ -15,12 +15,13 @@ const SettInnDelmalKnapp = () => {
     <>
       <Tooltip content={'Sett inn delmal'} keys={[]}>
         <Button
+          data-color="neutral"
           disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert || !editor.selection}
           onMouseDown={(event: { preventDefault: () => void }) => {
             event.preventDefault()
             settVisModal(true)
           }}
-          variant="tertiary-neutral"
+          variant="tertiary"
           size="small"
           icon={<FileParagraphIcon fontSize="1rem" />}
         />

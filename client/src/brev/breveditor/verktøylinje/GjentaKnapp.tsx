@@ -15,12 +15,13 @@ const GjentaKnapp = () => {
       }
     >
       <Button
+        data-color="neutral"
         disabled={disabled}
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
           redo()
         }}
-        variant="tertiary-neutral"
+        variant="tertiary"
         size="small"
         icon={<ArrowRedoIcon fontSize="1rem" />}
       />

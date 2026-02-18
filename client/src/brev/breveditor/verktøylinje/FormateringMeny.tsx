@@ -35,7 +35,8 @@ const FormateringMeny = () => {
       >
         <ActionMenu.Trigger>
           <Button
-            variant="tertiary-neutral"
+            data-color="neutral"
+            variant="tertiary"
             icon={<MenuElipsisVerticalCircleIcon aria-hidden fontSize="1rem" />}
             iconPosition="right"
             size="small"

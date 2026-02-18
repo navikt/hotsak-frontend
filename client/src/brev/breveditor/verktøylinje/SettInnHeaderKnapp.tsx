@@ -9,6 +9,7 @@ const SettInnHeaderKnapp = () => {
   return (
     <Tooltip content={'Test: sett inn brev-header komponent'} keys={[]}>
       <Button
+        data-color="neutral"
         disabled={!breveditor.erBreveditorEllerVerktoylinjeFokusert}
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
@@ -17,7 +18,7 @@ const SettInnHeaderKnapp = () => {
             children: [{ text: '' }],
           })
         }}
-        variant="tertiary-neutral"
+        variant="tertiary"
         size="small"
         icon={<PlusIcon fontSize="1rem" />}
       />

@@ -28,7 +28,8 @@ export function VenstreSidebar() {
   return (
     <Box borderWidth="0 1" borderColor="neutral-subtle" background="default" height="100%">
       <Button
-        variant="tertiary-neutral"
+        data-color="neutral"
+        variant="tertiary"
         size="small"
         icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
         onClick={() => setSidePanel(false)}

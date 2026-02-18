@@ -8,7 +8,8 @@ export const PanelTittel = ({ tittel, lukkPanel }: { tittel: string; lukkPanel: 
         {tittel}
       </Heading>
       <Button
-        variant="tertiary-neutral"
+        data-color="neutral"
+        variant="tertiary"
         size="small"
         icon={<XMarkIcon title={`Lukk ${tittel}`} fontSize="1.5rem" />}
         onClick={lukkPanel}

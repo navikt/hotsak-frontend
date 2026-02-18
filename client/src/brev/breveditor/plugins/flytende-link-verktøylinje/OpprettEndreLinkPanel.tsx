@@ -67,8 +67,9 @@ export function OpprettEndreLinkPanel() {
         Lagre
       </Button>
       <Button
+        data-color="neutral"
         icon={<LinkBrokenIcon />}
-        variant="tertiary-neutral"
+        variant="tertiary"
         size="small"
         onClick={() => {
           onClick()

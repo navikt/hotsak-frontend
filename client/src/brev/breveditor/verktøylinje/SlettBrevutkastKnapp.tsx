@@ -8,11 +8,12 @@ const SlettBrevutkastKnapp = () => {
   return (
     <Tooltip content={'Slett brevutkast'} keys={[]}>
       <Button
+        data-color="neutral"
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
           breveditor.onSlettBrev && breveditor.onSlettBrev()
         }}
-        variant="tertiary-neutral"
+        variant="tertiary"
         size="small"
         icon={<TrashIcon fontSize="1rem" />}
       />

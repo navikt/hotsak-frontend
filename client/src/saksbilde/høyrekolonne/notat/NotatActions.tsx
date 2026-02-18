@@ -30,7 +30,8 @@ export function NotatActions({ notat }: NotaterProps) {
         <ActionMenu>
           <ActionMenu.Trigger>
             <Button
-              variant="tertiary-neutral"
+              data-color="neutral"
+              variant="tertiary"
               icon={<MenuElipsisHorizontalCircleIcon title="Notatmeny" />}
               size="small"
             />

@@ -12,7 +12,8 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
     <ActionMenu>
       <ActionMenu.Trigger>
         <Button
-          variant="tertiary-neutral"
+          data-color="neutral"
+          variant="tertiary"
           size="xsmall"
           type="button"
           icon={<MenuElipsisVerticalIcon title="Oppgavemeny" />}

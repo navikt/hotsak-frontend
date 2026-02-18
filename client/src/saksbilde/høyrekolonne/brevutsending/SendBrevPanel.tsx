@@ -190,8 +190,9 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
                   Send brev
                 </Button>
                 <Button
+                  data-color="danger"
                   icon={<TrashIcon />}
-                  variant="danger"
+                  variant="primary"
                   size="small"
                   onClick={() => {
                     setVisSlettUtkastModal(true)

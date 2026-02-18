@@ -12,12 +12,13 @@ const AngreKnapp = () => {
       }
     >
       <Button
+        data-color="neutral"
         disabled={disabled}
         onMouseDown={(event: { preventDefault: () => void }) => {
           event.preventDefault()
           undo()
         }}
-        variant="tertiary-neutral"
+        variant="tertiary"
         size="small"
         icon={<ArrowUndoIcon fontSize="1rem" />}
       />

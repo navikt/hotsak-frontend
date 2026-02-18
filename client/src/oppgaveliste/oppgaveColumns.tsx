@@ -249,7 +249,7 @@ export const oppgaveColumns = {
       const { fristFerdigstillelse, ferdigstiltTidspunkt } = row
       if (!fristFerdigstillelse) return null
       return (
-        <HStack align="center" gap="2" wrap={false}>
+        <HStack align="center" gap="space-8" wrap={false}>
           <FormatDate date={fristFerdigstillelse} />
           {!ferdigstiltTidspunkt && isBefore(fristFerdigstillelse, Date.now()) && (
             <Tooltip content="Fristen har gått ut">

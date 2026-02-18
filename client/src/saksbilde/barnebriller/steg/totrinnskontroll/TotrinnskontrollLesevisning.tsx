@@ -10,7 +10,7 @@ export function TotrinnskontrollLesevisning() {
   const { sak } = useBarnebrillesak()
 
   return (
-    <VStack gap="3">
+    <VStack gap="space-12">
       <div>
         <Etikett>Vurdering</Etikett>
         <Tekst>{storForbokstavIAlleOrd(sak?.data.totrinnskontroll?.resultat)}</Tekst>

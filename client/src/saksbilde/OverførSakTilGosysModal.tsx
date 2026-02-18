@@ -38,7 +38,7 @@ export function OverførSakTilGosysModal({
       onClose={onClose}
     >
       {notater.length > 0 && (
-        <VStack gap="3">
+        <VStack gap="space-12">
           {notater.find((notat) => notat.type === NotatType.JOURNALFØRT) && (
             <Alert variant="warning" size="small">
               <Heading size="xsmall" level="2" spacing>

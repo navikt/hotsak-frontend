@@ -9,28 +9,28 @@ interface Props {
 
 const Bytter = ({ bytter }: Props) => {
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {bytter.map((bytte, idx) => (
-        <VStack gap="2" key={idx}>
-          <HStack gap="2">
+        <VStack gap="space-8" key={idx}>
+          <HStack gap="space-8">
             <Etikett>{bytte.erTilsvarende ? 'Skal byttes inn' : 'Skal leveres tilbake'}</Etikett>
           </HStack>
 
-          <HStack align={'start'} wrap={false} gap="2">
+          <HStack align={'start'} wrap={false} gap="space-8">
             <HStack wrap={false} align="center">
               <Kopiknapp tooltip="Kopier hmsnr" copyText={bytte.hmsnr} />
               <Tekst weight="semibold" size="small">
                 {bytte.hmsnr}
               </Tekst>
             </HStack>
-            <VStack gap="2">
+            <VStack gap="space-8">
               <Tekst>{bytte.hjmNavn}</Tekst>
               {bytte.serienr && <Tekst> Serienr: {bytte.serienr}</Tekst>}
             </VStack>
           </HStack>
 
           {bytte.årsak && (
-            <VStack gap="2">
+            <VStack gap="space-8">
               <Etikett>Begrunnelse for bytte</Etikett>
               <Tekst>Hjelpemiddelet skal byttes fordi det er {tekstByBytteårsak[bytte.årsak]}</Tekst>
             </VStack>

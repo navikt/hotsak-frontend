@@ -69,11 +69,11 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
         <Personlinje person={personInfo} loading={personInfoLoading} />
         <Container>
           <ToKolonner>
-            <HStack paddingBlock="4 0">
+            <HStack paddingBlock="space-16 space-0">
               <span>
                 <Loader size="medium" title="Henter journalpost..." />
               </span>
-              <Box paddingInline="4 0">
+              <Box paddingInline="space-16 space-0">
                 <Etikett>Henter journalpost...</Etikett>
               </Box>
             </HStack>

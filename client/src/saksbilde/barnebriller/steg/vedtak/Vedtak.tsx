@@ -43,11 +43,11 @@ export function Vedtak() {
   return (
     <TreKolonner>
       {visSkeleton ? (
-        <Box padding="4">
+        <Box padding="space-16">
           <Heading level="1" size="small" spacing>
             Forslag til vedtak
           </Heading>
-          <VStack gap="2">
+          <VStack gap="space-8">
             <Skeleton variant="rectangle" width="40%" height={60} />
             <Skeleton variant="rectangle" width="80%" height={20} />
             <Skeleton variant="rectangle" width="80%" height={20} />
@@ -55,11 +55,11 @@ export function Vedtak() {
           </VStack>
         </Box>
       ) : (
-        <Box padding="4">
+        <Box padding="space-16">
           <Heading level="1" size="small" spacing>
             {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
           </Heading>
-          <VStack gap="5">
+          <VStack gap="space-20">
             <div>
               <Detail uppercase>Resultat</Detail>
               <Tag variant={alertType} size="small">

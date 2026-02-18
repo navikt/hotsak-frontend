@@ -13,7 +13,7 @@ export function ManueltSøkPanel({
   produktValgt: boolean
 }) {
   return (
-    <Box paddingBlock="space-24 0">
+    <Box paddingBlock="space-24 space-0">
       {!produktValgt ? (
         <>
           <Heading level="1" size="small">

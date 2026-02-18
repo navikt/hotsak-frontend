@@ -19,13 +19,13 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
     <HStack
       asChild
       position="sticky"
-      left="0"
-      bottom="0"
+      left="space-0"
+      bottom="space-0"
       align="center"
       justify="space-between"
-      gap="4"
-      paddingInline="4"
-      paddingBlock="2"
+      gap="space-16"
+      paddingInline="space-16"
+      paddingBlock="space-8"
       width="100%"
       className="z-23"
     >

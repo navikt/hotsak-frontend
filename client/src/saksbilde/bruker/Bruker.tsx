@@ -41,7 +41,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
       <Heading level="2" size="small">
         Hjelpemiddelbruker
       </Heading>
-      <VStack paddingBlock="space-16 0" gap="space-4">
+      <VStack paddingBlock="space-16 space-0" gap="space-4">
         <HStack gap="space-6">
           <Etikett>Navn:</Etikett>
           <Tekst>{formatertNavn}</Tekst>
@@ -71,7 +71,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
         <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
         <Kontaktperson levering={levering} />
         {utleveringMerknad && (
-          <HStack gap="space-6" paddingBlock="0 space-12" align="center">
+          <HStack gap="space-6" paddingBlock="space-0 space-12" align="center">
             <Etikett>Merknad til utlevering:</Etikett>
             <Tekst>{utleveringMerknad}</Tekst>
           </HStack>

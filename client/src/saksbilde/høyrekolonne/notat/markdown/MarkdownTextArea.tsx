@@ -14,10 +14,16 @@ type MarkdownTextAreaProps = {
 export function MarkdownTextArea(props: MarkdownTextAreaProps) {
   const { label, tekst, onChange, readOnly, valideringsfeil } = props
   return (
-    <VStack gap="2">
+    <VStack gap="space-8">
       <Label size="small">{label}</Label>
       <MarkdownEditorStyling>
-        <Box marginBlock="0 0" borderRadius="large" borderColor="neutral" borderWidth="1" className="mdxEditorBox">
+        <Box
+          marginBlock="space-0 space-0"
+          borderRadius="large"
+          borderColor="neutral"
+          borderWidth="1"
+          className="mdxEditorBox"
+        >
           <MarkdownEditor tekst={tekst} onChange={onChange} readOnly={readOnly} />
         </Box>
       </MarkdownEditorStyling>

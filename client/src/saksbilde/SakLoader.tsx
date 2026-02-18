@@ -13,7 +13,7 @@ export function SakLoader() {
           <Box margin={spacing}>
             <Skeleton variant="rectangle" width="100%" height={30} />
           </Box>
-          <HGrid columns={`${hotsakVenstremenyWidth} auto`} gap={spacing} marginInline="0 4">
+          <HGrid columns={`${hotsakVenstremenyWidth} auto`} gap={spacing} marginInline="space-0 space-16">
             <Skeleton variant="rectangle" width="100%" height={800} />
             <Skeleton variant="rectangle" width="100%" height={800} />
           </HGrid>

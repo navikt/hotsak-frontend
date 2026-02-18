@@ -147,7 +147,6 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
           </Detail>
         </SkjemaAlert>
       )}
-
       {usendtUtkastTilInnhenteOpplysningerBrev && (
         <SkjemaAlert variant="warning">
           <Detail>
@@ -155,10 +154,8 @@ export function Redigeringsvisning(props: RedigeringsvisningProps) {
           </Detail>
         </SkjemaAlert>
       )}
-
       {submitAttempt && harNotatUtkast && <NotatUtkastVarsel />}
-
-      <HStack gap="2">
+      <HStack gap="space-8">
         <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
           Forrige
         </Button>

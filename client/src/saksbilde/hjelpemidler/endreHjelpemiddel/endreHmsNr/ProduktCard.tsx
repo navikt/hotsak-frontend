@@ -10,8 +10,8 @@ export function ProduktCard({ hjelpemiddel }: { hjelpemiddel: HjelpemiddelData }
       borderColor="neutral-subtle"
       background="raised"
       borderRadius="large"
-      marginBlock="space-28 0"
-      padding="4"
+      marginBlock="space-28 space-0"
+      padding="space-16"
       maxWidth="350px"
     >
       <VStack>

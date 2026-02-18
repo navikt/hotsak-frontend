@@ -55,7 +55,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
   const funksjonsbeskrivelse = brukersituasjon.funksjonsbeskrivelse
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <Heading level="1" size="small" visuallyHidden={true}>
         {storForbokstavIOrd(sak.sakstype)}
       </Heading>
@@ -70,7 +70,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
       {hjelpemidler.map((hjelpemiddel) => (
-        <Box key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="4">
+        <Box key={hjelpemiddel.produkt.hmsArtNr} background="neutral-soft" padding="space-16">
           <Hjelpemiddel
             sak={sak}
             hjelpemiddel={hjelpemiddel}
@@ -94,7 +94,7 @@ function HjelpemiddelListe({ sak, behovsmelding }: HjelpemiddelListeProps) {
           <FrittståendeTilbehør sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
         </>
       )}
-      <VStack gap="1">
+      <VStack gap="space-4">
         <Skillelinje />
         <Etikett>{`Totalt ${totaltAntall} stk. inkl. tilbehør`}</Etikett>
         <Skillelinje />

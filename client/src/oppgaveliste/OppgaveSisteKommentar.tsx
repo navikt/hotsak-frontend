@@ -24,8 +24,8 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
         ) : (
           <>
             {sisteKommentar ? (
-              <VStack gap="2">
-                <HStack gap="2" align="center">
+              <VStack gap="space-8">
+                <HStack gap="space-8" align="center">
                   <Detail>{sisteKommentar.registrertAv}</Detail>
                   <Detail>|</Detail>
                   <Detail>{sisteKommentar.registrertAvEnhetsnummer}</Detail>
@@ -37,7 +37,7 @@ export function OppgaveSisteKommentar(props: OppgaveSisteKommentarProps) {
                 <BodyShort size="small">{sisteKommentar.tekst}</BodyShort>
               </VStack>
             ) : (
-              <HStack gap="2" align="center">
+              <HStack gap="space-8" align="center">
                 <InformationSquareIcon />
                 <BodyShort size="small">Det er ingen kommentarer til oppgaven</BodyShort>
               </HStack>

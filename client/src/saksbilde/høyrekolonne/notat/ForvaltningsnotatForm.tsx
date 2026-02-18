@@ -109,7 +109,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)} name="forvaltningsnotat-form">
         {!notaterLaster && (
-          <VStack gap="4" paddingBlock="6 0">
+          <VStack gap="space-16" paddingBlock="space-24 space-0">
             <Controller
               name="klassifisering"
               control={control}
@@ -148,7 +148,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
         )}
 
         {!lesevisning && (
-          <HStack justify="space-between" paddingBlock={'1-alt 0'}>
+          <HStack justify="space-between" paddingBlock={'space-6 space-0'}>
             <Button
               type="button"
               size="xsmall"
@@ -169,7 +169,7 @@ export function ForvaltningsnotatForm({ sakId, lesevisning, aktivtUtkast }: Forv
         )}
 
         {!lesevisning && (
-          <VStack paddingBlock={'3 0'}>
+          <VStack paddingBlock={'space-12 space-0'}>
             <div>
               <Button
                 variant="secondary"

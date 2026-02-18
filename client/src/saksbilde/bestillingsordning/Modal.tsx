@@ -39,7 +39,7 @@ export function BekreftAutomatiskOrdre({
       loading={loading}
       onClose={onClose}
     >
-      <VStack gap="4">
+      <VStack gap="space-16">
         {leveringsmerknad && (
           <FritekstPanel
             leveringsmerknad={leveringsmerknad}
@@ -76,8 +76,8 @@ export function FritekstPanel({
   const [beskjedlengdeError, setBeskjedlengdeError] = useState(false)
 
   return (
-    <Box padding="4" background="neutral-soft">
-      <VStack gap="4">
+    <Box padding="space-16" background="neutral-soft">
+      <VStack gap="space-16">
         <Heading level="2" size="xsmall" spacing>
           Beskjed fra formidler til kommunen om utlevering
         </Heading>
@@ -86,7 +86,7 @@ export function FritekstPanel({
         </Alert>
 
         <form>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Textarea
               label="Beskjed til kommunen"
               description="Sjekk teksten og fjern sensitive opplysninger"

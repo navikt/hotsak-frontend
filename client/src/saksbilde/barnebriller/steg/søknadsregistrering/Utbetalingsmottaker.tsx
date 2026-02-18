@@ -21,7 +21,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
 
   return (
     <div>
-      <HStack gap="2" align="end">
+      <HStack gap="space-8" align="end">
         <TextField
           label="Fødselsnummer innsender"
           size="small"
@@ -41,7 +41,7 @@ export function Utbetalingsmottaker(props: UtbetalingsmottakerProps) {
           Hent kontonummer
         </Button>
       </HStack>
-      <Box marginBlock="3">
+      <Box marginBlock="space-12">
         {kontoinformasjon && !kontonummerFunnet && (
           <SkjemaAlert variant="error">
             {`Fant ikke kontonummer for ${

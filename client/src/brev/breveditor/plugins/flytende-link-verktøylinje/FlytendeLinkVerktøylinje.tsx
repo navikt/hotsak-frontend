@@ -88,7 +88,7 @@ export function FlytendeLinkVerktøylinje() {
               <OpprettEndreLinkPanel />
             </>
           ) : (
-            <HStack gap="1" wrap={false}>
+            <HStack gap="space-4" wrap={false}>
               <Button
                 icon={<DocPencilIcon />}
                 variant="tertiary"

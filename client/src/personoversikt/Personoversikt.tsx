@@ -59,7 +59,7 @@ function PersonoversiktContent() {
             sakerCount={sakerOgBarnebrillekrav.length}
             hjelpemidlerCount={antallUtlånteHjelpemidler}
           />
-          <Box paddingBlock="4" paddingInline="8">
+          <Box paddingBlock="space-16" paddingInline="space-32">
             <Routes>
               <Route path="/oppgaver" element={<OppgaveoversiktPerson fnr={fodselsnummer} />} />
               <Route

@@ -41,7 +41,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
 
   return (
     <>
-      <VStack gap="2">
+      <VStack gap="space-8">
         <ReadMore size="small" header="Når skal du bruke de ulike notattypene">
           <Etikett>Internt arbeidsnotat</Etikett>
           <Tekst spacing>
@@ -73,7 +73,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
             </List>
           </Box>
         </ReadMore>
-        <Box paddingBlock="6 0">
+        <Box paddingBlock="space-24 space-0">
           <ToggleGroup
             size="small"
             value={notatType}
@@ -99,7 +99,7 @@ export function Notater({ sakId, lesevisning }: NotaterProps) {
           )}
         </>
       )}
-      <VStack gap="4" paddingBlock="8 0">
+      <VStack gap="space-16" paddingBlock="space-32 space-0">
         <Mellomtittel spacing={false}>Notater knyttet til saken</Mellomtittel>
         {notaterLaster && (
           <div>

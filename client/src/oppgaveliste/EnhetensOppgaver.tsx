@@ -13,7 +13,7 @@ export function EnhetensOppgaver() {
   })
   useOppgavemetrikker('Enhetens', oppgaver.length, totalElements)
   return (
-    <Box marginInline="5">
+    <Box marginInline="space-20">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`} />
       <EnhetensOppgaverTable oppgaver={oppgaver} filterOptions={filterOptions} loading={isLoading} />
     </Box>

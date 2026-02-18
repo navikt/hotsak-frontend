@@ -84,7 +84,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
         <Heading level="2" as={Skeleton} size="small" spacing>
           Placeholder
         </Heading>
-        <VStack gap="4">
+        <VStack gap="space-16">
           <Skeleton variant="rectangle" width="80%" height={30} />
           <Skeleton variant="rectangle" width="80%" height={90} />
         </VStack>
@@ -139,7 +139,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
             <Tekst>Saken må være under behandling og du må være tildelt saken for å kunne sende brev.</Tekst>
           ) : (
             <form onSubmit={(e) => e.preventDefault()}>
-              <VStack gap="4">
+              <VStack gap="space-16">
                 <Select size="small" label="Velg brevmal">
                   <option value={brevtype}>Innhente opplysninger</option>
                 </Select>
@@ -164,7 +164,7 @@ export const SendBrevPanel = memo((props: SendBrevProps) => {
                   onTextChange={setFritekst}
                 />
               </VStack>
-              <HStack gap="2">
+              <HStack gap="space-8">
                 <Button
                   type="submit"
                   size="small"

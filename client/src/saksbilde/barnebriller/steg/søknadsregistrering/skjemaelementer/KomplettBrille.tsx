@@ -16,7 +16,7 @@ export function KomplettBrille() {
   const vilkårOppfylt = watch('komplettBrille.vilkårOppfylt')
 
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       <Controller
         name="komplettBrille.vilkårOppfylt"
         control={control}
@@ -24,7 +24,7 @@ export function KomplettBrille() {
         render={({ field }) => (
           <RadioGroup
             legend={
-              <HStack wrap={false} gap="2" align="center">
+              <HStack wrap={false} gap="space-8" align="center">
                 <Etikett>Inneholder bestillingen glass? (§2)</Etikett>
                 <HelpText>Bestillingen må inneholde glass, det gis ikke tilskudd til kun innfatning (§2)</HelpText>
               </HStack>

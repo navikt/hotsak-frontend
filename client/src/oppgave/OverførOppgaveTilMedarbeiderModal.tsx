@@ -58,7 +58,7 @@ export function OverførOppgaveTilMedarbeiderModal(props: { sakId: string; open:
           <Skeleton height={134} />
         </>
       ) : (
-        <VStack gap="4">
+        <VStack gap="space-16">
           <Tekst>Du kan velge blant medarbeidere ved {gjeldendeEnhet.navn} som har tilgang til Hotsak.</Tekst>
           <Select id="valgtSaksbehandler" name="valgtSaksbehandler" label="Medarbeider" size="small">
             <option value="">Velg medarbeider</option>

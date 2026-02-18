@@ -68,17 +68,17 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
         Journalføring
       </Heading>
       <form>
-        <VStack gap="6">
+        <VStack gap="space-24">
           <div>
             <Heading size="small" level="2" spacing>
               Bruker
             </Heading>
 
-            <Box paddingInline="1 3">
+            <Box paddingInline="space-4 space-12">
               <ExpansionCard size="small" aria-label="Bruker det skal journalføres på">
                 <ExpansionCard.Header>
                   <ExpansionCard.Title as="h3" size="small">
-                    <HStack align="center" gap="1">
+                    <HStack align="center" gap="space-4">
                       <PersonEnvelopeIcon />
                       {`${formaterNavn(personInfo?.navn)} | ${personInfo?.fnr}`}
                     </HStack>
@@ -109,7 +109,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
               </ExpansionCard>
             </Box>
           </div>
-          <Box marginInline="2 3">
+          <Box marginInline="space-8 space-12">
             <Heading size="small" level="2" spacing>
               Journalpost
             </Heading>
@@ -130,7 +130,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
               onChange={setValgtEksisterendeSakId}
             />
           )}
-          <Box paddingBlock="1 0">
+          <Box paddingBlock="space-4 space-0">
             <Button
               type="submit"
               variant="primary"

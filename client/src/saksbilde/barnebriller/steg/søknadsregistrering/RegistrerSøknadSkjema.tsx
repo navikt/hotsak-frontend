@@ -109,10 +109,10 @@ export function RegistrerSøknadSkjema() {
 
   return (
     <Container>
-      <Box paddingBlock="4 2">
+      <Box paddingBlock="space-16 space-8">
         <Dokumenter dokumenter={dokumenter} />
       </Box>
-      <Box marginBlock="10 0" paddingInline="2">
+      <Box marginBlock="space-40 space-0" paddingInline="space-8">
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit((data) => {

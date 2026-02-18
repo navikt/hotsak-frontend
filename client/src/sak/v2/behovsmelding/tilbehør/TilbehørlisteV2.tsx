@@ -24,7 +24,7 @@ export function FrittStåendeTilbehørV2({
 }) {
   const { kanEndreHmsnr } = useSaksregler()
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
 
@@ -32,7 +32,7 @@ export function FrittStåendeTilbehørV2({
           <Box
             key={idx}
             borderRadius="large"
-            padding="4"
+            padding="space-16"
             background="neutral-softA"
             borderColor="neutral-subtle"
             borderWidth="1"
@@ -114,14 +114,14 @@ function Tilbehør({
         <HStack gap="space-12">
           <ProduktV2 hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
         </HStack>
-        <VStack paddingBlock={'space-8 0'}>
+        <VStack paddingBlock={'space-8 space-0'}>
           <Etikett>Antall</Etikett>
           <div>
             <AntallTag antall={tilbehør.antall} />
           </div>
         </VStack>
         {harEndretTilbehør && (
-          <Box paddingInline="4 0">
+          <Box paddingInline="space-16 space-0">
             <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
             <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
           </Box>

@@ -15,7 +15,7 @@ export function BarnebrillesakHistorikk() {
       loading={isLoading && 'Henter historikk...'}
     >
       {hendelser.length > 0 ? (
-        <VStack as={ListeUtenPunkt} gap="3">
+        <VStack as={ListeUtenPunkt} gap="space-12">
           {hendelser.map((it) => (
             <HistorikkHendelse key={it.id} {...it} />
           ))}

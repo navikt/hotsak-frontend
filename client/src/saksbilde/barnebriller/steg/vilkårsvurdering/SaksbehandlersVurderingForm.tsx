@@ -71,7 +71,7 @@ export function SaksbehandlersVurderingForm({
           )}
         />
 
-        <Box paddingBlock="4 0">
+        <Box paddingBlock="space-16 space-0">
           <Tekstområde
             size="small"
             label="Begrunnelse"
@@ -80,7 +80,7 @@ export function SaksbehandlersVurderingForm({
             {...methods.register('begrunnelseSaksbehandler', { required: 'Skriv inn begrunnelse' })}
           ></Tekstområde>
         </Box>
-        <Box paddingBlock="4 0">
+        <Box paddingBlock="space-16 space-0">
           <Kolonner>
             <Button variant="primary" size="small" type="submit" loading={venterPåVilkårsvurdering}>
               Lagre

@@ -59,7 +59,7 @@ export function HjelpemiddelV2({
       <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
         <TextContainer>
           <Etikett size="medium">{produkt?.isotittel}</Etikett>
-          <VStack gap="1">
+          <VStack gap="space-4">
             {produkt?.delkontrakter?.map(({ posttittel }) => (
               <TextContainer key={posttittel}>
                 <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
@@ -69,7 +69,7 @@ export function HjelpemiddelV2({
         </TextContainer>
 
         <>
-          <VStack justify="start" gap="2">
+          <VStack justify="start" gap="space-8">
             {endretHjelpemiddel && (
               <ProduktV2
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}

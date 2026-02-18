@@ -56,7 +56,7 @@ export function TotrinnskontrollPanel() {
 
   return (
     <SidebarPanel tittel="Totrinnskontroll">
-      <VStack gap="5">
+      <VStack gap="space-20">
         <Tekst>Kontrollér opplysninger og faglige vurderinger som er gjort.</Tekst>
         {!totrinnskontrollFullført ? <TotrinnskontrollForm /> : <TotrinnskontrollLesevisning />}
       </VStack>

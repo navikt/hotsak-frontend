@@ -16,7 +16,7 @@ export function Produkt({
   showLink?: boolean
 }) {
   return (
-    <HStack align={'start'} wrap={false} gap="1">
+    <HStack align={'start'} wrap={false} gap="space-4">
       <HStack wrap={false}>
         <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
           {hmsnr}

@@ -86,7 +86,7 @@ export function VurderVilkår() {
 
   return (
     <>
-      <Box padding="4">
+      <Box padding="space-16">
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
         </Heading>
@@ -96,7 +96,7 @@ export function VurderVilkår() {
         </Tag>
 
         {errors.length > 0 && (
-          <Box paddingBlock="6 0">
+          <Box paddingBlock="space-24 space-0">
             <ErrorSummary heading="Vilkår mangler vurdering og må vurders av saksbehandler" size="small" ref={errorRef}>
               {errors.map((error) => (
                 <ErrorSummary.Item key={error}>{error}</ErrorSummary.Item>
@@ -104,7 +104,7 @@ export function VurderVilkår() {
             </ErrorSummary>
           </Box>
         )}
-        <Box paddingBlock="6 0">
+        <Box paddingBlock="space-24 space-0">
           <Table size="small">
             <Table.Header>
               <Table.Row>

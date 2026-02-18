@@ -72,7 +72,7 @@ export function Utviklingsverktøy() {
       >
         -
       </Button>
-      <VStack gap="2">
+      <VStack gap="space-8">
         <Heading size="xsmall">[UTVIKLINGSVERKTØY]</Heading>
         <Select
           data-testid="select-bytt-bruker"

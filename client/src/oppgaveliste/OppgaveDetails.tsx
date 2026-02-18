@@ -25,8 +25,8 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
 
   if (kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING) {
     return (
-      <VStack gap="5">
-        <VStack gap="3">
+      <VStack gap="space-20">
+        <VStack gap="space-12">
           {isTildeltSaksbehandler && <OppgaveDetailsBruker bruker={bruker} />}
           <OppgaveDetailsItem label="Beskrivelse" value={oppgave.beskrivelse} />
         </VStack>
@@ -35,8 +35,8 @@ export function OppgaveDetails({ oppgave, visible }: OppgaveDetailsProps) {
   }
 
   return (
-    <VStack gap="5">
-      <VStack gap="3">
+    <VStack gap="space-20">
+      <VStack gap="space-12">
         {isTildeltSaksbehandler && <OppgaveDetailsBruker bruker={bruker} />}
         {sak?.søknadGjelder && <OppgaveDetailsItem label="Beskrivelse" value={sak?.søknadGjelder} />}
         {sak?.sakstype !== Sakstype.BARNEBRILLER && <OppgaveHjelpemidler sakId={visible ? oppgave.sakId : null} />}
@@ -56,7 +56,7 @@ function OppgaveDetailsBruker({ bruker }: { bruker?: OppgaveBruker }) {
   if (!bruker) return null
   return (
     <OppgaveDetailsItem label="Bruker">
-      <HStack gap="3">
+      <HStack gap="space-12">
         <FormatPersonnavn size="small" value={bruker.navn} />
         <FormatFødselsnummer size="small" value={bruker.fnr} />
         {bruker.brukernummer && <BodyShort size="small">{bruker.brukernummer}</BodyShort>}

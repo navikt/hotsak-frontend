@@ -13,7 +13,7 @@ export function Dokumenter(props: DokumenterProps) {
   const { valgtDokument, setValgtDokument } = useDokumentContext()
 
   return (
-    <Box paddingBlock="6 0">
+    <Box paddingBlock="space-24 space-0">
       <Heading size={'xsmall'} level={'2'}>
         Dokumenter
       </Heading>

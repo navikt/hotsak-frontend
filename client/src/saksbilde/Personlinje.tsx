@@ -100,7 +100,7 @@ export function LasterPersonlinje() {
 
 function Element({ children }: { children: ReactNode }) {
   return (
-    <HStack align="center" gap="1">
+    <HStack align="center" gap="space-4">
       {children}
     </HStack>
   )
@@ -113,7 +113,7 @@ function Container({ children }: { children?: ReactNode }) {
       flexShrink="0"
       //minWidth={hotsakTotalMinWidth}
       height={søknadslinjeHøyde}
-      gap="4"
+      gap="space-16"
       paddingInline="space-12"
       className={classes.container}
     >

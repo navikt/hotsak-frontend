@@ -74,7 +74,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
               render={({ field, fieldState }) => (
                 <TextField
                   label={
-                    <HStack wrap={false} gap="2" align="center">
+                    <HStack wrap={false} gap="space-8" align="center">
                       <Etikett>Problemsammendrag til OeBS </Etikett>
                       <HelpText strategy="fixed">
                         <Tekst>
@@ -97,7 +97,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                 <Textarea
                   readOnly={harLagretPostbegrunnelse}
                   label={
-                    <HStack wrap={false} gap="2" align="center">
+                    <HStack wrap={false} gap="space-8" align="center">
                       <Etikett>Begrunnelse for lavere rangering</Etikett>
                       <HelpText strategy="fixed">
                         <Tekst>

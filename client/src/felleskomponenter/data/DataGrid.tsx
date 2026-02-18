@@ -78,7 +78,7 @@ export function DataGrid<T extends object>(props: DataGridProps<T>) {
             } else {
               return (
                 <Table.HeaderCell key={key} textSize={textSize} style={{ width: column.width, whiteSpace: 'nowrap' }}>
-                  <HStack align="center" gap="1" wrap={false}>
+                  <HStack align="center" gap="space-4" wrap={false}>
                     <div>{header}</div>
                     {column.filter ? <DataGridFilterMenu field={column.field} filter={column.filter} /> : null}
                   </HStack>

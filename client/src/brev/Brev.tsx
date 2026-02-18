@@ -244,7 +244,7 @@ export const Brev = () => {
                 </div>
               )}
               {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (
-                <HStack justify="center" gap="4" marginBlock="4">
+                <HStack justify="center" gap="space-16" marginBlock="space-16">
                   <Loader size="medium" title="Henter brev..." />
                   <Etikett>Genererer forhåndsvisning av brev...</Etikett>
                 </HStack>

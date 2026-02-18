@@ -11,13 +11,12 @@ export function BrillestyrkeForm() {
 
   return (
     <div>
-      <VStack gap="8">
+      <VStack gap="space-32">
         <Øye type="høyre" />
         <Øye type="venstre" />
       </VStack>
-
       {beregning && (
-        <Box paddingBlock="3 1">
+        <Box paddingBlock="space-12 space-4">
           {beregning.sats === SatsType.INGEN ? (
             <Alert variant="warning">
               <BodyLong>Vilkår om brillestyrke og/eller sylinderstyrke er ikke oppfylt</BodyLong>

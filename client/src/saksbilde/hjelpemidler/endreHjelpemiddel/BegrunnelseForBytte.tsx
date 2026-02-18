@@ -20,7 +20,7 @@ export function BegrunnelseForBytte({ type }: { type: EndreHjelpemiddelType }) {
       : EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
 
   return (
-    <VStack gap="3" paddingBlock="4 0">
+    <VStack gap="space-12" paddingBlock="space-16 space-0">
       <Controller
         name="endreBegrunnelse"
         control={control}

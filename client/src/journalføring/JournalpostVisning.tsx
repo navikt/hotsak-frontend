@@ -36,7 +36,7 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
   return (
     <Container>
       {!lesevisning && <JournalføringMenu onAction={mutate} />}
-      <VStack gap="3">
+      <VStack gap="space-12">
         <Heading level="1" size="xsmall" spacing>
           Journalføring
         </Heading>
@@ -46,13 +46,13 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
           </Heading>
           <Tekst>{`${formaterNavn(personInfo)} | ${personInfo?.fnr}`}</Tekst>
         </VStack>
-        <VStack marginInline="0 3">
+        <VStack marginInline="space-0 space-12">
           <Heading size="xsmall" level="2" spacing>
             Journalpost
           </Heading>
           <Dokumenter dokumenter={journalpost.dokumenter} />
         </VStack>
-        <Box paddingBlock="6 0" paddingInline="0 6">
+        <Box paddingBlock="space-24 space-0" paddingInline="space-0 space-24">
           <Status lesevisning={lesevisning} onOppgavetildeling={() => mutate()} />
         </Box>
       </VStack>

@@ -107,7 +107,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
         ))}
       {tilbehør && tilbehør.length > 0 && (
         <>
-          <VStack paddingBlock="space-20 0">
+          <VStack paddingBlock="space-20 space-0">
             <HStack align="center">
               <Button
                 variant="tertiary"

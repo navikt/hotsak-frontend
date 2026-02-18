@@ -6,11 +6,11 @@ import { Vilkår } from '../../../../types/types.internal'
 
 export function SaksbehandlersVurderingLesevisning({ vilkår }: { sakId: number | string; vilkår: Vilkår }) {
   return (
-    <Box paddingBlock="6 0">
+    <Box paddingBlock="space-24 space-0">
       <Etikett>Er vilkåret oppfylt?</Etikett>
       <Tekst>{storForbokstavIAlleOrd(vilkår.vilkårOppfylt).replace('_', ' ')}</Tekst>
       {vilkår.manuellVurdering?.begrunnelse && (
-        <Box paddingBlock="6 0">
+        <Box paddingBlock="space-24 space-0">
           <Etikett>Begrunnelse</Etikett>
           <Tekst>{vilkår.manuellVurdering.begrunnelse}</Tekst>
         </Box>

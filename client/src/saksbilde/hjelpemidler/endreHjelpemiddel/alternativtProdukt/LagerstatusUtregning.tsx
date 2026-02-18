@@ -21,7 +21,7 @@ export function LagerstatusUtregning(props: { lagerstatus: WareHouseStock }) {
   return (
     <HelpText title="Forklaring på utregning av lagerstatus">
       <Etikett>Lagerstatus er regnet ut slik:</Etikett>
-      <HGrid columns="auto auto 1fr" gap="0 space-8" paddingBlock={'space-12 0'}>
+      <HGrid columns="auto auto 1fr" gap="space-0 space-8" paddingBlock={'space-12 space-0'}>
         {utregninger.map(({ operator, label, key }) => {
           return (
             <Fragment key={key}>
@@ -34,7 +34,7 @@ export function LagerstatusUtregning(props: { lagerstatus: WareHouseStock }) {
       </HGrid>
       <HGrid
         columns="auto auto 1fr"
-        gap="0 space-8"
+        gap="space-0 space-8"
         style={{
           borderTopWidth: '1px',
           borderTopStyle: 'solid',

@@ -13,7 +13,7 @@ export function Toast({ children }: { children: ReactNode }) {
       padding="space-12"
       borderColor="brand-blue-subtle"
       borderWidth="1"
-      marginInline="space-20 0"
+      marginInline="space-20 space-0"
       borderRadius="large"
       shadow="dialog"
       style={{ width: 'max-content', position: 'fixed', top: '14rem' }}

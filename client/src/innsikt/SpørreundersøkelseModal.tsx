@@ -80,13 +80,13 @@ export function SpørreundersøkelseModal(props: SpørreundersøkelseModalProps)
           })}
         >
           <Modal.Body style={{ paddingTop: 0 }}>
-            <VStack gap="4" style={{ maxWidth: `${textcontainerBredde}` }} marginInline={'space-0 space-24'}>
+            <VStack gap="space-16" style={{ maxWidth: `${textcontainerBredde}` }} marginInline={'space-0 space-24'}>
               {children}
               <SpørreundersøkelseStack spørreundersøkelse={spørreundersøkelse} size={size} />
             </VStack>
           </Modal.Body>
           <Modal.Footer>
-            <Stack gap="4" justify="end" direction={reverserKnapperekkefølge ? 'row' : 'row-reverse'}>
+            <Stack gap="space-16" justify="end" direction={reverserKnapperekkefølge ? 'row' : 'row-reverse'}>
               <Button
                 type="submit"
                 size="small"

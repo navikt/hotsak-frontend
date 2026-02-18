@@ -15,7 +15,7 @@ export function InnvilgetVedtakVisning(props: InnvilgetVedtakVisningProps) {
   const { vilkårsvurdering, utbetalingsmottaker } = sak
   return (
     <>
-      <HGrid gap="2" columns="180px auto">
+      <HGrid gap="space-8" columns="180px auto">
         <div>{`${vilkårsvurdering?.data?.sats.replace('SATS_', 'Sats ')}:`}</div>
         <Etikett>{`${formaterBeløp(vilkårsvurdering?.data?.satsBeløp)} kr`}</Etikett>
         <div>Beløp som utbetales:</div>

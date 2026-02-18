@@ -35,7 +35,7 @@ export function BrevPanel(props: BrevPanelProps) {
     return <Feilmelding>Det oppstod en feil ved opprettelse av brev</Feilmelding>
   } else if (hentetDokument.status === RessursStatus.HENTER) {
     return (
-      <HStack justify="center" gap="4" marginBlock="4">
+      <HStack justify="center" gap="space-16" marginBlock="space-16">
         <Loader size="medium" title="Henter brev..." />
         <Etikett>Genererer forhåndsvisning av brev...</Etikett>
       </HStack>

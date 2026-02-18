@@ -24,7 +24,7 @@ export function KjøptBrille() {
       render={({ field }) => (
         <RadioGroup
           legend={
-            <HStack wrap={false} gap="2" align="center">
+            <HStack wrap={false} gap="space-8" align="center">
               <Etikett>Er det snakk om kjøp av briller? (§2)</Etikett>
               <HelpText>
                 Det gis kun tilskudd til kjøp av brille. Briller som er del av et abonnement støttes ikke (§2).
@@ -37,12 +37,12 @@ export function KjøptBrille() {
         >
           <Radio value={VilkårsResultat.JA}>Ja</Radio>
           {vilkårOppfylt === VilkårsResultat.JA && (
-            <Box paddingInline="7 0" paddingBlock="0 4">
+            <Box paddingInline="space-28 space-0" paddingBlock="space-0 space-16">
               <Tekstfelt
                 id="brillepris"
                 htmlSize={8}
                 label={
-                  <HStack wrap={false} gap="2" align="center">
+                  <HStack wrap={false} gap="space-8" align="center">
                     <Etikett>Pris på brillen</Etikett>
                     <HelpText>
                       Skal bare inkludere glass, slip av glass og innfatning, inkl moms, og brilletilpasning. Eventuell

@@ -58,18 +58,18 @@ export function Hjelpemiddel({
   const harAlternativeProdukter = alternativeProdukter.length > 0
 
   return (
-    <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="4">
+    <VStack key={hjelpemiddel.produkt.hmsArtNr} gap="space-16">
       <TextContainer>
         <Etikett size="medium">{produkt?.isotittel}</Etikett>
       </TextContainer>
-      <VStack gap="1">
+      <VStack gap="space-4">
         <TextContainer>
           <BrytbarBrødtekst>Delkontrakt {hjelpemiddel.produkt.delkontrakttittel}</BrytbarBrødtekst>
         </TextContainer>
       </VStack>
       <HjelpemiddelGrid>
         <TextContainer>
-          <VStack justify="start" gap="2">
+          <VStack justify="start" gap="space-8">
             {harEndretHjelpemiddel && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
@@ -83,7 +83,7 @@ export function Hjelpemiddel({
               navn={hjelpemiddel.produkt.artikkelnavn}
               gjennomstrek={harEndretHjelpemiddel}
             />
-            <HStack gap="2">
+            <HStack gap="space-8">
               {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
                 <Tag size="xsmall" variant="warning">{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
               ) : (
@@ -104,7 +104,7 @@ export function Hjelpemiddel({
             </HStack>
           </VStack>
           {/* TODO fjerne VStack her */}
-          <VStack gap="3" paddingBlock="4 0" paddingInline="4 0">
+          <VStack gap="space-12" paddingBlock="space-16 space-0" paddingInline="space-16 space-0">
             {harEndretHjelpemiddel && (
               <div>
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
@@ -139,7 +139,7 @@ export function Hjelpemiddel({
         </div>
         {kanEndreHmsnr && (
           <div>
-            <Bleed marginBlock="1 0">
+            <Bleed marginBlock="space-4 space-0">
               <Button
                 variant="tertiary"
                 size="xsmall"
@@ -175,7 +175,7 @@ export function Hjelpemiddel({
         />
 
         {hjelpemiddel.tilbehør.length > 0 && (
-          <VStack gap="3">
+          <VStack gap="space-12">
             <Etikett size="medium">Tilbehør</Etikett>
             <Tilbehørliste sakId={sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
           </VStack>

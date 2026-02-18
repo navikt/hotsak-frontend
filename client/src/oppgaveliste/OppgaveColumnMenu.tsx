@@ -88,7 +88,7 @@ function OppgaveColumnMenuItem({ columnState }: { columnState: OppgaveColumnStat
   return (
     <div ref={setNodeRef} style={style}>
       <ActionMenu.CheckboxItem checked={columnState.checked} onCheckedChange={handleToggleColumn}>
-        <HStack gap="3" align="center" justify="space-between" width="100%" wrap={false}>
+        <HStack gap="space-12" align="center" justify="space-between" width="100%" wrap={false}>
           <div className={classes.draggableHeader}>{header}</div>
           <VStack className={isDragging ? classes.isDragging : classes.isNotDragging} {...attributes} {...listeners}>
             <DragVerticalIcon width={20} height={20} />

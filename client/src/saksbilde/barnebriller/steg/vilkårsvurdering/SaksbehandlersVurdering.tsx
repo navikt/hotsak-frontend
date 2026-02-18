@@ -33,7 +33,7 @@ export function SaksbehandlersVurdering({
           </Link>
         </Heading>
         <Tekst>{metadataFor(vilkår.vilkårId)?.beskrivelse}</Tekst>
-        <Box paddingBlock="4 2">
+        <Box paddingBlock="space-16 space-8">
           <Detail>VURDERINGEN ER BASERT PÅ:</Detail>
         </Box>
         {vilkår.manuellVurdering && (
@@ -42,7 +42,7 @@ export function SaksbehandlersVurdering({
             <RedigerGrunnlagLink />
           </>
         )}
-        <VStack gap="4">
+        <VStack gap="space-16">
           {Object.keys(vilkår.grunnlag)
             .filter((grunnlagKey: string) => {
               return grunnlagMetadata.get(grunnlagKey) !== undefined
@@ -84,7 +84,7 @@ export function SaksbehandlersVurdering({
 const RedigerGrunnlagLink = () => {
   const { setStep } = useManuellSaksbehandlingContext()
   return (
-    <Box paddingBlock="4">
+    <Box paddingBlock="space-16">
       <Detail>
         Hvis informasjonen som er lagt inn er feil, må du legge inn riktig informasjon under
         <Link href="#" onClick={() => setStep(StepType.REGISTRER)}>

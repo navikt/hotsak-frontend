@@ -38,7 +38,7 @@ export function RegistrerSøknadLesevisning() {
   const { vilkårsgrunnlag, vilkårsvurdering } = sak.data
 
   return (
-    <VStack gap="5">
+    <VStack gap="space-20">
       <div>
         <Dokumenter dokumenter={dokumenter} />
       </div>

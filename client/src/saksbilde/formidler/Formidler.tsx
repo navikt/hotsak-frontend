@@ -110,22 +110,22 @@ export function Formidler({ levering }: FormidlerProps) {
 
   return (
     <div style={{ paddingBlock: '0 var(--ax-space-64)' }}>
-      <Box paddingBlock="space-12 0" paddingInline="space-32 0">
+      <Box paddingBlock="space-12 space-0" paddingInline="space-32 space-0">
         <Heading level="2" size="small" spacing={!nyttSaksbilde}>
           Hjelpemiddelformidler
         </Heading>
-        <Box paddingBlock="space-16 0">
+        <Box paddingBlock="space-16 space-0">
           <InfoFormidler />
         </Box>
       </Box>
       {oppfølgingsansvarlig && (
-        <Box paddingBlock="space-12 0" paddingInline="space-32 0">
+        <Box paddingBlock="space-12 space-0" paddingInline="space-32 space-0">
           <>
             <Skillelinje />
             <Heading level="2" size="small" spacing={!nyttSaksbilde}>
               Oppfølgings- og opplæringsansvarlig
             </Heading>
-            <Box paddingBlock="space-16 0">
+            <Box paddingBlock="space-16 space-0">
               <InfoOppfølgingsansvarlig />
             </Box>
           </>

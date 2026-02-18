@@ -9,7 +9,7 @@ export interface KopiknappProps {
 export function InlineKopiknapp(props: KopiknappProps) {
   const { tooltip, copyText, placement } = props
   return (
-    <Bleed marginBlock="1 0">
+    <Bleed marginBlock="space-4 space-0">
       <Tooltip content={tooltip} placement={placement}>
         <CopyButton size="xsmall" copyText={copyText} />
       </Tooltip>

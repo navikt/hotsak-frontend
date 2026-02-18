@@ -16,7 +16,7 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
 
   return (
     <>
-      <Box paddingBlock={'0 space-16'}>
+      <Box paddingBlock={'space-0 space-16'}>
         {lagerStatusOppdatert && (
           <Tag size="small" variant="neutral-moderate">{`Oppdatert: ${formaterRelativTid(lagerStatusOppdatert)}`}</Tag>
         )}
@@ -37,7 +37,7 @@ export function AlternativtProduktVelger({ alternativeProdukter }: AlternativPro
             size="small"
             error={fieldState.error?.message}
           >
-            <HGrid columns="1fr 1fr 1fr" gap="3" height="100%">
+            <HGrid columns="1fr 1fr 1fr" gap="space-12" height="100%">
               {alternativeProdukter.map((produkt) => (
                 <AlternativtProduktCard key={produkt.id} alternativtProdukt={produkt} endretProdukt={field.value} />
               ))}

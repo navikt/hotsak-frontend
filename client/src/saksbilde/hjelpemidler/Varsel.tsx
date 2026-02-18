@@ -6,7 +6,7 @@ export function Varsler({ varsler }: { varsler?: Varsel[] }) {
     return null
   }
   return (
-    <VStack gap="space-6" paddingBlock="space-6 0">
+    <VStack gap="space-6" paddingBlock="space-6 space-0">
       {varsler.map((varsel) => {
         return (
           <InlineMessage status={varsel.type === Varseltype.WARNING ? 'warning' : 'info'} size="small">

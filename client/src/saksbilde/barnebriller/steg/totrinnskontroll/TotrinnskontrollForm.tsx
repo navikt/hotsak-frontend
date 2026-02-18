@@ -53,7 +53,7 @@ export function TotrinnskontrollForm() {
               }
             })}
           >
-            <VStack gap="3">
+            <VStack gap="space-12">
               <Controller
                 name="resultat"
                 control={control}

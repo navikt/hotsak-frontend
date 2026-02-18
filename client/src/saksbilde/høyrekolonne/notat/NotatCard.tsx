@@ -22,9 +22,9 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
 
   return (
     <>
-      <Box key={notat.id} background="neutral-soft" padding="3" borderRadius="xlarge" data-testid="notat-card">
-        <VStack gap="3">
-          <HStack gap="2" wrap={false} align="center">
+      <Box key={notat.id} background="neutral-soft" padding="space-12" borderRadius="xlarge" data-testid="notat-card">
+        <VStack gap="space-12">
+          <HStack gap="space-8" wrap={false} align="center">
             <Tag variant={notat.type === NotatType.JOURNALFØRT ? 'alt3-filled' : 'neutral-moderate'} size="small">
               {notat.type === NotatType.INTERNT ? 'Internt arbeidsnotat' : 'Forvaltningsnotat'}
             </Tag>
@@ -37,7 +37,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
             <Spacer />
             <NotatActions notat={notat} mutate={mutateNotater} />
           </HStack>
-          <HStack gap="2">
+          <HStack gap="space-8">
             <Heading level="3" size="xsmall" style={{ fontSize: '1em' }}>
               {notat.tittel}
             </Heading>
@@ -49,7 +49,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         </VStack>
 
         {notat.tekst && (
-          <VStack gap="3">
+          <VStack gap="space-12">
             <MardownEditorPreviewStyling ref={textRef} truncate={!visFulltNotat}>
               <MDXEditor
                 markdown={notat.tekst}
@@ -88,7 +88,7 @@ export function NotatCard({ notat, mutate: mutateNotater }: NotaterProps) {
         )}
 
         {!notat.tekst && (
-          <Box paddingBlock={'3 0'}>
+          <Box paddingBlock={'space-12 space-0'}>
             <Tekst>Dette notatet ble sendt inn igjennom Gosys, les PDF filen for å se innholdet.</Tekst>
           </Box>
         )}

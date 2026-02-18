@@ -58,7 +58,7 @@ export function InterntNotatForm({ sakId, lesevisning, aktivtUtkast }: InterntNo
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(ferdigstillInterntNotat)} name="internt-notat-form">
         {!notaterLaster && (
-          <VStack gap="4" paddingBlock="6 0">
+          <VStack gap="space-16" paddingBlock="space-24 space-0">
             <Alert variant="info" size="small" inline>
               Notatet kan bli utlevert til innbygger ved forespørsel om innsyn
             </Alert>
@@ -71,7 +71,7 @@ export function InterntNotatForm({ sakId, lesevisning, aktivtUtkast }: InterntNo
           </HStack>
         )}
         {!lesevisning && (
-          <VStack gap="4" paddingBlock="3 0">
+          <VStack gap="space-16" paddingBlock="space-12 space-0">
             <div>
               <Button variant="secondary" size="small" loading={ferdigstiller} type="submit">
                 Opprett internt notat

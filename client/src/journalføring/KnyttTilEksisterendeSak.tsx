@@ -22,8 +22,8 @@ export function KnyttTilEksisterendeSak(props: KnyttTilEksisterendeSakProps) {
     : 'Personen har ingen åpne saker i Hotsak av typen Tilskudd ved kjøp av briller til barn.'
 
   return (
-    <Box paddingBlock="6 0">
-      <HStack gap="2">
+    <Box paddingBlock="space-24 space-0">
+      <HStack gap="space-8">
         <HeadingMedHjelpetekst level="2" hjelpetekst={åpneSakerHjelpetekst} placement="right-end">
           Knytt til eksisterende sak
         </HeadingMedHjelpetekst>

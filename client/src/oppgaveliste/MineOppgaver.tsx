@@ -20,7 +20,7 @@ export function MineOppgaver() {
   })
   useOppgavemetrikker('Mine', oppgaver.length, totalElements)
   return (
-    <Box marginInline="5">
+    <Box marginInline="space-20">
       <OppgaveToolbar text={`${oppgaver.length} av ${totalElements} oppgaver`}>
         <Switch
           checked={visFerdigstilte}

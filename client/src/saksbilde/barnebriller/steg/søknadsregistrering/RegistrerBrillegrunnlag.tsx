@@ -13,7 +13,7 @@ export function RegistrerBrillegrunnlag() {
   const { sak } = useBarnebrillesak()
 
   return (
-    <VStack gap="10" paddingBlock="10 0" marginInline="0 1">
+    <VStack gap="space-40" paddingBlock="space-40 space-0" marginInline="space-0 space-4">
       <Utbetalingsmottaker defaultInnsenderFnr={sak?.data.utbetalingsmottaker?.fnr} />
       <BrillestyrkeForm />
       <Bestillingsdato />

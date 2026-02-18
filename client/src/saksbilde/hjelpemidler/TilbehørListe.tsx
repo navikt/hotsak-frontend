@@ -24,12 +24,12 @@ export function FrittståendeTilbehør({
   produkter: Produkttype[]
 }) {
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((it) => it.hmsArtNr === t.hmsArtNr)
 
         return (
-          <Box key={idx} background="neutral-soft" padding="4">
+          <Box key={idx} background="neutral-soft" padding="space-16">
             <Tilbehør sakId={sakId} tilbehør={t} produkt={produkt} frittståendeTilbehør={true} />
           </Box>
         )
@@ -48,7 +48,7 @@ export function Tilbehørliste({
   produkter: Produkttype[]
 }) {
   return (
-    <VStack gap="4">
+    <VStack gap="space-16">
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((it) => it.hmsArtNr === t.hmsArtNr)
         return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} />
@@ -89,7 +89,7 @@ function Tilbehør({
     <>
       <HjelpemiddelGrid>
         <TextContainer>
-          <VStack gap="1">
+          <VStack gap="space-4">
             {harEndretTilbehør && (
               <Produkt
                 hmsnr={endretHjelpemiddelResponse.hmsArtNr}
@@ -99,18 +99,18 @@ function Tilbehør({
             )}
             <Produkt hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} gjennomstrek={harEndretTilbehør} />
             {harSaksbehandlingvarsel && (
-              <Box paddingInline="4 0">
+              <Box paddingInline="space-16 space-0">
                 <Varsler varsler={tilbehør.saksbehandlingvarsel!} />
               </Box>
             )}
             {harEndretTilbehør && (
-              <Box paddingInline="4 0">
+              <Box paddingInline="space-16 space-0">
                 <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
                 <EndretTilbehørBegrunnelse endretTilbehør={endretTilbehør} />
               </Box>
             )}
             {harOpplysninger && (
-              <Box paddingInline="4 0">
+              <Box paddingInline="space-16 space-0">
                 <Opplysninger opplysninger={tilbehør.opplysninger!} />
               </Box>
             )}
@@ -151,14 +151,13 @@ function Begrunnelse({ tilbehør }: { tilbehør: Tilbehørtype }) {
   return (
     <>
       {tilbehør.begrunnelse && (
-        <Box paddingInline="4 0">
+        <Box paddingInline="space-16 space-0">
           <Etikett>Begrunnelse</Etikett>
           <BrytbarBrødtekst>{tilbehør.begrunnelse}</BrytbarBrødtekst>
         </Box>
       )}
-
       {tilbehør.fritakFraBegrunnelseÅrsak && (
-        <Box paddingInline="4 0">
+        <Box paddingInline="space-16 space-0">
           <Tekst>Begrunnelse ikke påkrevd for dette tilbehøret.</Tekst>
         </Box>
       )}

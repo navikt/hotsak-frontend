@@ -23,7 +23,7 @@ export function BestiltHosOptiker() {
         render={({ field }) => (
           <RadioGroup
             legend={
-              <HStack wrap={false} gap="2" align="center">
+              <HStack wrap={false} gap="space-8" align="center">
                 <Etikett>Er brillen bestilt hos optiker? (§2)</Etikett>
                 <HelpText>
                   For at en virksomhet/nettbutikk skal kunne godkjennes, må det være optiker tilknyttet denne (§2).
@@ -41,7 +41,7 @@ export function BestiltHosOptiker() {
         )}
       />
       {vilkårOppfylt === VilkårsResultat.NEI && (
-        <Box paddingBlock="4 0">
+        <Box paddingBlock="space-16 space-0">
           <Textarea
             size="small"
             label="Begrunnelse"

@@ -3,21 +3,21 @@ import { Box, HGrid, HStack, Skeleton, VStack } from '@navikt/ds-react'
 export function Loading({ count }: { count: number }) {
   return (
     <>
-      <HGrid columns="1fr 1fr 1fr" gap="3">
+      <HGrid columns="1fr 1fr 1fr" gap="space-12">
         {[...Array(count).keys()].map((it) => (
           <LoadingCard key={it} />
         ))}
       </HGrid>
-      <Box marginBlock="3 0" style={{ height: 64 }} />
+      <Box marginBlock="space-12 space-0" style={{ height: 64 }} />
     </>
   )
 }
 
 function LoadingCard() {
   return (
-    <VStack gap="3">
-      <Box borderWidth="1" borderColor="neutral-subtle" borderRadius="large" padding="4">
-        <VStack gap="3">
+    <VStack gap="space-12">
+      <Box borderWidth="1" borderColor="neutral-subtle" borderRadius="large" padding="space-16">
+        <VStack gap="space-12">
           <Skeleton variant="rectangle" width="100%" height={185} />
           <Skeleton variant="rectangle" width="90%" height={64} />
           <Skeleton variant="rectangle" width="60%" height={24} />

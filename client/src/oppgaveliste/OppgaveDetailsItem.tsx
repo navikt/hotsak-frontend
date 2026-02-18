@@ -11,7 +11,7 @@ export function OppgaveDetailsItem(props: OppgaveDetailsItemProps) {
   const { label, value, children } = props
   if (!value && !children) return null
   return (
-    <VStack gap="2">
+    <VStack gap="space-8">
       <Label size="small">{label}</Label>
       {value == null ? null : <BodyShort size="small">{value}</BodyShort>}
       {children}

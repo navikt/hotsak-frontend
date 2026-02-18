@@ -49,7 +49,7 @@ export function OpprettEndreLinkPanel() {
   }
 
   return (
-    <VStack gap="4" padding="space-8" onKeyDownCapture={onKeyDownCapture}>
+    <VStack gap="space-16" padding="space-8" onKeyDownCapture={onKeyDownCapture}>
       <TextField
         label="Link adresse"
         placeholder="https://"

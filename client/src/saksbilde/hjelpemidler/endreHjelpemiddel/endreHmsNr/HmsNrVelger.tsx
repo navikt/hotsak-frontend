@@ -23,10 +23,10 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
 
   return (
     <>
-      <Box paddingBlock="0 4">
+      <Box paddingBlock="space-0 space-16">
         <Tekst>Her kan du endre hjelpemidler som begrunner har lagt inn.</Tekst>
       </Box>
-      <Box padding="0" borderRadius="large">
+      <Box padding="space-0" borderRadius="large">
         <HStack align="start" gap="space-32" wrap={true}>
           <HStack gap="space-12" wrap={true} align={'end'}>
             <Box width="200px">
@@ -59,13 +59,13 @@ export function HmsNrVelger({ nåværendeHmsnr }: { nåværendeHmsnr?: string })
             </Box>
 
             {isLoading && !error && (
-              <HStack gap="3" align={'center'} marginBlock={'0 space-4'}>
+              <HStack gap="space-12" align={'center'} marginBlock={'space-0 space-4'}>
                 <Loader size="medium" title="Søker etter hjelpemiddel..." />
                 <Tekst>Søker etter hjelpemiddel...</Tekst>
               </HStack>
             )}
             {!hjelpemiddel && error && (
-              <Box marginBlock={'0 space-4'}>
+              <Box marginBlock={'space-0 space-4'}>
                 <Alert variant="error" inline title="Fant ikke hjelpemiddel" size="small">
                   <Tekst>HMS-nummer ikke funnet i FinnHjelpemiddel eller OeBS</Tekst>
                 </Alert>

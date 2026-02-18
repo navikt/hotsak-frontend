@@ -14,7 +14,7 @@ export function SpørreundersøkelseStack(props: SpørreundersøkelseStackProps)
   const { spørsmål } = spørreundersøkelse
 
   return (
-    <VStack gap="5">
+    <VStack gap="space-20">
       {spørreundersøkelse.beskrivelse && (
         <ReadMore header={spørreundersøkelse.beskrivelse.header} size={size}>
           {spørreundersøkelse.beskrivelse.body}

@@ -8,6 +8,7 @@ import { formaterDato } from '../../utils/dato'
 import { storForbokstavIOrd } from '../../utils/formater'
 import { UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
+import classes from './StickyBunnlinje.module.css'
 
 export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => void }) {
   const { oppgave } = useOppgave()
@@ -27,9 +28,14 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
       paddingInline="space-16"
       paddingBlock="space-8"
       width="100%"
-      className="z-23"
     >
-      <Box background="default" borderWidth="1 0 0 0" borderColor="neutral-subtle">
+      <Box
+        position="sticky"
+        background="default"
+        borderWidth="1 0 0 0"
+        borderColor="neutral-subtle"
+        className={classes.root}
+      >
         <HStack align="center" justify="space-between" gap="space-24">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant="primary" size="small" onClick={() => onClick()}>

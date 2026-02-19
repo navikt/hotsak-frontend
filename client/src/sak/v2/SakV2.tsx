@@ -2,7 +2,6 @@ import { Box, HStack } from '@navikt/ds-react'
 import { useState } from 'react'
 import { Panel, Group, useDefaultLayout } from 'react-resizable-panels'
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
-import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
 import { Personlinje } from '../../saksbilde/Personlinje.tsx'
@@ -61,36 +60,39 @@ export function SakV2() {
   }
 
   return (
-    <Box style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
+    <Box
+      background="neutral-moderate"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: `calc(100vh - ${headerHøyde})`,
+      }}
+    >
       <HStack width="100%" wrap={false}>
         <Personlinje loading={personInfoLoading} person={personInfo} skjulTelefonnummer />
         <SakKontrollPanel />
       </HStack>
       <Box
+        marginBlock="space-8 space-0"
+        marginInline="space-8"
         style={{
           minHeight: 0,
           height: '100%',
           minWidth: `${totalVisibleMinWidth}px`,
           overflowX: 'auto',
-          marginTop: 'var(--ax-space-4)',
-          marginInline: '0 var(--ax-space-12)',
         }}
       >
         <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
           {bahandlingsPanel.visible && (
-            <>
-              <Panel
-                id="behandlingspanel"
-                defaultSize={bahandlingsPanel.defaultSize}
-                minSize={`${bahandlingsPanel.minWidth}${bahandlingsPanel.minWidthUnit}`}
-              >
-                {sak && behovsmelding ? (
-                  <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
-                ) : (
-                  <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
-                )}
-              </Panel>
-            </>
+            <Panel
+              id="behandlingspanel"
+              defaultSize={bahandlingsPanel.defaultSize}
+              minSize={`${bahandlingsPanel.minWidth}${bahandlingsPanel.minWidthUnit}`}
+            >
+              <AvrundetPanel>
+                <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
+              </AvrundetPanel>
+            </Panel>
           )}
           {brevPanel.visible && (
             <>
@@ -100,23 +102,24 @@ export function SakV2() {
                 defaultSize={brevPanel.defaultSize}
                 minSize={`${brevPanel.minWidth}${brevPanel.minWidthUnit}`}
               >
-                <BrevPanel />
+                <AvrundetPanel>
+                  <BrevPanel />
+                </AvrundetPanel>
               </Panel>
             </>
           )}
           {behovsmeldingsPanel.visible && (
             <>
               {harFlerePanelerÅpne && <ResizeHandle />}
+
               <Panel
                 id="behovsmeldingspanel"
                 defaultSize={behovsmeldingsPanel.defaultSize}
                 minSize={`${behovsmeldingsPanel.minWidth}${behovsmeldingsPanel.minWidthUnit}`}
               >
-                {!sak || !behovsmelding ? (
-                  'Fant ikke sak'
-                ) : (
+                <AvrundetPanel>
                   <BehovsmeldingsPanel sak={sak.data} behovsmelding={behovsmelding} />
-                )}
+                </AvrundetPanel>
               </Panel>
             </>
           )}
@@ -128,7 +131,9 @@ export function SakV2() {
                 defaultSize={sidePanel.defaultSize}
                 minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
               >
-                <Sidebar />
+                <AvrundetPanel>
+                  <Sidebar />
+                </AvrundetPanel>
               </Panel>
             </>
           )}
@@ -153,6 +158,21 @@ export function SakV2() {
       )}
     </Box>
   )
+
+  function AvrundetPanel({ children }: { children: React.ReactNode }) {
+    return (
+      <Box
+        background="default"
+        paddingBlock="space-12 space-0"
+        borderRadius="12 12 0 0"
+        height="100%"
+        borderColor="neutral-subtle"
+        borderWidth="1 1 0 1"
+      >
+        {children}
+      </Box>
+    )
+  }
 
   function modalVelger() {
     if (!gjeldendeBehandling || !vedtaksResultat) {

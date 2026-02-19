@@ -55,7 +55,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
         }}
       />
       <ScrollablePanel>
-        <VStack gap="space-16" paddingInline="space-16">
+        <VStack gap="space-16" paddingInline="space-0 space-8">
           <HStack gap="space-20">
             <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
             {oppgave?.fristFerdigstillelse && (
@@ -78,7 +78,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
           {vedtaksResultat && (
             <TextContainer>
               <Box>
-                <Heading level="2" size="small">
+                <Heading level="2" size="xsmall" spacing>
                   Vedtaksbrev
                 </Heading>
                 <VStack gap="space-12">
@@ -147,7 +147,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
             (vedtaksResultat === VedtaksResultat.INNVILGET || vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET) &&
             harVarsler && (
               <>
-                <Heading level="2" size="small">
+                <Heading level="2" size="xsmall">
                   Videre behandling i OeBS
                 </Heading>
                 <Tekst>Saken kan nå tas videre i OeBS</Tekst>
@@ -197,7 +197,7 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: Vedtaks
   }
   return (
     <VStack gap="space-8">
-      <Heading size="small" level="2" spacing={false}>
+      <Heading size="xsmall" level="2" spacing={false}>
         Vedtaksresultat
       </Heading>
       <TextContainer>
@@ -226,7 +226,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
   return (
     <>
       <VStack>
-        <Heading size="small" level="2" spacing={false}>
+        <Heading size="xsmall" level="2" spacing={false}>
           Vurderingen din
         </Heading>
         <TextContainer>

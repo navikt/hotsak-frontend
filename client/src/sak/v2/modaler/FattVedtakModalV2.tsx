@@ -9,6 +9,7 @@ import { VedtakForm, VedtakFormHandle } from '../../felles/VedtakForm'
 import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { VedtakFormValues } from '../../felles/useVedtak'
+import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 
 export function FattVedtakModalV2({
   open,
@@ -29,6 +30,7 @@ export function FattVedtakModalV2({
   const erAvslag = vedtaksResultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksResultat === VedtaksResultat.INNVILGET
+  const brevMetaData = useBrevMetadata()
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -72,15 +74,19 @@ export function FattVedtakModalV2({
       loading={vedtakLoader}
       open={open}
       width="700px"
-      bekreftButtonLabel={`${vedtakTekst?.knapp} søknaden`}
+      bekreftButtonLabel={`${vedtakTekst?.knapp}${brevMetaData.harBrevISak ? ' og send brev' : ''}`}
       onBekreft={erAvslag ? fattAvslagsvedtak : () => formRef.current?.submit()}
       onClose={onClose}
     >
       {(erInnvilget || erDelvisInnvilget) && (
         <>
+          <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
+            Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
+            varsel om vedtaksresultatet.
+          </Alert>
           <Tekst spacing>
-            Når du {erDelvisInnvilget ? 'delvis innvilger' : 'innvilger'} søknaden vil det opprettes en
-            serviceforespørsel (SF) i OeBS. Innbygger kan se vedtaket på innlogget side på nav.no
+            Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.{' '}
+            {!brevMetaData.harBrevISak && <>Innbygger får varsel om vedtaksresultatet neste virkedag.</>}
           </Tekst>
           {erDelvisInnvilget && (
             <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
@@ -95,10 +101,10 @@ export function FattVedtakModalV2({
       )}
       {erAvslag && (
         <>
-          <Tekst spacing>
-            Når du avslår søknaden vil det naturligvis ikke opprettes en serviceforespørsel (SF) i OeBS. Bruker
-            underrettes med brevet du har forfattet. Innbygger kan også se vedtaket på innlogget side på nav.no
-          </Tekst>
+          <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
+            Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
+            varsel om vedtaksresultatet.
+          </Alert>
         </>
       )}
     </BekreftelseModal>

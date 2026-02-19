@@ -5,6 +5,7 @@ import { useOppgave } from '../../../oppgave/useOppgave.ts'
 import { mutateSak } from '../../../saksbilde/mutateSak.ts'
 import { Behandlingsutfall } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
+import { useSWRConfig } from 'swr'
 
 export interface BehandlingActions extends Actions {
   lagreBehandling(utfall?: Behandlingsutfall): Promise<void>
@@ -23,6 +24,7 @@ export function useBehandlingActions(): BehandlingActions {
   const { gjeldendeBehandling, mutate: mutateBehandling } = useBehandling()
   const { mutate: muteBrevMetadata } = useBrevMetadata()
   const { execute, state } = useActionState()
+  const { mutate } = useSWRConfig()
 
   const mutateOppgaveOgSak = () => Promise.all([mutateOppgave(), mutateSak(sakId)])
 
@@ -33,6 +35,7 @@ export function useBehandlingActions(): BehandlingActions {
         return execute(async () => {
           await http.put(`/api/sak/${sakId}/behandling/${behandlingId}`, { utfall })
           await mutateBehandling()
+          mutate(`/api/sak/${sakId}/serviceforesporsel`)
         })
       }
       return execute(async () => {

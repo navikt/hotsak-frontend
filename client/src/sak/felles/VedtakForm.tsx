@@ -26,6 +26,7 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
         return true
       }
       if (!value || value.trim() === '') {
+        //denne kan vel flyttes over early return siden alle problemsammendrag skal ha en verdi
         return 'Problemsammendrag er påkrevd når det er søkt om lavere rangerte hjelpemidler'
       }
       if (!value.trim().startsWith('POST ')) {

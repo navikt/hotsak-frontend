@@ -1,5 +1,6 @@
 .placeholderErrorSummary {
-  position: fixed;
-  bottom: 3.5rem;
-  right: 0.5rem;
+  position: absolute;
+  top: 4em;
+  right: 1em;
+  width: 40%;
 }

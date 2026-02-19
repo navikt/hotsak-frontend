@@ -311,7 +311,7 @@ const Breveditor = ({
           }
         }}
       >
-        <div ref={editorWidthScaleRef} className="breveditor-container">
+        <div ref={editorWidthScaleRef} className="breveditor-container" style={{ position: 'relative' }}>
           <Verktøylinje />
           <div className="scrollable-pit">
             <div style={{ height: editorHeightScale }} className="scaled-height">

@@ -1,5 +1,5 @@
 import { Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
-import { useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
@@ -18,6 +18,21 @@ import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/place
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
 
+interface BrevContextType {
+  placeholderFeil: PlaceholderFeil[]
+  setPlaceholderFeil: (feil: PlaceholderFeil[]) => void
+  synligKryssKnapp: boolean
+  setSynligKryssKnapp: (synlig: boolean) => void
+}
+
+const BrevContext = createContext<BrevContextType | undefined>(undefined)
+
+export const useBrevContext = () => {
+  const ctx = useContext(BrevContext)
+  if (!ctx) throw new Error('useBrevContext must be used within BrevContextProvider')
+  return ctx
+}
+
 export const Brev = () => {
   const { sak } = useSak()
   const { opprettBrevKlikket, setOpprettBrevKlikket } = useSakContext()
@@ -29,6 +44,7 @@ export const Brev = () => {
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
+  const [synligKryssKnapp, setSynligKryssKnapp] = useState(true)
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 
@@ -159,7 +175,14 @@ export const Brev = () => {
   }
 
   return (
-    <>
+    <BrevContext.Provider
+      value={{
+        placeholderFeil,
+        setPlaceholderFeil,
+        synligKryssKnapp,
+        setSynligKryssKnapp,
+      }}
+    >
       {errorEr404 && valgtMal === undefined && malKey === undefined && (
         <div style={{ padding: '1em' }}>
           <TextContainer>
@@ -221,7 +244,6 @@ export const Brev = () => {
                   })
                 }}
                 onSlettBrev={onSlettBrev}
-                placeholderFeil={placeholderFeil}
               />
             </>
           )}
@@ -263,6 +285,6 @@ export const Brev = () => {
           )}
         </div>
       )}
-    </>
+    </BrevContext.Provider>
   )
 }

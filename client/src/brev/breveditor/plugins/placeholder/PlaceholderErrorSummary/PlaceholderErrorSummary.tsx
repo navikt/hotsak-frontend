@@ -1,19 +1,14 @@
-import { Button, ErrorSummary } from '@navikt/ds-react'
-import { PlaceholderFeil } from '../PlaceholderFeil'
-import styles from './PlaceholderErrorSummary.module.css'
-import { useBreveditorContext } from '../../../Breveditor'
 import { XMarkIcon } from '@navikt/aksel-icons'
-import { useState } from 'react'
+import { Button, ErrorSummary } from '@navikt/ds-react'
+import { useBreveditorContext } from '../../../Breveditor'
+import styles from './PlaceholderErrorSummary.module.css'
+import { useBrevContext } from '../../../../Brev'
 
-interface Props {
-  feil: PlaceholderFeil[]
-}
-
-export const PlaceholderErrorSummary = ({ feil }: Props) => {
+export const PlaceholderErrorSummary = () => {
   const { focusPath } = useBreveditorContext()
-  const [erSynlig, seterSynlig] = useState(true)
+  const { placeholderFeil, synligKryssKnapp, setSynligKryssKnapp } = useBrevContext()
 
-  if (!erSynlig || feil.length === 0) return null
+  if (!synligKryssKnapp || placeholderFeil.length === 0) return null
 
   return (
     <ErrorSummary
@@ -26,14 +21,14 @@ export const PlaceholderErrorSummary = ({ feil }: Props) => {
         variant="tertiary"
         size="small"
         icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
-        onClick={() => seterSynlig(false)}
+        onClick={() => setSynligKryssKnapp(false)}
         style={{
           position: 'absolute',
           right: '0.5em',
           top: '0.5rem',
         }}
       />
-      {feil.map((f, i) => (
+      {placeholderFeil.map((f, i) => (
         <ErrorSummary.Item
           key={`${f.placeholder}-${i}`}
           href="#"

@@ -1,10 +1,3 @@
-import './Breveditor.less'
-import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
-import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
-import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
-import { KEYS, type Value } from 'platejs'
-import { serializeHtml } from 'platejs/static'
-import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   BoldPlugin,
   H1Plugin,
@@ -14,16 +7,22 @@ import {
   ItalicPlugin,
   UnderlinePlugin,
 } from '@platejs/basic-nodes/react'
-import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
-import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
-import type { History } from '@platejs/slate'
-import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import { ListPlugin } from '@platejs/list-classic/react'
+import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
+import type { History } from '@platejs/slate'
+import { KEYS, type Value } from 'platejs'
+import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
+import { serializeHtml } from 'platejs/static'
+import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
+import './Breveditor.less'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
+import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
 import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
-import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
-import { PlaceholderFeil } from './plugins/placeholder/PlaceholderFeil.ts'
 import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
+import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
+import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
+import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
+import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -96,7 +95,6 @@ const Breveditor = ({
   onLagreBrev,
   onSlettBrev,
   placeholder,
-  placeholderFeil = [],
 }: {
   brevId?: string
   metadata: Metadata
@@ -106,7 +104,6 @@ const Breveditor = ({
   onLagreBrev?: (newState: StateMangement) => Promise<void>
   onSlettBrev?: () => void
   placeholder?: string
-  placeholderFeil?: PlaceholderFeil[]
 }) => {
   const editor = usePlateEditor(
     {
@@ -359,7 +356,7 @@ const Breveditor = ({
               </div>
             </div>
           </div>
-          <PlaceholderErrorSummary feil={placeholderFeil}></PlaceholderErrorSummary>
+          <PlaceholderErrorSummary></PlaceholderErrorSummary>
         </div>
       </Plate>
     </BreveditorContext>

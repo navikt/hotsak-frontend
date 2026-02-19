@@ -3,7 +3,6 @@ import { Box, Tabs, Tag, Tooltip } from '@navikt/ds-react'
 
 import { ScrollContainer } from '../../felleskomponenter/ScrollContainer.tsx'
 import { søknadslinjeHøyde } from '../../GlobalStyles'
-import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/venstre/UtlånsoversiktV2.tsx'
 import { useSaksregler } from '../../saksregler/useSaksregler'
 import { HøyrekolonneTabs } from '../../types/types.internal'
 import { useSak } from '../useSak'
@@ -14,6 +13,7 @@ import { SidebarPanel } from '../../sak/v2/sidebars/SidebarPanel.tsx'
 import { Notater } from './notat/Notater.tsx'
 import { NotificationBadge } from './notat/NotificationBadge.tsx'
 import { useNotater } from './notat/useNotater.tsx'
+import { UtlånsoversiktV2 } from '../../sak/v2/sidebars/UtlånsoversiktV2.tsx'
 
 export function Høyrekolonne() {
   const { kanBehandleSak } = useSaksregler()

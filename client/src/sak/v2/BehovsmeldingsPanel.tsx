@@ -10,18 +10,13 @@ import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
-import { useSakContext } from './SakProvider.tsx'
+import { useClosePanel } from './SakProvider.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
-  const { setSøknadPanel } = useSakContext()
+  const lukkPanel = useClosePanel('behovsmeldingspanel')
   return (
     <Box background="default" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
-      <PanelTittel
-        tittel="Søknad om hjelpemidler"
-        lukkPanel={() => {
-          setSøknadPanel(false)
-        }}
-      />
+      <PanelTittel tittel="Søknad om hjelpemidler" lukkPanel={lukkPanel} />
       <ScrollablePanel paddingInline={'space-16'}>
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>

@@ -1,6 +1,6 @@
 import { Box, HStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Panel, PanelGroup } from 'react-resizable-panels'
+import { Panel, Group, useDefaultLayout } from 'react-resizable-panels'
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { Feilmelding } from '../../felleskomponenter/feil/Feilmelding.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
@@ -17,10 +17,10 @@ import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
-import { VenstreSidebar } from './sidebars/venstre/VenstreSidebar.tsx'
 import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { headerHøyde } from '../../GlobalStyles.tsx'
+import { Sidebar } from './sidebars/Sidebar.tsx'
 
 export function SakV2() {
   const { sak } = useSak()
@@ -31,7 +31,8 @@ export function SakV2() {
   const [visBrevMangler, setVisBrevMangler] = useState(false)
   const [visNotatIkkeFerdigstilt, setVisNotatIkkeFerdigstilt] = useState(false)
 
-  const { sidePanel, søknadPanel, brevKolonne, behandlingPanel } = useSakContext()
+  const { panelState, totalVisibleMinWidth, harFlerePanelerÅpne } = useSakContext()
+  const { panels } = panelState
 
   const { gjeldendeBehandling } = useBehandling()
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall as VedtaksResultat | undefined
@@ -41,6 +42,13 @@ export function SakV2() {
   const notaterIkkeFerdigstilt = gjenstående.includes(Gjenstående.NOTAT_IKKE_FERDIGSTILT)
   const brevutkastIkkeFerdigstilt =
     gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT) || gjenstående.includes(Gjenstående.BREV_MANGLER)
+
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({ groupId: 'sakv2', storage: localStorage })
+
+  const bahandlingsPanel = panels.behandlingspanel
+  const behovsmeldingsPanel = panels.behovsmeldingspanel
+  const sidePanel = panels.sidebarpanel
+  const brevPanel = panels.brevpanel
 
   if (!behovsmelding) {
     // TODO skeleton eller loader her?
@@ -53,6 +61,17 @@ export function SakV2() {
   }
 
   // TODO bruke css modules vars
+  // se på width, height og overflow for Group
+  // Teste dobbeltklikk på separator for å resette paneler til default størrelse
+  // Sette max width på noen paneler?
+  // Teste collapsible panel
+  // Se på css animasjoner for panler som kollapser eller endrer størrelse
+  // Minimumsbredde på brevpanel og slette med alerten for at det er for smalt
+  // Hente ut visible panels og iterere over dem
+  // Mangler lukkeknapp på sidepanel
+  // Sjekke ut typescript satifies
+  // slutte med .provider
+
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
       <HStack width="100%" wrap={false}>
@@ -63,51 +82,69 @@ export function SakV2() {
         style={{
           minHeight: 0,
           height: '100%',
+          minWidth: `${totalVisibleMinWidth}px`,
+          overflowX: 'auto',
           marginTop: 'var(--ax-space-4)',
           marginInline: '0 var(--ax-space-12)',
         }}
       >
-        <PanelGroup direction="horizontal" autoSaveId="eksperimentellSaksbehandling">
-          {sidePanel && (
+        <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
+          {bahandlingsPanel.visible && (
             <>
-              <Panel defaultSize={20} minSize={11} order={1}>
-                <VenstreSidebar />
-              </Panel>
-              {(brevKolonne || søknadPanel || behandlingPanel) && <ResizeHandle />}
-            </>
-          )}
-          {søknadPanel && (
-            <>
-              <Panel defaultSize={35} minSize={20} order={2}>
-                {!sak || !behovsmelding ? (
-                  'Fant ikke sak'
-                ) : (
-                  <BehovsmeldingsPanel sak={sak.data} behovsmelding={behovsmelding} />
-                )}
-              </Panel>
-              {(brevKolonne || behandlingPanel || sidePanel) && <ResizeHandle />}
-            </>
-          )}
-          {behandlingPanel && (
-            <>
-              <Panel defaultSize={25} minSize={10} order={3}>
+              <Panel
+                id="behandlingspanel"
+                defaultSize={bahandlingsPanel.defaultSize}
+                minSize={`${bahandlingsPanel.minWidth}${bahandlingsPanel.minWidthUnit}`}
+              >
                 {sak && behovsmelding ? (
                   <BehandlingPanel sak={sak.data} behovsmelding={behovsmelding} />
                 ) : (
                   <Feilmelding>Fant ikke sak eller behovsmelding</Feilmelding>
                 )}
               </Panel>
-              {brevKolonne && <ResizeHandle />}
             </>
           )}
-          {brevKolonne && (
+          {brevPanel.visible && (
             <>
-              <Panel defaultSize={40} minSize={10} order={4}>
+              {harFlerePanelerÅpne && <ResizeHandle />}
+              <Panel
+                id="brevpanel"
+                defaultSize={brevPanel.defaultSize}
+                minSize={`${brevPanel.minWidth}${brevPanel.minWidthUnit}`}
+              >
                 <BrevPanel />
               </Panel>
             </>
           )}
-        </PanelGroup>
+          {behovsmeldingsPanel.visible && (
+            <>
+              {harFlerePanelerÅpne && <ResizeHandle />}
+              <Panel
+                id="behovsmeldingspanel"
+                defaultSize={behovsmeldingsPanel.defaultSize}
+                minSize={`${behovsmeldingsPanel.minWidth}${behovsmeldingsPanel.minWidthUnit}`}
+              >
+                {!sak || !behovsmelding ? (
+                  'Fant ikke sak'
+                ) : (
+                  <BehovsmeldingsPanel sak={sak.data} behovsmelding={behovsmelding} />
+                )}
+              </Panel>
+            </>
+          )}
+          {sidePanel.visible && (
+            <>
+              {harFlerePanelerÅpne && <ResizeHandle />}
+              <Panel
+                id="sidebarpanel"
+                defaultSize={sidePanel.defaultSize}
+                minSize={`${sidePanel.minWidth}${sidePanel.minWidthUnit}`}
+              >
+                <Sidebar />
+              </Panel>
+            </>
+          )}
+        </Group>
       </Box>
       <StickyBunnlinje sak={sak.data} onClick={() => modalVelger()} />
       <ResultatManglerModal open={visResultatManglerModal} onClose={() => setVisResultatManglerModal(false)} />

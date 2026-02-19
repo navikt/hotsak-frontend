@@ -7,7 +7,7 @@ import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { useSakContext } from '../sak/v2/SakProvider.tsx'
+import { useClosePanel, useSakContext } from '../sak/v2/SakProvider.tsx'
 import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
@@ -20,7 +20,8 @@ import { useBrevMetadata } from './useBrevMetadata.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
-  const { opprettBrevKlikket, setOpprettBrevKlikket, setBrevKolonne } = useSakContext()
+  const { opprettBrevKlikket, setOpprettBrevKlikket } = useSakContext()
+  const closePanel = useClosePanel('brevpanel')
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
@@ -129,7 +130,7 @@ export const Brev = () => {
     }).then((res) => {
       if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
     })
-    setBrevKolonne(false)
+    closePanel()
     await brevutkast.mutate()
     mutateGjeldendeBehandling()
     mutateBrevMetadata()
@@ -240,7 +241,7 @@ export const Brev = () => {
               )}
               {oppgaveFerdigstilt && (
                 <div style={{ padding: '0.8em 1em' }}>
-                  <PanelTittel tittel="Vedtaksbrev" lukkPanel={() => setBrevKolonne(false)} />
+                  <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
                 </div>
               )}
               {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (

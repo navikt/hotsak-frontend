@@ -1,27 +1,28 @@
 import { ClockDashedIcon, NotePencilIcon, WheelchairIcon, XMarkIcon } from '@navikt/aksel-icons'
 import { Box, Button, Tabs, Tag, Tooltip } from '@navikt/ds-react'
-import { søknadslinjeHøyde } from '../../../../GlobalStyles'
-import { Historikk } from '../../../../saksbilde/høyrekolonne/historikk/Historikk'
-import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { SidebarPanel } from '../SidebarPanel'
-import { Notater } from '../../../../saksbilde/høyrekolonne/notat/Notater'
-import { NotificationBadge } from '../../../../saksbilde/høyrekolonne/notat/NotificationBadge'
-import { useNotater } from '../../../../saksbilde/høyrekolonne/notat/useNotater'
-import { useSak } from '../../../../saksbilde/useSak'
-import { useSaksregler } from '../../../../saksregler/useSaksregler'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from '../../SakPanelTabTypes'
+import { søknadslinjeHøyde } from '../../../GlobalStyles'
+import { Historikk } from '../../../saksbilde/høyrekolonne/historikk/Historikk'
+import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { SidebarPanel } from './SidebarPanel'
+import { Notater } from '../../../saksbilde/høyrekolonne/notat/Notater'
+import { NotificationBadge } from '../../../saksbilde/høyrekolonne/notat/NotificationBadge'
+import { useNotater } from '../../../saksbilde/høyrekolonne/notat/useNotater'
+import { useSak } from '../../../saksbilde/useSak'
+import { useSaksregler } from '../../../saksregler/useSaksregler'
+import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { useSakContext } from '../../SakProvider'
-import { ScrollablePanel } from '../../../../felleskomponenter/ScrollablePanel'
+import { useClosePanel, useSakContext } from '../SakProvider'
+import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
 
-export function VenstreSidebar() {
-  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab, setSidePanel } = useSakContext()
+export function Sidebar() {
+  const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
   const { sak } = useSak()
   const { hjelpemiddelArtikler, error, isLoading } = useHjelpemiddeloversikt(
     sak?.data.bruker.fnr,
     sak?.data.vedtak?.vedtaksgrunnlag
   )
   const { kanBehandleSak } = useSaksregler()
+  const closePanel = useClosePanel('sidebarpanel')
   const { antallNotater, harUtkast, isLoading: henterNotater } = useNotater(sak?.data.sakId)
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
@@ -32,7 +33,7 @@ export function VenstreSidebar() {
         variant="tertiary"
         size="small"
         icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
-        onClick={() => setSidePanel(false)}
+        onClick={closePanel}
         style={{
           /* FIXME: Trolig ikke måten vi bør gjøre dette på, men har ikke tid til noe annet */ position: 'absolute',
           right: '0.5em',

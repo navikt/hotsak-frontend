@@ -4,35 +4,33 @@ import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import globalStyles from '../../styles/shared.module.css'
 import classes from './SakKontrollPanel.module.css'
-import { useSakContext } from './SakProvider'
+import { usePanel, useTogglePanel } from './SakProvider'
 
 export const SakKontrollPanel = () => {
-  const {
-    sidePanel,
-    setSidePanel,
-    søknadPanel,
-    setSøknadPanel,
-    behandlingPanel,
-    setBehandlingPanel,
-    brevKolonne,
-    setBrevKolonne,
-  } = useSakContext()
+  const behandlingPanel = usePanel('behandlingspanel')
+  const brevKolonne = usePanel('brevpanel')
+  const søknadPanel = usePanel('behovsmeldingspanel')
+  const sidePanel = usePanel('sidebarpanel')
+  const toggleBehandlingPanel = useTogglePanel('behandlingspanel')
+  const toggleBrevKolonne = useTogglePanel('brevpanel')
+  const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
+  const toggleSidePanel = useTogglePanel('sidebarpanel')
   const { isOppgaveContext } = useOppgaveContext()
 
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
       <Chips size="small">
-        <ToggleKnapp selected={sidePanel} onToggle={() => setSidePanel(!sidePanel)}>
-          Utlån, notater og historikk
-        </ToggleKnapp>
-        <ToggleKnapp selected={søknadPanel} onToggle={() => setSøknadPanel(!søknadPanel)}>
-          Søknad
-        </ToggleKnapp>
-        <ToggleKnapp selected={behandlingPanel} onToggle={() => setBehandlingPanel(!behandlingPanel)}>
+        <ToggleKnapp selected={behandlingPanel.visible} onToggle={() => toggleBehandlingPanel()}>
           Behandle
         </ToggleKnapp>
-        <ToggleKnapp selected={brevKolonne} onToggle={() => setBrevKolonne(!brevKolonne)}>
+        <ToggleKnapp selected={brevKolonne.visible} onToggle={() => toggleBrevKolonne()}>
           Brev
+        </ToggleKnapp>
+        <ToggleKnapp selected={søknadPanel.visible} onToggle={() => toggleSøknadPanel()}>
+          Søknad
+        </ToggleKnapp>
+        <ToggleKnapp selected={sidePanel.visible} onToggle={() => toggleSidePanel()}>
+          Utlån, notater og historikk
         </ToggleKnapp>
       </Chips>
       {isOppgaveContext && <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />}

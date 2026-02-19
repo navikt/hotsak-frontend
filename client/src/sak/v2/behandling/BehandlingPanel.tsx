@@ -4,6 +4,7 @@ import { memo } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
+import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { textcontainerBredde } from '../../../GlobalStyles.tsx'
 import { Oppgavestatus } from '../../../oppgave/oppgaveTypes.ts'
@@ -14,11 +15,10 @@ import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDato, formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
+import { useClosePanel, usePanel, useSakContext, useSetPanelVisibility } from '../SakProvider.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useSakContext } from '../SakProvider.tsx'
-import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 
 interface BehandlingProps {
   sak: Sak
@@ -26,7 +26,11 @@ interface BehandlingProps {
 }
 
 function BehandlingPanel({ sak }: BehandlingProps) {
-  const { brevKolonne, setBrevKolonne, setBehandlingPanel, setOpprettBrevKlikket } = useSakContext()
+  const { setOpprettBrevKlikket } = useSakContext()
+
+  const brevPanel = usePanel('brevpanel')
+  const lukkBehandlingsPanel = useClosePanel('behandlingspanel')
+  const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
 
   const { oppgave } = useOppgave()
   const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING
@@ -46,7 +50,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
       <PanelTittel
         tittel="Behandle sak"
         lukkPanel={() => {
-          setBehandlingPanel(false)
+          lukkBehandlingsPanel()
         }}
       />
       <ScrollablePanel>
@@ -102,7 +106,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                         variant="secondary"
                         size="small"
                         onClick={() => {
-                          setBrevKolonne(true)
+                          setBrevpanelVisibility(true)
                           setOpprettBrevKlikket(true)
                         }}
                       >
@@ -111,13 +115,13 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                     </div>
                   )}
 
-                  {!brevKolonne && harBrevISak && (
+                  {!brevPanel.visible && harBrevISak && (
                     <div>
                       <Button
                         variant="secondary"
                         size="small"
                         onClick={() => {
-                          setBrevKolonne(true)
+                          setBrevpanelVisibility(true)
                         }}
                       >
                         Vis vedtaksbrev

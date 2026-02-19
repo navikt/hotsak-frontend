@@ -1,12 +1,12 @@
 import { BodyLong, Detail, HStack, Label, VStack } from '@navikt/ds-react'
 import { useMemo } from 'react'
-import { Skillelinje } from '../../../../felleskomponenter/Strek'
-import { Tekst, TextContainer } from '../../../../felleskomponenter/typografi'
-import { useHjelpemiddeloversikt } from '../../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
-import { SidebarPanel } from '../SidebarPanel'
-import { useSak } from '../../../../saksbilde/useSak'
-import { HjelpemiddelArtikkel } from '../../../../types/types.internal'
-import { formaterDato } from '../../../../utils/dato'
+import { useSak } from '../../../saksbilde/useSak'
+import { useHjelpemiddeloversikt } from '../../../saksbilde/høyrekolonne/hjelpemiddeloversikt/useHjelpemiddeloversikt'
+import { SidebarPanel } from './SidebarPanel'
+import { Tekst, TextContainer } from '../../../felleskomponenter/typografi'
+import { formaterDato } from '../../../utils/dato'
+import { Skillelinje } from '../../../felleskomponenter/Strek'
+import { HjelpemiddelArtikkel } from '../../../types/types.internal'
 
 export function UtlånsoversiktV2() {
   const { sak } = useSak()

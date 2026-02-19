@@ -153,6 +153,7 @@ export const Brev = () => {
   }
 
   const markerKlart = async (klart: boolean) => {
+    setSynligKryssKnapp(true)
     const currentBrev = brevutkast.data?.data?.value
     if (!currentBrev) return
 

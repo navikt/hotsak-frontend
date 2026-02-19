@@ -4,7 +4,7 @@ import { useOppgaveContext } from '../../oppgave/OppgaveContext'
 import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import globalStyles from '../../styles/shared.module.css'
 import classes from './SakKontrollPanel.module.css'
-import { usePanel, useTogglePanel } from './SakProvider'
+import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
 
 export const SakKontrollPanel = () => {
   const behandlingPanel = usePanel('behandlingspanel')

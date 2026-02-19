@@ -7,7 +7,7 @@ import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
-import { useClosePanel, useSakContext } from '../sak/v2/SakProvider.tsx'
+import { useSakContext } from '../sak/v2/SakProvider.tsx'
 import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../saksbilde/useSak.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
@@ -17,6 +17,7 @@ import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
+import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]

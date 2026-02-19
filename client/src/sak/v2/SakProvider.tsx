@@ -1,14 +1,13 @@
 import { createContext, ReactNode, useContext, useMemo, useReducer, useState } from 'react'
-import { HøyrekolonneTabs, VenstrekolonneTabs } from './SakPanelTabTypes'
+import { VenstrekolonneTabs } from './SakPanelTabTypes'
 import {
+  getTotalVisibleMinWidth,
   getVisiblePanels,
   hasMultiplePanelsOpen,
   initialPanelState,
   PanelAction,
-  PanelId,
   panelReducer,
   PanelState,
-  getTotalVisibleMinWidth,
 } from './paneler/panelReducer'
 
 /**
@@ -17,17 +16,8 @@ import {
  *
  */
 const initialState = {
-  //setSidePanel() {},
-  //søknadPanel: false,
-  //setSøknadPanel() {},
-  //behandlingPanel: false,
-  //setBehandlingPanel() {},
-  //brevKolonne: false,
-  //setBrevKolonne() {},
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs.BEHOVSMELDINGSINFO,
   setValgtNedreVenstreKolonneTab() {},
-  valgtHøyreKolonneTab: HøyrekolonneTabs.NOTATER,
-  setValgtHøyreKolonneTab() {},
   opprettBrevKlikket: false,
   setOpprettBrevKlikket() {},
 
@@ -46,7 +36,6 @@ function SakProvider({ children }: { children: ReactNode }) {
   const [valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab] = useState<VenstrekolonneTabs>(
     VenstrekolonneTabs.HJELPEMIDDELOVERSIKT
   )
-  const [valgtHøyreKolonneTab, setValgtHøyreKolonneTab] = useState<HøyrekolonneTabs>(HøyrekolonneTabs.NOTATER)
   const [opprettBrevKlikket, setOpprettBrevKlikket] = useState(false)
 
   const totalVisibleMinWidth = useMemo(() => getTotalVisibleMinWidth(panelState), [panelState])
@@ -63,8 +52,6 @@ function SakProvider({ children }: { children: ReactNode }) {
         totalVisibleMinWidth,
         visiblePanels,
         harFlerePanelerÅpne,
-        valgtHøyreKolonneTab,
-        setValgtHøyreKolonneTab,
         opprettBrevKlikket,
         setOpprettBrevKlikket,
       }}
@@ -84,26 +71,6 @@ function useSakContext(): SakV2ContextType {
   return context
 }
 
-export function usePanel(panelId: PanelId) {
-  const { panelState } = useSakContext()
-  return panelState.panels[panelId]
-}
-
-export function useTogglePanel(panelId: PanelId) {
-  const { panelDispatch } = useSakContext()
-  return () => panelDispatch({ type: 'TOGGLE_PANEL', panelId })
-}
-
-export function useClosePanel(panelId: PanelId) {
-  const { panelDispatch } = useSakContext()
-  return () => panelDispatch({ type: 'SET_PANEL_VISIBILITY', panelId, visible: false })
-}
-
-export function useSetPanelVisibility(panelId: PanelId) {
-  const { panelDispatch } = useSakContext()
-  return (visible: boolean) => panelDispatch({ type: 'SET_PANEL_VISIBILITY', panelId, visible })
-}
-
 type SakV2ContextType = {
   valgtNedreVenstreKolonneTab: VenstrekolonneTabs
   setValgtNedreVenstreKolonneTab(tab: VenstrekolonneTabs): void
@@ -112,10 +79,9 @@ type SakV2ContextType = {
   totalVisibleMinWidth: number
   visiblePanels: ReturnType<typeof getVisiblePanels>
   harFlerePanelerÅpne: boolean
-  valgtHøyreKolonneTab: HøyrekolonneTabs
-  setValgtHøyreKolonneTab(tab: HøyrekolonneTabs): void
   opprettBrevKlikket: boolean
   setOpprettBrevKlikket(klikket: boolean): void
 }
 
-export { SakContext, SakProvider, useSakContext }
+export { SakProvider, useSakContext }
+export type { SakV2ContextType }

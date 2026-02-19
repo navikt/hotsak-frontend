@@ -10,7 +10,7 @@ import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
-import { useClosePanel } from './SakProvider.tsx'
+import { useClosePanel } from './paneler/usePanelHooks.ts'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')

@@ -15,10 +15,11 @@ import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDato, formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
-import { useClosePanel, usePanel, useSakContext, useSetPanelVisibility } from '../SakProvider.tsx'
+import { useSakContext } from '../SakProvider.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
+import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 
 interface BehandlingProps {
   sak: Sak

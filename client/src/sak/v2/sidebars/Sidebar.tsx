@@ -11,8 +11,9 @@ import { useSak } from '../../../saksbilde/useSak'
 import { useSaksregler } from '../../../saksregler/useSaksregler'
 import { HøyrekolonneTabs, VenstrekolonneTabs } from '../SakPanelTabTypes'
 import { UtlånsoversiktV2 } from './UtlånsoversiktV2'
-import { useClosePanel, useSakContext } from '../SakProvider'
+import { useSakContext } from '../SakProvider'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel'
+import { useClosePanel } from '../paneler/usePanelHooks'
 
 export function Sidebar() {
   const { valgtNedreVenstreKolonneTab, setValgtNedreVenstreKolonneTab } = useSakContext()
@@ -32,7 +33,7 @@ export function Sidebar() {
         data-color="neutral"
         variant="tertiary"
         size="small"
-        icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
+        icon={<XMarkIcon title="Lukk sidepanel" fontSize="1.5rem" />}
         onClick={closePanel}
         style={{
           /* FIXME: Trolig ikke måten vi bør gjøre dette på, men har ikke tid til noe annet */ position: 'absolute',

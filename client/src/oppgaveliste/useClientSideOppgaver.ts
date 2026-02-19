@@ -15,6 +15,7 @@ import {
   selectMappenavn,
   selectOppgavetype,
   selectPrioritet,
+  selectSaksstatus,
   selectTildeltSaksbehandlerNavn,
 } from './oppgaveSelectors.ts'
 import { useOppgaveComparator } from './useOppgaveComparator.ts'
@@ -59,6 +60,7 @@ export function useClientSideOppgaver(request: Partial<FinnOppgaverRequest> = {}
       .filterBy(selectPrioritet, filterState.prioritet)
       .filterBy(selectInnsenderNavn, filterState.innsenderNavn)
       .filterBy(selectBrukerKommuneNavn, filterState.kommune)
+      .filterBy(selectSaksstatus, filterState.saksstatus)
       .toSorted(comparator)
       .toArray()
   }, [alleOppgaver, filterState, comparator])

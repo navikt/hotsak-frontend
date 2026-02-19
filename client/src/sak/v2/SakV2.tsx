@@ -60,18 +60,6 @@ export function SakV2() {
     return <div>Fant ikke sak</div>
   }
 
-  // TODO bruke css modules vars
-  // se på width, height og overflow for Group
-  // Teste dobbeltklikk på separator for å resette paneler til default størrelse
-  // Sette max width på noen paneler?
-  // Teste collapsible panel
-  // Se på css animasjoner for panler som kollapser eller endrer størrelse
-  // Minimumsbredde på brevpanel og slette med alerten for at det er for smalt
-  // Hente ut visible panels og iterere over dem
-  // Mangler lukkeknapp på sidepanel
-  // Sjekke ut typescript satifies
-  // slutte med .provider
-
   return (
     <Box style={{ display: 'flex', flexDirection: 'column', height: `calc(100vh - ${headerHøyde})` }}>
       <HStack width="100%" wrap={false}>

@@ -1,7 +1,9 @@
-import { ErrorSummary } from '@navikt/ds-react'
+import { Button, ErrorSummary } from '@navikt/ds-react'
 import { PlaceholderFeil } from '../PlaceholderFeil'
 import styles from './PlaceholderErrorSummary.module.css'
 import { useBreveditorContext } from '../../../Breveditor'
+import { XMarkIcon } from '@navikt/aksel-icons'
+import { useState } from 'react'
 
 interface Props {
   feil: PlaceholderFeil[]
@@ -9,8 +11,9 @@ interface Props {
 
 export const PlaceholderErrorSummary = ({ feil }: Props) => {
   const { focusPath } = useBreveditorContext()
+  const [erSynlig, seterSynlig] = useState(true)
 
-  if (feil.length === 0) return null
+  if (!erSynlig || feil.length === 0) return null
 
   return (
     <ErrorSummary
@@ -18,6 +21,18 @@ export const PlaceholderErrorSummary = ({ feil }: Props) => {
       heading=" Du må fylle ut følgende felt før du kan ferdigstille utkastet"
       className={styles.placeholderErrorSummary}
     >
+      <Button
+        data-color="neutral"
+        variant="tertiary"
+        size="small"
+        icon={<XMarkIcon title="a11y-title" fontSize="1.5rem" />}
+        onClick={() => seterSynlig(false)}
+        style={{
+          position: 'absolute',
+          right: '0.5em',
+          top: '0.5rem',
+        }}
+      />
       {feil.map((f, i) => (
         <ErrorSummary.Item
           key={`${f.placeholder}-${i}`}

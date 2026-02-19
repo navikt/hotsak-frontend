@@ -581,7 +581,7 @@ export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
   [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
   [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
-  [OppgaveStatusType.SENDT_GOSYS, 'Sendt GOSYS'],
+  [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
   [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
   [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
   [OppgaveStatusType.AVVIST, 'Avvist'],

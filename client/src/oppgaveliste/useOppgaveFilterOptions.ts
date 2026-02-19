@@ -4,6 +4,13 @@ import { toDataGridFilterOptions } from '../felleskomponenter/data/DataGridFilte
 import { type Oppgave, Oppgavetype, OppgavetypeLabel } from '../oppgave/oppgaveTypes.ts'
 import { useIsSaksbehandlerBarnebriller } from '../tilgang/useTilgang.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
+import {
+  selectBehandlingstemaTerm,
+  selectBrukerKommuneNavn,
+  selectInnsenderNavn,
+  selectMappenavn,
+  selectTildeltSaksbehandlerNavn,
+} from './oppgaveSelectors.ts'
 
 export const OPPGAVE_FILTER_OPTION_TOMME = '(Tomme)'
 
@@ -15,12 +22,12 @@ export function useOppgaveFilterOptions(oppgaver: Oppgave[]): OppgaveFilterOptio
   const isSaksbehandlerBarnebriller = useIsSaksbehandlerBarnebriller()
   return useMemo(() => {
     return {
-      saksbehandler: toSet(oppgaver, (it) => it.tildeltSaksbehandler?.navn ?? OPPGAVE_FILTER_OPTION_TOMME),
+      saksbehandler: toSet(oppgaver, selectTildeltSaksbehandlerNavn),
       oppgavetype: isSaksbehandlerBarnebriller ? oppgavetypeOptionsBarnebriller : oppgavetypeOptions,
-      behandlingstema: toSet(oppgaver, (it) => it.kategorisering.behandlingstema?.term ?? OPPGAVE_FILTER_OPTION_TOMME),
-      mappenavn: toSet(oppgaver, (it) => it.mappenavn ?? OPPGAVE_FILTER_OPTION_TOMME),
-      innsenderNavn: toSet(oppgaver, (it) => it.innsender?.fulltNavn ?? OPPGAVE_FILTER_OPTION_TOMME),
-      kommune: toSet(oppgaver, (it) => it.bruker?.kommune?.navn ?? OPPGAVE_FILTER_OPTION_TOMME),
+      behandlingstema: toSet(oppgaver, selectBehandlingstemaTerm),
+      mappenavn: toSet(oppgaver, selectMappenavn),
+      innsenderNavn: toSet(oppgaver, selectInnsenderNavn),
+      kommune: toSet(oppgaver, selectBrukerKommuneNavn),
     }
   }, [oppgaver, isSaksbehandlerBarnebriller])
 }

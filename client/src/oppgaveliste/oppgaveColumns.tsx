@@ -12,7 +12,7 @@ import {
   Oppgavetype,
   OppgavetypeLabel,
 } from '../oppgave/oppgaveTypes.ts'
-import { OppgaveStatusLabel } from '../types/types.internal.ts'
+import { OppgaveStatusLabel, OppgaveStatusType } from '../types/types.internal.ts'
 import { formaterFødselsnummer, storForbokstavIOrd } from '../utils/formater.ts'
 import { MineOppgaverMenu } from './MineOppgaverMenu.tsx'
 
@@ -237,7 +237,25 @@ export const oppgaveColumns = {
   saksstatus: {
     field: 'saksstatus',
     header: 'Saksstatus',
-    width: 200,
+    width: 150,
+    filter: {
+      options: new Map([
+        ['(Tomme)', '(Tomme)'],
+        [OppgaveStatusType.AVVENTER_SAKSBEHANDLER, 'Mottatt'],
+        [OppgaveStatusType.TILDELT_SAKSBEHANDLER, 'Under behandling'],
+        [OppgaveStatusType.AVVENTER_DOKUMENTASJON, 'Avventer opplysninger'],
+        [OppgaveStatusType.AVVENTER_GODKJENNER, 'Til godkjenning'],
+        [OppgaveStatusType.TILDELT_GODKJENNER, 'Under totrinnskontroll'],
+        /*
+        [OppgaveStatusType.SENDT_GOSYS, 'Overført til Gosys'],
+        [OppgaveStatusType.VEDTAK_FATTET, 'Vedtak fattet'],
+        [OppgaveStatusType.FERDIGSTILT, 'Godkjent'],
+        [OppgaveStatusType.AVVIST, 'Avvist'],
+        [OppgaveStatusType.HENLAGT, 'Henlagt'],
+        [OppgaveStatusType.ANNULERT, 'Annulert'],
+        */
+      ]),
+    },
     renderCell(row) {
       const sak = row.sak
       if (!sak) {

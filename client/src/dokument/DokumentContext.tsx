@@ -40,8 +40,8 @@ export function DokumentProvider({ children }: { children: ReactNode }) {
   const [hentedeBrev, setHentedeBrev] = useState(initialState.hentedeBrev)
 
   const settHentetBrev = useCallback<DokumentContextType['settHentetBrev']>(
-    (brevtype, hentetBrev) => setHentedeBrev({ ...hentedeBrev, [brevtype]: hentetBrev }),
-    [hentedeBrev]
+    (brevtype, hentetBrev) => setHentedeBrev((prev) => ({ ...prev, [brevtype]: hentetBrev })),
+    []
   )
 
   return (

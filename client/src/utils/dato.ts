@@ -24,6 +24,11 @@ export function formaterDato(dato?: string): string {
   return format(dato, 'P')
 }
 
+export function formaterDatoKort(dato?: string): string {
+  if (!dato) return ''
+  return format(dato, 'dd.MM.yy')
+}
+
 export function formaterDatoLang(dato?: string): string {
   if (!dato) return ''
   return format(dato, 'PPP')

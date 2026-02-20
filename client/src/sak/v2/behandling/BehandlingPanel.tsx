@@ -1,5 +1,4 @@
-import { ExternalLinkIcon } from '@navikt/aksel-icons'
-import { Box, Button, Heading, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
 import { memo } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
@@ -13,13 +12,13 @@ import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.t
 import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
-import { formaterDato, formaterTidsstempelLang } from '../../../utils/dato.ts'
+import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
+import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakProvider.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 
 interface BehandlingProps {
   sak: Sak
@@ -47,7 +46,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
-    <Box background="default" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
+    <Box background="default" paddingInline="space-16" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
       <PanelTittel
         tittel="Behandle sak"
         lukkPanel={() => {
@@ -59,13 +58,13 @@ function BehandlingPanel({ sak }: BehandlingProps) {
           <HStack gap="space-20">
             <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
             {oppgave?.fristFerdigstillelse && (
-              <Tekst textColor="subtle">Frist: {formaterDato(oppgave.fristFerdigstillelse)}</Tekst>
+              <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristFerdigstillelse)}</Tekst>
             )}
           </HStack>
 
           <Tekst>
             <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
-              Slå opp folketrygdlovens § 10-6 i Lovdata <ExternalLinkIcon />
+              Slå opp folketrygdlovens § 10-6 i Lovdata
             </Link>
           </Tekst>
 
@@ -104,7 +103,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                   {kanOppretteBrev && (
                     <div>
                       <Button
-                        variant="secondary"
+                        variant={vedtaksResultat === VedtaksResultat.INNVILGET ? 'secondary' : 'primary'}
                         size="small"
                         onClick={() => {
                           setBrevpanelVisibility(true)
@@ -225,37 +224,39 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
 
   return (
     <>
-      <VStack>
+      <HStack gap="space-2">
         <Heading size="xsmall" level="2" spacing={false}>
           Vurderingen din
         </Heading>
-        <TextContainer>
-          <Tekst>Vurderingen din blir ikke synlig for bruker før du har fattet vedtak i saken.</Tekst>
-        </TextContainer>
-      </VStack>
-
-      <Select
-        size="small"
-        label="Resultat"
-        readOnly={harBrevutkast}
-        style={{ width: 'auto' }}
-        value={utfall ? utfall : ''}
-        onChange={async (e) => {
-          if (utfall === (e.target.value as VedtaksResultat)) {
-            return
-          }
-          if (e.target.value !== '') {
-            await lagreBehandling({ utfall: e.target.value as VedtaksResultat, type: 'VEDTAK' })
-          } else {
-            await lagreBehandling(undefined)
-          }
-        }}
-      >
-        <option value="">-- Velg resultat --</option>
-        <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
-        <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
-        <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
-      </Select>
+        <HelpText title="Vurderingsinformasjon">
+          Vurder om søknaden skal innvilges, delvis innvilges eller avslås. Vurderingen blir ikke synlig for bruker før
+          etter at vedtaket er fattet.
+        </HelpText>
+      </HStack>
+      <Box paddingInline="space-6 space-0">
+        <Select
+          size="small"
+          label="Resultat"
+          readOnly={harBrevutkast}
+          style={{ width: 'auto' }}
+          value={utfall ? utfall : ''}
+          onChange={async (e) => {
+            if (utfall === (e.target.value as VedtaksResultat)) {
+              return
+            }
+            if (e.target.value !== '') {
+              await lagreBehandling({ utfall: e.target.value as VedtaksResultat, type: 'VEDTAK' })
+            } else {
+              await lagreBehandling(undefined)
+            }
+          }}
+        >
+          <option value="">-- Velg resultat --</option>
+          <option value={VedtaksResultat.INNVILGET}>Innvilget</option>
+          <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
+          <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
+        </Select>
+      </Box>
       {harBrevutkast && (
         <TextContainer>
           <Tekst>

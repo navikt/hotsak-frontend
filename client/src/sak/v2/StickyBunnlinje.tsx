@@ -6,7 +6,7 @@ import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
 import { storForbokstavIOrd } from '../../utils/formater'
-import { UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper'
+import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import classes from './StickyBunnlinje.module.css'
 
@@ -15,6 +15,12 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
   const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
   const { gjeldendeBehandling } = useBehandling()
+
+  const knappevariant = [Gjenstående.BREV_IKKE_FERDIGSTILT, Gjenstående.BREV_MANGLER, Gjenstående.UTFALL_MANGLER].some(
+    (gjenstående) => gjeldendeBehandling?.gjenstående.includes(gjenstående)
+  )
+    ? 'secondary'
+    : 'primary'
 
   return (
     <HStack
@@ -38,7 +44,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
       >
         <HStack align="center" justify="space-between" gap="space-24">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-            <Button type="button" variant="primary" size="small" onClick={() => onClick()}>
+            <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
               Fatt vedtak
             </Button>
           )}

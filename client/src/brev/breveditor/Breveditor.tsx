@@ -157,7 +157,7 @@ const Breveditor = ({
 
   // Diverse state
   const state = useRef<StateMangement | undefined>(undefined)
-  const [visMarger, settVisMarger] = useState(true)
+  const [visMarger, settVisMarger] = useState(false)
   const [erPlateContentFokusert, settPlateContentFokusert] = useState(false)
   const [erVerktoylinjeFokusert, settVerktoylinjeFokusert] = useState(false)
 

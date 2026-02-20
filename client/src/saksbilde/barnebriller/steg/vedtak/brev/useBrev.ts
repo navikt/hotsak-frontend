@@ -23,9 +23,12 @@ export function useBrev(): UseBrevResponse {
   const { hentedeBrev, settHentetBrev } = useDokumentContext()
   const [brevError, setBrevError] = useState<HttpError | null>(null)
 
-  const nullstillBrev = (brevtype: Brevtype) => {
-    settHentetBrev(brevtype, byggTomRessurs())
-  }
+  const nullstillBrev = useCallback(
+    (brevtype: Brevtype) => {
+      settHentetBrev(brevtype, byggTomRessurs())
+    },
+    [settHentetBrev]
+  )
 
   const hentForhåndsvisning = useCallback(
     (sakId: number | string, brevtype: Brevtype = Brevtype.BARNEBRILLER_VEDTAK, notatId?: string) => {

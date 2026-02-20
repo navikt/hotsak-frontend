@@ -53,7 +53,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
           lukkBehandlingsPanel()
         }}
       />
-      <ScrollablePanel>
+      <ScrollablePanel paddingInline="space-16 space-0">
         <VStack gap="space-16" paddingInline="space-0 space-8">
           <HStack gap="space-20">
             <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>

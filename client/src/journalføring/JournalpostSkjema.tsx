@@ -12,7 +12,7 @@ import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { useJournalpost } from '../saksbilde/useJournalpost.ts'
-import { BehandlingstatusType, JournalføringRequest, Sakstype } from '../types/types.internal.ts'
+import { JournalføringRequest, SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
@@ -30,7 +30,7 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const [valgtEksisterendeSakId, setValgtEksisterendeSakId] = useState('')
   const [journalføresPåFnr, setJournalføresPåFnr] = useState('')
   const { isLoading: henterPerson, personInfo } = usePerson(fodselsnummer)
-  const { saksoversikt } = useSaksoversikt(fodselsnummer, BehandlingstatusType.ÅPEN, Sakstype.BARNEBRILLER)
+  const { saksoversikt } = useSaksoversikt(fodselsnummer, SaksstatusKategori.ÅPEN, Sakstype.BARNEBRILLER)
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
 
   const journalfør = () => {

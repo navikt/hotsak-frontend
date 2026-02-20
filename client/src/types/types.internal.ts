@@ -561,18 +561,16 @@ export enum OppgaveStatusType {
 }
 
 /**
- * NB! Heter Statuskategori i backend.
- *
- * todo -> rename til `StatuskategoriSak` el.
+ * NB! Heter Saksstatus.Statuskategori i backend.
  */
-export enum BehandlingstatusType {
+export enum SaksstatusKategori {
   PÅ_VENT = 'PÅ_VENT',
   ÅPEN = 'ÅPEN',
   LUKKET = 'LUKKET',
 }
 
 /**
- * todo -> rename til `SakstypeLabel`
+ * todo -> rename til `SaksstatusLabel`
  */
 export const OppgaveStatusLabel = new Map<OppgaveStatusType, string>([
   [OppgaveStatusType.AVVENTER_JOURNALFORING, 'Ikke journalført'],

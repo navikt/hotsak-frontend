@@ -21,6 +21,21 @@ import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { headerHøyde } from '../../GlobalStyles.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
 
+function AvrundetPanel({ children }: { children: React.ReactNode }) {
+  return (
+    <Box
+      background="default"
+      paddingBlock="space-12 space-0"
+      borderRadius="12 12 0 0"
+      height="100%"
+      borderColor="neutral-subtle"
+      borderWidth="1 1 0 1"
+    >
+      {children}
+    </Box>
+  )
+}
+
 export function SakV2() {
   const { sak } = useSak()
   const { behovsmelding } = useBehovsmelding()
@@ -158,21 +173,6 @@ export function SakV2() {
       )}
     </Box>
   )
-
-  function AvrundetPanel({ children }: { children: React.ReactNode }) {
-    return (
-      <Box
-        background="default"
-        paddingBlock="space-12 space-0"
-        borderRadius="12 12 0 0"
-        height="100%"
-        borderColor="neutral-subtle"
-        borderWidth="1 1 0 1"
-      >
-        {children}
-      </Box>
-    )
-  }
 
   function modalVelger() {
     if (!gjeldendeBehandling || !vedtaksResultat) {

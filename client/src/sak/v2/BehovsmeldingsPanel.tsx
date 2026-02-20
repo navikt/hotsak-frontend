@@ -15,9 +15,14 @@ import { useClosePanel } from './paneler/usePanelHooks.ts'
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')
   return (
-    <Box background="default" paddingBlock="space-0 space-48" paddingInline="space-16" style={{ height: '100%' }}>
+    <Box
+      background="default"
+      paddingBlock="space-0 space-48"
+      paddingInline="space-16 space-0"
+      style={{ height: '100%' }}
+    >
       <PanelTittel tittel="Søknad om hjelpemidler" lukkPanel={lukkPanel} />
-      <ScrollablePanel>
+      <ScrollablePanel paddingInline="space-0 space-4">
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
           <Tekst textColor="subtle">

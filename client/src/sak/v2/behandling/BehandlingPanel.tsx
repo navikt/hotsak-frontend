@@ -131,12 +131,15 @@ function BehandlingPanel({ sak }: BehandlingProps) {
 
                   {!lesevisning && brevutkastFerdigstilt && (
                     <InlineMessage status="info">
-                      Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket.
+                      Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket. Brevet blir lagt til
+                      utsending etter at vedtaket er fattet.
                     </InlineMessage>
                   )}
 
                   {!lesevisning && harBrevutkast && !brevutkastFerdigstilt && (
-                    <InlineMessage status="info">Ferdigstill utkastet i brevpanelet.</InlineMessage>
+                    <InlineMessage status="info">
+                      Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
+                    </InlineMessage>
                   )}
                 </VStack>
               </Box>
@@ -172,10 +175,10 @@ function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResulta
       tekst = 'Du må selv vurdere om det er behov for å sende vedtaksbrev.'
       break
     case VedtaksResultat.DELVIS_INNVILGET:
-      tekst = 'Du må sende vedtaksbrev ved delvis innvilgelse. Brevet blir sendt når du fatter vedtak.'
+      tekst = 'Du må sende vedtaksbrev ved delvis innvilgelse.'
       break
     case VedtaksResultat.AVSLÅTT:
-      tekst = 'Du må sende vedtaksbrev ved avslag. Brevet blir sendt når du fatter vedtak.'
+      tekst = 'Du må sende vedtaksbrev ved avslag.'
       break
     default:
       return null
@@ -183,7 +186,9 @@ function UnderrettBruker({ vedtaksResultat }: { vedtaksResultat?: VedtaksResulta
 
   return (
     <TextContainer>
-      <Tekst textColor="subtle">{tekst}</Tekst>
+      <InlineMessage status="info" size="small">
+        {tekst}
+      </InlineMessage>
     </TextContainer>
   )
 }

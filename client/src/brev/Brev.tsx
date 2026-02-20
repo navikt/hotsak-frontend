@@ -218,7 +218,7 @@ export const Brev = () => {
                 <div className="right">
                   <Button
                     loading={brevutkast.isLoading || brevutkast.isValidating}
-                    variant="secondary"
+                    variant="primary"
                     size="small"
                     onClick={() => markerKlart(true)}
                   >

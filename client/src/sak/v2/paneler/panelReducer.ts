@@ -21,7 +21,7 @@ export const initialPanelState: PanelState = {
     behandlingspanel: {
       id: 'behandlingspanel',
       visible: true,
-      minWidth: 240,
+      minWidth: 220,
       minWidthUnit: 'px',
       defaultSize: 25,
     },
@@ -35,14 +35,14 @@ export const initialPanelState: PanelState = {
     behovsmeldingspanel: {
       id: 'behovsmeldingspanel',
       visible: true,
-      minWidth: 400,
+      minWidth: 300,
       minWidthUnit: 'px',
       defaultSize: 34,
     },
     sidebarpanel: {
       id: 'sidebarpanel',
       visible: true,
-      minWidth: 375,
+      minWidth: 230,
       minWidthUnit: 'px',
       defaultSize: 20,
     },

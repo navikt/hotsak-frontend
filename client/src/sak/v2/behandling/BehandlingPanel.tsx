@@ -98,7 +98,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                       Saken er innvilget uten å sende brev
                     </InlineMessage>
                   )}
-                  {!lesevisning && <UnderrettBruker vedtaksResultat={vedtaksResultat} />}
+                  {!lesevisning && !harBrevutkast && <UnderrettBruker vedtaksResultat={vedtaksResultat} />}
 
                   {kanOppretteBrev && (
                     <div>
@@ -130,14 +130,14 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                   )}
 
                   {!lesevisning && brevutkastFerdigstilt && (
-                    <InlineMessage status="info">
+                    <InlineMessage status="info" size="small">
                       Du har markert brevet som ferdigstilt, og kan gå videre til å fatte vedtaket. Brevet blir lagt til
                       utsending etter at vedtaket er fattet.
                     </InlineMessage>
                   )}
 
                   {!lesevisning && harBrevutkast && !brevutkastFerdigstilt && (
-                    <InlineMessage status="info">
+                    <InlineMessage status="info" size="small">
                       Ferdigstill utkastet i brevpanelet. Brevet blir lagt til utsending etter at vedtaket er fattet.
                     </InlineMessage>
                   )}

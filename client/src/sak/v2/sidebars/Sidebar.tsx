@@ -33,12 +33,11 @@ export function Sidebar() {
         data-color="neutral"
         variant="tertiary"
         size="small"
-        icon={<XMarkIcon title="Lukk sidepanel" fontSize="1.5rem" />}
+        icon={<XMarkIcon title={`Lukk sidepanel`} fontSize="20px" />}
         onClick={closePanel}
         style={{
           /* FIXME: Trolig ikke måten vi bør gjøre dette på, men har ikke tid til noe annet */ position: 'absolute',
-          right: '0.5em',
-          top: '0.5rem',
+          right: '0.3rem',
         }}
       />
       <Tabs
@@ -48,7 +47,7 @@ export function Sidebar() {
         onChange={(value) => setValgtNedreVenstreKolonneTab(value as VenstrekolonneTabs)}
         loop
       >
-        <Tabs.List style={{ height: `${søknadslinjeHøyde}` }}>
+        <Tabs.List>
           <Tooltip content="Historikk">
             <Tabs.Tab value={VenstrekolonneTabs.SAKSHISTORIKK} icon={<ClockDashedIcon title="Sakshistorikk" />} />
           </Tooltip>

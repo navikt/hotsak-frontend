@@ -1,4 +1,4 @@
-import { Alert } from '@navikt/ds-react'
+import { Alert, InfoCard, VStack } from '@navikt/ds-react'
 import { useRef, useState } from 'react'
 import { useToast } from '../../../felleskomponenter/toast/ToastContext'
 import { Tekst } from '../../../felleskomponenter/typografi'
@@ -79,27 +79,39 @@ export function FattVedtakModalV2({
       onClose={onClose}
     >
       {(erInnvilget || erDelvisInnvilget) && (
-        <>
+        <VStack gap="space-16">
+          {erDelvisInnvilget && (
+            <InfoCard data-color="warning" size="small">
+              <InfoCard.Header>
+                <InfoCard.Title>Du må legge til hjelpemidlene manuelt i OeBS</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <Tekst>
+                  Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
+                  oppretter ordre.
+                </Tekst>
+              </InfoCard.Content>
+            </InfoCard>
+          )}
           {brevMetaData.harBrevISak && (
-            <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
-              Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da
-              få varsel om vedtaksresultatet.
-            </Alert>
+            <InfoCard data-color="info" size="small">
+              <InfoCard.Header>
+                <InfoCard.Title>Du er i ferd med å sende ut et brev</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <Tekst>Brevet vil bli sendt ut neste virkedag. Innbygger vil da få varsel om vedtaksresultatet.</Tekst>
+              </InfoCard.Content>
+            </InfoCard>
           )}
           <Tekst spacing>
-            Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.{' '}
-            {!brevMetaData.harBrevISak && <>Innbygger får varsel om vedtaksresultatet neste virkedag.</>}
+            {`Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.
+            ${!brevMetaData.harBrevISak ? ' Innbygger får varsel om vedtaksresultatet neste virkedag.' : ''}`}
           </Tekst>
-          {erDelvisInnvilget && (
-            <Alert variant="info" size="small" style={{ margin: '1em 0' }}>
-              Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
-              oppretter ordre.
-            </Alert>
-          )}
+
           {(erInnvilget || erDelvisInnvilget) && (
             <VedtakForm sak={sak} ref={formRef} onVedtak={fattVedtak} postbegrunnelsePåkrevd={erInnvilget} />
           )}
-        </>
+        </VStack>
       )}
       {erAvslag && (
         <>

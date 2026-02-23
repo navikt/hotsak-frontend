@@ -80,10 +80,12 @@ export function FattVedtakModalV2({
     >
       {(erInnvilget || erDelvisInnvilget) && (
         <>
-          <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
-            Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da få
-            varsel om vedtaksresultatet.
-          </Alert>
+          {brevMetaData.harBrevISak && (
+            <Alert variant="info" size="small" style={{ marginBottom: '1em' }}>
+              Du er i ferd med å sende ut et brev til bruker. Brevet vil bli sendt ut neste virkedag. Innbygger vil da
+              få varsel om vedtaksresultatet.
+            </Alert>
+          )}
           <Tekst spacing>
             Når du går videre blir det opprettet en serviceforespørsel (SF) i OeBS.{' '}
             {!brevMetaData.harBrevISak && <>Innbygger får varsel om vedtaksresultatet neste virkedag.</>}

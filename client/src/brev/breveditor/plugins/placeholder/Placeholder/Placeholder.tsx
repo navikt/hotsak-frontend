@@ -42,8 +42,30 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
       if (!path) return
 
       e.preventDefault()
-      const offset = text.includes(EMPTY_CHAR) ? 1 : 0
-      editor.tf.select({ path: [...path, 0], offset })
+      e.stopPropagation()
+
+      const currentText = element.children[0]?.text || ''
+      const offset = currentText.includes(EMPTY_CHAR) ? 1 : 0
+      const point = { path: [...path, 0], offset }
+
+      const alleredeFokusert =
+        editor.selection?.anchor?.path?.[0] === path[0] && editor.selection?.anchor?.path?.[1] === path[1]
+
+      if (alleredeFokusert) {
+        editor.tf.setSelection({ anchor: point, focus: point })
+        requestAnimationFrame(() => {
+          editor.tf.focus()
+        })
+      } else {
+        editor.tf.focus()
+        editor.tf.setSelection({ anchor: point, focus: point })
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            editor.tf.focus()
+          })
+        })
+      }
     },
     [editor, element, erTom, text]
   )

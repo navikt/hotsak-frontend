@@ -234,16 +234,30 @@ const Breveditor = ({
 
   const focusPath = useCallback(
     (path: number[]) => {
-      editor.tf.focus()
-      editor.tf.select({ path: [...path, 0], offset: 0 })
+      if (plateContentRef.current) {
+        ;(plateContentRef.current as HTMLElement).blur()
+      }
+
       setTimeout(() => {
-        const selection = window.getSelection()
-        if (selection && selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0)
-          const element = range.startContainer.parentElement
-          element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-      }, 0)
+        editor.tf.focus()
+        editor.tf.select({ path: [...path, 0], offset: 0 })
+
+        setTimeout(() => {
+          const selection = window.getSelection()
+          if (selection && selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0)
+            const element = range.startContainer.parentElement
+            element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            const clonedRange = range.cloneRange()
+            selection.removeAllRanges()
+            selection.addRange(clonedRange)
+          }
+
+          if (plateContentRef.current) {
+            ;(plateContentRef.current as HTMLElement).focus()
+          }
+        }, 0)
+      }, 10)
     },
     [editor]
   )

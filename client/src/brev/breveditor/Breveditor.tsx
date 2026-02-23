@@ -281,7 +281,6 @@ const Breveditor = ({
         editor={editor}
         onChange={async ({ editor: changedEditor, value: newValue }) => {
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
-            const htmlContent = serializeHtml(editor)
             const constructedState: StateMangement = {
               value: newValue,
               valueAsHtml:
@@ -309,7 +308,7 @@ const Breveditor = ({
                       <style>${versjonertStilarkV1}</style>
                     </head>` +
                 (headerRef.current?.outerHTML || '') +
-                htmlContent +
+                (await serializeHtml(editor)) +
                 (footerRef.current?.outerHTML || '') +
                 '</html>',
               history: changedEditor.history,

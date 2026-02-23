@@ -1,5 +1,5 @@
 import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
@@ -14,6 +14,7 @@ import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
 import { storForbokstavIOrd } from '../../../utils/formater.ts'
+import { SlettBrevutkastModal } from '../modaler/SlettBrevutkastModal.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakProvider.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
@@ -226,6 +227,7 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: Vedtaks
 
 function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResultat | null; harBrevutkast: boolean }) {
   const { lagreBehandling } = useBehandlingActions()
+  const [visSlettBrevutkastModal, setVisSlettBrevutkastModal] = useState(false)
 
   return (
     <>
@@ -238,7 +240,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           etter at vedtaket er fattet.
         </HelpText>
       </HStack>
-      <Box paddingInline="space-6 space-0">
+      <VStack paddingInline="space-0" gap="space-12">
         <Select
           size="small"
           label="Resultat"
@@ -261,7 +263,14 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           <option value={VedtaksResultat.DELVIS_INNVILGET}>Delvis innvilget</option>
           <option value={VedtaksResultat.AVSLÅTT}>Avslått</option>
         </Select>
-      </Box>
+        {harBrevutkast && (
+          <div>
+            <Button variant="tertiary" size="small" onClick={() => setVisSlettBrevutkastModal(true)}>
+              Endre vurdering
+            </Button>
+          </div>
+        )}
+      </VStack>
       {harBrevutkast && (
         <TextContainer>
           <Tekst>
@@ -270,6 +279,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           </Tekst>
         </TextContainer>
       )}
+      <SlettBrevutkastModal onClose={() => setVisSlettBrevutkastModal(false)} open={visSlettBrevutkastModal} />
     </>
   )
 }

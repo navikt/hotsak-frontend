@@ -271,14 +271,6 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           </div>
         )}
       </VStack>
-      {harBrevutkast && (
-        <TextContainer>
-          <Tekst>
-            Hvis du vil endre vedtaksresultatet må du først slette brevutkastet. Valget for å slette utkastet finner du
-            i toppmenyen over brevet.
-          </Tekst>
-        </TextContainer>
-      )}
       <SlettBrevutkastModal onClose={() => setVisSlettBrevutkastModal(false)} open={visSlettBrevutkastModal} />
     </>
   )

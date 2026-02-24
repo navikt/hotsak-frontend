@@ -12,7 +12,6 @@ import { MarkdownPlugin, remarkMdx } from '@platejs/markdown'
 import type { History } from '@platejs/slate'
 import { KEYS, type Value } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
-import { serializeHtml } from 'platejs/static'
 import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import './Breveditor.less'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
@@ -23,6 +22,7 @@ import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
+import { serialiserTilHtml } from './serialiserTilHtml.ts'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -276,13 +276,14 @@ const Breveditor = ({
     >
       <Plate
         editor={editor}
-        onChange={async ({ editor: changedEditor, value: newValue }) => {
+        onChange={({ editor: changedEditor, value: newValue }) => {
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: StateMangement = {
               value: newValue,
               valueAsHtml:
                 `<html>
                     <head>
+                      <meta charset="UTF-8">
                       <style>
                         @page {
                           margin: 64pt 56pt 74pt 56pt;
@@ -305,7 +306,7 @@ const Breveditor = ({
                       <style>${versjonertStilarkV1}</style>
                     </head>` +
                 (headerRef.current?.outerHTML || '') +
-                (await serializeHtml(editor)) +
+                (serialiserTilHtml(newValue) || '') +
                 (footerRef.current?.outerHTML || '') +
                 '</html>',
               history: changedEditor.history,

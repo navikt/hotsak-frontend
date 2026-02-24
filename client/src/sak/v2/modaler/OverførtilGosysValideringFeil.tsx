@@ -17,12 +17,22 @@ export function OverførtilGosysValideringFeil({
       {gjenstående.map((gjenstående) => {
         switch (gjenstående) {
           case GjenståendeOverfør.BREV_MÅ_SLETTES:
-            return <Tekst spacing>For å kunne overføre saken til Gosys må brevutkast slettes.</Tekst>
+            return (
+              <Tekst key="BREV_MÅ_SLETTES" spacing>
+                For å kunne overføre saken til Gosys må brevutkast slettes.
+              </Tekst>
+            )
           case GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES:
-            return <Tekst spacing>For å kunne overføre saken til Gosys må påbegynte brevutkast slettes.</Tekst>
+            return (
+              <Tekst key="BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES" spacing>
+                For å kunne overføre saken til Gosys må påbegynte brevutkast slettes.
+              </Tekst>
+            )
           case GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES:
             return (
-              <Tekst spacing>For å kunne overføre saken til Gosys må notatutkast slettes eller ferdigstilles.</Tekst>
+              <Tekst key="NOTATUTKAST_MÅ_SLETTES" spacing>
+                For å kunne overføre saken til Gosys må notatutkast slettes eller ferdigstilles.
+              </Tekst>
             )
         }
       })}

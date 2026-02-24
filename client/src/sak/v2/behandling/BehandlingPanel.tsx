@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
@@ -13,10 +13,10 @@ import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
-import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { SlettBrevutkastModal } from '../modaler/SlettBrevutkastModal.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakProvider.tsx'
+import { VedtaksresultatTag } from '../VedtaksresultatTag.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
@@ -207,22 +207,9 @@ function VedtaksResultatVisning({ vedtaksResultat }: { vedtaksResultat?: Vedtaks
       <Heading size="xsmall" level="2" spacing={false}>
         Vedtaksresultat
       </Heading>
-      <TextContainer>
-        <Tag
-          size="small"
-          variant={
-            vedtaksResultat == VedtaksResultat.INNVILGET
-              ? 'success-moderate'
-              : vedtaksResultat == VedtaksResultat.DELVIS_INNVILGET
-                ? 'warning-moderate'
-                : vedtaksResultat == VedtaksResultat.AVSLÅTT
-                  ? 'error-moderate'
-                  : 'neutral-moderate'
-          }
-        >
-          {storForbokstavIOrd(vedtaksResultat).replace(/_/g, ' ')}
-        </Tag>
-      </TextContainer>
+      <div>
+        <VedtaksresultatTag vedtaksResultat={vedtaksResultat} />
+      </div>
     </VStack>
   )
 }

@@ -5,10 +5,10 @@ import { useOppgave } from '../../oppgave/useOppgave'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
 import { formaterDato } from '../../utils/dato'
-import { storForbokstavIOrd } from '../../utils/formater'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandlingTyper'
 import { useBehandling } from './behandling/useBehandling'
 import classes from './StickyBunnlinje.module.css'
+import { VedtaksresultatTag } from './VedtaksresultatTag'
 
 export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => void }) {
   const { oppgave } = useOppgave()
@@ -50,20 +50,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
           )}
           {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
             <HStack gap="space-12" align="center">
-              <Tag
-                size="small"
-                variant={
-                  oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.INNVILGET
-                    ? 'success-moderate'
-                    : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.DELVIS_INNVILGET
-                      ? 'warning-moderate'
-                      : oppgaveFerdigstilt && gjeldendeBehandling.utfall?.utfall == VedtaksResultat.AVSLÅTT
-                        ? 'error-moderate'
-                        : 'neutral-moderate'
-                }
-              >
-                {storForbokstavIOrd(gjeldendeBehandling.utfall?.utfall).replace(/_/g, ' ')}
-              </Tag>
+              <VedtaksresultatTag vedtaksResultat={gjeldendeBehandling?.utfall?.utfall as VedtaksResultat} />
               <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak.vedtak?.vedtaksdato)}`}</Tekst>
             </HStack>
           )}

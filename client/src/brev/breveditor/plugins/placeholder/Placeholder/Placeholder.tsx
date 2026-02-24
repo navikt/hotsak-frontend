@@ -5,6 +5,8 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { PathApi } from 'platejs'
 import styles from './Placeholder.module.css'
 import { ELEMENT_PLACEHOLDER, PlaceholderElement } from '../PlaceholderElement'
+import { useBrevContext } from '../../../../Brev'
+import { validerPlaceholders } from '../PlaceholderFeil'
 
 const EMPTY_CHAR = '\uFEFF'
 const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
@@ -21,8 +23,13 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
   const erTom = synligTekst.length === 0
   const visSøppelbøtte = !readOnly && erTom && element.deletable !== false
 
+  const { setPlaceholderFeil } = useBrevContext()
+
   // passe på at placeholder alltid har usynlig karakter for posisjonering av musepeker
   useEffect(() => {
+    const feil = validerPlaceholders(editor.children)
+    setPlaceholderFeil(feil)
+
     if (text.length > 0) return
 
     const path = editor.api.findPath(element)
@@ -51,6 +58,9 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
 
       editor.tf.delete({ at: path })
       editor.tf.focus()
+
+      const feil = validerPlaceholders(editor.children)
+      setPlaceholderFeil(feil)
     },
     [editor, element]
   )

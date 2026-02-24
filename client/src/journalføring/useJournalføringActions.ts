@@ -1,29 +1,27 @@
 import { Actions, ExecutionPromise, useActionState } from '../action/Actions.ts'
 import { http } from '../io/HttpClient.ts'
-import { OppgaveId } from '../oppgave/oppgaveTypes.ts'
-import type { JournalføringRequest } from '../types/types.internal.ts'
-
-export interface JournalføringResponse {
-  sakId: string
-  /**
-   * Id for behandle sak-oppgaven som følger journalføring.
-   */
-  oppgaveId?: OppgaveId
-}
+import { useOppgaveContext } from '../oppgave/OppgaveContext.ts'
+import type { JournalførJournalpostRequest, JournalførJournalpostResponse } from './journalføringTypes.ts'
 
 export interface JournalføringActions extends Actions {
-  journalfør(request: JournalføringRequest): ExecutionPromise<JournalføringResponse>
+  journalfør(request: Omit<JournalførJournalpostRequest, 'oppgaveId'>): ExecutionPromise<JournalførJournalpostResponse>
 }
 
 export function useJournalføringActions(): JournalføringActions {
   const { execute, state } = useActionState()
-
+  const { oppgaveId, versjon } = useOppgaveContext()
+  if (!oppgaveId) {
+    throw new Error('Mangler oppgaveId!')
+  }
   return {
-    journalfør(request: JournalføringRequest): ExecutionPromise<JournalføringResponse> {
+    journalfør(
+      request: Omit<JournalførJournalpostRequest, 'oppgaveId'>
+    ): ExecutionPromise<JournalførJournalpostResponse> {
       return execute(() =>
-        http.post<JournalføringRequest, JournalføringResponse>(
+        http.post<JournalførJournalpostRequest, JournalførJournalpostResponse>(
           `/api/journalpost/${request.journalpostId}/journalforing`,
-          request
+          { oppgaveId, ...request },
+          { versjon }
         )
       )
     },

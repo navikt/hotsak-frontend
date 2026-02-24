@@ -7,12 +7,11 @@ import styled from 'styled-components'
 import { Dokumenter } from '../dokument/Dokumenter.tsx'
 import { Kolonner } from '../felleskomponenter/Kolonner.tsx'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
-import { erOppgaveIdNull } from '../oppgave/oppgaveTypes.ts'
 import { usePersonContext } from '../personoversikt/PersonContext.tsx'
 import { usePerson } from '../personoversikt/usePerson.ts'
 import { useSaksoversikt } from '../personoversikt/useSaksoversikt.ts'
 import { useJournalpost } from '../saksbilde/useJournalpost.ts'
-import { JournalføringRequest, SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
+import { SaksstatusKategori, Sakstype } from '../types/types.internal.ts'
 import { formaterNavn } from '../utils/formater.ts'
 import { JournalføringMenu } from './JournalføringMenu.tsx'
 import { KnyttTilEksisterendeSak } from './KnyttTilEksisterendeSak.tsx'
@@ -34,23 +33,19 @@ export function JournalpostSkjema({ journalpostId }: JournalpostSkjemaProps) {
   const [journalpostTittel, setJournalpostTittel] = useState(journalpost?.tittel || '')
 
   const journalfør = () => {
-    const journalføringRequest: JournalføringRequest = {
-      journalpostId: journalpost!.journalpostId,
-      tittel: journalpostTittel,
-      journalføresPåFnr: fodselsnummer,
-      sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
-      oppgaveId: journalpost!.oppgave.oppgaveId,
-    }
-    journalføringActions.journalfør(journalføringRequest).then((response) => {
-      // todo -> dette blir det eneste caset på sikt, men backend (og mock) er ikke klar ennå
-      if (response?.oppgaveId && !erOppgaveIdNull(response.oppgaveId)) {
+    journalføringActions
+      .journalfør({
+        journalpostId: journalpost!.journalpostId,
+        tittel: journalpostTittel,
+        journalføresPåFnr: fodselsnummer,
+        sakId: valgtEksisterendeSakId !== '' ? valgtEksisterendeSakId : undefined,
+      })
+      .then((response) => {
+        if (!response) {
+          throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
+        }
         return navigate(`/oppgave/${response.oppgaveId}`)
-      }
-      if (response?.sakId) {
-        return navigate(`/oppgave/S-${response.sakId}`)
-      }
-      throw new Error('Klarte ikke å opprette behandle sak-oppgave og/eller sak')
-    })
+      })
   }
 
   if (henterPerson || !personInfo || isLoading) {

@@ -45,7 +45,7 @@ export const Brev = () => {
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
-  const [synligKryssKnapp, setSynligKryssKnapp] = useState(true)
+  const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
 

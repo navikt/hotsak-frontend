@@ -248,9 +248,6 @@ const Breveditor = ({
             const range = selection.getRangeAt(0)
             const element = range.startContainer.parentElement
             element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-            const clonedRange = range.cloneRange()
-            selection.removeAllRanges()
-            selection.addRange(clonedRange)
           }
 
           if (plateContentRef.current) {

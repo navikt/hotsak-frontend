@@ -34,42 +34,6 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     editor.tf.insertText(EMPTY_CHAR, { at: { path: textPath, offset: 0 } })
   }, [editor, element, text])
 
-  const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (!erTom) return
-
-      const path = editor.api.findPath(element)
-      if (!path) return
-
-      e.preventDefault()
-      e.stopPropagation()
-
-      const currentText = element.children[0]?.text || ''
-      const offset = currentText.includes(EMPTY_CHAR) ? 1 : 0
-      const point = { path: [...path, 0], offset }
-
-      const alleredeFokusert =
-        editor.selection?.anchor?.path?.[0] === path[0] && editor.selection?.anchor?.path?.[1] === path[1]
-
-      if (alleredeFokusert) {
-        editor.tf.setSelection({ anchor: point, focus: point })
-        requestAnimationFrame(() => {
-          editor.tf.focus()
-        })
-      } else {
-        editor.tf.focus()
-        editor.tf.setSelection({ anchor: point, focus: point })
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            editor.tf.focus()
-          })
-        })
-      }
-    },
-    [editor, element, erTom, text]
-  )
-
   const handleDelete = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
@@ -91,6 +55,30 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     [editor, element]
   )
 
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      if (!erTom) return
+
+      const path = editor.api.findPath(element)
+      if (!path) return
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      const currentText = element.children[0]?.text || ''
+      const offset = currentText.includes(EMPTY_CHAR) ? 1 : 0
+      const point = { path: [...path, 0], offset }
+
+      editor.tf.focus()
+
+      requestAnimationFrame(() => {
+        editor.tf.setSelection({ anchor: point, focus: point })
+        editor.tf.focus()
+      })
+    },
+    [editor, element, erTom, text]
+  )
+
   return (
     <PlateElement
       {...props}
@@ -106,7 +94,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
           className={`${styles.placeholderElement} ${erTom ? styles.placeholderEmpty : styles.placeholderFilled}`}
           data-node-type={ELEMENT_PLACEHOLDER}
           data-placeholder={erTom ? element.placeholder : undefined}
-          onClick={handleClick}
+          onMouseDown={handleMouseDown}
         >
           {visSøppelbøtte && (
             <Button

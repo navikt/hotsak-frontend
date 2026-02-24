@@ -11,6 +11,8 @@ import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 
+type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS>
+
 export function FattVedtakModalV2({
   open,
   onClose,
@@ -20,7 +22,7 @@ export function FattVedtakModalV2({
   open: boolean
   onClose: () => void
   sak: Sak
-  vedtaksResultat: VedtaksResultat
+  vedtaksResultat: FattbartVedtaksresultat
 }) {
   const [vedtakLoader, setVedtakLoader] = useState(false)
   const { ferdigstillBehandling } = useBehandlingActions()

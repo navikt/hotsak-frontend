@@ -48,6 +48,7 @@ export enum VedtaksResultat {
   INNVILGET = 'INNVILGET',
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
+  GOSYS = 'GOSYS',
 }
 
 enum Bestillingsreultat {

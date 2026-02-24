@@ -163,7 +163,7 @@ export function SakV2() {
         vedtaksResultat={vedtaksResultat}
       />
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
-      {vedtaksResultat && (
+      {vedtaksResultat && vedtaksResultat !== VedtaksResultat.GOSYS && (
         <FattVedtakModalV2
           open={visFerdigstillModal}
           onClose={() => setVisFerdigstillModal(false)}

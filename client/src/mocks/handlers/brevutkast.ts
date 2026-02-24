@@ -92,6 +92,12 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
     if (behandlinger && behandlinger.length > 0) {
       const gjeldendeBehandling = behandlinger[0]
 
+      const gjenståendeOverfør = (gjeldendeBehandling.operasjoner.overfør || [])
+        .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES)
+        .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES)
+
+      console.log('Gjenstende ved slett av brev ', gjenståendeOverfør)
+
       if (gjeldendeBehandling.utfall?.utfall === VedtaksResultat.INNVILGET) {
         console.log('Fjerner brevutkast på utfall innvilget')
 
@@ -99,12 +105,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
           ...gjeldendeBehandling,
           gjenstående: [],
           utfallLåst: [],
+          operasjoner: { overfør: gjenståendeOverfør },
         })
       } else {
         await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
           ...gjeldendeBehandling,
           gjenstående: [Gjenstående.BREV_MANGLER],
           utfallLåst: [],
+          operasjoner: { overfør: gjenståendeOverfør },
         })
       }
     }

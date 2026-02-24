@@ -1,5 +1,4 @@
 import type { Value } from 'platejs'
-import { useMiljø } from '../../utils/useMiljø'
 
 const escapeHtml = (text: string): string =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -9,8 +8,7 @@ const KJENTE_TYPER = ['h1', 'h2', 'h3', 'h4', 'p', 'a', 'ul', 'ol', 'li', 'lic',
 
 // prøver å varsle i console i dev hvis vi støter på ukjente markeringer eller typer
 const varsleUkjent = (node: any) => {
-  const erDev = useMiljø()
-  if (erDev) {
+  if (window.appSettings.NAIS_CLUSTER_NAME === 'dev-gcp') {
     if ('text' in node) {
       const ukjenteMarkeringer = Object.keys(node).filter(
         (k) => k !== 'text' && node[k] === true && !KJENTE_MARKERINGER.includes(k)

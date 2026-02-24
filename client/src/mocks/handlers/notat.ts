@@ -24,7 +24,12 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, sakStore }) =>
         ...gjeldendeBehandling,
         operasjoner: {
           ...gjeldendeBehandling.operasjoner,
-          overfør: [...(gjeldendeBehandling.operasjoner.overfør || []), GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES],
+          overfør: {
+            gjenstående: [
+              ...(gjeldendeBehandling.operasjoner.overfør.gjenstående || []),
+              GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES,
+            ],
+          },
         },
       })
     }
@@ -52,11 +57,13 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, sakStore }) =>
             ...gjeldendeBehandling,
             operasjoner: {
               ...gjeldendeBehandling.operasjoner,
-              overfør: [
-                ...(gjeldendeBehandling.operasjoner.overfør || []).filter(
-                  (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
-                ),
-              ],
+              overfør: {
+                gjenstående: [
+                  ...(gjeldendeBehandling.operasjoner.overfør.gjenstående || []).filter(
+                    (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
+                  ),
+                ],
+              },
             },
           })
         }
@@ -101,11 +108,13 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore, sakStore }) =>
           ...gjeldendeBehandling,
           operasjoner: {
             ...gjeldendeBehandling.operasjoner,
-            overfør: [
-              ...(gjeldendeBehandling.operasjoner.overfør || []).filter(
-                (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
-              ),
-            ],
+            overfør: {
+              gjenstående: [
+                ...(gjeldendeBehandling.operasjoner.overfør.gjenstående || []).filter(
+                  (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
+                ),
+              ],
+            },
           },
         })
       }

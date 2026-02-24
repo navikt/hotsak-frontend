@@ -33,7 +33,12 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
           utfallLåst: [UtfallLåst.HAR_VEDTAKSBREV],
           operasjoner: {
             ...gjeldendeBehandling.operasjoner,
-            overfør: [...(gjeldendeBehandling.operasjoner.overfør || []), GjenståendeOverfør.BREV_MÅ_SLETTES],
+            overfør: {
+              gjenstående: [
+                ...(gjeldendeBehandling.operasjoner.overfør.gjenstående || []),
+                GjenståendeOverfør.BREV_MÅ_SLETTES,
+              ],
+            },
           },
         })
       }
@@ -56,12 +61,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
         ...gjeldendeBehandling,
         gjenstående: [],
         operasjoner: {
-          overfør: [
-            ...(gjeldendeBehandling.operasjoner.overfør.filter(
-              (gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES
-            ) || []),
-            GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES,
-          ],
+          overfør: {
+            gjenstående: [
+              ...(gjeldendeBehandling.operasjoner.overfør.gjenstående.filter(
+                (gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES
+              ) || []),
+              GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES,
+            ],
+          },
         },
       })
     }
@@ -92,7 +99,7 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
     if (behandlinger && behandlinger.length > 0) {
       const gjeldendeBehandling = behandlinger[0]
 
-      const gjenståendeOverfør = (gjeldendeBehandling.operasjoner.overfør || [])
+      const gjenståendeOverfør = (gjeldendeBehandling.operasjoner.overfør.gjenstående || [])
         .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES)
         .filter((gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES)
 
@@ -105,14 +112,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
           ...gjeldendeBehandling,
           gjenstående: [],
           utfallLåst: [],
-          operasjoner: { overfør: gjenståendeOverfør },
+          operasjoner: { overfør: { gjenstående: gjenståendeOverfør } },
         })
       } else {
         await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
           ...gjeldendeBehandling,
           gjenstående: [Gjenstående.BREV_MANGLER],
           utfallLåst: [],
-          operasjoner: { overfør: gjenståendeOverfør },
+          operasjoner: { overfør: { gjenstående: gjenståendeOverfør } },
         })
       }
     }

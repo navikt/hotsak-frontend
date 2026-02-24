@@ -25,7 +25,7 @@ export interface Utfall<T extends VedtaksResultat | HenleggelsesÅrsak | Bestill
 
 export interface Operasjoner {
   //vedtak:
-  overfør: GjenståendeOverfør[]
+  overfør: { gjenstående: GjenståendeOverfør[] }
   //endreUtfall:
 }
 

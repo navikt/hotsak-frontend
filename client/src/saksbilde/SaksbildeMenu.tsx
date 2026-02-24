@@ -3,24 +3,28 @@ import { ActionMenu, Button } from '@navikt/ds-react'
 import { useState } from 'react'
 
 import { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser.ts'
+import { EndreOppgaveModal } from '../oppgave/EndreOppgaveModal.tsx'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { OverførOppgaveTilMedarbeiderModal } from '../oppgave/OverførOppgaveTilMedarbeiderModal.tsx'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
+import { GjenståendeOverfør } from '../sak/v2/behandling/behandlingTyper.ts'
+import { OverførtilGosysValideringFeil } from '../sak/v2/modaler/OverførtilGosysValideringFeil.tsx'
 import { OverførSakTilGosysModal } from './OverførSakTilGosysModal.tsx'
 import { useOverførSakTilGosys } from './useOverførSakTilGosys.ts'
-import { EndreOppgaveModal } from '../oppgave/EndreOppgaveModal.tsx'
 
 export interface SaksbildeMenuProps {
+  gjenståendeFørOverføring?: GjenståendeOverfør[]
   spørreundersøkelseId: SpørreundersøkelseId
 }
 
-export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
+export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverføring = [] }: SaksbildeMenuProps) {
   const { oppgave } = useOppgave()
   const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const [visOverførMedarbeider, setVisOverførMedarbeider] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys(spørreundersøkelseId)
-  const [endreOppgave, setEndreOppgave] = useState(false);
+  const [endreOppgave, setEndreOppgave] = useState(false)
+  const [visValideringsFeil, setVisValideringsFeil] = useState(false)
 
   if (!oppgave || oppgaveErAvsluttet) {
     return null
@@ -58,7 +62,11 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
               <ActionMenu.Group aria-label="Saksmeny">
                 <ActionMenu.Item
                   onSelect={() => {
-                    visOverførGosys()
+                    if (gjenståendeFørOverføring.length > 0) {
+                      setVisValideringsFeil(true)
+                    } else {
+                      visOverførGosys()
+                    }
                   }}
                 >
                   Overfør sak til Gosys
@@ -76,6 +84,11 @@ export function SaksbildeMenu({ spørreundersøkelseId }: SaksbildeMenuProps) {
         }}
       />
       <OverførSakTilGosysModal {...overførGosys} />
+      <OverførtilGosysValideringFeil
+        gjenstående={gjenståendeFørOverføring}
+        open={visValideringsFeil}
+        onClose={() => setVisValideringsFeil(false)}
+      />
       <EndreOppgaveModal
         oppgave={oppgave}
         open={endreOppgave}

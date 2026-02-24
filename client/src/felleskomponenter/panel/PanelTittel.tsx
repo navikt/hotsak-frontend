@@ -1,9 +1,17 @@
-import { Button, Heading, HStack } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
+import { Button, Heading, HStack, HStackProps } from '@navikt/ds-react'
 
-export const PanelTittel = ({ tittel, lukkPanel }: { tittel: string; lukkPanel: () => void }) => {
+export const PanelTittel = ({
+  tittel,
+  lukkPanel,
+  paddingInline = 'space-0 space-12',
+}: {
+  tittel: string
+  lukkPanel: () => void
+  paddingInline?: HStackProps['paddingInline']
+}) => {
   return (
-    <HStack justify="space-between" paddingInline={'space-0 space-12'} align={'center'}>
+    <HStack justify="space-between" paddingInline={paddingInline} align={'center'}>
       <Heading level="1" size="xsmall" spacing={false}>
         {tittel}
       </Heading>

@@ -5,6 +5,7 @@ export interface Behandling {
   behandlingId: number
   gjenstående: Gjenstående[]
   utfallLåst?: UtfallLåst[]
+  operasjoner: Operasjoner
   utfall?: Behandlingsutfall
   utførtAv?: Saksbehandler
   oppgaveId: OppgaveId
@@ -20,6 +21,18 @@ export type Behandlingsutfall = Utfall<VedtaksResultat | HenleggelsesÅrsak | Be
 export interface Utfall<T extends VedtaksResultat | HenleggelsesÅrsak | Bestillingsreultat> {
   utfall: T
   type: 'VEDTAK' | 'HENLEGGELSE' | 'BESTILLING'
+}
+
+export interface Operasjoner {
+  //vedtak:
+  overfør: GjenståendeOverfør[]
+  //endreUtfall:
+}
+
+export enum GjenståendeOverfør {
+  BREV_MÅ_SLETTES = 'BREV_MÅ_SLETTES',
+  BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES = 'BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES',
+  NOTATUTKAST_MÅ_SLETTES = 'NOTATUTKAST_MÅ_SLETTES',
 }
 
 export interface BehandlingerForSak {

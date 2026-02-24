@@ -193,6 +193,7 @@ export class SakStore extends Dexie {
     const behandlingId = await this.behandlinger.put({
       oppgaveId: request.oppgaveId as OppgaveId,
       gjenstående: gjenstående,
+      operasjoner: { overfør: [] },
       utfall: request.utfall,
       sakId,
     })

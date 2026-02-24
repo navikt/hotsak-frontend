@@ -5,14 +5,30 @@ import type { StoreHandlersFactory } from '../data'
 import { lastDokument } from '../data/felles'
 import type { SakParams } from './params'
 import { delay, respondNoContent, respondPdf } from './response'
+import { GjenståendeOverfør } from '../../sak/v2/behandling/behandlingTyper'
 
 interface NotatParams extends SakParams {
   notatId: string
 }
 
-export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
+export const notatHandlers: StoreHandlersFactory = ({ notatStore, sakStore }) => [
   http.post<SakParams, NotatUtkast>(`/api/sak/:sakId/notater`, async ({ request, params }) => {
     const { type, tittel, tekst, klassifisering } = await request.json()
+
+    const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+    if (behandlinger.length > 0) {
+      const gjeldendeBehandling = behandlinger[0]
+
+      await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+        ...gjeldendeBehandling,
+        operasjoner: {
+          ...gjeldendeBehandling.operasjoner,
+          overfør: [...(gjeldendeBehandling.operasjoner.overfør || []), GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES],
+        },
+      })
+    }
+
     await notatStore.lagreUtkast(params.sakId, { type, tittel, tekst, klassifisering })
     await delay(500)
     return respondNoContent()
@@ -24,6 +40,28 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
       const payload = await request.json()
 
       await notatStore.ferdigstillNotat(params.notatId, payload)
+      const notater = await notatStore.alle()
+
+      if (notater.filter((notat) => !notat.ferdigstilt).length === 0) {
+        const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+        if (behandlinger.length > 0) {
+          const gjeldendeBehandling = behandlinger[0]
+
+          await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+            ...gjeldendeBehandling,
+            operasjoner: {
+              ...gjeldendeBehandling.operasjoner,
+              overfør: [
+                ...(gjeldendeBehandling.operasjoner.overfør || []).filter(
+                  (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
+                ),
+              ],
+            },
+          })
+        }
+      }
+
       await delay(500)
       return respondNoContent()
     }
@@ -50,6 +88,29 @@ export const notatHandlers: StoreHandlersFactory = ({ notatStore }) => [
 
   http.delete<NotatParams>(`/api/sak/:sakId/notater/:notatId`, async ({ params }) => {
     await notatStore.slettNotat(params.notatId)
+
+    const notater = await notatStore.alle()
+
+    if (notater.filter((notat) => !notat.ferdigstilt).length === 0) {
+      const behandlinger = await sakStore.hentBehandlinger(params.sakId)
+
+      if (behandlinger.length > 0) {
+        const gjeldendeBehandling = behandlinger[0]
+
+        await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
+          ...gjeldendeBehandling,
+          operasjoner: {
+            ...gjeldendeBehandling.operasjoner,
+            overfør: [
+              ...(gjeldendeBehandling.operasjoner.overfør || []).filter(
+                (operasjon) => operasjon !== GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES
+              ),
+            ],
+          },
+        })
+      }
+    }
+
     await delay(100)
     return respondNoContent()
   }),

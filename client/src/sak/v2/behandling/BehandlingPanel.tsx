@@ -47,27 +47,29 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
-    <Box background="default" paddingInline="space-16" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
+    <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
       <PanelTittel
+        paddingInline="space-8 space-0"
         tittel="Behandle sak"
         lukkPanel={() => {
           lukkBehandlingsPanel()
         }}
       />
-      <ScrollablePanel paddingInline="space-16 space-0">
+      <ScrollablePanel>
         <VStack gap="space-16" paddingInline="space-0 space-8">
-          <HStack gap="space-20">
+          <HStack gap="space-20" paddingInline="space-8 space-0">
             <Tekst data-tip="Saksnummer" data-for="sak" textColor="subtle">{`Sak: ${sak.sakId}`}</Tekst>
             {oppgave?.fristFerdigstillelse && (
               <Tekst textColor="subtle">Frist: {formaterDatoKort(oppgave.fristFerdigstillelse)}</Tekst>
             )}
           </HStack>
-
-          <Tekst>
-            <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
-              Slå opp folketrygdlovens § 10-6 i Lovdata
-            </Link>
-          </Tekst>
+          <Box paddingInline="space-8 space-0">
+            <Tekst>
+              <Link href="https://lovdata.no/lov/1997-02-28-19/§10-6" target="_blank">
+                Slå opp folketrygdlovens § 10-6 i Lovdata
+              </Link>
+            </Tekst>
+          </Box>
 
           {lesevisning ? (
             <VedtaksResultatVisning vedtaksResultat={vedtaksResultat} />
@@ -77,7 +79,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
 
           {vedtaksResultat && (
             <TextContainer>
-              <Box>
+              <Box paddingInline="space-8 space-0">
                 <Heading level="2" size="xsmall" spacing>
                   Vedtaksbrev
                 </Heading>
@@ -231,7 +233,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
 
   return (
     <>
-      <HStack gap="space-2">
+      <HStack gap="space-2" paddingInline="space-8 space-0">
         <Heading size="xsmall" level="2" spacing={false}>
           Vurderingen din
         </Heading>
@@ -240,7 +242,7 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           etter at vedtaket er fattet.
         </HelpText>
       </HStack>
-      <VStack paddingInline="space-0" gap="space-12">
+      <VStack paddingInline="space-8 space-0" gap="space-12">
         <Select
           size="small"
           label="Resultat"

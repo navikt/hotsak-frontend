@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 
-import { Gjenstående, UtfallLåst, VedtaksResultat } from '../../sak/v2/behandling/behandlingTyper'
+import { Gjenstående, GjenståendeOverfør, UtfallLåst, VedtaksResultat } from '../../sak/v2/behandling/behandlingTyper'
 import type { BrevTekst, Brevtype } from '../../types/types.internal'
 import type { StoreHandlersFactory } from '../data'
 import type { SakParams } from './params'
@@ -31,6 +31,10 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
           ...gjeldendeBehandling,
           gjenstående: [Gjenstående.BREV_IKKE_FERDIGSTILT],
           utfallLåst: [UtfallLåst.HAR_VEDTAKSBREV],
+          operasjoner: {
+            ...gjeldendeBehandling.operasjoner,
+            overfør: [...(gjeldendeBehandling.operasjoner.overfør || []), GjenståendeOverfør.BREV_MÅ_SLETTES],
+          },
         })
       }
     }
@@ -51,6 +55,14 @@ export const brevutkastHandlers: StoreHandlersFactory = ({ sakStore }) => [
       await sakStore.oppdaterBehandling(gjeldendeBehandling.behandlingId, {
         ...gjeldendeBehandling,
         gjenstående: [],
+        operasjoner: {
+          overfør: [
+            ...(gjeldendeBehandling.operasjoner.overfør.filter(
+              (gjenstående) => gjenstående !== GjenståendeOverfør.BREV_MÅ_SLETTES
+            ) || []),
+            GjenståendeOverfør.BREV_MÅ_ÅPNES_FOR_REDIGERING_OG_SLETTES,
+          ],
+        },
       })
     }
 

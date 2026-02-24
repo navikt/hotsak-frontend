@@ -5,8 +5,13 @@ import { SaksbildeMenu } from '../../saksbilde/SaksbildeMenu'
 import globalStyles from '../../styles/shared.module.css'
 import classes from './SakKontrollPanel.module.css'
 import { usePanel, useTogglePanel } from './paneler/usePanelHooks'
+import { useBehandling } from './behandling/useBehandling'
+import { useNotater } from '../../saksbilde/høyrekolonne/notat/useNotater'
+import { useSakId } from '../../saksbilde/useSak'
+import { GjenståendeOverfør } from './behandling/behandlingTyper'
 
 export const SakKontrollPanel = () => {
+  const sakId = useSakId()
   const behandlingPanel = usePanel('behandlingspanel')
   const brevKolonne = usePanel('brevpanel')
   const søknadPanel = usePanel('behovsmeldingspanel')
@@ -16,6 +21,14 @@ export const SakKontrollPanel = () => {
   const toggleSøknadPanel = useTogglePanel('behovsmeldingspanel')
   const toggleSidePanel = useTogglePanel('sidebarpanel')
   const { isOppgaveContext } = useOppgaveContext()
+  const { gjeldendeBehandling } = useBehandling()
+  const { harUtkast: harNotatUtkast } = useNotater(sakId)
+
+  const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør || []
+
+  if (harNotatUtkast && !gjenståendeForOverføringTilGosys.includes(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)) {
+    gjenståendeForOverføringTilGosys.push(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)
+  }
 
   return (
     <HStack gap="space-16" align="center" className={`${globalStyles.container} ${classes.togglePanel}`} width="100%">
@@ -33,7 +46,12 @@ export const SakKontrollPanel = () => {
           Utlån, notater og historikk
         </ToggleKnapp>
       </Chips>
-      {isOppgaveContext && <SaksbildeMenu spørreundersøkelseId="sak_overført_gosys_v1" />}
+      {isOppgaveContext && (
+        <SaksbildeMenu
+          spørreundersøkelseId="sak_overført_gosys_v1"
+          gjenståendeFørOverføring={gjenståendeForOverføringTilGosys}
+        />
+      )}
     </HStack>
   )
 }

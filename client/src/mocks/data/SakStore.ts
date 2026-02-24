@@ -1,5 +1,6 @@
 import Dexie, { Table, UpdateSpec } from 'dexie'
 
+import { type JournalførJournalpostRequest } from '../../journalføring/journalføringTypes.ts'
 import { type OppgaveId } from '../../oppgave/oppgaveTypes.ts'
 import { type EndreOppgavetildelingRequest } from '../../oppgave/useOppgaveActions.ts'
 import { type Saksoversikt } from '../../personoversikt/saksoversiktTypes.ts'
@@ -15,7 +16,6 @@ import {
   type Barnebrillesak,
   Brevkode,
   type BrevTekst,
-  type JournalføringRequest,
   Kjønn,
   MålformType,
   type OppdaterVilkårRequest,
@@ -445,14 +445,14 @@ export class SakStore extends Dexie {
     })
   }
 
-  async opprettSak(journalføring: JournalføringRequest) {
+  async opprettSak(journalføring: JournalførJournalpostRequest) {
     const sak = lagBarnebrillesak('') // fixme
     sak.bruker.fnr = journalføring.journalføresPåFnr
     sak.journalposter = [journalføring.journalpostId]
     return this.saker.add(sak)
   }
 
-  async knyttJournalpostTilSak(journalføring: JournalføringRequest) {
+  async knyttJournalpostTilSak(journalføring: JournalførJournalpostRequest) {
     const sakId = journalføring.sakId
     if (!sakId) {
       return

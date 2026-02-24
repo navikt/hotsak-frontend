@@ -8,13 +8,13 @@ import { Feilmelding } from '../felleskomponenter/feil/Feilmelding'
 import { PersonFeilmelding } from '../felleskomponenter/feil/PersonFeilmelding'
 import { Etikett } from '../felleskomponenter/typografi'
 import { headerHøydeRem } from '../GlobalStyles'
-import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
+import { useOppgave } from '../oppgave/useOppgave.ts'
+import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { useOppgavetilgang } from '../oppgave/useOppgavetilgang.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
 import { usePerson } from '../personoversikt/usePerson'
 import { Personlinje } from '../saksbilde/Personlinje'
 import { useJournalpost } from '../saksbilde/useJournalpost'
-import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { JournalpostSkjema } from './JournalpostSkjema'
 import { JournalpostVisning } from './JournalpostVisning'
 
@@ -23,16 +23,13 @@ export interface JournalføringProps {
 }
 
 export function Journalføring({ journalpostId }: JournalføringProps) {
+  const { oppgave } = useOppgave()
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
   const { journalpost, error, isLoading } = useJournalpost(journalpostId)
   const { setValgtDokument } = useDokumentContext()
   const { fodselsnummer, setFodselsnummer } = usePersonContext()
-  const saksbehandler = useInnloggetAnsatt()
   const { harSkrivetilgang } = useOppgavetilgang()
   const { personInfo, error: personInfoError, isLoading: personInfoLoading } = usePerson(fodselsnummer)
-
-  const journalpostTildeltSaksbehandler =
-    journalpost?.oppgave.oppgavestatus === Oppgavestatus.UNDER_BEHANDLING &&
-    journalpost?.oppgave.tildeltSaksbehandler?.id === saksbehandler.id
 
   const dokumenter = journalpost?.dokumenter
 
@@ -89,7 +86,7 @@ export function Journalføring({ journalpostId }: JournalføringProps) {
       <Personlinje person={personInfo} loading={personInfoLoading} />
       <Container>
         <ToKolonner>
-          {journalpostTildeltSaksbehandler && harSkrivetilgang ? (
+          {oppgaveErUnderBehandlingAvInnloggetAnsatt && harSkrivetilgang ? (
             <JournalpostSkjema journalpostId={journalpostId} />
           ) : (
             <JournalpostVisning journalpostId={journalpostId} lesevisning={!harSkrivetilgang} />

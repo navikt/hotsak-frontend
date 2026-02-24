@@ -1,7 +1,9 @@
 import { http, HttpResponse } from 'msw'
 
-import type { JournalføringResponse } from '../../journalføring/useJournalføringActions.ts'
-import type { JournalføringRequest } from '../../types/types.internal.ts'
+import type {
+  JournalførJournalpostRequest,
+  JournalførJournalpostResponse,
+} from '../../journalføring/journalføringTypes.ts'
 import type { StoreHandlersFactory } from '../data'
 import { lastDokument, lastDokumentBarnebriller } from '../data/felles.ts'
 import { delay, respondForbidden, respondInternalServerError, respondNotFound, respondPdf } from './response.ts'
@@ -14,18 +16,12 @@ interface DokumentParams extends JournalpostParams {
   dokumentId: string
 }
 
-export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpostStore, sakStore }) => [
+export const dokumentHandlers: StoreHandlersFactory = ({ journalpostStore, sakStore }) => [
   http.get<JournalpostParams>(`/api/journalpost/:journalpostId`, async ({ params }) => {
     const journalpostId = params.journalpostId
     const journalpost = await journalpostStore.hent(journalpostId)
-    const oppgave = (await oppgaveStore.finnOppgaveForJournalpostId(journalpostId)) || null
-
     await delay(200)
     if (journalpost) {
-      if (oppgave) {
-        journalpost.oppgave = oppgave
-      }
-
       return HttpResponse.json(journalpost)
     } else if (journalpostId === '403') {
       return respondForbidden()
@@ -63,7 +59,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
     return respondPdf(buffer)
   }),
 
-  http.post<JournalpostParams, JournalføringRequest, JournalføringResponse>(
+  http.post<JournalpostParams, JournalførJournalpostRequest, JournalførJournalpostResponse>(
     `/api/journalpost/:journalpostId/journalforing`,
     async ({ request }) => {
       const journalføring = await request.json()
@@ -77,7 +73,7 @@ export const dokumentHandlers: StoreHandlersFactory = ({ oppgaveStore, journalpo
       if (eksisterendeSakId) {
         await sakStore.knyttJournalpostTilSak(journalføring)
         await sakStore.tildel(eksisterendeSakId)
-        return HttpResponse.json({ sakId: eksisterendeSakId })
+        return HttpResponse.json({ oppgaveId: '1', sakId: eksisterendeSakId })
       } else {
         const sakId = await sakStore.opprettSak(journalføring)
         await sakStore.tildel(sakId)

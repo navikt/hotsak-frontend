@@ -1,6 +1,5 @@
 import Dexie, { Table } from 'dexie'
 
-import { Oppgave } from '../../oppgave/oppgaveTypes.ts'
 import { Journalpost } from '../../types/types.internal.ts'
 import { nåIso } from './felles.ts'
 import {
@@ -97,7 +96,6 @@ export class JournalpostStore extends Dexie {
 
     return this.journalposter.update(journalpostId, {
       tittel,
-      oppgave: {} as Oppgave,
     })
   }
 }

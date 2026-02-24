@@ -1,4 +1,3 @@
-import type { Oppgave } from '../oppgave/oppgaveTypes.ts'
 import type { Ansatt } from '../tilgang/Ansatt.ts'
 
 export interface SakResponse<T extends SakBase> {
@@ -459,7 +458,6 @@ export interface Journalpost {
   fnrInnsender: string
   journalstatus: JournalpostStatusType
   dokumenter: Dokument[]
-  oppgave: Oppgave
   innsender: FødselsnummerOgNavn
   bruker?: FødselsnummerOgNavn
 }
@@ -502,14 +500,6 @@ export interface Saksdokument {
 export interface SaksdokumentOriginalTekst {
   dokumenttittel: string
   brevtekst: string
-}
-
-export interface JournalføringRequest {
-  journalpostId: string
-  tittel: string
-  journalføresPåFnr: string
-  sakId?: string
-  oppgaveId?: string
 }
 
 export enum DokumentFormat {

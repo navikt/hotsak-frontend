@@ -4,6 +4,7 @@ import { Tekst } from '../felleskomponenter/typografi'
 import type { Tilbakemelding } from '../innsikt/Besvarelse'
 import { SpørreundersøkelseModal } from '../innsikt/SpørreundersøkelseModal'
 import type { SpørreundersøkelseId } from '../innsikt/spørreundersøkelser'
+import { useBehandling } from '../sak/v2/behandling/useBehandling'
 import { NotatType } from '../types/types.internal'
 import { useNotater } from './høyrekolonne/notat/useNotater'
 import { useSakId } from './useSak'
@@ -26,6 +27,12 @@ export function OverførSakTilGosysModal({
 }: OverførSakTilGosysModalProps) {
   const sakId = useSakId()
   const { notater } = useNotater(sakId)
+  const { mutate: mutateBehandling } = useBehandling()
+
+  async function onBesvar(tilbakemelding: Tilbakemelding) {
+    await onBekreft(tilbakemelding)
+    await mutateBehandling()
+  }
 
   return (
     <SpørreundersøkelseModal
@@ -34,7 +41,7 @@ export function OverførSakTilGosysModal({
       spørreundersøkelseId={spørreundersøkelseId}
       size="small"
       knappetekst="Overfør til Gosys"
-      onBesvar={onBekreft}
+      onBesvar={onBesvar}
       onClose={onClose}
     >
       {notater.length > 0 && (

@@ -30,8 +30,6 @@ export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverfør
     return null
   }
 
-  console.log('Saksbildemeny', gjenståendeFørOverføring)
-
   return (
     <>
       <ActionMenu>

@@ -42,12 +42,9 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
 
     const validerPostbegrunnelse = (value: string | undefined) => {
       if (!value || value.trim() === '' || value.trim() === 'POST') {
-        console.log('Mangler begrunnelse')
-
         return 'Begrunnelse er påkrevd når det er søkt om lavere rangerte hjelpemidler'
       }
       if (!value.trim().startsWith('POST ')) {
-        console.log('Må starte med POST')
         return 'Begrunnelsen må starte med "POST"'
       }
       return true
@@ -149,7 +146,6 @@ export const VedtakForm = forwardRef<VedtakFormHandle, VedtakFormProps>(
                         const value = form.getValues('postbegrunnelse')
                         const valideringResultat = validerPostbegrunnelse(value)
                         if (valideringResultat !== true) {
-                          console.log(valideringResultat + ' - kan ikke godkjenne', valideringResultat)
                           form.setError('postbegrunnelse', { message: valideringResultat })
                         } else {
                           form.clearErrors('postbegrunnelse')

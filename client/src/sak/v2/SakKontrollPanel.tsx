@@ -25,7 +25,6 @@ export const SakKontrollPanel = () => {
   const { harUtkast: harNotatUtkast } = useNotater(sakId)
 
   const gjenståendeForOverføringTilGosys = gjeldendeBehandling?.operasjoner.overfør.gjenstående || []
-  console.log('Gjeldende behandling', gjeldendeBehandling, 'gjenstående', gjenståendeForOverføringTilGosys)
 
   if (harNotatUtkast && !gjenståendeForOverføringTilGosys.includes(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)) {
     gjenståendeForOverføringTilGosys.push(GjenståendeOverfør.NOTATUTKAST_MÅ_SLETTES)

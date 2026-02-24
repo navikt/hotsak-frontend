@@ -26,4 +26,10 @@
   cursor: pointer;
   background: transparent;
   color: red;
+  vertical-align: middle;
+}
+
+.placeholderEmpty {
+  display: inline-block;
+  vertical-align: middle;
 }

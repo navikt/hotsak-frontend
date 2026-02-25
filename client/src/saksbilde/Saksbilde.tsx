@@ -50,10 +50,6 @@ const SaksbildeContent = memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  console.log('Sak er ferdigbehandlet i Hotsak classic', sakErFerdigBehandletIHotsakClassic)
-
-  console.log('Er pilot for nytt saksbilde', erPilot)
-
   if (erIkkeProd && nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
     return (
       <SakProvider>

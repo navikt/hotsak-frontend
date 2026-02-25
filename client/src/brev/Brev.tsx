@@ -18,6 +18,7 @@ import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
+import { SlettBrevModal } from './SlettBrevModal.tsx'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
@@ -40,6 +41,7 @@ export const Brev = () => {
   const { sak } = useSak()
   const { opprettBrevKlikket, setOpprettBrevKlikket } = useSakContext()
   const closePanel = useClosePanel('brevpanel')
+  const [visSlettBrevModal, setVisSlettBrevModal] = useState(false)
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
@@ -222,7 +224,7 @@ export const Brev = () => {
             <>
               <div className="brevtoolbar">
                 <div className="left">
-                  <Button variant="tertiary" size="small" onClick={() => onSlettBrev()}>
+                  <Button variant="tertiary" size="small" onClick={() => setVisSlettBrevModal(true)}>
                     Slett utkast
                   </Button>
                 </div>
@@ -299,6 +301,7 @@ export const Brev = () => {
           )}
         </div>
       )}
+      <SlettBrevModal open={visSlettBrevModal} onSlettBrev={onSlettBrev} onClose={() => setVisSlettBrevModal(false)} />
     </BrevContext.Provider>
   )
 }

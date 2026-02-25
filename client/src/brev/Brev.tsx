@@ -7,6 +7,7 @@ import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
 import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
 import { useSakContext } from '../sak/v2/SakProvider.tsx'
 import { useBrev } from '../saksbilde/barnebriller/steg/vedtak/brev/useBrev.ts'
 import { useSak } from '../saksbilde/useSak.ts'
@@ -17,13 +18,14 @@ import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-import { useClosePanel } from '../sak/v2/paneler/usePanelHooks.ts'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
   setPlaceholderFeil: (feil: PlaceholderFeil[]) => void
   synligKryssKnapp: boolean
   setSynligKryssKnapp: (synlig: boolean) => void
+  datoSoknadMottatt: string | undefined
+  hjelpemidlerSøktOm: string[] | undefined
 }
 
 const BrevContext = createContext<BrevContextType | undefined>(undefined)
@@ -48,6 +50,13 @@ export const Brev = () => {
   const [synligKryssKnapp, setSynligKryssKnapp] = useState(false)
 
   const vedtaksResultat = gjeldendeBehandling?.utfall?.utfall
+  const datoSoknadMottatt = sak?.data.opprettet
+  const hjelpemidlerSøktOm = sak?.data.søknadGjelder
+    ? sak.data.søknadGjelder
+        .replace(/^Søknad om:\s*/i, '')
+        .split(',')
+        .map((h) => h.trim())
+    : undefined
 
   const brevutkast = useSWR<
     {
@@ -183,6 +192,8 @@ export const Brev = () => {
         setPlaceholderFeil,
         synligKryssKnapp,
         setSynligKryssKnapp,
+        datoSoknadMottatt,
+        hjelpemidlerSøktOm,
       }}
     >
       {errorEr404 && valgtMal === undefined && malKey === undefined && (

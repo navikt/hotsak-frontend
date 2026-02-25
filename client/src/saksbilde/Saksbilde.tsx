@@ -18,7 +18,6 @@ import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
 import { useErPilot } from '../tilgang/useTilgang'
-import { log } from 'console'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
@@ -53,7 +52,7 @@ const SaksbildeContent = memo(() => {
 
   console.log('Sak er ferdigbehandlet i Hotsak classic', sakErFerdigBehandletIHotsakClassic)
 
-  log('Er pilot for nytt saksbilde', erPilot)
+  console.log('Er pilot for nytt saksbilde', erPilot)
 
   if (erIkkeProd && nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
     return (

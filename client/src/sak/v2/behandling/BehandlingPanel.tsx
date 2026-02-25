@@ -96,7 +96,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                     </InlineMessage>
                   )}
 
-                  {lesevisning && !harBrevISak && (
+                  {lesevisning && !harBrevISak && vedtaksResultat === VedtaksResultat.INNVILGET && (
                     <InlineMessage status="info" size="small">
                       Saken er innvilget uten å sende brev
                     </InlineMessage>

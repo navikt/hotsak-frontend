@@ -17,11 +17,11 @@ import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-import { useErPilot } from '../tilgang/useTilgang'
+//import { useErPilot } from '../tilgang/useTilgang'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
-  const erPilot = useErPilot('nyttSaksbilde')
+  //const erPilot = useErPilot('nyttSaksbilde')
   const { erIkkeProd } = useMiljø()
   const { sak, isLoading, error } = useSak()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()

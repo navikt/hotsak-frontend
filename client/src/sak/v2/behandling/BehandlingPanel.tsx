@@ -6,8 +6,8 @@ import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import { textcontainerBredde } from '../../../GlobalStyles.tsx'
-import { Oppgavestatus } from '../../../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../../../oppgave/useOppgave.ts'
+import { useOppgaveregler } from '../../../oppgave/useOppgaveregler.ts'
 import { Saksvarsler } from '../../../saksbilde/bestillingsordning/Saksvarsler.tsx'
 import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
@@ -34,7 +34,8 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const setBrevpanelVisibility = useSetPanelVisibility('brevpanel')
 
   const { oppgave } = useOppgave()
-  const lesevisning = oppgave?.oppgavestatus !== Oppgavestatus.UNDER_BEHANDLING
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  const lesevisning = !oppgaveErUnderBehandlingAvInnloggetAnsatt
   const { gjeldendeBehandling } = useBehandling()
   const { gjeldendeBrev: brevMetadata, harBrevISak } = useBrevMetadata()
   const { varsler, harVarsler } = useSøknadsVarsler()

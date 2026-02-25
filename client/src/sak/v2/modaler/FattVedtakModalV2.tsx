@@ -89,7 +89,7 @@ export function FattVedtakModalV2({
               </InfoCard.Header>
               <InfoCard.Content>
                 <Tekst>
-                  Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespøreselen i OeBS før du
+                  Når du delvis innvilger må du huske å redigere hjepemidlene i serviceforespørselen i OeBS før du
                   oppretter ordre.
                 </Tekst>
               </InfoCard.Content>

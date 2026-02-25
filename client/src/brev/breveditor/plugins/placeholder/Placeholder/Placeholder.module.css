@@ -1,7 +1,7 @@
 .placeholderElement {
   border-radius: 4px;
   padding: 0 4px;
-  background-color: var(--ax-border-neutral-subtle);
+  background-color: var(--ax-bg-danger-moderate);
   align-items: center;
   display: inline-flex;
   vertical-align: middle;
@@ -10,7 +10,7 @@
 
 .placeholderElement.placeholderEmpty::after {
   content: attr(data-placeholder);
-  color: var(--ax-text-subtle);
+  background-color: var(--ax-surface-action-subtle);
   cursor: text;
   user-select: none;
 }
@@ -25,11 +25,15 @@
   width: 1em;
   cursor: pointer;
   background: transparent;
-  color: red;
+  color: var(--ax-bg-danger-strong);
   vertical-align: middle;
 }
 
 .placeholderEmpty {
   display: inline-block;
   vertical-align: middle;
+}
+
+.placeholderFilled {
+  background-color: var(--ax-bg-neutral-moderate);
 }

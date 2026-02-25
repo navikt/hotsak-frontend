@@ -232,7 +232,8 @@ export const Brev = () => {
                   brukersNavn: sak?.data.bruker.fulltNavn || '',
                   brukersFødselsnummer: sak?.data.bruker.fnr || '',
                   saksnummer: Number(sak!.data.sakId),
-                  brevOpprettet: formaterDatoLang(brevutkast.data?.opprettet), // TODO: Skal brev opprettet settes til utsendelsesdato? Eller dagen brevet ble skrevet og ferdigstilt?
+                  // TODO: Kan vi trigge on-change i breveditor for å oppdatere html i utkast, hvis siste utkast hadde en tidligere dato enn denne?
+                  brevOpprettet: formaterDatoLang(new Date().toISOString()),
                   saksbehandlerNavn: sak?.data.saksbehandler?.navn || '',
                   attestantsNavn: undefined,
                   hjelpemiddelsentral: sak?.data.enhet.enhetsnavn || 'Nav hjelpemiddelsentral',

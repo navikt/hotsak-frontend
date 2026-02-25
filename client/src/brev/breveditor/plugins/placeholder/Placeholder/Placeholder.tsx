@@ -89,6 +89,19 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     [editor, element, erTom, text]
   )
 
+  const handlePaste = useCallback(
+    (e: React.ClipboardEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const pastedText = e.clipboardData.getData('text/plain')
+      if (!pastedText) return
+
+      editor.tf.insertText(pastedText)
+    },
+    [editor]
+  )
+
   return (
     <PlateElement
       {...props}
@@ -105,6 +118,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
           data-node-type={ELEMENT_PLACEHOLDER}
           data-placeholder={erTom ? element.placeholder : undefined}
           onMouseDown={handleMouseDown}
+          onPaste={handlePaste}
         >
           {visSøppelbøtte && (
             <Button

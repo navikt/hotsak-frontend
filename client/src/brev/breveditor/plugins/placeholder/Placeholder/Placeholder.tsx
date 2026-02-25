@@ -38,7 +38,9 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     const textPath = [...path, 0]
     if (!editor.api.hasPath(textPath)) return
 
-    editor.tf.insertText(EMPTY_CHAR, { at: { path: textPath, offset: 0 } })
+    editor.tf.withoutSaving(() => {
+      editor.tf.insertText(EMPTY_CHAR, { at: { path: textPath, offset: 0 } })
+    })
   }, [editor, element, text])
 
   const handleDelete = useCallback(

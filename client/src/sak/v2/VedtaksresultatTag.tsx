@@ -13,6 +13,7 @@ const vedtaksresultatInfo: Record<VedtaksResultat, VedtaksresultatInfo> = {
   [VedtaksResultat.DELVIS_INNVILGET]: { label: 'Delvis innvilget', variant: 'warning-moderate' },
   [VedtaksResultat.AVSLÅTT]: { label: 'Avslått', variant: 'error-moderate' },
   [VedtaksResultat.GOSYS]: { label: 'Overført til Gosys', variant: 'neutral-moderate' },
+  [VedtaksResultat.BRUKER_ER_DØD]: { label: 'Henlagt -Bruker er død', variant: 'neutral-moderate' },
 }
 
 export function VedtaksresultatTag({ vedtaksResultat }: { vedtaksResultat?: VedtaksResultat }) {

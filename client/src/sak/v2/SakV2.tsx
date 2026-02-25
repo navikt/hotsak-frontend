@@ -163,14 +163,16 @@ export function SakV2() {
         vedtaksResultat={vedtaksResultat}
       />
       <NotatIUtkastModal open={visNotatIkkeFerdigstilt} onClose={() => setVisNotatIkkeFerdigstilt(false)} />
-      {vedtaksResultat && vedtaksResultat !== VedtaksResultat.GOSYS && (
-        <FattVedtakModalV2
-          open={visFerdigstillModal}
-          onClose={() => setVisFerdigstillModal(false)}
-          sak={sak.data}
-          vedtaksResultat={vedtaksResultat}
-        />
-      )}
+      {vedtaksResultat &&
+        vedtaksResultat !== VedtaksResultat.GOSYS &&
+        vedtaksResultat !== VedtaksResultat.BRUKER_ER_DØD && (
+          <FattVedtakModalV2
+            open={visFerdigstillModal}
+            onClose={() => setVisFerdigstillModal(false)}
+            sak={sak.data}
+            vedtaksResultat={vedtaksResultat}
+          />
+        )}
     </Box>
   )
 

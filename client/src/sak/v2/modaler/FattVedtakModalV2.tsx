@@ -11,7 +11,7 @@ import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 
-type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS>
+type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS | VedtaksResultat.BRUKER_ER_DØD>
 
 export function FattVedtakModalV2({
   open,

@@ -20,7 +20,7 @@ export type Behandlingsutfall = Utfall<VedtaksResultat | HenleggelsesÅrsak | Be
 
 export interface Utfall<T extends VedtaksResultat | HenleggelsesÅrsak | Bestillingsreultat> {
   utfall: T
-  type: 'VEDTAK' | 'HENLEGGELSE' | 'BESTILLING'
+  type: 'VEDTAK' | 'HENLEGGELSE' | 'BESTILLING' | 'OVERFØRING'
 }
 
 export interface Operasjoner {
@@ -49,6 +49,7 @@ export enum VedtaksResultat {
   AVSLÅTT = 'AVSLÅTT',
   DELVIS_INNVILGET = 'DELVIS_INNVILGET',
   GOSYS = 'GOSYS',
+  BRUKER_ER_DØD = 'BRUKER_ER_DØD',
 }
 
 enum Bestillingsreultat {

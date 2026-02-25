@@ -1,4 +1,4 @@
-import { Box, LocalAlert, Theme } from '@navikt/ds-react'
+import { Theme } from '@navikt/ds-react'
 import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -8,14 +8,12 @@ import classes from './App.module.css'
 import { Feilside } from './feilsider/Feilside.tsx'
 import { GlobalFeilside } from './feilsider/GlobalFeilside.tsx'
 import { ToastProvider } from './felleskomponenter/toast/ToastContext.tsx'
-import { TextContainer } from './felleskomponenter/typografi.tsx'
 import { Toppmeny } from './header/Toppmeny.tsx'
 import { useDarkmode } from './header/useDarkmode.ts'
 import { http } from './io/HttpClient.ts'
 import { OppgaveTitle } from './OppgaveTitle.tsx'
 import { PersonProvider } from './personoversikt/PersonContext.tsx'
 import { RequireAuth } from './RequireAuth.tsx'
-import { useNyttSaksbilde } from './sak/v2/useNyttSaksbilde.ts'
 import { SakTitle } from './SakTitle.tsx'
 import { useLogBruker } from './sporing/useLogBruker.ts'
 import { useLogVinduStørrelse } from './sporing/useLogVinduStørrelse.ts'
@@ -30,7 +28,6 @@ const Saksbilde = lazy(() => import('./saksbilde/Saksbilde.tsx'))
 
 function App() {
   const [darkmode] = useDarkmode()
-  const [nyttSaksbilde] = useNyttSaksbilde()
 
   useLogBruker()
   useLogVinduStørrelse()
@@ -67,23 +64,7 @@ function App() {
                         element={
                           <RequireAuth>
                             <SakTitle />
-                            {nyttSaksbilde ? (
-                              <Box padding="space-20">
-                                <TextContainer>
-                                  <LocalAlert status="warning">
-                                    <LocalAlert.Header>
-                                      <LocalAlert.Title>TODO </LocalAlert.Title>
-                                    </LocalAlert.Header>
-                                    <LocalAlert.Content>
-                                      TODO: Hvordan skal vi vise en Hotsak1.5 sak når vi ikke er i context av en
-                                      oppgave?
-                                    </LocalAlert.Content>
-                                  </LocalAlert>
-                                </TextContainer>
-                              </Box>
-                            ) : (
-                              <Saksbilde />
-                            )}
+                            <Saksbilde />
                           </RequireAuth>
                         }
                       />

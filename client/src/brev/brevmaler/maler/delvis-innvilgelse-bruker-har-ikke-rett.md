@@ -14,9 +14,9 @@ Du får ikke disse hjelpemidlene:
 
 Vedtaket er gjort etter folketrygdloven § 10-6 og § 10-7 bokstav a jf. forskrift om stønad til hjelpemidler m.v.
 
-Vi har innvilget søknaden din om \[Innvilgede hjelpemidler\] fordi \[forklar hvilke opplysninger du har lagt vekt på når du har vurdert om vilkårene er oppfylt\].
+Vi har innvilget søknaden din om \[innvilgede hjelpemidler\] fordi \[forklar hvilke opplysninger du har lagt vekt på når du har vurdert om vilkårene er oppfylt\]
 
-Vi har avslått søknaden din om \[Avslåtte hjelpemidler\] fordi \[forklar hvilke opplysninger du har lagt vekt på når du har vurdert om vilkårene er oppfylt\].
+Vi har avslått søknaden din om \[avslåtte hjelpemidler\] fordi \[forklar hvilke opplysninger du har lagt vekt på når du har vurdert om vilkårene er oppfylt\]
 
 ## Hva skjer videre i saken din?
 

@@ -48,7 +48,7 @@ const serialiserNodeTilHtml = (node: any): string => {
     case 'p':
       return `<p>${children}</p>\n`
     case 'a':
-      return `<a href="${escapeHtml(node.url ?? '')}">${children}</a>`
+      return `<a href="${escapeHtml(node.url ?? '')}" target="_blank">${children}</a>`
     case 'ul':
       return `<ul>${children}</ul>\n`
     case 'ol':

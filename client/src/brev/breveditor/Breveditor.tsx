@@ -13,16 +13,20 @@ import type { History } from '@platejs/slate'
 import { KEYS, type Value } from 'platejs'
 import { Plate, PlateContainer, PlateContent, usePlateEditor } from 'platejs/react'
 import { createContext, type RefObject, useCallback, useContext, useMemo, useRef, useState } from 'react'
+import { useBrevContext } from '../Brev.tsx'
 import './Breveditor.less'
 import { useBeforeUnload, useRefSize } from './hooks.ts'
 import { FlytendeLinkVerktøylinjeKit } from './plugins/flytende-link-verktøylinje/FlytendeLinkVerktøylinjeKit.tsx'
-import { parseTekstMedPlaceholders } from './plugins/placeholder/parseTekstMedPlaceholders.ts'
+import {
+  parseTekstMedPlaceholders,
+  PlaceholderSpesielleVerdier,
+} from './plugins/placeholder/parseTekstMedPlaceholders.ts'
 import { PlaceholderErrorSummary } from './plugins/placeholder/PlaceholderErrorSummary/PlaceholderErrorSummary.tsx'
 import { PlaceholderPlugin } from './plugins/placeholder/PlaceholderPlugin'
 import { TabSyncPlugin } from './plugins/tab-sync/TabSyncPlugin.tsx'
+import { serialiserTilHtml } from './serialiserTilHtml.ts'
 import Verktøylinje from './verktøylinje/Verktøylinje.tsx'
 import versjonertStilarkV1 from './versjonerte-brev-stilark/v1.less?raw'
-import { serialiserTilHtml } from './serialiserTilHtml.ts'
 
 export interface BreveditorContextType {
   erPlateContentFokusert: boolean
@@ -61,29 +65,62 @@ export interface Metadata {
   hjelpemiddelsentral: string
 }
 
-const transformerPlaceholders = (nodes: Value): Value => {
-  return nodes.map((node) => {
+const transformerPlaceholders = (nodes: Value, spesielleVerdier?: PlaceholderSpesielleVerdier): Value => {
+  const result: any[] = []
+
+  for (const node of nodes) {
     // hvis det er en tekstnode med placeholder-syntaks
     if ('text' in node && typeof node.text === 'string' && node.text.includes('[')) {
-      const parsed = parseTekstMedPlaceholders(node.text)
-      // Hvis parsing fant placeholders, returner arrayet med noder
-      // Ellers returner den originale noden
+      const parsed = parseTekstMedPlaceholders(node.text, spesielleVerdier)
       if (parsed.length > 1 || (parsed.length === 1 && parsed[0].type)) {
-        return parsed
+        result.push(...parsed)
+      } else {
+        result.push(node)
       }
-      return node
+      continue
     }
 
     // Hvis node har children, transformer dem rekursivt
     if ('children' in node && Array.isArray(node.children)) {
-      const transformedChildren = transformerPlaceholders(node.children as Value)
-      // Flat ut arrayet med barnenoder
+      const transformedChildren = transformerPlaceholders(node.children as Value, spesielleVerdier)
       const flattenedChildren = transformedChildren.flat()
-      return { ...node, children: flattenedChildren }
+
+      // Sjekk om noen barn er blokk-erstatninger (f.eks. <ul> inne i en <p>)
+      const harBlokkErstatninger = flattenedChildren.some((child: any) => child.__blockReplacement)
+
+      if (harBlokkErstatninger) {
+        // Del opp parent-noden: tekst før blokken, blokken selv, tekst etter
+        let currentInlineChildren: any[] = []
+
+        for (const child of flattenedChildren) {
+          if (child.__blockReplacement) {
+            // Legg til foregående inline-barn som en <p>
+            if (currentInlineChildren.length > 0) {
+              result.push({ ...node, children: currentInlineChildren })
+              currentInlineChildren = []
+            }
+            // Legg til blokk-noden direkte (uten __blockReplacement flagget)
+            const { __blockReplacement, ...blockNode } = child
+            result.push(blockNode)
+          } else {
+            currentInlineChildren.push(child)
+          }
+        }
+
+        // Legg til gjenværende inline-barn
+        if (currentInlineChildren.length > 0) {
+          result.push({ ...node, children: currentInlineChildren })
+        }
+      } else {
+        result.push({ ...node, children: flattenedChildren })
+      }
+      continue
     }
 
-    return node
-  }) as Value
+    result.push(node)
+  }
+
+  return result as Value
 }
 
 const Breveditor = ({
@@ -105,6 +142,17 @@ const Breveditor = ({
   onSlettBrev?: () => void
   placeholder?: string
 }) => {
+  const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
+
+  const spesielleVerdier: PlaceholderSpesielleVerdier = {
+    auto_dato_soknad_mottatt: datoSoknadMottatt
+      ? new Date(datoSoknadMottatt).toLocaleDateString('no-NB', { day: '2-digit', month: 'long', year: 'numeric' })
+      : undefined,
+    auto_hjelpemidler_innvilget: hjelpemidlerSøktOm,
+    auto_hjelpemidler_avslått: hjelpemidlerSøktOm,
+    auto_hjelpemidler_avslått_inline: hjelpemidlerSøktOm,
+  }
+
   const editor = usePlateEditor(
     {
       plugins: [
@@ -143,7 +191,7 @@ const Breveditor = ({
       value: (editor) => {
         if (templateMarkdown) {
           const deserialized = editor.getApi(MarkdownPlugin).markdown.deserialize(templateMarkdown)
-          return transformerPlaceholders(deserialized)
+          return transformerPlaceholders(deserialized, spesielleVerdier)
         } else if (initialState?.value != undefined) {
           editor.history = initialState.history
           return initialState.value

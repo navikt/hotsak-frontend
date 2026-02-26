@@ -1,6 +1,7 @@
 import { Box, Button, Heading, HelpText, HStack, InlineMessage, Link, Select, VStack } from '@navikt/ds-react'
 import { memo, useState } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
+import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
@@ -13,7 +14,6 @@ import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { formaterDatoKort, formaterTidsstempelLang } from '../../../utils/dato.ts'
-import { SlettBrevutkastModal } from '../modaler/SlettBrevutkastModal.tsx'
 import { useClosePanel, usePanel, useSetPanelVisibility } from '../paneler/usePanelHooks.ts'
 import { useSakContext } from '../SakProvider.tsx'
 import { VedtaksresultatTag } from '../VedtaksresultatTag.tsx'
@@ -261,7 +261,14 @@ function VedtaksResultatVelger({ utfall, harBrevutkast }: { utfall: VedtaksResul
           </div>
         )}
       </VStack>
-      <SlettBrevutkastModal onClose={() => setVisSlettBrevutkastModal(false)} open={visSlettBrevutkastModal} />
+      <SlettBrevModal
+        open={visSlettBrevutkastModal}
+        onClose={() => setVisSlettBrevutkastModal(false)}
+        heading="Du må slette brevutkastet ditt før du kan endre resultatet"
+        tekst="Du har begynt på et utkast til vedtaksbrev. Dette må slettes før du kan endre resultatet. Hvis du sletter
+        brevet, kan det ikke gjenopprettes."
+        width="700px"
+      />
     </>
   )
 }

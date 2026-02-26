@@ -27,7 +27,7 @@ export function Sidebar() {
   const antallUtlånteHjelpemidler = hjelpemiddelArtikler?.reduce((antall, artikkel) => antall + artikkel.antall, 0)
 
   return (
-    <Box borderWidth="0 1" borderColor="neutral-subtle" background="default" height="100%" position="relative">
+    <Box background="default" height="100%" position="relative">
       <Button
         data-color="neutral"
         variant="tertiary"

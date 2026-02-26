@@ -108,7 +108,6 @@ const Verktøylinje = () => {
             <>Lagret</>
           )}
         </div>
-        {/*<SlettBrevutkastKnapp />*/}
       </div>
     </Box>
   )

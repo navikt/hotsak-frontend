@@ -1,22 +1,32 @@
+import { ModalProps } from '@navikt/ds-react'
+import { Tekst } from '../felleskomponenter/typografi'
 import { BekreftelseModal } from '../saksbilde/komponenter/BekreftelseModal'
+import { useSlettBrevUtkast } from './breveditor/hooks'
 
 type SlettBrevModalProps = {
-  onSlettBrev: () => void
   open: boolean
   onClose: () => void
+  heading: string
+  tekst: string
+  width?: ModalProps['width']
 }
 
-export function SlettBrevModal({ onSlettBrev, open, onClose }: SlettBrevModalProps) {
+export function SlettBrevModal({ open, onClose, heading, tekst, width }: SlettBrevModalProps) {
+  const slettBrevutkast = useSlettBrevUtkast()
   return (
     <BekreftelseModal
-      heading={'Vil du slettet brevutkastet?'}
+      heading={heading}
       bekreftButtonLabel={'Slett utkast'}
       bekreftButtonVariant={'danger'}
-      onBekreft={onSlettBrev}
+      onBekreft={() => {
+        slettBrevutkast()
+        onClose()
+      }}
       open={open}
       onClose={onClose}
+      width={width}
     >
-      <p>Du er i ferd med å slette brevutkastet. Dette kan ikke angres.</p>
+      <Tekst>{tekst}</Tekst>
     </BekreftelseModal>
   )
 }

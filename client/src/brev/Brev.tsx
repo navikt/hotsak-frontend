@@ -17,8 +17,8 @@ import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
-import { useBrevMetadata } from './useBrevMetadata.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
+import { useBrevMetadata } from './useBrevMetadata.ts'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
@@ -151,19 +151,6 @@ export const Brev = () => {
     })
   }
 
-  const onSlettBrev = async () => {
-    velgMal(undefined) // Unngå at forrige valgte mal trigger at breveditoren laster den på nytt
-    await fetch(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, {
-      method: 'delete',
-    }).then((res) => {
-      if (!res.ok) throw new Error(`Brev ikke slettet, statuskode ${res.status}`)
-    })
-    closePanel()
-    await brevutkast.mutate()
-    mutateGjeldendeBehandling()
-    mutateBrevMetadata()
-  }
-
   const markerKlart = async (klart: boolean) => {
     setSynligKryssKnapp(true)
     const currentBrev = brevutkast.data?.data?.value
@@ -259,7 +246,6 @@ export const Brev = () => {
                     if (!res.ok) throw new Error(`Brev ikke lagret, statuskode ${res.status}`)
                   })
                 }}
-                onSlettBrev={onSlettBrev}
               />
             </>
           )}
@@ -301,7 +287,12 @@ export const Brev = () => {
           )}
         </div>
       )}
-      <SlettBrevModal open={visSlettBrevModal} onSlettBrev={onSlettBrev} onClose={() => setVisSlettBrevModal(false)} />
+      <SlettBrevModal
+        open={visSlettBrevModal}
+        onClose={() => setVisSlettBrevModal(false)}
+        heading="Vil du slette brevutkastet?"
+        tekst="Du er i ferd med å slette brevutkastet. Dette kan ikke angres."
+      />
     </BrevContext.Provider>
   )
 }

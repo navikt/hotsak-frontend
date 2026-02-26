@@ -38,7 +38,6 @@ export interface BreveditorContextType {
   erBreveditorEllerVerktoylinjeFokusert: boolean
   visMarger: boolean
   settVisMarger: (visMarger: boolean) => void
-  onSlettBrev?: () => void
   endringsstatus: { lagrerNå: boolean; erEndret: boolean; error?: string }
   focusPath: (path: number[]) => void
 }
@@ -132,7 +131,6 @@ const Breveditor = ({
   initialState,
   onStateChange,
   onLagreBrev,
-  onSlettBrev,
   placeholder,
 }: {
   brevId?: string
@@ -141,7 +139,6 @@ const Breveditor = ({
   initialState?: StateMangement
   onStateChange?: (newState: StateMangement) => void
   onLagreBrev?: (newState: StateMangement) => Promise<void>
-  onSlettBrev?: () => void
   placeholder?: string
 }) => {
   const { datoSoknadMottatt, hjelpemidlerSøktOm } = useBrevContext()
@@ -321,7 +318,6 @@ const Breveditor = ({
         erBreveditorEllerVerktoylinjeFokusert: erBreveditorEllerVerktoylinjeFokusert,
         visMarger: visMarger,
         settVisMarger: settVisMarger,
-        onSlettBrev: onSlettBrev,
         endringsstatus: endringsstatus,
         focusPath: focusPath,
       }}

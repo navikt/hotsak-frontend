@@ -1,6 +1,6 @@
 import { Box, HStack } from '@navikt/ds-react'
 import { useState } from 'react'
-import { Panel, Group, useDefaultLayout } from 'react-resizable-panels'
+import { Group, Panel, useDefaultLayout } from 'react-resizable-panels'
 import { BrevPanel } from '../../brev/BrevPanel.tsx'
 import { ResizeHandle } from '../../felleskomponenter/resize/ResizeHandle.tsx'
 import { usePerson } from '../../personoversikt/usePerson.ts'
@@ -12,14 +12,13 @@ import { Gjenstående, VedtaksResultat } from './behandling/behandlingTyper.ts'
 import { useBehandling } from './behandling/useBehandling.ts'
 import { BehovsmeldingsPanel } from './BehovsmeldingsPanel.tsx'
 import { BrevManglerModal } from './modaler/BrevManglerModal.tsx'
+import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
 import { NotatIUtkastModal } from './modaler/NotatIUtkastModal.tsx'
 import { ResultatManglerModal } from './modaler/ResultatManglerModal.tsx'
 import { SakKontrollPanel } from './SakKontrollPanel.tsx'
 import { useSakContext } from './SakProvider.tsx'
-import { StickyBunnlinje } from './StickyBunnlinje.tsx'
-import { FattVedtakModalV2 } from './modaler/FattVedtakModalV2.tsx'
-import { headerHøyde } from '../../GlobalStyles.tsx'
 import { Sidebar } from './sidebars/Sidebar.tsx'
+import { StickyBunnlinje } from './StickyBunnlinje.tsx'
 
 function AvrundetPanel({ children }: { children: React.ReactNode }) {
   return (
@@ -80,7 +79,9 @@ export function SakV2() {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: `calc(100vh - ${headerHøyde})`,
+        height: '100%',
+        minWidth: `${totalVisibleMinWidth}px`,
+        overflowY: 'clip',
       }}
     >
       <HStack width="100%" wrap={false}>
@@ -93,8 +94,7 @@ export function SakV2() {
         style={{
           minHeight: 0,
           height: '100%',
-          minWidth: `${totalVisibleMinWidth}px`,
-          overflowX: 'auto',
+          //minWidth: `${totalVisibleMinWidth}px`,
         }}
       >
         <Group orientation="horizontal" defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>

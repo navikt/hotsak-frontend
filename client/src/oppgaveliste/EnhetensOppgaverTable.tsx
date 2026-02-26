@@ -23,6 +23,7 @@ export function EnhetensOppgaverTable(props: EnhetensOppgaverTableProps) {
       columns={columns}
       keyFactory={selectOppgaveId}
       renderContent={renderContent}
+      stickyHeader
       size="small"
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"

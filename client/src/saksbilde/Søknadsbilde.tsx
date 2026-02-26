@@ -54,13 +54,15 @@ const SaksbildeContent = memo(() => {
         </HGrid>
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
           <Venstremeny gap="space-24">
-            <Søknadsinfo />
-            {sak.data.sakstype === Sakstype.SØKNAD && (
-              <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-            )}
-            {erBestilling && (
-              <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-            )}
+            <ScrollContainer>
+              <Søknadsinfo />
+              {sak.data.sakstype === Sakstype.SØKNAD && (
+                <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+              )}
+              {erBestilling && (
+                <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+              )}
+            </ScrollContainer>
           </Venstremeny>
           <section>
             <ScrollContainer>

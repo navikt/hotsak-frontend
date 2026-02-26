@@ -14,6 +14,7 @@ import { useBarnebrillesak } from '../useBarnebrillesak'
 import { BarnebrillesakHistorikk } from './BarnebrillesakHistorikk'
 import { useManuellSaksbehandlingContext } from './ManuellSaksbehandlingTabContext'
 import { TotrinnskontrollPanel } from './steg/totrinnskontroll/TotrinnskontrollPanel'
+import { ScrollContainer } from '../../felleskomponenter/ScrollContainer'
 
 const Sidebar = styled(Tabs)`
   border-left: 1px solid var(--ax-border-neutral-subtle);
@@ -73,20 +74,22 @@ export function BarnebrillesakSidebar() {
           />
         </Tooltip>
       </Tabs.List>
-      <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK}>
-        <BarnebrillesakHistorikk />
-      </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL}>
-        <TotrinnskontrollPanel />
-      </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV}>
-        <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-      </Tabs.Panel>
-      <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
-        <SidebarPanel tittel="Notater">
-          <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
-        </SidebarPanel>
-      </Tabs.Panel>
+      <ScrollContainer>
+        <Tabs.Panel value={HøyrekolonneTabs.SAKSHISTORIKK}>
+          <BarnebrillesakHistorikk />
+        </Tabs.Panel>
+        <Tabs.Panel value={HøyrekolonneTabs.TOTRINNSKONTROLL}>
+          <TotrinnskontrollPanel />
+        </Tabs.Panel>
+        <Tabs.Panel value={HøyrekolonneTabs.SEND_BREV}>
+          <SendBrevPanel sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+        </Tabs.Panel>
+        <Tabs.Panel value={HøyrekolonneTabs.NOTATER}>
+          <SidebarPanel tittel="Notater">
+            <Notater sakId={sak.data.sakId} lesevisning={!saksbehandlerKanRedigereBarnebrillesak} />
+          </SidebarPanel>
+        </Tabs.Panel>
+      </ScrollContainer>
     </Sidebar>
   )
 }

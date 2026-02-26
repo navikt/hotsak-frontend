@@ -24,6 +24,7 @@ export function MedarbeidersOppgaverTable(props: MedarbeidersOppgaverTableProps)
       keyFactory={selectOppgaveId}
       renderContent={renderContent}
       size="small"
+      stickyHeader
       textSize="small"
       emptyMessage="Ingen oppgaver funnet"
       loading={loading}

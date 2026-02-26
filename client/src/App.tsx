@@ -1,7 +1,7 @@
 import { Theme } from '@navikt/ds-react'
 import { type ComponentType, lazy, type ReactNode, Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { SWRConfig, type SWRConfiguration } from 'swr'
 
 import classes from './App.module.css'
@@ -47,18 +47,10 @@ function App() {
               <Utviklingsverktøy />
               <ErrorBoundary FallbackComponent={GlobalFeilside}>
                 <Suspense fallback={<div />}>
-                  {/* TODO Se på denne i forbindelse med at vi bare vil ha scroll i hvert panel og ikke global scroll for hele siden */}
-                  <main>
-                    <Routes>
-                      <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
-                      <Route
-                        path="/*"
-                        element={
-                          <RequireAuth>
-                            <Oppgaveliste />
-                          </RequireAuth>
-                        }
-                      />
+                  <Routes>
+                    <Route path="/uautorisert" element={<Feilside statusCode={401} />} />
+                    {/* Ruter hvor paneler kan scrolles uavhengig og ingen global scroll */}
+                    <Route element={<PanelLayout />}>
                       <Route
                         path="/sak/:sakId/*"
                         element={
@@ -77,6 +69,18 @@ function App() {
                           </RequireAuth>
                         }
                       />
+                    </Route>
+
+                    {/* Ruter hvor det er naturlig med global vertikal scroll */}
+                    <Route element={<SideLayout />}>
+                      <Route
+                        path="/*"
+                        element={
+                          <RequireAuth>
+                            <Oppgaveliste />
+                          </RequireAuth>
+                        }
+                      />
                       <Route
                         path="/personoversikt/*"
                         element={
@@ -86,9 +90,9 @@ function App() {
                           </RequireAuth>
                         }
                       />
-                      <Route path="*" element={<Feilside statusCode={404} />} />
-                    </Routes>
-                  </main>
+                    </Route>
+                    <Route path="*" element={<Feilside statusCode={404} />} />
+                  </Routes>
                 </Suspense>
               </ErrorBoundary>
             </ToastProvider>
@@ -96,6 +100,23 @@ function App() {
         </ErrorBoundary>
       </div>
     </Theme>
+  )
+}
+
+// TODO slå sammen PanelLayout og ScrollableLayout til en komponent som tar inn en prop for om den skal være scrollable eller ikke, så slipper vi å duplisere Outlet og Routes
+function PanelLayout() {
+  return (
+    <main className={classes.panelLayout}>
+      <Outlet />
+    </main>
+  )
+}
+
+function SideLayout() {
+  return (
+    <main className={classes.sideLayout}>
+      <Outlet />
+    </main>
   )
 }
 

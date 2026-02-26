@@ -15,6 +15,7 @@ import { VurdertAv } from './kolonner/VurdertAv'
 import { alertVariant } from './oppsummertStatus'
 import { SaksbehandlersVurdering } from './SaksbehandlersVurdering'
 import { metadataFor } from './vilkårMetada'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 
 export function VurderVilkår() {
   const sakId = useSakId()
@@ -85,7 +86,7 @@ export function VurderVilkår() {
   const alertType = alertVariant(status)
 
   return (
-    <>
+    <ScrollContainer>
       <Box padding="space-16">
         <Heading level="1" size="small" spacing>
           Oversikt vilkår
@@ -198,7 +199,7 @@ export function VurderVilkår() {
           </Knappepanel>
         }
       </Box>
-    </>
+    </ScrollContainer>
   )
 
   function sorterPåLovreferanse(a?: string, b?: string): number {

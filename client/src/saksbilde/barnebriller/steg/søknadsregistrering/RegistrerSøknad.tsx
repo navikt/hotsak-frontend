@@ -13,6 +13,7 @@ import { useJournalposter } from '../../../useJournalposter'
 import { Venstremeny } from '../../../venstremeny/Venstremeny'
 import { RegistrerSøknadLesevisning } from './RegistrerSøknadLesevisning'
 import { RegistrerSøknadSkjema } from './RegistrerSøknadSkjema'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer'
 
 const RegistrerSøknadContent = memo(() => {
   const { sak, isLoading, error } = useBarnebrillesak()
@@ -47,9 +48,13 @@ const RegistrerSøknadContent = memo(() => {
   return (
     <TreKolonner>
       <Venstremeny>
-        {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
+        <ScrollContainer>
+          {saksbehandlerKanRedigereBarnebrillesak ? <RegistrerSøknadSkjema /> : <RegistrerSøknadLesevisning />}
+        </ScrollContainer>
       </Venstremeny>
-      <DokumentPanel />
+      <ScrollContainer>
+        <DokumentPanel />
+      </ScrollContainer>
     </TreKolonner>
   )
 })

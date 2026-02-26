@@ -14,6 +14,7 @@ import { alertVariant } from '../vilkårsvurdering/oppsummertStatus'
 import { BrevPanel } from './brev/BrevPanel'
 import { InnvilgetVedtakVisning } from './InnvilgetVedtakVisning'
 import { Redigeringsvisning } from './Redigeringsvisning'
+import { ScrollContainer } from '../../../../felleskomponenter/ScrollContainer.tsx'
 
 export function Vedtak() {
   const sakId = useSakId()
@@ -55,39 +56,41 @@ export function Vedtak() {
           </VStack>
         </Box>
       ) : (
-        <Box padding="space-16">
-          <Heading level="1" size="small" spacing>
-            {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
-          </Heading>
-          <VStack gap="space-20">
-            <div>
-              <Detail uppercase>Resultat</Detail>
-              <Tag variant={alertType} size="small">
-                {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
-              </Tag>
-            </div>
-            {status === VilkårsResultat.JA && (
-              <InnvilgetVedtakVisning
-                sak={sak.data}
-                mutate={mutate}
-                lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
-              />
-            )}
-            {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} />}
-            {visAlertGodkjenning && (
-              <Alert variant="info" size="small">
-                {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
-              </Alert>
-            )}
-            {!saksbehandlerKanRedigereBarnebrillesak && (
+        <ScrollContainer>
+          <Box padding="space-16">
+            <Heading level="1" size="small" spacing>
+              {vedtakFattet ? 'Vedtak' : 'Forslag til vedtak'}
+            </Heading>
+            <VStack gap="space-20">
               <div>
-                <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
-                  Forrige
-                </Button>
+                <Detail uppercase>Resultat</Detail>
+                <Tag variant={alertType} size="small">
+                  {status === VilkårsResultat.JA ? 'Innvilget' : 'Avslag'}
+                </Tag>
               </div>
-            )}
-          </VStack>
-        </Box>
+              {status === VilkårsResultat.JA && (
+                <InnvilgetVedtakVisning
+                  sak={sak.data}
+                  mutate={mutate}
+                  lesevisning={!saksbehandlerKanRedigereBarnebrillesak}
+                />
+              )}
+              {saksbehandlerKanRedigereBarnebrillesak && <Redigeringsvisning sak={sak.data} />}
+              {visAlertGodkjenning && (
+                <Alert variant="info" size="small">
+                  {`Sendt til godkjenning ${formaterDato(sak.data.totrinnskontroll?.opprettet)}.`}
+                </Alert>
+              )}
+              {!saksbehandlerKanRedigereBarnebrillesak && (
+                <div>
+                  <Button variant="secondary" size="small" onClick={() => setStep(StepType.VILKÅR)}>
+                    Forrige
+                  </Button>
+                </div>
+              )}
+            </VStack>
+          </Box>
+        </ScrollContainer>
       )}
       <VenstreKolonne>
         <BrevPanel sakId={sak.data.sakId} fullSize={true} brevtype={Brevtype.BARNEBRILLER_VEDTAK} />

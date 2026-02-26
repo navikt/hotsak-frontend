@@ -1,5 +1,20 @@
 .root {
-  background: var(--ax-bg-default);
-  min-height: 100vh;
-  min-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.panelLayout {
+  flex: 1;
+  min-height: 0;
+  overflow-y: clip;
+  overflow-x: auto;
+}
+
+.sideLayout {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: auto;
 }

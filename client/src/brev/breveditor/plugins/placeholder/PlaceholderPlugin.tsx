@@ -57,17 +57,29 @@ export const PlaceholderPlugin = createPlatePlugin({
 
       if (allePlaceholders.length === 0) return
 
+      const currentPath = editor.selection?.anchor?.path
+      if (!currentPath) return
+
+      const currentIndex = allePlaceholders.findIndex(([, path]) => currentPath.join(',').startsWith(path.join(',')))
+
+      // I en liste men ikke i en placeholder — la liste-plugin håndtere Tab for innrykk
+      if (currentIndex === -1) {
+        const inList = editor.api.some({
+          match: (n: any) => n.type === 'ul' || n.type === 'ol',
+        })
+        if (inList) return
+      }
+
       event.preventDefault()
       event.stopPropagation()
 
-      const currentPath = editor.selection?.anchor?.path
-      if (!currentPath) {
-        const [node, path] = allePlaceholders[0]
+      if (currentIndex === -1) {
+        // Ikke i placeholder og ikke i liste — gå til første placeholder
+        const index = event.shiftKey ? allePlaceholders.length - 1 : 0
+        const [node, path] = allePlaceholders[index]
         gåTilPlaceholder(editor, node, path)
         return
       }
-
-      const currentIndex = allePlaceholders.findIndex(([, path]) => currentPath.join(',').startsWith(path.join(',')))
 
       const nesteIndex = event.shiftKey
         ? (currentIndex - 1 + allePlaceholders.length) % allePlaceholders.length

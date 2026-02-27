@@ -58,7 +58,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
   } = useSummering(hjelpemidler, tilbehør)
 
   return (
-    <VStack gap="space-12">
+    <VStack gap="space-12" paddingInline="space-0 space-12">
       {behovsmelding.levering.hast && <Hast hast={behovsmelding.levering.hast} />}
       {behovsmelding.type === BehovsmeldingType.SØKNAD && artiklerSomIkkeFinnesIOebs.length > 0 && (
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />

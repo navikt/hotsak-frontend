@@ -1,4 +1,4 @@
-import { Button, HStack, InfoCard, Loader, LocalAlert } from '@navikt/ds-react'
+import { Button, HStack, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
@@ -214,7 +214,14 @@ export const Brev = () => {
         </>
       )}
       {errorEr404 && valgtMal === undefined && malKey === undefined && !brevSendt && (
-        <div style={{ padding: '1em' }}>
+        <VStack paddingInline="space-20" gap="space-16">
+          <PanelTittel
+            paddingInline="space-8 space-0"
+            tittel="Brev"
+            lukkPanel={() => {
+              closePanel()
+            }}
+          />
           <TextContainer>
             <InfoCard data-color="info" size="small">
               <InfoCard.Header>
@@ -228,7 +235,7 @@ export const Brev = () => {
               </InfoCard.Content>
             </InfoCard>
           </TextContainer>
-        </div>
+        </VStack>
       )}
       {errorEr404 && valgtMal === undefined && malKey !== undefined && !brevSendt && (
         <BrevmalLaster malKey={malKey} velgMal={velgMal} />

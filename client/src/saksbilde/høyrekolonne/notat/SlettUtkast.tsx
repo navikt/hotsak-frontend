@@ -9,7 +9,6 @@ import { useToast } from '../../../felleskomponenter/toast/ToastContext.tsx'
 import { Tekst } from '../../../felleskomponenter/typografi.tsx'
 import { http } from '../../../io/HttpClient.ts'
 import { Notat } from '../../../types/types.internal.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 import { BekreftelseModal } from '../../komponenter/BekreftelseModal.tsx'
 
 export interface NotaterProps {
@@ -22,7 +21,6 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
   const { mutate } = useSWRConfig()
   const [visSlettUtkastModal, setVisSlettUtkastModal] = useState(false)
   const { showSuccessToast } = useToast()
-  const { erIkkeProd } = useMiljø()
   const { execute, state: sletterUtkast } = useActionState()
   showSuccessToast
 
@@ -35,10 +33,8 @@ export function SlettUtkast({ sakId, aktivtUtkast, onReset }: NotaterProps) {
       setVisSlettUtkastModal(false)
       showSuccessToast('Utkast slettet')
       await mutate(`/api/sak/${sakId}/notater`)
-      if (erIkkeProd) {
-        // TODO usikker på om det gir mening å oppdatere behandling her,er det bedre å sjekke dette på notater enn gjenstående på behandling?
-        await mutate(`/api/sak/${sakId}/behandling`)
-      }
+      // TODO usikker på om det gir mening å oppdatere behandling her,er det bedre å sjekke dette på notater enn gjenstående på behandling?
+      await mutate(`/api/sak/${sakId}/behandling`)
       onReset()
     } else {
       setVisSlettUtkastModal(false)

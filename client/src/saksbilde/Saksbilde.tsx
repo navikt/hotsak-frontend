@@ -10,19 +10,15 @@ import { SakProvider } from '../sak/v2/SakProvider'
 import { SakV2 } from '../sak/v2/SakV2'
 import { useNyttSaksbilde } from '../sak/v2/useNyttSaksbilde'
 import { OppgaveStatusType, SakBase, Sakstype } from '../types/types.internal'
-import { useMiljø } from '../utils/useMiljø'
 import { Barnebrillesaksbilde } from './barnebriller/Barnebrillesaksbilde'
 import { Personlinje } from './Personlinje'
 import { SakLoader } from './SakLoader'
 import { Søknadsbilde } from './Søknadsbilde'
 import { useBehovsmelding } from './useBehovsmelding'
 import { useSak } from './useSak'
-//import { useErPilot } from '../tilgang/useTilgang'
 
 const SaksbildeContent = memo(() => {
   const [nyttSaksbilde] = useNyttSaksbilde()
-  //const erPilot = useErPilot('nyttSaksbilde')
-  const { erIkkeProd } = useMiljø()
   const { sak, isLoading, error } = useSak()
   const { error: behovsmeldingError, isLoading: isBehovsmeldingLoading } = useBehovsmelding()
   const { gjeldendeBehandling } = useBehandling()
@@ -50,7 +46,7 @@ const SaksbildeContent = memo(() => {
 
   if (!sak) return <div>Fant ikke sak</div>
 
-  if (erIkkeProd && nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
+  if (nyttSaksbilde && sak.data.sakstype === Sakstype.SØKNAD && !sakErFerdigBehandletIHotsakClassic) {
     return (
       <SakProvider>
         <SakV2 />

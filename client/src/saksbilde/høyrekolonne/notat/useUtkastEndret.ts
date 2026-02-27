@@ -4,7 +4,6 @@ import { KeyedMutator, mutate } from 'swr'
 import { http } from '../../../io/HttpClient.ts'
 import { NotatKlassifisering, NotatType, NotatUtkast, Saksnotater } from '../../../types/types.internal.ts'
 import { delay } from '../../../utils/delay.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
 
 export function useUtkastEndret(
   type: NotatType,
@@ -17,7 +16,6 @@ export function useUtkastEndret(
 ) {
   const [debounceTimer, setDebounceTimer] = useState<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [oppretterNyttUtkast, setOppretterNyttUtkast] = useState(false)
-  const { erIkkeProd } = useMiljø()
   const [lagrerUtkast, setLagrerUtkast] = useState(false)
 
   const utkastEndret = async (
@@ -32,9 +30,8 @@ export function useUtkastEndret(
       try {
         await http.post(`/api/sak/${sakId}/notater`, { tittel, tekst, klassifisering, type })
         await mutateNotater()
-        if (erIkkeProd) {
-          await mutate(`/api/sak/${sakId}/behandling`)
-        }
+        // TODO usikker på om det gir mening å oppdatere behandling her,er det bedre å sjekke dette på notater enn gjenstående på behandling?
+        await mutate(`/api/sak/${sakId}/behandling`)
         await delay(500) // Ikke vis "Lagrer..." kortere enn tid brukt + 500 millisekunder
       } finally {
         setOppretterNyttUtkast(false)

@@ -48,7 +48,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
 
   return (
-    <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-48" style={{ height: '100%' }}>
+    <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" style={{ height: '100%' }}>
       <PanelTittel
         paddingInline="space-8 space-0"
         tittel="Behandle sak"

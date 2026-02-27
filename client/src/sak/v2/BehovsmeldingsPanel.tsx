@@ -17,7 +17,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
   return (
     <Box
       background="default"
-      paddingBlock="space-0 space-48"
+      paddingBlock="space-0 space-36"
       paddingInline="space-16 space-0"
       style={{ height: '100%' }}
     >

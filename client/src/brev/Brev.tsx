@@ -19,6 +19,7 @@ import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/place
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
+import { Brevstatus } from './brevTyper.ts'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
@@ -45,7 +46,7 @@ export const Brev = () => {
 
   const { gjeldendeBehandling, mutate: mutateGjeldendeBehandling } = useBehandling()
   const { oppgave } = useOppgave()
-  const { mutate: mutateBrevMetadata } = useBrevMetadata()
+  const { mutate: mutateBrevMetadata, gjeldendeBrev: brev } = useBrevMetadata()
   const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
 
   const [placeholderFeil, setPlaceholderFeil] = useState<PlaceholderFeil[]>([])
@@ -74,6 +75,7 @@ export const Brev = () => {
 
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])
+  const brevSendt = useMemo(() => brev?.status == Brevstatus.SENDT, [brev])
 
   const malKey =
     errorEr404 && opprettBrevKlikket
@@ -108,7 +110,14 @@ export const Brev = () => {
         nullstillForhåndsvisning(Brevtype.BREVEDITOR_VEDTAKSBREV)
       }
     }
-  }, [brevutkast.data?.ferdigstilt, hentedeBrev, sak?.data.sakId, hentForhåndsvisning, nullstillForhåndsvisning])
+  }, [
+    brevutkast.data?.ferdigstilt,
+    hentedeBrev,
+    sak?.data.sakId,
+    hentForhåndsvisning,
+    nullstillForhåndsvisning,
+    brevSendt,
+  ])
 
   if (brevutkast.isLoading) {
     return (
@@ -185,7 +194,26 @@ export const Brev = () => {
         hjelpemidlerSøktOm,
       }}
     >
-      {errorEr404 && valgtMal === undefined && malKey === undefined && (
+      {brevSendt && (
+        <>
+          {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (
+            <HStack justify="center" gap="space-16" marginBlock="space-16">
+              <Loader size="medium" title="Henter brev..." />
+              <Etikett>Henter vedtaksbrev fra Joark...</Etikett>
+            </HStack>
+          )}
+          {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.SUKSESS && (
+            <iframe
+              src={hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.data}
+              width="100%"
+              height="100%"
+              allow="fullscreen"
+              style={{ border: 'none' }}
+            />
+          )}
+        </>
+      )}
+      {errorEr404 && valgtMal === undefined && malKey === undefined && !brevSendt && (
         <div style={{ padding: '1em' }}>
           <TextContainer>
             <InfoCard data-color="info" size="small">
@@ -202,10 +230,10 @@ export const Brev = () => {
           </TextContainer>
         </div>
       )}
-      {errorEr404 && valgtMal === undefined && malKey !== undefined && (
+      {errorEr404 && valgtMal === undefined && malKey !== undefined && !brevSendt && (
         <BrevmalLaster malKey={malKey} velgMal={velgMal} />
       )}
-      {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && (
+      {(!errorEr404 || valgtMal !== undefined) && brevutkast.data && !brevSendt && (
         <div className="brev">
           {!brevutkast.data?.ferdigstilt && (
             <>

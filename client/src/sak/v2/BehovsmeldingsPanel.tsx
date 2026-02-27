@@ -26,8 +26,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
           <Tekst textColor="subtle">
-            Område:
-            {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
+            Område: {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
           </Tekst>
         </HStack>
 

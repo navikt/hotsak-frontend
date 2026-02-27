@@ -1,8 +1,8 @@
-import { Button, HStack, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
+import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
-import { Etikett, Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
+import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { VedtaksResultat } from '../sak/v2/behandling/behandlingTyper.ts'
@@ -16,10 +16,11 @@ import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
+import BrevForhåndsvisning from './BrevForhåndsvisning.tsx'
 import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
+import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-import { Brevstatus } from './brevTyper.ts'
 
 interface BrevContextType {
   placeholderFeil: PlaceholderFeil[]
@@ -196,21 +197,10 @@ export const Brev = () => {
     >
       {brevSendt && (
         <>
-          {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (
-            <HStack justify="center" gap="space-16" marginBlock="space-16">
-              <Loader size="medium" title="Henter brev..." />
-              <Etikett>Henter vedtaksbrev fra Joark...</Etikett>
-            </HStack>
-          )}
-          {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.SUKSESS && (
-            <iframe
-              src={hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.data}
-              width="100%"
-              height="100%"
-              allow="fullscreen"
-              style={{ border: 'none' }}
-            />
-          )}
+          <div style={{ padding: '0.8em 1em' }}>
+            <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
+          </div>
+          <BrevForhåndsvisning loaderTekst="Henter vedtaksbrev fra Joark..." />
         </>
       )}
       {errorEr404 && valgtMal === undefined && malKey === undefined && !brevSendt && (
@@ -303,21 +293,7 @@ export const Brev = () => {
                   <PanelTittel tittel="Vedtaksbrev" lukkPanel={closePanel} />
                 </div>
               )}
-              {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.HENTER && (
-                <HStack justify="center" gap="space-16" marginBlock="space-16">
-                  <Loader size="medium" title="Henter brev..." />
-                  <Etikett>Genererer forhåndsvisning av brev...</Etikett>
-                </HStack>
-              )}
-              {hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.SUKSESS && (
-                <iframe
-                  src={hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.data}
-                  width="100%"
-                  height="100%"
-                  allow="fullscreen"
-                  style={{ border: 'none' }}
-                />
-              )}
+              <BrevForhåndsvisning loaderTekst="Genererer forhåndsvisning av brev..." />
             </>
           )}
         </div>

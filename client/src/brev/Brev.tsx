@@ -101,7 +101,7 @@ export const Brev = () => {
   const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
 
   useEffect(() => {
-    if (brevutkast.data?.ferdigstilt) {
+    if (brevSendt || brevutkast.data?.ferdigstilt) {
       if (hentedeBrev[Brevtype.BREVEDITOR_VEDTAKSBREV]?.status == RessursStatus.IKKE_HENTET) {
         if (sak?.data.sakId) hentForhåndsvisning(sak.data.sakId, Brevtype.BREVEDITOR_VEDTAKSBREV)
       }

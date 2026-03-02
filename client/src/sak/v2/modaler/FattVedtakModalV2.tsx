@@ -10,6 +10,7 @@ import { VedtaksResultat } from '../behandling/behandlingTyper'
 import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
+import { useClosePanel } from '../paneler/usePanelHooks'
 
 type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS | VedtaksResultat.BRUKER_ER_DØD>
 
@@ -28,6 +29,7 @@ export function FattVedtakModalV2({
   const { ferdigstillBehandling } = useBehandlingActions()
   const { showSuccessToast } = useToast()
   const formRef = useRef<VedtakFormHandle>(null)
+  const closePanel = useClosePanel('brevpanel')
 
   const erAvslag = vedtaksResultat === VedtaksResultat.AVSLÅTT
   const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
@@ -42,7 +44,10 @@ export function FattVedtakModalV2({
     } else if (erDelvisInnvilget) {
       await ferdigstillBehandling({ problemsammendrag: data.problemsammendrag })
     }
-
+    if (erInnvilget) {
+      //lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
+      if (!brevMetaData.harBrevISak) closePanel()
+    }
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')
     onClose()

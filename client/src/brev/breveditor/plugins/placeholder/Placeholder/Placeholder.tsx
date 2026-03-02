@@ -46,25 +46,29 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
   const handleDelete = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation()
+      e.preventDefault()
 
-      const path = editor.api.findPath(element)
-      if (!path) return
+      // må time ut før sletting for å unngå error hvis bruker prøver å slette før editor har fokus
+      setTimeout(() => {
+        const path = editor.api.findPath(element)
+        if (!path) return
 
-      // flytte musepeker til forrige element før sletting
-      const previousPath = PathApi.previous(path)
-      if (!editor.selection && previousPath) {
+        // flytte musepeker til forrige element før sletting
+        const previousPath = PathApi.previous(path)
+        if (!editor.selection && previousPath) {
+          editor.tf.focus()
+          const point = editor.api.end(previousPath)
+          editor.tf.setSelection({ focus: point, anchor: point })
+        }
+
+        editor.tf.delete({ at: path })
         editor.tf.focus()
-        const point = editor.api.end(previousPath)
-        editor.tf.setSelection({ focus: point, anchor: point })
-      }
 
-      editor.tf.delete({ at: path })
-      editor.tf.focus()
-
-      const feil = validerPlaceholders(editor.children)
-      setPlaceholderFeil(feil)
+        const feil = validerPlaceholders(editor.children)
+        setPlaceholderFeil(feil)
+      }, 0)
     },
-    [editor, element]
+    [editor, element, setPlaceholderFeil]
   )
 
   const handleMouseDown = useCallback(

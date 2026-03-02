@@ -150,6 +150,7 @@ const Breveditor = ({
     auto_hjelpemidler_innvilget: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått: hjelpemidlerSøktOm,
     auto_hjelpemidler_avslått_inline: hjelpemidlerSøktOm,
+    auto_leveringstid: 'fem uker',
   }
 
   const editor = usePlateEditor(

@@ -24,7 +24,7 @@ Hjelpemidlene blir først levert fra Nav hjelpemiddelsentral til kommunen, hvis 
 
 ### Når får jeg hjelpemiddelet?
 
-Hvis vi har hjelpemidlene på lager, sender vi dem til kommunen din i løpet av noen få dager, og senest innen tre uker etter at søknaden er innvilget. Det kan ta opptil fem uker hvis hjelpemiddelet må bestilles fra leverandør eller spesialtilpasses.
+Hvis vi har hjelpemidlene på lager, sender vi dem til kommunen din i løpet av noen få dager, og senest innen tre uker etter at søknaden er innvilget. Det kan ta opptil \[auto_leveringstid\] hvis hjelpemiddelet må bestilles fra leverandør eller spesialtilpasses.
 
 ## Dette må du huske på når du får låne hjelpemidler
 

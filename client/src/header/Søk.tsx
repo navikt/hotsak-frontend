@@ -6,6 +6,7 @@ export function Søk({ onSearch }: { onSearch: (...args: any[]) => any }) {
 
   return (
     <form
+      style={{ paddingTop: '0.5rem', marginRight: '1rem' }}
       role="search"
       onSubmit={(e) => {
         e.preventDefault()

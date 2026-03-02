@@ -1,7 +1,6 @@
 import { MenuGridIcon, ThemeIcon } from '@navikt/aksel-icons'
 import { ActionMenu, InternalHeader } from '@navikt/ds-react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
 
 import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -13,11 +12,6 @@ import { EndringsloggMenu } from './endringslogg/EndringsloggMenu.tsx'
 import { Søk } from './Søk'
 import { useDarkmode } from './useDarkmode.ts'
 
-const SøkeContainer = styled.div`
-  padding-top: 0.5rem;
-  padding-left: 1rem;
-  margin-right: auto;
-`
 export function Toppmeny() {
   const { innloggetAnsatt, setValgtEnhet } = useTilgangContext()
   const valgtEnhet = innloggetAnsatt.gjeldendeEnhet
@@ -33,19 +27,29 @@ export function Toppmeny() {
         {nyttSaksbilde ? 'Hotsak 1.5' : 'Hotsak'}
       </InternalHeader.Title>
 
-      <SøkeContainer>
-        <Søk
-          onSearch={(value: string) => {
-            const fnrEllerSakId = fjernMellomrom(value)
-            if (fnrEllerSakId.length === 11) {
-              setFodselsnummer(fnrEllerSakId)
-              navigate('/personoversikt/saker')
-            } else {
-              navigate(`/sak/${fnrEllerSakId}`)
-            }
-          }}
-        />
-      </SøkeContainer>
+      <InternalHeader.Button
+        style={{
+          marginRight: 'auto',
+          borderRight: '1px solid var(--ax-border-neutral-subtleA)',
+          borderLeft: 'none',
+          textDecoration: 'none',
+        }}
+        as="a"
+        href="/enhetens"
+      >
+        Enhetens oppgaver
+      </InternalHeader.Button>
+      <Søk
+        onSearch={(value: string) => {
+          const fnrEllerSakId = fjernMellomrom(value)
+          if (fnrEllerSakId.length === 11) {
+            setFodselsnummer(fnrEllerSakId)
+            navigate('/personoversikt/saker')
+          } else {
+            navigate(`/sak/${fnrEllerSakId}`)
+          }
+        }}
+      />
       <ActionMenu>
         <ActionMenu.Trigger>
           <InternalHeader.Button>

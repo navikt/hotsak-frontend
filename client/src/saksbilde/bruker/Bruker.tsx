@@ -20,6 +20,7 @@ import {
 import { Leveringsmåte } from './Leveringsmåte'
 import { Kontaktperson } from './Kontaktperson'
 import { Signatur } from './Signatur'
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -45,6 +46,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
         <HStack gap="space-6">
           <Etikett>Navn:</Etikett>
           <Tekst>{formatertNavn}</Tekst>
+          <Kopiknapp tooltip="Kopier navn" copyText={formatertNavn} placement="bottom" />
         </HStack>
         <HStack gap="space-6">
           <Etikett>Fødselsnummer:</Etikett>
@@ -57,6 +59,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
         <HStack gap="space-6">
           <Etikett>Telefon:</Etikett>
           <Tekst>{formatertTlf}</Tekst>
+          <Kopiknapp tooltip="Kopier telefon" copyText={formatertTlf} placement="bottom" />
         </HStack>
         <HStack gap="space-6">
           <Etikett>Funksjonsnedsettelse:</Etikett>

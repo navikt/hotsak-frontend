@@ -16,4 +16,5 @@ export const enum UmamiTaksonomi {
   UTFALL_LAVERE_RANGERT = 'utfall lavere rangert',
   POSTBEGRUNNELSE_ENDRET = 'postbegrunnelse endret',
   PROBLEMSAMMENDRAG_ENDRET = 'problemsammendrag endret',
+  BREVSENDING = 'brevsending',
 }

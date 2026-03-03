@@ -9,6 +9,7 @@ export const SpesiellePlaceholdere = {
   HJELPEMIDLER_INNVILGET: 'auto_hjelpemidler_innvilget',
   HJELPEMIDLER_AVSLATT: 'auto_hjelpemidler_avslått',
   HJELPEMIDLER_AVSLÅTT_INLINE: 'auto_hjelpemidler_avslått_inline',
+  LEVERINGSTID: 'auto_leveringstid',
 } as const
 
 export type SpesiellPlaceholder = (typeof SpesiellePlaceholdere)[keyof typeof SpesiellePlaceholdere]
@@ -18,6 +19,7 @@ export const SpesiellePlaceholdereOversatt: Record<SpesiellPlaceholder, string> 
   [SpesiellePlaceholdere.HJELPEMIDLER_INNVILGET]: 'Hjelpemiddel innvilget',
   [SpesiellePlaceholdere.HJELPEMIDLER_AVSLATT]: 'Hjelpemiddel avslått',
   [SpesiellePlaceholdere.HJELPEMIDLER_AVSLÅTT_INLINE]: 'Hjelpemidler avslått',
+  [SpesiellePlaceholdere.LEVERINGSTID]: 'Standard anslått leveringstid. Endre om upresist',
 }
 
 export interface PlaceholderSpesielleVerdier {
@@ -25,6 +27,7 @@ export interface PlaceholderSpesielleVerdier {
   [SpesiellePlaceholdere.HJELPEMIDLER_INNVILGET]?: string[]
   [SpesiellePlaceholdere.HJELPEMIDLER_AVSLATT]?: string[]
   [SpesiellePlaceholdere.HJELPEMIDLER_AVSLÅTT_INLINE]?: string[]
+  [SpesiellePlaceholdere.LEVERINGSTID]?: string
 }
 
 export const parseTekstMedPlaceholders = (text: string, spesielleVerdier?: PlaceholderSpesielleVerdier): any[] => {

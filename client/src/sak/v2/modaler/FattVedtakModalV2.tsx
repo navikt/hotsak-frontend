@@ -11,7 +11,6 @@ import { useBehandlingActions } from '../behandling/useBehandlingActions'
 import { VedtakFormValues } from '../../felles/useVedtak'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata'
 import { useClosePanel } from '../paneler/usePanelHooks'
-import { useUmami } from '../../../sporing/useUmami'
 
 type FattbartVedtaksresultat = Exclude<VedtaksResultat, VedtaksResultat.GOSYS | VedtaksResultat.BRUKER_ER_DØD>
 
@@ -36,7 +35,6 @@ export function FattVedtakModalV2({
   const erDelvisInnvilget = vedtaksResultat === VedtaksResultat.DELVIS_INNVILGET
   const erInnvilget = vedtaksResultat === VedtaksResultat.INNVILGET
   const brevMetaData = useBrevMetadata()
-  const { logBrevsending } = useUmami()
 
   const fattVedtak = async (data: VedtakFormValues) => {
     setVedtakLoader(true)
@@ -49,9 +47,6 @@ export function FattVedtakModalV2({
     if (erInnvilget) {
       //lukker brevpanelet hvis det er åpent og det ikke finnes et brev og det innvilges
       if (!brevMetaData.harBrevISak) closePanel()
-    }
-    if (brevMetaData.harBrevISak) {
-      logBrevsending({ vedtaksresultat: vedtaksResultat })
     }
     setVedtakLoader(false)
     showSuccessToast('Vedtak fattet')

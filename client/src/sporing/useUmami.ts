@@ -100,10 +100,6 @@ export function useUmami() {
     logUmamiHendelse(UmamiTaksonomi.PROBLEMSAMMENDRAG_ENDRET, data)
   }
 
-  const logBrevsending: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.BREVSENDING, data)
-  }
-
   return {
     logUmamiHendelse,
     logKnappKlikket,
@@ -123,7 +119,6 @@ export function useUmami() {
     logUtfallLavereRangert,
     logPostbegrunnelseEndret,
     logProblemsammendragEndret,
-    logBrevsending,
 
     isReady,
   }

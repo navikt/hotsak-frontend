@@ -2,6 +2,128 @@
   "data": {
     "products": [
       {
+        "id": "3026322b-2c08-4de9-8139-5cba29e5999d",
+        "hmsArtNr": "297414",
+        "articleName": "Dusjkrakk Etac Easy rund ",
+        "isoCategoryTitleShort": "Dusjkrakk",
+        "supplier": {
+          "name": "ETAC AS"
+        },
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/297414",
+        "media": [
+          {
+            "uri": "orig/65669.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/65669_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/65669_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "orig/65669_4.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "brugsvejl/65669.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 13
+          },
+          {
+            "uri": "produktblade/65669.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 14
+          },
+          {
+            "uri": "video/65669.mp4",
+            "type": "VIDEO",
+            "source": "HMDB",
+            "priority": 15
+          }
+        ],
+        "agreements": []
+      },
+      {
+        "id": "f5c51862-385a-4ca0-aee2-63d0ca4ace86",
+        "hmsArtNr": "296289",
+        "articleName": "Active Easyriser Small 60-80 kg",
+        "isoCategoryTitleShort": "Løftestol",
+        "supplier": {
+          "name": "Hjelpemiddelpartner AS"
+        },
+        "productVariantURL": "https://finnhjelpemiddel.intern.dev.nav.no/produkt/hmsartnr/296289",
+        "media": [
+          {
+            "uri": "orig/65617.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 1
+          },
+          {
+            "uri": "orig/65617_2.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 4
+          },
+          {
+            "uri": "orig/65617_3.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 7
+          },
+          {
+            "uri": "orig/65617_4.jpg",
+            "type": "IMAGE",
+            "source": "HMDB",
+            "priority": 10
+          },
+          {
+            "uri": "brugsvejl/65617.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 13
+          },
+          {
+            "uri": "produktblade/65617.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 14
+          },
+          {
+            "uri": "seriedok/8606/65617.pdf",
+            "type": "PDF",
+            "source": "HMDB",
+            "priority": 15
+          },
+          {
+            "uri": "video/65617.mp4",
+            "type": "VIDEO",
+            "source": "HMDB",
+            "priority": 16
+          }
+        ],
+        "agreements": [
+          {
+            "postTitle": "2: Stol med mekanisk oppreisingsfunksjon",
+            "postNr": 2,
+            "rank": 1
+          }
+        ]
+      },
+      {
         "id": "5ee41ddf-5055-45bd-9556-a8512418b6da",
         "articleName": "Aquatec 90000 10 cm",
         "hmsArtNr": "097820",

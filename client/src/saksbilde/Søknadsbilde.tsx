@@ -55,13 +55,15 @@ const SaksbildeContent = memo(() => {
         <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
           <Venstremeny gap="space-24">
             <ScrollContainer>
-              <Søknadsinfo />
-              {sak.data.sakstype === Sakstype.SØKNAD && (
-                <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-              )}
-              {erBestilling && (
-                <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-              )}
+              <div style={{ paddingBottom: 'var(--ax-space-32)' }}>
+                <Søknadsinfo />
+                {sak.data.sakstype === Sakstype.SØKNAD && (
+                  <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+                )}
+                {erBestilling && (
+                  <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+                )}
+              </div>
             </ScrollContainer>
           </Venstremeny>
           <section>
@@ -103,7 +105,7 @@ const SaksbildeContent = memo(() => {
 const Container = styled.section`
   padding: 0 var(--ax-space-16);
   padding-top: 1rem;
-  padding-bottom: var(--ax-space-128);
+  padding-bottom: var(--ax-space-32);
   box-sizing: border-box;
 `
 

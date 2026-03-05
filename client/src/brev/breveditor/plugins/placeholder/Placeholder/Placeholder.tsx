@@ -50,22 +50,32 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
 
       // må time ut før sletting for å unngå error hvis bruker prøver å slette før editor har fokus
       setTimeout(() => {
-        const path = editor.api.findPath(element)
-        if (!path) return
+        try {
+          const path = editor.api.findPath(element)
+          if (!path) return
 
-        // flytte musepeker til forrige element før sletting
-        const previousPath = PathApi.previous(path)
-        if (!editor.selection && previousPath) {
+          // Alltid sett selection til et gyldig punkt før sletting
+          const previousPath = PathApi.previous(path)
+          if (previousPath && editor.api.hasPath(previousPath)) {
+            const point = editor.api.end(previousPath)
+            if (point) {
+              editor.tf.select({ anchor: point, focus: point })
+            } else {
+              editor.tf.deselect()
+            }
+          } else {
+            // Placeholder er første element — deselect for å unngå stale selection
+            editor.tf.deselect()
+          }
+
+          editor.tf.delete({ at: path })
           editor.tf.focus()
-          const point = editor.api.end(previousPath)
-          editor.tf.setSelection({ focus: point, anchor: point })
+
+          const feil = validerPlaceholders(editor.children)
+          setPlaceholderFeil(feil)
+        } catch (e) {
+          console.warn('Feil ved sletting av placeholder:', e)
         }
-
-        editor.tf.delete({ at: path })
-        editor.tf.focus()
-
-        const feil = validerPlaceholders(editor.children)
-        setPlaceholderFeil(feil)
       }, 0)
     },
     [editor, element, setPlaceholderFeil]

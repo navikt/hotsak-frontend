@@ -36,4 +36,3 @@ function OppgavetypeSwitch({ oppgave }: { oppgave: Oppgave }) {
       return null
   }
 }
-;('')

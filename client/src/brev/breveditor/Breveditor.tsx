@@ -392,7 +392,16 @@ const Breveditor = ({
                         <PlateContent
                           ref={plateContentRef}
                           onBlur={() => settPlateContentFokusert(false)}
-                          onFocus={() => settPlateContentFokusert(true)}
+                          onFocus={() => {
+                            settPlateContentFokusert(true)
+                            // hvis editor har fokus men caret er ikke plassert plasserer vi den på starten
+                            if (!editor.selection) {
+                              const start = editor.api.start([])
+                              if (start) {
+                                editor.tf.select({ anchor: start, focus: start })
+                              }
+                            }
+                          }}
                           placeholder={placeholder}
                           className="contentEditable"
                         />

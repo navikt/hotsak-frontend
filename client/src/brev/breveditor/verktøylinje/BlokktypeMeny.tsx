@@ -17,6 +17,15 @@ const BlokktypeMeny = () => {
   const breveditor = useBreveditorContext()
   const editor = useEditorState()
 
+  const safeBlocks = () => {
+    if (!editor.selection) return []
+    try {
+      return editor.api.blocks().filter((it) => it[1].length == 1)
+    } catch {
+      return []
+    }
+  }
+
   const turnInto = React.useCallback(
     (type: string) => {
       editor.api
@@ -30,10 +39,22 @@ const BlokktypeMeny = () => {
     [editor]
   )
 
-  const punktlistePressed = useEditorSelector((editor) => someList(editor, 'ul'), [])
-  const nummerertListePressed = useEditorSelector((editor) => someList(editor, 'ol'), [])
+  const punktlistePressed = useEditorSelector((editor) => {
+    try {
+      return someList(editor, 'ul')
+    } catch {
+      return false
+    }
+  }, [])
+  const nummerertListePressed = useEditorSelector((editor) => {
+    try {
+      return someList(editor, 'ol')
+    } catch {
+      return false
+    }
+  }, [])
 
-  const topLevelBlocks = editor.api.blocks().filter((it) => it[1].length == 1)
+  const topLevelBlocks = safeBlocks()
   const blockType = (() => {
     return topLevelBlocks.length == 1 ? topLevelBlocks[0]![0]!.type : undefined
   })()

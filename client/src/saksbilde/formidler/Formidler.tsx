@@ -8,9 +8,10 @@ import { useNyttSaksbilde } from '../../sak/v2/useNyttSaksbilde'
 
 interface FormidlerProps {
   levering: Levering
+  skjulHeading?: boolean
 }
 
-export function Formidler({ levering }: FormidlerProps) {
+export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
   const { hjelpemiddelformidler: formidler, oppfølgingsansvarlig, annenOppfølgingsansvarlig } = levering
   const nyttSaksbilde = useNyttSaksbilde()
 
@@ -111,9 +112,11 @@ export function Formidler({ levering }: FormidlerProps) {
   return (
     <div style={{ paddingBlock: '0 var(--ax-space-64)' }}>
       <Box paddingBlock="space-12 space-0" paddingInline="space-32 space-0">
-        <Heading level="2" size="small" spacing={!nyttSaksbilde}>
-          Hjelpemiddelformidler
-        </Heading>
+        {skjulHeading && (
+          <Heading level="2" size="small" spacing={!nyttSaksbilde}>
+            Hjelpemiddelformidler
+          </Heading>
+        )}
         <Box paddingBlock="space-16 space-0">
           <InfoFormidler />
         </Box>

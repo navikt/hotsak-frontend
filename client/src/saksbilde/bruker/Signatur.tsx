@@ -1,5 +1,7 @@
 import { useNyttSaksbilde } from '../../sak/v2/useNyttSaksbilde'
 import { Signaturtype } from '../../types/BehovsmeldingTypes'
+import { Bruker as Hjelpemiddelbruker } from '../../types/types.internal'
+import { formaterNavn } from '../../utils/formater'
 import { BrukerBekreftet } from './BrukerBekreftet'
 import { Fullmakt } from './Fullmakt'
 import { FullmaktFritak } from './FullmaktFritak'
@@ -12,22 +14,23 @@ export interface HeadingProps {
 }
 
 interface SignaturProps {
+  bruker: Hjelpemiddelbruker
   signaturType: Signaturtype
-  navn: string
 }
 
-export function Signatur({ signaturType, navn }: SignaturProps) {
+export function Signatur({ bruker, signaturType }: SignaturProps) {
   const nyttSaksbilde = useNyttSaksbilde()
+  const formatertNavn = formaterNavn(bruker)
 
   const headingLevel = nyttSaksbilde ? '2' : '1'
 
   switch (signaturType) {
     case Signaturtype.BRUKER_BEKREFTER:
-      return <BrukerBekreftet navn={navn} headingLevel={headingLevel} />
+      return <BrukerBekreftet navn={formatertNavn} headingLevel={headingLevel} />
     case Signaturtype.FULLMAKT:
-      return <Fullmakt navn={navn} headingLevel={headingLevel} />
+      return <Fullmakt navn={formatertNavn} headingLevel={headingLevel} />
     case Signaturtype.FRITAK_FRA_FULLMAKT:
-      return <FullmaktFritak navn={navn} headingLevel={headingLevel} />
+      return <FullmaktFritak navn={formatertNavn} headingLevel={headingLevel} />
     case Signaturtype.IKKE_INNHENTET_FORDI_KUN_TILBEHØR:
       return <IkkkeInnhentetFordiKunTilbehør headingLevel={headingLevel} />
     case Signaturtype.IKKE_INNHENTET_FORDI_KUN_TILBEHØR_V2:

@@ -1,0 +1,38 @@
+.root {
+  padding-inline: var(--ax-space-8);
+  padding-block: var(--ax-space-8);
+  background-color: var(--ax-bg-neutral-moderateA);
+}
+
+.root[data-open='true']::after {
+  display: none;
+}
+
+.box {
+  border-color: var(--ax-border-neutral-subtleA);
+}
+
+.box:has(.root:hover) {
+  box-shadow: 0 0 0 1px var(--ax-border-accent);
+  border-color: var(--ax-border-accent);
+  box-shadow: 0 0 0 1px var(--ax-border-neutral);
+  border-color: var(--ax-border-neutral);
+
+  background-color: var(--ax-bg-neutral-softA);
+
+  /*box-shadow:
+    0px 4px 6px 0px rgba(0, 0, 0, 0.15),
+    0px 1px 3px -1px rgba(0, 0, 0, 0.15),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.06);*/
+  /*border-color: var(--ax-border-accent-subtle);*/
+}
+
+/* TODO: Bruk Aksel variabler */
+.heading {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.content {
+  padding: 0px;
+}

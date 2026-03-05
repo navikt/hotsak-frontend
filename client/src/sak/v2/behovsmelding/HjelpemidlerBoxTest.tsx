@@ -1,4 +1,4 @@
-import { Box, VStack } from '@navikt/ds-react'
+import { VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
 import { CollapsiblePanel } from '../../../felleskomponenter/panel/CollapsiblePanel.tsx'
@@ -13,7 +13,7 @@ import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHje
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../felles/useArtiklerForSak.ts'
-import { HjelpemiddelV2 } from './HjelpemiddelV2.tsx'
+import { HjelpemiddelV2 } from './HjelpemiddelV2BoxTest.tsx'
 import { useSummering } from './summering/useSummering.ts'
 import { FrittStåendeTilbehørV2 } from './tilbehør/TilbehørlisteV2.tsx'
 
@@ -65,32 +65,22 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
           label="Hjelpemidler"
           detaljer={`Totalt ${antallHjelpemidler} hjelpemidler${harTilknyttedeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler} stk tilbehør` : ''}`}
         >
-          <VStack gap="space-12">
+          <VStack gap="space-12" paddingInline="space-2" paddingBlock="space-20 space-0">
             {hjelpemidler.map((hjelpemiddel) => (
-              <Box
-                key={hjelpemiddel.produkt.hmsArtNr}
-                paddingInline="space-12"
-                background="neutral-softA"
-                borderColor="neutral-subtle"
-                borderWidth="1"
-                borderRadius="8"
-              >
-                <HjelpemiddelV2
-                  sak={sak}
-                  hjelpemiddel={hjelpemiddel}
-                  produkter={hjelpemiddelprodukter}
-                  minmaxStyrt={
-                    lagerinfoForProdukter[hjelpemiddel.produkt.hmsArtNr]?.wareHouseStock?.some(
-                      (l) => l?.minmax === true
-                    ) || false
-                  }
-                  alternativeProdukter={
-                    alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ??
-                    ingenAlternativeProdukterForHmsArtNr
-                  }
-                  harOppdatertLagerstatus={harOppdatertLagerstatus}
-                />
-              </Box>
+              <HjelpemiddelV2
+                sak={sak}
+                hjelpemiddel={hjelpemiddel}
+                produkter={hjelpemiddelprodukter}
+                minmaxStyrt={
+                  lagerinfoForProdukter[hjelpemiddel.produkt.hmsArtNr]?.wareHouseStock?.some(
+                    (l) => l?.minmax === true
+                  ) || false
+                }
+                alternativeProdukter={
+                  alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ?? ingenAlternativeProdukterForHmsArtNr
+                }
+                harOppdatertLagerstatus={harOppdatertLagerstatus}
+              />
             ))}
           </VStack>
         </CollapsiblePanel>

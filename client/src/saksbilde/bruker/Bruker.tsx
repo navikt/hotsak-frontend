@@ -1,5 +1,6 @@
-import { Heading, HStack, List, VStack, Box } from '@navikt/ds-react'
+import { Box, Heading, HStack, List, VStack } from '@navikt/ds-react'
 
+import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 import { Skillelinje } from '../../felleskomponenter/Strek'
 import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import {
@@ -17,10 +18,6 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater'
-import { Leveringsmåte } from './Leveringsmåte'
-import { Kontaktperson } from './Kontaktperson'
-import { Signatur } from './Signatur'
-import { Kopiknapp } from '../../felleskomponenter/Kopiknapp'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -28,9 +25,17 @@ export interface BrukerProps {
   brukerSituasjon: Brukersituasjon
   levering: Levering
   vilkår: Vilkår[]
+  skjulHeading?: boolean
 }
 
-export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering, vilkår }: BrukerProps) {
+export function Bruker({
+  bruker,
+  behovsmeldingsbruker,
+  brukerSituasjon,
+  levering,
+  vilkår,
+  skjulHeading = false,
+}: BrukerProps) {
   const { utleveringMerknad } = levering
   const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(behovsmeldingsbruker.veiadresse)
@@ -39,10 +44,12 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
 
   return (
     <>
-      <Heading level="2" size="small">
-        Hjelpemiddelbruker
-      </Heading>
-      <VStack paddingBlock="space-16 space-0" gap="space-4">
+      {!skjulHeading && (
+        <Heading level="2" size="small">
+          Hjelpemiddelbruker
+        </Heading>
+      )}
+      <VStack gap="space-4">
         <HStack gap="space-6">
           <Etikett>Navn:</Etikett>
           <Tekst>{formatertNavn}</Tekst>
@@ -66,22 +73,7 @@ export function Bruker({ bruker, behovsmeldingsbruker, brukerSituasjon, levering
           <Tekst>{storForbokstavIAlleOrd(brukerSituasjon.funksjonsnedsettelser.join(', '))}</Tekst>
         </HStack>
       </VStack>
-      <Skillelinje />
-      <Heading level="2" size="small" spacing={true}>
-        Levering
-      </Heading>
-      <VStack gap="space-4">
-        <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
-        <Kontaktperson levering={levering} />
-        {utleveringMerknad && (
-          <HStack gap="space-6" paddingBlock="space-0 space-12" align="center">
-            <Etikett>Merknad til utlevering:</Etikett>
-            <Tekst>{utleveringMerknad}</Tekst>
-          </HStack>
-        )}
-      </VStack>
-      <Skillelinje />
-      <Signatur signaturType={behovsmeldingsbruker.signaturtype} navn={formatertNavn} />
+
       <Skillelinje />
       <Heading level="2" size="small" spacing>
         Formidlers vurdering

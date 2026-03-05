@@ -44,67 +44,57 @@ const SaksbildeContent = memo(() => {
   const levering = behovsmelding.levering
 
   return (
-    <Box
-      background="neutral-moderate"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        overflowY: 'clip',
-      }}
+    <HGrid
+      columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
+      style={{ background: 'var(--ax-bg-default)', height: '100%', minHeight: '0' }}
     >
-      <HGrid
-        columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
-        style={{ background: 'var(--ax-bg-default)', height: '100%', minHeight: '0' }}
-      >
-        <section style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Søknadslinje id={sak.data.sakId} />
-          <HGrid columns={`${hotsakVenstremenyWidth} auto`} style={{ flex: 1 }}>
+      <section style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Søknadslinje id={sak.data.sakId} />
+        <HGrid columns={`${hotsakVenstremenyWidth} auto`} style={{ flex: 1 }}>
+          <ScrollContainer>
+            <Venstremeny gap="space-24">
+              <Søknadsinfo />
+              {sak.data.sakstype === Sakstype.SØKNAD && (
+                <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+              )}
+              {erBestilling && (
+                <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
+              )}
+            </Venstremeny>
+          </ScrollContainer>
+          <section>
             <ScrollContainer>
-              <Venstremeny gap="space-24">
-                <Søknadsinfo />
-                {sak.data.sakstype === Sakstype.SØKNAD && (
-                  <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-                )}
-                {erBestilling && (
-                  <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
-                )}
-              </Venstremeny>
+              <Container>
+                {harVarsler && <Saksvarsler varsler={varsler} />}
+                <Routes>
+                  <Route
+                    path="/hjelpemidler"
+                    element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
+                  />
+                  <Route
+                    path="/bruker"
+                    element={
+                      <Box>
+                        <Bruker
+                          bruker={sak.data.bruker}
+                          behovsmeldingsbruker={behovsmelding.bruker}
+                          brukerSituasjon={behovsmelding.brukersituasjon}
+                          levering={behovsmelding.levering}
+                          vilkår={behovsmelding.brukersituasjon.vilkår}
+                        />
+                      </Box>
+                    }
+                  />
+                  <Route path="/formidler" element={<Formidler levering={levering} />} />
+                  <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
+                </Routes>
+              </Container>
             </ScrollContainer>
-            <section>
-              <ScrollContainer>
-                <Container>
-                  {harVarsler && <Saksvarsler varsler={varsler} />}
-                  <Routes>
-                    <Route
-                      path="/hjelpemidler"
-                      element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
-                    />
-                    <Route
-                      path="/bruker"
-                      element={
-                        <Box>
-                          <Bruker
-                            bruker={sak.data.bruker}
-                            behovsmeldingsbruker={behovsmelding.bruker}
-                            brukerSituasjon={behovsmelding.brukersituasjon}
-                            levering={behovsmelding.levering}
-                            vilkår={behovsmelding.brukersituasjon.vilkår}
-                          />
-                        </Box>
-                      }
-                    />
-                    <Route path="/formidler" element={<Formidler levering={levering} />} />
-                    <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
-                  </Routes>
-                </Container>
-              </ScrollContainer>
-            </section>
-          </HGrid>
-        </section>
-        <Høyrekolonne />
-      </HGrid>
-    </Box>
+          </section>
+        </HGrid>
+      </section>
+      <Høyrekolonne />
+    </HGrid>
   )
 })
 

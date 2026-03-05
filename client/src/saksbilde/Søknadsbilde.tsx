@@ -44,18 +44,24 @@ const SaksbildeContent = memo(() => {
   const levering = behovsmelding.levering
 
   return (
-    <HGrid
-      columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
-      style={{ background: 'var(--ax-bg-default)' }}
+    <Box
+      background="neutral-moderate"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflowY: 'clip',
+      }}
     >
-      <section>
-        <HGrid columns="auto">
+      <HGrid
+        columns={`max(${hovedInnholdMaxWidth})  minmax(${sidebarMinWidth}, ${hotsakHistorikkMaxWidth})`}
+        style={{ background: 'var(--ax-bg-default)', height: '100%', minHeight: '0' }}
+      >
+        <section style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <Søknadslinje id={sak.data.sakId} />
-        </HGrid>
-        <HGrid columns={`${hotsakVenstremenyWidth} auto`}>
-          <Venstremeny gap="space-24">
+          <HGrid columns={`${hotsakVenstremenyWidth} auto`} style={{ flex: 1 }}>
             <ScrollContainer>
-              <div style={{ paddingBottom: 'var(--ax-space-32)' }}>
+              <Venstremeny gap="space-24">
                 <Søknadsinfo />
                 {sak.data.sakstype === Sakstype.SØKNAD && (
                   <VedtakCard sak={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
@@ -63,42 +69,42 @@ const SaksbildeContent = memo(() => {
                 {erBestilling && (
                   <BestillingCard bestilling={sak.data} lesevisning={!harSkrivetilgang} harNotatUtkast={harUtkast} />
                 )}
-              </div>
+              </Venstremeny>
             </ScrollContainer>
-          </Venstremeny>
-          <section>
-            <ScrollContainer>
-              <Container>
-                {harVarsler && <Saksvarsler varsler={varsler} />}
-                <Routes>
-                  <Route
-                    path="/hjelpemidler"
-                    element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
-                  />
-                  <Route
-                    path="/bruker"
-                    element={
-                      <Box>
-                        <Bruker
-                          bruker={sak.data.bruker}
-                          behovsmeldingsbruker={behovsmelding.bruker}
-                          brukerSituasjon={behovsmelding.brukersituasjon}
-                          levering={behovsmelding.levering}
-                          vilkår={behovsmelding.brukersituasjon.vilkår}
-                        />
-                      </Box>
-                    }
-                  />
-                  <Route path="/formidler" element={<Formidler levering={levering} />} />
-                  <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
-                </Routes>
-              </Container>
-            </ScrollContainer>
-          </section>
-        </HGrid>
-      </section>
-      <Høyrekolonne />
-    </HGrid>
+            <section>
+              <ScrollContainer>
+                <Container>
+                  {harVarsler && <Saksvarsler varsler={varsler} />}
+                  <Routes>
+                    <Route
+                      path="/hjelpemidler"
+                      element={<HjelpemiddelListe sak={sak.data} behovsmelding={behovsmelding} />}
+                    />
+                    <Route
+                      path="/bruker"
+                      element={
+                        <Box>
+                          <Bruker
+                            bruker={sak.data.bruker}
+                            behovsmeldingsbruker={behovsmelding.bruker}
+                            brukerSituasjon={behovsmelding.brukersituasjon}
+                            levering={behovsmelding.levering}
+                            vilkår={behovsmelding.brukersituasjon.vilkår}
+                          />
+                        </Box>
+                      }
+                    />
+                    <Route path="/formidler" element={<Formidler levering={levering} />} />
+                    <Route path="/" element={<Navigate to="hjelpemidler" replace />} />
+                  </Routes>
+                </Container>
+              </ScrollContainer>
+            </section>
+          </HGrid>
+        </section>
+        <Høyrekolonne />
+      </HGrid>
+    </Box>
   )
 })
 

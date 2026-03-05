@@ -9,7 +9,7 @@ export interface VenstremenyProps {
 
 export function Venstremeny({ gap, children }: VenstremenyProps) {
   return (
-    <Container forwardedAs="aside" padding="space-16" gap={gap}>
+    <Container forwardedAs="aside" padding="space-16" gap={gap} style={{ height: '100%', overflowY: 'auto' }}>
       {children}
     </Container>
   )

@@ -85,7 +85,7 @@
           "bytter": [],
           "bruksarenaer": ["EGET_HJEM"],
           "utlevertinfo": {
-            "alleredeUtlevertFraHjelpemiddelsentralen": false,
+            "alleredeUtlevertFraHjelpemiddelsentralen": true,
             "utleverttype": "FREMSKUTT_LAGER",
             "overførtFraBruker": null,
             "annenKommentar": null

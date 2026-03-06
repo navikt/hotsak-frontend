@@ -359,7 +359,7 @@
       "annenUtleveringsbydel": null,
       "utleveringKontaktperson": "HJELPEMIDDELFORMIDLER",
       "annenKontaktperson": null,
-      "utleveringMerknad": "",
+      "utleveringMerknad": "Dette er en merknad om utlevering fra formidler som skal med på 5.17",
       "hast": null,
       "automatiskUtledetTilleggsinfo": []
     },

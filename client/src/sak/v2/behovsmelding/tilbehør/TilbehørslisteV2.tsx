@@ -12,6 +12,8 @@ import { Produkt as Produkttype } from '../../../../types/types.internal'
 import { AntallTag } from '../../AntallTag'
 import { ProduktV2 } from '../ProduktV2'
 import { EndretTilbehørBegrunnelse } from './EndretTilbehørBegrunnelse'
+import { CompactExpandableCard } from '../../../../felleskomponenter/panel/CompactExpandableCard'
+import classes from './Tilbehørsliste.module.css'
 
 export function FrittStåendeTilbehørV2({
   sakId,
@@ -25,28 +27,23 @@ export function FrittStåendeTilbehørV2({
   const { kanEndreHmsnr } = useSaksregler()
   return (
     <VStack gap="space-16">
-      {tilbehør.map((t, idx) => {
-        const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
-
-        return (
-          <Box
-            key={idx}
-            borderRadius="8"
-            padding="space-16"
-            background="neutral-softA"
-            borderColor="neutral-subtle"
-            borderWidth="1"
-          >
-            <Tilbehør
-              tilbehør={t}
-              sakId={sakId}
-              produkt={produkt}
-              frittståendeTilbehør={true}
-              kanEndreHmsnr={kanEndreHmsnr}
-            />
-          </Box>
-        )
-      })}
+      <CompactExpandableCard tittel={'Tilbehør uten hovedhjelpemiddel'}>
+        <Box className={classes.tilbehørListe} paddingInline="space-12">
+          {tilbehør.map((t) => {
+            const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
+            return (
+              <Tilbehør
+                key={t.hmsArtNr}
+                tilbehør={t}
+                sakId={sakId}
+                produkt={produkt}
+                frittståendeTilbehør={true}
+                kanEndreHmsnr={kanEndreHmsnr}
+              />
+            )
+          })}
+        </Box>
+      </CompactExpandableCard>
     </VStack>
   )
 }
@@ -63,7 +60,7 @@ export function TilbehørlisteV2({
   const { kanEndreHmsnr } = useSaksregler()
 
   return (
-    <VStack gap="space-16">
+    <VStack gap="space-12" className={classes.tilbehørListe}>
       {tilbehør.map((t, idx) => {
         const produkt = produkter.find((p) => p.hmsArtNr === t.hmsArtNr)
         return <Tilbehør key={idx} sakId={sakId} tilbehør={t} produkt={produkt} kanEndreHmsnr={kanEndreHmsnr} />
@@ -102,7 +99,7 @@ function Tilbehør({
   const harEndretTilbehør = endretTilbehør && tilbehør.hmsArtNr !== endretHjelpemiddelResponse.hmsArtNr
 
   return (
-    <>
+    <Box paddingBlock="space-8">
       <VStack gap="space-4">
         {harEndretTilbehør && (
           <ProduktV2
@@ -160,7 +157,7 @@ function Tilbehør({
         onLagre={endreHjelpemiddel}
         onLukk={() => setVisAlternativerModal(false)}
       />
-    </>
+    </Box>
   )
 }
 

@@ -1,5 +1,5 @@
 import { PencilIcon } from '@navikt/aksel-icons'
-import { Button, HStack, Tag, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
 
 import { useState } from 'react'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
@@ -18,7 +18,8 @@ import { storForbokstavIOrd } from '../../../utils/formater.ts'
 import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../sakTypes.ts'
 import { AntallTag } from '../AntallTag.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
-import { TilbehørlisteV2 } from './tilbehør/TilbehørlisteV2.tsx'
+import { TilbehørlisteV2 } from './tilbehør/TilbehørslisteV2.tsx'
+import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak
@@ -56,118 +57,114 @@ export function HjelpemiddelV2({
 
   return (
     <>
-      <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
-        <TextContainer>
-          <Etikett size="medium">{produkt?.isotittel}</Etikett>
-          <VStack gap="space-4">
-            {produkt?.delkontrakter?.map(({ posttittel }) => (
-              <TextContainer key={posttittel}>
-                <BrytbarBrødtekst>Delkontrakt {posttittel}</BrytbarBrødtekst>
-              </TextContainer>
-            ))}
-          </VStack>
-        </TextContainer>
+      <CompactExpandableCard tittel={produkt?.isotittel || 'Mangler kategori'}>
+        <Box style={{ borderBottom: '1px solid var(--ax-border-neutral-subtleA)' }}>
+          <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
+            <TextContainer>
+              <VStack gap="space-4">
+                <BrytbarBrødtekst>Delkontrakt {hjelpemiddel.produkt.delkontrakttittel}</BrytbarBrødtekst>
+              </VStack>
+            </TextContainer>
 
-        <>
-          <VStack justify="start" gap="space-8">
-            {endretHjelpemiddel && (
-              <ProduktV2
-                hmsnr={endretHjelpemiddelResponse.hmsArtNr}
-                navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
-                showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
-              />
-            )}
-            <HStack gap="space-8">
-              <ProduktV2
-                hmsnr={hjelpemiddel.produkt.hmsArtNr}
-                navn={hjelpemiddel.produkt.artikkelnavn}
-                gjennomstrek={endretHjelpemiddel !== undefined}
-              />
-            </HStack>
-            {endretHjelpemiddel && (
-              <div>
-                <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
-                <BrytbarBrødtekst>
-                  {endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
-                  endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
-                    ? endretHjelpemiddel.begrunnelseFritekst
-                    : EndretArtikkelBegrunnelseLabel[endretHjelpemiddel?.begrunnelse] ||
-                      `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
-                </BrytbarBrødtekst>
-              </div>
-            )}
-            <HStack gap="space-4" align={'center'}>
-              {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
-                <Tag
-                  data-color="warning"
-                  size="xsmall"
-                  variant="moderate"
-                >{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
-              ) : (
-                <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
+            <VStack justify="start" gap="space-8">
+              {endretHjelpemiddel && (
+                <ProduktV2
+                  hmsnr={endretHjelpemiddelResponse.hmsArtNr}
+                  navn={endretHjelpemiddelProdukt?.artikkelnavn || '-'}
+                  showLink={endretHjelpemiddelProdukt?.kilde !== 'OeBS'}
+                />
               )}
-              <div>
-                <Tekst textColor="subtle">|</Tekst>
-              </div>
-              <AntallTag antall={hjelpemiddel.antall} />
-              {minmaxStyrt && (
-                <>
-                  <Tekst textColor="subtle">|</Tekst>
-                  <Tekst>Min/max lagervare</Tekst>
-                </>
-              )}
-              {harAlternativeProdukter && (
-                <>
-                  <Tekst textColor="subtle">|</Tekst>
-                  <Tag data-color="info" size="xsmall" variant="moderate">
-                    Har alternativliste
-                  </Tag>
-                </>
-              )}
-              {kanEndreHmsnr && (
+              <HStack gap="space-8">
+                <ProduktV2
+                  hmsnr={hjelpemiddel.produkt.hmsArtNr}
+                  navn={hjelpemiddel.produkt.artikkelnavn}
+                  gjennomstrek={endretHjelpemiddel !== undefined}
+                />
+              </HStack>
+              {endretHjelpemiddel && (
                 <div>
-                  <Button
-                    variant="tertiary"
-                    size="xsmall"
-                    icon={<PencilIcon />}
-                    onClick={() => {
-                      setVisAlternativerModal(true)
-                    }}
-                  >
-                    Endre
-                  </Button>
+                  <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
+                  <BrytbarBrødtekst>
+                    {endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ANNET ||
+                    endretHjelpemiddel?.begrunnelse === EndretArtikkelBegrunnelse.ALTERNATIV_PRODUKT_ANNET
+                      ? endretHjelpemiddel.begrunnelseFritekst
+                      : EndretArtikkelBegrunnelseLabel[endretHjelpemiddel?.begrunnelse] ||
+                        `${storForbokstavIOrd(endretHjelpemiddel?.begrunnelse)}`}
+                  </BrytbarBrødtekst>
                 </div>
               )}
-            </HStack>
-            <Skillelinje />
+              <HStack gap="space-4" align={'center'}>
+                {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
+                  <Tag
+                    data-color="warning"
+                    size="xsmall"
+                    variant="moderate"
+                  >{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
+                ) : (
+                  <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
+                )}
+                <div>
+                  <Tekst textColor="subtle">|</Tekst>
+                </div>
+                <AntallTag antall={hjelpemiddel.antall} />
+                {minmaxStyrt && (
+                  <>
+                    <Tekst textColor="subtle">|</Tekst>
+                    <Tekst>Min/max lagervare</Tekst>
+                  </>
+                )}
+                {harAlternativeProdukter && (
+                  <>
+                    <Tekst textColor="subtle">|</Tekst>
+                    <Tag data-color="info" size="xsmall" variant="moderate">
+                      Har alternativliste
+                    </Tag>
+                  </>
+                )}
+                {kanEndreHmsnr && (
+                  <div>
+                    <Button
+                      variant="tertiary"
+                      size="xsmall"
+                      icon={<PencilIcon />}
+                      onClick={() => {
+                        setVisAlternativerModal(true)
+                      }}
+                    >
+                      Endre
+                    </Button>
+                  </div>
+                )}
+              </HStack>
+            </VStack>
           </VStack>
-          <VStack gap="space-8">
-            <Varsler varsler={hjelpemiddel.varsler} />
-            <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
-            <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
+        </Box>
+        <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-16">
+          <Varsler varsler={hjelpemiddel.varsler} />
+          <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
+          <Opplysninger opplysninger={hjelpemiddel.opplysninger} />
 
-            {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
-              <Utlevert
-                alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
-                utlevertInfo={hjelpemiddel.utlevertinfo}
-              />
-            )}
-            {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
-          </VStack>
-        </>
-
-        <>
-          {hjelpemiddel.tilbehør.length > 0 && (
-            <>
-              <Skillelinje />
-              <VStack gap="space-12">
-                <Etikett size="small">Tilbehør</Etikett>
-                <TilbehørlisteV2 sakId={sak.sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
-              </VStack>
-            </>
+          {hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen && (
+            <Utlevert
+              alleredeUtlevert={hjelpemiddel.utlevertinfo.alleredeUtlevertFraHjelpemiddelsentralen}
+              utlevertInfo={hjelpemiddel.utlevertinfo}
+            />
           )}
-        </>
-      </VStack>
+          {hjelpemiddel.bytter && hjelpemiddel.bytter.length > 0 && <Bytter bytter={hjelpemiddel.bytter} />}
+        </VStack>
+
+        {hjelpemiddel.tilbehør.length > 0 && (
+          <>
+            <Skillelinje />
+            <VStack paddingInline="space-8">
+              <Heading level="3" size="xsmall">
+                Tilbehør
+              </Heading>
+              <TilbehørlisteV2 sakId={sak.sakId} tilbehør={hjelpemiddel.tilbehør} produkter={produkter} />
+            </VStack>
+          </>
+        )}
+      </CompactExpandableCard>
       <EndreHjelpemiddelModal
         åpen={visAlternativerModal}
         hjelpemiddel={hjelpemiddel}

@@ -1,7 +1,7 @@
 .root {
   padding-inline: var(--ax-space-8);
   padding-block: var(--ax-space-8);
-  background-color: var(--ax-bg-neutral-moderateA);
+  background-color: var(--ax-bg-accent-softA);
 }
 
 .root[data-open='true']::after {
@@ -9,18 +9,19 @@
 }
 
 .box {
-  border-color: var(--ax-border-neutral-subtleA);
+  border-color: var(--ax-border-accent-subtleA);
 }
 
 .box:has(.root:hover) {
-  box-shadow: 0 0 0 1px var(--ax-border-accent);
-  border-color: var(--ax-border-accent);
-  box-shadow: 0 0 0 1px var(--ax-border-neutral);
-  border-color: var(--ax-border-neutral);
+  /*box-shadow: 0 0 0 1px var(--ax-border-accent);
+  border-color: var(--ax-border-accent);*/
 
-  background-color: var(--ax-bg-neutral-softA);
+  box-shadow: 0 0 0 1px var(--ax-border-neutral-subtle);
+  border-color: var(--ax-border-neutral-subtle);
 
-  /*box-shadow:
+  /*background-color: var(--ax-bg-neutral-softA);*/
+
+  /* box-shadow:
     0px 4px 6px 0px rgba(0, 0, 0, 0.15),
     0px 1px 3px -1px rgba(0, 0, 0, 0.15),
     0px 1px 1px 0px rgba(0, 0, 0, 0.06);*/

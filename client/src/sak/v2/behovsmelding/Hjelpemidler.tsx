@@ -1,7 +1,6 @@
-import { Box, VStack } from '@navikt/ds-react'
+import { Heading, InlineMessage, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
-import { CollapsiblePanel } from '../../../felleskomponenter/panel/CollapsiblePanel.tsx'
 import { Hast } from '../../../saksbilde/hjelpemidler/Hast.tsx'
 import { OebsAlert } from '../../../saksbilde/hjelpemidler/OebsAlert.tsx'
 import {
@@ -15,7 +14,7 @@ import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../felles/useArtiklerForSak.ts'
 import { HjelpemiddelV2 } from './HjelpemiddelV2.tsx'
 import { useSummering } from './summering/useSummering.ts'
-import { FrittStåendeTilbehørV2 } from './tilbehør/TilbehørlisteV2.tsx'
+import { FrittStåendeTilbehørV2 } from './tilbehør/TilbehørslisteV2.tsx'
 
 interface HjelpemidlerProps {
   sak: Sak
@@ -50,6 +49,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
     antallHjelpemidler,
     antallTilbehørTilknyttetHjelpemidler,
     harTilknyttedeTilbehør,
+    harFrittståendeTilbehør,
     antallFrittståendeTilbehør,
   } = useSummering(hjelpemidler, tilbehør)
 
@@ -60,21 +60,17 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
 
-      {hjelpemidler.length > 0 && (
-        <CollapsiblePanel
-          label="Hjelpemidler"
-          detaljer={`Totalt ${antallHjelpemidler} hjelpemidler${harTilknyttedeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler} stk tilbehør` : ''}`}
-        >
-          <VStack gap="space-12">
-            {hjelpemidler.map((hjelpemiddel) => (
-              <Box
-                key={hjelpemiddel.produkt.hmsArtNr}
-                paddingInline="space-12"
-                background="neutral-softA"
-                borderColor="neutral-subtle"
-                borderWidth="1"
-                borderRadius="8"
-              >
+      <VStack gap="space-8" paddingBlock={'space-12 space-0'}>
+        <InlineMessage status="info" size="small">
+          {`Totalt ${antallHjelpemidler} hjelpemidler${harTilknyttedeTilbehør || harFrittståendeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør} stk tilbehør${harFrittståendeTilbehør ? ` (${antallFrittståendeTilbehør} stk uten hovedhjelpemiddel)` : ''}` : ''}`}
+        </InlineMessage>
+        {hjelpemidler.length > 0 && (
+          <section>
+            <Heading size="xsmall" level="2" textColor="subtle">
+              Hjelpemidler
+            </Heading>
+            <VStack gap="space-12" paddingInline="space-2" paddingBlock="space-8 space-0">
+              {hjelpemidler.map((hjelpemiddel) => (
                 <HjelpemiddelV2
                   sak={sak}
                   hjelpemiddel={hjelpemiddel}
@@ -90,16 +86,14 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
                   }
                   harOppdatertLagerstatus={harOppdatertLagerstatus}
                 />
-              </Box>
-            ))}
-          </VStack>
-        </CollapsiblePanel>
-      )}
+              ))}
+            </VStack>
+          </section>
+        )}
+      </VStack>
 
       {tilbehør && tilbehør.length > 0 && (
-        <CollapsiblePanel label="TILBEHØR" detaljer={`Totalt ${antallFrittståendeTilbehør} stk`}>
-          <FrittStåendeTilbehørV2 sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
-        </CollapsiblePanel>
+        <FrittStåendeTilbehørV2 sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
       )}
     </VStack>
   )

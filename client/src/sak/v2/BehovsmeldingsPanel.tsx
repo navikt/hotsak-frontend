@@ -1,20 +1,21 @@
 import { Box, HStack, VStack } from '@navikt/ds-react'
+import { CompactExpandableCard } from '../../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { PanelTittel } from '../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../felleskomponenter/ScrollablePanel.tsx'
+import { Skillelinje } from '../../felleskomponenter/Strek.tsx'
 import { Tekst } from '../../felleskomponenter/typografi.tsx'
-import { Bruker } from '../../saksbilde/bruker/Bruker.tsx'
-import { Formidler } from '../../saksbilde/formidler/Formidler.tsx'
+import { Leveringinfo } from '../../saksbilde/bruker/Leveringinfo.tsx'
 import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
 import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
+import { BrukerV2 } from './behovsmelding/BrukerV2.tsx'
+import { FormidlerV2, OppfølgingsansvarligV2 } from './behovsmelding/FormidlerV2.tsx'
+import { FunksjonsbeskrivelseV2 } from './behovsmelding/FunksjonsbeksrivelseV2.tsx'
+import Hjelpemidler from './behovsmelding/Hjelpemidler.tsx'
+import { SignaturV2 } from './behovsmelding/signatur/SignaturV2.tsx'
 import classes from './BehovsmeldingsPanel.module.css'
 import { useClosePanel } from './paneler/usePanelHooks.ts'
-import { BrukersFunksjon } from '../../saksbilde/hjelpemidler/BrukersFunksjon.tsx'
-import { CollapsiblePanel } from '../../felleskomponenter/panel/CollapsiblePanel.tsx'
-import { Leveringinfo } from '../../saksbilde/bruker/Leveringinfo.tsx'
-import { Signatur } from '../../saksbilde/bruker/Signatur.tsx'
-import HjelpemidlerBoxTest from './behovsmelding/HjelpemidlerBoxTest.tsx'
 
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')
@@ -24,7 +25,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
     <Box
       background="default"
       paddingBlock="space-0 space-36"
-      paddingInline="space-16 space-0"
+      paddingInline="space-12 space-0"
       style={{ height: '100%' }}
     >
       <PanelTittel tittel="Søknad om hjelpemidler" lukkPanel={lukkPanel} />
@@ -36,44 +37,48 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           </Tekst>
         </HStack>
 
-        <VStack gap="space-16">
+        <VStack gap="space-16" paddingInline="space-4">
           <section className={classes.søknadContainer}>
-            <HjelpemidlerBoxTest sak={sak} behovsmelding={behovsmelding} />
+            <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />
           </section>
 
           <section>
-            {funksjonsbeskrivelse && (
-              <CollapsiblePanel label="FUNKSJONSBESKRIVELSE">
-                <BrukersFunksjon funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />
-              </CollapsiblePanel>
-            )}
-          </section>
-          <section>
-            <CollapsiblePanel label="HJELPEMIDDELBRUKER">
-              <Bruker
+            <CompactExpandableCard tittel="Om personen">
+              {funksjonsbeskrivelse && (
+                <>
+                  <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />
+                  <Skillelinje />
+                </>
+              )}
+              <BrukerV2
                 bruker={sak.bruker}
                 behovsmeldingsbruker={behovsmelding.bruker}
                 brukerSituasjon={behovsmelding.brukersituasjon}
-                levering={behovsmelding.levering}
                 vilkår={behovsmelding.brukersituasjon.vilkår}
                 skjulHeading={true}
               />
-            </CollapsiblePanel>
+            </CompactExpandableCard>
           </section>
+
           <section>
-            <CollapsiblePanel label="LEVERING">
+            <CompactExpandableCard tittel="Levering">
               <Leveringinfo behovsmeldingsbruker={behovsmelding.bruker} levering={behovsmelding.levering} />
-            </CollapsiblePanel>
+            </CompactExpandableCard>
           </section>
           <section>
-            <CollapsiblePanel label="FORMIDLER">
-              <Formidler levering={behovsmelding.levering} skjulHeading={true} />
-            </CollapsiblePanel>
+            <CompactExpandableCard tittel="Formidler">
+              <FormidlerV2 levering={behovsmelding.levering} />
+            </CompactExpandableCard>
           </section>
           <section>
-            <CollapsiblePanel label="SIGNATUR">
-              <Signatur bruker={sak.bruker} signaturType={behovsmelding.bruker.signaturtype} />
-            </CollapsiblePanel>
+            <CompactExpandableCard tittel="Oppfølgings- og opplæringsansvarlig">
+              <OppfølgingsansvarligV2 levering={behovsmelding.levering} />
+            </CompactExpandableCard>
+          </section>
+          <section>
+            <CompactExpandableCard tittel="Signatur">
+              <SignaturV2 bruker={sak.bruker} signaturType={behovsmelding.bruker.signaturtype} />
+            </CompactExpandableCard>
           </section>
         </VStack>
       </ScrollablePanel>

@@ -24,6 +24,7 @@ export function useSummering(hjelpemidler: Hjelpemiddel[], frittstående: Tilbeh
     antallHjelpemidler,
     antallTilbehørTilknyttetHjelpemidler,
     harTilknyttedeTilbehør: antallTilbehørTilknyttetHjelpemidler > 0,
+    harFrittståendeTilbehør: antallFrittståendeTilbehør > 0,
     antallFrittståendeTilbehør,
     totaltAntall: antallHjelpemidler + antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør,
   }
@@ -33,6 +34,7 @@ export interface Summering {
   antallHjelpemidler: number
   antallTilbehørTilknyttetHjelpemidler: number
   harTilknyttedeTilbehør: boolean
+  harFrittståendeTilbehør: boolean
   antallFrittståendeTilbehør: number
   totaltAntall: number
 }

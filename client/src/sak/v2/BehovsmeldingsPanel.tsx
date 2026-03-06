@@ -43,7 +43,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
           </section>
 
           <section>
-            <CompactExpandableCard tittel="Om personen">
+            <CompactExpandableCard tittel="Bruker">
               {funksjonsbeskrivelse && (
                 <>
                   <FunksjonsbeskrivelseV2 funksjonsbeskrivelse={funksjonsbeskrivelse} skjulHeading={true} />

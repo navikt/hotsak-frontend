@@ -54,8 +54,8 @@ export const TabSyncPlugin = createPlatePlugin({
       if (plugin.options.onChangeLocked) {
         return
       }
-      let newMessage: TabSyncPluginMessage = {
-        brevId: brevId!!,
+      const newMessage: TabSyncPluginMessage = {
+        brevId: brevId!,
         state: {
           value,
           history,

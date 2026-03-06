@@ -249,7 +249,7 @@ export const saksbehandlingHandlers: StoreHandlersFactory = ({
     const sakId = params.sakId
 
     const behandlingerForSak = await sakStore.hentBehandlinger(sakId)
-    const gjeldendeBehandling = behandlingerForSak[0]!!
+    const gjeldendeBehandling = behandlingerForSak[0]!
 
     const vedtaksResultat = gjeldendeBehandling.utfall?.utfall as VedtaksResultat
     await oppgaveStore.ferdigstillOppgave(gjeldendeBehandling!.oppgaveId)

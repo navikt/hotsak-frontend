@@ -112,8 +112,8 @@ export function Formidler({ levering, skjulHeading = false }: FormidlerProps) {
   return (
     <div style={{ paddingBlock: '0 var(--ax-space-64)' }}>
       <Box paddingBlock="space-12 space-0" paddingInline="space-32 space-0">
-        {skjulHeading && (
-          <Heading level="2" size="small" spacing={!nyttSaksbilde}>
+        {!skjulHeading && (
+          <Heading level="2" size="small">
             Hjelpemiddelformidler
           </Heading>
         )}

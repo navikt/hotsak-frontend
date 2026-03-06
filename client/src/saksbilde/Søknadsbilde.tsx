@@ -79,8 +79,8 @@ const SaksbildeContent = memo(() => {
                           bruker={sak.data.bruker}
                           behovsmeldingsbruker={behovsmelding.bruker}
                           brukerSituasjon={behovsmelding.brukersituasjon}
-                          levering={behovsmelding.levering}
                           vilkår={behovsmelding.brukersituasjon.vilkår}
+                          levering={behovsmelding.levering}
                         />
                       </Box>
                     }

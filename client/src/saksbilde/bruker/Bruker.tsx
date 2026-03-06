@@ -18,6 +18,8 @@ import {
   formaterTelefonnummer,
   storForbokstavIAlleOrd,
 } from '../../utils/formater'
+import { Leveringinfo } from './Leveringinfo'
+import { Fullmakt } from './Fullmakt'
 
 export interface BrukerProps {
   bruker: Hjelpemiddelbruker
@@ -36,7 +38,6 @@ export function Bruker({
   vilkår,
   skjulHeading = false,
 }: BrukerProps) {
-  const { utleveringMerknad } = levering
   const formatertNavn = formaterNavn(bruker)
   const adresseBruker = formaterAdresse(behovsmeldingsbruker.veiadresse)
   const formatertFnr = formaterFødselsnummer(bruker.fnr)
@@ -45,7 +46,7 @@ export function Bruker({
   return (
     <>
       {!skjulHeading && (
-        <Heading level="2" size="small">
+        <Heading level="2" size="small" spacing>
           Hjelpemiddelbruker
         </Heading>
       )}
@@ -74,6 +75,15 @@ export function Bruker({
         </HStack>
       </VStack>
 
+      <Skillelinje />
+
+      <Heading level="2" size="small" spacing>
+        Levering
+      </Heading>
+      <Leveringinfo behovsmeldingsbruker={behovsmeldingsbruker} levering={levering} />
+
+      <Skillelinje />
+      <Fullmakt navn={formatertNavn} headingLevel="2" />
       <Skillelinje />
       <Heading level="2" size="small" spacing>
         Formidlers vurdering

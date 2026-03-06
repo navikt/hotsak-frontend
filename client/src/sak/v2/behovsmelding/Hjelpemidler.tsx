@@ -62,7 +62,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
 
       <VStack gap="space-8" paddingBlock={'space-12 space-0'}>
         <InlineMessage status="info" size="small">
-          {`Totalt ${antallHjelpemidler} hjelpemidler${harTilknyttedeTilbehør || harFrittståendeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør} stk tilbehør${harFrittståendeTilbehør ? ` (${antallFrittståendeTilbehør} stk uten hovedhjelpemiddel)` : ''}` : ''}`}
+          {`Totalt ${antallHjelpemidler} stk${harTilknyttedeTilbehør || harFrittståendeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør} stk tilbehør${harFrittståendeTilbehør ? ` (${antallFrittståendeTilbehør} stk uten hovedhjelpemiddel)` : ''}` : ''}`}
         </InlineMessage>
         {hjelpemidler.length > 0 && (
           <section>

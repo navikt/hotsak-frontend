@@ -1,7 +1,6 @@
-import { Button, Tooltip } from '@navikt/ds-react'
 import { LinkIcon } from '@navikt/aksel-icons'
-import { useLinkToolbarButton, useLinkToolbarButtonState } from '@platejs/link/react'
-import { useBreveditorContext } from '../Breveditor.tsx'
+import { Button, Tooltip } from '@navikt/ds-react'
+import { useLinkKnapp } from './useLinkKnapp'
 
 const LinkKnapp = () => {
   const { disabled, active, onMouseDown, onClick } = useLinkKnapp()
@@ -25,17 +24,3 @@ const LinkKnapp = () => {
 }
 
 export default LinkKnapp
-
-export const useLinkKnapp = () => {
-  const breveditor = useBreveditorContext()
-  const state = useLinkToolbarButtonState()
-  const {
-    props: { pressed, onClick, onMouseDown },
-  } = useLinkToolbarButton(state)
-  return {
-    onClick,
-    onMouseDown,
-    active: breveditor.erPlateContentFokusert && pressed,
-    disabled: !breveditor.erPlateContentFokusert,
-  }
-}

@@ -3,9 +3,9 @@ import { useEditorRef, useEditorState } from 'platejs/react'
 import { FileParagraphIcon } from '@navikt/aksel-icons'
 import { useState } from 'react'
 import { MarkdownPlugin } from '@platejs/markdown'
-import { useBreveditorContext } from '../Breveditor.tsx'
 import avslagDetYtesIkkeStonadTilSengForSmertelindringOgAvlasting from '../../brevmaler/delmaler/avslag-det-ytes-ikke-stønad-for-smertelindring-avlasting.md?raw'
 import avslagDyneKuledyne from '../../brevmaler/delmaler/avslag-dyne-kulekjededyne.md?raw'
+import { useBreveditorContext } from '../BreveditorContext'
 
 const SettInnDelmalKnapp = () => {
   const breveditor = useBreveditorContext()

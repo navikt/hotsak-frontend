@@ -24,7 +24,7 @@ export function OpprettEndreLinkPanel() {
       setOptions({
         url: urlTransform(opts.text.trim()),
       })
-  }, [])
+  }, [getOptions, setOptions])
 
   // Submit endringer og feilhåndtering
   const [harUrlError, settHarUrlError] = useState(false)

@@ -28,5 +28,5 @@ export function useLogVinduStørrelse() {
       window.removeEventListener('resize', handleResize)
       clearTimeout(timeoutId)
     }
-  }, [isReady])
+  }, [isReady, useLogVinduStørrelse])
 }

@@ -1,4 +1,4 @@
-import MarkKnapp from './hjelpere/MarkKnapp.tsx'
+import MarkKnapp from './hjelpere/MarkKnapp/MarkKnapp.tsx'
 
 const UnderlinjeKnapp = () => {
   return (

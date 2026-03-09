@@ -41,7 +41,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
     editor.tf.withoutSaving(() => {
       editor.tf.insertText(EMPTY_CHAR, { at: { path: textPath, offset: 0 } })
     })
-  }, [editor, element, text])
+  }, [editor, element, text, setPlaceholderFeil])
 
   const handleDelete = useCallback(
     (e: React.MouseEvent) => {
@@ -102,7 +102,7 @@ export const Placeholder = (props: PlateElementProps<PlaceholderElement>) => {
         editor.tf.focus()
       })
     },
-    [editor, element, erTom, text]
+    [editor, element, erTom]
   )
 
   const handlePaste = useCallback(

@@ -8,13 +8,13 @@ import {
   MenuElipsisVerticalCircleIcon,
   ShrinkIcon,
 } from '@navikt/aksel-icons'
-import { useBreveditorContext } from '../Breveditor.tsx'
 import { useAngreKnapp } from './AngreKnapp.tsx'
 import { useGjentaKnapp } from './GjentaKnapp.tsx'
-import { useMarkKnapp } from './hjelpere/MarkKnapp.tsx'
-import { useLinkKnapp } from './LinkKnapp.tsx'
 import { SettInnDelmalModal } from './SettInnDelmalKnapp.tsx'
 import { useState } from 'react'
+import { useBreveditorContext } from '../BreveditorContext.ts'
+import { useMarkKnapp } from './hjelpere/MarkKnapp/useMarkKnapp.ts'
+import { useLinkKnapp } from './LinkKnapp/useLinkKnapp.ts'
 
 const FormateringMeny = () => {
   const breveditor = useBreveditorContext()

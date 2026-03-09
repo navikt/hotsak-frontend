@@ -190,7 +190,7 @@ const OpprettBrevKnapp = ({
 }: {
   velgMal: (mal: string) => void
   unikNøkkel: string
-  importer: Promise<any>
+  importer: Promise<{ default: string }>
   transformerMal?: (mal: string) => string
 }) => {
   const [key, setKey] = useState<string>()
@@ -198,7 +198,7 @@ const OpprettBrevKnapp = ({
 
   useEffect(() => {
     if (data) velgMal(transformerMal ? transformerMal(data) : data)
-  }, [data])
+  }, [data, velgMal, transformerMal])
 
   return (
     <Button
@@ -213,6 +213,6 @@ const OpprettBrevKnapp = ({
   )
 }
 
-const useImporterMal = (key: string | undefined, importer: Promise<any> | undefined) => {
-  return useSWR(key, importer === undefined ? async () => {} : async () => (await importer).default)
+const useImporterMal = (key: string | undefined, importer: Promise<{ default: string }>) => {
+  return useSWR(key, async () => (await importer).default)
 }

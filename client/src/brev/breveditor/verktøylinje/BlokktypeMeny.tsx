@@ -68,7 +68,7 @@ const BlokktypeMeny = () => {
       }}
     >
       <ActionMenu
-        onOpenChange={(open: any) => {
+        onOpenChange={(open: boolean) => {
           if (!open) breveditor.fokuserPlateContent()
         }}
       >

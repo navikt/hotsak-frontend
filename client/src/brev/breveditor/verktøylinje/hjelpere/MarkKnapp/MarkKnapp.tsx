@@ -1,7 +1,6 @@
 import { Button, Tooltip } from '@navikt/ds-react'
-import { useEditorState } from 'platejs/react'
 import { ReactNode } from 'react'
-import { useBreveditorContext } from '../../BreveditorContext'
+import { useMarkKnapp } from './useMarkKnapp'
 
 const MarkKnapp = ({
   tittel,
@@ -32,24 +31,3 @@ const MarkKnapp = ({
 }
 
 export default MarkKnapp
-
-export const useMarkKnapp = (markKey: string) => {
-  const editor = useEditorState()
-  const breveditor = useBreveditorContext()
-
-  const isActive = (() => {
-    if (!breveditor.erPlateContentFokusert) return false
-    if (!editor.selection) return false
-    try {
-      return !!editor.api.mark(markKey)
-    } catch {
-      return false
-    }
-  })()
-
-  return {
-    toggle: () => editor.tf.toggleMark(markKey),
-    active: isActive,
-    disabled: !breveditor.erPlateContentFokusert,
-  }
-}

@@ -9,7 +9,7 @@ on:
       - 'CODEOWNERS'
     branches:
       - main
-      - breveditor-endringer
+      - packagesBug
 
 jobs:
   test:
@@ -71,6 +71,10 @@ jobs:
         uses: navikt/digihot-deploy/actions/pre-deploy@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Autentiser med GitHub NPM registry
+        run: |
+          echo '//npm.pkg.github.com/:_authToken='${{ secrets.READER_TOKEN }} >> client/.npmrc
 
       - name: Bygg og push Docker image
         uses: nais/docker-build-push@v0

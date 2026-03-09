@@ -11,8 +11,9 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 WORKDIR /app
+RUN pnpm config set @navikt:registry=https://npm.pkg.github.com 
 COPY .npmrc client/package.json client/pnpm-lock.yaml client/pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN cat .npmrc && pnpm install --frozen-lockfile
 COPY client .
 RUN pnpm run test:ci && pnpm run build
 

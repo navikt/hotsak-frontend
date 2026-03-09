@@ -15,7 +15,7 @@ RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
 RUN pnpm config set @navikt:registry=https://npm.pkg.github.com
 WORKDIR /app
 COPY client/package.json client/pnpm-lock.yaml client/pnpm-workspace.yaml ./
-RUN cat .npmrc && pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 COPY client .
 RUN pnpm run test:ci && pnpm run build
 

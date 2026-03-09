@@ -1,8 +1,8 @@
 import { XMarkIcon } from '@navikt/aksel-icons'
 import { Button, ErrorSummary } from '@navikt/ds-react'
-import { useBreveditorContext } from '../../../Breveditor'
 import styles from './PlaceholderErrorSummary.module.css'
 import { useBrevContext } from '../../../../Brev'
+import { useBreveditorContext } from '../../../BreveditorContext'
 
 export const PlaceholderErrorSummary = () => {
   const { focusPath } = useBreveditorContext()

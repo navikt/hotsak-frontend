@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { useEditorRef, useEditorSelector } from 'platejs/react'
 import { someList, toggleList } from '@platejs/list-classic'
 import type { ReactNode } from 'react'
-import { useBreveditorContext } from '../../Breveditor.tsx'
+import { useBreveditorContext } from '../../BreveditorContext'
 
 const ListeKnapp = ({ tittel, listeStilType, ikon }: { tittel: string; listeStilType: string; ikon: ReactNode }) => {
   const { disabled, onClick, active } = useListeKnapp(listeStilType)

@@ -1,7 +1,7 @@
 import { Button, Tooltip } from '@navikt/ds-react'
 import { useEditorState } from 'platejs/react'
 import { ReactNode } from 'react'
-import { useBreveditorContext } from '../../Breveditor.tsx'
+import { useBreveditorContext } from '../../BreveditorContext'
 
 const MarkKnapp = ({
   tittel,

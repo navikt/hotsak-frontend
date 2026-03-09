@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@navikt/ds-react'
 import { ExpandIcon, ShrinkIcon } from '@navikt/aksel-icons'
-import { useBreveditorContext } from '../Breveditor.tsx'
+import { useBreveditorContext } from '../BreveditorContext'
 
 const SvitsjMargerKnapp = () => {
   const breveditor = useBreveditorContext()

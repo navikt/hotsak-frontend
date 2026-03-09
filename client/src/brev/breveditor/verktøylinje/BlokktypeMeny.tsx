@@ -11,7 +11,7 @@ import {
 } from '@navikt/aksel-icons'
 import { someList, toggleList } from '@platejs/list-classic'
 import { TypeH1, TypeH2, TypeH3 } from '@styled-icons/bootstrap'
-import { useBreveditorContext } from '../Breveditor.tsx'
+import { useBreveditorContext } from '../BreveditorContext'
 
 const BlokktypeMeny = () => {
   const breveditor = useBreveditorContext()

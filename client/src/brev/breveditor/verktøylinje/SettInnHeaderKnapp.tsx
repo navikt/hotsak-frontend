@@ -1,7 +1,7 @@
 import { Button, Tooltip } from '@navikt/ds-react'
 import { PlusIcon } from '@navikt/aksel-icons'
-import { useBreveditorContext } from '../Breveditor.tsx'
 import { useEditorRef } from 'platejs/react'
+import { useBreveditorContext } from '../BreveditorContext'
 
 const SettInnHeaderKnapp = () => {
   const breveditor = useBreveditorContext()

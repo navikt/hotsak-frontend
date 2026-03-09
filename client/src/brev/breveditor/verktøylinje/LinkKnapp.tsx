@@ -1,7 +1,7 @@
 import { Button, Tooltip } from '@navikt/ds-react'
 import { LinkIcon } from '@navikt/aksel-icons'
 import { useLinkToolbarButton, useLinkToolbarButtonState } from '@platejs/link/react'
-import { useBreveditorContext } from '../Breveditor.tsx'
+import { useBreveditorContext } from '../BreveditorContext'
 
 const LinkKnapp = () => {
   const { disabled, active, onMouseDown, onClick } = useLinkKnapp()

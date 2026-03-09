@@ -8,11 +8,11 @@ import UnderlinjeKnapp from './UnderlinjeKnapp.tsx'
 import PunktlisteKnapp from './PunktlisteKnapp.tsx'
 import NummerertListeKnapp from './NummerertListeKnapp.tsx'
 import SvitsjMargerKnapp from './SvitsjMargerKnapp.tsx'
-import { useBreveditorContext } from '../Breveditor.tsx'
 import LinkKnapp from './LinkKnapp.tsx'
 import SettInnDelmalKnapp from './SettInnDelmalKnapp.tsx'
 import FormateringMeny from './FormateringMeny.tsx'
 import { useRefSize } from '../hooks.ts'
+import { useBreveditorContext } from '../BreveditorContext.ts'
 
 const Verktøylinje = () => {
   const breveditor = useBreveditorContext()

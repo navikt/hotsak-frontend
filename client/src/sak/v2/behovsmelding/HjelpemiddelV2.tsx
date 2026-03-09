@@ -55,10 +55,16 @@ export function HjelpemiddelV2({
   const harAlternativeProdukter = alternativeProdukter.length > 0
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
 
+  const harVarsler =
+    (hjelpemiddel.varsler && hjelpemiddel.varsler.length > 0) ||
+    (hjelpemiddel.saksbehandlingvarsel && hjelpemiddel.saksbehandlingvarsel.length > 0)
+
+  const harOpplysninger = hjelpemiddel.opplysninger.length > 0
+
   return (
     <>
       <CompactExpandableCard tittel={produkt?.isotittel || 'Mangler kategori'}>
-        <Box style={{ borderBottom: '1px solid var(--ax-border-neutral-subtleA)' }}>
+        <Box>
           <VStack key={hjelpemiddel.produkt.hmsArtNr} paddingBlock="space-8" gap="space-12" paddingInline="space-12">
             <TextContainer>
               <VStack gap="space-4">
@@ -139,7 +145,8 @@ export function HjelpemiddelV2({
             </VStack>
           </VStack>
         </Box>
-        <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-16">
+        {(harVarsler || harOpplysninger) && <Skillelinje />}
+        <VStack gap="space-8" paddingInline="space-12" paddingBlock="space-4 space-12">
           <Varsler varsler={hjelpemiddel.varsler} />
           <Varsler varsler={hjelpemiddel.saksbehandlingvarsel} />
           <Opplysninger opplysninger={hjelpemiddel.opplysninger} />

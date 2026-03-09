@@ -42,7 +42,7 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
             <Hjelpemidler sak={sak} behovsmelding={behovsmelding} />
           </section>
 
-          <section>
+          <section className={classes.panel}>
             <CompactExpandableCard tittel="Bruker">
               {funksjonsbeskrivelse && (
                 <>
@@ -60,22 +60,22 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
             </CompactExpandableCard>
           </section>
 
-          <section>
+          <section className={classes.panel}>
             <CompactExpandableCard tittel="Levering">
               <Leveringinfo behovsmeldingsbruker={behovsmelding.bruker} levering={behovsmelding.levering} />
             </CompactExpandableCard>
           </section>
-          <section>
+          <section className={classes.panel}>
             <CompactExpandableCard tittel="Formidler">
               <FormidlerV2 levering={behovsmelding.levering} />
             </CompactExpandableCard>
           </section>
-          <section>
+          <section className={classes.panel}>
             <CompactExpandableCard tittel="Oppfølgings- og opplæringsansvarlig">
               <OppfølgingsansvarligV2 levering={behovsmelding.levering} />
             </CompactExpandableCard>
           </section>
-          <section>
+          <section className={classes.panel}>
             <CompactExpandableCard tittel="Signatur">
               <SignaturV2 bruker={sak.bruker} signaturType={behovsmelding.bruker.signaturtype} />
             </CompactExpandableCard>

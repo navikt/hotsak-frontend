@@ -11,6 +11,7 @@ export interface LeveringsmåteProps {
 
 export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
+
   return (
     <VStack gap="space-4">
       <HStack gap="space-6">

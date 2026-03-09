@@ -2,3 +2,7 @@
   padding-top: 1rem;
   box-sizing: border-box;
 }
+
+.panel {
+  padding-inline: var(--ax-space-0) var(--ax-space-12);
+}

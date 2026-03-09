@@ -75,7 +75,6 @@ jobs:
       - name: Autentiser med GitHub NPM registry
         run: |
           echo '//npm.pkg.github.com/:_authToken='${{ secrets.READER_TOKEN }} >> client/.npmrc
-          echo '@navikt:registry=https://npm.pkg.github.com' >> client/.npmrc
 
       - name: Bygg og push Docker image
         uses: nais/docker-build-push@v0

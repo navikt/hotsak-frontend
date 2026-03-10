@@ -109,7 +109,11 @@ function Tilbehør({
           />
         )}
         <HStack gap="space-12">
-          <ProduktV2 hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
+          <ProduktV2
+            hmsnr={tilbehør.hmsArtNr || '-'}
+            navn={tilbehør.navn || '-'}
+            gjennomstrek={endretTilbehør !== undefined}
+          />
         </HStack>
         <HStack paddingBlock={'space-8 space-0'}>
           <div>

@@ -94,32 +94,24 @@ export function HjelpemiddelV2({
                 </div>
               )}
               <HStack gap="space-4" align={'center'}>
-                {hjelpemiddel.produkt.rangering && hjelpemiddel.produkt.rangering > 1 ? (
-                  <Tag
-                    data-color="warning"
-                    size="xsmall"
-                    variant="moderate"
-                  >{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tag>
-                ) : (
-                  <Tekst>{`Rangering ${hjelpemiddel.produkt.rangering}`}</Tekst>
-                )}
-                <div>
-                  <Tekst textColor="subtle">|</Tekst>
-                </div>
+                <Tag
+                  data-color={hjelpemiddel.produkt.rangering === 1 ? 'info' : 'warning'}
+                  size="small"
+                  variant="moderate"
+                >
+                  {hjelpemiddel.produkt.rangering ? `Rangering ${hjelpemiddel.produkt.rangering}` : 'Ingen rangering'}
+                </Tag>
+
                 <AntallTag antall={hjelpemiddel.antall} />
                 {minmaxStyrt && (
-                  <>
-                    <Tekst textColor="subtle">|</Tekst>
-                    <Tekst>Min/max lagervare</Tekst>
-                  </>
+                  <Tag data-color="info" size="small" variant="moderate">
+                    Min/max lagervare
+                  </Tag>
                 )}
                 {harAlternativeProdukter && (
-                  <>
-                    <Tekst textColor="subtle">|</Tekst>
-                    <Tag data-color="info" size="xsmall" variant="moderate">
-                      Har alternativliste
-                    </Tag>
-                  </>
+                  <Tag data-color="info" size="small" variant="moderate">
+                    Har alternativliste
+                  </Tag>
                 )}
                 {kanEndreHmsnr && (
                   <div>

@@ -8,7 +8,7 @@ import { Leveringinfo } from '../../saksbilde/bruker/Leveringinfo.tsx'
 import { Innsenderbehovsmelding } from '../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../types/types.internal.ts'
 import { formaterTidsstempel } from '../../utils/dato.ts'
-import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
+import { formaterNavn, storForbokstavIAlleOrd } from '../../utils/formater.ts'
 import { BrukerV2 } from './behovsmelding/BrukerV2.tsx'
 import { FormidlerV2, OppfølgingsansvarligV2 } from './behovsmelding/FormidlerV2.tsx'
 import { FunksjonsbeskrivelseV2 } from './behovsmelding/FunksjonsbeksrivelseV2.tsx'
@@ -20,6 +20,7 @@ import { useClosePanel } from './paneler/usePanelHooks.ts'
 export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsmelding: Innsenderbehovsmelding }) {
   const lukkPanel = useClosePanel('behovsmeldingspanel')
   const funksjonsbeskrivelse = behovsmelding.brukersituasjon.funksjonsbeskrivelse
+  const formidler = behovsmelding.levering.hjelpemiddelformidler
 
   return (
     <Box
@@ -32,10 +33,11 @@ export function BehovsmeldingsPanel({ sak, behovsmelding }: { sak: Sak; behovsme
       <ScrollablePanel paddingInline="space-0 space-4">
         <HStack gap="space-20">
           <Tekst textColor="subtle">Mottatt: {formaterTidsstempel(sak.opprettet)}</Tekst>
-          <Tekst textColor="subtle">
+          <Tekst textColor="subtle" spacing>
             Område: {storForbokstavIAlleOrd(behovsmelding.brukersituasjon.funksjonsnedsettelser.join(', '))}
           </Tekst>
         </HStack>
+        <Tekst textColor="subtle">{`Sendt inn av ${formaterNavn(formidler.navn)} - ${formidler.stilling} - ${formidler.arbeidssted}`}</Tekst>
 
         <VStack gap="space-16" paddingInline="space-4">
           <section className={classes.søknadContainer}>

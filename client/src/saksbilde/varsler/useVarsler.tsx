@@ -6,6 +6,7 @@ interface VarslerDataResponse {
   harAnnenLeveringsadresse: boolean
   harBeskjedTilKommune: boolean
   harAnnenKontaktperson: boolean
+  alleHjelpemidlerErUtlevert: boolean
   harVarsler: boolean
   varsler: Varsel[]
   isLoading: boolean
@@ -74,6 +75,7 @@ export function useSøknadsVarsler(): VarslerDataResponse {
     harAnnenLeveringsadresse,
     harBeskjedTilKommune,
     harAnnenKontaktperson,
+    alleHjelpemidlerErUtlevert,
     varsler,
     harVarsler: erSøknad && beskrivelser.length > 0,
     isLoading: false,

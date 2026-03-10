@@ -1,6 +1,7 @@
-import { Heading, InlineMessage, VStack } from '@navikt/ds-react'
+import { InlineMessage, VStack } from '@navikt/ds-react'
 import { memo, useMemo } from 'react'
 
+import { CollapsiblePanel } from '../../../felleskomponenter/panel/CollapsiblePanel.tsx'
 import { Hast } from '../../../saksbilde/hjelpemidler/Hast.tsx'
 import { OebsAlert } from '../../../saksbilde/hjelpemidler/OebsAlert.tsx'
 import {
@@ -9,6 +10,7 @@ import {
   useProduktLagerInfo,
 } from '../../../saksbilde/hjelpemidler/useAlternativeProdukter.ts'
 import { useHjelpemiddelprodukter } from '../../../saksbilde/hjelpemidler/useHjelpemiddelprodukter.ts'
+import { useSøknadsVarsler } from '../../../saksbilde/varsler/useVarsler.tsx'
 import { BehovsmeldingType, type Innsenderbehovsmelding } from '../../../types/BehovsmeldingTypes.ts'
 import { Sak } from '../../../types/types.internal.ts'
 import { useArtiklerForSak } from '../../felles/useArtiklerForSak.ts'
@@ -43,6 +45,7 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
   const { alternativeProdukterByHmsArtNr, harOppdatertLagerstatus } = useAlternativeProdukter(alleHjelpemidler)
   const { produkter: lagerinfoForProdukter } = useProduktLagerInfo(alleHmsNr)
   const { artikler } = useArtiklerForSak(sak.sakId)
+  const { alleHjelpemidlerErUtlevert } = useSøknadsVarsler()
   const artiklerSomIkkeFinnesIOebs = artikler.filter((artikkel) => !artikkel.finnesIOebs)
 
   const {
@@ -60,41 +63,45 @@ function Hjelpemidler({ sak, behovsmelding }: HjelpemidlerProps) {
         <OebsAlert hjelpemidler={artiklerSomIkkeFinnesIOebs} />
       )}
 
-      <VStack gap="space-8" paddingBlock={'space-12 space-0'}>
-        <InlineMessage status="info" size="small">
-          {`Totalt ${antallHjelpemidler} stk${harTilknyttedeTilbehør || harFrittståendeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør} stk tilbehør${harFrittståendeTilbehør ? ` (${antallFrittståendeTilbehør} stk uten hovedhjelpemiddel)` : ''}` : ''}`}
-        </InlineMessage>
-        {hjelpemidler.length > 0 && (
-          <section>
-            <Heading size="xsmall" level="2" textColor="subtle">
-              Hjelpemidler
-            </Heading>
-            <VStack gap="space-12" paddingInline="space-2" paddingBlock="space-8 space-0">
-              {hjelpemidler.map((hjelpemiddel) => (
-                <HjelpemiddelV2
-                  sak={sak}
-                  hjelpemiddel={hjelpemiddel}
-                  produkter={hjelpemiddelprodukter}
-                  minmaxStyrt={
-                    lagerinfoForProdukter[hjelpemiddel.produkt.hmsArtNr]?.wareHouseStock?.some(
-                      (l) => l?.minmax === true
-                    ) || false
-                  }
-                  alternativeProdukter={
-                    alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ??
-                    ingenAlternativeProdukterForHmsArtNr
-                  }
-                  harOppdatertLagerstatus={harOppdatertLagerstatus}
-                />
-              ))}
-            </VStack>
-          </section>
-        )}
-      </VStack>
+      <CollapsiblePanel label={hjelpemidler.length > 0 ? 'Hjelpemidler' : 'Tilbehør'}>
+        <VStack gap="space-8" paddingBlock={'space-12 space-0'}>
+          <InlineMessage status="info" size="small">
+            {`Totalt ${antallHjelpemidler} ${antallHjelpemidler === 1 ? 'hjelpemiddel' : 'hjelpemidler'}${harTilknyttedeTilbehør || harFrittståendeTilbehør ? ` og ${antallTilbehørTilknyttetHjelpemidler + antallFrittståendeTilbehør} tilbehør` : ''}`}
+          </InlineMessage>
+          {alleHjelpemidlerErUtlevert && (
+            <InlineMessage status="warning" size="small">
+              Alle hjelpemidlene er utlevert
+            </InlineMessage>
+          )}
+          {hjelpemidler.length > 0 && (
+            <section>
+              <VStack gap="space-12" paddingInline="space-2" paddingBlock="space-8 space-0">
+                {hjelpemidler.map((hjelpemiddel) => (
+                  <HjelpemiddelV2
+                    sak={sak}
+                    hjelpemiddel={hjelpemiddel}
+                    produkter={hjelpemiddelprodukter}
+                    minmaxStyrt={
+                      lagerinfoForProdukter[hjelpemiddel.produkt.hmsArtNr]?.wareHouseStock?.some(
+                        (l) => l?.minmax === true
+                      ) || false
+                    }
+                    alternativeProdukter={
+                      alternativeProdukterByHmsArtNr[hjelpemiddel.produkt.hmsArtNr] ??
+                      ingenAlternativeProdukterForHmsArtNr
+                    }
+                    harOppdatertLagerstatus={harOppdatertLagerstatus}
+                  />
+                ))}
+              </VStack>
+            </section>
+          )}
+        </VStack>
 
-      {tilbehør && tilbehør.length > 0 && (
-        <FrittStåendeTilbehørV2 sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
-      )}
+        {tilbehør && tilbehør.length > 0 && (
+          <FrittStåendeTilbehørV2 sakId={sak.sakId} tilbehør={tilbehør} produkter={hjelpemiddelprodukter} />
+        )}
+      </CollapsiblePanel>
     </VStack>
   )
 }

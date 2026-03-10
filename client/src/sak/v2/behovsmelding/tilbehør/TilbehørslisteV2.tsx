@@ -111,12 +111,25 @@ function Tilbehør({
         <HStack gap="space-12">
           <ProduktV2 hmsnr={tilbehør.hmsArtNr || '-'} navn={tilbehør.navn || '-'} />
         </HStack>
-        <VStack paddingBlock={'space-8 space-0'}>
-          <Etikett>Antall</Etikett>
+        <HStack paddingBlock={'space-8 space-0'}>
           <div>
             <AntallTag antall={tilbehør.antall} />
           </div>
-        </VStack>
+          {kanEndreHmsnr && (
+            <div>
+              <Button
+                variant="tertiary"
+                size="xsmall"
+                icon={<PencilIcon />}
+                onClick={() => {
+                  setVisAlternativerModal(true)
+                }}
+              >
+                Endre
+              </Button>
+            </div>
+          )}
+        </HStack>
         {harEndretTilbehør && (
           <Box paddingInline="space-16 space-0">
             <Etikett>Endret av saksbehandler, begrunnelse:</Etikett>
@@ -134,20 +147,6 @@ function Tilbehør({
           </Box>
         )}
         {!frittståendeTilbehør && <Begrunnelse tilbehør={tilbehør} />}
-        {kanEndreHmsnr && (
-          <div>
-            <Button
-              variant="tertiary"
-              size="xsmall"
-              icon={<PencilIcon />}
-              onClick={() => {
-                setVisAlternativerModal(true)
-              }}
-            >
-              Endre tilbehør
-            </Button>
-          </div>
-        )}
       </VStack>
       <EndreTilbehørModal
         åpen={visAlternativerModal}

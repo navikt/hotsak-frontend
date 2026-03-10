@@ -14,18 +14,18 @@ export function CollapsiblePanel({ label, detaljer, defaultCollapsed = false, ch
 
   return (
     <VStack>
-      <HStack align="center">
+      <HStack align="center" gap="space-4">
+        <Heading size="xsmall" level="2" textColor="subtle">
+          {label}
+        </Heading>
         <Button
           variant="tertiary"
           size="small"
           icon={collapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
           onClick={() => setCollapsed(!collapsed)}
         />
-        <Heading size="xsmall" level="2" textColor="subtle">
-          {label}
-        </Heading>
       </HStack>
-      {detaljer && (
+      {!collapsed && detaljer && (
         <InlineMessage status="info" size="small">
           {detaljer}
         </InlineMessage>

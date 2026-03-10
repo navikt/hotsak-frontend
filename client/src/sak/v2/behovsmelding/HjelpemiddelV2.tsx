@@ -2,8 +2,9 @@ import { PencilIcon } from '@navikt/aksel-icons'
 import { Box, Button, Heading, HStack, Tag, VStack } from '@navikt/ds-react'
 
 import { useState } from 'react'
+import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
 import { Skillelinje } from '../../../felleskomponenter/Strek.tsx'
-import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
+import { BrytbarBrødtekst, Etikett, TextContainer } from '../../../felleskomponenter/typografi.tsx'
 import Bytter from '../../../saksbilde/hjelpemidler/Bytter.tsx'
 import { EndreHjelpemiddelModal } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/EndreHjelpemiddelModal.tsx'
 import { useEndreHjelpemiddel } from '../../../saksbilde/hjelpemidler/endreHjelpemiddel/useEndreHjelpemiddel.tsx'
@@ -19,7 +20,6 @@ import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../..
 import { AntallTag } from '../AntallTag.tsx'
 import { ProduktV2 } from './ProduktV2.tsx'
 import { TilbehørlisteV2 } from './tilbehør/TilbehørslisteV2.tsx'
-import { CompactExpandableCard } from '../../../felleskomponenter/panel/CompactExpandableCard.tsx'
 
 interface HjelpemiddelV2Props {
   sak: Sak

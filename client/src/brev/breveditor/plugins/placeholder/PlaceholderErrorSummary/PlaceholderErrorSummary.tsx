@@ -1,8 +1,9 @@
 import { XMarkIcon } from '@navikt/aksel-icons'
 import { Button, ErrorSummary } from '@navikt/ds-react'
 import styles from './PlaceholderErrorSummary.module.css'
-import { useBrevContext } from '../../../../Brev'
 import { useBreveditorContext } from '../../../BreveditorContext'
+import { useBrevContext } from '../../../../BrevContext'
+import { PlaceholderFeil } from '../PlaceholderFeil'
 
 export const PlaceholderErrorSummary = () => {
   const { focusPath } = useBreveditorContext()
@@ -28,7 +29,7 @@ export const PlaceholderErrorSummary = () => {
           top: '0.5rem',
         }}
       />
-      {placeholderFeil.map((f, i) => (
+      {placeholderFeil.map((f: PlaceholderFeil, i: number) => (
         <ErrorSummary.Item
           key={`${f.placeholder}-${i}`}
           href="#"

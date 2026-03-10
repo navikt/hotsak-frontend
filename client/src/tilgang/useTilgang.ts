@@ -54,7 +54,12 @@ export function useIsSaksbehandlerBarnebriller(): boolean {
 
 const piloter = {
   test: [Enhet.IT_AVDELINGEN],
-  nyttSaksbilde: [Enhet.IT_AVDELINGEN, Enhet.NAV_HJELPEMIDDELSENTRAL_AKERSHUS, Enhet.NAV_HJELPEMIDDELSENTRAL_OSLO],
+  nyttSaksbilde: [
+    Enhet.IT_AVDELINGEN,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_AKERSHUS,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_OSLO,
+    Enhet.NAV_HJELPEMIDDELSENTRAL_VESTFOLD_OG_TELEMARK,
+  ],
 } satisfies Record<string, string[]>
 
 export type PilotName = keyof typeof piloter

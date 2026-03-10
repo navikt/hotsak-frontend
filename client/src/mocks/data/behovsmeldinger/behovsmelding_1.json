@@ -2,15 +2,7 @@
   "behovsmeldingId": "1e3f5513-a394-4f59-9020-07a35cb4c7e8",
   "beskrivelse": "behovsmelding_1",
   "behovsmelding": {
-    "saksbehandlingvarsel": [
-      {
-        "tekst": {
-          "nb": "Denne søknaden ble meldt inn sammen med et bytte, men ble automatisk delt opp i to saker. Sakene kan inneholde hjelpemidler som bør behandles samlet. Byttesaken inneholder følgende hjelpemidler: 326540 Cross 6 sb35 sd42-55 lang",
-          "nn": "Denne søknaden ble meldt inn sammen med et bytte, men ble automatisk delt opp i to saker. Sakene kan inneholde hjelpemidler som bør behandles samlet. Byttesaken inneholder følgende hjelpemidler: 326540 Cross 6 sb35 sd42-55 lang"
-        },
-        "type": "WARNING"
-      }
-    ],
+    "saksbehandlingvarsel": [],
     "bruker": {
       "fnr": "13820599335",
       "navn": {
@@ -85,7 +77,7 @@
           "bytter": [],
           "bruksarenaer": ["EGET_HJEM"],
           "utlevertinfo": {
-            "alleredeUtlevertFraHjelpemiddelsentralen": true,
+            "alleredeUtlevertFraHjelpemiddelsentralen": false,
             "utleverttype": "FREMSKUTT_LAGER",
             "overførtFraBruker": null,
             "annenKommentar": null
@@ -103,23 +95,6 @@
                     "nb": "I eget hjem.",
                     "nn": "I eigen heim."
                   },
-                  "begrepsforklaring": null
-                }
-              ]
-            },
-            {
-              "key": {
-                "id": "LAVERE_RANGERING_BEGRUNNELSE",
-                "versjon": 1
-              },
-              "ledetekst": {
-                "nb": "Begrunnelse for lavere rangering",
-                "nn": "Grunngjeving for lågare rangering"
-              },
-              "innhold": [
-                {
-                  "fritekst": "Behov for rullestol med lavest mulig brukervekt og mest mulig lukket vinkel i kne.",
-                  "forhåndsdefinertTekst": null,
                   "begrepsforklaring": null
                 }
               ]
@@ -153,7 +128,7 @@
       },
       "oppfølgingsansvarlig": "HJELPEMIDDELFORMIDLER",
       "annenOppfølgingsansvarlig": null,
-      "utleveringsmåte": "FOLKEREGISTERT_ADRESSE",
+      "utleveringsmåte": "FOLKEREGISTRERT_ADRESSE",
       "annenUtleveringsadresse": null,
       "annenUtleveringskommune": { "navn": "OSLO", "nummer": "0301" },
       "annenUtleveringsbydel": { "navn": "Alna", "nummer": "030112" },

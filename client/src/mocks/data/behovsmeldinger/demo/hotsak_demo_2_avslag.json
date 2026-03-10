@@ -361,7 +361,7 @@
       "annenKontaktperson": null,
       "utleveringMerknad": "Dette er en merknad om utlevering fra formidler som skal med på 5.17",
       "hast": null,
-      "automatiskUtledetTilleggsinfo": []
+      "automatiskUtledetTilleggsinfo": ["ALLE_HJELPEMIDLER_ER_UTLEVERT"]
     },
     "innsender": {
       "rolle": "FORMIDLER",

@@ -5,8 +5,8 @@ import { Button, Tooltip } from '@navikt/ds-react'
 import { PathApi } from 'platejs'
 import styles from './Placeholder.module.css'
 import { ELEMENT_PLACEHOLDER, PlaceholderElement } from '../PlaceholderElement'
-import { useBrevContext } from '../../../../Brev'
 import { validerPlaceholders } from '../PlaceholderFeil'
+import { useBrevContext } from '../../../../BrevContext'
 
 const EMPTY_CHAR = '\uFEFF'
 const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')

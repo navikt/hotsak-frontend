@@ -78,10 +78,10 @@ export function FlytendeLinkVerktøylinje() {
         floatingLinkUrlInput,
       }}
     >
-      <Box ref={insertRef} {...(insertProps as any)} {...flytendeBoxProps}>
+      <Box ref={insertRef} {...(insertProps as React.HTMLAttributes<HTMLDivElement>)} {...flytendeBoxProps}>
         <OpprettEndreLinkPanel />
       </Box>
-      <Box ref={editRef} {...(editProps as any)} {...flytendeBoxProps}>
+      <Box ref={editRef} {...(editProps as React.HTMLAttributes<HTMLDivElement>)} {...flytendeBoxProps}>
         <>
           {floatingLinkEditState.isEditing ? (
             <>

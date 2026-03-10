@@ -1,17 +1,23 @@
 import { createPlatePlugin } from 'platejs/react'
 import { Placeholder } from './Placeholder/Placeholder'
 import { ELEMENT_PLACEHOLDER } from './PlaceholderElement'
+import type { Editor, Path, TElement } from 'platejs'
+
+interface PlaceholderNode extends TElement {
+  type: string
+}
 
 const EMPTY_CHAR = '\uFEFF'
 const EMPTY_CHAR_REGEX = new RegExp(EMPTY_CHAR, 'g')
 
 const hentSynligTekst = (text: string) => text.replace(EMPTY_CHAR_REGEX, '')
 
-const gåTilPlaceholder = (editor: any, node: any, path: any[]) => {
+const gåTilPlaceholder = (editor: Editor, node: PlaceholderNode, path: Path) => {
   const textPath = [...path, 0]
   if (!editor.api.hasPath(textPath)) return
 
-  const text = node.children?.[0]?.text || ''
+  const firstChild = node.children?.[0]
+  const text = ('text' in firstChild ? (firstChild.text as string) : '') || ''
   const synlig = hentSynligTekst(text)
   const offset = text.includes(EMPTY_CHAR) ? 1 : 0
 
@@ -51,9 +57,9 @@ export const PlaceholderPlugin = createPlatePlugin({
       const allePlaceholders = Array.from(
         editor.api.nodes({
           at: [],
-          match: (n: any) => n.type === ELEMENT_PLACEHOLDER,
+          match: (n) => (n as PlaceholderNode).type === ELEMENT_PLACEHOLDER,
         })
-      ) as [any, any[]][]
+      ) as [PlaceholderNode, Path][]
 
       if (allePlaceholders.length === 0) return
 
@@ -65,7 +71,7 @@ export const PlaceholderPlugin = createPlatePlugin({
       // I en liste men ikke i en placeholder — la liste-plugin håndtere Tab for innrykk
       if (currentIndex === -1) {
         const inList = editor.api.some({
-          match: (n: any) => n.type === 'ul' || n.type === 'ol',
+          match: (n) => (n as PlaceholderNode).type === 'ul' || (n as PlaceholderNode).type === 'ol',
         })
         if (inList) return
       }

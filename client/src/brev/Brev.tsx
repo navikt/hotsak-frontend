@@ -1,5 +1,5 @@
 import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
@@ -21,23 +21,7 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-
-interface BrevContextType {
-  placeholderFeil: PlaceholderFeil[]
-  setPlaceholderFeil: (feil: PlaceholderFeil[]) => void
-  synligKryssKnapp: boolean
-  setSynligKryssKnapp: (synlig: boolean) => void
-  datoSoknadMottatt: string | undefined
-  hjelpemidlerSøktOm: string[] | undefined
-}
-
-const BrevContext = createContext<BrevContextType | undefined>(undefined)
-
-export const useBrevContext = () => {
-  const ctx = useContext(BrevContext)
-  if (!ctx) throw new Error('useBrevContext must be used within BrevContextProvider')
-  return ctx
-}
+import { BrevContext } from './BrevContext.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -89,15 +73,17 @@ export const Brev = () => {
             : undefined
       : undefined
 
-  useEffect(() => {
-    // Når backend er oppdatert med state fjerner vi mal-valget slik at vi ikke ender opp i en loop
-    if (brevutkast.data?.data?.value) {
+  const [prevBrevutkastValue, setPrevBrevutkastValue] = useState(brevutkast.data?.data?.value)
+  const currentValue = brevutkast.data?.data?.value
+  if (currentValue !== prevBrevutkastValue) {
+    setPrevBrevutkastValue(currentValue)
+    if (currentValue) {
       velgMal(undefined)
       setOpprettBrevKlikket(false)
       mutateGjeldendeBehandling()
       mutateBrevMetadata()
     }
-  }, [brevutkast.data, setOpprettBrevKlikket, mutateGjeldendeBehandling])
+  }
 
   const { nullstillBrev: nullstillForhåndsvisning, hentForhåndsvisning, hentedeBrev } = useBrev()
 
@@ -139,7 +125,7 @@ export const Brev = () => {
     )
   }
 
-  const lagreBrevutkast = async (data: any) => {
+  const lagreBrevutkast = async (data: StateMangement) => {
     return fetch(`/api/sak/${sak!.data.sakId}/brevutkast`, {
       method: 'post',
       headers: {

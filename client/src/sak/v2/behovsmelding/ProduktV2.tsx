@@ -1,6 +1,7 @@
 import { HStack } from '@navikt/ds-react'
 import { FinnHjelpemiddelLink } from '../../../felleskomponenter/FinnHjelpemiddelLink'
 import { BrytbarBrødtekst, Tekst } from '../../../felleskomponenter/typografi'
+import { Kopiknapp } from '../../../felleskomponenter/Kopiknapp'
 
 export function ProduktV2({
   gjennomstrek = false,
@@ -25,6 +26,7 @@ export function ProduktV2({
       ) : (
         <BrytbarBrødtekst>{navn}</BrytbarBrødtekst>
       )}
+      <Kopiknapp tooltip="Kopier hmsnummer" copyText={hmsnr} placement="bottom" />
       <Tekst weight="semibold" style={{ textDecoration: gjennomstrek ? 'line-through' : '' }}>
         {navn}
       </Tekst>

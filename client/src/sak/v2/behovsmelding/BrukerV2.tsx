@@ -47,7 +47,7 @@ export function BrukerV2({ bruker, behovsmeldingsbruker, brukerSituasjon, vilkå
         <HStack gap="space-6">
           <Etikett>Telefon:</Etikett>
           <Tekst>{formatertTlf}</Tekst>
-          <Kopiknapp tooltip="Kopier telefon" copyText={formatertTlf} placement="bottom" />
+          <Kopiknapp tooltip="Kopier telefon" copyText={bruker.telefon || ''} placement="bottom" />
         </HStack>
         <HStack gap="space-6">
           <Etikett>Funksjonsnedsettelse:</Etikett>

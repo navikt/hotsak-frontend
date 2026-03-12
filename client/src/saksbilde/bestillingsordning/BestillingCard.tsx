@@ -4,13 +4,10 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
 import { AvvisBestilling, OppgaveStatusType, Sak } from '../../types/types.internal'
 import { formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
-import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useBehovsmelding } from '../useBehovsmelding.ts'
 import { useSakActions } from '../useSakActions.ts'
 import { NotatUtkastVarsel } from '../venstremeny/NotatUtkastVarsel.tsx'
@@ -26,7 +23,6 @@ export interface BestillingCardProps {
 
 export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: BestillingCardProps) {
   const innloggetAnsatt = useInnloggetAnsatt()
-  const oppgaveActions = useOppgaveActions()
   const sakActions = useSakActions()
   const { behovsmelding } = useBehovsmelding()
   const [utleveringMerknad, setUtleveringMerknad] = useState(behovsmelding?.levering.utleveringMerknad)
@@ -34,18 +30,12 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   const [ferdigstillBestillingAttempt, setFerdigstillBestillingAttempt] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
   const [visOpprettOrdreModal, setVisOpprettOrdreModal] = useState(false)
-  const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [visAvvisModal, setVisAvvisModal] = useState(false)
 
   const lagreUtleveringMerknad = (merknad: string) => {
     setSubmitAttempt(false)
     setUtleveringMerknad(merknad)
     setHarLagretBeskjed(true)
-  }
-
-  const overtaBestilling = async () => {
-    await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
-    setVisOvertaSakModal(false)
   }
 
   const godkjennBestilling = async () => {
@@ -102,12 +92,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   if (bestilling.saksstatus === OppgaveStatusType.AVVENTER_SAKSBEHANDLER) {
     return (
       <VenstremenyCard heading="Bestilling ikke startet">
-        <Tekst>Bestillingen er ikke tildelt en saksbehandler enda</Tekst>
-        {!lesevisning && (
-          <Knappepanel>
-            <TaOppgaveISakButton />
-          </Knappepanel>
-        )}
+        <Tekst>Bestillingen er ikke tildelt en saksbehandler enda.</Tekst>
       </VenstremenyCard>
     )
   }
@@ -118,22 +103,7 @@ export function BestillingCard({ bestilling, lesevisning, harNotatUtkast }: Best
   ) {
     return (
       <VenstremenyCard heading="Saksbehandler">
-        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}</Tekst>
-        {!lesevisning && (
-          <Knappepanel>
-            <Button variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
-              Overta bestillingen
-            </Button>
-          </Knappepanel>
-        )}
-        <OvertaOppgaveModal
-          open={visOvertaSakModal}
-          saksbehandler={bestilling?.saksbehandler?.navn || '<Ukjent>'}
-          type="bestilling"
-          onBekreft={() => overtaBestilling()}
-          loading={oppgaveActions.state.loading}
-          onClose={() => setVisOvertaSakModal(false)}
-        />
+        <Tekst>Bestillingen er tildelt saksbehandler {formaterNavn(bestilling.saksbehandler?.navn || '')}.</Tekst>
       </VenstremenyCard>
     )
   }

@@ -1,4 +1,5 @@
 import { Box, HStack, VStack } from '@navikt/ds-react'
+
 import { Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi'
 import { Bruker as Behovsmeldingsbruker, Levering } from '../../types/BehovsmeldingTypes'
 import { formaterAdresse } from '../../utils/formater'
@@ -19,7 +20,7 @@ export function Leveringinfo({ behovsmeldingsbruker, levering }: BrukerProps) {
     <Box paddingInline={'space-12 space-8'} paddingBlock="space-8">
       <TextContainer>
         <VStack gap="space-4">
-          <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />
+          {levering.utleveringsmåte && <Leveringsmåte levering={levering} adresseBruker={adresseBruker} />}
           <Kontaktperson levering={levering} />
           {utleveringMerknad && (
             <>

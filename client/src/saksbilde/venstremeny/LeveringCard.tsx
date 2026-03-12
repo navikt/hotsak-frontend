@@ -1,16 +1,15 @@
 import { HouseIcon, InformationSquareIcon } from '@navikt/aksel-icons'
+import { BodyShort } from '@navikt/ds-react'
 
-import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes.ts'
-import { formaterAdresse, storForbokstavIAlleOrd } from '../../utils/formater.ts'
-import { lagKontaktpersonTekst } from '../bruker/Kontaktperson.tsx'
-
+import type { Levering } from '../../types/BehovsmeldingTypes.ts'
+import { storForbokstavIAlleOrd } from '../../utils/formater.ts'
+import { lagKontaktpersonTekst } from '../bruker/lagKontaktpersonTekst.ts'
 import { useSkjulUIElementer } from '../useSkjulUiElementer.ts'
 import { useSøknadsVarsler } from '../varsler/useVarsler.tsx'
 import { VarselIkonNøytralt } from '../varsler/varselIkon.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
 import { VenstremenyCardRow } from './VenstremenyCardRow.tsx'
-import { BodyShort } from '@navikt/ds-react'
-import { Bydel, Kommune } from '../../types/types.internal.ts'
+import { lagLeveringsmåteTekst } from './lagLeveringsmåteTekst.ts'
 
 export interface UtleveringCardProps {
   levering: Levering
@@ -83,34 +82,4 @@ export function LeveringCard(props: UtleveringCardProps) {
   function lagKontaktpersonIkon() {
     return harAnnenKontaktperson ? <VarselIkonNøytralt /> : <InformationSquareIcon />
   }
-}
-
-export function lagLeveringsmåteTekst(
-  { utleveringsmåte, annenUtleveringsadresse, annenUtleveringskommune, annenUtleveringsbydel }: Levering,
-  adresseBruker: string
-): LeveringsmåteTekst {
-  const annenAdresse = formaterAdresse(annenUtleveringsadresse)
-
-  switch (utleveringsmåte) {
-    case Utleveringsmåte.ANNEN_BRUKSADRESSE:
-      return {
-        label: `Til annen adresse`,
-        copyText: annenAdresse,
-        kommune: annenUtleveringskommune,
-        bydel: annenUtleveringsbydel,
-      }
-    case Utleveringsmåte.FOLKEREGISTRERT_ADRESSE:
-      return { label: `Til folkeregistert adresse`, copyText: adresseBruker }
-    case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
-      return { label: 'Hentes på hjelpemiddelsentralen' }
-    default:
-      return { label: 'Ukjent leveringsmåte' }
-  }
-}
-
-interface LeveringsmåteTekst {
-  label: string
-  copyText?: string
-  kommune?: Kommune
-  bydel?: Bydel
 }

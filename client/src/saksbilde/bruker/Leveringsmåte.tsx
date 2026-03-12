@@ -1,4 +1,5 @@
 import { HStack, VStack } from '@navikt/ds-react'
+
 import { Etikett, Tekst } from '../../felleskomponenter/typografi'
 import { Levering, Utleveringsmåte } from '../../types/BehovsmeldingTypes'
 import { formaterAdresse, storForbokstavIAlleOrd } from '../../utils/formater'
@@ -11,7 +12,6 @@ export interface LeveringsmåteProps {
 
 export function Leveringsmåte({ levering, adresseBruker }: LeveringsmåteProps) {
   const leveringsmåteTekst = lagLeveringsmåteTekst(levering, adresseBruker)
-
   return (
     <VStack gap="space-4">
       <HStack gap="space-6">
@@ -55,7 +55,7 @@ function lagLeveringsmåteTekst(
       return { tekst: `${adresseBruker} (Folkeregistert adresse)`, copyText: adresseBruker }
     case Utleveringsmåte.HJELPEMIDDELSENTRALEN:
       return { tekst: 'Hentes på hjelpemiddelsentralen' }
-    case undefined:
+    default:
       return { tekst: 'Ukjent leveringsmåte', copyText: 'Ukjent leveringsmåte' }
   }
 }

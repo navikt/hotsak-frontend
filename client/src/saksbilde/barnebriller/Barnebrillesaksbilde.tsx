@@ -1,12 +1,11 @@
 import { Alert, HGrid, HStack, Spacer } from '@navikt/ds-react'
-import { memo, Suspense, useState } from 'react'
+import { memo, Suspense } from 'react'
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary'
 import styled from 'styled-components'
 
 import { AlertError } from '../../feilsider/AlertError'
 import { AlertContainerMedium } from '../../felleskomponenter/AlertContainer'
 import { hotsakBarnebrilleHistorikkMaxWidth, hotsakHistorikkMinWidth, søknadslinjeHøyde } from '../../GlobalStyles'
-import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
 import { useSaksbehandlerHarSkrivetilgang } from '../../tilgang/useSaksbehandlerHarSkrivetilgang.ts'
 import { useSaksbehandlerKanRedigereBarnebrillesak } from '../../tilgang/useSaksbehandlerKanRedigereBarnebrillesak'
 import { OppgaveStatusType, Sakstype, StepType } from '../../types/types.internal'
@@ -41,7 +40,6 @@ const BarnebrillesakContent = memo(() => {
   const harSkrivetilgang = useSaksbehandlerHarSkrivetilgang(sak?.tilganger)
   const saksbehandlerKanRedigereBarnebrillesak = useSaksbehandlerKanRedigereBarnebrillesak(sak)
   const { showBoundary } = useErrorBoundary()
-  const [visTildelingKonfliktModalForSak, setVisTildelingKonfliktModalForSak] = useState<string | undefined>(undefined)
 
   if (error) {
     showBoundary(error)
@@ -62,16 +60,7 @@ const BarnebrillesakContent = memo(() => {
         <Spacer />
         <HStack justify="center" align="center" gap="space-16">
           <StatusTag sakStatus={sak.data.saksstatus} vedtakStatus={sak.data.vedtak?.status} />
-          {harSkrivetilgang && (
-            <>
-              <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />
-              <OppgavetildelingKonfliktModal
-                open={!!visTildelingKonfliktModalForSak}
-                onClose={() => setVisTildelingKonfliktModalForSak(undefined)}
-                saksbehandler={sak.data.saksbehandler}
-              />
-            </>
-          )}
+          {harSkrivetilgang && <SaksbildeMenu spørreundersøkelseId="barnebrillesak_overført_gosys_v1" />}
         </HStack>
       </Header>
       {sak.data.saksstatus === OppgaveStatusType.AVVENTER_DOKUMENTASJON && (

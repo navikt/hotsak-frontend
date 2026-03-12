@@ -4,9 +4,6 @@ import styled from 'styled-components'
 
 import { Knappepanel } from '../../felleskomponenter/Knappepanel'
 import { Tekst } from '../../felleskomponenter/typografi'
-import { OppgavetildelingKonfliktModal } from '../../oppgave/OppgavetildelingKonfliktModal.tsx'
-import { OvertaOppgaveModal } from '../../oppgave/OvertaOppgaveModal.tsx'
-import { useOppgaveActions } from '../../oppgave/useOppgaveActions.ts'
 import { useVedtak } from '../../sak/felles/useVedtak.ts'
 import { useUmami } from '../../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../../tilgang/useTilgang.ts'
@@ -15,7 +12,6 @@ import { formaterDato, formaterTidsstempel } from '../../utils/dato'
 import { formaterNavn } from '../../utils/formater'
 import { FattVedtakModal } from '../modaler/FattVedtakModal.tsx'
 import { OverførSakTilGosysModal } from '../OverførSakTilGosysModal.tsx'
-import { TaOppgaveISakButton } from '../TaOppgaveISakButton.tsx'
 import { useOverførSakTilGosys } from '../useOverførSakTilGosys.ts'
 import { NotatUtkastVarsel } from './NotatUtkastVarsel.tsx'
 import { VenstremenyCard } from './VenstremenyCard.tsx'
@@ -29,19 +25,11 @@ export interface VedtakCardProps {
 export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakCardProps) {
   const innloggetAnsatt = useInnloggetAnsatt()
   const [visVedtakModal, setVisVedtakModal] = useState(false)
-  const [visOvertaSakModal, setVisOvertaSakModal] = useState(false)
   const [submitAttempt, setSubmitAttempt] = useState(false)
-  const [visTildelSakKonfliktModalForSak, setVisTildelSakKonfliktModalForSak] = useState(false)
   const { onOpen: visOverførGosys, ...overførGosys } = useOverførSakTilGosys('sak_overført_gosys_v1')
-  const oppgaveActions = useOppgaveActions()
   const { logUtfallLavereRangert, logPostbegrunnelseEndret } = useUmami()
 
   const { lavereRangertHjelpemiddel, harEndretPostbegrunnelse } = useVedtak(sak)
-
-  const overtaSak = async () => {
-    await oppgaveActions.endreOppgavetildeling({ overtaHvisTildelt: true })
-    setVisOvertaSakModal(false)
-  }
 
   if (sak.saksstatus === OppgaveStatusType.HENLAGT) {
     return (
@@ -95,11 +83,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return (
       <VenstremenyCard heading="Sak ikke startet">
         <Tekst>Saken er ikke tildelt en saksbehandler ennå.</Tekst>
-        {!lesevisning && (
-          <Knappepanel>
-            <TaOppgaveISakButton />
-          </Knappepanel>
-        )}
       </VenstremenyCard>
     )
   }
@@ -108,27 +91,6 @@ export function VedtakCard({ sak, lesevisning, harNotatUtkast = false }: VedtakC
     return (
       <VenstremenyCard heading="Saksbehandler">
         <Tekst>Saken er tildelt saksbehandler {formaterNavn(sak.saksbehandler?.navn)}.</Tekst>
-        {!lesevisning && (
-          <>
-            <Knappepanel>
-              <Knapp variant="primary" size="small" onClick={() => setVisOvertaSakModal(true)}>
-                Overta saken
-              </Knapp>
-            </Knappepanel>
-            <OvertaOppgaveModal
-              open={visOvertaSakModal}
-              saksbehandler={sak?.saksbehandler?.navn || '<Ukjent>'}
-              onBekreft={() => overtaSak()}
-              loading={oppgaveActions.state.loading}
-              onClose={() => setVisOvertaSakModal(false)}
-            />
-            <OppgavetildelingKonfliktModal
-              open={visTildelSakKonfliktModalForSak}
-              onClose={() => setVisTildelSakKonfliktModalForSak(false)}
-              saksbehandler={sak.saksbehandler}
-            />
-          </>
-        )}
       </VenstremenyCard>
     )
   }

@@ -81,7 +81,7 @@ export function SakV2() {
         flexDirection: 'column',
         height: '100%',
         minWidth: `${totalVisibleMinWidth}px`,
-        overflowY: 'clip',
+        overflowY: 'hidden',
       }}
     >
       <HStack width="100%" wrap={false}>
@@ -92,8 +92,8 @@ export function SakV2() {
         marginBlock="space-8 space-0"
         marginInline="space-8"
         style={{
+          flex: 1,
           minHeight: 0,
-          height: '100%',
           //minWidth: `${totalVisibleMinWidth}px`,
         }}
       >

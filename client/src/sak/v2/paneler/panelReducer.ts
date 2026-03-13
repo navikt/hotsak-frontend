@@ -23,7 +23,7 @@ export const initialPanelState: PanelState = {
       visible: true,
       minWidth: 220,
       minWidthUnit: 'px',
-      defaultSize: 25,
+      defaultSize: 15,
     },
     brevpanel: {
       id: 'brevpanel',

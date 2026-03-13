@@ -1,12 +1,9 @@
 import Dexie, { Table } from 'dexie'
 
 import { calculateOffset, calculateTotalPages } from '../../felleskomponenter/Page.ts'
-import { behandlingstemaer } from '../../oppgave/EndreOppgaveModal'
-
 import {
   type FinnOppgaverRequest,
   type FinnOppgaverResponse,
-  type GjelderAlternativerResponse,
   type Oppgave,
   type OppgaveId,
   type OppgaveKodeverk,
@@ -23,15 +20,19 @@ import { JournalpostStore } from './JournalpostStore.ts'
 import { type InsertOppgave, lagJournalføringsoppgave, lagOppgave, type LagretOppgave } from './lagOppgave.ts'
 import { SaksbehandlerStore } from './SaksbehandlerStore'
 import { SakStore } from './SakStore'
+import { KodeverkStore } from './KodeverkStore.ts'
+import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
+import { isFuture } from 'date-fns'
 
 export class OppgaveStore extends Dexie {
   private readonly oppgaver!: Table<LagretOppgave, OppgaveId, InsertOppgave>
 
   constructor(
+    private readonly kodeverkStore: KodeverkStore,
     private readonly behovsmeldingStore: BehovsmeldingStore,
     private readonly saksbehandlerStore: SaksbehandlerStore,
-    private readonly sakStore: SakStore,
-    private readonly journalpostStore: JournalpostStore
+    private readonly journalpostStore: JournalpostStore,
+    private readonly sakStore: SakStore
   ) {
     super('OppgaveStore')
     this.version(1).stores({
@@ -45,7 +46,9 @@ export class OppgaveStore extends Dexie {
       return []
     }
 
-    const isokategoriseringByKode: any = (await import('./isokategorisering.json')).default // fixme
+    const isokategoriseringByKode: Record<string, { behandlingstema_kode: string; behandlingstema_term: string }> = (
+      await import('./isokategorisering.json')
+    ).default
 
     const saker = await this.sakStore.alle()
     const oppgaverForSaker: InsertOppgave[] = await Promise.all(
@@ -96,10 +99,6 @@ export class OppgaveStore extends Dexie {
     return oppgave
   }
 
-  async finnOppgaveForJournalpostId(journalpostId: string): Promise<Oppgave | undefined> {
-    return this.oppgaver.filter((oppgave) => oppgave.journalpostId === journalpostId).first()
-  }
-
   async ferdigstillOppgave(oppgaveId: OppgaveId) {
     console.log(`Ferdigstiller oppgaveId: ${oppgaveId}`)
 
@@ -125,43 +124,28 @@ export class OppgaveStore extends Dexie {
     })
   }
 
-  async oppdaterKategorisering(oppgaveId: OppgaveId, behandlingstema: string) {
-    console.log(`Oppdaterer behandlingstema for oppgaveId: ${oppgaveId}, behandlingstema: ${behandlingstema}`)
-    const oppgave = await this.oppgaver.get(oppgaveId)
-    return this.oppgaver.update(oppgaveId, {
-      kategorisering: {
-        oppgavetype: oppgave?.kategorisering.oppgavetype || Oppgavetype.BEHANDLE_SAK,
-        tema: 'HJE',
-        behandlingstema: {
-          kode: behandlingstema,
-          term: behandlingstemaer.find((bt) => bt.kode === behandlingstema)?.term || '',
-        },
-        behandlingstype: oppgave?.kategorisering.behandlingstype,
-      },
-    })
-  }
-
-  async hentGjelderInfo(
-    oppgaveId: OppgaveId
-  ): Promise<
-    { behandlingstema: string; behandlingstype: string; alternativer: GjelderAlternativerResponse } | undefined
-  > {
-    console.log(`Henter kategorisering for oppgaveId: ${oppgaveId}`)
+  async endre(oppgaveId: OppgaveId, request: EndreOppgaveRequest) {
+    console.log(`Endrer oppgave med oppgaveId: ${oppgaveId}`, request)
     const oppgave = await this.oppgaver.get(oppgaveId)
     if (!oppgave) {
       return
     }
-    /*
-    return {
-      behandlingstema: oppgave.behandlingstema || '',
-      behandlingstype: oppgave.behandlingstype || '',
-      alternativer: {
-        behandlingstemaKode: hentBehandlingstemaKode(oppgave.behandlingstema || ''),
-        behandlingstemaTerm: oppgave.behandlingstema || '',
-        alternativer: [],
-      },
+    const changes: Partial<Oppgave> = {}
+    if (request.behandlingstema) {
+      const [gjelder] = this.kodeverkStore.finnBehandlingstema(request.behandlingstema)
+      changes.kategorisering = {
+        ...oppgave.kategorisering,
+        behandlingstema: gjelder.behandlingstema,
+      }
     }
-    */
+    if (request.aktivDato) {
+      changes.aktivDato = request.aktivDato
+      changes.isPåVent = isFuture(request.aktivDato)
+    }
+    if (request.fristFerdigstillelse) {
+      changes.fristFerdigstillelse = request.fristFerdigstillelse
+    }
+    return this.oppgaver.update(oppgaveId, changes)
   }
 
   async alle() {

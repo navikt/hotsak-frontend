@@ -7,11 +7,10 @@ import { ÅpneOppgave } from './ÅpneOppgave.tsx'
 
 export interface TaEllerÅpneOppgaveProps {
   oppgave: Oppgave
-  overta?: boolean
 }
 
 export function TaEllerÅpneOppgave(props: TaEllerÅpneOppgaveProps) {
-  const { oppgave, overta } = props
+  const { oppgave } = props
   const { id: saksbehandlerId } = useInnloggetAnsatt()
   const [tildelt, setTildelt] = useState(false)
   const handleOppgavetildeling = useCallback(() => {
@@ -28,15 +27,11 @@ export function TaEllerÅpneOppgave(props: TaEllerÅpneOppgaveProps) {
   ) {
     return <>-</>
   }
+
+  const tildeltSaksbehandlerId = oppgave.tildeltSaksbehandler?.id
   return (
-    <TaOppgaveButton
-      oppgave={oppgave}
-      variant="tertiary"
-      size="xsmall"
-      overta={overta}
-      onOppgavetildeling={handleOppgavetildeling}
-    >
-      {overta ? 'Overta oppgave' : 'Ta oppgave'}
+    <TaOppgaveButton oppgave={oppgave} variant="tertiary" size="xsmall" onOppgavetildeling={handleOppgavetildeling}>
+      {tildeltSaksbehandlerId != null && tildeltSaksbehandlerId !== saksbehandlerId ? 'Overta oppgave' : 'Ta oppgave'}
     </TaOppgaveButton>
   )
 }

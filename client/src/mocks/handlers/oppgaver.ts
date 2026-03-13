@@ -10,6 +10,7 @@ import {
 import { type Oppgavebehandlere } from '../../oppgave/useOppgavebehandlere.ts'
 import { type StoreHandlersFactory } from '../data'
 import { delay, respondNoContent, respondNotFound } from './response.ts'
+import { type EndreOppgaveRequest } from '../../oppgave/useOppgaveActions.ts'
 
 export interface OppgaveParams {
   oppgaveId: OppgaveId
@@ -38,7 +39,7 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return HttpResponse.json({ behandlere })
   }),
 
-  http.get<never, never, any[]>('/api/oppgaver/:oppgaveId/kommentarer', async () => {
+  http.get<never, never, unknown[]>('/api/oppgaver/:oppgaveId/kommentarer', async () => {
     await delay(75)
     return HttpResponse.json([])
   }),
@@ -63,30 +64,14 @@ export const oppgaveHandlers: StoreHandlersFactory = ({ oppgaveStore, sakStore, 
     return respondNoContent()
   }),
 
-  http.put<OppgaveParams, { behandlingstema?: string }>(`/api/oppgaver/:oppgaveId`, async ({ request, params }) => {
-    const { behandlingstema } = await request.json()
+  http.put<OppgaveParams, EndreOppgaveRequest>(`/api/oppgaver/:oppgaveId`, async ({ request, params }) => {
     const { oppgaveId } = params
-    if (!behandlingstema) {
-      return respondNoContent()
-    }
-    await oppgaveStore.oppdaterKategorisering(oppgaveId, behandlingstema)
+    await oppgaveStore.endre(oppgaveId, await request.json())
     await delay(200)
     return respondNoContent()
   }),
 
-  http.get<OppgaveParams>(`/api/oppgaver/:oppgaveId/gjelder`, async ({ params }) => {
-    const { oppgaveId } = params
-    const result = await oppgaveStore.hentGjelderInfo(oppgaveId)
-    const { behandlingstema, behandlingstype, alternativer } = result ?? {
-      behandlingstema: undefined,
-      behandlingstype: undefined,
-      alternativer: undefined,
-    }
-    await delay(75)
-    return HttpResponse.json({
-      behandlingstema,
-      behandlingstype,
-      alternativer,
-    })
+  http.get<OppgaveParams>(`/api/oppgaver/:oppgaveId/gjelder`, async () => {
+    return HttpResponse.json({})
   }),
 ]

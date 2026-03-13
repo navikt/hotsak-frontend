@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { BrytbarBrødtekst, Etikett, Tekst, TextContainer } from '../../felleskomponenter/typografi.tsx'
 import { EndretArtikkelBegrunnelse, EndretArtikkelBegrunnelseLabel } from '../../sak/sakTypes.ts'
 import { useSaksregler } from '../../saksregler/useSaksregler.ts'
-import { useUmami } from '../../sporing/useUmami.ts'
 import { type Hjelpemiddel as Hjelpemiddeltype } from '../../types/BehovsmeldingTypes.ts'
 import { type Produkt as ProduktType, Sak } from '../../types/types.internal.ts'
 import Bytter from './Bytter.tsx'
@@ -39,7 +38,6 @@ export function Hjelpemiddel({
   const { sakId } = sak
   const { kanEndreHmsnr } = useSaksregler()
   const [visAlternativerModal, setVisAlternativerModal] = useState(false)
-  const { logModalÅpnet } = useUmami()
   const produkt = produkter.find((it) => it.hmsArtNr === hjelpemiddel.produkt.hmsArtNr)
   const {
     endreHjelpemiddel,
@@ -153,13 +151,6 @@ export function Hjelpemiddel({
                 size="xsmall"
                 icon={<PencilIcon />}
                 onClick={() => {
-                  logModalÅpnet({
-                    tekst: 'alterrnative-produkter-modal',
-                    alternativerTilgjengelig: alternativeProdukter.length,
-                    alternativer: alternativeProdukter.map((p) => {
-                      return (p.hmsArtNr, p.articleName, p.wareHouseStock, p.alternativeFor)
-                    }),
-                  })
                   setVisAlternativerModal(true)
                 }}
               >

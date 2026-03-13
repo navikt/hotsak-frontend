@@ -4,16 +4,17 @@ import { ActionMenu, Button, HStack } from '@navikt/ds-react'
 import { OppgaveMenu } from '../oppgave/OppgaveMenu.tsx'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
+import { OppgaveMenuModals } from '../oppgave/OppgaveMenuModals.tsx'
 
 export interface JournalføringMenuProps {
-  onAction(...args: any[]): any
+  onAction?(): unknown | Promise<unknown>
 }
 
 export function JournalføringMenu({ onAction }: JournalføringMenuProps) {
   const { oppgave } = useOppgave()
 
   const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
-  if (oppgaveErAvsluttet) {
+  if (!oppgave || oppgaveErAvsluttet) {
     return null
   }
 
@@ -29,6 +30,7 @@ export function JournalføringMenu({ onAction }: JournalføringMenuProps) {
           <OppgaveMenu oppgave={oppgave} onAction={onAction} />
         </ActionMenu.Content>
       </ActionMenu>
+      <OppgaveMenuModals oppgave={oppgave} />
     </HStack>
   )
 }

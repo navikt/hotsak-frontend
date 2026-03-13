@@ -1,71 +1,32 @@
 import { ActionMenu } from '@navikt/ds-react'
+import { type ReactNode } from 'react'
 
-import { useSakActions } from '../saksbilde/useSakActions.ts'
-import { Oppgave } from './oppgaveTypes.ts'
+import { Oppgave, Oppgavetype } from './oppgaveTypes.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgaveregler } from './useOppgaveregler.ts'
-import { useOppgavetilgang } from './useOppgavetilgang.ts'
+import { OppgaveModalType, useOppgaveÅpneModalHandler } from './OppgaveContext.ts'
+import { Eksperiment } from '../felleskomponenter/Eksperiment.tsx'
+import { useSakActions } from '../saksbilde/useSakActions.ts'
 
 export interface OppgaveMenuProps {
   oppgave?: Oppgave
-  onAction?(): void | Promise<void>
-  onSelectOverførOppgaveTilMedarbeider?(): void | Promise<void>
-  onSelectEndreOppgave?(): void | Promise<void>
+  onAction?(): unknown | Promise<unknown>
 }
 
 export function OppgaveMenu(props: OppgaveMenuProps) {
-  const { oppgave, onAction, onSelectOverførOppgaveTilMedarbeider, onSelectEndreOppgave } = props
-  const {
-    oppgaveErAvsluttet,
-    oppgaveErKlarTilBehandling,
-    oppgaveErUnderBehandlingAvInnloggetAnsatt,
-    oppgaveErUnderBehandlingAvAnnenAnsatt,
-    oppgaveErPåVent,
-  } = useOppgaveregler(oppgave)
-  const { harSkrivetilgang } = useOppgavetilgang()
-  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
+  const { oppgave, onAction } = props
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent, gjeldendeEnhet } = useOppgaveregler(oppgave)
+  const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { fortsettBehandling } = useSakActions()
 
-  if (!oppgave || !harSkrivetilgang || oppgaveErAvsluttet) {
+  if (!oppgave || !oppgaveErUnderBehandlingAvInnloggetAnsatt) {
     return null
   }
 
+  const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
     <ActionMenu.Group aria-label="Oppgavemeny">
-      {oppgaveErKlarTilBehandling && (
-        <ActionMenu.Item
-          onSelect={async (event) => {
-            event.stopPropagation()
-            await endreOppgavetildeling({ overtaHvisTildelt: true })
-            if (onAction) return onAction()
-          }}
-        >
-          Ta oppgave
-        </ActionMenu.Item>
-      )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
-        <ActionMenu.Item
-          onSelect={async (event) => {
-            event.stopPropagation()
-            await fjernOppgavetildeling()
-            if (onAction) return onAction()
-          }}
-        >
-          Fjern tildeling
-        </ActionMenu.Item>
-      )}
-      {oppgaveErUnderBehandlingAvAnnenAnsatt && (
-        <ActionMenu.Item
-          onSelect={async (event) => {
-            event.stopPropagation()
-            await endreOppgavetildeling({ overtaHvisTildelt: true })
-            if (onAction) return onAction()
-          }}
-        >
-          Overta oppgave
-        </ActionMenu.Item>
-      )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt && oppgaveErPåVent && (
+      {!isJournalføring && oppgaveErUnderBehandlingAvInnloggetAnsatt && oppgaveErPåVent && (
         <ActionMenu.Item
           onSelect={async (event) => {
             event.stopPropagation()
@@ -76,26 +37,40 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
           Fortsett behandling
         </ActionMenu.Item>
       )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt &&
-        onSelectOverførOppgaveTilMedarbeider &&
-        oppgave.sak?.sakstype !== 'BARNEBRILLER' && (
-          <ActionMenu.Item
-            onSelect={() => {
-              onSelectOverførOppgaveTilMedarbeider()
-            }}
-          >
-            Overfør til medarbeider
-          </ActionMenu.Item>
+      <Eksperiment>
+        {oppgaveErPåVent ? (
+          <OppgaveModalActionMenuItem modal={OppgaveModalType.FORTSETT_BEHANDLING}>
+            Fortsett behandling (ny)
+          </OppgaveModalActionMenuItem>
+        ) : (
+          <OppgaveModalActionMenuItem modal={OppgaveModalType.SETT_PÅ_VENT}>
+            Sett oppgaven på vent
+          </OppgaveModalActionMenuItem>
         )}
-      {oppgaveErUnderBehandlingAvInnloggetAnsatt && onSelectEndreOppgave && (
-        <ActionMenu.Item
-          onSelect={() => {
-            onSelectEndreOppgave()
-          }}
-        >
-          Endre oppgave
-        </ActionMenu.Item>
+      </Eksperiment>
+      {!isJournalføring && (
+        <OppgaveModalActionMenuItem modal={OppgaveModalType.ENDRE_BEHANDLINGSTEMA}>
+          Endre behandlingstema
+        </OppgaveModalActionMenuItem>
       )}
+      <OppgaveModalActionMenuItem modal={OppgaveModalType.OVERFØR_TIL_MEDARBEIDER}>
+        Overfør til medarbeider
+      </OppgaveModalActionMenuItem>
+      <ActionMenu.Item
+        onSelect={async (event) => {
+          event.stopPropagation()
+          await fjernOppgavetildeling()
+          if (onAction) return onAction()
+        }}
+      >
+        {`Legg tilbake til ${gjeldendeEnhet?.navn}`}
+      </ActionMenu.Item>
     </ActionMenu.Group>
   )
+}
+
+function OppgaveModalActionMenuItem({ modal, children }: { modal: OppgaveModalType; children: ReactNode }) {
+  const åpneModal = useOppgaveÅpneModalHandler()
+  const handleSelect = () => åpneModal(modal)
+  return <ActionMenu.Item onSelect={handleSelect}>{children}</ActionMenu.Item>
 }

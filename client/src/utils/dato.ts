@@ -1,10 +1,12 @@
 import {
   compareAsc,
   compareDesc,
+  type DateArg,
   differenceInYears,
   type Duration,
   format,
   formatDistance,
+  formatISO,
   formatISODuration,
   isDate,
   isToday,
@@ -62,6 +64,10 @@ export function formaterRelativTid(dato?: string): string {
 export function tilDato(verdi?: Date | number | string): Date | undefined {
   if (!verdi) return
   return toDate(verdi)
+}
+
+export function tilLocalDateString(date: DateArg<Date> = new Date()): string {
+  return formatISO(date, { representation: 'date' })
 }
 
 export function sorterKronologiskStigende(a: string, b: string): number {

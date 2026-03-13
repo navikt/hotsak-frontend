@@ -14,7 +14,7 @@ export function ÅpneOppgave(props: ÅpneOppgaveProps) {
       className={classes.root}
       size="xsmall"
       type="button"
-      variant="tertiary"
+      variant="secondary"
       to={`/oppgave/${oppgave.oppgaveId}`}
     >
       Åpne oppgave

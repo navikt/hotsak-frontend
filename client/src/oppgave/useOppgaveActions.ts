@@ -14,10 +14,13 @@ export interface EndreOppgavetildelingRequest {
    */
   saksbehandlerId?: NavIdent | null
   melding?: string | null
-  /**
-   * `true` hvis tildelingen skal skje selv om oppgaven allerede er tildelt en annen saksbehandler.
-   */
-  overtaHvisTildelt?: boolean
+}
+
+export interface EndreOppgaveRequest {
+  behandlingstema?: string
+  aktivDato?: string
+  fristFerdigstillelse?: string
+  kommentar?: string
 }
 
 export interface OppgaveActions extends Actions {
@@ -31,10 +34,16 @@ export interface OppgaveActions extends Actions {
     request: Omit<EndreOppgavetildelingRequest, 'oppgaveId'>,
     onConflict?: () => void | Promise<void>
   ): Promise<void>
+
   /**
    * Fjern tildeling av oppgave/sak. Setter behandlende saksbehandler til `null`.
    */
   fjernOppgavetildeling(): Promise<void>
+
+  /**
+   *
+   */
+  endreOppgave(request: EndreOppgaveRequest): Promise<void>
 }
 
 /**
@@ -74,6 +83,17 @@ export function useOppgaveActions(oppgave?: OppgaveBase): OppgaveActions {
     async fjernOppgavetildeling() {
       return execute(async () => {
         await http.delete(`/api/oppgaver/${oppgaveId}/tildeling`, {
+          versjon,
+        })
+        if (isOppgaveContext) {
+          await mutateOppgaveOgSak()
+        }
+      })
+    },
+
+    async endreOppgave(request) {
+      return execute(async () => {
+        await http.put(`/api/oppgaver/${oppgaveId}`, request, {
           versjon,
         })
         if (isOppgaveContext) {

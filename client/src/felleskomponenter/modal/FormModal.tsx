@@ -1,75 +1,59 @@
-import { Button, Heading, Modal, ModalProps } from '@navikt/ds-react'
-import { ReactNode, useRef } from 'react'
-import { useFormStatus } from 'react-dom'
+import { Button, Modal, ModalProps } from '@navikt/ds-react'
+import { type ReactNode, type SubmitEventHandler, useRef } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 export interface FormModalProps {
-  heading: string
   open?: boolean
-  submitButtonLabel: string
-  avbrytButtonLabel?: string
-  width?: ModalProps['width']
-  children: ReactNode
-  action: any
   onClose(): void | Promise<void>
+  heading: string
+  submitButtonLabel: string
+  resetButtonLabel?: string
+  width?: ModalProps['width']
+  onSubmit?: SubmitEventHandler<HTMLFormElement>
+  children: ReactNode
 }
 
 export function FormModal(props: FormModalProps) {
   const {
-    heading,
     open,
-    submitButtonLabel,
-    avbrytButtonLabel = 'Avbryt',
-    width = '500px',
-    children,
-    action,
     onClose,
+    heading,
+    submitButtonLabel,
+    resetButtonLabel = 'Avbryt',
+    width = 500,
+    onSubmit,
+    children,
   } = props
   const ref = useRef<HTMLDialogElement>(null)
+  const { formState } = useFormContext()
   return (
     <Modal
       ref={ref}
-      closeOnBackdropClick={false}
-      width={width}
       open={open}
       onClose={onClose}
+      closeOnBackdropClick={false}
       size="small"
+      width={width}
+      header={{ heading, size: 'small' }}
       aria-label={heading}
     >
-      <form action={action}>
-        <Modal.Header>
-          <Heading level="1" size="small">
-            {heading}
-          </Heading>
-        </Modal.Header>
+      <form onSubmit={onSubmit}>
         <Modal.Body>{children}</Modal.Body>
-        <FormModalFooter
-          submitButtonLabel={submitButtonLabel}
-          avbrytButtonLabel={avbrytButtonLabel}
-          onClose={onClose}
-        />
+        <Modal.Footer>
+          <Button
+            type="submit"
+            variant="primary"
+            size="small"
+            disabled={formState.isSubmitting}
+            loading={formState.isSubmitting}
+          >
+            {submitButtonLabel}
+          </Button>
+          <Button type="reset" variant="secondary" size="small" disabled={formState.isSubmitting} onClick={onClose}>
+            {resetButtonLabel}
+          </Button>
+        </Modal.Footer>
       </form>
     </Modal>
-  )
-}
-
-function FormModalFooter({
-  submitButtonLabel,
-  avbrytButtonLabel,
-  onClose,
-}: {
-  submitButtonLabel: string
-  avbrytButtonLabel: string
-  onClose(): void | Promise<void>
-}) {
-  const { pending } = useFormStatus()
-  return (
-    <Modal.Footer>
-      <Button type="submit" variant="primary" size="small" disabled={pending} loading={pending}>
-        {submitButtonLabel}
-      </Button>
-      <Button type="reset" variant="secondary" size="small" disabled={pending} onClick={onClose}>
-        {avbrytButtonLabel}
-      </Button>
-    </Modal.Footer>
   )
 }

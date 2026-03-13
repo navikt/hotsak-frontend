@@ -146,6 +146,11 @@ export interface OppgaveKodeverk {
   term: string
 }
 
+export interface KodeverkGjelder {
+  behandlingstema?: OppgaveKodeverk
+  behandlingstype?: OppgaveKodeverk
+}
+
 export interface Oppgavekategorisering {
   oppgavetype: Oppgavetype
   behandlingstema?: OppgaveKodeverk

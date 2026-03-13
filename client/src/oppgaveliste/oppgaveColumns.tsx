@@ -43,7 +43,7 @@ export const oppgaveColumns = {
     field: 'overtaOppgave',
     width: 150,
     renderCell(row) {
-      return <TaEllerÅpneOppgave oppgave={row} overta />
+      return <TaEllerÅpneOppgave oppgave={row} />
     },
   },
   saksbehandler: {

@@ -23,6 +23,7 @@ import { saksvarslerHandlers } from './saksvarsler.ts'
 import { totrinnskontrollHandlers } from './totrinnskontroll.ts'
 import { utbetalingsmottakerHandlers } from './utbetalingsmottaker.ts'
 import { vilkårsvurderingHandlers } from './vilkårsvurdering.ts'
+import { kodeverkHandlers } from './kodeverk.ts'
 
 export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...ansatteHandlers(store),
@@ -36,16 +37,17 @@ export const setupHotsakApiHandlers: StoreHandlersFactory = (store) => [
   ...endringsloggHandlers(store),
   ...hjelpemiddelHandlers(store),
   ...hjelpemiddeloversiktHandlers(store),
+  ...kodeverkHandlers(store),
   ...notatHandlers(store),
   ...oppgaveHandlers(store),
   ...personHandlers(store),
-  ...saksvarslerHandlers(store),
+  ...problemsammendragHandlers(store),
   ...saksbehandlingHandlers(store),
   ...saksoversiktHandlers(store),
+  ...saksvarslerHandlers(store),
   ...totrinnskontrollHandlers(store),
   ...utbetalingsmottakerHandlers(store),
   ...vilkårsvurderingHandlers(store),
-  ...problemsammendragHandlers(store),
 ]
 
 export const setupGrunndataHandlers: StoreHandlersFactory = (store) => grunndataHandlers(store)

@@ -4,7 +4,9 @@ import { useInnloggetAnsatt } from '../tilgang/useTilgang'
 import { logDebug } from '../utvikling/logDebug.ts'
 import { UmamiTaksonomi } from './UmamiTaksonomi.ts'
 
-type Logger<T = Record<string, any>> = (data?: T) => void
+export type LogRecord = Record<string, boolean | number | string>
+
+type Logger<T = LogRecord> = (data?: T) => void
 
 export function useUmami() {
   const [isReady, setIsReady] = useState(false)
@@ -22,7 +24,7 @@ export function useUmami() {
 
   const { gjeldendeEnhet } = useInnloggetAnsatt()
   const logUmamiHendelse = useCallback(
-    (navn: UmamiTaksonomi, data?: Record<string, any>) => {
+    (navn: UmamiTaksonomi, data?: LogRecord) => {
       const { nummer: enhetsnummer, navn: enhetsnavn } = gjeldendeEnhet
       if (typeof window !== 'undefined' && window.umami) {
         window.umami.track(navn, {
@@ -46,13 +48,8 @@ export function useUmami() {
     logUmamiHendelse(UmamiTaksonomi.SKJEMA_FULLFØRT, data)
   }
 
-  const logModalÅpnet: Logger = (data) => {
-    logUmamiHendelse(UmamiTaksonomi.MODAL_ÅPNET, data)
-  }
-
   const logVinduStørrelse: Logger = (data) => {
     const { innerWidth: width, innerHeight: height } = window
-
     logUmamiHendelse(UmamiTaksonomi.CLIENT_INFO, {
       vinduBredde: width,
       vinduHoyde: height,
@@ -104,7 +101,6 @@ export function useUmami() {
     logUmamiHendelse,
     logKnappKlikket,
     logSkjemaFullført,
-    logModalÅpnet,
     logVinduStørrelse,
     logTemaByttet,
     logOverføringMedarbeider,

@@ -34,6 +34,7 @@ export function lagOppgave(sak: LagretSak, kategorisering: Oppgavekategorisering
     fristFerdigstillelse: addBusinessDays(parseISO(sak.opprettet), 60).toISOString(),
     opprettetTidspunkt: sak.opprettet,
     endretTidspunkt: sak.opprettet,
+    isPåVent: false,
     fnr: bruker.fnr,
     bruker: {
       fnr: bruker.fnr,
@@ -78,6 +79,7 @@ export function lagJournalføringsoppgave(journalføring: LagretJournalpost): In
     fristFerdigstillelse: addBusinessDays(parseISO(journalføring.journalpostOpprettetTid), 5).toISOString(),
     opprettetTidspunkt: journalføring.journalpostOpprettetTid,
     endretTidspunkt: journalføring.journalpostOpprettetTid,
+    isPåVent: false,
     fnr: journalføring.bruker!.fnr,
     bruker: {
       fnr: journalføring.bruker!.fnr,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { useDataGridFilterContext } from '../felleskomponenter/data/DataGridFilterContext.ts'
-import { useUmami } from '../sporing/useUmami.ts'
+import { type LogRecord, useUmami } from '../sporing/useUmami.ts'
 import { entriesOf } from '../utils/array.ts'
 import { type OppgaveColumnField } from './oppgaveColumns.tsx'
 import { useOppgaveColumnsContext } from './OppgaveColumnsContext.ts'
@@ -17,7 +17,7 @@ export function useOppgavemetrikker(
   useEffect(() => {
     const entries = entriesOf(filterState).filter(([, { values }]) => values.size > 0)
     if (entries.length === 0) return
-    const data = entries.reduce<Record<string, any>>(
+    const data = entries.reduce<LogRecord>(
       (result, [field, { values }]) => {
         if (field === 'saksbehandler') {
           result[field] = true
@@ -42,7 +42,7 @@ export function useOppgavemetrikker(
   }, [sort])
   const columns = useOppgaveColumnsContext()
   useEffect(() => {
-    const data = columns.reduce<Record<string, any>>(
+    const data = columns.reduce<LogRecord>(
       (result, column) => {
         result[`${column.id}_checked`] = column.checked
         result[`${column.id}_order`] = column.order

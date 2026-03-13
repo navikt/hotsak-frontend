@@ -169,6 +169,7 @@ export class SakStore extends Dexie {
       const vilkårsvurdering = await this.vilkårsvurderinger.where('sakId').equals(sak.sakId).first()
       if (vilkårsvurdering) {
         const vilkår = await this.vilkår.where('vilkårsvurderingId').equals(vilkårsvurdering.id).toArray()
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { resultat, ...rest } = vilkårsvurdering
         const samletVurdering = this.beregnSamletVurdering(vilkår)
         return {
@@ -261,9 +262,11 @@ export class SakStore extends Dexie {
     if (!sak) {
       return 404
     }
-    if (sak.saksbehandler && !payload.overtaHvisTildelt) {
+    /* todo
+    if (false) {
       return 409
     }
+    */
 
     let saksbehandler = await this.saksbehandlerStore.innloggetSaksbehandler()
     if (payload.saksbehandlerId) {
@@ -469,7 +472,7 @@ export class SakStore extends Dexie {
     })
   }
 
-  async lagreBrevtekst(sakId: string, brevtype: string, data: any) {
+  async lagreBrevtekst(sakId: string, brevtype: string, data: Record<string, unknown>) {
     this.brevtekst.put({ brevtype, målform: MålformType.BOKMÅL, data: data, sakId }, sakId)
   }
 

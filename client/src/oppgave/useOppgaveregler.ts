@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
 import { type Oppgave, Statuskategori } from './oppgaveTypes.ts'
+import { type AnsattEnhet } from '../tilgang/Ansatt.ts'
 
 export interface UseOppgavereglerResponse {
   /**
@@ -29,6 +30,7 @@ export interface UseOppgavereglerResponse {
    */
   oppgaveErUnderBehandlingAvAnnenAnsatt: boolean
   oppgaveErPåVent: boolean
+  gjeldendeEnhet?: AnsattEnhet
 }
 
 const initialResponse: UseOppgavereglerResponse = {
@@ -42,7 +44,7 @@ const initialResponse: UseOppgavereglerResponse = {
 }
 
 export function useOppgaveregler(oppgave?: Oppgave): UseOppgavereglerResponse {
-  const { id: ansattId } = useInnloggetAnsatt()
+  const { id: ansattId, gjeldendeEnhet } = useInnloggetAnsatt()
   return useMemo(() => {
     if (!oppgave) return initialResponse
     const { tildeltSaksbehandler } = oppgave
@@ -62,6 +64,7 @@ export function useOppgaveregler(oppgave?: Oppgave): UseOppgavereglerResponse {
       oppgaveErUnderBehandlingAvInnloggetAnsatt,
       oppgaveErUnderBehandlingAvAnnenAnsatt,
       oppgaveErPåVent,
+      gjeldendeEnhet,
     }
-  }, [ansattId, oppgave])
+  }, [ansattId, gjeldendeEnhet, oppgave])
 }

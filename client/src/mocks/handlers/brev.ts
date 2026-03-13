@@ -43,7 +43,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
             tidspunkt: '2026-03-13T12:23:07Z',
           },
         ],
-        fysiskpostSendt: 'Adresseveien 8, 1335, Oslo',
+        fysiskpostSendt: 'Herfindalsfjellet 37\n5725 VAKSDAL',
         digitalpostSendt: null,
       },
     })

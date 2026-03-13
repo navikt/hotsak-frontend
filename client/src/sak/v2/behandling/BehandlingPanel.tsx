@@ -117,12 +117,12 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                           )}
                           {utsendingsinfo?.fysiskpostSendt && (
                             <InlineMessage status="info" size="small">
-                              Sendt som fysisk post (sentral utskrift) til {utsendingsinfo.fysiskpostSendt}
+                              Brevet er sendt som fysisk post (sentral utskrift) til {utsendingsinfo.fysiskpostSendt}
                             </InlineMessage>
                           )}
                           {utsendingsinfo?.digitalpostSendt && (
                             <InlineMessage status="info" size="small">
-                              Sendt til digital postkasse (DPI): {utsendingsinfo.digitalpostSendt}
+                              Brevet er sendt til digital postkasse
                             </InlineMessage>
                           )}
                         </>

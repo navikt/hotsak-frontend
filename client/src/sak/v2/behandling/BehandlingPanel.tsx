@@ -20,6 +20,8 @@ import { VedtaksresultatTag } from '../VedtaksresultatTag.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
+import { useMiljø } from '../../../utils/useMiljø.ts'
+import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 
 interface BehandlingProps {
   sak: Sak
@@ -46,6 +48,8 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
   const kanOppretteBrev = !lesevisning && !harBrevutkast
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
+  const erDev = useMiljø()
+  const { utsendingsinfo, harUtsendingsInfo } = useUtsendingsInfo()
 
   return (
     <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" style={{ height: '100%' }}>
@@ -92,11 +96,38 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                   )}
 
                   {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
-                    <InlineMessage status="info" size="small">
-                      Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLang(brevMetadata?.sendt!)}
-                    </InlineMessage>
+                    <>
+                      <InlineMessage status="info" size="small">
+                        Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLang(brevMetadata?.sendt)}
+                      </InlineMessage>
+                      {erDev && harUtsendingsInfo && (
+                        <>
+                          <InlineMessage status="info" size="small">
+                            Bruker har blitt varslet om vedtaket. Varsler til bruker:
+                            <br />
+                            {utsendingsinfo?.varselSendt.map((varsel, index) => (
+                              <div key={index}>
+                                <strong>{varsel.type}</strong>: {varsel.tittel} ({varsel.adresse}) -{' '}
+                                {formaterTidsstempelLang(varsel.varslingstidspunkt)}
+                              </div>
+                            ))}
+                          </InlineMessage>
+                          {utsendingsinfo?.fysiskpostSendt && (
+                            <InlineMessage status="info" size="small">
+                              Brevet er distribuert som fysisk post gjennom sentral utskrift. Adresse på konvolutt:{' '}
+                              {utsendingsinfo.fysiskpostSendt}
+                            </InlineMessage>
+                          )}
+                          {utsendingsinfo?.digitalpostSendt && (
+                            <InlineMessage status="info" size="small">
+                              Brevet er distribuert til Digital postkasse til Innbyggere (DPI). Adresse:{' '}
+                              {utsendingsinfo.digitalpostSendt}
+                            </InlineMessage>
+                          )}
+                        </>
+                      )}
+                    </>
                   )}
-
                   {lesevisning && !harBrevISak && vedtaksResultat === VedtaksResultat.INNVILGET && (
                     <InlineMessage status="info" size="small">
                       Saken er innvilget uten å sende brev

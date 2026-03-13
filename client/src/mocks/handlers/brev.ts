@@ -13,6 +13,35 @@ interface BrevParams extends SakParams {
 }
 
 export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
+  http.get<SakParams>('/api/sak/:sakId/brev/utsendingsinfo', async ({ params }) => {
+    const { sakId } = params
+
+    const brev = await sakStore.hentBrevtekst(sakId)
+
+    const behandlinger = await sakStore.hentBehandlinger(sakId)
+    const gjeldendeBehandling = behandlinger.length > 0 ? behandlinger[0] : null
+
+    const behandlingFerdigstilt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT)
+
+    if (!brev || !behandlingFerdigstilt) {
+      return HttpResponse.json({ utsendingsinfo: null })
+    }
+
+    return HttpResponse.json({
+      utsendingsinfo: {
+        varselSendt: [
+          {
+            type: 'EPOST',
+            tittel: 'Vedtak fra Nav',
+            adresse: 'email@nav.no',
+            varslingstidspunkt: '2026-03-12T09:49:07',
+          },
+        ],
+        fysiskpostSendt: 'Adresseveien 8, 1335, Oslo',
+        digitalpostSendt: null,
+      },
+    })
+  }),
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført
   http.get<BrevParams>(`/api/sak/:sakId/brev/:brevtype`, async ({ params }) => {
     let buffer: ArrayBuffer

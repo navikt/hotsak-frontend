@@ -16,3 +16,14 @@ export enum Brevstatus {
   UTBOKS = 'UTBOKS',
   SENDT = 'SENDT',
 }
+
+export interface UtsendingsInfo {
+  varselSendt: {
+    type: string
+    tittel: string
+    adresse: string
+    varslingstidspunkt: string
+  }[]
+  fysiskpostSendt: string
+  digitalpostSendt: string
+}

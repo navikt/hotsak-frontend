@@ -36,6 +36,12 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
             adresse: 'email@nav.no',
             tidspunkt: '2026-03-12T09:49:07Z',
           },
+          {
+            type: 'SMS',
+            tittel: 'Vedtak fra Nav',
+            adresse: '12345678',
+            tidspunkt: '2026-03-13T12:23:07Z',
+          },
         ],
         fysiskpostSendt: 'Adresseveien 8, 1335, Oslo',
         digitalpostSendt: null,
@@ -94,7 +100,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
     const behandlingFerdigstilt = gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT)
 
     const brevStatus = (() => {
-      if (behandlingFerdigstilt) return Brevstatus.UTBOKS
+      if (behandlingFerdigstilt) return Brevstatus.SENDT
       if (brev?.ferdigstilt) return Brevstatus.FERDIGSTILT
       return Brevstatus.UTKAST
     })()
@@ -108,6 +114,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
           oppdatert: nåIso(),
           opprettet: nåIso(),
           behandlingId: gjeldendeBehandling?.behandlingId,
+          sendt: nåIso(),
         },
       ],
     })

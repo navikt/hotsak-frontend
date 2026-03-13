@@ -103,6 +103,7 @@ export class OppgaveStore extends Dexie {
     console.log(`Ferdigstiller oppgaveId: ${oppgaveId}`)
 
     return this.oppgaver.update(oppgaveId, {
+      statuskategori: Statuskategori.AVSLUTTET,
       oppgavestatus: Oppgavestatus.FERDIGSTILT,
     })
   }

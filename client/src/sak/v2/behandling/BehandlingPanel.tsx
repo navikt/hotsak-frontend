@@ -102,26 +102,27 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                       </InlineMessage>
                       {erDev && harUtsendingsInfo && (
                         <>
-                          <InlineMessage status="info" size="small">
-                            Bruker har blitt varslet om vedtaket. Varsler til bruker:
-                            <br />
-                            {utsendingsinfo?.varselSendt.map((varsel, index) => (
-                              <div key={index}>
-                                <strong>{varsel.type}</strong>: "{varsel.tittel}" til {varsel.adresse} -{' '}
-                                {formaterTidsstempelLang(varsel.tidspunkt)}
-                              </div>
-                            ))}
-                          </InlineMessage>
+                          {utsendingsinfo?.varselSendt && utsendingsinfo.varselSendt.length > 0 && (
+                            <InlineMessage status="info" size="small">
+                              <VStack gap="space-4">
+                                <span>Bruker er varslet om vedtaket:</span>
+                                {utsendingsinfo.varselSendt.map((varsel) => (
+                                  <span>
+                                    «{varsel.tittel}» til {varsel.adresse}
+                                    {varsel.tidspunkt && <> – {formaterTidsstempelLang(varsel.tidspunkt)}</>}
+                                  </span>
+                                ))}
+                              </VStack>
+                            </InlineMessage>
+                          )}
                           {utsendingsinfo?.fysiskpostSendt && (
                             <InlineMessage status="info" size="small">
-                              Brevet er distribuert som fysisk post gjennom sentral utskrift. Adresse på konvolutt:{' '}
-                              {utsendingsinfo.fysiskpostSendt}
+                              Sendt som fysisk post (sentral utskrift) til {utsendingsinfo.fysiskpostSendt}
                             </InlineMessage>
                           )}
                           {utsendingsinfo?.digitalpostSendt && (
                             <InlineMessage status="info" size="small">
-                              Brevet er distribuert til Digital postkasse til Innbyggere (DPI). Adresse:{' '}
-                              {utsendingsinfo.digitalpostSendt}
+                              Sendt til digital postkasse (DPI): {utsendingsinfo.digitalpostSendt}
                             </InlineMessage>
                           )}
                         </>

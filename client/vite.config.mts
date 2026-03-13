@@ -1,7 +1,6 @@
 /// <reference types="vitest" />
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 import type { Proxy } from './proxy'
 import { htmlPlugin } from './vite-html-plugin.mjs'
@@ -19,7 +18,6 @@ export default defineConfig((env) => {
   return {
     base: '/',
     plugins: [
-      tsconfigPaths(),
       middlewarePlugin({ development: env.mode === 'test' || env.mode === 'development', proxy }),
       htmlPlugin({ development: env.mode === 'test' || env.mode === 'development', proxy }),
       react(),

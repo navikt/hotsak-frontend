@@ -1,5 +1,5 @@
 # build server
-FROM golang:1.25.1-alpine AS server-builder
+FROM golang:1.26.1-trixie AS server-builder
 WORKDIR /app
 COPY server ./
 RUN go test -v ./... && go build .
@@ -17,7 +17,7 @@ COPY client .
 RUN pnpm run test:ci && pnpm run build
 
 # runtime
-FROM gcr.io/distroless/static-debian12 AS runtime
+FROM gcr.io/distroless/static-debian13 AS runtime
 WORKDIR /app
 
 ENV TZ="Europe/Oslo"

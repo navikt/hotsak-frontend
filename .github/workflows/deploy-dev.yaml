@@ -88,7 +88,7 @@ jobs:
 
       - name: Definer release tag
         id: version-tag
-        run: echo "VERSION_TAG=${{env.VERSION_TAG}}" >> "$GITHUB_OUTPUT"
+        run: echo "VERSION_TAG=${{ env.VERSION_TAG }}" >> "$GITHUB_OUTPUT"
 
   deploy-labs:
     name: Deploy til labs-gcp

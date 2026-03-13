@@ -61,7 +61,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       docker_image: ${{ steps.docker-build-push.outputs.image }}
-      version_tag: ${{ steps.version-tag.outputs.VERSION_TAG}}
+      version_tag: ${{ steps.version-tag.outputs.VERSION_TAG }}
 
     steps:
       - name: Sjekk ut koden
@@ -74,7 +74,7 @@ jobs:
       
       - name: Autentiser med GitHub NPM registry
         run: |
-          echo '//npm.pkg.github.com/:_authToken='${{ secrets.READER_TOKEN }} >> client/.npmrc
+          echo '//npm.pkg.github.com/:_authToken='${{ secrets.READER_TOKEN }} >> .npmrc
 
       - name: Bygg og push Docker image
         uses: nais/docker-build-push@v0

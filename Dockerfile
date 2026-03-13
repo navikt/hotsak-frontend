@@ -2,7 +2,8 @@
 FROM golang:1.26.1-trixie AS server-builder
 WORKDIR /app
 COPY server ./
-RUN go test -v ./... && go build .
+RUN go test -v ./... && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o hotsak-frontend-server .
 
 # build client
 FROM node:lts-alpine AS client-builder

@@ -22,7 +22,7 @@ export interface UtsendingsInfo {
     type: string
     tittel: string
     adresse: string
-    varslingstidspunkt: string
+    tidspunkt: string
   }[]
   fysiskpostSendt: string
   digitalpostSendt: string

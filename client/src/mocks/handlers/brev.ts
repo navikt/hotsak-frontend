@@ -34,7 +34,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
             type: 'EPOST',
             tittel: 'Vedtak fra Nav',
             adresse: 'email@nav.no',
-            varslingstidspunkt: '2026-03-12T09:49:07',
+            tidspunkt: '2026-03-12T09:49:07Z',
           },
         ],
         fysiskpostSendt: 'Adresseveien 8, 1335, Oslo',

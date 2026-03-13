@@ -107,8 +107,8 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                             <br />
                             {utsendingsinfo?.varselSendt.map((varsel, index) => (
                               <div key={index}>
-                                <strong>{varsel.type}</strong>: {varsel.tittel} ({varsel.adresse}) -{' '}
-                                {formaterTidsstempelLang(varsel.varslingstidspunkt)}
+                                <strong>{varsel.type}</strong>: "{varsel.tittel}" til {varsel.adresse} -{' '}
+                                {formaterTidsstempelLang(varsel.tidspunkt)}
                               </div>
                             ))}
                           </InlineMessage>

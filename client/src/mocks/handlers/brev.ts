@@ -46,6 +46,7 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
         fysiskpostSendt: 'Herfindalsfjellet 37\n5725 VAKSDAL',
         digitalpostSendt: null,
       },
+      datoEkspedert: '2026-03-12T09:49:07Z',
     })
   }),
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført

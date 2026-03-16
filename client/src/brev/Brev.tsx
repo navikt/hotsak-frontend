@@ -1,6 +1,5 @@
 import { Button, InfoCard, Loader, LocalAlert, VStack } from '@navikt/ds-react'
 import { useEffect, useMemo, useState } from 'react'
-import useSWR from 'swr'
 import { PanelTittel } from '../felleskomponenter/panel/PanelTittel.tsx'
 import { Tekst, TextContainer } from '../felleskomponenter/typografi.tsx'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
@@ -14,6 +13,7 @@ import { useSak } from '../saksbilde/useSak.ts'
 import { Brevtype, RessursStatus } from '../types/types.internal.ts'
 import { formaterDatoLang } from '../utils/dato.ts'
 import './Brev.less'
+import { BrevContext } from './BrevContext.ts'
 import Breveditor, { StateMangement } from './breveditor/Breveditor.tsx'
 import { PlaceholderFeil, validerPlaceholders } from './breveditor/plugins/placeholder/PlaceholderFeil.ts'
 import BrevForhåndsvisning from './BrevForhåndsvisning.tsx'
@@ -21,7 +21,7 @@ import { BrevmalLaster } from './brevmaler/BrevmalLaster.tsx'
 import { Brevstatus } from './brevTyper.ts'
 import { SlettBrevModal } from './SlettBrevModal.tsx'
 import { useBrevMetadata } from './useBrevMetadata.ts'
-import { BrevContext } from './BrevContext.ts'
+import { useBrevutkast } from './useBrevutkast.ts'
 
 export const Brev = () => {
   const { sak } = useSak()
@@ -46,17 +46,7 @@ export const Brev = () => {
         .map((h) => h.trim())
     : undefined
 
-  const brevutkast = useSWR<
-    {
-      error?: string
-      data?: StateMangement
-      ferdigstilt: boolean
-      opprettet: string
-    },
-    Error
-  >(`/api/sak/${sak!.data.sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV`, async (key: string) =>
-    fetch(key, { method: 'get' }).then((res) => res.json())
-  )
+  const { brevutkast } = useBrevutkast()
 
   const [valgtMal, velgMal] = useState<string>()
   const errorEr404 = useMemo(() => brevutkast.data?.data?.value == undefined, [brevutkast.data])

@@ -1,20 +1,23 @@
 import { Skeleton, Textarea, VStack } from '@navikt/ds-react'
 import { useEffect } from 'react'
 
+import { FormProvider, useForm } from 'react-hook-form'
+import { useBrevutkast } from '../brev/useBrevutkast.ts'
 import { FormModal } from '../felleskomponenter/modal/FormModal.tsx'
+import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
 import { Tekst } from '../felleskomponenter/typografi.tsx'
 import { useNotater } from '../saksbilde/høyrekolonne/notat/useNotater.tsx'
 import { InfoModal } from '../saksbilde/komponenter/InfoModal.tsx'
+import { mutateSak } from '../saksbilde/mutateSak.ts'
+import { useUmami } from '../sporing/useUmami.ts'
 import { useInnloggetAnsatt } from '../tilgang/useTilgang.ts'
+import { isNotBlank } from '../utils/type.ts'
+import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
 import { useOppgaveActions } from './useOppgaveActions.ts'
 import { useOppgavebehandlere } from './useOppgavebehandlere.ts'
-import { useToast } from '../felleskomponenter/toast/ToastContext.tsx'
-import { useUmami } from '../sporing/useUmami.ts'
-import { OppgaveModalType, useOppgaveContext, useOppgaveLukkModalHandler } from './OppgaveContext.ts'
-import { FormProvider, useForm } from 'react-hook-form'
-import { isNotBlank } from '../utils/type.ts'
-import { mutateSak } from '../saksbilde/mutateSak.ts'
-import { SelectController } from '../felleskomponenter/skjema/SelectController.tsx'
+import { useBehandling } from '../sak/v2/behandling/useBehandling.ts'
+import { useBrevMetadata } from '../brev/useBrevMetadata.ts'
 
 export interface OverførTilMedarbeiderModalProps {
   sakId: string
@@ -41,6 +44,9 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   const { endreOppgavetildeling } = useOppgaveActions()
   const { showSuccessToast } = useToast()
   const { logOverføringMedarbeider } = useUmami()
+  const { brevutkast } = useBrevutkast()
+  const { mutate: mutateGjeldendeBehandling } = useBehandling()
+  const { mutate: mutateBrevMetadata } = useBrevMetadata()
 
   useEffect(() => {
     if (open) {
@@ -63,6 +69,16 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
       melding: isNotBlank(data.kommentar) ? data.kommentar : null,
     })
     await mutateSak(sakId)
+
+    //fjerner ferdigstilling av brev
+    await fetch(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
+      method: 'delete',
+    })
+    brevutkast.mutate()
+
+    await mutateGjeldendeBehandling()
+    await mutateBrevMetadata()
+
     logOverføringMedarbeider()
     showSuccessToast('Oppgaven ble overført')
     lukkModal()

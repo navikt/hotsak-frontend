@@ -64,12 +64,6 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await endreOppgavetildeling({
-      saksbehandlerId: data.valgtSaksbehandler,
-      melding: isNotBlank(data.kommentar) ? data.kommentar : null,
-    })
-    await mutateSak(sakId)
-
     //fjerner ferdigstilling av brev
     await fetch(`/api/sak/${sakId}/brevutkast/BREVEDITOR_VEDTAKSBREV/ferdigstilling`, {
       method: 'delete',
@@ -78,6 +72,12 @@ export function OverførTilMedarbeiderModal(props: OverførTilMedarbeiderModalPr
 
     await mutateGjeldendeBehandling()
     await mutateBrevMetadata()
+
+    await endreOppgavetildeling({
+      saksbehandlerId: data.valgtSaksbehandler,
+      melding: isNotBlank(data.kommentar) ? data.kommentar : null,
+    })
+    await mutateSak(sakId)
 
     logOverføringMedarbeider()
     showSuccessToast('Oppgaven ble overført')

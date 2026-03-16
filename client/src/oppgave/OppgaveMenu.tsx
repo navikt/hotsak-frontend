@@ -19,13 +19,13 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
   const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { fortsettBehandling } = useSakActions()
 
-  if (!oppgave || !oppgaveErUnderBehandlingAvInnloggetAnsatt) {
+  if (!(oppgave && oppgaveErUnderBehandlingAvInnloggetAnsatt)) {
     return null
   }
 
   const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
-    <ActionMenu.Group aria-label="Oppgavemeny">
+    <ActionMenu.Group label="Oppgave">
       {!isJournalføring && oppgaveErUnderBehandlingAvInnloggetAnsatt && oppgaveErPåVent && (
         <ActionMenu.Item
           onSelect={async (event) => {

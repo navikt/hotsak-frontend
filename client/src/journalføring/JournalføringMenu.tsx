@@ -13,8 +13,8 @@ export interface JournalføringMenuProps {
 export function JournalføringMenu({ onAction }: JournalføringMenuProps) {
   const { oppgave } = useOppgave()
 
-  const { oppgaveErAvsluttet } = useOppgaveregler(oppgave)
-  if (!oppgave || oppgaveErAvsluttet) {
+  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
+  if (!(oppgave && oppgaveErUnderBehandlingAvInnloggetAnsatt)) {
     return null
   }
 

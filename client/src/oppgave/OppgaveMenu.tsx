@@ -15,21 +15,41 @@ export interface OppgaveMenuProps {
 
 export function OppgaveMenu(props: OppgaveMenuProps) {
   const { oppgave, onAction } = props
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent, gjeldendeEnhet } = useOppgaveregler(oppgave)
-  const { fjernOppgavetildeling } = useOppgaveActions(oppgave)
+  const {
+    oppgaveErAvsluttet,
+    oppgaveErKlarTilBehandling,
+    oppgaveErUnderBehandlingAvAnnenAnsatt,
+    oppgaveErPåVent,
+    gjeldendeEnhet,
+  } = useOppgaveregler(oppgave)
+  const { endreOppgavetildeling, fjernOppgavetildeling } = useOppgaveActions(oppgave)
   const { fortsettBehandling } = useSakActions()
 
-  if (!(oppgave && oppgaveErUnderBehandlingAvInnloggetAnsatt)) {
+  if (!oppgave || oppgaveErAvsluttet) {
     return null
+  }
+
+  if (oppgaveErKlarTilBehandling || oppgaveErUnderBehandlingAvAnnenAnsatt) {
+    return (
+      <OppgaveMenuGroup>
+        <ActionMenu.Item
+          onSelect={async () => {
+            await endreOppgavetildeling({})
+            if (onAction) return onAction()
+          }}
+        >
+          {oppgaveErKlarTilBehandling ? 'Ta oppgaven' : 'Overta oppgaven'}
+        </ActionMenu.Item>
+      </OppgaveMenuGroup>
+    )
   }
 
   const isJournalføring = oppgave.kategorisering.oppgavetype === Oppgavetype.JOURNALFØRING
   return (
     <ActionMenu.Group label="Oppgave">
-      {!isJournalføring && oppgaveErUnderBehandlingAvInnloggetAnsatt && oppgaveErPåVent && (
+      {!isJournalføring && oppgaveErPåVent && (
         <ActionMenu.Item
-          onSelect={async (event) => {
-            event.stopPropagation()
+          onSelect={async () => {
             await fortsettBehandling()
             if (onAction) return onAction()
           }}
@@ -57,8 +77,7 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
         Overfør til medarbeider
       </OppgaveModalActionMenuItem>
       <ActionMenu.Item
-        onSelect={async (event) => {
-          event.stopPropagation()
+        onSelect={async () => {
           await fjernOppgavetildeling()
           if (onAction) return onAction()
         }}
@@ -67,6 +86,10 @@ export function OppgaveMenu(props: OppgaveMenuProps) {
       </ActionMenu.Item>
     </ActionMenu.Group>
   )
+}
+
+function OppgaveMenuGroup({ children }: { children: ReactNode }) {
+  return <ActionMenu.Group label="Oppgave">{children}</ActionMenu.Group>
 }
 
 function OppgaveModalActionMenuItem({ modal, children }: { modal: OppgaveModalType; children: ReactNode }) {

@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Tag } from '@navikt/ds-react'
+
 import { Tekst } from '../../felleskomponenter/typografi'
-import { Oppgavestatus } from '../../oppgave/oppgaveTypes'
 import { useOppgave } from '../../oppgave/useOppgave'
 import { useOppgaveregler } from '../../oppgave/useOppgaveregler'
 import { OppgaveStatusLabel, Sak } from '../../types/types.internal'
@@ -9,11 +9,11 @@ import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandling/behandl
 import { useBehandling } from './behandling/useBehandling'
 import classes from './StickyBunnlinje.module.css'
 import { VedtaksresultatTag } from './VedtaksresultatTag'
+import { OppgavePåVentTag } from '../../oppgave/OppgavePåVentTag.tsx'
 
 export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => void }) {
   const { oppgave } = useOppgave()
-  const { oppgaveErUnderBehandlingAvInnloggetAnsatt } = useOppgaveregler(oppgave)
-  const oppgaveFerdigstilt = oppgave?.oppgavestatus === Oppgavestatus.FERDIGSTILT
+  const { oppgaveErAvsluttet, oppgaveErUnderBehandlingAvInnloggetAnsatt, oppgaveErPåVent } = useOppgaveregler(oppgave)
   const { gjeldendeBehandling } = useBehandling()
 
   const knappevariant = [Gjenstående.BREV_IKKE_FERDIGSTILT, Gjenstående.BREV_MANGLER, Gjenstående.UTFALL_MANGLER].some(
@@ -22,6 +22,7 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
     ? 'secondary'
     : 'primary'
 
+  if (!oppgave) return null
   return (
     <HStack
       asChild
@@ -42,23 +43,24 @@ export function StickyBunnlinje({ sak, onClick }: { sak: Sak; onClick: () => voi
         borderColor="neutral-subtle"
         className={classes.root}
       >
-        <HStack align="center" justify="space-between" gap="space-24">
+        <HStack align="center" justify="space-between" gap="space-16">
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <Button type="button" variant={knappevariant} size="small" onClick={() => onClick()}>
               Fatt vedtak
             </Button>
           )}
-          {oppgaveFerdigstilt && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
+          {oppgaveErAvsluttet && gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.FERDIGSTILT) && (
             <HStack gap="space-12" align="center">
               <VedtaksresultatTag vedtaksResultat={gjeldendeBehandling?.utfall?.utfall as VedtaksResultat} />
               <Tekst>{`av: ${sak.saksbehandler?.navn} ${formaterDato(sak.vedtak?.vedtaksdato)}`}</Tekst>
             </HStack>
           )}
-          {!oppgaveFerdigstilt && (
+          {!oppgaveErPåVent && !oppgaveErAvsluttet && (
             <Tag data-color="neutral" variant="moderate" size="small">
               {OppgaveStatusLabel.get(sak.saksstatus)}
             </Tag>
           )}
+          {oppgaveErPåVent && <OppgavePåVentTag oppgave={oppgave} />}
         </HStack>
       </Box>
     </HStack>

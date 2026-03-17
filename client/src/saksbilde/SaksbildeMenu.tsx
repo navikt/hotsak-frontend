@@ -48,7 +48,7 @@ export function SaksbildeMenu({ spørreundersøkelseId, gjenståendeFørOverfør
           {oppgaveErUnderBehandlingAvInnloggetAnsatt && (
             <>
               <ActionMenu.Divider />
-              <ActionMenu.Group aria-label="Saksmeny">
+              <ActionMenu.Group label="Sak">
                 <ActionMenu.Item
                   onSelect={() => {
                     if (gjenståendeFørOverføring.length > 0) {

@@ -34,18 +34,19 @@ export const brevHandlers: StoreHandlersFactory = ({ sakStore }) => [
             type: 'EPOST',
             tittel: 'Vedtak fra Nav',
             adresse: 'email@nav.no',
-            tidspunkt: '2026-03-12T09:49:07Z',
+            tidspunkt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
           },
           {
             type: 'SMS',
             tittel: 'Vedtak fra Nav',
             adresse: '12345678',
-            tidspunkt: '2026-03-13T12:23:07Z',
+            tidspunkt: new Date(Date.now() + 4 * 60 * 1000).toISOString(),
           },
         ],
         fysiskpostSendt: 'Herfindalsfjellet 37\n5725 VAKSDAL',
         digitalpostSendt: null,
       },
+      datoEkspedert: new Date().toISOString(),
     })
   }),
   // dokumenter for saksbehandlers enhet hvor status != endelig journalført

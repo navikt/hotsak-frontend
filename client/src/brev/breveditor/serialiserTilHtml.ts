@@ -1,4 +1,4 @@
-import type { Value } from 'platejs'
+import type { Value, Descendant } from 'platejs'
 
 const escapeHtml = (text: string): string =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -6,37 +6,60 @@ const escapeHtml = (text: string): string =>
 const KJENTE_MARKERINGER = ['bold', 'italic', 'underline']
 const KJENTE_TYPER = ['h1', 'h2', 'h3', 'h4', 'p', 'a', 'ul', 'ol', 'li', 'lic', 'placeholder']
 
+interface BrevTextNode {
+  text: string
+  bold?: boolean
+  italic?: boolean
+  underline?: boolean
+  [key: string]: unknown
+}
+
+interface BrevElementNode {
+  type?: string
+  url?: string
+  children?: Descendant[]
+  [key: string]: unknown
+}
+
 // prøver å varsle i console i dev hvis vi støter på ukjente markeringer eller typer
-const varsleUkjent = (node: any) => {
+const varsleUkjent = (node: Descendant) => {
   if (window.appSettings.NAIS_CLUSTER_NAME === 'dev-gcp') {
     if ('text' in node) {
-      const ukjenteMarkeringer = Object.keys(node).filter(
-        (k) => k !== 'text' && node[k] === true && !KJENTE_MARKERINGER.includes(k)
+      const textNode = node as BrevTextNode
+      const ukjenteMarkeringer = Object.keys(textNode).filter(
+        (k) => k !== 'text' && textNode[k] === true && !KJENTE_MARKERINGER.includes(k)
       )
       if (ukjenteMarkeringer.length > 0) {
         console.warn(`[serialiserTilHtml] Ukjent(e) mark(s): ${ukjenteMarkeringer.join(', ')}`, node)
       }
-    } else if (node.type && !KJENTE_TYPER.includes(node.type)) {
-      console.warn(`[serialiserTilHtml] Ukjent nodetype: "${node.type}"`, node)
+    } else {
+      const elementNode = node as BrevElementNode
+      if (elementNode.type && !KJENTE_TYPER.includes(elementNode.type)) {
+        console.warn(`[serialiserTilHtml] Ukjent nodetype: "${elementNode.type}"`, node)
+      }
     }
   }
 }
 
 // serialiserer data fra editor for å generere html
-const serialiserNodeTilHtml = (node: any): string => {
+const serialiserNodeTilHtml = (node: Descendant): string => {
   varsleUkjent(node)
 
   if ('text' in node) {
-    let html = escapeHtml(node.text ?? '')
-    if (node.bold) html = `<strong>${html}</strong>`
-    if (node.italic) html = `<em>${html}</em>`
-    if (node.underline) html = `<u>${html}</u>`
+    const textNode = node as BrevTextNode
+    let html = escapeHtml(textNode.text ?? '')
+    if (textNode.bold) html = `<strong>${html}</strong>`
+    if (textNode.italic) html = `<em>${html}</em>`
+    if (textNode.underline) html = `<u>${html}</u>`
     return html
   }
 
-  const children: string = Array.isArray(node.children) ? node.children.map(serialiserNodeTilHtml).join('') : ''
+  const elementNode = node as BrevElementNode
+  const children: string = Array.isArray(elementNode.children)
+    ? elementNode.children.map(serialiserNodeTilHtml).join('')
+    : ''
 
-  switch (node.type) {
+  switch (elementNode.type) {
     case 'h1':
       return `<h1>${children}</h1>\n`
     case 'h2':
@@ -47,8 +70,11 @@ const serialiserNodeTilHtml = (node: any): string => {
       return `<h4>${children}</h4>\n`
     case 'p':
       return `<p>${children}</p>\n`
-    case 'a':
-      return `<a href="${escapeHtml(node.url ?? '')}" target="_blank">${children}</a>`
+    case 'a': {
+      const url = escapeHtml(elementNode.url ?? '')
+      const linkText = children || url
+      return `<a href="${url}" title="${linkText}">${children}</a>`
+    }
     case 'ul':
       return `<ul>${children}</ul>\n`
     case 'ol':

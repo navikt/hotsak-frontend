@@ -3,6 +3,7 @@ import { memo, useState } from 'react'
 import { Brevstatus } from '../../../brev/brevTyper.ts'
 import { SlettBrevModal } from '../../../brev/SlettBrevModal.tsx'
 import { useBrevMetadata } from '../../../brev/useBrevMetadata.ts'
+import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 import { PanelTittel } from '../../../felleskomponenter/panel/PanelTittel.tsx'
 import { ScrollablePanel } from '../../../felleskomponenter/ScrollablePanel.tsx'
 import { Tekst, TextContainer } from '../../../felleskomponenter/typografi.tsx'
@@ -20,8 +21,6 @@ import { VedtaksresultatTag } from '../VedtaksresultatTag.tsx'
 import { Gjenstående, UtfallLåst, VedtaksResultat } from './behandlingTyper.ts'
 import { useBehandling } from './useBehandling.ts'
 import { useBehandlingActions } from './useBehandlingActions.ts'
-import { useMiljø } from '../../../utils/useMiljø.ts'
-import { useUtsendingsInfo } from '../../../brev/useUtsendingsInfo.ts'
 
 interface BehandlingProps {
   sak: Sak
@@ -48,8 +47,7 @@ function BehandlingPanel({ sak }: BehandlingProps) {
   const harBrevutkast = !!gjeldendeBehandling?.utfallLåst?.includes(UtfallLåst.HAR_VEDTAKSBREV)
   const kanOppretteBrev = !lesevisning && !harBrevutkast
   const brevutkastFerdigstilt = harBrevutkast && !gjenstående.includes(Gjenstående.BREV_IKKE_FERDIGSTILT)
-  const erDev = useMiljø()
-  const { utsendingsinfo, harUtsendingsInfo } = useUtsendingsInfo()
+  const { datoEkspedert } = useUtsendingsInfo()
 
   return (
     <Box background="default" paddingInline="space-8" paddingBlock="space-0 space-36" style={{ height: '100%' }}>
@@ -98,35 +96,11 @@ function BehandlingPanel({ sak }: BehandlingProps) {
                   {lesevisning && brevMetadata?.status === Brevstatus.SENDT && (
                     <>
                       <InlineMessage status="info" size="small">
-                        Vedtaksbrevet ble sendt til bruker den {formaterTidsstempelLang(brevMetadata?.sendt)}
+                        Vedtaksbrevet ble sendt til bruker den{' '}
+                        {datoEkspedert
+                          ? formaterTidsstempelLang(datoEkspedert)
+                          : formaterTidsstempelLang(brevMetadata?.sendt)}
                       </InlineMessage>
-                      {erDev && harUtsendingsInfo && (
-                        <>
-                          {utsendingsinfo?.varselSendt && utsendingsinfo.varselSendt.length > 0 && (
-                            <InlineMessage status="info" size="small">
-                              <VStack gap="space-4">
-                                <span>Bruker er varslet om vedtaket:</span>
-                                {utsendingsinfo.varselSendt.map((varsel) => (
-                                  <span>
-                                    «{varsel.tittel}» til {varsel.adresse}
-                                    {varsel.tidspunkt && <> – {formaterTidsstempelLang(varsel.tidspunkt)}</>}
-                                  </span>
-                                ))}
-                              </VStack>
-                            </InlineMessage>
-                          )}
-                          {utsendingsinfo?.fysiskpostSendt && (
-                            <InlineMessage status="info" size="small">
-                              Brevet er sendt som fysisk post (sentral utskrift) til {utsendingsinfo.fysiskpostSendt}
-                            </InlineMessage>
-                          )}
-                          {utsendingsinfo?.digitalpostSendt && (
-                            <InlineMessage status="info" size="small">
-                              Brevet er sendt til digital postkasse
-                            </InlineMessage>
-                          )}
-                        </>
-                      )}
                     </>
                   )}
                   {lesevisning && !harBrevISak && vedtaksResultat === VedtaksResultat.INNVILGET && (

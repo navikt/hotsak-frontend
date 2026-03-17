@@ -6,7 +6,6 @@ import { SkjemaAlert } from '../felleskomponenter/SkjemaAlert'
 import { Toast } from '../felleskomponenter/toast/Toast.tsx'
 import { Tekst } from '../felleskomponenter/typografi'
 import { Oppgavestatus } from '../oppgave/oppgaveTypes.ts'
-import { TaOppgaveButton } from '../oppgave/TaOppgaveButton.tsx'
 import { useOppgave } from '../oppgave/useOppgave.ts'
 import { useOppgaveregler } from '../oppgave/useOppgaveregler.ts'
 import { usePersonContext } from '../personoversikt/PersonContext'
@@ -53,14 +52,14 @@ export function JournalpostVisning({ journalpostId, lesevisning }: JournalpostVi
           <Dokumenter dokumenter={journalpost.dokumenter} />
         </VStack>
         <Box paddingBlock="space-24 space-0" paddingInline="space-0 space-24">
-          <Status lesevisning={lesevisning} onOppgavetildeling={() => mutate()} />
+          <JournalpostStatus />
         </Box>
       </VStack>
     </Container>
   )
 }
 
-function Status({ lesevisning, onOppgavetildeling }: { lesevisning: boolean; onOppgavetildeling(): void }) {
+function JournalpostStatus() {
   const { oppgave } = useOppgave()
   const { oppgaveErUnderBehandlingAvAnnenAnsatt } = useOppgaveregler(oppgave)
 
@@ -76,15 +75,7 @@ function Status({ lesevisning, onOppgavetildeling }: { lesevisning: boolean; onO
     return <SkjemaAlert variant="info">Journalposten er sendt til journalføring</SkjemaAlert>
   }
 
-  if (lesevisning) {
-    return null
-  }
-
-  return (
-    <TaOppgaveButton oppgave={oppgave} onOppgavetildeling={onOppgavetildeling}>
-      Start journalføring
-    </TaOppgaveButton>
-  )
+  return null
 }
 
 const Container = styled.div`

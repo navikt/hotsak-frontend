@@ -69,7 +69,14 @@ export function SettPåVentModal() {
             <DatePicker.Input {...inputPropsFristFerdigstillelse} label="Frist" size="small" />
           </DatePicker>
           <Checkbox size="small">{`Legg tilbake til ${gjeldendeEnhet.navn}`}</Checkbox>
-          <Textarea size="small" label="Kommentar (valgfri)" maxLength={2000} minRows={3} maxRows={3} />
+          <Textarea
+            size="small"
+            label="Kommentar (valgfri)"
+            maxLength={2000}
+            minRows={3}
+            maxRows={3}
+            {...form.register('kommentar')}
+          />
         </VStack>
       </FormModal>
     </FormProvider>

@@ -91,6 +91,7 @@ export function FattVedtakModalV2({
       loading={vedtakLoader}
       open={open}
       width="700px"
+      buttonSize="medium"
       bekreftButtonLabel={`${vedtakTekst?.knapp}${brevMetaData.harBrevISak ? ' og send brev' : ''}`}
       onBekreft={erAvslag ? fattAvslagsvedtak : () => formRef.current?.submit()}
       onClose={onClose}

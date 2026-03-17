@@ -197,9 +197,6 @@ const Breveditor = ({
     [erPlateContentFokusert, erVerktoylinjeFokusert]
   )
 
-  const headerRef = useRef<HTMLDivElement | null>(null)
-  const footerRef = useRef<HTMLParagraphElement | null>(null)
-
   // Hjelper for å kunne fokusere text-editoren
   const plateContentRef = useRef<HTMLDivElement>(null)
   const fokuserPlateContent = useCallback(() => {
@@ -240,7 +237,7 @@ const Breveditor = ({
   const debounceLagring = useRef<NodeJS.Timeout | undefined>(undefined)
   const kallOnLagreBrevMedDebounceOgRetry = (constructedState: StateMangement) => {
     if (onLagreBrev) {
-      setEndringsstatus({ ...endringsstatus, erEndret: true }) // Behold evt. error men sett erEndret=true.
+      setEndringsstatus((prev) => ({ ...prev, erEndret: true })) // Behold evt. error men sett erEndret=true.
       clearTimeout(debounceLagring.current) // Kanseller pågående timere, enten de var startet på enste linjer eller i retry nedenfor
       debounceLagring.current = setTimeout(async () => {
         setEndringsstatus({ erEndret: true, lagrerNå: true, error: undefined }) // Vis at vi forsøker å lagre
@@ -262,8 +259,6 @@ const Breveditor = ({
       }, 500)
     }
   }
-
-  const byggHeaderHtml = (headerInnerHtml: string) => `<div class="header">${NAV_LOGO_SVG}${headerInnerHtml}</div>`
 
   const focusPath = useCallback(
     (path: number[]) => {
@@ -292,6 +287,69 @@ const Breveditor = ({
     [editor]
   )
 
+  const byggHeaderHtml = useCallback(() => {
+    return (
+      `<div class="header">` +
+      NAV_LOGO_SVG +
+      `<dl>
+          <dt>Navn:</dt>
+          <dd>${metadata.brukersNavn}</dd>
+          <dt>Fødselsnummer:</dt>
+          <dd>${metadata.brukersFødselsnummer}</dd>
+          <dt>Saksnummer:</dt>
+          <dd>${metadata.saksnummer}</dd>
+        </dl>
+        <span>${metadata.brevOpprettet}</span>
+      </div>`
+    )
+  }, [metadata])
+
+  const byggFooterHtml = useCallback(() => {
+    return `<p>
+        Med vennlig hilsen <br />
+        ${metadata.saksbehandlerNavn}
+        ${metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
+        ${metadata.hjelpemiddelsentral}
+      </p>`
+  }, [metadata])
+
+  const byggFullHtml = useCallback(
+    (nyVerdi: Value) => {
+      return (
+        `<html lang="nb">
+        <head>
+          <meta charset="UTF-8">
+          <title>Vedtaksbrev fra Nav</title>
+          <style>
+            @page {
+              margin: 64pt 56pt 74pt 56pt;
+              @bottom-right {
+                font-family: 'Source Sans 3', sans-serif;
+                content: 'Side ' counter(page) ' av ' counter(pages);
+              }
+              @bottom-left {
+                font-family: 'Source Sans 3', sans-serif;
+                content: 'Saksnummer ${metadata.saksnummer}';
+              }
+            }
+            html, body {
+              font-size: 11pt;
+              font-weight: normal;
+              font-family: 'Source Sans 3', sans-serif;
+              line-height: 16pt;
+            }
+          </style>
+          <style>${versjonertStilarkV1}</style>
+        </head>` +
+        byggHeaderHtml() +
+        (serialiserTilHtml(nyVerdi) || '') +
+        byggFooterHtml() +
+        '</html>'
+      )
+    },
+    [metadata, byggHeaderHtml, byggFooterHtml]
+  )
+
   return (
     <BreveditorContext
       value={{
@@ -308,43 +366,14 @@ const Breveditor = ({
     >
       <Plate
         editor={editor}
-        onChange={({ editor: changedEditor, value: newValue }) => {
+        onChange={({ editor: changedEditor, value: nyVerdi }) => {
           if ((onStateChange != undefined || onLagreBrev) && !editor.getPlugin(TabSyncPlugin).options.onChangeLocked) {
             const constructedState: StateMangement = {
-              value: newValue,
-              valueAsHtml:
-                `<html lang="nb">
-                    <head>
-                      <meta charset="UTF-8">
-                      <title>Vedtaksbrev fra Nav</title>
-                      <style>
-                        @page {
-                          margin: 64pt 56pt 74pt 56pt;
-                          @bottom-right {
-                            font-family: 'Source Sans 3', sans-serif;
-                            content: 'Side ' counter(page) ' av ' counter(pages);
-                          }
-                          @bottom-left {
-                            font-family: 'Source Sans 3', sans-serif;
-                            content: 'Saksnummer ${metadata.saksnummer}';
-                          }
-                        }
-                        html, body {
-                          font-size: 11pt;
-                          font-weight: normal;
-                          font-family: 'Source Sans 3', sans-serif;
-                          line-height: 16pt;
-                        }
-                      </style>
-                      <style>${versjonertStilarkV1}</style>
-                    </head>` +
-                byggHeaderHtml(headerRef.current?.outerHTML || '') +
-                (serialiserTilHtml(newValue) || '') +
-                (footerRef.current?.outerHTML || '') +
-                '</html>',
+              value: nyVerdi,
+              valueAsHtml: byggFullHtml(nyVerdi),
               history: changedEditor.history,
             }
-            if (!state.current || JSON.stringify(state.current) != JSON.stringify(constructedState)) {
+            if (!state.current || state.current.value !== nyVerdi) {
               // On state-change
               state.current = constructedState
               if (onStateChange) onStateChange(constructedState)
@@ -361,7 +390,7 @@ const Breveditor = ({
                 <div style={{ scale: editorWidthScale }} className="scaled-width">
                   <div className="clear-styles">
                     <div className={`brev-stilark brev-stilark-v1${!visMarger ? ' zoomed' : ''}`}>
-                      <div ref={headerRef} className="header">
+                      <div className="header">
                         <dl>
                           <dt>Navn:</dt>
                           <dd>{metadata.brukersNavn}</dd>
@@ -390,7 +419,7 @@ const Breveditor = ({
                           className="contentEditable"
                         />
                       </PlateContainer>
-                      <p ref={footerRef}>
+                      <p>
                         Med vennlig hilsen <br />
                         {metadata.saksbehandlerNavn}
                         {metadata.attestantsNavn ? `, ${metadata.attestantsNavn}` : ''} <br />
